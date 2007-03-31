@@ -6,61 +6,56 @@ from zope.tal.talinterpreter import _write_ValueError
 def _unicode_replace(structure):
     if isinstance(structure, str):
         try:
-            text = structure.decode('ascii')
+            text = structure.decode('utf-8')
         except UnicodeDecodeError:
-            try:
-                text = structure.decode('utf')
-                # BBB: We shouldn't emit those warnings in Plone 3.0, as all
-                # of the core content types still have this problem. Enable this
-                # once we fixed at least Archetypes to return Unicode (which
-                # should happen in Plone 3.5).
-                #warnings.warn(textwrap.dedent('''\
-                #
-                #*** *** Insertion of non-unicode non-ascii text in TAL is deprecated and will be broken in Plone 4.5 !!!
-                #
-                #%s...
-                #''' % (repr(structure), )), DeprecationWarning, 2)
-            except UnicodeDecodeError:
-                # XXX Maybe, raise an exception here instead of a warning?
-                warnings.warn(textwrap.dedent('''\
+            # XXX Maybe, raise an exception here instead of a warning?
+            warnings.warn(textwrap.dedent('''\
 
-                *** *** Insertion of non-unicode non-ascii non-utf8 encoded text in TAL is deprecated and will be broken in Plone 3.5 !!!
+            *** *** Insertion of non-unicode non-ascii non-utf8 encoded text in TAL is deprecated and will be broken in Plone 3.5 !!!
 
-                %s...
-                ''' % (repr(structure), )), DeprecationWarning, 2)
-                # XXX the next line is fool-proof and will substitute ??-s if the encoding was not
-                # unicode
-                text = structure.decode('utf', 'replace')
+            %s...
+            ''' % (repr(structure), )), DeprecationWarning, 2)
+            # XXX the next line is fool-proof and will substitute ??-s if the encoding was not
+            # unicode
+            text = structure.decode('utf-8', 'replace')
     else:
         text = unicode(structure)
     return text
 
+
 def _nulljoin(valuelist):
     try:
-        return ''.join(valuelist)
+        return u''.join(valuelist)
     except UnicodeDecodeError:
-        text = u''
-        for value in valuelist:
-            text += _unicode_replace(value)
-        return text
+        pass
+    return u''.join([_unicode_replace(value) for value in valuelist])
 
 
 def new__call__(self, econtext):
-    vvals = []
-    for var in self._vars:
-        v = var(econtext)
-        vvals.append(_unicode_replace(v))
-    return self._expr % tuple(vvals)
+    try:
+        return self._expr % tuple([var(econtext) for var in self._vars])
+    except UnicodeDecodeError:
+        pass
+    return self._expr % tuple([_unicode_replace(var(econtext)) for var in self._vars])
 
 
 class FasterStringIO(StringIO):
-    """Append-only version of StringIO.
+    """Append-only version of StringIO, which ignores any initial buffer.
 
-    This let's us have a much faster write() method.
+    This let's us have much faster write() and getvalue methods.
 
     Most of this code was taken from zope.tal.talinterpreter.py licenced under
     the ZPL 2.1.
     """
+    def __init__(self, buf=None):
+        self.buf = ''
+        self.len = 0
+        self.buflist = []
+        self.bufappend = self.buflist.append
+        self.pos = 0
+        self.closed = False
+        self.softspace = 0
+
     def close(self):
         if not self.closed:
             self.write = _write_ValueError
@@ -70,16 +65,14 @@ class FasterStringIO(StringIO):
         raise RuntimeError("FasterStringIO.seek() not allowed")
 
     def write(self, s):
-        #assert self.pos == self.len
-        self.buflist.append(s)
+        self.bufappend(s)
         self.len = self.pos = self.pos + len(s)
 
     def getvalue(self):
         if self.buflist:
             try:
-                self.buf += ''.join(self.buflist)
+                self.buf = u''.join(self.buflist)
             except UnicodeDecodeError:
-                for value in self.buflist:
-                    self.buf += _unicode_replace(value)
+                self.buf = u''.join([_unicode_replace(value) for value in self.buflist])
             self.buflist = []
         return self.buf

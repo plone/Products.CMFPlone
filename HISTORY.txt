@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Cleaned up code in unicodehacks.py so we don't have a performance penality
+      for mixed unicode/non-unicode pages.
+      [hannosch]
+
     - Micro optimization: Use a truly local variable for language lookup, which
       is faster than getting the value from the globals.
       [hannosch]
