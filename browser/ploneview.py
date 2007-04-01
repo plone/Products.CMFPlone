@@ -122,7 +122,7 @@ class Plone(utils.BrowserView):
         self._data['global_actions'] =  actions['global']
 
         portal_tabs_view = getMultiAdapter((context, context.REQUEST), name='portal_tabs_view')
-        self._data['portal_tabs'] =  portal_tabs_view.topLevelTabs()
+        self._data['portal_tabs'] =  portal_tabs_view.topLevelTabs(actions=actions)
 
         self._data['wf_state'] =  context_state.workflow_state()
         self._data['portal_properties'] = props = tools.properties()

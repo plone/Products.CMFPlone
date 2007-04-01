@@ -4,10 +4,6 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
-    - Optimized the CatalogNavigationTabs view, excluded the 'portal_tabs'
-      action category from the action dictionary available from the ploneview.
-      [hannosch]
-
     - Added new arguments to the action tools API which allow querying for a
       specific action category or exclude certain action categories or action
       providers from the results in an efficient way.
