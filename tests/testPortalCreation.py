@@ -586,6 +586,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # the custom skin needs to be created
         self.failUnless('custom' in self.skins.objectIds())
 
+    def testCustomSkinFolderComesFirst(self):
+        firstInDefaultSkin = (
+            self.skins.getSkinPath('Plone Default').split(',')[0])
+        self.assertEqual(
+            firstInDefaultSkin, 'custom',
+            "The 'custom' layer was not the first in the Plone Default skin. "
+            "It was %r." % firstInDefaultSkin)
+
     def testMemberHasViewGroupsPermission(self):
         # Member should be granted the 'View Groups' permission
         member_has_permission = [p for p in
