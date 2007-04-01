@@ -4,8 +4,8 @@ from zope.component import getUtility
 
 from Acquisition import aq_base
 from Products.CMFPlone import utils
-from Products.CMFPlone import PloneMessageFactory as PMF
 
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IURLTool
@@ -27,6 +27,8 @@ from plone.app.layout.navigation.interfaces import INavtreeStrategy
 
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.navtree import buildFolderTree
+
+from plone.memoize.view import memoize_contextless
 
 import zope.deferredimport
 zope.deferredimport.deprecated(
@@ -125,10 +127,10 @@ class CatalogSiteMap(utils.BrowserView):
 class CatalogNavigationTabs(utils.BrowserView):
     implements(INavigationTabs)
 
+    @memoize_contextless
     def topLevelTabs(self, actions=None, category='portal_tabs'):
         context = utils.context(self)
 
-        portal_catalog = getUtility(ICatalogTool)
         portal_properties = getUtility(IPropertiesTool)
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         site_properties = getattr(portal_properties, 'site_properties')
@@ -136,19 +138,19 @@ class CatalogNavigationTabs(utils.BrowserView):
         # Build result dict
         result = []
         # first the actions
-        if actions is not None:
-            for actionInfo in actions.get(category, []):
-                data = actionInfo.copy()
-                # We use PMF instead of _() here, as this should not be picked
-                # up by the extraction tool.
-                title = utils.safe_unicode(data['title'])
-                data['name'] = PMF(title, default=title)
-                result.append(data)
+        if actions is None:
+            actions_tool = getUtility(IActionsTool)
+            actions = (actions_tool.listActionInfos(object=context,
+                                                    categories=(category, )))
+            for action in actions:
+                action['name'] = action['title']
+        result.extend(actions)
 
         # check whether we only want actions
         if site_properties.getProperty('disable_folder_sections', False):
             return result
 
+        portal_catalog = getUtility(ICatalogTool)
         customQuery = getattr(context, 'getCustomNavQuery', False)
         if customQuery is not None and utils.safe_callable(customQuery):
             query = customQuery()
