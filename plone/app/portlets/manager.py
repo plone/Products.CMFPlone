@@ -1,3 +1,6 @@
+import sys
+from ZODB.POSException import ConflictError
+
 from zope.interface import Interface
 from zope.component import adapts, getMultiAdapter, getUtility
 
@@ -13,6 +16,9 @@ from plone.portlets.interfaces import IPortletRenderer, ILocalPortletAssignable
 from plone.portlets.manager import PortletManagerRenderer as BasePortletManagerRenderer
 
 from plone.app.portlets.interfaces import IColumn
+
+import logging
+logger = logging.getLogger('portlets')
 
 class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
     """A Zope 2 implementation of the default PortletManagerRenderer
@@ -31,6 +37,7 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
     """
     adapts(Interface, IBrowserRequest, IBrowserView, IColumn)
     template = ViewPageTemplateFile('browser/templates/column.pt')
+    error_message = ViewPageTemplateFile('browser/templates/error_message.pt')
 
     def _context(self):
         context = aq_inner(self.context)
@@ -51,3 +58,13 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
             return False
         mtool = getUtility(IMembershipTool)
         return mtool.checkPermission("Portlets: Manage portlets", context)
+
+    def safe_render(self, portlet_renderer):
+        try:
+            return portlet_renderer.render()
+        except ConflictError:
+            raise
+        except Exception:
+            logger.exception('Error while rendering %r' % (self,))
+            self.aq_inner.aq_parent.error_log.raising(sys.exc_info())
+            return self.error_message()

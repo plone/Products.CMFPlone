@@ -26,9 +26,6 @@ from plone.app.portlets.browser.formhelper import AddForm
 from plone.app.portlets.browser.formhelper import NullAddForm
 from plone.app.portlets.browser.formhelper import EditForm
 
-import logging
-logger = logging.getLogger('portlets')
-
 class Assignment(SimpleItem, Contained):
     """Base class for assignments.
     
@@ -69,8 +66,6 @@ class Renderer(Explicit):
     
     implements(IPortletRenderer)
 
-    error_message = ViewPageTemplateFile('error_message.pt')
-
     def __init__(self, context, request, view, manager, data):
         self.context = context
         self.request = request
@@ -85,16 +80,6 @@ class Renderer(Explicit):
         raise NotImplementedError("You must implement 'render' as a method "
                                   "or page template file attribute")
 
-    def safe_render(self):
-        try:
-            return self.render()
-        except ConflictError:
-            raise
-        except Exception:
-            logging.exception('Error while rendering %r' % (self,))
-            self.aq_inner.aq_parent.error_log.raising(sys.exc_info())
-            return self.error_message()
-    
     @property
     def available(self):
         """By default, portlets are available
