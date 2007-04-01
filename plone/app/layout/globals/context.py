@@ -20,7 +20,7 @@ from Products.CMFPlone import utils
 from interfaces import IContextState
 
 BLACKLISTED_PROVIDERS = ('portal_workflow', )
-BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons', 'portal_tabs')
+BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons')
 
 
 class ContextState(BrowserView):
