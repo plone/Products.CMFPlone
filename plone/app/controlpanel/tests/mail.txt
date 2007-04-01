@@ -10,7 +10,7 @@ First some initial setup code:
     >>> mailhost = getUtility(IMailHost)
     >>> self.loginAsManager()
 
-Viewing the search control panel
+Viewing the mail control panel
 --------------------------------
 
     >>> self.browser.open('http://nohost/plone/@@mail-controlpanel')
@@ -71,4 +71,4 @@ Make sure the changes have been applied correctly to the mailhost:
     u'Spambot'
 
     >>> self.site_props.email_from_address
-    u'spam@localhost'
+    'spam@localhost'

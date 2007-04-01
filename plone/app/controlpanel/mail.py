@@ -8,6 +8,8 @@ from zope.interface import implements
 from zope.schema import Int
 from zope.schema import Password
 from zope.schema import TextLine
+from zope.schema import ASCII
+from zope.app.form.browser.textwidgets import ASCIIWidget
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -56,7 +58,7 @@ class IMailFromSchema(Interface):
                                default=None,
                                required=True)
 
-    email_from_address = TextLine(title=_(u"Site 'From' address"),
+    email_from_address = ASCII(title=_(u"Site 'From' address"),
                                   description=_(u'''Plone generates e-mail using
                                                 this address as the e-mail
                                                 return address. It is also used
@@ -140,7 +142,7 @@ mailfromset.label = _(u'Mail sender')
 class MailControlPanel(ControlPanelForm):
 
     form_fields = FormFieldsets(mailhostset, mailfromset)
-
+    form_fields['email_from_address'].custom_widget = ASCIIWidget
     label = _("Mail settings")
     description = _("Mail settings for this Site.")
     form_name = _("Outgoing Mail Details")
