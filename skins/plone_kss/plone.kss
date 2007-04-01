@@ -65,7 +65,7 @@ dl.kssPortletRefresh:timeout {
 Content Menu Sections: General
 */
 
-div.contentActions:load {
+ul#contentActionMenus:load {
     evt-load-initial: false;
     action-client: bindActionMenus;
 }
@@ -113,32 +113,23 @@ a.actionicon-object_buttons-copy:click {
 /*
 Content Menu Sections: Workflow State
 */
-
-dl#statusMenu dd a:click {
-    evt-click-preventdefault: True;
-    action-server: changeWorkflowState;
-    changeWorkflowState-url: nodeAttr(href);
-    changeWorkflowState-error: plone-followLink;
-}
-
-/*
 dl#plone-contentmenu-workflow dd.actionMenuContent a:click {
     evt-click-preventdefault: True;
     evt-click-allowbubbling: True; 
     action-server: changeWorkflowState;
-    changeWorkflowState-id: nodeAttr(id);
+    changeWorkflowState-url: nodeAttr(href);
 }
-*/
+
 
 dl#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
     evt-click-preventdefault: False;
     action-cancel: changeWorkflowState;
 }
 
+
 /* 
 In-place calendar changing
 */
-
 a.kssCalendarChange:click {
     evt-click-preventdefault:      true;
     action-server:                 refreshCalendar;
@@ -324,3 +315,4 @@ body:load {
    evt-timeout-repeat: '';
    action-client: deleteNode;
 }
+

@@ -167,7 +167,7 @@
                       Portal status message
                     </div>
                     
-                    <div tal:replace="structure provider:plone.abovecontent" />
+                    <div id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />
 
                     <metal:slot metal:define-slot="body">
                       <metal:header metal:define-slot="header" tal:content="nothing">
