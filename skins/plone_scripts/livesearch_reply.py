@@ -61,7 +61,7 @@ for char in '?-+*':
 r=q.split()
 r = " AND ".join(r)
 r = quote_bad_chars(r)+'*'
-searchterms = url_quote(r.replace(' ','+'))
+searchterms = url_quote_plus(r)
 
 site_encoding = context.plone_utils.getSiteEncoding()
 
