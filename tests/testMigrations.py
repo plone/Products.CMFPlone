@@ -157,6 +157,8 @@ from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
 from Products.CMFPlone.migrations.v3_0.betas import updateEditActionConditionForLocking
+from Products.CMFPlone.migrations.v3_0.betas import addOnFormUnloadJS
+
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2526,6 +2528,29 @@ class TestMigrations_v3_0(MigrationTest):
         for action in fti.listActions():
             if action.getId() == 'edit':
                 self.assertEquals(action.condition.text, 'foo')
+
+    def testAddOnFormUnloadRegistrationJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('unlockOnFormUnload.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('unlockOnFormUnload.js' in script_ids)
+        # migrate and test again
+        addOnFormUnloadJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('unlockOnFormUnload.js' in script_ids)
+
+    def testAddOnFormUnloadRegistrationJSTwice(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('unlockOnFormUnload.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('unlockOnFormUnload.js' in script_ids)
+        # migrate and test again
+        addOnFormUnloadJS(self.portal, [])
+        addOnFormUnloadJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('unlockOnFormUnload.js' in script_ids)
 
 def test_suite():
     from unittest import TestSuite, makeSuite

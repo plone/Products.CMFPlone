@@ -2,8 +2,7 @@ from zope.component import queryUtility
 
 from Products.CMFCore.interfaces import IActionsTool, ITypesTool
 from Products.CMFCore.Expression import Expression
-#from Products.CMFCore.ActionInformation import Action
-#from Products.CMFCore.ActionInformation import ActionInformation
+from Products.ResourceRegistries.interfaces import IJSRegistry
 
 def beta1_beta2(portal):
     """ 3.0-beta1 -> 3.0-beta2
@@ -14,6 +13,7 @@ def beta1_beta2(portal):
     migrateHistoryTab(portal, out)
     changeOrderOfActionProviders(portal, out)
     updateEditActionConditionForLocking(portal, out)
+    addOnFormUnloadJS(portal, out)
 
     return out
 
@@ -51,3 +51,21 @@ def updateEditActionConditionForLocking(portal, out):
                 for action in fti.listActions():
                     if action.getId() == 'edit' and not action.condition:
                         action.condition = Expression("not:object/@@plone_lock_info/is_locked_for_current_user|python:True")
+
+def addOnFormUnloadJS(portal, out):
+    """
+    add the form unload JS to the js registry
+    """
+    jsreg = queryUtility(IJSRegistry)
+    script = 'unlockOnFormUnload.js'
+    if jsreg is not None:
+        script_ids = jsreg.getResourceIds()
+        # Failsafe: first make sure the stylesheet doesn't exist in the list
+        if script not in script_ids:
+            jsreg.registerScript(script,
+                                 enabled = True,
+                                 cookable = True)
+            # put it at the bottom of the stack
+            jsreg.moveResourceToBottom(script)
+            out.append("Added " + script + " to portal_javascipt")
+
