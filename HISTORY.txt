@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added new arguments to the action tools API which allow querying for a
+      specific action category or exclude certain action categories or action
+      providers from the results in an efficient way.
+
+      We exclude all actions from the workflow tool and those in the
+      folder_buttons and object_buttons categories by default from the
+      dictionary available from the ploneview.
+      [hannosch]
+
     - Removed lots of unused actions and the entire object_tabs and global
       action categories. This closes http://dev.plone.org/plone/ticket/6336.
       [hannosch]
