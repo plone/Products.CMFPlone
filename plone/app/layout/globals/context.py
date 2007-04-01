@@ -19,6 +19,10 @@ from Products.CMFPlone import utils
 
 from interfaces import IContextState
 
+BLACKLISTED_PROVIDERS = ('portal_workflow', )
+BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons')
+
+
 class ContextState(BrowserView):
     """Information about the state of the current context
     """
@@ -166,12 +170,14 @@ class ContextState(BrowserView):
             context = aq_inner(self.context)
             lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
             return lockable and context.wl_isLocked()
-                            
+
     @memoize
     def actions(self):
         tool = getUtility(IActionsTool)
-        return tool.listFilteredActionsFor(aq_inner(self.context))
-        
+        return tool.listFilteredActionsFor(aq_inner(self.context),
+                                           ignore_providers=BLACKLISTED_PROVIDERS,
+                                           ignore_categories=BLACKLISTED_CATEGORIES)
+
     @memoize
     def keyed_actions(self):
         actions = self.actions()
