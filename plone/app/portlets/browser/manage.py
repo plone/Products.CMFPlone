@@ -2,7 +2,7 @@ from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
 
 from AccessControl import Unauthorized
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_inner
 from Products.Five import BrowserView
 
 from Products.CMFCore.interfaces import IMembershipTool
@@ -66,8 +66,9 @@ class ManageContextualPortlets(BrowserView):
     def set_blacklist_status(self, manager, group_status, content_type_status, context_status):
         portletManager = getUtility(IPortletManager, name=manager)
         assignable = getMultiAdapter((self.context, portletManager,), ILocalPortletAssignmentManager)
+        assignments = getMultiAdapter((self.context, portletManager), IPortletAssignmentMapping)
         
-        IPortletPermissionChecker(assignable)()
+        IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
         
         def int2status(status):
             if status == 0:
