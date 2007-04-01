@@ -13,6 +13,8 @@ from Products.Archetypes.interfaces import IUIDCatalog
 from Products.ATContentTypes.interface import IATCTTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
+from Products.CMFCore.ActionInformation import Action
+from Products.CMFCore.ActionInformation import ActionCategory
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.interfaces import IActionCategory
@@ -157,6 +159,7 @@ from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
 from Products.CMFPlone.migrations.v3_0.betas import addNewBeta2CSSFiles
+from Products.CMFPlone.migrations.v3_0.betas import cleanupOldActions
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2489,6 +2492,72 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(
             self.actions.listActionProviders(),
             ('portal_workflow', 'portal_types', 'portal_actions'))
+
+    def testCleanupOldActions(self):
+        out = []
+        reply = Action('reply', title='Reply')
+        logged_in = Action('logged_in', title='Logged in')
+        change_ownership = Action('change_ownership', title='Change ownership')
+
+        object_ = self.actions.object
+        object_tabs = getattr(self.actions, 'object_tabs', None)
+        if object_tabs is None:
+            category = 'object_tabs'
+            self.actions._setObject(category, ActionCategory(id=category))
+            object_tabs = self.actions.object_tabs
+        if getattr(self.actions, 'global', None) is None:
+            category = 'global'
+            self.actions._setObject(category, ActionCategory(id=category))
+
+        if not 'reply' in object_.keys():
+            object_._setObject('reply', reply)
+        user = self.actions.user
+        if not 'logged_in' in user.keys():
+            user._setObject('logged_in', logged_in)
+        if not 'change_ownership' in object_tabs.keys():
+            object_tabs._setObject('change_ownership', change_ownership)
+        del object_tabs
+
+        cleanupOldActions(self.portal, out)
+
+        self.failIf('reply' in object_.keys())
+        self.failIf('logged_in' in user.keys())
+        self.failIf('object_tabs' in self.actions.keys())
+        self.failIf('global' in self.actions.keys())
+
+    def testCleanupOldActionsTwice(self):
+        out = []
+        reply = Action('reply', title='Reply')
+        logged_in = Action('logged_in', title='Logged in')
+        change_ownership = Action('change_ownership', title='Change ownership')
+
+        object_ = self.actions.object
+        object_tabs = getattr(self.actions, 'object_tabs', None)
+        if object_tabs is None:
+            category = 'object_tabs'
+            self.actions._setObject(category, ActionCategory(id=category))
+            object_tabs = self.actions.object_tabs
+        if getattr(self.actions, 'global', None) is None:
+            category = 'global'
+            self.actions._setObject(category, ActionCategory(id=category))
+
+        if not 'reply' in object_.keys():
+            object_._setObject('reply', reply)
+        user = self.actions.user
+        if not 'logged_in' in user.keys():
+            user._setObject('logged_in', logged_in)
+        if not 'change_ownership' in object_tabs.keys():
+            object_tabs._setObject('change_ownership', change_ownership)
+        del object_tabs
+
+        cleanupOldActions(self.portal, out)
+        cleanupOldActions(self.portal, out)
+
+        self.failIf('reply' in object_.keys())
+        self.failIf('logged_in' in user.keys())
+        self.failIf('object_tabs' in self.actions.keys())
+        self.failIf('global' in self.actions.keys())
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
