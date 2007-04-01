@@ -4,7 +4,6 @@ from zope.component import getUtility
 
 from Acquisition import aq_base
 from Products.CMFPlone import utils
-from Products.CMFPlone import PloneMessageFactory as PMF
 
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IPropertiesTool
@@ -139,10 +138,7 @@ class CatalogNavigationTabs(utils.BrowserView):
         if actions is not None:
             for actionInfo in actions.get(category, []):
                 data = actionInfo.copy()
-                # We use PMF instead of _() here, as this should not be picked
-                # up by the extraction tool.
-                title = utils.safe_unicode(data['title'])
-                data['name'] = PMF(title, default=title)
+                data['name'] = data['title']
                 result.append(data)
 
         # check whether we only want actions
