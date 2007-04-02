@@ -13,12 +13,12 @@ RESPONSE=REQUEST.RESPONSE
 delete = REQUEST.get('delete', [])
 for groupname in delete:
     group = context.portal_groups.getGroupById(groupname)
-    group.removeMember(userid)
+    group.removeMember(userid, REQUEST=context.REQUEST)
 
 add = REQUEST.get('add', [])
 for groupname in add:
     group = context.portal_groups.getGroupById(groupname)
-    group.addMember(userid)
+    group.addMember(userid, REQUEST=context.REQUEST)
 
 return RESPONSE.redirect('%s?userid=%s' % (container.prefs_user_memberships.absolute_url(),
                                            userid)

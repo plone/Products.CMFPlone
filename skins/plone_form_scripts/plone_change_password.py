@@ -32,7 +32,7 @@ if failMessage:
 
 member=mt.getAuthenticatedMember()
 try:
-    mt.setPassword(password, domains)
+    mt.setPassword(password, domains, REQUEST=context.REQUEST)
 except AttributeError:
     failMessage=_(u'While changing your password an AttributeError occurred. This is usually caused by your user being defined outside the portal.')
     context.plone_utils.addPortalMessage(failMessage)
