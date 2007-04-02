@@ -64,7 +64,7 @@
           Up to Users Overview
         </a>
 
-        <h2 i18n:translate="heading_search_newgroups">Search for new groups</h2>
+        <h2 i18n:translate="heading_search_groups">Search for groups</h2>
         <div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
           <metal:block metal:fill-slot="hiddens">
             <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
