@@ -8,6 +8,39 @@
 <metal:block fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border',1)" />
 
+<metal:block fill-slot="javascript_head_slot">
+    <!-- maybe someone can put that into nice kss -->
+    <script type="text/javascript">
+        <!--
+        function show_submenu(show) {
+            var details = document.getElementById('details');
+
+            if (show) {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+        function check_mode(ident) {
+            upper = document.getElementById(ident);
+            lower = document.getElementById(ident + '_lower');
+            hidden = document.getElementById(ident + '_hidden');
+
+
+            lower.disabled = true;
+            hidden.setAttribute('value', ident);
+            if( upper.checked && !lower.checked ) {
+                // not allowed.
+                lower.checked = true;
+            } else if(lower.checked && upper.checked) {
+                lower.disabled = true;
+            } else {
+                lower.disabled = false;
+            }
+        }
+        //-->
+    </script>
+</metal:block>
   <body>
 
     <div metal:fill-slot="main">
@@ -26,7 +59,6 @@
         types will be available for selection.
       </p>
 
-
       <form name="constraintypes_form"
             action="."
             method="post"
@@ -34,7 +66,7 @@
             tal:define="errors options/state/getErrors;">
 
         <input type="hidden" name="form.submitted" value="1"/>
-    
+
         <tal:items define="currentMode    request/constrainTypesMode | here/getConstrainTypesMode;
                            currentAllow   request/locallyAllowedTypes | here/getLocallyAllowedTypes;
                            currentPrefer  request/immediatelyAddableTypes | here/getImmediatelyAddableTypes;
@@ -43,11 +75,11 @@
                            parent_allowed_types getLocallyAllowedTypes|python:[];
                            parent_immediate_types parent/getImmediatelyAddableTypes|python:[];
                            default_types here/getDefaultAddableTypes">
-    
+
             <fieldset>
 
                 <legend i18n:translate="legend_constraintypes">Addable types options</legend>
-    
+
                 <div class="field">
                     <label for="enableAddRestrictions" 
                             i18n:translate="label_add_restriction_mode">
@@ -58,7 +90,7 @@
                        Please select how you would like to control which content 
                        types are addable in this folder.
                     </div>
-                    
+
                     <tal:mode condition="python:ifacetool.objectImplements(parent,'Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes')">
                         <input type="radio"
                                name="constrainTypesMode:int"
@@ -73,116 +105,134 @@
                         </label>
                         <br />
                     </tal:mode>
-                    
+
                     <input type="radio"
                            name="constrainTypesMode:int"
                            id="mode_disable"
                            value="0"
                            class="noborder"
+                           onclick="show_submenu(false)"
                            tabindex=""
                            tal:attributes="tabindex tabindex/next;
                                            checked python:test('0' == str(currentMode), 'checked', None)"/>
                     <label for="mode_disable" i18n:translate="constraintypes_mode_disable">
-                        Use site default
+                        Use defaults
                     </label>
                     <br />
-                    
+                </div>
+
+                <!-- Manually selected Fields, normally collapsed -->
+                <div class="field">
                     <input type="radio"
                            name="constrainTypesMode:int"
                            id="mode_enable"
                            value="1"
                            class="noborder"
+                           onclick="show_submenu(true)"
                            tabindex=""
                            tal:attributes="tabindex tabindex/next;
                                            checked python:test('1' == str(currentMode), 'checked', None)"/>
                     <label for="mode_enable" i18n:translate="constraintypes_mode_enable">
-                        Select manually
+                        Specify manually
                     </label>
                     <br />
-                    
-                </div>
-    
-                <div class="field">
-                    <label for="locallyAllowedTypes" 
-                            i18n:translate="label_locally_allowed_types">
-                        Addable types
-                    </label>
 
-                    <div class="formHelp" i18n:translate="help_locally_allowed_types">
-                           Select the content types that will be addable inside
-                           this folder.
+                    <div id="details" tal:attributes="style python:'display:%s'%test('1' == str(currentMode), 'block', 'none')">
+
+                    <!-- Addable to the Menu -->
+                    <div id="details"
+                         tal:define="error errors/immediatelyAddableTypes | nothing;"
+                         tal:attributes="class python:test(error, 'field error', 'field')">
+
+                        <label for="immediatelyAddableTypes" 
+                                i18n:translate="label_immediately_addable_types">
+                            Preferred types
+                        </label>
+
+                        <div class="formHelp" i18n:translate="help_immediately_addable_types">
+                            Of the types selected below, certain items may be
+                            made available through the standard "Add" drop-down
+                            menu. Any further types selected below will be addable 
+                            via a separate form accessible from the same menu.
+                        </div>
+
+                        <!-- Errors go here -->
+                        <div tal:content="error">Validation error output</div>
+
+                        <div tal:attributes="tabindex tabindex/next;">
+                            <tal:block tal:repeat="type availableTypes">
+                                <input name="immediatelyAddableTypes:list"
+                                       class="noborder"
+                                       type="checkbox"
+                                       tal:attributes="value type/getId;
+                                                       id type/getId;
+                                                       onclick string:check_mode('${type/getId}');
+                                                       checked python:test(type.getId() in currentPrefer, 'checked', None);"
+                                />
+                                <span tal:content="type/title_or_id">Type</span>
+                            </tal:block>
+                        </div>
+
                     </div>
 
-                    <select name="locallyAllowedTypes:list"
-                            id="locallyAllowedTypes"
-                            size="7"
-                            multiple="multiple"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;">
-                        <option value="#"
-                                tal:repeat="type availableTypes"
-                                tal:content="type/title_or_id"
-                                tal:attributes="value type/getId;
-                                                selected python:test(type.getId() in currentAllow, 'selected', None);"
-                                i18n:translate=""
-                                >dummy</option>
-                    </select>
-                </div>
-                
-                <div class="field" 
-                     tal:define="error errors/immediatelyAddableTypes | nothing;"
-                     tal:attributes="class python:test(error, 'field error', 'field')">
-                    <label for="immediatelyAddableTypes" 
-                            i18n:translate="label_immediately_addable_types">
-                        Preferred types
-                    </label>
+                    <!-- Types addable over the more... option in the menu -->
+                    <div class="field"
+                         tal:define="error errors/locallyAllowedTypes | nothing;"
+                         tal:attributes="class python:test(error, 'field error', 'field')">
 
-                    <div class="formHelp" i18n:translate="help_immediately_addable_types">
-                        Of the types selected above, certain items may be
-                        made available through the standard "Add" drop-down
-                        menu. Any further types selected above will be addable 
-                        via a separate form accessible from the same menu.
+                        <label for="locallyAllowedTypes"
+                                i18n:translate="label_locally_allowed_types">
+                            Addable types
+                        </label>
+
+                        <div class="formHelp" i18n:translate="help_locally_allowed_types">
+                               Select the content types that will be addable inside
+                               this folder.
+                        </div>
+
+                        <!-- Errors go here -->
+                        <div tal:content="error">Validation error output</div>
+
+                        <div tal:attributes="tabindex tabindex/next;">
+                            <tal:block tal:repeat="type availableTypes">
+                                <input name="locallyAllowedTypes:list"
+                                       class="noborder"
+                                       type="checkbox"
+                                       tal:attributes="value type/getId;
+                                                       id string:${type/getId}_lower;
+                                                       onclick string:check_mode('${type/getId}');
+                                                       checked python:test(type.getId() in currentAllow, 'checked', None);"
+                                />
+                                <input tal:attributes="id string:${type/getId}_hidden" name="locallyAllowedTypes:list:default" value="" type="hidden">
+                                <span tal:content="type/title_or_id">Type</span>
+                            </tal:block>
+                        </div>
                     </div>
-                    
-                    <div tal:content="error">Validation error output</div>
-
-                    <select name="immediatelyAddableTypes:list"
-                            id="immediatelyAddableTypes"
-                            size="7"
-                            multiple="multiple"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;">
-                        <option value="#"
-                                tal:repeat="type availableTypes"
-                                tal:content="type/title_or_id"
-                                tal:attributes="value type/getId;
-                                                selected python:test(type.getId() in currentPrefer, 'selected', None);"
-                                i18n:translate=""
-                                >dummy</option>
-                    </select>
                 </div>
-    
+                </div> <!-- /manually selected -->
+
+                <!-- Form Actions -->
                 <div class="formControls">
                     <input class="context"
-                       tabindex=""
-                       type="submit"
-                       name="form.button.Save"
-                       value="Save"
-                       i18n:attributes="value label_save;"
-                       tal:attributes="tabindex tabindex/next;"
-                       />
+                        tabindex=""
+                        type="submit"
+                        name="form.button.Save"
+                        value="Save"
+                        i18n:attributes="value label_save;"
+                        tal:attributes="tabindex tabindex/next;"
+                    />
                     <input class="standalone"
-                       tabindex=""
-                       type="submit"
-                       name="form.button.Cancel"
-                       value="Cancel"
-                       i18n:attributes="value label_cancel;"
-                       tal:attributes="tabindex tabindex/next;"
-                       />
-                </div>
-                
+                        tabindex=""
+                        type="submit"
+                        name="form.button.Cancel"
+                        value="Cancel"
+                        i18n:attributes="value label_cancel;"
+                        tal:attributes="tabindex tabindex/next;"
+                    />
+                </div> <!-- /Form Actions -->
+
             </fieldset>
-        
+
         </tal:items>
       </form>
 
