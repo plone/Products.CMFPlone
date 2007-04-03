@@ -453,6 +453,15 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
         self.assertEqual(tree[5]['children'][0]['children'][0]['item'].getPath(), rootPath + '/folder2/folder21/doc211')
         self.assertEqual(tree[5]['children'][0]['children'][1]['item'].getPath(), rootPath + '/folder2/folder21/doc212')
 
+    def testCurrentParent(self):
+        self.loginAsPortalOwner()
+        self.portal.invokeFactory('Document', 'doc')
+        context = self.portal.doc1
+        tree = buildFolderTree(self.portal, obj=context)['children']
+        for t in tree:
+            if t['item'].getId == 'doc':
+                self.assertEqual(t['currentParent'], False)
+
 class TestNavigationRoot(PloneTestCase.PloneTestCase):
 
     def testGetNavigationRootPropertyNotSet(self):
