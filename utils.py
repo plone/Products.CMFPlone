@@ -242,7 +242,7 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
 
     return queryUtility(IFileNameNormalizer).normalize(text)
 
-class IndexIterator:
+class IndexIterator(object):
     """An iterator used to generate tabindexes. Note that tabindexes are not as
        good for accessibility as once thought, and are largely disabled with
        this iterator.
@@ -286,6 +286,20 @@ class IndexIterator:
             return None
         self.disabled = True
         return self.pos
+
+class RealIndexIterator(object):
+    """The 'real' version of the IndexIterator class, that's actually 
+    used to generate unique indexes. 
+    """ 
+    __allow_access_to_unprotected_subobjects__ = 1 
+
+    def __init__(self, pos=0): 
+        self.pos=pos
+
+    def next(self): 
+        result=self.pos 
+        self.pos=self.pos+1 
+        return result 
 
 class ToolInit(CMFCoreToolInit):
 

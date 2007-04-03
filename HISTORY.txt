@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Merged patch from olivluca to properly support the uniqueItemIndex
+      iterator.
+      [optilude]
+
     - Set the current instance version on site creation so we can migrate
       properly.
       [wichert]

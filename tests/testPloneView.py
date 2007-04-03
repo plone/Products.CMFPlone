@@ -202,6 +202,12 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         text = u'Koko\u0159\xedn'.encode('utf8')
         self.assertEqual(view.cropText(text, 5), 'Koko\xc5\x99...')
     
+    def testUniqueIndexIterator(self):
+        iterator = self.view._data['uniqueItemIndex']
+        self.assertEquals(0, iterator.next())
+        self.assertEquals(1, iterator.next())
+        self.assertEquals(2, iterator.next())
+    
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''
 

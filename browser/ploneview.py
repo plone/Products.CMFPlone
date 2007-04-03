@@ -150,7 +150,7 @@ class Plone(utils.BrowserView):
         self._data['navigation_root_url'] = portal_state.navigation_root_url()
         self._data['Iterator'] = utils.IndexIterator
         self._data['tabindex'] = utils.IndexIterator(pos=30000, mainSlot=False)
-        self._data['uniqueItemIndex'] = utils.IndexIterator(pos=0)
+        self._data['uniqueItemIndex'] = utils.RealIndexIterator(pos=0)
 
         template_id = options.get('template_id', None)
         if template_id is None and template is not None:
