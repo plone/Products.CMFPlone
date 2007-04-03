@@ -1,10 +1,12 @@
 from zope.component import getUtility, queryUtility
 
 from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IURLTool
 
 from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
+from Products.CMFCore.utils import registerToolInterface
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import base_hasattr
 from ZODB.POSException import ConflictError
@@ -395,3 +397,4 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 WorkflowTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(WorkflowTool)
+registerToolInterface('portal_workflow', IConfigurableWorkflowTool)

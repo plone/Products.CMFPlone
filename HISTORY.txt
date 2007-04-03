@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Register the tool inteface for the membership and workflow tools
+      using the CMFCore interface, overriding the CMFDefault registration.
+      [wichert]
+
     - Enabled search-current-folder-only option for the quicksearch box.
       [optilude]
 

@@ -2,6 +2,7 @@ from zope.component import getUtility
 import PIL
 from cStringIO import StringIO
 from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import registerToolInterface
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import scale_image
@@ -19,6 +20,7 @@ from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.interfaces import IMemberDataTool
+from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IRegistrationTool
 from Products.CMFCore.interfaces import IURLTool
 
@@ -333,3 +335,4 @@ class MembershipTool(PloneBaseTool, BaseTool):
 MembershipTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MembershipTool)
+registerToolInterface('portal_membership', IMembershipTool)
