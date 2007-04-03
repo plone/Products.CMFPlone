@@ -35,9 +35,9 @@ function decodeReferrer(ref) {
         if (ref.match(match)) {
             
             if (!match.compile) {
-                match = new RegExp('^.*'+searchEngines[i][1]+'([^&]+)&?.*$', 'i');
+                match = new RegExp('^.*[?&]'+searchEngines[i][1]+'([^&]+)&?.*$', 'i');
             } else {
-                match.compile('^.*'+searchEngines[i][1]+'([^&]+)&?.*$');
+                match.compile('^.*[?&]'+searchEngines[i][1]+'([^&]+)&?.*$');
             }
             seQuery = ref.replace(match, '$1');
             if (seQuery) {
