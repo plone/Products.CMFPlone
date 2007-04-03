@@ -9,6 +9,7 @@
 
 from Products.CMFCore.utils import getToolByInterfaceName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
 from Products.PythonScripts.standard import url_quote_plus
@@ -64,8 +65,8 @@ r = quote_bad_chars(r)+'*'
 searchterms = url_quote_plus(r)
 
 site_encoding = context.plone_utils.getSiteEncoding()
-
-results = catalog(SearchableText=r, portal_type=friendly_types)
+navigation_root = getNavigationRoot(context)
+results = catalog(SearchableText=r, portal_type=friendly_types, path=navigation_root)
 
 searchterm_query = '?searchterm=%s'%url_quote_plus(q)
 

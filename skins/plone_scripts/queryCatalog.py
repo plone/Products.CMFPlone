@@ -4,12 +4,13 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText','Description','Title'],use_types_blacklist=False,show_inactive=False
+##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText','Description','Title'],use_types_blacklist=False,show_inactive=False,use_navigation_root=False
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFPlone.browser.navtree import getNavigationRoot
 
 results=[]
 catalog=context.portal_catalog
@@ -66,6 +67,10 @@ def ensureFriendlyTypes(query):
         friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
         query['portal_type'] = friendlyTypes
 
+def rootAtNavigationRoot(query):
+    if 'path' not in query:
+        query['path'] = getNavigationRoot(context)
+
 # Avoid creating a session implicitly.
 for k in REQUEST.keys():
     if k in ('SESSION',):
@@ -102,6 +107,8 @@ if show_query:
     try:
         if use_types_blacklist:
             ensureFriendlyTypes(query)
+        if use_navigation_root:
+            rootAtNavigationRoot(query)
         results = catalog(query, show_inactive=show_inactive)
     except ParseError:
         pass

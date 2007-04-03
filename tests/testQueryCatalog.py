@@ -93,6 +93,26 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         self.failUnless('Document' in qry['portal_type'])
         self.failUnless('Event' not in qry['portal_type'])
 
+    def testNavigationRoot(self):
+        request = {'SearchableText':'a*'}
+        ntp = self.portal.portal_properties.navtree_properties
+        ntp.root = '/'
+        qry = self.folder.queryCatalog(request, use_navigation_root=True)
+        self.assertEquals('/'.join(self.portal.getPhysicalPath()), qry['path'])
+        self.setRoles(('Manager',))
+        self.portal.invokeFactory('Folder', 'foo')
+        ntp.root = '/foo'
+        qry = self.folder.queryCatalog(request, use_navigation_root=True)
+        self.assertEquals('/'.join(self.portal.foo.getPhysicalPath()), qry['path'])
+        
+    def testNavigationRootDoesNotOverrideExplicitPath(self):
+        request = {'SearchableText':'a*', 'path':'/yyy/zzz'}
+        ntp = self.portal.portal_properties.navtree_properties
+        self.setRoles(('Manager',))
+        self.portal.invokeFactory('Folder', 'foo')
+        ntp.root = '/foo'
+        qry = self.folder.queryCatalog(request, use_navigation_root=True)
+        self.assertEquals('/yyy/zzz', qry['path'])
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     """Test logic quoting features queryCatalog script.
