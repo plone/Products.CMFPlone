@@ -116,11 +116,12 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     # Find the object's path. Use parent folder if context is a default-page
 
     objPath = None
+    objPhysicalPath = None
     if obj is not None:
+        objPhysicalPath = obj.getPhysicalPath()
         if utils.isDefaultPage(obj, request):
-            objPath = '/'.join(obj.getPhysicalPath()[:-1])
-        else:
-            objPath = '/'.join(obj.getPhysicalPath())
+            objPhysicalPath = objPhysicalPath[:-1]
+        objPath = '/'.join(objPhysicalPath)
 
     portalPath = portal_url.getPortalPath()
 
@@ -213,7 +214,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
         if objPath is not None:
             if objPath == itemPath:
                 isCurrent = True
-            elif objPath.startswith(itemPath):
+            elif objPath.startswith(itemPath) and len(objPhysicalPath) > len(itemPhysicalPath):
                 isCurrentParent = True
 
         relativeDepth = len(itemPhysicalPath) - rootDepth
