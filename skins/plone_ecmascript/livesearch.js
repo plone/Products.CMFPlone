@@ -45,6 +45,12 @@ var livesearch = function (){
         if ($shadow.length != 1)
             return;
         $shadow = $shadow[0];
+        var $path = _cssQuery("input[name=path]", $form);
+        if ($path.length == 1) {
+            $path = $path[0];
+        } else {
+            $path = null;
+        }
 
         function _hide() {
             // hides the result window
@@ -79,11 +85,18 @@ var livesearch = function (){
                 _hide();
                 return;
             }
+            if ($path && $path.checked) {
+                $$current_path = "&path=" + encodeURIComponent($path.value);
+            } else {
+                $$current_path = "";
+            }
             // check cache
-            var $data = $cache[$inputnode.value];
-            if ($data) {
-                _show($data);
-                return;
+            if ($cache[$$current_path]) {
+                var $data = $cache[$$current_path][$inputnode.value];
+                if ($data) {
+                    _show($data);
+                    return;
+                }
             }
             // prepare the search request
             $request = new XMLHttpRequest();
@@ -96,10 +109,13 @@ var livesearch = function (){
                     }
                     // show results if there are any and cache them
                     _show($request.responseText);
-                    $cache[$lastsearch] = $request.responseText;
+                    if (!$cache[$$current_path]) {
+                        $cache[$$current_path] = {};
+                    }
+                    $cache[$$current_path][$lastsearch] = $request.responseText;
                 }
             };
-            $request.open("GET", $querytarget + encodeURIComponent($inputnode.value));
+            $request.open("GET", $querytarget + encodeURIComponent($inputnode.value) + $$current_path);
             $lastsearch = $inputnode.value;
             // start the actual request
             $request.send(null);

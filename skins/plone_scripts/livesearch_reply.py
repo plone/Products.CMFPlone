@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=q,limit=10
+##parameters=q,limit=10,path=None
 ##title=Determine whether to show an id in an edit form
 
 from Products.CMFCore.utils import getToolByInterfaceName
@@ -65,8 +65,9 @@ r = quote_bad_chars(r)+'*'
 searchterms = url_quote_plus(r)
 
 site_encoding = context.plone_utils.getSiteEncoding()
-navigation_root = getNavigationRoot(context)
-results = catalog(SearchableText=r, portal_type=friendly_types, path=navigation_root)
+if path is None:
+    path = getNavigationRoot(context)
+results = catalog(SearchableText=r, portal_type=friendly_types, path=path)
 
 searchterm_query = '?searchterm=%s'%url_quote_plus(q)
 
