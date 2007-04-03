@@ -10,7 +10,9 @@
 <div id="portal-searchbox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
-          tal:define="livesearch site_properties/enable_livesearch|nothing"
+          tal:define="livesearch site_properties/enable_livesearch|nothing;
+                      folder context/@@plone_context_state/folder;
+                      folder_path python:'/'.join(folder.getPhysicalPath())"
           tal:attributes="action string:${portal_url}/search;
                           onsubmit python:test(livesearch==True,'return liveSearchSubmit()','')"
           style="white-space:nowrap">
@@ -38,6 +40,17 @@
                value="Search"
                tal:attributes="tabindex tabindex/next"
                i18n:attributes="value label_search;" />
+    
+        <div>
+            <input id="searchbox_currentfolder_only" 
+                   type="checkbox" 
+                   name="path" 
+                   tal:attributes="value folder_path"
+                   />
+            <label for="searchbox_currentfolder_only" i18n:translate="label_searchbox_currentfolder_only">
+                Current folder only
+            </label>
+        </div>
 
         <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
         </div>

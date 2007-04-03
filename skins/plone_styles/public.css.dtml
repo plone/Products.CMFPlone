@@ -289,6 +289,9 @@ h3, h4, h5, h6 {
     text-align: center;
     padding: 2px;
 }
+.LSBox label {
+    font-weight: normal;
+}
 
 /* The global section tabs. */
 #portal-globalnav {

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Enabled search-current-folder-only option for the quicksearch box.
+      [optilude]
+
     - Make the navigation root affect searches (including live searches). 
       By default, you will not get search results from outside the navigation
       root.
