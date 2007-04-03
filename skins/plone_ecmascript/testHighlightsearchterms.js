@@ -110,6 +110,24 @@ if (window.decodeReferrer) {
             this.assertEquals(terms[2], 'string');
         }
 
+        this.testExtraQuery = function() {
+            var ref = 'http://google.de/search?q=google+referrer+string&aq=something';
+            var terms = decodeReferrer(ref);
+            this.assertEquals(terms.length, 3, 'number of searchterms in '+ref);
+            this.assertEquals(terms[0], 'google');
+            this.assertEquals(terms[1], 'referrer');
+            this.assertEquals(terms[2], 'string');
+        }
+
+        this.testExtraQuery2 = function() {
+            var ref = 'http://google.de/search?aq=something&q=google+referrer+string';
+            var terms = decodeReferrer(ref);
+            this.assertEquals(terms.length, 3, 'number of searchterms in '+ref);
+            this.assertEquals(terms[0], 'google');
+            this.assertEquals(terms[1], 'referrer');
+            this.assertEquals(terms[2], 'string');
+        }
+
         this.tearDown = function() {
             clearChildNodes(this.sandbox);
         }
