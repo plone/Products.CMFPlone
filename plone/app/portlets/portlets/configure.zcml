@@ -89,6 +89,7 @@
         assignment=".search.Assignment"
         renderer=".search.Renderer"
         addview=".search.AddForm"
+        editview=".search.EditForm"
         />
 
 </configure>
