@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Remove the default_charset property on the portal object during migration
+      if it is set to an empty string. This makes sure we do not try to use an
+      invalid (ie empty) encoding when exporting GenericSetup profiles.
+      [wichert]
+
     - Register the tool inteface for the membership and workflow tools
       using the CMFCore interface, overriding the CMFDefault registration.
       [wichert]

@@ -160,6 +160,7 @@ from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
 from Products.CMFPlone.migrations.v3_0.betas import addNewBeta2CSSFiles
 from Products.CMFPlone.migrations.v3_0.betas import cleanupOldActions
+from Products.CMFPlone.migrations.v3_0.betas import cleanDefaultCharset
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2558,6 +2559,19 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf('object_tabs' in self.actions.keys())
         self.failIf('global' in self.actions.keys())
 
+    def testCharsetCleanup(self):
+        if not self.portal.hasProperty('default_charset'):
+            self.portal.manage_addProperty('default_charset', '', 'string')
+
+        self.portal.manage_changeProperties(default_charset = 'latin1')
+        cleanDefaultCharset(self.portal, [])
+        self.assertEqual(self.portal.getProperty('default_charset', 'nothere'),
+                'latin1')
+
+        self.portal.manage_changeProperties(default_charset = '')
+        cleanDefaultCharset(self.portal, [])
+        self.assertEqual(self.portal.getProperty('default_charset', 'nothere'),
+                'nothere')
 
 def test_suite():
     from unittest import TestSuite, makeSuite

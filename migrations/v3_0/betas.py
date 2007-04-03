@@ -25,6 +25,8 @@ def beta1_beta2(portal):
 
     cleanupOldActions(portal, out)
 
+    cleanDefaultCharset(portal, out)
+
     return out
 
 
@@ -91,3 +93,12 @@ def cleanupOldActions(portal, out):
                 del global_
                 portal_actions._delObject('global')
                 out.append('Removed global action category.')
+
+def cleanDefaultCharset(portal, out):
+    charset = portal.getProperty('default_charset', None)
+    if charset is not None:
+        if not charset.strip():
+            portal.manage_delProperties(['default_charset'])
+            out.append('Removed empty default_charset portal property')
+
+
