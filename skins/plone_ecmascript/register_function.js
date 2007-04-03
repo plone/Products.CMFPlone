@@ -16,7 +16,7 @@ var W3CDOM = (!bugRiddenCrashPronePieceOfJunk &&
                typeof document.createElement != 'undefined' );
 
 // cross browser function for registering event handlers
-var registerEventListener = undefined;
+var registerEventListener = null;
 
 if (typeof addEvent != 'undefined') {
     // use Dean Edwards' function if available
@@ -42,7 +42,7 @@ if (typeof addEvent != 'undefined') {
 }
 
 // cross browser function for unregistering event handlers
-var unRegisterEventListener = undefined;
+var unRegisterEventListener = null;
 
 if (typeof removeEvent != 'undefined') {
     // use Dean Edwards' function if available
@@ -67,7 +67,7 @@ if (typeof removeEvent != 'undefined') {
     }
 }
 
-var registerPloneFunction = undefined;
+var registerPloneFunction = null;
 
 if (typeof addDOMLoadEvent != 'undefined') {
     registerPloneFunction = function (func) {
