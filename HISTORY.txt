@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Set the current instance version on site creation so we can migrate
+      properly.
+      [wichert]
+
     - Added new arguments to the action tools API which allow querying for a
       specific action category or exclude certain action categories or action
       providers from the results in an efficient way.
+      [hannosch]
 
       We exclude all actions from the workflow tool and those in the
       folder_buttons and object_buttons categories by default from the

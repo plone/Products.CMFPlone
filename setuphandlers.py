@@ -40,6 +40,7 @@ from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ISyndicationTool
+from Products.CMFPlone.interfaces import IMigrationTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.ResourceRegistries.interfaces import IJSRegistry
 
@@ -261,7 +262,8 @@ class PloneGenerator:
         """
         Perform any necessary migration steps.
         """
-        out = []
+        mt = queryUtility(IMigrationTool)
+        mt.setInstanceVersion(mt.getFileSystemVersion())
 
     def enableSyndication(self, portal, out):
         syn = queryUtility(ISyndicationTool)
