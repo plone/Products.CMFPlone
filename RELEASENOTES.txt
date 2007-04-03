@@ -142,8 +142,27 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   tools has been deprectaed. Please use the search features of PAS directly
   or the PlonePAS pas_search browser view.
 
-* portlets have been re-implemented using the Zope3 component architecture.
-  -> Martin Aspeli to fill in stuff here
+* Portlets have been re-implemented using the Zope3 component architecture.
+  The base package, plone.portlets, is usable in plain Zope 3 and has been
+  successfully used with Grok. See its README.txt for full details on the
+  architecture (you are only likely to need this if you need to understand
+  how portlets are wired into Plone's core - you need to know considerably
+  less to understand how to use and make portlets, and there is a much
+  improved UI for site administrators).
+  
+  The easiest way to re-use an existing template-based portlet is to use a
+  Classic Portlet from the "Manage portlets" screen, although this will suffer
+  some performance overhead. It is better to make a new-style portlet. These
+  allow you to keep configuration data associated with a particular portlet
+  assignment, using formlib, and gives you a well-defined place to put
+  Python logic powering the portlet. See plone.app.portlets.portlets for
+  plenty of examples, or http://svn.plone.org/svn/collective/collective.portlet.
+  
+  Note that the left_slots and right_slots properties are no longer used.
+  The "manage portlets" screen will allow you to migrate existing properties
+  in a particular folder (those at the root of the portal are migrated when
+  Plone is upgraded). To manage portlet assignments, use the APIs described
+  in plone.portlets.interfaces, or see plone.app.portlets.browser.editmanager.
 
 * Skins: main_template now uses viewlet managers instead of metal macros
   -> Alexander Limi or Cornelis to fill in stuff here
