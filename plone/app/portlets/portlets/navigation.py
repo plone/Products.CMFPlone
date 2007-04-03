@@ -44,6 +44,12 @@ class INavigationPortlet(IPortletDataProvider):
             default=u"",
             required=False)
                             
+    includeTop = schema.Bool(
+            title=_(u"Include top node"),
+            description=_(u'Whether or not to show the top, or "home" node in the navigation tree.'),
+            default=True,
+            required=False)
+            
     currentFolderOnly = schema.Bool(
             title=_(u"Current folder only"),
             description=_(u"If selected, the navigation tree will only show the current folder and its children at all times."),
@@ -73,10 +79,18 @@ class Assignment(base.Assignment):
 
     title = _(u'Navigation')
     
-    def __init__(self, name=u"", root=u"", currentFolderOnly=False, topLevel=0, bottomLevel=0):
+    name = u""
+    root = u""
+    currentFolderOnly = False
+    includeTop = True
+    topLevel = 0
+    bottomLevel = 0
+    
+    def __init__(self, name=u"", root=u"", currentFolderOnly=False, includeTop=True, topLevel=0, bottomLevel=0):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
+        self.includeTop = includeTop
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
 
@@ -97,7 +111,7 @@ class Renderer(base.Renderer):
         return (root is not None and len(tree['children']) > 0)
 
     def include_top(self):
-        return self.properties.includeTop
+        return getattr(self.data, 'includeTop', self.properties.includeTop)
 
     def navigation_root(self):
         return self.getNavRoot()
