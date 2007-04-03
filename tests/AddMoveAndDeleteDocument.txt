@@ -32,7 +32,8 @@ browser.
     >>> browser.getLink('Add new').click()
     >>> 'Add new item' in browser.contents
     True
-    >>> browser.getControl('Add Page').click()
+    >>> browser.getControl('Page').click()
+    >>> browser.getControl('Add').click()
     >>> #'Edit Page' in browser.contents # ouch, Plone has <span> around 'Page'
     >>> browser.url
     'http://nohost/plone/Members/test_user_1_/portal_factory/Document/.../edit'
@@ -114,7 +115,8 @@ Before doing the actual paste, we create a folder to paste into.
     >>> browser.getLink('Add new').click()
     >>> 'Add new item' in browser.contents
     True
-    >>> browser.getControl('Add Folder').click()
+    >>> browser.getControl('Folder').click()
+    >>> browser.getControl('Add').click()
     >>> #'Edit Folder' in browser.contents # empty <span> again
     True
     >>> browser.getControl('Title').value = 'My Folder'
