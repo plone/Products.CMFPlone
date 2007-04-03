@@ -456,20 +456,18 @@ h3, h4, h5, h6 {
     margin: 0 1em 0 0;
 }
 .documentActions {
-    float: right;
     margin: 0.4em 0 0 0.5em;
     padding: 0;
     text-align: right;
 }
 .documentActions ul {
-    margin: 1px 0 2px 0;
+    margin: 0;
     padding: 0;
     display: block;
 }
 .documentActions li {
     display: inline;
-    list-style: none;
-    list-style-image: none;
+    font-size: &dtml-fontSmallSize;;
     margin: 0;
     padding: 0;
 }
