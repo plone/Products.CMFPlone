@@ -20,14 +20,15 @@
             size="15"
             title="Search Site"
             i18n:attributes="title title_search_title;"
-            tal:attributes="value request/SearchableTest|nothing;"
+            tal:attributes="value request/SearchableTest|nothing;
+                            class python:livesearch and 'portlet-search-gadget' or 'portlet-search-gadget-nols'"
             class="inputLabel" />
         <input class="searchButton"
             type="submit"
             value="Search"
             i18n:attributes="value label_search;"/>
 
-        <div class="LSResult" style="">
+        <div class="LSResult" style="" tal:condition="livesearch">
           <div class="LSShadow"></div>
         </div>
       </div>
