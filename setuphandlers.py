@@ -25,6 +25,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.Portal import member_indexhtml
+from Products.ATContentTypes.lib import constraintypes
 from Products.PloneLanguageTool.interfaces import ILanguageTool
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
@@ -200,7 +201,7 @@ class PloneGenerator:
             _createObjectByType('Topic', p.news, id='aggregator', title='News',
                                 description='Site News')
             folder = p.news
-            folder.setConstrainTypesMode(1)
+            folder.setConstrainTypesMode(constraintypes.ENABLED)
             folder.setLocallyAllowedTypes(['News Item'])
             folder.setImmediatelyAddableTypes(['News Item'])
             folder.setDefaultPage('aggregator')
@@ -221,7 +222,7 @@ class PloneGenerator:
                                 title='Events',
                                 description='Site Events')
             folder = p.events
-            folder.setConstrainTypesMode(1)
+            folder.setConstrainTypesMode(constraintypes.ENABLED)
             folder.setLocallyAllowedTypes(['Event'])
             folder.setImmediatelyAddableTypes(['Event'])
             folder.setDefaultPage('aggregator')
