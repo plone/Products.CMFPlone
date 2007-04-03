@@ -3,6 +3,11 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 2.5.x - unreleased
+
+    - Set the current instance version on site creation so we can migrate
+      properly.
+      [wichert]
+
     - Fixed some bugs in addtoFavorites
       [ender]
 

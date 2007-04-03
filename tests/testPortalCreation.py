@@ -44,6 +44,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.javascripts = self.portal.portal_javascripts
         self.setup = self.portal.portal_setup
 
+    def testInstanceVersion(self):
+        # Test if the version of the instance has been set
+        mt = self.portal.portal_migration
+        self.assertEqual(mt._version, mt.getFileSystemVersion())
+
     def testPloneSkins(self):
         # Plone skins should have been set up
         self.failUnless(hasattr(self.folder, 'plone_powered.gif'))
