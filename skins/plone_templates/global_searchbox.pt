@@ -13,9 +13,7 @@
           tal:define="livesearch site_properties/enable_livesearch|nothing;
                       folder context/@@plone_context_state/folder;
                       folder_path python:'/'.join(folder.getPhysicalPath())"
-          tal:attributes="action string:${portal_url}/search;
-                          onsubmit python:test(livesearch==True,'return liveSearchSubmit()','')"
-          style="white-space:nowrap">
+          tal:attributes="action string:${portal_url}/search">
 
         <label for="searchGadget" class="hiddenStructure"
                     i18n:translate="text_search">Search Site</label>
