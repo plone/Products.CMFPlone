@@ -9,15 +9,7 @@
         <li>
             <a href=""
                tal:attributes="href daction/url"
-               tal:define="title daction/title;
-                           icon python:view.getIconFor('plone', daction['id'], None)"
-               tal:condition="icon">
-
-                <img i18n:attributes="title" src="" alt="" title=""
-                     tal:attributes="src    string:${view/portal_url}/$icon;
-                                     id     string:icon-${daction/id};
-                                     title  title;
-                                     alt    title;" />
+               tal:content="daction/title">
             </a>
         </li>
     </tal:actions>

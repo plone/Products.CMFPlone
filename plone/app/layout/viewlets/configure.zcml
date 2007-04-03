@@ -83,7 +83,7 @@
     <!-- Render the document actions -->
     <browser:viewlet
         name="plone.abovecontenttitle.documentactions"
-        manager=".interfaces.IAboveContentTitle"
+        manager=".interfaces.IBelowContentBody"
         class=".content.DocumentActionsViewlet"
         permission="zope2.View" 
         />
