@@ -289,7 +289,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testNewsFolder(self):
         self.failUnless('news' in self.portal.objectIds())
         folder = getattr(self.portal, 'news')
-        self.assertEqual(folder.portal_type, 'Folder')
+        self.assertEqual(folder.portal_type, 'Large Plone Folder')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.getRawLocallyAllowedTypes(), ('News Item',))
         self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('News Item',))
@@ -297,7 +297,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testEventsFolder(self):
         self.failUnless('events' in self.portal.objectIds())
         folder = getattr(self.portal, 'events')
-        self.assertEqual(folder.portal_type, 'Folder')
+        self.assertEqual(folder.portal_type, 'Large Plone Folder')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.getRawLocallyAllowedTypes(), ('Event',))
         self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
@@ -305,7 +305,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testNewsTopic(self):
         # News topic is in place as default view and has a criterion to show
         # only News Items, and uses the folder_summary_view.
-        self.assertEqual(['aggregator'], self.portal.news.objectIds())
+        self.assertEqual(['aggregator'], [i for i in self.portal.news.objectIds()])
         topic = getattr(self.portal.news.aq_base, 'aggregator')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
@@ -315,7 +315,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testEventsTopic(self):
         # Events topic is in place as default view and has criterion to show
         # only future Events Items.
-        self.assertEqual(['aggregator'], self.portal.events.objectIds())
+        self.assertEqual(['aggregator'], [i for i in self.portal.events.objectIds()])
         topic = getattr(self.portal.events.aq_base, 'aggregator')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         query = topic.buildQuery()

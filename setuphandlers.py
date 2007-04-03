@@ -195,7 +195,7 @@ class PloneGenerator:
 
         # News topic
         if 'news' not in existing:
-            _createObjectByType('Folder', p, id='news', title='News',
+            _createObjectByType('Large Plone Folder', p, id='news', title='News',
                                 description='Site News')
             
             _createObjectByType('Topic', p.news, id='aggregator', title='News',
@@ -216,7 +216,7 @@ class PloneGenerator:
 
         # Events topic
         if 'events' not in existing:
-            _createObjectByType('Folder', p, id='events', title='Events',
+            _createObjectByType('Large Plone Folder', p, id='events', title='Events',
                                 description='Site Events')
             _createObjectByType('Topic', p.events, id='aggregator',
                                 title='Events',
