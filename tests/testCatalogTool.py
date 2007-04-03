@@ -22,7 +22,8 @@ default_user  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
-base_content = ['Members', 'events', 'news', 'previous',
+base_content = ['Members', 'aggregator', 'aggregator',
+                'events', 'news', 'previous',
                 default_user, 'front-page', 'doc']
 
 

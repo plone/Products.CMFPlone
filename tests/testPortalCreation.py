@@ -254,27 +254,59 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if action.getId() == 'news':
                 self.fail("Actions tool still has 'News' action")
 
-    def testNewsFolderIsIndexed(self):
+    def testNewsTopicIsIndexed(self):
         # News (smart) folder should be cataloged
-        res = self.catalog(getId='news')
+        res = self.catalog(path={'query' : '/plone/news/aggregator', 'depth' : 0})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'aggregator')
+        self.assertEqual(res[0].Title, 'News')
+        self.assertEqual(res[0].Description, 'Site News')
+
+    def testEventsTopicIsIndexed(self):
+        # Events (smart) folder should be cataloged
+        res = self.catalog(path={'query' : '/plone/events/aggregator', 'depth' : 0})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0].getId, 'aggregator')
+        self.assertEqual(res[0].Title, 'Events')
+        self.assertEqual(res[0].Description, 'Site Events')
+
+    def testNewsFolderIsIndexed(self):
+        # News folder should be cataloged
+        res = self.catalog(path={'query' : '/plone/news', 'depth' : 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'news')
         self.assertEqual(res[0].Title, 'News')
         self.assertEqual(res[0].Description, 'Site News')
 
     def testEventsFolderIsIndexed(self):
-        # Events (smart) folder should be cataloged
-        res = self.catalog(id='events')
+        # Events folder should be cataloged
+        res = self.catalog(path={'query' : '/plone/events', 'depth' : 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'events')
         self.assertEqual(res[0].Title, 'Events')
         self.assertEqual(res[0].Description, 'Site Events')
 
+    def testNewsFolder(self):
+        self.failUnless('news' in self.portal.objectIds())
+        folder = getattr(self.portal, 'news')
+        self.assertEqual(folder.portal_type, 'Folder')
+        self.assertEqual(folder.getDefaultPage(), 'aggregator')
+        self.assertEqual(folder.getRawLocallyAllowedTypes(), ('News Item',))
+        self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('News Item',))
+
+    def testEventsFolder(self):
+        self.failUnless('events' in self.portal.objectIds())
+        folder = getattr(self.portal, 'events')
+        self.assertEqual(folder.portal_type, 'Folder')
+        self.assertEqual(folder.getDefaultPage(), 'aggregator')
+        self.assertEqual(folder.getRawLocallyAllowedTypes(), ('Event',))
+        self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
+
     def testNewsTopic(self):
         # News topic is in place as default view and has a criterion to show
         # only News Items, and uses the folder_summary_view.
-        self.failUnless('news' in self.portal.objectIds())
-        topic = getattr(self.portal.aq_base, 'news')
+        self.assertEqual(['aggregator'], self.portal.news.objectIds())
+        topic = getattr(self.portal.news.aq_base, 'aggregator')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
         self.assertEqual(topic.buildQuery()['review_state'], 'published')
@@ -283,8 +315,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testEventsTopic(self):
         # Events topic is in place as default view and has criterion to show
         # only future Events Items.
-        self.failUnless('events' in self.portal.objectIds())
-        topic = self.portal.events
+        self.assertEqual(['aggregator'], self.portal.events.objectIds())
+        topic = getattr(self.portal.events.aq_base, 'aggregator')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         query = topic.buildQuery()
         self.assertEqual(query['Type'], ('Event',))
@@ -295,7 +327,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testEventsSubTopic(self):
         # past Events sub-topic is in place and has criteria to show
         # only past Events Items.
-        events_topic = self.portal.events
+        events_topic = self.portal.events.aggregator
         self.failUnless('previous' in events_topic.objectIds())
         topic = getattr(events_topic.aq_base, 'previous')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
@@ -494,8 +526,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testSyndicationEnabledOnNewsAndEvents(self):
         syn = self.portal.portal_syndication
-        self.failUnless(syn.isSyndicationAllowed(self.portal.news))
-        self.failUnless(syn.isSyndicationAllowed(self.portal.events))
+        self.failUnless(syn.isSyndicationAllowed(self.portal.news.aggregator))
+        self.failUnless(syn.isSyndicationAllowed(self.portal.events.aggregator))
 
     def testSyndicationTabDisabled(self):
         # Syndication tab should be disabled by default

@@ -194,9 +194,17 @@ class PloneGenerator:
 
         # News topic
         if 'news' not in existing:
-            _createObjectByType('Topic', p, id='news', title='News',
+            _createObjectByType('Folder', p, id='news', title='News',
                                 description='Site News')
-            topic = p.news
+            
+            _createObjectByType('Topic', p.news, id='aggregator', title='News',
+                                description='Site News')
+            folder = p.news
+            folder.setConstrainTypesMode(1)
+            folder.setLocallyAllowedTypes(['News Item'])
+            folder.setImmediatelyAddableTypes(['News Item'])
+            folder.setDefaultPage('aggregator')
+            topic = p.news.aggregator
             type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
             type_crit.setValue('News Item')
             sort_crit = topic.addCriterion('created','ATSortCriterion')
@@ -207,8 +215,17 @@ class PloneGenerator:
 
         # Events topic
         if 'events' not in existing:
-            _createObjectByType('Topic', p, id='events', title='Events', description='Site Events')
-            topic = p.events
+            _createObjectByType('Folder', p, id='events', title='Events',
+                                description='Site Events')
+            _createObjectByType('Topic', p.events, id='aggregator',
+                                title='Events',
+                                description='Site Events')
+            folder = p.events
+            folder.setConstrainTypesMode(1)
+            folder.setLocallyAllowedTypes(['Event'])
+            folder.setImmediatelyAddableTypes(['Event'])
+            folder.setDefaultPage('aggregator')
+            topic = folder.aggregator
             type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
             type_crit.setValue('Event')
             sort_crit = topic.addCriterion('start','ATSortCriterion')
