@@ -2,6 +2,7 @@ from zope.component import queryUtility
 from zope.component import getUtility
 
 from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFCore.interfaces import ITypesTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
@@ -29,6 +30,8 @@ def beta1_beta2(portal):
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b1-3.0b2')
 
     addAutoGroupToPAS(portal, out)
+
+    removeS5Actions(portal, out)
 
     return out
 
@@ -109,3 +112,19 @@ def addAutoGroupToPAS(portal, out):
         activatePluginInterfaces(portal, "session", sout)
         out.append("Added automatic group PAS plugin")
 
+def removeS5Actions(portal, out):
+    portalTypes = queryUtility(ITypesTool)
+    if portalTypes is not None:
+        document = portalTypes.restrictedTraverse('Document', None)
+        if document:
+            ids = [x.getId() for x in document.listActions()]
+            if 's5_presentation' in ids:
+                tool._delOb('s5_presentation')
+                out.append("Removed 's5_presentation' action from actions tool.")
+
+    iconsTool = queryUtility(IActionIconsTool)
+    if iconsTool is not None:
+        ids = [x.getActionId() for x in iconsTool.listActionIcons()]
+        if 's5_presentation' in ids:
+            iconsTool.removeActionIcon('plone','s5_presentation')
+            out.append("Removed 's5_presentation' icon from actionicons tool.")

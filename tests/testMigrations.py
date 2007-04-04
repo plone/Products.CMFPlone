@@ -163,6 +163,7 @@ from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
 from Products.CMFPlone.migrations.v3_0.betas import cleanupOldActions
 from Products.CMFPlone.migrations.v3_0.betas import cleanDefaultCharset
 from Products.CMFPlone.migrations.v3_0.betas import addAutoGroupToPAS
+from Products.CMFPlone.migrations.v3_0.betas import removeS5Actions
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2586,6 +2587,34 @@ class TestMigrations_v3_0(MigrationTest):
         addAutoGroupToPAS(self.portal, [])
         self.assertEqual(self.portal.acl_users.objectIds(['Automatic Group Plugin']),
                 ['auto_group'])
+
+    def testPloneS5(self):
+        pt = getUtility(ITypesTool)
+        ait = getUtility(IActionIconsTool)
+        document = pt.restrictedTraverse('Document')
+
+        action_ids = [x.getId() for x in document.listActions()]
+        assert "s5_presentation" not in action_ids
+
+        icon_ids = [x.getActionId() for x in ait.listActionIcons()]
+        assert "s5_presentation" not in icon_ids
+
+        installS5(self.portal, [])
+
+        action_ids = [x.getId() for x in document.listActions()]
+        assert "s5_presentation" in action_ids
+
+        icon_ids = [x.getActionId() for x in ait.listActionIcons()]
+        assert "s5_presentation" in icon_ids
+
+        removeS5Actions(self.portal, [])
+
+        action_ids = [x.getId() for x in document.listActions()]
+        assert "s5_presentation" not in action_ids
+
+        icon_ids = [x.getActionId() for x in ait.listActionIcons()]
+        assert "s5_presentation" not in icon_ids
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -50,11 +50,4 @@
     condition_expr="" url_expr="string:${object_url}/sharing" visible="True">
   <permission value="Manage properties"/>
  </action>
-  <action title="View as presentation" action_id="s5_presentation"
-     category="document_actions"
-     condition_expr="python:object.document_s5_alter(test=True)"
-     url_expr="string:${object/absolute_url}/document_s5_presentation"
-     visible="True">
-   <permission value="View"/>
-  </action>
 </object>
