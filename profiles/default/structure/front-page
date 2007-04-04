@@ -8,8 +8,8 @@ effectiveDate: None
 expirationDate: None
 language: 
 rights: 
-creation_date: 2006/10/10 14:28:30 US/Central
-modification_date: 2006/10/10 14:28:30 US/Central
+creation_date: 2007/04/02 14:28:30 US/Central
+modification_date: 2007/04/02 14:28:30 US/Central
 relatedItems: 
 allowDiscussion: None
 Content-Type: text/html
@@ -20,80 +20,55 @@ this web site has just installed Plone. Do not contact the Plone Team
 or the Plone mailing lists about this.
 </p>
 
+<h2>Get Started</h2>
+
 <p>
-The first thing you should do is to set up your site by visiting the 
-<a href="plone_control_panel">Site Setup area</a>. Become familiar with Plone by
-getting one of the <a href="http://plone.org/documentation/books">Plone books</a>,
-and make sure you look at the available 
-<a href="http://plone.org/products">add-on products</a>
-and
-<a href="http://plone.org/documentation">online documentation</a>.
+Before you start exploring your newly created Plone site, please do the following:
 </p>
 
-<h2>Quick Start</h2>
+<ol>
+    <li>Make sure you are logged in as an admin/manager user 
+        <span class="discreet">(you should see a Site Setup link in the top right corner)</span></li>
+    <li><a href="prefs_mailhost_form">Set up your mail server</a> <span class="discreet">(Plone needs a valid SMTP server to verify users and send out password reminders)</span></li>
+    <li><a href="reconfig_form">Specify an owner for the site</a> <span class="discreet">(From address on mail, contact address)</span></li>
+</ol>
+
+<p>After that, we suggest you do one or more of the following:</p>
+
+<ul>
+    <li>Find out <a href="http://plone.org/documentation/whatsnew/2.5">What's new in Plone 2.5</a></li>
+    <li>Read the <a href="http://plone.org/documentation">documentation</a>, especially the 
+        <a href="http://plone.org/documentation/how-to/read-documentation">What documentation should I read</a> 
+        and 
+        <a href="http://plone.org/documentation/faq/server-recommendations">Server setup recommendations</a>
+    </li>
+    <li>Explore the <a href="http://plone.org/products">available add-on products</a> for Plone</li>
+    <li>Read and/or subscribe to the <a href="http://plone.org/support">support forums</a></li>
+</ul>
+
+<h2>Tell us how you use Plone</h2>
 
 <p>
-Some useful hints if you are new to Plone:
+Are you doing something interesting with Plone? Big site deployments, 
+interesting use cases? Do you have a company that delivers Plone-based solutions?
 </p>
 
 <ul>
-    <li>
-    Access key + 4 focuses the LiveSearch field - you can start writing 
-    your search terms straight away, and have all your information at your 
-    fingertips without leaving the keyboard. For information about how to use 
-    access keys in your particular browser, see the 
-    <a href="accessibility-info">Accessibility page</a>.
-    </li>
-    
-    <li>
-    Plone will automatically be displayed in the language your browser asks for.
-    If you need more control over languages in Plone, install Plone Language
-    Tool from the <a href="plone_control_panel">Site Setup</a>. If you need
-    to maintain your content in multiple languages, download 
-    <a href="http://plone.org/products/linguaplone">LinguaPlone</a>.
-    </li>
-    
-    <li>
-    Workflow states are color coded if you are logged in, so it is easy to keep
-    track of content security and visibility. Try the Site Map with color 
-    coding for a visual security inspection of your site!
-    </li>
-    
-    <li>
-    If you prefer working with pure HTML, Structured Text or ReStructured Text
-    markup instead of using a visual editor, you can disable it in 
-    <a href="plone_memberprefs_panel">your preferences</a>.
-    </li> 
+    <li>Add your sites to the <a href="http://plone.net/sites">Plone site listing</a></li>
+    <li>Add your company as a <a href="http://plone.net/providers">Plone provider</a></li>
+    <li>Add a <a href="http://plone.net/case-studies">case study</a> describing your deployed project and customer</li>
 </ul>
 
-<h2>More information</h2>
-
-<p>
-For more information on Plone:
-</p>
-
-
-<p><a href="http://plone.org">The Plone Open Source Content Management System website</a></p>
-<p><a href="http://plone.org/documentation/whatsnew/2.5">What's new in Plone 2.5</a></p>
-<p><a href="http://plone.org/documentation">Plone documentation</a></p>
-<p><a href="http://plone.org/products">Plone add-on products</a></p>
-<p><a href="http://plone.org/support">Plone mailing lists and support forums</a></p>
-<p><a href="http://plone.org/documentation/books">Available Plone books</a> <span class="discreet">(recommended!)</span></p>
-<p><a href="http://plone.org/documentation/faq/server-recommendations">Server recommendations for Plone</a></p>
+<h2>Find out more about the underlying architecture</h2>
 
 <p>
 Plone is based on the Zope application server, and uses the Python programming
 language. More about these technologies:
 </p>
 
+<p><a href="http://plone.org">The Plone Open Source Content Management System website</a></p>
 <p><a href="http://www.zope.org">Zope community</a></p>
 <p><a href="http://www.python.org">Python website</a></p>
-
-<p>
-Are you doing something interesting with Plone? Big site deployments, 
-interesting use cases?
-<a href="&#0109;&#0097;&#0105;&#0108;&#0116;&#0111;&#0058;pr&#0064;plone.org">Tell us about it</a>!
-</p>
 
 <p>Thanks for using our product!</p>
 
