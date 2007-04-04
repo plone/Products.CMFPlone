@@ -8,7 +8,8 @@
     <tal:actions repeat="daction view/actions">
         <li>
             <a href=""
-               tal:attributes="href daction/url"
+               tal:attributes="href daction/url;
+                               title daction/description"
                tal:content="daction/title">
             </a>
         </li>
