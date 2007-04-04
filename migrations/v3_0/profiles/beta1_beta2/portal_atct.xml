@@ -52,6 +52,10 @@
   <metadata name="Subject" 
     friendlyName="Categories"
     />
+  <metadata name="expires"
+    description="The time and date an item is no longer publicly available (non-ISO)"
+    />
+
   <metadata name="UID" description="" enabled="False" friendlyName=""/>
  </topic_metadata>
 </atcttool>
