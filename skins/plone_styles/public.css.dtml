@@ -957,6 +957,10 @@ textarea.proportional {
     text-decoration: none;
     font-weight: normal;
 }
+.link-presentation {
+    font-size: 90%;
+    text-align: center;
+}
 
 /* For ghosted elements */
 .visualGhosted {
