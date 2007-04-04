@@ -69,6 +69,7 @@ from Products.PlonePAS.interfaces.group import IGroupTool
 from Products.PlonePAS.interfaces.group import IGroupDataTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.ResourceRegistries.interfaces import IJSRegistry
+from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
@@ -156,9 +157,9 @@ from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
 from Products.CMFPlone.migrations.v3_0.alphas import installI18NUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installProduct
 from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
+
 from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
-from Products.CMFPlone.migrations.v3_0.betas import addNewBeta2CSSFiles
 from Products.CMFPlone.migrations.v3_0.betas import cleanupOldActions
 from Products.CMFPlone.migrations.v3_0.betas import cleanDefaultCharset
 from Products.CMFPlone.migrations.v3_0.betas import addAutoGroupToPAS
@@ -1287,12 +1288,16 @@ class TestMigrations_v3_0(MigrationTest):
         stylesheet_ids = cssreg.getResourceIds()
         for id in added_ids:
             self.failIf('controlpanel.css' in stylesheet_ids)
-        addNewBeta2CSSFiles(self.portal, [])
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["cssregistry"])
         stylesheet_ids = cssreg.getResourceIds()
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
         # perform migration twice
-        addNewBeta2CSSFiles(self.portal, [])
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["cssregistry"])
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
 

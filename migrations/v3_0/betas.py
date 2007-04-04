@@ -19,8 +19,6 @@ def beta1_beta2(portal):
 
     changeOrderOfActionProviders(portal, out)
 
-    addNewBeta2CSSFiles(portal, out)
-
     # Add the action a second time, now to the correct action category
     addContentRulesAction(portal, out)
 
@@ -33,16 +31,6 @@ def beta1_beta2(portal):
     addAutoGroupToPAS(portal, out)
 
     return out
-
-
-def addNewBeta2CSSFiles(portal, out):
-    # add new css files to the portal_css registries
-    cssreg = getUtility(ICSSRegistry)
-    stylesheet_ids = cssreg.getResourceIds()
-    if 'controlpanel.css' not in stylesheet_ids:
-        cssreg.registerStylesheet('controlpanel.css', media='screen')
-        cssreg.moveResourceAfter('controlpanel.css', 'portlets.css')
-        out.append("Added controlpanel.css to the registry")
 
 
 def migrateHistoryTab(portal, out):
