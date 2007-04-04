@@ -361,7 +361,7 @@ function createControls() {
 	}
 	controlsDiv.innerHTML = '<form action="#" id="controlForm"' + hideDiv + '>' +
 	'<div id="navLinks">' +
-	'<a accesskey="t" id="toggle" href="javascript:toggle();" title="Exit presentation Mode">&#216;<\/a>' +
+	'<a accesskey="t" id="toggle" href="javascript:toggle();" title="Exit presentation Mode">&times;<\/a>' +
 	'<a accesskey="z" id="prev" href="javascript:go(-1);" title="Previous page">&laquo;<\/a>' +
 	'<a accesskey="x" id="next" href="javascript:go(1);" title="Next page">&raquo;<\/a>' +
 	'<div id="navList"' + hideList + '><select id="jumplist" onchange="go(\'j\');"><\/select><\/div>' +
