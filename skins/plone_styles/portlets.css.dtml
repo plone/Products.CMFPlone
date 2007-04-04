@@ -185,6 +185,15 @@ div.managedPortlet {
     color:red !important;
 }
 
+/* Table of Contents styling - essentially a portlet with smaller fonts and aligned right + limited in width */
+.toc {
+    float: right;
+    width: 30%;
+    font-size: 90%;
+}
+
+
+
 <dtml-comment>
 /* Commented out for now, since the calendar markup has changed slightly ~limi */
 
