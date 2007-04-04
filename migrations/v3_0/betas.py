@@ -30,6 +30,8 @@ def beta1_beta2(portal):
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b1-3.0b2')
 
+    addAutoGroupToPAS(portal, out)
+
     return out
 
 
@@ -104,4 +106,18 @@ def cleanDefaultCharset(portal, out):
             portal.manage_delProperties(['default_charset'])
             out.append('Removed empty default_charset portal property')
 
+
+def addAutoGroupToPAS(portal, out):
+    from Products.PlonePAS.Extensions.Install import activatePluginInterfaces
+    from StringIO import StringIO
+
+    sout=StringIO()
+
+    if not portal.acl_users.objectIds(['Automatic Group Plugin']):
+        from Products.PlonePAS.plugins.autogroup import manage_addAutoGroup
+        manage_addAutoGroup(portal.acl_users, 'auto_group',
+                'Automatic Group Provider',
+                'AuthenticatedUsers", "Authenticated Users (Virtual Group)')
+        activatePluginInterfaces(portal, "session", sout)
+        out.append("Added automatic group PAS plugin")
 

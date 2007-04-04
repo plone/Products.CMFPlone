@@ -161,6 +161,7 @@ from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
 from Products.CMFPlone.migrations.v3_0.betas import addNewBeta2CSSFiles
 from Products.CMFPlone.migrations.v3_0.betas import cleanupOldActions
 from Products.CMFPlone.migrations.v3_0.betas import cleanDefaultCharset
+from Products.CMFPlone.migrations.v3_0.betas import addAutoGroupToPAS
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2572,6 +2573,14 @@ class TestMigrations_v3_0(MigrationTest):
         cleanDefaultCharset(self.portal, [])
         self.assertEqual(self.portal.getProperty('default_charset', 'nothere'),
                 'nothere')
+
+    def testAutoGroupCreated(self):
+        ids = self.portal.acl_users.objectIds(['Automatic Group Plugin'])
+        if ids:
+            self.portal.acl_users.manage_delObjects(ids)
+        addAutoGroupToPAS(self.portal, [])
+        self.assertEqual(self.portal.acl_users.objectIds(['Automatic Group Plugin']),
+                ['auto_group'])
 
 def test_suite():
     from unittest import TestSuite, makeSuite
