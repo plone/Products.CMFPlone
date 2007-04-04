@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - 'News' and 'Events' are no longer "Smart Folders" (or "Collections") in
+      new created portals. Instead, they are now "Large Folders" with a
+      "Collection" default page named 'aggregator'.
+      This closes http://dev.plone.org/plone/ticket/6218.
+      [davconvent, nouri, optilude]
+
     - Remove the default_charset property on the portal object during migration
       if it is set to an empty string. This makes sure we do not try to use an
       invalid (ie empty) encoding when exporting GenericSetup profiles.
