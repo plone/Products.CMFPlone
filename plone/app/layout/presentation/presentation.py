@@ -74,5 +74,5 @@ class PresentationViewlet(ViewletBase):
     def render(self):
         if self.presentation_enabled:
             url = "%s/presentation_view" % self.context.absolute_url()
-            return u'<a href="%s">[Also available in slide show mode]</a>' % url
+            return u'<a href="%s" class="link-presentation">Also available in slide show mode</a>' % url
         return u''
