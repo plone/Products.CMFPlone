@@ -65,7 +65,7 @@
 
   </head>
 
-  <body tal:attributes="class here/getSectionFromURL;
+  <body tal:attributes="class string:${here/getSectionFromURL} template-${template/id};
                         dir python:test(isRTL, 'rtl', 'ltr')">
     <div id="visual-portal-wrapper">
 
