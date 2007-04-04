@@ -2,6 +2,7 @@ from zope.component import queryUtility
 from zope.component import getUtility
 
 from Products.CMFCore.interfaces import IActionsTool
+from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCore.interfaces import ITypesTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.CMFCore.ActionInformation import Action
@@ -119,7 +120,8 @@ def removeS5Actions(portal, out):
         if document:
             ids = [x.getId() for x in document.listActions()]
             if 's5_presentation' in ids:
-                tool._delOb('s5_presentation')
+                index = ids.index('s5_presentation')
+                document.deleteActions([index])
                 out.append("Removed 's5_presentation' action from actions tool.")
 
     iconsTool = queryUtility(IActionIconsTool)
