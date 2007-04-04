@@ -10,6 +10,7 @@ from interface import IInterfaceTool
 from installable import INonInstallable
 from migration import IMigrationTool
 from siteroot import IPloneSiteRoot
+from siteroot import IMigratingPloneSiteRoot
 from constrains import IConstrainTypes
 from constrains import ISelectableConstrainTypes
 from structure import INonStructuralFolder

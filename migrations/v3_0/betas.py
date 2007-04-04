@@ -1,10 +1,11 @@
 from zope.component import queryUtility
+from zope.component import getUtility
 
 from Products.CMFCore.interfaces import IActionsTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
-
+from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from alphas import addContentRulesAction
 
 
@@ -27,12 +28,14 @@ def beta1_beta2(portal):
 
     cleanDefaultCharset(portal, out)
 
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b1-3.0b2')
+
     return out
 
 
 def addNewBeta2CSSFiles(portal, out):
     # add new css files to the portal_css registries
-    cssreg = queryUtility(ICSSRegistry)
+    cssreg = getUtility(ICSSRegistry)
     stylesheet_ids = cssreg.getResourceIds()
     if 'controlpanel.css' not in stylesheet_ids:
         cssreg.registerStylesheet('controlpanel.css', media='screen')

@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add a migration utility function to load (parts of) GenericSetup profiles
+      during migration. This allows us to write configuration changes in the
+      form of GenericSetup extension profiles instead of python code. 
+      Use this to load a new 3.0b1-3.0b2 migration profile. 
+      [wichert]
+
     - 'News' and 'Events' are no longer "Smart Folders" (or "Collections") in
       new created portals. Instead, they are now "Large Folders" with a
       "Collection" default page named 'aggregator'.

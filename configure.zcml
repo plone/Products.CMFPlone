@@ -33,6 +33,7 @@
   
   <include package=".browser" />
   <include package=".exportimport" />
+  <include package=".migrations" />
 
   <include file="deprecated.zcml"/>
   <include file="profiles.zcml"/>

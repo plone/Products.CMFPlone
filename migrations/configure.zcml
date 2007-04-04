@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone">
+
+  <genericsetup:registerProfile
+      name="3.0b1-3.0b2"
+      title="Migration profile for Plone 3.0-beta1 to Plone 3.0-beta2"
+      description="This profile contains configuration changes that are applied during the Plone 3.0-beta1 to 3.0-beta2 migration." 
+      directory="v3_0/profiles/beta1_beta2"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+</configure>
+

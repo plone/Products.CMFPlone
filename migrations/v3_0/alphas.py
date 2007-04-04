@@ -57,6 +57,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.CMFUid.interfaces import IUniqueIdAnnotationManagement
 from Products.CMFUid.interfaces import IUniqueIdGenerator
@@ -568,19 +569,8 @@ def updateFTII18NDomain(portal, out):
 
 def addPortletManagers(portal, out):
     """Add new portlets managers."""
-    tool = getUtility(ISetupTool)
-    plone_base_profileid = 'profile-Products.CMFPlone:plone'
-    current_context = tool.getImportContextID()
-    tool.setImportContext(plone_base_profileid)
-    tool.runImportStep('portlets', run_dependencies=False, purge_old=False)
-
-    # Restore import context again
-    try:
-        tool.setImportContext(current_context)
-    except KeyError:
-        # If the old import context wasn't valid anymore, we set it to the
-        # Plone base profile
-        tool.setImportContext(plone_base_profileid)
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone:plone',
+            steps=['portlets'])
     
 
 def convertLegacyPortlets(portal, out):
@@ -1367,19 +1357,11 @@ def restorePloneTool(portal, out):
 
 def updateImportStepsFromBaseProfile(portal, out):
     """Updates the available import steps for existing sites."""
-    tool = getUtility(ISetupTool)
-    plone_base_profileid = 'profile-Products.CMFPlone:plone'
-    current_context = tool.getImportContextID()
-    # This reads the import_steps.xml file from the base profile and
-    # registers the additional steps, like the componentregistry step.
-    tool.setImportContext(plone_base_profileid)
-    # Restore import context again
-    try:
-        tool.setImportContext(current_context)
-    except KeyError:
-        # If the old import context wasn't valid anymore, we set it to the
-        # Plone base profile
-        tool.setImportContext(plone_base_profileid)
+
+    # Just switching the profile context reads the import_steps.xml file from
+    # the base profile and registers the additional steps, like the
+    # componentregistry step.
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone:plone', steps=[])
 
 
 def installI18NUtilities(portal, out):

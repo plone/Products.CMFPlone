@@ -8,8 +8,12 @@ from Products.CMFCore.interfaces import IMemberDataTool
 from Products.CMFCore.interfaces import ISkinsTool
 from Products.CMFPlone.MemberDataTool import MemberDataTool
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
+from Products.GenericSetup.interfaces import ISetupTool
+
 from Products.PlonePAS.tools.memberdata \
         import MemberDataTool as PASMemberDataTool
+
+_marker = []
 
 def safeEditProperty(obj, key, value, data_type='string'):
     """ An add or edit function, surprisingly useful :) """
@@ -101,3 +105,24 @@ def installOrReinstallProduct(portal, product_name, out, hidden=False):
                 'reinstalled.' % (product_name, installed_version, product_version))
         else:
             out.append('%s already installed.' % product_name)
+
+
+def loadMigrationProfile(portal, profile, steps=_marker):
+    plone_base_profileid = 'profile-Products.CMFPlone:plone'
+    tool = getUtility(ISetupTool)
+    current_context = tool.getImportContextID()
+    tool.setImportContext(profile)
+    if steps is _marker:
+        tool.runAllImportSteps(purge_old=False)
+    else:
+        for step in steps:
+            tool.runImportStep(step, run_dependencies=False, purge_old=False)
+
+    # Restore import context again
+    try:
+        tool.setImportContext(current_context)
+    except KeyError:
+        # If the old import context wasn't valid anymore, we set it to the
+        # Plone base profile
+        tool.setImportContext(plone_base_profileid)
+
