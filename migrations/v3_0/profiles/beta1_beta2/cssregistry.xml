@@ -3,4 +3,9 @@
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="controlpanel.css" media="screen"
     rel="stylesheet" rendering="import" insert-after="portlets.css"/>
+ <stylesheet id="toc.css" remove=""/>    
+ <stylesheet id="navtree.css" insert-after="deprecated.css"/>
+ <stylesheet id="invisibles.css" insert-after="navtree.css"/>
+ <stylesheet id="forms.css" insert-after="invisibles.css"/>
+ <stylesheet id="ploneKss.css" insert-after="forms.css"/>
 </object>

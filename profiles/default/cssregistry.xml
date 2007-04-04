@@ -31,6 +31,18 @@
     enabled="1" expression="" id="deprecated.css" media="screen"
     rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="navtree.css" media="screen" rel="stylesheet"
+    rendering="import"/>
+ <stylesheet title="" cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="invisibles.css" media="screen" rel="stylesheet"
+    rendering="import"/>
+ <stylesheet title="" cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="forms.css" media="screen" rel="stylesheet"
+    rendering="import"/>
+ <stylesheet title="" cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="ploneKss.css" media="all"
+    rel="stylesheet" rendering="import"/>
+ <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="not: portal/portal_membership/isAnonymousUser"
     id="member.css" media="screen" rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
@@ -42,15 +54,6 @@
  <stylesheet title="Large Text" cacheable="True" compression="safe"
     cookable="True" enabled="1" expression="" id="textLarge.css"
     media="screen" rel="alternate stylesheet" rendering="link"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="navtree.css" media="screen" rel="stylesheet"
-    rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="invisibles.css" media="screen" rel="stylesheet"
-    rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="forms.css" media="screen" rel="stylesheet"
-    rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
@@ -66,13 +69,7 @@
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="ploneCustom.css" media="all"
     rel="stylesheet" rendering="import"/>
- <stylesheet title="Table of Contents CSS" cacheable="True" compression="safe"
-    cookable="True" enabled="on" expression="" id="toc.css" media="all"
-    rel="stylesheet" rendering="import"/>    
  <!-- kss  -->
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="ploneKss.css" media="all"
-    rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="none" cookable="False"
     enabled="1" expression="" id="at.kss" media=""
     rel="kinetic-stylesheet" rendering="link"/>
