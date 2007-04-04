@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <utilities>
+  <utility factory="Products.CMFPlone.PloneTool.PloneTool"
+     interface="Products.CMFPlone.interfaces.basetool.IPloneTool"/>
+  <utility factory="plone.app.customerize.tool.ViewTemplateContainer"
+     interface="five.customerize.interfaces.IViewTemplateContainer"/>
+ </utilities>
+</componentregistry>
