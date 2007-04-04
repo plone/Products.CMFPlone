@@ -7,7 +7,7 @@
  <object name="document_actions" meta_type="CMF Action Category">
   <property name="title"></property>
   <object name="rss" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">RSS feed of this listing</property>
+   <property name="title" i18n:translate="">RSS feed</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:$object_url/RSS</property>
    <property name="icon_expr"></property>
@@ -19,7 +19,7 @@
    <property name="visible">True</property>
   </object>
   <object name="sendto" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Send this page to somebody</property>
+   <property name="title" i18n:translate="">Send to someone</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:$object_url/sendto_form</property>
    <property name="icon_expr"></property>
@@ -30,7 +30,7 @@
    <property name="visible">True</property>
   </object>
   <object name="print" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Print this page</property>
+   <property name="title" i18n:translate="">Print</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:javascript:this.print();</property>
    <property name="icon_expr"></property>
@@ -41,7 +41,7 @@
    <property name="visible">True</property>
   </object>
   <object name="addtofavorites" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Add to Favorites</property>
+   <property name="title" i18n:translate="">Add to favorites</property>
    <property name="description" i18n:translate=""></property>
    <property name="url_expr">string:${object_url}/addtoFavorites</property>
    <property name="icon_expr"></property>
@@ -62,7 +62,7 @@
    <property name="permissions">
     <element value="View"/>
    </property>
-   <property name="visible">True</property>
+   <property name="visible">False</property>
   </object>
   <object name="extedit" meta_type="CMF Action" i18n:domain="plone">
    <property name="title"
