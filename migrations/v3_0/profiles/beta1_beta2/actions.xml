@@ -14,10 +14,10 @@
    <property name="title" i18n:translate="">RSS feed</property>
   </object>
   <object name="sendto" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Send to someone</property>
+   <property name="title" i18n:translate="">Send this</property>
   </object>
   <object name="print" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Print</property>
+   <property name="title" i18n:translate="">Print this</property>
   </object>
   <object name="addtofavorites" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Add to favorites</property>
