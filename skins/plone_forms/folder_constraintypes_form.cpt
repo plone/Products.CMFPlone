@@ -46,7 +46,7 @@
     <div metal:fill-slot="main">
 
       <h1 i18n:translate="heading_set_folder_type_restrictions">
-        Restrict addable types
+        Restrict what types of content can be added
       </h1>
 
       <p i18n:translate="description_set_folder_type_restrictions">
@@ -116,13 +116,9 @@
                            tal:attributes="tabindex tabindex/next;
                                            checked python:test('0' == str(currentMode), 'checked', None)"/>
                     <label for="mode_disable" i18n:translate="constraintypes_mode_disable">
-                        Use defaults
+                        Allow the standard set of addable types
                     </label>
                     <br />
-                </div>
-
-                <!-- Manually selected Fields, normally collapsed -->
-                <div class="field">
                     <input type="radio"
                            name="constrainTypesMode:int"
                            id="mode_enable"
@@ -136,6 +132,10 @@
                         Specify manually
                     </label>
                     <br />
+                </div>
+
+                <!-- Manually selected Fields, normally collapsed -->
+                <div class="field">
 
                     <div id="details" tal:attributes="style python:'display:%s'%test('1' == str(currentMode), 'block', 'none')">
 
@@ -169,7 +169,8 @@
                                                        onclick string:check_mode('${type/getId}');
                                                        checked python:test(type.getId() in currentPrefer, 'checked', None);"
                                 />
-                                <span tal:content="type/title_or_id">Type</span>
+                                <label tal:content="type/title_or_id">Type</label>
+                                <br />
                             </tal:block>
                         </div>
 
@@ -204,7 +205,8 @@
                                                        checked python:test(type.getId() in currentAllow, 'checked', None);"
                                 />
                                 <input tal:attributes="id string:${type/getId}_hidden" name="locallyAllowedTypes:list:default" value="" type="hidden">
-                                <span tal:content="type/title_or_id">Type</span>
+                                <label tal:content="type/title_or_id">Type</label>
+                                <br />
                             </tal:block>
                         </div>
                     </div>
