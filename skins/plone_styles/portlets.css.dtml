@@ -61,6 +61,9 @@
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
+.portletItem ol {
+    margin: 0 0 0 1em;
+}
 .portletItemDetails {
     text-align: right;
     display: block;
