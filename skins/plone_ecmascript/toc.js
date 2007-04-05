@@ -65,12 +65,12 @@ function createTableOfContents() {
         var link = document.createElement('a');
 
         link.appendChild(document.createTextNode(getInnerTextFast(node)));
-        link.href = location + '#toc-link' + i;
+        link.href = location + '#section-' + i;
 
         li.appendChild(link);
 
         var anchor = document.createElement('a');
-        anchor.name = 'toc-link' + i;
+        anchor.name = 'section-' + i;
         node.parentNode.insertBefore(anchor, node);
 
         var level = node.nodeName.substring(1);
