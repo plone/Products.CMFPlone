@@ -83,7 +83,7 @@
                 <div class="field">
                     <label for="enableAddRestrictions" 
                             i18n:translate="label_add_restriction_mode">
-                        Mode
+                        Restrictions
                     </label>
 
                     <div class="formHelp" i18n:translate="help_add_restriction_mode">
