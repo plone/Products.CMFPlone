@@ -193,6 +193,7 @@ div.managedPortlet {
     float: right;
     width: 30%;
     font-size: 90%;
+    margin: 0 0 0.5em 0.5em;
 }
 
 
