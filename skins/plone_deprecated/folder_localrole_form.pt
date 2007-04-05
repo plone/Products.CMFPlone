@@ -27,10 +27,6 @@
                                           request.get('group_search_term', '')}) or None;
                   ">
 
-    <div metal:use-macro="here/document_actions/macros/document_actions">
-        Document actions (print, sendto etc)
-    </div>
-
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
         <span tal:content="object_title" tal:omit-tag="" i18n:name="folder">title</span>
