@@ -15,12 +15,10 @@
 
     <ul>
     <tal:actions repeat="daction document_actions">
-        <li>
-            <a href=""
+        <li><a href=""
                tal:attributes="href daction/url"
                tal:content="daction/title">
-            </a>
-        </li>
+            </a></li>
     </tal:actions>
 
     </ul>
