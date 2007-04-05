@@ -131,12 +131,13 @@
     text-align: right;
     padding: 2px;
 }
-.ploneCalendar .weekdays td {
+.ploneCalendar .weekdays th {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-style: &dtml-borderStyle; none;
     text-align: center;
     padding: 2px;
+    font-weight: normal;
 }
 .ploneCalendar .event {
     background-color: &dtml-globalBackgroundColor;;
