@@ -7,8 +7,10 @@ function walkHeaders(node, func, data) {
     if (node.hasChildNodes) {
         // we can't use for (i in childNodes) here, because the number of
         // childNodes might change (higlightsearchterms)
-        for (var i = 0; i < node.childNodes.length; i++) {
-            walkHeaders(node.childNodes[i], func, data);
+        var child = node.firstChild;
+        while (child) {
+            walkHeaders(child, func, data);
+            child = child.nextSibling;
         }
         var type = node.tagName;
         if (type) {
@@ -39,64 +41,61 @@ function locationWithoutHash() {
 }
 
 function createTableOfContents() {
-    var dest = document.getElementById('toc');
-    if (!dest) {
+    var toc = cssQuery('dl.toc');
+    if (toc.length == 0) {
        return;
     }
-    var elems = new Array;
-    var content = document.getElementById('content');
+    toc = toc[0];
+    var dest = cssQuery('dl.toc dd.portletItem');
+    if (dest.length == 0) {
+       return;
+    }
+    dest = dest[0];
+
+    var content = getContentArea();
     if (!content) {
         return;
     }
-    walkHeaders(content, function(n, d){d.push(n)}, elems); 
-    if (elems.length < 0) {
-        /* if there's no elements, this is all rather pointless */
-        return;
-    }
-    
+
     var location = locationWithoutHash();
-    
-    // hidden unless this is actually run
-    dest.style.display = "block";
-    for (var i=1; i < elems.length; i++) {
+    var ols = [];
+    var i = 0;
+    var func = function(node, data) {
+        if (hasClassName(node, "documentFirstHeading"))
+            return;
         var li = document.createElement('li');
-        var tmp = document.createElement('a');
-        var arrow = document.createElement('span');
-        var elem = elems[i];
+        var link = document.createElement('a');
         
-        tmp.innerHTML = elem.innerHTML;
-        // by making it 
-        tmp.href = location + '#link' + i;        
-        tmp.className = 'tocLink';
+        link.appendChild(document.createTextNode(getInnerTextFast(node)));
+        link.href = location + '#toc-link' + i;        
         
-        // put the level in the class so css can do indentation
-        var level = elem.nodeName.substring(1);
-        li.className = 'toc-' + level;
-        
-        
-        arrow.innerHTML = '&#9660;';
-        arrow.className = 'arrowDownAlternative';
-        
-        li.appendChild(arrow);
-        li.appendChild(tmp);
-        dest.appendChild(li);
-        
-        // add on return to top links
-        // the return to top link, dont need for the top
-        if (i < 1) {
-            continue;
+        li.appendChild(link);
+
+        var anchor = document.createElement('a');
+        anchor.name = 'toc-link' + i;
+        node.parentNode.insertBefore(anchor, node);
+
+        var level = node.nodeName.substring(1);
+        // if the current level is deeper, add ol tags
+        while (ols.length < level) {
+            var ol = document.createElement('ol');
+            if (ols.length > 0) {
+                ols[ols.length - 1].appendChild(ol);
+            }
+            ols.push(ol);
         }
-        var tmp2 = document.createElement('a');
-        var span = document.createElement('span');
-        
-        // insert return link
-        tmp2.id = 'link' + i;
-        tmp2.href = location + '#documentContent';
-        tmp2.className = "tocTop";
-        span.innerHTML = "Return to top";
-        
-        tmp2.appendChild(span);
-        elem.parentNode.insertBefore(tmp2, elem);
+        // if the current level is higher, remove ol tags
+        while (ols.length > level) {
+            ols.pop();
+        }
+        ols[ols.length - 1].appendChild(li);
+        i++;
+    }
+
+    walkHeaders(content, func);
+    if (ols.length > 0) {
+        toc.style.display = "block";
+        dest.appendChild(ols[0]);
     }
 }
 

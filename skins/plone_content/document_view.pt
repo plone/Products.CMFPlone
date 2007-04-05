@@ -22,8 +22,12 @@
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <ul id="toc" style="display:none;" tal:condition="context/getTableContents|nothing">
-        </ul>
+        <dl class="portlet toc" style="display: none"
+            tal:condition="context/getTableContents|nothing">
+          <dt class="portletHeader">Table of Contents</dt>
+          <dd class="portletItem">
+          </dd>
+        </dl>
 
         <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
             Description
