@@ -26,18 +26,11 @@
                    login_name python:request.get('login_name', request.get(ac_name, ''));">
 
 <tal:reallyloggedout condition="isAnon">
-  <h1 i18n:translate="heading_signed_out">You are now logged out</h1>
+  <h1 class="documentFirstHeading"
+      i18n:translate="heading_signed_out">You are now logged out</h1>
 
-  <div i18n:translate="description_logged_out" tal:omit-tag="">
-    <p>We hope you enjoyed using our services. We look forward to seeing you again.</p>
-
-    <p>Best Regards from the
-      <strong tal:content="python:container.portal_url.getPortalObject().Title()" i18n:name="portal_title">portal title</strong>
-      team.
-    </p>
-  </div>
-  
-  <h1 i18n:translate="heading_sign_in">Please log in</h1>
+  <p class="documentDescription"
+     i18n:translate="description_loginagain">You can log in again below.</p>
 
   <p i18n:translate="description_no_account"
      tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
@@ -69,7 +62,7 @@
   </div>
 
   <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
-      While cookie authentication is disabled, cookie-based login is not available.
+      Since cookie authentication is disabled, cookie-based login is not available.
   </div>
 
   <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
@@ -177,10 +170,6 @@
 
           </div>
 
-          <p i18n:translate="remember_to_log_out">
-              Please log out or exit your browser when you're done.
-          </p>
-
       </fieldset>
 
   </form>
@@ -188,7 +177,8 @@
 </tal:reallyloggedout>
 
 <tal:notloggedoutafterall tal:condition="not: isAnon">
-    <h1 i18n:translate="heading_quit_to_log_out">Quit your web browser to log out</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_quit_to_log_out">Quit your web browser to log out</h1>
     
     <p i18n:translate="description_quit_to_log_out">
     Because you are logged in via HTTP authentication 
