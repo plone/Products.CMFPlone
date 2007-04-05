@@ -115,9 +115,16 @@ input.searchButton {
     font-size: &dtml-fontSmallSize;;
     background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
     cursor: pointer;
-    padding: 1px 1px 1px 15px;
+    padding: 1px 1px 1px 17px;
     text-transform: &dtml-textTransform;;
 
+}
+.searchSection {
+    color: &dtml-discreetColor;;
+    margin-top: 0.25em;
+}
+.searchSection label:hover {
+    color: &dtml-fontColor;;
 }
 
 /* The edit form elements */
