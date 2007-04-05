@@ -461,20 +461,25 @@ h3, h4, h5, h6 {
     margin: 0 1em 0 0;
 }
 .documentActions {
-    margin: 0.4em 0 0 0.5em;
+    margin: 1em 0;
     padding: 0;
     text-align: right;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 .documentActions ul {
     margin: 0;
-    padding: 0;
+    padding: 0 0.5;
     display: block;
+    margin-top: -0.9em;
+    list-style-type: none;
+    list-style-image: none;
 }
 .documentActions li {
     display: inline;
     font-size: &dtml-fontSmallSize;;
-    margin: 0;
-    padding: 0;
+    margin: 0 0.5em;
+    padding: 0 0.25em;
+    background-color: &dtml-backgroundColor;;
 }
 .documentActions a {
     border: none !important;
