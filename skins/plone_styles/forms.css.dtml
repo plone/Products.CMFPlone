@@ -115,7 +115,7 @@ input.searchButton {
     font-size: &dtml-fontSmallSize;;
     background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
     cursor: pointer;
-    padding: 1px 1px 1px 17px;
+    padding: 1px 1px 1px 19px;
     text-transform: &dtml-textTransform;;
 
 }
