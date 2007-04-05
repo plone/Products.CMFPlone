@@ -46,7 +46,8 @@
     <thead>
         <tr class="weekdays"
             ><tal:data tal:repeat="weekday view/getWeekdays"
-                ><td tal:content="weekday">Su</td
+                ><th scope="col"
+                     tal:content="weekday">Su</th
             ></tal:data>
         </tr>
     </thead>
