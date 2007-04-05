@@ -2581,12 +2581,18 @@ class TestMigrations_v3_0(MigrationTest):
                 'nothere')
 
     def testAutoGroupCreated(self):
-        ids = self.portal.acl_users.objectIds(['Automatic Group Plugin'])
+        pas = self.portal.acl_users
+        ids = pas.objectIds(['Automatic Group Plugin'])
         if ids:
-            self.portal.acl_users.manage_delObjects(ids)
+            pas.manage_delObjects(ids)
         addAutoGroupToPAS(self.portal, [])
-        self.assertEqual(self.portal.acl_users.objectIds(['Automatic Group Plugin']),
+        self.assertEqual(pas.objectIds(['Automatic Group Plugin']),
                 ['auto_group'])
+        plugin = pas.auto_group
+        interfaces = [info['interface'] for info in pas.plugins.listPluginTypeInfo()]
+        for iface in interfaces:
+            if plugin.testImplements(iface):
+                self.failIf('auto_group' not in pas.plugins.listPluginIds(iface))
 
     def testPloneS5(self):
         pt = getUtility(ITypesTool)
