@@ -4,9 +4,8 @@ function walkHeaders(node, func, data) {
     don't be tempted to use getElementsByTagNames, it won't work
     on Safari (as of Feb 2007), boo! */
     if (!node){return false}
+    var valid = Array("h1", "h2", "h3", "h4");
     if (node.hasChildNodes) {
-        // we can't use for (i in childNodes) here, because the number of
-        // childNodes might change (higlightsearchterms)
         var child = node.firstChild;
         while (child) {
             walkHeaders(child, func, data);
@@ -15,7 +14,6 @@ function walkHeaders(node, func, data) {
         var type = node.tagName;
         if (type) {
             type = type.toLowerCase();
-            var valid = Array("h1", "h2", "h3", "h4");
             for (var k = 0; k < valid.length; k++) {
                 if (valid[k] == type) {
                     func(node, data);
@@ -29,7 +27,7 @@ function walkHeaders(node, func, data) {
 function locationWithoutHash() {
     /* you can just put # on the end of url's because
     there is a base tag that does not match the actual
-    url, its the base tag to the object, so we have 
+    url, its the base tag to the object, so we have
     to reconstruct from the window.location */
     var loc = window.location.href;
     var hash = window.location.hash;
@@ -65,10 +63,10 @@ function createTableOfContents() {
             return;
         var li = document.createElement('li');
         var link = document.createElement('a');
-        
+
         link.appendChild(document.createTextNode(getInnerTextFast(node)));
-        link.href = location + '#toc-link' + i;        
-        
+        link.href = location + '#toc-link' + i;
+
         li.appendChild(link);
 
         var anchor = document.createElement('a');
