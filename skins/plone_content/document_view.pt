@@ -22,18 +22,18 @@
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
+        <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
+            Description
+        </p>
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
         <dl class="portlet toc" style="display: none"
             tal:condition="context/getTableContents|nothing">
           <dt class="portletHeader">Table of Contents</dt>
           <dd class="portletItem">
           </dd>
         </dl>
-
-        <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
-            Description
-        </p>
-
-        <div tal:replace="structure provider:plone.abovecontentbody" />
 
         <p tal:condition="python: not text and is_editable"
            i18n:translate="no_body_text"
