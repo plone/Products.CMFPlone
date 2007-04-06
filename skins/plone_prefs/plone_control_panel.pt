@@ -13,11 +13,10 @@
 
 <body>
 
-
-   <div metal:fill-slot="prefs_configlet_main"
-      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByInterfaceName('Products.CMFPlone.interfaces.IControlPanel');
-                  groups python:controlPanel.getGroups('site');
-                  getIconFor nocall:putils/getIconFor">
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByInterfaceName('Products.CMFPlone.interfaces.IControlPanel');
+                 groups python:controlPanel.getGroups('site');
+                 getIconFor nocall:putils/getIconFor">
 
     <h1 class="documentFirstHeading"
         i18n:translate="heading_control_panel">Site Setup</h1>
@@ -51,7 +50,7 @@
 
     <div class="visualClear"><!-- --></div>
 
-    <tal:block tal:repeat="group groups">
+    <tal:configletgroup tal:repeat="group groups">
 
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
@@ -85,15 +84,57 @@
 
             <div class="visualClear"><!-- --></div>
 
-            <div tal:condition="not:allconfiglets"
+            <div class="discreet"
+                 tal:condition="not:allconfiglets"
                  i18n:translate="label_no_prefs_panels_available">
                 No preference panels available.
             </div>
 
         </div>
 
-    </tal:block>                        
-    </div>
+        <div class="visualClear"><!-- --></div>
+
+    </tal:configletgroup>                        
+
+    <tal:versions define="mt here/portal_migration;
+                          sys mt/coreVersions">
+            <h2 i18n:translate="heading_plone_version_overview">Plone version overview</h2>
+            
+            <ul>
+                <li>Plone <span tal:replace="mt/getInstanceVersion" /></li>
+                <li><span tal:replace="sys/CMF" /></li>
+                <li>Zope <span tal:replace="sys/Zope" /></li>
+                <li>Python <span tal:replace="sys/Python" /></li>
+            <tal:pil condition="sys/PIL">
+                <li>PIL <span tal:replace="sys/PIL" /></li>
+            </tal:pil>
+        </ul>
+    </tal:versions>
+    
+    <tal:debugmode define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
+        <p tal:condition="not:QI/isDevelopmentMode" 
+           class="discreet"
+           i18n:translate="description_production_mode">
+          You are running in "production mode". This is the preferred mode of
+          operation for a live Plone site, but means that some
+          configuration changes will not take effect until your server is
+          restarted or a product refreshed. If this is a development instance,
+          and you want to enable debug mode, edit your zope.conf file to say
+          'debug-mode on' &mdash; then restart the server process.
+        </p>
+
+        <p tal:condition="QI/isDevelopmentMode"
+           class="discreet"
+           i18n:translate="description_debug_mode">
+          Note: You are running in "debug mode". This mode is intended for
+          sites that are under development. This allows many configuration
+          changes to be immediately visible, but will make your site
+          run more slowly. To turn off debug mode, edit your zope.conf file to
+          say 'debug-mode off' &mdash; then restart the server process.
+        </p>
+    </tal:debugmode>
+
+</div>
 
 </body>
 </html>
