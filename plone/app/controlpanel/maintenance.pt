@@ -53,29 +53,6 @@
 
             </metal:block>
 
-            <tal:debugmode define="isDevelopmentMode view/isDevelopmentMode">
-                <p tal:condition="not:isDevelopmentMode" 
-                   class="discreet"
-                   i18n:translate="description_production_mode">
-                  You are running in "production mode". This is the preferred mode of
-                  operation for a live Plone site, but means that some
-                  configuration changes will not take effect until your server is
-                  restarted or a product refreshed. If this is a development instance,
-                  and you want to enable debug mode, edit your zope.conf file to say
-                  'debug-mode on' &mdash; then restart the server process.
-                </p>
-
-                <p tal:condition="isDevelopmentMode"
-                   class="discreet"
-                   i18n:translate="description_debug_mode">
-                  Note: You are running in "debug mode". This mode is intended for
-                  sites that are under development. This allows many configuration
-                  changes to be immediately evident, but will make your site
-                  run more slowly. To turn off debug mode, edit your zope.conf file to
-                  say 'debug-mode off' &mdash; then restart the server process.
-                </p>
-            </tal:debugmode>
-
             <form action="."
                   tal:attributes="action request/URL"
                   method="post"
@@ -96,9 +73,9 @@
                             <input type="submit"
                                    id="form.actions.shutdown"
                                    name="form.actions.shutdown"
-                                   value="Shutdown"
+                                   value="Shut down"
                                    i18n:attributes="value"
-                                   class="context" />
+                                   class="standalone" />
 
                             <input tal:condition="view/isRestartable"
                                    type="submit"
@@ -106,7 +83,7 @@
                                    name="form.actions.restart"
                                    value="Restart"
                                    i18n:attributes="value"
-                                   class="context" />
+                                   class="standalone" />
 
                         </span>
                     </div>
@@ -186,7 +163,7 @@
                                    name="form.actions.pack"
                                    value="Pack database now"
                                    i18n:attributes="value"
-                                   class="context" />
+                                   class="standalone" />
                         </span>
                     </div>
 
@@ -194,28 +171,6 @@
 
             </form>
 
-            <fieldset tal:define="sys view/coreVersions">
-                <legend i18n:translate="heading_version_overview">
-                    Version overview
-                </legend>
-
-                <p class="discreet">
-                    Plone <span tal:replace="sys/Instance" />, <br />
-                    <span tal:replace="sys/CMF" />, <br />
-                    Zope <span tal:replace="sys/Zope" />, <br />
-                    Python <span tal:replace="sys/Python" />, <br />
-                    <tal:pil condition="sys/PIL">
-                    PIL <span tal:replace="sys/PIL" />
-                    </tal:pil>
-                </p>
-
-                <p class="portalMessage"
-                   tal:condition="not:sys/PIL"
-                   i18n:translate="text_no_pil_installed">
-                    Warning: PIL is not installed properly, image scaling will not work.
-                </p>
-
-            </fieldset>
         </div>
 
         <script type="text/javascript"
