@@ -30,8 +30,7 @@
     <span i18n:translate="description_trademark">
     Plone<sup>&reg;</sup> and the Plone logo are registered trademarks of the  
         <span i18n:name="plonefoundation">
-            <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a>
-        </span>.
+            <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a></span>.
     </span>
 
     <span i18n:translate="description_license">
