@@ -17,7 +17,8 @@
 
         <div id="viewspace" metal:define-slot="viewspace">
 
-            <h1 i18n:translate=""
+            <h1 class="documentFirstHeading"
+                i18n:translate=""
                 tal:condition="view/label"
                 tal:content="view/label"
                 metal:define-slot="heading">
