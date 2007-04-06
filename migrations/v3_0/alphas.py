@@ -829,6 +829,8 @@ def migrateLocalroleForm(portal, out):
     portal_types = queryUtility(ITypesTool)
     if portal_types is not None:
         for fti in portal_types.objectValues():
+            if not hasattr(fti, '_aliases'):
+                fti._aliases={}
             
             aliases = fti.getMethodAliases()
             new_aliases = aliases.copy()
