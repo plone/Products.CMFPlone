@@ -15,7 +15,8 @@
 <div metal:fill-slot="main">
 
 
-    <h1 i18n:translate="heading_accessibility_info">Accessibility</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_accessibility_info">Accessibility</h1>
 
     <p i18n:translate="text_size">Text size:</p>
 

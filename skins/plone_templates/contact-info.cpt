@@ -14,10 +14,11 @@
 <body>
 <div metal:fill-slot="main">
 
-    <h1 i18n:translate="heading_contact_form">Contact form</h1>
-	<p tal:content="portal/description">Site Description</p>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_contact_form">Contact form</h1>
+    
+    <p tal:content="portal/description">Site Description</p>
         <!-- feedback form -->        
-        
             <p class="documentDescription"
                i18n:translate="description_contact_info_feedback">
                 Fill in this form to contact the site owners.

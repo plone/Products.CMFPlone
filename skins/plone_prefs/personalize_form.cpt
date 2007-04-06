@@ -46,7 +46,8 @@
                     Portal status message
                 </div>
 
-                <h1 i18n:translate="heading_my_preferences">Personal Preferences</h1>
+                <h1 class="documentFirstHeading"
+                    i18n:translate="heading_my_preferences">Personal Preferences</h1>
 
                 <a href=""
                    class="link-parent"

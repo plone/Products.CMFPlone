@@ -12,7 +12,8 @@
   <div metal:define-macro="login_failed"
        tal:define="login_name python:request.get('login_name', '');">
 
-    <h1 i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
 
     <p i18n:translate="description_not_logged_in_username_incorrect">
       You are not currently logged in. Your user name and/or password

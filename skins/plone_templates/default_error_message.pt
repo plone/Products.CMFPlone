@@ -29,7 +29,8 @@
                     If the attempt succeeds, we won't see any more of this template
                 </tal:redirect>
                     
-                <h1 i18n:translate="heading_site_error_apologies">Our apologies...</h1>
+                <h1 class="documentFirstHeading"
+                    i18n:translate="heading_site_error_apologies">Our apologies...</h1>
 
                 <p i18n:translate="description_site_error_does_not_exist">
                 The item you requested does not exist on this server or cannot be served.
@@ -130,7 +131,8 @@
 
         <div tal:condition="python: err_type!='NotFound'">
 
-            <h1 i18n:translate="heading_site_error">Site error</h1>
+            <h1 class="documentFirstHeading"
+                i18n:translate="heading_site_error">Site error</h1>
     
             <p i18n:translate="description_site_error">
             This site encountered an error trying to fulfill your request.

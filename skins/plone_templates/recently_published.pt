@@ -17,7 +17,8 @@
                  DateTime python:modules['DateTime'].DateTime;
                  b_start python:request.get('b_start',0);">
 
-    <h1 i18n:translate="heading_recently_published">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_recently_published">
         Published items
     </h1>
 

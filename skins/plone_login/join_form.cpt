@@ -18,7 +18,8 @@
 <div metal:fill-slot="main"
      tal:define="errors options/state/getErrors;">
 
-  <h1 i18n:translate="heading_registration_form">Registration Form</h1>
+  <h1 class="documentFirstHeading"
+      i18n:translate="heading_registration_form">Registration Form</h1>
 
   <form action=""
         method="post"

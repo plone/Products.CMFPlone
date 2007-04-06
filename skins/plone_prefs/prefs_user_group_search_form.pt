@@ -19,7 +19,8 @@
         searchstring request/searchstring | nothing;
         searchfor request/searchonly | request/searching | nothing;">
 
-    <h1 i18n:translate="heading_search_usersandgroups">Search for Users and Groups</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_search_usersandgroups">Search for Users and Groups</h1>
 
     <p i18n:translate="description_search_usersandgroups">
     Search for the users or groups you want to locate (blank search returns all),

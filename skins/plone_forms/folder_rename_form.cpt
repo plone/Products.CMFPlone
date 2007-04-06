@@ -15,7 +15,8 @@
       <tal:block tal:condition="not: request/paths | nothing"
                  tal:replace="python:here.redirectToReferrer('Please select one or more items to rename.')"/>
 
-      <h1 i18n:translate="heading_rename_item">Rename item</h1>
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_rename_item">Rename item</h1>
 
       <p i18n:translate="description_rename_item">Each item has a Short Name and a Title, which you can change by entering the new details below.</p>
 

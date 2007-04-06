@@ -55,7 +55,8 @@
             </div>
 
             <div class="configlet">
-                <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
+                <h1 class="documentFirstHeading"
+                    i18n:translate="heading_groups_overview">Groups Overview</h1>
 
                 <a href=""
                    class="link-parent"
@@ -241,7 +242,8 @@
                     </tal:block>
                 </form>
 
-                <h1 i18n:translate="heading_roles_management">Roles Management</h1>
+                <h1 class="documentFirstHeading"
+                    i18n:translate="heading_roles_management">Roles Management</h1>
 
                 <p i18n:translate="description_roles_management"
                    class="discreet">

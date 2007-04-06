@@ -13,7 +13,8 @@
 
 <div metal:fill-slot="prefs_configlet_main">
 
-    <h1 i18n:translate="heading_error_log">Error log</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_error_log">Error log</h1>
          
     <a href=""
        class="link-parent"

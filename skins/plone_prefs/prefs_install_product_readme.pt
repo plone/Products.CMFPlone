@@ -15,7 +15,8 @@
      i18n:domain="plone"
      tal:define="errors python:request.get('errors', {})">
 
-    <h1 i18n:translate="heading_product_readme">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_product_readme">
         Description of
         <span tal:content="request/filereadme"
               tal:omit-tag=""
@@ -31,17 +32,16 @@
     Back to Add/Remove Products
     </a>
 
-	<tal:readme define="transform nocall:portal/portal_transforms|nothing;
-						readme python:portal.portal_quickinstaller.getProductFile(request['filereadme']);
-						converted python: transform is not None and transform.convertTo('text/html', readme, mimetype='text/structured')">
-						
-    	    <div class="stx"
-    	         tal:condition="converted"
-    	     	 tal:content="structure converted" />
-    	     	 
-    	    <pre tal:condition="not:converted"
-    	    	     tal:content="readme" />
-    	</tal:readme>
+    <tal:readme define="transform nocall:portal/portal_transforms|nothing;
+                        readme python:portal.portal_quickinstaller.getProductFile(request['filereadme']);
+                        converted python: transform is not None and transform.convertTo('text/html', readme, mimetype='text/structured')">
+        <div class="stx"
+             tal:condition="converted"
+             tal:content="structure converted" />
+                 
+        <pre tal:condition="not:converted"
+                 tal:content="readme" />
+    </tal:readme>
 
     <a href=""
        class="link-parent"

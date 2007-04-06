@@ -45,7 +45,8 @@
 
     <div metal:fill-slot="main">
 
-      <h1 i18n:translate="heading_set_folder_type_restrictions">
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_set_folder_type_restrictions">
         Restrict what types of content can be added
       </h1>
 

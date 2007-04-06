@@ -62,7 +62,8 @@
 
       <div class="configlet">
         <tal:ifnogroups tal:condition="not:group | nothing">
-          <h1 i18n:translate="heading_group_members">Group Members</h1>
+          <h1 class="documentFirstHeading"
+              i18n:translate="heading_group_members">Group Members</h1>
           <a href=""
              class="link-parent"
              tal:attributes="href string: $portal_url/prefs_groups_overview"
@@ -78,7 +79,8 @@
         </tal:ifnogroups>
 
         <tal:ifgroups tal:condition="group | nothing">
-          <h1 i18n:translate="heading_group_members_of">
+          <h1 class="documentFirstHeading"
+              i18n:translate="heading_group_members_of">
               Members of the <span tal:content="grouptitle" tal:omit-tag="" i18n:name="groupname">Groupname</span> group
           </h1>
 

@@ -12,7 +12,8 @@
 
     <div metal:fill-slot="main">
 
-      <h1 i18n:translate="heading_select_default_view">Select default view</h1>
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_select_default_view">Select default view</h1>
 
       <div class="documentDescription" i18n:translate="description_select_default_view">
         Please select which template should be used as the default view of the

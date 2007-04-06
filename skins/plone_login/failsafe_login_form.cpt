@@ -19,7 +19,8 @@
                  ztutils modules/ZTUtils;
                  errors options/state/getErrors;">
 
-<h1 i18n:translate="heading_sign_in">Please log in</h1>
+<h1 class="documentFirstHeading"
+    i18n:translate="heading_sign_in">Please log in</h1>
 
 <p i18n:translate="description_sign_in">
 To access this part of the site, you need to log in with your user name and password.

@@ -10,7 +10,8 @@
 
 <div metal:fill-slot="main">
 
-    <h1 i18n:translate="heading_comment_preview">Comment Preview</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_comment_preview">Comment Preview</h1>
 
     <p i18n:translate="description_comment_preview">
     This is how your comment will look when posted.

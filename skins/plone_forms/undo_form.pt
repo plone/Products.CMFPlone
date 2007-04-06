@@ -25,7 +25,8 @@
 
         <input type="hidden" name="came_from" value="" tal:attributes="value request/HTTP_REFERER" />
 
-        <h1 i18n:translate="heading_undo_actions">Undo actions</h1>
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_undo_actions">Undo actions</h1>
 
         <p i18n:translate="description_undo_action">
         This applications transactional feature allows you to easily undo changes

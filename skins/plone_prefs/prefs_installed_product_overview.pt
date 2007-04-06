@@ -9,7 +9,8 @@
 
 <div metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
 
-    <h1 i18n:translate="heading_install_log_for">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_install_log_for">
         Install log for 
         <span tal:content="here/id" tal:omit-tag="" i18n:name="productname">
             Product Name

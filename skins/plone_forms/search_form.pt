@@ -11,7 +11,8 @@
 
 <div metal:fill-slot="main">
 
-    <h1 i18n:translate="heading_advanced_search">Advanced search for content</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_advanced_search">Advanced search for content</h1>
 
     <p i18n:translate="description_advanced_search">
     This search form enables you to find content on the site by

@@ -26,7 +26,8 @@
                  searchterm request/SearchableText|nothing;
                  use_view_action site_properties/typesUseViewActionInListings|python:();">
 
-    <h1 i18n:translate="heading_search_results">Search results</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_search_results">Search results</h1>
 
     <div tal:condition="not: results">
         <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>

@@ -14,7 +14,8 @@
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors">
 
-      <h1 i18n:translate="heading_edit_item">
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_edit_item">
         Edit
         <span i18n:name="itemtype">
           <span i18n:translate=""

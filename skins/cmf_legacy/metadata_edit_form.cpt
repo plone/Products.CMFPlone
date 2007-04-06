@@ -31,7 +31,8 @@
         Document actions (print, sendto etc)
     </div>
 
-    <h1 i18n:translate="heading_edit_properties">Edit Properties</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_edit_properties">Edit Properties</h1>
 
     <p i18n:translate="description_edit_properties">
     This information, also referred to as <em>metadata</em> is the

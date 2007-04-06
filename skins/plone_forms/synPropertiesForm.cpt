@@ -12,7 +12,8 @@
          tal:define="errors options/state/getErrors;
                      syndicateInfo python:syntool.isSyndicationAllowed(here);">
 
-      <h1 i18n:translate="heading_syndication_properties">Syndication Properties</h1>
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_syndication_properties">Syndication Properties</h1>
 
       <p i18n:translate="description_syndication_properties">
         Syndication enables you to syndicate this folder so it can

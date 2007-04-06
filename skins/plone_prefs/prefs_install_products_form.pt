@@ -13,7 +13,8 @@
 
 <div metal:fill-slot="prefs_configlet_main" i18n:domain="plone" tal:define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
     
-    <h1 i18n:translate="heading_addremove_products">Add/Remove Products</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_addremove_products">Add/Remove Products</h1>
 
     <a href=""
        class="link-parent"

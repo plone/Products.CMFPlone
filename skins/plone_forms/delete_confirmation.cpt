@@ -14,12 +14,14 @@
          tal:define="useSelf python:isStructuralFolder and not isContextDefaultPage;
                      folder_warning python:useSelf and here.portal_type != 'Topic';">
 
-      <h1 i18n:translate="alert_really_delete_folder"
+      <h1 class="documentFirstHeading"
+          i18n:translate="alert_really_delete_folder"
           tal:condition="folder_warning">
         Do you really want to delete this folder and all its contents?
       </h1>
 
-      <h1 i18n:translate="alert_really_delete"
+      <h1 class="documentFirstHeading"
+          i18n:translate="alert_really_delete"
           tal:condition="not:folder_warning">
         Do you really want to delete this item?
       </h1>

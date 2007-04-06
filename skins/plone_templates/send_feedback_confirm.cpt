@@ -15,7 +15,8 @@
 
 <div metal:fill-slot="main">
 
-    <h1 i18n:translate="heading_send_feedback_confirm">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_send_feedback_confirm">
         Site Administrator has been contacted.
     </h1>
 	

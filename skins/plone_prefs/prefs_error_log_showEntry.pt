@@ -16,7 +16,8 @@
                      member python:mtool.getMemberById(userid);
                      errors python:request.get('errors', {})">
 
-        <h1 i18n:translate="heading_exception_details">Exception Details</h1>
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_exception_details">Exception Details</h1>
 
         <a href=""
            class="link-parent"

@@ -59,7 +59,8 @@
       <div class="configlet" tal:condition="not:group | nothing">
         <metal:block metal:use-macro="template/macros/props">
           <metal:title metal:fill-slot="title">
-        <h1 i18n:translate="heading_create_group">Create a Group</h1>
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_create_group">Create a Group</h1>
           </metal:title>
 
           <metal:name metal:fill-slot="name">
@@ -85,7 +86,8 @@
       <div class="configlet" tal:condition="group | nothing">
             <metal:block metal:define-macro="props" tal:omit-tag="">
 
-        <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
             Edit Group Properties for <span tal:content="grouptitle | default" tal:omit-tag="" i18n:name="groupname">unavailable</span>
         </h1>
 

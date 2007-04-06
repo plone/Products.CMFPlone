@@ -15,7 +15,8 @@
      tal:define="errors options/state/getErrors;
                  navtree_props portal_properties/navtree_properties;">
 
-    <h1 i18n:translate="heading_navigation_setup">Navigation Settings</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_navigation_setup">Navigation Settings</h1>
 
     <a href=""
        class="link-parent"

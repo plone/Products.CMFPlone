@@ -16,7 +16,8 @@
                    DateTime python:modules['DateTime'].DateTime;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;">
 
-    <h1 i18n:translate="heading_search_results">Search results</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_search_results">Search results</h1>
 
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1)">

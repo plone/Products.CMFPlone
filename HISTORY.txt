@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Ensured that templates missing the initial h1 class "documentFirstHeading"
+      got it applied, since it makes a difference with the header 
+      styling. If you see additional space above your headlines in your own
+      products or add-on products, please insert this class.
+      It would have been nice if IE supported :first-child selectors, but since
+      it doesn't, this is the workaround.
+      [limi]
+
     - Add a migration utility function to load (parts of) GenericSetup profiles
       during migration. This allows us to write configuration changes in the
       form of GenericSetup extension profiles instead of python code. 

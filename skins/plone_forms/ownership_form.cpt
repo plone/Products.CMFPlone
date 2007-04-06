@@ -8,7 +8,8 @@
 
 <div metal:fill-slot="main"
      tal:define="owner python:putils.getOwnerName(here)">
-    <h1 i18n:translate="heading_change_ownership">Change ownership</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_change_ownership">Change ownership</h1>
 
     <p i18n:translate="description_change_ownership">
         You can transfer the current item's ownership to somebody else using

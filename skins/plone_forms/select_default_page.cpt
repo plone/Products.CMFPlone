@@ -12,7 +12,8 @@
 
     <div metal:fill-slot="main">
 
-      <h1 i18n:translate="heading_select_default_page">Select default page</h1>
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_select_default_page">Select default page</h1>
 
       <div class="discreet" i18n:translate="description_select_default_page">
         Please select item which will be displayed as the default page of the

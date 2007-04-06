@@ -46,7 +46,8 @@
       <metal:block tal:condition="python: paths and not batch"
                    tal:replace="python:here.redirectToReferrer('The item(s) you selected are no longer available.')"/>
 
-      <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_publishing_process">Publishing process</h1>
 
       <p i18n:translate="description_publishing_process_short">
         An item's status (also called its review state) determines who

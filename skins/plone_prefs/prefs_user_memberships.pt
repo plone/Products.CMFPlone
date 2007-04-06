@@ -50,7 +50,8 @@
 
       <div class="configlet">
 
-        <h1 i18n:translate="heading_group_memberships_for">
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_group_memberships_for">
           Group Memberships for
           <span tal:content="string:${member/getUserName}"
                 tal:omit-tag=""
