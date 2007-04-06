@@ -262,7 +262,7 @@ class FilterControlPanel(ControlPanelForm):
     form_fields = FormFieldsets(filtertagset, filterattributes, filtereditor)
     form_fields['stripped_combinations'].custom_widget = combination_widget
 
-    label = _("Html Filter settings")
-    description = _("Html filtering settings for this site.")
-    form_name = _("Html Filter Details")
+    label = _("HTML Filter settings")
+    description = _("Plone filters HTML tags that are considered security risks. Be aware of the implications before making changes below.")
+    form_name = _("HTML Filter Details")
 
