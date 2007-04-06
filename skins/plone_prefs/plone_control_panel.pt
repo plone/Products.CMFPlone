@@ -9,7 +9,7 @@
 <metal:block fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border',1)" />
 
-<metal:block fill-slot="portlets_one_slot" />
+<metal:block fill-slot="column_one_slot" />
 
 <body>
 

@@ -27,8 +27,10 @@
     <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1)" />
 
-    <metal:override fill-slot="portlets_one_slot">
-      <metal:prefs use-macro="here/portlet_prefs/macros/portlet" />
+    <metal:override fill-slot="column_one_slot">
+        <metal:override define-slot="column_one_slot">
+            <metal:prefs use-macro="here/portlet_prefs/macros/portlet" />
+        </metal:override>
     </metal:override>
 
     <metal:override fill-slot="column_two_slot" />
