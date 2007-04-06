@@ -13,10 +13,6 @@
 
 <div metal:fill-slot="prefs_configlet_main">
 
-    <div metal:use-macro="context/document_actions/macros/document_actions">
-        Document actions (print, sendto etc)
-    </div>
-
     <h1 class="documentFirstHeading"
         i18n:translate="heading_portal_setup">Type Settings</h1>
 
