@@ -4,17 +4,23 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
-    - Ensured that templates missing the initial h1 class "documentFirstHeading"
-      got it applied, since it makes a difference with the header 
-      styling. If you see additional space above your headlines in your own
-      products or add-on products, please insert this class.
-      It would have been nice if IE supported :first-child selectors, but since
-      it doesn't, this is the workaround.
+    - Made the error page much friendlier, it essentially just prints a log
+      entry number now and explains that the error has been logged. If you are
+      logged in as an administrator, you have access to the full error log.
+      This fixes http://dev.plone.org/plone/ticket/6277
       [limi]
 
-    - Add a migration utility function to load (parts of) GenericSetup profiles
-      during migration. This allows us to write configuration changes in the
-      form of GenericSetup extension profiles instead of python code. 
+    - Ensured that templates missing the initial h1 class
+      "documentFirstHeading" got it applied, since it makes a difference with
+      the header styling. If you see additional space above your headlines in
+      your own products or add-on products, please insert this class.
+      It would have been nice if IE supported :first-child selectors, but
+      since it doesn't, this is the workaround.
+      [limi]
+
+    - Add a migration utility function to load (parts of) GenericSetup
+      profiles during migration. This allows us to write configuration changes
+      in the form of GenericSetup extension profiles instead of python code. 
       Use this to load a new 3.0b1-3.0b2 migration profile. 
       [wichert]
 
@@ -24,9 +30,10 @@ Plone 3.0 - unreleased
       This closes http://dev.plone.org/plone/ticket/6218.
       [davconvent, nouri, optilude]
 
-    - Remove the default_charset property on the portal object during migration
-      if it is set to an empty string. This makes sure we do not try to use an
-      invalid (ie empty) encoding when exporting GenericSetup profiles.
+    - Remove the default_charset property on the portal object during
+      migration if it is set to an empty string. This makes sure we do not try
+      to use an invalid (ie empty) encoding when exporting GenericSetup
+      profiles.
       [wichert]
 
     - Register the tool inteface for the membership and workflow tools
