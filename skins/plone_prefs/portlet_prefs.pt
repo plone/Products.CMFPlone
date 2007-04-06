@@ -6,7 +6,7 @@
 <body>
 <metal:portlet define-macro="portlet"
    tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByInterfaceName('Products.CMFPlone.interfaces.IControlPanel');
-               groups python:controlPanel.getGroups('');
+               groups python:controlPanel.getGroups('site');
                getIconFor nocall:putils/getIconFor">
 
 <td id="portal-column-one">

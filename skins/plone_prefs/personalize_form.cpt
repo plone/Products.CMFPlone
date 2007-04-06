@@ -3,18 +3,19 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
-      metal:use-macro="here/prefs_main_template/macros/master"
+      metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
-<metal:block fill-slot="top_slot"
-             tal:define="dummy python:request.set('disable_border',1)" />
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_content"
-     tal:define="errors options/state/getErrors;">
-
-    <span tal:define="dummy python:request.response.setHeader('pragma','no-cache')" />
+<metal:main fill-slot="content"
+            tal:define="errors options/state/getErrors;">
+    <tal:main-macro metal:define-macro="main">
 
      <div id="content" 
           class="documentEditable">
@@ -456,9 +457,9 @@
                     </fieldset>
                 </form>
             </div>
-        </div>
+    </tal:main-macro>
 
-</div>
+</metal:main>
 
 </body>
 </html>
