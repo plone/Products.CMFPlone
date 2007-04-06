@@ -10,31 +10,32 @@ Installing Plone manually, step by step instructions.
   3) Download and install CMFPlone
   4) Download and install optional products
 
-  For alternative install docs, try http://plone.org/documentation. They may be
-  more up to date, and have useful illustrations to go with them.
+  For alternative install docs, try http://plone.org/documentation. They may
+  be more up to date, and have useful illustrations to go with them.
 
 
-===============================================================================
+==============================================================================
 
 
 **ASSUMPTIONS**
 
   1) You are running a *nix server
   2) You are comfortable with standard Unix commands, including
-     * wget or cvs
+     * wget or svn
      * tar
      * symlinking
   3) You are familiar with logging into the Zope Management Interface
 
 
-===============================================================================
+==============================================================================
 
 
 **REQUIREMENTS**
 
   **MANDATORY**
 
-  - Zope 2.9.7+ (does not run natively on Zope 3)
+  - Zope 2.9.7+ (does not comply with Zope 2.10.x and does not run natively on
+    Zope 3)
      http://www.zope.org/Products/Zope/2.9.7
    or
     Zope 2.8.9+
@@ -125,46 +126,46 @@ Installing Plone manually, step by step instructions.
      ``PolicyHTTPCacheManager`` into your Products directory and carefully
      read the instructions included with the product.
 
-===============================================================================
+==============================================================================
 
 
 **INSTALLATION PROCEDURE:**
 
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
 1. Download and install Zope
 
   Install Zope and start it. Check that it's running.
 
-  *****************************************************************************
-  * If you want to run Plone on FreeBSD, you'll need to up the thread stack   *
-  * size of your python interpreter or else Zope will repeatedly crash!       *
-  * Compile python with 'make WANT_HUGE_STACK_SIZE=yes' or use the compiler   *
-  * option CFLAG: -DTHREAD_STACK_SIZE=0x100000                                *
-  *****************************************************************************
--------------------------------------------------------------------------------
+  ****************************************************************************
+  * If you want to run Plone on FreeBSD, you'll need to up the thread stack  *
+  * size of your python interpreter or else Zope will repeatedly crash!      *
+  * Compile python with 'make WANT_HUGE_STACK_SIZE=yes' or use the compiler  *
+  * option CFLAG: -DTHREAD_STACK_SIZE=0x100000                               *
+  ****************************************************************************
+------------------------------------------------------------------------------
 
 2. Find your instance's Products directory
 
-   The location of this varies from system to system, so to avoid hunting for it,
-   go to the Zope Management Interface (ZMI) Control Panel in your Zope's root,
-   which will likely be at one of the following URLs:
+   The location of this varies from system to system, so to avoid hunting for
+   it, go to the Zope Management Interface (ZMI) Control Panel in your Zope's
+   root, which will likely be at one of the following URLs:
 
    http://yourhost:8080/Control_Panel/manage_main
    http://yourhost:9673/Control_Panel/manage_main (if you're using Debian)
-   http://yourhost/Control_Panel/manage_main (if you're proxying through a front
-   end webserver)
+   http://yourhost/Control_Panel/manage_main (if you're proxying through a
+   front end webserver)
 
-   This page will tell you your INSTANCE_HOME. There is a Products folder in each
-   site's INSTANCE_HOME folder. This is the best place to install add-on Products
-   for a site.
+   This page will tell you your INSTANCE_HOME. There is a Products folder in
+   each site's INSTANCE_HOME folder. This is the best place to install add-on
+   Products for a site.
 
       $SOFTWARE_HOME/Products folder
 
    Sometimes a Product's documentation will instruct you to install it in
-   SOFTWARE_HOME/Products.  SOFTWARE_HOME refers to the lib/python sub-folder of
-   the Zope folder. We strongly discourage installing packages in these places for
-   two reasons:
+   SOFTWARE_HOME/Products. SOFTWARE_HOME refers to the lib/python sub-folder
+   of the Zope folder. We strongly discourage installing packages in these
+   places for two reasons:
 
     * These folders affect all Plone 2 sites using that version of Zope.
     * If you reinstall Plone 2 or a newer version of Plone 2, Zope will
@@ -173,7 +174,7 @@ Installing Plone manually, step by step instructions.
    Any time you're asked to place packages into a Products folder, choose
    the INSTANCE_HOME/Products folder instead. Thank you!
 
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
 3. Download and install CMFPlone
 
@@ -228,37 +229,37 @@ Installing Plone manually, step by step instructions.
    directory. If it does not exist, create it.  If you are running Zope 2.9.x
    do not place Five in your Products directory, or Zope will not start.
 
-  *****************************************************************************
-  * Note that each of these is a Product in its own right and *must* be       *
-  * directly within $INSTANCE_HOME/Products. If you just move the entire CMF  *
-  * directory into $INSTANCE_HOME/Products, your Zope Instance will *not* be  *
-  * able to find these required products, and you will not be able to run     *
-  * Plone.                                                                    *
-  *****************************************************************************
+  ****************************************************************************
+  * Note that each of these is a Product in its own right and *must* be      *
+  * directly within $INSTANCE_HOME/Products. If you just move the entire CMF *
+  * directory into $INSTANCE_HOME/Products, your Zope Instance will *not* be *
+  * able to find these required products, and you will not be able to run    *
+  * Plone.                                                                   *
+  ****************************************************************************
 
   It's probably A Good Idea at this point to restart your Zope to load these
   Products, then test that they have installed correctly. You can do this by
   logging into the ZMI - you should have
 
-    1) The Plone Products (BTreeFolder2 etc.) listed in the Products section of
-       the Control_Panel
-    2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI Root
-       Folder
+    1) The Plone Products (BTreeFolder2 etc.) listed in the Products section
+       of the Control_Panel
+    2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI
+       Root Folder
 
-  Complete the install test by adding a Plone Site from the pulldown in the root
-  folder.
+  Complete the install test by adding a Plone Site from the pulldown in the
+  root folder.
 
-  *****************************************************************************
-  * Make sure this is not done inside the Control Panel, but in the root of   *
-  * the Zope site.                                                            *
-  *****************************************************************************
+  ****************************************************************************
+  * Make sure this is not done inside the Control Panel, but in the root of  *
+  * the Zope site.                                                           *
+  ****************************************************************************
 
   When you do this, it asks you to complete a form, specifying the site's Id,
   Title, Description and where your members' user folder should be. Complete
   these fields and hit the "Add Plone Site" button. After a short while, you
   should be looking at a basic Plone site containing the details you entered.
 
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
 4. Download and install optional products
 
@@ -267,11 +268,11 @@ Installing Plone manually, step by step instructions.
   Use Plone Setup's "Add/Remove Products" to install optional products bundled
   with Plone: PloneErrorReporting
 
-  For optional products not bundled with Plone:  Download the product, unpack the
-  product into your instance's Products directory, restart Zope, and install them
-  in Plone using Plone Setup's "Add/Remove Products."
+  For optional products not bundled with Plone: Download the product, unpack
+  the product into your instance's Products directory, restart Zope, and
+  install them in Plone using Plone Setup's "Add/Remove Products."
 
-===============================================================================
+==============================================================================
 Have fun, and don't forget to report any bugs or inconsistencies in the
 Plone bug tracker: http://dev.plone.org/plone/
 
