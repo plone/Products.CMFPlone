@@ -103,7 +103,10 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
         # Include actions from specific tools.
         for provider_name in providers:
-            provider = getattr(self, provider_name)
+            provider = getattr(self, provider_name, None)
+            # Skip missing action providers.
+            if provider is None:
+                continue
             if IActionProvider.providedBy(provider):
                 if provider_name == 'portal_actions':
                     actions.extend(provider.listActionInfos(
