@@ -14,8 +14,8 @@
 <body>
 <div metal:fill-slot="main">
 
-  <h1 i18n:translate="title_manage_contextual_portlets"
-        class="documentFirstHeading">Manage portlets</h1>
+  <h1 class="documentFirstHeading"
+      i18n:translate="title_manage_contextual_portlets">Manage portlets</h1>
         
   <a href=""
        class="link-parent"

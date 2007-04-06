@@ -51,8 +51,8 @@
       <div class="configlet">
             <metal:block metal:define-macro="props" tal:omit-tag="">
 
-          <h1 i18n:translate="title_manage_group_portlets"
-              class="documentFirstHeading">
+          <h1 class="documentFirstHeading"
+              i18n:translate="title_manage_group_portlets">
               Manage Group Portlets for
               <span i18n:name="group_name" tal:content="view/group">group</span>
           </h1>
