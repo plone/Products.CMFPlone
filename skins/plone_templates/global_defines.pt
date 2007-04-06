@@ -1,6 +1,6 @@
 <!-- 
 The expressions that used to generate these globals have been 
-moved to (much faster) Python code in CMFPlone/browser/plone.py
+moved to (much faster) Python code in CMFPlone/browser/ploneview.py
 
 !!!! Do not add any more defines here, under penalty of death !!!!
 -->
