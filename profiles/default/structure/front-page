@@ -89,9 +89,11 @@ Plone is based on the Zope application server, and uses the Python programming
 language. More about these technologies:
 </p>
 
-<p>The <a class="link-plain" href="http://plone.org">Plone open source Content Management System</a> web site.</p>
-<p>The <a class="link-plain" href="http://www.zope.org">Zope application server</a> web site.</p>
-<p>The <a class="link-plain" href="http://www.python.org">Python programming language</a> web site.</p>
+<ul>
+<li>The <a class="link-plain" href="http://plone.org">Plone open source Content Management System</a> web site.</li>
+<li>The <a class="link-plain" href="http://www.zope.org">Zope application server</a> web site.</li>
+<li>The <a class="link-plain" href="http://www.python.org">Python programming language</a> web site.</li>
+</ul>
 
 <p>Thanks for using our product!</p>
 
