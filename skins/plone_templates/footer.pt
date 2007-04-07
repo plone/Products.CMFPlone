@@ -12,7 +12,7 @@
     <span i18n:name="plonecms">
         <a href="http://plone.org" i18n:translate="label_plone_cms">Plone<sup>&reg;</sup> CMS &mdash; Open Source Content Management System</a>
     </span>
-    is Copyright
+    is
     <acronym title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</acronym>
     2000-<span i18n:name="current_year" 
                tal:define="now modules/DateTime/DateTime" 
