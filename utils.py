@@ -254,6 +254,12 @@ class IndexIterator(object):
         >>> i.next()
         10
 
+       The default start value is "1"
+
+        >>> i = IndexIterator(mainSlot=True)
+        >>> i.next()
+        1
+
        Subsequent iterations will get None (thus removing the tabindex
        attribute):
 
@@ -268,10 +274,14 @@ class IndexIterator(object):
 
         >>> i.next() is None
         True
+
+        >>> i = IndexIterator(mainSlot=False)
+        >>> i.next() is None
+        True
     """
     __allow_access_to_unprotected_subobjects__ = 1
 
-    def __init__(self, upper=100000, pos=0, mainSlot=True):
+    def __init__(self, upper=100000, pos=1, mainSlot=True):
         self.upper=upper
         self.pos=pos
         self.mainSlot=mainSlot
