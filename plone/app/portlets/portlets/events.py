@@ -68,7 +68,13 @@ class Renderer(base.Renderer):
             return '%s/events_listing' % self.portal_url
 
     def prev_events_link(self):
-        if self.have_events_folder and 'previous' in self.portal['events'].objectIds():
+        if (self.have_events_folder and
+            'aggregator' in self.portal['events'].objectIds() and
+            'previous' in self.portal['events']['aggregator'].objectIds()):
+            return '%s/events/aggregator/previous' % self.portal_url
+            
+        elif (self.have_events_folder and
+            'previous' in self.portal['events'].objectIds()):
             return '%s/events/previous' % self.portal_url
         else:
             return None

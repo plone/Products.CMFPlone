@@ -88,7 +88,17 @@ class TestRenderer(PortletsTestCase):
         
     def test_prev_events_link(self):
         r = self.renderer(assignment=events.Assignment(count=5))
-        self.failUnless(r.prev_events_link().endswith('/events/previous'))
+        self.failUnless(r.prev_events_link().endswith(
+            '/events/aggregator/previous'))
+
+        self.loginAsPortalOwner()
+        self.portal._delObject('events')
+        self.portal.invokeFactory('Folder', 'events')
+        self.portal.events.invokeFactory('Folder', 'previous')
+        r = self.renderer(assignment=events.Assignment(count=5))
+        self.failUnless(r.prev_events_link().endswith(
+            '/events/previous'))
+
         self.portal._delObject('events')
         r = self.renderer(assignment=events.Assignment(count=5))
         self.assertEquals(None, r.prev_events_link())
