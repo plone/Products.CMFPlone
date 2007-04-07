@@ -48,6 +48,8 @@ try {
 				$cacheSelector += "(" + $arguments + ")";
 			}
 			// process a token/filter pair use cached results if possible
+			if ($token==" " && $filter=="*" && $selector[j]=="#")
+				continue;
 			$$from = ($useCache && cache[$cacheSelector]) ?
 				cache[$cacheSelector] : select($$from, $token, $filter, $arguments);
 			if ($useCache) cache[$cacheSelector] = $$from;
@@ -123,9 +125,21 @@ selectors[" "] = function($results, $from, $tagName, $namespace) {
 
 // ID selector
 selectors["#"] = function($results, $from, $id) {
-	// loop through current selection and check ID
 	var $element, j;
-	for (j = 0; ($element = $from[j]); j++) if ($element.id == $id) $results.push($element);
+	// XXX - fschulze - Try to make this as fast as possible
+	// first see whether we have a chance to optimize this
+	if ($from.length==1 && $from[0]==document) {
+		var $node = document.getElementById($id);
+		if ($node)
+			$results.push();
+	} else {
+		// loop through current selection and check ID
+		for (j = 0; ($element = $from[j]); j++)
+			if ($element.id == $id) {
+				$results.push($element);
+				break;
+			}
+	}
 };
 
 // class selector
