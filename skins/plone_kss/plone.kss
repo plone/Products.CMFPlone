@@ -62,7 +62,7 @@ dl.kssPortletRefresh:timeout {
 */
 
 /* Deferred portlets */
-.portlet-deferred:load {
+div.portlet-deferred:load {
     action-server: refreshPortlet;
     refreshPortlet-portlethash: kssAttr(portlethash, True);
 }
@@ -216,7 +216,7 @@ input[name="form_submit"]:click {
    setStyle-value: inline;
 }
 
-.kupu-save:click {
+button.kupu-save:click {
    action-server: savekupu;
    savekupu-text: currentFormVarFromKssAttr("atfieldname", true);
    savekupu-fieldname: kssAttr("atfieldname", true);
@@ -305,7 +305,7 @@ body:load {
    setStyle-value: inline;
 }
 
-.kupu-save-message:timeout {
+div.kupu-save-message:timeout {
    evt-timeout-delay: 2000;
    evt-timeout-repeat: '';
    action-client: deleteNode;
