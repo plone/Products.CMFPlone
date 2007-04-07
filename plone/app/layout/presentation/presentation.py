@@ -1,5 +1,6 @@
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.memoize.view import memoize
 from plone.app.layout.viewlets.common import ViewletBase
@@ -74,5 +75,6 @@ class PresentationViewlet(ViewletBase):
     def render(self):
         if self.presentation_enabled:
             url = "%s/presentation_view" % self.context.absolute_url()
-            return u'<p><a href="%s" class="link-presentation">Also available in presentation mode, click to activate&hellip;</a></p>' % url
+            msg = _(u'Also available in presentation mode, click to activate\u2026')
+            return u'<p><a href="%s" class="link-presentation">%s</a></p>' % (url, msg)
         return u''
