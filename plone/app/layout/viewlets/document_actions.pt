@@ -1,3 +1,4 @@
+<div class="visualClear"><!-- --></div>
 <div i18n:domain="plone"
      class="documentActions">
     <tal:docactions tal:condition="view/actions">
