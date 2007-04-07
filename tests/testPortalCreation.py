@@ -227,6 +227,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testResourceRegistries(self):
         # We should have portal_css and portal_javascripts tools
         self.failUnless(hasattr(self.portal, 'portal_css'))
+        self.failUnless(hasattr(self.portal, 'portal_kss'))
         self.failUnless(hasattr(self.portal, 'portal_javascripts'))
 
     def testUnfriendlyTypesProperty(self):

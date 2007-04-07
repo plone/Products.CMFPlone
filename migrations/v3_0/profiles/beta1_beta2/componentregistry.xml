@@ -5,5 +5,8 @@
      interface="Products.CMFPlone.interfaces.basetool.IPloneTool"/>
   <utility factory="plone.app.customerize.tool.ViewTemplateContainer"
      interface="five.customerize.interfaces.IViewTemplateContainer"/>
+  <utility
+     interface="Products.ResourceRegistries.interfaces.IKSSRegistry"
+     object="/portal_kss"/>
  </utilities>
 </componentregistry>

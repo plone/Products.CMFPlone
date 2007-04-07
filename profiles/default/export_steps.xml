@@ -50,6 +50,11 @@
               title="Stylesheet registry">
    Export stylesheet registry
  </export-step>
+ <export-step id="kssregistry"
+              handler="Products.ResourceRegistries.exportimport.kssregistry.exportKSSRegistry"
+              title="KSS registry">
+   Export stylesheet registry
+ </export-step>
  <export-step id="factorytool"
               handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
               title="Portal Factory Tool">

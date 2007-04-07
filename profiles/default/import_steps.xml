@@ -58,6 +58,12 @@
   <dependency step="componentregistry"/>
     Import stylesheet registry
  </import-step>
+ <import-step id="kssregistry" version="20070407-01"
+              handler="Products.ResourceRegistries.exportimport.kssregistry.importKSSRegistry"
+              title="KSS registry">
+  <dependency step="componentregistry"/>
+    Import stylesheet registry
+ </import-step>
  <import-step id="factorytool" version="20060711-01"
               handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
               title="Portal Factory Tool">
@@ -116,6 +122,7 @@
               title="Various Plone Settings">
   <dependency step="catalog"/>
   <dependency step="cssregistry"/>
+  <dependency step="kssregistry"/>
   <dependency step="jsregistry"/>
   <dependency step="propertiestool"/>
   <dependency step="rolemap"/>

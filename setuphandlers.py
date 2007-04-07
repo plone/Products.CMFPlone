@@ -43,6 +43,7 @@ from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.ResourceRegistries.interfaces import ICSSRegistry
+from Products.ResourceRegistries.interfaces import IKSSRegistry
 from Products.ResourceRegistries.interfaces import IJSRegistry
 
 class HiddenProducts(object):
@@ -106,6 +107,10 @@ class PloneGenerator:
             settings['request_vars'] = ('URL',)
             cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
         reg = queryUtility(ICSSRegistry)
+        if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+            reg.ZCacheable_setManagerId(ram_cache_id)
+            reg.ZCacheable_setEnabled(1)
+        reg = queryUtility(IKSSRegistry)
         if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
             reg.ZCacheable_setManagerId(ram_cache_id)
             reg.ZCacheable_setEnabled(1)

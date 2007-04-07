@@ -4,12 +4,13 @@ from zope.component import getUtility
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCore.interfaces import ITypesTool
-from Products.ResourceRegistries.interfaces import ICSSRegistry
+from Products.ResourceRegistries.interfaces import IKSSRegistry
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from alphas import addContentRulesAction
 
+from Acquisition import aq_base
 
 def beta1_beta2(portal):
     """ 3.0-beta1 -> 3.0-beta2
@@ -33,6 +34,8 @@ def beta1_beta2(portal):
     addAutoGroupToPAS(portal, out)
 
     removeS5Actions(portal, out)
+
+    addCacheForKSSRegistry(portal, out)
 
     return out
 
@@ -130,3 +133,11 @@ def removeS5Actions(portal, out):
         if 's5_presentation' in ids:
             iconsTool.removeActionIcon('plone','s5_presentation')
             out.append("Removed 's5_presentation' icon from actionicons tool.")
+
+def addCacheForKSSRegistry(portal, out):
+    ram_cache_id = 'ResourceRegistryCache'
+    reg = queryUtility(IKSSRegistry)
+    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+        reg.ZCacheable_setManagerId(ram_cache_id)
+        reg.ZCacheable_setEnabled(1)
+        out.append('Associated portal_kss with %s' % ram_cache_id)

@@ -8,4 +8,6 @@
  <stylesheet id="invisibles.css" insert-after="navtree.css"/>
  <stylesheet id="forms.css" insert-after="invisibles.css"/>
  <stylesheet id="ploneKss.css" insert-after="forms.css"/>
+ <stylesheet id="at.kss" remove=""/>
+ <stylesheet id="plone.kss" remove=""/>
 </object>

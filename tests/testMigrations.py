@@ -164,6 +164,7 @@ from Products.CMFPlone.migrations.v3_0.betas import cleanupOldActions
 from Products.CMFPlone.migrations.v3_0.betas import cleanDefaultCharset
 from Products.CMFPlone.migrations.v3_0.betas import addAutoGroupToPAS
 from Products.CMFPlone.migrations.v3_0.betas import removeS5Actions
+from Products.CMFPlone.migrations.v3_0.betas import addCacheForKSSRegistry
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2620,6 +2621,19 @@ class TestMigrations_v3_0(MigrationTest):
 
         icon_ids = [x.getActionId() for x in ait.listActionIcons()]
         assert "s5_presentation" not in icon_ids
+
+    def testAddCacheForKSSRegistry(self):
+        ram_cache_id = 'ResourceRegistryCache'
+        kssreg = self.portal.portal_kss
+        kssreg.ZCacheable_setEnabled(0)
+        kssreg.ZCacheable_setManagerId(None)
+        self.failIf(kssreg.ZCacheable_enabled())
+        self.failUnless(kssreg.ZCacheable_getManagerId() is None)
+        # migrate
+        addCacheForKSSRegistry(self.portal, [])
+        # and test
+        self.failUnless(kssreg.ZCacheable_enabled())
+        self.failIf(kssreg.ZCacheable_getManagerId() is None)
 
 
 def test_suite():
