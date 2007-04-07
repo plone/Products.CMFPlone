@@ -279,8 +279,6 @@ label {
 
 /* .system-message and #error-handling are reST error indicators */
 .portalMessage,
-.portalWarningMessage,
-.portalStopMessage,
 .system-message,
 #error-handling {
     background-color: &dtml-notifyBackgroundColor;;
@@ -292,9 +290,7 @@ label {
     padding: 0.5em 1em;
     vertical-align: middle;
 }
-.portalMessage a,
-.portalWarningMessage a,
-.portalStopMessage a {
+.portalMessage a {
     color: &dtml-fontColor;;
 }
 .documentDescription {
