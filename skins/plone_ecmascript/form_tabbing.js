@@ -27,8 +27,14 @@ ploneFormTabbing.isForm = function(node) {
 
 ploneFormTabbing.toggle = function(e) {
     if (!e) var e = window.event; // IE compatibility
-    var id = this.id.replace(/^fieldsetlegend-/, "fieldset-");
-    var tabs = cssQuery("form.enableFormTabbing .formTab a");
+    if (this.tagName.toLowerCase() == 'select') {
+        var id = this.value;
+    } else {
+        var id = this.id;
+    }
+    id = id.replace(/^fieldsetlegend-/, "fieldset-")
+    var tabs = cssQuery("form.enableFormTabbing .formTab a,"+
+                        "form.enableFormTabbing option.formTab");
     for (var i=0; i<tabs.length; i++) {
         var tab = tabs[i];
         if (tab.id == this.id) {
@@ -54,27 +60,24 @@ ploneFormTabbing.toggle = function(e) {
     return false;
 };
 
-ploneFormTabbing.initializeForm = function(form) {
-
-    var fieldsets = cssQuery("> fieldset", form);
-    var legends = [];
-    for (var i=0; i<fieldsets.length; i++) {
-        var childnodes = fieldsets[i].childNodes;
-        for (var j=0; j<childnodes.length; j++) {
-            var child = childnodes[j];
-            if (child.nodeType == 1 && child.tagName.toLowerCase() == 'legend') {
-                legends.push(child);
-            }
-        }
+ploneFormTabbing._buildTabs = function(legends) {
+    var threshold = 6;
+    if (legends.length > threshold) {
+        var tabs = document.createElement("select");
+        tabs.onchange = ploneFormTabbing.toggle;
+    } else {
+        var tabs = document.createElement("ul");
     }
-
-    var tabs = document.createElement("ul");
     tabs.className = "formTabs";
 
     for (var i=0; i<legends.length; i++) {
         var legend = legends[i];
         var parent = legend.parentNode;
-        var tab = document.createElement("li");
+        if (legends.length > threshold) {
+            var tab = document.createElement("option");
+        } else {
+            var tab = document.createElement("li");
+        }
         switch (i) {
             case 0: {
                 tab.className = "formTab firstFormTab";
@@ -89,21 +92,45 @@ ploneFormTabbing.initializeForm = function(form) {
                 break;
             }
         }
-        var a = document.createElement("a");
-        a.id = legend.id;
-        a.href = "#" + legend.id;
-        a.onclick = ploneFormTabbing.toggle;
-        var span = document.createElement("span");
-        copyChildNodes(legend, span);
-        a.appendChild(span);
-        tab.appendChild(a);
+        var text = document.createTextNode(getInnerTextFast(legend));
+        if (legends.length > threshold) {
+            tab.appendChild(text);
+            tab.id = legend.id;
+            tab.value = legend.id;
+        } else {
+            var a = document.createElement("a");
+            a.id = legend.id;
+            a.href = "#" + legend.id;
+            a.onclick = ploneFormTabbing.toggle;
+            var span = document.createElement("span");
+            span.appendChild(text);
+            a.appendChild(span);
+            tab.appendChild(a);
+        }
         tabs.appendChild(tab);
         parent.removeChild(legend);
     }
 
+    return tabs;
+}
+
+ploneFormTabbing.initializeForm = function(form) {
+
+    var fieldsets = cssQuery("> fieldset", form);
+    var legends = [];
+    for (var i=0; i<fieldsets.length; i++) {
+        var childnodes = fieldsets[i].childNodes;
+        for (var j=0; j<childnodes.length; j++) {
+            var child = childnodes[j];
+            if (child.nodeType == 1 && child.tagName.toLowerCase() == 'legend') {
+                legends.push(child);
+            }
+        }
+    }
+
+    var tabs = ploneFormTabbing._buildTabs(legends);
     form.insertBefore(tabs, form.firstChild);
 
-    //var fieldsets = cssQuery("> fieldset", form);
     for (var i=0; i<fieldsets.length; i++) {
         var fieldset = fieldsets[i];
         addClassName(fieldset, "formPanel")
@@ -137,9 +164,14 @@ ploneFormTabbing.initializeForm = function(form) {
         }
     }
 
-    var tabs = cssQuery("form.enableFormTabbing .formTab a");
-    if (!tab_inited) {
-        tabs[0].onclick();
+    var tabs = cssQuery("form.enableFormTabbing .formTab a,"+
+                        "form.enableFormTabbing option.formTab");
+    if (!tab_inited && tabs.length > 0) {
+        if (tabs[0].tagName.toLowerCase() == 'a') {
+            tabs[0].onclick();
+        } else {
+            tabs[0].parentNode.onchange();
+        }
     }
 
     schema_links = document.getElementById("archetypes-schemata-links")
