@@ -186,7 +186,7 @@ ploneFormTabbing.initializeForm = function(form) {
 
     var active_fieldsets = cssQuery("input[name=fieldset.current]");
     for (var i=0; i<active_fieldsets.length; i++) {
-        if (!tab_inited) {
+        if (!tab_inited && active_fieldsets[i].value) {
             tab_inited = ploneFormTabbing.select(active_fieldsets[i].value);
         }
     }
