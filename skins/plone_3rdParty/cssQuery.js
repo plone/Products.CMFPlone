@@ -47,9 +47,10 @@ try {
 				$arguments = $arguments.slice(0, -1);
 				$cacheSelector += "(" + $arguments + ")";
 			}
-			// process a token/filter pair use cached results if possible
+			// XXX - fschulze - shortcut for pure id selectors
 			if ($token==" " && $filter=="*" && $selector[j]=="#")
 				continue;
+			// process a token/filter pair use cached results if possible
 			$$from = ($useCache && cache[$cacheSelector]) ?
 				cache[$cacheSelector] : select($$from, $token, $filter, $arguments);
 			if ($useCache) cache[$cacheSelector] = $$from;
