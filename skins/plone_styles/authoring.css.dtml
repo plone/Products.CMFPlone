@@ -426,13 +426,16 @@ li.formTab {
     padding: 0;
 }
 li.formTab a {
+    /* this isn't supported by all browsers, so we keep it in a separate rule */
+    display: inline-block;
+}
+li.formTab a {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-left: &dtml-borderWidth; dotted &dtml-globalBorderColor;;
     background: &dtml-backgroundColor;;
     margin: 0;
-    padding: 0.25em 0.75em;
-    line-height: 2em;
+    padding: 0.125em 0.75em;
     text-decoration: none;
 }
 li.firstFormTab a {
@@ -450,6 +453,12 @@ li.formTab a:hover {
 li.formTab a.notify {
     background-color: &dtml-notifyBackgroundColor;;
     color: &dtml-fontColor;;
+}
+li.formTab a.required span {
+    background-image: url(&dtml-portal_url;/required.gif);
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding-right: 8px;
 }
 li.formTab a.notify:hover {
     background-color: &dtml-notifyBorderColor;;
