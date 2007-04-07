@@ -42,7 +42,7 @@ iframe.kupu-editor-iframe:load {
     action-client: plone-initKupu;
 }
 
-div#region-content:load {
+#region-content:load {
     evt-load-initial: false;
     action-client: initializeCollapsible;
 }
@@ -81,7 +81,7 @@ Content Menu Sections: Change View
 */
 
 
-dl#plone-contentmenu-display dd.actionMenuContent a:click {
+#plone-contentmenu-display dd.actionMenuContent a:click {
     evt-click-preventdefault: True;
     action-server: changeViewTemplate;
     evt-click-allowbubbling: True; 
@@ -90,11 +90,11 @@ dl#plone-contentmenu-display dd.actionMenuContent a:click {
 
 /* This rule is needed for keeping the default behavior for menu elements that */
 /* are supposed to send user to another page */
-dl#plone-contentmenu-display a#_contextSetDefaultPage:click {
+#_contextSetDefaultPage:click {
     evt-click-preventdefault: False;
     action-cancel: changeViewTemplate;
 }
-dl#plone-contentmenu-display a#_folderChangeDefaultPage:click {
+#_folderChangeDefaultPage:click {
     evt-click-preventdefault: False;
     action-cancel: changeViewTemplate;
 }
@@ -119,7 +119,7 @@ a.actionicon-object_buttons-copy:click {
 /*
 Content Menu Sections: Workflow State
 */
-dl#plone-contentmenu-workflow dd.actionMenuContent a:click {
+#plone-contentmenu-workflow dd.actionMenuContent a:click {
     evt-click-preventdefault: True;
     evt-click-allowbubbling: True; 
     action-server: changeWorkflowState;
@@ -127,7 +127,7 @@ dl#plone-contentmenu-workflow dd.actionMenuContent a:click {
 }
 
 
-dl#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
+#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
     evt-click-preventdefault: False;
     action-cancel: changeWorkflowState;
 }
