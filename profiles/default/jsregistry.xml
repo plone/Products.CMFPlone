@@ -122,10 +122,10 @@
     enabled="False" expression=""
     id="++resource++MochiKit.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression=""
+    enabled="False" expression=""
     id="++resource++prototype.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression=""
+    enabled="False" expression=""
     id="++resource++effects.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression=""
