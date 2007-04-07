@@ -8,6 +8,13 @@
 
 /* General stylesheet for Plone AJAX */
 
+/* Add class to body to allow conditional styling when kss is available */
+
+body:load {
+  action-client: addClassName;
+  addClassName-name: kssActive;
+}
+
 /* Content tab reloading */
 
 

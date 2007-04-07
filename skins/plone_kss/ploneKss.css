@@ -14,7 +14,7 @@
     padding: 1px;
 }
 
-.inlineEditable:hover {
+body.kssActive .inlineEditable:hover {
     padding: 0;
     background-color: #ffc;
     border-top: 1px solid #8cacbb;
@@ -27,7 +27,7 @@
     background-repeat: no-repeat;
 }
 
-h1.inlineEditable:hover {
+body.kssActive h1.inlineEditable:hover {
     padding-bottom: 1px;
 }
 
