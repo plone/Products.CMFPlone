@@ -61,7 +61,7 @@ ploneFormTabbing.toggle = function(e) {
 };
 
 ploneFormTabbing._buildTabs = function(legends) {
-    var threshold = 6;
+    var threshold = 1;
     if (legends.length > threshold) {
         var tabs = document.createElement("select");
         tabs.onchange = ploneFormTabbing.toggle;
@@ -169,6 +169,19 @@ ploneFormTabbing.initializeForm = function(form) {
         if (tab) {
             addClassName(tab, "notify");
             tab_inited = ploneFormTabbing.select(tab);
+        }
+    }
+
+    var requiredfields = cssQuery("div.field span.fieldRequired", form);
+    for (var i=0; i<requiredfields.length; i++) {
+        var panel = findContainer(requiredfields[i], ploneFormTabbing.isFormPanel);
+        if (!panel) {
+            continue;
+        }
+        var id = panel.id.replace(/^fieldset-/, "fieldsetlegend-");
+        var tab = document.getElementById(id);
+        if (tab) {
+            addClassName(tab, "required");
         }
     }
 
