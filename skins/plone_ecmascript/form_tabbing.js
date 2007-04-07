@@ -28,11 +28,11 @@ ploneFormTabbing.isForm = function(node) {
 ploneFormTabbing.toggle = function(e) {
     if (!e) var e = window.event; // IE compatibility
     if (this.tagName.toLowerCase() == 'select') {
-        var id = this.value;
+        var orig_id = this.value;
     } else {
-        var id = this.id;
+        var orig_id = this.id;
     }
-    id = id.replace(/^fieldsetlegend-/, "fieldset-")
+    var id = orig_id.replace(/^fieldsetlegend-/, "fieldset-")
     var tabs = cssQuery("form.enableFormTabbing .formTab a,"+
                         "form.enableFormTabbing option.formTab");
     for (var i=0; i<tabs.length; i++) {
@@ -55,7 +55,7 @@ ploneFormTabbing.toggle = function(e) {
     var form = findContainer(panels[0], ploneFormTabbing.isForm);
     var current = cssQuery("input[name=fieldset.current]", form);
     if (current && current.length) {
-        current[0].value = this.id;
+        current[0].value = orig_id;
     }
     return false;
 };
@@ -112,7 +112,27 @@ ploneFormTabbing._buildTabs = function(legends) {
     }
 
     return tabs;
-}
+};
+
+ploneFormTabbing.select = function($which) {
+    if (typeof $which == "string") {
+        var id = $which.replace(/^fieldset-/, "fieldsetlegend-")
+        $which = document.getElementById(id);
+    }
+    console.log($which);
+    if ($which.tagName.toLowerCase() == 'a') {
+        $which.onclick();
+        return true;
+    } else if ($which.tagName.toLowerCase() == 'option') {
+        $which.parentNode.value = $which.value;
+        $which.parentNode.onchange();
+        return true;
+    } else {
+        $which.onchange();
+        return true;
+    }
+    return false;
+};
 
 ploneFormTabbing.initializeForm = function(form) {
 
@@ -138,7 +158,7 @@ ploneFormTabbing.initializeForm = function(form) {
 
     var tab_inited = false;
 
-    var fieldswitherrors = cssQuery("div.field.error");
+    var fieldswitherrors = cssQuery("div.field.error", form);
     for (var i=0; i<fieldswitherrors.length; i++) {
         var panel = findContainer(fieldswitherrors[i], ploneFormTabbing.isFormPanel);
         if (!panel) {
@@ -148,30 +168,21 @@ ploneFormTabbing.initializeForm = function(form) {
         var tab = document.getElementById(id);
         if (tab) {
             addClassName(tab, "notify");
-            if (tab.onclick) {
-                tab.onclick();
-                tab_inited = true;
-            }
+            tab_inited = ploneFormTabbing.select(tab);
         }
     }
 
     var active_fieldsets = cssQuery("input[name=fieldset.current]");
     for (var i=0; i<active_fieldsets.length; i++) {
-        var tab = document.getElementById(active_fieldsets[i].value);
-        if (tab && tab.onclick && !tab_inited) {
-            tab.onclick();
-            tab_inited = true;
+        if (!tab_inited) {
+            tab_inited = ploneFormTabbing.select(active_fieldsets[i].value);
         }
     }
 
     var tabs = cssQuery("form.enableFormTabbing .formTab a,"+
                         "form.enableFormTabbing option.formTab");
     if (!tab_inited && tabs.length > 0) {
-        if (tabs[0].tagName.toLowerCase() == 'a') {
-            tabs[0].onclick();
-        } else {
-            tabs[0].parentNode.onchange();
-        }
+        ploneFormTabbing.select(tabs[0]);
     }
 
     schema_links = document.getElementById("archetypes-schemata-links")
