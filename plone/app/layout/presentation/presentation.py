@@ -67,10 +67,10 @@ class PresentationView(BrowserView):
 class PresentationViewlet(ViewletBase):
     def update(self):
         getPresentation = getattr(self.context.aq_base, "getPresentation", None)
-        if getPresentation is None or getPresentation() == False:
-            self.presentation_enabled = False
-        else:
+        if getPresentation is not None and getPresentation():
             self.presentation_enabled = True
+        else:
+            self.presentation_enabled = False
 
     def render(self):
         if self.presentation_enabled:
