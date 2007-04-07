@@ -6,31 +6,32 @@
 
 <body>
 
-<!-- THE STATUS MESSAGE DEFINITION -->
 <tal:block i18n:domain="plone"
            metal:define-macro="portal_message">
 
-    <div class="portalMessage" id="kssPortalMessage" style="display:none">
-        <tal:block replace="nothing">KSS portal message</tal:block>
-    </div>
+    <dl class="portalMessage info" id="kssPortalMessage" style="display:none">
+        <dt>Info</dt>
+        <dd><tal:block replace="nothing">KSS portal message</tal:block></dd>
+    </dl>
 
-    <tal:block tal:define="messages python: putils.showPortalMessages()"
+    <tal:statusmsg tal:define="messages python: putils.showPortalMessages()"
                tal:repeat="message messages">
-        <tal:block
-             tal:define="type_css_map python: {'info':'portalMessage',
-                                               'warn':'portalWarningMessage',
-                                               'error':'portalErrorMessage'
-                                              };
-                         mtype message/type | nothing;">
-            <div class=""
-                 tal:attributes="class python:mtype and type_css_map[mtype] or 'info';"
-                 tal:content="message/message | nothing"
-                 i18n:translate="">
-                Message
-            </div>
 
-        </tal:block>
-    </tal:block>
+        <dl class="portalMessage info"
+            tal:define="mtype message/type | nothing;"
+            tal:attributes="class string:portalMessage ${mtype};">
+            <dt tal:content="python:mtype.capitalize()"
+                i18n:translate="">
+                Info
+            </dt>
+            <dd tal:content="message/message | nothing"
+                i18n:translate="">
+                The status message.
+            </dd>
+        </dl>
+
+    </tal:statusmsg>
 </tal:block>
+
 </body>
 </html>

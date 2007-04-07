@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added visual styles and updated markup for the new "Info", "Warning" and
+      "Error" status message levels.
+      [limi]
+
     - Made the error page much friendlier, it essentially just prints a log
       entry number now and explains that the error has been logged. If you are
       logged in as an administrator, you have access to the full error log.

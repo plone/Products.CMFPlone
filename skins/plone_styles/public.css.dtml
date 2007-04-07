@@ -486,29 +486,50 @@ h3, h4, h5, h6 {
     text-decoration: none;
 }
 
-/* .system-message and #error-handling are reST error indicators */
-.portalMessage,
-.portalWarningMessage,
-.portalErrorMessage,
-.system-message,
-#error-handling {
-    background-color: &dtml-notifyBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-    color: &dtml-fontColor;;
+/* Status messages */
+
+dl.portalMessage {
     font-size: &dtml-fontSmallSize;;
+}
+dl.portalMessage a {
+    color: black;
+    border: none;
+    text-decoration: underline;
+}
+dl.portalMessage dt {
+    background-color: #996; 
+    border: 1px solid #996;
     font-weight: bold;
-    margin: 1em 0em;
-    padding: 0.5em 1em 0.5em 3em;
-    vertical-align: middle;
-    background-image: url(&dtml-portal_url;/info_icon.gif);
-    background-repeat: no-repeat;
-    background-position: 5px 50%;
+    float: left;
+    margin: 0 0.5em 0 0;
+    padding: 0.5em 0.75em;
+    color: White;
+    line-height: 1em;
 }
-.portalMessage a,
-.portalWarningMessage a,
-.portalErrorMessage a {
-    color: &dtml-fontColor;;
+dl.portalMessage dd {
+    background-color: #ffffe3;
+    border: 1px solid #996;
+    padding: 0.5em 0.5em; 
+    margin: 0;
+    line-height: 1em;
 }
+dl.warning dt {
+    background-color: #d80; 
+    border: 1px solid #d80;
+}
+dl.error dt {
+    background-color: #d00; 
+    border-color: #d00;
+}
+dl.warning dd {
+    background-color: #fd7; 
+    border-color: #d80;
+}
+dl.error dd {
+    background-color: #fdc; 
+    border-color:  #d00;
+}
+
 .documentDescription {
     /* The summary text describing the document */
     font-weight: bold;

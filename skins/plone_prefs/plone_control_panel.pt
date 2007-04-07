@@ -30,15 +30,20 @@
                      mailhost context/MailHost/smtp_host|nothing;
                      mailfrom context/email_from_address|nothing">
 
-        <p class="portalMessage"
-           tal:condition="python:not (mailhost and mailfrom)"
-           i18n:translate="text_no_mailhost_configured">
-            Warning: You have not configured a mail host or a site 'From'
+        <dl class="portalMessage warning"
+            tal:condition="python:not (mailhost and mailfrom)">
+            <dt i18n:translate="">
+                Warning
+            </dt>
+            <dd i18n:translate="text_no_mailhost_configured">
+            You have not configured a mail host or a site 'From'
             address, various features including contact forms, email
             notification and password reset will not work. Go to the
             <a href="" tal:attributes="href string:${portal_url}/@@mail-controlpanel"
             >Mail control panel</a> to fix this.
-        </p>
+            </dd>
+        </dl>
+
 
         <p class="portalMessage"
            tal:condition="not:sys/PIL"
@@ -98,7 +103,7 @@
 
     <tal:versions define="mt here/portal_migration;
                           sys mt/coreVersions">
-            <h2 i18n:translate="heading_plone_version_overview">Plone version overview</h2>
+            <h2 i18n:translate="heading_plone_version_overview">Plone Version Overview</h2>
             
             <ul>
                 <li>Plone <span tal:replace="mt/getInstanceVersion" /></li>
