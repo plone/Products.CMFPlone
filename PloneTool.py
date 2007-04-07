@@ -679,7 +679,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool = self.portal.plone_utils
 
-        >>> ptool.addPortalMessage(u'A random warning message', 'warn')
+        >>> ptool.addPortalMessage(u'A random warning message', 'warning')
 
         If no type is given it defaults to 'info'
         >>> ptool.addPortalMessage(u'A random info message')
@@ -691,8 +691,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                        the message will be rendered, as it is used to select
                        the CSS class for the message. Predefined types are:
                        'info' - for informational messages
-                       'warn' - for warning messages
-                       'stop' - for messages about restricted access or errors.
+                       'warning' - for warning messages
+                       'error' - for messages about restricted access or errors.
 
         Portal messages are by default rendered by the global_statusmessage.pt
         page template.
