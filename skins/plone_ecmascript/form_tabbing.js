@@ -61,7 +61,7 @@ ploneFormTabbing.toggle = function(e) {
 };
 
 ploneFormTabbing._buildTabs = function(legends) {
-    var threshold = 1;
+    var threshold = 6;
     if (legends.length > threshold) {
         var tabs = document.createElement("select");
         tabs.onchange = ploneFormTabbing.toggle;
@@ -119,7 +119,6 @@ ploneFormTabbing.select = function($which) {
         var id = $which.replace(/^fieldset-/, "fieldsetlegend-")
         $which = document.getElementById(id);
     }
-    console.log($which);
     if ($which.tagName.toLowerCase() == 'a') {
         $which.onclick();
         return true;
