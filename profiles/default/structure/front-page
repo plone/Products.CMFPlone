@@ -53,16 +53,16 @@ Before you start exploring your newly created Plone site, please do the followin
 
 <ul>
     <li>
-    By default, Plone uses a visual editor for content, but if you prefer 
-    text-based syntax and/or wiki syntax, you can change this in the
-    <a href="@@markup-controlpanel">markup control panel</a>.
-    </li>
-
-    <li>
     Try out a different theme, either pick from 
     <a href="@@skins-controlpanel">the included ones</a>, or one of the 
     <a class="link-plain" href="http://plone.org/products/by-category/themes">available 
     themes from plone.org</a>.
+    </li>
+
+    <li>
+    By default, Plone uses a visual editor for content, but if you prefer 
+    text-based syntax and/or wiki syntax, you can change this in the
+    <a href="@@markup-controlpanel">markup control panel</a>.
     </li>
 
     <li>&hellip;and many more settings are available in the <a href="plone_control_panel">Site Setup</a>.</li>
