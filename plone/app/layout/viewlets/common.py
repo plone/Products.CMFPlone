@@ -4,6 +4,7 @@ from zope.viewlet.interfaces import IViewlet
 
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
 class ViewletBase(BrowserView):
@@ -41,3 +42,13 @@ class TitleViewlet(ViewletBase):
         return u"<title>%s &mdash; %s</title>" % (
             safe_unicode(self.page_title()),
             safe_unicode(self.portal_title()))
+
+class TableOfContentsViewlet(ViewletBase):
+    render = ViewPageTemplateFile('toc.pt')
+
+    def update(self):
+        obj = self.context.aq_base
+        getTableContents = getattr(obj, 'getTableContents', None)
+        self.enabled = False
+        if getTableContents is not None:
+            self.enabled = getTableContents()

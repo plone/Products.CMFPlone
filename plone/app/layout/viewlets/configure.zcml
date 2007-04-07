@@ -124,4 +124,13 @@
         view="plone.app.form.interfaces.IEditForm"
         />
 
+    <!-- Render table of contents -->
+    <browser:viewlet
+        name="plone.tableofcontents"
+        for="Products.ATContentTypes.interface.IATDocument"
+        manager=".interfaces.IAboveContentBody"
+        class=".common.TableOfContentsViewlet"
+        permission="zope2.View" 
+        />
+
 </configure>
