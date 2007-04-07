@@ -162,11 +162,11 @@ input.searchButton {
 .formControls {
    margin: 1em 0;
 }
-.error {
+div.error {
     /* Class for error indication in forms */
-    background-color: &dtml-notifyBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
-    padding: 1em;
+    background-color: #fdc; 
+    border: 1px solid #d00;
+    padding: 0.5em;
     margin: 0 0 1em 0;
     width: 95%;
 }
