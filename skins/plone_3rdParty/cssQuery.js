@@ -132,7 +132,7 @@ selectors["#"] = function($results, $from, $id) {
 	if ($from.length==1 && $from[0]==document) {
 		var $node = document.getElementById($id);
 		if ($node)
-			$results.push();
+			$results.push($node);
 	} else {
 		// loop through current selection and check ID
 		for (j = 0; ($element = $from[j]); j++)
