@@ -18,16 +18,9 @@
   <property name="number_of_days_to_keep" type="int">7</property>
   <property name="enable_link_integrity_checks" type="boolean">True</property>
   <property name="icon_visibility" type="string">enabled</property>
-  <property name="forbidden_contenttypes" type="lines">
-   <element value="text/structured"/>
+  <property name="forbidden_contenttypes" type="lines" purge="False">
    <element value="text/restructured"/>
-   <element value="text/x-rst"/>
    <element value="text/plain"/>
-   <element value="text/plain-pre"/>
-   <element value="text/x-python"/>
-   <element value="text/x-web-markdown"/>
-   <element value="text/x-web-intelligent"/>
-   <element value="text/x-web-textile"/>
   </property>
  </object>
 </object>
