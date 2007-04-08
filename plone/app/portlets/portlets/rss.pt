@@ -30,7 +30,7 @@
     </tal:rss>
     <dd class="portletFooter" tal:condition="view/feedAvailable">
         <a href=""
-           tal:attributes="href view/url"
+           tal:attributes="href view/siteurl"
            i18n:translate="box_more_rss_link">
                 More&hellip;
         </a>

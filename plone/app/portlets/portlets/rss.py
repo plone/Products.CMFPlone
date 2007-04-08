@@ -241,7 +241,13 @@ class Renderer(base.DeferredRenderer):
     def url(self):
         """return url of feed for portlet"""
         return self._getFeed().url
-    
+     
+     
+    @property
+    def siteurl(self):
+        """return url of site for portlet"""
+        return self._getFeed().siteurl
+            
     @property    
     def feedlink(self):
         """return rss url of feed for portlet"""
