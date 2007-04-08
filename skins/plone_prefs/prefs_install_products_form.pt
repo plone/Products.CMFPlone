@@ -23,11 +23,11 @@
     Up to Site Setup
     </a>
 
-    <div class="documentDescription"
+    <p class="documentDescription"
          i18n:translate="description_addremove_products">
     This is the Add-on Products install section, you can add and remove products 
     in the lists below. 
-    </div>
+    </p>
 
     <p class="discreet" i18n:translate="description_product_location">
       To make new products show up here, put them in the directory

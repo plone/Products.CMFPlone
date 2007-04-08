@@ -20,10 +20,10 @@
       <h1 class="documentFirstHeading"
           i18n:translate="heading_send_page_to">Send this page to someone</h1>
 
-      <div class="documentDescription" i18n:translate="description_send_page_to">
+      <p class="documentDescription" i18n:translate="description_send_page_to">
         Fill in the email address of your friend, and we will send an email that contains
         a link to this page.
-      </div>
+      </p>
 
 
       <form name="sendto_form"
