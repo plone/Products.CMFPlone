@@ -71,7 +71,7 @@ div.portlet-deferred:load {
 Content Menu Sections: General
 */
 
-div.contentActions:load {
+ul#contentActionMenus:load {
     evt-load-initial: false;
     action-client: bindActionMenus;
 }
