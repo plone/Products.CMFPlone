@@ -29,7 +29,7 @@ except (AttributeError, KeyError, DateTimeError):
     REQUEST.set('expiration_date', '')  # Remove bad date from request
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     return state

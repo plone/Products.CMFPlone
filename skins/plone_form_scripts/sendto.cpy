@@ -22,7 +22,7 @@ site_properties = getToolByInterfaceName('Products.CMFCore.interfaces.IPropertie
 pretty_title_or_id = plone_utils.pretty_title_or_id
 
 if not mtool.checkPermission(AllowSendto, context):
-    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'))
+    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'), 'error')
     return state.set(status='failure')
 
 at = getToolByInterfaceName('Products.CMFCore.interfaces.IActionsTool')
@@ -33,7 +33,7 @@ for action in actions:
     if action['id'] == 'sendto' and action['category'] == 'document_actions':
         show = True
 if not show:
-    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'))
+    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'), 'error')
     return state.set(status='failure')
 
 # Try to find the view action. If not found, use absolute_url()
@@ -62,7 +62,7 @@ except: # TODO To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})
-    context.plone_utils.addPortalMessage(message)
+    context.plone_utils.addPortalMessage(message, 'error')
     return state.set(status='failure')
 
 tmsg='Sent page %s to %s' % (url, REQUEST.send_to_address)

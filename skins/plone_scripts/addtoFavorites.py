@@ -15,7 +15,7 @@ homeFolder=context.portal_membership.getHomeFolder()
 state = context.restrictedTraverse("@@plone_context_state")
 view_url = '%s/%s' % (context.absolute_url(), state.view_template_id())
 if not homeFolder:
-    context.plone_utils.addPortalMessage(_(u'Can\'t access home folder. Favorite is not added.'))
+    context.plone_utils.addPortalMessage(_(u'Can\'t access home folder. Favorite is not added.'), 'error')
     return RESPONSE.redirect(view_url)
 
 if not base_hasattr(homeFolder, 'Favorites'):

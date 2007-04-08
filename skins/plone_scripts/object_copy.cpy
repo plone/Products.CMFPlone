@@ -29,7 +29,7 @@ try:
 except CopyError:
     message = _(u'${title} is not copyable.',
                 mapping={u'title' : context.title_or_id()})
-    context.plone_utils.addPortalMessage(message)
+    context.plone_utils.addPortalMessage(message, 'error')
     return state.set(status = 'failure')
 
 message = _(u'${title} copied.',

@@ -31,5 +31,5 @@ if context.cb_dataValid:
     except: # fallback
         msg=_(u'Paste could not find clipboard content.')
 
-context.plone_utils.addPortalMessage(msg)
+context.plone_utils.addPortalMessage(msg, 'error')
 return state.set(status='failure')

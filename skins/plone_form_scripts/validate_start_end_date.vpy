@@ -42,7 +42,7 @@ if not state.getError('start_date') and not state.getError('end_date'):
             state.setError('start_date', _(u'An event must start before it ends.'))
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     REQUEST.set('start_date',start_date)

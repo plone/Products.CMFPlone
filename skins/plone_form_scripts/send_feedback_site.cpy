@@ -55,7 +55,7 @@ except: # TODO Too many things could possibly go wrong. So we catch all.
     exception = plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})
-    plone_utils.addPortalMessage(message)
+    plone_utils.addPortalMessage(message, 'error')
     return state.set(status=state_failure)
 
 ## clear request variables so form is cleared as well

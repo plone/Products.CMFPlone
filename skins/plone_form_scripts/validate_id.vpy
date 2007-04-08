@@ -21,7 +21,7 @@ if id_error:
     state.setError('id', id_error, new_status='failure')
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     return state

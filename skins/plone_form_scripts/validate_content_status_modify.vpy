@@ -15,7 +15,7 @@ if not workflow_action:
     state.setError('workflow_action', _(u'This field is required, please provide some information.'), 'workflow_missing')
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     return state

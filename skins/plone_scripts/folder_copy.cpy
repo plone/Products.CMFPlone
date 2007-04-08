@@ -21,11 +21,11 @@ if REQUEST.has_key('paths'):
         context.manage_copyObjects(ids, REQUEST, REQUEST.RESPONSE)
     except CopyError:
         message = _(u'One or more items not copyable.')
-        context.plone_utils.addPortalMessage(message)
+        context.plone_utils.addPortalMessage(message, 'error')
         return state.set(status = 'failure')
     except AttributeError:
         message = _(u'One or more selected items is no longer available.')
-        context.plone_utils.addPortalMessage(message)
+        context.plone_utils.addPortalMessage(message, 'error')
         return state.set(status = 'failure')
 
     transaction_note('Copied %s from %s' % (str(ids), context.absolute_url()))
@@ -35,5 +35,5 @@ if REQUEST.has_key('paths'):
     context.plone_utils.addPortalMessage(message)
     return state
 
-context.plone_utils.addPortalMessage(_(u'Please select one or more items to copy.'))
+context.plone_utils.addPortalMessage(_(u'Please select one or more items to copy.'), 'error')
 return state.set(status='failure')

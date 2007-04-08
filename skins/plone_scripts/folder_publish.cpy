@@ -21,10 +21,10 @@ failed = {}
 success = {}
 
 if workflow_action is None:
-    context.plone_utils.addPortalMessage(_(u'You must select a publishing action.'))
+    context.plone_utils.addPortalMessage(_(u'You must select a publishing action.'), 'error')
     return state.set(status='failure')
 if not paths:
-    context.plone_utils.addPortalMessage(_(u'You must select content to change.'))
+    context.plone_utils.addPortalMessage(_(u'You must select content to change.'), 'error')
     return state.set(status='failure')
 
 objs = context.getObjectsFromPathList(paths)

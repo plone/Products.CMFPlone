@@ -90,10 +90,15 @@ Headlines
 
 <pre>Example document rendering</pre>
 
-<div class="portalMessage">
-    The portalMessage class, can also contain <a href="#">links</a> - used to
-    give the user temporary status messages.
-</div>
+<dl class="portalMessage info">
+    <dt>
+        Info
+    </dt>
+    <dd>
+        The portalMessage class, can also contain <a href="#">links</a> - used to
+        give the user temporary status messages.
+    </dd>
+</dl>
 
 <h1>Document Headline</h1>
 

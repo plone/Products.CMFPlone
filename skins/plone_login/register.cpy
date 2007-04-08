@@ -30,7 +30,7 @@ try:
     portal_registration.addMember(username, password, properties=REQUEST)
 except AttributeError:
     state.setError('username', _(u'The login name you selected is already in use or is not valid. Please choose another.'))
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 
 if site_properties.validate_email or REQUEST.get('mail_me', 0):
@@ -50,7 +50,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         state.setError('email', msg)
         state.set(came_from='login_success')
         context.acl_users.userFolderDelUsers([username,])
-        context.plone_utils.addPortalMessage(_(u'Please enter a valid email address.'))
+        context.plone_utils.addPortalMessage(_(u'Please enter a valid email address.'), 'error')
         return state.set(status='failure')
 
 state.set(came_from=REQUEST.get('came_from','login_success'))

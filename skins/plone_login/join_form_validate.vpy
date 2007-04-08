@@ -48,7 +48,7 @@ if not state.getError('username') and not reg_tool.isMemberIdAllowed(username):
                    'username_invalid' )
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     context.plone_utils.addPortalMessage(_(u'You have been registered.'))

@@ -18,7 +18,7 @@ if addname:
     if not success:
         msg = _(u'Could not add group ${name}, perhaps a user or group with '
                 u'this name already exists.', mapping={u'name' : addname})
-        context.plone_utils.addPortalMessage(msg)
+        context.plone_utils.addPortalMessage(msg, 'error')
         return context.prefs_group_details()
     group=context.portal_groups.getGroupById(addname)
     msg = _(u'Group ${name} has been added.',

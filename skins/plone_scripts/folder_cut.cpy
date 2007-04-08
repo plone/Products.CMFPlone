@@ -21,11 +21,11 @@ if REQUEST.has_key('paths'):
         context.manage_cutObjects(ids, REQUEST)
     except CopyError:
         message = _(u'One or more items not moveable.')
-	context.plone_utils.addPortalMessage(message)
+	context.plone_utils.addPortalMessage(message, 'error')
         return state.set(status = 'failure')
     except AttributeError:
         message = _(u'One or more selected items is no longer available.')
-	context.plone_utils.addPortalMessage(message)
+	context.plone_utils.addPortalMessage(message, 'error')
         return state.set(status = 'failure')
 
     transaction_note('Cut %s from %s' % ((str(ids)), context.absolute_url()))
@@ -34,5 +34,5 @@ if REQUEST.has_key('paths'):
     context.plone_utils.addPortalMessage(message)
     return state
                                  
-context.plone_utils.addPortalMessage(_(u'Please select one or more items to cut.'))
+context.plone_utils.addPortalMessage(_(u'Please select one or more items to cut.'), 'error')
 return state.set(status='failure')

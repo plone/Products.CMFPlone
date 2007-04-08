@@ -50,7 +50,7 @@ try:
 except ConflictError:
     raise
 except: # TODO DateTime and contentEdit() has many things that could go wrong - catch all.
-    context.plone_utils.addPortalMessage(_(u'Error saving event.'))
+    context.plone_utils.addPortalMessage(_(u'Error saving event.'), 'error')
     return state.set(new_status='failure')
 
 from Products.CMFPlone.utils import transaction_note

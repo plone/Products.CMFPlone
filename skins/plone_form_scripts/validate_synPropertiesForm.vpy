@@ -25,7 +25,7 @@ if max_items is None:
     state.setError('max_items', _(u'This field is required, please provide some information.'), 'input_required')
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     return state

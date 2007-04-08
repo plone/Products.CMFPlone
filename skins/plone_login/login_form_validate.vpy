@@ -18,7 +18,7 @@ cookies_enabled = request.get('cookies_enabled',0) # are cookies enabled?
 cookies_enabled = cookies_enabled=='1' or cookies_enabled==1
 
 if js_enabled and not cookies_enabled:
-    context.plone_utils.addPortalMessage(_(u'You must enable cookies before you can log in.'))
+    context.plone_utils.addPortalMessage(_(u'You must enable cookies before you can log in.'), 'error')
     state.set(status='enable_cookies')
     return state
 
@@ -44,10 +44,10 @@ if mt.isAnonymousUser():
                     state.setError(ac_name, _(u'Login name not found.'), 'login_name_not_found')
                 elif not password_empty:
                     state.setError(ac_password, _(u'Password incorrect.'), 'password_incorrect')
-        context.plone_utils.addPortalMessage(_(u'Login failed'))
+        context.plone_utils.addPortalMessage(_(u'Login failed'), 'error')
         state.set(status='failure')
     else: # no javascript - do low tech login failure
-        context.plone_utils.addPortalMessage(_(u'Login failed'))
+        context.plone_utils.addPortalMessage(_(u'Login failed'), 'error')
         state.set(status='failure_page')
 
 return state

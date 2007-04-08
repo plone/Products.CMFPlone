@@ -18,16 +18,16 @@ portal = context.portal_url.getPortalObject()
 check_id = context.check_id
 
 if len(paths)!=len(new_ids):
-    context.plone_utils.addPortalMessage(_(u'You must provide content names'))
+    context.plone_utils.addPortalMessage(_(u'You must provide content names'), 'error')
     return state.set(status='failure')
 
 if not paths:
-    context.plone_utils.addPortalMessage(_(u'Need source content ids.'))
+    context.plone_utils.addPortalMessage(_(u'Need source content ids.'), 'error')
     return state.set(status='failure')
 
 if not new_ids:
     state.setError(id, _(u'Please provide an id'))
-    context.plone_utils.addPortalMessage(_(u'Need destination content ids.'))
+    context.plone_utils.addPortalMessage(_(u'Need destination content ids.'), 'error')
     return state.set(status='failure')
 
 for x in range(0, len(new_ids)):
@@ -43,7 +43,7 @@ for x in range(0, len(new_ids)):
             state.setError(id, error)
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 
 return state
