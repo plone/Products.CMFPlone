@@ -43,12 +43,18 @@ If you do not have an account here, head over to the
 
 </p>
 
-<div id="enable_cookies_message"
-      i18n:translate="enable_cookies_message"
-      class="portalMessage"
-      style="display:none">
-    Cookies are not enabled. You must enable cookies before you can log in.
-</div>
+
+<dl class="portalMessage error"
+    id="enable_cookies_message"
+    style="display:none">
+    <dt i18n:translate="">
+        Error
+    </dt>
+    <dd i18n:translate="enable_cookies_message">
+        Cookies are not enabled. You must enable cookies before you can log in.
+    </dd>
+</dl>
+
 
 <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
     While cookie authentication is disabled, cookie-based login is not available.
