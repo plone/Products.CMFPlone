@@ -726,13 +726,13 @@ class TestPortalStatusMessages(PloneTestCase.PloneTestCase):
         self.assertEqual(len(msgs), 0)
         # add two messages
         self.utils.addPortalMessage(u'message1', type=u'info')
-        self.utils.addPortalMessage(u'message2', type=u'warn')
+        self.utils.addPortalMessage(u'message2', type=u'warning')
         msgs = self.utils.showPortalMessages()
         self.assertEqual(len(msgs), 2)
         self.assertEqual(msgs[0].message, u'message1')
         self.assertEqual(msgs[0].type, u'info')
         self.assertEqual(msgs[1].message, u'message2')
-        self.assertEqual(msgs[1].type, u'warn')
+        self.assertEqual(msgs[1].type, u'warning')
         # make sure there's no stored message
         self.assertEqual(len(self.utils.showPortalMessages()), 0)
 
