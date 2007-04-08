@@ -46,13 +46,6 @@ ol.visualNoMarker {
     margin: 0;
 }
 
-/* Correction for WYSIWYG editors */
-.visualFontSizeCorrection { 
-    font-size: 75%;
-    background: transparent;
-    background-image: none;
-}
-
 /* Accessibility and visual enhancement elements */
 .hiddenStructure {
     display: block;
