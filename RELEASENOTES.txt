@@ -177,6 +177,9 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   More information on this product can be found in the RichDocument tutorial:
   http://plone.org/documentation/tutorial/richdocument/migrations/
 
+* If you have a custom content type that is derived from ATDocument but does
+  not want the document-specific behaviour that is provided on the IATDocument
+  interface you should use the new ATDocumentBase base class instead.
 
 Preferred but not obligatory (right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
