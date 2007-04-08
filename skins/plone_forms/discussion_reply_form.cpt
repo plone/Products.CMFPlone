@@ -73,17 +73,17 @@
             <input type="hidden" name="Creator" value=""
                    tal:attributes="value member/getUserName" />
 
-            <div class="portalMessage"
-                 tal:condition="isAnon">
-
-                <tal:block replace="structure here/info.gif"/>
-
-                <p i18n:translate="legend_note_reply_anonymous">
-                    Note: you are not logged in. You may optionally enter your
-                    username and password below. If you don't enter your
-                    username and password below, this comment will be posted as
-                    the 'Anonymous User'.
-                </p>
+            <div tal:condition="isAnon">
+                <dl class="portalMessage warning">
+                    <dt i18n:translate="">
+                        Info
+                    </dt>
+                    <dd i18n:translate="legend_note_reply_anonymous">
+                        You are not logged in. You may optionally enter your
+                        username and password below. If you don't enter anything,
+                        this comment will be posted as 'Anonymous User'.
+                    </dd>
+                </dl>
 
                 <div class="field">
 
