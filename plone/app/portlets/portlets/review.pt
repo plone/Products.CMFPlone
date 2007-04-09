@@ -3,7 +3,10 @@
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <span i18n:translate="box_review_list">Review List</span>
+        <a href="#" 
+           class="tile"
+           tal:attributes="href view/full_review_link"
+           i18n:translate="box_review_list">Review List</a>
         <span class="portletTopRight"></span>
     </dt>
 
