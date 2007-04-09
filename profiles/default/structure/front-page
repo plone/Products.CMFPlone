@@ -49,14 +49,16 @@ Before you start exploring your newly created Plone site, please do the followin
 
 <h2>Make it your own</h2>
 
-<p>Plone has a lot of different settings that can be used to easily tailor Plone to your audience. Some examples:</p>
+<p>Plone has a lot of different settings that can be used to make it do what you want it to. Some examples:</p>
 
 <ul>
     <li>
     Try out a different theme, either pick from 
     <a href="@@skins-controlpanel">the included ones</a>, or one of the 
-    <a class="link-plain" href="http://plone.org/products/by-category/themes">available 
-    themes from plone.org</a>.
+    <a class="link-plain" 
+       href="http://plone.org/products/by-category/themes">available themes 
+       from plone.org</a>. <span class="discreet">(Make sure the theme is 
+       compatible with the version of Plone you are currently using)</span>
     </li>
 
     <li>
@@ -65,7 +67,9 @@ Before you start exploring your newly created Plone site, please do the followin
     <a href="@@markup-controlpanel">markup control panel</a>.
     </li>
 
-    <li>&hellip;and many more settings are available in the <a href="plone_control_panel">Site Setup</a>.</li>
+    <li>&hellip;and many more settings are available in the 
+        <a href="plone_control_panel">Site Setup</a>.
+    </li>
     
 </ul>
 
@@ -73,13 +77,18 @@ Before you start exploring your newly created Plone site, please do the followin
 
 <p>
 Are you doing something interesting with Plone? Big site deployments, 
-interesting use cases? Do you have a company that delivers Plone-based solutions?
+interesting use cases? Do you have a company that delivers Plone-based 
+solutions?
 </p>
 
 <ul>
-    <li>Add your sites to the <a class="link-plain" href="http://plone.net/sites">Plone site listing</a>.</li>
-    <li>Add your company as a <a class="link-plain" href="http://plone.net/providers">Plone provider</a>.</li>
-    <li>Add a <a class="link-plain" href="http://plone.net/case-studies">case study</a> describing your deployed project and customer.</li>
+    <li>Add your sites to the <a class="link-plain" 
+        href="http://plone.net/sites">Plone site listing</a>.</li>
+    <li>Add your company as a <a class="link-plain" 
+        href="http://plone.net/providers">Plone provider</a>.</li>
+    <li>Add a <a class="link-plain" 
+        href="http://plone.net/case-studies">case study</a> describing your 
+        deployed project and customer.</li>
 </ul>
 
 <h2>Find out more about our architecture</h2>
@@ -90,13 +99,17 @@ language. More about these technologies:
 </p>
 
 <ul>
-<li>The <a class="link-plain" href="http://plone.org">Plone open source Content Management System</a> web site.</li>
-<li>The <a class="link-plain" href="http://www.zope.org">Zope application server</a> web site.</li>
-<li>The <a class="link-plain" href="http://www.python.org">Python programming language</a> web site.</li>
+<li>The <a class="link-plain" href="http://plone.org">Plone open source 
+    Content Management System</a> web site.</li>
+<li>The <a class="link-plain" href="http://www.zope.org">Zope 
+    application server</a> web site.</li>
+<li>The <a class="link-plain" href="http://www.python.org">Python 
+    programming language</a> web site.</li>
 </ul>
 
 <p>Thanks for using our product!</p>
 
 <p>
-&mdash; <a class="link-plain" href="http://plone.org/about/team">The Plone Team</a>
+&mdash;
+<a class="link-plain" href="http://plone.org/about/team">The Plone Team</a>
 </p>
