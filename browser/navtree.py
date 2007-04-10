@@ -265,9 +265,9 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
                 if itemPaths.has_key(itemPath):
                     newNode['children'] = itemPaths[itemPath]['children']
                 else:
-                    newNode['children'] = []
+                    children = newNode.setdefault('children',[])
             else:
-                newNode['children'] = []
+                children = newNode.setdefault('children',[])
                 newNode['_pruneSubtree'] = True
 
             itemPaths[itemPath] = newNode
