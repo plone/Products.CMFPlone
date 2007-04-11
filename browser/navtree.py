@@ -259,15 +259,13 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
             if expand and (not forceInsert and strategy is not None):
                 expand = strategy.subtreeFilter(newNode)
 
+            children = newNode.setdefault('children',[])
             if expand:
                 # If we had some orphaned children for this node, attach
                 # them
                 if itemPaths.has_key(itemPath):
-                    newNode['children'] = itemPaths[itemPath]['children']
-                else:
-                    children = newNode.setdefault('children',[])
+                    children.extend(itemPaths[itemPath]['children'])
             else:
-                children = newNode.setdefault('children',[])
                 newNode['_pruneSubtree'] = True
 
             itemPaths[itemPath] = newNode
