@@ -8,7 +8,7 @@
                 showPrevMonth view/showPrevMonth;
                 showNextMonth view/showNextMonth;
                 year view/year;">
-    <dt>
+    <dt class="portletHeader">
 
                 <a href="#" rel="nofollow"
                    title="Previous month"
