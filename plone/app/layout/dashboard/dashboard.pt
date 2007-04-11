@@ -61,7 +61,7 @@
                     <ul>
                         <li class="portalUser">
                             <a href="personalize_form" 
-                               tal:attributes="href string:${portal_url}/author"
+                               tal:attributes="href string:${portal_url}/author/${member/getId}"
                                i18n:translate="">Profile</a>
                         </li>
                         <li>
