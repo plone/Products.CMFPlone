@@ -11,13 +11,13 @@ upgrading to Plone 3.0:
   downloaded from its homepage at http://effbot.org/downloads/#elementtree .
 
 * The python lxml package is now required to run all tests. It is
-  not needed for normal Plone users. This package can be downloaded
+  not needed for normal Plone use. This package can be downloaded
   from its homepage at http://codespeak.net/lxml/ .
 
 * Plone 3.0 uses both Zope Products and python packages. The Zope Products
- are installed in the usual location: the Products directory of the Zope
- instance. Python package may be installed in the lib/python directory in the
- Zope instance, or anywhere on the standard python path.
+  are installed in the usual location: the Products directory of the Zope
+  instance. Python package may be installed in the lib/python directory in the
+  Zope instance, or anywhere on the standard python path.
 
 * The GroupUserFolder user folder is no longer supported; instead Plone
   now requires the Pluggable Authentication System (PAS). It may not be
@@ -112,8 +112,14 @@ Important notes for users
     used in the page.
 
 * KSS/Azax
-* new workflows
+
+* In addition to the standard four-state workflow Plone has always used
+  there Plone now includes special community, intranet, simple publication
+  and one-state workflows. Switching between workflows can be done in an
+  existing site using a new control panel.
+
 * versioning, staging and locking
+
 * content rules
 
 
@@ -148,7 +154,7 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
 
 * Searching for users and groups using the portal_membership and portal_groups
   tools has been deprectaed. Please use the search features of PAS directly
-  or the PlonePAS pas_search browser view.
+  or use the PlonePAS pas_search browser view.
 
 * Portlets have been re-implemented using the Zope3 component architecture.
   The base package, plone.portlets, is usable in plain Zope 3 and has been
@@ -173,36 +179,42 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   in plone.portlets.interfaces, or see plone.app.portlets.browser.editmanager.
 
 * Skins: main_template now uses viewlet managers instead of metal macros
-  -> Alexander Limi or Cornelis to fill in stuff here
+  -> Alexander Limi or Florian Schulze to fill in stuff here
 
 * It is no longer possible to define workflows using python code. Instead
   workflows have to be created via a GenericSetup profile.
 
-* The long deprecated Products.CMFCore.CMFPermissions module is no longer
-  present. Code should now use its replacement Products.CMFCore.permissions
+* The long deprecated Products.CMFCore.CMFPermissions module has been
+  removed. Code should now use its replacement Products.CMFCore.permissions
 
-* You can use the contentmigration product to write migrations for your own products.
-  More information on this product can be found in the RichDocument tutorial:
-  http://plone.org/documentation/tutorial/richdocument/migrations/
+* You can use the contentmigration product to write migrations for your own
+  products.  More information on this product can be found in the RichDocument
+  tutorial: http://plone.org/documentation/tutorial/richdocument/migrations/
 
 * If you have a custom content type that is derived from ATDocument but does
   not want the document-specific behaviour that is provided on the IATDocument
   interface you should use the new ATDocumentBase base class instead.
+
 
 Preferred but not obligatory (right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * QuickInstaller-based installation should use GenericSetup profiles instead 
 
-* use events instead of manage_ methods (which will probably disappear in plone 3.5 or 4.0)
+* use events instead of manage_ methods (which will probably disappear in plone
+  3.5 or 4.0)
 
 * Packaging technology:
 
-  - Use python packages instead of Zope products
+  - Use python packages instead of Zope products. Creating python packages
+    is very easy using the paster tool. See
+    http://plone.org/documentation/how-to/use-paster/ for more information.
 
-  - Ship packages as eggs and register in the cheeseshop
+  - Use ploneit or ploneout to create development and/or production
+    environments
 
-  - Use paste to create new packages
-
-  - Use ploneit or ploneout to create development and/or production environments
+  - Releasing packages as eggs and registering them with the Python Cheese
+    Shop (http://cheeseshop.python.org/) makes it simple for people to
+    install them and all required dependencies if they are using a system
+    such as ploneout, ploneit or workingenv.
 
