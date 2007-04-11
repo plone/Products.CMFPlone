@@ -108,11 +108,10 @@
 
               <input type="text"
                      size="15"
-                     tabindex=""
+                     tabindex="1"
                      tal:attributes="name ac_name;
                                      id ac_name;
-                                     value login_name;
-                                     tabindex tabindex/next;"
+                                     value login_name;"
                      />
 
       </div>
@@ -134,10 +133,9 @@
 
               <input type="password"
                      size="15"
-                     tabindex=""
+                     tabindex="2"
                      tal:attributes="name ac_password;
-                                     id ac_password;
-                                     tabindex tabindex/next;"
+                                     id ac_password;"
                      />
       </div>
 
@@ -148,9 +146,7 @@
                      value="1"
                      checked="checked"
                      id="cb_remember"
-                     tabindex=""
                      tal:attributes="name ac_persist;
-                                     tabindex tabindex/next;
                                      checked python:request.get(ac_name, '') and 'checked' or None;"
                      />
 
@@ -166,13 +162,12 @@
           <div class="formControls">
 
               <input class="context"
-                     tabindex=""
                      type="submit"
                      name="submit"
                      value="Log in"
+                     tabindex="3"
                      i18n:attributes="value label_log_in;"
-                     tal:attributes="tabindex tabindex/next;
-                                 onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
+                     tal:attributes="onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                      />
 
           </div>
