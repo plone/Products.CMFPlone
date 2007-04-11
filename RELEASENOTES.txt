@@ -124,7 +124,15 @@ For migration instructions please see http://plone.org/documentation/<nog even o
 
 * Caching related changes required (or maybe none!)
 
+* Plone 3 now uses a new session authentication implementation based on the
+  new plone.session package. This system uses a cryptographic hash against
+  the userid of a succesfully authenticated user to authenticate sessions.
 
+  This form of session authentication only works for users defined in the
+  user folder in the Plone site itself. Users defined in other user folders
+  (such as the global admin user defined in the Zope root) will work, but
+  use the authentication methods configured in their user folder. This
+  means that they will be less secure than users defined in the Plone site.
 
 
 Important notes for developers
