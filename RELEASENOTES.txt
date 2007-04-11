@@ -126,7 +126,9 @@ Important notes for users
 Important notes for system administrators
 -----------------------------------------
 
-For migration instructions please see http://plone.org/documentation/<nog even opzoeken>
+For migration instructions please see the online Plone migration manual:
+http://plone.org/documentation/manual/migration-guide
+XXX this document is not published yet XXX
 
 * Caching related changes required (or maybe none!)
 
