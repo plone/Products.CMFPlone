@@ -123,8 +123,8 @@ Important notes for users
 * content rules
 
 
-Important notes for system administrators
------------------------------------------
+Important notes for site and system administrators
+--------------------------------------------------
 
 For migration instructions please see the online Plone migration manual:
 http://plone.org/documentation/manual/migration-guide
@@ -142,6 +142,7 @@ XXX this document is not published yet XXX
   use the authentication methods configured in their user folder. This
   means that they will be less secure than users defined in the Plone site.
 
+* Member folders are no longer enabled by default.
 
 Important notes for developers
 ------------------------------
@@ -149,7 +150,7 @@ Important notes for developers
 The latest information on migrating products to Plone 3.0 can be found online
 at http://plone.org/documentation/manual/migration-guide/version-specific/adjusting-third-party-products-from-plone-2-5-to-3.0/
 
-* getToolByName has been deprectaed in favour of getUtility, queryUtility and
+* getToolByName has been deprecated in favour of getUtility, queryUtility and
   getToolByInterfaceName. Please see
   http://svn.zope.org/CMF/trunk/docs/ToolsAreUtilities.stx?view=markup for more
   information on this change.
@@ -181,7 +182,8 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   in plone.portlets.interfaces, or see plone.app.portlets.browser.editmanager.
 
 * Skins: main_template now uses viewlet managers instead of metal macros
-  -> Alexander Limi or Florian Schulze to fill in stuff here
+  -> Alexander Limi or Florian Schulze to fill in stuff here. Affected
+  are at least header.pt, viewThreadsAtBottom and global_contentmenu
 
 * It is no longer possible to define workflows using python code. Instead
   workflows have to be created via a GenericSetup profile.
@@ -197,6 +199,7 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   not want the document-specific behaviour that is provided on the IATDocument
   interface you should use the new ATDocumentBase base class instead.
 
+* Customising z3 views using customerize
 
 Preferred but not obligatory (right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
