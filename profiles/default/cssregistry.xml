@@ -69,11 +69,4 @@
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="ploneCustom.css" media="all"
     rel="stylesheet" rendering="import"/>
- <!-- kss  -->
- <stylesheet title="" cacheable="True" compression="none" cookable="False"
-    enabled="1" expression="" id="at.kss" media=""
-    rel="kinetic-stylesheet" rendering="link"/>
- <stylesheet title="" cacheable="True" compression="none" cookable="False"
-    enabled="1" expression="" id="plone.kss" media=""
-    rel="kinetic-stylesheet" rendering="link"/>
 </object>
