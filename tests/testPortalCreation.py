@@ -106,17 +106,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(members._getPortalTypeName(), 'Large Plone Folder')
 
     def testMembersFolderMeta(self):
-        # Members folder should have title 'Members'
+        # Members folder should have title 'Users'
         members = self.membership.getMembersFolder()
         self.assertEqual(members.getId(), 'Members')
-        self.assertEqual(members.Title(), 'Members')
+        self.assertEqual(members.Title(), 'Users')
 
     def testMembersFolderIsIndexed(self):
         # Members folder should be cataloged
         res = self.catalog(getId='Members')
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'Members')
-        self.assertEqual(res[0].Title, 'Members')
+        self.assertEqual(res[0].Title, 'Users')
 
     def testSecureMailHost(self):
         # MailHost should be of the SMH variety

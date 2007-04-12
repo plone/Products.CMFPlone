@@ -264,7 +264,7 @@ class PloneGenerator:
         if 'Members' in existing:
             # configure Members folder (already added by the content import)
             members = getattr(p , 'Members')
-            members.setTitle('Members')
+            members.setTitle('Users')
             members.setDescription("Container for portal members' home directories")
             members.reindexObject()
             
