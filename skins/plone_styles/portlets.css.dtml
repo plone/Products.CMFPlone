@@ -101,7 +101,6 @@
 }
 .portletCalendar {
     width: 100%;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1px 0 1em 0;
     width: 100%;
 }
@@ -113,6 +112,8 @@
 }
 .portletCalendar dd {
     margin: 0;
+    padding: 0;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 .portletCalendar a {
     text-decoration: none;
@@ -128,7 +129,7 @@
 .ploneCalendar td {
     background-color: transparent;
     width: 14%;
-    text-align: right;
+    text-align: center;
     padding: 2px;
 }
 .ploneCalendar .weekdays th {
