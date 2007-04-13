@@ -38,7 +38,7 @@
 
 
     </dt>
-    <dd>
+    <dd class="portletItem">
 <table class="ploneCalendar"
        summary="Calendar"
        i18n:domain="plone"
