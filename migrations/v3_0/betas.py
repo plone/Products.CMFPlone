@@ -4,7 +4,7 @@ from zope.component import getUtility
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCore.interfaces import ITypesTool
-from Products.ResourceRegistries.interfaces import IKSSRegistry
+from Products.ResourceRegistries.interfaces import IKSSRegistry, IJSRegistry
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
@@ -36,6 +36,8 @@ def beta1_beta2(portal):
     removeS5Actions(portal, out)
 
     addCacheForKSSRegistry(portal, out)
+
+    modifyKSSResources(portal, out)
 
     return out
 
@@ -141,3 +143,13 @@ def addCacheForKSSRegistry(portal, out):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
         out.append('Associated portal_kss with %s' % ram_cache_id)
+
+def modifyKSSResources(portal, out):
+    # make kukit.js conditonol and not load for anonymous
+    reg = queryUtility(IJSRegistry)
+    if reg is not None:
+        id = '++resource++kukit-src.js'
+        entry = aq_base(reg).getResourcesDict().get(id, None)
+        if entry:
+            reg.updateScript(id, expression='not:here/@@plone_portal_state/anonymous')
+            out.append('Updated kss javascript resource %s, to disable kss for anonymous.' % id)
