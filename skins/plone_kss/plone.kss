@@ -15,21 +15,6 @@ body:load {
   addClassName-name: kssActive;
 }
 
-/* Content tab reloading */
-
-
-ul.contentViews li a:click {
-    evt-click-preventdefault: True;
-    action-client: plone-formProtectionCheck;
-}
-
-ul.contentViews li a:plone-formProtectionChecked {
-    action-server: replaceContentRegion;
-    replaceContentRegion-tabid: nodeAttr(id, true);
-    replaceContentRegion-url: nodeAttr(href);
-    replaceContentRegion-error: plone-followLink;
-}
-
 /* 
 Load the kupu editor.
 
