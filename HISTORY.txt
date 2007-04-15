@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.x - unreleased
 
+    - Add back user skin cookie deletion on logout.  Fixes
+      http://dev.plone.org/plone/ticket/2563
+      [alecm]
+
     - Add POST-only protections to security critical methods (see
       http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-0240).
       [mj, bloodbare, alecm]
