@@ -128,7 +128,7 @@
     enabled="False" expression=""
     id="++resource++effects.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression=""
+    enabled="True" expression="not:here/@@plone_portal_state/anonymous"
     id="++resource++kukit-src.js" inline="False"/>
  <javascript cacheable="True" compression="none" cookable="True"
     enabled="True" expression=""
