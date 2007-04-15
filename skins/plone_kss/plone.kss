@@ -47,6 +47,18 @@ iframe.kupu-editor-iframe:load {
     action-client: initializeCollapsible;
 }
 
+/*
+This loads the external links markers each time an element marked inlineEditable
+is reloaded (needed to make it work with inlineEditable). However, this isn't the best,
+client-performance wise.
+TODO: Find a better way to "bind just once" or just bind the effectively reloaded links,
+and not rebind everything
+*/
+#region-content .inlineEditable:load {
+    evt-load-initial: false;
+    action-client: bindExternalLinks;
+}
+
 /* 
 Portlet refreshing. The refreshing portlets
 must have the kssPortletRefresh class for selection.
