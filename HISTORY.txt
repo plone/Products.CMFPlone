@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Reindex security recursively after group name update in
+      stripGRUFLocalRolePrefix. Fixes
+      http://dev.plone.org/plone/ticket/5817
+      [alecm]
+
     - Add back user skin cookie deletion on logout.  Fixes
       http://dev.plone.org/plone/ticket/2563
       [alecm]

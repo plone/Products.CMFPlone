@@ -6,6 +6,8 @@ def do(self):
     """Do it!""" 
     print '---' 
     removePrefix(self, root=True) 
+    # Reindex security settings recursively
+    self.reindexObjectSecurity()
     print '---' 
     return 'Done!' 
      
