@@ -153,3 +153,12 @@ def modifyKSSResources(portal, out):
         if entry:
             reg.updateScript(id, expression='not:here/@@plone_portal_state/anonymous')
             out.append('Updated kss javascript resource %s, to disable kss for anonymous.' % id)
+    # register the new kss resources
+    reg = queryUtility(IKSSRegistry)
+    if reg is not None:
+        new_resources = ['at_experimental.kss', 'plone_experimental.kss']
+        for id in new_resources:
+            entry = aq_base(reg).getResourcesDict().get(id, None)
+            if not entry:
+                reg.registerKineticStylesheet(id, enabled=0)
+                out.append('Added kss resource %s, disabled by default.' % id)
