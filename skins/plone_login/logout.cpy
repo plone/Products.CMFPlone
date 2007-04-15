@@ -16,7 +16,11 @@ except:
     pass  # XXX we expect Unauthorized, but why do we do a bare except then?
 
 REQUEST = context.REQUEST
+skinvar = context.portal_skins.getRequestVarname()
+path = '/' + context.absolute_url(1)
 
+if REQUEST.has_key(skinvar) and not context.portal_skins.getCookiePersistence():
+    REQUEST.RESPONSE.expireCookie(skinvar, path=path)
 
 # Invalidate existing sessions, but only if they exist.
 sdm = getToolByName(context, 'session_data_manager', None)
