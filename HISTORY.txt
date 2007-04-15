@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add back user skin cookie deletion on logout.  Fixes
+      http://dev.plone.org/plone/ticket/2563
+      [alecm]
+
     - Added visual styles and updated markup for the new "Info", "Warning" and
       "Error" status message levels.
       [limi]
