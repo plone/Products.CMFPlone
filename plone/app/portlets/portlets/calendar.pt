@@ -1,4 +1,4 @@
-<dl class="portletCalendar"
+<dl class="portlet portletCalendar"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
                 anchor_url request/anchor_url | context/@@plone_context_state/object_url;
                 query_string python:request.get('orig_query', None);
