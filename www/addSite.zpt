@@ -27,7 +27,7 @@
     <div class="form-label">
     Title
     </div>
-    <input type="text" name="title" size="40" value="Portal" />
+    <input type="text" name="title" size="40" value="Site" />
 
     <input type="hidden" name="create_userfolder" value="1" />
 
