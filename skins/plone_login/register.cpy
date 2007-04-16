@@ -27,7 +27,10 @@ password=REQUEST.get('password') or portal_registration.generatePassword()
 # http://dev.plone.org/plone/ticket/2982 and http://plone.org/collector/3028
 # for more info. (rohrer 2004-10-24)
 try:
-    portal_registration.addMember(username, password, properties=REQUEST, REQUEST=context.REQUEST)
+    try:
+        portal_registration.addMember(username, password, properties=REQUEST, REQUEST=context.REQUEST)
+    except TypeError:
+        portal_registration.addMember(username, password, properties=REQUEST)
 except AttributeError:
     state.setError('username', _(u'The login name you selected is already in use or is not valid. Please choose another.'))
     context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'))
