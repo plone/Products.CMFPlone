@@ -10,15 +10,17 @@
 
 from Products.CMFPlone import PloneMessageFactory as _
 
-locallyAllowedTypes = context.REQUEST.get('locallyAllowedTypes', [])
-immediatelyAddableTypes = context.REQUEST.get('immediatelyAddableTypes', [])
+currentPrefer = context.REQUEST.get('currentPrefer', [])
+currentAllow = context.REQUEST.get('currentAllow', [])
 
-notFound = [t for t in immediatelyAddableTypes \
-                if t not in locallyAllowedTypes]
+#plone_log=context.plone_log
+#plone_log( "VAL: currentAllow=%s, currentPrefer=%s" % ( currentAllow, currentPrefer ))
+
+notFound = [t for t in currentAllow if t not in currentPrefer]
 if notFound:
-    msg = _(u'You cannot select a preferred type that is not also in the list of addable types. You have selected ${types}.',
+    msg = _(u'You cannot have a type as secondary type withot having it allowed. You have selected ${types}.',
             mapping={u'types' : ', '.join(notFound)})
-    state.setError('immediatelyAddableTypes', msg,
+    state.setError('currentPrefer', msg,
                     'validation_immediately_addable_types_too_big')
                     
 if state.getErrors():

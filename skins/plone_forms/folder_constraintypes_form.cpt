@@ -22,21 +22,25 @@
             }
         }
         function check_mode(ident) {
-            upper = document.getElementById(ident);
-            lower = document.getElementById(ident + '_lower');
-            hidden = document.getElementById(ident + '_hidden');
+            // The logic here is that from #6151, comment 12.
+            preferred = document.getElementById(ident);
+            allowed = document.getElementById(ident + '_allowed');
+            allowed_hidden = document.getElementById(ident + '_allowed_hidden');
 
-
-            lower.disabled = true;
-            hidden.setAttribute('value', ident);
-            if( upper.checked && !lower.checked ) {
-                // not allowed.
-                lower.checked = true;
-            } else if(lower.checked && upper.checked) {
-                lower.disabled = true;
-            } else {
-                lower.disabled = false;
+            // type is not preferred, so it is not allowed, too.
+            // We uncheck and disable (ghost) the allowed checkbox
+            if ( preferred.checked == false ) {
+              allowed.checked = false;
+              allowed.disabled = true;
             }
+
+            // type _is_ preferred, so user _may_ want to make it
+            // an "allowed-only" type by checking the "allowed" checkbox.
+            // We need to enable (unghost) the allowed checkbox
+            if ( preferred.checked == true ) {
+              allowed.disabled = false;
+            }
+
         }
         //-->
     </script>
@@ -69,13 +73,10 @@
         <input type="hidden" name="form.submitted" value="1"/>
 
         <tal:items define="currentMode    request/constrainTypesMode | here/getConstrainTypesMode;
-                           currentAllow   request/locallyAllowedTypes | here/getLocallyAllowedTypes;
-                           currentPrefer  request/immediatelyAddableTypes | here/getImmediatelyAddableTypes;
+                           currentAllow   request/currentAllow | here/getLocallyAllowedTypes;
+                           currentPrefer  request/currentPrefer | here/getImmediatelyAddableTypes;
                            availableTypes here/getDefaultAddableTypes;
-                           parent plone_view/getParentObject;
-                           parent_allowed_types getLocallyAllowedTypes|python:[];
-                           parent_immediate_types parent/getImmediatelyAddableTypes|python:[];
-                           default_types here/getDefaultAddableTypes">
+                           parent plone_view/getParentObject">
 
             <fieldset>
 
@@ -142,10 +143,10 @@
 
                     <!-- Addable to the Menu -->
                     <div id="details"
-                         tal:define="error errors/immediatelyAddableTypes | nothing;"
+                         tal:define="error errors/currentPrefer | nothing;"
                          tal:attributes="class python:test(error, 'field error', 'field')">
 
-                        <label for="immediatelyAddableTypes" 
+                        <label for="currentPrefer" 
                                 i18n:translate="label_immediately_addable_types">
                             Preferred types
                         </label>
@@ -162,16 +163,15 @@
 
                         <div tal:attributes="tabindex tabindex/next;">
                             <tal:block tal:repeat="type availableTypes">
-                                <input name="immediatelyAddableTypes:list"
+                                <input name="currentPrefer:list"
                                        class="noborder"
                                        type="checkbox"
                                        tal:attributes="value type/getId;
                                                        id type/getId;
                                                        onclick string:check_mode('${type/getId}');
-                                                       checked python:test(type.getId() in currentPrefer, 'checked', None);"
+                                                       checked python:test(type.getId() in currentPrefer or type.getId() in currentAllow, 'checked', None);"
                                 />
                                 <label tal:content="type/title_or_id">Type</label>
-                                <br />
                             </tal:block>
                         </div>
 
@@ -188,8 +188,8 @@
                         </label>
 
                         <div class="formHelp" i18n:translate="help_locally_allowed_types">
-                               Select the content types that will be addable inside
-                               this folder.
+                               Select the content types that will be addable to this folder using the
+                               'more ...' link.
                         </div>
 
                         <!-- Errors go here -->
@@ -197,17 +197,19 @@
 
                         <div tal:attributes="tabindex tabindex/next;">
                             <tal:block tal:repeat="type availableTypes">
-                                <input name="locallyAllowedTypes:list"
+                                <input name="currentAllow:list"
                                        class="noborder"
                                        type="checkbox"
+                                       tal:define="tid      type/getId;
+                                                   disabled python:test(tid not in currentAllow, 'disabled', None);
+                                                   checked  python:test(tid in currentAllow and tid not in currentPrefer, 'checked', None);"
                                        tal:attributes="value type/getId;
-                                                       id string:${type/getId}_lower;
+                                                       id string:${type/getId}_allowed;
                                                        onclick string:check_mode('${type/getId}');
-                                                       checked python:test(type.getId() in currentAllow, 'checked', None);"
+                                                       disabled disabled;
+                                                       checked checked;"
                                 />
-                                <input tal:attributes="id string:${type/getId}_hidden" name="locallyAllowedTypes:list:default" value="" type="hidden">
                                 <label tal:content="type/title_or_id">Type</label>
-                                <br />
                             </tal:block>
                         </div>
                     </div>
