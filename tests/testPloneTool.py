@@ -380,11 +380,11 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
     def testSetEffectiveDate(self):
         self.assertEqual(self.doc.EffectiveDate(), 'None')
         self.utils.editMetadata(self.doc, effective_date='2001-01-01')
-        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.EffectiveDate(zone='UTC'), '2001-01-01 00:00:00')
 
     def testClearEffectiveDate(self):
         self.utils.editMetadata(self.doc, effective_date='2001-01-01')
-        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.EffectiveDate(zone='UTC'), '2001-01-01 00:00:00')
         self.utils.editMetadata(self.doc, effective_date='None')
         self.assertEqual(self.doc.EffectiveDate(), 'None')
         self.assertEqual(self.doc.effective_date, None)
@@ -392,11 +392,11 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
     def testSetExpirationDate(self):
         self.assertEqual(self.doc.ExpirationDate(), 'None')
         self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
-        self.assertEqual(self.doc.ExpirationDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(zone='UTC'), '2001-01-01 00:00:00')
 
     def testClearExpirationDate(self):
         self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
-        self.assertEqual(self.doc.ExpirationDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(zone='UTC'), '2001-01-01 00:00:00')
         self.utils.editMetadata(self.doc, expiration_date='None')
         self.assertEqual(self.doc.ExpirationDate(), 'None')
         self.assertEqual(self.doc.expiration_date, None)
@@ -457,8 +457,8 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
-        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.EffectiveDate(zone='UTC'), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(zone='UTC'), '2003-01-01 00:00:00')
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
@@ -470,21 +470,21 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Title(), 'Foo')
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
-        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.EffectiveDate(zone='UTC'), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(zone='UTC'), '2003-01-01 00:00:00')
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
 
     def testEditEffectiveDateOnly(self):
         self.utils.editMetadata(self.doc, effective_date='2001-12-31')
-        self.assertEqual(self.doc.EffectiveDate(), '2001-12-31 00:00:00')
+        self.assertEqual(self.doc.EffectiveDate(zone='UTC'), '2001-12-31 00:00:00')
         # Other elements must not change
         self.assertEqual(self.doc.Title(), 'Foo')
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(zone='UTC'), '2003-01-01 00:00:00')
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
@@ -497,8 +497,8 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
-        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.EffectiveDate(zone='UTC'), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(zone='UTC'), '2003-01-01 00:00:00')
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
 
@@ -529,7 +529,7 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
     def testEffectiveDateField(self):
         self.setField('effective_date', '2001-01-01')
         self.utils.editMetadata(self.doc)
-        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.EffectiveDate(zone='UTC'), '2001-01-01 00:00:00')
 
     def testLanguageField(self):
         self.setField('language', 'de')

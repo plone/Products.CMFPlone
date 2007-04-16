@@ -34,8 +34,8 @@ Take my hand you ugly girl """
 
 props={'description':'song by ween',
        'contributors':['dean ween', 'gene ween'],
-       'effective_date':'1/12/2004',
-       'expiration_date':'12/12/2004',
+       'effective_date':'2004-01-12',
+       'expiration_date':'2004-12-12',
        'format':'text/plain',
        'language':'english',
        'rights':'ween music',
@@ -49,7 +49,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         so it acts strangely.  This is also hardcoded to work with Document.
 
         This testcase was written to prevent collector/2914 regressions
-        
+
         In addition, some more general tests of content_status_modify and
         folder_publish behaviour have been added, since this seems a logical
         place to keep them.
@@ -67,12 +67,14 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
             _orig_props = {}
             _orig_props.update(props)
             props.update(changes)
-            
+
         self.assertEqual(obj.Title(), props['title'])
         self.assertEqual(obj.Description(), props['description'])
         self.assertEqual(obj.Subject(), tuple(props['subject']))
-        self.assertEqual(obj.ExpirationDate(), obj._datify(props['expiration_date']).ISO())
-        self.assertEqual(obj.EffectiveDate(), obj._datify(props['effective_date']).ISO())
+        self.assertEqual(obj.ExpirationDate(zone='UTC'),
+                         obj._datify(props['expiration_date']).ISO())
+        self.assertEqual(obj.EffectiveDate(zone='UTC'),
+                         obj._datify(props['effective_date']).ISO())
         self.assertEqual(obj.Format(), props['format'])
         self.assertEqual(obj.Rights(), props['rights'])
         self.assertEqual(obj.Language(), props['language'])
