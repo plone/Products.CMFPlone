@@ -109,6 +109,7 @@
     font-weight: normal;
     text-align: center;
     line-height: 1.6em;
+    border-bottom: none;
 }
 .portletCalendar dd {
     margin: 0;
