@@ -162,7 +162,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     if 'is_default_page' not in query:
         query['is_default_page'] = False
 
-    results = portal_catalog.searchResults(query)
+    results = portal_catalog.searchResults(**query)
 
     # We keep track of a dict of item path -> node, so that we can easily
     # find parents and attach children. If a child appears before its

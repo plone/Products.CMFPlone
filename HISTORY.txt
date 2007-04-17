@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.x - unreleased
 
+    - Fix improper uses of 'CatalogTool.searchResults' where a dict was
+      passed as the first argument in place of REQUEST.
+      [nouri, maurits]
+
     - Reindex security recursively after group name update in
       stripGRUFLocalRolePrefix. Fixes
       http://dev.plone.org/plone/ticket/5817

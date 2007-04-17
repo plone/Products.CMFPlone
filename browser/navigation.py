@@ -250,7 +250,7 @@ class CatalogNavigationTabs(utils.BrowserView):
         for id in idsNotToList:
             excludedIds[id]=1
 
-        rawresult = portal_catalog.searchResults(query)
+        rawresult = portal_catalog.searchResults(**query)
 
         # now add the content to results
         for item in rawresult:

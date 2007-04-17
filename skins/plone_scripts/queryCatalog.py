@@ -102,7 +102,8 @@ if show_query:
     try:
         if use_types_blacklist:
             ensureFriendlyTypes(query)
-        results = catalog(query, show_inactive=show_inactive)
+        query['show_inactive'] = show_inactive
+        results = catalog(**query)
     except ParseError:
         pass
 
