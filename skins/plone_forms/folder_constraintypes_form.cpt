@@ -171,7 +171,9 @@
                                                        onclick string:check_mode('${type/getId}');
                                                        checked python:test(type.getId() in currentPrefer or type.getId() in currentAllow, 'checked', None);"
                                 />
-                                <label tal:content="type/title_or_id">Type</label>
+                                <label for="#"
+                                       tal:attributes="for type/getId"
+                                       tal:content="type/title_or_id">Type</label>
                             </tal:block>
                         </div>
 
@@ -209,7 +211,9 @@
                                                        disabled disabled;
                                                        checked checked;"
                                 />
-                                <label tal:content="type/title_or_id">Type</label>
+                                <label for="#"
+                                       tal:attributes="for string:${type/getId}_allowed"
+                                       tal:content="type/title_or_id">Type</label>
                             </tal:block>
                         </div>
                     </div>
