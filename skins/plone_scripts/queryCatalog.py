@@ -109,7 +109,8 @@ if show_query:
             ensureFriendlyTypes(query)
         if use_navigation_root:
             rootAtNavigationRoot(query)
-        results = catalog(query, show_inactive=show_inactive)
+        query['show_inactive'] = show_inactive
+        results = catalog(**query)
     except ParseError:
         pass
 

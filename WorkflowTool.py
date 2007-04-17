@@ -224,10 +224,10 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 for worklist in wf.worklists._objects:
                     wlist_def=wf.worklists._mapping[worklist['id']]
                     # Make the var_matches a dict instead of PersistentMapping to enable access from scripts
-                    catalog_vars = {}
+                    catalog_vars = dict(portal_type=types_by_wf.get(id, []))
                     for key in wlist_def.var_matches.keys():
                         catalog_vars[key] = wlist_def.var_matches[key]
-                    for result in catalog.searchResults(catalog_vars, portal_type=types_by_wf.get(id, [])):
+                    for result in catalog.searchResults(**catalog_vars):
                         o = result.getObject()
                         if o \
                            and id in self.getChainFor(o) \

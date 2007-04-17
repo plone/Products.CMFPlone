@@ -19,15 +19,17 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
     would be searched.
     """
 
-    def dummyCatalog(self,query_dict,**kw):
-        return query_dict
+    def dummyCatalog(self,REQUEST=None,**kw):
+        return kw
 
-    def stripTypes(self, query_dict):
-        # strip portal_types parameter which is auto-set with
-        # types blacklisting. Useful to simplify test assertions
-        # when we don't care
-        if type(query_dict) == types.DictType and query_dict.has_key('portal_type'):
-            del query_dict['portal_type']
+    def stripStuff(self, query_dict):
+        # strip portal_types and show_inactive parameter which is
+        # auto-set with types blacklisting. Useful to simplify test
+        # assertions when we don't care
+        if type(query_dict) == types.DictType:
+            for ignore in ['portal_type', 'show_inactive']:
+                if query_dict.has_key(ignore):
+                    del query_dict[ignore]
         return query_dict
 
     def afterSetUp(self):
@@ -35,54 +37,54 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testEmptyRequest(self):
         request = {}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testNonexistantIndex(self):
         request = {'foo':'bar'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testNonexistantIndex(self):
         request = {'foo':'bar'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testRealIndex(self):
         request = {'SearchableText':'bar'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), 
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), 
                             {'SearchableText':'bar'})
 
     def testTwoIndexes(self):
         request = {'SearchableText':'bar','foo':'bar'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), 
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), 
                             {'SearchableText':'bar'})
 
     def testRealIndexes(self):
         request = {'SearchableText':'bar','Subject':'bar'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), 
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), 
                             request)
 
     def testOnlySort(self):
         # if we only sort, we shouldn't actually call the catalog
         request = {'sort_on':'foozle'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
         request = {'sort_order':'foozle','sort_on':'foozle'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
         request = {'sort_order':'foozle'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testOnlyUsage(self):
         request = {'date_usage':'range:min'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), [])
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testRealWithUsage(self):
         request = {'modified':'2004-01-01','modified_usage':'range:min'}
         expected = {'modified': {'query': '2004-01-01', 'range': 'min'}}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), 
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), 
                             expected)
 
     def testSortLimit(self):
         # the script ignored 'sort_limit'; test to show it no longer does.
         request = {'SearchableText':'bar','sort_on':'foozle','sort_limit':50}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), 
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), 
                             request)
 
     def testBlacklistedTypes(self):
@@ -124,15 +126,17 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     would be searched.
     """
 
-    def dummyCatalog(self, query_dict, **kw):
-        return query_dict
+    def dummyCatalog(self, REQUEST=None, **kw):
+        return kw
         
-    def stripTypes(self, query_dict):
-        # strip portal_types parameter which is auto-set with
-        # types blacklisting. Useful to simplify test assertions
-        # when we don't care
-        if type(query_dict) == types.DictType and query_dict.has_key('portal_type'):
-            del query_dict['portal_type']
+    def stripStuff(self, query_dict):
+        # strip portal_types and show_inactive parameter which is
+        # auto-set with types blacklisting. Useful to simplify test
+        # assertions when we don't care
+        if type(query_dict) == types.DictType:
+            for ignore in ['portal_type', 'show_inactive']:
+                if query_dict.has_key(ignore):
+                    del query_dict[ignore]
         return query_dict
 
     def afterSetUp(self):
@@ -141,50 +145,50 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     def testQuotingNone(self):
         request = {'SearchableText':'Hello Joel'}
         expected = request
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
 
     def testQuotingNotNeeded(self):
         request = {'SearchableText':'Hello or Joel'}
         expected = request
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
 
     def testQuotingNotNeededWithNot(self):
         request = {'SearchableText':'Hello or not Joel'}
         expected = request
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
 
     def testQuotingRequiredToEscape(self):
         request = {'SearchableText':'Hello Joel Or'}
         expected = {'SearchableText':'Hello Joel "Or"'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
 
     def testQuotingRequiredToEscapeOptionOff(self):
         request = {'SearchableText':'Hello Joel Or'}
         expected = request
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
 
     def testQuotingWithLeadingNot(self):
         request = {'SearchableText':'Not Hello Joel'}
         expected = request
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
 
     def testEmptyItem(self):
         request = {'SearchableText':''}
         # queryCatalog will return empty result without calling the catalog tool
         expected = []
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
 
     def testEmptyItemShowAll(self):
         request = {'SearchableText':''}
         # Catalog gets a blank search, and returns the empty dict
         expected = {}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request, show_all=1)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, show_all=1)), expected)
 
     def testBadCharsAreQuoted(self):
         request = {'SearchableText':'context(1)'}
         # Catalog gets ( or ) in search and quotes them to avoid parse error
         expected = {'SearchableText':'context"("1")"'}
-        self.assertEqual(self.stripTypes(self.folder.queryCatalog(request)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
 
 
 class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
