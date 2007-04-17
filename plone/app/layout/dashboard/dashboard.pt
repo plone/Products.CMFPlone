@@ -57,18 +57,33 @@
                 Portal status message
             </div>
             <div id="dashboard">
-                <div id="dashboard-actions">
+                <div id="dashboard-actions"
+                     tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByInterfaceName('Products.CMFPlone.interfaces.IControlPanel');
+                                 groups python:controlPanel.getGroups('member');
+                                 getIconFor nocall:putils/getIconFor" >
                     <ul>
                         <li class="portalUser">
                             <a href="personalize_form" 
                                tal:attributes="href string:${portal_url}/author/${member/getId}"
                                i18n:translate="">Profile</a>
                         </li>
-                        <li>
-                            <a href="personalize_form" 
-                               tal:attributes="href string:${portal_url}/personalize_form"
-                               i18n:translate="">Preferences</a>
-                        </li>
+                        <tal:groups condition="groups">
+                            <tal:group repeat="group groups">
+                                <tal:configlets repeat="configlet python:controlPanel.enumConfiglets(group=group['id'])">
+                                    <li tal:condition="configlet/visible">
+                                        <a href=""          
+                                           tal:attributes="href configlet/url">
+                                            <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                                                                               alt configlet/title;"
+                                                 i18n:attributes="alt"
+                                                 tal:on-error="string:" />
+                                        <tal:configletname tal:content="configlet/title"
+                                                           i18n:translate=""></tal:configletname>
+                                        </a>
+                                    </li>
+                                </tal:configlets>
+                            </tal:group>
+                        </tal:groups>
                     </ul>
                 </div>
                 <div class="visualClear"><!-- --></div>
