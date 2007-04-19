@@ -6,6 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=template_id, actions=None, default_tab='view'
 ##
+
 from urllib import unquote
 here_url = context.absolute_url()
 site_properties=context.portal_properties.site_properties
@@ -62,9 +63,10 @@ for action in actionlist:
         # Don't raise if we don't have a CMF 1.5 FTI
         pass
     
-    if action_method==template_id or action_method == request_action:
-        item['selected']=1
-        use_default=0
+    if action_method:
+        if action_method==template_id or action_method == request_action:
+            item['selected']=1
+            use_default=0
 
     plone_actions.append(item)
 
