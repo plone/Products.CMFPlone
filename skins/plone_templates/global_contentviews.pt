@@ -10,8 +10,7 @@
 
     <div metal:define-macro="content_views"
          tal:omit-tag=""
-         tal:define="default_tab default_tab | request/default_tab | string:view;
-                     view_actions python:here.plonifyActions(template_id=template_id, actions=actions, default_tab=default_tab)">
+         tal:define="view_actions context/@@plone/prepareObjectTabs">
 
         <h5 class="hiddenStructure"
             tal:condition="view_actions"

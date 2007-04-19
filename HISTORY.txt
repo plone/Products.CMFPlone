@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Deprecated ploneifyActions.py and moved the functionality to the
+      @@plone view. As part of this, removed the use_folder_tabs property.
+      All structural folders now use folder tabs; this property pre-dates
+      the concept of non-structural folders.
+      [optilude]
+
     - Reindex security recursively after group name update in
       stripGRUFLocalRolePrefix. Fixes
       http://dev.plone.org/plone/ticket/5817

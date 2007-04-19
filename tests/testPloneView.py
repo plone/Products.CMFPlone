@@ -2,6 +2,9 @@
 # Test methods used to make ...
 #
 
+from zope.interface import directlyProvides, noLongerProvides
+
+from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import \
      INonStructuralFolder as z2INonStructuralFolder
 from Products.CMFPlone.tests import PloneTestCase
@@ -207,6 +210,45 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.assertEquals(0, iterator.next())
         self.assertEquals(1, iterator.next())
         self.assertEquals(2, iterator.next())
+        
+    def testPrepareObjectTabsOnPortalRoot(self):
+        del self.app.REQUEST.__annotations__
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
+        view = self.portal.restrictedTraverse('@@plone')
+        tabs = view.prepareObjectTabs()
+        self.assertEquals(tabs[0]['id'], 'folderContents')
+        self.assertEquals(['view'], [t['id'] for t in tabs if t['selected']])
+        
+    def testPrepareObjectTabsNonFolder(self):
+        del self.app.REQUEST.__annotations__
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
+        view = self.folder.test.restrictedTraverse('@@plone')
+        tabs = view.prepareObjectTabs()
+        self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEquals(['view'], [t['id'] for t in tabs if t['selected']])
+        
+    def testPrepareObjectTabsNonStructuralFolder(self):
+        del self.app.REQUEST.__annotations__
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
+        directlyProvides(self.folder, INonStructuralFolder)
+        view = self.folder.restrictedTraverse('@@plone')
+        tabs = view.prepareObjectTabs()
+        noLongerProvides(self.folder, INonStructuralFolder)
+        self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEquals(['view'], [t['id'] for t in tabs if t['selected']])
+        
+    def testPrepareObjectTabsDefaultView(self):
+        del self.app.REQUEST.__annotations__
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url() + '/edit'
+        view = self.folder.test.restrictedTraverse('@@plone')
+        tabs = view.prepareObjectTabs()
+        self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEquals(['edit'], [t['id'] for t in tabs if t['selected']])
+        
     
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''
@@ -241,5 +283,5 @@ def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestPloneView))
-    suite.addTest(makeSuite(TestVisibleIdsEnabled))
+    # suite.addTest(makeSuite(TestVisibleIdsEnabled))
     return suite
