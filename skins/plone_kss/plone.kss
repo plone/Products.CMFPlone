@@ -199,18 +199,17 @@ input[name="form_submit"]:click {
 /*  Selector for the sharing page in plone.app.workflow.
     the search_term parameters, put the needed info the request
  */
- /* 
- 
- XXX: Disabled - it currently breaks the sharing page : when you make some
- role selection and then search again, the selection does not stick.
- 
+ /*
+
+XXX: Disabled pending some fixes in KSS and the sharing page KSS view
+
 #sharing-save-button:click {
   action-server: updateSharingInfo;
   updateSharingInfo-search_term: currentFormVar('search_term');
+  updateSharingInfo-form_vars: currentForm();
   evt-click-preventdefault: true;
 }
  */
-
 
 /* kupu stuff */
 #kupu-save-button:load {

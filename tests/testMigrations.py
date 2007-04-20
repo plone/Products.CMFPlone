@@ -165,6 +165,7 @@ from Products.CMFPlone.migrations.v3_0.betas import cleanDefaultCharset
 from Products.CMFPlone.migrations.v3_0.betas import addAutoGroupToPAS
 from Products.CMFPlone.migrations.v3_0.betas import removeS5Actions
 from Products.CMFPlone.migrations.v3_0.betas import addCacheForKSSRegistry
+from Products.CMFPlone.migrations.v3_0.betas import addEditorToCreationPermissions
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2635,6 +2636,45 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(kssreg.ZCacheable_enabled())
         self.failIf(kssreg.ZCacheable_getManagerId() is None)
 
+    def testAddEditorToCreationPermissions(self):
+        for p in ['Add portal content', 'Add portal folders', 'ATContentTypes: Add Document',
+                    'ATContentTypes: Add Event', 'ATContentTypes: Add Favorite',
+                    'ATContentTypes: Add File', 'ATContentTypes: Add Folder', 
+                    'ATContentTypes: Add Image', 'ATContentTypes: Add Large Plone Folder',
+                    'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
+            self.portal.manage_permission(p, ['Manager', 'Owner'], True)
+        addEditorToCreationPermissions(self.portal, [])
+        for p in ['Add portal content', 'Add portal folders', 'ATContentTypes: Add Document',
+                    'ATContentTypes: Add Event', 'ATContentTypes: Add Favorite',
+                    'ATContentTypes: Add File', 'ATContentTypes: Add Folder', 
+                    'ATContentTypes: Add Image', 'ATContentTypes: Add Large Plone Folder',
+                    'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Editor') if r['selected']])
+
+    def testAddEditorToCreationPermissionsNoStomp(self):
+        self.portal.manage_permission('Add portal content', ['Manager'], False)
+        addEditorToCreationPermissions(self.portal, [])
+        roles = sorted([r['name'] for r in self.portal.rolesOfPermission('Add portal content') if r['selected']])
+        self.assertEquals(['Editor', 'Manager'], roles)
+        self.assertEquals(False, bool(self.portal.acquiredRolesAreUsedBy('Add portal content')))
+                                
+    def testAddEditorToCreationPermissionsTwice(self):
+        for p in ['Add portal content', 'Add portal folders', 'ATContentTypes: Add Document',
+                    'ATContentTypes: Add Event', 'ATContentTypes: Add Favorite',
+                    'ATContentTypes: Add File', 'ATContentTypes: Add Folder', 
+                    'ATContentTypes: Add Image', 'ATContentTypes: Add Large Plone Folder',
+                    'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
+            self.portal.manage_permission(p, ['Manager', 'Owner'], True)
+        addEditorToCreationPermissions(self.portal, [])
+        addEditorToCreationPermissions(self.portal, [])
+        for p in ['Add portal content', 'Add portal folders', 'ATContentTypes: Add Document',
+                    'ATContentTypes: Add Event', 'ATContentTypes: Add Favorite',
+                    'ATContentTypes: Add File', 'ATContentTypes: Add Folder', 
+                    'ATContentTypes: Add Image', 'ATContentTypes: Add Large Plone Folder',
+                    'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Editor') if r['selected']])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

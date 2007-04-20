@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Let users with the Editor local role add content in folders. Note that
+      this will only work for third party content types and custom workflows
+      if  they either use one of the standard "add content" permissions or
+      explicitly give Editor the Add portal content role. Fixes
+      http://dev.plone.org/plone/ticket/6265
+      [optilude]
+
     - Deprecated ploneifyActions.py and moved the functionality to the
       @@plone view. As part of this, removed the use_folder_tabs property.
       All structural folders now use folder tabs; this property pre-dates

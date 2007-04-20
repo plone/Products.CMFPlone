@@ -39,6 +39,8 @@ def beta1_beta2(portal):
 
     modifyKSSResources(portal, out)
 
+    addEditorToCreationPermissions(portal, out)
+
     return out
 
 
@@ -162,3 +164,14 @@ def modifyKSSResources(portal, out):
             if not entry:
                 reg.registerKineticStylesheet(id, enabled=0)
                 out.append('Added kss resource %s, disabled by default.' % id)
+
+def addEditorToCreationPermissions(portal, out):
+    for p in ['Add portal content', 'Add portal folders', 'ATContentTypes: Add Document',
+                'ATContentTypes: Add Event', 'ATContentTypes: Add Favorite',
+                'ATContentTypes: Add File', 'ATContentTypes: Add Folder', 
+                'ATContentTypes: Add Image', 'ATContentTypes: Add Large Plone Folder',
+                'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
+        roles = [r['name'] for r in portal.rolesOfPermission(p) if r['selected']]
+        if 'Editor' not in roles:
+            roles.append('Editor')
+            portal.manage_permission(p, roles, bool(portal.acquiredRolesAreUsedBy(p)))
