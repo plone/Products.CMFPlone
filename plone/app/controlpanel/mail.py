@@ -3,7 +3,6 @@ from plone.fieldsets import FormFieldsets
 from zope.interface import Interface
 from zope.component import adapts
 from zope.component import getUtility
-from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Int
 from zope.schema import Password
@@ -11,7 +10,7 @@ from zope.schema import TextLine
 from zope.schema import ASCII
 from zope.app.form.browser.textwidgets import ASCIIWidget
 
-from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
@@ -81,8 +80,6 @@ class MailControlPanelAdapter(SchemaAdapterBase):
     def __init__(self, context):
         super(MailControlPanelAdapter, self).__init__(context)
         self.context = getUtility(IMailHost)
-        pprop = getUtility(IPropertiesTool)
-        self.site_properties = pprop.site_properties
 
     smtp_host = ProxyFieldProperty(IMailSchema['smtp_host'])
     smtp_port = ProxyFieldProperty(IMailSchema['smtp_port'])
@@ -114,18 +111,18 @@ class MailControlPanelAdapter(SchemaAdapterBase):
     smtp_pass = property(get_smtp_pass, set_smtp_pass)
 
     def get_email_from_name(self):
-        return self.site_properties.email_from_name
+        return getUtility(ISiteRoot).email_from_name
 
     def set_email_from_name(self, value):
-        self.site_properties.email_from_name = value
+        getUtility(ISiteRoot).email_from_name = value
 
     email_from_name = property(get_email_from_name, set_email_from_name)
 
     def get_email_from_address(self):
-        return self.site_properties.email_from_address
+        return getUtility(ISiteRoot).email_from_address
 
     def set_email_from_address(self, value):
-        self.site_properties.email_from_address = value
+        getUtility(ISiteRoot).email_from_address = value
 
     email_from_address = property(get_email_from_address, set_email_from_address)
 

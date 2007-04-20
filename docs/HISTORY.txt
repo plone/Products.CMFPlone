@@ -2,6 +2,13 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
+plone.app.controlpanel - Unreleased
+
+    - Adjusted the mail control panel to store the email settings on the portal
+      root intead of in the site properties. This closes
+      http://dev.plone.org/plone/ticket/6173.
+      [hannosch]
+
 plone.app.controlpanel - 1.0b2 Released March 23, 2007
 
     - Spelling corrections and wording.
