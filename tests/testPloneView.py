@@ -283,5 +283,5 @@ def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestPloneView))
-    # suite.addTest(makeSuite(TestVisibleIdsEnabled))
+    suite.addTest(makeSuite(TestVisibleIdsEnabled))
     return suite
