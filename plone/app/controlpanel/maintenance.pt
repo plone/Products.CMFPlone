@@ -17,6 +17,19 @@
 
         <div id="viewspace" metal:define-slot="viewspace">
 
+            <metal:block define-macro="header">
+
+                <dl tal:define="status view/status"
+                     tal:condition="status"
+                     class="portalMessage info">
+                    <dt i18n:translate="">
+                        Info
+                    </dt>
+                    <dd tal:content="view/status" />
+                </dl>
+
+            </metal:block>
+
             <h1 class="documentFirstHeading"
                 i18n:translate=""
                 tal:condition="view/label"
@@ -37,22 +50,6 @@
                tal:content="view/description">
                 Description
             </p>
-
-            <metal:block define-macro="header">
-
-                <div class="form-status"
-                     tal:define="status view/status"
-                     tal:condition="status">
-
-                    <div class="summary portalMessage"
-                         i18n:translate=""
-                         tal:content="view/status">
-                        Form status summary
-                    </div>
-
-                </div>
-
-            </metal:block>
 
             <form action="."
                   tal:attributes="action request/URL"
