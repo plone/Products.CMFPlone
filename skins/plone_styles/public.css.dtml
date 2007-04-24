@@ -400,12 +400,9 @@ h3, h4, h5, h6 {
 .addFavorite {
     vertical-align: bottom;
 }
-#content {
-    padding: 1em 1em 0 1em !important;
-    margin: 0em 0em 2em 0em;
-}
 .documentEditable {
-    padding: 0em 2em 1em 2em !important;
+    padding: 0em 1em 1em 1em !important;
+    margin: 0 -1em;
 }
 #content-news h1 {
     margin-bottom: 1em;

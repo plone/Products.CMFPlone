@@ -117,12 +117,6 @@
 
       <div class="visualClear" id="clear-space-before-wrapper-table"><!-- --></div>
 
-      <tal:comment replace="nothing">
-      The wrapper table. It contains the three columns. There's a table-less
-      alternative in the plone_tableless skin layer that you can use if you
-      prefer layouts that don't use tables.
-      </tal:comment>
-
       <table id="portal-columns">
         <tbody>
           <tr>
@@ -144,8 +138,7 @@
                 tal:define="tabindex python:Iterator(mainSlot=True)">
 
               <metal:block define-slot="content">
-                <div id="content"
-                     metal:define-macro="content"
+                <div metal:define-macro="content"
                      tal:define="show_border python:here.showEditableBorder(template_id=template_id, actions=actions );"
                      tal:attributes="class python:test(show_border,'documentEditable','')">
 
@@ -159,7 +152,8 @@
                     </div>
                   </metal:ifborder>
 
-                  <div class="documentContent" id="region-content">
+                  <div id="region-content"
+                       class="documentContent">
 
                     <a name="documentContent"></a>
 
@@ -170,12 +164,20 @@
                     <div tal:replace="structure provider:plone.abovecontent" />
 
                     <metal:slot metal:define-slot="body">
+                    <tal:comment replace="nothing">
+                        The div with ID #content will only show up if we're actually on a content
+                        view, never on edit forms, control panels etc. It's meant to only wrap the
+                        actual content that gets rendered on a page, not the other UI elements.
+                    </tal:comment>
+                    <div id="content"
+                         tal:omit-tag="not:context/@@plone_context_state/is_view_template">
                       <metal:header metal:define-slot="header" tal:content="nothing">
                         Visual Header
                       </metal:header>
                       <metal:bodytext metal:define-slot="main" tal:content="nothing">
                         Page body text
                       </metal:bodytext>
+                    </div>
                     </metal:slot>
 
                     <metal:sub metal:define-slot="sub">

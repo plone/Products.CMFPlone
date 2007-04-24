@@ -4,6 +4,19 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Cleaned up the ID mess around which ID/class that wraps the actual
+      content (without the UI elements in the content well). The official
+      approach is now to use #content for the actual content, and to use
+      #portal-column-content for the entire content region. Also made it
+      possible to get rid of some !important statements.
+      If you have CSS that depends on either of these two selectors, you might
+      want to make sure that the output is still as expected. It should work
+      the same way in most cases, but since the scope is narrower for #content
+      now, you might need to update your styles (and main_template needs to
+      be updated too, if you have customized that).
+      Fixes http://dev.plone.org/plone/ticket/6465
+      [limi]
+
     - Let users with the Editor local role add content in folders. Note that
       this will only work for third party content types and custom workflows
       if  they either use one of the standard "add content" permissions or
