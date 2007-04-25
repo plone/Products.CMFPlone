@@ -10,11 +10,15 @@ function setFocus(){
         $elements[0].focus();
         return;
     }
-    $elements = cssQuery("form input[tabindex=1],"+
-                         "form textarea[tabindex=1],"+
-                         "form select[tabindex=1]");
-    if ($elements.length > 0) {
-        $elements[0].focus();
+    $elements = cssQuery("form.enableAutoFocus input,"+
+                         "form.enableAutoFocus textarea,"+
+                         "form.enableAutoFocus select");
+    for (var i=0; i < $elements.length; i++) {
+        if ($elements[i].type == 'hidden') {
+            continue;
+        }
+        $elements[i].focus();
+        break;
     }
 }
 if (typeof addDOMLoadEvent != "undefined") {
