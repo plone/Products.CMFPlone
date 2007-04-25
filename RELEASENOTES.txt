@@ -150,11 +150,6 @@ Important notes for developers
 The latest information on migrating products to Plone 3.0 can be found online
 at http://plone.org/documentation/manual/migration-guide/version-specific/adjusting-third-party-products-from-plone-2-5-to-3.0/
 
-* getToolByName has been deprecated in favour of getUtility, queryUtility and
-  getToolByInterfaceName. Please see
-  http://svn.zope.org/CMF/trunk/docs/ToolsAreUtilities.stx?view=markup for more
-  information on this change.
-
 * Searching for users and groups using the portal_membership and portal_groups
   tools has been deprectaed. Please use the search features of PAS directly
   or use the PlonePAS pas_search browser view.
