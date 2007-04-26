@@ -16,7 +16,6 @@
 
 body.kssActive .inlineEditable:hover {
     padding: 0;
-    background-color: #ffc;
     border-top: 1px solid #8cacbb;
     border-left: 1px solid #8cacbb;
     border-right: 1px solid #8cacbb;
