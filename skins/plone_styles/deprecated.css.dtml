@@ -5,6 +5,7 @@
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
 /* .system-message and #error-handling are reST error indicators */
+div.portalMessage,
 .system-message,
 #error-handling {
     background-color: &dtml-notifyBackgroundColor;;
@@ -18,5 +19,6 @@
     background-repeat: no-repeat;
     background-position: 5px 50%;
 }
+
 
 /* </dtml-with> */
