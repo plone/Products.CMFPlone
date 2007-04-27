@@ -17,6 +17,7 @@ from Acquisition import aq_base
 from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
@@ -209,7 +210,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.default = sp.getProperty('default_page', [])
 
     def getDefault(self):
-        return getToolByname(self, "plone_utils").browserDefault(self.ob)
+        return getToolByName(self, "plone_utils").browserDefault(self.ob)
 
     def testDefaultPageSetting(self):
         self.assertEquals(self.default, ('index_html', 'index.html',

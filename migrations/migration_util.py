@@ -3,7 +3,6 @@ from Acquisition import aq_base
 import logging
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.MemberDataTool import MemberDataTool
-from Products.GenericSetup.interfaces import ISetupTool
 
 from Products.PlonePAS.tools.memberdata \
         import MemberDataTool as PASMemberDataTool
@@ -104,7 +103,7 @@ def installOrReinstallProduct(portal, product_name, out, hidden=False):
 
 def loadMigrationProfile(portal, profile, steps=_marker):
     plone_base_profileid = 'profile-Products.CMFPlone:plone'
-    tool = getUtility(ISetupTool)
+    tool = getToolByName(portal, "portal_setup")
     current_context = tool.getImportContextID()
     tool.setImportContext(profile)
     if steps is _marker:

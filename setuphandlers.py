@@ -57,16 +57,16 @@ class HiddenProducts(object):
 
 class PloneGenerator:
 
-    def installArchetypes(self):
+    def installArchetypes(self, p):
         """QuickInstaller install of Archetypes and required dependencies."""
-        qi = getToolByName("portal_quickinstaller")
+        qi = getToolByName(p, "portal_quickinstaller")
         qi.installProduct('CMFFormController', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('MimetypesRegistry', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('PortalTransforms', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('Archetypes', locked=1, hidden=1,
             profile=u'Products.Archetypes:Archetypes')
 
-    def installProducts(self):
+    def installProducts(self, p):
         """QuickInstaller install of required Products"""
         qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
@@ -150,7 +150,7 @@ class PloneGenerator:
 
             # As we have a sensible language code set now, we disable the
             # start neutral functionality
-            tool = getToolByName(self, "portal_languages")
+            tool = getToolByName(p, "portal_languages")
 
             tool.manage_setLanguageSettings(language,
                 [language],
@@ -379,8 +379,9 @@ def importArchetypes(context):
     # Only run step if a flag file is present (e.g. not an extension profile)
     if context.readDataFile('plone_archetypes.txt') is None:
         return
+    site = context.getSite()
     gen = PloneGenerator()
-    gen.installArchetypes()
+    gen.installArchetypes(site)
 
 def importVarious(context):
     """
@@ -394,7 +395,7 @@ def importVarious(context):
         return
     site = context.getSite()
     gen = PloneGenerator()
-    gen.installProducts()
+    gen.installProducts(site)
     gen.addCacheHandlers(site)
     gen.addCacheForResourceRegistry(site)
 
