@@ -16,6 +16,7 @@ from webdav.NullResource import NullResource
 from webdav.WriteLockInterface import WriteLockInterface
 from webdav.interfaces import IWriteLock
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.permissions import AccessContentsInformation, \
@@ -25,11 +26,6 @@ from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implements
 from zope.app.container.contained import notifyContainerModified
-from zope.component import getUtility
-
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import ITypesTool
-from Products.CMFPlone.interfaces import IPloneTool
 
 # ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
@@ -133,7 +129,7 @@ class OrderedContainer(Folder):
     security.declarePrivate('getCMFObjectsSubsetIds')
     def getCMFObjectsSubsetIds(self, objs):
         """Get the ids of only cmf objects (used for moveObjectsByDelta)."""
-        ttool = getUtility(ITypesTool)
+        ttool = getToolByName(self, 'portal_types')
         cmf_meta_types = [ti.Metatype() for ti in ttool.listTypeInfo()]
         return [obj['id'] for obj in objs if obj['meta_type'] in cmf_meta_types]
 
@@ -200,7 +196,7 @@ class OrderedContainer(Folder):
         method = OrderedContainer.inheritedAttribute('manage_renameObject')
         result = method(self, id, new_id, REQUEST)
         self.moveObject(new_id, objidx)
-        putils = getUtility(IPloneTool)
+        putils = getToolByName(self, 'plone_utils')
         putils.reindexOnReorder(self)
         return result
 
@@ -288,7 +284,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
     security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
     def manage_delObjects(self, ids=[], REQUEST=None):
         """We need to enforce security."""
-        mt = getUtility(IMembershipTool)
+        mt = getToolByName(self, 'portal_membership')
         if type(ids) is StringType:
             ids = [ids]
         for id in ids:
@@ -301,7 +297,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
     def __browser_default__(self, request):
         """Set default so we can return whatever we want instead
         of index_html."""
-        return getUtility(IPloneTool).browserDefault(self)
+        return getToolByName(self, 'plone_utils').browserDefault(self)
 
     security.declarePublic('contentValues')
     def contentValues(self, filter=None, sort_on=None, reverse=0):
@@ -343,7 +339,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
     security.declareProtected(AddPortalContent, 'invokeFactory')
     def invokeFactory(self, type_name, id, RESPONSE=None, *args, **kw):
         """Invokes the portal_types tool."""
-        pt = getUtility(ITypesTool)
+        pt = getToolByName(self, 'portal_types')
         myType = pt.getTypeInfo(self)
         if myType is not None:
             if not myType.allowType(type_name):

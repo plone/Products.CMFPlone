@@ -9,10 +9,10 @@
 ##title=Reply to content
 
 from Products.PythonScripts.standard import url_quote_plus
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-mtool = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
-dtool = getToolByInterfaceName('Products.CMFCore.interfaces.IDiscussionTool')
+mtool = getToolByName(context, 'portal_membership')
+dtool = getToolByName(context, 'portal_discussion')
 req = context.REQUEST
 
 if username or password:

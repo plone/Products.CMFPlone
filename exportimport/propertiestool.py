@@ -4,14 +4,13 @@ $Id:$
 """
 
 from zope.app import zapi
-from zope.component import getUtility, queryUtility
+from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.interfaces import INode
 from Products.GenericSetup.utils import XMLAdapterBase
 from Products.GenericSetup.utils import ObjectManagerHelpers
 from Products.GenericSetup.utils import PropertyManagerHelpers
 from Products.GenericSetup.utils import I18NURI
-from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
 from Products.CMFPlone.interfaces import IPropertiesTool as IPlonePropertiesTool
 from Products.CMFPlone.interfaces import ISimpleItemWithProperties
@@ -23,7 +22,7 @@ def importPloneProperties(context):
     """
     site = context.getSite()
     logger = context.getLogger('propertiestool')
-    ptool = getUtility(IPropertiesTool)
+    ptool = getToolByName(site, 'portal_properties')
 
     body = context.readDataFile(_FILENAME)
     if body is None:
@@ -43,7 +42,7 @@ def exportPloneProperties(context):
     """
     site = context.getSite()
     logger = context.getLogger('propertiestool')
-    ptool = queryUtility(IPropertiesTool)
+    ptool = getToolByName(site, 'portal_properties', None)
     if ptool is None:
         logger.info('Nothing to export.')
         return

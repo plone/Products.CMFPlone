@@ -10,11 +10,11 @@
 ##
 
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 
 REQUEST=context.REQUEST
-portal_properties=getToolByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
-plone_utils=getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
+portal_properties=getToolByName(context, 'portal_properties')
+plone_utils=getToolByName(context, 'plone_utils')
 
 if generated_tabs:
   portal_properties.site_properties.manage_changeProperties(disable_folder_sections=False)

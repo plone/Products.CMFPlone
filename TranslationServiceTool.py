@@ -3,19 +3,17 @@ This tool requires a translation service which supports
 the translate method and the default parameter.
 """
 from zope.interface import implements
-from zope.component import getUtility
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from OFS.SimpleItem import SimpleItem
 from Products.CMFCore.utils import registerToolInterface
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFPlone import PloneLocalesMessageFactory as PLMF
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-
-from Products.CMFPlone.interfaces import IPloneTool
 
 from i18nl10n import ulocalized_time, utranslate, \
                      monthname_msgid, monthname_msgid_abbr, \
@@ -53,7 +51,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if output_encoding is None:
             # get output encoding from portal
-            plone_tool = getUtility(IPloneTool)
+            plone_tool = getToolByName(self, 'plone_utils')
             output_encoding = plone_tool.getSiteEncoding()
 
         # return as type string
@@ -67,7 +65,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         if input_encoding is None:
             # get input encoding from portal
-            plone_tool = getUtility(IPloneTool)
+            plone_tool = getToolByName(self, 'plone_utils')
             input_encoding = plone_tool.getSiteEncoding()
 
         # return as type unicode

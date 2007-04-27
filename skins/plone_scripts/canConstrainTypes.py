@@ -8,9 +8,9 @@
 ##title=Find out if the context supports per-instance addable type restriction 
 
 INTERFACE = 'Products.CMFPlone.interfaces.ConstrainTypes.ISelectableConstrainTypes'
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 
-itool = getToolByInterfaceName('Products.CMFPlone.interfaces.IInterfaceTool')
+itool = getToolByName(context, 'portal_interface')
 if not itool.objectImplements(context, INTERFACE):
     return False
 

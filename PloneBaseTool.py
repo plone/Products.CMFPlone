@@ -1,7 +1,5 @@
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IURLTool
 from Products.CMFPlone.interfaces.PloneBaseTool import IPloneBaseTool \
      as z2IPloneBaseTool
 from Products.CMFPlone.interfaces import IPloneBaseTool
@@ -10,10 +8,10 @@ from Acquisition import aq_parent
 from Acquisition import aq_inner
 
 from Products.CMFCore import Expression
+from Products.CMFCore.utils import getToolByName
 
 from zope.interface import implements
 from zope.component import getMultiAdapter
-from zope.component import getUtility
 
 TempFolderClass = None
 
@@ -89,7 +87,7 @@ def createExprContext(folder, portal, object):
     
     # Add checkPermission to the action expression context to make cleaner
     # faster expressions
-    membership_tool = getUtility(IMembershipTool)
+    membership_tool = getToolByName(view_obj, 'portal_membership')
     checkPerm = membership_tool.checkPermission
     expr_context.setGlobal('checkPermission', checkPerm)
 
@@ -106,7 +104,7 @@ def getExprContext(context, object=None):
     else:
         ec = None
     if ec is None:
-        utool = getUtility(IURLTool)
+        utool = getToolByName(context, 'portal_url')
         portal = utool.getPortalObject()
         if object is None or not hasattr(object, 'aq_base'):
             folder = portal

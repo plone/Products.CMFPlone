@@ -11,7 +11,7 @@
 REQUEST=context.REQUEST
 
 from Products.CMFPlone.utils import transaction_note
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
@@ -20,8 +20,8 @@ from ZODB.POSException import ConflictError
 state_success = "success"
 state_failure = "failure"
 
-plone_utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
-urltool = getToolByInterfaceName('Products.CMFCore.interfaces.IURLTool')
+plone_utils = getToolByName(context, 'plone_utils')
+urltool = getToolByName(context, 'portal_url')
 portal = urltool.getPortalObject()
 url = urltool()
 

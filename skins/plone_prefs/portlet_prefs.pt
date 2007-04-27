@@ -5,7 +5,7 @@
       i18n:domain="plone">
 <body>
 <metal:portlet define-macro="portlet"
-   tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByInterfaceName('Products.CMFPlone.interfaces.IControlPanel');
+   tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                groups python:controlPanel.getGroups('site');
                getIconFor nocall:putils/getIconFor">
 

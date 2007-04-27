@@ -1,9 +1,4 @@
-from zope.component import getUtility
-
-from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFCore.interfaces import ITypesTool
-from Products.CMFCore.interfaces import IURLTool
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
@@ -66,7 +61,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         transitions=[]
         t_names=[]
-        portal = getUtility(IURLTool).getPortalObject()
+        portal = getToolByName(self, 'portal_url').getPortalObject()
 
         for o in [portal.restrictedTraverse(path) for path in paths]:
             trans=()
@@ -140,7 +135,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         """
         # We want to know which types use the workflows with worklists
         # This for example avoids displaying 'pending' of multiple workflows in the same worklist
-        types_tool = getUtility(ITypesTool)
+        types_tool = getToolByName(self, 'portal_types')
         list_ptypes = types_tool.listContentTypes()
         types_by_wf = {} # wf:[list,of,types]
         for t in list_ptypes:
@@ -194,8 +189,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         sm = getSecurityManager()
         # We want to know which types use the workflows with worklists
         # This for example avoids displaying 'pending' of multiple workflows in the same worklist
-        types_tool = getUtility(ITypesTool)
-        catalog = getUtility(ICatalogTool)
+        types_tool = getToolByName(self, 'portal_types')
+        catalog = getToolByName(self, 'portal_catalog')
 
         list_ptypes = types_tool.listContentTypes()
         types_by_wf = {} # wf:[list,of,types]

@@ -7,9 +7,9 @@
 ##parameters=
 ##title=Return a list of the content types installed in the portal
 
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 
-portal_types_tool=getToolByInterfaceName('Products.CMFCore.interfaces.ITypesTool')
+portal_types_tool=getToolByName(context,'portal_types')
 installed_types=portal_types_tool.listContentTypes()
 
 return installed_types

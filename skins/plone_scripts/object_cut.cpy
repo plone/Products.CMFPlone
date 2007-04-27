@@ -10,14 +10,14 @@
 ##
 
 from Products.CMFPlone.utils import transaction_note
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from OFS.CopySupport import CopyError
 from AccessControl import Unauthorized
 
 REQUEST = context.REQUEST
 
-mtool = getToolByInterfaceName('Products.CMFCore.interfaces.IMembershipTool')
+mtool = getToolByName(context, 'portal_membership')
 if not mtool.checkPermission('Copy or Move', context):
     msg = _(u'Permission denied to cut ${title}.',
             mapping={u'title' : context.title_or_id()})

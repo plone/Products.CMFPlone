@@ -22,8 +22,8 @@ from Products.GenericSetup.utils import XMLAdapterBase
 from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.interfaces.portal_actions \
         import ActionProvider as z2IActionProvider
+from Products.CMFCore.utils import getToolByName
 
-from zope.component import getUtility, queryUtility
 from Products.CMFPlone.interfaces import IControlPanel
 
 class ControlPanelXMLAdapter(XMLAdapterBase):
@@ -141,7 +141,7 @@ def importControlPanel(context):
     """Import Plone control panel.
     """
     site = context.getSite()
-    tool = getUtility(IControlPanel)
+    tool = getToolByName(site, 'portal_controlpanel')
 
     importObjects(tool, '', context)
 
@@ -149,7 +149,7 @@ def exportControlPanel(context):
     """Export actions tool.
     """
     site = context.getSite()
-    tool = queryUtility(IControlPanel)
+    tool = getToolByName(site, 'portal_controlpanel', None)
     if tool is None:
         logger = context.getLogger('controlpanel')
         logger.info('Nothing to export.')

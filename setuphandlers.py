@@ -38,10 +38,6 @@ from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 from plone.app.portlets import portlets
 
-from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFPlone.interfaces import IMigrationTool
 
 class HiddenProducts(object):
@@ -289,10 +285,10 @@ class PloneGenerator:
         mt.setInstanceVersion(mt.getFileSystemVersion())
 
     def enableSyndication(self, portal, out):
-        syn = queryUtility(ISyndicationTool)
+        syn = getToolByName(portal, 'portal_syndication', None)
         if syn is not None:
             syn.editProperties(isAllowed=True)
-            cat = getUtility(ICatalogTool)
+            cat = getToolByName(portal, 'portal_catalog', None)
             if cat is not None:
                 topics = cat(portal_type='Topic')
                 for b in topics:
@@ -414,8 +410,8 @@ def importFinalSteps(context):
         return
     out = []
     site = context.getSite()
-    pprop = getUtility(IPropertiesTool)
-    pmembership = getUtility(IMembershipTool)
+    pprop = getToolByName(site, 'portal_properties')
+    pmembership = getToolByName(site, 'portal_membership')
     gen = PloneGenerator()
     gen.addDefaultPortlets(site)
     gen.performMigrationActions(site)

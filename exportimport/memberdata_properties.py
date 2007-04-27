@@ -4,9 +4,7 @@ $Id:$
 """
 
 from zope.app import zapi
-from zope.component import getUtility
-from zope.component import queryUtility
-from Products.CMFCore.interfaces import IMemberDataTool
+from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.interfaces import IBody
 
 _FILENAME = 'memberdata_properties.xml'
@@ -16,7 +14,7 @@ def importMemberDataProperties(context):
     """
     site = context.getSite()
     logger = context.getLogger('memberdata')
-    ptool = getUtility(IMemberDataTool)
+    ptool = getToolByName(site, 'portal_memberdata')
 
     body = context.readDataFile(_FILENAME)
     if body is None:
@@ -36,7 +34,7 @@ def exportMemberDataProperties(context):
     """
     site = context.getSite()
     logger = context.getLogger('memberdata')
-    ptool = queryUtility(IMemberDataTool)
+    ptool = getToolByName(site, 'portal_memberdata', None)
     if ptool is None:
         logger.info('Nothing to export.')
         return

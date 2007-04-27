@@ -1,12 +1,11 @@
 from Products.CMFActionIcons.ActionIconsTool import ActionIconsTool as BaseTool
 from Products.CMFActionIcons.permissions import View
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import _icons as iconcache
-from zope.component import getUtility
-from Products.CMFCore.interfaces import IURLTool
 
 def removeAICacheEntry(category, id):
     if (category, id) in iconcache.keys():
@@ -36,7 +35,7 @@ class ActionIconsTool(PloneBaseTool, BaseTool):
                                      default=default,
                                      context=context )
         if icon is not None:
-            portal=getUtility(IURLTool).getPortalObject()
+            portal=getToolByName(self, 'portal_url').getPortalObject()
             return portal.restrictedTraverse(icon)
 
         return default

@@ -7,10 +7,10 @@
 ##parameters=
 ##title=
 ##
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 Discussable = 'Products.CMFCore.interfaces.Discussions.Discussable'
 
-interface = getToolByInterfaceName('Products.CMFPlone.interfaces.IInterfaceTool')
+interface = getToolByName(container, 'portal_interface')
 parent = context.aq_inner.aq_parent
 
 # Stupid, stupid DiscussionItemContainer...

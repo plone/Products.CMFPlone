@@ -4,6 +4,8 @@
 
 from Products.CMFPlone.tests import PloneTestCase
 
+from Products.CMFCore.utils import getToolByName
+
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
@@ -14,9 +16,7 @@ from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
 from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy
-from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 
-from zope.component import getUtility
 from zope.interface import directlyProvides
 from zope.interface import implements
 
@@ -332,7 +332,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
     def testShowAllParentsWithRestrictedParent(self):
         strategy = NavtreeStrategyBase()
         strategy.showAllParents = True
-        wftool = getUtility(IConfigurableWorkflowTool)
+        wftool = getToolByName(self.portal, 'portal_workflow')
         wftool.doActionFor(self.portal.folder1, 'hide')
         self.portal.folder1.reindexObject()
         query = {'portal_type' : 'Folder'}
@@ -350,7 +350,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
     def testShowAllParentsWithParentNotInCatalog(self):
         strategy = NavtreeStrategyBase()
         strategy.showAllParents = True
-        wftool = getUtility(IConfigurableWorkflowTool)
+        wftool = getToolByName(self.portal, 'portal_workflow')
         self.portal.folder1.unindexObject()
         query = {'portal_type' : 'Folder'}
         context = self.portal.folder1.doc11

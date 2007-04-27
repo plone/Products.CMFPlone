@@ -1,11 +1,8 @@
-from zope.component import getUtility
-
-from Products.CMFCore.interfaces import IMembershipTool
-
 from Products.CMFDefault.SyndicationTool import SyndicationTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import ManageProperties
+from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Globals import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
@@ -42,7 +39,7 @@ class SyndicationTool(PloneBaseTool, BaseTool):
         """
         Enable syndication for the obj
         """
-        mtool = getUtility(IMembershipTool)
+        mtool = getToolByName(self, 'portal_membership')
         if not mtool.checkPermission(ManageProperties, obj):
             raise Unauthorized
         BaseTool.enableSyndication(self, obj)
@@ -51,7 +48,7 @@ class SyndicationTool(PloneBaseTool, BaseTool):
         """
         Disable syndication for the obj; and remove it.
         """
-        mtool = getUtility(IMembershipTool)
+        mtool = getToolByName(self, 'portal_membership')
         if not mtool.checkPermission(ManageProperties, obj):
             raise Unauthorized
         BaseTool.disableSyndication(self, obj)

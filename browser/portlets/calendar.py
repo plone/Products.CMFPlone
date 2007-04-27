@@ -1,14 +1,11 @@
 import zope.deprecation
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
-from zope.component import getUtility
 
 from DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
-
-from Products.CMFCalendar.interfaces import ICalendarTool
-from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 PLMF = MessageFactory('plonelocales')
 
@@ -28,10 +25,10 @@ class CalendarPortlet(utils.BrowserView):
         self.month = self.yearmonth[1]
         self.prevMonthTime = self.getPreviousMonth(self.month, self.year)
         self.nextMonthTime = self.getNextMonth(self.month, self.year)
-        calendar = getUtility(ICalendarTool)
+        calendar = getToolByName(context, 'portal_calendar')
         self.weeks = calendar.getEventsForCalendar(self.month, self.year)
         self.daynumbers = calendar.getDayNumbers()
-        self._translation_service = getUtility(ITranslationServiceTool)
+        self._translation_service = getToolByName(context, 'translation_service')
         self.showStates = calendar.getCalendarStates()
         self.showPrevMonth = self.yearmonth > (self.prevYearMin.year(), self.prevYearMin.month())
         self.showNextMonth = self.yearmonth < (self.nextYearMax.year(), self.nextYearMax.month())

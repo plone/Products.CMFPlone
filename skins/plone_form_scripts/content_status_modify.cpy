@@ -13,9 +13,9 @@ from DateTime import DateTime
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 from AccessControl import Unauthorized
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 
-plone_utils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
+plone_utils = getToolByName(context, 'plone_utils')
 contentEditSuccess=0
 plone_log=context.plone_log
 new_context = context.portal_factory.doCreate(context)

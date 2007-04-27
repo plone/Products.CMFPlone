@@ -1,11 +1,9 @@
 import zope.deprecation
 from zope.interface import implements
-from zope.component import getUtility
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IRecentPortlet
-from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFPlone.interfaces import IPloneTool
 
 
 class RecentPortlet(utils.BrowserView):
@@ -14,8 +12,8 @@ class RecentPortlet(utils.BrowserView):
     def results(self):
         """ """
         context = utils.context(self)
-        putils = getUtility(IPloneTool)
-        portal_catalog = getUtility(ICatalogTool)
+        putils = getToolByName(context, 'plone_utils')
+        portal_catalog = getToolByName(context, 'portal_catalog')
         typesToShow = putils.getUserFriendlyTypes()
         return self.request.get(
             'items',

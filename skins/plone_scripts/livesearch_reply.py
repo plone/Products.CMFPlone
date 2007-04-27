@@ -7,19 +7,19 @@
 ##parameters=q,limit=10,path=None
 ##title=Determine whether to show an id in an edit form
 
-from Products.CMFCore.utils import getToolByInterfaceName
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
 from Products.PythonScripts.standard import url_quote_plus
 
-ploneUtils = getToolByInterfaceName('Products.CMFPlone.interfaces.IPloneTool')
-portal_url = getToolByInterfaceName('Products.CMFCore.interfaces.IURLTool')()
+ploneUtils = getToolByName(context, 'plone_utils')
+portal_url = getToolByName(context, 'portal_url')()
 pretty_title_or_id = ploneUtils.pretty_title_or_id
 plone_view = context.restrictedTraverse('@@plone')
 
-portalProperties = getToolByInterfaceName('Products.CMFCore.interfaces.IPropertiesTool')
+portalProperties = getToolByName(context, 'portal_properties')
 siteProperties = getattr(portalProperties, 'site_properties', None)
 useViewAction = []
 if siteProperties is not None:
@@ -82,7 +82,7 @@ label_no_results_found = _('label_no_results_found', default='No matching result
 label_advanced_search = _('label_advanced_search', default='Advanced Search&#8230;')
 label_show_all = _('label_show_all', default='Show all&#8230;')
 
-ts = getToolByInterfaceName('Products.CMFPlone.interfaces.ITranslationServiceTool')
+ts = getToolByName(context, 'translation_service')
 
 output = []
 

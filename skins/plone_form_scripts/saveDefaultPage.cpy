@@ -15,8 +15,8 @@ if not objectId:
     context.plone_utils.addPortalMessage(_(u'Please select an item to use.'), 'error')
     return state.set(status = 'missing')
 
-from Products.CMFCore.utils import getToolByInterfaceName
-itool = getToolByInterfaceName('Products.CMFPlone.interfaces.IInterfaceTool')
+from Products.CMFCore.utils import getToolByName
+itool = getToolByName(context, 'portal_interface')
 
 # Should never happen, but let's be sure
 if not itool.objectImplements(context, INTERFACE):

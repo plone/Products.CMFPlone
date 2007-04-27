@@ -15,6 +15,7 @@ from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.interfaces import IActionCategory
@@ -36,7 +37,6 @@ from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import IUndoTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDiffTool.interfaces import IDiffTool
@@ -2047,12 +2047,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless("toc.css" in css.getResourceIds())
         
     def testUpdateMemberSecurity(self):
-        pprop = getUtility(IPropertiesTool)
+        pprop = getToolByName(self.portal, 'portal_properties')
         self.assertEquals(
                 pprop.site_properties.getProperty('allowAnonymousViewAbout'),
                 False)
 
-        pmembership = getUtility(IMembershipTool)
+        pmembership = getToolByName(self.portal, 'portal_membership')
         self.assertEquals(pmembership.memberareaCreationFlag, False)
 
         self.assertEquals(self.portal.getProperty('validate_email'), True)
@@ -2288,7 +2288,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(jsreg.ZCacheable_getManagerId() is None)
 
     def testTablelessRemoval(self):
-        st = getUtility(ISkinsTool)
+        st = getToolByName(self.portal, "portal_skins")
         if "Plone Tableless" not in st.getSkinSelections():
             st.addSkinSelection('Plone Tableless', 'one,two', make_default=True)
         removeTablelessSkin(self.portal, [])
@@ -2369,7 +2369,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
 
     def testObjectProvidesIndex(self):
-        catalog = getUtility(ICatalogTool)
+        catalog = getToolByName(self.portal, 'portal_catalog')
         if 'object_provides' in catalog.indexes():
             catalog.delIndex('object_provides')
         self.failIf('object_provides' in catalog.indexes())

@@ -4,9 +4,7 @@ from smtplib import SMTPRecipientsRefused
 
 from zope.component import getUtility
 
-from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFPlone.interfaces import IPloneTool
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
@@ -172,7 +170,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             if results:
                 return 0
         else:
-            membership = getUtility(IMembershipTool)
+            membership = getToolByName(self, 'portal_membership')
             if membership.getMemberById(id) is not None:
                 return 0
             groups = getToolByName(self, 'portal_groups')
@@ -197,11 +195,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('mailPassword')
     def mailPassword(self, forgotten_userid, REQUEST):
         """ Wrapper around mailPassword """
-        membership = getUtility(IMembershipTool)
+        membership = getToolByName(self, 'portal_membership')
         if not membership.checkPermission('Mail forgotten password', self):
             raise Unauthorized, "Mailing forgotten passwords has been disabled"
 
-        utils = getUtility(IPloneTool)
+        utils = getToolByName(self, 'plone_utils')
         member = membership.getMemberById(forgotten_userid)
 
         if member is None:
@@ -220,8 +218,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id):
         """ Wrapper around registeredNotify """
-        membership = getUtility(IMembershipTool)
-        utils = getUtility(IPloneTool)
+        membership = getToolByName( self, 'portal_membership' )
+        utils = getToolByName(self, 'plone_utils')
         member = membership.getMemberById( new_member_id )
 
         if member and member.getProperty('email'):
@@ -266,7 +264,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             if results:
                 return 0
         else:
-            membership = getUtility(IMembershipTool)
+            membership = getToolByName(self, 'portal_membership')
             if membership.getMemberById(id) is not None:
                 return 0
             groups = getToolByName(self, 'portal_groups')
