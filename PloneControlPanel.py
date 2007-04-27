@@ -6,17 +6,12 @@ from OFS.SimpleItem import SimpleItem
 from OFS.PropertyManager import PropertyManager
 
 from zope.interface import implements
-from zope.component import getUtility
-
-from Products.CMFActionIcons.interfaces import IActionIconsTool
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IURLTool
 
 from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.permissions import ManagePortal, View
-from Products.CMFCore.utils import _checkPermission, UniqueObject
+from Products.CMFCore.utils import _checkPermission, getToolByName, UniqueObject
 from Products.CMFCore.utils import registerToolInterface
 
 import ToolNames
@@ -105,8 +100,8 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
 
     security.declarePublic( 'enumConfiglets' )
     def enumConfiglets(self,group=None):
-        portal=getUtility(IURLTool).getPortalObject()
-        mtool = getUtility(IMembershipTool)
+        portal=getToolByName(self,'portal_url').getPortalObject()
+        mtool = getToolByName(self,'portal_membership')
         context=createExprContext(self,portal,self)
         res = []
         for a in self.listActions():
@@ -125,7 +120,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         selection=[actids.index(a) for a in actids if a==id]
         self.deleteActions(selection)
 
-        actionicons=getUtility(IActionIconsTool)
+        actionicons=getToolByName(self,'portal_actionicons')
         if actionicons.queryActionInfo('controlpanel', id, None):
             actionicons.removeActionIcon('controlpanel', id)
 
@@ -136,7 +131,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         selection=[acts.index(a) for a in acts if a.appId==appId]
         self.deleteActions(selection)
 
-        actionicons=getUtility(IActionIconsTool)
+        actionicons=getToolByName(self,'portal_actionicons')
         for a in acts:
             if (a.appId == appId and
                 actionicons.queryActionInfo('controlpanel', a.id, None)):
@@ -230,7 +225,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         self._actions = tuple( new_actions )
 
         if imageUrl:
-            actionicons=getUtility(IActionIconsTool)
+            actionicons=getToolByName(self,'portal_actionicons')
             actionicons.addActionIcon('controlpanel', new_action.id,
                                       imageUrl, new_action.title)
 

@@ -46,7 +46,7 @@ from Products.CMFEditions.interfaces import IPurgePolicyTool
 from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
 from Products.CMFEditions.interfaces import IStorageTool
 from Products.CMFFormController.interfaces import IFormControllerTool
-from Products.CMFPlone.PloneTool import AllowSendto
+from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IFactoryTool
 from Products.CMFPlone.interfaces import IInterfaceTool
@@ -54,9 +54,7 @@ from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import ITranslationServiceTool
-from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
-from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.CMFUid.interfaces import IUniqueIdAnnotationManagement
 from Products.CMFUid.interfaces import IUniqueIdGenerator
 from Products.CMFUid.interfaces import IUniqueIdHandler
@@ -74,7 +72,6 @@ from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from Products.CMFPlone.migrations.v2_1.final_two11 import reindexPathIndex
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeCMFTopicSkinLayer
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addRenameObjectButton
-from Products.CMFPlone.migrations.v2_1.two11_two12 import addSEHighLightJS
 from Products.CMFPlone.migrations.v2_1.two11_two12 import removeDiscussionItemWorkflow
 from Products.CMFPlone.migrations.v2_1.two11_two12 import addMemberData
 from Products.CMFPlone.migrations.v2_1.two11_two12 import reinstallPortalTransforms
@@ -112,7 +109,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import addIconForMaintenanceConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
@@ -130,7 +126,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addLinkIntegritySwitch
 from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
-from Products.CMFPlone.migrations.v3_0.alphas import updateMemberSecurity
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
 from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateConfigletTitles
@@ -139,7 +134,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import addFilterAndSecurityConfigl
 from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 from Products.CMFPlone.migrations.v3_0.alphas import addCacheForResourceRegistry
-from Products.CMFPlone.migrations.v3_0.alphas import updateCssQueryJS
 from Products.CMFPlone.migrations.v3_0.alphas import removeHideAddItemsJS
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSFile
@@ -171,20 +165,11 @@ from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
-from zope.component import getUtility, getMultiAdapter, queryUtility
+from zope.component import getUtility, getMultiAdapter
 
-from Products.CMFDynamicViewFTI.migrate import migrateFTI
-from Products.Five.component import disableSite
-
-import types
-from Acquisition import aq_base
-
-from plone.app.i18n.locales.countries import Countries
 from plone.app.i18n.locales.interfaces import IContentLanguages
 from plone.app.i18n.locales.interfaces import ICountries
 from plone.app.i18n.locales.interfaces import IMetadataLanguages
-from plone.app.i18n.locales.languages import ContentLanguages
-from plone.app.i18n.locales.languages import MetadataLanguages
 
 from plone.app.redirector.interfaces import IRedirectionStorage
 from plone.contentrules.engine.interfaces import IRuleStorage
@@ -192,7 +177,6 @@ from plone.contentrules.engine.interfaces import IRuleStorage
 from plone.app.portlets import portlets
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 
@@ -2457,7 +2441,7 @@ class TestMigrations_v3_0(MigrationTest):
     def testInstallPloneLanguageTool(self):
         CMFSite.manage_delObjects(self.portal, ['portal_languages'])
         self.uninstallProduct('PloneLanguageTool')
-        qi = getUtility(IQuickInstallerTool)
+        qi = getToolByName(self, "portal_quickinstaller")
         installProduct('PloneLanguageTool', self.portal, [])
         self.failUnless(qi.isProductInstalled('PloneLanguageTool'))
         self.failUnless('portal_languages' in self.portal.keys())
@@ -2597,8 +2581,8 @@ class TestMigrations_v3_0(MigrationTest):
                 self.failIf('auto_group' not in pas.plugins.listPluginIds(iface))
 
     def testPloneS5(self):
-        pt = getUtility(ITypesTool)
-        ait = getUtility(IActionIconsTool)
+        pt = getToolByName(self, "portal_types")
+        ait = getToolByName(self, "portal_actionicons")
         document = pt.restrictedTraverse('Document')
 
         action_ids = [x.getId() for x in document.listActions()]

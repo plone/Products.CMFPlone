@@ -106,7 +106,7 @@ class Plone(utils.BrowserView):
         self._data['portal_url'] =  portal_state.portal_url()
         self._data['mtool'] = mtool = tools.membership()
         self._data['atool'] = atool = tools.actions()
-        self._data['putils'] = putils = getUtility(IPloneTool)
+        self._data['putils'] = putils = getToolByName(context, "plone_utils")
         self._data['acl_users'] = getToolByName(context, 'acl_users')
         self._data['wtool'] = wtool = tools.workflow()
         self._data['ifacetool'] = tools.interface()
@@ -192,7 +192,7 @@ class Plone(utils.BrowserView):
         """Determine if visible ids are enabled
         """
         context = utils.context(self)
-        props = getUtility(IPropertiesTool).site_properties
+        props = getToolByName(context, "portal_properties").site_properties
         if not props.getProperty('visible_ids', False):
             return False
 
@@ -214,7 +214,7 @@ class Plone(utils.BrowserView):
         context_url = context.absolute_url()
         context_fti = context.getTypeInfo()
         
-        site_properties = getUtility(IPropertiesTool).site_properties
+        site_properties = getToolByName(context, "portal_properties").site_properties
 
         context_state = getMultiAdapter((context, self.request), name=u'plone_context_state')
         actions = context_state.actions()
@@ -323,8 +323,9 @@ class Plone(utils.BrowserView):
 
     @memoize
     def icons_visible(self):
-        membership = getUtility(IMembershipTool)
-        properties = getUtility(IPropertiesTool)
+        context = utils.context(self)
+        membership = getToolByName(self, "portal_membership")
+        properties = getToolByName(self, "portal_properties")
 
         site_properties = getattr(properties, 'site_properties')
         icon_visibility = site_properties.getProperty('icon_visibility', 'enabled')

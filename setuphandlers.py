@@ -29,7 +29,6 @@ from Products.CMFPlone.Portal import member_indexhtml
 from Products.ATContentTypes.lib import constraintypes
 from Products.PloneLanguageTool.interfaces import ILanguageTool
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
-from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 
 from plone.i18n.normalizer.interfaces import IURLNormalizer
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -60,7 +59,7 @@ class PloneGenerator:
 
     def installArchetypes(self):
         """QuickInstaller install of Archetypes and required dependencies."""
-        qi = getUtility(IQuickInstallerTool)
+        qi = getToolByName("portal_quickinstaller")
         qi.installProduct('CMFFormController', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('MimetypesRegistry', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('PortalTransforms', locked=1, hidden=1, forceProfile=True)
@@ -69,7 +68,7 @@ class PloneGenerator:
 
     def installProducts(self):
         """QuickInstaller install of required Products"""
-        qi = getUtility(IQuickInstallerTool)
+        qi = getToolByName(p, 'portal_quickinstaller')
         qi.installProduct('PlonePAS', locked=1, hidden=1, forceProfile=True)
         qi.installProduct('kupu', locked=0, forceProfile=True)
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
@@ -151,9 +150,7 @@ class PloneGenerator:
 
             # As we have a sensible language code set now, we disable the
             # start neutral functionality
-            tool = getUtility(ILanguageTool)
-            pprop = getUtility(IPropertiesTool)
-            sheet = pprop.site_properties
+            tool = getToolByName(self, "portal_languages")
 
             tool.manage_setLanguageSettings(language,
                 [language],

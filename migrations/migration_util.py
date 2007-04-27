@@ -1,8 +1,8 @@
 from types import ListType, TupleType
 from Acquisition import aq_base
 import logging
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.MemberDataTool import MemberDataTool
-from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.GenericSetup.interfaces import ISetupTool
 
 from Products.PlonePAS.tools.memberdata \
@@ -81,7 +81,7 @@ def installOrReinstallProduct(portal, product_name, out, hidden=False):
     If product is already installed test if it needs to be reinstalled. Also
     fix skins after reinstalling
     """
-    qi = getUtility(IQuickInstallerTool)
+    qi = getToolByName(portal, 'portal_quickinstaller')
     if not qi.isProductInstalled(product_name):
         qi.installProduct(product_name, hidden=hidden)
         # Refresh skins

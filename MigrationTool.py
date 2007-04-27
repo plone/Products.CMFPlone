@@ -3,7 +3,6 @@ import traceback
 import sys
 
 import transaction
-from zope.component import getUtility
 from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo
@@ -11,14 +10,13 @@ from Globals import InitializeClass, DTMLFile, DevelopmentMode
 from OFS.SimpleItem import SimpleItem
 from ZODB.POSException import ConflictError
 
-from Products.CMFCore.utils import UniqueObject
+from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log, log_deprecated
-from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 
 _upgradePaths = {}
 _widgetRegistry = {}
@@ -165,7 +163,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getProductInfo(self):
         """Provide information about installed products for error reporting"""
         zope_products = self.getPhysicalRoot().Control_Panel.Products.objectValues()
-        installed_products = getUtility(IQuickInstallerTool).listInstalledProducts(showHidden=1)
+        installed_products = getToolByName(self, 'portal_quickinstaller').listInstalledProducts(showHidden=1)
         products = {}
         for p in zope_products:
             product_info = {'id':p.id, 'version':p.version}
