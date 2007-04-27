@@ -10,8 +10,7 @@ from Products.CMFPlone.interfaces import IMigrationTool
 class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        # Some methods need an Acquistion context
-        self.migration = getUtility(IMigrationTool).__of__(self.portal)
+        self.migration = getutility(self, "portal_migration")
 
     def testMigrationFinished(self):
         self.assertEqual(self.migration.getInstanceVersion(),

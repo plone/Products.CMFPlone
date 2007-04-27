@@ -22,6 +22,7 @@ from DateTime import DateTime
 
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
@@ -44,7 +45,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.workflow = self.portal.portal_workflow
         self.types = self.portal.portal_types
-        self.cp = getUtility(IControlPanel)
+        self.cp = self.portal.portal_controlpanel
         self.actions = self.portal.portal_actions
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
@@ -861,7 +862,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testSubsequentProfileImportSucceeds(self):
         # Subsequent profile imports fail (#5439)
         self.loginAsPortalOwner()
-        setup_tool = getUtility(ISetupTool)
+        setup_tool = getToolByName(self, "portal_setup")
         # this will raise an error if it fails
         setup_tool.runAllImportSteps(purge_old=True)
         self.failUnless(1 == 1)

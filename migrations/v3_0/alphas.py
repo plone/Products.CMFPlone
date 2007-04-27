@@ -1345,7 +1345,7 @@ def addManyGroupsProperty(portal, out):
 
 
 def restorePloneTool(portal, out):
-    tool = getUtility(IPloneTool)
+    tool = getToolByName(portal, "plone_utils")
     if tool.meta_type == 'PlonePAS Utilities Tool':
         from Products.CMFPlone.PloneTool import PloneTool
         from Products.CMFDefault.Portal import CMFSite

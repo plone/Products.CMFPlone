@@ -11,14 +11,9 @@ from Products.CMFPlone.tests import dummy
 
 import difflib
 import re
-from zope.component import getUtility
 
 from Acquisition import aq_base
-from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
@@ -339,7 +334,7 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
 
     def testSetDefaultPageUpdatesCatalog(self):
         # Ensure that Default page changes update the catalog
-        cat = getUtility(ICatalogTool)
+        cat = getToolByName(self, "portal_catalog")
         self.portal.invokeFactory('Document', 'ad')
         self.portal.invokeFactory('Document', 'other')
         self.assertEqual(len(cat(getId=['ad','other'],is_default_page=True)), 0)

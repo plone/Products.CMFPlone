@@ -2,16 +2,15 @@
 # Tests the ControlPanel
 #
 
-from zope.component import getUtility
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.interfaces import IControlPanel
 
 
 class TestControlPanel(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.controlpanel = getUtility(IControlPanel)
+        self.controlpanel = getToolByName(self, "portal_controlpanel")
         
         # get the expected default groups and configlets
         self.groups     = ['Plone', 'Products', 'Member']

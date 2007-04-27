@@ -294,7 +294,7 @@ class TestMigrations_v2_1_1(MigrationTest):
         self.groups = self.portal.portal_groups
         self.factory = self.portal.portal_factory
         self.portal_memberdata = self.portal.portal_memberdata
-        self.cp = getUtility(IControlPanel)
+        self.cp = self.portal.portal_controlpanel
         self.skins = self.portal.portal_skins
 
     def testReindexPathIndex(self):
@@ -1196,7 +1196,7 @@ class TestMigrations_v3_0(MigrationTest):
 
     def afterSetUp(self):
         self.actions = self.portal.portal_actions
-        self.cp = getUtility(IControlPanel)
+        self.cp = self.portal.portal_controlpanel
         self.icons = self.portal.portal_actionicons
         self.skins = self.portal.portal_skins
         self.types = self.portal.portal_types
