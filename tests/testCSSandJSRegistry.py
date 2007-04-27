@@ -4,16 +4,14 @@
 
 from Products.CMFPlone.tests import PloneTestCase
 
-from zope.component import getUtility
 from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
-from Products.ResourceRegistries.interfaces import ICSSRegistry
-from Products.ResourceRegistries.interfaces import IJSRegistry
+from Products.CMFCore.utils import getToolByName
 
 
 class TestCSSRegistry(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.tool = getUtility(ICSSRegistry)
+        self.tool = getToolByName(self.portal, CSSTOOLNAME)
 
     def testToolExists(self):
         self.failUnless(CSSTOOLNAME in self.portal.objectIds())
@@ -40,7 +38,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
 class TestJSRegistry(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.tool = getUtility(IJSRegistry)
+        self.tool = getToolByName(self.portal, JSTOOLNAME)
 
     def testToolExists(self):
         self.failUnless(JSTOOLNAME in self.portal.objectIds())

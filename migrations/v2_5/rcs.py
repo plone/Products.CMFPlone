@@ -1,6 +1,5 @@
-from zope.component import queryUtility
+from Products.CMFCore.utils import getToolByName
 
-from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 
@@ -18,7 +17,7 @@ def beta2_rc1(portal):
 
     # add a property indicating if this is a big or small site, so the UI can
     # change depending on it
-    propTool = queryUtility(IPropertiesTool)
+    propTool = getToolByName(portal, 'portal_properties', None)
     propSheet = getattr(propTool, 'site_properties', None)
     if not propSheet.hasProperty('many_users'):
         if propSheet.hasProperty('large_site'):

@@ -1,7 +1,8 @@
 import re
-from zope.component import queryUtility
-
 from Acquisition import aq_base
+
+from Products.GenericSetup.tool import SetupTool
+
 from Products.CMFPlone.migrations.v2_1.two12_two13 import indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
@@ -14,15 +15,8 @@ from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 
 from Products.CMFCore.ActionInformation import Action
-from Products.CMFCore.interfaces import IActionsTool
-from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.interfaces import ISkinsTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.ResourceRegistries.interfaces import ICSSRegistry
-from Products.ResourceRegistries.interfaces import IJSRegistry
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import View
-
-from Products.GenericSetup.tool import SetupTool
 
 
 def alpha2_beta1(portal):
@@ -72,7 +66,7 @@ def beta1_beta2(portal):
 
     # add a property indicating if this is a big or small site, so the UI can
     # change depending on it
-    propTool = queryUtility(IPropertiesTool)
+    propTool = getToolByName(portal, 'portal_properties', None)
     propSheet = getattr(propTool, 'site_properties', None)
     if not propSheet.hasProperty('large_site'):
         propSheet.manage_addProperty('large_site', 0, 'boolean')
@@ -114,7 +108,7 @@ def beta1_beta2(portal):
 def addDragDropReorderJS(portal, out):
     """Add dragdropreorder.js to ResourceRegistries.
     """
-    jsreg = queryUtility(IJSRegistry)
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
     script = 'dragdropreorder.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -131,7 +125,7 @@ def addDragDropReorderJS(portal, out):
 
 def addGetEventTypeIndex(portal, out):
     """Adds the getEventType KeywordIndex."""
-    catalog = queryUtility(ICatalogTool)
+    catalog = getToolByName(portal, 'portal_catalog', None)
     if catalog is not None:
         try:
             index = catalog._catalog.getIndex('getEventType')
@@ -162,7 +156,7 @@ def fixHomeAction(portal, out):
         permissions=(View,),
         visible=True)
 
-    actionsTool = queryUtility(IActionsTool)
+    actionsTool = getToolByName(portal, 'portal_actions', None)
     if actionsTool is not None:
         category = actionsTool.portal_tabs
         for action in category.objectIds():
@@ -177,14 +171,14 @@ def fixHomeAction(portal, out):
 
 
 def removeBogusSkin(portal, out):
-    skins = queryUtility(ISkinsTool)
+    skins = getToolByName(portal, 'portal_skins', None)
     if skins is not None:
         if skins._getSelections().has_key('cmf_legacy'):
             skins.manage_skinLayers(('cmf_legacy',), del_skin=True)
             out.append("Deleted incorrectly added 'cmf_legacy' skin")
 
 def addPloneSkinLayers(portal, out):
-    st = queryUtility(ISkinsTool)
+    st = getToolByName(portal, 'portal_skins', None)
     if st is None:
         out.append('No portal_skins tool')
         return
@@ -235,7 +229,7 @@ action_replacements = [
 
 def simplifyActions(portal, out):
     from Products.CMFCore.ActionInformation import ActionCategory
-    tool = queryUtility(IActionsTool)
+    tool = getToolByName(portal, 'portal_actions', None)
     if tool is not None:
         categories = [obj for obj in tool.objectItems()
                                   if isinstance(obj[1], ActionCategory)]
@@ -269,7 +263,7 @@ def migrateCSSRegExpression(portal, out):
     """Changes calls to the isRightToLeft script to use the view, also
        replaces the use of restrictedTraverse with a more compact path
        expression."""
-    css_reg = queryUtility(ICSSRegistry)
+    css_reg = getToolByName(portal, 'portal_css', None)
     if css_reg is not None:
         resource = css_reg.getResource('RTL.css')
         # The None that comes out of RR is apparently acquisition wrapped,

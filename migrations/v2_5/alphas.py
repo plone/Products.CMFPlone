@@ -1,8 +1,7 @@
 import os
-from zope.component import queryUtility
-
 from Acquisition import aq_base
-from Products.CMFCore.interfaces import ISkinsTool
+
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
 
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
@@ -64,7 +63,7 @@ def installPlonePAS(portal, out):
 
 def installDeprecated(portal, out):
     # register login skin
-    st = queryUtility(ISkinsTool)
+    st = getToolByName(portal, 'portal_skins', None)
     if st is None:
         return
     if not hasattr(aq_base(st), 'plone_deprecated'):

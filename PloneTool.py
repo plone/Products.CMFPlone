@@ -29,6 +29,7 @@ from OFS.ObjectManager import bad_id
 from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore import permissions
 from Products.CMFCore.permissions import AccessContentsInformation, \
@@ -50,7 +51,6 @@ from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.interfaces import IBrowserDefault
-from Products.MimetypesRegistry.interfaces import IMimetypesRegistryTool
 from Products.statusmessages.interfaces import IStatusMessage
 
 AllowSendto = 'Allow sendto'
@@ -340,7 +340,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         Requires mimetype registry from Archetypes >= 1.3.
         """
-        mtr = getUtility(IMimetypesRegistryTool)
+        mtr = getToolByName(self, 'mimetypes_registry')
         return mtr.list_mimetypes()
 
     security.declareProtected(View, 'getWorkflowChainFor')
