@@ -10,8 +10,8 @@
 
 if context.portal_type == 'Discussion Item':
   redirect_target = context.plone_utils.getDiscussionThread(context)[0]
-  view = redirect_target.getTypeInfo().getActionById('view')
+  state = redirect_target.restrictedTraverse("@@plone_context_state")
+  view_url = '%s/%s' % (context.absolute_url(), state.view_template_id())
   anchor = context.id
   
-  context.REQUEST['RESPONSE'].redirect( redirect_target.absolute_url()
-         + '/%s#%s' % (view, anchor) )
+  context.REQUEST['RESPONSE'].redirect(view_url + '#' + anchor)
