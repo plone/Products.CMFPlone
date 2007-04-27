@@ -921,7 +921,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(ModifyPortalContent, obj):
             raise Unauthorized
-<<<<<<< .working
 
         # Set local role status...
         # set the variable (or unset it if it's defined)
@@ -931,12 +930,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if getattr(obj, '__ac_local_roles_block__', None):
                 obj.__ac_local_roles_block__ = None
 
-=======
-        # Set local role status
-        gruf = getToolByName(self, 'portal_url').getPortalObject().acl_users
-        # We perform our own security check
-        gruf._acquireLocalRoles(obj, status)
->>>>>>> .merge-right.r13605
         # Reindex the whole stuff.
         obj.reindexObjectSecurity()
 
@@ -946,14 +939,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         True if normal, false if blocked.
         """
-<<<<<<< .working
         if getattr(obj, '__ac_local_roles_block__', None):
             return False
         return True
-=======
-        gruf = getToolByName(self, 'portal_url').getPortalObject().acl_users
-        return gruf.isLocalRoleAcquired(obj)
->>>>>>> .merge-right.r13605
 
     security.declarePublic('getOwnerName')
     def getOwnerName(self, obj):
