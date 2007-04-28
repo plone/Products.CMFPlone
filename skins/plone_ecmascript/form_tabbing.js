@@ -7,6 +7,14 @@
  *   </fieldset>
  * </form>
  *
+ * or the following
+ *
+ * <dl class="enableFormTabbing">
+ *   <dt id="fieldsetlegend-[unique-id]">Title</dt>
+ *   <dd id="fieldset-[same-id-as-above]">
+ *   </dd>
+ * </dl>
+ *
  */
 
 var ploneFormTabbing = {};
@@ -18,53 +26,50 @@ ploneFormTabbing.isFormPanel = function(node) {
     return false;
 };
 
-ploneFormTabbing.isForm = function(node) {
-    if (node.tagName == 'FORM' || node.tagName == 'form') {
-        return true;
+ploneFormTabbing._toggleFactory = function(container, tab_ids, panel_ids) {
+    return function(e) {
+        if (!e) var e = window.event; // IE compatibility
+        if (this.tagName.toLowerCase() == 'select') {
+            var orig_id = this.value;
+        } else {
+            var orig_id = this.id;
+        }
+        var id = orig_id.replace(/^fieldsetlegend-/, "fieldset-")
+        for (var i=0; i<tab_ids.length; i++) {
+            var tab = document.getElementById(tab_ids[i]);
+            if (tab.id == orig_id) {
+                addClassName(tab, "selected");
+            } else {
+                removeClassName(tab, "selected");
+            }
+            var panel = document.getElementById(panel_ids[i]);
+            if (panel.id == id) {
+                removeClassName(panel, "hidden");
+            } else {
+                addClassName(panel, "hidden");
+            }
+        }
+        var current = cssQuery("input[name=fieldset.current]", container);
+        if (current && current.length) {
+            current[0].value = orig_id;
+        }
+        return false;
     }
-    return false;
 };
 
-ploneFormTabbing.toggle = function(e) {
-    if (!e) var e = window.event; // IE compatibility
-    if (this.tagName.toLowerCase() == 'select') {
-        var orig_id = this.value;
-    } else {
-        var orig_id = this.id;
-    }
-    var id = orig_id.replace(/^fieldsetlegend-/, "fieldset-")
-    var tabs = cssQuery("form.enableFormTabbing .formTab a,"+
-                        "form.enableFormTabbing option.formTab");
-    for (var i=0; i<tabs.length; i++) {
-        var tab = tabs[i];
-        if (tab.id == this.id) {
-            addClassName(tab, "selected");
-        } else {
-            removeClassName(tab, "selected");
-        }
-    }
-    var panels = cssQuery("form.enableFormTabbing .formPanel");
-    for (var i=0; i<panels.length; i++) {
-        var panel = panels[i];
-        if (panel.id == id) {
-            removeClassName(panel, "hidden");
-        } else {
-            addClassName(panel, "hidden");
-        }
-    }
-    var form = findContainer(panels[0], ploneFormTabbing.isForm);
-    var current = cssQuery("input[name=fieldset.current]", form);
-    if (current && current.length) {
-        current[0].value = orig_id;
-    }
-    return false;
-};
-
-ploneFormTabbing._buildTabs = function(legends) {
+ploneFormTabbing._buildTabs = function(container, legends) {
     var threshold = 6;
+    var tab_ids = [];
+    var panel_ids = [];
+
+    for (var i=0; i<legends.length; i++) {
+        tab_ids[i] = legends[i].id;
+        panel_ids[i] = tab_ids[i].replace(/^fieldsetlegend-/, "fieldset-")
+    }
+
     if (legends.length > threshold) {
         var tabs = document.createElement("select");
-        tabs.onchange = ploneFormTabbing.toggle;
+        tabs.onchange = ploneFormTabbing._toggleFactory(container, tab_ids, panel_ids);
     } else {
         var tabs = document.createElement("ul");
     }
@@ -101,7 +106,7 @@ ploneFormTabbing._buildTabs = function(legends) {
             var a = document.createElement("a");
             a.id = legend.id;
             a.href = "#" + legend.id;
-            a.onclick = ploneFormTabbing.toggle;
+            a.onclick = ploneFormTabbing._toggleFactory(container, tab_ids, panel_ids);
             var span = document.createElement("span");
             span.appendChild(text);
             a.appendChild(span);
@@ -110,7 +115,6 @@ ploneFormTabbing._buildTabs = function(legends) {
         tabs.appendChild(tab);
         parent.removeChild(legend);
     }
-
     return tabs;
 };
 
@@ -133,6 +137,28 @@ ploneFormTabbing.select = function($which) {
     return false;
 };
 
+ploneFormTabbing.initializeDL = function(dl) {
+    var dts = cssQuery("> dt", dl);
+    var legends = [];
+    for (var i=0; i<dts.length; i++) {
+        legends.push(dts[i]);
+    }
+    var tabs = ploneFormTabbing._buildTabs(dl, legends);
+    dl.parentNode.insertBefore(tabs, dl);
+
+    var dds = cssQuery("> dd", dl);
+    for (var i=0; i<dds.length; i++) {
+        addClassName(dds[i], "formPanel");
+    }
+
+    var tabs = cssQuery("li.formTab a,"+
+                        "option.formTab",
+                        tabs);
+    if (tabs.length > 0) {
+        ploneFormTabbing.select(tabs[0]);
+    }
+};
+
 ploneFormTabbing.initializeForm = function(form) {
 
     var fieldsets = cssQuery("> fieldset", form);
@@ -147,7 +173,7 @@ ploneFormTabbing.initializeForm = function(form) {
         }
     }
 
-    var tabs = ploneFormTabbing._buildTabs(legends);
+    var tabs = ploneFormTabbing._buildTabs(form, legends);
     form.insertBefore(tabs, form.firstChild);
 
     for (var i=0; i<fieldsets.length; i++) {
@@ -191,7 +217,7 @@ ploneFormTabbing.initializeForm = function(form) {
         }
     }
 
-    var tabs = cssQuery("form.enableFormTabbing .formTab a,"+
+    var tabs = cssQuery("form.enableFormTabbing li.formTab a,"+
                         "form.enableFormTabbing option.formTab");
     if (!tab_inited && tabs.length > 0) {
         ploneFormTabbing.select(tabs[0]);
@@ -214,6 +240,12 @@ ploneFormTabbing.initialize = function() {
 
     for (var i=0; i<forms.length; i++) {
         ploneFormTabbing.initializeForm(forms[i]);
+    }
+
+    var dls = cssQuery("dl.enableFormTabbing");
+
+    for (var i=0; i<dls.length; i++) {
+        ploneFormTabbing.initializeDL(dls[i]);
     }
 };
 
