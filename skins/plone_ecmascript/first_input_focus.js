@@ -10,9 +10,8 @@ function setFocus(){
         $elements[0].focus();
         return;
     }
-    $elements = cssQuery("form.enableAutoFocus input,"+
-                         "form.enableAutoFocus textarea,"+
-                         "form.enableAutoFocus select");
+    $elements = cssQuery("form.enableAutoFocus input[type=text],"+
+                         "form.enableAutoFocus textarea");
     for (var i=0; i < $elements.length; i++) {
         if ($elements[i].type == 'hidden') {
             continue;
