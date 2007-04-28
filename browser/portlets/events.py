@@ -1,13 +1,14 @@
+from Acquisition import aq_inner
 import zope.deprecation
 from zope.interface import implements
 
 from DateTime import DateTime
+from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IEventsPortlet
 
 
-class EventsPortlet(utils.BrowserView):
+class EventsPortlet(BrowserView):
     implements(IEventsPortlet)
 
     def __init__(self, context, request, *args, **kw):
@@ -19,7 +20,7 @@ class EventsPortlet(utils.BrowserView):
         self.eventsFolder = 'events' in self.portal.objectIds()
 
     def published_events(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         portal_catalog = getToolByName(context, 'portal_catalog')
 
         return portal_catalog.searchResults(portal_type='Event',

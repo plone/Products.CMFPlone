@@ -1,17 +1,18 @@
+from Acquisition import aq_inner
 from zope.component import getMultiAdapter
 from zope.interface import implements
 
 from Products.CMFCore.utils import getToolByName
+from Products.Five import BrowserView
 
-from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ISitemapView
 
 
-class SitemapView(utils.BrowserView):
+class SitemapView(BrowserView):
     implements(ISitemapView)
 
     def createSiteMap(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         view = getMultiAdapter((context, self.request),
                                name='sitemap_builder_view')
         data = view.siteMap()

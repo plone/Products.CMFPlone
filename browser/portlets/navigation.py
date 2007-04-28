@@ -6,16 +6,17 @@ from zope.component import queryUtility
 from zope.interface import implements
 
 from Acquisition import aq_base, aq_inner, aq_parent
+from Products.Five import BrowserView
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INavigationPortlet
 
-class NavigationPortlet(utils.BrowserView):
+class NavigationPortlet(BrowserView):
     implements(INavigationPortlet)
 
     def title(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         portal_properties = getToolByName(context, 'portal_properties')
         return portal_properties.navtree_properties.name
 
@@ -25,7 +26,7 @@ class NavigationPortlet(utils.BrowserView):
         return (root is not None and len(tree['children']) > 0)
 
     def includeTop(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         portal_properties = getToolByName(context, 'portal_properties')
         return portal_properties.navtree_properties.includeTop
 
@@ -37,7 +38,7 @@ class NavigationPortlet(utils.BrowserView):
         return queryUtility(IIDNormalizer).normalize(root.portal_type)
 
     def createNavTree(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         data = self.getNavTree()
         properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(properties, 'navtree_properties')
@@ -47,7 +48,7 @@ class NavigationPortlet(utils.BrowserView):
             level=1, show_children=True, isNaviTree=True, bottomLevel=bottomLevel)
 
     def isPortalOrDefaultChild(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         root = self.getNavRoot()
         return (aq_base(root) == aq_base(context) or
                 (aq_base(root) == aq_base(aq_parent(aq_inner(context))) and
@@ -58,7 +59,7 @@ class NavigationPortlet(utils.BrowserView):
     def getNavRoot(self):
         """Get and cache the navigation root"""
         if not utils.base_hasattr(self, '_root'):
-            context = utils.context(self)
+            context = aq_inner(self.context)
             portal_url = getToolByName(context, 'portal_url')
             portal = portal_url.getPortalObject()
 
@@ -84,7 +85,7 @@ class NavigationPortlet(utils.BrowserView):
         if tree is not None:
             return tree
         else:
-            context = utils.context(self)
+            context = aq_inner(self.context)
             view = getMultiAdapter((context, self.request),
                                    name='navtree_builder_view')
             self._navtree = view.navigationTree()

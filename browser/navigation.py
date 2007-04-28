@@ -1,9 +1,11 @@
+from Acquisition import aq_inner
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
+from Products.Five import BrowserView
 
 from Products.CMFPlone.browser.interfaces import INavigationBreadcrumbs
 from Products.CMFPlone.browser.interfaces import INavigationTabs
@@ -60,11 +62,11 @@ def get_view_url(context):
 
     return name, item_url
 
-class CatalogNavigationTree(utils.BrowserView):
+class CatalogNavigationTree(BrowserView):
     implements(INavigationTree)
 
     def navigationTreeRootPath(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
 
         portal_properties = getToolByName(context, 'portal_properties')
         portal_url = getToolByName(context, 'portal_url')
@@ -94,7 +96,7 @@ class CatalogNavigationTree(utils.BrowserView):
         return rootPath
 
     def navigationTree(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
 
         queryBuilder = NavtreeQueryBuilder(context)
         query = queryBuilder()
@@ -103,11 +105,11 @@ class CatalogNavigationTree(utils.BrowserView):
 
         return buildFolderTree(context, obj=context, query=query, strategy=strategy)
 
-class CatalogSiteMap(utils.BrowserView):
+class CatalogSiteMap(BrowserView):
     implements(ISiteMap)
 
     def siteMap(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
 
         queryBuilder = SitemapQueryBuilder(context)
         query = queryBuilder()
@@ -117,11 +119,11 @@ class CatalogSiteMap(utils.BrowserView):
         return buildFolderTree(context, obj=context, query=query, strategy=strategy)
 
 
-class CatalogNavigationTabs(utils.BrowserView):
+class CatalogNavigationTabs(BrowserView):
     implements(INavigationTabs)
 
     def topLevelTabs(self, actions=None, category='portal_tabs'):
-        context = utils.context(self)
+        context = aq_inner(self.context)
 
         portal_catalog = getToolByName(context, 'portal_catalog')
         portal_properties = getToolByName(context, 'portal_properties')
@@ -186,11 +188,11 @@ class CatalogNavigationTabs(utils.BrowserView):
         return result
 
 
-class CatalogNavigationBreadcrumbs(utils.BrowserView):
+class CatalogNavigationBreadcrumbs(BrowserView):
     implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         request = self.request
         ct = getToolByName(context, 'portal_catalog')
         query = {}
@@ -228,11 +230,11 @@ class CatalogNavigationBreadcrumbs(utils.BrowserView):
         return result
 
 
-class PhysicalNavigationBreadcrumbs(utils.BrowserView):
+class PhysicalNavigationBreadcrumbs(BrowserView):
     implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         request = self.request
         container = utils.parent(context)
 
@@ -269,12 +271,11 @@ class PhysicalNavigationBreadcrumbs(utils.BrowserView):
         return base
 
 
-class RootPhysicalNavigationBreadcrumbs(utils.BrowserView):
+class RootPhysicalNavigationBreadcrumbs(BrowserView):
     implements(INavigationBreadcrumbs)
 
     def breadcrumbs(self):
         # XXX Root never gets included, it's hardcoded as 'Home' in
         # the template. We will fix and remove the hardcoding and fix
         # the tests.
-        context = utils.context(self)
         return ()

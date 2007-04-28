@@ -1,17 +1,18 @@
+from Acquisition import aq_inner
 import zope.deprecation
 from zope.interface import implements
 
+from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IRecentPortlet
 
 
-class RecentPortlet(utils.BrowserView):
+class RecentPortlet(BrowserView):
     implements(IRecentPortlet)
 
     def results(self):
         """ """
-        context = utils.context(self)
+        context = aq_inner(self.context)
         putils = getToolByName(context, 'plone_utils')
         portal_catalog = getToolByName(context, 'portal_catalog')
         typesToShow = putils.getUserFriendlyTypes()

@@ -1,19 +1,20 @@
+from Acquisition import aq_inner
 import zope.deprecation
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
 from DateTime import DateTime
+from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import ICalendarPortlet
 
 PLMF = MessageFactory('plonelocales')
 
-class CalendarPortlet(utils.BrowserView):
+class CalendarPortlet(BrowserView):
     implements(ICalendarPortlet)
 
     def __init__(self, context, request):
-        self.context = [context]
+        self.context = context
         self.request = request
         self.yearmonth = self.getYearAndMonthToDisplay()
         self.DateTime = DateTime
@@ -37,7 +38,7 @@ class CalendarPortlet(utils.BrowserView):
         """ from skins/plone_scripts/getYearAndMonthToDisplay.py """
 
         current = DateTime()
-        context = utils.context(self)
+        context = aq_inner(self.context)
         request = self.request
         session = None
 

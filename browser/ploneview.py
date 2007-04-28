@@ -1,10 +1,7 @@
 from urllib import unquote
 
-from Acquisition import aq_base
 from Acquisition import aq_inner
-from Acquisition import aq_parent
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IPropertiesTool
+from Products.Five import BrowserView
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.permissions import DeleteObjects
 from Products.CMFCore.permissions import ListFolderContents
@@ -14,11 +11,6 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.interfaces import IBrowserDefault
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import IPloneTool
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder\
-     as z2INonStructuralFolder
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 from zope.deprecation import deprecate, deprecated
@@ -50,7 +42,7 @@ zope.deferredimport.deprecated(
     cache_decorator = 'plone.memoize.instance:memoize',
     )
 
-class Plone(utils.BrowserView):
+class Plone(BrowserView):
     implements(IPlone)
 
     def globalize(self):
@@ -86,7 +78,7 @@ class Plone(utils.BrowserView):
         # actions during __init__ is dangerous because instances are usually
         # created during traversal, which means authentication hasn't yet
         # happened.
-        context = utils.context(self)
+        context = aq_inner(self.context)
         if options is None:
             options = {}
         if view is None:
@@ -182,7 +174,7 @@ class Plone(utils.BrowserView):
     def toLocalizedTime(self, time, long_format=None):
         """Convert time to localized time
         """
-        context = utils.context(self)
+        context = aq_inner(self.context)
         util = getUtility(ITranslationServiceTool)
         return util.ulocalized_time(time, long_format, context,
                                     domain='plonelocales')
@@ -191,7 +183,7 @@ class Plone(utils.BrowserView):
     def visibleIdsEnabled(self):
         """Determine if visible ids are enabled
         """
-        context = utils.context(self)
+        context = aq_inner(self.context)
         props = getToolByName(context, "portal_properties").site_properties
         if not props.getProperty('visible_ids', False):
             return False
@@ -210,7 +202,7 @@ class Plone(utils.BrowserView):
         """Prepare the object tabs by determining their order and working
         out which tab is selected. Used in global_contentviews.pt
         """
-        context = utils.context(self)
+        context = aq_inner(self.context)
         context_url = context.absolute_url()
         context_fti = context.getTypeInfo()
         
@@ -281,7 +273,7 @@ class Plone(utils.BrowserView):
     def displayContentsTab(self):
         """Whether or not the contents tabs should be displayed
         """
-        context = utils.context(self)
+        context = aq_inner(self.context)
         modification_permissions = (ModifyPortalContent,
                                     AddPortalContent,
                                     DeleteObjects,
@@ -323,7 +315,7 @@ class Plone(utils.BrowserView):
 
     @memoize
     def icons_visible(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         membership = getToolByName(self, "portal_membership")
         properties = getToolByName(self, "portal_properties")
 
@@ -343,7 +335,7 @@ class Plone(utils.BrowserView):
            The item parameter needs to be adaptable to IContentIcon.
            Icons can be disabled globally or just for anonymous users with
            the icon_visibility property in site_properties."""
-        context = utils.context(self)
+        context = aq_inner(self.context)
         if not self.icons_visible():
             icon = getMultiAdapter((context, self.request, None), IContentIcon)
         else:
@@ -360,7 +352,7 @@ class Plone(utils.BrowserView):
         """
         converted = False
         if not isinstance(text, unicode):
-            encoding = utils.getSiteEncoding(utils.context(self))
+            encoding = utils.getSiteEncoding(aq_inner(self.context))
             text = unicode(text, encoding)
             converted = True
         if len(text)>length:
@@ -381,7 +373,7 @@ class Plone(utils.BrowserView):
                "keyed_actions method of the plone_context_state adapter "
                "instead.")
     def keyFilteredActions(self, actions=None):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.keyed_actions()
 
     # @deprecate("The getCurrentUrl method of the Plone view has been "
@@ -389,14 +381,14 @@ class Plone(utils.BrowserView):
     #            "current_page_url method of the plone_context_state adapter "
     #            "instead.")
     def getCurrentUrl(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.current_page_url()
 
     @deprecate("The isRightToLeft method of the Plone view has been "
                "deprecated and will be removed in Plone 3.5. Use the "
                "is_rtl method of the plone_portal_state adapter instead.")
     def isRightToLeft(self, domain='plone'):
-        portal_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_portal_state')
         return portal_state.is_rtl()
 
     # @deprecate("The isDefaultPageInFolder method of the Plone view has been "
@@ -404,7 +396,7 @@ class Plone(utils.BrowserView):
     #            "is_default_page method of the plone_context_state adapter "
     #            "instead.")
     def isDefaultPageInFolder(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_default_page()
 
     # @deprecate("The isStructuralFolder method of the Plone view has been "
@@ -412,7 +404,7 @@ class Plone(utils.BrowserView):
     #            "is_structural_folder method of the plone_context_state adapter "
     #            "instead.")
     def isStructuralFolder(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_structural_folder()
 
     # @deprecate("The navigationRootPath method of the Plone view has been "
@@ -420,7 +412,7 @@ class Plone(utils.BrowserView):
     #            "navigation_root_path method of the plone_portal_state adapter "
     #            "instead.")
     def navigationRootPath(self):
-        portal_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_portal_state')
         return portal_state.navigation_root_path()
 
     # @deprecate("The navigationRootUrl method of the Plone view has been "
@@ -428,21 +420,21 @@ class Plone(utils.BrowserView):
     #            "navigation_root_url method of the plone_portal_state adapter "
     #            "instead.")
     def navigationRootUrl(self):
-        portal_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_portal_state')
         return portal_state.navigation_root_url()
 
     # @deprecate("The getParentObject method of the Plone view has been "
     #            "deprecated and will be removed in Plone 3.5. Use the "
     #            "parent method of the plone_context_state adapter instead.")
     def getParentObject(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.parent()
 
     # @deprecate("The getCurrentFolder method of the Plone view has been "
     #            "deprecated and will be removed in Plone 3.5. Use the "
     #            "folder method of the plone_context_state adapter instead.")
     def getCurrentFolder(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.folder()
 
     # @deprecate("The getCurrentFolderUrl method of the Plone view has been "
@@ -450,7 +442,7 @@ class Plone(utils.BrowserView):
     #            "absolute_url method on the result of the folder method of the "
     #            "plone_context_state adapter instead.")
     def getCurrentFolderUrl(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.folder().absolute_url()
 
     # @deprecate("The getCurrentObjectUrl method of the Plone view has been "
@@ -459,7 +451,7 @@ class Plone(utils.BrowserView):
     #            "adapter instead.")
     @memoize
     def getCurrentObjectUrl(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.canonical_object_url()
 
     # @deprecate("The isFolderOrFolderDefaultPage method of the Plone view has "
@@ -468,7 +460,7 @@ class Plone(utils.BrowserView):
     #            "plone_context_state adapter instead.")
     @memoize
     def isFolderOrFolderDefaultPage(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_structural_folder() or context_state.is_default_page()
 
     # @deprecate("The isPortalOrPortalDefaultPage method of the Plone view has "
@@ -477,7 +469,7 @@ class Plone(utils.BrowserView):
     #            "instead.")
     @memoize
     def isPortalOrPortalDefaultPage(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_portal_root()
         
     # @deprecate("The getViewTemplateId method of the Plone view has been "
@@ -486,7 +478,7 @@ class Plone(utils.BrowserView):
     #            "instead.")
     @memoize
     def getViewTemplateId(self):
-        context_state = getMultiAdapter((utils.context(self), self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.view_template_id()
 
     # Helper methods
@@ -497,7 +489,7 @@ class Plone(utils.BrowserView):
         (see portlets.xml).
         """
         
-        context = utils.context(self)
+        context = aq_inner(self.context)
         if view is None:
             view = self
 

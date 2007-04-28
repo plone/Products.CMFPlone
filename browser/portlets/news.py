@@ -1,16 +1,17 @@
+from Acquisition import aq_inner
 import zope.deprecation
 from zope.interface import implements
 
+from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import INewsPortlet
 
 
-class NewsPortlet(utils.BrowserView):
+class NewsPortlet(BrowserView):
     implements(INewsPortlet)
 
     def published_news_items(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         portal_catalog = getToolByName(context, 'portal_catalog')
 
         return self.request.get('news', 
@@ -19,7 +20,7 @@ class NewsPortlet(utils.BrowserView):
                                                              sort_order='reverse',
                                                              review_state='published'))
     def all_news_link(self):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         utool = getToolByName(context, 'portal_url')
         portal_url = utool()
         portal = utool.getPortalObject()
