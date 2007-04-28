@@ -78,6 +78,11 @@
           <div class="field formSingleCheckbox"
                tal:condition="folders_in_publishing|nothing">
 
+            <input type="checkbox"
+                   class="formElement"
+                   id="include_children"
+                   name="include_children"
+                   />
             <label for="include_children" i18n:translate="label_include_contained_objects">
               Include contained items
             </label>
@@ -88,11 +93,6 @@
               in any selected folders and their subfolders.
             </div>
 
-            <input type="checkbox"
-                   class="formElement"
-                   id="include_children"
-                   name="include_children"
-                   />
           </div>
 
           <div class="field" tal:define="error errors/effective_date | nothing;">
