@@ -1,7 +1,7 @@
 /* 
-*  S5 is - a Simple Standards-based Slide Show System
-*  Thanks to Eric Meyer (http://meyerweb.com/) - the CSS guru of all the times for this 
-*  excellent technique - http://meyerweb.com/eric/tools/s5/
+*  S5 is a Simple Standards-based Slide Show System.
+*  Thanks to Eric Meyer for this excellent technique:
+*  http://meyerweb.com/eric/tools/s5/
 */
 
 /* <dtml-with base_properties> (do not remove this :) */
@@ -38,10 +38,11 @@ sup {font-size: smaller; line-height: 1px;}
 .slide ul ul {line-height: 1;}
 .slide ul ul li {margin: .2em; font-size: 85%; list-style: square;}
 .slide img.leader {display: block; margin: 0 auto;}
+.slide a { text-decoration: none; border-bottom: 2px solid &dtml-linkColor;;}
 
 ul.urls {list-style: none; display: inline; margin: 0;}
 .urls li {display: inline; margin: 0;}
-.note {display: none;}
+.note, p, .byline {display: none;}
 .external {border-bottom: &dtml-borderWidth; dotted &dtml-contentViewBorderColor;;}
 html>body .external {border-bottom: none;}
 .external:after {content: " \274F"; font-size: smaller; color: #77B;}
@@ -76,7 +77,6 @@ div#header {
     padding: 0.3em 0 0 1em; 
     white-space: nowrap;
     font: bold 150%/1em Helvetica, sans-serif; 
-    text-transform: capitalize;
     color: &dtml-globalFontColor;; 
 }
 
