@@ -27,6 +27,7 @@
 
 
       <form name="sendto_form"
+            class="enableAutoFocus"
             action="sendto_form"
             method="post"
             enctype="multipart/form-data"

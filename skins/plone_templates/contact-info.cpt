@@ -25,6 +25,7 @@
             </p>
             
             <form name="feedback_form"
+                class="enableAutoFocus"
                 action=""
                 method="post"
                 tal:define="errors options/state/getErrors"

@@ -62,6 +62,7 @@
                 </p>
 
                 <form action="personalize"
+                      class="enableAutoFocus"
                       method="post"
                       enctype="multipart/form-data"
                       class="enableUnloadProtection"

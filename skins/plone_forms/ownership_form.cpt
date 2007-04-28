@@ -28,6 +28,7 @@
           </legend>
 
         <form action="change_ownership"
+            class="enableAutoFocus"
             name="ownership_form"
             method="post"
             tal:attributes="action string:$here_url/$template_id">
@@ -168,6 +169,7 @@
           </tal:block>
 
           <form action="change_ownership"
+                class="enableAutoFocus"
                 name="ownership_form"
                 method="post"
                 tal:attributes="action string:$here_url/$template_id">

@@ -19,6 +19,7 @@
     </p>
 
     <form action="member_search_results"
+          class="enableAutoFocus"
           method="post"
           name="search"
           tal:define="DateTime python:modules['DateTime'].DateTime">

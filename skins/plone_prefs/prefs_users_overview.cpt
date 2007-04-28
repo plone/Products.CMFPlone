@@ -96,6 +96,7 @@
         </form>
 
         <form action=""
+              class="enableAutoFocus"
               name="users_search"
               method="post"
               tal:attributes="action template/getId"

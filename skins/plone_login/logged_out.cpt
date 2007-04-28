@@ -73,6 +73,7 @@
   </div>
 
   <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
+        class="enableAutoFocus"
         method="post"
         id="login_form"
         tal:condition="python:auth">

@@ -22,6 +22,7 @@
       i18n:translate="heading_registration_form">Registration Form</h1>
 
   <form action=""
+        class="enableAutoFocus"
         method="post"
         class="enableUnloadProtection"
         tal:define="allowEnterPassword site_properties/validate_email|nothing;"

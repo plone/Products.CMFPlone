@@ -107,7 +107,7 @@
         <form action=""
               name="groups"
               method="post"
-              class="enableUnloadProtection"
+              class="enableUnloadProtection enableAutoFocus"
               tal:attributes="action string:${gtool/absolute_url}"
               tal:define="targetobject context/portal_groupdata;
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">

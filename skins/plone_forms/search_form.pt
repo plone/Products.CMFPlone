@@ -22,7 +22,8 @@
     good enough, this search form is just if you want to be more specific.
     </p>
 
-  	<form action="search"
+    <form action="search"
+          class="enableAutoFocus"
           method="get"
           name="search"
           tal:define="DateTime python:modules['DateTime'].DateTime">

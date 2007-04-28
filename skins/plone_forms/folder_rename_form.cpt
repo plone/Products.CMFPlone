@@ -28,6 +28,7 @@
                  tal:replace="python:here.redirectToReferrer('The item(s) you selected are no longer available.')"/>
 
       <form name="folder_rename"
+            class="enableAutoFocus"
             action="folder_rename"
             method="post"
             tal:attributes="action template_id"

@@ -28,8 +28,9 @@
     </p>
 
     <form action=""
-        name="users"
-        method="post">
+          class="enableAutoFocus"
+          name="users"
+          method="post">
 
         <span tal:omit-tag="" i18n:translate="label_show_me">Show me</span>
 
