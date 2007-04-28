@@ -2,15 +2,14 @@
 # MigrationTool tests
 #
 
-from zope.component import getUtility
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.interfaces import IMigrationTool
+from Products.CMFCore.utils import getToolByName
 
 class TestMigrationTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.migration = getutility(self, "portal_migration")
+        self.migration = getToolByName(self, "portal_migration")
 
     def testMigrationFinished(self):
         self.assertEqual(self.migration.getInstanceVersion(),
