@@ -26,7 +26,6 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'deprecated.css',
                     'member.css',
                     'print.css',
-                    'presentation.css',
                     'RTL.css',
                     'mobile.css',
                     'textSmall.css',
