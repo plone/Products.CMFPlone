@@ -805,5 +805,13 @@ zope.deprecation.deprecated(
     "removed in Plone 3.5. Please import it from Products.CMFPlone.i18nl10n.")
 zope.deprecation.deprecated(
     ('BrowserView'),
-    "Products.CMFPlone.utils.BrowserView will be removed in Plone 3.5. Please
-    use Products.Five.BrowserView instead.")
+    "Products.CMFPlone.utils.BrowserView will be removed in Plone 3.5. "
+    "Please use Products.Five.BrowserView instead.")
+zope.deprecation.deprecated(
+    ('context'),
+    "This method is only useful for classes derived from the deprectaed "
+    "Products.CMFPlone.utils.BrowserView class. Please use "
+    "Products.Five.BrowserView as base class and aq_inner(self.context) "
+    "to get the current context.")
+
+
