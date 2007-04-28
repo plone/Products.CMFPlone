@@ -146,12 +146,12 @@
 }
 .ploneCalendar .todayevent {
     background-color: &dtml-globalBackgroundColor;;
-    border: 2px &dtml-borderStyle; #ffa500;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
     font-weight: bold;
 }
 .ploneCalendar .todaynoevent {
     border-collapse: collapse;
-    border: 2px &dtml-borderStyle; #ffa500;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
 
 .managePortletsLink {
