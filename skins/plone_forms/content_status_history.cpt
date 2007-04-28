@@ -59,6 +59,7 @@
       </p>
 
       <form id="edit_form"
+            class="enableAutoFocus"
             name="edit_form"
             method="post"
             action="content_status_modify"
@@ -261,14 +262,6 @@
         </fieldset>
 
       </form>
-
-      <div tal:condition="not: request/paths|nothing">
-
-        <div metal:use-macro="here/document_byline/macros/byline">
-            Get the byline - contains details about author and modification date.
-        </div>
-
-      </div>
 
     </div>
 
