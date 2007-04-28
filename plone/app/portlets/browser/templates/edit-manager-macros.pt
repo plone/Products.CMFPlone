@@ -5,10 +5,9 @@
           tal:define="base_url string:${view/baseUrl}/+/"
           tal:attributes="action here/absolute_url">
         <label for="dest" class="hiddenStructure">Add portlet</label>
-        <select name=":action" tabindex="#"
+        <select name=":action" 
             onchange="location.href=this.options[this.selectedIndex].value"
-            tal:attributes="tabindex tabindex/next|nothing;
-                            onchange string:location.href='${here/absolute_url}'+this.options[this.selectedIndex].value">
+            tal:attributes="onchange string:location.href='${here/absolute_url}'+this.options[this.selectedIndex].value">
             <option value="/@@manage-portlets">Add portlet&hellip;</option>
             <tal:options repeat="portlet view/addable_portlets">
             <option tal:attributes="value portlet/addview"
@@ -17,8 +16,7 @@
         </select>
         <noscript>
             <input class="standalone" type="submit"
-                   value="Add" tabindex="#"
-                   tal:attributes="tabindex tabindex/next|nothing;" />
+                   value="Add" />
         </noscript>
     </form>
 </div>
