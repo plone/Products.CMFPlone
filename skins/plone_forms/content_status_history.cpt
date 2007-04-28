@@ -79,7 +79,7 @@
                tal:condition="folders_in_publishing|nothing">
 
             <label for="include_children" i18n:translate="label_include_contained_objects">
-              Include folder items
+              Include contained items
             </label>
 
             <div class="formHelp"
