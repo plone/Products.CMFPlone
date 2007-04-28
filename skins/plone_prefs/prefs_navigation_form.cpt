@@ -160,12 +160,10 @@
 
             <div class="formControls">
                 <input class="context"
-                       tabindex=""
                        type="submit"
                        name="form.button.Save"
                        value="Save"
                        i18n:attributes="value label_save;"
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
 

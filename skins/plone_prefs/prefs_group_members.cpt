@@ -196,29 +196,23 @@
                 <th colspan="2">
                   <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
                     <input class="quickSearch"
-                           tabindex=""
                            type="text"
                            name="searchstring"
                            value=""
-                           tal:attributes="value searchstring;
-                               tabindex tabindex/next;"
+                           tal:attributes="value searchstring;"
                            />
 
                     <input type="submit"
                            class="searchButton"
                            name="form.button.Search"
                            value="Search"
-                           tabindex=""
-                           i18n:attributes="value label_search;"
-                           tal:attributes="tabindex tabindex/next;" />
+                           i18n:attributes="value label_search;" />
                     <input type="submit"
                            class="searchButton"
                            name="form.button.FindAll"
                            value="Show all"
-                           tabindex=""
                            i18n:attributes="value label_search_large;"
-                           tal:condition="not:site_properties/many_users"
-                           tal:attributes="tabindex tabindex/next;" />
+                           tal:condition="not:site_properties/many_users" />
                 </th>
               </tr>
               <tr>
@@ -289,12 +283,10 @@
             <div metal:use-macro="here/batch_macros/macros/navigation" />
 
             <input class="context"
-                    tabindex=""
                     type="submit"
                     name="form.button.Add"
                     value="Add selected groups and users to this group"
                     tal:condition="batch"
-                    tal:attributes="tabindex tabindex/next;"
                     i18n:attributes="value label_add_users_to_group;" />
 
           </form>

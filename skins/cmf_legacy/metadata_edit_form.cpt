@@ -65,16 +65,13 @@
             <metal:block tal:define="val request/allowDiscussion | python: here.portal_discussion.isDiscussionAllowedFor(here);
                                      val python:test(not hasattr(here,'allow_discussion'),None,val);
                                      val python:test(val=='off',0,val);
-                                     val python:test(val=='on',1,val);
-                                     tabindex tabindex/next;">
+                                     val python:test(val=='on',1,val);">
               <input class="noborder"
                      type="radio"
                      name="allowDiscussion"
                      value="default"
-                     tabindex=""
                      id="discussion_default"
-                     tal:attributes="checked python:val is None;
-                                     tabindex tabindex;"
+                     tal:attributes="checked python:val is None;"
                      />
               <label for="discussion_default"
                      i18n:translate="label_discussion_default">
@@ -86,10 +83,8 @@
                      type="radio"
                      name="allowDiscussion"
                      value="on"
-                     tabindex=""
                      id="discussion_on"
-                     tal:attributes="checked python:test(val == 1, '1', None);
-                                     tabindex tabindex;"
+                     tal:attributes="checked python:test(val == 1, '1', None);"
                      />
               <label for="discussion_on"
                      i18n:translate="label_discussion_enabled">
@@ -101,10 +96,8 @@
                      type="radio"
                      name="allowDiscussion"
                      value="off"
-                     tabindex=""
                      id="discussion_off"
-                     tal:attributes="checked python:test(val == 0, '1', None);
-                                     tabindex tabindex;"
+                     tal:attributes="checked python:test(val == 0, '1', None);"
                      />
               <label for="discussion_off" i18n:translate="label_discussion_disabled">Never allow comments</label>
 
@@ -142,8 +135,6 @@
                                   rows="11"
                                   cols="15"
                                   wrap="off"
-                                  tabindex=""
-                                  tal:attributes="tabindex tabindex/next;"
                                   tal:define="subject python:request.get('subject',[])"
                                   tal:content="python:'\n'.join(subject)"
                                   >selected keywords</textarea>&nbsp;
@@ -163,9 +154,7 @@
                 <select id="predefined_subjects"
                         name="predefined_subjects:list"
                         size="14"
-                        multiple="multiple"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;">
+                        multiple="multiple">
                   <option value="#"
                           i18n:domain="plone-metadata"
                           i18n:translate=""
@@ -203,8 +192,7 @@
                              formname   string:edit_form;
                              formvalue  request/effective_date | nothing;
                              inputvalue python:test(here.effective_date, here.effective_date, '');
-                             inputvalue python:test(formvalue,formvalue,inputvalue);
-                             tabindex tabindex/next">
+                             inputvalue python:test(formvalue,formvalue,inputvalue);">
 
               <div tal:content="error">Validation error output</div>
 
@@ -233,8 +221,7 @@
                              formname   string:edit_form;
                              formvalue  request/expiration_date | nothing;
                              inputvalue python:test(here.expiration_date, here.expiration_date, '');
-                             inputvalue python:test(formvalue,formvalue,inputvalue);
-                             tabindex tabindex/next">
+                             inputvalue python:test(formvalue,formvalue,inputvalue);">
 
               <div tal:content="error">Validation error output</div>
 
@@ -257,8 +244,6 @@
 
             <select name="format"
                     id="format"
-                    tabindex=""
-                    tal:attributes="tabindex tabindex/next;"
                     tal:define="format request/format | here/Format;">
               <option value=""
                       i18n:translate="label_choose_mime">
@@ -287,8 +272,6 @@
               <!-- ISO-639-2 language selector for Plone -->
               <select name="language"
                       id="language"
-                      tabindex=""
-                      tal:attributes="tabindex tabindex/next;"
                       >
                 <option tal:repeat="language here/availableLanguages"
                         tal:attributes="value python:language[0];
@@ -315,9 +298,7 @@
                    name="rights"
                    size="25"
                    value=""
-                   tabindex=""
-                   tal:attributes="value request/rights | here/Rights;
-                                   tabindex tabindex/next;"
+                   tal:attributes="value request/rights | here/Rights;"
                    i18n:domain="plone-metadata"
                    i18n:attributes="value"
                    />
@@ -338,8 +319,6 @@
                       id="contributors"
                       rows="5"
                       cols="25"
-                      tabindex=""
-                      tal:attributes="tabindex tabindex/next;"
                       tal:define="contributors request/contributors | here/Contributors;"
                       tal:content="python:'\n'.join(contributors)"
                       >contributors</textarea>
@@ -356,22 +335,18 @@
                    i18n:attributes="alt label_object_locked;"/>
 
             <input class="context"
-                   tabindex=""
                    type="submit"
                    name="form.button.Save"
                    value="Save"
                    i18n:attributes="value label_save;"
-                   tal:attributes="tabindex tabindex/next;
-                                   disabled python:test(isLocked, 'disabled', None);" />
+                   tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
 
 
             <input class="standalone"
-                   tabindex=""
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value label_cancel;"
-                   tal:attributes="tabindex tabindex/next;" />
+                   i18n:attributes="value label_cancel;" />
           </div>
         </fieldset>
 

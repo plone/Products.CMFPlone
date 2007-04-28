@@ -63,9 +63,7 @@
                id="fullname"
                size="30"
                value="fullname"
-               tabindex=""
-               tal:attributes="value fullname;
-                               tabindex tabindex/next;"
+               tal:attributes="value fullname;"
                />
 
       </div>
@@ -98,9 +96,7 @@
                      id="username"
                      size="30"
                      value="username"
-                     tabindex=""
-                     tal:attributes="value username;
-                                     tabindex tabindex/next;"
+                     tal:attributes="value username;"
                      />
       </div>
 
@@ -128,9 +124,7 @@
                      name="email"
                      id="email"
                      size="30"
-                     tabindex=""
-                     tal:attributes="value email;
-                                     tabindex tabindex/next;"
+                     tal:attributes="value email;"
                      />
       </div>
 
@@ -159,8 +153,6 @@
                      id="password"
                      size="10"
                      value=""
-                     tabindex=""
-                     tal:attributes="tabindex tabindex/next;"
                      />
       </div>
 
@@ -189,8 +181,6 @@
                      id="password_confirm"
                      size="10"
                      value=""
-                     tabindex=""
-                     tal:attributes="tabindex tabindex/next;"
                      />
       </div>
 
@@ -203,9 +193,7 @@
                name="mail_me"
                size="30"
                id="cb_mailme"
-               tabindex=""
-               tal:attributes="checked python:test(mail_me, 'checked', None);
-                               tabindex tabindex/next;"
+               tal:attributes="checked python:test(mail_me, 'checked', None);"
                />
         <label for="cb_mailme" i18n:translate="label_mail_password">Send a mail with the password</label>
       </div>
@@ -223,11 +211,9 @@
       <div class="formControls">
         <input class="context"
                type="submit"
-               tabindex=""
                name="form.button.Register"
                value="Register"
-               i18n:attributes="value label_register;"
-               tal:attributes="tabindex tabindex/next;" />
+               i18n:attributes="value label_register;" />
       </div>
 
     </fieldset>

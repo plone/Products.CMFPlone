@@ -63,16 +63,14 @@
                 <metal:block tal:repeat="trx batch">
                     <tr class="even"
                         tal:define="oddrow repeat/trx/odd;
-			            descriptions python:trx.get('description').split('\n');"
+                        descriptions python:trx.get('description').split('\n');"
                         tal:attributes="class python:test(oddrow, 'even', 'odd')" >
 
                         <td>
                             <input type="checkbox"
                                    class="noborder"
                                    name="transaction_info:list" value=""
-                                   tabindex=""
-                                   tal:attributes="value python:trx['id'];
-                                                   tabindex tabindex/next;" />
+                                   tal:attributes="value python:trx['id'];" />
                         </td>
 
                         <td tal:define="has_description python:len(descriptions)>1">
@@ -103,9 +101,7 @@
                type="submit"
                name="undo:method"
                value="Undo"
-               tabindex=""
                i18n:attributes="value label_undo;"
-               tal:attributes="tabindex tabindex/next;"
                />
 
         <!-- Navigation -->

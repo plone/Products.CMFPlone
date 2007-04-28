@@ -30,12 +30,10 @@
             <th colspan="2">
               <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
                     <input class="quickSearch"
-                           tabindex=""
                            type="text"
                            name="searchstring"
                            value=""
-                           tal:attributes="value searchstring;
-                                           tabindex tabindex/next;"
+                           tal:attributes="value searchstring;"
                            />
                 
                     <input type="hidden" name="searchonly" value="groups" />
@@ -43,10 +41,8 @@
                            class="searchButton"
                            name="prefs_user_group_search_form"
                            value="Search"
-                           tabindex=""
                            i18n:attributes="value label_search;"
-                           tal:attributes="name string:${template/id}:method;
-                                           tabindex tabindex/next;" />
+                           tal:attributes="name string:${template/id}:method;" />
 
             </th>
           </tr>
@@ -122,12 +118,10 @@
 
         <metal:block metal:define-slot="actions" >
         <input class="context"
-               tabindex=""
                type="submit"
                name="addingaction"
                value="Use Selected..."
                tal:condition="batch"
-               tal:attributes="tabindex tabindex/next;"
                i18n:attributes="value label_use_selected;" />
         </metal:block>
 

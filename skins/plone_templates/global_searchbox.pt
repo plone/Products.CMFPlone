@@ -19,8 +19,7 @@
                     i18n:translate="text_search">Search Site</label>
 
         <div class="LSBox">
-        <input tabindex=""
-               name="SearchableText"
+        <input name="SearchableText"
                type="text"
                size="15"
                value=""
@@ -28,15 +27,12 @@
                accesskey="4"
                i18n:attributes="title title_search_site;"
                tal:attributes="value request/SearchableText|nothing;
-                               tabindex tabindex/next;
                                id python:test(livesearch, 'searchGadget', '')"
                class="inputLabel" />
 
         <input class="searchButton"
                type="submit"
-               tabindex=""
                value="Search"
-               tal:attributes="tabindex tabindex/next"
                i18n:attributes="value label_search;" />
     
         <div class="searchSection">

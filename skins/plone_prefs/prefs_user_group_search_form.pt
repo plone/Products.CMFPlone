@@ -35,8 +35,6 @@
         <span tal:omit-tag="" i18n:translate="label_show_me">Show me</span>
 
         <select name="searching"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
                 tal:condition="python: not here.prefs_valid_search_restriction(searchonly)">
             <option value="both" i18n:translate="label_usersandgroups">Users and groups</option>
             <option value="users" i18n:translate="label_users">Users</option>
@@ -53,20 +51,16 @@
 
         <span i18n:translate="label_containing">containing</span>
 
-        <input tabindex=""
-            type="text"
-            name="searchstring"
-            value=""
-            tal:attributes="tabindex tabindex/next;"
+        <input type="text"
+               name="searchstring"
+               value=""
             />
 
         <input class="context"
-            tabindex=""
-            type="submit"
-            name="prefs_user_group_search:method"
-            value="Search"
-            tal:attributes="tabindex tabindex/next;"
-            i18n:attributes="value label_search;"
+               type="submit"
+               name="prefs_user_group_search:method"
+               value="Search"
+               i18n:attributes="value label_search;"
             />
 
 
@@ -136,14 +130,12 @@
                tal:attributes="value template_id"/>
 
         <input class="context"
-            tabindex=""
-            type="submit"
-            name="prefs_user_manage:method"
-            value="Use Selected..."
-        tal:condition="request/takeaction | nothing"
-            tal:attributes="tabindex tabindex/next;
-                        name string:${request/takeaction}:method"
-            i18n:attributes="value label_use_selected;"
+               type="submit"
+               name="prefs_user_manage:method"
+               value="Use Selected..."
+               tal:condition="request/takeaction | nothing"
+               tal:attributes="name string:${request/takeaction}:method"
+               i18n:attributes="value label_use_selected;"
             />
 
     </form>

@@ -90,11 +90,9 @@
                     <input type="hidden" name="form.submitted" value="1" />
 
                     <input class="standalone add"
-                           tabindex=""
                            type="submit"
                            name="form.button.AddGroup"
                            value="Add New Group"
-                           tal:attributes="tabindex tabindex/next;"
                            i18n:attributes="value label_add_new_group;"
                            />
 
@@ -114,21 +112,17 @@
                                 </span>
 
                                 <input class="quickSearch"
-                                       tabindex=""
                                        type="text"
                                        name="searchstring"
                                        value=""
-                                       tal:attributes="value searchstring;
-                                                       tabindex tabindex/next;"
+                                       tal:attributes="value searchstring;"
                                        />
 
                                 <input type="submit"
                                        class="searchButton"
                                        name="form.button.Search"
                                        value="Search"
-                                       tabindex=""
                                        i18n:attributes="value label_search;"
-                                       tal:attributes="tabindex tabindex/next;"
                                        />
 
                                 <input type="hidden"
@@ -232,11 +226,9 @@
                         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
                         <input class="context"
-                               tabindex=""
                                type="submit"
                                name="form.button.Modify"
                                value="Apply Changes"
-                               tal:attributes="tabindex tabindex/next;"
                                i18n:attributes="value label_apply_changes;"
                                />
                     </tal:block>

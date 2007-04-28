@@ -1,4 +1,4 @@
-// Focus on error or element with tabindex==1
+// Focus on error or first element in a form with class="enableAutoFocus"
 function setFocus(){
     // terminate if we hit a non-compliant DOM implementation
     if (!W3CDOM){return false};

@@ -73,12 +73,10 @@
 
           <metal:block metal:fill-slot="actions" >
             <input class="context"
-                          tabindex=""
                           type="submit"
                           name="prefs_user_membership_edit:method"
                           value="Add user to selected groups"
                           tal:condition="batch"
-                          tal:attributes="tabindex tabindex/next;"
                           i18n:attributes="value label_add_user_to_group;" />
           </metal:block>
 

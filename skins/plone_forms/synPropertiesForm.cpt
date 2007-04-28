@@ -32,10 +32,8 @@
         <input class="standalone"
                type="submit"
                value="Disable Syndication"
-               tabindex=""
                name="form.button.disableSyndication"
                i18n:attributes="value label_disable_syndication;"
-               tal:attributes="tabindex tabindex/next;"
                />
 
         <input type="hidden" name="form.submitted" value="1" />
@@ -53,10 +51,8 @@
         <input class="standalone"
                type="submit"
                value="Enable Syndication"
-               tabindex=""
                i18n:attributes="value label_enable_syndication;"
                name="form.button.enableSyndication"
-               tal:attributes="tabindex tabindex/next;"
                />
 
         <input type="hidden" name="form.submitted" value="1" />
@@ -91,10 +87,7 @@
               </div>
 
               <select name="updatePeriod"
-                      id="updatePeriod"
-                      tabindex=""
-                      tal:attributes="tabindex tabindex/next;"
-                      >
+                      id="updatePeriod">
                 <option value=""
                         tal:repeat="period python:syntool.buildUpdatePeriods()"
                         tal:attributes="value python:period[0];
@@ -126,9 +119,7 @@
                      name="updateFrequency"
                      size="3"
                      value="#"
-                     tabindex=""
-                     tal:attributes="value updateFrequency;
-                                     tabindex tabindex/next;" />
+                     tal:attributes="value updateFrequency;" />
             </div>
 
             <div class="field" 
@@ -177,19 +168,15 @@
                            id="max_items"
                            value="#"
                            size="3"
-                           tabindex=""
-                           tal:attributes="value max_items;
-                                           tabindex tabindex/next;" />
+                           tal:attributes="value max_items;" />
             </div>
 
             <div class="formControls">
               <input class="context"
-                     tabindex=""
                      type="submit"
                      value="Save"
                      i18n:attributes="value label_save;"
                      name="form.button.Save"
-                     tal:attributes="tabindex tabindex/next;"
                      />
             </div>
 

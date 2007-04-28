@@ -193,8 +193,6 @@
                      id="search_term"
                      name="search_term"
                      size="30"
-                     tabindex=""
-                     tal:attributes="tabindex tabindex/next;"
                      />
            </div>
 
@@ -206,8 +204,6 @@
                     name="form.button.Search"
                     value="Perform Search"
                     i18n:attributes="value label_perform_search;"
-                    tabindex=""
-                    tal:attributes="tabindex tabindex/next;"
                     />
           </div>
         </form>

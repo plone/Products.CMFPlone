@@ -12,7 +12,6 @@
 <div tal:define="checkPermission nocall:here/portal_membership/checkPermission;
                  actions python:context.portal_actions.listFilteredActionsFor(context);
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator(pos=30000);
                  auth nocall:here/acl_users/credentials_cookie_auth|nothing;
                  came_from request/came_from|request/HTTP_REFERER|nothing;
                  came_from python:test(here.portal_url.isURLInPortal(came_from), came_from, None);
@@ -99,11 +98,9 @@ If you do not have an account here, head over to the
 
             <input type="text"
                    size="15"
-                   tabindex=""
                    tal:attributes="name ac_name;
                                    id ac_name;
-                                   value value;
-                                   tabindex tabindex/next;"
+                                   value value;"
                    />
 
         </div>
@@ -133,10 +130,8 @@ If you do not have an account here, head over to the
 
             <input type="password"
                    size="15"
-                   tabindex=""
                    tal:attributes="name ac_password;
-                                   id ac_password;
-                                   tabindex tabindex/next;"
+                                   id ac_password;"
                    />
         </div>
 
@@ -147,9 +142,7 @@ If you do not have an account here, head over to the
                    value="1"
                    checked="checked"
                    id="cb_remember"
-                   tabindex=""
                    tal:attributes="name ac_persist;
-                                   tabindex tabindex/next;
                                    checked python:request.get(ac_name, '') and 'checked' or None;"
                    />
 
@@ -165,12 +158,10 @@ If you do not have an account here, head over to the
         <div class="formControls">
 
             <input class="context"
-                   tabindex=""
                    type="submit"
                    name="submit"
                    value="Log in"
-                   i18n:attributes="value label_log_in;"
-                   tal:attributes="tabindex tabindex/next;" />
+                   i18n:attributes="value label_log_in;" />
 
         </div>
 

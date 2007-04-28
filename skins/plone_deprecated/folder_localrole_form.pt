@@ -90,9 +90,7 @@
                        name="alr_toggle"
                        value="#"
                        id="alr_toggle"
-                       class="noborder"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"/>
+                       class="noborder" />
                 </th>
                 <th i18n:translate="label_name">Name</th>
                 <th i18n:translate="label_type">Type</th>
@@ -120,10 +118,8 @@
                            name="member_ids:list"
                            id="member_ids"
                            value=""
-                           tabindex=""
                            tal:condition="python:entry['name']!=username"
-                           tal:attributes="value entry/id;
-                                           tabindex tabindex/next"
+                           tal:attributes="value entry/id;"
                            />
                 </td>
 
@@ -194,8 +190,7 @@
                     <td tal:repeat="lrole row">
                         <input type="checkbox" name="member_roles:list" 
                                 tal:condition="lrole"
-                                tal:attributes="tabindex tabindex/next;
-                                                value lrole"/>
+                                tal:attributes="value lrole" />
                         <span tal:condition="lrole" 
                               i18n:translate=""
                               tal:content="lrole">role</span>
@@ -210,16 +205,12 @@
                    value="Assign Selected Role(s) to Selected User(s)/Group(s)"
                    name="folder_localrole_add:method"
                    i18n:attributes="value label_assign_roles_to_users_groups;"
-                   tabindex=""
-                   tal:attributes="tabindex tabindex/next;"
                    />
             <input class="destructive"
                 type="submit"
                 value="Delete Selected Role(s) and User(s)/Group(s)"
                 name="folder_localrole_delete:method"
                 i18n:attributes="value label_delete_roles_users_groups;"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
                 />
         </div>
 
@@ -276,9 +267,7 @@
                                name="alr_toggle"
                                value="#"
                                id="alr_toggle"
-                               class="noborder"
-                               tabindex=""
-                               tal:attributes="tabindex tabindex/next;"/>
+                               class="noborder" />
                         </th>
                         <th i18n:translate="label_full_name">Full Name</th>
                         <th i18n:translate="label_user_name">User Name</th>
@@ -298,11 +287,9 @@
                                    name="member_ids:list"
                                    id=""
                                    value=""
-                                   tabindex=""
                                    tal:attributes="id member_id;
                                                    value member_id;
-                                                   checked python:nResults==1;
-                                                   tabindex tabindex/next;"
+                                                   checked python:nResults==1;"
                             />
                         </td>
 
@@ -323,9 +310,7 @@
 
                     <select name="member_role:list"
                             id="user_member_role"
-                            multiple="multiple"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;">
+                            multiple="multiple">
 
                         <option tal:repeat="lroles candidate_roles"
                                 tal:attributes="value lroles"
@@ -342,8 +327,6 @@
                             type="submit"
                             value="Assign Local Role to Selected User(s)"
                             i18n:attributes="value label_assign_local_role_to_users;"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;"
                             />
                 </div>
 
@@ -386,9 +369,7 @@
                   </label>
 
                   <select name="search_param"
-                          id="search_param"
-                          tabindex=""
-                          tal:attributes="tabindex tabindex/next;">
+                          id="search_param">
                       <option value="fullname" i18n:translate="label_fullname">
                           Full Name
                       </option>
@@ -414,8 +395,6 @@
                           id="search_term"
                           name="search_term"
                           size="30"
-                          tabindex=""
-                          tal:attributes="tabindex tabindex/next;"
                           />
               </div>
 
@@ -424,8 +403,6 @@
                           type="submit"
                           value="Perform Search"
                           i18n:attributes="value label_perform_search;"
-                          tabindex=""
-                          tal:attributes="tabindex tabindex/next;"
                           />
               </div>
 
@@ -476,9 +453,7 @@
                            name="alr_toggle"
                            value="#"
                            id="alr_toggle"
-                           class="noborder"
-                           tabindex=""
-                           tal:attributes="tabindex tabindex/next;"/>
+                           class="noborder" />
                     </th>
                     <th i18n:translate="listingheader_title">Title</th>
                     <th i18n:translate="listingheader_description">Description</th>
@@ -500,10 +475,8 @@
                                 name="member_ids:list"
                                 id=""
                                 value=""
-                                tabindex=""
                                 tal:attributes="id group_id;
-                                                value group_id;
-                                                tabindex tabindex/next;"/>
+                                                value group_id;" />
                         </td>
                         <td tal:content="group_title">
                             groupname
@@ -524,9 +497,7 @@
 
                     <select name="member_role:list"
                             id="group_member_role"
-                            multiple="multiple"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;">
+                            multiple="multiple">
                         <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"
                                 tal:attributes="value lroles"
                                 tal:content="lroles"
@@ -541,8 +512,6 @@
                         type="submit"
                         value="Assign Local Role to Selected Group(s)"
                         i18n:attributes="value label_assign_role_to_groups;"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;"
                         />
                 </div>
 
@@ -575,8 +544,6 @@
                             id="group_search_term"
                             name="group_search_term"
                             size="30"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;"
                             />
                 </div>
 
@@ -585,8 +552,6 @@
                             type="submit"
                             value="Perform Search"
                             i18n:attributes="value label_perform_search;"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;"
                             />
                 </div>
 
@@ -632,8 +597,6 @@
                 type="submit"
                 value="Apply Settings"
                 i18n:attributes="value label_apply_settings;"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
                 />
         </div>
 

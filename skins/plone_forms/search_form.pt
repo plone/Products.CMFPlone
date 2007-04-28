@@ -47,8 +47,6 @@
                        id="SearchableText"
                        name="SearchableText"
                        size="25"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
 
@@ -63,8 +61,6 @@
                        id="Title"
                        name="Title"
                        size="25"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
 
@@ -82,8 +78,6 @@
                         id="Subject"
                         size="7"
                         multiple="multiple"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;"
                         tal:define="contentSubjects here/Subject;
                                     usedSubjects python:here.portal_catalog.uniqueValuesFor('Subject');"
                         >
@@ -102,9 +96,7 @@
                        id="Subject_or"
                        value=""
                        class="noborder"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;
-                                       checked python:1"/>
+                       tal:attributes="checked python:1"/>
                     <label for="Subject_or" i18n:translate="description_subject_or">
                         Match any
                     </label>
@@ -115,9 +107,7 @@
                         id="Subject_and"
                         value="operator:and"
                         class="noborder"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;
-                                        checked python:0"/>
+                        tal:attributes="checked python:0"/>
                 <label for="Subject_and" i18n:translate="description_subject_and">
                     Match all
                 </label>
@@ -136,8 +126,6 @@
                        id="Description"
                        name="Description"
                        size="25"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
     
@@ -151,8 +139,6 @@
                 <tal:datetime define="today python:DateTime().earliestTime()">
                 <select name="created:list:date"
                         id="created"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;"
                         tal:define="yesterday python:(today-1).Date();
                                     lastweek python:(today-7).Date();
                                     lastmonth python:(today-31).Date();
@@ -178,16 +164,14 @@
                 Return items of a specific type.
                 </div>
     
-                <span class="optionsToggle" tal:define="tabindex tabindex/next">
+                <span class="optionsToggle">
                     <input type="checkbox"
                            onclick="javascript:toggleSelect(this, 'portal_type:list', true);"
                            name="pt_toggle"
                            value="#"
                            id="pt_toggle"
                            class="noborder"
-                           tabindex=""
-                           checked="checked"
-                           tal:attributes="tabindex tabindex;"/>
+                           checked="checked" />
                     <label for="pt_toggle"
                            i18n:translate="label_toggle"
                            >Select All/None
@@ -199,15 +183,12 @@
                              typeLists python:here.createMultiColumnList(allTypes, numCols=2, sort_on='self');"
                      tal:repeat="sublist typeLists">
                     <tal:items repeat="type sublist">
-                    <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="portal_type:list"
                            value="#"
                            class="noborder"
                            checked="checked"
-                           tabindex=""
                            tal:attributes="value type;
-                                           tabindex tabindex;
                                            id string:portal_type_${repeat/sublist/number}_${repeat/type/number}"/>
                     <label for=""
                            i18n:translate=""
@@ -215,7 +196,6 @@
                            tal:content="python: portal_types.getTypeInfo(type).Title()"
                            />
                     <br />
-                    </tal:tabindex>
                     </tal:items>
                 </div>
             </div>
@@ -233,8 +213,6 @@
                 <tal:creators tal:define="creators python:portal.portal_catalog.uniqueValuesFor('Creator')">
                     <select name="Creator"
                             id="Creator"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;"
                             tal:condition="python: len(creators) &lt;= 30">
                         <option value="" i18n:translate="label_any_author">Any Author</option>
                         <metal:block tal:repeat="creator creators">
@@ -243,8 +221,6 @@
                     </select>
     
                     <input name="Creator"
-                           tabindex=""
-                           tal:attributes="tabindex tabindex/next;"
                            tal:condition="python: len(creators) &gt; 30 " />
                 </tal:creators>
             </div>
@@ -259,16 +235,14 @@
                 in certain states, select them from this list.
                 </div>
     
-                <span class="optionsToggle" tal:define="tabindex tabindex/next">
+                <span class="optionsToggle">
                 <input type="checkbox"
                        onclick="javascript:toggleSelect(this, 'review_state:list', true);"
                        name="rs_toggle"
                        value="#"
                        id="rs_toggle"
                        class="noborder"
-                       checked="checked"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex;"/>
+                       checked="checked" />
                 <label for="rs_toggle"
                        i18n:translate="label_toggle"
                        >Select All/None
@@ -302,12 +276,10 @@
 
             <div class="formControls">
                 <input class="context"
-                       tabindex=""
                        type="submit"
                        name="submit"
                        value="Search"
                        i18n:attributes="value label_search;"
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
 

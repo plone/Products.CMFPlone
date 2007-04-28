@@ -94,9 +94,7 @@
                            id="username"
                            value="" alt="Username" title="Name"
                            size="40"
-                           tabindex=""
-                           i18n:attributes="title label_name; alt label_username;"
-                           tal:attributes="tabindex tabindex/next;" />
+                           i18n:attributes="title label_name; alt label_username;" />
 
                 </div>
 
@@ -107,11 +105,9 @@
                     <input type="password"
                            id="password"
                            name="password"
-                           tabindex=""
                            value="" alt="Password" title="Password"
                            size="40"
-                           i18n:attributes="title label_password; alt label_password;"
-                           tal:attributes="tabindex tabindex/next;" />
+                           i18n:attributes="title label_password; alt label_password;" />
 
                 </div>
 
@@ -134,9 +130,7 @@
                        id="subject"
                        value=""
                        size="40"
-                       tabindex=""
-                       tal:attributes="value request/subject|request/title_override|nothing;
-                                       tabindex tabindex/next" />
+                       tal:attributes="value request/subject|request/title_override|nothing;" />
 
             </div>
 
@@ -156,9 +150,7 @@
                           id="body_text"
                           cols="40"
                           rows="8"
-                          tabindex=""
                           tal:content="request/body_text|request/text_override | nothing"
-                          tal:attributes="tabindex tabindex/next"
                         ></textarea>
 
             </div>
@@ -166,13 +158,11 @@
             <div class="formControls">
 
                 <input class="context"
-                       tabindex=""
                        type="submit"
                        value="Save"
                        name="form.button.Save"
                        i18n:attributes="value label_save;"
-                       tal:attributes="tabindex tabindex/next;
-                                       name string:discussion_reply:method;" />
+                       tal:attributes="name string:discussion_reply:method;" />
 
             </div>
           <input type="hidden" name="form.submitted" value="1" />

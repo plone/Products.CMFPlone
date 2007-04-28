@@ -1,8 +1,7 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
-<body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator(mainSlot=False)">
+<body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;">
 <div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:define="pageloc python: request.URL.split('/')[-1];
@@ -53,8 +52,7 @@
                        alt="Login Name"
                        onclick="showCookieMessage('cookies_message')"
                        tal:attributes="name ac_name; id ac_name;
-                                       value python:request.get(ac_name, '');
-                                       tabindex tabindex/next"
+                                       value python:request.get(ac_name, '');"
                        i18n:attributes="alt label_login_name;"/>
             </div>
             
@@ -67,8 +65,7 @@
                        size="10"
                        alt="Password"
                        onclick="showCookieMessage('cookies_message')"
-                       tal:attributes="name ac_password; id ac_password;
-                                       tabindex tabindex/next;"
+                       tal:attributes="name ac_password; id ac_password;"
                        i18n:attributes="alt label_password;"/>
             </div>
 
@@ -83,8 +80,7 @@
                        name="submit"
                        value="Log in"
                        alt="Log in"
-                       tal:attributes="tabindex tabindex/next;
-                                  onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
+                       tal:attributes="onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                        i18n:attributes="value label_log_in; alt label_log_in;"/>
             </div>
         </form>

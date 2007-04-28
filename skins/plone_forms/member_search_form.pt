@@ -39,8 +39,6 @@
                        id="login"
                        name="login"
                        size="25"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
 
@@ -56,8 +54,6 @@
                        id="email"
                        name="email"
                        size="25"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
 
@@ -74,8 +70,6 @@
                 <tal:datetime define="today python:DateTime().earliestTime()">
                     <select name="last_login_time:date"
                             id="last_login_time"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;"
                             tal:define="yesterday python:(today-1).Date();
                                         lastweek python:(today-7).Date();
                                         lastmonth python:(today-31).Date();
@@ -100,16 +94,12 @@
                        id="fullname"
                        name="fullname"
                        size="25"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
 
             <div class="field">
               <input type="checkbox" class="noborder"
-                     name="before_specified_time" id="cb_before_specified_time"
-                     tabindex=""
-                     tal:attributes="tabindex tabindex/next;" />
+                     name="before_specified_time" id="cb_before_specified_time" />
 
               <label for="cb_before_specified_time"
                      i18n:translate="label_before_specified_time">Not logged in since specified time</label>
@@ -153,14 +143,11 @@
                 </div>
 
                 <metal:role tal:repeat="role portalRoles">
-                <metal:tabindex tal:define="tabindex tabindex/next">
                     <input id="roles"
                            name="roles:list"
                            type="checkbox"
                            class="noborder"
-                           tabindex=""
-                           tal:attributes="tabindex tabindex;
-                                           value role;
+                           tal:attributes="value role;
                                            id string:roles_${repeat/role/number}"
                            />
                     <label for=""
@@ -169,18 +156,15 @@
                            tal:content="role"
                            />
                     <br />
-                </metal:tabindex>
                 </metal:role>
             </div>
 
             <div class="formControls">
                 <input class="context"
-                       tabindex=""
                        type="submit"
                        name="submit"
                        value="Search"
                        i18n:attributes="value label_search;"
-                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
         </fieldset>

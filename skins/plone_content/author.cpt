@@ -177,8 +177,7 @@
                          name="subject" 
                          size="25" 
                          value="" 
-                         tabindex="" 
-                         tal:attributes="tabindex tabindex/next; value request/subject|nothing"
+                         tal:attributes="value request/subject|nothing"
                          />
                 </div>
                 <div class="field"
@@ -196,8 +195,6 @@
                             id="message"
                             rows="5"
                             cols="25"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;"
                             tal:content="request/message|nothing"
                             ></textarea>
                 </div>
@@ -205,12 +202,10 @@
                 <div class="formControls">
 
                     <input class="context"
-                           tabindex=""
                            type="submit"
                            name="form.button.Send"
                            value="Send"
-                           i18n:attributes="value label_send;"
-                           tal:attributes="tabindex tabindex/next;" />
+                           i18n:attributes="value label_send;" />
 
                 </div>
 

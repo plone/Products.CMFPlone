@@ -59,9 +59,7 @@
                    name="id"
                    value=""
                    size="40"
-                   tabindex=""
-                   tal:attributes="value id;
-                                   tabindex tabindex/next;"
+                   tal:attributes="value id;"
                    />
 
           </div>
@@ -93,9 +91,7 @@
                          name="title"
                          value=""
                          size="40"
-                         tabindex=""
-                         tal:attributes="value Title;
-                                         tabindex tabindex/next;"
+                         tal:attributes="value Title;"
                          />
 
           </div>
@@ -111,11 +107,9 @@
 
             <textarea cols="80"
                       rows="5"
-                      tabindex=""
                       id="description"
                       name="description"
                       tal:content="description"
-                      tal:attributes="tabindex tabindex/next;"
                       >
               Description
             </textarea>
@@ -125,19 +119,15 @@
                tal:define="process_creation request/process_creation|nothing;">
 
             <input class="context"
-                   tabindex=""
                    type="submit"
                    name="form.button.Save"
                    value="Save"
-                   i18n:attributes="value label_save;"
-                   tal:attributes="tabindex tabindex/next;" />
+                   i18n:attributes="value label_save;" />
             <input class="standalone"
-                   tabindex=""
                    type="submit"
                    name="form.button.Cancel"
                    value="Cancel"
-                   i18n:attributes="value label_cancel;"
-                   tal:attributes="tabindex tabindex/next;" />
+                   i18n:attributes="value label_cancel;" />
           </div>
 
         <input type="hidden" name="form.submitted" value="1" />

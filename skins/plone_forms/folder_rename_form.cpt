@@ -85,11 +85,9 @@
                            id=""
                            value=""
                            size="40"
-                           tabindex=""
                            tal:condition="canRenameItem"
                            tal:attributes="value item;
-                                           id string:${item}_id;
-                                           tabindex tabindex/next;" />
+                                           id string:${item}_id;" />
 
               </div>
 
@@ -110,11 +108,9 @@
                            name="new_titles:list"
                            value="title"
                            size="40"
-                           tabindex=""
                            tal:condition="canModifyItem"
                            tal:attributes="value obj/Title;
-                                           id string:${item}_title;
-                                           tabindex tabindex/next;" />
+                                           id string:${item}_title;" />
 
               </div>
 
@@ -130,17 +126,13 @@
                  type="submit"
                  value="Rename All"
                  name="form.button.RenameAll"
-                 tabindex=""
                  i18n:attributes="value label_rename_all;"
-                 tal:attributes="tabindex tabindex/next;"
                  />
           <input class="standalone"
                  type="submit"
                  value="Cancel"
                  name="form.button.Cancel"
-                 tabindex=""
                  i18n:attributes="value label_cancel;"
-                 tal:attributes="tabindex tabindex/next;"
                  />
         </div>
 

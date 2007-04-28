@@ -239,22 +239,21 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
     return queryUtility(IFileNameNormalizer).normalize(text)
 
 class IndexIterator(object):
-    """An iterator used to generate tabindexes. Note that tabindexes are not as
-       good for accessibility as once thought, and are largely disabled with
-       this iterator.
+    """BBB: This iterator was us ed for tabindex use, but for accessibility 
+       reasons, we have deprecated it, and it now returns None always. Should 
+       be removed in Plone 3.5.
        
-       Only the first iteration of an iterator instantiated with mainSlot=True
-       will get an index:
+       Below are the different use cases we used to have, all return None now:
 
         >>> i = IndexIterator(pos=10, mainSlot=True)
-        >>> i.next()
-        10
+        >>> i.next() is None
+        True
 
-       The default start value is "1"
+       The default start value gets "None"
 
         >>> i = IndexIterator(mainSlot=True)
-        >>> i.next()
-        1
+        >>> i.next() is None
+        True
 
        Subsequent iterations will get None (thus removing the tabindex
        attribute):
@@ -282,16 +281,8 @@ class IndexIterator(object):
         self.pos=pos
         self.mainSlot=mainSlot
 
-        if not mainSlot:
-            self.disabled = True
-        else:
-            self.disabled = False
-
     def next(self):
-        if self.disabled:
-            return None
-        self.disabled = True
-        return self.pos
+        return None
 
 class RealIndexIterator(object):
     """The 'real' version of the IndexIterator class, that's actually 

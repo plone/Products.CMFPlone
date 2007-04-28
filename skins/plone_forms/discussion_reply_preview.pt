@@ -48,19 +48,15 @@
                            type="submit"
                            value="Change Comment"
                            name=""
-                           tabindex=""
                            i18n:attributes="value label_change_comment;"
                            tal:define="hId here/getId"
-            	           tal:attributes="name python: hId + '/discussion_reply_form:method';
-                                           tabindex tabindex/next;" />
+            	           tal:attributes="name python: hId + '/discussion_reply_form:method';" />
 
                     <input class="standalone"
                            type="submit"
                            value="Add Comment"
                            name="discussion_reply:method"
-                           i18n:attributes="value label_add_comment;"
-                           tabindex=""
-                           tal:attributes="tabindex tabindex/next;" />
+                           i18n:attributes="value label_add_comment;" />
 
 
                 </div>

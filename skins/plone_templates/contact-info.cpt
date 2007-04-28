@@ -53,8 +53,7 @@
                      name="sender_fullname" 
                      size="40" 
                      value="" 
-                     tabindex="" 
-                     tal:attributes="tabindex tabindex/next; value request/sender_fullname|nothing"
+                     tal:attributes="value request/sender_fullname|nothing"
                      />
             </div>
             <div class="field"
@@ -78,8 +77,7 @@
                      name="sender_from_address" 
                      size="40" 
                      value="" 
-                     tabindex="" 
-                     tal:attributes="tabindex tabindex/next; value request/sender_from_address|nothing"
+                     tal:attributes="value request/sender_from_address|nothing"
                      />
             </div>
             </tal:feedbackForm>
@@ -110,8 +108,7 @@
                      name="subject" 
                      size="25" 
                      value="" 
-                     tabindex="" 
-                     tal:attributes="tabindex tabindex/next; value request/subject|nothing"
+                     tal:attributes="value request/subject|nothing"
                      />
             </div>
             <div class="field"
@@ -134,8 +131,6 @@
                         id="message"
                         rows="5"
                         cols="25"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;"
                         tal:content="request/message|nothing"
                         > </textarea>
             </div>
@@ -143,12 +138,11 @@
             <div class="formControls">
 
                 <input class="context"
-                       tabindex=""
                        type="submit"
                        name="form.button.Send"
                        value="Send"
                        i18n:attributes="value label_send;"
-                       tal:attributes="tabindex tabindex/next;" />
+                       />
 
             </div>
 

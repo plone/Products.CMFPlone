@@ -57,9 +57,7 @@
                          id="send_to_address"
                          name="send_to_address"
                          size="25"
-                         tabindex=""
-                         tal:attributes="value request/send_to_address | nothing;
-                                         tabindex tabindex/next;"
+                         tal:attributes="value request/send_to_address | nothing;"
                          />
           </div>
 
@@ -83,9 +81,7 @@
                          id="send_from_address"
                          name="send_from_address"
                          size="25"
-                         tabindex=""
-                         tal:attributes="value python: request.get('send_from_address', member.getProperty('email',''));
-                                         tabindex tabindex/next;"
+                         tal:attributes="value python: request.get('send_from_address', member.getProperty('email',''));"
                          />
           </div>
 
@@ -98,11 +94,9 @@
 
             <textarea cols="80"
                       rows="5"
-                      tabindex=""
                       id="comment"
                       name="comment"
                       tal:content="request/comment | nothing"
-                      tal:attributes="tabindex tabindex/next;"
                       >
               Comment
             </textarea>
@@ -110,12 +104,10 @@
 
           <div class="formControls">
             <input class="context"
-                   tabindex=""
                    type="submit"
                    name="form.button.Send"
                    value="Send"
                    i18n:attributes="value label_send;"
-                   tal:attributes="tabindex tabindex/next;"
                    />
           </div>
 

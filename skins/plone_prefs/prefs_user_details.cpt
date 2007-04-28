@@ -111,9 +111,7 @@ we eventually might want to merge this form with personalize_form
                name="fullname"
                size="30"
                value="fullname"
-               tabindex=""
                tal:attributes="value fullname;
-                               tabindex tabindex/next;
                                disabled python:member.canWriteProperty('fullname') and default or 'disabled'"
                    />
           </div>
@@ -141,9 +139,7 @@ we eventually might want to merge this form with personalize_form
                          name="email"
                          id="email"
                          size="30"
-                         tabindex=""
                          tal:attributes="value email;
-                                         tabindex tabindex/next;
                                          readonly python:member.canWriteProperty('email') and default or 'readonly'"
                          />
           </div>
@@ -170,10 +166,8 @@ we eventually might want to merge this form with personalize_form
                        id="location"
                        name="location"
                        size="25"
-                       tabindex=""
                        value="member.location html_quote"
                        tal:attributes="value location;
-                                       tabindex tabindex/next;
                                        disabled python:member.canWriteProperty('location') and default or 'disabled'"
                        />
 
@@ -195,9 +189,7 @@ we eventually might want to merge this form with personalize_form
 
                 <select name="language"
                         id="language"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;
-                                        disabled python:member.canWriteProperty('language') and default or 'disabled'">
+                        tal:attributes="disabled python:member.canWriteProperty('language') and default or 'disabled'">
                     <tal:block tal:repeat="lang portal/availableLanguages">
                         <option value="None"
                             tal:content="python:lang[1]"
@@ -247,9 +239,7 @@ we eventually might want to merge this form with personalize_form
 
                 <select name="wysiwyg_editor"
                         id="wysiwyg_editor"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;
-                                        disabled python:member.canWriteProperty('wysiwyg_editor') and default or 'disabled'">
+                        tal:attributes="disabled python:member.canWriteProperty('wysiwyg_editor') and default or 'disabled'">
                         <tal:block tal:repeat="editor site_properties/available_editors">
                         <option tal:condition="python:editor != 'None'"
                                 value="None"
@@ -275,8 +265,7 @@ we eventually might want to merge this form with personalize_form
                        class="noborder"
                        name="ext_editor"
                        id="cb_ext_editor"
-                       tal:attributes="tabindex tabindex/next;
-                                       checked python:test(ext_editor, 'checked', None);
+                       tal:attributes="checked python:test(ext_editor, 'checked', None);
                                        disabled python:member.canWriteProperty('ext_editor') and default or 'disabled'"
                        />
 
@@ -296,8 +285,7 @@ we eventually might want to merge this form with personalize_form
                        class="noborder"
                        name="listed"
                        id="cb_listed"
-                       tal:attributes="tabindex tabindex/next;
-                                       checked python:test(listed, 'checked', None);
+                       tal:attributes="checked python:test(listed, 'checked', None);
                                        disabled python:member.canWriteProperty('listed') and default or 'disabled'"
                        />
 
@@ -317,8 +305,7 @@ we eventually might want to merge this form with personalize_form
                        class="noborder"
                        name="visible_ids"
                        id="cb_invisible_ids"
-                       tal:attributes="tabindex tabindex/next;
-                                       checked python:test(visible_ids, 'checked', None);
+                       tal:attributes="checked python:test(visible_ids, 'checked', None);
                                        disabled python:member.canWriteProperty('visible_ids') and default or 'disabled'"
                        />
 
@@ -356,19 +343,15 @@ we eventually might want to merge this form with personalize_form
                        name="portrait"
                        id="portrait"
                        size="20"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex/next;"
                        />
 
                 <br />
 
                 <input class="noborder"
-                    tabindex=""
                     type="checkbox"
                     id="pdelete"
                     value="Delete Portrait"
                     name="delete_portrait"
-                    tal:attributes="tabindex tabindex/next;"
                     />
                 <label for="pdelete" i18n:translate="label_delete_portrait">Delete Portrait</label>
 
@@ -380,12 +363,10 @@ we eventually might want to merge this form with personalize_form
             
             <div class="formControls">
                     <input class="context"
-                        tabindex=""
                         type="submit"
                         value="Save"
                         name="prefs_user_edit:method"
                         i18n:attributes="value label_save;"
-                        tal:attributes="tabindex tabindex/next;"
                         />
             </div>
           </fieldset>

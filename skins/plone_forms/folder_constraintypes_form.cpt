@@ -99,9 +99,7 @@
                                id="mode_acquire"
                                value="-1"
                                class="noborder"
-                               tabindex=""
-                               tal:attributes="tabindex tabindex/next;
-                                               checked python:test('-1' == str(currentMode), 'checked', None)"/>
+                               tal:attributes="checked python:test('-1' == str(currentMode), 'checked', None)"/>
                         <label for="mode_acquire" i18n:translate="constraintypes_mode_acquire">
                             Use parent folder setting
                         </label>
@@ -114,9 +112,7 @@
                            value="0"
                            class="noborder"
                            onclick="show_submenu(false)"
-                           tabindex=""
-                           tal:attributes="tabindex tabindex/next;
-                                           checked python:test('0' == str(currentMode), 'checked', None)"/>
+                           tal:attributes="checked python:test('0' == str(currentMode), 'checked', None)"/>
                     <label for="mode_disable" i18n:translate="constraintypes_mode_disable">
                         Allow the standard set of addable types
                     </label>
@@ -127,9 +123,7 @@
                            value="1"
                            class="noborder"
                            onclick="show_submenu(true)"
-                           tabindex=""
-                           tal:attributes="tabindex tabindex/next;
-                                           checked python:test('1' == str(currentMode), 'checked', None)"/>
+                           tal:attributes="checked python:test('1' == str(currentMode), 'checked', None)"/>
                     <label for="mode_enable" i18n:translate="constraintypes_mode_enable">
                         Specify manually
                     </label>
@@ -163,8 +157,7 @@
 
                         <div style="float:left; margin-right: 2em;"
                              tal:define="typeLists python:here.createMultiColumnList(availableTypes, numCols=3, sort_on='title_or_id');"
-                             tal:repeat="sublist typeLists"
-                             tal:attributes="tabindex tabindex/next;">
+                             tal:repeat="sublist typeLists">
                             <tal:block tal:repeat="type sublist">
                                 <input name="currentPrefer:list"
                                        class="noborder"
@@ -206,8 +199,7 @@
 
                         <div style="float:left; margin-right: 2em;"
                              tal:define="typeLists python:here.createMultiColumnList(availableTypes, numCols=3, sort_on='title_or_id');"
-                             tal:repeat="sublist typeLists"
-                             tal:attributes="tabindex tabindex/next;">
+                             tal:repeat="sublist typeLists">
                             <tal:block tal:repeat="type sublist">
                                 <input name="currentAllow:list"
                                        class="noborder"
@@ -237,20 +229,16 @@
                 <!-- Form Actions -->
                 <div class="formControls">
                     <input class="context"
-                        tabindex=""
                         type="submit"
                         name="form.button.Save"
                         value="Save"
                         i18n:attributes="value label_save;"
-                        tal:attributes="tabindex tabindex/next;"
                     />
                     <input class="standalone"
-                        tabindex=""
                         type="submit"
                         name="form.button.Cancel"
                         value="Cancel"
                         i18n:attributes="value label_cancel;"
-                        tal:attributes="tabindex tabindex/next;"
                     />
                 </div> <!-- /Form Actions -->
 
