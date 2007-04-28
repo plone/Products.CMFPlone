@@ -66,10 +66,6 @@
             tal:attributes="action string:$here_url/$template_id"
             tal:condition="not:python:paths and not batch">
 
-        <fieldset>
-
-          <legend i18n:translate="legend_publishing_details">Publishing Details</legend>
-
           <div class="field" tal:condition="batch">
             <label for="" i18n:translate="label_affected_content">Affected content</label>
             <div tal:define="dummy python:request.set('ids_checked', 1);">
@@ -258,8 +254,6 @@
           <input type="hidden" name="orig_template"
                  tal:condition="request/orig_template|nothing"
                  tal:attributes="value request/orig_template"/>
-
-        </fieldset>
 
       </form>
 
