@@ -4,19 +4,16 @@ from cgi import escape
 from plone.app.form.validators import null_validator
 from plone.fieldsets.form import FieldsetsEditForm
 from zope.component import adapts
-from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import Interface
 from zope.interface import implements
 from zope.schema import Int
 
 from Acquisition import aq_inner
-from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
-from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from plone.app.controlpanel.interfaces import IPloneControlPanelForm
@@ -39,7 +36,7 @@ class MaintenanceControlPanelAdapter(SchemaAdapterBase):
     implements(IMaintenanceSchema)
 
     def __init__(self, context):
-        pprop = getUtility(IPropertiesTool)
+        pprop = getToolByName(context, 'portal_properties')
         self.context = pprop.site_properties
 
     def get_days(self):
@@ -100,11 +97,11 @@ class MaintenanceControlPanel(FieldsetsEditForm):
         return False
 
     def isDevelopmentMode(self):
-        qi = getUtility(IQuickInstallerTool)
+        qi = getToolByName(self.context, 'portal_quickinstaller')
         return qi.isDevelopmentMode()
 
     def coreVersions(self):
-        mt = getUtility(IMigrationTool)
+        mt = getToolByName(self.context, 'portal_migration')
         versions = mt.coreVersions()
         versions['Instance'] = versions['Plone Instance']
         return versions

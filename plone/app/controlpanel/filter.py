@@ -2,7 +2,6 @@ from plone.fieldsets import FormFieldsets
 
 from zope.interface import Interface
 from zope.component import adapts
-from zope.component import getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope import schema
@@ -16,7 +15,6 @@ from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_hasattr
-from Products.PortalTransforms.interfaces import IPortalTransformsTool
 from Products.PortalTransforms.transforms.safe_html import VALID_TAGS
 
 from form import ControlPanelForm
@@ -118,7 +116,7 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
         super(FilterControlPanelAdapter, self).__init__(context)
         self.context = context
         self.transform = getattr(
-            getUtility(IPortalTransformsTool), 'safe_html')
+            getToolByName(context, 'portal_transforms'), 'safe_html')
         self.kupu_tool = getToolByName(context, 'kupu_library_tool')
 
     def _settransform(self, **kwargs):

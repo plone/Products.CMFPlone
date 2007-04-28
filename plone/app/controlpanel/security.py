@@ -1,13 +1,10 @@
 from zope.interface import Interface
 from zope.component import adapts
-from zope.component import getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import IURLTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -51,9 +48,9 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(SecurityControlPanelAdapter, self).__init__(context)
-        pprop = getUtility(IPropertiesTool)
-        self.pmembership = getUtility(IMembershipTool)
-        portal_url = getUtility(IURLTool)
+        pprop = getToolByName(context, 'portal_properties')
+        self.pmembership = getToolByName(context, 'portal_membership')
+        portal_url = getToolByName(context, 'portal_url')
         self.portal = portal_url.getPortalObject()
         self.context = pprop.site_properties
 

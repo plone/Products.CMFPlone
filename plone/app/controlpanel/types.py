@@ -7,10 +7,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from Acquisition import aq_inner, aq_parent, aq_base
 from AccessControl import Unauthorized
 
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import ITypesTool
-from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
@@ -35,7 +32,7 @@ class TypesControlPanel(BrowserView):
     @memoize
     def fti(self):
         type_id = self.type_id
-        portal_types = getUtility(ITypesTool)
+        portal_types = getToolByName(self.context, 'portal_types')
         return getattr(portal_types, type_id)
 
     def __call__(self):
@@ -51,10 +48,11 @@ class TypesControlPanel(BrowserView):
         type_id = form.get('old_type_id', None)
 
         if submitted and type_id and not cancel_button:
-            
-            portal_types = getUtility(ITypesTool)
-            portal_repository = getUtility(IRepositoryTool)
-            portal_properties = getUtility(IPropertiesTool)
+            portal_types = getToolByName(self.context, 'portal_types')
+            portal_repository = getToolByName(self.context,
+                                              'portal_repository')
+            portal_properties = getToolByName(self.context,
+                                              'portal_properties')
             site_properties = getattr(portal_properties, 'site_properties')
             
             fti = getattr(portal_types, type_id)
@@ -131,19 +129,19 @@ class TypesControlPanel(BrowserView):
     
     def is_versionable(self):
         context = aq_inner(self.context)
-        portal_repository = getUtility(IRepositoryTool)
+        portal_repository = getToolByName(context, 'portal_repository')
         return (self.type_id in portal_repository.getVersionableContentTypes())
         
     def is_searchable(self):
         context = aq_inner(self.context)
-        portal_properties = getUtility(IPropertiesTool)
+        portal_properties = getToolByName(context, 'portal_properties')
         blacklisted = portal_properties.site_properties.types_not_searched
         return (self.type_id not in blacklisted)
 
     @memoize
     def current_workflow(self):
         context = aq_inner(self.context)
-        portal_workflow = getUtility(IConfigurableWorkflowTool)
+        portal_workflow = getToolByName(context, 'portal_workflow')
         try: 
             wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
         except IndexError:
@@ -177,7 +175,7 @@ class TypesControlPanel(BrowserView):
         new_workflow = self.new_workflow()
         
         if new_workflow != current_workflow:
-            portal_workflow = getUtility(IConfigurableWorkflowTool)
+            portal_workflow = getToolByName(self.context, 'portal_workflow')
             wf = getattr(portal_workflow, new_workflow)
             return [dict(id=s.id, title=s.title) for s in wf.states.objectValues()]
         else:
@@ -187,7 +185,7 @@ class TypesControlPanel(BrowserView):
         current_workflow = self.current_workflow()['id']
         new_workflow = self.new_workflow()
             
-        portal_workflow = getUtility(IConfigurableWorkflowTool)
+        portal_workflow = getToolByName(self.context, 'portal_workflow')
                 
         if current_workflow == '[none]':
             new_wf = getattr(portal_workflow, new_workflow)

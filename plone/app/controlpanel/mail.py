@@ -11,12 +11,12 @@ from zope.schema import ASCII
 from zope.app.form.browser.textwidgets import ASCIIWidget
 
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_hasattr
-from Products.MailHost.interfaces import IMailHost
 
 from form import ControlPanelForm
 
@@ -79,7 +79,7 @@ class MailControlPanelAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         super(MailControlPanelAdapter, self).__init__(context)
-        self.context = getUtility(IMailHost)
+        self.context = getToolByName(context, 'MailHost')
 
     smtp_host = ProxyFieldProperty(IMailSchema['smtp_host'])
     smtp_port = ProxyFieldProperty(IMailSchema['smtp_port'])
