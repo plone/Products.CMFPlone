@@ -93,7 +93,9 @@ solutions?
 
 <ul>
     <li>Add your sites to the <a class="link-plain" 
-        href="http://plone.net/sites">Plone site listing</a>.</li>
+        href="http://plone.net/sites">Plone site listing</a>.
+        <span class="discreet">(Or see what sites are already out there!)</span>
+    </li>
     <li>Add your company as a <a class="link-plain" 
         href="http://plone.net/providers">Plone provider</a>.</li>
     <li>Add a <a class="link-plain" 
