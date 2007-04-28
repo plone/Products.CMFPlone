@@ -501,14 +501,14 @@ dl.portalMessage dt {
     margin: 0 0.5em 0 0;
     padding: 0.5em 0.75em;
     color: White;
-    line-height: 1em;
+    line-height: 1.25em;
 }
 dl.portalMessage dd {
     background-color: #ffffe3;
     border: 1px solid #996;
     padding: 0.5em 0.5em; 
     margin: 0;
-    line-height: 1em;
+    line-height: 1.25em;
 }
 dl.warning dt {
     background-color: #d80; 
@@ -523,8 +523,8 @@ dl.warning dd {
     border-color: #d80;
 }
 dl.error dd {
-    background-color: #fdc; 
-    border-color:  #d00;
+    background-color: #fd7; 
+    border-color: #d80;
 }
 
 .documentDescription {

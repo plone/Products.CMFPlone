@@ -14,10 +14,11 @@
 body {
     font-size: 2em;
 }
-html, body {margin: 0; padding: 0;}
+html, body {margin: 0; padding: 0; line-height: 1.25em;}
 
 h1, h2, h3, h4 {font-size: 100%; margin: 0; padding: 0; font-weight: inherit;}
-ul, pre {margin: 0; line-height: 1em;}
+ul, pre {margin: 0;}
+ol {margin: 0 1.5em;}
 blockquote, q {font-style: italic;}
 blockquote {padding: 0 2em 0.5em; margin: 0 1.5em 0.5em; text-align: center; font-size: 1em;}
 blockquote p {margin: 0;}
@@ -33,7 +34,7 @@ sup {font-size: smaller; line-height: 1px;}
 .slide code.old {color: silver;}
 .slide pre {padding: 0; margin: 0.25em 0 0.5em 0.5em; color: &dtml-fontColor;; font-size: 90%;}
 .slide pre code {display: block;}
-.slide ul {margin-left: 5%; margin-right: 7%; list-style: disc;}
+.slide ul {margin-left: 5%; margin-right: 7%; list-style: square;}
 .slide li {margin-top: 0.75em; margin-right: 0;}
 .slide ul ul {line-height: 1;}
 .slide ul ul li {margin: .2em; font-size: 85%; list-style: square;}
@@ -42,7 +43,7 @@ sup {font-size: smaller; line-height: 1px;}
 
 ul.urls {list-style: none; display: inline; margin: 0;}
 .urls li {display: inline; margin: 0;}
-.note, p, .byline {display: none;}
+.note, p, .discreet {display: none;}
 .external {border-bottom: &dtml-borderWidth; dotted &dtml-contentViewBorderColor;;}
 html>body .external {border-bottom: none;}
 .external:after {content: " \274F"; font-size: smaller; color: #77B;}
@@ -63,10 +64,10 @@ h1 abbr {
 */
 
 div#header {
-    background: &dtml-globalBackgroundColor;;
-    color: &dtml-globalFontColor;;
+    color: &dtml-fontColor;;
     line-height: 1px;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    background-color: &dtml-globalBackgroundColor;;
 }
 .slide h1 {
     position: absolute; 
@@ -77,7 +78,8 @@ div#header {
     padding: 0.3em 0 0 1em; 
     white-space: nowrap;
     font: bold 150%/1em Helvetica, sans-serif; 
-    color: &dtml-globalFontColor;; 
+    color: &dtml-fontColor;; 
+    text-align: center;
 }
 
 /*
@@ -86,7 +88,7 @@ div#header {
 
 div#footer {
     background: &dtml-backgroundColor; url('&dtml-portal_url;/&dtml-logoName;') 10px 10px no-repeat; 
-    /*border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;    */
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;    
     color: &dtml-fontColor;;
     font-size: 0.5em; 
     font-weight: bold; 
@@ -168,6 +170,11 @@ div#controls form {
     padding-top: 2.5em; 
     font-size: 90%;
 }
+
+#slide0 #header {
+    display: none;
+}
+
 #slide0 h1 {
     position: static; 
     margin: 1em 0 0; 
@@ -177,16 +184,20 @@ div#controls form {
     white-space: normal;
     color: #000; 
     background: transparent;
+    text-align: center;
 }
 #slide0 h2 {
     font-weight: bold;
-    font-style: italic;
     font-size: 1em;
     margin: 0.25em;
+    text-align: center;
 }
 #slide0 h3 {
     margin-top: 1.5em; 
     font-size: 1.5em;
+    text-align: center;
+    font-size: 1em;
+    color: #666;
 }
 #slide0 h4 {
     margin-top: 0; 

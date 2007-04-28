@@ -33,6 +33,8 @@ Before you start exploring your newly created Plone site, please do the followin
     <li><a href="@@security-controlpanel">Decide what security level you want on your site</a>. <span class="discreet">(Who can join, password policies, etc)</span></li>
 </ol>
 
+<h2>Get Comfortable</h2>
+
 <p>After that, we suggest you do one or more of the following:</p>
 
 <ul>
@@ -62,9 +64,17 @@ Before you start exploring your newly created Plone site, please do the followin
     </li>
 
     <li>
-    By default, Plone uses a visual editor for content, but if you prefer 
-    text-based syntax and/or wiki syntax, you can change this in the
-    <a href="@@markup-controlpanel">markup control panel</a>.
+    Decide what kind of workflow you want in your site. 
+    <span class="discreet">(The default is a
+    community-centric workflow. If you do web publishing, you might want the
+    simpler submit/review workflow)</span>
+    </li>
+
+    <li>
+    By default, Plone uses a visual editor for content. 
+    <span class="discreet">(If you prefer text-based syntax and/or wiki 
+        syntax, you can change this in the
+    <a href="@@markup-controlpanel">markup control panel</a>)</span>
     </li>
 
     <li>&hellip;and many more settings are available in the 

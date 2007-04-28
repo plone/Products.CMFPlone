@@ -21,8 +21,6 @@
       <div id="content" class="documentEditable"
            tal:condition="python:checkPermission('Manage users', here)">
 
-            <h5 class="hiddenStructure">Views</h5>
-
             <ul class="contentViews">
               <li class="selected">
                 <a href=""
