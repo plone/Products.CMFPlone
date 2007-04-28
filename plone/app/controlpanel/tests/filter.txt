@@ -37,11 +37,6 @@ Now click the cancel button:
     >>> browser.url.endswith('plone_control_panel')
     True
 
-There should be still no changes:
-
-    >>> 'Changes canceled.' in browser.contents
-    True
-
 Look at the defaults
 --------------------
 
@@ -139,7 +134,8 @@ Check that the filtering works
     >>> browser.getLink('Add new').click()
     >>> 'Add new item' in browser.contents
     True
-    >>> browser.getControl('Add Page').click()
+    >>> browser.getControl('Page').click()
+    >>> browser.getControl('Add').click()
     >>> browser.getControl('Body Text').value = \
     ... '<p>Testing that<span> tag and its contents get stripped</span> works.</p>'
     >>> browser.getControl('Title').value = 'My Page'
