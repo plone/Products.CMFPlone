@@ -196,6 +196,10 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
 
 * Customising z3 views using customerize
 
+* Products.CMFPlone.utils.BrowserView has been deprectaed. If you were using
+  this as a base class please use Products.Five.BrowserView instead. To
+  get a correctly acquisition wrapped context use aq_inner(self.context).
+
 Preferred but not obligatory (right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
