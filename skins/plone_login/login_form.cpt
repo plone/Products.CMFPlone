@@ -70,6 +70,7 @@ If you do not have an account here, head over to the
 </div>
 
 <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
+      class="enableAutoFocus"
       method="post"
       id="login_form"
       tal:condition="python:auth">
@@ -105,7 +106,6 @@ If you do not have an account here, head over to the
 
             <input type="text"
                    size="15"
-                   tabindex="1"
                    tal:attributes="name ac_name;
                                    id ac_name;
                                    value login_name;"
@@ -130,7 +130,6 @@ If you do not have an account here, head over to the
 
             <input type="password"
                    size="15"
-                   tabindex="2"
                    tal:attributes="name ac_password;
                                    id ac_password;"
                    />
@@ -143,9 +142,7 @@ If you do not have an account here, head over to the
                    value="1"
                    checked="checked"
                    id="cb_remember"
-                   tabindex="3"
                    tal:attributes="name ac_persist;
-                                   tabindex tabindex/next;
                                    checked python:request.get(ac_name, '') and 'checked' or None;"
                    />
 
@@ -161,7 +158,6 @@ If you do not have an account here, head over to the
         <div class="formControls">
 
             <input class="context"
-                   tabindex="4"
                    type="submit"
                    name="submit"
                    value="Log in"
