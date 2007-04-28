@@ -38,9 +38,8 @@ class WickedSettings(Persistent):
     """
     types_enabled = []
     enable_mediawiki = False
-    
-wicked_type_regs = dict((factory.type, factory) for factory in wicked_basic_type_regs)
-    
+wicked_type_regs = dict((factory.type, factory) for factory in \
+                        wicked_basic_type_regs)
 class WickedTypesVocabulary(object):
     """Vocabulary factory for wickedized portal types.
     """
@@ -49,17 +48,17 @@ class WickedTypesVocabulary(object):
     def __call__(self, context):
         items = [(reg.type, reg.type) for key, reg in wicked_type_regs.items()]
         return SimpleVocabulary.fromItems(items)
-        
+
 WickedTypesVocabularyFactory = WickedTypesVocabulary()
-    
+
 #
 # Archetypes markup types
-# 
+#
 
 class ITextMarkupSchema(Interface):
 
     default_type = Choice(title=_(u'Default Format'),
-        description=_(u'''Select the default format of textfields 
+        description=_(u'''Select the default format of textfields
             for newly created content objects.'''),
         default=u'text/html',
         missing_value=set(),
@@ -67,7 +66,7 @@ class ITextMarkupSchema(Interface):
         required=True)
 
     allowed_types = Tuple(title=_(u'Alternative Formats'),
-        description=_(u'''Select which formats are available for users 
+        description=_(u'''Select which formats are available for users
             as alternative to the default format. Note that if new formats are
             installed, they will be enabled for text fields by default unless
             explicitly turned off here or by the relevant installer.'''),
@@ -77,32 +76,39 @@ class ITextMarkupSchema(Interface):
             vocabulary="plone.app.vocabularies.AllowableContentTypes"))
 
 #
-# Wicked behaviour 
-# 
+# Wicked behaviour
+#
 
 class IWikiMarkupSchema(Interface):
 
-    enable_mediawiki = Bool(title=_(u'Use Media wiki style syntax: [[my link]]'),
-                            description=_(u"""Use brackets rather than the internationally usable default (( ))"""),
+    enable_mediawiki = Bool(title=_(u"""Use Media wiki style syntax: \
+[[my link]]"""),
+                            description=_(u"""Use brackets rather than the
+                                          internationally usable default (( ))
+                                          """),
                             default=False)
 
-    wiki_enabled_types = Tuple(title=_(u'Choose which types will have wiki behavior.'),
-                               description=_(u"""Each type chosen will have a wiki enabled primary text area. At least
-                                                one type must be chosen to turn wiki behavior on"""),
+    wiki_enabled_types = Tuple(title=_(u'''Choose which types will have wiki \
+behavior.'''),
+                               description=_(u"""Each type chosen will have a
+                                             wiki enabled primary text area.
+                                             At least one type must be chosen
+                                             to turn wiki behavior on"""),
                                required=False,
                                missing_value=tuple(),
-                               value_type=Choice(vocabulary="plone.app.controlpanel.WickedPortalTypes"))
+                               value_type=Choice(vocabulary="plone.app.\
+controlpanel.WickedPortalTypes"))
 
-# 
+#
 # Combined schemata and fieldsets
-# 
+#
 
 class IMarkupSchema(ITextMarkupSchema, IWikiMarkupSchema):
     """Combined schema for the adapter lookup.
     """
 
 class MarkupControlPanelAdapter(SchemaAdapterBase):
-    
+
     adapts(IPloneSiteRoot)
     implements(IMarkupSchema)
 
@@ -125,30 +131,30 @@ class MarkupControlPanelAdapter(SchemaAdapterBase):
         return getAllowedContentTypes(self.context)
 
     def set_allowed_types(self, value):
-        # The menu pretends to be a whitelist, but we are storing a blacklist so that
-        # new types are available by default. So, we inverse the list.
+        # The menu pretends to be a whitelist, but we are storing a blacklist
+        # so that new types are available by default. So, we inverse the list.
         allowable_types = getAllowableContentTypes(self.context)
         forbidden_types = [t for t in allowable_types if t not in value]
         setForbiddenContentTypes(self.context, forbidden_types)
 
     allowed_types = property(get_allowed_types, set_allowed_types)
-    
+
     # Wiki settings
 
     def get_enable_mediawiki(self):
         return self.wicked_settings.enable_mediawiki
-        
+
     def set_enable_mediawiki(self, value):
         settings = self.wicked_settings
         if settings.enable_mediawiki != value:
             self.toggle_mediawiki = True
             settings.enable_mediawiki = value
-        
+
     enable_mediawiki = property(get_enable_mediawiki, set_enable_mediawiki)
 
-    def get_wiki_enabled_types(self): 
+    def get_wiki_enabled_types(self):
         return self.wicked_settings.types_enabled
-        
+
     def set_wiki_enabled_types(self, value):
         settings = self.wicked_settings
         if not self.toggle_mediawiki and value == settings.types_enabled:
@@ -163,14 +169,15 @@ class MarkupControlPanelAdapter(SchemaAdapterBase):
 
         self.toggle_mediawiki = False
         settings.types_enabled = value
-    
-    wiki_enabled_types = property(get_wiki_enabled_types, set_wiki_enabled_types)
-    
+
+    wiki_enabled_types = property(get_wiki_enabled_types,
+                                  set_wiki_enabled_types)
+
     @property
     def wicked_settings(self):
         ann = IAnnotations(self.context)
         return ann.setdefault(WICKED_SETTING_KEY, WickedSettings())
-        
+
     def unregister_wicked_types(self):
         """Unregisters all previous registration objects
         """
@@ -191,5 +198,6 @@ class MarkupControlPanel(ControlPanelForm):
     form_fields['allowed_types'].custom_widget = AllowedTypesWidget
 
     label = _("Markup settings")
-    description = _("""Lets you control what markup is available when editing content.""")
+    description = _("""Lets you control what markup is available when editing
+                       content.""")
     form_name = _("Markup settings")

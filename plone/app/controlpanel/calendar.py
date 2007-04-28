@@ -31,7 +31,6 @@ class ICalendarSchema(Interface):
 
 
 class CalendarControlPanelAdapter(SchemaAdapterBase):
-    
     adapts(IPloneSiteRoot)
     implements(ICalendarSchema)
 

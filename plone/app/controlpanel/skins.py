@@ -4,7 +4,6 @@ from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Choice
-from zope.schema import Tuple
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -21,7 +20,7 @@ ICON_VISIBILITY_CHOICES = {
     _(u"Never show icons"): 'disabled',
     _(u"Always show icons"): 'enabled',
 }
-    
+
 class ISkinsSchema(Interface):
 
     theme = Choice(title=_(u'Default theme'),
@@ -38,19 +37,20 @@ class ISkinsSchema(Interface):
                                              "window' setting has no effect."),
                               default=True)
 
-    ext_links_open_new_window = Bool(title=_(u'External links open in new window'),
+    ext_links_open_new_window = Bool(title=_(u'External links open in new\
+window'),
                                      description=_(u"If enabled all external "
                                                     "links in the content "
                                                     "region open in a new  "
                                                     "window."),
                                      default=False)
-                    
+
     icon_visibility = Choice(title=_(u'Show content type icons'),
                              description=_(u"If disabled the content icons "
                                             "in folder listings and portlets "
                                             "won't be visible."),
                              vocabulary=SimpleVocabulary.fromItems(
-                                                ICON_VISIBILITY_CHOICES.items()))
+                                            ICON_VISIBILITY_CHOICES.items()))
 
 
 class SkinsControlPanelAdapter(SchemaAdapterBase):
@@ -83,7 +83,8 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
             self.jstool.getResource('mark_special_links.js').setEnabled(False)
         self.jstool.cookResources()
 
-    mark_special_links = property(get_mark_special_links, set_mark_special_links)
+    mark_special_links = property(get_mark_special_links,
+                                  set_mark_special_links)
 
     def get_ext_links_open_new_window(self):
         elonw = self.props.external_links_open_new_window
@@ -99,7 +100,8 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
         self.jstool.cookResources()
 
     ext_links_open_new_window = property(get_ext_links_open_new_window,
-                                         set_ext_links_open_new_window)                                
+                                         set_ext_links_open_new_window)
+
     def get_icon_visibility(self):
         return self.props.icon_visibility
 

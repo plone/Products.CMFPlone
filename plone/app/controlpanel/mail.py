@@ -37,14 +37,15 @@ class IMailHostSchema(Interface):
                     required=True)
 
     smtp_userid = TextLine(title=_(u'ESMTP username'),
-                           description=_(u'''Username for authentication to your
-                                         e-mail server. Not required unless you
-                                         are using ESMTP.'''),
+                           description=_(u'''Username for authentication to
+                                         your e-mail server. Not required
+                                         unless you are using ESMTP.'''),
                            default=None,
                            required=False)
 
     smtp_pass = Password(title=_(u'ESMTP password'),
-                         description=_(u'The password for the ESMTP user account.'),
+                         description=_(u'''The password for the ESMTP user
+                                         account.'''),
                          default=None,
                          required=False)
 
@@ -53,16 +54,18 @@ class IMailFromSchema(Interface):
 
     email_from_name = TextLine(title=_(u"Site 'From' name"),
                                description=_(u'''Plone generates e-mail using
-                                             this name as the e-mail sender.'''),
+                                             this name as the e-mail
+                                             sender.'''),
                                default=None,
                                required=True)
 
     email_from_address = ASCII(title=_(u"Site 'From' address"),
-                                  description=_(u'''Plone generates e-mail using
-                                                this address as the e-mail
-                                                return address. It is also used
-                                                as the destination address on
-                                                the site-wide contact form.'''),
+                                  description=_(u'''Plone generates e-mail
+                                                using this address as the
+                                                e-mail return address. It is
+                                                also used as the destination
+                                                address on the site-wide
+                                                contact form.'''),
                                   default=None,
                                   required=True)
 
@@ -73,7 +76,7 @@ class IMailSchema(IMailHostSchema, IMailFromSchema):
 
 
 class MailControlPanelAdapter(SchemaAdapterBase):
-    
+
     adapts(IPloneSiteRoot)
     implements(IMailSchema)
 
@@ -124,7 +127,8 @@ class MailControlPanelAdapter(SchemaAdapterBase):
     def set_email_from_address(self, value):
         getUtility(ISiteRoot).email_from_address = value
 
-    email_from_address = property(get_email_from_address, set_email_from_address)
+    email_from_address = property(get_email_from_address,
+                                  set_email_from_address)
 
 
 mailhostset = FormFieldsets(IMailHostSchema)

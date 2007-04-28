@@ -20,13 +20,15 @@ from form import ControlPanelForm
 class ISiteSchema(Interface):
 
     site_title = TextLine(title=_(u'Site title'),
-                          description=_(u"""This shows up in the title bar of browsers, in syndication feeds, etc."""),
+                          description=_(u"This shows up in the title bar of "
+                                        "browsers, in syndication feeds, "
+                                        "etc."),
                           default=u'')
 
     site_description = Text(title=_(u'Site description'),
                            description=_(u"The site description is available "
-                               "in syndicated content and in search engines. Keep it "
-                               "brief."),
+                               "in syndicated content and in search engines."
+                               "Keep it brief."),
                            default=u'',
                            required=False)
 
@@ -39,7 +41,8 @@ class ISiteSchema(Interface):
                        default=False,
                        required=False)
 
-    enable_link_integrity_checks = Bool(title=_(u'Enable link integrity checks'),
+    enable_link_integrity_checks = Bool(title=_(u'Enable link integrity \
+checks'),
                           description=_(u"Determines if the users should get "
                               "warnings when they delete or move content that "
                               "is linked from inside the site"),
@@ -55,22 +58,23 @@ class ISiteSchema(Interface):
                           default=False,
                           required=False)
 
-    enable_sitemap = Bool(title=_(u'Provide sitemap.xml.gz in the portal root'),
+    enable_sitemap = Bool(title=_(u'Provide sitemap.xml.gz in the portal \
+root'),
                           description=_(u"A sitemap.xml.gz file might be "
                               "useful for Google and lists all your content "
-                              "along with modification dates. Please note that "
-                              "generating the sitemap is an expensive "
+                              "along with modification dates. Please note "
+                              "that generating the sitemap is an expensive "
                               "operation which can be abused to slow down "
                               "your site."),
                           default=False,
                           required=False)
-                          
+
     webstats_js = SourceText(title=_(u'JavaScript for web statistics support'),
                         description=_(u"For enabling web statistics support "
                             "for e.g. Google Analytics. Look at "
-                            "http://plone.org for snippets which you can paste "
-                            "here. Do not paste Google Analytics code here "
-                            "directly; it will not work."),
+                            "http://plone.org for snippets which you can "
+                            "paste here. Do not paste Google Analytics code"
+                            "here directly; it will not work."),
                         default=u'',
                         required=False)
 

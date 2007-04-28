@@ -7,7 +7,6 @@ from zope.schema import Choice
 from zope.schema import Tuple
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -41,7 +40,7 @@ class ISearchSchema(Interface):
 
 
 class SearchControlPanelAdapter(SchemaAdapterBase):
-    
+
     adapts(IPloneSiteRoot)
     implements(ISearchSchema)
 
@@ -75,7 +74,8 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
         self.context._updateProperty('types_not_searched', value)
 
     # This also defines the user friendly types
-    types_not_searched = property(get_types_not_searched, set_types_not_searched)
+    types_not_searched = property(get_types_not_searched,
+                                  set_types_not_searched)
 
 
 class SearchControlPanel(ControlPanelForm):

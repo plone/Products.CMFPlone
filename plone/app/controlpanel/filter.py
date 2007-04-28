@@ -2,7 +2,6 @@ from plone.fieldsets import FormFieldsets
 
 from zope.interface import Interface
 from zope.component import adapts
-from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope import schema
 from zope.app.form import CustomWidgetFactory
@@ -10,11 +9,9 @@ from zope.app.form.browser import ObjectWidget
 from zope.app.form.browser import ListSequenceWidget
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.CMFPlone.utils import safe_hasattr
 from Products.PortalTransforms.transforms.safe_html import VALID_TAGS
 
 from form import ControlPanelForm
@@ -56,7 +53,6 @@ class IFilterTagsSchema(Interface):
         value_type=schema.TextLine(),
         required=False)
 
-    
     custom_tags = schema.List(
         title=_(u'Custom tags'),
         description=_(u"Add tag names here for tags which are not part of "
@@ -75,7 +71,7 @@ class IFilterAttributesSchema(Interface):
                  'cellpadding bgcolor').split(),
         value_type=schema.TextLine(),
         required=False)
-    
+
     stripped_combinations = schema.List(
         title=_(u'Stripped combinations'),
         description=_(u"These attributes are stripped from any tag when "
@@ -92,7 +88,7 @@ class IFilterEditorSchema(Interface):
         default=u'text-align list-style-type float'.split(),
         value_type=schema.TextLine(),
         required=False)
-    
+
     class_blacklist = schema.List(
         title=_(u'Filtered classes'),
         description=_(u'These class names styles are not allowed in class '
@@ -108,7 +104,6 @@ class IFilterSchema(IFilterTagsSchema, IFilterAttributesSchema,
     """
 
 class FilterControlPanelAdapter(SchemaAdapterBase):
-    
     adapts(IPloneSiteRoot)
     implements(IFilterSchema)
 
@@ -228,7 +223,8 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
     @apply
     def stripped_combinations():
         def get(self):
-            return  [TagAttrPair(' '.join(t),' '.join(a)) for (t,a) in self.kupu_tool.get_stripped_combinations()]
+            return  [TagAttrPair(' '.join(t),' '.join(a)) for (t,a) in \
+                     self.kupu_tool.get_stripped_combinations()]
         def set(self, value):
             stripped = []
             for ta in value:
@@ -253,7 +249,8 @@ filtereditor.id = 'filtereditor'
 filtereditor.label = _(u'Styles')
 
 tagattr_widget = CustomWidgetFactory(ObjectWidget, TagAttrPair)
-combination_widget = CustomWidgetFactory(ListSequenceWidget, subwidget=tagattr_widget)
+combination_widget = CustomWidgetFactory(ListSequenceWidget,
+                                         subwidget=tagattr_widget)
 
 class FilterControlPanel(ControlPanelForm):
 
@@ -261,6 +258,7 @@ class FilterControlPanel(ControlPanelForm):
     form_fields['stripped_combinations'].custom_widget = combination_widget
 
     label = _("HTML Filter settings")
-    description = _("Plone filters HTML tags that are considered security risks. Be aware of the implications before making changes below.")
+    description = _("Plone filters HTML tags that are considered security \
+risks. Be aware of the implications before making changes below.")
     form_name = _("HTML Filter Details")
 

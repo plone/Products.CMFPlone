@@ -1,11 +1,7 @@
 from zope.app.form.browser import MultiCheckBoxWidget
 from zope.app.form.browser import MultiSelectWidget
 from zope.app.form.browser import DropdownWidget
-from zope.app.form.browser import RadioWidget
 from zope.schema.vocabulary import SimpleVocabulary
-
-from Products.CMFPlone import PloneMessageFactory as _
-
 
 class DropdownChoiceWidget(DropdownWidget):
     """ """
@@ -36,7 +32,7 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
     def renderItemsWithValues(self, values):
         """Render the list of possible values, with those found in
         `values` being marked as selected.
-        
+
         This code is mostly taken from from zope.app.form.browser.itemswidgets
         import ItemsEditWidgetBase licensed under the ZPL 2.1.
         """
@@ -112,7 +108,7 @@ class MultiSelectTupleWidget(MultiSelectWidget):
 
 def WeekdayWidget(field, request):
     """A widget for the selection of weekdays."""
-    vocabulary = SimpleVocabulary.fromItems((('Monday', 0), 
+    vocabulary = SimpleVocabulary.fromItems((('Monday', 0),
                                              ('Tuesday', 1),
                                              ('Wednesday', 2),
                                              ('Thursday', 3),
@@ -123,17 +119,18 @@ def WeekdayWidget(field, request):
 
 
 class AllowedTypesWidget(MultiCheckBoxWidget):
-    """ A widget for activating and deactivating mimetypes with special considerations for types
+    """ A widget for activating and deactivating mimetypes with special
+        considerations for types
         whose transformation is not installed locally.
-        
+
         a format can have the following states:
-        
+
          1. active (i.e. selected and deselectable)
          2. inactive (i.e. not selected but selectable)
          3. deactivated (i.e. not selected and not selectable)
          4. default (i.e. selected and not deselectable)
-        
-        TODO: 
+
+        TODO:
          * computation of state for each format
          * rendering of those states
     """

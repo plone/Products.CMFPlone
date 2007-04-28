@@ -28,8 +28,10 @@ class ControlPanelForm(FieldsetsEditForm):
 
     @form.action(_(u'Cancel'), validator=null_validator)
     def handle_cancel_action(self, action, data):
-        IStatusMessage(self.request).addStatusMessage(_("Changes canceled."), type="info")
-        url = getMultiAdapter((self.context, self.request), name='absolute_url')()
+        IStatusMessage(self.request).addStatusMessage(_("Changes canceled."),
+                                                      type="info")
+        url = getMultiAdapter((self.context, self.request),
+                              name='absolute_url')()
         self.request.response.redirect(url + '/plone_control_panel')
         return
 

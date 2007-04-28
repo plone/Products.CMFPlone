@@ -17,8 +17,8 @@ class IUserGroupsSettingsSchema(Interface):
     many_groups = Bool(title=_(u'Many groups?'),
                        description=_(u"Determines if your Plone is optimized "
                            "for small or large sites. In environments with a "
-                           "lot of groups it can be very slow or impossible to "
-                           "build a list all groups. This option tunes the "
+                           "lot of groups it can be very slow or impossible "
+                           "to build a list all groups. This option tunes the "
                            "user interface and behaviour of Plone for this "
                            "case by allowing you to search for groups instead "
                            "of listing all of them."),
@@ -36,7 +36,7 @@ class IUserGroupsSettingsSchema(Interface):
 
 
 class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
-    
+
     adapts(IPloneSiteRoot)
     implements(IUserGroupsSettingsSchema)
 
