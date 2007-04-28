@@ -5,9 +5,7 @@ from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
-
-from zope.component import getUtility
-from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.utils import getToolByName
 
 setupPloneSite()
 
@@ -26,7 +24,7 @@ class SiteMapTestCase(FunctionalTestCase):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddUser('root', 'secret', ['Manager'], [])
         
-        self.ptool = getUtility(IPropertiesTool)
+        self.ptool = self.getToolByName('portal_properties')
         self.site_props = self.ptool.site_properties
         
     def loginAsManager(self):
@@ -38,6 +36,10 @@ class SiteMapTestCase(FunctionalTestCase):
         self.browser.getControl('Login Name').value = 'root'
         self.browser.getControl('Password').value = 'secret'
         self.browser.getControl('Log in').click()
+    
+    def getToolByName(self, name):
+        """docstring for getToolByName"""
+        return getToolByName(self.portal, name)
 
 
 def test_suite():

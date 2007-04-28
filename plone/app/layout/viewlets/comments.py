@@ -2,17 +2,16 @@ from urllib import quote as url_quote
 
 from zope.interface import implements
 from zope.component import getUtility
-from zope.component import queryUtility
 from zope.viewlet.interfaces import IViewlet
 
 from Acquisition import aq_inner, aq_parent
 from AccessControl import getSecurityManager
-from Products.CMFCore.interfaces import IDiscussionTool
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
-from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.CMFCore.utils import getToolByName
+
+from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
+from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 from plone.app.layout.viewlets.common import ViewletBase
 
@@ -22,8 +21,8 @@ class CommentsViewlet(ViewletBase):
     render = ViewPageTemplateFile('comments.pt')
 
     def update(self):
-        self.portal_discussion = queryUtility(IDiscussionTool)
-        self.portal_membership = queryUtility(IMembershipTool)
+        self.portal_discussion = getToolByName(aq_inner(self.context), 'portal_discussion', None)
+        self.portal_membership = getToolByName(aq_inner(self.context), 'portal_membership', None)
 
     def can_reply(self):
         return getSecurityManager().checkPermission('Reply to item', aq_inner(self.context))

@@ -6,10 +6,8 @@ from zope.i18n.locales import locales, LoadLocaleError
 from plone.memoize.view import memoize, memoize_contextless
 
 from Acquisition import aq_inner
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -49,7 +47,7 @@ class PortalState(BrowserView):
     
     @memoize_contextless
     def default_language(self):
-        site_properties = getUtility(IPropertiesTool).site_properties
+        site_properties = getToolByName(aq_inner(self.context), "portal_properties").site_properties
         return site_properties.getProperty('default_language', None)
 
     @memoize
@@ -96,18 +94,18 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def member(self):
-        tool = getUtility(IMembershipTool)
+        tool = getToolByName(aq_inner(self.context), "portal_membership")
         return tool.getAuthenticatedMember()
 
     @memoize_contextless
     def anonymous(self):
-        tool = getUtility(IMembershipTool)
+        tool = getToolByName(aq_inner(self.context), "portal_membership")
         return bool(tool.isAnonymousUser())
 
     @memoize_contextless
     def friendly_types(self):
-        site_properties = getUtility(IPropertiesTool).site_properties
+        site_properties = getToolByName(aq_inner(self.context), "portal_properties").site_properties
         not_searched = site_properties.getProperty('types_not_searched', [])
 
-        types = getUtility(ITypesTool).listContentTypes()
+        types = getToolByName(aq_inner(self.context), "portal_types").listContentTypes()
         return [t for t in types if t not in not_searched]

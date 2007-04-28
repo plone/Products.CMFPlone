@@ -1,16 +1,14 @@
-from zope.component import getUtility
-from zope.component import getMultiAdapter
 from zope.interface import implements
+from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
 
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
 from plone.memoize import view, instance
 
-from Acquisition import aq_inner, aq_parent
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-
+from Products.CMFCore.utils import getToolByName
+from Acquisition import aq_inner, aq_parent
 
 
 class NextPreviousView(BrowserView):
@@ -65,7 +63,8 @@ class ViewletBase(NextPreviousView):
         pass
 
     def portal_url(self):
-        portal = getUtility(ISiteRoot)
+        tool = getToolByName(aq_inner(self.context), 'portal_url')
+        portal = tool.getPortalObject()
         return portal.absolute_url()
 
 

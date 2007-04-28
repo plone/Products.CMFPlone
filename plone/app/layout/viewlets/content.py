@@ -1,17 +1,18 @@
+from Acquisition import aq_inner
 from zope.component import getMultiAdapter, queryMultiAdapter, getUtility
 from plone.memoize.instance import memoize
 
 from plone.app.layout.viewlets import ViewletBase
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFPlone.interfaces import IPloneTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 class DocumentActionsViewlet(ViewletBase):
     def __init__(self, context, request, view, manager):
         super(DocumentActionsViewlet, self).__init__(context, request, view, manager)
         self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
-        plone_utils = getUtility(IPloneTool)
+        plone_utils = getToolByName(aq_inner(context), 'plone_utils')
         self.getIconFor = plone_utils.getIconFor
         self.actions = self.context_state.actions().get('document_actions', None)
 

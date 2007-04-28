@@ -1,9 +1,9 @@
-from zope.component import getUtility
+from Acquisition import aq_inner
 from zope.interface import implements
 
 from plone.memoize.instance import memoize
 
-from Products.CMFCore.interfaces import IURLTool
+from Products.CMFCore.utils import getToolByName
 from plone.app.layout.icons.interfaces import IContentIcon
 
 
@@ -35,7 +35,7 @@ class CatalogBrainContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.brain = brain
-        self.portal_url = getUtility(IURLTool)()
+        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
@@ -64,7 +64,7 @@ class ArchetypesContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getUtility(IURLTool)()
+        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
@@ -90,7 +90,7 @@ class FTIContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getUtility(IURLTool)()
+        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
@@ -116,7 +116,7 @@ class PloneSiteContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getUtility(IURLTool)()
+        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
@@ -141,7 +141,7 @@ class DefaultContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getUtility(IURLTool)()
+        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16

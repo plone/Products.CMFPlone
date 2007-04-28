@@ -1,17 +1,7 @@
 import unittest
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 
-from zope.component import getUtility
-
-from Products.CMFCore.interfaces import IActionsTool
-from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import ISyndicationTool
-from Products.CMFCore.interfaces import ITypesTool
-from Products.CMFCore.interfaces import IURLTool
-from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-
+from Products.CMFPlone.utils import getToolByName
 
 class TestToolsView(GlobalsTestCase):
     """Ensure that the basic redirector setup is successful.
@@ -21,28 +11,28 @@ class TestToolsView(GlobalsTestCase):
         self.view = self.folder.restrictedTraverse('@@plone_tools')
     
     def test_actions(self):
-        self.assertEquals(self.view.actions(), getUtility(IActionsTool))
+        self.assertEquals(self.view.actions(), getToolByName(self.folder, 'portal_actions'))
         
     def test_catalog(self):
-        self.assertEquals(self.view.catalog(), getUtility(ICatalogTool))
+        self.assertEquals(self.view.catalog(), getToolByName(self.folder, 'portal_catalog'))
         
     def test_membership(self):
-        self.assertEquals(self.view.membership(), getUtility(IMembershipTool))
+        self.assertEquals(self.view.membership(), getToolByName(self.folder, 'portal_membership'))
         
     def test_properties(self):
-        self.assertEquals(self.view.properties(), getUtility(IPropertiesTool))
+        self.assertEquals(self.view.properties(), getToolByName(self.folder, 'portal_properties'))
         
     def test_syndication(self):
-        self.assertEquals(self.view.syndication(), getUtility(ISyndicationTool))
+        self.assertEquals(self.view.syndication(), getToolByName(self.folder, 'portal_syndication'))
         
     def test_types(self):
-        self.assertEquals(self.view.types(), getUtility(ITypesTool))
+        self.assertEquals(self.view.types(), getToolByName(self.folder, 'portal_types'))
         
     def test_url(self):
-        self.assertEquals(self.view.url(), getUtility(IURLTool))
+        self.assertEquals(self.view.url(), getToolByName(self.folder, 'portal_url'))
 
     def test_workflow(self):
-        self.assertEquals(self.view.workflow(), getUtility(IConfigurableWorkflowTool))
+        self.assertEquals(self.view.workflow(), getToolByName(self.folder, 'portal_workflow'))
 
 def test_suite():
     suite = unittest.TestSuite()

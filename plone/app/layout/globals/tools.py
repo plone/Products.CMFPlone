@@ -1,17 +1,10 @@
-from zope.component import getUtility
+from Acquisition import aq_inner
+
 from zope.interface import implements
 from plone.memoize.view import memoize_contextless
 
 from Products.Five.browser import BrowserView
-from Products.CMFCore.interfaces import IActionsTool
-from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import ISyndicationTool
-from Products.CMFCore.interfaces import ITypesTool
-from Products.CMFCore.interfaces import IURLTool
-from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFPlone.interfaces import IInterfaceTool
+from Products.CMFCore.utils import getToolByName
 
 from interfaces import ITools
 
@@ -23,36 +16,36 @@ class Tools(BrowserView):
     
     @memoize_contextless
     def actions(self):
-        return getUtility(IActionsTool)
+        return getToolByName(aq_inner(self.context), 'portal_actions')
         
     @memoize_contextless
     def catalog(self):
-        return getUtility(ICatalogTool)
+        return getToolByName(aq_inner(self.context), 'portal_catalog')
         
     @memoize_contextless
     def interface(self):
-        return getUtility(IInterfaceTool)
+        return getToolByName(aq_inner(self.context), 'portal_interface')
         
     @memoize_contextless
     def membership(self):
-        return getUtility(IMembershipTool)
+        return getToolByName(aq_inner(self.context), 'portal_membership')
         
     @memoize_contextless
     def properties(self):
-        return getUtility(IPropertiesTool)
+        return getToolByName(aq_inner(self.context), 'portal_properties')
 
     @memoize_contextless
     def syndication(self):
-        return getUtility(ISyndicationTool)
+        return getToolByName(aq_inner(self.context), 'portal_syndication')
         
     @memoize_contextless
     def url(self):
-        return getUtility(IURLTool)
+        return getToolByName(aq_inner(self.context), 'portal_url')
         
     @memoize_contextless
     def types(self):
-        return getUtility(ITypesTool)
+        return getToolByName(aq_inner(self.context), 'portal_types')
 
     @memoize_contextless
     def workflow(self):
-        return getUtility(IConfigurableWorkflowTool)
+        return getToolByName(aq_inner(self.context), 'portal_workflow')

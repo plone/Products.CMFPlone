@@ -6,15 +6,13 @@ from plone.memoize.view import memoize
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
-from Products.CMFCore.interfaces import IActionsTool
-from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder \
      as z2INonStructuralFolder
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 
 from interfaces import IContextState
@@ -106,7 +104,7 @@ class ContextState(BrowserView):
         
     @memoize
     def workflow_state(self):
-        tool = getUtility(IConfigurableWorkflowTool)
+        tool = getToolByName(aq_inner(self.context), "portal_workflow")
         return tool.getInfoFor(aq_inner(self.context), 'review_state', None)
     
     @memoize
@@ -156,7 +154,7 @@ class ContextState(BrowserView):
     
     @memoize
     def is_editable(self):
-        tool = getUtility(IMembershipTool)
+        tool = getToolByName(aq_inner(self.context), "portal_membership")
         return bool(tool.checkPermission('Modify portal content', aq_inner(self.context)))
     
     @memoize
@@ -173,7 +171,7 @@ class ContextState(BrowserView):
 
     @memoize
     def actions(self):
-        tool = getUtility(IActionsTool)
+        tool = getToolByName(aq_inner(self.context), "portal_actions")
         return tool.listFilteredActionsFor(aq_inner(self.context),
                                            ignore_providers=BLACKLISTED_PROVIDERS,
                                            ignore_categories=BLACKLISTED_CATEGORIES)

@@ -1,13 +1,11 @@
 # This module contains a function to help build navigation-tree-like structures
 # from catalog queries.
 
-from zope.component import getUtility
 from zope.interface import implements
 
 from Acquisition import aq_base
 
-from Products.CMFCore.interfaces import ICatalogTool
-from Products.CMFCore.interfaces import IURLTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 
 from types import StringType
@@ -105,8 +103,8 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     used for the purposes of selecting the 'currentItem'.
     """
 
-    portal_url = getUtility(IURLTool)
-    portal_catalog = getUtility(ICatalogTool)
+    portal_url = getToolByName(context, 'portal_url')
+    portal_catalog = getToolByName(context, 'portal_catalog')
 
     showAllParents = strategy.showAllParents
     rootPath = strategy.rootPath

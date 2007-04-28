@@ -1,12 +1,9 @@
-from zope.component import getUtility
-
 from Acquisition import aq_base
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import IURLTool
-from Products.CMFPlone import utils
 
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import utils
 
 def getNavigationRoot(context, relativeRoot=None):
     """Get the path to the root of the navigation tree. If context or one of
@@ -18,10 +15,10 @@ def getNavigationRoot(context, relativeRoot=None):
     the portal root.
     """
 
-    portal_url = getUtility(IURLTool)
+    portal_url = getToolByName(context, 'portal_url')
     
     if not relativeRoot:
-        portal_properties = getUtility(IPropertiesTool)
+        portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         relativeRoot = navtree_properties.getProperty('root', None)
 
