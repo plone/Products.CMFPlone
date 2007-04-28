@@ -248,7 +248,7 @@ class Plone(utils.BrowserView):
             if action_url.startswith('http') or action_url.startswith('javascript'):
                 item['url'] = action_url
             else:
-                item['url'] = '%s/%s'%(context_,aurl)
+                item['url'] = '%s/%s'%(context_url, action_url)
 
             action_method = item['url'].split('/')[-1]
 
