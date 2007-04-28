@@ -18,8 +18,7 @@ from plone.app.portlets.portlets import recent
 from plone.app.portlets.portlets import review
 
 from Acquisition import aq_base
-from Products.CMFCore.interfaces import ISiteRoot
-
+from Products.CMFCore.utils import getToolByName
 
 def assignment_mapping_from_key(context, manager_name, category, key):
     """Given the name of a portlet manager, the name of a category, and a
@@ -31,7 +30,7 @@ def assignment_mapping_from_key(context, manager_name, category, key):
     
     if category == CONTEXT_CATEGORY:
         path = key
-        portal = getUtility(ISiteRoot)
+        portal = getToolByName(context, 'portal_url').getPortalObject()
         portal_path = '/'.join(portal.getPhysicalPath())
         path = path[len(portal_path)+1:]
         obj = portal.restrictedTraverse(path, None)

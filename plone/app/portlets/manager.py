@@ -2,14 +2,14 @@ import sys
 from ZODB.POSException import ConflictError
 
 from zope.interface import Interface
-from zope.component import adapts, getMultiAdapter, getUtility
+from zope.component import adapts, getMultiAdapter
 
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
 
 from Acquisition import Explicit, aq_inner, aq_parent
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import isDefaultPage
 
 from plone.portlets.interfaces import IPortletRenderer, ILocalPortletAssignable
@@ -56,7 +56,7 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
         context = self._context()
         if not ILocalPortletAssignable.providedBy(context):
             return False
-        mtool = getUtility(IMembershipTool)
+        mtool = getToolByName(context, 'portal_membership')
         return mtool.checkPermission("Portlets: Manage portlets", context)
 
     def safe_render(self, portlet_renderer):

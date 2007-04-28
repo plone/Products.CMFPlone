@@ -4,8 +4,12 @@ from zope.formlib import form
 from zope.interface import implements
 
 from plone.app.portlets.portlets import base
+from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 
+from Acquisition import aq_inner
+from DateTime.DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 

@@ -2,12 +2,11 @@ from types import StringTypes
 
 from zope.interface import implements, Interface
 from zope.component import adapts
-from zope.component import queryUtility
 
 from Acquisition import aq_parent, aq_inner, aq_base
 
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.utils import getToolByName
 
 from plone.portlets.interfaces import IPortletContext
 from plone.portlets.constants import USER_CATEGORY
@@ -48,7 +47,7 @@ class ContentContext(object):
         return cats
 
     def _getUserId(self):
-        membership = queryUtility(IMembershipTool)
+        membership = getToolByName(self.context, 'portal_membership', None)
 
         member = membership.getAuthenticatedMember()
         if not member:
@@ -68,7 +67,7 @@ class ContentContext(object):
         return memberId
 
     def _getGroupIds(self):
-        membership = queryUtility(IMembershipTool)
+        membership = getToolByName(self.context, 'portal_membership', None)
         if membership is None or membership.isAnonymousUser():
             return ()
 

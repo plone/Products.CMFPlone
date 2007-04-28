@@ -2,11 +2,11 @@ from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
 
 from AccessControl import Unauthorized
-from Acquisition import aq_base, aq_inner
+from Acquisition import aq_inner
+from Acquisition import aq_base
 from Products.Five import BrowserView
 
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFCore.utils import getToolByName
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -22,6 +22,7 @@ from plone.app.portlets.storage import UserPortletAssignmentMapping
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
+from plone.app.portlets.browser.interfaces import IManagePortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from plone.app.portlets.browser.interfaces import IManageGroupPortletsView
@@ -120,7 +121,7 @@ class ManageDashboardPortlets(BrowserView):
         return mapping.values()
     
     def _getUserId(self):
-        membership = getUtility(IMembershipTool)
+        membership = getToolByName(aq_inner(self.context), 'portal_membership', None)
         if membership.isAnonymousUser():
             raise Unauthorized, "Cannot get portlet assignments for anonymous through this view"
         
@@ -205,7 +206,7 @@ class ManageContentTypePortlets(BrowserView):
     # View attributes
     
     def portal_type(self):
-        portal_types = getUtility(ITypesTool)
+        portal_types = getToolByName(aq_inner(self.context), 'portal_types')
         portal_type = self.request['key']
         for fti in portal_types.listTypeInfo():
             if fti.getId() == portal_type:

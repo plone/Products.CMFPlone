@@ -1,6 +1,5 @@
 from zope import schema
 from zope.component import getMultiAdapter
-from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import implements
 
@@ -10,7 +9,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 
 from Acquisition import aq_inner
 from DateTime.DateTime import DateTime
-from Products.CMFCore.interfaces import ICatalogTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -82,7 +81,7 @@ class Renderer(base.Renderer):
     @memoize
     def _data(self):
         context = aq_inner(self.context)
-        catalog = getUtility(ICatalogTool)
+        catalog = getToolByName(context, 'portal_catalog')
         limit = self.data.count
         state = self.data.state
         # We don't support querying for more than one state at a time yet

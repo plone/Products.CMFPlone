@@ -17,6 +17,7 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
 
+from Acquisition import aq_inner
 
 class ContextPortletNamespace(object):
     """Used to traverse to a contextual portlet assignable

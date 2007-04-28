@@ -1,16 +1,17 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
-from zope.component import getUtility
-from zope.component import queryUtility
 
-from plone.app.portlets.portlets import base
-from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.portlets.portlets import base
 
+from zope import schema
+from zope.formlib import form
+
+from plone.memoize.instance import memoize
+
+from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IRegistrationTool
 
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -28,7 +29,7 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
         
-        self.membership = getUtility(IMembershipTool)
+        self.membership = getToolByName(self.context, 'portal_membership')
         
         self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
         self.portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
@@ -79,7 +80,7 @@ class Renderer(base.Renderer):
             return None
 
     def can_register(self):
-        if queryUtility(IRegistrationTool) is None:
+        if getToolByName(self.context, 'portal_registration', None) is None:
             return False
         return self.membership.checkPermission('Add portal member', self.context)
 

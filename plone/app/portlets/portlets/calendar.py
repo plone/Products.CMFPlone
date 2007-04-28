@@ -2,14 +2,15 @@ from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 
-from zope.component import getUtility
+from zope import schema
+from zope.formlib import form
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
+from Acquisition import aq_inner
 from DateTime import DateTime
-from Products.CMFCalendar.interfaces import ICalendarTool
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ITranslationServiceTool
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote_plus
@@ -32,8 +33,8 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
 
-        self.calendar = getUtility(ICalendarTool)
-        self._ts = getUtility(ITranslationServiceTool)
+        self.calendar = getToolByName(context, 'portal_calendar')
+        self._ts = getToolByName(context, 'translation_service')
         self.url_quote_plus = url_quote_plus
 
         self.current = DateTime()
