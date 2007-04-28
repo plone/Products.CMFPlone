@@ -14,7 +14,7 @@
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
 body {
-    font: &dtml-fontBaseSize; <dtml-var fontFamily>;
+    font-family: <dtml-var fontFamily>;
     background-color: &dtml-backgroundColor;;
     color: &dtml-fontColor;;
     margin: 0;
