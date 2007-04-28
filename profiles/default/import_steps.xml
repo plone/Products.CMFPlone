@@ -62,7 +62,7 @@
               handler="Products.ResourceRegistries.exportimport.kssregistry.importKSSRegistry"
               title="KSS registry">
   <dependency step="componentregistry"/>
-    Import stylesheet registry
+    Import KSS registry
  </import-step>
  <import-step id="factorytool" version="20060711-01"
               handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
