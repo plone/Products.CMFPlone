@@ -19,9 +19,6 @@
     enabled="1" expression="" id="controlpanel.css" media="screen" rel="stylesheet"
     rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="presentation.css" media="projection"
-    rel="stylesheet" rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="print.css" media="print" rel="stylesheet"
     rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"

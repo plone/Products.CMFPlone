@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Removed presentation.css, as the presentation mode has moved to use
+      the S5 presentation mode.
+      [limi]
+
     - Cleaned up the ID mess around which ID/class that wraps the actual
       content (without the UI elements in the content well). The official
       approach is now to use #content for the actual content, and to use

@@ -10,4 +10,5 @@
  <stylesheet id="ploneKss.css" insert-after="forms.css"/>
  <stylesheet id="at.kss" remove=""/>
  <stylesheet id="plone.kss" remove=""/>
+ <stylesheet id="presentation.css" remove=""/>
 </object>
