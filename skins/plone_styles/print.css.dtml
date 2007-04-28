@@ -14,32 +14,6 @@
 **
 */
 
-div.top,
-#portal-logo,
-#portal-siteactions,
-.hiddenStructure,
-#portal-searchbox,
-#portal-globalnav,
-#portal-personaltools,
-#portal-breadcrumbs,
-#portal-column-one,
-#portal-column-two,
-.contentViews,
-.contentActions,
-.help,
-.legend,
-.portalMessage,
-.documentActions,
-.documentByLine,
-.netscape4,
-#portal-footer,
-#portal-colophon,
-.skipnav,
-.visualNoPrint {
-    /* Hides all the elements irrelevant for printing */
-    display: none;
-}
-
 body {
     font-family: Baskerville, Georgia, Garamond, Times, serif;
     font-size: 11pt !important;
@@ -49,7 +23,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: Baskerville, Georgia, Garamond, Times, serif;
 }
 div, p, ul, dl, ol {
-    width: auto !important;
+    width: auto;
 }
 ul, ol, dl {
     padding-right: 0.5em;	
@@ -82,11 +56,36 @@ a:link, a:visited {
     background: transparent;
 }
 
-/* Uncomment this to get link addresses inserted along with the link text
+/* Uncomment these to get link addresses inserted along with the link text
    when you print.
-
 #content a:link:after, 
 #content a:visited:after {
    content: " [" attr(href) "] ";
 }
 */
+
+/* Hide all the elements that are irrelevant for printing */
+div.top,
+#portal-logo,
+#portal-siteactions,
+.hiddenStructure,
+#portal-searchbox,
+#portal-globalnav,
+#portal-personaltools,
+#portal-breadcrumbs,
+#portal-column-one,
+#portal-column-two,
+.contentViews,
+.contentActions,
+.help,
+.legend,
+.portalMessage,
+.documentActions,
+.documentByLine,
+.netscape4,
+#portal-footer,
+#portal-colophon,
+.skipnav,
+.visualNoPrint {
+    display: none;
+}
