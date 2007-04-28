@@ -803,3 +803,7 @@ zope.deprecation.deprecated(
     ('ulocalized_time'),
     "This reference to the ulocalized_time method has been deprecated will be "
     "removed in Plone 3.5. Please import it from Products.CMFPlone.i18nl10n.")
+zope.deprecation.deprecated(
+    ('BrowserView'),
+    "Products.CMFPlone.utils.BrowserView will be removed in Plone 3.5. Please
+    use Products.Five.BrowserView instead.")

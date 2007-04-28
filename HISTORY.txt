@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Deprecate Products.CMFPlone.utils.BrowserView. Its users should use
+      Products.Five.BrowserView directly.
+      [wichert]
+
     - Removed presentation.css, as the presentation mode has moved to use
       the S5 presentation mode.
       [limi]
