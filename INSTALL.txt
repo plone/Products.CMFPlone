@@ -44,37 +44,37 @@ Installing Plone manually, step by step instructions.
      Products, you may find it here:
      http://codespeak.net/z3/five/release/Five-1.2.6.tgz**
 
-  - CMF 1.6.2+ (neither 1.5 nor 2.x+ will work)
+  - CMF 1.6.4+ (neither 1.5 nor 2.x+ will work)
      Included in the Plone tarball
 
-  - CMFQuickInstallerTool 1.5.9 or newer
+  - CMFQuickInstallerTool 1.6.1 or newer
      Included in the Plone tarball
 
-  - GroupUserFolder 3.54.1 or newer
+  - GroupUserFolder 3.54.3 or newer
      Included in the Plone tarball
 
-  - CMFFormController 2.0.6 or newer
+  - CMFFormController 2.0.8 or newer
      Included in the Plone tarball
 
-  - SecureMailHost 1.0.4 or newer
+  - SecureMailHost 1.0.5 or newer
      Included in the Plone tarball
 
-  - Archetypes 1.4.2 or newer
+  - Archetypes 1.4.3 or newer
      Included in the Plone tarball
 
-  - ATContentTypes 1.1.4 or newer
+  - ATContentTypes 1.1.5 or newer
      Included in the Plone tarball
 
-  - ATReferenceBrowserWidget 1.7 or newer
+  - ATReferenceBrowserWidget 1.7.1 or newer
      Included in the Plone tarball
 
-  - ResourceRegistries 1.3.3 or newer
+  - ResourceRegistries 1.3.8 or newer
      Included in the Plone tarball
 
   - ExtendedPathIndex 2.4 or newer
      Included in the Plone tarball
 
-  - CMFDynamicViewFTI 2.1 or newer
+  - CMFDynamicViewFTI 2.1.2 or newer
      Included in the Plone tarball
 
   - Python Imaging Library 1.1.5 or newer
@@ -87,28 +87,28 @@ Installing Plone manually, step by step instructions.
      Not included in the Plone tarball
      http://effbot.org/downloads/#elementtree
 
-  - Placeless Translation Service 1.3.4 or newer
+  - Placeless Translation Service 1.3.7 or newer
      Included in the Plone tarball
 
-  - PloneTranslations 2.6.1
+  - PloneTranslations 3.0.0
      Included in the Plone tarball
 
-  - PloneLanguageTool 1.5 or newer
+  - PloneLanguageTool 1.6 or newer
      Included in the Plone tarball
 
-  - CMFPlacefulWorkflow 1.0.2 or newer
+  - CMFPlacefulWorkflow 1.0.4 or newer
      Included in the Plone tarball
 
-  - PlonePAS 2.2 or newer
+  - PlonePAS 2.4 or newer
      Included in the Plone tarball
 
-  - PasswordResetTool 0.4.2 or newer
+  - PasswordResetTool 0.4.3 or newer
      Included in the Plone tarball
 
-  - PluggableAuthService 1.4.1 or newer
+  - PluggableAuthService 1.4.2 or newer
      Included in the Plone tarball
 
-  - PluginRegistry 1.1.1 or newer
+  - PluginRegistry 1.1.2 or newer
      Included in the Plone tarball
 
   - ExternalEditor 0.9.3 or newer

@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 2.5.x - unreleased
+Plone 2.5.3 - Release Candidate - released April 28, 2007
 
     - Fix improper uses of 'CatalogTool.searchResults' where a dict was
       passed as the first argument in place of REQUEST.
