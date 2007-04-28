@@ -24,6 +24,11 @@ Click the cancel button:
     >>> self.browser.url.endswith('plone_control_panel')
     True
 
+There should be still no changes:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
 Make some changes
 -----------------
 

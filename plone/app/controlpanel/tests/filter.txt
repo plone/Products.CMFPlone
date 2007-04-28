@@ -37,6 +37,11 @@ Now click the cancel button:
     >>> browser.url.endswith('plone_control_panel')
     True
 
+There should be still no changes:
+
+    >>> 'Changes canceled.' in browser.contents
+    True
+
 Look at the defaults
 --------------------
 

@@ -33,7 +33,7 @@ class ControlPanelForm(FieldsetsEditForm):
         url = getMultiAdapter((self.context, self.request),
                               name='absolute_url')()
         self.request.response.redirect(url + '/plone_control_panel')
-        return
+        return ''
 
 _template = ViewPageTemplateFile('control-panel.pt')
 controlpanel_named_template_adapter = named_template_adapter(_template)
