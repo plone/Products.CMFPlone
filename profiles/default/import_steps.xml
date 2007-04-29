@@ -55,12 +55,14 @@
  <import-step id="cssregistry" version="20051015-01"
               handler="Products.ResourceRegistries.exportimport.cssregistry.importCSSRegistry"
               title="Stylesheet registry">
+  <dependency step="toolset"/>
   <dependency step="componentregistry"/>
     Import stylesheet registry
  </import-step>
  <import-step id="kssregistry" version="20070407-01"
               handler="Products.ResourceRegistries.exportimport.kssregistry.importKSSRegistry"
               title="KSS registry">
+  <dependency step="toolset"/>
   <dependency step="componentregistry"/>
     Import KSS registry
  </import-step>
@@ -74,6 +76,7 @@
  <import-step id="jsregistry" version="20051015-01"
               handler="Products.ResourceRegistries.exportimport.jsregistry.importJSRegistry"
               title="Javascript registry">
+  <dependency step="toolset"/>
   <dependency step="componentregistry"/>
     Import javascript registry
  </import-step>
