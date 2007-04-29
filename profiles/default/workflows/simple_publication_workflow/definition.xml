@@ -3,15 +3,51 @@
              title="Simple Publication Workflow"
              state_variable="review_state"
              initial_state="private">
+
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
+
+ <state state_id="pending" title="Pending">
+  <description>Waiting to be reviewed, not editable by the owner.</description>
+  <exit-transition transition_id="make_private"/>
+  <exit-transition transition_id="publish"/>
+  <exit-transition transition_id="reject"/>
+  <exit-transition transition_id="retract"/>
+  <permission-map name="Access contents information"
+                  acquired="True">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Reviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Reviewer</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Reviewer</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Editor</permission-role>
+  </permission-map>
+
+ </state>
  <state state_id="private"
-        title="Private">
+    title="Private">
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="publish"/>
+  <exit-transition transition_id="submit"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -40,7 +76,8 @@
  <state state_id="published" 
         title="Published">
   <description>Visible to everyone, not editable by the owner.</description>
-  <exit-transition transition_id="make_private"/>
+  <exit-transition transition_id="retract"/>
+  <exit-transition transition_id="reject"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Anonymous</permission-role>
@@ -76,17 +113,7 @@
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
- <transition transition_id="make_private"
-             title="Make private"
-             new_state="private" trigger="USER"
-             before_script="" after_script="">
-  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=private"
-          category="workflow">Make private</action>
-  <guard>
-   <guard-role>Owner</guard-role>
-  </guard>
- </transition>
+
  <transition transition_id="publish"
              title="Publish"
              new_state="published" trigger="USER"
@@ -95,9 +122,43 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
           category="workflow">Publish</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
+ <transition transition_id="reject"
+             title="Send back"
+             new_state="private" trigger="USER"
+             before_script="" after_script="">
+  <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=reject"
+          category="workflow">Send back</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="retract"
+             title="Retract"
+             new_state="private" trigger="USER"
+             before_script="" after_script="">
+  <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=retract"
+          category="workflow">Retract</action>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="submit"
+             title="Submit for publication"
+             new_state="pending" trigger="USER"
+             before_script="" after_script="">
+  <description>Puts your item in a review queue, so it can be published on the site.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=submit"
+          category="workflow">Submit for publication</action>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+  </guard>
+ </transition>
+
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
   <description>Previous transition</description>
@@ -150,4 +211,5 @@
   <guard>
   </guard>
  </variable>
+
 </dc-workflow>
