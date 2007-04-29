@@ -1,9 +1,9 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
-    
+
     <!-- Register viewlet managers - used in plone's main_template -->
-    
+
     <browser:viewletManager
         name="plone.htmlhead"
         provides=".interfaces.IHtmlHead"
@@ -17,9 +17,17 @@
         />
 
     <browser:viewletManager
+        name="plone.portaltop"
+        provides=".interfaces.IPortalTop"
+        permission="zope2.View"
+        class=".managers.PortalTopManager"
+        />
+
+    <browser:viewletManager
         name="plone.portalheader"
         provides=".interfaces.IPortalHeader"
         permission="zope2.View"
+        class=".managers.PortalHeaderManager"
         />
 
     <browser:viewletManager
@@ -71,7 +79,71 @@
         />
 
     <!-- Define some viewlets -->
-    
+
+    <!-- The portal header -->
+    <browser:viewlet
+        name="plone.header"
+        manager=".interfaces.IPortalTop"
+        template="portal_header.pt"
+        permission="zope2.View" 
+        />
+
+    <!-- The skip links for accessibility -->
+    <browser:viewlet
+        name="plone.skip_links"
+        manager=".interfaces.IPortalHeader"
+        class=".common.SkipLinksViewlet"
+        permission="zope2.View" 
+        />
+
+    <!-- The site actions -->
+    <browser:viewlet
+        name="plone.site_actions"
+        manager=".interfaces.IPortalHeader"
+        class=".common.SiteActionsViewlet"
+        permission="zope2.View" 
+        />
+
+    <!-- The search box -->
+    <browser:viewlet
+        name="plone.searchbox"
+        manager=".interfaces.IPortalHeader"
+        class=".common.SearchBoxViewlet"
+        permission="zope2.View" 
+        />
+
+    <!-- The logo -->
+    <browser:viewlet
+        name="plone.logo"
+        manager=".interfaces.IPortalHeader"
+        class=".common.LogoViewlet"
+        permission="zope2.View" 
+        />
+
+    <!-- The global sections -->
+    <browser:viewlet
+        name="plone.global_sections"
+        manager=".interfaces.IPortalHeader"
+        class=".common.GlobalSectionsViewlet"
+        permission="zope2.View" 
+        />
+
+    <!-- The personal bar -->
+    <browser:viewlet
+        name="plone.personal_bar"
+        manager=".interfaces.IPortalTop"
+        class=".common.PersonalBarViewlet"
+        permission="zope2.View" 
+        />
+
+    <!-- The personal bar -->
+    <browser:viewlet
+        name="plone.path_bar"
+        manager=".interfaces.IPortalTop"
+        class=".common.PathBarViewlet"
+        permission="zope2.View" 
+        />
+
     <!-- Render the browser title -->
     <browser:viewlet
         name="plone.htmlhead.title"
@@ -79,7 +151,7 @@
         class=".common.TitleViewlet"
         permission="zope2.View" 
         />
-        
+
     <!-- Render the document actions -->
     <browser:viewlet
         name="plone.abovecontenttitle.documentactions"
@@ -87,7 +159,7 @@
         class=".content.DocumentActionsViewlet"
         permission="zope2.View" 
         />
-        
+
     <!-- Render the document byline -->
     <browser:viewlet
         name="plone.belowcontenttitle.documentbyline"
@@ -95,7 +167,7 @@
         class=".content.DocumentBylineViewlet"
         permission="zope2.View" 
         />
-        
+
     <!-- Render comments -->
     <browser:viewlet
         name="plone.comments"
@@ -105,7 +177,7 @@
         class=".comments.CommentsViewlet"
         permission="zope2.View"
         />
-        
+
     <!-- Render lock info -->
     <browser:viewlet
         name="plone.lockinfo"

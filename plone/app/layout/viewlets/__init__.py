@@ -1,1 +1,1 @@
-from common import ViewletBase, TitleViewlet
+from common import ViewletBase

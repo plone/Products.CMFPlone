@@ -1,7 +1,7 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
-from zope.viewlet.interfaces import IViewlet
 
+from plone.app.layout.viewlets import ViewletBase
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
 from plone.memoize import view, instance
 
@@ -48,29 +48,9 @@ class NextPreviousView(BrowserView):
         return plone.is_view_template()
 
 
-class ViewletBase(NextPreviousView):
-    implements(IViewlet)
-
-    def __init__(self, context, request, view, manager):
-        super(ViewletBase, self).__init__(context, request)
-        self.__parent__ = view
-        self.context = context
-        self.request = request
-        self.view = view
-        self.manager = manager
-
-    def update(self):
-        pass
-
-    def portal_url(self):
-        tool = getToolByName(aq_inner(self.context), 'portal_url')
-        portal = tool.getPortalObject()
-        return portal.absolute_url()
-
-
-class NextPreviousViewlet(ViewletBase):
+class NextPreviousViewlet(ViewletBase, NextPreviousView):
     render = ZopeTwoPageTemplateFile('nextprevious.pt')
 
 
-class NextPreviousLinksViewlet(ViewletBase):
+class NextPreviousLinksViewlet(ViewletBase, NextPreviousView):
     render = ZopeTwoPageTemplateFile('links.pt')

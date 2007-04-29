@@ -9,10 +9,13 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 class DocumentActionsViewlet(ViewletBase):
-    def __init__(self, context, request, view, manager):
-        super(DocumentActionsViewlet, self).__init__(context, request, view, manager)
-        self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
-        plone_utils = getToolByName(aq_inner(context), 'plone_utils')
+    def update(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.portal_url = self.portal_state.portal_url()
+        self.context_state = getMultiAdapter((self.context, self.request),
+                                             name=u'plone_context_state')
+        plone_utils = getToolByName(aq_inner(self.context), 'plone_utils')
         self.getIconFor = plone_utils.getIconFor
         self.actions = self.context_state.actions().get('document_actions', None)
 
@@ -20,10 +23,14 @@ class DocumentActionsViewlet(ViewletBase):
 
 
 class DocumentBylineViewlet(ViewletBase):
-    def __init__(self, context, request, view, manager):
-        super(DocumentBylineViewlet, self).__init__(context, request, view, manager)
-        self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
-        self.tools = getMultiAdapter((context, request), name='plone_tools')
+    def update(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.portal_url = self.portal_state.portal_url()
+        self.context_state = getMultiAdapter((self.context, self.request),
+                                             name=u'plone_context_state')
+        self.tools = getMultiAdapter((self.context, self.request),
+                                     name='plone_tools')
 
     @memoize
     def show(self):

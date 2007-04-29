@@ -1,0 +1,34 @@
+<div id="portal-personaltools-wrapper"
+     i18n:domain="plone">
+
+<h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
+
+<ul id="portal-personaltools"
+    class="visualInline">
+   <tal:block condition="not: view/anonymous">
+       <li class="portalUser"><a 
+           id="user-name"
+           tal:attributes="href string:${view/portal_url}/dashboard"
+          ><span class="visualCaseSensitive"
+                 tal:content="view/user_name">
+                John
+           </span
+       ></a></li>
+   </tal:block>
+
+    <tal:actions tal:repeat="action view/user_actions">
+        <li tal:define="icon python:view.getIconFor(action['category'], action['id'], None);
+                        class_name string:visualIcon actionicon-${action/category}-${action/id};
+                        class_name python:icon is not None and class_name or nothing;"
+            tal:attributes="class class_name">
+            <a href=""
+               tal:attributes="href action/url;
+                               class python:icon is not None and 'visualIconPadding' or nothing;"
+            ><tal:actionname i18n:translate="" 
+                             tal:content="action/title">dummy</tal:actionname
+            ></a>
+        </li>
+    </tal:actions>
+
+</ul>
+</div>

@@ -10,8 +10,12 @@ class IHtmlHeadLinks(IViewletManager):
         provided by <link> tags.
     """
 
-class IPortalHeader(IViewletManager):
+class IPortalTop(IViewletManager):
     """A viewlet manager that sits at the very top of the rendered page
+    """
+
+class IPortalHeader(IViewletManager):
+    """A viewlet manager that sits right after the skip to content links
     """
 
 class IAboveContent(IViewletManager):

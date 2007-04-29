@@ -1,0 +1,10 @@
+<p class="hiddenStructure"
+   i18n:domain="plone">
+  <a accesskey="2"
+     tal:attributes="href string:${view/current_page_url}#documentContent"
+     i18n:translate="label_skiptocontent">Skip to content.</a> |
+
+  <a accesskey="6"
+     tal:attributes="href string:${view/current_page_url}#portlet-navigation-tree"
+     i18n:translate="label_skiptonavigation">Skip to navigation</a>
+</p>
