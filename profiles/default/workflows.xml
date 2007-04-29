@@ -12,7 +12,7 @@
  <object name="simple_publication_workflow" meta_type="Workflow"/>
  <bindings>
   <default>
-   <bound-workflow workflow_id="plone_workflow"/>
+   <bound-workflow workflow_id="simple_publication_workflow"/>
   </default>
   <type type_id="ATBooleanCriterion"/>
   <type type_id="ATCurrentAuthorCriterion"/>

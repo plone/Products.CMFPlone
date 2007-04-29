@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Switched to the simple_publication_workflow as the default workflow.
+      Note that the tests still assume plone_workflow is the default (see
+      the previous change message below).
+      [optilude]
+
+    - Made an extension profile for the default Plone test fixture in
+      profiles/testfixture. For now, this explicitly sets the test fixture
+      workflow. This profile should be used with care - deviate too far from
+      the base profile and tests become meaningless! However, some deviation
+      may be inevitable in order to have sane and predictable tests.
+      [optilude]
+
     - Deprecate Products.CMFPlone.utils.BrowserView. Its users should use
       Products.Five.BrowserView directly.
       [wichert]
