@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Moved global_logo, global_pathbar, global_personalbar, global_searchbox,
+      global_sections and global_siteactions to viewlets in plone.app.layout.
+      [fschulze]
+
     - Add POST-only protections to security critical methods (see
       http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-0240).
       [mj, bloodbare, alecm]
