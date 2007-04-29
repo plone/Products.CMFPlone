@@ -15,7 +15,7 @@ REQUEST=context.REQUEST
 group=context.portal_groups.getGroupById(groupname)
 
 for u in delete:
-    group.removeMember(u)
+    group.removeMember(u, REQUEST=context.REQUEST)
 
 context.plone_utils.addPortalMessage(_(u'Changes saved.'))
 return state

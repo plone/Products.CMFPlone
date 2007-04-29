@@ -15,10 +15,12 @@ if change_type == 'add':
     for role in member_role:
         pm.setLocalRoles( obj=context,
                           member_ids=member_ids,
-                          member_role=role )
+                          member_role=role,
+                          REQUEST=context.REQUEST)
 else:
     pm.deleteLocalRoles( obj=context,
-                         member_ids=member_ids )
+                         member_ids=member_ids,
+			 REQUEST=context.REQUEST )
 
 transaction_note('Modified sharing for folder %s at %s' % (context.title_or_id(), context.absolute_url()))
 context.plone_utils.addPortalMessage(_(u'Local roles changed.'))

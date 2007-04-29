@@ -27,7 +27,7 @@ password=REQUEST.get('password') or portal_registration.generatePassword()
 # http://dev.plone.org/plone/ticket/2982 and http://plone.org/collector/3028
 # for more info. (rohrer 2004-10-24)
 try:
-    portal_registration.addMember(username, password, properties=REQUEST)
+    portal_registration.addMember(username, password, properties=REQUEST, REQUEST=context.REQUEST)
 except AttributeError:
     state.setError('username', _(u'The login name you selected is already in use or is not valid. Please choose another.'))
     context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
@@ -49,7 +49,8 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
                 mapping={u'address' : str(err)})
         state.setError('email', msg)
         state.set(came_from='login_success')
-        context.acl_users.userFolderDelUsers([username,])
+        context.acl_users.userFolderDelUsers([username,], REQUEST=context.REQUE
+ST)
         context.plone_utils.addPortalMessage(_(u'Please enter a valid email address.'), 'error')
         return state.set(status='failure')
 

@@ -42,6 +42,7 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.statusmessages.interfaces import IStatusMessage
+from AccessControl.requestmethod import postonly
 
 AllowSendto = 'Allow sendto'
 permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager',))
@@ -429,7 +430,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal.changeSkin(skin_name)
 
     security.declareProtected(ManagePortal, 'changeOwnershipOf')
-    def changeOwnershipOf(self, object, userid, recursive=0):
+    def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):
         """Changes the ownership of an object."""
         membership = getToolByName(self, 'portal_membership')
         acl_users = getattr(self, 'acl_users')
@@ -467,6 +468,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 fixOwnerRole(obj, user.getId())
                 if base_hasattr(obj, 'reindexObject'):
                     obj.reindexObject()
+    changeOwnershipOf = postonly(changeOwnershipOf)
 
     security.declarePublic('urlparse')
     def urlparse(self, url):
@@ -912,7 +914,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return True
 
     security.declarePublic('acquireLocalRoles')
-    def acquireLocalRoles(self, obj, status = 1):
+    def acquireLocalRoles(self, obj, status = 1, REQUEST=None):
         """If status is 1, allow acquisition of local roles (regular behaviour).
 
         If it's 0, prohibit it (it will allow some kind of local role
@@ -932,6 +934,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # Reindex the whole stuff.
         obj.reindexObjectSecurity()
+    acquireLocalRoles = postonly(acquireLocalRoles)
 
     security.declarePublic('isLocalRoleAcquired')
     def isLocalRoleAcquired(self, obj):

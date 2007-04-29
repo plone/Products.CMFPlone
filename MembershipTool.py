@@ -19,6 +19,7 @@ from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.interfaces import IMembershipTool
+from AccessControl.requestmethod import postonly
 
 default_portrait = 'defaultUser.gif'
 
@@ -231,7 +232,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             return None
 
     security.declareProtected(SetOwnPassword, 'setPassword')
-    def setPassword(self, password, domains=None):
+    def setPassword(self, password, domains=None, REQUEST=None):
         '''Allows the authenticated member to set his/her own password.
         '''
         registration = getToolByName(self, 'portal_registration', None)
@@ -258,6 +259,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             self.credentialsChanged(password)
         else:
             raise BadRequest, 'Not logged in.'
+    setPassword = postonly(setPassword)
 
     security.declareProtected(View, 'getCandidateLocalRoles')
     def getCandidateLocalRoles(self, obj):

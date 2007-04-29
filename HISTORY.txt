@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add POST-only protections to security critical methods (see
+      http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-0240).
+      [mj, bloodbare, alecm]
+
     - Switched to the simple_publication_workflow as the default workflow.
       Note that the tests still assume plone_workflow is the default (see
       the previous change message below).

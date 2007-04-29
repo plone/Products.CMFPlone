@@ -14,7 +14,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 mt = context.portal_membership
 member=mt.getAuthenticatedMember()
 try:
-    mt.setPassword(password)
+    mt.setPassword(password, REQUEST=context.REQUEST)
 except AttributeError:
     context.plone_utils.addPortalMessage(_(u'While changing your password an AttributeError occurred. This is usually caused by your user being defined outside the portal.'), 'error')
     return state.set(status='failure')

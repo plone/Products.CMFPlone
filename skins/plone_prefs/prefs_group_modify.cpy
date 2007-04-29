@@ -20,13 +20,13 @@ groups=[group[len('group_'):]
 
 for group in groups:
     roles=[r for r in REQUEST['group_' + group] if r]
-    groupstool.editGroup(group, roles=roles, groups=())
+    groupstool.editGroup(group, roles=roles, groups=(), REQUEST=context.REQUEST)
     message = _(u'Changes saved.')
 
 delete=REQUEST.get('delete',[])
 
 if delete:
-    groupstool.removeGroups(delete)
+    groupstool.removeGroups(delete, REQUEST=context.REQUEST)
     message=_(u'Group(s) deleted.')
 
 context.plone_utils.addPortalMessage(message)

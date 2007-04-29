@@ -3,6 +3,7 @@
 #
 
 from Products.CMFPlone.tests import PloneTestCase
+from zExceptions import Forbidden
 
 def sortTuple(t):
     l = list(t)
@@ -21,20 +22,48 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Cannot assign a role I do not have myself...
         self.setRoles(['Member', 'Foo', 'Bar', 'Baz'])
 
+    def testFolderLocalRoleAddPostOnly(self):
+        # Should try to use get on assing a local role
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.assertRaises(Forbidden, self.folder.folder_localrole_edit,'add',['user2'],'Foo')
+
+    def testFolderLocalRoleDeletePostOnly(self):
+        # Should try to use get on delete a local role
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.assertRaises(Forbidden, self.folder.folder_localrole_edit,'delete',['user2'])
+
+    def testFolderLocalRoleDelete2PostOnly(self):
+        # Should try to use get on delete a local role
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.assertRaises(Forbidden, self.folder.folder_localrole_delete,['user2'])
+
+    def testFolderLocalRoleSetPostOnly(self):
+        # Should try to use get on assing a local role
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.assertRaises(Forbidden, self.folder.folder_localrole_set)
+
     def testFolderLocalRoleAdd(self):
         # Should assing a local role
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
         member = self.membership.getMemberById('user2')
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
 
     def testFolderLocalRoleDelete(self):
         # Should delete a local role
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         member = self.membership.getMemberById('user2')
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
         self.folder.folder_localrole_edit('delete', ['user2'])
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Member'))
 
@@ -48,11 +77,13 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Try deleting a single role
         member = self.membership.getMemberById('user2')
         # add two roles
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         self.folder.folder_localrole_edit('add', ['user2'], 'Bar')
 
         # remove the Bar role
         self.folder.folder_localrole_delete(member_role_ids=['user2((Bar))'])
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
 
@@ -60,11 +91,13 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Try deleting a all roles
         member = self.membership.getMemberById('user2')
         # add two roles
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         self.folder.folder_localrole_edit('add', ['user2'], 'Bar')
 
         # remove a user
         self.folder.folder_localrole_delete(member_ids=['user2'])
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Member'))
 
@@ -72,10 +105,12 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Try adding a new role for a user
         member = self.membership.getMemberById('user2')
         # add a role the old way
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
 
         # add another role the new way
         self.folder.folder_localrole_add(member_ids=['user2'], member_roles=['Bar', 'Baz'])
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Bar', 'Baz', 'Foo', 'Member'))
 
@@ -88,6 +123,7 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
     def testStopAcquireLocalRole(self):
         # See if a sub folder really didn't get the roles by acquisition
         member = self.membership.getMemberById('user2')
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_localrole_add(member_ids=['user2'], member_roles=['Bar'])
 
         # check if the role was assigned
@@ -97,6 +133,7 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='A')
         putils = self.portal.plone_utils
         putils.acquireLocalRoles(self.folder.A, status=0)
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
 
         # check if inheritance is blocked
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder.A)),

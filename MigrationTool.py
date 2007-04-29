@@ -17,6 +17,7 @@ from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log, log_deprecated
+from AccessControl.requestmethod import postonly
 
 _upgradePaths = {}
 _widgetRegistry = {}
@@ -289,6 +290,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             return self.manage_results(self, out=out)
         except NameError:
             pass
+    upgrade = postonly(upgrade)
 
     ##############################################################
     # Private methods

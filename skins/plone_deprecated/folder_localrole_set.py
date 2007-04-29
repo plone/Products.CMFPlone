@@ -7,7 +7,7 @@ from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 putils = context.plone_utils
-putils.acquireLocalRoles(context, use_acquisition)
+putils.acquireLocalRoles(context, use_acquisition, REQUEST=context.REQUEST)
 if use_acquisition:
     msg=_(u'Role Acquisition is now turned on.')
 else:

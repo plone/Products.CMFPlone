@@ -28,7 +28,8 @@ Also make sure you are not doing this migration as an Emergency user.</span>
 Your Plone instance is out of date. Click "upgrade" to bring this Plone Zope
 version up to date with your file system.
 
-<form action="upgrade">
+<form action="upgrade"
+           method="POST">
 
 <p>
 <input name="dry_run" type="checkbox" value="1:int" />
@@ -47,7 +48,9 @@ Your Plone instance is up to date.
 </dtml-if>
 <hr />
 
-<form action="upgrade">
+<form action="upgrade"
+           method="POST">
+
 <p>
 If you're <strong>absolutely</strong> sure your Plone instance is not
 &dtml-getInstanceVersion;, choose the version you think it is below and click
