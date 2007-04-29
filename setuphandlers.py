@@ -120,6 +120,8 @@ class PloneGenerator:
         Import default plone content
         """
         existing = p.objectIds()
+        
+        wftool = getToolByName(p, "portal_workflow")
 
         # Figure out the current user preferred language
         language = None
@@ -176,6 +178,9 @@ class PloneGenerator:
         # Special handling of the front-page, as we want to translate it
         if 'front-page' in existing:
             fp = p['front-page']
+            if wftool.getInfoFor(fp, 'review_state') != 'published':
+                wftool.doActionFor(fp, 'publish')
+                
             if language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
@@ -190,6 +195,7 @@ class PloneGenerator:
                         fp.setTitle(title)
                         fp.setDescription(desc)
                         fp.setText(text)
+            
 
         # News topic
         if 'news' not in existing:
@@ -203,6 +209,10 @@ class PloneGenerator:
             folder.setLocallyAllowedTypes(['News Item'])
             folder.setImmediatelyAddableTypes(['News Item'])
             folder.setDefaultPage('aggregator')
+            
+            if wftool.getInfoFor(folder, 'review_state') != 'published':
+                wftool.doActionFor(folder, 'publish')
+            
             topic = p.news.aggregator
             type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
             type_crit.setValue('News Item')
@@ -211,6 +221,9 @@ class PloneGenerator:
             state_crit.setValue('published')
             topic.setSortCriterion('effective', True)
             topic.setLayout('folder_summary_view')
+            
+            if wftool.getInfoFor(topic, 'review_state') != 'published':
+                wftool.doActionFor(topic, 'publish')
 
         # Events topic
         if 'events' not in existing:
@@ -224,6 +237,10 @@ class PloneGenerator:
             folder.setLocallyAllowedTypes(['Event'])
             folder.setImmediatelyAddableTypes(['Event'])
             folder.setDefaultPage('aggregator')
+            
+            if wftool.getInfoFor(folder, 'review_state') != 'published':
+                wftool.doActionFor(folder, 'publish')
+            
             topic = folder.aggregator
             type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
             type_crit.setValue('Event')
@@ -238,6 +255,9 @@ class PloneGenerator:
             date_crit.setOperation('more')
         else:
             topic = p.events
+            
+        if wftool.getInfoFor(topic, 'review_state') != 'published':
+            wftool.doActionFor(topic, 'publish')
 
         # Previous events subtopic
         if 'previous' not in topic.objectIds():
@@ -253,6 +273,9 @@ class PloneGenerator:
             # Only take events in the past
             date_crit.setDateRange('-') # This is irrelevant when the date is now
             date_crit.setOperation('less')
+            
+            if wftool.getInfoFor(topic, 'review_state') != 'published':
+                wftool.doActionFor(topic, 'publish')
 
         if 'Members' in existing:
             # configure Members folder (already added by the content import)
@@ -260,6 +283,9 @@ class PloneGenerator:
             members.setTitle('Users')
             members.setDescription("Container for portal members' home directories")
             members.reindexObject()
+            
+            if wftool.getInfoFor(members, 'review_state') != 'published':
+                wftool.doActionFor(members, 'publish')
             
             # Disable portlets here
             rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=p)
