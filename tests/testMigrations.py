@@ -1722,10 +1722,8 @@ class TestMigrations_v3_0(MigrationTest):
                       IQuickInstallerTool, ICSSRegistry, IJSRegistry, 
                       IFormControllerTool, ILanguageTool, IDiffTool,
                       IATCTTool, IArchetypeTool, IReferenceCatalog,
-                      IUIDCatalog, IMimetypesRegistryTool, IRepositoryTool,
-                      IPortalTransformsTool, IArchivistTool, IStorageTool,
-                      IPortalModifierTool, IPurgePolicyTool, IGroupTool,
-                      IGroupDataTool, )
+                      IUIDCatalog, IMimetypesRegistryTool,
+                      IPortalTransformsTool, IGroupTool, IGroupDataTool )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])

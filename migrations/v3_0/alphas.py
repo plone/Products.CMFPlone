@@ -43,11 +43,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFDiffTool.interfaces import IDiffTool
-from Products.CMFEditions.interfaces import IArchivistTool
-from Products.CMFEditions.interfaces import IPortalModifierTool
-from Products.CMFEditions.interfaces import IPurgePolicyTool
-from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
-from Products.CMFEditions.interfaces import IStorageTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
@@ -736,11 +731,6 @@ registration = (('archetype_tool', IArchetypeTool),
                 ('portal_uidannotation', IUniqueIdAnnotationManagement),
                 ('portal_uidgenerator', IUniqueIdGenerator),
                 ('portal_uidhandler', IUniqueIdHandler),
-                ('portal_archivist', IArchivistTool),
-                ('portal_modifier', IPortalModifierTool),
-                ('portal_purgepolicy', IPurgePolicyTool),
-                ('portal_repository', IRepositoryTool),
-                ('portal_historiesstorage', IStorageTool),
                 ('portal_languages', ILanguageTool),
                )
 
