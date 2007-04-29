@@ -165,7 +165,7 @@
              title="Retract"
              new_state="visible" trigger="USER"
              before_script="" after_script="">
-  <description>If you submitted the item by mistake or want to perform additional edits, this will bring take it back.</description>
+  <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow">Retract</action>
   <guard>

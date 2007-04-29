@@ -8,7 +8,8 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <state state_id="internal"
-        title="Visible only to intranet members">
+        title="Internally visible">
+  <description>Visible to all intranet users.</description>
   <exit-transition transition_id="make_private"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -40,7 +41,8 @@
   </permission-map>
  </state>
  <state state_id="private"
-        title="Visible and editable only by owner">
+        title="Private">
+  <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -70,9 +72,10 @@
   </permission-map>
  </state>
  <transition transition_id="make_private"
-             title="Member makes content private"
+             title="Make private"
              new_state="private" trigger="USER"
              before_script="" after_script="">
+  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=private"
           category="workflow">Make private</action>
   <guard>
@@ -80,11 +83,12 @@
   </guard>
  </transition>
  <transition transition_id="show"
-             title="Make the folder visible and accessible to other intranet members"
+             title="Make visible internally"
              new_state="internal" trigger="USER"
              before_script="" after_script="">
+  <description>Makes the folder visible internally.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Make internally visible </action>
+          category="workflow">Make visible internally</action>
   <guard>
    <guard-role>Owner</guard-role>
   </guard>

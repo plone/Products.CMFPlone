@@ -9,7 +9,8 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <state state_id="internal"
-        title="Visible only to intranet members">
+        title="Internal draft">
+  <description>Visible to all intranet users.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
@@ -51,7 +52,8 @@
   </permission-map>
  </state>
  <state state_id="internally_published"
-        title="Internally published">
+        title="Published internally">
+  <description>Published and visible to intranet users.</description>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -86,7 +88,8 @@
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
- <state state_id="pending" title="Waiting for reviewer">
+ <state state_id="pending" title="Pending">
+  <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
@@ -128,7 +131,8 @@
   </permission-map>
  </state>
  <state state_id="private"
-        title="Visible and editable only by owner">
+        title="Private">
+  <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -156,9 +160,10 @@
   </permission-map>
  </state>
  <transition transition_id="hide"
-             title="Member makes content private"
+             title="Make private"
              new_state="private" trigger="USER"
              before_script="" after_script="">
+  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow">Make private</action>
   <guard>
@@ -166,29 +171,32 @@
   </guard>
  </transition>
  <transition transition_id="publish"
-             title="Reviewer publishes content"
+             title="Publish internally"
              new_state="internally_published" trigger="USER"
              before_script="" after_script="">
+  <description>Publishing the item makes it visible to other users.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
-          category="workflow">Publish</action>
+          category="workflow">Publish internally</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="reject"
-             title="Reviewer rejects submission"
+             title="Send back"
              new_state="internal" trigger="USER"
              before_script="" after_script="">
+  <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
-          category="workflow">Reject</action>
+          category="workflow">Send back</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="retract"
-             title="Member retracts submission"
+             title="Retract"
              new_state="internal" trigger="USER"
              before_script="" after_script="">
+  <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow">Retract</action>
   <guard>
@@ -196,19 +204,21 @@
   </guard>
  </transition>
  <transition transition_id="show"
-             title="Member makes content visible"
+             title="Promote to internal draft"
              new_state="internal" trigger="USER"
              before_script="" after_script="">
+  <description>Promotes your private item to an internal draft.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Make visible</action>
+          category="workflow">Promote to internal draft</action>
   <guard>
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <transition transition_id="submit"
-             title="Member requests publishing on the intranet"
+             title="Submit for internal publication"
              new_state="pending" trigger="USER"
              before_script="" after_script="">
+  <description>Puts your item in a review queue, so it can be published internally.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
           category="workflow">Submit for internal publication</action>
   <guard>
