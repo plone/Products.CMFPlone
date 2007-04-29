@@ -51,9 +51,9 @@
 
       <p i18n:translate="description_publishing_process_short">
         An item's status (also called its review state) determines who
-        can see it.<br /> Another way to control the visibility of an item is
-        with its <strong>effective date</strong>. An item is not publicly
-        searchable before its effective date. This will prevent the item
+        can see it.  Another way to control the visibility of an item is
+        with its <strong>Publishing Date</strong>. An item is not publicly
+        searchable before its publishing date. This will prevent the item
         from showing up in portlets and folder listings, although the item
         will still be available if accessed directly via its URL.
       </p>
@@ -96,12 +96,11 @@
           </div>
 
           <div class="field" tal:define="error errors/effective_date | nothing;">
-            <label i18n:translate="label_effective_date">Effective Date</label>
+            <label i18n:translate="label_effective_date">Publishing Date</label>
             <div class="formHelp"
                  i18n:translate="help_effective_date">
-              The date when the item will be available (of course it
-              needs to be published too). If no date is selected the
-              item will be effective immediately.
+              The date when the item will be published. If no date is selected the
+              item will be published immediately.
             </div>
 
             <div tal:content="error">Validation error output</div>
