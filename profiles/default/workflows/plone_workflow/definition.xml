@@ -3,10 +3,12 @@
              title="Default Workflow [Plone]"
              state_variable="review_state"
              initial_state="visible">
+
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
+
  <state state_id="pending" title="Pending">
   <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="hide"/>
@@ -128,6 +130,7 @@
   </permission-map>
 
  </state>
+
  <transition transition_id="hide"
              title="Make private"
              new_state="private" trigger="USER"
@@ -195,6 +198,7 @@
    <guard-permission>Request review</guard-permission>
   </guard>
  </transition>
+
  <worklist worklist_id="reviewer_queue" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending"
@@ -204,6 +208,7 @@
   </guard>
   <match name="review_state" values="pending"/>
  </worklist>
+
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
   <description>Previous transition</description>
@@ -256,4 +261,5 @@
   <guard>
   </guard>
  </variable>
+
 </dc-workflow>
