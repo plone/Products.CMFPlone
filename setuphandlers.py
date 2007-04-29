@@ -180,7 +180,10 @@ class PloneGenerator:
             fp = p['front-page']
             if wftool.getInfoFor(fp, 'review_state') != 'published':
                 wftool.doActionFor(fp, 'publish')
-                
+
+            # Show off presentation mode
+            fp.setPresentation(True)
+
             if language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
