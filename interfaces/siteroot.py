@@ -12,3 +12,7 @@ class IMigratingPloneSiteRoot(Interface):
     Marker interface used for migration GenericSetup profiles.
     """
 
+class ITestCasePloneSiteRoot(Interface):
+    """
+    Marker interface used for test fixture GenericSetup profiles.
+    """

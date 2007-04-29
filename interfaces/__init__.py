@@ -11,6 +11,7 @@ from installable import INonInstallable
 from migration import IMigrationTool
 from siteroot import IPloneSiteRoot
 from siteroot import IMigratingPloneSiteRoot
+from siteroot import ITestCasePloneSiteRoot
 from constrains import IConstrainTypes
 from constrains import ISelectableConstrainTypes
 from structure import INonStructuralFolder

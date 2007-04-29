@@ -6,7 +6,13 @@
 
 from Products.PloneTestCase.ptc import *
 
-setupPloneSite()
+# Make the test fixture extension profile active
+from zope.interface import classImplements
+from Products.CMFPlone.Portal import PloneSite
+from Products.CMFPlone.interfaces import ITestCasePloneSiteRoot
+classImplements(PloneSite, ITestCasePloneSiteRoot)
+
+setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
 
 
 class PloneTestCase(PloneTestCase):

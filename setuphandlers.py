@@ -430,3 +430,13 @@ def importContent(context):
     site = context.getSite()
     gen = PloneGenerator()
     gen.setupPortalContent(site)
+
+def updateWorkflowRoleMappings(context):
+    """
+    If an extension profile (such as the testfixture one) switches default,
+    workflows, this import handler will make sure object security works
+    properly.
+    """
+    site = context.getSite()
+    portal_workflow = getToolByName(site, 'portal_workflow')
+    portal_workflow.updateRoleMappings()

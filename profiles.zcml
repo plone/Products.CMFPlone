@@ -10,5 +10,14 @@
       description="Profile for a default Plone."
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       />
+      
+  <genericsetup:registerProfile
+      name="testfixture"
+      title="Plone Test Fixture"
+      directory="profiles/testfixture"
+      description="Extension profile to configure a test fixture"
+      for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
 
 </configure>
