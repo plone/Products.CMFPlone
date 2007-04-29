@@ -420,7 +420,7 @@ Plone 3.0-beta1 - released March 26, 2007
 
     - Renamed "Smart Folder" to "Collection" since it better describes the new
       functionality, made other things more consistent: "Comments" everywhere
-      instead of "Discussion", "Publication Date" instead of "Effective Date",
+      instead of "Discussion", "Publishing Date" instead of "Effective Date",
       better help text on these.
       [limi]
 
