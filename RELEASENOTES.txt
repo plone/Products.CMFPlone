@@ -182,6 +182,15 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
 
 * It is no longer possible to define workflows using python code. Instead
   workflows have to be created via a GenericSetup profile.
+  
+* The new default workflow is simple_publication_workflow. If you have tests
+  which can't handle this, you should fix them. However, to get a test fixture
+  with the old plone_workflow as default, you can do:
+  
+    setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
+
+  This sets up the CMFPlone test fixture extension profile, which ensures
+  the default is plone_workflow.
 
 * The long deprecated Products.CMFCore.CMFPermissions module has been
   removed. Code should now use its replacement Products.CMFCore.permissions
