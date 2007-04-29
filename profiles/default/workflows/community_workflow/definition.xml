@@ -215,7 +215,7 @@
  </transition>
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
-  <description>The last transition</description>
+  <description>Previous transition</description>
   <default>
    
    <expression>transition/getId|nothing</expression>
@@ -235,7 +235,7 @@
  </variable>
  <variable variable_id="comments" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Comments about the last transition</description>
+  <description>Comment about the last transition</description>
   <default>
    
    <expression>python:state_change.kwargs.get('comment','')</expression>
@@ -257,7 +257,7 @@
  </variable>
  <variable variable_id="time" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Time of the last transition</description>
+  <description>When the previous transition was performed</description>
   <default>
    
    <expression>state_change/getDateTime</expression>

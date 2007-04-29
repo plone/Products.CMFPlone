@@ -8,6 +8,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <state state_id="pending" title="Pending">
+  <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
@@ -40,6 +41,7 @@
 
  </state>
  <state state_id="private" title="Private">
+  <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -94,6 +96,7 @@
 
  </state>
  <state state_id="visible" title="Public Draft">
+  <description>Visible to everyone, but not approved by the reviewers.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
@@ -126,9 +129,10 @@
 
  </state>
  <transition transition_id="hide"
-             title="Member makes content private"
+             title="Make private"
              new_state="private" trigger="USER"
              before_script="" after_script="">
+  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow">Make private</action>
   <guard>
@@ -136,9 +140,10 @@
   </guard>
  </transition>
  <transition transition_id="publish"
-             title="Reviewer publishes content"
+             title="Publish"
              new_state="published" trigger="USER"
              before_script="" after_script="">
+  <description>Publishing the item makes it visible to other users.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
           category="workflow">Publish</action>
   <guard>
@@ -146,19 +151,21 @@
   </guard>
  </transition>
  <transition transition_id="reject"
-             title="Reviewer rejects submission"
+             title="Send back"
              new_state="visible" trigger="USER"
              before_script="" after_script="">
+  <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
-          category="workflow">Reject</action>
+          category="workflow">Send back</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="retract"
-             title="Member retracts submission"
+             title="Retract"
              new_state="visible" trigger="USER"
              before_script="" after_script="">
+  <description>If you submitted the item by mistake or want to perform additional edits, this will bring take it back.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow">Retract</action>
   <guard>
@@ -166,21 +173,24 @@
   </guard>
  </transition>
  <transition transition_id="show"
-             title="Member makes content visible"
+             title="Promote to public draft"
              new_state="visible" trigger="USER"
              before_script="" after_script="">
+  <description>Promotes your private item to a public draft.</description>
+
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Make visible</action>
+          category="workflow">Promote to public draft</action>
   <guard>
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <transition transition_id="submit"
-             title="Member requests publishing"
+             title="Submit for publication"
              new_state="pending" trigger="USER"
              before_script="" after_script="">
+  <description>Puts your item in a review queue, so it can be published on the site.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
-          category="workflow">Submit</action>
+          category="workflow">Submit for publication</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>
@@ -196,7 +206,7 @@
  </worklist>
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
-  <description>The last transition</description>
+  <description>Previous transition</description>
   <default>
    
    <expression>transition/getId|nothing</expression>
@@ -216,7 +226,7 @@
  </variable>
  <variable variable_id="comments" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Comments about the last transition</description>
+  <description>Comment about the last transition</description>
   <default>
    
    <expression>python:state_change.kwargs.get('comment', '')</expression>
@@ -238,7 +248,7 @@
  </variable>
  <variable variable_id="time" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Time of the last transition</description>
+  <description>When the previous transition was performed</description>
   <default>
    
    <expression>state_change/getDateTime</expression>

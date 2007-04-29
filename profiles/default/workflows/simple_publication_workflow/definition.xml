@@ -9,7 +9,8 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <state state_id="private"
-        title="Visible and editable only by owner">
+        title="Private">
+  <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -36,7 +37,9 @@
    <permission-role>Owner</permission-role>
   </permission-map>
  </state>
- <state state_id="published" title="Public">
+ <state state_id="published" 
+        title="Published">
+  <description>Visible to everyone, not editable by the owner.</description>
   <exit-transition transition_id="make_private"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -74,9 +77,10 @@
   </permission-map>
  </state>
  <transition transition_id="make_private"
-             title="Member makes content private"
+             title="Make private"
              new_state="private" trigger="USER"
              before_script="" after_script="">
+  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=private"
           category="workflow">Make private</action>
   <guard>
@@ -84,9 +88,10 @@
   </guard>
  </transition>
  <transition transition_id="publish"
-             title="Reviewer publishes content"
+             title="Publish"
              new_state="published" trigger="USER"
              before_script="" after_script="">
+  <description>Publishing the item makes it visible to other users.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
           category="workflow">Publish</action>
   <guard>
@@ -95,7 +100,7 @@
  </transition>
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
-  <description>The last transition</description>
+  <description>Previous transition</description>
   <default>
    
    <expression>transition/getId|nothing</expression>
@@ -105,7 +110,7 @@
  </variable>
  <variable variable_id="actor" for_catalog="False"
            for_status="True" update_always="True">
-  <description>The ID of the user who performed the last transition</description>
+  <description>The ID of the user who performed the previous transition</description>
   <default>
    
    <expression>user/getUserName</expression>
@@ -115,7 +120,7 @@
  </variable>
  <variable variable_id="comments" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Comments about the last transition</description>
+  <description>Comment about the last transition</description>
   <default>
    
    <expression>python:state_change.kwargs.get('comment', '')</expression>
@@ -137,7 +142,7 @@
  </variable>
  <variable variable_id="time" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Time of the last transition</description>
+  <description>When the previous transition was performed</description>
   <default>
    
    <expression>state_change/getDateTime</expression>
