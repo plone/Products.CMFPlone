@@ -381,6 +381,13 @@ h3, h4, h5, h6 {
 .visualCaseSensitive {
     text-transform: none;
 }
+#portal-languageselector {
+    margin: 0 1em 0 1em;
+    float:right;
+}
+#portal-languageselector li {
+    display: inline;
+}
 #portal-breadcrumbs {
     /* The path bar, including breadcrumbs and add to favorites */
     border-bottom-color: &dtml-globalBorderColor;;
