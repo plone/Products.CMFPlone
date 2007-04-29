@@ -17,8 +17,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
-RE_REMOVE_DOCCONT = re.compile('href="http://.*?#documentContent"')
-RE_REMOVE_NAVTREE = re.compile('href="http://.*?#portlet-navigation-tree"')
+RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#documentContent"')
+RE_REMOVE_NAVTREE = re.compile('\s*href="http://.*?#portlet-navigation-tree"')
 
 
 class TestPloneToolBrowserDefault(FunctionalTestCase):
