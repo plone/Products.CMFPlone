@@ -168,9 +168,6 @@ input.searchButton {
     color: &dtml-fontColor;;
     cursor: default;
 }
-.formControls {
-   margin: 1em 0;
-}
 div.error {
     /* Class for error indication in forms */
     background-color: #fdc; 

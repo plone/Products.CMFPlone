@@ -26,6 +26,7 @@ body.kssActive h1.inlineEditable:hover {
     padding-bottom: 1px;
 }
 
+
 .inlineForm .formHelp,
 .inlineForm .fieldRequired,
 .inlineForm label {
@@ -35,4 +36,9 @@ body.kssActive h1.inlineEditable:hover {
 .inlineForm #archetypes-fieldname-title input,
 .inlineForm #archetypes-fieldname-title {
     font-size: 100%;
+}
+
+/* Workaround for abnormally large buttons in the h1 tag */
+h1 div.formControls input {
+    font-size: 55% !important;
 }
