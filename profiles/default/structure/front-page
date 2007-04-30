@@ -64,10 +64,11 @@ Before you start exploring your newly created Plone site, please do the followin
     </li>
 
     <li>
-    Decide what kind of workflow you want in your site. 
+    <a href="@@types-controlpanel">
+    Decide what kind of workflow you want in your site.</a>
     <span class="discreet">(The default is a
-    community-centric workflow. If you do web publishing, you might want the
-    simpler submit/review workflow)</span>
+    website-centric workflow, if you want to use Plone as a closed intranet, 
+    you should adjust your workflow settings accordingly)</span>
     </li>
 
     <li>
