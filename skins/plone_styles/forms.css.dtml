@@ -143,7 +143,7 @@ input.searchButton {
     margin: 0 1em 1em 0;
 }
 .field .field {
-    margin: 1em 0 0 0;
+    margin: 0;
 }
 .fieldRequired {
     background: url(&dtml-portal_url;/required.gif) center left no-repeat;
