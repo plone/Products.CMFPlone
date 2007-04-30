@@ -7,15 +7,16 @@ from Products.CMFPlone.tests import PloneTestCase
 default_user = PloneTestCase.default_user
 
 # XXX - Ugh...Rather than use and update ambiguous numbers,
-# we maintain a mapping of the various workfows to stats
-# though there are some obvious downsides to this, it's better than just 
+# we maintain a mapping of the various workflows to stats
+# though there are some obvious downsides to this, it's better than just
 # asserting that there are X published states in all workflows, etc.
 workflow_dict = {
       'community_folder_workflow':('private','published','visible',)
     , 'community_workflow':('private','published','visible','pending',)
     , 'folder_workflow':('private','published','visible',)
     , 'intranet_folder_workflow':('internal','private',)
-    , 'intranet_workflow':('internal','internally_published','pending','private',)
+    , 'intranet_workflow':('internal','published','pending',
+                           'private','external',)
     , 'one_state_workflow':('published',)
     , 'plone_workflow':('pending','private','published','visible',)
     , 'simple_publication_workflow':('private','published','pending',)
@@ -95,35 +96,30 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         pend_states = [s for s in states if s[1]=='pending']
         vis_states = [s for s in states if s[1]=='visible']
         internal_states = [s for s in states if s[1]=='internal']
-        internalpub_states = [s for s in states if s[1]=='internally_published']
         
         self.assertEqual(len(pub_states), all_states.count('published'))
         self.assertEqual(len(priv_states), all_states.count('private'))
         self.assertEqual(len(pend_states), all_states.count('pending'))
         self.assertEqual(len(vis_states), all_states.count('visible'))
         self.assertEqual(len(internal_states), all_states.count('internal'))
-        self.assertEqual(len(internalpub_states), all_states.count('internally_published'))
 
     def testListWFStatesByTitleFiltersSimilar(self):
         states = self.workflow.listWFStatesByTitle(filter_similar=True)
         # XXX - it's a bit tricky to use our workflow_dict here because we have  
         # similar id states that have different titles are therefore not filtered, 
         # need to think on it a bit more
-        self.assertEqual(len(states), 11)
+        self.assertEqual(len(states), 12)
         pub_states = [s for s in states if s[1]=='published']
         priv_states = [s for s in states if s[1]=='private']
         pend_states = [s for s in states if s[1]=='pending']
         vis_states = [s for s in states if s[1]=='visible']
         internal_states = [s for s in states if s[1]=='internal']
-        internalpub_states = [s for s in states if s[1]=='internally_published']
 
-        self.assertEqual(len(pub_states), 2)
-        self.assertEqual(len(priv_states), 3)
+        self.assertEqual(len(pub_states), 3)
+        self.assertEqual(len(priv_states), 2)
         self.assertEqual(len(pend_states), 2)
         self.assertEqual(len(vis_states), 2)
-        self.assertEqual(len(pubdraft_states), 1)
-        self.assertEqual(len(internal_states), 1)
-        self.assertEqual(len(internalpub_states), 1)
+        self.assertEqual(len(internal_states), 2)
 
 
 def test_suite():
