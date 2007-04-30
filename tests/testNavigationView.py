@@ -294,6 +294,9 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
     def testCustomQuery(self):
         # Try a custom query script for the navtree that returns only published
         # objects
+        self.portal._delObject('Members')
+        self.portal._delObject('news')
+        self.portal._delObject('events')
         workflow = self.portal.portal_workflow
         factory = self.portal.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript('getCustomNavQuery')
@@ -316,6 +319,9 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
 
     def testStateFiltering(self):
         # Test Navtree workflow state filtering
+        self.portal._delObject('Members')
+        self.portal._delObject('news')
+        self.portal._delObject('events')
         workflow = self.portal.portal_workflow
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(wf_states_to_show=['published'])
@@ -512,6 +518,9 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
     def testCustomQuery(self):
         # Try a custom query script for the tabs that returns only published
         # objects
+        self.portal._delObject('Members')
+        self.portal._delObject('news')
+        self.portal._delObject('events')
         workflow = self.portal.portal_workflow
         factory = self.portal.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript('getCustomNavQuery')
@@ -533,6 +542,9 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
 
     def testStateFiltering(self):
         # Test tabs workflow state filtering
+        self.portal._delObject('Members')
+        self.portal._delObject('news')
+        self.portal._delObject('events')
         workflow = self.portal.portal_workflow
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(wf_states_to_show=['published'])
