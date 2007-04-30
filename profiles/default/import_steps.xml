@@ -187,4 +187,11 @@
   <dependency step="mimetypes-registry-various"/>
     KSS (Kinetic Style Sheet) setup. Register kss mimetype.
  </import-step>
+ <import-step id="difftool" version="20070304-01"
+              handler="Products.CMFDiffTool.exportimport.difftool.importDiffTool"
+              title="Diff Tool">
+  <dependency step="toolset"/>
+  <dependency step="componentregistry"/>
+    Import CMFDiffTool settings
+ </import-step>
 </import-steps>

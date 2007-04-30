@@ -76,4 +76,6 @@
            class="Products.CMFPlone.WorkflowTool.WorkflowTool"/>
  <required tool_id="translation_service"
            class="Products.CMFPlone.TranslationServiceTool.TranslationServiceTool"/>
+ <required tool_id="portal_diff"
+           class="Products.CMFDiffTool.CMFDiffTool.CMFDiffTool"/>
 </tool-setup>
