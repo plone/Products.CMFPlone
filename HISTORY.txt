@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Fix bad links between templates prefs_users_overview, prefs_user_details
+      and prefs_user_membership (remove starting space and force portal_url)
+      [encolpe]
+
     - Separated the Editor role into Editor and Contributor, the latter with
       responsibility for adding content. This is necessary in order to support
       the (most common?) use case of wanting to have a folder in which people

@@ -155,7 +155,7 @@
 
                     <td>
               <a href="prefs_user_details"
-             tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$userid">
+             tal:attributes="href string:$portal_url/prefs_user_details?userid=$userid">
             <tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="userid">username</span>
             (<span tal:replace="fullname">Full Name</span>)
               </a>
