@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Separated the Editor role into Editor and Contributor, the latter with
+      responsibility for adding content. This is necessary in order to support
+      the (most common?) use case of wanting to have a folder in which people
+      can add content, but not edit the folder itself!
+      [optilude]
+
     - Moved global_logo, global_pathbar, global_personalbar, global_searchbox,
       global_sections and global_siteactions to viewlets in plone.app.layout.
       [fschulze]

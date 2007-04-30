@@ -9,6 +9,7 @@
     <role name="Reviewer"/>
     <role name="Reader" />
     <role name="Editor" />
+    <role name="Contributor" />
   </roles>
   <permissions>
     <permission name="Access inactive portal content"
@@ -18,57 +19,57 @@
     <permission name="Add portal content" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="Add portal folders" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add Document" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add Event" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add Favorite" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add File" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add Folder" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add Image" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add Large Plone Folder" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add Link" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="ATContentTypes: Add News Item" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
-      <role name="Editor"/>
+      <role name="Contributor"/>
     </permission>
     <permission name="Allow sendto" acquire="True">
       <role name="Anonymous"/>
@@ -87,6 +88,9 @@
       <role name="Manager"/>
       <role name="Member"/>
       <role name="Owner"/>
+      <role name="Reader" />
+      <role name="Editor" />
+      <role name="Contributor" />
     </permission>
     <permission name="List portal members" acquire="True">
       <role name="Manager"/>
@@ -150,6 +154,14 @@
     <permission name="View"
                 acquire="True">
         <role name="Reader" />
+        <role name="Editor" />
+        <role name="Contributor" />
+    </permission>
+    <permission name="Access contents information"
+                acquire="True">
+        <role name="Reader" />
+        <role name="Editor" />
+        <role name="Contributor" />
     </permission>
     <permission name="Modify portal content"
                 acquire="True">

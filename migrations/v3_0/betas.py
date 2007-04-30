@@ -39,7 +39,7 @@ def beta1_beta2(portal):
 
     modifyKSSResources(portal, out)
 
-    addEditorToCreationPermissions(portal, out)
+    addContributorToCreationPermissions(portal, out)
 
     return out
 
@@ -165,13 +165,19 @@ def modifyKSSResources(portal, out):
                 reg.registerKineticStylesheet(id, enabled=0)
                 out.append('Added kss resource %s, disabled by default.' % id)
 
-def addEditorToCreationPermissions(portal, out):
+def addContributorToCreationPermissions(portal, out):
+    
+    if 'Contributor' not in portal.valid_roles():
+        portal._addRole('Contributor')
+    if 'Contributor' not in portal.acl_users.portal_role_manager.listRoleIds():
+        portal.acl_users.portal_role_manager.addRole('Contributor')
+    
     for p in ['Add portal content', 'Add portal folders', 'ATContentTypes: Add Document',
                 'ATContentTypes: Add Event', 'ATContentTypes: Add Favorite',
                 'ATContentTypes: Add File', 'ATContentTypes: Add Folder', 
                 'ATContentTypes: Add Image', 'ATContentTypes: Add Large Plone Folder',
                 'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
         roles = [r['name'] for r in portal.rolesOfPermission(p) if r['selected']]
-        if 'Editor' not in roles:
-            roles.append('Editor')
+        if 'Contributor' not in roles:
+            roles.append('Contributor')
             portal.manage_permission(p, roles, bool(portal.acquiredRolesAreUsedBy(p)))
