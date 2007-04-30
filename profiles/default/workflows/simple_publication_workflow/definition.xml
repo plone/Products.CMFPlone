@@ -132,7 +132,7 @@
  </transition>
  <transition transition_id="reject"  new_state="private"
              title="Send back"
-             new_state="private" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
