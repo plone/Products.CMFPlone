@@ -784,6 +784,31 @@ def scale_image(image_file, max_size=None, default_format=None):
     # Return the file data and the new mimetype
     return new_file, mimetype
 
+def isLinked(obj):
+    """ check if the given content object is linked from another one """
+    # first check to see if the removal of the object was already confirmed,
+    # i.e. while replaying the request;  unfortunately this makes it necessary
+    # to import from plone.app.linkintegrity here, hence the try block...
+    try:
+        from plone.app.linkintegrity.interfaces import ILinkIntegrityInfo
+        if ILinkIntegrityInfo(obj.REQUEST).isConfirmedItem(obj):
+            return True
+    except ImportError:
+        # if p.a.li isn't installed the following check can be cut short...
+        return False
+    # otherwise, when not replaying the request already, it is tried to
+    # delete the object, making it possible to find out if it was referenced,
+    # i.e. in case a link integrity exception was raised
+    linked = False
+    parent = obj.aq_inner.aq_parent
+    saved = transaction.savepoint()     # create a save point...
+    try:
+        parent.manage_delObjects(obj.getId())
+    except OFS.ObjectManager.BeforeDeleteException, e:
+        linked = True
+    saved.rollback()                    # roll back so nothing gets changed
+    return linked
+
 # BBB Plone 3.5: Cyclic import errors are bad, deprecate these import locations.
 # Put these at the end to avoid an ImportError for safe_unicode
 from i18nl10n import utranslate

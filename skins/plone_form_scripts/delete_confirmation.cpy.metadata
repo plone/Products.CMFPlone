@@ -1,0 +1,3 @@
+[actions]
+action.success=redirect_to:python:object.aq_inner.aq_parent.absolute_url()
+action.confirm=traverse_to:string:delete_confirmation_page
