@@ -16,14 +16,9 @@
 
 body.kssActive .inlineEditable:hover {
     padding: 0;
-    border-top: 1px solid #8cacbb;
-    border-left: 1px solid #8cacbb;
-    border-right: 1px solid #8cacbb;
-    border-bottom: 1px solid #8cacbb;
+    border: 1px solid #ccc;
+    border-color:#666 #ddd #ddd #666;
     cursor: text;
-    background-image: url(edit_inline.gif);
-    background-position: top right;
-    background-repeat: no-repeat;
 }
 
 body.kssActive h1.inlineEditable:hover {
