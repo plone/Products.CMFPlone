@@ -594,7 +594,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('getInheritedLocalRoles')
     def getInheritedLocalRoles(self, here):
         """Returns a tuple with the acquired local roles."""
-        portal = here.portal_url.getPortalObject()
+        portal = getToolByName(here, 'portal_url').getPortalObject()
         result = []
         cont = 1
         if portal != here:
