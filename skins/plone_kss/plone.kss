@@ -116,7 +116,7 @@ a.actionicon-object_buttons-copy:click {
 /*
 Content Menu Sections: Workflow State
 */
-#plone-contentmenu-workflow dd.actionMenuContent a:click {
+/*#plone-contentmenu-workflow dd.actionMenuContent a:click {
     evt-click-preventdefault: True;
     evt-click-allowbubbling: True; 
     action-server: changeWorkflowState;
@@ -128,7 +128,7 @@ Content Menu Sections: Workflow State
     evt-click-preventdefault: False;
     action-cancel: changeWorkflowState;
 }
-
+*/
 
 /* 
 In-place calendar changing
