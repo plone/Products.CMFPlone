@@ -22,6 +22,7 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 import ploneview
 sys.modules['Products.CMFPlone.browser.plone'] = ploneview
 
+from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 
@@ -108,7 +109,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
     #adapts(*, ISiteMap)
 
     def __init__(self, context, view=None):
-        self.context = [context]
+        self.context = context
         
         portal_url = getToolByName(context, 'portal_url')
         self.portal = portal_url.getPortalObject()
@@ -123,10 +124,9 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
 
         self.showAllParents = navtree_properties.getProperty('showAllParents', True)
         self.rootPath = getNavigationRoot(context)
-        
+
         membership = getToolByName(context, 'portal_membership')
         self.memberId = membership.getAuthenticatedMember().getId()
-
 
     def nodeFilter(self, node):
         item = node['item']
@@ -145,7 +145,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
             return True
 
     def decoratorFactory(self, node):
-        context = utils.context(self)
+        context = aq_inner(self.context)
         request = context.REQUEST
         
         newNode = node.copy()
