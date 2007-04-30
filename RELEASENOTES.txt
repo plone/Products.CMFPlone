@@ -154,6 +154,16 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   tools has been deprectaed. Please use the search features of PAS directly
   or use the PlonePAS pas_search browser view.
 
+* There are new Reader, Editor and Contributor roles, roughly mapping to
+  View/Access contents information/List folder contents, Modify portal content
+  and Add portal content, respectively. They are to be used only as local
+  roles, via the improved "sharing" tab. 
+  
+  If you have custom workflows, you may want to amend them to use these roles. 
+  
+  If you use custom add permissions for your content types, you may want to
+  give them to the Contributor role by default.
+
 * Portlets have been re-implemented using the Zope3 component architecture.
   The base package, plone.portlets, is usable in plain Zope 3 and has been
   successfully used with Grok. See its README.txt for full details on the
