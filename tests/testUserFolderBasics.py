@@ -5,6 +5,7 @@
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 import base64
 from AccessControl import Unauthorized
@@ -15,7 +16,7 @@ user_perms       = ZopeTestCase.standard_permissions
 user_role        = 'Member'
 
 
-class TestUserFolder(PloneTestCase.PloneTestCase):
+class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.logout()
@@ -29,7 +30,8 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('PARENTS', [self.folder, self.app])
         folder_path = list(self.folder.getPhysicalPath())
         self.app.REQUEST.steps = folder_path + ['doc']
-        
+        self._trap_warning_output()
+
         if 'auto_group' in self.uf.objectIds():
             self.uf.manage_delObjects(['auto_group'])
 
@@ -127,6 +129,9 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
 
     def testDenyAccessToAnonymous(self):
         self.assertRaises(Unauthorized, self.folder.restrictedTraverse, 'doc')
+
+    def beforeTearDown(self):
+        self._free_warning_output()
 
 
 def test_suite():

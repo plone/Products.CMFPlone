@@ -5,6 +5,7 @@
 import os
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 from tempfile import mkstemp
 from zope.app.component.hooks import setSite, clearSite
@@ -39,7 +40,7 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 
-class TestPortalCreation(PloneTestCase.PloneTestCase):
+class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
@@ -353,6 +354,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                 self.failUnless(a.visible)
 
     def testDefaultGroupsAdded(self):
+        self._trap_warning_output()
         self.failUnless('Administrators' in self.groups.listGroupIds())
         self.failUnless('Reviewers' in self.groups.listGroupIds())
 
@@ -827,6 +829,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
                     'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
             self.failUnless(p in [r['name'] for r in 
                                 self.portal.permissionsOfRole('Contributor') if r['selected']])
+
+    def beforeTearDown(self):
+        self._free_warning_output()
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

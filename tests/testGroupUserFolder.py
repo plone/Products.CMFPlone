@@ -3,6 +3,7 @@
 #
 
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 default_user = PloneTestCase.default_user
 default_group = 'test_group_1_'
@@ -14,10 +15,11 @@ else:
     PREFIX = ''
 
 
-class TestGroupUserFolder(PloneTestCase.PloneTestCase):
+class TestGroupUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.uf = self.portal.acl_users
+        self._trap_warning_output()
         
         if 'auto_group' in self.uf.objectIds():
             self.uf.manage_delObjects(['auto_group'])
@@ -106,11 +108,16 @@ class TestGroupUserFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(len(groupnames), 1)
         self.failUnless(default_group in groupnames)
 
+    def beforeTearDown(self):
+        self._free_warning_output()
 
-class TestUserManagement(PloneTestCase.PloneTestCase):
+
+class TestUserManagement(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.uf = self.portal.acl_users
+        self._trap_warning_output()
+
         if 'auto_group' in self.uf.objectIds():
             self.uf.manage_delObjects(['auto_group'])
         self.uf.userFolderAddGroup(default_group, [])
@@ -197,16 +204,20 @@ class TestUserManagement(PloneTestCase.PloneTestCase):
         self.assertEqual(tuple(user.getRoles()), ('Member', 'Authenticated'))
         self.assertEqual(user.getGroups(), [PREFIX+'group2'])
 
+    def beforeTearDown(self):
+        self._free_warning_output()
 
-class TestGroupManagement(PloneTestCase.PloneTestCase):
+
+class TestGroupManagement(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.uf = self.portal.acl_users
+        self._trap_warning_output()
+
         if 'auto_group' in self.uf.objectIds():
             self.uf.manage_delObjects(['auto_group'])
         self.uf.userFolderAddGroup(default_group, [])
         self.uf.userFolderAddGroup('group2', [])
-#        self.uf._updateGroup(default_group, groups=['group2'])
 
     # Classic-style interface
 
@@ -216,17 +227,10 @@ class TestGroupManagement(PloneTestCase.PloneTestCase):
         self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
         self.assertEqual(group.getGroups(), [])  # XXX: Should be tuple
 
-#    def test_doAddGroup_WithGroups(self):
-#        self.uf._doAddGroup('group3', ['Reviewer'], ['group2'])
-#        group = self.uf.getGroup('group3')
-#        self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
-#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
-
     def test_doChangeGroup(self):
         self.uf._doChangeGroup(default_group, ['Reviewer'])
         group = self.uf.getGroup(default_group)
         self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
-#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
 
     def test_doDelGroups(self):
         self.uf._doDelGroups([default_group])
@@ -244,7 +248,6 @@ class TestGroupManagement(PloneTestCase.PloneTestCase):
         self.uf.userFolderEditGroup(default_group, ['Reviewer'], [])
         group = self.uf.getGroup(default_group)
         self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
-#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
 
     def testUserFolderDelGroups(self):
         self.uf.userFolderDelGroups([default_group])
@@ -256,13 +259,17 @@ class TestGroupManagement(PloneTestCase.PloneTestCase):
         self.uf._updateGroup(default_group, roles=['Reviewer'])
         group = self.uf.getGroup(default_group)
         self.assertEqual(tuple(group.getRoles()), ('Reviewer', 'Authenticated'))
-#        self.assertEqual(group.getGroups(), [PREFIX+'group2'])
+
+    def beforeTearDown(self):
+        self._free_warning_output()
 
 
-class TestUsersAndGroups(PloneTestCase.PloneTestCase):
+class TestUsersAndGroups(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.uf = self.portal.acl_users
+        self._trap_warning_output()
+
         self.uf.userFolderAddGroup(default_group, [])
         if 'auto_group' in self.uf.objectIds():
             self.uf.manage_delObjects(['auto_group'])
@@ -278,11 +285,6 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
 
     def testUserGetName(self):
         self.assertEqual(self.user.getUserName(), default_user)
-
-#    # internal to basic UserFolder; see also tests/testUserFolderBasics.py
-#    def testUserAuthenticate(self):
-#        result = self.user.authenticate('secret', self.app.REQUEST)
-#        self.assertEqual(result, True)
 
     def testUserGetRoles(self):
         self.assertEqual(tuple(self.user.getRoles()), ('Member', 'Authenticated'))
@@ -320,6 +322,9 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
 
     def testGroupGetMemberIds(self):
         self.assertEqual(self.group.getMemberIds(), (default_user,))
+
+    def beforeTearDown(self):
+        self._free_warning_output()
 
 
 def test_suite():

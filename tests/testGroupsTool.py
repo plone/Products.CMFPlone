@@ -3,6 +3,7 @@
 #
 
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 from Acquisition import aq_base
 
@@ -14,13 +15,14 @@ def sortTuple(t):
     return tuple(l)
 
 
-class TestGroupsTool(PloneTestCase.PloneTestCase):
+class TestGroupsTool(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
         self.groups.groupWorkspacesCreationFlag = 0
+        self._trap_warning_output()
 
         if 'auto_group' in self.acl_users.objectIds():
             self.acl_users.manage_delObjects(['auto_group'])
@@ -148,14 +150,19 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         info = self.groups.getGroupInfo('foo')
         self.assertEqual(info, None)
 
+    def beforeTearDown(self):
+        self._free_warning_output()
 
-class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
+
+class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
         self.groups.groupWorkspacesCreationFlag = 0
+        self._trap_warning_output()
+
         if 'auto_group' in self.acl_users.objectIds():
             self.acl_users.manage_delObjects(['auto_group'])
         # Note that this is not a proper portal type (anymore) but we don't care
@@ -266,6 +273,9 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.groups.listGroupIds()), 0)
         # Group workspace should still be present
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
+
+    def beforeTearDown(self):
+        self._free_warning_output()
 
 
 def test_suite():

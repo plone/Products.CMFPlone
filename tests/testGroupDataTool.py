@@ -3,6 +3,7 @@
 #
 
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 from AccessControl import Unauthorized
 from AccessControl import Permissions
@@ -37,7 +38,7 @@ class TestGroupDataTool(PloneTestCase.PloneTestCase):
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupManager')
 
 
-class TestGroupData(PloneTestCase.PloneTestCase):
+class TestGroupData(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
@@ -52,6 +53,7 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         # MUST reset _v_ attributes!
         self.memberdata._v_temps = None
         self.groupdata._v_temps = None
+        self._trap_warning_output()
 
     def testGetGroup(self):
         g = self.groups.getGroupById('foo')
@@ -151,6 +153,9 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.groups.editGroup(g.getId(), roles=['Member'])
         g = self.groups.getGroupById('foo')
         self.failUnless(g.has_role('Member'))
+
+    def beforeTearDown(self):
+        self._free_warning_output()
 
 
 class TestMethodProtection(PloneTestCase.PloneTestCase):

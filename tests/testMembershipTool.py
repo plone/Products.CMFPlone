@@ -9,6 +9,7 @@ from OFS.Image import Image
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from Products.CMFCore.tests.base.testcase import WarningInterceptor
 
 from AccessControl.User import nobody
 from AccessControl import Unauthorized
@@ -20,11 +21,12 @@ default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
 
 
-class TestMembershipTool(PloneTestCase.PloneTestCase):
+class TestMembershipTool(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.groups = self.portal.portal_groups
+        self._trap_warning_output()
 
     def addMember(self, username, fullname, email, roles, last_login_time):
         self.membership.addMember(username, 'secret', roles, [])
@@ -350,6 +352,9 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.membership.changeMemberPortrait(self.makeRealImage(), default_user)
         self.assertEqual(self.membership.getBadMembers(), [])
 
+    def beforeTearDown(self):
+        self._free_warning_output()
+
 
 class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
@@ -463,7 +468,7 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
             self.failIf('index_html' in self.home.objectIds())
 
 
-class TestSearchForMembers(PloneTestCase.PloneTestCase):
+class TestSearchForMembers(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.memberdata = self.portal.portal_memberdata
@@ -482,6 +487,7 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
                        '2003-12-31')
         # MUST reset this
         self.memberdata._v_temps = None
+        self._trap_warning_output()
 
     def addMember(self, username, fullname, email, roles, last_login_time):
         self.membership.addMember(username, 'secret', roles, [])
@@ -593,6 +599,9 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
         self.assertEqual(len(search(roles=['Reviewer'],
                                     last_login_time=DateTime('2004-01-01'),
                                     before_specified_time=True)), 1)
+
+    def beforeTearDown(self):
+        self._free_warning_output()
 
 
 class TestDefaultUserAndPasswordNotChanged(PloneTestCase.PloneTestCase):
