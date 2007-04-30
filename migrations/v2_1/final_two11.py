@@ -13,8 +13,8 @@ def final_two11(portal):
 
     # register some tools as utilities
     registerToolsAsUtilities(portal, out)
-    
-    fixUpSMIGlobs(portal)
+
+    fixUpSMIGlobs(portal, out)
 
     # Update path index for new EPI version
     reindexPathIndex(portal, out)
