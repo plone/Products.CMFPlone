@@ -26,6 +26,7 @@
     
         <div class="searchSection">
             <input id="searchbox_currentfolder_only" 
+                   class="noborder"
                    type="checkbox" 
                    name="path" 
                    tal:attributes="value view/folder_path"
