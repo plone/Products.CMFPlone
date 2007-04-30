@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="intranet_workflow"
-             title="Private Intranet Workflow"
+             title="Intranet Workflow"
              state_variable="review_state"
              initial_state="internal">
+
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <state state_id="internal"
-        title="Internal draft">
-  <description>Visible to all intranet users.</description>
+
+ <state state_id="internal"  title="Internal draft">
+  <description>Visible to all intranet users, editable by the owner.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
-  <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -44,11 +44,11 @@
    <permission-role>Member</permission-role>
   </permission-map>
  </state>
- <state state_id="internally_published"
-        title="Published internally">
-  <description>Published and visible to intranet users.</description>
+ <state state_id="published" title="Internally published">
+  <description>Published and visible to intranet users, not editable by the owner.</description>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
+  <exit-transition transition_id="externally"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -75,9 +75,10 @@
    <permission-role>Member</permission-role>
   </permission-map>
  </state>
- <state state_id="pending" title="Pending">
+ <state state_id="pending"   title="Pending">
   <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="publish"/>
+  <exit-transition transition_id="externally"/>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -110,8 +111,7 @@
    <permission-role>Reviewer</permission-role>
   </permission-map>
  </state>
- <state state_id="private"
-        title="Private">
+ <state state_id="private"   title="Private">
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
@@ -142,9 +142,33 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
  </state>
- <transition transition_id="hide"
+ <state state_id="external"  title="Externally visible">
+  <description>Visible to people outside the intranet, not editable by the owner.</description>
+  <exit-transition transition_id="retract"/>
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents"
+                  acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Anonymous</permission-role>
+  </permission-map>
+ </state>
+
+ <transition transition_id="hide"    new_state="private"
              title="Make private"
-             new_state="private" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
@@ -153,9 +177,9 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <transition transition_id="publish"
+ <transition transition_id="publish" new_state="published"
              title="Publish internally"
-             new_state="internally_published" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Publishing the item makes it visible to other users.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
@@ -164,9 +188,20 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="reject"
+ <transition transition_id="externally" new_state="external"
+             title="Publish externally"
+             trigger="USER"
+             before_script="" after_script="">
+  <description>Publishing the item makes it visible to other users.</description>
+  <action url="%(content_url)s/content_status_modify?workflow_action=externally"
+          category="workflow">Publish externally</action>
+  <guard>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="reject"  new_state="internal"
              title="Send back"
-             new_state="internal" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
@@ -175,9 +210,9 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="retract"
+ <transition transition_id="retract" new_state="internal"
              title="Retract"
-             new_state="internal" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
@@ -186,9 +221,9 @@
    <guard-permission>Request review</guard-permission>
   </guard>
  </transition>
- <transition transition_id="show"
+ <transition transition_id="show"    new_state="internal"
              title="Promote to internal draft"
-             new_state="internal" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Promotes your private item to an internal draft.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
@@ -197,38 +232,37 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <transition transition_id="submit"
-             title="Submit for internal publication"
-             new_state="pending" trigger="USER"
+ <transition transition_id="submit"  new_state="pending" 
+             title="Submit for publication"
+             trigger="USER"
              before_script="" after_script="">
-  <description>Puts your item in a review queue, so it can be published internally.</description>
+  <description>Puts your item in a review queue, so it can be published externally or internally.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
-          category="workflow">Submit for internal publication</action>
+          category="workflow">Submit for publication</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>
  </transition>
- <variable variable_id="action" for_catalog="False"
+
+ <variable variable_id="action"         for_catalog="False"
            for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
-   
    <expression>transition/getId|nothing</expression>
   </default>
   <guard>
   </guard>
  </variable>
- <variable variable_id="actor" for_catalog="False"
+ <variable variable_id="actor"          for_catalog="False"
            for_status="True" update_always="True">
   <description>The ID of the user who performed the last transition</description>
   <default>
-   
    <expression>user/getId</expression>
   </default>
   <guard>
   </guard>
  </variable>
- <variable variable_id="comments" for_catalog="False"
+ <variable variable_id="comments"       for_catalog="False"
            for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
@@ -250,7 +284,7 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </variable>
- <variable variable_id="time" for_catalog="False"
+ <variable variable_id="time"           for_catalog="False"
            for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
@@ -260,4 +294,5 @@
   <guard>
   </guard>
  </variable>
+
 </dc-workflow>
