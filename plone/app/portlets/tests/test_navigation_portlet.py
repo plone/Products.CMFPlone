@@ -307,6 +307,7 @@ class TestRenderer(PortletsTestCase):
     def testCustomQuery(self):
         # Try a custom query script for the navtree that returns only published
         # objects
+        self.setRoles(['Manager'])
         workflow = self.portal.portal_workflow
         factory = self.portal.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript('getCustomNavQuery')
@@ -318,17 +319,18 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.failUnless(tree.has_key('children'))
         #Should only contain current object
-        self.assertEqual(len(tree['children']), 1)
+        self.assertEqual(len(tree['children']), 4)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.renderer(self.portal.folder2)
         tree = view.getNavTree()
         #Should only contain current object and published folder
-        self.assertEqual(len(tree['children']), 2)
+        self.assertEqual(len(tree['children']), 5)
 
     def testStateFiltering(self):
         # Test Navtree workflow state filtering
+        self.setRoles(['Manager'])
         workflow = self.portal.portal_workflow
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(wf_states_to_show=['published'])
@@ -338,14 +340,14 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.failUnless(tree.has_key('children'))
         #Should only contain current object
-        self.assertEqual(len(tree['children']), 1)
+        self.assertEqual(len(tree['children']), 4)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.renderer(self.portal.folder2)
         tree = view.getNavTree()
         #Should only contain current object and published folder
-        self.assertEqual(len(tree['children']), 2)
+        self.assertEqual(len(tree['children']), 5)
     
 def test_suite():
     from unittest import TestSuite, makeSuite
