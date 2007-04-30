@@ -18,7 +18,8 @@
 
 textarea {
     font: 100% Monaco, "Courier New", Courier, monospace;
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    border: 1px solid #ddd;
+    border-color:#666 #ddd #ddd #666;
     color: &dtml-inputFontColor;;
     background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
     width: 100%;
@@ -26,11 +27,17 @@ textarea {
 input {
     font-family: <dtml-var fontFamily>;
     visibility: visible;
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    border: 1px solid #ddd;
+    border-color:#666 #ddd #ddd #666;
     color: &dtml-inputFontColor;;
     vertical-align: middle;
     background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
 }
+
+#searchGadget {
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+}
+
 button {
     font-family: <dtml-var fontFamily>;
     visibility: visible;
@@ -44,7 +51,6 @@ button {
     text-transform: &dtml-textTransform;;    
 }
 select {
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
     background-color: White;
     vertical-align: top;
@@ -88,6 +94,7 @@ optgroup > option {
     font-size: &dtml-fontSmallSize;;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
 }
 .context,
 .formControls .actionButtons .button,
@@ -98,6 +105,7 @@ optgroup > option {
     font-size: &dtml-fontSmallSize;;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
 }
 .destructive,
 .documentEditable * .destructive {
@@ -108,6 +116,7 @@ optgroup > option {
     font-size: &dtml-fontSmallSize;;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
 }
 input.searchButton {
     margin-bottom: &dtml-borderWidth; ! important;
@@ -117,7 +126,7 @@ input.searchButton {
     cursor: pointer;
     padding: 1px 1px 1px 19px;
     text-transform: &dtml-textTransform;;
-
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
 }
 .searchSection {
     color: &dtml-discreetColor;;
