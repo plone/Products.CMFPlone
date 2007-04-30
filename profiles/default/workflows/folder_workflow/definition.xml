@@ -3,11 +3,13 @@
              title="Folder Workflow [Plone]"
              state_variable="review_state"
              initial_state="visible">
+
  <permission>Access contents information</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <state state_id="private" title="Private">
+
+ <state state_id="private"   title="Private">
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="show"/>
@@ -65,7 +67,7 @@
   </permission-map>
 
  </state>
- <state state_id="visible" title="Public Draft">
+ <state state_id="visible"   title="Public Draft">
   <description>Visible to everyone, but not approved by the reviewers.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
@@ -94,9 +96,10 @@
   </permission-map>
 
  </state>
- <transition transition_id="hide"
+
+ <transition transition_id="hide"    new_state="private"
              title="Make private"
-             new_state="private" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
@@ -105,9 +108,9 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <transition transition_id="publish"
+ <transition transition_id="publish" new_state="published"
              title="Publish"
-             new_state="published" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Publishing the item makes it visible to other users.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
@@ -118,9 +121,9 @@
    <guard-role>Manager</guard-role>
   </guard>
  </transition>
- <transition transition_id="retract"
+ <transition transition_id="retract" new_state="visible"
              title="Retract"
-             new_state="visible" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
@@ -129,9 +132,9 @@
    <guard-permission>Request review</guard-permission>
   </guard>
  </transition>
- <transition transition_id="show"
+ <transition transition_id="show"    new_state="visible"
              title="Promote to public draft"
-             new_state="visible" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Promotes your folder to public draft state.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
@@ -140,7 +143,8 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <variable variable_id="action" for_catalog="False"
+
+ <variable variable_id="action"         for_catalog="False"
            for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
@@ -150,7 +154,7 @@
   <guard>
   </guard>
  </variable>
- <variable variable_id="actor" for_catalog="False"
+ <variable variable_id="actor"          for_catalog="False"
            for_status="True" update_always="True">
   <description>The ID of the user who performed the last transition</description>
   <default>
@@ -160,7 +164,7 @@
   <guard>
   </guard>
  </variable>
- <variable variable_id="comments" for_catalog="False"
+ <variable variable_id="comments"       for_catalog="False"
            for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
@@ -182,7 +186,7 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </variable>
- <variable variable_id="time" for_catalog="False"
+ <variable variable_id="time"           for_catalog="False"
            for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
@@ -192,4 +196,5 @@
   <guard>
   </guard>
  </variable>
+
 </dc-workflow>

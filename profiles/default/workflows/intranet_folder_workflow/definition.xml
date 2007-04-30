@@ -3,10 +3,12 @@
              title="Private Intranet Workflow for Folders"
              state_variable="review_state"
              initial_state="internal">
+
  <permission>Access contents information</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
+
  <state state_id="internal"
         title="Internally visible">
   <description>Visible to all intranet users.</description>
@@ -78,6 +80,7 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
  </state>
+
  <transition transition_id="make_private"
              title="Make private"
              new_state="private" trigger="USER"
@@ -100,6 +103,7 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
+
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
   <description>Previous transition</description>
@@ -152,4 +156,5 @@
   <guard>
   </guard>
  </variable>
+
 </dc-workflow>

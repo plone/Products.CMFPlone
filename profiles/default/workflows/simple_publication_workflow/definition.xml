@@ -10,7 +10,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="pending" title="Pending">
+ <state state_id="pending"   title="Pending">
   <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="make_private"/>
   <exit-transition transition_id="publish"/>
@@ -54,8 +54,7 @@
   </permission-map>
 
  </state>
- <state state_id="private"
-    title="Private">
+ <state state_id="private"   title="Private">
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
@@ -95,8 +94,7 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
  </state>
- <state state_id="published" 
-        title="Published">
+ <state state_id="published" title="Published">
   <description>Visible to everyone, not editable by the owner.</description>
   <exit-transition transition_id="retract"/>
   <exit-transition transition_id="reject"/>
@@ -121,9 +119,9 @@
   </permission-map>
  </state>
 
- <transition transition_id="publish"
+ <transition transition_id="publish" new_state="published"
              title="Publish"
-             new_state="published" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Publishing the item makes it visible to other users.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
@@ -132,7 +130,7 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="reject"
+ <transition transition_id="reject"  new_state="private"
              title="Send back"
              new_state="private" trigger="USER"
              before_script="" after_script="">
@@ -143,9 +141,9 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="retract"
+ <transition transition_id="retract" new_state="private" 
              title="Retract"
-             new_state="private" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
@@ -154,9 +152,9 @@
    <guard-permission>Request review</guard-permission>
   </guard>
  </transition>
- <transition transition_id="submit"
+ <transition transition_id="submit"  new_state="pending" 
              title="Submit for publication"
-             new_state="pending" trigger="USER"
+             trigger="USER"
              before_script="" after_script="">
   <description>Puts your item in a review queue, so it can be published on the site.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
@@ -166,7 +164,7 @@
   </guard>
  </transition>
 
- <variable variable_id="action" for_catalog="False"
+ <variable variable_id="action"         for_catalog="False"
            for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
@@ -176,7 +174,7 @@
   <guard>
   </guard>
  </variable>
- <variable variable_id="actor" for_catalog="False"
+ <variable variable_id="actor"          for_catalog="False"
            for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
@@ -186,7 +184,7 @@
   <guard>
   </guard>
  </variable>
- <variable variable_id="comments" for_catalog="False"
+ <variable variable_id="comments"       for_catalog="False"
            for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
@@ -208,7 +206,7 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </variable>
- <variable variable_id="time" for_catalog="False"
+ <variable variable_id="time"           for_catalog="False"
            for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>

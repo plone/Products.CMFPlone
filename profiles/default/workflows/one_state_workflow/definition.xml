@@ -3,11 +3,13 @@
              title="Single State Workflow"
              state_variable="review_state"
              initial_state="published">
+
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
+
  <state state_id="published" title="Published">
   <description>Visible to everyone, editable by the owner.</description>
   <permission-map name="Access contents information"
@@ -34,7 +36,8 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
- <variable variable_id="action" for_catalog="False"
+
+ <variable variable_id="action"         for_catalog="False"
            for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
@@ -44,7 +47,7 @@
   <guard>
   </guard>
  </variable>
- <variable variable_id="actor" for_catalog="False"
+ <variable variable_id="actor"          for_catalog="False"
            for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
@@ -54,7 +57,7 @@
   <guard>
   </guard>
  </variable>
- <variable variable_id="comments" for_catalog="False"
+ <variable variable_id="comments"       for_catalog="False"
            for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
@@ -76,7 +79,7 @@
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </variable>
- <variable variable_id="time" for_catalog="False"
+ <variable variable_id="time"           for_catalog="False"
            for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
@@ -86,4 +89,5 @@
   <guard>
   </guard>
  </variable>
+
 </dc-workflow>
