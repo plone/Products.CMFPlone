@@ -24,6 +24,7 @@ class OrderedViewletManager(object):
 class PortalTopManager(OrderedViewletManager):
     order_by_name = ('plone.header',
                      'plone.personal_bar',
+                     'plone.app.i18n.locales.languageselector',
                      'plone.path_bar',
                     )
 
