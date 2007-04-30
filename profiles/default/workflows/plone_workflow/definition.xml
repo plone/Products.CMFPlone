@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0"?> 
 <dc-workflow workflow_id="plone_workflow"
              title="Default Workflow [Plone]"
              state_variable="review_state"
@@ -17,11 +17,7 @@
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
                   acquired="True">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Editor</permission-role>
+   <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -34,11 +30,7 @@
    <permission-role>Reviewer</permission-role>
   </permission-map>
   <permission-map name="View" acquired="True">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Editor</permission-role>
+   <permission-role>Anonymous</permission-role>
   </permission-map>
 
  </state>
@@ -51,11 +43,13 @@
    <permission-role>Owner</permission-role>
    <permission-role>Reader</permission-role>
    <permission-role>Editor</permission-role>
+   <permission-role>Contributor</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
@@ -68,6 +62,7 @@
    <permission-role>Owner</permission-role>
    <permission-role>Reader</permission-role>
    <permission-role>Editor</permission-role>
+   <permission-role>Contributor</permission-role>
   </permission-map>
 
  </state>
@@ -77,9 +72,6 @@
   <permission-map name="Access contents information"
                   acquired="True">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -91,9 +83,6 @@
   </permission-map>
   <permission-map name="View" acquired="True">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Editor</permission-role>
   </permission-map>
 
  </state>
@@ -105,15 +94,12 @@
   <permission-map name="Access contents information"
                   acquired="True">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
@@ -123,10 +109,6 @@
   </permission-map>
   <permission-map name="View" acquired="True">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Reviewer</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Editor</permission-role>
   </permission-map>
 
  </state>

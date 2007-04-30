@@ -8,31 +8,37 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <state state_id="private"
-        title="Visible and editable only by owner and editor">
+        title="Private">
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
-                  acquired="False">
-   <permission-role>Editor</permission-role>
+                  acquired="False">   
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
                   acquired="False">
-   <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
-   <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
+   <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
   </permission-map>
  </state>
  <state state_id="published" title="Public">
@@ -41,20 +47,10 @@
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Member</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
                   acquired="False">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Member</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
@@ -62,47 +58,32 @@
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Member</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reader</permission-role>
   </permission-map>
  </state>
- <state state_id="visible" title="Visible but not published">
+ <state state_id="visible" title="Public draft">
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Member</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
                   acquired="False">
-   <permission-role>Anonymous</permission-role>
-   <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Member</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
    <permission-role>Reader</permission-role>
+   <permission-role>Contributor</permission-role>
+   <permission-role>Member</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
-   <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Editor</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>Member</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <transition transition_id="hide"
