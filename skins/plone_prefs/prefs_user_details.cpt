@@ -22,7 +22,7 @@ we eventually might want to merge this form with personalize_form
     <ul class="contentViews">
       <li class="selected">
             <a href=""
-               tal:attributes="href string:${template_id}?userid=${userid}"
+               tal:attributes="href string: $portal_url/${template_id}?userid=${userid}"
                i18n:translate="label_user_properties">
               User Properties
             </a>
@@ -30,7 +30,7 @@ we eventually might want to merge this form with personalize_form
             
       <li>
             <a href=""
-               tal:attributes="href string: prefs_user_memberships?userid=${userid}"
+               tal:attributes="href string: $portal_url/prefs_user_memberships?userid=${userid}"
                i18n:translate="label_group_memberships">
               Group Memberships
             </a>

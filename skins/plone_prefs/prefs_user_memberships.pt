@@ -12,7 +12,6 @@
      tal:define="userid python:request.get('userid', member.getId());
                 member python:mtool.getMemberById(userid);
                 groups member/getGroups;
-                mdata here/portal_memberdata;
                 errors python:request.get('errors', {});
                 searchonly string:groups;
                 takeaction string:prefs_user_membership_edit;">
@@ -22,13 +21,13 @@
     <ul class="contentViews">
       <li>
             <a href=""
-           tal:attributes="href string: prefs_user_details?userid=${userid}"
+           tal:attributes="href string: $portal_url/prefs_user_details?userid=${userid}"
            i18n:translate="label_user_properties">User Properties</a>
       </li>
 
       <li class="selected">
             <a href=""
-           tal:attributes="href string:${template_id}?userid=${userid}"
+           tal:attributes="href string: $portal_url/${template_id}?userid=${userid}"
            i18n:translate="label_group_memberships">Group Memberships</a>
       </li>
     </ul>
