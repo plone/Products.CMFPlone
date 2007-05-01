@@ -6,10 +6,11 @@
 <ul id="portal-personaltools"
     class="visualInline">
    <tal:block condition="not: view/anonymous">
-       <li class="portalUser"><a 
+       <li><a 
            id="user-name"
            tal:attributes="href string:${view/portal_url}/dashboard"
-          ><span class="visualCaseSensitive"
+          ><img src="" tal:replace="structure here/user.gif" />
+            <span class="visualCaseSensitive"
                  tal:content="view/user_name">
                 John
            </span
