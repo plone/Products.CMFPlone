@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Hide CMFPlone on the add-on product installation control panel.
+      This fixes http://dev.plone.org/plone/ticket/6513.
+      [hannosch]
+
     - Fix bad links between templates prefs_users_overview, prefs_user_details
       and prefs_user_membership (remove starting space and force portal_url)
       [encolpe]

@@ -44,7 +44,7 @@ class HiddenProducts(object):
 
     def getNonInstallableProducts(self):
         return ['Archetypes', 'ATContentTypes', 'ATReferenceBrowserWidget',
-                'CMFActionIcons', 'CMFCalendar', 'CMFDefault',
+                'CMFActionIcons', 'CMFCalendar', 'CMFDefault', 'CMFPlone',
                 'CMFTopic', 'CMFUid', 'DCWorkflow', 'GroupUserFolder',
                 'PasswordResetTool', 'wicked.at', 'kupu', 'PloneLanguageTool',
                 'Kupu', 'CMFFormController', 'MimetypesRegistry',
