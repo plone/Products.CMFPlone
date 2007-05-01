@@ -69,6 +69,8 @@ If you do not have an account here, head over to the
     While cookie authentication is disabled, cookie-based login is not available.
 </div>
 
+
+<metal:login define-macro="login">
 <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
       class="enableAutoFocus"
       method="post"
@@ -170,7 +172,8 @@ If you do not have an account here, head over to the
     </fieldset>
 
 </form>
-</div>
+</metal:login>
 
+</div>
 </body>
 </html>
