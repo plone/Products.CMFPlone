@@ -153,6 +153,8 @@ class PloneGenerator:
             # As we have a sensible language code set now, we disable the
             # start neutral functionality
             tool = getToolByName(p, "portal_languages")
+            pprop = getToolByName(p, "portal_properties")
+            sheet = pprop.site_properties 
 
             tool.manage_setLanguageSettings(language,
                 [language],
