@@ -19,7 +19,7 @@ if REQUEST.get('__cp', None) is not None:
 membership_tool=context.portal_membership
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
-    context.plone_utils.addPortalMessage(_(u'Login failed'), 'error')
+    context.plone_utils.addPortalMessage(_(u'Login failed. Both login name and password is case sensitive, check that caps lock is not enabled.'), 'error')
     return state.set(status='failure')
 
 member = membership_tool.getAuthenticatedMember()

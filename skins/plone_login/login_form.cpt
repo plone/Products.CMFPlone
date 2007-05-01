@@ -26,8 +26,6 @@
                  ac_persist auth/persist_cookie|nothing;
                  login_name python:request.get('login_name', request.get(ac_name, ''));">
 
-<h1 class="documentFirstHeading"
-    i18n:translate="heading_sign_in">Please log in</h1>
 
 <p i18n:translate="description_no_account"
    tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
@@ -44,14 +42,6 @@ If you do not have an account here, head over to the
        i18n:translate="description_no_account_registration_linktext">
         registration form</a></span>.
 
-</p>
-
-<p tal:condition="python:checkPermission('Mail forgotten password', here)"
-     i18n:translate="help_password_retrieval">
-    If you have forgotten your password,
-    <span i18n:name="click_here">
-        <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
-           i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a></span>.
 </p>
 
 <dl class="portalMessage error"
@@ -77,9 +67,22 @@ If you do not have an account here, head over to the
       id="login_form"
       tal:condition="python:auth">
 
-    <fieldset>
+    <fieldset id="login-form">
 
-        <legend i18n:translate="legend_account_details">Account details</legend>
+        <legend i18n:translate="heading_sign_in">Please log in</legend>
+
+        <div id="forgotten-password"
+             tal:condition="python:checkPermission('Mail forgotten password', here)">
+            <h3 i18n:translate="box_forgot_password_option">
+                Forgot your password?
+            </h3>
+            <p i18n:translate="help_password_retrieval">
+                If you have forgotten your password,
+                <span i18n:name="click_here">
+                    <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
+                       i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a></span>.
+            </p>
+        </div>
 
         <input type="hidden"
             name="came_from"
@@ -99,11 +102,6 @@ If you do not have an account here, head over to the
             <label i18n:translate="label_login_name"
                    tal:attributes="for ac_name">Login Name</label>
 
-            <div i18n:translate="help_login_name_caps"
-                 class="formHelp">
-            Login names are case sensitive, make sure the caps lock key is not enabled.
-            </div>
-
             <div tal:content="error">Validation error output</div>
 
             <input type="text"
@@ -121,12 +119,6 @@ If you do not have an account here, head over to the
 
             <label i18n:translate="label_password"
                    tal:attributes="for ac_password">Password</label>
-
-            <div class="formHelp">
-                <div i18n:translate="help_capslock_password">
-                    Case sensitive, make sure caps lock is not enabled.
-                </div>
-            </div>
 
             <div tal:content="error">Validation error output</div>
 

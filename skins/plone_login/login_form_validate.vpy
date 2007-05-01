@@ -44,10 +44,10 @@ if mt.isAnonymousUser():
                     state.setError(ac_name, _(u'Login name not found.'), 'login_name_not_found')
                 elif not password_empty:
                     state.setError(ac_password, _(u'Password incorrect.'), 'password_incorrect')
-        context.plone_utils.addPortalMessage(_(u'Login failed'), 'error')
+        context.plone_utils.addPortalMessage(_(u'Login failed. Both login name and password is case sensitive, check that caps lock is not enabled.'), 'error')
         state.set(status='failure')
     else: # no javascript - do low tech login failure
-        context.plone_utils.addPortalMessage(_(u'Login failed'), 'error')
+        context.plone_utils.addPortalMessage(_(u'Login failed. Both login name and password is case sensitive, check that caps lock is not enabled.'), 'error')
         state.set(status='failure_page')
 
 return state

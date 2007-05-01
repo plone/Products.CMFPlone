@@ -86,6 +86,31 @@ option {
 optgroup > option {
   padding: 0 0.25em 0 1em;
 }
+
+dl.enableFormTabbing dd {
+    margin-left: 0;
+    padding-top: 2em;
+}
+
+#login-form {
+    max-width: 30em; 
+    margin: 0 auto;
+}
+#login-form input {
+    font-size: 150%;
+}
+#login-form input.context {
+    padding: 1px 10px 1px 20px;
+    background-position: 9px 5px;
+    margin-bottom: 1em;
+}
+
+#forgotten-password {
+    float: right; 
+    width: 35%; 
+    margin: 0 1em;
+}
+
 .standalone,
 .documentEditable * .standalone {
     background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
