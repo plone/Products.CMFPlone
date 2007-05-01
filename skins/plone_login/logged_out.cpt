@@ -49,14 +49,6 @@
 
   </p>
 
-  <p tal:condition="python:checkPermission('Mail forgotten password', here)"
-       i18n:translate="help_password_retrieval">
-      If you have forgotten your password,
-      <span i18n:name="click_here">
-          <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
-             i18n:translate="label_click_here_to_retrieve">click here to retrieve it</a></span>.
-  </p>
-
     <dl class="portalMessage error"
         id="enable_cookies_message"
         style="display:none">
