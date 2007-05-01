@@ -57,31 +57,6 @@
                        />
             </div>
 
-            <div class="field">
-                <label for="last_login_time"
-                       i18n:translate="label_last_logged_in">
-                    Last logged in
-                </label>
-
-                <div class="formHelp" i18n:translate="help_search_last_logged_in">
-                    Find users who have logged in since yesterday, last week, etc.
-                </div>
-
-                <tal:datetime define="today python:DateTime().earliestTime()">
-                    <select name="last_login_time:date"
-                            id="last_login_time"
-                            tal:define="yesterday python:(today-1).Date();
-                                        lastweek python:(today-7).Date();
-                                        lastmonth python:(today-31).Date();
-                                        ever string:2000/02/01 00:00:00 GMT;">
-                        <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday">Yesterday</option>
-                        <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week">Last week</option>
-                        <option value="#" tal:attributes="value lastmonth" i18n:translate="time_last_month">Last month</option>
-                        <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever">Ever</option>
-                    </select>
-                </tal:datetime>
-            </div>
-
            <div class="field">
                 <label for="fullname"
                        i18n:translate="label_fullname">Full Name</label>
@@ -97,17 +72,6 @@
                        />
             </div>
 
-            <div class="field">
-              <input type="checkbox" class="noborder"
-                     name="before_specified_time" id="cb_before_specified_time" />
-
-              <label for="cb_before_specified_time"
-                     i18n:translate="label_before_specified_time">Not logged in since specified time</label>
-
-              <div class="formHelp" i18n:translate="help_search_before_specified_time">
-                Find users who have NOT logged in since the time specified above.
-              </div>
-            </div>
 
             <tal:condition condition="python:checkPermission('View Groups', portal)">
             <div class="field"
