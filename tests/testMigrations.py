@@ -2664,6 +2664,47 @@ class TestMigrations_v3_0(MigrationTest):
             self.failUnless(p in [r['name'] for r in 
                                 self.portal.permissionsOfRole('Contributor') if r['selected']])
 
+    def testAddBeta2VersioningPermissionsToNewRoles(self):
+        # This migration just uses GS to apply the role changes,
+        # these permissions will not have been installed previously,
+        # so this should be safe
+        for p in ['CMFEditions: Apply version control',
+                  'CMFEditions: Save new version',
+                  'CMFEditions: Access previous versions',
+                  'CMFEditions: Revert to previous versions',
+                  'CMFEditions: Checkout to location']:
+            self.portal.manage_permission(p, ['Manager', 'Owner'], True)
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["rolemap"])
+        for p in ['CMFEditions: Apply version control',
+                  'CMFEditions: Save new version',
+                  'CMFEditions: Access previous versions']:
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Contributor') if r['selected']])
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Editor') if r['selected']])
+        for p in ['CMFEditions: Revert to previous versions',
+                  'CMFEditions: Checkout to location']:
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Editor') if r['selected']])
+        # perform migration twice
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["rolemap"])
+        for p in ['CMFEditions: Apply version control',
+                  'CMFEditions: Save new version',
+                  'CMFEditions: Access previous versions']:
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Contributor') if r['selected']])
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Editor') if r['selected']])
+        for p in ['CMFEditions: Revert to previous versions',
+                  'CMFEditions: Checkout to location']:
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Editor') if r['selected']])
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
