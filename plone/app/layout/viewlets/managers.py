@@ -18,7 +18,8 @@ class OrderedViewletManager(object):
                 del name_map[name]
 
         # then sort the remaining ones
-        remaining = sorted(name_map.items(), lambda x, y: cmp(aq_base(x[1]), aq_base(y[1])))
+        remaining = sorted(name_map.items(),
+                           lambda x, y: cmp(aq_base(x[1]), aq_base(y[1])))
 
         # return both together
         return result + remaining
