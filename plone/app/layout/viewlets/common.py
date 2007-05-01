@@ -2,7 +2,7 @@ from zope.interface import implements
 from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
 
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -52,7 +52,7 @@ class TableOfContentsViewlet(ViewletBase):
     render = ViewPageTemplateFile('toc.pt')
 
     def update(self):
-        obj = self.context.aq_base
+        obj = aq_base(self.context)
         getTableContents = getattr(obj, 'getTableContents', None)
         self.enabled = False
         if getTableContents is not None:
