@@ -17,7 +17,7 @@
 body.kssActive .inlineEditable:hover {
     padding: 0;
     border: 1px solid #ddd;
-    border-color:#666 #ddd #ddd #666;
+    border-color: #666 #ddd #ddd #666;
     cursor: text;
     background: White url(input_background.gif) repeat-x;
 }
