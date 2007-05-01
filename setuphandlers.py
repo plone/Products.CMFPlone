@@ -27,7 +27,6 @@ from Products.CMFPlone import migrations as migs
 from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.Portal import member_indexhtml
 from Products.ATContentTypes.lib import constraintypes
-from Products.PloneLanguageTool.interfaces import ILanguageTool
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 
 from plone.i18n.normalizer.interfaces import IURLNormalizer
@@ -189,26 +188,39 @@ class PloneGenerator:
             if language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
-                    title = util.translate(u'title',
-                                           target_language=language)
-                    desc = util.translate(u'description',
-                                          target_language=language)
-                    text = util.translate(u'text',
-                                          target_language=language)
-                    if title <> u'title' and text <> u'text':
-                        fp.setLanguage(language)
-                        fp.setTitle(title)
-                        fp.setDescription(desc)
-                        fp.setText(text)
-            
+                    front_title = util.translate(u'front-title',
+                                       target_language=language,
+                                       default="Welcome to Plone")
+                    front_desc = util.translate(u'front-description',
+                                       target_language=language,
+                                       default="Congratulations! You have successfully installed Plone.")
+                    front_text = util.translate(u'front-text',
+                                       target_language=language)
+                    fp.setLanguage(language)
+                    fp.setTitle(front_title)
+                    fp.setDescription(front_desc)
+                    if front_text <> u'front-text':
+                        fp.setText(front_text)
 
         # News topic
         if 'news' not in existing:
-            _createObjectByType('Large Plone Folder', p, id='news', title='News',
-                                description='Site News')
-            
-            _createObjectByType('Topic', p.news, id='aggregator', title='News',
-                                description='Site News')
+            news_title = 'News'
+            news_desc = 'Site News'
+            if language is not None:
+                util = queryUtility(ITranslationDomain, 'plonefrontpage')
+                if util is not None:
+                    news_title = util.translate(u'news-title',
+                                           target_language=language,
+                                           default='News')
+                    news_desc = util.translate(u'news-description',
+                                          target_language=language,
+                                          default='Site News')
+
+            _createObjectByType('Large Plone Folder', p, id='news',
+                                title=news_title, description=news_desc)
+            _createObjectByType('Topic', p.news, id='aggregator',
+                                title=news_title, description=news_desc)
+
             folder = p.news
             folder.setConstrainTypesMode(constraintypes.ENABLED)
             folder.setLocallyAllowedTypes(['News Item'])
@@ -232,11 +244,22 @@ class PloneGenerator:
 
         # Events topic
         if 'events' not in existing:
-            _createObjectByType('Large Plone Folder', p, id='events', title='Events',
-                                description='Site Events')
+            events_title = 'Events'
+            events_desc = 'Site Events'
+            if language is not None:
+                util = queryUtility(ITranslationDomain, 'plonefrontpage')
+                if util is not None:
+                    events_title = util.translate(u'events-title',
+                                           target_language=language,
+                                           default='Events')
+                    events_desc = util.translate(u'events-description',
+                                          target_language=language,
+                                          default='Site Events')
+
+            _createObjectByType('Large Plone Folder', p, id='events',
+                                title=events_title, description=events_desc)
             _createObjectByType('Topic', p.events, id='aggregator',
-                                title='Events',
-                                description='Site Events')
+                                title=events_title, description=events_desc)
             folder = p.events
             folder.setConstrainTypesMode(constraintypes.ENABLED)
             folder.setLocallyAllowedTypes(['Event'])
@@ -266,8 +289,21 @@ class PloneGenerator:
 
         # Previous events subtopic
         if 'previous' not in topic.objectIds():
-            _createObjectByType('Topic', topic, id='previous', title='Past Events',
-                                description="Events which have already happened.")
+            prev_events_title = 'Past Events'
+            prev_events_desc = 'Events which have already happened.'
+            if language is not None:
+                util = queryUtility(ITranslationDomain, 'plonefrontpage')
+                if util is not None:
+                    prev_events_title = util.translate(u'prev-events-title',
+                                           target_language=language,
+                                           default='Past Events')
+                    prev_events_desc = util.translate(u'prev-events-description',
+                                          target_language=language,
+                                          default='Events which have already happened.')
+            
+            _createObjectByType('Topic', topic, id='previous',
+                                title=prev_events_title,
+                                description=prev_events_desc)
             topic = topic.previous
             topic.setAcquireCriteria(True)
             sort_crit = topic.addCriterion('start','ATSortCriterion')
@@ -284,9 +320,21 @@ class PloneGenerator:
 
         if 'Members' in existing:
             # configure Members folder (already added by the content import)
+            members_title = 'Users'
+            members_desc = "Container for portal users' home directories"
+            if language is not None:
+                util = queryUtility(ITranslationDomain, 'plonefrontpage')
+                if util is not None:
+                    members_title = util.translate(u'members-title',
+                                           target_language=language,
+                                           default='Users')
+                    members_desc = util.translate(u'members-description',
+                                          target_language=language,
+                                          default="Container for portal users' home directories")
+
             members = getattr(p , 'Members')
-            members.setTitle('Users')
-            members.setDescription("Container for portal members' home directories")
+            members.setTitle(members_title)
+            members.setDescription(members_desc)
             members.reindexObject()
             
             if wftool.getInfoFor(members, 'review_state') != 'published':
@@ -303,7 +351,7 @@ class PloneGenerator:
                 addPy('index_html')
                 index_html = getattr(members, 'index_html')
                 index_html.write(member_indexhtml)
-                index_html.ZPythonScript_setTitle('Member Search')
+                index_html.ZPythonScript_setTitle('User Search')
 
     def performMigrationActions(self, p):
         """
