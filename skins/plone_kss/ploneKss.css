@@ -22,6 +22,9 @@ body.kssActive .inlineEditable:hover {
     background: White url(input_background.gif) repeat-x;
 }
 
+body.kssActive .inlineEditable a:hover {
+    cursor: pointer;
+}
 body.kssActive h1.inlineEditable:hover {
     padding-bottom: 1px;
 }
