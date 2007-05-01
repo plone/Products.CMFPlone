@@ -26,13 +26,17 @@
 }
 
 /* Content area */
-h1, h2, h3, h4, h5, h6 {
-    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-}
 h1, h2 {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     font-weight: normal;
 }
+/* Compensate for the inline editing hover, since we have a 1px border */
+body.kssActive h2.inlineEditable:hover,
+body.kssActive h1.inlineEditable:hover {
+    padding-bottom: 1px;
+}
+
+
 h3, h4, h5, h6 {
     border-bottom: none;
     font-weight: bold;
