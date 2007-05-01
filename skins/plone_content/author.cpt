@@ -125,7 +125,9 @@
             </p>
 
             <p tal:condition="python: not mtool.getHomeFolder(id=author) and authorinfo['home_page']">
-            <a href="#" tal:attributes="href authorinfo/home_page"
+            <a href="#" 
+               rel="nofollow"
+               tal:attributes="href authorinfo/home_page"
                i18n:translate="label_author_external_home_page">Author's external home page&hellip;</a>
             </p>
 
