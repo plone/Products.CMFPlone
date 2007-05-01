@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Add getChainFor method in WorkflowTool from CMFPlacefulWorkflow monkey-patch
+      and disable this one.
+      [encolpe]
+
     - Hide CMFPlone on the add-on product installation control panel.
       This fixes http://dev.plone.org/plone/ticket/6513.
       [hannosch]
