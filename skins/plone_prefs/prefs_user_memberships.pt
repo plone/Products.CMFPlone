@@ -66,14 +66,15 @@
           </metal:block>
 
           <metal:block metal:fill-slot="actions" >
-            <input class="context"
-                          tabindex=""
-                          type="submit"
-                          name="prefs_user_membership_edit:method"
-                          value="Add user to selected groups"
-                          tal:condition="batch"
-                          tal:attributes="tabindex tabindex/next;"
-                          i18n:attributes="value label_add_user_to_group;" />
+            <form method="post"
+                  tal:attributes="action template_id">
+              <input class="context"
+                     type="submit"
+                     name="prefs_user_membership_edit:method"
+                     value="Add user to selected groups"
+                     tal:condition="batch"
+                     i18n:attributes="value label_add_user_to_group;" />
+            </form>
           </metal:block>
 
           <metal:block metal:fill-slot="removables">
@@ -110,12 +111,15 @@
 
             </table>
             <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-            <input class="destructive"
-                   type="submit"
-                   name="prefs_user_membership_edit:method"
-                   value="Remove selected groups"
-                   i18n:attributes="value label_remove_selected_groups;"
-                   tal:condition="groups" />
+            <form method="post"
+                  tal:attributes="action template_id">
+              <input class="destructive"
+                     type="submit"
+                     name="prefs_user_membership_edit:method"
+                     value="Remove selected groups"
+                     i18n:attributes="value label_remove_selected_groups;"
+                     tal:condition="groups" />
+            </form>
           </metal:block>
         </div>
     </div>
