@@ -23,6 +23,7 @@ class ControlPanelForm(FieldsetsEditForm):
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
             self.status = _("Changes saved.")
+            self._on_save()
         else:
             self.status = _("No changes made.")
 
@@ -34,6 +35,9 @@ class ControlPanelForm(FieldsetsEditForm):
                               name='absolute_url')()
         self.request.response.redirect(url + '/plone_control_panel')
         return ''
+        
+    def _on_save(self):
+        pass
 
 _template = ViewPageTemplateFile('control-panel.pt')
 controlpanel_named_template_adapter = named_template_adapter(_template)
