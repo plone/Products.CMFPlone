@@ -30,8 +30,9 @@ own passwords'),
                         required=False)
 
     enable_user_folders = Bool(title=_(u'Enable User Folders'),
-                        description=_(u'''If selected, empty home folders will
-                                       be created for new users.'''),
+                        description=_(u'''If selected, home folders 
+                                       where users can create content will
+                                       be created when they log in.'''),
                         default=False,
                         required=False)
 
