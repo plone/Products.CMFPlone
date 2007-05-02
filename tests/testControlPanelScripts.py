@@ -24,7 +24,8 @@ class TestNoGETControlPannel(PloneTestCase.FunctionalTestCase):
         env = dict()
         if rpath:
             env['HTTP_REFERER'] = self.app.absolute_url() + rpath
-        response = self.publish('%s?%s' % (path, qstring), basic_auth, env)
+        response = self.publish('%s?%s' % (path, qstring), basic_auth, env,
+                                handle_errors=True)
         self.assertEqual(response.getStatus(), 403)
 
         data = StringIO(qstring)
