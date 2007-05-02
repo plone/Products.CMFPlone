@@ -81,15 +81,16 @@ if cmfcore:
             else:
                 break
         cmf_ver = [int(x) for x in filtered.split('.')]
+
+        if tuple(cmf_ver) < MINIMUM_CMF_VER:
+            log(("Plone requires CMF %s or later. "
+                 "Your version is: %s" % (MINIMUM_CMF_VER, CMF_VERSION)))
     except IOError:
         # couldnt find file, oh well
         pass
     except ValueError:
         # couldnt make sense of the version number
         pass
-    if tuple(cmf_ver) < MINIMUM_CMF_VER:
-        log(("Plone requires CMF %s or later. "
-             "Your version is: %s" % (MINIMUM_CMF_VER, CMF_VERSION)))
 
 try:
     import Products.CMFQuickInstallerTool
