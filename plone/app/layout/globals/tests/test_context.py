@@ -141,11 +141,6 @@ class TestContextStateView(GlobalsTestCase):
         actions = self.fview.actions()
         self.failUnless('workflow' in actions)
     
-    def keyed_actions():
-        keyed_actions = self.fview.keyed_actions()
-        self.failUnless('workflow' in actions)
-        self.failUnless('publish' in actions['workflow'])
-
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestContextStateView))
