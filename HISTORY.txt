@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+Plone 3.0-beta2 - released May 2, 2007
+
     - Extended support for creation of translated initial content to include all
       titles and descriptions of all initial content.
       [hannosch]

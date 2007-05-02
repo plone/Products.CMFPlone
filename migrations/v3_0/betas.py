@@ -44,6 +44,15 @@ def beta1_beta2(portal):
     return out
 
 
+def beta2_beta3(portal):
+    """ 3.0-beta2 -> 3.0-beta3
+    """
+
+    out = []
+
+    return out
+
+
 def migrateHistoryTab(portal, out):
     portal_actions = queryUtility(IActionsTool)
     if portal_actions is not None:
