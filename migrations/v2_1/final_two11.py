@@ -17,7 +17,7 @@ def final_two11(portal):
     try:
         fixUpSMIGlobs(portal, out)
     except TypeError:
-        fixUpSMIGlobs(portal)
+        fixUpSMIGlobs(out)
 
 
     # Update path index for new EPI version
