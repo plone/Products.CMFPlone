@@ -54,19 +54,6 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
         self.assertEqual(cookie.get('path'), '/')
         self.assertEqual(cookie.get('expires'), None)
 
-    def testSetPersistentCookie(self):
-        # The __ac cookie should be set for 7 days
-        self.portal.portal_properties.site_properties.auth_cookie_length = 7
-        form = {'__ac_name': default_user, '__ac_password': default_password}
-
-        response = self.publish(self.portal_path + '/logged_in',
-                                env={'QUERY_STRING': urlencode(form)})
-
-        self.assertEqual(response.getStatus(), 200)
-
-        cookie = response.getCookie('__ac')
-        self.failIfEqual(cookie.get('expires'), None)
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -540,22 +540,6 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(len(search(name='fred', roles=['Reviewer'])), 1)
         self.assertEqual(len(search(name='fred', roles=['Manager'])), 0)
 
-    def testSearchByNameAndLastLoginTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(name='rubble', last_login_time=DateTime('2002-01-01'))), 2)
-        self.assertEqual(len(search(name='flintstone', last_login_time=DateTime('2003-01-01'))), 0)
-
-    def testSearchByNameAndLoginBeforeSpecifiedTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(name='rubble',
-                                    last_login_time=DateTime('2002-01-01'),
-                                    before_specified_time=True)), 0)
-        self.assertEqual(len(search(name='rubble',
-                                    last_login_time=DateTime('2002-01-02'),
-                                    before_specified_time=True)), 1)
-        self.assertEqual(len(search(name='flintstone',
-                                    last_login_time=DateTime('2003-01-01'),
-                                    before_specified_time=True)), 1)
 
     def testSearchByEmailAndRoles(self):
         search = self.membership.searchForMembers
