@@ -489,6 +489,7 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.memberdata._v_temps = None
         self._trap_warning_output()
 
+
     def addMember(self, username, fullname, email, roles, last_login_time):
         self.membership.addMember(username, 'secret', roles, [])
         member = self.membership.getMemberById(username)
@@ -498,7 +499,7 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testSearchById(self):
         # Should search id and fullname
         search = self.membership.searchForMembers
-        self.assertEqual(len(search(name='brubble')), 1)
+        self.assertEqual(len(search(name='brubble')), 0)
         self.assertEqual(len(search(name='barney')), 1)
         self.assertEqual(len(search(name='rubble')), 2)
 
@@ -518,17 +519,6 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(len(search(roles=['Member'])), 3)
         self.assertEqual(len(search(roles=['Reviewer'])), 1)
 
-    def testSearchByLastLoginTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(last_login_time=DateTime('2002-01-01'))), 3)
-        self.assertEqual(len(search(last_login_time=DateTime('2003-01-01'))), 1)
-
-    def testSearchLoginBeforeSpecifiedTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(last_login_time=DateTime('2002-01-02'),
-                                    before_specified_time=True)), 2)
-        self.assertEqual(len(search(last_login_time=DateTime('2004-01-01'),
-                                    before_specified_time=True)), 3)
 
     def testSearchByNameAndEmail(self):
         search = self.membership.searchForMembers
@@ -545,44 +535,6 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase, WarningInterceptor):
         search = self.membership.searchForMembers
         self.assertEqual(len(search(email='fred', roles=['Reviewer'])), 1)
         self.assertEqual(len(search(email='fred', roles=['Manager'])), 0)
-
-    def testSearchByEmailAndLastLoginTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(email='bedrock', last_login_time=DateTime('2002-01-01'))), 2)
-        self.assertEqual(len(search(email='bedrock', last_login_time=DateTime('2003-01-01'))), 0)
-
-    def testSearchByEmailAndLoginBeforeSpecifiedTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(email='bedrock',
-                                    last_login_time=DateTime('2002-01-01'),
-                                    before_specified_time=True)), 0)
-        self.assertEqual(len(search(email='bedrock',
-                                    last_login_time=DateTime('2003-01-01'),
-                                    before_specified_time=True)), 2)
-
-    def testSearchByRolesAndLastLoginTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(roles=['Member'], last_login_time=DateTime('2002-01-01'))), 3)
-        self.assertEqual(len(search(roles=['Reviewer'], last_login_time=DateTime('2002-01-01'))), 1)
-        self.assertEqual(len(search(roles=['Member'], last_login_time=DateTime('2003-01-01'))), 1)
-
-    def testSearchByRolesAndLoginBeforeSpecifiedTime(self):
-        search = self.membership.searchForMembers
-        self.assertEqual(len(search(roles=['Member'],
-                                    last_login_time=DateTime('2002-01-01'),
-                                    before_specified_time=True)), 0)
-        self.assertEqual(len(search(roles=['Member'],
-                                    last_login_time=DateTime('2003-01-01'),
-                                    before_specified_time=True)), 2)
-        self.assertEqual(len(search(roles=['Member'],
-                                    last_login_time=DateTime('2004-01-01'),
-                                    before_specified_time=True)), 3)
-        self.assertEqual(len(search(roles=['Reviewer'],
-                                    last_login_time=DateTime('2002-01-01'),
-                                    before_specified_time=True)), 0)
-        self.assertEqual(len(search(roles=['Reviewer'],
-                                    last_login_time=DateTime('2004-01-01'),
-                                    before_specified_time=True)), 1)
 
     def beforeTearDown(self):
         self._free_warning_output()
