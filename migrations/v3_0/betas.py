@@ -50,6 +50,8 @@ def beta2_beta3(portal):
 
     out = []
 
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b2-3.0b3')
+
     return out
 
 

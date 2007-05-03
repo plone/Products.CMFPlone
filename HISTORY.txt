@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Added plone.app.viewletmanager. This allows you to hide and order the
+      viewlets per skin via a GenericSetup profile.
+
 Plone 3.0-beta2 - released May 2, 2007
 
     - Extended support for creation of translated initial content to include all

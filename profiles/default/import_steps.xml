@@ -180,6 +180,12 @@
   <dependency step="typeinfo"/>
     Import workflow tool's workflow definitions and supporting scripts.
  </import-step>
+ <import-step id="viewlets" version="20070503-01"
+              handler="plone.app.viewletmanager.exportimport.storage.importViewletSettingsStorage"
+              title="Viewlet Settings">
+  <dependency step="componentregistry"/>
+    Import viewlet settings
+ </import-step>
  <import-step id="kss_mimetype" version="20061125-01"
               handler="plone.app.kss.exportimport.setup.setupMimetype"
               title="KSS setup / mimetype">
