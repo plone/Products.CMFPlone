@@ -11,7 +11,7 @@
 
 <div metal:fill-slot="main"
        tal:define="search_view here/@@pas_search;
-                   results python:search_view.searchUsersByRequest(request, sortKey='fullname');
+                   results python:search_view.searchUsersByRequest(request, sort_by='fullname');
                    Batch python:modules['Products.CMFPlone'].Batch;
                    DateTime python:modules['DateTime'].DateTime;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;">

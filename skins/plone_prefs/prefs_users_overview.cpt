@@ -101,7 +101,7 @@
               tal:define="findAll python:'form.button.FindAll' in request.keys();
                           searchstring request/searchstring | nothing;
                           search_view here/@@pas_search;
-                          sorted_users python:search_view.searchUsers(sortKey='userid', fullname=searchstring);
+                          sorted_users python:search_view.searchUsers(sort_by='userid', fullname=searchstring);
                           portal_users python:(searchstring or findAll) and sorted_users or [];
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
           <input type="hidden" name="form.submitted" value="1" />
