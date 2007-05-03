@@ -20,62 +20,70 @@
         name="plone.portaltop"
         provides=".interfaces.IPortalTop"
         permission="zope2.View"
-        class=".managers.PortalTopManager"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.portalheader"
         provides=".interfaces.IPortalHeader"
         permission="zope2.View"
-        class=".managers.PortalHeaderManager"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.abovecontent"
         provides=".interfaces.IAboveContent"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.abovecontenttitle"
         provides=".interfaces.IAboveContentTitle"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.documentactions"
         provides=".interfaces.IDocumentActions"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.belowcontenttitle"
         provides=".interfaces.IBelowContentTitle"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.abovecontentbody"
         provides=".interfaces.IAboveContentBody"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.belowcontentbody"
         provides=".interfaces.IBelowContentBody"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.belowcontent"
         provides=".interfaces.IBelowContent"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.portalfooter"
         provides=".interfaces.IPortalFooter"
         permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <!-- Define some viewlets -->
