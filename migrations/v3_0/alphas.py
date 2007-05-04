@@ -115,8 +115,8 @@ def three0_alpha1(portal):
     upgradeATCTTool(portal, out)
 
     # Install CMFEditions and 
-    installProduct('CMFEditions', portal, out, hidden=True)
     installProduct('CMFDiffTool', portal, out, hidden=True)
+    installProduct('CMFEditions', portal, out, hidden=True)
 
     # Migrate legacy portlets
     addPortletManagers(portal, out)

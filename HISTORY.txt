@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Fixed migration code for CMFEditions. This closes
+      http://dev.plone.org/plone/ticket/6491
+      [hannosch]
+
     - Fixed member_search_results to work for users without a fullname.
       [hannosch]
 
