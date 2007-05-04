@@ -23,7 +23,7 @@ class ControlPanelForm(FieldsetsEditForm):
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
             self.status = _("Changes saved.")
-            self._on_save()
+            self._on_save(data)
         else:
             self.status = _("No changes made.")
 
