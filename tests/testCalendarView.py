@@ -129,13 +129,13 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
     def testEmptyCalendar(self):
         response = self.publish(self.portal_path, self.basic_auth)
         self.assertEquals(response.getStatus(), 200)
-        self.failUnless('class="portletCalendar"' in response.getBody())
+        self.failUnless('class="portlet portletCalendar"' in response.getBody())
 
     def testCalendarWithEvents(self):
         self.populateSite()
         response = self.publish(self.portal_path, self.basic_auth)
         self.assertEquals(response.getStatus(), 200)
-        self.failUnless('class="portletCalendar"' in response.getBody())
+        self.failUnless('class="portlet portletCalendar"' in response.getBody())
         self.failUnless('event1' in response.getBody())
         self.failUnless('event2' in response.getBody())
         self.failUnless('event3' in response.getBody())
