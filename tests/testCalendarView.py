@@ -155,7 +155,7 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.portal_path, self.basic_auth,
                                 env={'HTTP_ACCEPT_LANGUAGE': 'ja'})
         self.assertEquals(response.getStatus(), 200)
-        self.failUnless('class="portletCalendar"' in response.getBody())
+        self.failUnless('class="portlet portletCalendar"' in response.getBody())
         self.failUnless('event1' in response.getBody())
         self.failUnless('event2' in response.getBody())
         self.failUnless('event3' in response.getBody())
