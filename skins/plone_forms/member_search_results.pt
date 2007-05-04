@@ -31,8 +31,8 @@
 
         <div>
         <metal:block tal:repeat="result batch">
-            <div class="card" tal:define="userid result/userid;
-                                          fullname result/fullname;
+            <div class="card" tal:define="userid result/userid | nothing;
+                                          fullname result/fullname | nothing;
                                           home python:container.portal_membership.getHomeUrl(userid, verifyPermission=1);
                                           portrait python: here.portal_membership.getPersonalPortrait(userid);">
                 <a href="#" tal:attributes="href home">
@@ -69,6 +69,4 @@
 
 </div>
 
-
 </html>
-
