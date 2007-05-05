@@ -31,12 +31,6 @@ Plone 3.0 is still in development
 
 Plone 3.0 is not finished yet. Some important things to take into account:
 
-* Migration from older sites is not working correctly in Plone 3.0-beta1. This
-  will be fixed in beta2.
-
-* the kss related ids and classes are subject to change. They will be fixed in
-  beta2.
-
 * the release notes and upgrade instructions are not completed yet.
 
 
@@ -83,7 +77,7 @@ Important notes for users
   - configure individual portlets, for example to change the number
     of items shown in portlets.
 
-* Users now have a personal dashboard. They can customise this with
+* Users now have a personal dashboard. They can customize this with
   multiple portlets.
   
 * Plone now supports the Google Sitemap protocol, described in 
@@ -134,7 +128,7 @@ XXX this document is not published yet XXX
 
 * Plone 3 now uses a new session authentication implementation based on the
   new plone.session package. This system uses a cryptographic hash against
-  the userid of a succesfully authenticated user to authenticate sessions.
+  the userid of a successfully authenticated user to authenticate sessions.
 
   This form of session authentication only works for users defined in the
   user folder in the Plone site itself. Users defined in other user folders
@@ -151,7 +145,7 @@ The latest information on migrating products to Plone 3.0 can be found online
 at http://plone.org/documentation/manual/migration-guide/version-specific/adjusting-third-party-products-from-plone-2-5-to-3.0/
 
 * Searching for users and groups using the portal_membership and portal_groups
-  tools has been deprectaed. Please use the search features of PAS directly
+  tools has been deprecated. Please use the search features of PAS directly
   or use the PlonePAS pas_search browser view.
 
 * There are new Reader, Editor and Contributor roles, roughly mapping to
@@ -216,7 +210,7 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   tutorial: http://plone.org/documentation/tutorial/richdocument/migrations/
 
 * If you have a custom content type that is derived from ATDocument but does
-  not want the document-specific behaviour that is provided on the IATDocument
+  not want the document-specific behavior that is provided on the IATDocument
   interface you should use the new ATDocumentBase base class instead.
 
 * Customising z3 views using customerize
@@ -230,7 +224,7 @@ Preferred but not obligatory (right now)
 
 * QuickInstaller-based installation should use GenericSetup profiles instead 
 
-* use events instead of manage_ methods (which will probably disappear in plone
+* use events instead of manage_ methods (which will probably disappear in Plone
   3.5 or 4.0)
 
 * Packaging technology:
