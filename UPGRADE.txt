@@ -1,5 +1,8 @@
 How to upgrade a Plone site to a newer version
 
+This is a short version, more information can be found at
+http://plone.org/upgrade.
+
 1. Stop Plone / Zope
 
 2. Backup your Plone site, just in case. You should backup:
