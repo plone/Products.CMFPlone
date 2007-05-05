@@ -2,7 +2,23 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - Unreleased
+plone.app.controlpanel - 1.0b4 Released May 5, 2007
+
+    - Pass data to the on-save template method.
+      [optilude]
+
+    - Add a callback method from the save button handler. This makes it easier
+      to react when saving is finished (successfully) - otherwise, the schema
+      adapter properties are simple set one-by-one and you can't do anything
+      when form saving is complete. The alternative is to override the button
+      handler, but then we lose some of the consistency that plone.app.form
+      tries to introduce.
+      [optilude]
+
+    - Wording.
+      [limi]
+
+plone.app.controlpanel - 1.0b3 Released May 1, 2007
 
     - Adjusted the mail control panel to store the email settings on the portal
       root intead of in the site properties. This closes
