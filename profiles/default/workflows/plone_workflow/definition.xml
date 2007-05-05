@@ -9,7 +9,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="pending"   title="Pending">
+ <state state_id="pending" title="Pending">
   <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
