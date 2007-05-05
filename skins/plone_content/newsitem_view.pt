@@ -52,13 +52,17 @@
             This item does not have any body text, click the edit tab to change it.
         </p>
 
-        <div class="stx"
+        <div metal:define-macro="text-field-view"
+             id="parent-fieldname-text" class="stx"
+             tal:define="kss_class python:getKssClasses('text',
+                         templateId=templateId, macro='text-field-view');
+                         text text|here/getText|nothing"
              tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
-                                                   'text/x-rst', ), 'stx', 'plain')">
-            <div tal:replace="structure text" />
+                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+            <div metal:define-slot="inside" tal:replace="structure text">The body</div>
         </div>
-
+        
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">
             Show related items if they exist
         </div>
