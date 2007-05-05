@@ -108,7 +108,7 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         # XXX - it's a bit tricky to use our workflow_dict here because we have  
         # similar id states that have different titles are therefore not filtered, 
         # need to think on it a bit more
-        self.assertEqual(len(states), 12)
+        self.assertEqual(len(states), 11)
         pub_states = [s for s in states if s[1]=='published']
         priv_states = [s for s in states if s[1]=='private']
         pend_states = [s for s in states if s[1]=='pending']
@@ -117,7 +117,7 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
 
         self.assertEqual(len(pub_states), 3)
         self.assertEqual(len(priv_states), 2)
-        self.assertEqual(len(pend_states), 2)
+        self.assertEqual(len(pend_states), 1)
         self.assertEqual(len(vis_states), 2)
         self.assertEqual(len(internal_states), 2)
 
