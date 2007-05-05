@@ -59,6 +59,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.javascripts = self.portal.portal_javascripts
         self.setup = self.portal.portal_setup 
 
+    def beforeTearDown(self):
+        self._free_warning_output()
+
     def testInstanceVersion(self):
         # Test if the version of the instance has been set
         mt = self.portal.portal_migration
@@ -830,8 +833,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.failUnless(p in [r['name'] for r in 
                                 self.portal.permissionsOfRole('Contributor') if r['selected']])
 
-    def beforeTearDown(self):
-        self._free_warning_output()
+    
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
