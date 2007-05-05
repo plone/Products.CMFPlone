@@ -15,10 +15,4 @@ It aims to be *the* open source out-of-the-box publishing system.
 
 - Installation docs in INSTALL.txt
 
-- Credits in CREDITS.txt
-
-- History in HISTORY.txt
-
-- License terms in LICENSE.txt
-
   Read more at http://plone.org/
