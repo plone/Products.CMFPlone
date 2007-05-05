@@ -108,6 +108,8 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         def_page = self.folder.foo.index_html
         self.failUnless(def_page.displayContentsTab())
         self.folder.foo.manage_permission(ListFolderContents, ['Manager'], acquire=0)
+        # Clear the memoized results, as it would happen for a new request
+        del self.app.REQUEST.__annotations__
         self.failIf(def_page.displayContentsTab())
 
 
