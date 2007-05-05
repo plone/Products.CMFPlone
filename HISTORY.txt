@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Allowed any non-structural folders and non-folderish items be eligible
+      as default view types. Structural folders can still be listed if they
+      are added to the default_page_types property. This closes
+      http://dev.plone.org/plone/ticket/6118
+      [optilude]
+
     - Gave the Editor role a few additional permissions: 
       "Modify view template", "Request review" and "Modify properties". This 
       closes http://dev.plone.org/plone/ticket/6530 

@@ -109,10 +109,6 @@
   <property name="many_groups" type="boolean">False</property>
   <property name="enable_livesearch" type="boolean">True</property>
   <property name="default_page_types" type="lines">
-   <element value="Document"/>
-   <element value="Event"/>
-   <element value="Link"/>
-   <element value="News Item"/>
    <element value="Topic"/>
   </property>
   <property name="use_folder_contents" type="lines"/>

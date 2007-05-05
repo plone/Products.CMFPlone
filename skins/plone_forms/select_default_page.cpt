@@ -30,7 +30,7 @@
     
         <tal:items define="availableTypes site_properties/default_page_types | python:[];
                            items python:[item for item in here.getFolderContents() if
-                                            item.portal_type in availableTypes];
+                                            not item.is_folderish or item.portal_type in availableTypes];
                            cur_page here/getDefaultPage|nothing">
         <tal:hasItems condition="items">
             <dl>

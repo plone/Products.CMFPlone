@@ -234,7 +234,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.failUnless('Folder' not in self.properties.site_properties.getProperty('default_page_types'))
         self.failUnless('Large Plone Folder' not in self.properties.site_properties.getProperty('default_page_types'))
         self.failUnless('Topic' in self.properties.site_properties.getProperty('default_page_types'))
-        self.failUnless('Document' in self.properties.site_properties.getProperty('default_page_types'))
 
     def testNoMembersAction(self):
         # There should not be a Members action
