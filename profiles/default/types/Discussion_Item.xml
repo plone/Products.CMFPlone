@@ -20,11 +20,6 @@
     url_expr="string:${object_url}/discussionitem_view" visible="True">
   <permission value="View"/>
  </action>
- <action title="Sharing" action_id="local_roles" category="object"
-    condition_expr="" url_expr="string:${object_url}/@@sharing"
-    visible="True">
-  <permission value="Manage properties"/>
- </action>
  <action title="External Edit" action_id="external_edit" category="object"
     condition_expr="" url_expr="string:$object_url/external_edit"
     visible="False">

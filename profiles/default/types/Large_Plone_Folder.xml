@@ -44,8 +44,4 @@
     url_expr="string:${folder_url}/view" visible="False">
   <permission value="View"/>
  </action>
- <action title="Sharing" action_id="local_roles" category="object"
-    condition_expr="" url_expr="string:${object_url}/sharing" visible="True">
-  <permission value="Manage properties"/>
- </action>
 </object>

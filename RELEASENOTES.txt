@@ -163,6 +163,12 @@ at http://plone.org/documentation/manual/migration-guide/version-specific/adjust
   
   If you use custom add permissions for your content types, you may want to
   give them to the Contributor role by default.
+  
+* You are no longer expected to have a "Sharing" tab, implemented as an
+  action with id 'local_roles', on your custom content types. This is now a 
+  global action, in the 'object' category. If your type provides such an
+  action, there will be two "Sharing" tabs. Also note that the sharing action
+  is now called @@sharing, not folder_local_role_form.
 
 * Portlets have been re-implemented using the Zope3 component architecture.
   The base package, plone.portlets, is usable in plain Zope 3 and has been

@@ -8,6 +8,7 @@ from Products.ResourceRegistries.interfaces import IKSSRegistry, IJSRegistry
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
+from Products.CMFCore.utils import getToolByName
 from alphas import addContentRulesAction
 
 from Acquisition import aq_base
@@ -51,6 +52,8 @@ def beta2_beta3(portal):
     out = []
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b2-3.0b3')
+
+    removeSharingAction(portal, out)
 
     return out
 
@@ -192,3 +195,13 @@ def addContributorToCreationPermissions(portal, out):
         if 'Contributor' not in roles:
             roles.append('Contributor')
             portal.manage_permission(p, roles, bool(portal.acquiredRolesAreUsedBy(p)))
+
+def removeSharingAction(portal, out):
+    portal_types = getToolByName(portal, 'portal_types', None)
+    if portal_types is not None:
+        for fti in portal_types.objectValues():
+            action_ids = [a.id for a in fti.listActions()]
+            if 'local_roles' in action_ids:
+                fti.deleteActions([action_ids.index('local_roles')])
+                
+    out.append('Removed explicit references to sharing action')

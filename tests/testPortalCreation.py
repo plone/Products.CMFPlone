@@ -143,18 +143,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         else:
             self.fail("Folder has no 'edit' action")
 
-    def testFolderEditActionBeforeSharing(self):
-        # Edit tab of folders should appear before the sharing tab
-        folder = self.types.getTypeInfo('Folder')
-        i = j = count = 0
-        for action in folder._cloneActions():
-            if action.id == 'local_roles':
-                i = count
-            elif action.id == 'edit':
-                j = count
-            count += 1
-        self.failUnless(j < i)
-
     def testFolderHasFolderListingAction(self):
         # Folders should have a 'folderlisting' action
         folder = self.types.getTypeInfo('Folder')
@@ -598,18 +586,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         ids = [(a['id']) for a in buttons]
         self.assertEqual(ids, ['cut','copy','paste','delete', 'rename',])
 
-    def testPortalSharingActionIsLocalRoles(self):
-        fti = getattr(self.types, 'Plone Site')
-        haveSharing = False
-        haveLocalRoles = False
-        for a in fti.listActions():
-            if a.getId() == 'sharing':
-                haveSharing = True
-            elif a.getId() == 'local_roles':
-                haveLocalRoles = True
-        self.failIf(haveSharing)
-        self.failUnless(haveLocalRoles)
-
     def testPlone3rdPartyLayerInDefault(self):
         # plone_3rdParty layer should exist
         path = self.skins.getSkinPath('Plone Default')
@@ -833,7 +809,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.failUnless(p in [r['name'] for r in 
                                 self.portal.permissionsOfRole('Contributor') if r['selected']])
 
-    
+    def testSharingAction(self):
+        # Should be in portal_actions
+        self.failUnless('local_roles' in self.actions.object.objectIds())
+
+        # Should not be in any of the default FTIs
+        for fti in self.types.objectValues():
+            self.failIf('local_roles' in [a.id for a in fti.listActions()])
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

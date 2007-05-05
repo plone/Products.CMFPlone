@@ -51,8 +51,4 @@
     url_expr="string:${object_url}/external_edit" visible="False">
   <permission value="Modify portal content"/>
  </action>
- <action title="Sharing" action_id="local_roles" category="object"
-    condition_expr="" url_expr="string:${object_url}/sharing" visible="True">
-  <permission value="Manage properties"/>
- </action>
 </object>

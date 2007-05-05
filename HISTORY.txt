@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Moved sharing action to a global action and removed from standard
+      types. This closes http://dev.plone.org/plone/ticket/6335
+      [optilude]
+    
     - Fixed migration code for CMFEditions. This closes
       http://dev.plone.org/plone/ticket/6491
       [hannosch]

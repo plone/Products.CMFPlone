@@ -160,6 +160,7 @@ from Products.CMFPlone.migrations.v3_0.betas import addAutoGroupToPAS
 from Products.CMFPlone.migrations.v3_0.betas import removeS5Actions
 from Products.CMFPlone.migrations.v3_0.betas import addCacheForKSSRegistry
 from Products.CMFPlone.migrations.v3_0.betas import addContributorToCreationPermissions
+from Products.CMFPlone.migrations.v3_0.betas import removeSharingAction
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2704,6 +2705,28 @@ class TestMigrations_v3_0(MigrationTest):
             self.failUnless(p in [r['name'] for r in 
                                 self.portal.permissionsOfRole('Editor') if r['selected']])
 
+    def testRemoveSharingAction(self):
+        fti = self.types['Document']
+        fti.addAction(id='local_roles', name='Sharing', 
+                      action='string:${object_url}/sharing',
+                      condition=None, permission='Manage properties',
+                      category='object')
+        removeSharingAction(self.portal, [])
+        self.failIf('local_roles' in [a.id for a in fti.listActions()])
+        
+    def testRemoveSharingActionNoTool(self):
+        self.portal._delOb('portal_types')
+        removeSharingAction(self.portal, [])
+        
+    def testRemoveSharingActionTwice(self):
+        fti = self.types['Document']
+        fti.addAction(id='local_roles', name='Sharing', 
+                      action='string:${object_url}/sharing',
+                      condition=None, permission='Manage properties',
+                      category='object')
+        removeSharingAction(self.portal, [])
+        removeSharingAction(self.portal, [])
+        self.failIf('local_roles' in [a.id for a in fti.listActions()])
 
 def test_suite():
     from unittest import TestSuite, makeSuite
