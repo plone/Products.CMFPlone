@@ -96,7 +96,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow">Make private</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="publish"
@@ -107,8 +107,6 @@
           category="workflow">Publish</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
-   <guard-role>Owner</guard-role>
-   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <transition transition_id="retract"
@@ -118,7 +116,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow">Retract</action>
   <guard>
-   <guard-permission>Request review</guard-permission>
+   <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="show"
@@ -128,7 +126,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
           category="workflow">Make visible</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
 

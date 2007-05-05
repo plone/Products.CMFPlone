@@ -89,7 +89,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=private"
           category="workflow">Make private</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="show"
@@ -100,7 +100,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
           category="workflow">Make visible internally</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
 

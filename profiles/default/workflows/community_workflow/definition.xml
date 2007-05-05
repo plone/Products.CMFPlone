@@ -114,7 +114,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow">Make private</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="publish"
@@ -154,7 +154,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
           category="workflow">Make visible (public draft)</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="submit"
