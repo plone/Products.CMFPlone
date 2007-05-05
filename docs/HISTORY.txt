@@ -2,6 +2,11 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
+plone.app.controlpanel - 1.0b5 Released May 5, 2007
+
+    - Fixed dummy on_save method to accept the data argument.
+      [hannosch]
+
 plone.app.controlpanel - 1.0b4 Released May 5, 2007
 
     - Pass data to the on-save template method.
