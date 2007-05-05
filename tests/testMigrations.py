@@ -161,6 +161,7 @@ from Products.CMFPlone.migrations.v3_0.betas import removeS5Actions
 from Products.CMFPlone.migrations.v3_0.betas import addCacheForKSSRegistry
 from Products.CMFPlone.migrations.v3_0.betas import addContributorToCreationPermissions
 from Products.CMFPlone.migrations.v3_0.betas import removeSharingAction
+from Products.CMFPlone.migrations.v3_0.betas import addEditorToSecondaryEditorPermissions
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2727,6 +2728,30 @@ class TestMigrations_v3_0(MigrationTest):
         removeSharingAction(self.portal, [])
         removeSharingAction(self.portal, [])
         self.failIf('local_roles' in [a.id for a in fti.listActions()])
+        
+    def testAddContributorToCreationPermissions(self):
+        for p in ['Manage properties', 'Modify view template', 'Request review']:
+            self.portal.manage_permission(p, ['Manager', 'Owner'], True)
+        addEditorToSecondaryEditorPermissions(self.portal, [])
+        for p in ['Manage properties', 'Modify view template', 'Request review']:
+            self.failUnless(p in [r['name'] for r in 
+                self.portal.permissionsOfRole('Editor') if r['selected']])
+
+    def testAddEditorToCreationPermissionsNoStomp(self):
+        self.portal.manage_permission('Manage properties', ['Manager'], False)
+        addEditorToSecondaryEditorPermissions(self.portal, [])
+        roles = sorted([r['name'] for r in self.portal.rolesOfPermission('Manage properties') if r['selected']])
+        self.assertEquals(['Editor', 'Manager'], roles)
+        self.assertEquals(False, bool(self.portal.acquiredRolesAreUsedBy('Manage properties')))
+                                
+    def testAddEditorToSecondaryEditPermissionsTwice(self):
+        for p in ['Manage properties', 'Modify view template', 'Request review']:
+            self.portal.manage_permission(p, ['Manager', 'Owner'], True)
+        addEditorToSecondaryEditorPermissions(self.portal, [])
+        addEditorToSecondaryEditorPermissions(self.portal, [])
+        for p in ['Manage properties', 'Modify view template', 'Request review']:
+            self.failUnless(p in [r['name'] for r in 
+                self.portal.permissionsOfRole('Editor') if r['selected']])
 
 def test_suite():
     from unittest import TestSuite, makeSuite

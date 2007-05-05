@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0 - unreleased
 
+    - Gave the Editor role a few additional permissions: 
+      "Modify view template", "Request review" and "Modify properties". This 
+      closes http://dev.plone.org/plone/ticket/6530 
+      [optilude]
+
     - Moved sharing action to a global action and removed from standard
       types. This closes http://dev.plone.org/plone/ticket/6335
       [optilude]

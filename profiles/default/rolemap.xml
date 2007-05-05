@@ -103,6 +103,17 @@
     <permission name="Manage properties" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
+      <role name="Editor"/>
+    </permission>
+    <permission name="Modify view template" acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+    </permission>
+    <permission name="Request review" acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
     </permission>
     <permission name="Reply to item" acquire="True">
       <role name="Manager"/>

@@ -54,6 +54,8 @@ def beta2_beta3(portal):
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b2-3.0b3')
 
     removeSharingAction(portal, out)
+    
+    addEditorToSecondaryEditorPermissions(portal, out)
 
     return out
 
@@ -205,3 +207,11 @@ def removeSharingAction(portal, out):
                 fti.deleteActions([action_ids.index('local_roles')])
                 
     out.append('Removed explicit references to sharing action')
+    
+def addEditorToSecondaryEditorPermissions(portal, out):
+    
+    for p in ['Manage properties', 'Modify view template', 'Request review']:
+        roles = [r['name'] for r in portal.rolesOfPermission(p) if r['selected']]
+        if 'Editor' not in roles:
+            roles.append('Editor')
+            portal.manage_permission(p, roles, bool(portal.acquiredRolesAreUsedBy(p)))

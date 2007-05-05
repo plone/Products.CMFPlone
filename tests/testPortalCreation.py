@@ -816,7 +816,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # Should not be in any of the default FTIs
         for fti in self.types.objectValues():
             self.failIf('local_roles' in [a.id for a in fti.listActions()])
-
+    
+    def testSecondaryEditorPermissionsGivenToEditorRole(self):
+        for p in ['Manage properties', 'Modify view template', 'Request review']:
+            self.failUnless(p in [r['name'] for r in 
+                                self.portal.permissionsOfRole('Editor') if r['selected']])
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
