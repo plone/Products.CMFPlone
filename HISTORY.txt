@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0 - unreleased
+Plone 3.0-beta3 - released May 5, 2007
 
     - Allowed any non-structural folders and non-folderish items be eligible
       as default view types. Structural folders can still be listed if they
