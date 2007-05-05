@@ -29,9 +29,13 @@ upgrading to Plone 3.0:
 Plone 3.0 is still in development
 ---------------------------------
 
-Plone 3.0 is not finished yet. Some important things to take into account:
+Plone 3.0 is not finished yet, but both it's developer visible API's as well as
+its CSS classes and ids are frozen for this release. This means you can start
+developing against Plone 3.0 and test and adjust your add-on products.
 
-* the release notes and upgrade instructions are not completed yet.
+Bugs found in the beta and release candidates releases will be fixed and might
+still cause some minor changes. Also note that neither the documentation nor
+the translations are fully updated yet.
 
 
 Important notes for users
