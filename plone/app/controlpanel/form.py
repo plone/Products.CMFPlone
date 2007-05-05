@@ -36,7 +36,7 @@ class ControlPanelForm(FieldsetsEditForm):
         self.request.response.redirect(url + '/plone_control_panel')
         return ''
         
-    def _on_save(self):
+    def _on_save(self, data=None):
         pass
 
 _template = ViewPageTemplateFile('control-panel.pt')
