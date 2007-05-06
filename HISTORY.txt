@@ -2,6 +2,12 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+Plone 3.0-beta4 - unreleased
+
+    - Link to the users dashboard from password_form and personalize_form,
+      instead of to the plone_memberprefs_panel.
+      [hannosch]
+
 Plone 3.0-beta3 - released May 5, 2007
 
     - Allowed any non-structural folders and non-folderish items be eligible
