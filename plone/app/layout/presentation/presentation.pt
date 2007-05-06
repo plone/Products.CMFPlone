@@ -7,6 +7,14 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:define-macro="master">
+
+    <tal:cache tal:define="charset here/site_properties/default_charset|string:utf-8;
+                           lang language;">
+        <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+            Get the global cache headers located in global_cache_settings.
+        </metal:cache>
+    </tal:cache>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"
           tal:define="charset here/site_properties/default_charset|string:utf-8"
