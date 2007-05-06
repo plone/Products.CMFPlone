@@ -37,8 +37,8 @@ class ISkinsSchema(Interface):
                                              "window' setting has no effect."),
                               default=True)
 
-    ext_links_open_new_window = Bool(title=_(u'External links open in new\
-window'),
+    ext_links_open_new_window = Bool(title=_(u"External links open in new "
+                                              "window"),
                                      description=_(u"If enabled all external "
                                                     "links in the content "
                                                     "region open in a new  "
