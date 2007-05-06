@@ -57,7 +57,7 @@ class CatalogBrainContentIcon(BaseIcon):
         return None
 
 
-class ArchetypesContentIcon(BaseIcon):
+class CMFContentIcon(BaseIcon):
     implements(IContentIcon)
 
     def __init__(self, context, request, obj):
@@ -156,7 +156,7 @@ class DefaultContentIcon(BaseIcon):
     def description(self):
         if self.obj is None:
             return None
-        return self.obj.Title
+        return self.obj.Title()
 
     @property
     def title(self):

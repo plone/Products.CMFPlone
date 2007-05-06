@@ -10,8 +10,8 @@
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
-                Products.Archetypes.interfaces.IBaseObject"
-           factory=".icons.ArchetypesContentIcon"
+                Products.CMFCore.interfaces.IDynamicType"
+           factory=".icons.CMFContentIcon"
            provides=".interfaces.IContentIcon" />
 
   <adapter for="*
