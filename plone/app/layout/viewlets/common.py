@@ -2,6 +2,7 @@ from zope.interface import implements
 from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
 
+from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
@@ -142,6 +143,8 @@ class PersonalBarViewlet(ViewletBase):
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
         tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
+        
+        sm = getSecurityManager()
 
         self.portal_url = portal_state.portal_url()
 
@@ -151,8 +154,15 @@ class PersonalBarViewlet(ViewletBase):
         self.getIconFor = plone_utils.getIconFor
 
         self.anonymous = portal_state.anonymous()
-
+        
         member = portal_state.member()
+        username = member.getUserName()
+        
+        if sm.checkPermission('Portlets: Manage own portlets', self.context):
+            self.homelink_url = self.portal_url + '/dashboard'
+        else:
+            self.homelink_url = self.portal_url + '/author/' + username
+        
         member_info = tools.membership().getMemberInfo(member.getId())
         fullname = member_info.get('fullname', '')
         if fullname:
