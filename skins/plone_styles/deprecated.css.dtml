@@ -6,6 +6,7 @@
 
 /* .system-message and #error-handling are reST error indicators */
 div.portalMessage,
+p.portalMessage,
 .system-message,
 #error-handling {
     background-color: &dtml-notifyBackgroundColor;;
