@@ -7,7 +7,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from Acquisition import aq_inner
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFEditions.setuphandlers import DEF_POLICIES
+from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -71,7 +71,7 @@ class TypesControlPanel(BrowserView):
             if versionable and type_id not in versionable_types:
                 versionable_types.append(type_id)
                 # Add default versioning policies to the versioned type
-                for policy_id in DEF_POLICIES:
+                for policy_id in DEFAULT_POLICIES:
                     portal_repository.addPolicyForContentType(type_id,
                                                               policy_id)
             elif not versionable and type_id in versionable_types:
