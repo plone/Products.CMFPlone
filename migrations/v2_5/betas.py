@@ -60,13 +60,15 @@ def beta1_beta2(portal):
     removeVcXMLRPC(portal, out)
 
     # Required due to a fix in PortalTransforms...
-    reindexCatalog(portal, out)
+    # Commented out since we reindex later in the migration process
+    # reindexCatalog(portal, out)
 
     # FIXME: *Must* be called after reindexCatalog.
     # In tests, reindexing loses the folders for some reason...
 
     # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
+    # Commented out since we do this too later in the migration process
+    # indexMembersFolder(portal, out)
 
     # add icons for copy, cut, paste and delete
     addActionDropDownMenuIcons(portal, out)

@@ -2,9 +2,12 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-   - Fix bad links between templates prefs_users_overview, prefs_user_details
-     and prefs_user_membership (remove starting space and force portal_url)
-     [encolpe]
+    - Made migration twice as fast, it was recataloging unnecessarily.
+      [hazmat][limi]
+
+    - Fix bad links between templates prefs_users_overview, prefs_user_details
+      and prefs_user_membership (remove starting space and force portal_url)
+      [encolpe]
 
 Plone 2.5.3 - Release Candidate - released April 28, 2007
 
