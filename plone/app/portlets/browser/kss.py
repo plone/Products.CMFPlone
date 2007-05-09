@@ -4,7 +4,7 @@ from zope.component import getUtility, getMultiAdapter
 from Acquisition import aq_inner
 
 from plone.app.kss.interfaces import IPloneKSSView
-from plone.app.kss.azaxview import PloneKSSView as base
+from plone.app.kss.plonekssview import PloneKSSView as base
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer

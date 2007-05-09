@@ -169,21 +169,21 @@
     <browser:page
         for="*"
         name="inlineMovePortletUp"
-        class=".azax.PortletManagerKSS"
+        class=".kss.PortletManagerKSS"
         attribute="move_portlet_up"
         permission="plone.app.portlets.ManageOwnPortlets"
         />
     <browser:page
         for="*"
         name="inlineMovePortletDown"
-        class=".azax.PortletManagerKSS"
+        class=".kss.PortletManagerKSS"
         attribute="move_portlet_down"
         permission="plone.app.portlets.ManageOwnPortlets"
         />
     <browser:page
         for="*"
         name="inlineDeletePortlet"
-        class=".azax.PortletManagerKSS"
+        class=".kss.PortletManagerKSS"
         attribute="delete_portlet"
         permission="plone.app.portlets.ManageOwnPortlets"
         />
