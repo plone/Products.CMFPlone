@@ -86,7 +86,7 @@
              new_state="private" trigger="USER"
              before_script="" after_script="">
   <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=private"
+  <action url="%(content_url)s/content_status_modify?workflow_action=make_private"
           category="workflow">Make private</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
