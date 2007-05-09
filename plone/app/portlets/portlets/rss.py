@@ -16,11 +16,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
-from kss.core import CommandSet
-from kss.core import force_unicode, kssaction
-from plone.app.kss.interfaces import IPloneAzaxView
-from kss.core.azaxview import AzaxBaseView
-
 import feedparser
 import time, socket
 

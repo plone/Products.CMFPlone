@@ -3,8 +3,8 @@ from zope.component import getUtility, getMultiAdapter
 
 from Acquisition import aq_inner
 
-from plone.app.kss.interfaces import IPloneAzaxView
-from plone.app.kss.azaxview import AzaxBaseView as base
+from plone.app.kss.interfaces import IPloneKSSView
+from plone.app.kss.azaxview import PloneKSSView as base
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
@@ -14,10 +14,10 @@ from plone.app.portlets.utils import assignment_mapping_from_key
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
-class PortletManagerAzax(base):
+class PortletManagerKSS(base):
     """Opertions on portlets done using KSS
     """
-    implements(IPloneAzaxView)
+    implements(IPloneKSSView)
     
     def move_portlet_up(self, portlethash, viewname):
         info = unhashPortletInfo(portlethash)
