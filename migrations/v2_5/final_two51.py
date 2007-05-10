@@ -1,10 +1,7 @@
 from Products.CMFCore.ActionInformation import Action
-from Products.CMFCore.Expression import Expression
 from Products.CMFCore.permissions import DeleteObjects
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
-from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog, \
-     indexMembersFolder
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
@@ -36,13 +33,8 @@ def final_two51(portal):
 
     # Required for #5569 (is_folderish needs reindexing) and #5231 (all text
     # indices need to be reindexed so they are split properly)
-    reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
+    migtool = getToolByName(portal, 'portal_migration')
+    migtool._needRecatalog = True
 
     return out
 

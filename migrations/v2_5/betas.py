@@ -3,8 +3,6 @@ from Acquisition import aq_base
 
 from Products.GenericSetup.tool import SetupTool
 
-from Products.CMFPlone.migrations.v2_1.two12_two13 import indexMembersFolder
-from Products.CMFPlone.migrations.v2_1.two12_two13 import reindexCatalog
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
@@ -75,15 +73,6 @@ def beta1_beta2(portal):
     # Remove vcXMLRPC.js from ResourceRegistries (this was already done in
     # 2.1.3, but may need to be done again for those migrating from alphas)
     removeVcXMLRPC(portal, out)
-
-    # Required due to a fix in PortalTransforms...
-    reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
 
     # add icons for copy, cut, paste and delete
     addActionDropDownMenuIcons(portal, out)

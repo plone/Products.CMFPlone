@@ -959,6 +959,14 @@ Plone 3.0-alpha1 - released November 24, 2006
 
 Plone 2.5.x
 
+    - Further optimized the migrations from older Plone versions. We reindex
+      the whole catalog once and only once, independent of the Plone version
+      we start migrating from.
+      [hannosch]
+
+    - Made migration twice as fast, it was recataloging unnecessarily.
+      [hazmat][limi]
+
     _ Add a new IHideFromBreadcrumbs interface. Items marked with this
       interface will not be shown in the breadcrumb trail. Mark the portal
       factory with this interface so it no longer polutes the breadcrumbs.

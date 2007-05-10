@@ -1,4 +1,3 @@
-import string
 from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
@@ -23,13 +22,8 @@ def two12_two13(portal):
     removeVcXMLRPC(portal, out)
 
     # Required due to a fix in PortalTransforms...
-    reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
+    migtool = getToolByName(portal, 'portal_migration')
+    migtool._needRecatalog = True
 
     # add icons for copy, cut, paste and delete
     addActionDropDownMenuIcons(portal, out)
