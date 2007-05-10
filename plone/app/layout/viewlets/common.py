@@ -8,6 +8,7 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
+from cgi import escape
 
 
 class ViewletBase(BrowserView):
@@ -45,8 +46,8 @@ class TitleViewlet(ViewletBase):
 
     def render(self):
         return u"<title>%s &mdash; %s</title>" % (
-            safe_unicode(self.page_title()),
-            safe_unicode(self.portal_title()))
+            escape(safe_unicode(self.page_title())),
+            escape(safe_unicode(self.portal_title())))
 
 
 class TableOfContentsViewlet(ViewletBase):
