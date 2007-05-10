@@ -9,10 +9,9 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="internal"
-        title="Internally visible">
+ <state state_id="internal" title="Internally visible">
   <description>Visible to all intranet users.</description>
-  <exit-transition transition_id="make_private"/>
+  <exit-transition transition_id="hide"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -46,10 +45,9 @@
    <permission-role>Member</permission-role>
   </permission-map>
  </state>
- <state state_id="private"
-        title="Private">
+ <state state_id="private" title="Private">
   <description>Can only be seen and edited by the owner.</description>
-  <exit-transition transition_id="show"/>
+  <exit-transition transition_id="show_internally"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -81,24 +79,24 @@
   </permission-map>
  </state>
 
- <transition transition_id="make_private"
-             title="Make private"
+ <transition transition_id="hide"
+             title="Member makes content private"
              new_state="private" trigger="USER"
              before_script="" after_script="">
   <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=make_private"
+  <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow">Make private</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="show"
-             title="Make visible internally"
+ <transition transition_id="show_internally"
+             title="Member makes content visible to other internal users"
              new_state="internal" trigger="USER"
              before_script="" after_script="">
   <description>Makes the folder visible internally.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Make visible internally</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=show_internally"
+          category="workflow">Show internally</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>

@@ -10,7 +10,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="pending" title="Pending">
+ <state state_id="pending" title="Pending review">
   <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="make_private"/>
   <exit-transition transition_id="publish"/>
@@ -120,7 +120,7 @@
  </state>
 
  <transition transition_id="publish" new_state="published"
-             title="Publish"
+             title="Reviewer publishes content"
              trigger="USER"
              before_script="" after_script="">
   <description>Publishing the item makes it visible to other users.</description>
@@ -131,7 +131,7 @@
   </guard>
  </transition>
  <transition transition_id="reject"  new_state="private"
-             title="Send back"
+             title="Reviewer send content back for re-drafting"
              trigger="USER"
              before_script="" after_script="">
   <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
@@ -142,7 +142,7 @@
   </guard>
  </transition>
  <transition transition_id="retract" new_state="private" 
-             title="Retract"
+             title="Member retracts submission"
              trigger="USER"
              before_script="" after_script="">
   <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
@@ -153,7 +153,7 @@
   </guard>
  </transition>
  <transition transition_id="submit"  new_state="pending" 
-             title="Submit for publication"
+             title="Member submits content for publication"
              trigger="USER"
              before_script="" after_script="">
   <description>Puts your item in a review queue, so it can be published on the site.</description>

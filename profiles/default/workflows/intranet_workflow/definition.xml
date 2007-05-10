@@ -12,7 +12,7 @@
  <state state_id="internal"  title="Internal draft">
   <description>Visible to all intranet users, editable by the owner.</description>
   <exit-transition transition_id="hide"/>
-  <exit-transition transition_id="publish"/>
+  <exit-transition transition_id="publish_internally"/>
   <exit-transition transition_id="submit"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -48,7 +48,7 @@
   <description>Published and visible to intranet users, not editable by the owner.</description>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
-  <exit-transition transition_id="externally"/>
+  <exit-transition transition_id="publish_externally"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -75,10 +75,10 @@
    <permission-role>Member</permission-role>
   </permission-map>
  </state>
- <state state_id="pending" title="Pending">
+ <state state_id="pending" title="Pending review">
   <description>Waiting to be reviewed, not editable by the owner.</description>
-  <exit-transition transition_id="publish"/>
-  <exit-transition transition_id="externally"/>
+  <exit-transition transition_id="publish_internally"/>
+  <exit-transition transition_id="publish_externally"/>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -113,7 +113,7 @@
  </state>
  <state state_id="private"   title="Private">
   <description>Can only be seen and edited by the owner.</description>
-  <exit-transition transition_id="show"/>
+  <exit-transition transition_id="show_internally"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -167,7 +167,7 @@
  </state>
 
  <transition transition_id="hide"    new_state="private"
-             title="Make private"
+             title="Member makes content private"
              trigger="USER"
              before_script="" after_script="">
   <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
@@ -177,23 +177,23 @@
    <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="publish" new_state="published"
-             title="Publish internally"
+ <transition transition_id="publish_internally" new_state="published"
+             title="Reviewer publishes content to internal users"
              trigger="USER"
              before_script="" after_script="">
   <description>Publishing the item makes it visible to other users.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=publish"
+  <action url="%(content_url)s/content_status_modify?workflow_action=publish_internally"
           category="workflow">Publish internally</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
  </transition>
- <transition transition_id="externally" new_state="external"
-             title="Publish externally"
+ <transition transition_id="publish_externally" new_state="external"
+             title="Reviewer makes content available externally"
              trigger="USER"
              before_script="" after_script="">
   <description>Publishing the item makes it visible to other users.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=externally"
+  <action url="%(content_url)s/content_status_modify?workflow_action=publish_externally"
           category="workflow">Publish externally</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
@@ -211,7 +211,7 @@
   </guard>
  </transition>
  <transition transition_id="retract" new_state="internal"
-             title="Retract"
+             title="Member retracts submission"
              trigger="USER"
              before_script="" after_script="">
   <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
@@ -221,13 +221,13 @@
    <guard-permission>Request review</guard-permission>
   </guard>
  </transition>
- <transition transition_id="show"    new_state="internal"
-             title="Promote to internal draft"
+ <transition transition_id="show_internally"    new_state="internal"
+             title="Member promotes content to internal draft"
              trigger="USER"
              before_script="" after_script="">
   <description>Promotes your private item to an internal draft.</description>
-  <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Promote to internal draft</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=show_internally"
+          category="workflow">Show internally</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>

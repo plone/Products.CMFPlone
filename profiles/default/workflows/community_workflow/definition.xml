@@ -9,7 +9,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="pending" title="Pending">
+ <state state_id="pending" title="Pending review">
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
@@ -32,8 +32,7 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
- <state state_id="private"
-        title="Visible and editable only by owner">
+ <state state_id="private" title="Private">
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -87,7 +86,7 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
- <state state_id="published" title="Public">
+ <state state_id="published" title="Published">
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -132,7 +131,7 @@
              new_state="visible" trigger="USER"
              before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
-          category="workflow">Reject</action>
+          category="workflow">Send back</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
@@ -152,7 +151,7 @@
              new_state="visible" trigger="USER"
              before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Make visible (public draft)</action>
+          category="workflow">Promote to Draft</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>

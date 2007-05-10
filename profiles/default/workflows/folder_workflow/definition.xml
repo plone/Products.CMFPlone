@@ -67,7 +67,7 @@
   </permission-map>
 
  </state>
- <state state_id="visible"   title="Public Draft">
+ <state state_id="visible"   title="Public draft">
   <description>Visible to everyone, but not approved by the reviewers.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
@@ -136,7 +136,7 @@
              before_script="" after_script="">
   <description>Promotes your folder to public draft state.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Promote to public draft</action>
+          category="workflow">Promote to Draft</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>

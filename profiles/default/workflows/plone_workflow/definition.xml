@@ -9,7 +9,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="pending" title="Pending">
+ <state state_id="pending" title="Pending review">
   <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
@@ -86,7 +86,7 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
- <state state_id="visible"   title="Public Draft">
+ <state state_id="visible"   title="Public draft">
   <description>Visible to everyone, but not approved by the reviewers.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
@@ -114,7 +114,7 @@
  </state>
 
  <transition transition_id="hide"    new_state="private"
-             title="Make private"
+             title="Member makes content private"
              trigger="USER"
              before_script="" after_script="">
   <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
@@ -125,7 +125,7 @@
   </guard>
  </transition>
  <transition transition_id="publish" new_state="published"
-             title="Publish"
+             title="Reviewer publishes content"
              trigger="USER"
              before_script="" after_script="">
   <description>Publishing the item makes it visible to other users.</description>
@@ -136,7 +136,7 @@
   </guard>
  </transition>
  <transition transition_id="reject"  new_state="visible"
-             title="Send back"
+             title="Reviewer sends content back for re-drafting"
              trigger="USER"
              before_script="" after_script="">
   <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
@@ -147,7 +147,7 @@
   </guard>
  </transition>
  <transition transition_id="retract" new_state="visible"
-             title="Retract"
+             title="Member retracts submission"
              trigger="USER"
              before_script="" after_script="">
   <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
@@ -158,19 +158,19 @@
   </guard>
  </transition>
  <transition transition_id="show"    new_state="visible"
-             title="Promote to public draft"
+             title="Member promotes content to public draft"
              trigger="USER"
              before_script="" after_script="">
   <description>Promotes your private item to a public draft.</description>
 
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Promote to public draft</action>
+          category="workflow">Promote to Draft</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>
  </transition>
  <transition transition_id="submit"  new_state="pending"
-             title="Submit for publication"
+             title="Member submits content for publication"
              trigger="USER"
              before_script="" after_script="">
   <description>Puts your item in a review queue, so it can be published on the site.</description>

@@ -9,8 +9,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="private"
-        title="Private">
+ <state state_id="private" title="Private">
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
@@ -43,7 +42,7 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
  </state>
- <state state_id="published" title="Public">
+ <state state_id="published" title="Published">
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -124,7 +123,7 @@
              new_state="visible" trigger="USER"
              before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Make visible</action>
+          category="workflow">Promote to Draft</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>
