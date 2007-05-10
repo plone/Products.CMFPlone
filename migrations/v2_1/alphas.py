@@ -1,5 +1,3 @@
-import os
-
 from Acquisition import aq_base
 from AccessControl.Permissions import copy_or_move
 from zExceptions import BadRequest
@@ -38,13 +36,10 @@ def two05_alpha1(portal):
 
     if not migrated and reindex:
         refreshSkinData(portal, out)
+        # XXX We shouldn't do a full recatalog here, but only reindex those
+        # indexes which we actually need for the ATCT migration. We do a full
+        # recatalog at the end of the migrations anyways...
         reindexCatalog(portal, out)
-    
-    # FIXME: Must get rid of this!
-    # ATCT is not installed when SUPPRESS_ATCT_INSTALLATION is set to YES
-    # It's required for some unit tests in ATCT [tiran]
-    suppress_atct = bool(os.environ.get('SUPPRESS_ATCT_INSTALLATION', None)
-                         == 'YES')
 
     # Install SecureMailHost
     replaceMailHost(portal, out)
@@ -61,15 +56,13 @@ def two05_alpha1(portal):
     installArchetypes(portal, out)
 
     # Install ATContentTypes
-    if not suppress_atct:
-        installATContentTypes(portal, out)
+    installATContentTypes(portal, out)
 
-        # Switch over to ATCT
-        #migrateToATCT(portal, out)
-        migrateToATCT10(portal, out)
+    # Switch over to ATCT
+    migrateToATCT10(portal, out)
 
     transaction.savepoint(optimistic=True)
-    
+
     return out
 
 def tweakPropertiesAndCSS(portal, out):
@@ -210,7 +203,8 @@ def alpha1_alpha2(portal):
     # Rebuild catalog
     if reindex:
         refreshSkinData(portal, out)
-        reindexCatalog(portal, out)
+        migtool = getToolByName(portal, 'portal_migration')
+        migtool._needRecatalog = True
     
     return out
 

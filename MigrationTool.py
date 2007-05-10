@@ -351,7 +351,15 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         # do this once all the changes have been done
         if self.needRecatalog():
             try:
-                self.portal_catalog.refreshCatalog()
+                catalog = self.portal_catalog
+                # Reduce threshold for the reindex run
+                old_threshold = catalog.threshold
+                pg_threshold = getattr(catalog, 'pgthreshold', 0)
+                catalog.pgthreshold = 300
+                catalog.threshold = 2000
+                catalog.refreshCatalog(clear=1)
+                catalog.threshold = old_threshold
+                catalog.pgthreshold = pg_threshold
                 self._needRecatalog = 0
             except ConflictError:
                 raise

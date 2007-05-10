@@ -1,8 +1,6 @@
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
-from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, \
-     indexMembersFolder
 
 
 def final_two51(portal):
@@ -22,13 +20,8 @@ def final_two51(portal):
 
     # Required for #5569 (is_folderish needs reindexing) and #5231 (all text
     # indices need to be reindexed so they are split properly)
-    reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
+    migtool = getToolByName(portal, 'portal_migration')
+    migtool._needRecatalog = True
 
     return out
 

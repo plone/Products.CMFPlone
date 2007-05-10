@@ -8,8 +8,7 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct, \
      safeGetMemberDataTool, safeEditProperty, cleanupSkinPath
 from Products.CMFCore.DirectoryView import createDirectoryView
-from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
-                    indexEventsFolder, convertPloneFTIToCMFDynamicViewFTI
+from alphas import convertPloneFTIToCMFDynamicViewFTI
 from Products.CMFPlone.PloneTool import AllowSendto
 from Products.CMFPlone.migrations.v2_1.alphas import migrateResourceRegistries
 
@@ -88,11 +87,10 @@ def alpha2_beta1(portal):
     # Fix folderlisting action for portal
     fixFolderlistingAction(portal, out)
 
-    # ADD NEW STUFF BEFORE THIS LINE AND LEAVE THE TRAILER ALONE!
-
     # Rebuild catalog
     if reindex:
-        reindexCatalog(portal, out)
+        migtool = getToolByName(portal, 'portal_migration')
+        migtool._needRecatalog = True
 
     return out
 
@@ -101,7 +99,6 @@ def beta1_beta2(portal):
     """2.1-beta1 -> 2.1-beta2
     """
     out = []
-    reindex = 0
 
     # Convert Plone Site FTI to CMFDynamicViewFTI again, for people already on
     # an alpha or beta.
@@ -172,18 +169,6 @@ def beta1_beta2(portal):
 
     # setup new Allow Sendto permission
     setupAllowSendtoPermission(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
-
-    # Make sure the News folder is cataloged
-    indexNewsFolder(portal, out)
-
-    # Make sure the Events folder is cataloged
-    indexEventsFolder(portal, out)
 
     return out
 

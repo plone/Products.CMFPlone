@@ -1,5 +1,4 @@
-from alphas import reindexCatalog, indexMembersFolder, indexNewsFolder, \
-                    indexEventsFolder, addIs_FolderishMetadata
+from alphas import addIs_FolderishMetadata
 from betas import fixContentActionConditions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import View
@@ -28,21 +27,10 @@ def rc1_rc2(portal):
     # Change RSS action title to be more accurate
     alterRSSActionTitle(portal, out)
 
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
     # Rebuild catalog
     if reindex:
-        reindexCatalog(portal, out)
-
-    # Make sure the Members folder is cataloged
-    indexMembersFolder(portal, out)
-
-    # Make sure the News folder is cataloged
-    indexNewsFolder(portal, out)
-
-    # Make sure the Events folder is cataloged
-    indexEventsFolder(portal, out)
+        migtool = getToolByName(portal, 'portal_migration')
+        migtool._needRecatalog = True
 
     return out
 

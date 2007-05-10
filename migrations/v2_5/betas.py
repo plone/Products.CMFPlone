@@ -1,11 +1,8 @@
-import os
 import re
 from Acquisition import aq_base
 
 from Products.GenericSetup.tool import SetupTool
 
-from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
-from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog, indexMembersFolder
 from Products.CMFPlone.migrations.v2_1.two12_two13 import normalizeNavtreeProperties
 from Products.CMFPlone.migrations.v2_1.two12_two13 import removeVcXMLRPC
 from Products.CMFPlone.migrations.v2_1.two12_two13 import addActionDropDownMenuIcons
@@ -13,7 +10,6 @@ from Products.CMFPlone.migrations.v2_5.alphas import installDeprecated
 from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFCore.Expression import Expression
 
 def alpha2_beta1(portal):
@@ -58,17 +54,6 @@ def beta1_beta2(portal):
     # Remove vcXMLRPC.js from ResourceRegistries (this was already done in
     # 2.1.3, but may need to be done again for those migrating from alphas)
     removeVcXMLRPC(portal, out)
-
-    # Required due to a fix in PortalTransforms...
-    # Commented out since we reindex later in the migration process
-    # reindexCatalog(portal, out)
-
-    # FIXME: *Must* be called after reindexCatalog.
-    # In tests, reindexing loses the folders for some reason...
-
-    # Make sure the Members folder is cataloged
-    # Commented out since we do this too later in the migration process
-    # indexMembersFolder(portal, out)
 
     # add icons for copy, cut, paste and delete
     addActionDropDownMenuIcons(portal, out)

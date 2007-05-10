@@ -2,6 +2,11 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Further optimized the migrations from older Plone versions. We reindex
+      the whole catalog once and only once, independent of the Plone version
+      we start migrating from.
+      [hannosch]
+
     - Made migration twice as fast, it was recataloging unnecessarily.
       [hazmat][limi]
 
