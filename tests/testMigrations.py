@@ -162,6 +162,9 @@ from Products.CMFPlone.migrations.v3_0.betas import addCacheForKSSRegistry
 from Products.CMFPlone.migrations.v3_0.betas import addContributorToCreationPermissions
 from Products.CMFPlone.migrations.v3_0.betas import removeSharingAction
 from Products.CMFPlone.migrations.v3_0.betas import addEditorToSecondaryEditorPermissions
+from Products.CMFPlone.migrations.v3_0.betas import updateEditActionConditionForLocking
+from Products.CMFPlone.migrations.v3_0.betas import addOnFormUnloadJS
+
 
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -2752,6 +2755,78 @@ class TestMigrations_v3_0(MigrationTest):
         for p in ['Manage properties', 'Modify view template', 'Request review']:
             self.failUnless(p in [r['name'] for r in 
                 self.portal.permissionsOfRole('Editor') if r['selected']])
+
+    def testUpdateEditActionConditionForLocking(self):
+        out = []
+        lockable_types = ['Document', 'Event', 'Favorite', 'File', 'Folder',
+                          'Image', 'Large Plone Folder', 'Link',
+                          'News Item', 'Topic']
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    action.condition = ''
+        updateEditActionConditionForLocking(self.portal, out)
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    expressionCondition = action.condition
+                    self.assertEquals(action.condition.text, "not:object/@@plone_lock_info/is_locked_for_current_user|python:True")
+
+    def testUpdateEditActionConditionForLockingTwice(self):
+        out = []
+        lockable_types = ['Document', 'Event', 'Favorite', 'File', 'Folder',
+                          'Image', 'Large Plone Folder', 'Link',
+                          'News Item', 'Topic']
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    action.condition = ''
+        updateEditActionConditionForLocking(self.portal, out)
+        updateEditActionConditionForLocking(self.portal, out)
+        for contentType in lockable_types:
+            fti = self.types.getTypeInfo(contentType)
+            for action in fti.listActions():
+                if action.getId() == 'edit':
+                    expressionCondition = action.condition
+                    self.assertEquals(action.condition.text, "not:object/@@plone_lock_info/is_locked_for_current_user|python:True")
+
+    def testUpdateEditExistingActionConditionForLocking(self):
+        out = []
+        fti = self.types.getTypeInfo('Document')
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                action.condition = Expression("foo")
+        updateEditActionConditionForLocking(self.portal, out)
+        fti = self.types.getTypeInfo('Document')
+        for action in fti.listActions():
+            if action.getId() == 'edit':
+                self.assertEquals(action.condition.text, 'foo')
+
+    def testAddOnFormUnloadRegistrationJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('unlockOnFormUnload.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('unlockOnFormUnload.js' in script_ids)
+        # migrate and test again
+        addOnFormUnloadJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('unlockOnFormUnload.js' in script_ids)
+
+    def testAddOnFormUnloadRegistrationJSTwice(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('unlockOnFormUnload.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('unlockOnFormUnload.js' in script_ids)
+        # migrate and test again
+        addOnFormUnloadJS(self.portal, [])
+        addOnFormUnloadJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('unlockOnFormUnload.js' in script_ids)
 
 def test_suite():
     from unittest import TestSuite, makeSuite

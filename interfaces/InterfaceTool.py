@@ -1,6 +1,6 @@
 """ InterfaceTool interface.
 
-$Id:$
+$Id$
 """
 
 # BBB: module will be removed in Plone 3.0
