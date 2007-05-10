@@ -379,8 +379,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool = self.portal.plone_utils
 
-        >>> ptool.getReviewStateTitleFor(self.folder)
-        'Public Draft'
+        >>> ptool.getReviewStateTitleFor(self.folder).lower()
+        'public draft'
         """
         wf_tool = getToolByName(self, 'portal_workflow')
         wfs = ()
