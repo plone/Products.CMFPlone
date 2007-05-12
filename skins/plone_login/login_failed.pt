@@ -24,7 +24,7 @@
       Click here to have your password mailed to you if you have forgotten it.</a>
     </p>
 
-    <p i18n:translate="description_enable_cookies">
+    <p i18n:translate="description_not_accept_cookies">
       If your user name and password are correct, the problem may be that
       your browser is not configured to accept cookies.
     </p>

@@ -51,7 +51,7 @@
 
       <p i18n:translate="description_publishing_process_short">
         An item's status (also called its review state) determines who
-        can see it.  Another way to control the visibility of an item is
+        can see it. Another way to control the visibility of an item is
         with its <strong>Publishing Date</strong>. An item is not publicly
         searchable before its publishing date. This will prevent the item
         from showing up in portlets and folder listings, although the item

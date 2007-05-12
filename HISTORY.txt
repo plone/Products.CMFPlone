@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Fixed lots of small i18n markup errors. Mostly using different message
+      ids for messages whose text has changed significantly.
+      [hannosch]
+
     - Link to the users dashboard from password_form and personalize_form,
       instead of to the plone_memberprefs_panel.
       [hannosch]

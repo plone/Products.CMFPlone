@@ -84,7 +84,7 @@
             if you enable javascript in your browser. 
          </p>
 
-         <p i18n:translate="description_enable_cookies_for_login">
+         <p i18n:translate="description_enable_cookies_to_stay_logged_in">
             Note: If you do not remain logged in after leaving this page,
             it is because you need to enable cookies in your browser.
          </p>

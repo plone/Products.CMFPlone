@@ -69,7 +69,10 @@
                        i18n:attributes="alt label_password;"/>
             </div>
 
-            <div id="cookies_message" i18n:translate="enable_cookies_message" class="portalMessage" style="display:none">
+            <div id="cookies_message"
+                 i18n:translate="enable_cookies_message_before_login"
+                 class="portalMessage"
+                 style="display:none">
                 Cookies are not enabled. You must enable cookies before you can log in.
             </div>
             

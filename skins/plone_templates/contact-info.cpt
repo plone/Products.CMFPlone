@@ -20,7 +20,7 @@
     <p tal:content="portal/description">Site Description</p>
         <!-- feedback form -->        
             <p class="documentDescription"
-               i18n:translate="description_contact_info_feedback">
+               i18n:translate="description_contact_site_owner">
                 Fill in this form to contact the site owners.
             </p>
             

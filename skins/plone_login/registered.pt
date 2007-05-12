@@ -47,7 +47,7 @@
         <dt i18n:translate="">
             Error
         </dt>
-        <dd i18n:translate="enable_cookies_message">
+        <dd i18n:translate="enable_cookies_message_before_login">
             Cookies are not enabled. You must enable cookies before you can log in.
         </dd>
     </dl>

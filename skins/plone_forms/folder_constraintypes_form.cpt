@@ -50,7 +50,7 @@
     <div metal:fill-slot="main">
 
       <h1 class="documentFirstHeading"
-          i18n:translate="heading_set_folder_type_restrictions">
+          i18n:translate="heading_set_content_type_restrictions">
         Restrict what types of content can be added
       </h1>
 
@@ -84,7 +84,7 @@
 
                 <div class="field">
                     <label for="enableAddRestrictions" 
-                            i18n:translate="label_add_restriction_mode">
+                            i18n:translate="label_type_restrictions">
                         Type restrictions
                     </label>
 
@@ -113,7 +113,7 @@
                            class="noborder"
                            onclick="show_submenu(false)"
                            tal:attributes="checked python:test('0' == str(currentMode), 'checked', None)"/>
-                    <label for="mode_disable" i18n:translate="constraintypes_mode_disable">
+                    <label for="mode_disable" i18n:translate="label_constraintypes_allow_standard">
                         Allow the standard set of addable types
                     </label>
                     <br />
@@ -124,7 +124,7 @@
                            class="noborder"
                            onclick="show_submenu(true)"
                            tal:attributes="checked python:test('1' == str(currentMode), 'checked', None)"/>
-                    <label for="mode_enable" i18n:translate="constraintypes_mode_enable">
+                    <label for="mode_enable" i18n:translate="label_constraintypes_specify_manually">
                         Specify manually
                     </label>
                     <br />
