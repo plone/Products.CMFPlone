@@ -84,6 +84,14 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         self.assertEqual(r, u'${name} is reserved.')
         self.assertEqual(r.mapping[u'name'], 'created')
 
+    def testCatalogMetadata(self):
+        self.portal.portal_catalog.addColumn('new_metadata')
+        self.failUnless('new_metadata' in self.portal.portal_catalog.schema())
+        self.failIf('new_metadata' in self.portal.portal_catalog.indexes())
+        r = self.folder.check_id('new_metadata')
+        self.assertEqual(r, u'${name} is reserved.')
+        self.assertEqual(r.mapping[u'name'], 'new_metadata')
+
     def testCollision(self):
         self.folder.invokeFactory('Document', id='foo')
         self.folder.invokeFactory('Document', id='bar')
@@ -175,7 +183,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
     def testCollisionSkipped(self):
         # Note that check is skipped when we don't have
         # the "Access contents information" permission.
-        self.folder.manage_permission('Access contents information', ['Manager'], acquire=0)
+        self.folder.manage_permission('Access contents information', [], acquire=0)
 
         self.folder._setObject('foo', dummy.Item('foo'))
         self.folder._setObject('bar', dummy.Item('bar'))
@@ -196,7 +204,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
     def testInvalidIdSkipped(self):
         # Note that the check is skipped when we don't have
         # the "Add portal content" permission.
-        self.folder.manage_permission('Add portal content', ['Manager'], acquire=0)
+        self.folder.manage_permission('Add portal content', [], acquire=0)
 
         self.folder._setObject('foo', dummy.Item('foo'))
         r = self.folder.foo.check_id('_foo')

@@ -2,6 +2,11 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+    - Forbid catalog metadata names in check_id.py.  Give check_id.py
+      Manager proxy so that ids can be checked even if listing the contents
+      of the parent is forbidden.
+      [alecm]
+
     - Further optimized the migrations from older Plone versions. We reindex
       the whole catalog once and only once, independent of the Plone version
       we start migrating from.
