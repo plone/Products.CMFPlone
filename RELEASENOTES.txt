@@ -1,4 +1,4 @@
-Plone 2.5.3 - April 28, 2007
+Plone 2.5.3 - May 16, 2007
 =============================
 
 The following is a short summary of changes in Plone 2.5.3 which may impact
