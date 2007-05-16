@@ -2,6 +2,9 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+Plone 2.5.4 - Unreleased
+
+    
 Plone 2.5.3 - Final - released May 16, 2007
 
     - Forbid catalog metadata names in check_id.py.  Give check_id.py

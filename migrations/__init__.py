@@ -217,4 +217,8 @@ def registerMigrations():
                                       '2.5.3-final',
                                       null)
 
+    MigrationTool.registerUpgradePath('2.5.3-final',
+                                      '2.5.4-devel (svn/unreleased)',
+                                      null)
+
 
