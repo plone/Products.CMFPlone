@@ -62,10 +62,9 @@
                 </p>
 
                 <form action="personalize"
-                      class="enableAutoFocus"
+                      class="enableAutoFocus enableUnloadProtection"
                       method="post"
                       enctype="multipart/form-data"
-                      class="enableUnloadProtection"
                       tal:condition="member"
                       tal:attributes="action template_id">
 

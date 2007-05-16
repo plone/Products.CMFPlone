@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Fixed duplicate class definitions in some templates.
+      [hannosch]
+
     - Fixed lots of small i18n markup errors. Mostly using different message
       ids for messages whose text has changed significantly.
       [hannosch]
