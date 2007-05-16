@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Corrected spelling error in validate_folder_constraintypes.vpy. This
+      closes http://dev.plone.org/plone/ticket/6591.
+      [hannosch]
+
     - Fixed duplicate class definitions in some templates.
       [hannosch]
 
