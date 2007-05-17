@@ -207,7 +207,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
     def testNormalizeStringRelaxedKeepsOtherSymbols(self):
         # Punctuation and spacing is removed and replaced by '-'
         self.assertEqual(self.utils.normalizeString("A ?String&/\\.foo_#xx", relaxed=True),
-                         'A -String-.foo_-xx')
+                         'A -String-.foo-xx')
 
     def testTypesToList(self):
         # Make sure typesToList() returns the expected types
