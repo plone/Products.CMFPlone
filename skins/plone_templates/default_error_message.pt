@@ -125,7 +125,8 @@
 
         </div>
 
-        <div tal:condition="python: err_type!='NotFound'">
+        <div tal:condition="python: err_type!='NotFound'"
+             tal:define="isManager python: checkPermission('Manage portal', here)">
 
             <h1 class="documentFirstHeading"
                 i18n:translate="heading_site_error_sorry">
@@ -133,12 +134,14 @@
             </h1>
 
             <tal:hasentry condition="err_log_id">
-                <p i18n:translate="description_error_has_been_logged">
+                <p tal:condition="not: isManager"
+                   i18n:translate="description_error_has_been_logged">
                 The error has been logged as entry number 
                 <code i18n:name="entryid" tal:content="err_log_id">1174791474.310.489098092344</code>.
                 </p>
                 
-                <p i18n:translate="description_include_error_in_admin_message">
+                <p tal:condition="not: isManager"
+                   i18n:translate="description_include_error_in_admin_message">
                 If you need to report this to the 
                 <span i18n:name="site_admin">
                 <a href="#" 
@@ -147,9 +150,14 @@
                 please include this entry number in your message.
                 </p>
             
-                <p tal:condition="python: checkPermission('Manage portal', here)">
-                (Since you are a site admin, you can
-                <a href="" tal:attributes="href err_log_url">see the full error message</a>)
+                <p tal:condition="isManager"
+                   i18n:translate="description_site_admin_see_full_error">
+                Since you are a site administrator, you can
+                <span i18n:name="link_full_error_msg">
+                <a href="" 
+                   i18n:translate="description_full_error_link"
+                   tal:attributes="href err_log_url">see the full error message</a>
+                </span>
                 </p>
 
             </tal:hasentry>
