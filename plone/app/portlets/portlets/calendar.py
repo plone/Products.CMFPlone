@@ -1,9 +1,8 @@
+from time import localtime
+
 from plone.app.portlets.portlets import base
-from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 
-from zope import schema
-from zope.formlib import form
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
@@ -37,25 +36,22 @@ class Renderer(base.Renderer):
         self._ts = getToolByName(context, 'translation_service')
         self.url_quote_plus = url_quote_plus
 
-        self.current = DateTime()
-        self.current_day = self.current.day()
+        self.now = localtime()
+        self.yearmonth = yearmonth = self.getYearAndMonthToDisplay()
+        self.year = year = yearmonth[0]
+        self.month = month = yearmonth[1]
 
-        self.yearmonth = self.getYearAndMonthToDisplay()
-        self.year = self.yearmonth[0]
-        self.month = self.yearmonth[1]
+        self.showPrevMonth = yearmonth > (self.now[0]-1, self.now[1])
+        self.showNextMonth = yearmonth < (self.now[0]+1, self.now[1])
 
-        nextYearMax = self.current + 365
-        prevYearMin = self.current - 365
-        self.showPrevMonth = self.yearmonth > (prevYearMin.year(), prevYearMin.month())
-        self.showNextMonth = self.yearmonth < (nextYearMax.year(), nextYearMax.month())
+        self.prevMonthYear, self.prevMonthMonth = self.getPreviousMonth(year, month)
+        self.nextMonthYear, self.nextMonthMonth = self.getNextMonth(year, month)
 
-        self.prevMonthTime = self.getPreviousMonth(self.month, self.year)
-        self.nextMonthTime = self.getNextMonth(self.month, self.year)
-
-        self.monthName = PLMF(self._ts.month_msgid(self.month),
-                              default=self._ts.month_english(self.month))
+        self.monthName = PLMF(self._ts.month_msgid(month),
+                              default=self._ts.month_english(month))
 
     def getEventsForCalendar(self):
+        context = aq_inner(self.context)
         year = self.year
         month = self.month
         weeks = self.calendar.getEventsForCalendar(month, year)
@@ -67,7 +63,7 @@ class Renderer(base.Renderer):
                 day['is_today'] = self.isToday(daynumber)
                 if day['event']:
                     cur_date = DateTime(year, month, daynumber)
-                    localized_date = [self._ts.ulocalized_time(cur_date, self.context)]
+                    localized_date = [self._ts.ulocalized_time(cur_date, context=context, request=self.request)]
                     day['eventstring'] = '\n'.join(localized_date+[self.getEventString(e) for e in day['eventslist']])
                     day['date_string'] = '%s-%s-%s' % (year, month, daynumber)
 
@@ -108,9 +104,9 @@ class Renderer(base.Renderer):
 
         # Last resort to today
         if not year:
-            year = self.current.year()
+            year = self.now[0]
         if not month:
-            month = self.current.month()
+            month = self.now[1]
 
         year, month = int(year), int(month)
 
@@ -122,27 +118,19 @@ class Renderer(base.Renderer):
         # Finally return the results
         return year, month
 
-    @memoize
-    def getPreviousMonth(self, month, year):
-        month=int(month)
-        year=int(year)
-
+    def getPreviousMonth(self, year, month):
         if month==0 or month==1:
             month, year = 12, year - 1
         else:
             month-=1
-        return DateTime(year, month, 1)
+        return (year, month)
 
-    @memoize
-    def getNextMonth(self, month, year):
-        month=int(month)
-        year=int(year)
-
+    def getNextMonth(self, year, month):
         if month==12:
             month, year = 1, year + 1
         else:
             month+=1
-        return DateTime(year, month, 1)
+        return (year, month)
 
     def getWeekdays(self):
         """Returns a list of Messages for the weekday names."""
@@ -158,8 +146,8 @@ class Renderer(base.Renderer):
         """Returns True if the given day and the current month and year equals
            today, otherwise False.
         """
-        return self.current_day==day and self.current.month()==self.month and \
-               self.current.year()==self.year
+        return self.now[2]==day and self.now[1]==self.month and \
+               self.now[0]==self.year
 
     def getReviewStateString(self):
         states = self.calendar.getCalendarStates()

@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Cleaned and speeded up calendar portlet. Extinguished some unneeded
+      uses of the DateTime module.
+      [hannosch]
+
     - Fixed tests to deal with the new default start_level of the navigation
       portlet.
       [hannosch]
