@@ -175,9 +175,9 @@ class Plone(BrowserView):
         """Convert time to localized time
         """
         context = aq_inner(self.context)
-        util = getUtility(ITranslationServiceTool)
-        return util.ulocalized_time(time, long_format, context,
-                                    domain='plonelocales')
+        util = getToolByName(context, 'translation_service')
+        return util.ulocalized_time(time, long_format, context=context,
+                                    domain='plonelocales', request=self.request)
     
     @memoize
     def visibleIdsEnabled(self):

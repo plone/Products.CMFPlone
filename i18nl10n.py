@@ -3,8 +3,15 @@ Collection of i18n and l10n utility methods.
 """
 import re
 import logging
-from DateTime import DateTime
 
+from zope.i18n import translate
+from zope.publisher.interfaces.browser import IBrowserRequest
+
+from Acquisition import aq_acquire
+from DateTime import DateTime
+from DateTime.interfaces import IDateTime
+
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.log import log
 from Products.CMFPlone.utils import safe_unicode
 
@@ -31,26 +38,18 @@ name_formatvariables = ('a', 'A', 'b', 'B')
 
 # unicode aware translate method (i18n)
 def utranslate(*args, **kw):
-    # As both the Five translation service as well as PTS return Unicode in all
-    # cases now, this returns Unicode
-
-    # get the global translation service
-    service = getGlobalTranslationService()
-
     # safety precaution for cases where we get passed in an encoded string
-    text = service.translate(*args, **kw)
-    return safe_unicode(text)
+    return safe_unicode(getGlobalTranslationService().translate(*args, **kw))
 
 # unicode aware localized time method (l10n)
-def ulocalized_time(time, long_format=None, context=None, domain='plonelocales'):
-    # python useable unicode aware localized time method
-
+def ulocalized_time(time, long_format=None, context=None,
+                    domain='plonelocales', request=None):
     # get msgid
     msgid = long_format and 'date_format_long' or 'date_format_short'
 
     # NOTE: this requires the presence of two msgids inside the translation catalog
     #       date_format_long and date_format_short
-    #       These msgids are translated using translation service interpolation.
+    #       These msgids are translated using interpolation.
     #       The variables used here are the same as used in the strftime formating.
     #       Supported are %A, %a, %B, %b, %H, %I, %m, %d, %M, %p, %S, %Y, %y, %Z, each used as
     #       variable in the msgstr without the %.
@@ -77,28 +76,29 @@ def ulocalized_time(time, long_format=None, context=None, domain='plonelocales')
     mapping = {}
     # convert to DateTime instances. Either a date string or 
     # a DateTime instance needs to be passed.
-    try:
-        time = DateTime(time)
-    except:
-        log('Failed to convert %s to a DateTime object' % time,
-            severity=logging.DEBUG)
-        return None
-       
+    if not IDateTime.providedBy(time):
+        try:
+            time = DateTime(time)
+        except:
+            log('Failed to convert %s to a DateTime object' % time,
+                severity=logging.DEBUG)
+            return None
+
     if context is None:
         # when without context, we cannot do very much.
         return time.ISO()
 
-    # get the translation service
-    service = getGlobalTranslationService()
+    if request is None:
+        request = aq_acquire(context, 'REQUEST')
 
     # get the formatstring
-    formatstring = service.translate(domain, msgid, mapping, context)
+    formatstring = translate(msgid, domain, mapping, request)
 
     if formatstring is None or formatstring.startswith('date_'):
         # msg catalog was not able to translate this msgids
         # use default setting
 
-        properties=context.portal_properties.site_properties
+        properties=getToolByName(context, 'portal_properties').site_properties
         if long_format:
             format=properties.localLongTimeFormat
         else:
@@ -140,12 +140,12 @@ def ulocalized_time(time, long_format=None, context=None, domain='plonelocales')
         if 'B' in name_elements:
             mapping['B']=monthname_msgid(monthday)
 
-    # feed translateable elements to translation service
+    # translate translateable elements
     for key in name_elements:
-        mapping[key]=service.translate(domain, mapping[key], context=context, default=mapping[key])
+        mapping[key] = translate(mapping[key], domain, context=request, default=mapping[key])
 
     # translate the time string
-    return service.translate(domain, msgid, mapping, context)
+    return translate(msgid, domain, mapping, request)
 
 def _numbertoenglishname(number, format=None, attr='_days'):
     # returns the english name of day or month number
