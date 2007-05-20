@@ -1,15 +1,18 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="community_workflow"
+<dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+             i18n:domain="plone"
+             workflow_id="community_workflow"
              title="Community Workflow"
              state_variable="review_state"
-             initial_state="visible">
+             initial_state="visible"
+             i18n:attributes="title">
 
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="pending" title="Pending review">
+ <state state_id="pending" title="Pending review" i18n:attributes="title">
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
@@ -32,7 +35,7 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
- <state state_id="private" title="Private">
+ <state state_id="private" title="Private" i18n:attributes="title">
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -62,7 +65,7 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
  </state>
- <state state_id="visible" title="Public draft">
+ <state state_id="visible" title="Public draft" i18n:attributes="title">
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
@@ -86,7 +89,7 @@
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
- <state state_id="published" title="Published">
+ <state state_id="published" title="Published" i18n:attributes="title">
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -109,9 +112,11 @@
  <transition transition_id="hide"
              title="Member makes content private"
              new_state="private" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
-          category="workflow">Make private</action>
+          category="workflow"
+          i18n:translate="">Make private</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>
@@ -119,9 +124,11 @@
  <transition transition_id="publish"
              title="Reviewer publishes content"
              new_state="published" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
-          category="workflow">Publish</action>
+          category="workflow"
+          i18n:translate="">Publish</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
@@ -129,9 +136,11 @@
  <transition transition_id="reject"
              title="Reviewer rejects submission"
              new_state="visible" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
-          category="workflow">Send back</action>
+          category="workflow"
+          i18n:translate="">Send back</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
@@ -139,9 +148,11 @@
  <transition transition_id="retract"
              title="Member retracts submission"
              new_state="visible" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
-          category="workflow">Retract</action>
+          category="workflow"
+          i18n:translate="">Retract</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>
@@ -149,9 +160,11 @@
  <transition transition_id="show"
              title="Member makes content visible"
              new_state="visible" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
-          category="workflow">Promote to Draft</action>
+          category="workflow"
+          i18n:translate="">Promote to Draft</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>
@@ -159,9 +172,11 @@
  <transition transition_id="submit"
              title="Member requests publishing"
              new_state="pending" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
-          category="workflow">Submit for publication</action>
+          category="workflow"
+          i18n:translate="">Submit for publication</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>

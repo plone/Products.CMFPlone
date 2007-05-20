@@ -1,15 +1,18 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="intranet_folder_workflow"
+<dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+             i18n:domain="plone"
+             workflow_id="intranet_folder_workflow"
              title="Private Intranet Workflow for Folders"
              state_variable="review_state"
-             initial_state="internal">
+             initial_state="internal"
+             i18n:attributes="title">
 
  <permission>Access contents information</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="internal" title="Internally visible">
+ <state state_id="internal" title="Internally visible" i18n:attributes="title">
   <description>Visible to all intranet users.</description>
   <exit-transition transition_id="hide"/>
   <permission-map name="Access contents information"
@@ -45,7 +48,7 @@
    <permission-role>Member</permission-role>
   </permission-map>
  </state>
- <state state_id="private" title="Private">
+ <state state_id="private" title="Private" i18n:attributes="title">
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="show_internally"/>
   <permission-map name="Access contents information"
@@ -82,10 +85,12 @@
  <transition transition_id="hide"
              title="Member makes content private"
              new_state="private" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
-          category="workflow">Make private</action>
+          category="workflow"
+          i18n:translate="">Make private</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>
@@ -93,10 +98,12 @@
  <transition transition_id="show_internally"
              title="Member makes content visible to other internal users"
              new_state="internal" trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <description>Makes the folder visible internally.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show_internally"
-          category="workflow">Show internally</action>
+          category="workflow"
+          i18n:translate="">Show internally</action>
   <guard>
    <guard-permission>Modify portal content</guard-permission>
   </guard>

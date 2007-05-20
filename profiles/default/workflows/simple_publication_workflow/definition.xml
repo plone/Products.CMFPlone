@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="simple_publication_workflow"
+<dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+             i18n:domain="plone"
+             workflow_id="simple_publication_workflow"
              title="Simple Publication Workflow"
              state_variable="review_state"
-             initial_state="private">
+             initial_state="private"
+             i18n:attributes="title">
 
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
@@ -10,7 +13,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="pending" title="Pending review">
+ <state state_id="pending" title="Pending review" i18n:attributes="title">
   <description>Waiting to be reviewed, not editable by the owner.</description>
   <exit-transition transition_id="make_private"/>
   <exit-transition transition_id="publish"/>
@@ -54,7 +57,7 @@
   </permission-map>
 
  </state>
- <state state_id="private"   title="Private">
+ <state state_id="private" title="Private" i18n:attributes="title">
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
@@ -94,7 +97,7 @@
    <permission-role>Contributor</permission-role>
   </permission-map>
  </state>
- <state state_id="published" title="Published">
+ <state state_id="published" title="Published" i18n:attributes="title">
   <description>Visible to everyone, not editable by the owner.</description>
   <exit-transition transition_id="retract"/>
   <exit-transition transition_id="reject"/>
@@ -122,10 +125,12 @@
  <transition transition_id="publish" new_state="published"
              title="Reviewer publishes content"
              trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <description>Publishing the item makes it visible to other users.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
-          category="workflow">Publish</action>
+          category="workflow"
+          i18n:translate="">Publish</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
@@ -133,10 +138,12 @@
  <transition transition_id="reject"  new_state="private"
              title="Reviewer send content back for re-drafting"
              trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
-          category="workflow">Send back</action>
+          category="workflow"
+          i18n:translate="">Send back</action>
   <guard>
    <guard-permission>Review portal content</guard-permission>
   </guard>
@@ -144,10 +151,12 @@
  <transition transition_id="retract" new_state="private" 
              title="Member retracts submission"
              trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
-          category="workflow">Retract</action>
+          category="workflow"
+          i18n:translate="">Retract</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>
@@ -155,10 +164,12 @@
  <transition transition_id="submit"  new_state="pending" 
              title="Member submits content for publication"
              trigger="USER"
-             before_script="" after_script="">
+             before_script="" after_script=""
+             i18n:attributes="title">
   <description>Puts your item in a review queue, so it can be published on the site.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
-          category="workflow">Submit for publication</action>
+          category="workflow"
+          i18n:translate="">Submit for publication</action>
   <guard>
    <guard-permission>Request review</guard-permission>
   </guard>

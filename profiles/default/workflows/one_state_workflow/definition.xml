@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="one_state_workflow"
+<dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+             i18n:domain="plone"
+             workflow_id="one_state_workflow"
              title="Single State Workflow"
              state_variable="review_state"
-             initial_state="published">
+             initial_state="published"
+             i18n:attributes="title">
 
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
@@ -10,7 +13,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="published" title="Published">
+ <state state_id="published" title="Published" i18n:attributes="title">
   <description>Visible to everyone, editable by the owner.</description>
   <permission-map name="Access contents information"
                   acquired="False">
