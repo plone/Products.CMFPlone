@@ -46,7 +46,11 @@
     <form method="POST"
           tal:attributes="action string:${context/absolute_url}/@@convert-legacy-portlets">
 
-        <input type="submit" class="context" value="Convert" i18n:attributes="value" name="convert" />
+        <input type="submit"
+               class="context"
+               value="Convert portlets"
+               i18n:attributes="value label_convert_portlets"
+               name="convert" />
     
     </form>
 

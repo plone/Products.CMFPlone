@@ -58,7 +58,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(ISearchPortlet)
-    label = _(u"Add Search portlet")
+    label = _(u"Add Search Portlet")
     description = _(u"This portlet shows a search box.")
 
     def create(self, data):
@@ -67,6 +67,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(ISearchPortlet)
-    label = _(u"Edit Search portlet")
+    label = _(u"Edit Search Portlet")
     description = _(u"This portlet shows a search box.")
-

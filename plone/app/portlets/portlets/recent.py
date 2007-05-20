@@ -15,7 +15,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 class IRecentPortlet(IPortletDataProvider):
 
     count = schema.Int(title=_(u'Number of items to display'),
-                       description=_(u'How many items to list'),
+                       description=_(u'How many items to list.'),
                        required=True,
                        default=5)
 
@@ -65,7 +65,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(IRecentPortlet)
-    label = _(u"Add Recent portlet")
+    label = _(u"Add Recent Portlet")
     description = _(u"This portlet displays recently modified content.")
 
     def create(self, data):
@@ -73,5 +73,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IRecentPortlet)
-    label = _(u"Edit Recent portlet")
+    label = _(u"Edit Recent Portlet")
     description = _(u"This portlet displays recently modified content.")

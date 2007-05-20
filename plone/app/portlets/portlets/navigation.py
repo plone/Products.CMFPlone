@@ -31,45 +31,64 @@ class INavigationPortlet(IPortletDataProvider):
     """
     
     name = schema.TextLine(
-            title=_(u"Title"),
-            description=_(u"The title of the navigation tree. Leave blank for the default, translated title"),
+            title=_(u"label_navigation_title", default=u"Title"),
+            description=_(u"help_navigation_title",
+                          default=u"The title of the navigation tree. Leave "
+                                   "blank for the default, translated title."),
             default=u"",
             required=False)
     
     root = schema.TextLine(
-            title=_(u"Root path"),
-            description=_(u"A path that specifies the base folder where the navigation tree, sitemap, breadcrumbs "
-                            "and tabs will be rooted. Use '/' for the portal root, and '/folder1' to start at 'folder1'."),
+            title=_(u"label_navigation_root_path", default=u"Root path"),
+            description=_(u'help_navigation_root',
+                          default=u"A path that specifies the base folder "
+                                   "where the navigation tree, sitemap, "
+                                   "breadcrumbs and tabs will be rooted. "
+                                   "Use '/' for the portal root, and "
+                                   "'/folder1' to start at 'folder1'."),
             default=u"",
             required=False)
                             
     includeTop = schema.Bool(
-            title=_(u"Include top node"),
-            description=_(u'Whether or not to show the top, or "home" node in the navigation tree.'),
+            title=_(u"label_include_top_node", default=u"Include top node"),
+            description=_(u"help_include_top_node",
+                          default=u"Whether or not to show the top, or 'home' "
+                                   "node in the navigation tree."),
             default=True,
             required=False)
             
     currentFolderOnly = schema.Bool(
-            title=_(u"Current folder only"),
-            description=_(u"If selected, the navigation tree will only show the current folder and its children at all times."),
+            title=_(u"label_current_folder_only",
+                    default=u"Only show the contents of the current folder."),
+            description=_(u"help_current_folder_only",
+                          default=u"If selected, the navigation tree will "
+                                   "only show the current folder and its "
+                                   "children at all times."),
             default=False,
             required=False)
     
     topLevel = schema.Int(
-            title=_(u"Start level"),
-            description=_(u"An integer value that specifies the number of folder "
-                           "levels below the site root that must be exceeded before "
-                           "the navigation tree will display. 0 means that the navigation "
-                           "tree should be displayed everywhere including pages in the root "
-                           "of the site. 1 means the tree only shows up inside folders located "
-                           "in the root and downwards, never showing at the top level."),
+            title=_(u"label_navigation_startlevel", default=u"Start level"),
+            description=_(u"help_navigation_start_level",
+                default=u"An integer value that specifies the number of folder "
+                         "levels below the site root that must be exceeded "
+                         "before the navigation tree will display. 0 means "
+                         "that the navigation tree should be displayed "
+                         "everywhere including pages in the root of the site. "
+                         "1 means the tree only shows up inside folders "
+                         "located in the root and downwards, never showing "
+                         "at the top level."),
             default=0,
             required=False)
     
     bottomLevel = schema.Int(
-            title=_(u"Depth"),
-            description=_(u"How many folders should be included before the navigation "
-                           "tree stops. 0 means no limit. 1 only includes the root folder."),
+            title=_(u"label_navigation_tree_depth",
+                    default=u"Navigation tree depth"),
+            description=_(u"help_navigation_tree_depth",
+                          default=u"How many folders should be included "
+                                   "before the navigation tree stops. 0 "
+                                   "means no limit. 1 only includes the "
+                                   "root folder."),
             default=0,
             required=False)
 
@@ -182,7 +201,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(INavigationPortlet)
-    label = _(u"Add Navigation portlet")
+    label = _(u"Add Navigation Portlet")
     description = _(u"This portlet display a navigation tree.")
 
     def create(self, data):
@@ -194,7 +213,7 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(INavigationPortlet)
-    label = _(u"Edit Navigation portlet")
+    label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet display a navigation tree.")
     
 class QueryBuilder(object):

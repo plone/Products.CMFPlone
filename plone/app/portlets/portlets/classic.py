@@ -13,11 +13,12 @@ class IClassicPortlet(IPortletDataProvider):
     """
 
     template = schema.ASCIILine(title=_(u'Template'),
-                            description=_(u'The template containing the portlet'),
+                            description=_(u'The template containing the portlet.'),
                             required=True)
 
     macro = schema.ASCIILine(title=_(u'Macro'),
-                         description=_(u'The macro containing the portlet. Leave blank if there is no macro.'),
+                         description=_(u"The macro containing the portlet. "
+                                        "Leave blank if there is no macro."),
                          default='portlet',
                          required=True)
 
@@ -51,7 +52,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(IClassicPortlet)
-    label = _(u"Add Classic portlet")
+    label = _(u"Add Classic Portlet")
     description = _(u"A classic portlet allows you to use legacy portlet templates.")
 
     def create(self, data):
@@ -60,6 +61,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IClassicPortlet)
-    label = _(u"Edit Classic portlet")
+    label = _(u"Edit Classic Portlet")
     description = _(u"A classic portlet allows you to use legacy portlet templates.")
-    

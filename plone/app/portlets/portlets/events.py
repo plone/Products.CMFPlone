@@ -16,7 +16,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 class IEventsPortlet(IPortletDataProvider):
 
     count = schema.Int(title=_(u'Number of items to display'),
-                       description=_(u'How many items to list'),
+                       description=_(u'How many items to list.'),
                        required=True,
                        default=5)
 
@@ -96,7 +96,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(IEventsPortlet)
-    label = _(u"Add Events portlet")
+    label = _(u"Add Events Portlet")
     description = _(u"This portlet lists upcoming Events.")
 
     def create(self, data):
@@ -104,5 +104,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IEventsPortlet)
-    label = _(u"Edit Events portlet")
+    label = _(u"Edit Events Portlet")
     description = _(u"This portlet lists upcoming Events.")

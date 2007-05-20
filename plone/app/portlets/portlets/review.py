@@ -57,7 +57,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.NullAddForm):
     form_fields = form.Fields(IReviewPortlet)
-    label = _(u"Add Review portlet")
+    label = _(u"Add Review Portlet")
     description = _(u"This portlet displays a queue of documents awaiting review.")
 
     def create(self):

@@ -190,16 +190,16 @@ class RSSFeed(object):
 class IRSSPortlet(IPortletDataProvider):
 
     count = schema.Int(title=_(u'Number of items to display'),
-                       description=_(u'How many items to list'),
+                       description=_(u'How many items to list.'),
                        required=True,
                        default=5)
     url = schema.TextLine(title=_(u'URL of RSS feed'),
-                        description=_(u'link to the RSS feed to list'),
+                        description=_(u'Link of the RSS feed to display.'),
                         required=True,
                         default=u'')
                         
-    timeout = schema.Int(title=_(u'Feed Reload Timeout'),
-                        description=_(u'time in minutes after which the feed should be reloaded'),
+    timeout = schema.Int(title=_(u'Feed reload timeout'),
+                        description=_(u'Time in minutes after which the feed should be reloaded.'),
                         required=True,
                         default=100)                        
 
@@ -282,7 +282,7 @@ class Renderer(base.DeferredRenderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(IRSSPortlet)
-    label = _(u"Add RSS portlet")
+    label = _(u"Add RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
     
 
@@ -293,7 +293,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IRSSPortlet)
-    label = _(u"Edit RSS portlet")
+    label = _(u"Edit RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
-    
-    

@@ -77,7 +77,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(INewsPortlet)
-    label = _(u"Add News portlet")
+    label = _(u"Add News Portlet")
     description = _(u"This portlet displays recent News Items.")
 
     def create(self, data):
@@ -85,5 +85,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(INewsPortlet)
-    label = _(u"Edit News portlet")
+    label = _(u"Edit News Portlet")
     description = _(u"This portlet displays recent News Items.")
