@@ -32,7 +32,7 @@ class ISiteSchema(Interface):
                            default=u'',
                            required=False)
 
-    visible_ids = Bool(title=_(u'Show "Short Name" on content?'),
+    visible_ids = Bool(title=_(u"Show 'Short Name' on content?"),
                        description=_(u"Display and allow users to edit the "
                            "'Short name' content identifiers, which form the "
                            "URL part of a content item's address. Once "
