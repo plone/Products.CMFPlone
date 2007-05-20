@@ -23,23 +23,23 @@ from form import ControlPanelForm
 class IMailHostSchema(Interface):
 
     smtp_host = TextLine(title=_(u'SMTP server'),
-                         description=_(u'''The address of your local SMTP
-                                       (outgoing e-mail) server. Usually
-                                       "localhost", unless you use an external
-                                       server to send e-mail.'''),
+                         description=_(u"The address of your local SMTP "
+                                        "(outgoing e-mail) server. Usually "
+                                       "'localhost', unless you use an "
+                                       "external server to send e-mail."),
                          default=u'localhost',
                          required=True)
 
     smtp_port = Int(title=_(u'SMTP port'),
-                    description=_(u'''The port of your local SMTP (outgoing
-                                      e-mail) server. Usually "25".'''),
+                    description=_(u"The port of your local SMTP (outgoing "
+                                   "e-mail) server. Usually '25'."),
                     default=25,
                     required=True)
 
     smtp_userid = TextLine(title=_(u'ESMTP username'),
-                           description=_(u'''Username for authentication to
-                                         your e-mail server. Not required
-                                         unless you are using ESMTP.'''),
+                           description=_(u"Username for authentication to "
+                                          "your e-mail server. Not required "
+                                          "unless you are using ESMTP."),
                            default=None,
                            required=False)
 
@@ -53,21 +53,21 @@ class IMailHostSchema(Interface):
 class IMailFromSchema(Interface):
 
     email_from_name = TextLine(title=_(u"Site 'From' name"),
-                               description=_(u'''Plone generates e-mail using
-                                             this name as the e-mail
-                                             sender.'''),
+                               description=_(u"Plone generates e-mail using "
+                                              "this name as the e-mail "
+                                              "sender."),
                                default=None,
                                required=True)
 
     email_from_address = ASCII(title=_(u"Site 'From' address"),
-                                  description=_(u'''Plone generates e-mail
-                                                using this address as the
-                                                e-mail return address. It is
-                                                also used as the destination
-                                                address on the site-wide
-                                                contact form.'''),
-                                  default=None,
-                                  required=True)
+                               description=_(u"Plone generates e-mail using "
+                                              "this address as the e-mail "
+                                              "return address. It is also "
+                                              "used as the destination "
+                                              "address on the site-wide "
+                                              "contact form."),
+                               default=None,
+                               required=True)
 
 
 class IMailSchema(IMailHostSchema, IMailFromSchema):
