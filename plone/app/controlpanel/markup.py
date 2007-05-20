@@ -58,18 +58,19 @@ WickedTypesVocabularyFactory = WickedTypesVocabulary()
 class ITextMarkupSchema(Interface):
 
     default_type = Choice(title=_(u'Default Format'),
-        description=_(u'''Select the default format of textfields
-            for newly created content objects.'''),
+        description=_(u"Select the default format of textfields for newly "
+                       "created content objects."),
         default=u'text/html',
         missing_value=set(),
         vocabulary="plone.app.vocabularies.AllowableContentTypes",
         required=True)
 
     allowed_types = Tuple(title=_(u'Alternative Formats'),
-        description=_(u'''Select which formats are available for users
-            as alternative to the default format. Note that if new formats are
-            installed, they will be enabled for text fields by default unless
-            explicitly turned off here or by the relevant installer.'''),
+        description=_(u"Select which formats are available for users as "
+                       "alternative to the default format. Note that if new "
+                       "formats are installed, they will be enabled for text "
+                       "fields by default unless explicitly turned off here "
+                       "or by the relevant installer."),
         required=True,
         missing_value=set(),
         value_type=Choice(
