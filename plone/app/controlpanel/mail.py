@@ -25,8 +25,8 @@ class IMailHostSchema(Interface):
     smtp_host = TextLine(title=_(u'SMTP server'),
                          description=_(u"The address of your local SMTP "
                                         "(outgoing e-mail) server. Usually "
-                                       "'localhost', unless you use an "
-                                       "external server to send e-mail."),
+                                        "'localhost', unless you use an "
+                                        "external server to send e-mail."),
                          default=u'localhost',
                          required=True)
 
@@ -44,8 +44,8 @@ class IMailHostSchema(Interface):
                            required=False)
 
     smtp_pass = Password(title=_(u'ESMTP password'),
-                         description=_(u'''The password for the ESMTP user
-                                         account.'''),
+                         description=_(u"The password for the ESMTP user "
+                                        "account."),
                          default=None,
                          required=False)
 
