@@ -24,15 +24,18 @@
  <alias from="view" to="(selected layout)"/>
  <action title="External Edit" action_id="external_edit" category="object"
     condition_expr="object/externalEditorEnabled"
-    url_expr="string:${object_url}/external_edit" visible="False">
+    url_expr="string:${object_url}/external_edit" visible="False"
+    i18n:attributes="title">
   <permission value="Modify portal content"/>
  </action>
  <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}" visible="True">
+    url_expr="string:${object_url}" visible="True"
+    i18n:attributes="title">
   <permission value="View"/>
  </action>
  <action title="Edit" action_id="edit" category="object" condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
-    url_expr="string:${object_url}/edit" visible="True">
+    url_expr="string:${object_url}/edit" visible="True"
+    i18n:attributes="title">
   <permission value="Modify portal content"/>
  </action>
 </object>

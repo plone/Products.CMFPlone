@@ -26,20 +26,23 @@
  <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
  <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}" visible="True">
+    url_expr="string:${object_url}" visible="True"
+    i18n:attributes="title">
   <permission value="View"/>
  </action>
  <action title="Edit" action_id="edit" category="object" condition_expr=""
-    url_expr="string:${object_url}/edit" visible="True">
+    url_expr="string:${object_url}/edit" visible="True"
+    i18n:attributes="title">
   <permission value="Manage properties"/>
  </action>
  <action title="Folder view" action_id="folderlisting" category="folder"
-    condition_expr="" url_expr="string:${folder_url}/view" visible="False">
+    condition_expr="" url_expr="string:${folder_url}/view" visible="False"
+    i18n:attributes="title">
   <permission value="View"/>
  </action>
  <action title="External Edit" action_id="external_edit" category="object"
     condition_expr="" url_expr="string:$object_url/external_edit"
-    visible="False">
+    visible="False" i18n:attributes="title">
   <permission value="Modify portal content"/>
  </action>
 </object>
