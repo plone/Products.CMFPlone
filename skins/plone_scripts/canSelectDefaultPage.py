@@ -8,8 +8,6 @@
 ##parameters=
 from AccessControl import Unauthorized
 
-INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
-
 # It's silly but because this is often called on the parent folder, we must
 # ensure we have permission.
 try:
@@ -18,10 +16,4 @@ try:
 except Unauthorized:
         return False
 
-from Products.CMFCore.utils import getToolByName
-itool = getToolByName(context, 'portal_interface')
-
-if not itool.objectImplements(context, INTERFACE):
-    return False
-    
 return context.canSetDefaultPage()

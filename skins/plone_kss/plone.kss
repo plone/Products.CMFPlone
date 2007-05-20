@@ -85,13 +85,14 @@ Content Menu Sections: General
 Content Menu Sections: Change View
 */
 
-
+/*
 #plone-contentmenu-display dd.actionMenuContent a:click {
     evt-click-preventdefault: True;
     action-server: changeViewTemplate;
     evt-click-allowbubbling: True; 
     changeViewTemplate-url: nodeAttr(href);
 }
+*/
 
 /* This rule is needed for keeping the default behavior for menu elements that */
 /* are supposed to send user to another page */
