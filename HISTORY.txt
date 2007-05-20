@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added ZPT-like i18n markup to GenericSetup profiles, which is used for
+      automatic message extraction by i18ndude.
+      [hannosch]
+
     - Cleaned and speed up ulocalized_time functions. Added request to the
       method signature which was implicitly acquired so far. Now you can
       optionally provide it directly.
