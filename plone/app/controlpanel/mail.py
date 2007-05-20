@@ -22,30 +22,38 @@ from form import ControlPanelForm
 
 class IMailHostSchema(Interface):
 
-    smtp_host = TextLine(title=_(u'SMTP server'),
-                         description=_(u"The address of your local SMTP "
-                                        "(outgoing e-mail) server. Usually "
-                                        "'localhost', unless you use an "
-                                        "external server to send e-mail."),
+    smtp_host = TextLine(title=_(u'label_smtp_server',
+                                 default=u'SMTP server'),
+                         description=_(u"help_smtp_server",
+                                       default=u"The address of your local "
+                                       "SMTP (outgoing e-mail) server. Usually "
+                                       "'localhost', unless you use an "
+                                       "external server to send e-mail."),
                          default=u'localhost',
                          required=True)
 
-    smtp_port = Int(title=_(u'SMTP port'),
-                    description=_(u"The port of your local SMTP (outgoing "
-                                   "e-mail) server. Usually '25'."),
+    smtp_port = Int(title=_(u'label_smtp_port',
+                            default=u'SMTP port'),
+                    description=_(u"help_smtp_port",
+                                  default=u"The port of your local SMTP "
+                                  "(outgoing e-mail) server. Usually '25'."),
                     default=25,
                     required=True)
 
-    smtp_userid = TextLine(title=_(u'ESMTP username'),
-                           description=_(u"Username for authentication to "
-                                          "your e-mail server. Not required "
-                                          "unless you are using ESMTP."),
+    smtp_userid = TextLine(title=_(u'label_smtp_userid',
+                                   default=u'ESMTP username'),
+                           description=_(u"help_smtp_userid",
+                                         default=u"Username for authentication "
+                                         "to your e-mail server. Not required "
+                                         "unless you are using ESMTP."),
                            default=None,
                            required=False)
 
-    smtp_pass = Password(title=_(u'ESMTP password'),
-                         description=_(u"The password for the ESMTP user "
-                                        "account."),
+    smtp_pass = Password(title=_(u'label_smtp_pass',
+                                 default=u'ESMTP password'),
+                         description=_(u"help_smtp_pass",
+                                       default=u"The password for the ESMTP "
+                                       "user account."),
                          default=None,
                          required=False)
 
@@ -145,5 +153,5 @@ class MailControlPanel(ControlPanelForm):
     form_fields = FormFieldsets(mailhostset, mailfromset)
     form_fields['email_from_address'].custom_widget = ASCIIWidget
     label = _("Mail settings")
-    description = _("Mail settings for this Site.")
-    form_name = _("Outgoing Mail Details")
+    description = _("Mail settings for this site.")
+    form_name = _("Mail settings")

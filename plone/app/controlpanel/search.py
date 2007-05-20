@@ -18,7 +18,7 @@ class ISearchSchema(Interface):
 
     enable_livesearch = Bool(title=_(u'Enable LiveSearch'),
                              description=_(u"Enables the LiveSearch feature, "
-                                            "which shows live results if the"
+                                            "which shows live results if the "
                                             "browser supports Javascript."),
                              default=False,
                              required=True)
@@ -85,5 +85,5 @@ class SearchControlPanel(ControlPanelForm):
     form_fields['types_not_searched'].custom_widget.cssClass='label'
 
     label = _("Search settings")
-    description = _("Search settings for Site.")
-    form_name = _("Search details")
+    description = _("Search settings for this site.")
+    form_name = _("Search settings")

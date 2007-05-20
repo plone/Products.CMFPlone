@@ -45,7 +45,7 @@ class ISiteSchema(Interface):
                                                  "checks"),
                           description=_(u"Determines if the users should get "
                               "warnings when they delete or move content that "
-                              "is linked from inside the site"),
+                              "is linked from inside the site."),
                           default=True,
                           required=False)
 
@@ -139,4 +139,4 @@ class SiteControlPanel(ControlPanelForm):
 
     label = _("Site settings")
     description = _("Site-wide settings.")
-    form_name = _("Site details")
+    form_name = _("Site settings")

@@ -41,7 +41,7 @@ class ISkinsSchema(Interface):
                                               "window"),
                                      description=_(u"If enabled all external "
                                                     "links in the content "
-                                                    "region open in a new  "
+                                                    "region open in a new "
                                                     "window."),
                                      default=False)
 
@@ -118,4 +118,4 @@ class SkinsControlPanel(ControlPanelForm):
 
     label = _("Theme settings")
     description = _("Settings that affect the site's look and feel.")
-    form_name = _("Theme details")
+    form_name = _("Theme settings")

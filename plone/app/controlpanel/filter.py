@@ -238,15 +238,15 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
 
 filtertagset = FormFieldsets(IFilterTagsSchema)
 filtertagset.id = 'filtertags'
-filtertagset.label = _(u'Tags')
+filtertagset.label = _(u'label_filtertags', default=u'Tags')
 
 filterattributes = FormFieldsets(IFilterAttributesSchema)
 filterattributes.id = 'filterattributes'
-filterattributes.label = _(u'Attributes')
+filterattributes.label = _(u'label_filterattributes', default=u'Attributes')
 
 filtereditor = FormFieldsets(IFilterEditorSchema)
 filtereditor.id = 'filtereditor'
-filtereditor.label = _(u'Styles')
+filtereditor.label = _(u'filterstyles', default=u'Styles')
 
 tagattr_widget = CustomWidgetFactory(ObjectWidget, TagAttrPair)
 combination_widget = CustomWidgetFactory(ListSequenceWidget,
@@ -260,5 +260,5 @@ class FilterControlPanel(ControlPanelForm):
     label = _("HTML Filter settings")
     description = _("Plone filters HTML tags that are considered security \
 risks. Be aware of the implications before making changes below.")
-    form_name = _("HTML Filter Details")
+    form_name = _("HTML Filter settings")
 

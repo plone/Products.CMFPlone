@@ -36,8 +36,8 @@ own passwords'),
                         default=False,
                         required=False)
 
-    allow_anon_views_about = Bool(title=_(u'Allow anyone to view "about"\
-information'),
+    allow_anon_views_about = Bool(title=_(u"Allow anyone to view 'about' "
+                                           "information"),
                         description=_(u"If not selected only logged-in users "
                                        "will be able to view information about "
                                        "who created an item and when it was "
@@ -127,4 +127,4 @@ class SecurityControlPanel(ControlPanelForm):
 
     label = _("Security settings")
     description = _("Security settings for this site.")
-    form_name = _("Site security settings")
+    form_name = _("Security settings")

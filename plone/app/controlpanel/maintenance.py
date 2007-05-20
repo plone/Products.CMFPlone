@@ -62,7 +62,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
     description = _(u"Zope server and site maintenance options.")
     form_name = _(u'Zope Database Packing')
 
-    @form.action(_(u'Pack'))
+    @form.action(_(u'Pack database now'))
     def handle_edit_action(self, action, data):
         form.applyChanges(self.context, self.form_fields, data, self.adapters)
         value = data.get('days', None)
@@ -73,7 +73,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
             cpanel.manage_pack(days=value, REQUEST=None)
         self.status = _(u'Packed the database.')
 
-    @form.action(_(u'Shutdown'), validator=null_validator)
+    @form.action(_(u'Shut down'), validator=null_validator)
     def handle_shutdown_action(self, action, data):
         context = aq_inner(self.context)
         cpanel = context.unrestrictedTraverse('/Control_Panel')

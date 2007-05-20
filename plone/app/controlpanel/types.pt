@@ -14,7 +14,7 @@
 <div metal:fill-slot="prefs_configlet_main">
 
     <h1 class="documentFirstHeading"
-        i18n:translate="heading_portal_setup">Type Settings</h1>
+        i18n:translate="heading_type_settings">Type Settings</h1>
 
     <a href=""
         class="link-parent"
@@ -46,8 +46,11 @@
                     </tal:option>
                 </select>
                 <noscript>
-                    <input type="submit" name="form.button.SelectContentType" class="standalone" 
-                           value="Change" i18n:attributes="value" />
+                    <input type="submit"
+                           name="form.button.SelectContentType"
+                           class="standalone"
+                           value="Change"
+                           i18n:attributes="value label_change;" />
                 </noscript>
            </legend>
 
@@ -133,8 +136,11 @@
                             i18n:translate="types_controlpanel_no_workflow">No Workflow</option>
                     </select>
                     <noscript>
-                        <input type="submit" name="form.button.SelectWorkflow" class="standalone"
-                                value="Change" i18n:attributes="value">
+                        <input type="submit"
+                               name="form.button.SelectWorkflow"
+                               class="standalone"
+                               value="Change"
+                               i18n:attributes="value label_change;">
                     </noscript>
                 </div>
             
@@ -202,8 +208,16 @@
             </div>
 
             <div class="formControls">
-              <input type="submit" value="Apply" name="form.button.Save" class="context" />
-              <input type="submit" value="Cancel" name="form.button.Cancel" class="context" />
+              <input type="submit"
+                     value="Apply Changes"
+                     name="form.button.Save"
+                     class="context"
+                     i18n:attributes="value label_apply_changes;" />
+              <input type="submit"
+                     value="Cancel" 
+                     name="form.button.Cancel"
+                     class="context"
+                     i18n:attributes="value label_cancel;" />
             </div>
             
         </fieldset>

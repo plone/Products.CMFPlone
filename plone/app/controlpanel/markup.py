@@ -57,7 +57,7 @@ WickedTypesVocabularyFactory = WickedTypesVocabulary()
 
 class ITextMarkupSchema(Interface):
 
-    default_type = Choice(title=_(u'Default Format'),
+    default_type = Choice(title=_(u'Default format'),
         description=_(u"Select the default format of textfields for newly "
                        "created content objects."),
         default=u'text/html',
@@ -65,7 +65,7 @@ class ITextMarkupSchema(Interface):
         vocabulary="plone.app.vocabularies.AllowableContentTypes",
         required=True)
 
-    allowed_types = Tuple(title=_(u'Alternative Formats'),
+    allowed_types = Tuple(title=_(u'Alternative formats'),
         description=_(u"Select which formats are available for users as "
                        "alternative to the default format. Note that if new "
                        "formats are installed, they will be enabled for text "
@@ -86,7 +86,7 @@ class IWikiMarkupSchema(Interface):
                                      "[[my link]]"),
                             description=_(u"Use brackets rather than the "
                                           "internationally usable default "
-                                          "(( )) "),
+                                          "(( ))."),
                             default=False)
 
     wiki_enabled_types = Tuple(title=_(u"Choose which types will have wiki "
@@ -94,7 +94,7 @@ class IWikiMarkupSchema(Interface):
                                description=_(u"Each type chosen will have a "
                                              "wiki enabled primary text area. "
                                              "At least one type must be chosen "
-                                             "to turn wiki behavior on"),
+                                             "to turn wiki behavior on."),
                                required=False,
                                missing_value=tuple(),
                                value_type=Choice(vocabulary="plone.app.\
