@@ -81,19 +81,19 @@ class ITextMarkupSchema(Interface):
 
 class IWikiMarkupSchema(Interface):
 
-    enable_mediawiki = Bool(title=_(u"""Use Media wiki style syntax: \
-[[my link]]"""),
-                            description=_(u"""Use brackets rather than the
-                                          internationally usable default (( ))
-                                          """),
+    enable_mediawiki = Bool(title=_(u"Use Media wiki style syntax: "
+                                     "[[my link]]"),
+                            description=_(u"Use brackets rather than the "
+                                          "internationally usable default "
+                                          "(( )) "),
                             default=False)
 
-    wiki_enabled_types = Tuple(title=_(u'''Choose which types will have wiki \
-behavior.'''),
-                               description=_(u"""Each type chosen will have a
-                                             wiki enabled primary text area.
-                                             At least one type must be chosen
-                                             to turn wiki behavior on"""),
+    wiki_enabled_types = Tuple(title=_(u"Choose which types will have wiki "
+                                        "behavior."),
+                               description=_(u"Each type chosen will have a "
+                                             "wiki enabled primary text area. "
+                                             "At least one type must be chosen "
+                                             "to turn wiki behavior on"),
                                required=False,
                                missing_value=tuple(),
                                value_type=Choice(vocabulary="plone.app.\
@@ -198,6 +198,6 @@ class MarkupControlPanel(ControlPanelForm):
     form_fields['allowed_types'].custom_widget = AllowedTypesWidget
 
     label = _("Markup settings")
-    description = _("""Lets you control what markup is available when editing
-                       content.""")
+    description = _("Lets you control what markup is available when editing "
+                    "content.")
     form_name = _("Markup settings")
