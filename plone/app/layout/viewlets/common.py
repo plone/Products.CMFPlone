@@ -45,9 +45,13 @@ class TitleViewlet(ViewletBase):
         self.portal_title = self.portal_state.portal_title
 
     def render(self):
-        return u"<title>%s &mdash; %s</title>" % (
-            escape(safe_unicode(self.page_title())),
-            escape(safe_unicode(self.portal_title())))
+        if self.page_title() == self.portal_title():
+            return u"<title>%s</title>" % (
+                escape(safe_unicode(self.portal_title())))
+        else:
+            return u"<title>%s &mdash; %s</title>" % (
+                escape(safe_unicode(self.page_title())),
+                escape(safe_unicode(self.portal_title())))
 
 
 class TableOfContentsViewlet(ViewletBase):
