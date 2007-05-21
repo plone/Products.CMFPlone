@@ -18,7 +18,7 @@ class ControlPanelForm(FieldsetsEditForm):
 
     implements(IPloneControlPanelForm)
 
-    @form.action(_(u'label_save', default=u'Save'))
+    @form.action(_(u'label_save', default=u'Save'), name=u'save')
     def handle_edit_action(self, action, data):
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
@@ -27,7 +27,9 @@ class ControlPanelForm(FieldsetsEditForm):
         else:
             self.status = _("No changes made.")
 
-    @form.action(_(u'label_cancel', default=u'Cancel'), validator=null_validator)
+    @form.action(_(u'label_cancel', default=u'Cancel'),
+                 validator=null_validator,
+                 name=u'cancel')
     def handle_cancel_action(self, action, data):
         IStatusMessage(self.request).addStatusMessage(_("Changes canceled."),
                                                       type="info")
