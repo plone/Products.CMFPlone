@@ -65,11 +65,13 @@ class AddForm(formbase.AddFormBase):
             url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
             return url + '/@@manage-portlets'
     
-    @form.action("Save")
+    @form.action(_(u"label_save", default=u"Save"), name=u'save')
     def handle_save_action(self, action, data):
         self.createAndAdd(data)
-    
-    @form.action("Cancel", validator=null_validator)
+
+    @form.action(_(u"label_cancel", default=u"Cancel"),
+                 validator=null_validator,
+                 name=u'cancel')
     def handle_cancel_action(self, action, data):
         nextURL = self.nextURL()
         if nextURL:
@@ -134,7 +136,9 @@ class EditForm(formbase.EditFormBase):
             url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
             return url + '/@@manage-portlets'
     
-    @form.action("Save", condition=form.haveInputWidgets)
+    @form.action(_(u"label_save", default=u"Save"),
+                 condition=form.haveInputWidgets,
+                 name=u'save')
     def handle_save_action(self, action, data):
         if form.applyChanges(self.context, self.form_fields, data, self.adapters):
             zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(self.context))
@@ -147,7 +151,9 @@ class EditForm(formbase.EditFormBase):
             self.request.response.redirect(self.nextURL())
         return ''
             
-    @form.action("Cancel", validator=null_validator)
+    @form.action(_(u"label_cancel", default=u"Cancel"),
+                 validator=null_validator,
+                 name=u'cancel')
     def handle_cancel_action(self, action, data):
         nextURL = self.nextURL()
         if nextURL:
