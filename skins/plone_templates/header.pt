@@ -12,10 +12,13 @@
 
     <title tal:define="portal_title portal_properties/title;
                        page_title object_title">
-        <tal:pagetitle replace="page_title">
-            Inserts page title
-        </tal:pagetitle>
-        &mdash;
+
+        <tal:hastitle condition="python:portal_title != page_title">
+            <tal:pagetitle replace="page_title">
+                Inserts page title
+            </tal:pagetitle>
+            &mdash;
+        </tal:hastitle>
         <tal:portaltitle replace="portal_title">
             Inserts portal title
         </tal:portaltitle>

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.4 - Unreleased
 
+    - The page title is not rendered if it's the same as the global site
+      title (e.g. for pages that don't have titles). This avoids duplicate
+      site titles in the title tag.
+      [limi]
     
 Plone 2.5.3 - Final - released May 16, 2007
 
