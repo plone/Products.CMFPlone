@@ -20,6 +20,9 @@ def two5_alpha1(portal):
     # register some tools as utilities
     registerToolsAsUtilities(portal, out)
 
+    # Install portal_setup
+    installPortalSetup(portal, out)
+
     # Install CMFPlacefulWorkflow
     installPlacefulWorkflow(portal, out)
 
@@ -85,3 +88,10 @@ def installDeprecated(portal, out):
                 path.append('plone_deprecated')
             st.addSkinSelection(s, ','.join(path))
             out.append('Added plone_deprecated to %s' % s)
+
+
+def installPortalSetup(portal, out):
+    """Adds portal_setup if not installed yet."""
+    if SETUP_TOOL_ID not in portal.objectIds():
+        portal._setObject(SETUP_TOOL_ID, SetupTool(SETUP_TOOL_ID))
+        out.append('Added setup_tool.')
