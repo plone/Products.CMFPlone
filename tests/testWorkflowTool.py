@@ -15,7 +15,7 @@ workflow_dict = {
     , 'community_workflow':('private','published','visible','pending',)
     , 'folder_workflow':('private','published','visible',)
     , 'intranet_folder_workflow':('internal','private',)
-    , 'intranet_workflow':('internal','published','pending',
+    , 'intranet_workflow':('internal','internally_published','pending',
                            'private','external',)
     , 'one_state_workflow':('published',)
     , 'plone_workflow':('pending','private','published','visible',)
@@ -95,33 +95,19 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         priv_states = [s for s in states if s[1]=='private']
         pend_states = [s for s in states if s[1]=='pending']
         vis_states = [s for s in states if s[1]=='visible']
+        external_states = [s for s in states if s[1]=='external']
         internal_states = [s for s in states if s[1]=='internal']
-        
+        internal_pub_states = [s for s in states
+                                 if s[1]=='internally_published']
+
         self.assertEqual(len(pub_states), all_states.count('published'))
         self.assertEqual(len(priv_states), all_states.count('private'))
         self.assertEqual(len(pend_states), all_states.count('pending'))
         self.assertEqual(len(vis_states), all_states.count('visible'))
+        self.assertEqual(len(external_states), all_states.count('external'))
         self.assertEqual(len(internal_states), all_states.count('internal'))
-
-    # XXX - This test is pointless, and we have to force-adjust it each time
-    # we make any chanes to titles in the workflows.
-    def _DISABLED_testListWFStatesByTitleFiltersSimilar(self):
-        states = self.workflow.listWFStatesByTitle(filter_similar=True)
-        # XXX - it's a bit tricky to use our workflow_dict here because we have  
-        # similar id states that have different titles are therefore not filtered, 
-        # need to think on it a bit more
-        self.assertEqual(len(states), 8)
-        pub_states = [s for s in states if s[1]=='published']
-        priv_states = [s for s in states if s[1]=='private']
-        pend_states = [s for s in states if s[1]=='pending']
-        vis_states = [s for s in states if s[1]=='visible']
-        internal_states = [s for s in states if s[1]=='internal']
-
-        self.assertEqual(len(pub_states), 3)
-        self.assertEqual(len(priv_states), 2)
-        self.assertEqual(len(pend_states), 1)
-        self.assertEqual(len(vis_states), 2)
-        self.assertEqual(len(internal_states), 2)
+        self.assertEqual(len(internal_pub_states),
+                         all_states.count('internally_published'))
 
 
 def test_suite():
