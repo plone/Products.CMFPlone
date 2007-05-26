@@ -70,7 +70,7 @@ if plone_utils is not None:
 portal_catalog = getToolByName(container, 'portal_catalog', None)
 if portal_catalog is not None:
     try:
-        if id in portal_catalog.indexes():
+        if id in portal_catalog.indexes() + portal_catalog.schema():
             return _(u'${name} is reserved.', mapping={u'name' : id})
     except Unauthorized:
         pass # ignore if we don't have permission; will get picked up at the end
