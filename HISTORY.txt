@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Corrected inconsistent slashing of URLs in folder listings, fixes
+      http://dev.plone.org/plone/ticket/4912
+
     - No longer call invokeFactory twice when creating objects in
       portal_factory.  Fixes http://dev.plone.org/plone/ticket/6595
       Nice catch nouri :-)

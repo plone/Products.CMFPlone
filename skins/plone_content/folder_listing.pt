@@ -76,7 +76,7 @@
                               tal:condition="python:item_type != 'Link'">
                             <img tal:replace="structure item_icon/html_tag" />
                             <a href="#"
-                               tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url+'/');
+                               tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);
                                                class string:${item_wf_state_class} url"
                                tal:content="item_title_or_id">
                                 Item Title
