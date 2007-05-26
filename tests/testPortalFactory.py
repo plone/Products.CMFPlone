@@ -6,6 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+import urlparse
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.permissions import AddPortalContent
@@ -283,7 +284,13 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         response = self.publish(self.folder_path +
                                 '/createObject?type_name=Document',
                                 ) # No basic out info
-
+        # We got redirected to the factory
+        self.assertEqual(response.getStatus(), 302)
+        newpath = response.getHeader('location')
+        proto, host, path, query, fragment = urlparse.urlsplit(newpath)
+        # Let's follow it
+        response = self.publish(path)
+        # And we are forbidden
         self.assertEqual(response.getStatus(), 401) # Unauthorized
 
     def testUnauthorizedToViewEditFormOfNonFactoryObject(self):
