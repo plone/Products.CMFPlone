@@ -3,7 +3,9 @@ from Acquisition import aq_base
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.DirectoryView import createDirectoryView
+from Products.GenericSetup.tool import SetupTool
 
+from Products.CMFPlone.factory import _TOOL_ID as SETUP_TOOL_ID
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
