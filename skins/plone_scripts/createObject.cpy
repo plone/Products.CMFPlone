@@ -12,6 +12,7 @@
 from DateTime import DateTime
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFCore.utils import getToolByName
 REQUEST=context.REQUEST
 
 if id is None:
@@ -20,10 +21,21 @@ if id is None:
 if type_name is None:
     raise Exception, 'Type name not specified'
 
+types_tool = getToolByName(context, 'portal_types')
+
+fti = types_tool.getTypeInfo(type_name)
+
+if not fti.queryMethodID('edit') and \
+   not fti.getActionObject('object/edit'):
+    state.setStatus('success_no_edit')
+
 if context.portal_factory.getFactoryTypes().has_key(type_name):
-    o = context.restrictedTraverse('portal_factory/' + type_name + '/' + id)
-    message = None
-    transaction_note('Initiated creation of %s with id %s in %s' % (o.getTypeInfo().getId(), id, context.absolute_url()))
+    new_url = 'portal_factory/' + type_name + '/' + id
+    if state.getStatus() != 'success_no_edit':
+        new_url = new_url + '/edit'
+    state.set(status='factory', next_action='redirect_to:string:%s'%new_url)
+    # If there's an issue with object creation, let the factory handle it
+    return state
 else:
     new_id = context.invokeFactory(id=id, type_name=type_name)
     if new_id is None or new_id == '':
@@ -35,11 +47,6 @@ else:
 
 if o is None:
     raise Exception
-
-typeinfo = o.getTypeInfo()
-if not typeinfo.queryMethodID('edit') and \
-   not typeinfo.getActionObject('object/edit'):
-    state.setStatus('success_no_edit')
 
 if script_id:
     state.setId(script_id)

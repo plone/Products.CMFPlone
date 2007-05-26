@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - No longer call invokeFactory twice when creating objects in
+      portal_factory.  Fixes http://dev.plone.org/plone/ticket/6595
+      Nice catch nouri :-)
+      [alecm]
+
     - Fixed migration from Plone < 2.5. The portal_setup tool needs to be
       installed before installing CMFPlacefulWorkflow now. This closes
       http://dev.plone.org/plone/ticket/6610.
@@ -49,7 +54,7 @@ Plone 3.0-beta3 - released May 5, 2007
     - Moved sharing action to a global action and removed from standard
       types. This closes http://dev.plone.org/plone/ticket/6335
       [optilude]
-    
+
     - Fixed migration code for CMFEditions. This closes
       http://dev.plone.org/plone/ticket/6491
       [hannosch]
