@@ -1,13 +1,13 @@
 <div id="portal-searchbox"
      i18n:domain="plone">
-    <form name="searchform"
+    <form
           action="search"
           tal:attributes="action string:${view/portal_url}/search">
 
+        <div class="LSBox">
         <label for="searchGadget" class="hiddenStructure"
                     i18n:translate="text_search">Search Site</label>
 
-        <div class="LSBox">
         <input name="SearchableText"
                type="text"
                size="15"
