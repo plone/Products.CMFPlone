@@ -4,8 +4,8 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
-    - Made the double-submit protection a bit less eager. It's only supposed
-      to work on forms with class enableUnloadProtection!
+    - Added an opt-out for multi-submit protection. Add a class to the input
+      tag called "allowMultiSubmit".
       [optilude, ree, fschulze]
 
     - Adjusted our RegistrationTool's mailPassword method not to use the method
