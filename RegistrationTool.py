@@ -1,3 +1,4 @@
+import re
 import random
 import md5
 from smtplib import SMTPRecipientsRefused
@@ -205,12 +206,32 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         if member is None:
             raise ValueError, 'The username you entered could not be found'
 
-        if member.getProperty('email'):
+        # assert that we can actually get an email address, otherwise
+        # the template will be made with a blank To:, this is bad
+        email = member.getProperty('email')
+        if not email:
+            raise ValueError('That user does not have an email address.')
+        else:
             # add the single email address
-            if not utils.validateSingleEmailAddress(member.getProperty('email')):
+            if not utils.validateSingleEmailAddress(email):
                 raise ValueError, 'The email address did not validate'
+        check, msg = _checkEmail(email)
+        if not check:
+            raise ValueError, msg
         try:
-            return BaseTool.mailPassword(self, forgotten_userid, REQUEST)
+            # Rather than have the template try to use the mailhost, we will
+            # render the message ourselves and send it from here (where we
+            # don't need to worry about 'UseMailHost' permissions).
+            mail_text = self.mail_password_template( self
+                                                   , REQUEST
+                                                   , member=member
+                                                   , password=member.getPassword()
+                                                   )
+
+            host = self.MailHost
+            host.send( mail_text )
+
+            return self.mail_password_response( self, REQUEST )
         except SMTPRecipientsRefused:
             # Don't disclose email address on failure
             raise SMTPRecipientsRefused('Recipient address rejected by server')
@@ -276,3 +297,41 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 RegistrationTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(RegistrationTool)
+
+_TESTS = ( ( re.compile("^[0-9a-zA-Z\.\-\_\+\']+\@[0-9a-zA-Z\.\-]+$")
+           , True
+           , "Failed a"
+           )
+         , ( re.compile("^[^0-9a-zA-Z]|[^0-9a-zA-Z]$")
+           , False
+           , "Failed b"
+           )
+         , ( re.compile("([0-9a-zA-Z_]{1})\@.")
+           , True
+           , "Failed c"
+           )
+         , ( re.compile(".\@([0-9a-zA-Z]{1})")
+           , True
+           , "Failed d"
+           )
+         , ( re.compile(".\.\-.|.\-\..|.\.\..|.\-\-.")
+           , False
+           , "Failed e"
+           )
+         , ( re.compile(".\.\_.|.\-\_.|.\_\..|.\_\-.|.\_\_.")
+           , False
+           , "Failed f"
+           )
+         , ( re.compile(".\.([a-zA-Z]{2,3})$|.\.([a-zA-Z]{2,4})$")
+           , True
+           , "Failed g"
+           )
+         )
+
+def _checkEmail( address ):
+    for pattern, expected, message in _TESTS:
+        matched = pattern.search( address ) is not None
+        if matched != expected:
+            return False, message
+    return True, ''
+

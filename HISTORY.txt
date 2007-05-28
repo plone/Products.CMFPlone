@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Adjusted our RegistrationTool's mailPassword method not to use the method
+      from the base tool anymore, as that has changed in incompatible ways.
+      Reverted the method to use the same logic as in CMF 1.6. This refs
+      http://dev.plone.org/plone/ticket/6614.
+      [hannosch]
+
     - Corrected inconsistent slashing of URLs in folder listings, fixes
       http://dev.plone.org/plone/ticket/4912
 
