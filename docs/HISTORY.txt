@@ -2,6 +2,13 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
+plone.app.controlpanel - 1.0b6 Unreleased
+
+    - Removed title customization from the types control panel. This is
+      currently not possible in any i18n-safe way. This closes
+      http://dev.plone.org/plone/ticket/6551.
+      [hannosch]
+
 plone.app.controlpanel - 1.0b5 Released May 5, 2007
 
     - Fixed dummy on_save method to accept the data argument.

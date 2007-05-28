@@ -58,12 +58,10 @@ class TypesControlPanel(BrowserView):
 
             # Set FTI properties
 
-            title = form.get('title', '')
             addable = form.get('addable', False)
             allow_discussion = form.get('allow_discussion', False)
 
-            fti.manage_changeProperties(title = title,
-                                        global_allow = bool(addable),
+            fti.manage_changeProperties(global_allow = bool(addable),
                                         allow_discussion = bool(allow_discussion))
 
             versionable = form.get('versionable', False)

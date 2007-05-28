@@ -55,14 +55,6 @@
            </legend>
 
            <div class="field">
-               <label i18n:translate="types_controlpanel_title" for="title">Title:</label>
-               <input id="title"
-                      name="title"
-                      type="text" 
-                      tal:attributes="value view/selected_type_title"/>
-           </div>
-        
-           <div class="field">
 
                 <input id="addable"
                        type="checkbox"
