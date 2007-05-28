@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0b6 Unreleased
 
+    - Localized the calendar control panel weekday names based on the Zope 3
+      locales information, which is available from the portal_state view.
+      [hannosch]
+
     - Removed title customization from the types control panel. This is
       currently not possible in any i18n-safe way. This closes
       http://dev.plone.org/plone/ticket/6551.
