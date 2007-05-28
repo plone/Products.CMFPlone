@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Made the double-submit protection a bit less eager. It's only supposed
+      to work on forms with class enableUnloadProtection!
+      [optilude, ree, fschulze]
+
     - Adjusted our RegistrationTool's mailPassword method not to use the method
       from the base tool anymore, as that has changed in incompatible ways.
       Reverted the method to use the same logic as in CMF 1.6. This refs
