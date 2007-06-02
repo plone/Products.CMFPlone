@@ -17,6 +17,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Acquisition import aq_base
 from DateTime import DateTime
+from BTrees.Length import Length
 
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import _checkPermission
@@ -320,6 +321,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/book_icon.gif'
+    _counter = None
 
     manage_catalogAdvanced = DTMLFile('www/catalogAdvanced', globals())
 
@@ -358,6 +360,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManageZCatalogEntries, 'catalog_object')
     def catalog_object(self, object, uid, idxs=[],
                        update_metadata=1, pghandler=None):
+        self._increment_counter()
         # Wraps the object with workflow and accessibility
         # information just before cataloging.
         wf = getattr(self, 'portal_workflow', None)
@@ -376,6 +379,20 @@ class CatalogTool(PloneBaseTool, BaseTool):
         
         ZCatalog.catalog_object(self, w, uid, idxs,
                                 update_metadata, pghandler=pghandler)
+
+    security.declareProtected(ManageZCatalogEntries, 'catalog_object')
+    def uncatalog_object(self, *args, **kwargs):
+        self._increment_counter()
+        return BaseTool.uncatalog_object(self, *args, **kwargs)
+
+    def _increment_counter(self):
+        if self._counter is None:
+            self._counter = Length()
+        self._counter.change(1)
+
+    security.declarePrivate('getCounter')
+    def getCounter(self):
+        return self._counter is not None and self._counter() or 0
 
     security.declareProtected(SearchZCatalog, 'searchResults')
     def searchResults(self, REQUEST=None, **kw):
