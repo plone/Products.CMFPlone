@@ -5,7 +5,9 @@ from zope.interface import implements
 
 from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
+from plone.memoize import ram
 from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.portlets.cache import render_cachekey
 
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -29,9 +31,13 @@ class Assignment(base.Assignment):
     def title(self):
         return _(u"Recent items")
 
-class Renderer(base.Renderer):
+def _render_cachekey(fun, self):
+    if self.anonymous:
+        return ram.DONT_CACHE
+    return render_cachekey(fun, self)
 
-    render = ViewPageTemplateFile('recent.pt')
+class Renderer(base.Renderer):
+    _template = ViewPageTemplateFile('recent.pt')
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -44,6 +50,10 @@ class Renderer(base.Renderer):
         plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
         self.catalog = plone_tools.catalog()
         
+    @ram.cache(_render_cachekey)
+    def render(self):
+        return self._template()
+
     @property
     def available(self):
         return not self.anonymous and len(self._data())

@@ -1,8 +1,12 @@
+from StringIO import StringIO
 from time import localtime
 
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 
+from zope import component
+from zope import schema
+from zope.formlib import form
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
@@ -13,6 +17,11 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote_plus
+
+from plone.memoize import ram
+from plone.app.portlets.portlets import base
+from plone.memoize.instance import memoize
+from plone.portlets.interfaces import IPortletDataProvider
 
 PLMF = MessageFactory('plonelocales')
 
@@ -25,10 +34,45 @@ class Assignment(base.Assignment):
 
     title = _(u'Calendar')
 
+def _render_cachekey(fun, self):
+    if self.calendar.getUseSession():
+        return ram.DONT_CACHE
+    else:
+        key = StringIO()
+        
+        portal_state = component.getMultiAdapter(
+            (self.context, self.request), name=u'plone_portal_state')
+        print >> key, portal_state.locale().getLocaleID()
+        
+        year, month = self.getYearAndMonthToDisplay()
+        print >> key, year
+        print >> key, month
+        
+        start = DateTime('%s/%s/1' % (year, month))
+        end = DateTime('%s/%s/1' % self.getNextMonth(year, month)) - 1
+        
+        def add(brain):
+            key.write(brain.getPath())
+            key.write('\n')
+            key.write(brain.modified)
+            key.write('\n\n')
+        
+        catalog = getToolByName(self.context, 'portal_catalog')
+        brains = catalog(
+            portal_type=self.calendar.getCalendarTypes(),
+            review_state=self.calendar.getCalendarStates(),
+            start={'query': end, 'range': 'max'},
+            end={'query': start, 'range': 'min'})
+
+        for brain in brains:
+            add(brain)
+
+        return key.getvalue()
+        
 class Renderer(base.Renderer):
 
-    render = ViewPageTemplateFile('calendar.pt')
-
+    _render = ViewPageTemplateFile('calendar.pt')
+    
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
 
@@ -49,6 +93,10 @@ class Renderer(base.Renderer):
 
         self.monthName = PLMF(self._ts.month_msgid(month),
                               default=self._ts.month_english(month))
+
+    @ram.cache(_render_cachekey)
+    def render(self):
+        return self._render()
 
     def getEventsForCalendar(self):
         context = aq_inner(self.context)

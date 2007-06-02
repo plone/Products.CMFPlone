@@ -1,16 +1,21 @@
+from StringIO import StringIO
+
 from zope.interface import implements, Interface
 from zope.component import adapts, getMultiAdapter, queryUtility
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
+from plone.app.portlets import cache
 
 from zope import schema
 from zope.formlib import form
 
 from plone.memoize.instance import memoize
+from plone.memoize import ram
 
 from Acquisition import aq_inner, aq_base, aq_parent
+from AccessControl import getSecurityManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
@@ -112,6 +117,25 @@ class Assignment(base.Assignment):
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
 
+def _render_cachekey(fun, self):
+    key = StringIO()
+    print >> key, cache.get_language(aq_inner(self.context), self.request)
+
+    catalog = getToolByName(self.context, 'portal_catalog')
+    counter = catalog.getCounter()
+    print >> key, counter
+
+    print >> key, aq_inner(self.context).getPhysicalPath()
+    
+    user = getSecurityManager().getUser()
+    roles = user.getRolesInContext(aq_inner(self.context))
+    print >> key, roles
+
+    print >> key, self.data._p_mtime
+    print >> key, self.properties._p_mtime
+
+    return key.getvalue()
+
 class Renderer(base.Renderer):
 
     def __init__(self, context, request, view, manager, data):
@@ -196,7 +220,11 @@ class Renderer(base.Renderer):
     def update(self):
         pass
 
-    render = ViewPageTemplateFile('navigation.pt')
+    @ram.cache(_render_cachekey)
+    def render(self):
+        return self._template()
+
+    _template = ViewPageTemplateFile('navigation.pt')
     recurse = ViewPageTemplateFile('navigation_recurse.pt')
 
 class AddForm(base.AddForm):

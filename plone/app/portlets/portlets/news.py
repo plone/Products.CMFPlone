@@ -5,7 +5,9 @@ from zope.interface import implements
 
 from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
+from plone.memoize import ram
 from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.portlets.cache import render_cachekey
 
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -41,7 +43,11 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
-    render = ViewPageTemplateFile('news.pt')
+    _template = ViewPageTemplateFile('news.pt')
+
+    @ram.cache(render_cachekey)
+    def render(self):
+        return self._template()
 
     @property
     def available(self):

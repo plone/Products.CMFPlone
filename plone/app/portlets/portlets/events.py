@@ -5,7 +5,9 @@ from zope.interface import implements
 
 from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
+from plone.memoize import ram
 from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.portlets.cache import render_cachekey
 
 from Acquisition import aq_inner
 from DateTime.DateTime import DateTime
@@ -42,7 +44,7 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
-    render = ViewPageTemplateFile('events.pt')
+    _template = ViewPageTemplateFile('events.pt')
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -52,6 +54,10 @@ class Renderer(base.Renderer):
         self.portal = portal_state.portal()
 
         self.have_events_folder = 'events' in self.portal.objectIds()
+
+    @ram.cache(render_cachekey)
+    def render(self):
+        return self._template()
 
     @property
     def available(self):
