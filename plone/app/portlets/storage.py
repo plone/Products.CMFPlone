@@ -41,4 +41,4 @@ class PortletAssignmentMappingTraverser(ItemTraverser):
     def publishTraverse(self, request, name):
         ob = ItemTraverser.publishTraverse(self, request, name)
         return ob.__of__(self.context)
-        
+
