@@ -3,8 +3,10 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       xml:lang="en" lang="en"
-      metal:use-macro="context/prefs_main_template/macros/master"
+      metal:define-macro="controlpanel"
       i18n:domain="plone">
+
+<metal:block use-macro="context/prefs_main_template/macros/master">
 
 <metal:block metal:fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border', 1)" />
@@ -189,4 +191,6 @@
 
 </div>
 </body>
+
+</metal:block>
 </html>

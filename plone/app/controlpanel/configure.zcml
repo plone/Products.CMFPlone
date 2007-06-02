@@ -112,7 +112,7 @@
     component=".markup.WickedTypesVocabularyFactory"
     name="plone.app.controlpanel.WickedPortalTypes"
     />
-    
+
   <!-- Default page layout for the control panel-->
   <adapter
       for=".interfaces.IPloneControlPanelForm"
