@@ -24,14 +24,13 @@
       />
     
     <!-- Make the site root and any ATContentType a possible portlet manager -->
-    <five:implements
-        class="Products.CMFPlone.Portal.PloneSite"
-        interface="plone.portlets.interfaces.ILocalPortletAssignable"
-        />
-    <five:implements
-        class="Products.ATContentTypes.content.base.ATCTMixin"
-        interface="plone.portlets.interfaces.ILocalPortletAssignable"
-        />
+    <class class="Products.CMFPlone.Portal.PloneSite">
+        <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
+    </class>
+    
+    <class class="Products.ATContentTypes.content.base.ATCTMixin">
+        <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
+    </class>
         
     <!-- Make a Zope 2 safe traversal adapter for assignment mappings -->
     <adapter 
