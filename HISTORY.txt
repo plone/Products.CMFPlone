@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Allow user ids that are substrings of existing user ids.  This
+      fixes http://dev.plone.org/plone/ticket/6396
+      [nouri]
+
     - Fix `RegistrationTool.mailPassword` by passing the results of
       `reset_tool.requestReset` to it, instead of having the template
       call the tool's function.  Also take care about encoding, since

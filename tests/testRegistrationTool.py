@@ -91,6 +91,11 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
     def testTakenGroupd(self):
         self.assertEqual(self.registration.isMemberIdAllowed('groupid'), 0)
 
+    def testIsMemberIdAllowedIfSubstringOfExisting(self):
+        # http://dev.plone.org/plone/ticket/6396
+        self.failUnless(self.registration.isMemberIdAllowed('useri'))
+        
+
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
