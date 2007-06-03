@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Fix `RegistrationTool.mailPassword` by passing the results of
+      `reset_tool.requestReset` to it, instead of having the template
+      call the tool's function.  Also take care about encoding, since
+      the template returns unicode now.  This makes e-mailing
+      forgotten passwords work again, and fixes
+      http://dev.plone.org/plone/ticket/6614
+      [nouri]
+
     - Added an opt-out for multi-submit protection. Add a class to the input
       tag called "allowMultiSubmit".
       [optilude, ree, fschulze]

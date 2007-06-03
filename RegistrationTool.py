@@ -218,17 +218,26 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         check, msg = _checkEmail(email)
         if not check:
             raise ValueError, msg
-        try:
-            # Rather than have the template try to use the mailhost, we will
-            # render the message ourselves and send it from here (where we
-            # don't need to worry about 'UseMailHost' permissions).
-            mail_text = self.mail_password_template( self
-                                                   , REQUEST
-                                                   , member=member
-                                                   , password=member.getPassword()
-                                                   )
 
-            host = self.MailHost
+        # Rather than have the template try to use the mailhost, we will
+        # render the message ourselves and send it from here (where we
+        # don't need to worry about 'UseMailHost' permissions).
+        reset_tool = getToolByName(self, 'portal_password_reset')
+        reset = reset_tool.requestReset(forgotten_userid)
+
+        
+        email_charset = getattr(self, 'email_charset', 'UTF-8')
+        mail_text = self.mail_password_template( self
+                                               , REQUEST
+                                               , member=member
+                                               , reset=reset
+                                               , password=member.getPassword()
+                                               , charset=email_charset
+                                               )
+        if isinstance(mail_text, unicode):
+            mail_text = mail_text.encode(email_charset)
+        host = self.MailHost
+        try:
             host.send( mail_text )
 
             return self.mail_password_response( self, REQUEST )
