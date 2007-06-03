@@ -6,14 +6,13 @@ import transaction
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 
-def create(app, admin_username='admin'):
+def create(app, admin_username='admin', pid='Plone' ):
     out = []
     oids = app.objectIds()
 
     # these are the two set elements...
     # (accessRule.py external method and SiteRoot)
     eid = 'accessRule.py'
-    pid = 'Plone'
     emod = 'CMFPlone.accessRule'
     efn = 'accessRule'
     sid = 'SiteRoot'
