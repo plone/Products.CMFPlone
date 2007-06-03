@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <utilities>
+  <utility
+     interface="zope.app.cache.interfaces.ram.IRAMCache"
+     factory="zope.app.cache.ram.RAMCache"/>
+ </utilities>
+</componentregistry>

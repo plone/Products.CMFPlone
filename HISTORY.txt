@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added a persistent zope.app.cache based RAMCache, which is used for
+      caching the portlets by default. Configuration is available via
+      http://portal/@@ramcache-controlpanel.
+      [hannosch]
+
     - Allow user ids that are substrings of existing user ids.  This
       fixes http://dev.plone.org/plone/ticket/6396
       [nouri]

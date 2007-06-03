@@ -137,5 +137,8 @@
   <utility
      interface="Products.ResourceRegistries.interfaces.IJSRegistry"
      object="/portal_javascripts"/>
+  <utility
+     interface="zope.app.cache.interfaces.ram.IRAMCache"
+     factory="zope.app.cache.ram.RAMCache"/>
  </utilities>
 </componentregistry>

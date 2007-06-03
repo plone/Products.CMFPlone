@@ -165,12 +165,14 @@ from Products.CMFPlone.migrations.v3_0.betas import addEditorToSecondaryEditorPe
 from Products.CMFPlone.migrations.v3_0.betas import updateEditActionConditionForLocking
 from Products.CMFPlone.migrations.v3_0.betas import addOnFormUnloadJS
 
+from Products.CMFPlone.migrations.v3_0.betas import beta3_beta4
 
+from zope.app.cache.interfaces.ram import IRAMCache
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getUtility, getMultiAdapter, queryUtility
 
 from plone.app.i18n.locales.interfaces import IContentLanguages
 from plone.app.i18n.locales.interfaces import ICountries
@@ -2827,6 +2829,16 @@ class TestMigrations_v3_0(MigrationTest):
         addOnFormUnloadJS(self.portal, [])
         script_ids = jsreg.getResourceIds()
         self.failUnless('unlockOnFormUnload.js' in script_ids)
+
+    def testAddRAMCache(self):
+        sm = getSiteManager()
+        sm.unregisterUtility(provided=IRAMCache)
+        util = queryUtility(IRAMCache)
+        self.failUnless(util.maxAge == 86400)
+        beta3_beta4(self.portal)
+        util = queryUtility(IRAMCache)
+        self.failUnless(util.maxAge == 3600)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
