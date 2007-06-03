@@ -200,4 +200,11 @@
   <dependency step="componentregistry"/>
     Import CMFDiffTool settings
  </import-step>
+ <import-step id="kupu-setup" version="20061211-01"
+              handler="Products.kupu.plone.exportimport.importKupuSettings"
+              title="Kupu Settings">
+  <dependency step="toolset"/>
+  <dependency step="typeinfo"/>
+  Import Kupu settings
+ </import-step>
 </import-steps>
