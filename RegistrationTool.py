@@ -290,8 +290,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         pas = getToolByName(self, 'acl_users')
         if IPluggableAuthService.providedBy(pas):
-            results = pas.searchPrincipals(id=id)
-            if [r for r in results if r['id'] == id]:
+            results = pas.searchPrincipals(id=id, exact_match=True)
+            if results:
                 return 0
         else:
             membership = getToolByName(self, 'portal_membership')
