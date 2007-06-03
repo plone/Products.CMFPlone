@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="view/base_template/macros/controlpanel"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="extra_info">
+
+    <h3 i18n:translate="heading_ramcache_stats">
+        RAMCache statistics
+    </h3>
+
+    <table tal:define="stats view/getStatistics"
+           class="listing" summary="RAMCache statistics"
+           cellpadding="2" cellspacing="0"
+           i18n:attributes="summary heading_ramcache_stats;">
+      <thead> 
+        <th i18n:translate="label_cache_path">Path</th>
+        <th i18n:translate="label_cache_hits">Hits</th>
+        <th i18n:translate="label_cache_misses">Misses</th>
+        <th i18n:translate="label_cache_size_bytes">Size, bytes</th>
+        <th i18n:translate="label_cache_entries">Entries</th>
+      </thead>
+      <tbody>
+        <tr tal:repeat="data stats">
+          <td><span tal:content="data/path">&nbsp;</span></td>
+          <td><span tal:content="data/hits">&nbsp;</span></td>
+          <td><span tal:content="data/misses">&nbsp;</span></td>
+          <td><span tal:content="data/size">&nbsp;</span></td>
+          <td><span tal:content="data/entries">&nbsp;</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

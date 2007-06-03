@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0b6 Unreleased
 
+    - Added RAMCache control panel. You can invoke it via
+      http://portal/@@ramcache-controlpanel.
+      [hannosch]
+
     - Localized the calendar control panel weekday names based on the Zope 3
       locales information, which is available from the portal_state view.
       [hannosch]
