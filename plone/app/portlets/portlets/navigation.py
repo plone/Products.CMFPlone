@@ -147,7 +147,8 @@ class Renderer(base.Renderer):
     def title(self):
         return self.data.name or self.properties.name
 
-    def display(self):
+    @property
+    def available(self):
         tree = self.getNavTree()
         root = self.getNavRoot()
         return (root is not None and len(tree['children']) > 0)
