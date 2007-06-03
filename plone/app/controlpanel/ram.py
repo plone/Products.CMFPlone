@@ -1,19 +1,24 @@
+from plone.app.form.validators import null_validator
 from zope.app.cache.interfaces.ram import IRAMCache
-from plone.app.controlpanel import form
 
 from zope.interface import Interface
 from zope.component import adapts
+from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.formlib.form import FormFields
+from zope.formlib import form
 from zope.interface import implements
 from zope.schema import Int
+
+from Acquisition import aq_inner
 
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.statusmessages.interfaces import IStatusMessage
 
 from plone.app.controlpanel.form import ControlPanelForm
+from plone.app.controlpanel.form import _template
 
 
 class IRAMCacheSchema(Interface):
@@ -63,10 +68,10 @@ class RAMCacheControlPanelAdapter(SchemaAdapterBase):
 
 class RAMCacheControlPanel(ControlPanelForm):
 
-    base_template = form._template
+    base_template = _template
     template = ZopeTwoPageTemplateFile('ram.pt')
 
-    form_fields = FormFields(IRAMCacheSchema)
+    form_fields = form.FormFields(IRAMCacheSchema)
 
     label = _("RAM Cache Settings")
     description = None
@@ -74,3 +79,33 @@ class RAMCacheControlPanel(ControlPanelForm):
 
     def getStatistics(self):
         return getUtility(IRAMCache).getStatistics()
+
+    def restricted_actions(self):
+        return [a for a in self.actions.actions
+                  if a.__name__ in ('form.actions.save', 'form.actions.cancel')]
+
+    @form.action(_(u'Clear cache'), validator=null_validator, name=u'clearall')
+    def handle_clearall_action(self, action, data):
+        context = aq_inner(self.context)
+        getUtility(IRAMCache).invalidateAll()
+        self.status = _(u'Cleared the cache.')
+
+    @form.action(_(u'label_save', default=u'Save'), name=u'save')
+    def handle_edit_action(self, action, data):
+        if form.applyChanges(self.context, self.form_fields, data,
+                             self.adapters):
+            self.status = _("Changes saved.")
+            self._on_save(data)
+        else:
+            self.status = _("No changes made.")
+
+    @form.action(_(u'label_cancel', default=u'Cancel'),
+                 validator=null_validator,
+                 name=u'cancel')
+    def handle_cancel_action(self, action, data):
+        IStatusMessage(self.request).addStatusMessage(_("Changes canceled."),
+                                                      type="info")
+        url = getMultiAdapter((self.context, self.request),
+                              name='absolute_url')()
+        self.request.response.redirect(url + '/plone_control_panel')
+        return ''
