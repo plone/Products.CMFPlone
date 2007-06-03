@@ -249,7 +249,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         pas = getToolByName(self, 'acl_users')
         if IPluggableAuthService.providedBy(pas):
-            results = pas.searchPrincipals(id=id)
+            results = pas.searchPrincipals(id=id, exact_match=True)
             if results:
                 return 0
         else:
