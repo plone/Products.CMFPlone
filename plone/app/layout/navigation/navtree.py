@@ -31,6 +31,9 @@ class NavtreeStrategyBase(object):
 
     def decoratorFactory(self, node):
         return node
+        
+    def showChildrenOf(self, object):
+        return True
 
 def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase()):
     """Create a tree structure representing a navigation tree. By default,
@@ -83,6 +86,9 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
             decoratorFactory(node) -- a method returning a dict; this can inject
                 additional keys in a node being inserted.
+                
+            showChildrenOf(object) -- a method returning True if children of
+                the given object (normally the root) should be returned
 
     Returns tree where each node is represented by a dict:
 
@@ -122,7 +128,8 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
         objPath = '/'.join(objPhysicalPath)
 
     portalPath = portal_url.getPortalPath()
-
+    portalObject = portal_url.getPortalObject()
+    
     # Calculate rootPath from the path query if not set.
 
     if 'path' not in query:
@@ -152,6 +159,15 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
     rootDepth = len(rootPath.split('/'))
 
+    # Determine if we need to prune the root (but still force the path to)
+    # the parent if necessary
+    
+    pruneRoot = False
+    if strategy is not None:
+        rootObject = portalObject.unrestrictedTraverse(rootPath, None)
+        if rootObject is not None:
+            pruneRoot = not strategy.showChildrenOf(rootObject)
+
     # Default sorting and threatment of default-pages
 
     if 'sort_on' not in query:
@@ -174,6 +190,14 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
     # /bar,).
 
     itemPaths = {}
+    
+    # Add an (initially empty) node for the root
+    itemPaths[rootPath] = {'children' : []}
+    
+    # If we need to "prune" the parent (but still allow showAllParent to 
+    # force some children), do so now
+    if pruneRoot:
+        itemPaths[rootPath]['_pruneSubtree'] = True
 
     def insertElement(itemPaths, item, forceInsert=False):
         """Insert the given 'item' brain into the tree, which is kept in
@@ -313,6 +337,5 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
             for r in results:
                 insertElement(itemPaths, r, forceInsert=True)
 
-    # Return the tree starting at rootPath as the root node. If the
-    # root path does not exist, we return a dummy parent node with no children.
-    return itemPaths.get(rootPath, {'children' : []})
+    # Return the tree starting at rootPath as the root node.
+    return itemPaths[rootPath]

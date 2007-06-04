@@ -52,3 +52,9 @@ class INavtreeStrategy(Interface):
         """Inject any additional keys in the node that are needed and return
         the new node.
         """
+        
+    def showChildrenOf(object):
+        """Given an object (usually the root of the site), determine whether
+        children should be shown or not. Even if this returns True, if
+        showAllParents is True, the path to the current item may be shown.
+        """
