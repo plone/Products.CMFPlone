@@ -349,6 +349,29 @@ class TestRenderer(PortletsTestCase):
         #Should only contain current object and published folder
         self.assertEqual(len(tree['children']), 5)
     
+    def testPrunedRootNode(self):
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        
+        assignment = navigation.Assignment(topLevel=0)
+        assignment.topLevel = 1
+        view = self.renderer(self.portal.folder1, assignment=assignment)
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.assertEqual(len(tree['children']), 0)
+        
+    def testPrunedRootNodeShowsAllParents(self):
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        
+        assignment = navigation.Assignment(topLevel=0)
+        assignment.topLevel = 1
+        view = self.renderer(self.portal.folder1.doc11, assignment=assignment)
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.assertEqual(len(tree['children']), 1)
+        self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/doc11')
+    
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
