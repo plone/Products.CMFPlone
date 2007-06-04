@@ -53,7 +53,7 @@ class AddForm(formbase.AddFormBase):
         return super(AddForm, self).__call__()
     
     def referer(self):
-        return self.request.form.get('referer') or self.request.get('HTTP_REFERER', '')
+        return self.request.get('referer') or self.request.get('HTTP_REFERER', '')
 
     def nextURL(self):
         referer = self.request.form.get('referer', None)
@@ -98,7 +98,7 @@ class NullAddForm(BrowserView):
         return ''
     
     def nextURL(self):
-        referer = self.request.get('HTTP_REFERER', None)
+        referer = self.request.get('referer', self.request.get('HTTP_REFERER', None))
         if referer is not None:
             return referer
         else:

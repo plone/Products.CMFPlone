@@ -202,7 +202,7 @@ class ManagePortletAssignments(BrowserView):
         return ''
         
     def _nextUrl(self):
-        referer = self.request.get('HTTP_REFERER', None)
+        referer = self.request.get('referer', self.request.get('HTTP_REFERER', None))
         if referer is None:
             context = aq_parent(aq_inner(self.context))
             url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))    

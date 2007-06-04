@@ -30,7 +30,7 @@ class PortletAdding(SimpleItem, BrowserView):
         manager[chooser.chooseName(None, content)] = content
         
     def nextURL(self):
-        referer = self.request.get('HTTP_REFERER', None)
+        referer = self.request.get('referer', self.request.get('HTTP_REFERER', None))
         if not referer:
             context = aq_parent(aq_inner(self.context))
             url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))

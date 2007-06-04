@@ -4,13 +4,14 @@
     <form method="get" action="#"
           tal:define="base_url string:${view/baseUrl}/+/"
           tal:attributes="action here/absolute_url">
+        <input type="hidden" name="referer" tal:attributes="value request/ACTUAL_URL" />
         <label for="dest" class="hiddenStructure">Add portlet</label>
         <select name=":action" 
             onchange="location.href=this.options[this.selectedIndex].value"
             tal:attributes="onchange string:location.href='${here/absolute_url}'+this.options[this.selectedIndex].value">
             <option value="/@@manage-portlets">Add portlet&hellip;</option>
             <tal:options repeat="portlet view/addable_portlets">
-            <option tal:attributes="value portlet/addview"
+            <option tal:attributes="value string:${portlet/addview}"
                     tal:content="portlet/title" />
             </tal:options>
         </select>
@@ -33,15 +34,15 @@
                 <span class="managedPortletActions">
                 <a href="#" class="up"
                    tal:condition="not:repeat/portlet/start"
-                   tal:attributes="href portlet/up_url">&uarr;</a>
+                   tal:attributes="href string:${portlet/up_url}&referer=${request/ACTUAL_URL}">&uarr;</a>
                 <a href="#" class="down"
                    tal:condition="not:repeat/portlet/end"
-                   tal:attributes="href portlet/down_url">&darr;</a>
+                   tal:attributes="href string:${portlet/down_url}&referer=${request/ACTUAL_URL}">&darr;</a>
                 <a href="#" class="delete"
-                   tal:attributes="href portlet/delete_url">&times;</a>
+                   tal:attributes="href string:${portlet/delete_url}&referer=${request/ACTUAL_URL}">&times;</a>
                 </span>
                 <a tal:omit-tag="not:portlet/editview"
-                   tal:attributes="href portlet/editview"
+                   tal:attributes="href string:${portlet/editview}?referer=${request/ACTUAL_URL}"
                    tal:content="portlet/title" />
             </div>
         </div>
