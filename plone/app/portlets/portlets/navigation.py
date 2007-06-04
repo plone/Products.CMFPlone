@@ -83,7 +83,7 @@ class INavigationPortlet(IPortletDataProvider):
                          "1 means the tree only shows up inside folders "
                          "located in the root and downwards, never showing "
                          "at the top level."),
-            default=0,
+            default=1,
             required=False)
     
     bottomLevel = schema.Int(
