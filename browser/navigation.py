@@ -166,7 +166,9 @@ class CatalogNavigationTabs(BrowserView):
             query['review_state'] = navtree_properties.getProperty('wf_states_to_show', [])
 
         query['is_default_page'] = False
-        query['is_folderish'] = True
+        
+        if site_properties.getProperty('disable_nonfolderish_sections', False):
+            query['is_folderish'] = True
 
         # Get ids not to list and make a dict to make the search fast
         idsNotToList = navtree_properties.getProperty('idsNotToList', ())

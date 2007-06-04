@@ -496,9 +496,15 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
     def testCreateTopLevelTabs(self):
         # See if we can create one at all
         view = self.view_class(self.portal, self.request)
+        
+        #Everything shows up by default
         tabs = view.topLevelTabs()
         self.failUnless(tabs)
+        self.assertEqual(len(tabs), 8)
+        
         #Only the folders show up (Members, news, events, folder1, folder2)
+        self.portal.portal_properties.site_properties.disable_nonfolderish_sections = True
+        tabs = view.topLevelTabs()
         self.assertEqual(len(tabs), 5)
 
     def testTabsRespectFolderOrder(self):
@@ -618,13 +624,13 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.failIf('folder2' in tab_names)
 
     def testTabsExcludeNonFolderishItems(self):
-        # Make sure that items witht he exclude_from_nav property are purged
+        self.portal.portal_properties.site_properties.disable_nonfolderish_sections = True
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs()
         orig_len = len(tabs)
         self.setRoles(['Manager','Member'])
         self.portal.invokeFactory('Document','foo')
-        self.portal.foo.reindexObject()
+        
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs()
         self.failUnless(tabs)
@@ -642,6 +648,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         
         rootPath = '/'.join(self.portal.getPhysicalPath()) + '/folder1'
         self.portal.portal_properties.navtree_properties.root = '/folder1'
+        self.portal.portal_properties.site_properties.disable_nonfolderish_sections = True
         
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs()

@@ -68,6 +68,33 @@
                     prefer manually constructing this part of the navigation.
                 </div>
             </div>
+            
+            <div class="field"
+                 tal:define="nonfolderish_tabs python: not site_properties.disable_nonfolderish_sections;
+                             nonfolderish_tabs request/nonfolderish_tabs | nonfolderish_tabs;
+                             error errors/nonfolderish_tabs | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_allow_nonfolderish"
+                       name="nonfolderish_tabs"
+                       value="1"
+                       tal:attributes="checked python:test(nonfolderish_tabs, 'checked', None)" />
+
+                <label for="cb_allow_nonfolderish"
+                       i18n:translate="label_nonfolderish_tabs_tabs_enable">
+                    Generate tabs for items other than folders.
+                </label>
+
+                <div class="formHelp" i18n:translate="help_nonfolderish_tabs">
+                    By default, any content item in the root of the portal will be shown
+                    as a global section. If you turn this option off, only folders
+                    will be shown.
+                    This only has an effect if "Automatically generate tabs" is enabled.
+                </div>
+            </div>
+            
             <div class="field" id="navigationtypes-field"
                  tal:define="
                        portal_types     portal/portal_types;

@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=generated_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], RESPONSE=None
+##parameters=generated_tabs=False, nonfolderish_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], RESPONSE=None
 ##title=Set Navigation Prefs
 ##
 
@@ -20,6 +20,11 @@ if generated_tabs:
   portal_properties.site_properties.manage_changeProperties(disable_folder_sections=False)
 else:
   portal_properties.site_properties.manage_changeProperties(disable_folder_sections=True)
+
+if nonfolderish_tabs:
+    portal_properties.site_properties.manage_changeProperties(disable_nonfolderish_sections=False)
+else:
+    portal_properties.site_properties.manage_changeProperties(disable_nonfolderish_sections=True)
 
 # The menu pretends to be a whitelist, but we are storing a blacklist so that
 # new types are searchable by default. Inverse the list.

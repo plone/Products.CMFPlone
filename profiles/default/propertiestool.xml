@@ -39,6 +39,7 @@
   </property>
   <property name="enable_wf_state_filtering" type="boolean">False</property>
   <property name="wf_states_to_show" type="lines"/>
+  
  </object>
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
@@ -100,6 +101,7 @@
    <element value="ATRelativePathCriterion"/>
   </property>
   <property name="disable_folder_sections" type="boolean">False</property>
+  <property name="disable_nonfolderish_sections" type="boolean">False</property>
   <property name="typesUseViewActionInListings" type="lines">
    <element value="Image"/>
    <element value="File"/>

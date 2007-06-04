@@ -820,6 +820,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         for p in ['Manage properties', 'Modify view template', 'Request review']:
             self.failUnless(p in [r['name'] for r in 
                                 self.portal.permissionsOfRole('Editor') if r['selected']])
+                                
+    def testNonFolderishTabsProperty(self):
+        self.assertEquals(False, self.properties.site_properties.disable_nonfolderish_sections)
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

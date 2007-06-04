@@ -19,6 +19,7 @@ from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#documentContent"')
 RE_REMOVE_NAVTREE = re.compile('\s*href="http://.*?#portlet-navigation-tree"')
+RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav">.*</ul>', re.S)
 
 
 class TestPloneToolBrowserDefault(FunctionalTestCase):
@@ -54,8 +55,11 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
         resolved = RE_REMOVE_NAVTREE.sub('', resolved)
+        resolved = RE_REMOVE_TABS.sub('', resolved)
+        
         body = RE_REMOVE_DOCCONT.sub('', body)
         body = RE_REMOVE_NAVTREE.sub('', body)
+        body = RE_REMOVE_TABS.sub('', body)
 
         if not body:
             self.fail('No body in response')

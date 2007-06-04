@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+
+    - Changed the global section (tab) navigation so that it shows non-
+      folderish items as well as folderis ones by default (for migrated
+      the sites, the default is not to display them). Also changed the 
+      navigation tree so that it start at level 1, not the site root by
+      default (again does not affect migrated sites). This makes it easier to
+      have a separate front page, and lets the tabs act as first-order
+      navigation with the navtree acting as second-order-and-below.
+      [optilude, limi]
+
     - Added a persistent zope.app.cache based RAMCache, which is used for
       caching the portlets by default. Configuration is available via
       http://portal/@@ramcache-controlpanel.
