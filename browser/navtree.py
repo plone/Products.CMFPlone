@@ -186,6 +186,14 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['normalized_review_state'] = idnormalizer.normalize(newNode['review_state'])
 
         return newNode
+        
+    def showChildrenOf(self, object):
+        getTypeInfo = getattr(object, 'getTypeInfo', None)
+        if getTypeInfo is not None:
+            portal_type = getTypeInfo().getId()
+            if portal_type in self.parentTypesNQ:
+                return False
+        return True
 
 class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet
