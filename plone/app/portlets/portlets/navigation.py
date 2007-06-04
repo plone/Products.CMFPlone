@@ -106,10 +106,10 @@ class Assignment(base.Assignment):
     root = u""
     currentFolderOnly = False
     includeTop = True
-    topLevel = 0
+    topLevel = 1
     bottomLevel = 0
     
-    def __init__(self, name=u"", root=u"", currentFolderOnly=False, includeTop=True, topLevel=0, bottomLevel=0):
+    def __init__(self, name=u"", root=u"", currentFolderOnly=False, includeTop=True, topLevel=1, bottomLevel=0):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
@@ -212,6 +212,9 @@ class Renderer(base.Renderer):
     def getNavTree(self, _marker=[]):
         context = aq_inner(self.context)
         
+        # Special case - if the root is supposed to be pruned, we need to
+        # abort here
+
         queryBuilder = getMultiAdapter((context, self.data), INavigationQueryBuilder)
         strategy = getMultiAdapter((context, self.data), INavtreeStrategy)
 
