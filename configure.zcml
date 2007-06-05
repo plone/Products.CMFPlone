@@ -21,7 +21,10 @@
   <include package="plone.app.workflow" />
   <include package="plone.memoize" />
   <include package="plone.session" />
-  
+
+  <!-- viewlets zope 3 layers support for themes -->
+  <include package="plone.theme" />
+
   <!-- kss -->
   <include package="kss.core" />
   <include package="plone.app.kss" />
