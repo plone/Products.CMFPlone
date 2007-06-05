@@ -4,7 +4,7 @@ if (!window.beforeunload) (function() {
         var self = this;
 
         this.message = window.form_modified_message ||
-            "Your form has not been saved. All changes you have made will be lost.";
+            "Discard changes? If you click OK, any changes you have made will be lost.";
 
         this.forms = [];
         this.chkId = [];
