@@ -143,83 +143,95 @@
             </form>
             </div>
 
-
             <!-- feedback form -->        
-            <tal:feedbackForm condition="not:isAnon">
-            <tal:owner condition="not:isOwner">
+            <tal:feedbackForm
+                tal:condition="not:isAnon"
+                tal:define="email_from_address portal/email_from_address">
+
+            <tal:noemailsetup tal:condition="not:email_from_address">
                 <p class="discreet"
-                   i18n:translate="description_author_feedback">
-                    If you want to contact this author, fill in the form
-                    below.
+                   i18n:translate="text_no_email_setup">
+                    This site doesn't have a valid email setup, so you cannot use
+                    any contact forms. 
                 </p>
-            
-                <form name="feedback_form"
-                      action=""
-                      method="post"
-                      tal:attributes="action string:$here_url/$template_id">
+            </tal:noemailsetup>
 
-                <fieldset>
-            
-                <legend i18n:translate="legend_feedback_for_author">Feedback for author</legend>
+            <tal:emailsetup tal:condition="email_from_address">
+                <tal:owner tal:condition="not:isOwner">
+                    <p class="discreet"
+                       i18n:translate="description_author_feedback">
+                        If you want to contact this author, fill in the form
+                        below.
+                    </p>
 
-                <div class="field"
-                  tal:define="error errors/subject|nothing"
-                  tal:attributes="class python:test(error, 'field error', 'field')">
-                  <label for="subject" i18n:translate="label_subject">
-                    Subject
-                  </label>
+                    <form name="feedback_form"
+                          action=""
+                          method="post"
+                          tal:attributes="action string:$here_url/$template_id">
 
-                  <span class="fieldRequired" title="Required"
-                          i18n:attributes="title title_required;"
-                          i18n:translate="label_required">(Required)</span>
+                    <fieldset>
 
-                  <br />
-                  <input type="text" 
-                         id="subject" 
-                         name="subject" 
-                         size="25" 
-                         value="" 
-                         tal:attributes="value request/subject|nothing"
-                         />
-                </div>
-                <div class="field"
-                  tal:define="error errors/message|nothing"
-                  tal:attributes="class python:test(error, 'field error', 'field')">
-                  <label for="message" i18n:translate="label_message">
-                    Message
-                  </label>
+                    <legend i18n:translate="legend_feedback_for_author">Feedback for author</legend>
+
+                    <div class="field"
+                      tal:define="error errors/subject|nothing"
+                      tal:attributes="class python:test(error, 'field error', 'field')">
+                      <label for="subject" i18n:translate="label_subject">
+                        Subject
+                      </label>
+
+                      <span class="fieldRequired" title="Required"
+                              i18n:attributes="title title_required;"
+                              i18n:translate="label_required">(Required)</span>
+
+                      <br />
+                      <input type="text" 
+                             id="subject" 
+                             name="subject" 
+                             size="25" 
+                             value="" 
+                             tal:attributes="value request/subject|nothing"
+                             />
+                    </div>
+                    <div class="field"
+                      tal:define="error errors/message|nothing"
+                      tal:attributes="class python:test(error, 'field error', 'field')">
+                      <label for="message" i18n:translate="label_message">
+                        Message
+                      </label>
         
-                  <span class="fieldRequired" title="Required"
-                          i18n:attributes="title title_required;"
-                          i18n:translate="label_required">(Required)</span>
+                      <span class="fieldRequired" title="Required"
+                              i18n:attributes="title title_required;"
+                              i18n:translate="label_required">(Required)</span>
 
-                  <textarea name="message"
-                            id="message"
-                            rows="5"
-                            cols="25"
-                            tal:content="request/message|nothing"
-                            ></textarea>
-                </div>
+                      <textarea name="message"
+                                id="message"
+                                rows="5"
+                                cols="25"
+                                tal:content="request/message|nothing"
+                                ></textarea>
+                    </div>
         
-                <div class="formControls">
+                    <div class="formControls">
 
-                    <input class="context"
-                           type="submit"
-                           name="form.button.Send"
-                           value="Send"
-                           i18n:attributes="value label_send;" />
+                        <input class="context"
+                               type="submit"
+                               name="form.button.Send"
+                               value="Send"
+                               i18n:attributes="value label_send;" />
 
-                </div>
+                    </div>
 
-                </fieldset>
+                    </fieldset>
 
-                <input type="hidden" name="author" value="" tal:attributes="value author" />
-                <input type="hidden" name="referer" value="" 
-                  tal:attributes="value python:request.get('referer', request.get('HTTP_REFERER', 'unknown url') )" />
-                <input type="hidden" name="form.submitted" value="1" />
+                    <input type="hidden" name="author" value="" tal:attributes="value author" />
+                    <input type="hidden" name="referer" value="" 
+                      tal:attributes="value python:request.get('referer', request.get('HTTP_REFERER', 'unknown url') )" />
+                    <input type="hidden" name="form.submitted" value="1" />
 
-                </form>
-            </tal:owner>
+                    </form>
+                </tal:owner>
+            </tal:emailsetup>
             </tal:feedbackForm>
             <!-- listing of content created by this user -->
         
