@@ -33,7 +33,7 @@ class Assignment(base.Assignment):
 
 def _render_cachekey(fun, self):
     if self.anonymous:
-        return ram.DONT_CACHE
+        raise ram.DontCache()
     return render_cachekey(fun, self)
 
 class Renderer(base.Renderer):

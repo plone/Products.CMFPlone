@@ -36,7 +36,7 @@ class Assignment(base.Assignment):
 
 def _render_cachekey(fun, self):
     if self.calendar.getUseSession():
-        return ram.DONT_CACHE
+        raise ram.DontCache()
     else:
         key = StringIO()
         
