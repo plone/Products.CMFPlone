@@ -7,4 +7,7 @@
 ##parameters=
 ##title=Find out if the context supports per-instance addable type restriction 
 
-return context.canSetConstrainTypes()
+if getattr(context, 'canSetConstrainTypes', None):
+    return context.canSetConstrainTypes()
+else:
+    return False
