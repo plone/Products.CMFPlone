@@ -222,7 +222,7 @@ blockquote {
     border-left: 4px solid &dtml-globalBorderColor;;
     color: &dtml-discreetColor;;
 }
-code {
+code, tt {
     font-family: Monaco, "Courier New", Courier, monospace;
     font-size: 120%;
     color: &dtml-fontColor;;
