@@ -3,7 +3,7 @@
 // Global Plone variables that need to be accessible to the Javascripts
 var portal_url = '<tal:block replace="here/portal_url" />';
 var form_modified_message = '<tal:block tal:replace="python: here.translate('text_form_modified_message', default='Your form has not been saved. All changes you have made will be lost.', escape_for_js=True)" />';
-var form_resubmit_message = '<tal:block tal:replace="python: here.translate('text_form_resubmit_message', default='Your already clicked the submit button. Do you really want to submit this form again?', escape_for_js=True)" />';
+var form_resubmit_message = '<tal:block tal:replace="python: here.translate('text_form_resubmit_message', default='You already clicked the submit button. Do you really want to submit this form again?', escape_for_js=True)" />';
 
 // the following are flags for mark_special_links.js
 // links get the target="_blank" attribute
