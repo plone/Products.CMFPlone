@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
 
 </head>
-<body bgcolor="#ffffff" link="#000099" alink="#000099" vlink="#000099">
+<body bgcolor="#ffffff" link="#000099" alink="#000099" vlink="#000099" onload="siteid.focus()">
 
   <div class="form-title">
   Add Plone Site
@@ -22,7 +22,7 @@
     <div class="form-label">
     Id
     </div>
-    <input type="text" name="id" size="40" /> <span class="form-help">(No special characters or spaces)</span>
+    <input type="text" name="id" size="40" id="siteid" /> <span class="form-help">(No special characters or spaces)</span>
 
     <div class="form-label">
     Title
