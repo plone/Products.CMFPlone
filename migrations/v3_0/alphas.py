@@ -1305,10 +1305,12 @@ def addMissingWorkflows(portal, out):
         , worklists
         , permissions
         , scripts
+        , description
         ) = wfdc.parseWorkflowXML(body, encoding)
 
         _initDCWorkflow( wf
                        , title
+                       , description
                        , state_variable
                        , initial_state
                        , states
