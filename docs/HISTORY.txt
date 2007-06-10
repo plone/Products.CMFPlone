@@ -4,6 +4,14 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0b6 Unreleased
 
+    - Added first working version of the new language control panel. It still
+      needs two new locale aware widgets for the language listings. This refs
+      http://dev.plone.org/plone/ticket/5442.
+      [hannosch]
+
+    - Added support for optional descriptions on fieldsets.
+      [hannosch]
+
     - Added RAMCache control panel. You can invoke it via
       http://portal/@@ramcache-controlpanel.
       [hannosch]

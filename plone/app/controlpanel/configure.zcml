@@ -6,6 +6,8 @@
 
   <adapter factory=".filter.FilterControlPanelAdapter" />
 
+  <adapter factory=".language.LanguageControlPanelAdapter" />
+
   <adapter factory=".mail.MailControlPanelAdapter" />
 
   <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
@@ -35,6 +37,13 @@
       name="filter-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".filter.FilterControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="language-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".language.LanguageControlPanel"
       permission="cmf.ManagePortal"
       />
 

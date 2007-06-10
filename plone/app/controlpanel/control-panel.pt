@@ -124,6 +124,13 @@
                             tal:condition="form_name"
                             tal:attributes="id python:'fieldsetlegend-%s' % fieldset.id"
                             tal:content="form_name">Form name</legend>
+
+                    <p i18n:translate=""
+                       tal:condition="fieldset/description"
+                       tal:content="fieldset/description">
+                        Description
+                    </p>
+
                     <tal:block tal:repeat="widget fieldset/widgets">
 
                         <div class="field"
