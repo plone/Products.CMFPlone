@@ -179,7 +179,7 @@ def modifyKSSResources(portal, out):
         id = '++resource++kukit-src.js'
         entry = aq_base(reg).getResourcesDict().get(id, None)
         if entry:
-            reg.updateScript(id, expression='not:here/@@plone_portal_state/anonymous')
+            reg.updateScript(id, expression='not:here/@@plone_portal_state/anonymous', compression='safe')
             out.append('Updated kss javascript resource %s, to disable kss for anonymous.' % id)
     # register the new kss resources
     reg = queryUtility(IKSSRegistry)

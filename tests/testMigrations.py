@@ -2251,7 +2251,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('++resource++kukit-src.js' in script_ids)
         resource = jsreg.getResource('++resource++kukit-src.js')
         self.failUnless(resource.getCompression() == 'full')
-
+        # now make sure that the last migration step sets it back to
+        # its proper value
+        beta3_beta4(self.portal)        
+        resource = jsreg.getResource('++resource++kukit-src.js')
+        self.failUnless(resource.getCompression() == 'safe')
+        
     def testAddCacheForResourceRegistry(self):
         ram_cache_id = 'ResourceRegistryCache'
         # first remove the cache manager and make sure it's removed
