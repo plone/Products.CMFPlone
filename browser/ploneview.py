@@ -270,7 +270,11 @@ class Plone(BrowserView):
 
         return first_tabs + tabs
 
-    @memoize
+    # XXX: This can't be request-memoized, because it won't necessarily remain
+    # valid across traversals. For example, you may get tabs on an error 
+    # message. :)
+    # 
+    # @memoize
     def showEditableBorder(self):
         """Determine if the editable border should be shown
         """
@@ -283,9 +287,6 @@ class Plone(BrowserView):
         
         context = aq_inner(self.context)
         
-        context_state = getMultiAdapter((context, request), name="plone_context_state")
-        actions = context_state.actions()
-        
         portal_membership = getToolByName(context, 'portal_membership')
         checkPerm = portal_membership.checkPermission
 
@@ -297,15 +298,18 @@ class Plone(BrowserView):
         if portal_membership.isAnonymousUser():
             return False
 
+        context_state = getMultiAdapter((context, request), name="plone_context_state")
+        actions = context_state.actions()
+            
         if actions.get('workflow', ()):
             return True
 
+        if actions.get('batch', []):
+            return True
+            
         for action in actions.get('object', []):
             if action.get('id', '') != 'view':
                 return True
-
-        if actions.get('batch', []):
-            return True
 
         template_id = self._data.get('template_id', None)
         if template_id is None and 'PUBLISHED' in request:
