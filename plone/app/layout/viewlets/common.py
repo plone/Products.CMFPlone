@@ -1,6 +1,8 @@
-from zope.interface import implements
+from zope.interface import implements, alsoProvides
 from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
+
+from plone.app.layout.globals.interfaces import IViewView 
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner, aq_parent
@@ -191,3 +193,24 @@ class PathBarViewlet(ViewletBase):
         breadcrumbs_view = getMultiAdapter((self.context, self.request),
                                            name='breadcrumbs_view')
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
+
+class ContentActionsViewlet(ViewletBase):
+    render = ViewPageTemplateFile('contentactions.pt')
+    
+    def update(self):
+        context_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_context_state')
+
+        self.object_actions = context_state.actions().get('object_actions', [])
+        
+        self.portal_actionicons = getToolByName(self.context, 'portal_actionicons')
+        
+        # The drop-down menus are pulled in via a simple content provider
+        # from plone.app.contentmenu. This behaves differently depending on
+        # whether the view is marked with IViewView. If our parent view 
+        # provides that marker, we should do it here as well.
+        if IViewView.providedBy(self.__parent__):
+            alsoProvides(self, IViewView)
+        
+    def icon(self, action):
+        return self.portal_actionicons.renderActionIcon('content_actions', action['id'], None)

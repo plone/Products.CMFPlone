@@ -18,6 +18,11 @@ class IPortalHeader(IViewletManager):
     """A viewlet manager that sits right after the skip to content links
     """
 
+class IContentViews(IViewletManager):
+    """A viewlet manager that sits above all content, normally used to hold
+    the content views (tabs) and associated actions.
+    """
+
 class IAboveContent(IViewletManager):
     """A viewlet manager that sits above the content area
     """
