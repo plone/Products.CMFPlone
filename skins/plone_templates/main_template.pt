@@ -97,18 +97,10 @@
 
               <metal:block define-slot="content">
                 <div metal:define-macro="content"
-                     tal:define="show_border python:here.showEditableBorder(template_id=template_id, actions=actions );"
+                     tal:define="show_border context/@@plone/showEditableBorder"
                      tal:attributes="class python:test(show_border,'documentEditable','')">
 
-                  <metal:ifborder tal:condition="show_border" >
-                    <div metal:use-macro="here/global_contentviews/macros/content_views">
-                      The content views (View, Edit, Properties, Workflow)
-                    </div>
-
-                    <div metal:use-macro="here/global_contentviews/macros/content_actions">
-                      The content bar
-                    </div>
-                  </metal:ifborder>
+                  <div tal:replace="structure provider:plone.contentviews" />
 
                   <div id="region-content"
                        class="documentContent">
@@ -183,14 +175,6 @@
 
         <div tal:replace="structure provider:plone.portalfooter" />
 
-        <metal:footer use-macro="here/footer/macros/portal_footer">
-          Footer
-        </metal:footer>
-
-        <metal:colophon use-macro="here/colophon/macros/colophon">
-          The colophon area - contains details about the production of
-          the site. Typically "powered by" buttons, standards, tools used.
-        </metal:colophon>
       </metal:block>
 
       <div class="visualClear"></div>

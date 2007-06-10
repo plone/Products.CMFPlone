@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<object>
+  <order manager="plone.contentviews" skinname="Plone Default">
+    <viewlet name="plone.contentviews" />
+    <viewlet name="plone.contentactions" />
+  </order>
+  <order manager="plone.portalfooter" skinname="Plone Default">
+    <viewlet name="plone.footer" />
+    <viewlet name="plone.colophon" />
+  </order>
+</object>

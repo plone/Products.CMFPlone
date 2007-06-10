@@ -26,6 +26,8 @@ from plone.portlets.interfaces import IPortletManager, IPortletManagerRenderer
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.icons.interfaces import IContentIcon
 
+from plone.app.contentmenu.menu import _allowedTypes
+
 deprecated(
     ('IndexIterator'),
     "This reference to IndexIterator will be removed in Plone 3.5. Please "
@@ -268,6 +270,62 @@ class Plone(BrowserView):
 
         return first_tabs + tabs
 
+    @memoize
+    def showEditableBorder(self):
+        """Determine if the editable border should be shown
+        """
+        request = self.request
+        
+        if request.has_key('disable_border'): #short circuit
+            return False
+        if request.has_key('enable_border'): #short circuit
+            return True
+        
+        context = aq_inner(self.context)
+        
+        context_state = getMultiAdapter((context, request), name="plone_context_state")
+        actions = context_state.actions()
+        
+        portal_membership = getToolByName(context, 'portal_membership')
+        checkPerm = portal_membership.checkPermission
+
+        if checkPerm('Modify portal content', context) or \
+               checkPerm('Add portal content', context)  or \
+               checkPerm('Review portal content', context):
+            return True
+
+        if portal_membership.isAnonymousUser():
+            return False
+
+        if actions.get('workflow', ()):
+            return True
+
+        for action in actions.get('object', []):
+            if action.get('id', '') != 'view':
+                return True
+
+        if actions.get('batch', []):
+            return True
+
+        template_id = self._data.get('template_id', None)
+        if template_id is None and 'PUBLISHED' in request:
+            if hasattr(request['PUBLISHED'], 'getId'):
+                template_id=request['PUBLISHED'].getId()
+
+        idActions = {}
+        for obj in actions.get('object', ()) + actions.get('folder', ()):
+            idActions[obj.get('id', '')] = 1
+
+        if idActions.has_key('edit'):
+            if (idActions.has_key(template_id) or \
+                template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']) :
+                return True
+
+        # Check to see if the user is able to add content or change workflow state
+        if _allowedTypes(request, context):
+            return True
+
+        return False
     
     @memoize
     def displayContentsTab(self):

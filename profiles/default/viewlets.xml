@@ -13,4 +13,12 @@
     <viewlet name="plone.logo" />
     <viewlet name="plone.global_sections" />
   </order>
+  <order manager="plone.contentviews" skinname="Plone Default">
+    <viewlet name="plone.contentviews" />
+    <viewlet name="plone.contentactions" />
+  </order>
+  <order manager="plone.portalfooter" skinname="Plone Default">
+    <viewlet name="plone.footer" />
+    <viewlet name="plone.colophon" />
+  </order>
 </object>

@@ -390,6 +390,10 @@ class IPlone(Interface):
         """Returns the template Id corresponding to the default view method of
            the context object.
         """
+        
+    def showEditableBorder():
+        """Returns true if the editable border should be shown
+        """
 
     def displayContentsTab():
         """Returns true if the contents tab should be displayed in the current

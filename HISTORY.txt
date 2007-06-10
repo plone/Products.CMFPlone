@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Moved footer.pt, colophon.pt and global_contentviews.pt to viewlets,
+      found in plone.app.layout.viewlets. The original templates are now in
+      the plone_deprecated layer.
+      [optilude]
+
     - Users aren't invited to contact the site admin anymore if mail settings
       are not set. This closes http://dev.plone.org/plone/ticket/6322.
       [hannosch]
