@@ -5,7 +5,7 @@ from zope.interface import Interface
 from zope.component import adapts, getMultiAdapter
 
 from zope.publisher.interfaces.browser import IBrowserView
-from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from Acquisition import Explicit, aq_inner, aq_parent
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -35,7 +35,7 @@ class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
 class ColumnPortletManagerRenderer(PortletManagerRenderer):
     """A renderer for the column portlets
     """
-    adapts(Interface, IBrowserRequest, IBrowserView, IColumn)
+    adapts(Interface, IDefaultBrowserLayer, IBrowserView, IColumn)
     template = ViewPageTemplateFile('browser/templates/column.pt')
     error_message = ViewPageTemplateFile('browser/templates/error_message.pt')
 

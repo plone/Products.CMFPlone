@@ -9,6 +9,12 @@
             schema=".metadirectives.IPortletDirective"
             handler=".metaconfigure.portletDirective"
             />
+            
+        <meta:directive
+            name="portletRenderer"
+            schema=".metadirectives.IPortletRendererDirective"
+            handler=".metaconfigure.portletRendererDirective"
+            />
         
     </meta:directives>
            

@@ -9,7 +9,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import Interface, implements
 from zope.component import adapts
 
-from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
 
 from plone.portlets.interfaces import IPortletDataProvider

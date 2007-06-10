@@ -7,7 +7,7 @@ from zope.component import adapts, getMultiAdapter, queryMultiAdapter, getUtilit
 from zope.annotation.interfaces import IAnnotations
 
 from zope.publisher.interfaces.http import IHTTPRequest
-from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from zope.contentprovider.interfaces import UpdateNotCalled
 
@@ -46,7 +46,7 @@ class EditPortletManagerRenderer(Explicit):
     which assignments to display.
     """
     implements(IPortletManagerRenderer)
-    adapts(Interface, IBrowserRequest, IManageColumnPortletsView, IPortletManager)
+    adapts(Interface, IDefaultBrowserLayer, IManageColumnPortletsView, IPortletManager)
 
     def __init__(self, context, request, view, manager):
         self.__parent__ = view
@@ -129,7 +129,7 @@ class EditPortletManagerRenderer(Explicit):
 class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for contextual portlets
     """
-    adapts(Interface, IBrowserRequest, IManageContextualPortletsView, IPortletManager)
+    adapts(Interface, IDefaultBrowserLayer, IManageContextualPortletsView, IPortletManager)
 
     def __init__(self, context, request, view, manager):
         EditPortletManagerRenderer.__init__(self, context, request, view, manager)
@@ -157,7 +157,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for the dashboard
     """
-    adapts(Interface, IBrowserRequest, IManageDashboardPortletsView, IDashboard)
+    adapts(Interface, IDefaultBrowserLayer, IManageDashboardPortletsView, IDashboard)
         
 class ManagePortletAssignments(BrowserView):
     """Utility views for managing portlets for a particular column

@@ -3,7 +3,10 @@ from zope.interface import Interface
 from zope import schema
 from zope.configuration import fields as configuration_fields
 
-from zope.app.i18n import ZopeMessageFactory as _
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer, IBrowserView
+from plone.portlets.interfaces import IPortletManager
+
+from Products.CMFPlone import PloneMessageFactory as _
 
 class IPortletDirective(Interface):
     """Directive which registers a new portlet type.
@@ -58,3 +61,57 @@ class IPortletDirective(Interface):
         description=_(u"View used to edit the assignment object (if appropriate)"),
         required=False
         )
+        
+class IPortletRendererDirective(Interface):
+    """Register a portlet renderer, i.e. a different view of a portlet
+    """
+    
+    # The portlet data provider type must be given
+    
+    portlet = configuration_fields.GlobalObject(
+        title=_("Portlet data provider type for which this renderer is used"),
+        description=_("An interface or class"),
+        required=True)
+        
+    # Use either class or template to specify the custom renderer
+
+    class_ = configuration_fields.GlobalObject(
+        title=_("Class"),
+        description=_("A class acting as the renderer."),
+        required=False,
+        )
+        
+    template = configuration_fields.Path(
+        title=_(u"The name of a template that implements the renderer."),
+        description=_(u"If given, the default renderer for this portlet will be used, but with this template"),
+        required=False
+        )
+    
+    # Use these to discriminate the renderer.
+    
+    for_ = configuration_fields.GlobalObject(
+        title=_("Context object type for which this renderer is used"),
+        description=_("""An interface or class"""),
+        required=False,
+        default=Interface,
+        )
+        
+    layer = configuration_fields.GlobalObject(
+        title=_("Browser layer for which this renderer is used"),
+        description=_("""An interface or class"""),
+        required=False,
+        default=IDefaultBrowserLayer,
+        )
+        
+    view = configuration_fields.GlobalObject(
+        title=_("Browser view type for this this renderer is used"),
+        description=_("An interface or class"),
+        required=False,
+        default=IBrowserView)
+        
+    manager = configuration_fields.GlobalObject(
+        title=_("Portlet manager type for which this renderer is used"),
+        description=_("An interface or class"),
+        required=False,
+        default=IPortletManager)
+    

@@ -1,7 +1,7 @@
 from zope.interface import implements
 from zope.component import adapts
 
-from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
 from zope.app.container.traversal import ItemTraverser
@@ -36,7 +36,7 @@ class PortletAssignmentMappingTraverser(ItemTraverser):
     """A traverser for portlet assignment mappings, that is acqusition-aware
     """
     implements(IBrowserPublisher)
-    adapts(IPortletAssignmentMapping, IBrowserRequest)
+    adapts(IPortletAssignmentMapping, IDefaultBrowserLayer)
     
     def publishTraverse(self, request, name):
         ob = ItemTraverser.publishTraverse(self, request, name)
