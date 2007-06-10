@@ -47,7 +47,7 @@ class IFilterTagsSchema(Interface):
 
     stripped_tags = schema.List(
         title=_(u'Stripped tags'),
-        description=_(u"These tags are stripped when saving or rendering,"
+        description=_(u"These tags are stripped when saving or rendering, "
                       "but any content is preserved."),
         default=[u'font', ],
         value_type=schema.TextLine(),
