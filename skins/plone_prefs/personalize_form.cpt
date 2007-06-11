@@ -68,6 +68,7 @@
                       tal:condition="member"
                       tal:attributes="action template_id">
 
+                    <metal:userdetails define-macro="user_form">
                     <fieldset tal:define="macros here/additional_memberdata/macros | nothing;
                                           top_macro macros/top | nothing;
                                           showTop python:top_macro;
@@ -429,6 +430,7 @@
                         <input type="hidden" name="form.submitted" value="1" />
 
                     </fieldset>
+                    </metal:userdetails>
                 </form>
             </div>
     </tal:main-macro>

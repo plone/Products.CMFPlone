@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Made 'prefs_user_details' pull its form from 'personalize_form' to
+      minimize duplicated code. If you have customized any of these templates,
+      you should probably revisit them and update your templates accordingly.
+      [limi]
+
     - Moved footer.pt, colophon.pt and global_contentviews.pt to viewlets,
       found in plone.app.layout.viewlets. The original templates are now in
       the plone_deprecated layer.
