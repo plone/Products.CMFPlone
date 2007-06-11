@@ -142,7 +142,7 @@ def addAutoGroupToPAS(portal, out):
         from Products.PlonePAS.plugins.autogroup import manage_addAutoGroup
         manage_addAutoGroup(portal.acl_users, 'auto_group',
                 'Automatic Group Provider',
-                'AuthenticatedUsers", "Authenticated Users (Virtual Group)')
+                'AuthenticatedUsers", "Logged-in users (Virtual Group)')
         activatePluginInterfaces(portal, "auto_group", sout)
         out.append("Added automatic group PAS plugin")
 
