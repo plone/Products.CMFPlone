@@ -11,22 +11,22 @@
 
 <body>
 
-    <div metal:fill-slot="prefs_configlet_main"
-         tal:define="userid python:request.get('userid', member.getId());
-                     member python:mtool.getMemberById(userid);
-                     errors python:request.get('errors', {})">
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="userid python:request.get('userid', member.getId());
+                 member python:mtool.getMemberById(userid);
+                 errors python:request.get('errors', {})">
 
-        <h1 class="documentFirstHeading"
-            i18n:translate="heading_exception_details">Exception Details</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_exception_details">Exception Details</h1>
 
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string: $portal_url/prefs_error_log_form"
-           i18n:translate="label_back_to_errorlog">
-        Back to Error Log
-        </a>
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/prefs_error_log_form"
+       i18n:translate="label_back_to_errorlog">
+    Back to Error Log
+    </a>
 
-        <div tal:define="entry python:here.error_log.getLogEntryById(request.get('id'))">
+    <div tal:define="entry python:here.error_log.getLogEntryById(request.get('id'))">
 
         <dl class="portalMessage error"
             tal:condition="not:entry">
@@ -40,54 +40,55 @@
             </dd>
         </dl>
 
-            <div tal:condition="entry">
+        <div tal:condition="entry">
 
-                <dl>
-                    <dt i18n:translate="label_time">Time</dt>
-                    <dd tal:content="python:toLocalizedTime(DateTime(entry['time']), long_format=True)"></dd>
+            <dl>
+                <dt i18n:translate="label_time">Time</dt>
+                <dd tal:content="python:toLocalizedTime(DateTime(entry['time']), long_format=True)"></dd>
 
-                    <dt align="left" valign="top"
-                        i18n:translate="label_user_name">User Name</dt>
-                    <dd tal:content="string: ${entry/username} (${entry/userid})">joe (joe)</dd>
+                <dt align="left" valign="top"
+                    i18n:translate="label_user_name">User Name</dt>
+                <dd tal:content="string: ${entry/username} (${entry/userid})">joe (joe)</dd>
 
-                    <dt align="left" valign="top"
-                        i18n:translate="label_request_url">Request URL</dt>
-                    <dd tal:content="entry/url">http://example.com</dd>
+                <dt align="left" valign="top"
+                    i18n:translate="label_request_url">Request URL</dt>
+                <dd tal:content="entry/url">http://example.com</dd>
 
-                    <dt align="left" valign="top"
-                        i18n:translate="label_exception_type">Exception Type</dt>
-                    <dd tal:content="entry/type">AttributeError</dd>
+                <dt align="left" valign="top"
+                    i18n:translate="label_exception_type">Exception Type</dt>
+                <dd tal:content="entry/type">AttributeError</dd>
 
-                    <dt align="left" valign="top"
-                        i18n:translate="label_exception_value">Exception Value</dt>
-                    <dd tal:content="entry/value">gak</dd>
-                </dl>
-                
-                <div tal:condition="entry/tb_html" tal:content="structure entry/tb_html">
-                Traceback (HTML)
-                </div>
-                <pre tal:condition="not:entry/tb_html" tal:content="entry/tb_text">
-                    Traceback (text)
-                </pre>
-
-                <p tal:condition="entry/tb_text"><a href="" tal:attributes="href
-                    string:error_log/getLogEntryAsText?id=${entry/id}"
-                    i18n:translate="label_traceback_as_text">Display traceback as text</a></p>
-
-                <div tal:condition="entry/req_html">
-                    <h3 i18n:translate="heading_request">REQUEST</h3>
-                    <div tal:replace="structure entry/req_html"></div>
-                </div>
+                <dt align="left" valign="top"
+                    i18n:translate="label_exception_value">Exception Value</dt>
+                <dd tal:content="entry/value">gak</dd>
+            </dl>
+            
+            <div tal:condition="entry/tb_html" tal:content="structure entry/tb_html">
+            Traceback (HTML)
             </div>
+            <pre tal:condition="not:entry/tb_html" tal:content="entry/tb_text">
+                Traceback (text)
+            </pre>
 
-            <a href=""
-               class="link-parent"
-               tal:attributes="href string: $portal_url/prefs_error_log_form"
-               i18n:translate="label_back_to_errorlog">
-            Back to Error Log
-            </a>
+            <p tal:condition="entry/tb_text"><a href="" tal:attributes="href
+                string:error_log/getLogEntryAsText?id=${entry/id}"
+                i18n:translate="label_traceback_as_text">Display traceback as text</a></p>
 
+            <div tal:condition="entry/req_html">
+                <h3 i18n:translate="heading_request">REQUEST</h3>
+                <div tal:replace="structure entry/req_html"></div>
+            </div>
         </div>
+
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_error_log_form"
+           i18n:translate="label_back_to_errorlog">
+        Back to Error Log
+        </a>
+
     </div>
+
+</div>
 </body>
 </html>
