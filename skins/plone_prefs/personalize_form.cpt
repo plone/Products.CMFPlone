@@ -366,7 +366,7 @@
                         </div>
 
                         <div class="field"
-                             tal:define="portrait mtool/getPersonalPortrait;">
+                             tal:define="portrait python:mtool.getPersonalPortrait(member.getId());">
 
                             <label for="portrait" i18n:translate="label_portrait">Portrait</label>
 
