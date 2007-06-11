@@ -28,11 +28,17 @@
 
         <div tal:define="entry python:here.error_log.getLogEntryById(request.get('id'))">
 
-            <em tal:condition="not:entry">
-                <span i18n:translate="text_errlog_notfound">
-                    The specified log entry was not found. It may have expired.
-                </span>
-            </em>
+        <dl class="portalMessage error"
+            tal:condition="not:entry">
+            <dt i18n:translate="">
+                Error
+            </dt>
+            <dd i18n:translate="text_errlog_notfound">
+                    The specified log entry was not found. It may have expired. 
+                    If you are using a load-balanced ZEO (cluster) setup, try 
+                    reloading until you get the right server in the cluster.
+            </dd>
+        </dl>
 
             <div tal:condition="entry">
 
