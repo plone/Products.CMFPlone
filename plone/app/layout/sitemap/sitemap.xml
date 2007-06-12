@@ -4,11 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.google.com/schemas/sitemap/0.84
         http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">
-    <tal:block repeat="obj view/objects">
+
+  <tal:block repeat="obj view/objects">
     <url>
         <loc tal:content="obj/url">URL</loc>
         <lastmod tal:content="obj/modificationdate">modified</lastmod>
     </url>
-</tal:block>
+  </tal:block>
 
 </urlset>
