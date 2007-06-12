@@ -22,7 +22,7 @@ class SiteMapView(BrowserView):
         """
         # create the sitemap
         catalog = getToolByName(aq_inner(self.context), "portal_catalog")
-        all = catalog.searchResults()
+        all = catalog.searchResults({'Language':'all'})
         
         return all
         
