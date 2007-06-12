@@ -11,9 +11,9 @@ from gzip import GzipFile
 
 
 class SiteMapView(BrowserView):
-    
+
     template = ViewPageTemplateFile('sitemap.xml')
-    
+
     def objects(self):
         """create the google sitemap as explained in 
         
@@ -23,9 +23,9 @@ class SiteMapView(BrowserView):
         # create the sitemap
         catalog = getToolByName(aq_inner(self.context), "portal_catalog")
         all = catalog.searchResults({'Language':'all'})
-        
+
         return all
-        
+
     def __call__(self):
         """render the template and compress it"""
         # check if we are allowed to be shown
@@ -44,5 +44,3 @@ class SiteMapView(BrowserView):
         data = fp.getvalue()
         fp.close()
         return data
-
-        
