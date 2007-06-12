@@ -22,9 +22,11 @@ class SiteMapView(BrowserView):
         """
         # create the sitemap
         catalog = getToolByName(aq_inner(self.context), "portal_catalog")
-        all = catalog.searchResults({'Language':'all'})
-
-        return all
+        for item in catalog.searchResults({'Language':'all'}):
+            yield {
+                'url': item.getURL(),
+                'modificationdate': item.ModificationDate.replace(' ','T'),
+            }
 
     def __call__(self):
         """render the template and compress it"""

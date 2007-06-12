@@ -6,8 +6,8 @@
         http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">
     <tal:block repeat="obj view/objects">
     <url>
-        <loc tal:content="obj/getURL">URL</loc>
-        <lastmod tal:content="python:obj.ModificationDate.replace(' ','T')">modified</lastmod>
+        <loc tal:content="obj/url">URL</loc>
+        <lastmod tal:content="obj/modificationdate">modified</lastmod>
     </url>
 </tal:block>
 
