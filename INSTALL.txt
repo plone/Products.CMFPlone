@@ -147,7 +147,7 @@ Installing Plone manually, step by step instructions.
 * Also see: http://plone.org/documentation/faq/plone-on-bsd-python-stack    *
 *****************************************************************************
 
-2. Find your instance's Products directory
+2. Find your instance's home directory.
 
    The location of this varies from system to system, so to avoid hunting for
    it, go to the Zope Management Interface (ZMI) Control Panel in your Zope's
@@ -158,9 +158,11 @@ Installing Plone manually, step by step instructions.
    http://yourhost/Control_Panel/manage_main (if you're proxying through a
                                               front end webserver on port 80)
 
-   This page will tell you your INSTANCE_HOME. There is a Products folder in
-   each site's INSTANCE_HOME folder. This is the best place to install add-on
-   Products for a site.
+   This page will tell you your INSTANCE_HOME. There are two important
+   directories in the site's INSTANCE_HOME directory: the Products folder
+   in which Zope Products can be installed and the lib/python directory
+   which is used for python packages that will only be used by this Zope
+   instance. 
 
    About $SOFTWARE_HOME/Products folder:
 
@@ -186,11 +188,11 @@ Installing Plone manually, step by step instructions.
    and lib.
 
    Move those two subdirectories into your $INSTANCE_HOME directory. You need
-   to remove the two directories beforehand.
+   to remove the two existing directories beforehand.
 
-  It's probably A Good Idea at this point to restart your Zope to load these
-  Products, then test that they have installed correctly. You can do this by
-  logging into the ZMI - you should have
+  You whave to restart your Zope to load these Products and new packages, then
+  test that they have installed correctly. You can do this by logging into the
+  ZMI - you should have
 
     1) The Plone Products (CMFPlone etc.) listed in the Products section
        of the Control_Panel
