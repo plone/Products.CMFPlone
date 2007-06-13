@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - In plone.app.viewletmanager GenericSetup handler: Added support for
+      'based-on' and 'make-default' parameters in <order /> and <hidden />
+      nodes, value for 'skinname' can be "*" (means all). Added support for
+      'insert-before', 'insert-after' (value can be "*") and 'remove'
+      parameters in <viewlet /> node. Viewlets ordering and hiding are now
+      additive.
+      [davconvent]
+
     - Made 'prefs_user_details' pull its form from 'personalize_form' to
       minimize duplicated code. If you have customized any of these templates,
       you should probably revisit them and update your templates accordingly.
