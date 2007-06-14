@@ -4,6 +4,9 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0b6 Unreleased
 
+    - Use the new LanguageDropdownChoiceWidget for the default language field.
+      [hannosch]
+
     - Added first working version of the new language control panel. It still
       needs two new locale aware widgets for the language listings. This refs
       http://dev.plone.org/plone/ticket/5442.

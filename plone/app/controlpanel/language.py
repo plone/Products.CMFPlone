@@ -1,5 +1,6 @@
 from plone.fieldsets import FormFieldsets
 from plone.app.form.widgets import DisabledCheckBoxWidget
+from plone.app.form.widgets import LanguageDropdownChoiceWidget
 
 from zope.interface import Interface
 from zope.component import adapts
@@ -17,7 +18,6 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.app.controlpanel.form import ControlPanelForm
-from plone.app.controlpanel.widgets import DropdownChoiceWidget
 from plone.app.controlpanel.widgets import MultiCheckBoxThreeColumnWidget
 
 class ILanguageSelectionSchema(Interface):
@@ -202,7 +202,7 @@ class LanguageControlPanel(ControlPanelForm):
     form_fields = FormFieldsets(languageselectionset,
                                 languagenegotiationset,
                                 multilingualcontentset)
-    form_fields['default_language'].custom_widget = DropdownChoiceWidget
+    form_fields['default_language'].custom_widget = LanguageDropdownChoiceWidget
     form_fields['supported_langs'].custom_widget = MultiCheckBoxThreeColumnWidget
     form_fields['use_default_language'].custom_widget = DisabledCheckBoxWidget
     label = _(u"heading_language_settings", default="Language Settings")
