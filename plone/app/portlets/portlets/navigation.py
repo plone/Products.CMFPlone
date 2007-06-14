@@ -19,7 +19,7 @@ from AccessControl import getSecurityManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
-from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import INonStructuralFolder, IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -345,10 +345,17 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
     context = aq_inner(context)
     if currentFolderOnly:
         folderish = getattr(aq_base(context), 'isPrincipiaFolderish', False) and not INonStructuralFolder.providedBy(context)
-        if folderish:
-            return '/'.join(context.getPhysicalPath())
+        parent = aq_parent(context)
+        
+        is_default_page = False
+        browser_default = IBrowserDefault(parent, None)
+        if browser_default is not None:
+            is_default_page = (browser_default.getDefaultPage() == context.getId())
+        
+        if not folderish or is_default_page:
+            return '/'.join(parent.getPhysicalPath())
         else:
-            return '/'.join(aq_parent(context).getPhysicalPath())
+            return '/'.join(context.getPhysicalPath())
 
     rootPath = getNavigationRoot(context, relativeRoot=root)
 

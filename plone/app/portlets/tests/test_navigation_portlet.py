@@ -303,6 +303,15 @@ class TestRenderer(PortletsTestCase):
         tree = view.getNavTree()
         self.failUnless(tree)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/doc21')
+        
+    def testRootIsCurrentWithFolderishDefaultPage(self):
+        self.portal.folder2.invokeFactory('Folder', 'folder21')
+        self.portal.folder2.setDefaultPage('folder21')
+        
+        view = self.renderer(self.portal.folder2.folder21, assignment=navigation.Assignment(currentFolderOnly=True))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/doc21')
 
     def testCustomQuery(self):
         # Try a custom query script for the navtree that returns only published
