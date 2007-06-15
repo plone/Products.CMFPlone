@@ -2589,6 +2589,8 @@ class TestMigrations_v3_0(MigrationTest):
         for iface in interfaces:
             if plugin.testImplements(iface):
                 self.failIf('auto_group' not in pas.plugins.listPluginIds(iface))
+        self.assertEqual(len(pas.searchGroups(id='AuthenticatedUsers',
+                                              exact_match=True)), 1)
 
     def testPloneS5(self):
         pt = getToolByName(self, "portal_types")
