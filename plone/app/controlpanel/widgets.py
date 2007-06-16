@@ -113,9 +113,26 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
 class LanguageTableWidget(MultiCheckBoxWidget):
     """ """
 
-    _joinButtonToMessageTemplate = u"""<tr>
+    _joinButtonToMessageTemplate = u"""<tr class="%s">
 <td>%s</td><td>%s</td><td>%s</td>
 <tr>"""
+
+    _table_start_template = u"""
+<table summary="%s"
+       class="listing"
+       id="lang-selection"
+       style="display: block; height: 20em; width: 50em; overflow: auto;">
+    <thead>
+        <tr>
+            <th class="nosort">%s</th>
+            <th>%s</th>
+            <th>%s</th>
+        </tr>
+    </thead>
+    <tbody>
+    """
+
+    _table_end_template = u"""</tbody></table>"""
 
     def __init__(self, field, request):
         """Initialize the widget."""
@@ -144,30 +161,16 @@ class LanguageTableWidget(MultiCheckBoxWidget):
         rendered_items = []
         count = 0
 
-        table_start = """
-<table summary="%s"
-       class="listing"
-       id="lang-selection"
-       style="display: block; height: 20em; width: 50em; overflow: auto;">
-    <thead>
-        <tr>
-            <th class="nosort">%s</th>
-            <th>%s</th>
-            <th>%s</th>
-        </tr>
-    </thead>
-    <tbody>
-""" % (self.translate(_(u'heading_allowed_languages',
-                        default=u'Allowed languages')),
-       self.translate(_(u'heading_language_allowed',
-                        default=u'Allowed?')),
-       self.translate(_(u'heading_language',
-                        default=u'Language')),
-       self.translate(_(u'heading_language_code',
-                        default=u'Code'))
-      )
-
-        rendered_items.append(table_start)
+        rendered_items.append(self._table_start_template % (
+            self.translate(_(u'heading_allowed_languages',
+                             default=u'Allowed languages')),
+            self.translate(_(u'heading_language_allowed',
+                             default=u'Allowed?')),
+            self.translate(_(u'heading_language',
+                             default=u'Language')),
+            self.translate(_(u'heading_language_code',
+                             default=u'Code'))
+            ))
 
         # Handle case of missing value
         missing = self._toFormValue(self.context.missing_value)
@@ -199,7 +202,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
             else:
                 render = self.renderItem
 
-            css = count % 2 and cssClass + ' even' or cssClass + ' odd'
+            css = count % 2 and cssClass + 'even' or cssClass + 'odd'
             rendered_item = render(count,
                 item_text,
                 term.token,
@@ -209,7 +212,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
             rendered_items.append(rendered_item)
             count += 1
 
-        rendered_items.append("</tbody></table>")
+        rendered_items.append(self._table_end_template)
 
         return rendered_items
 
@@ -221,7 +224,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
                              name=name,
                              id=id,
                              value=value)
-        return self._joinButtonToMessageTemplate % (elem, text, value)
+        return self._joinButtonToMessageTemplate % (cssClass, elem, text, value)
     
     def renderSelectedItem(self, index, text, value, name, cssClass):
         id = '%s.%s' % (name, index)
@@ -232,7 +235,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
                              id=id,
                              value=value,
                              checked="checked")
-        return self._joinButtonToMessageTemplate % (elem, text, value)
+        return self._joinButtonToMessageTemplate % (cssClass, elem, text, value)
 
     def textForValue(self, term):
         """Extract a string from the `term`.
