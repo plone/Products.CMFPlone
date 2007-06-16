@@ -7,6 +7,7 @@ from zope.component import queryMultiAdapter
 from zope.schema.interfaces import ITitledTokenizedTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
 WEEKDAYS = (('Monday', 0),
@@ -113,9 +114,15 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
 class LanguageTableWidget(MultiCheckBoxWidget):
     """ """
 
+    show_flags = None
+
     _joinButtonToMessageTemplate = u"""<tr class="%s">
 <td>%s</td><td>%s</td><td>%s</td>
 <tr>"""
+
+    _image_template = u"""
+<img src="%s" alt="%s" height="11" width="14" />&nbsp;%s
+"""
 
     _table_start_template = u"""
 <table summary="%s"
@@ -142,6 +149,13 @@ class LanguageTableWidget(MultiCheckBoxWidget):
                                          name=u'plone_portal_state')
         self.languages = portal_state.locale().displayNames.languages
         self.territories = portal_state.locale().displayNames.territories
+        self.ltool = getToolByName(self.context, 'portal_languages', None)
+        if self.show_flags is None and self.ltool is not None:
+            self.show_flags = self.ltool.showFlags()
+            portal_tool = getToolByName(self.context, 'portal_url', None)
+            if portal_tool is not None:
+                self.portal_url = portal_tool.getPortalObject().absolute_url()
+
 
     def renderValue(self, value):
         return ''.join(self.renderItems(value))
@@ -224,6 +238,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
                              name=name,
                              id=id,
                              value=value)
+        text = self.renderText(text, value)
         return self._joinButtonToMessageTemplate % (cssClass, elem, text, value)
     
     def renderSelectedItem(self, index, text, value, name, cssClass):
@@ -235,7 +250,17 @@ class LanguageTableWidget(MultiCheckBoxWidget):
                              id=id,
                              value=value,
                              checked="checked")
+        text = self.renderText(text, value)
         return self._joinButtonToMessageTemplate % (cssClass, elem, text, value)
+
+    def renderText(self, text, value):
+        if self.show_flags:
+            url = self.ltool.getFlagForLanguageCode(value)
+            if url is not None:
+                return self._image_template % (
+                    self.portal_url + url, text, text
+                    )
+        return text
 
     def textForValue(self, term):
         """Extract a string from the `term`.
