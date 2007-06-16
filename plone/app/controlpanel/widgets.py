@@ -2,6 +2,8 @@ from zope.app.form.browser import MultiCheckBoxWidget
 from zope.app.form.browser import MultiSelectWidget
 from zope.app.form.browser import DropdownWidget
 from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
+from zope.schema.interfaces import ITitledTokenizedTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 WEEKDAYS = (('Monday', 0),
@@ -104,6 +106,29 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
 
         return rendered_items
 
+
+class LanguageMultiCheckBoxThreeColumnWidget(MultiCheckBoxThreeColumnWidget):
+    """ """
+
+    def __init__(self, field, request):
+        """Initialize the widget."""
+        super(LanguageMultiCheckBoxThreeColumnWidget, self).__init__(field,
+              request)
+        portal_state = queryMultiAdapter((self.context, request),
+                                         name=u'plone_portal_state')
+        self.languages = portal_state.locale().displayNames.languages
+
+    def textForValue(self, term):
+        """Extract a string from the `term`.
+
+        The `term` must be a vocabulary tokenized term.
+        """
+        if ITitledTokenizedTerm.providedBy(term):
+            result = self.languages.get(term.value, term.title)
+            if result == term.value:
+                return term.title
+            return result
+        return term.token
 
 
 class MultiSelectTupleWidget(MultiSelectWidget):
