@@ -4,8 +4,8 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0b6 Unreleased
 
-    - Added and used the new LanguageMultiCheckBoxThreeColumnWidget for the
-      available language listing.
+    - Added and used the new LanguageTableWidget for the available language
+      listing.
       [hannosch]
 
     - Use the new LanguageDropdownChoiceWidget for the default language field.

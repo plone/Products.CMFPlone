@@ -1,10 +1,13 @@
 from zope.app.form.browser import MultiCheckBoxWidget
 from zope.app.form.browser import MultiSelectWidget
 from zope.app.form.browser import DropdownWidget
+from zope.app.form.browser.widget import renderElement
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.schema.interfaces import ITitledTokenizedTerm
 from zope.schema.vocabulary import SimpleVocabulary
+
+from Products.CMFPlone import PloneMessageFactory as _
 
 WEEKDAYS = (('Monday', 0),
             ('Tuesday', 1),
@@ -107,16 +110,129 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
         return rendered_items
 
 
-class LanguageMultiCheckBoxThreeColumnWidget(MultiCheckBoxThreeColumnWidget):
+class LanguageTableWidget(MultiCheckBoxWidget):
     """ """
+
+    _joinButtonToMessageTemplate = u"""<tr>
+<td>%s</td><td>%s</td><td>%s</td>
+<tr>"""
 
     def __init__(self, field, request):
         """Initialize the widget."""
-        super(LanguageMultiCheckBoxThreeColumnWidget, self).__init__(field,
-              request)
+        super(LanguageTableWidget, self).__init__(field,
+            field.value_type.vocabulary, request)
         portal_state = queryMultiAdapter((self.context, request),
                                          name=u'plone_portal_state')
         self.languages = portal_state.locale().displayNames.languages
+        self.territories = portal_state.locale().displayNames.territories
+
+    def renderValue(self, value):
+        return ''.join(self.renderItems(value))
+
+    def renderItemsWithValues(self, values):
+        """Render the list of possible values, with those found in
+        `values` being marked as selected.
+
+        This code is mostly taken from from zope.app.form.browser.itemswidgets
+        import ItemsEditWidgetBase licensed under the ZPL 2.1.
+        """
+
+        cssClass = self.cssClass
+
+        # multiple items with the same value are not allowed from a
+        # vocabulary, so that need not be considered here
+        rendered_items = []
+        count = 0
+
+        table_start = """
+<table summary="%s"
+       class="listing"
+       id="lang-selection"
+       style="display: block; height: 20em; width: 50em; overflow: auto;">
+    <thead>
+        <tr>
+            <th class="nosort">%s</th>
+            <th>%s</th>
+            <th>%s</th>
+        </tr>
+    </thead>
+    <tbody>
+""" % (self.translate(_(u'heading_allowed_languages',
+                        default=u'Allowed languages')),
+       self.translate(_(u'heading_language_allowed',
+                        default=u'Allowed?')),
+       self.translate(_(u'heading_language',
+                        default=u'Language')),
+       self.translate(_(u'heading_language_code',
+                        default=u'Code'))
+      )
+
+        rendered_items.append(table_start)
+
+        # Handle case of missing value
+        missing = self._toFormValue(self.context.missing_value)
+
+        if self._displayItemForMissingValue and not self.context.required:
+            if missing in values:
+                render = self.renderSelectedItem
+            else:
+                render = self.renderItem
+
+            missing_item = render(count,
+                self.translate(self._messageNoValue),
+                missing,
+                self.name,
+                cssClass)
+            rendered_items.append(missing_item)
+            count += 1
+
+        # Render normal values
+        vocabulary = [(self.textForValue(term), term) for
+                      term in self.vocabulary]
+
+        # Sort by translated name
+        vocabulary.sort()
+
+        for item_text, term in vocabulary:
+            if term.value in values:
+                render = self.renderSelectedItem
+            else:
+                render = self.renderItem
+
+            css = count % 2 and cssClass + ' even' or cssClass + ' odd'
+            rendered_item = render(count,
+                item_text,
+                term.token,
+                self.name,
+                css)
+
+            rendered_items.append(rendered_item)
+            count += 1
+
+        rendered_items.append("</tbody></table>")
+
+        return rendered_items
+
+    def renderItem(self, index, text, value, name, cssClass):
+        id = '%s.%s' % (name, index)
+        elem = renderElement('input',
+                             type="checkbox",
+                             cssClass=cssClass,
+                             name=name,
+                             id=id,
+                             value=value)
+        return self._joinButtonToMessageTemplate % (elem, text, value)
+    
+    def renderSelectedItem(self, index, text, value, name, cssClass):
+        id = '%s.%s' % (name, index)
+        elem = renderElement('input',
+                             type="checkbox",
+                             cssClass=cssClass,
+                             name=name,
+                             id=id,
+                             value=value,
+                             checked="checked")
+        return self._joinButtonToMessageTemplate % (elem, text, value)
 
     def textForValue(self, term):
         """Extract a string from the `term`.
@@ -124,8 +240,15 @@ class LanguageMultiCheckBoxThreeColumnWidget(MultiCheckBoxThreeColumnWidget):
         The `term` must be a vocabulary tokenized term.
         """
         if ITitledTokenizedTerm.providedBy(term):
-            result = self.languages.get(term.value, term.title)
-            if result == term.value:
+            if '-' in term.value:
+                code, territory = term.value.split('-')
+                territory = territory.upper()
+                code = self.languages.get(code, term.value)
+                territory = self.territories.get(territory, territory)
+                result = "%s (%s)" % (code, territory)
+            else:
+                result = self.languages.get(term.value, term.title)
+            if result.startswith(term.value[:2]):
                 return term.title
             return result
         return term.token

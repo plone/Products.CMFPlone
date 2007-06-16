@@ -18,8 +18,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.app.controlpanel.form import ControlPanelForm
-from plone.app.controlpanel.widgets import \
-    LanguageMultiCheckBoxThreeColumnWidget
+from plone.app.controlpanel.widgets import LanguageTableWidget
 
 
 class ILanguageSelectionSchema(Interface):
@@ -204,12 +203,9 @@ class LanguageControlPanel(ControlPanelForm):
     form_fields = FormFieldsets(languageselectionset,
                                 languagenegotiationset,
                                 multilingualcontentset)
-    form_fields['default_language'].custom_widget = \
-        LanguageDropdownChoiceWidget
-    form_fields['supported_langs'].custom_widget = \
-        LanguageMultiCheckBoxThreeColumnWidget
-    form_fields['use_default_language'].custom_widget = \
-        DisabledCheckBoxWidget
+    form_fields['default_language'].custom_widget = LanguageDropdownChoiceWidget
+    form_fields['supported_langs'].custom_widget = LanguageTableWidget
+    form_fields['use_default_language'].custom_widget = DisabledCheckBoxWidget
     label = _(u"heading_language_settings", default="Language Settings")
     description = _(u"description_language_settings",
                     default="Settings related to interface languages and "
