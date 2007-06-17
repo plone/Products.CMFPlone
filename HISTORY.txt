@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Made the user preference for which editor to use translatable. This
+      closes http://dev.plone.org/plone/ticket/6386.
+      [hannosch]
+
     - Consistently bicapitalized 'JavaScript'. This closes
       http://dev.plone.org/plone/ticket/6636.
       [hannosch]

@@ -259,7 +259,8 @@
                                         value="None"
                                         tal:attributes="value editor;
                                                         selected python:test(editor==wysiwyg_editor, 'selected', None);"
-                                        tal:content="editor">
+                                        tal:content="editor"
+                                        i18n:translate="">
                                 WYSIWYG-editor
                                 </option>
                                 <option tal:condition="python:editor == 'None'"
