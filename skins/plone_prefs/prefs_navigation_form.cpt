@@ -30,9 +30,9 @@
     </p>
     
     <p i18n:translate="description_navigation_setup_navtree">
-        Note that to control how the navigation tree is displayed, you
-        should go to "Manage portlets" at the root of the site (or wherever)
-        a navigation tree portlet has been added, and change its settings
+        Note that to control how the navigation tree is displayed, you should
+        go to "Manage portlets" at the root of the site (or wherever a
+        navigation tree portlet has been added) and change its settings
         directly.
     </p>
 

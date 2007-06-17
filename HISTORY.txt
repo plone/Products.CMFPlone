@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Fixed explanation on the navigation control panel. This closes
+      http://dev.plone.org/plone/ticket/6643.
+      [hannosch]
+
     - Updated the language control panel to a new formlib-based version which
       shows all the language names localized to your language.
       This refs http://dev.plone.org/plone/ticket/5442.
