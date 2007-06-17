@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added the selected year to the options in the calendar date picker box if
+      it was not in the available range, so you can always keep the year.
+      This closes http://dev.plone.org/plone/ticket/5279.
+      [hannosch]
+
     - No longer migrate the deprecated related and language portlets to classic
       portlet assignments in the portal root. This closes
       http://dev.plone.org/plone/ticket/6545.

@@ -4,20 +4,44 @@ function onJsCalendarDateUpdate(cal) {
     var year   = cal.params.input_id_year;
     var month  = cal.params.input_id_month;
     var day    = cal.params.input_id_day;
-    // var hour   = cal.params.input_id_hour;
-    // var minute = cal.params.input_id_minute;
 
-    // cal.params.inputField.value = cal.date.print('%Y/%m/%d %H:%M'); // doesn't work in Opera, don't use time now
-    //cal.params.inputField.value = cal.date.print('%Y/%m/%d'); // doesn't work in Opera
     var daystr = '' + cal.date.getDate();
     if (daystr.length == 1)
-    	daystr = '0' + daystr;
+        daystr = '0' + daystr;
     var monthstr = '' + (cal.date.getMonth()+1);
     if (monthstr.length == 1)
-	monthstr = '0' + monthstr;
+        monthstr = '0' + monthstr;
     cal.params.inputField.value = '' + cal.date.getFullYear() + '/' + monthstr + '/' + daystr
 
-    year.value  = cal.params.inputField.value.substring(0,4);
+    var yearValue  = cal.params.inputField.value.substring(0,4);
+
+    // Check if year already exists in the options list.
+    var yearExists = false;
+    for (var i = 0; i < year.options.length; i++) {
+        if (year.options[i].value == yearValue) {
+            yearExists = true;
+        }
+    }
+
+    if (!yearExists) {
+        // Append missing year to the options list
+        year.options[year.length] = new Option('' + yearValue, yearValue, false, true);
+
+        // Sort options list inplace considering the list is already sorted
+        // and only the last option is not at the right place.
+        // Stop at i > 1 as the first option is not a year but the "----" string.
+        for (var i = year.options.length - 1; i > 1; i--) {
+            if (year.options[i].value < year.options[i-1].value) {
+                // Swap options
+                var option1 = year.options[i];
+                var option2 = year.options[i-1];
+                year.options[i] = new Option(option2.text, option2.value, option2.defaultSelected, option2.selected);
+                year.options[i-1] = new Option(option1.text, option1.value, option1.defaultSelected, option1.selected);
+            }
+        }
+    }
+
+    year.value  = yearValue;
     month.value = cal.params.inputField.value.substring(5,7);
     day.value   = cal.params.inputField.value.substring(8,10);
     // hour.value  = cal.params.inputField.value.substring(11,13);
@@ -32,8 +56,6 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
     var input_id_year = document.getElementById(input_id_year);
     var input_id_month = document.getElementById(input_id_month);
     var input_id_day = document.getElementById(input_id_day);
-    // var input_id_hour = document.getElementById(input_id_hour);
-    // var input_id_minute = document.getElementById(input_id_minute);
     var format = 'y/mm/dd';
 
     var dateEl = input_id;
@@ -46,8 +68,6 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
         input_id_year : input_id_year,
         input_id_month: input_id_month,
         input_id_day  : input_id_day
-        // input_id_hour : input_id_hour,
-        // input_id_minute: input_id_minute
     };
 
     function param_default(pname, def) { if (typeof params[pname] == "undefined") { params[pname] = def; } };
@@ -144,5 +164,3 @@ function update_date_field(field, year, month, day, hour, minute, ampm)
             ampm.options[0].selected = 1
     }
 }
-
-
