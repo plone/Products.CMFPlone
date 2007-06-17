@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - The persistent type information of the Topic type was not updated to its
+      new name Collection. This closes http://dev.plone.org/plone/ticket/6546.
+      [hannosch]
+
     - Reformatted the migration registrations for less excessive whitespace use.
       [hannosch]
 

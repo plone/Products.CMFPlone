@@ -169,6 +169,7 @@ from Products.CMFPlone.migrations.v3_0.betas import addOnFormUnloadJS
 from Products.CMFPlone.migrations.v3_0.betas import beta3_beta4
 from Products.CMFPlone.migrations.v3_0.betas import moveKupuAndCMFPWControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateLanguageControlPanel
+from Products.CMFPlone.migrations.v3_0.betas import updateTopicTitle
 
 from zope.app.cache.interfaces.ram import IRAMCache
 from zope.app.component.hooks import clearSite
@@ -2910,6 +2911,23 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         updateLanguageControlPanel(self.portal, [])
+
+    def testUpdateTopicTitle(self):
+        topic = self.types.get('Topic')
+        topic.title = 'Unmigrated'
+        updateTopicTitle(self.portal, [])
+        self.failUnless(topic.title == 'Collection')
+
+    def testUpdateTopicTitleTwice(self):
+        topic = self.types.get('Topic')
+        topic.title = 'Unmigrated'
+        updateTopicTitle(self.portal, [])
+        updateTopicTitle(self.portal, [])
+        self.failUnless(topic.title == 'Collection')
+
+    def testUpdateTopicTitleNoTool(self):
+        self.portal._delObject('portal_types')
+        updateTopicTitle(self.portal, [])
 
 
 def test_suite():

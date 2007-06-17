@@ -72,6 +72,8 @@ def beta3_beta4(portal):
 
     updateLanguageControlPanel(portal, out)
 
+    updateTopicTitle(portal, out)
+
     return out
 
 
@@ -286,3 +288,12 @@ def updateLanguageControlPanel(portal, out):
         lang = cp.getActionObject('Plone/PloneLanguageTool')
         if lang is not None:
             lang.action = Expression('string:${portal_url}/@@language-controlpanel')
+
+def updateTopicTitle(portal, out):
+    """Update the title of the topic type."""
+    tt = getToolByName(portal, 'portal_types', None)
+    if tt is not None:
+        topic = tt.get('Topic')
+        if topic is not None:
+            topic.title = 'Collection'
+
