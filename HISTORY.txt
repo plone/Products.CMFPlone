@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added migration registrations for the 2.5.3 rc1 and final releases.
+      Corrected the history. This closes http://dev.plone.org/plone/ticket/6659.
+      [hannosch]
+
     - Added the selected year to the options in the calendar date picker box if
       it was not in the available range, so you can always keep the year.
       This closes http://dev.plone.org/plone/ticket/5279.
@@ -96,11 +100,6 @@ Plone 3.0-beta4 - unreleased
 
     - Corrected inconsistent slashing of URLs in folder listings, fixes
       http://dev.plone.org/plone/ticket/4912
-
-    - No longer call invokeFactory twice when creating objects in
-      portal_factory.  Fixes http://dev.plone.org/plone/ticket/6595
-      Nice catch nouri :-)
-      [alecm]
 
     - Fixed migration from Plone < 2.5. The portal_setup tool needs to be
       installed before installing CMFPlacefulWorkflow now. This closes
@@ -1080,7 +1079,14 @@ Plone 3.0-alpha1 - released November 24, 2006
       CatalogTool._initIndexes.
       [hannosch]
 
-Plone 2.5.x
+Plone 2.5.4 - Unreleased
+
+    - No longer call invokeFactory twice when creating objects in
+      portal_factory. Fixes http://dev.plone.org/plone/ticket/6595
+      Nice catch nouri :-)
+      [alecm]
+
+Plone 2.5.3 - Final - released May 16, 2007
 
     - Further optimized the migrations from older Plone versions. We reindex
       the whole catalog once and only once, independent of the Plone version
