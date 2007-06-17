@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Reformatted the migration registrations for less excessive whitespace use.
+      [hannosch]
+
     - Added migration registrations for the 2.5.3 rc1 and final releases.
       Corrected the history. This closes http://dev.plone.org/plone/ticket/6659.
       [hannosch]
