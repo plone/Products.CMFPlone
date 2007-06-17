@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0b6 Unreleased
 
+    - Fixed another spelling error on the filter control panel. This closes
+      http://dev.plone.org/plone/ticket/6653.
+      [hannosch]
+
     - Fixed two spelling errors on the filter control panel. This closes
       http://dev.plone.org/plone/ticket/6644.
       [hannosch]

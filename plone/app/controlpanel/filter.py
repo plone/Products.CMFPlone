@@ -91,7 +91,7 @@ class IFilterEditorSchema(Interface):
 
     class_blacklist = schema.List(
         title=_(u'Filtered classes'),
-        description=_(u'These class names styles are not allowed in class '
+        description=_(u'These class names are not allowed in class '
                       'attributes.'),
         default=[],
         value_type=schema.TextLine(),
