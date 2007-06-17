@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Updated the language control panel to a new formlib-based version which
+      shows all the language names localized to your language.
+      This refs http://dev.plone.org/plone/ticket/5442.
+      [hannosch]
+
     - Added migration to move the kupu (core) and CMFPlacefulWorkflow (add-on)
       control panels to the right categories. This closes
       http://dev.plone.org/plone/ticket/6547.

@@ -93,7 +93,7 @@
  </configlet>
  <configlet title="Language" action_id="PloneLanguageTool"
     appId="PloneLanguageTool" category="Plone" condition_expr=""
-    url_expr="string:${portal_url}/portal_languages/prefs_languages"
+    url_expr="string:${portal_url}/@@language-controlpanel"
     visible="True" i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>

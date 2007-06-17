@@ -168,6 +168,7 @@ from Products.CMFPlone.migrations.v3_0.betas import addOnFormUnloadJS
 
 from Products.CMFPlone.migrations.v3_0.betas import beta3_beta4
 from Products.CMFPlone.migrations.v3_0.betas import moveKupuAndCMFPWControlPanel
+from Products.CMFPlone.migrations.v3_0.betas import updateLanguageControlPanel
 
 from zope.app.cache.interfaces.ram import IRAMCache
 from zope.app.component.hooks import clearSite
@@ -2884,6 +2885,27 @@ class TestMigrations_v3_0(MigrationTest):
         # Should not fail if tool is missing
         self.portal._delObject('portal_controlpanel')
         moveKupuAndCMFPWControlPanel(self.portal, [])
+
+    def testUpdateLanguageControlPanel(self):
+        lang = self.cp.getActionObject('Plone/PloneLanguageTool')
+        lang.action = Expression('string:lang')
+        updateLanguageControlPanel(self.portal, [])
+        self.assertEquals(lang.action.text,
+                          'string:${portal_url}/@@language-controlpanel')
+
+    def testUpdateLanguageControlPanelTwice(self):
+        # Should not fail if done twice
+        lang = self.cp.getActionObject('Plone/PloneLanguageTool')
+        lang.action = Expression('string:lang')
+        updateLanguageControlPanel(self.portal, [])
+        updateLanguageControlPanel(self.portal, [])
+        self.assertEquals(lang.action.text,
+                          'string:${portal_url}/@@language-controlpanel')
+
+    def testUpdateLanguageControlPanelNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        updateLanguageControlPanel(self.portal, [])
 
 
 def test_suite():

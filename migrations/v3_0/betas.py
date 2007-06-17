@@ -70,6 +70,8 @@ def beta3_beta4(portal):
 
     moveKupuAndCMFPWControlPanel(portal, out)
 
+    updateLanguageControlPanel(portal, out)
+
     return out
 
 
@@ -263,7 +265,6 @@ def addOnFormUnloadJS(portal, out):
             jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
 
-
 def moveKupuAndCMFPWControlPanel(portal, out):
     """
     Move Kupu control panel to the Plone section and the CMFPW control panel
@@ -277,3 +278,11 @@ def moveKupuAndCMFPWControlPanel(portal, out):
         cmfpw = cp.getActionObject('Plone/placefulworkflow')
         if cmfpw is not None:
             cmfpw.category = 'Products'
+
+def updateLanguageControlPanel(portal, out):
+    """Use the new configlet for the language control panel"""
+    cp = getToolByName(portal, 'portal_controlpanel', None)
+    if cp is not None:
+        lang = cp.getActionObject('Plone/PloneLanguageTool')
+        if lang is not None:
+            lang.action = Expression('string:${portal_url}/@@language-controlpanel')
