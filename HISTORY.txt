@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added migration to move the kupu (core) and CMFPlacefulWorkflow (add-on)
+      control panels to the right categories. This closes
+      http://dev.plone.org/plone/ticket/6547.
+      [hannosch]
+
     - In plone.app.viewletmanager GenericSetup handler: Added support for
       'based-on' and 'make-default' parameters in <order /> and <hidden />
       nodes, value for 'skinname' can be "*" (means all). Added support for

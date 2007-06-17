@@ -68,6 +68,8 @@ def beta3_beta4(portal):
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b3-3.0b4')
 
+    moveKupuAndCMFPWControlPanel(portal, out)
+
     return out
 
 
@@ -261,3 +263,17 @@ def addOnFormUnloadJS(portal, out):
             jsreg.moveResourceToBottom(script)
             out.append("Added " + script + " to portal_javascipt")
 
+
+def moveKupuAndCMFPWControlPanel(portal, out):
+    """
+    Move Kupu control panel to the Plone section and the CMFPW control panel
+    to the add-on section if it is installed.
+    """
+    cp = getToolByName(portal, 'portal_controlpanel', None)
+    if cp is not None:
+        kupu = cp.getActionObject('Products/kupu')
+        if kupu is not None:
+            kupu.category = 'Plone'
+        cmfpw = cp.getActionObject('Plone/placefulworkflow')
+        if cmfpw is not None:
+            cmfpw.category = 'Products'

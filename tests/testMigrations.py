@@ -47,6 +47,7 @@ from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
 from Products.CMFEditions.interfaces import IStorageTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
+from Products.CMFPlacefulWorkflow.global_symbols import placeful_prefs_configlet
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IFactoryTool
 from Products.CMFPlone.interfaces import IInterfaceTool
@@ -166,6 +167,7 @@ from Products.CMFPlone.migrations.v3_0.betas import updateEditActionConditionFor
 from Products.CMFPlone.migrations.v3_0.betas import addOnFormUnloadJS
 
 from Products.CMFPlone.migrations.v3_0.betas import beta3_beta4
+from Products.CMFPlone.migrations.v3_0.betas import moveKupuAndCMFPWControlPanel
 
 from zope.app.cache.interfaces.ram import IRAMCache
 from zope.app.component.hooks import clearSite
@@ -2253,7 +2255,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(resource.getCompression() == 'full')
         # now make sure that the last migration step sets it back to
         # its proper value
-        beta3_beta4(self.portal)        
+        beta3_beta4(self.portal)
         resource = jsreg.getResource('++resource++kukit-src.js')
         self.failUnless(resource.getCompression() == 'safe')
         
@@ -2845,6 +2847,43 @@ class TestMigrations_v3_0(MigrationTest):
         beta3_beta4(self.portal)
         util = queryUtility(IRAMCache)
         self.failUnless(util.maxAge == 3600)
+
+    def testMoveKupuAndCMFPWControlPanel(self):
+        kupu = self.cp.getActionObject('Plone/kupu')
+        kupu.category = 'Products'
+        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
+        if cmfpw is None:
+            self.cp.registerConfiglet(**placeful_prefs_configlet)
+        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
+        cmfpw.category = 'Plone'
+        # migrate
+        moveKupuAndCMFPWControlPanel(self.portal, [])
+        kupu = self.cp.getActionObject('Plone/kupu')
+        self.assertEquals(kupu.getCategory(), 'Plone')
+        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
+        self.assertEquals(cmfpw.getCategory(), 'Products')
+
+    def testMoveKupuAndCMFPWControlPanelTwice(self):
+        # Should not fail if done twice
+        kupu = self.cp.getActionObject('Plone/kupu')
+        kupu.category = 'Products'
+        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
+        if cmfpw is None:
+            self.cp.registerConfiglet(**placeful_prefs_configlet)
+        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
+        cmfpw.category = 'Plone'
+        # migrate
+        moveKupuAndCMFPWControlPanel(self.portal, [])
+        moveKupuAndCMFPWControlPanel(self.portal, [])
+        kupu = self.cp.getActionObject('Plone/kupu')
+        self.assertEquals(kupu.getCategory(), 'Plone')
+        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
+        self.assertEquals(cmfpw.getCategory(), 'Products')
+
+    def testMoveKupuAndCMFPWControlPanelNoTool(self):
+        # Should not fail if tool is missing
+        self.portal._delObject('portal_controlpanel')
+        moveKupuAndCMFPWControlPanel(self.portal, [])
 
 
 def test_suite():
