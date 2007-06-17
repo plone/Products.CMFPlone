@@ -1474,8 +1474,10 @@ class TestMigrations_v3_0(MigrationTest):
             del right[k]
                 
         self.portal.left_slots = ['here/portlet_recent/macros/portlet',
-                                  'here/portlet_news/macros/portlet']
-        self.portal.right_slots = ['here/portlet_login/macros/portlet']
+                                  'here/portlet_news/macros/portlet',
+                                  'here/portlet_related/macros/portlet']
+        self.portal.right_slots = ['here/portlet_login/macros/portlet',
+                                   'here/portlet_languages/macros/portlet']
         
         convertLegacyPortlets(self.portal, [])
         
@@ -1510,8 +1512,10 @@ class TestMigrations_v3_0(MigrationTest):
             del right[k]
             
         self.portal.left_slots = ['here/portlet_recent/macros/portlet',
-                                  'here/portlet_news/macros/portlet']
-        self.portal.right_slots = ['here/portlet_login/macros/portlet']
+                                  'here/portlet_news/macros/portlet',
+                                  'here/portlet_related/macros/portlet']
+        self.portal.right_slots = ['here/portlet_login/macros/portlet',
+                                   'here/portlet_languages/macros/portlet']
         
         convertLegacyPortlets(self.portal, [])
         convertLegacyPortlets(self.portal, [])
