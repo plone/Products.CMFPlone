@@ -39,7 +39,10 @@
             You have not configured a mail host or a site 'From'
             address, various features including contact forms, email
             notification and password reset will not work. Go to the
-            <a href="" tal:attributes="href string:${portal_url}/@@mail-controlpanel"
+            <a href=""
+               i18n:name="label_mail_control_panel_link"
+               i18n:translate="text_no_mailhost_configured_control_panel_link"
+               tal:attributes="href string:${portal_url}/@@mail-controlpanel"
             >Mail control panel</a> to fix this.
             </dd>
         </dl>

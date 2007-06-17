@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Small i18n markup fix in the control panel overview. Dynamic content
+      inside a message has to be quoted by using i18n:name.
+      [hannosch]
+
     - The persistent type information of the Topic type was not updated to its
       new name Collection. This closes http://dev.plone.org/plone/ticket/6546.
       [hannosch]
