@@ -4,6 +4,11 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Extended the portlet migration machinery to exclude the deprecated
+      related and language portlets. This refs
+      http://dev.plone.org/plone/ticket/6545.
+      [hannosch]
+
     - Cleaned and speeded up calendar portlet. Extinguished some unneeded
       uses of the DateTime module.
       [hannosch]

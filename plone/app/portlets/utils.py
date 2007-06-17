@@ -46,7 +46,8 @@ def assignment_from_key(context, manager_name, category, key, name):
     the IPortletAssignment. Raise a KeyError if it cannot be found.
     """
     return assignment_mapping_from_key(context, manager_name, category, key)[name]
-    
+
+DONT_MIGRATE = object()
 
 portletsMapping = { 'portlet_login'      : login.Assignment(),
                     'portlet_news'       : news.Assignment(count=5),
@@ -55,6 +56,8 @@ portletsMapping = { 'portlet_login'      : login.Assignment(),
                     'portlet_calendar'   : calendar.Assignment(),
                     'portlet_review'     : review.Assignment(),
                     'portlet_recent'     : recent.Assignment(count=5),
+                    'portlet_related'    : DONT_MIGRATE,
+                    'portlet_languages'  : DONT_MIGRATE,
                   }
                   
 def convert_legacy_portlets(context):
@@ -85,7 +88,7 @@ def convert_legacy_portlets(context):
             newPortlet = portletsMapping.get(path[1], None)
             if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
                 newPortlet = classic.Assignment(path[1], path[3])
-            if newPortlet is not None:
+            if newPortlet is not None and newPortlet is not DONT_MIGRATE:
                 leftAssignable[leftChooser.chooseName(None, newPortlet)] = newPortlet
                 
     for item in right_slots:
@@ -94,8 +97,8 @@ def convert_legacy_portlets(context):
             newPortlet = portletsMapping.get(path[1], None)
             if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
                 newPortlet = classic.Assignment(path[1], path[3])
-            if newPortlet is not None:
+            if newPortlet is not None and newPortlet is not DONT_MIGRATE:
                 rightAssignable[rightChooser.chooseName(None, newPortlet)] = newPortlet
-                
+
     context.left_slots = []
     context.right_slots = []
