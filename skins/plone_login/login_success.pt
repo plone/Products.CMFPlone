@@ -81,7 +81,7 @@
       <div tal:condition="not:js_enabled">
          <p i18n:translate="description_javascript_advantage">
             You can take fuller advantage of the features of this site
-            if you enable javascript in your browser. 
+            if you enable JavaScript in your browser. 
          </p>
 
          <p i18n:translate="description_enable_cookies_to_stay_logged_in">

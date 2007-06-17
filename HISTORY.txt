@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Consistently bicapitalized 'JavaScript'. This closes
+      http://dev.plone.org/plone/ticket/6636.
+      [hannosch]
+
     - Fixed explanation on the navigation control panel. This closes
       http://dev.plone.org/plone/ticket/6643.
       [hannosch]
