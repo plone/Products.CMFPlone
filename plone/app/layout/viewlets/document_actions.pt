@@ -7,7 +7,7 @@
 
     <ul>
     <tal:actions repeat="daction view/actions">
-        <li>
+        <li tal:attributes="id string:document-action-${daction/id}">
             <a href=""
                tal:attributes="href daction/url;
                                title daction/description"
