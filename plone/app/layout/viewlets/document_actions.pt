@@ -5,7 +5,7 @@
 
     <h5 class="hiddenStructure" i18n:translate="heading_document_actions">Document Actions</h5>
 
-    <ul tal:define="normalizeString nocall: context/plone_utils/normalizeString">
+    <ul tal:define="normalizeString nocall: context/@@plone/normalizeString">
     <tal:actions repeat="daction view/actions">
         <li tal:attributes="id python:'document-action-' + normalizeString(daction['id'])">
             <a href=""
