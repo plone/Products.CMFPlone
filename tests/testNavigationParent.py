@@ -123,4 +123,3 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestNavigationParent))
     return suite
-    
