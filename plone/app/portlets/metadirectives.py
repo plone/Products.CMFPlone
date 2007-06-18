@@ -114,4 +114,3 @@ class IPortletRendererDirective(Interface):
         description=_("An interface or class"),
         required=False,
         default=IPortletManager)
-    
