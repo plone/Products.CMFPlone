@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Fixed erroneous wording in add screen for classicportlet.
+      Fixes https://dev.plone.org/plone/ticket/6703
+      [elvix]
+
     - Extended the portlet migration machinery to exclude the deprecated
       related and language portlets. This refs
       http://dev.plone.org/plone/ticket/6545.
