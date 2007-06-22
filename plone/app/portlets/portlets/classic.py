@@ -17,8 +17,7 @@ class IClassicPortlet(IPortletDataProvider):
                             required=True)
 
     macro = schema.ASCIILine(title=_(u'Macro'),
-                         description=_(u"The macro containing the portlet. "
-                                        "Leave blank if there is no macro."),
+                         description=_(u"The macro containing the portlet."),
                          default='portlet',
                          required=True)
 
