@@ -187,10 +187,11 @@ Installing Plone manually, step by step instructions.
    xxxx is the version. This should contain two subdirectories: Products
    and lib.
 
-   Move those two subdirectories into your $INSTANCE_HOME directory. You need
-   to remove the two existing directories beforehand.
+   Go to your $INSTANCE_HOME directory and remove the two existing
+   directories with those same names (Products and lib) beforehand.
+   Replace them with the two directories you just unpacked.
 
-  You whave to restart your Zope to load these Products and new packages, then
+  You have to restart your Zope to load these Products and new packages, then
   test that they have installed correctly. You can do this by logging into the
   ZMI - you should have
 
