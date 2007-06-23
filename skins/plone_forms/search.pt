@@ -33,14 +33,14 @@
     <form name="searchform" 
           action="search"
           class="searchPage">
-        <input class="searchPage"
+        <input class="searchPage inputLabel"
                name="SearchableText"
                type="text"
                size="25"
                title="Search Site"
                i18n:attributes="title title_search_title;"
                tal:attributes="value request/SearchableText|nothing;"
-            class="inputLabel" />
+               />
         <input class="searchPage"
                type="submit"
                value="Search"
@@ -63,8 +63,9 @@
         <span i18n:translate="heading_search_results">
             Search results
         </span>
-        <span class="discreet"
-              i18n:translate="batch_x_items_matching_your_criteria"
+        <span class="discreet">
+        &mdash;
+        <span i18n:translate="batch_x_items_matching_your_criteria"
         ><span i18n:name="number" 
         tal:omit-tag="" 
         tal:content="python:len(results)">234</span> items matching your search terms</span>
@@ -72,10 +73,8 @@
 
     <p class="discreet"
        tal:condition="syntool/isSiteSyndicationAllowed">
-        <a href="" tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
-        <img src="rss.gif"
-             alt="RSS" /></a>
         <a href=""
+           class="link-feed"
            i18n:translate="title_rss_feed"
            tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
              Subscribe to an always-updated feed of these search terms
