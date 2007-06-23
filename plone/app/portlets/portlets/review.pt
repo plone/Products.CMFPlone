@@ -28,8 +28,10 @@
                     Title
                 </span>
                 <span class="portletItemDetails"
-                      tal:define="moddate o/ModificationDate;"
-                      tal:content="python:toLocalizedTime(moddate)">May 5</span>
+                      tal:define="moddate o/ModificationDate;">
+                    <span tal:replace="o/Creator">Jim Smith</span> &mdash;
+                    <span tal:replace="python:toLocalizedTime(moddate)"> May 5</span>
+                </span>
             </a>
 
         </dd>
