@@ -77,8 +77,7 @@
            class="link-feed"
            i18n:translate="title_rss_feed"
            tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
-             Subscribe to an always-updated feed of these search terms
-        </a>
+             Subscribe to an always-updated feed of these search terms</a>
     </p>
 
 
