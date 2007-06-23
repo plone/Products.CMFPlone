@@ -33,11 +33,11 @@
     <form name="searchform" 
           action="search"
           class="searchPage">
-        <input class="searchPage inputLabel"
+        <input class="searchPage"
                name="SearchableText"
                type="text"
                size="25"
-               title="Search Site"
+               title="Enter search terms"
                i18n:attributes="title title_search_title;"
                tal:attributes="value request/SearchableText|nothing;"
                />
