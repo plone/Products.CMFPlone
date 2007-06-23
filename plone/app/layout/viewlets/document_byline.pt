@@ -17,12 +17,11 @@
             Bob Dobalina
           </a>
 
-          &mdash;
-          
           </span>
         </tal:name>
 
         <span class="documentModified">
+          &mdash;
             <span i18n:translate="box_last_modified">
             last modified
             </span>
@@ -32,10 +31,28 @@
         </span>
 
         <span class="state-expired"
-            tal:condition="view/isExpired"
-            i18n:translate="time_expired">
-        &mdash; expired
+              tal:condition="view/isExpired">
+            &mdash;
+            <tal:expired i18n:translate="time_expired">expired</tal:expired>
         </span>
+
+        <span id="categories"
+              class="documentCategory"
+              tal:define="categories context/Subject|nothing"
+              tal:condition="categories">
+        &mdash;
+        <tal:filedunder i18n:translate="label_filed_under">filed under:</tal:filedunder>
+        <ul>
+            <li tal:repeat="category categories">
+                <a href="" 
+                   tal:content="category"
+                   tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${category}">
+                   Category
+                </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
+            </li>
+        </ul>
+
+        </span>    
 
         <div class="documentContributors"
              tal:condition="here/Contributors"
@@ -54,7 +71,9 @@
             </div>
         </tal:rights>
 
-        <!--<span metal:use-macro="here/review_history/macros/review_history" />-->
+        <tal:comment replace="nothing">
+            <span metal:use-macro="here/review_history/macros/review_history" />
+        </tal:comment>
 
     </div>
 
