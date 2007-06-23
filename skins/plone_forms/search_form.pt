@@ -47,6 +47,7 @@
                        id="SearchableText"
                        name="SearchableText"
                        size="25"
+                       tal:attributes="value request/SearchableText|nothing"
                        />
             </div>
 
