@@ -230,7 +230,9 @@ textarea#form\.description {
     width: 99%;
 }
 
-tr.selected { background-color: yellow;}
+tr.selected { 
+    background-color: #ffc;
+}
 
 .kupu-save-message {
   color: white;
