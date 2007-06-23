@@ -102,21 +102,12 @@ def installOrReinstallProduct(portal, product_name, out, hidden=False):
 
 
 def loadMigrationProfile(portal, profile, steps=_marker):
-    plone_base_profileid = 'profile-Products.CMFPlone:plone'
     tool = getToolByName(portal, "portal_setup")
-    current_context = tool.getImportContextID()
-    tool.setImportContext(profile)
     if steps is _marker:
-        tool.runAllImportSteps(purge_old=False)
+        tool.runAllImportStepsFromProfile(profile, purge_old=False)
     else:
         for step in steps:
-            tool.runImportStep(step, run_dependencies=False, purge_old=False)
-
-    # Restore import context again
-    try:
-        tool.setImportContext(current_context)
-    except KeyError:
-        # If the old import context wasn't valid anymore, we set it to the
-        # Plone base profile
-        tool.setImportContext(plone_base_profileid)
-
+            tool.runImportStepFromProfile(profile,
+                                          step,
+                                          run_dependencies=False,
+                                          purge_old=False)

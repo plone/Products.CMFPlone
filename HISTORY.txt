@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Updated the factory and migration_util code to use the new GenericSetup
+      methods for directly loading profiles, without setting the context.
+      [hannosch]
+
     - Small i18n markup fix in the control panel overview. Dynamic content
       inside a message has to be quoted by using i18n:name.
       [hannosch]

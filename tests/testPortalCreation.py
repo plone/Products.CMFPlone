@@ -862,7 +862,8 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.loginAsPortalOwner()
         setup_tool = getToolByName(self, "portal_setup")
         # this will raise an error if it fails
-        setup_tool.runAllImportSteps(purge_old=True)
+        profile = setup_tool.getBaselineContextID()
+        setup_tool.runAllImportStepsFromProfile(profile, purge_old=True)
         self.failUnless(1 == 1)
 
     def testFinalStepsWithMembersFolderDeleted(self):
