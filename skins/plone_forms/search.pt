@@ -67,7 +67,7 @@
               i18n:translate="batch_x_items_matching_your_criteria"
         ><span i18n:name="number" 
         tal:omit-tag="" 
-        tal:content="python:len(results)">234</span> items matching your criteria</span>
+        tal:content="python:len(results)">234</span> items matching your search terms</span>
     </h1>
 
     <p class="discreet"
@@ -78,7 +78,7 @@
         <a href=""
            i18n:translate="title_rss_feed"
            tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
-             RSS feed of these search results
+             Subscribe to an always-updated feed of these search terms
         </a>
     </p>
 
