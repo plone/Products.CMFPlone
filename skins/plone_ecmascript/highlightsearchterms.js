@@ -55,8 +55,12 @@ function getSearchTermsFromURI(uri) {
     }
     var qfinder = new RegExp("searchterm=([^&]*)", "gi");
     var qq = qfinder.exec(query);
+    if (!qq) {
+      qfinder = new RegExp("SearchableText=([^&]*)", "gi");
+      qq = qfinder.exec(query);
+    }
     if (qq && qq[1]) {
-        var terms = qq[1].replace(/\+/g,' ').split(/\s+/);
+        var terms = qq[1].replace(/\+/g,' ').split(' ');
         for (var i=0; i < terms.length; i++) {
             if (terms[i] != '') {
                 result.push(terms[i]);
@@ -71,7 +75,7 @@ function highlightSearchTermsFromURI() {
     // terminate if we hit a non-compliant DOM implementation
     if (!W3CDOM){return false};
 
-    // search-term-highlighter function --  Geir BÃ¦kholt
+    // search-term-highlighter function --  Geir Bækholt
     var terms = getSearchTermsFromURI(window.location.search);
     // make sure we start the right place so we don't higlight menuitems or breadcrumb
     var contentarea = getContentArea();
@@ -79,3 +83,4 @@ function highlightSearchTermsFromURI() {
 }
 
 registerPloneFunction(highlightSearchTermsFromURI);
+
