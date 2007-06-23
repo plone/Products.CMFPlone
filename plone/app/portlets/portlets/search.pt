@@ -20,7 +20,7 @@
             size="15"
             title="Search Site"
             i18n:attributes="title title_search_title;"
-            tal:attributes="value request/SearchableTest|nothing;
+            tal:attributes="value request/SearchableText|nothing;
                             class python:livesearch and 'inputLabel portlet-search-gadget' or 'inputLabel portlet-search-gadget-nols'"
             class="inputLabel" />
         <input class="searchButton"
