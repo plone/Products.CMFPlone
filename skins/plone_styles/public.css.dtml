@@ -570,6 +570,8 @@ dl.error dd {
     font-weight: normal;
     color: &dtml-discreetColor;;
     margin-bottom: 0.5em;
+}
+dl.searchResults span.documentByLine {
     display: block;
 }
 #category ul {
