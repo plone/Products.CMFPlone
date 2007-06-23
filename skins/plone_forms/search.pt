@@ -123,16 +123,14 @@
                       tal:condition="categories">
                     &mdash;
                     <tal:filedunder i18n:translate="label_filed_under">filed under:</tal:filedunder>
-                    <ul>
-                        <li tal:repeat="category categories">
+                        <span tal:repeat="category categories">
                             <a href=""
                                rel="tag"
                                tal:content="category"
                                tal:attributes="href string:${portal_url}/search?Subject%3Alist=${category}">
                                Category
                             </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
-                        </li>
-                    </ul>
+                        </span>
                 </span>    
 
 
