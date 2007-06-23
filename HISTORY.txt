@@ -16,16 +16,17 @@ Plone 3.0-beta4 - unreleased
       [hannosch]
 
     - Added migration registrations for the 2.5.3 rc1 and final releases.
-      Corrected the history. This closes http://dev.plone.org/plone/ticket/6659.
+      Corrected the history. This closes
+      http://dev.plone.org/plone/ticket/6659.
       [hannosch]
 
-    - Added the selected year to the options in the calendar date picker box if
-      it was not in the available range, so you can always keep the year.
+    - Added the selected year to the options in the calendar date picker box
+      if it was not in the available range, so you can always keep the year.
       This closes http://dev.plone.org/plone/ticket/5279.
       [hannosch]
 
-    - No longer migrate the deprecated related and language portlets to classic
-      portlet assignments in the portal root. This closes
+    - No longer migrate the deprecated related and language portlets to 
+      classic portlet assignments in the portal root. This closes
       http://dev.plone.org/plone/ticket/6545.
       [hannosch]
 
@@ -103,8 +104,9 @@ Plone 3.0-beta4 - unreleased
       tag called "allowMultiSubmit".
       [optilude, ree, fschulze]
 
-    - Adjusted our RegistrationTool's mailPassword method not to use the method
-      from the base tool anymore, as that has changed in incompatible ways.
+    - Adjusted our RegistrationTool's mailPassword method not to use the
+      method from the base tool anymore, as that has changed in incompatible
+      ways.
       Reverted the method to use the same logic as in CMF 1.6. This refs
       http://dev.plone.org/plone/ticket/6614.
       [hannosch]
@@ -170,8 +172,8 @@ Plone 3.0-beta3 - released May 5, 2007
 
 Plone 3.0-beta2 - released May 2, 2007
 
-    - Extended support for creation of translated initial content to include all
-      titles and descriptions of all initial content.
+    - Extended support for creation of translated initial content to include 
+      all titles and descriptions of all initial content.
       [hannosch]
 
     - Add getChainFor method in WorkflowTool from CMFPlacefulWorkflow
@@ -325,12 +327,12 @@ Plone 3.0-beta2 - released May 2, 2007
       action categories. This closes http://dev.plone.org/plone/ticket/6336.
       [hannosch]
 
-    - Cleaned up code in unicodehacks.py so we don't have a performance penality
-      for mixed unicode/non-unicode pages.
+    - Cleaned up code in unicodehacks.py so we don't have a performance 
+      penality for mixed unicode/non-unicode pages.
       [hannosch]
 
-    - Micro optimization: Use a truly local variable for language lookup, which
-      is faster than getting the value from the globals.
+    - Micro optimization: Use a truly local variable for language lookup, 
+      which is faster than getting the value from the globals.
       [hannosch]
 
     - Stop calculating the body text of a document twice in document_view.
@@ -440,8 +442,8 @@ Plone 3.0-beta1 - released March 26, 2007
       all extension profiles, by not requiring a flag file anymore. We also
       need to call the enableZope3Site and registerToolsAsUtilities migration
       steps as the first step in every possible version migration, as the
-      migration code itself depends on these to be present. Otherwise migrating
-      from older versions would fail with ComponentLookupErrors.
+      migration code itself depends on these to be present. Otherwise 
+      migrating from older versions would fail with ComponentLookupErrors.
       [hannosch]
 
     - Location is now a standard metadata field available for categorizing 
@@ -464,10 +466,10 @@ Plone 3.0-beta1 - released March 26, 2007
       as one providing CMF's ISiteRoot.
       [hannosch]
 
-    - Replaced our local component registry with one from five.localsitemanager.
-      There is no migration path for existing Plone 3.0 alpha sites, so make
-      sure to throw them away and recreate new ones. Migration from Plone < 3.0
-      is of course supported.
+    - Replaced our local component registry with one from 
+      five.localsitemanager. There is no migration path for existing Plone 3.0
+      alpha sites, so make sure to throw them away and recreate new ones.
+      Migration from Plone < 3.0 is of course supported.
       [hannosch]
 
     - Optimized the calendar_macros template. Trying to translate integers
@@ -483,8 +485,8 @@ Plone 3.0-beta1 - released March 26, 2007
       [hannosch]
 
     - Moved version overview and server debug mode to the maintenance control
-      panel. Added warning message about missing mail host or email from adress
-      to the main control panel view.
+      panel. Added warning message about missing mail host or email from 
+      adress to the main control panel view.
       [hannosch]
 
     - Added external_links_open_new_window to site properties which controls
@@ -707,7 +709,8 @@ Plone 3.0-alpha2 - released February 13, 2007
       needed anymore.
       [hannosch]
 
-    - Fixed an unsafe usage of hasattr in computeRelatedItems with base_hasattr.
+    - Fixed an unsafe usage of hasattr in computeRelatedItems with 
+      base_hasattr.
       [hannosch]
 
     - Removed obsolete factory type information for the Plone folder classes.
@@ -757,10 +760,11 @@ Plone 3.0-alpha2 - released February 13, 2007
       GenericSetup import step tries to call any local component.
       [hannosch]
 
-    - Decoupled some more of the GenericSetup import steps. The plone-site step
-      only creates the local component registry and enables the portal object as
-      a site manager. This is needed as steps using local components depend on
-      this step while not much else in the site may have been configured yet. 
+    - Decoupled some more of the GenericSetup import steps. The plone-site 
+      step only creates the local component registry and enables the portal 
+      object as a site manager. This is needed as steps using local components 
+      depend on this step while not much else in the site may have been 
+      configured yet. 
       The plone-content step adjusts the initial content and is run last as it
       depends on everything else in the portal having been already set up.
       [hannosch]
@@ -815,8 +819,8 @@ Plone 3.0-alpha2 - released February 13, 2007
 
     - Finished multilingual front-page support code. The front page which is
       created at portal creation time is now localized to the browser language
-      used while creating the portal, as long as there is a complete translation
-      of the page.
+      used while creating the portal, as long as there is a complete 
+      translation of the page.
       [hannosch]
 
     - Merged generalised next/previous navigation into plone.app.layout
@@ -845,9 +849,9 @@ Plone 3.0-alpha2 - released February 13, 2007
       [optilude]
 
     - Moved date/time formatting related messages to it's own domain called
-      plonelocales. Message files in this domain are translated directly by the
-      Zope 3 translations service, which results in a major speed increase for
-      date/time formatting.
+      plonelocales. Message files in this domain are translated directly by 
+      the Zope 3 translations service, which results in a major speed increase 
+      for date/time formatting.
       [hannosch]
 
     - Moved new controlpanels to its own package (plone.app.controlpanel).
@@ -868,7 +872,8 @@ Plone 3.0-alpha2 - released February 13, 2007
       functions.
       [optilude]
 
-    - Removed outdated version of listFilteredActionsFor from the actions tool.
+    - Removed outdated version of listFilteredActionsFor from the actions
+      tool.
       [hannosch]
 
     - Deprecated cache_decorator in browser/ploneview.py (formerly plone.py),
@@ -895,9 +900,10 @@ Plone 3.0-alpha2 - released February 13, 2007
     - Added formlib based mail and search control panels.
       [hannosch]
 
-    - Removed the view alias of index.html for all standard content types. This
-      makes it possible to create and upload files called index.html to the
-      site, which is quite common when batch importing old sites into the site.
+    - Removed the view alias of index.html for all standard content types. 
+      This makes it possible to create and upload files called index.html to 
+      the site, which is quite common when batch importing old sites into the 
+      site.
       As someone might rely on the former behaviour, we do not migrate
       any existing type information. This closes
       http://dev.plone.org/plone/ticket/4837.
@@ -965,19 +971,13 @@ Plone 3.0-alpha1 - released November 24, 2006
       http://plone.org/products/plone/roadmap/161.
       [hannosch]
 
-    - Merged PLIP 8 versioning bundle http://plone.org/products/plone/roadmap/8.
+    - Merged PLIP 8 versioning bundle 
+      http://plone.org/products/plone/roadmap/8.
       [wichert]
 
-    - Converted some tests to inline doctests and some others to real unit tests
-      as opposed to integration tests.
+    - Converted some tests to inline doctests and some others to real unit 
+      tests as opposed to integration tests.
       [hannosch]
-
-    - Added a few macro hooks in personalize_form and prefs_user_details to allow
-      at least some form of easy customization without the need to customize
-      the entire forms. Now it looks for a file additional_memberdata in your
-      skin and uses the macros in there to inject them into these horrible forms.
-      Now it sucks slightly less ;-).
-      [ender]
       
     - Changed the logo template 'global_logo' to not use the image replacement
       approach, but use a straightforward link/image approach instead.
@@ -1036,8 +1036,8 @@ Plone 3.0-alpha1 - released November 24, 2006
       ATBTreeFolder from ATContentTypes instead.
       [hannosch]
 
-    - Added unicodeFallbackPatch that allows to use utf-8 encoded strings to be
-      used inside the Zope3 TAL engine.
+    - Added unicodeFallbackPatch that allows to use utf-8 encoded strings to 
+      be used inside the Zope3 TAL engine.
       [ree, hannosch]
 
     - Fixed the 'Unauthorized: You are not allowed to access 'Creator' in this
@@ -1078,16 +1078,17 @@ Plone 3.0-alpha1 - released November 24, 2006
 
     - Removed deprecated FolderWorkflow, PloneWorkflow and PloneUtilities
       classes. Removed aliases for base_hasattr and transaction_note from
-      CMFPlone. Import these from CMFPlone.utils. Removed security declarations
-      for zLOG levels. zLOG usage was replaced by Python's logging module.
+      CMFPlone. Import these from CMFPlone.utils. Removed security 
+      declarations for zLOG levels. zLOG usage was replaced by Python's 
+      logging module.
       [hannosch]
 
     - Removed five:traversable from configure.zcml as it is not needed anymore
       for Zope 2.10.
       [hannosch]
 
-    - Removed bbb code for MessageIDFactory, queryMultiAdapter, transaction and
-      CatalogTool._initIndexes.
+    - Removed bbb code for MessageIDFactory, queryMultiAdapter, transaction 
+      and CatalogTool._initIndexes.
       [hannosch]
 
 Plone 2.5.4 - Unreleased
@@ -1154,13 +1155,13 @@ Plone 2.5.2 - Release Candidate - released January 3, 2007
       [alecm]
 
     - links in Contents table behave as they should now - show the "pointer" 
-      hand when hovering the mouse over them. It was broken due to ajax sorting 
-      feature somehow
+      hand when hovering the mouse over them. It was broken due to ajax 
+      sorting feature somehow
       [spliter]
 
-    - event_view.pt has a better position for details table now, letting byLine 
-      and Description info to be content-wide and not to be shifted to the left,
-      bacuse of Details table
+    - event_view.pt has a better position for details table now, letting 
+      byLine and Description info to be content-wide and not to be shifted to 
+      the left, bacuse of Details table
       [spliter]
 
     - main table for columns (#portal-columns) should not have paddings or 
@@ -1186,10 +1187,10 @@ Plone 2.5.2 - Release Candidate - released January 3, 2007
       http://dev.plone.org/plone/ticket/5940
       [alecm]
 
-    - Make various icons in folder_contents explicitly render alt tags, because
-      the rendering of those images magically picks up items named 'alt' in
-      the context, which breaks the page (plus it adds usability).  Fixes
-      http://dev.plone.org/plone/ticket/5934
+    - Make various icons in folder_contents explicitly render alt tags, 
+      because the rendering of those images magically picks up items named 
+      'alt' in the context, which breaks the page. 
+      Fixes  http://dev.plone.org/plone/ticket/5934
       [alecm]
 
     - Don't assume portal_catalog when reindexing during ownership change.
@@ -1222,8 +1223,8 @@ Plone 2.5.2 - Release Candidate - released January 3, 2007
       [alecm]
 
     - Made the error displayed on SMTPRecipientsRefused during password reset
-      not display the email address, as this is an undesirable privacy leakage.
-      Fixes http://dev.plone.org/plone/ticket/5962
+      not display the email address, as this is an undesirable privacy 
+      leakage. Fixes http://dev.plone.org/plone/ticket/5962
       [alecm]
 
     - Applied the Hotfix for CVE-2006-4249, which also fixes
@@ -1256,8 +1257,9 @@ Plone 2.5.2 - Release Candidate - released January 3, 2007
     - Injected Plone 2.1.4 into the migration chain.
       [stefan]
 
-    - Lots of minor whitespace corrections, found by using the new i18ndude 3.0
-      which is based on zope.tal.talgettext for extraction of translation files.
+    - Lots of minor whitespace corrections, found by using the new i18ndude 
+      3.0 which is based on zope.tal.talgettext for extraction of translation 
+      files.
       [hannosch]
 
     - Fixed a minor spelling inconsistency in folder_localrole_form.
@@ -1281,11 +1283,11 @@ Plone 2.5.2 - Release Candidate - released January 3, 2007
     - Updated links in the automatically generated front-page.
       [hannosch]
 
-    - Added a few macro hooks in personalize_form and prefs_user_details to
-      allow at least some form of easy customization without the need to
-      customize the entire forms. Now it looks for a file additional_memberdata
-      in your skin and uses the macros in there to inject them into these
-      horrible forms. Now it sucks slightly less ;-).
+    - Added a few macro hooks in personalize_form and prefs_user_details to 
+      allow at least some form of easy customization without the need to 
+      customize the entire forms. Now it looks for a file 
+      'additional_memberdata' in your skin and uses the macros in there to 
+      inject them into these forms.
       [ender]
 
     - livesearch_reply.py mixed up utf-8-encoded strings and unicode strings
@@ -1441,12 +1443,13 @@ Plone 2.5.1-rc1 - released September 11, 2006
       [paregorius] [alecm]
 
     - Made PloneTool.browserDefault check for a result of None from getLayout
-      and raise a sensible error.  Generally this means that the FTI is missing
-      or otherwise incorrect. Fixes http://dev.plone.org/plone/ticket/5676.
+      and raise a sensible error.  Generally this means that the FTI is 
+      missing or otherwise incorrect. 
+      Fixes http://dev.plone.org/plone/ticket/5676.
       [alecm]
 
-    - Added migration to reindex the catalog which is necessary for the changes
-      made for http://dev.plone.org/plone/ticket/5569 and
+    - Added migration to reindex the catalog which is necessary for the 
+      changes made for http://dev.plone.org/plone/ticket/5569 and
       http://dev.plone.org/plone/ticket/5231.
       [alecm]
 
@@ -1464,16 +1467,16 @@ Plone 2.5.1-rc1 - released September 11, 2006
 
     - Added a workaround for erroneous indexing behavior for words containing
       non-ascii characters. These were treated as word breaks so far. The code
-      works for a site encoding of 'utf-8' now as well as proper unicode usage.
-      This closes http://dev.plone.org/plone/ticket/5231.
+      works for a site encoding of 'utf-8' now as well as proper unicode 
+      usage. This closes http://dev.plone.org/plone/ticket/5231.
       [hannosch]
 
     - Added migration to remove plone.css from portal_css. Fixes
       http://dev.plone.org/plone/ticket/5614.
       [alecm]
 
-    - Fixed wrong usage of label tag. Added one for attribute that was missing.
-      This closes http://dev.plone.org/plone/ticket/5539.
+    - Fixed wrong usage of label tag. Added one for attribute that was 
+      missing. This closes http://dev.plone.org/plone/ticket/5539.
       [ender]
 
     - Added test that ensures the language is getting set in header.
@@ -1659,8 +1662,9 @@ Plone 2.5 - released June 16, 2006
     - Fix several wrong usages of the 'label' tag.
       [nouri]
 
-    - Added little spamProtect.py enhancement, to allow overwriting of the name
-      that should be shown. This closes http://dev.plone.org/plone/ticket/4868.
+    - Added little spamProtect.py enhancement, to allow overwriting of the 
+      name that should be shown. This closes
+      http://dev.plone.org/plone/ticket/4868.
       [hannosch]
 
     - Use sort_limit in the search for portlet_recent. Fixes
@@ -1668,7 +1672,8 @@ Plone 2.5 - released June 16, 2006
       [alecm]
 
     - Expose allowAnonymousViewAbout and allowRolesToAddKeywords in the
-      site configuration configlet. Fixes http://dev.plone.org/plone/ticket/5275
+      site configuration configlet. Fixes 
+      http://dev.plone.org/plone/ticket/5275
       [wichert]
 
     - Move the 'mail password' text and link on the login form so the tab
@@ -1695,7 +1700,8 @@ Plone 2.5 - released June 16, 2006
       [limi] [spliter]
 
     - Moved column padding to public.css to make sure it doesn't stick around
-      when doing customizations of the site theme. It used to be in columns.css.
+      when doing customizations of the site theme. It used to be in 
+      columns.css.
       [limi]
 
     - Fixed private attribute access in PloneBaseTool createExprContext to use
@@ -1708,8 +1714,8 @@ Plone 2.5 - released June 16, 2006
       versions, and Five applications.
       [siebo]
 
-    - Updated the GenericSetup profile format to CMF1.6-style. No configuration
-      changes were made, only format changes.
+    - Updated the GenericSetup profile format to CMF1.6-style. No 
+      configuration changes were made, only format changes.
       [hannosch]
 
     - Various small i18n markup fixes. Updated folder_edit_form to conform to
@@ -1767,7 +1773,8 @@ Plone 2.5 - released June 16, 2006
       This closes http://dev.plone.org/plone/ticket/5430.
       [hannosch]
 
-    - Fixed some i18n markup problems revealed by the Zope 2.10 ZChecker tests.
+    - Fixed some i18n markup problems revealed by the Zope 2.10 ZChecker 
+      tests.
       [hannosch]
 
     - Moved css rules for the photo album view inside Plone's public.css,
@@ -1784,8 +1791,8 @@ Plone 2.5 - released June 16, 2006
       [wald]
 
     - When setting some background to the top, Live Search did not look
-      properly. Moreover in IE it had a bad visual behavior. Changed the visual
-      representation of the Live Search to repair the improper look.
+      properly. Moreover in IE it had a bad visual behavior. Changed the 
+      visual representation of the Live Search to repair the improper look.
       This closes http://dev.plone.org/plone/ticket/4313 and
       http.://dev.plone.org/plone/ticket/5005.
       [wald]
@@ -1808,8 +1815,8 @@ Plone 2.5 - released June 16, 2006
       'Show all'. This closes http://dev.plone.org/plone/ticket/5425.
       [hannosch]
 
-    - Fixed incorrect coloring of workflow states in content menu in some cases,
-      due to missing normalizeString call.
+    - Fixed incorrect coloring of workflow states in content menu in some 
+      cases, due to missing normalizeString call.
       This fixes http://dev.plone.org/plone/ticket/5078.
       [hannosch]
 
@@ -1981,8 +1988,8 @@ Plone 2.5 - released June 16, 2006
       #kupu-underline-button { display: inline; }
       [limi]
 
-    - Fixed up Summary View to show author/date on News Items and location/time
-      on Events.
+    - Fixed up Summary View to show author/date on News Items and 
+      location/time on Events.
       [limi]
 
     - Added condition so that you don't get the "send feedback to author" on
@@ -2003,8 +2010,8 @@ Plone 2.5 - released June 16, 2006
       [limi]
 
     - Adjusted status message related methods of PloneTool to the new
-      implementation of statusmessages as an adapter for the request rather than
-      a utility.
+      implementation of statusmessages as an adapter for the request rather 
+      than a utility.
       [hannosch]
 
     - Added some missing .metadata file for images.
@@ -2026,13 +2033,14 @@ Plone 2.5 - released June 16, 2006
       http://dev.plone.org/plone/ticket/5264.
       [optilude]
 
-    - Making the user-name link in the personal-bar link to the author profile.
+    - Making the user-name link in the personal-bar link to the author 
+      profile.
       Fixes http://dev.plone.org/plone/ticket/5268.
       [optilude]
 
     - Added more insane TAL logic to portlets_fetcher.pt to actually show the
-      error to the user, as opposed to simply logging it. If anyone has an issue
-      with this, please just remove the tal:on-error. Fixes
+      error to the user, as opposed to simply logging it. If anyone has an 
+      issue  with this, please just remove the tal:on-error. Fixes
       http://dev.plone.org/plone/ticket/5282 and
       http://dev.plone.org/plone/ticket/2850.
       [optilude]
@@ -2055,8 +2063,8 @@ Plone 2.5 - released June 16, 2006
       - Updating icons to better match the Plone style
 
       - Improved tool ordering (growing elements like the text format selector
-        should be at the end, since they displace all the other icons when they
-        change if not)
+        should be at the end, since they displace all the other icons when 
+        they change if not)
 
       - Fixed stupid bug in Mozilla by explicitly setting the link styling
         inside Kupu
@@ -2104,15 +2112,16 @@ Plone 2.5 - released June 16, 2006
       [hannosch]
 
     - Fixed inconsistencies where some 'Controller Python Script' were being
-      declared as normal 'Script (Python)' and were missing the state variable.
+      declared as normal 'Script (Python)' and were missing the state 
+      variable.
       [deo]
 
     - Fix confusion between user names and user ids in the membership tool.
       Fixes http://dev.plone.org/plone/ticket/5098
       [wichert]
 
-    - Fixed bug: can't access content when the user have no permission to access
-      the acquired left_slots/right_slots properties.
+    - Fixed bug: can't access content when the user have no permission to 
+      access the acquired left_slots/right_slots properties.
       [panjunyong]
 
     - Introduced a new class "tile" to use in the portlets. The previous
@@ -2253,8 +2262,8 @@ Plone 2.5 - released June 16, 2006
       Fixes http://dev.plone.org/plone/ticket/4438
       [alecm]
 
-    - Removed code from Portal.py for default_frontpage. This is now handled by
-      the GenericSetup driven site creation. This fixes
+    - Removed code from Portal.py for default_frontpage. This is now handled 
+      by the GenericSetup driven site creation. This fixes
       http://dev.plone.org/plone/ticket/5332
       [hannosch]
 
@@ -2293,14 +2302,16 @@ Plone 2.5 - released June 16, 2006
       CMFPlone/profiles/default directory)
       [rafrombrc]
 
-    - Added ignoredSkinLayers option to zcheck.py to filter out certain folders.
+    - Added ignoredSkinLayers option to zcheck.py to filter out certain 
+      folders.
       [hannosch]
 
     - Removed default front-page from ./www. New location is:
       ./profiles/default/structure
       [hannosch]
 
-    - Merged PlonePAS bundle. This implements the start of step 2 for PLIP 102.
+    - Merged PlonePAS bundle. This implements the start of step 2 for PLIP 
+      102.
       [wichert]
 
     - Do no list all groups in the sharing screen, but make it possible to
@@ -2312,8 +2323,8 @@ Plone 2.5 - released June 16, 2006
       Fixes http://dev.plone.org/plone/ticket/5098
       [wichert]
 
-    - Converted unit tests to use the external PloneTestCase product instead of
-      a local modified copy.
+    - Converted unit tests to use the external PloneTestCase product instead 
+      of a local modified copy.
       [hannosch]
 
     - Factored out 'default page'-related functionality into a view
@@ -2339,8 +2350,8 @@ Plone 2.5 - released June 16, 2006
       [encolpe]
 
     - Merged plip108-five-translationservice r8093:8841 into trunk.
-      This implements PLIP 108 Zope3 MessageID's and PLIP 111 new portal status
-      message infrastructure.
+      This implements PLIP 108 Zope3 MessageID's and PLIP 111 new portal 
+      status message infrastructure.
       [hannosch]
 
     - Merged hannosch-cleanup branch. This removes a lot of unused files and
