@@ -207,6 +207,11 @@ input.searchPage {
     font-size: 200% !important;
 }
 
+form.searchPage input.searchButton {
+    background-position:5px 7px;
+    padding:1px 10px 1px 25px;
+}
+
 /* LiveSearch styles */
 .LSRes {
     font-family:  <dtml-var fontFamily>;

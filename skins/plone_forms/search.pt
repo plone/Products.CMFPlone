@@ -37,11 +37,11 @@
                name="SearchableText"
                type="text"
                size="25"
-               title="Enter search terms"
+               title="Search Site"
                i18n:attributes="title title_search_title;"
                tal:attributes="value request/SearchableText|nothing;"
                />
-        <input class="searchPage"
+        <input class="searchPage searchButton"
                type="submit"
                value="Search"
                i18n:attributes="value label_search;"/>
