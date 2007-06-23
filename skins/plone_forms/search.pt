@@ -89,9 +89,6 @@
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
 
-
-        <!-- Search results -->
-
         <dl class="searchResults">
         <tal:results repeat="result batch">
         <tal:entry define="result_url result/getURL;
@@ -113,7 +110,8 @@
                     Cropped description
                 </span>
 
-            <span class="documentByLine">
+            <span class="documentByLine"
+                  tal:condition="python:not isAnon or site_properties.allowAnonymousViewAbout">
                 <span class="documentAuthor"
                     i18n:translate="label_by_author">
                 by
@@ -171,7 +169,6 @@
         </tal:results>
         </dl>
          
-        <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
     </div>
