@@ -551,10 +551,6 @@ dl.error dd {
     color: &dtml-discreetColor;;
     margin: 0em 0em 0.5em 0em;
 }
-#categories {
-    font-size: &dtml-fontSmallSize;;
-    color: &dtml-discreetColor;;
-}
 #categories ul {
     list-style-image: none;
     list-style-type: none;
