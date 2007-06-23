@@ -199,6 +199,14 @@ dl.searchResults dt {
     font-weight: normal;
 }
 
+form.searchPage {
+    text-align: center;
+}
+
+input.searchPage {
+    font-size: 200% !important;
+}
+
 /* LiveSearch styles */
 .LSRes {
     font-family:  <dtml-var fontFamily>;
@@ -559,26 +567,15 @@ dl.error dd {
     margin-bottom: 0.5em;
     display: block;
 }
-#category ul,
-span.category ul {
+#category ul {
     list-style-image: none;
     list-style-type: none;
     display: inline;
     margin: 0;
 }
-#category ul li,
-span.category ul li {
+#category ul li {
     display: inline;
 }
-#category a,
-span.category a {
-    color: #74ae0b;
-}
-
-dd.byline {
-    margin-top: -1em;
-}
-
 .discussion {
     margin-top: 1em;
 }
@@ -968,6 +965,9 @@ textarea.proportional {
     padding: 1px 0px 10px 16px;
     font-size: &dtml-fontSmallSize;;
     text-decoration: none;
+}
+.link-category {
+    color: #74ae0b !important;
 }
 .link-user {
     background: transparent url(&dtml-portal_url;/user.gif) 0 1px no-repeat;

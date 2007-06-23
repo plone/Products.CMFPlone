@@ -30,6 +30,35 @@
                  searchterm request/SearchableText|nothing;
                  use_view_action site_properties/typesUseViewActionInListings|python:();">
 
+    <form name="searchform" 
+          action="search"
+          class="searchPage">
+        <input class="searchPage"
+               name="SearchableText"
+               type="text"
+               size="25"
+               title="Search Site"
+               i18n:attributes="title title_search_title;"
+               tal:attributes="value request/SearchableText|nothing;"
+            class="inputLabel" />
+        <input class="searchPage"
+               type="submit"
+               value="Search"
+               i18n:attributes="value label_search;"/>
+
+        <p class="discreet"
+           i18n:translate="search_results_advanced">
+        Did you not find what you were looking for? Try the
+        <span i18n:name="advanced_search">
+        <a href=""
+           i18n:translate="search_results_advanced_link"
+           tal:attributes="href string:$portal_url/search_form">Advanced Search</a>
+        </span>
+        for more precise search options.
+        </p>
+    </form>
+
+
     <h1 class="documentFirstHeading">
         <span i18n:translate="heading_search_results">
             Search results
@@ -53,19 +82,10 @@
         </a>
     </p>
 
+
     <div tal:condition="not: results">
         <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>
     </div>
-
-    <p i18n:translate="search_results_advanced">
-    Did you not find what you were looking for? Try the
-    <span i18n:name="advanced_search">
-    <a href=""
-       i18n:translate="search_results_advanced_link"
-       tal:attributes="href string:$portal_url/search_form">Advanced Search</a>
-    </span>
-    for more precise search options.
-    </p>
 
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
@@ -125,6 +145,7 @@
                     <tal:filedunder i18n:translate="label_filed_under">filed under:</tal:filedunder>
                         <span tal:repeat="category categories">
                             <a href=""
+                               class="link-category"
                                rel="tag"
                                tal:content="category"
                                tal:attributes="href string:${portal_url}/search?Subject%3Alist=${category}">
