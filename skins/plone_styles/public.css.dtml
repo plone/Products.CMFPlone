@@ -192,6 +192,13 @@ h3, h4, h5, h6 {
     text-transform: &dtml-textTransform;;
 }
 
+/* Search results elements */
+
+dl.searchResults dt {
+    font-size: 140%;
+    font-weight: normal;
+}
+
 /* LiveSearch styles */
 .LSRes {
     font-family:  <dtml-var fontFamily>;
@@ -549,20 +556,29 @@ dl.error dd {
     font-size: &dtml-fontSmallSize;;
     font-weight: normal;
     color: &dtml-discreetColor;;
-    margin: 0em 0em 0.5em 0em;
+    margin-bottom: 0.5em;
+    display: block;
 }
-#categories ul {
+#category ul,
+span.category ul {
     list-style-image: none;
     list-style-type: none;
     display: inline;
     margin: 0;
 }
-#categories ul li {
+#category ul li,
+span.category ul li {
     display: inline;
 }
-#categories a {
+#category a,
+span.category a {
     color: #74ae0b;
 }
+
+dd.byline {
+    margin-top: -1em;
+}
+
 .discussion {
     margin-top: 1em;
 }

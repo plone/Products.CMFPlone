@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added proper byline on search results, optimized layout.
+      [limi]
+
     - Adding support for the rel="tag" microformat. 
       This closes http://dev.plone.org/plone/ticket/5351
       [limi]
