@@ -9,6 +9,10 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from cStringIO import StringIO
 from gzip import GzipFile
 
+from plone.memoize import ram
+
+def _render_cachekey(fun, self):
+    return "sitemap" # fixed cache key only for that one as the sitemap is global
 
 class SiteMapView(BrowserView):
 
@@ -28,16 +32,9 @@ class SiteMapView(BrowserView):
                 'modificationdate': item.modified.toZone("GMT+0").strftime("%Y-%m-%dT%H:%M:%S+00:00"),
             }
 
-    def __call__(self):
-        """render the template and compress it"""
-        # check if we are allowed to be shown
-        sp = getToolByName(aq_inner(self.context), 'portal_properties').site_properties
-        if not sp.enable_sitemap:
-            raise NotFound(self.context, "sitemap.xml.gz", self.request)
-
-        # set the headers
-        self.request.RESPONSE.setHeader("Content-Type",
-                "application/octet-stream")
+    @ram.cache(_render_cachekey)
+    def generate(self):
+        """generate the gzipped sitemap"""
         xml = self.template()
         fp = StringIO()
         gzip = GzipFile("sitemap.xml.gz","w",9,fp)
@@ -46,3 +43,16 @@ class SiteMapView(BrowserView):
         data = fp.getvalue()
         fp.close()
         return data
+        
+    def __call__(self):
+        """render the template and compress it"""
+        # check if we are allowed to be shown"
+        sp = getToolByName(aq_inner(self.context), 'portal_properties').site_properties
+        if not sp.enable_sitemap:
+            raise NotFound(self.context, "sitemap.xml.gz", self.request)
+
+        # set the headers
+        self.request.RESPONSE.setHeader("Content-Type",
+                "application/octet-stream")
+
+        return self.generate()
