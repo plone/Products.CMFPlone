@@ -25,7 +25,7 @@ class SiteMapView(BrowserView):
         for item in catalog.searchResults({'Language':'all'}):
             yield {
                 'url': item.getURL(),
-                'modificationdate': item.ModificationDate.replace(' ','T'),
+                'modificationdate': item.modified.toZone("GMT+0").strftime("%Y-%m-%dT%H:%M:%S+00:00"),
             }
 
     def __call__(self):
