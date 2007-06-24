@@ -694,8 +694,6 @@ def addFormInputLabelJS(portal, out):
 
 
 registration = (('archetype_tool', IArchetypeTool),
-                ('reference_catalog', IReferenceCatalog),
-                ('uid_catalog', IUIDCatalog),
                 ('mimetypes_registry', IMimetypesRegistryTool),
                 ('portal_transforms', IPortalTransformsTool),
                 ('portal_atct', IATCTTool),
@@ -738,7 +736,7 @@ registration = (('archetype_tool', IArchetypeTool),
 
 invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
                 IPurgePolicyTool, IRepositoryTool, IStorageTool,
-                IFormControllerTool,
+                IFormControllerTool, IReferenceCatalog,, IUIDCatalog,
                )
 
 def registerToolsAsUtilities(portal, out):
