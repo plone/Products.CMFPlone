@@ -736,7 +736,7 @@ registration = (('archetype_tool', IArchetypeTool),
 
 invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
                 IPurgePolicyTool, IRepositoryTool, IStorageTool,
-                IFormControllerTool, IReferenceCatalog,, IUIDCatalog,
+                IFormControllerTool, IReferenceCatalog, IUIDCatalog,
                )
 
 def registerToolsAsUtilities(portal, out):
