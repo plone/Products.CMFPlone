@@ -27,11 +27,23 @@
      interface="Products.ATContentTypes.interface.IATCTTool"
      object="/portal_atct"/>
   <utility
+     interface="Products.CMFCalendar.interfaces.ICalendarTool"
+     object="/portal_calendar"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IActionsTool"
+     object="/portal_actions"/>
+  <utility
      interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
      object="/portal_actionicons"/>
   <utility
      interface="Products.CMFCore.interfaces.ICachingPolicyManager"
      object="/caching_policy_manager"/>
+  <utility
+     interface="Products.CMFCore.interfaces.ICatalogTool"
+     object="/portal_catalog"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IContentTypeRegistry"
+     object="/content_type_registry"/>
   <utility
      interface="Products.CMFCore.interfaces.IDiscussionTool"
      object="/portal_discussion"/>
@@ -54,11 +66,23 @@
      interface="Products.CMFCore.interfaces.ISiteRoot"
      object="/"/>
   <utility
+     interface="Products.CMFCore.interfaces.ISkinsTool"
+     object="/portal_skins"/>
+  <utility
      interface="Products.CMFCore.interfaces.ISyndicationTool"
      object="/portal_syndication"/>
   <utility
+     interface="Products.CMFCore.interfaces.ITypesTool"
+     object="/portal_types"/>
+  <utility
      interface="Products.CMFCore.interfaces.IUndoTool"
      object="/portal_undo"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IURLTool"
+     object="/portal_url"/>
+  <utility
+     interface="Products.CMFCore.interfaces.IConfigurableWorkflowTool"
+     object="/portal_workflow"/>
   <utility
      interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
      object="/portal_uidannotation"/>
