@@ -1055,8 +1055,6 @@ textarea.proportional {
 /* For ghosted elements */
 .visualGhosted {
     opacity: 0.2;
-    -moz-opacity: 0.2;
-    -khtml-opacity: 0.2;
 }
 
 /* Fullscreen */
