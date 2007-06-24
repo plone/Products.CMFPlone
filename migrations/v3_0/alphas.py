@@ -5,7 +5,6 @@ from zope.app.component.interfaces import ISite
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
-from zope.component import queryUtility
 
 from Acquisition import aq_base
 from Globals import package_home
@@ -43,6 +42,11 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFDiffTool.interfaces import IDiffTool
+from Products.CMFEditions.interfaces import IArchivistTool
+from Products.CMFEditions.interfaces import IPortalModifierTool
+from Products.CMFEditions.interfaces import IPurgePolicyTool
+from Products.CMFEditions.interfaces.IRepository import IRepositoryTool
+from Products.CMFEditions.interfaces import IStorageTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.interfaces import IControlPanel
@@ -731,7 +735,10 @@ registration = (('archetype_tool', IArchetypeTool),
                 ('portal_uidannotation', IUniqueIdAnnotationManagement),
                 ('portal_uidgenerator', IUniqueIdGenerator),
                 ('portal_uidhandler', IUniqueIdHandler),
-                ('portal_languages', ILanguageTool),
+               )
+
+invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
+                IPurgePolicyTool, IRepositoryTool, IStorageTool,
                )
 
 def registerToolsAsUtilities(portal, out):
@@ -749,6 +756,10 @@ def registerToolsAsUtilities(portal, out):
             if reg[0] in portal.keys():
                 tool = aq_base(portal[reg[0]])
                 sm.registerUtility(tool, reg[1])
+
+    for reg in invalid_regs:
+        if sm.queryUtility(reg) is not None:
+            sm.unregisterUtility(provided=reg)
 
     out.append("Registered tools as utilities.")
 

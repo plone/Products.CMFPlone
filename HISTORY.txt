@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Started removing utility registrations for tools that are not utilities.
+      [hannosch]
+
     - Updated the factory and migration_util code to use the new GenericSetup
       methods for directly loading profiles, without setting the context.
       [hannosch]

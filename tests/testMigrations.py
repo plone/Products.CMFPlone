@@ -1735,7 +1735,7 @@ class TestMigrations_v3_0(MigrationTest):
                       IConfigurableWorkflowTool, IUniqueIdAnnotationManagement,
                       IUniqueIdGenerator, IUniqueIdHandler, ISetupTool, 
                       IQuickInstallerTool, ICSSRegistry, IJSRegistry, 
-                      IFormControllerTool, ILanguageTool, IDiffTool,
+                      IFormControllerTool, IDiffTool,
                       IATCTTool, IArchetypeTool, IReferenceCatalog,
                       IUIDCatalog, IMimetypesRegistryTool,
                       IPortalTransformsTool, IGroupTool, IGroupDataTool )
@@ -1751,6 +1751,23 @@ class TestMigrations_v3_0(MigrationTest):
         registerToolsAsUtilities(self.portal, [])
         for i in interfaces:
             self.failIf(sm.queryUtility(i) is None)
+
+    def testDontRegisterToolsAsUtilities(self):
+        sm = getSiteManager(self.portal)
+        interfaces = (ILanguageTool, IArchivistTool, IPortalModifierTool,
+                      IPurgePolicyTool, IRepositoryTool, IStorageTool)
+        for i in interfaces:
+            sm.unregisterUtility(provided=i)
+        registerToolsAsUtilities(self.portal, [])
+        for i in interfaces:
+            self.failUnless(sm.queryUtility(i) is None)
+
+        for i in interfaces:
+            sm.unregisterUtility(provided=i)
+        registerToolsAsUtilities(self.portal, [])
+        registerToolsAsUtilities(self.portal, [])
+        for i in interfaces:
+            self.failUnless(sm.queryUtility(i) is None)
     
     def testInstallKss(self, unregister=True):
         'Test kss migration'

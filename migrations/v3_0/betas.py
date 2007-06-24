@@ -3,11 +3,13 @@ from zope.component import queryUtility
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCore.interfaces import ITypesTool
-from Products.ResourceRegistries.interfaces import IKSSRegistry, IJSRegistry
 from Products.CMFCore.Expression import Expression
-from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from Products.CMFCore.utils import getToolByName
+from Products.ResourceRegistries.interfaces import IKSSRegistry, IJSRegistry
+
+from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from alphas import addContentRulesAction
+from alphas import registerToolsAsUtilities
 
 from Acquisition import aq_base
 
@@ -73,6 +75,8 @@ def beta3_beta4(portal):
     updateLanguageControlPanel(portal, out)
 
     updateTopicTitle(portal, out)
+
+    registerToolsAsUtilities(portal, out)
 
     return out
 
