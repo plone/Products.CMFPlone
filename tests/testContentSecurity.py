@@ -66,9 +66,9 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         folder.manage_addLocalRoles('user2', ('Owner',))
         folder.invokeFactory('Folder', id='subfolder')
         #Turn off local role acquisition
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         folder.subfolder.folder_localrole_set(use_acquisition=0)
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         self.login('user2')
         # This should now raise Unauthorized
         self.assertRaises(Unauthorized, folder.subfolder.invokeFactory, 'Document', 'new')
@@ -82,9 +82,9 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         folder.invokeFactory('Folder', id='subfolder')
         subfolder = folder.subfolder
         #Turn off local role acquisition
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         subfolder.folder_localrole_set(use_acquisition=0)
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         subfolder.invokeFactory('Folder', id='subsubfolder')
         subfolder.subsubfolder.manage_addLocalRoles('user2', ('Owner',))
         self.login('user2')
@@ -96,14 +96,14 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # invalid
         self.login('user1')
         folder = self.membership.getHomeFolder('user1')
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         folder.manage_addLocalRoles('user2', ('Owner',))
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         folder.invokeFactory('Folder', id='subfolder')
         subfolder = folder.subfolder
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         subfolder.folder_localrole_set(use_acquisition=0)
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         #Turn off local role acquisition
         subfolder.invokeFactory('Document', id='new')
         subfolder.new.content_status_modify(workflow_action='publish')
@@ -147,15 +147,15 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         self.portal.portal_workflow.updateRoleMappings()
 
         self.login('user1')
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         folder = self.membership.getHomeFolder('user1')
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         folder.manage_addLocalRoles('user2', ('Member',))
         folder.invokeFactory('Folder', id='subfolder')
         subfolder = folder.subfolder
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         subfolder.folder_localrole_set(use_acquisition=0)
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         subfolder.invokeFactory('Document', id='new')
         subfolder.new.content_status_modify(workflow_action='publish')
         subfolder.new.manage_addLocalRoles('user3', ('Member',))

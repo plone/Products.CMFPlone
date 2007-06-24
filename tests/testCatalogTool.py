@@ -386,9 +386,9 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # After adding a group with access rights and containing user2,
         # a search must find the document.
         groupname = self.addUser2ToGroup()
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         self.login(user2)
         self.assertEqual(self.catalog(SearchableText='aaa')[0].id, 'aaa')
 
@@ -396,9 +396,9 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # After adding a group with access rights and containing user2,
         # a search must find the document in subfolders.
         groupname = self.addUser2ToGroup()
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         self.login(user2)
         # Local Role works in subfolder
         self.assertEqual(self.catalog(SearchableText='bbb')[0].id, 'bbb')
@@ -408,11 +408,11 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # a search should not find documents in subfolders which have
         # disabled local role acquisition.
         groupname = self.addUser2ToGroup()
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
         # Acquisition off for folder2
         self.folder.folder2.folder_localrole_set(use_acquisition=0)
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         # Everything in subfolder should be invisible
         self.login(user2)
         self.failIf(self.catalog(SearchableText='bar'))
@@ -767,9 +767,9 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         doc_path = '/'.join(self.folder.doc.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc_path])
         # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         self.folder.folder_delete()
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         self.failIf(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedWhenDeletingParentFolder(self):

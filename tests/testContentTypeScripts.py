@@ -185,7 +185,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testObjectDelete(self):
         self.folder.invokeFactory('Document', id='doc')
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         self.folder.doc.object_delete()
         self.failIf('doc' in self.folder.objectIds())
 

@@ -102,7 +102,7 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
 
     def testPrefsAddGroupPostOnly(self):
         self.setRoles(['Manager'])	
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         self.assertRaises(Forbidden, self.portal.prefs_group_edit, addname='foo')
 
     def testPrefsUserMembershipEditPostOnly(self):
@@ -110,7 +110,7 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         self.groups = self.portal.portal_groups
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup('foo')
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         self.app.REQUEST.set('delete',['foo'])
         self.assertRaises(Forbidden, self.portal.prefs_user_membership_edit, userid='barney')
         del self.app.REQUEST.other['delete']
@@ -119,7 +119,7 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
 
     def test_ploneChangePasswordPostOnly(self):
         self.login(default_user) 
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         self.assertRaises(Forbidden, self.portal.plone_change_password, current=default_password, password=default_password, password_confirm=default_password)
 
     def test_bug4333_delete_user_remove_memberdata(self):
@@ -131,9 +131,9 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         self.failUnlessEqual(barney.getProperty('email'), 'barney@bedrock.com')
         del barney
 
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         self.portal.prefs_user_manage(delete=['barney'])
-        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.setRequestMethod('GET')
         md = memberdata._members
         self.failIf(md.has_key('barney'))
 

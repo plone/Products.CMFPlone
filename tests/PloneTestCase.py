@@ -20,6 +20,10 @@ class PloneTestCase(PloneTestCase):
        something fancy on Your Branch (tm), put it here.
     """
 
+    def setRequestMethod(self, method):
+        self.app.REQUEST.set('REQUEST_METHOD', method)
+        self.app.REQUEST.method = method
+
 
 class FunctionalTestCase(Functional, PloneTestCase):
     """This is a stub now, but in case you want to try
