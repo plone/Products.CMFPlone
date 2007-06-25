@@ -1,12 +1,10 @@
 from zope.interface import implements
-from zope.component import getUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
 
 from plone.memoize.view import memoize, memoize_contextless
 
 from Acquisition import aq_inner
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
@@ -26,7 +24,7 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def portal(self):
-        return getUtility(ISiteRoot)
+        return getToolByName(aq_inner(self.context), 'portal_url').getPortalObject()
     
     @memoize_contextless
     def portal_title(self):
