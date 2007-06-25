@@ -102,15 +102,6 @@
      interface="Products.PlonePAS.interfaces.group.IGroupDataTool"
      object="/portal_groupdata"/>
   <utility
-     interface="Products.ResourceRegistries.interfaces.ICSSRegistry"
-     object="/portal_css"/>
-  <utility
-     interface="Products.ResourceRegistries.interfaces.IKSSRegistry"
-     object="/portal_kss"/>
-  <utility
-     interface="Products.ResourceRegistries.interfaces.IJSRegistry"
-     object="/portal_javascripts"/>
-  <utility
      interface="zope.app.cache.interfaces.ram.IRAMCache"
      factory="zope.app.cache.ram.RAMCache"/>
  </utilities>
