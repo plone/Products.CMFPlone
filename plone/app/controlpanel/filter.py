@@ -197,7 +197,7 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
     @apply
     def style_whitelist():
         def get(self):
-            return self.kupu_tool.style_whitelist
+            return self.kupu_tool.getStyleWhitelist()
         def set(self, value):
             self.kupu_tool.style_whitelist = list(value)
         return property(get, set)
