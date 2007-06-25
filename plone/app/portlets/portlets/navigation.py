@@ -119,6 +119,7 @@ class Assignment(base.Assignment):
 
 def _render_cachekey(fun, self):
     key = StringIO()
+    print >> key, self.request['HTTP_HOST']
     print >> key, cache.get_language(aq_inner(self.context), self.request)
 
     catalog = getToolByName(self.context, 'portal_catalog')

@@ -12,6 +12,7 @@ def get_language(context, request):
 
 def render_cachekey(fun, self):
     key = StringIO()
+    print >> key, self.request['HTTP_HOST']    
     print >> key, get_language(aq_inner(self.context), self.request)
 
     def add(brain):

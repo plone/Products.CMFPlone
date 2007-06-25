@@ -19,6 +19,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote_plus
 
 from plone.memoize import ram
+from plone.app.portlets import cache
 from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
@@ -39,10 +40,8 @@ def _render_cachekey(fun, self):
         raise ram.DontCache()
     else:
         key = StringIO()
-        
-        portal_state = component.getMultiAdapter(
-            (self.context, self.request), name=u'plone_portal_state')
-        print >> key, portal_state.locale().getLocaleID()
+        print >> key, self.request['HTTP_HOST']
+        print >> key, cache.get_language(aq_inner(self.context), self.request)
         
         year, month = self.getYearAndMonthToDisplay()
         print >> key, year
