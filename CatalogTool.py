@@ -21,9 +21,8 @@ from BTrees.Length import Length
 
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
-from Products.CMFCore.interfaces.portal_catalog \
-        import IndexableObjectWrapper as z2IIndexableObjectWrapper
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.interfaces.NonStructuralFolder import \
@@ -31,7 +30,6 @@ from Products.CMFPlone.interfaces.NonStructuralFolder import \
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
-from Products.CMFPlone.utils import log_deprecated
 from OFS.IOrderSupport import IOrderedContainer
 from ZODB.POSException import ConflictError
 
@@ -310,7 +308,7 @@ registerIndexableAttribute('syndication_enabled', syndication_enabled)
 def is_default_page(obj, portal, **kwargs):
     """Is this the default page in its folder
     """
-    ptool = portal.plone_utils
+    ptool = getToolByName(portal, 'plone_utils')
     return ptool.isDefaultPage(obj)
 
 registerIndexableAttribute('is_default_page', is_default_page)
