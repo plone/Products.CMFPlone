@@ -37,7 +37,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
         _createObjectByType('Document',     self.portal, 'atctdocument')
         _createObjectByType('File',         self.portal, 'atctfile')
 
-        self.putils = getToolByName(self, "plone_utils")
+        self.putils = getToolByName(self.portal, "plone_utils")
 
     def compareLayoutVsView(self, obj, path="", viewaction=None):
         if viewaction is None:
