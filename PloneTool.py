@@ -7,8 +7,6 @@ import transaction
 from zope.deprecation import deprecate
 from zope.interface import implements
 
-from Products.CMFCore.interfaces import ISiteRoot
-
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Acquisition import aq_base, aq_inner, aq_parent
 from ComputedAttribute import ComputedAttribute
@@ -159,7 +157,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Sends a link of a page to someone."""
         host = self.getMailHost()
         template = getattr(self, 'sendto_template')
-        encoding = getUtility(ISiteRoot).getProperty('email_charset')
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        encoding = portal.getProperty('email_charset')
         if 'envelope_from' in kwargs:
             envelope_from = kwargs['envelope_from']
         else:
