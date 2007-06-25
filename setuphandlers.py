@@ -125,19 +125,21 @@ class PloneGenerator:
         # Figure out the current user preferred language
         language = None
         locale = None
-        pl = IUserPreferredLanguages(p.REQUEST)
-        if pl is not None:
-            languages = pl.getPreferredLanguages()
-            for httplang in languages:
-                parts = (httplang.split('-') + [None, None])[:3]
-                try:
-                    locale = locales.getLocale(*parts)
-                    break
-                except LoadLocaleError:
-                    # Just try the next combination
-                    pass
-            if len(languages) > 0:
-                language = languages[0]
+        request = getattr(p, 'REQUEST', None)
+        if request is not None:
+            pl = IUserPreferredLanguages(request)
+            if pl is not None:
+                languages = pl.getPreferredLanguages()
+                for httplang in languages:
+                    parts = (httplang.split('-') + [None, None])[:3]
+                    try:
+                        locale = locales.getLocale(*parts)
+                        break
+                    except LoadLocaleError:
+                        # Just try the next combination
+                        pass
+                if len(languages) > 0:
+                    language = languages[0]
 
         # Set the default language of the portal
         if language is not None and locale is not None:
