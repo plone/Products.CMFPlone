@@ -700,7 +700,6 @@ registration = (('archetype_tool', IArchetypeTool),
                 ('portal_actionicons', IActionIconsTool),
                 ('caching_policy_manager', ICachingPolicyManager),
                 ('portal_discussion', IDiscussionTool),
-                ('portal_memberdata', IMemberDataTool),
                 ('portal_metadata', IMetadataTool),
                 ('portal_properties', IPropertiesTool),
                 ('portal_registration', IRegistrationTool),
@@ -725,7 +724,7 @@ invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
                 IContentTypeRegistry, ISkinsTool, ITypesTool, IURLTool,
                 IConfigurableWorkflowTool, IPloneTool, ICSSRegistry,
                 IJSRegistry, IUniqueIdHandler, IFactoryTool, IMembershipTool,
-                IGroupTool, IGroupDataTool,
+                IGroupTool, IGroupDataTool, IMemberDataTool,
                )
 
 def registerToolsAsUtilities(portal, out):

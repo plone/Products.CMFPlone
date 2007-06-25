@@ -36,9 +36,6 @@
      interface="Products.CMFCore.interfaces.IDiscussionTool"
      object="/portal_discussion"/>
   <utility
-     interface="Products.CMFCore.interfaces.IMemberDataTool"
-     object="/portal_memberdata"/>
-  <utility
      interface="Products.CMFCore.interfaces.IMetadataTool"
      object="/portal_metadata"/>
   <utility

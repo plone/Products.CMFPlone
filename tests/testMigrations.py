@@ -1727,9 +1727,8 @@ class TestMigrations_v3_0(MigrationTest):
         interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
                       IMigrationTool, ITranslationServiceTool,
                       IActionIconsTool, ISyndicationTool,
-                      ICachingPolicyManager, IDiscussionTool,
-                      IMemberDataTool, IMetadataTool,
-                      IPropertiesTool, IRegistrationTool,  IUndoTool,
+                      ICachingPolicyManager, IDiscussionTool, IMetadataTool,
+                      IPropertiesTool, IRegistrationTool, IUndoTool,
                       IMailHost, IUniqueIdAnnotationManagement,
                       IUniqueIdGenerator, ISetupTool, IQuickInstallerTool,
                       IDiffTool, IATCTTool, IArchetypeTool,
@@ -1757,6 +1756,7 @@ class TestMigrations_v3_0(MigrationTest):
                       IConfigurableWorkflowTool, IPloneTool, ICSSRegistry,
                       IJSRegistry, IUniqueIdHandler, IFactoryTool,
                       IMembershipTool, IGroupTool, IGroupDataTool,
+                      IMemberDataTool,
                      )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
