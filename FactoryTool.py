@@ -3,8 +3,6 @@ import os
 
 from zope.interface import implements
 
-from Products.CMFCore.interfaces import IURLTool
-
 import Globals
 from AccessControl import Owned, ClassSecurityInfo, getSecurityManager
 from AccessControl.Permission import Permission
@@ -15,7 +13,6 @@ from ZPublisher.mapply import mapply
 from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore.permissions import ManagePortal
-from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import getToolByName
 from StructuredText.StructuredText import HTML
@@ -440,4 +437,3 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         return tempFolder
 
 Globals.InitializeClass(FactoryTool)
-registerToolInterface('portal_factory', IFactoryTool)
