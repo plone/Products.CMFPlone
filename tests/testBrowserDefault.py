@@ -110,7 +110,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
                          (self.portal.atctfolder, ['index_html'],))
 
     def testBrowserDefaultMixinFolderGlobalDefaultPage(self):
-        getToolByName(self, "portal_properties").site_properties.manage_changeProperties(default_page = ['foo'])
+        getToolByName(self.portal, "portal_properties").site_properties.manage_changeProperties(default_page = ['foo'])
         self.portal.atctfolder.invokeFactory('Document', 'foo')
         self.assertEqual(self.putils.browserDefault(self.portal.atctfolder),
                          (self.portal.atctfolder, ['foo']))
@@ -178,7 +178,7 @@ class TestPloneToolBrowserDefault(FunctionalTestCase):
     def testBrowserDefaultMixinWithoutFtiGivesSensibleError(self):
         # Test for issue http://dev.plone.org/plone/ticket/5676
         # Ensure that the error displayed for missing FTIs is not so cryptic
-        getToolByName(self, "portal_types")._delOb('Document')
+        getToolByName(self.portal, "portal_types")._delOb('Document')
 
         self.assertRaises(AttributeError,
                           self.portal.plone_utils.browserDefault,
@@ -205,11 +205,11 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.ob = dummy.DefaultPage()
-        sp = getToolByName(self, "portal_properties").site_properties
+        sp = getToolByName(self.portal, "portal_properties").site_properties
         self.default = sp.getProperty('default_page', [])
 
     def getDefault(self):
-        return getToolByName(self, "plone_utils").browserDefault(self.ob)
+        return getToolByName(self.portal, "plone_utils").browserDefault(self.ob)
 
     def testDefaultPageSetting(self):
         self.assertEquals(self.default, ('index_html', 'index.html',
@@ -338,7 +338,7 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
 
     def testSetDefaultPageUpdatesCatalog(self):
         # Ensure that Default page changes update the catalog
-        cat = getToolByName(self, "portal_catalog")
+        cat = getToolByName(self.portal, "portal_catalog")
         self.portal.invokeFactory('Document', 'ad')
         self.portal.invokeFactory('Document', 'other')
         self.assertEqual(len(cat(getId=['ad','other'],is_default_page=True)), 0)
