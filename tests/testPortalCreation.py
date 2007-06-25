@@ -525,7 +525,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testSyndicationTabDisabled(self):
         # Syndication tab should be disabled by default
-        for action in self.portal.portal_syndication.listActions():
+        for action in self.actions.listActions():
             if action.getId() == 'syndication' and action.visible:
                 self.fail("Actions tool still has visible 'syndication' action")
 
