@@ -40,7 +40,7 @@ def _render_cachekey(fun, self):
         raise ram.DontCache()
     else:
         key = StringIO()
-        print >> key, self.request['HTTP_HOST']
+        print >> key, getToolByName(aq_inner(self.context), 'portal_url')()
         print >> key, cache.get_language(aq_inner(self.context), self.request)
         
         year, month = self.getYearAndMonthToDisplay()
