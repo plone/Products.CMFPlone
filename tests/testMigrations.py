@@ -1728,13 +1728,12 @@ class TestMigrations_v3_0(MigrationTest):
                       IMigrationTool, ITranslationServiceTool,
                       IActionIconsTool, ISyndicationTool,
                       ICachingPolicyManager, IDiscussionTool,
-                      IMemberDataTool, IMembershipTool, IMetadataTool,
+                      IMemberDataTool, IMetadataTool,
                       IPropertiesTool, IRegistrationTool,  IUndoTool,
                       IMailHost, IUniqueIdAnnotationManagement,
                       IUniqueIdGenerator, ISetupTool, IQuickInstallerTool,
                       IDiffTool, IATCTTool, IArchetypeTool,
-                      IMimetypesRegistryTool, IPortalTransformsTool,
-                      IGroupTool, IGroupDataTool )
+                      IMimetypesRegistryTool, IPortalTransformsTool, )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
         registerToolsAsUtilities(self.portal, [])
@@ -1757,6 +1756,7 @@ class TestMigrations_v3_0(MigrationTest):
                       IContentTypeRegistry, ISkinsTool, ITypesTool, IURLTool,
                       IConfigurableWorkflowTool, IPloneTool, ICSSRegistry,
                       IJSRegistry, IUniqueIdHandler, IFactoryTool,
+                      IMembershipTool, IGroupTool, IGroupDataTool,
                      )
         for i in interfaces:
             sm.unregisterUtility(provided=i)

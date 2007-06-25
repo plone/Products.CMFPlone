@@ -39,9 +39,6 @@
      interface="Products.CMFCore.interfaces.IMemberDataTool"
      object="/portal_memberdata"/>
   <utility
-     interface="Products.CMFCore.interfaces.IMembershipTool"
-     object="/portal_membership"/>
-  <utility
      interface="Products.CMFCore.interfaces.IMetadataTool"
      object="/portal_metadata"/>
   <utility
@@ -89,12 +86,6 @@
   <utility
      interface="Products.MailHost.interfaces.IMailHost"
      object="/MailHost"/>
-  <utility
-     interface="Products.PlonePAS.interfaces.group.IGroupTool"
-     object="/portal_groups"/>
-  <utility
-     interface="Products.PlonePAS.interfaces.group.IGroupDataTool"
-     object="/portal_groupdata"/>
   <utility
      interface="zope.app.cache.interfaces.ram.IRAMCache"
      factory="zope.app.cache.ram.RAMCache"/>
