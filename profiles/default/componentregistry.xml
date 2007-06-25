@@ -84,9 +84,6 @@
      interface="Products.CMFPlone.interfaces.IMigrationTool"
      object="/portal_migration"/>
   <utility
-     interface="Products.CMFPlone.interfaces.IPloneTool"
-     object="/plone_utils"/>
-  <utility
      interface="Products.CMFQuickInstallerTool.interfaces.IQuickInstallerTool"
      object="/portal_quickinstaller"/>
   <utility

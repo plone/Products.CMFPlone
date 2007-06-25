@@ -713,7 +713,6 @@ registration = (('archetype_tool', IArchetypeTool),
                 ('portal_interface', IInterfaceTool),
                 ('portal_migration', IMigrationTool),
                 ('portal_quickinstaller', IQuickInstallerTool),
-                ('plone_utils', IPloneTool),
                 ('translation_service', ITranslationServiceTool),
                 ('MailHost', IMailHost),
                 ('portal_groups', IGroupTool),
@@ -731,7 +730,7 @@ invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
                 IFormControllerTool, IReferenceCatalog, IUIDCatalog,
                 ICalendarTool, IActionsTool, ICatalogTool,
                 IContentTypeRegistry, ISkinsTool, ITypesTool, IURLTool,
-                IConfigurableWorkflowTool,
+                IConfigurableWorkflowTool, IPloneTool,
                )
 
 def registerToolsAsUtilities(portal, out):

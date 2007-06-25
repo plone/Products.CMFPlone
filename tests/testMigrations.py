@@ -1725,7 +1725,7 @@ class TestMigrations_v3_0(MigrationTest):
     def testRegisterToolsAsUtilities(self):
         sm = getSiteManager(self.portal)
         interfaces = (ISiteRoot, IPloneSiteRoot, IControlPanel, IInterfaceTool,
-                      IMigrationTool, IPloneTool, ITranslationServiceTool,
+                      IMigrationTool, ITranslationServiceTool,
                       IActionIconsTool, ISyndicationTool, IFactoryTool,
                       ICachingPolicyManager, IDiscussionTool,
                       IMemberDataTool, IMembershipTool, IMetadataTool,
@@ -1756,7 +1756,7 @@ class TestMigrations_v3_0(MigrationTest):
                       IFormControllerTool, IReferenceCatalog, IUIDCatalog,
                       ICalendarTool, IActionsTool, ICatalogTool,
                       IContentTypeRegistry, ISkinsTool, ITypesTool, IURLTool,
-                      IConfigurableWorkflowTool,
+                      IConfigurableWorkflowTool, IPloneTool,
                      )
         for i in interfaces:
             sm.unregisterUtility(provided=i)
