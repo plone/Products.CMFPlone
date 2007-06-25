@@ -1,5 +1,4 @@
 from Acquisition import aq_parent, aq_inner
-from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFDefault.PropertiesTool import PropertiesTool as BaseTool
 from Products.CMFPlone import ToolNames
@@ -30,8 +29,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
     implements(IPropertiesTool)
     __implements__ = ((z2IPropertiesTool,) +
-                      (ActionProviderBase.__implements__,
-                      Folder.__implements__, ))
+                      (Folder.__implements__, ))
 
     manage_options = ((Folder.manage_options[0],) +
                         BaseTool.manage_options)
