@@ -66,9 +66,6 @@
      interface="Products.CMFUid.interfaces.IUniqueIdGenerator"
      object="/portal_uidgenerator"/>
   <utility
-     interface="Products.CMFUid.interfaces.IUniqueIdHandler"
-     object="/portal_uidhandler"/>
-  <utility
      interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
      object="/"/>
   <utility

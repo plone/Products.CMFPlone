@@ -720,7 +720,6 @@ registration = (('archetype_tool', IArchetypeTool),
                 ('portal_diff', IDiffTool),
                 ('portal_uidannotation', IUniqueIdAnnotationManagement),
                 ('portal_uidgenerator', IUniqueIdGenerator),
-                ('portal_uidhandler', IUniqueIdHandler),
                )
 
 invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
@@ -729,8 +728,7 @@ invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
                 ICalendarTool, IActionsTool, ICatalogTool,
                 IContentTypeRegistry, ISkinsTool, ITypesTool, IURLTool,
                 IConfigurableWorkflowTool, IPloneTool, ICSSRegistry,
-                IJSRegistry,
-
+                IJSRegistry, IUniqueIdHandler,
                )
 
 def registerToolsAsUtilities(portal, out):
