@@ -190,7 +190,7 @@ class Plone(BrowserView):
         if not props.getProperty('visible_ids', False):
             return False
 
-        pm=context.portal_membership
+        pm = getToolByName(context, "portal_membership")
         if pm.isAnonymousUser():
             return False
 
@@ -378,8 +378,8 @@ class Plone(BrowserView):
     @memoize
     def icons_visible(self):
         context = aq_inner(self.context)
-        membership = getToolByName(self, "portal_membership")
-        properties = getToolByName(self, "portal_properties")
+        membership = getToolByName(context, "portal_membership")
+        properties = getToolByName(context, "portal_properties")
 
         site_properties = getattr(properties, 'site_properties')
         icon_visibility = site_properties.getProperty('icon_visibility', 'enabled')
