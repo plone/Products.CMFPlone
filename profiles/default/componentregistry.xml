@@ -30,20 +30,11 @@
      interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
      object="/portal_actionicons"/>
   <utility
-     interface="Products.CMFCore.interfaces.ICachingPolicyManager"
-     object="/caching_policy_manager"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IDiscussionTool"
-     object="/portal_discussion"/>
-  <utility
      interface="Products.CMFCore.interfaces.IMetadataTool"
      object="/portal_metadata"/>
   <utility
      interface="Products.CMFCore.interfaces.IPropertiesTool"
      object="/portal_properties"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IRegistrationTool"
-     object="/portal_registration"/>
   <utility
      interface="Products.CMFCore.interfaces.ISiteRoot"
      object="/"/>
