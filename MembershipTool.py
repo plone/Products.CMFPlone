@@ -1,7 +1,6 @@
 import PIL
 from cStringIO import StringIO
 from Products.CMFCore.utils import getToolByName, _checkPermission
-from Products.CMFCore.utils import registerToolInterface
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import scale_image
@@ -334,4 +333,3 @@ class MembershipTool(PloneBaseTool, BaseTool):
 MembershipTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MembershipTool)
-registerToolInterface('portal_membership', IMembershipTool)
