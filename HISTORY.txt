@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Use the PlonePAS way of setting member properties
+      [wichert]
+
     - Removed utility registrations for tools that are not utilities anymore.
       [hannosch]
 

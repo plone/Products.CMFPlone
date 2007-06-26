@@ -97,11 +97,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(ManageUsers, 'setMemberProperties')
     def setMemberProperties(self, member, **properties):
-        membership = getToolByName(self, 'portal_membership')
+        pas = getToolByName(self, 'acl_users')
         if safe_hasattr(member, 'getId'):
             member = member.getId()
-        user = membership.getMemberById(member)
-        user.setMemberProperties(properties)
+        user = pas.getUserById(member)
+        user.setProperties(**properties)
 
     security.declarePublic('getSiteEncoding')
     def getSiteEncoding(self):
