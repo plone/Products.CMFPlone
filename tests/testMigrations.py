@@ -2477,7 +2477,7 @@ class TestMigrations_v3_0(MigrationTest):
     def testInstallPloneLanguageTool(self):
         CMFSite.manage_delObjects(self.portal, ['portal_languages'])
         self.uninstallProduct('PloneLanguageTool')
-        qi = getToolByName(self, "portal_quickinstaller")
+        qi = getToolByName(self.portal, "portal_quickinstaller")
         installProduct('PloneLanguageTool', self.portal, [])
         self.failUnless(qi.isProductInstalled('PloneLanguageTool'))
         self.failUnless('portal_languages' in self.portal.keys())
@@ -2619,8 +2619,8 @@ class TestMigrations_v3_0(MigrationTest):
                                               exact_match=True)), 1)
 
     def testPloneS5(self):
-        pt = getToolByName(self, "portal_types")
-        ait = getToolByName(self, "portal_actionicons")
+        pt = getToolByName(self.portal, "portal_types")
+        ait = getToolByName(self.portal, "portal_actionicons")
         document = pt.restrictedTraverse('Document')
 
         action_ids = [x.getId() for x in document.listActions()]
