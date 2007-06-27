@@ -1,11 +1,8 @@
 from zope.component import queryUtility
 
-from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFActionIcons.interfaces import IActionIconsTool
-from Products.CMFCore.interfaces import ITypesTool
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
-from Products.ResourceRegistries.interfaces import IKSSRegistry, IJSRegistry
 
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from alphas import addContentRulesAction
@@ -82,7 +79,7 @@ def beta3_beta4(portal):
 
 
 def migrateHistoryTab(portal, out):
-    portal_actions = queryUtility(IActionsTool)
+    portal_actions = getToolByName(portal, 'portal_actions', None)
     if portal_actions is not None:
         objects = getattr(portal_actions, 'object', None)
         if objects is not None:
@@ -92,14 +89,14 @@ def migrateHistoryTab(portal, out):
 
 
 def changeOrderOfActionProviders(portal, out):
-    portal_actions = queryUtility(IActionsTool)
+    portal_actions = getToolByName(portal, 'portal_actions', None)
     if portal_actions is not None:
         portal_actions.deleteActionProvider('portal_actions')
         portal_actions.addActionProvider('portal_actions')
         out.append('Changed the order of action providers.')
 
 def cleanupOldActions(portal, out):
-    portal_actions = queryUtility(IActionsTool)
+    portal_actions = getToolByName(portal, 'portal_actions', None)
     if portal_actions is not None:
         # Remove some known unused actions from the object_tabs category and
         # remove the category completely if no actions are left
@@ -157,7 +154,7 @@ def addAutoGroupToPAS(portal, out):
         out.append("Added automatic group PAS plugin")
 
 def removeS5Actions(portal, out):
-    portalTypes = queryUtility(ITypesTool)
+    portalTypes = getToolByName(portal, 'portal_types', None)
     if portalTypes is not None:
         document = portalTypes.restrictedTraverse('Document', None)
         if document:
@@ -176,7 +173,7 @@ def removeS5Actions(portal, out):
 
 def addCacheForKSSRegistry(portal, out):
     ram_cache_id = 'ResourceRegistryCache'
-    reg = queryUtility(IKSSRegistry)
+    reg = getToolByName(portal, 'portal_kss', None)
     if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
@@ -184,7 +181,7 @@ def addCacheForKSSRegistry(portal, out):
 
 def modifyKSSResources(portal, out):
     # make kukit.js conditonol and not load for anonymous
-    reg = queryUtility(IJSRegistry)
+    reg = getToolByName(portal, 'portal_javascripts', None)
     if reg is not None:
         id = '++resource++kukit-src.js'
         entry = aq_base(reg).getResourcesDict().get(id, None)
@@ -192,7 +189,7 @@ def modifyKSSResources(portal, out):
             reg.updateScript(id, expression='not:here/@@plone_portal_state/anonymous', compression='safe')
             out.append('Updated kss javascript resource %s, to disable kss for anonymous.' % id)
     # register the new kss resources
-    reg = queryUtility(IKSSRegistry)
+    reg = getToolByName(portal, 'portal_kss', None)
     if reg is not None:
         new_resources = ['at_experimental.kss', 'plone_experimental.kss']
         for id in new_resources:
@@ -242,7 +239,7 @@ def updateEditActionConditionForLocking(portal, out):
     Large_Plone_Folder, Link, Topic has been added to not display the Edit
     tab if an item is locked
     """
-    portal_types = queryUtility(ITypesTool)
+    portal_types = getToolByName(portal, 'portal_types', None)
     lockable_types = ['Document', 'Event', 'Favorite', 'File', 'Folder',
                       'Image', 'Large Plone Folder', 'Link',
                       'News Item', 'Topic']
@@ -258,7 +255,7 @@ def addOnFormUnloadJS(portal, out):
     """
     add the form unload JS to the js registry
     """
-    jsreg = queryUtility(IJSRegistry)
+    jsreg = getToolByName(portal, 'portal_javascripts', None)
     script = 'unlockOnFormUnload.js'
     if jsreg is not None:
         script_ids = jsreg.getResourceIds()
@@ -269,7 +266,7 @@ def addOnFormUnloadJS(portal, out):
                                  cookable = True)
             # put it at the bottom of the stack
             jsreg.moveResourceToBottom(script)
-            out.append("Added " + script + " to portal_javascipt")
+            out.append("Added " + script + " to portal_javascripts")
 
 def moveKupuAndCMFPWControlPanel(portal, out):
     """
