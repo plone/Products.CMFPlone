@@ -94,7 +94,6 @@ Look at the defaults
     u
 
     >>> print_all_of('stripped_attributes')
-    dir
     lang
     valign
     halign

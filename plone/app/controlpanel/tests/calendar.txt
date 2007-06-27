@@ -3,9 +3,8 @@ Calendar control panel
 
 First some initial setup code:
 
-    >>> from zope.component import getUtility
-    >>> from Products.CMFCalendar.interfaces import ICalendarTool
-    >>> ctool = getUtility(ICalendarTool)
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> ctool = getToolByName(self.portal, 'portal_calendar')
     >>> self.loginAsManager()
 
 Viewing the calendar control panel

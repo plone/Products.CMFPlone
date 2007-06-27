@@ -3,10 +3,8 @@ Search control panel
 
 First some initial setup code:
 
-    >>> from zope.component import getUtility
-    >>> from Products.ResourceRegistries.interfaces import IJSRegistry
-
-    >>> jstool = getUtility(IJSRegistry)
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> jstool = getToolByName(self.portal, 'portal_javascripts')
     >>> self.loginAsManager()
 
 Viewing the search control panel

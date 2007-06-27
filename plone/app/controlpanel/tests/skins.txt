@@ -3,9 +3,8 @@ Skins control panel
 
 First some initial setup code:
 
-    >>> from zope.component import getUtility
-    >>> from Products.CMFCore.interfaces import ISkinsTool
-    >>> stool = getUtility(ISkinsTool)
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> stool = getToolByName(self.portal, 'portal_skins')
     >>> self.loginAsManager()
 
 Fake a second available skin:
