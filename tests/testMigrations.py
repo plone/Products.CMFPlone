@@ -2265,8 +2265,11 @@ class TestMigrations_v3_0(MigrationTest):
     def testUpdateKukitJS(self):
         jsreg = self.portal.portal_javascripts
         # put into old state first
-        jsreg.unregisterResource('++resource++kukit-src.js')
+        jsreg.unregisterResource('++resource++kukit.js')
+        jsreg.unregisterResource('++resource++kukit-devel.js')
         script_ids = jsreg.getResourceIds()
+        self.failIf('++resource++kukit.js' in script_ids)
+        self.failIf('++resource++kukit-devel.js' in script_ids)
         self.failIf('++resource++kukit-src.js' in script_ids)
         jsreg.registerScript('++resource++kukit.js', compression="none")
         script_ids = jsreg.getResourceIds()
@@ -2277,11 +2280,21 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('++resource++kukit-src.js' in script_ids)
         resource = jsreg.getResource('++resource++kukit-src.js')
         self.failUnless(resource.getCompression() == 'full')
-        # now make sure that the last migration step sets it back to
-        # its proper value
+        # Run the last migration and check that everything is in its
+        # place. We must have both the devel and production resources.
+        # They both should be uncompressed since kss compresses them
+        # directly. Also they should have conditions that switches them.
         beta3_beta4(self.portal)
-        resource = jsreg.getResource('++resource++kukit-src.js')
-        self.failUnless(resource.getCompression() == 'safe')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('++resource++kukit-src.js' in script_ids)
+        resource1 = jsreg.getResource('++resource++kukit.js')
+        resource2 = jsreg.getResource('++resource++kukit-devel.js')
+        self.failUnless(resource1.getCompression() == 'none')
+        self.failUnless(resource2.getCompression() == 'none')
+        self.failUnless('@@kss_devel_mode' in resource1.getExpression())
+        self.failUnless('@@kss_devel_mode' in resource2.getExpression())
+        self.failUnless('isoff' in resource1.getExpression())
+        self.failUnless('ison' in resource2.getExpression())
         
     def testAddCacheForResourceRegistry(self):
         ram_cache_id = 'ResourceRegistryCache'

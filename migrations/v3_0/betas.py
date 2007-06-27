@@ -75,6 +75,8 @@ def beta3_beta4(portal):
 
     registerToolsAsUtilities(portal, out)
 
+    modifyKSSResourcesForDevelMode(portal, out)
+
     return out
 
 
@@ -197,6 +199,36 @@ def modifyKSSResources(portal, out):
             if not entry:
                 reg.registerKineticStylesheet(id, enabled=0)
                 out.append('Added kss resource %s, disabled by default.' % id)
+
+def modifyKSSResourcesForDevelMode(portal, out):
+    # separate kukit.js and kukit-src-js based on debug mode
+    reg = getToolByName(portal, 'portal_javascripts', None)
+    if reg is not None:
+        id = '++resource++kukit-src.js'
+        entry = aq_base(reg).getResourcesDict().get(id, None)
+        if entry:
+            pos = aq_base(reg).getResourcePosition(id)
+            # delete kukit-src.js
+            aq_base(reg).unregisterResource(id)
+            # add the new ones
+            id1 = '++resource++kukit.js'
+            if aq_base(reg).getResourcesDict().get(id1, None):
+                aq_base(reg).unregisterResource(id1)
+            aq_base(reg).registerScript(id1,
+                    expression="python: not here.restrictedTraverse('@@plone_portal_state').anonymous() and here.restrictedTraverse('@@kss_devel_mode').isoff()",
+                    inline=False, enabled=True,
+                    cookable=True, compression='none', cacheable=True)
+            id2 = '++resource++kukit-devel.js'
+            if aq_base(reg).getResourcesDict().get(id2, None):
+                aq_base(reg).unregisterResource(id2)
+            aq_base(reg).registerScript(id2,
+                    expression="python: not here.restrictedTraverse('@@plone_portal_state').anonymous() and here.restrictedTraverse('@@kss_devel_mode').ison()",
+                    inline=False, enabled=True,
+                    cookable=True, compression='none', cacheable=True)
+            # move them to where the old one has been
+            aq_base(reg).moveResource(id1, pos)
+            aq_base(reg).moveResource(id2, pos + 1)
+            out.append('Updated kss javascript resources, to enable the use of production and development versions.')
 
 def addContributorToCreationPermissions(portal, out):
     
