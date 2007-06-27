@@ -299,7 +299,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # News topic is in place as default view and has a criterion to show
         # only News Items, and uses the folder_summary_view.
         self.assertEqual(['aggregator'], [i for i in self.portal.news.objectIds()])
-        topic = getattr(self.portal.news.aq_base, 'aggregator')
+        topic = getattr(self.portal.news, 'aggregator')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
         self.assertEqual(topic.buildQuery()['review_state'], 'published')
@@ -309,7 +309,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # Events topic is in place as default view and has criterion to show
         # only future Events Items.
         self.assertEqual(['aggregator'], [i for i in self.portal.events.objectIds()])
-        topic = getattr(self.portal.events.aq_base, 'aggregator')
+        topic = getattr(self.portal.events, 'aggregator')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         query = topic.buildQuery()
         self.assertEqual(query['Type'], ('Event',))
@@ -322,7 +322,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # only past Events Items.
         events_topic = self.portal.events.aggregator
         self.failUnless('previous' in events_topic.objectIds())
-        topic = getattr(events_topic.aq_base, 'previous')
+        topic = getattr(events_topic, 'previous')
         self.assertEqual(topic._getPortalTypeName(), 'Topic')
         query = topic.buildQuery()
         self.assertEqual(query['Type'], ('Event',))
