@@ -693,8 +693,7 @@ def addFormInputLabelJS(portal, out):
             out.append("Added " + script + " to portal_javascipt")
 
 
-registration = (('archetype_tool', IArchetypeTool),
-                ('mimetypes_registry', IMimetypesRegistryTool),
+registration = (('mimetypes_registry', IMimetypesRegistryTool),
                 ('portal_transforms', IPortalTransformsTool),
                 ('portal_atct', IATCTTool),
                 ('portal_actionicons', IActionIconsTool),
@@ -722,7 +721,7 @@ invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
                 IConfigurableWorkflowTool, IPloneTool, ICSSRegistry,
                 IJSRegistry, IUniqueIdHandler, IFactoryTool, IMembershipTool,
                 IGroupTool, IGroupDataTool, IMemberDataTool, IDiscussionTool,
-                ICachingPolicyManager, IRegistrationTool,
+                ICachingPolicyManager, IRegistrationTool, IArchetypeTool,
                )
 
 def registerToolsAsUtilities(portal, out):
