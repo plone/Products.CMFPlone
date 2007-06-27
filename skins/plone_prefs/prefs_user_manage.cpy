@@ -23,7 +23,7 @@ for user in users:
         continue
 
     member = getMemberById(user.id)
-   # If email address was changed, set the new one
+    # If email address was changed, set the new one
     if hasattr(user, 'email'):
         # If the email field was disabled (ie: non-writeable), the
         # property might not exist.
