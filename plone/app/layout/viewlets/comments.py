@@ -1,29 +1,26 @@
 from urllib import quote as url_quote
 
-from zope.interface import implements
-from zope.component import getUtility, getMultiAdapter
-from zope.viewlet.interfaces import IViewlet
+from zope.component import getMultiAdapter
 
 from Acquisition import aq_inner, aq_parent
 from AccessControl import getSecurityManager
-from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
-from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 from plone.app.layout.viewlets.common import ViewletBase
+
 
 class CommentsViewlet(ViewletBase):
     render = ViewPageTemplateFile('comments.pt')
 
     def update(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
+        context = aq_inner(self.context)
+        self.portal_state = getMultiAdapter((context, self.request),
                                             name=u'plone_portal_state')
         self.portal_url = self.portal_state.portal_url()
-        self.portal_discussion = getToolByName(aq_inner(self.context), 'portal_discussion', None)
-        self.portal_membership = getToolByName(aq_inner(self.context), 'portal_membership', None)
+        self.portal_discussion = getToolByName(context, 'portal_discussion', None)
+        self.portal_membership = getToolByName(self.context, 'portal_membership', None)
 
     def can_reply(self):
         return getSecurityManager().checkPermission('Reply to item', aq_inner(self.context))
@@ -74,5 +71,5 @@ class CommentsViewlet(ViewletBase):
 
     def format_time(self, time):
         context = aq_inner(self.context)
-        util = getUtility(ITranslationServiceTool)
+        util = getToolByName(context, 'translation_service')
         return util.ulocalized_time(time, 1, context, domain='plonelocales')
