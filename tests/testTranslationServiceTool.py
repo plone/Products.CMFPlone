@@ -1,20 +1,15 @@
 #
 # Test toLocalizedTime script and TranslationServiceTool.
 #
-# Tries to cover http://plone.org/products/plone/roadmap/98
-#
 
 from Products.CMFPlone.tests import PloneTestCase
-
-from zope.component import getUtility
-from DateTime.DateTime import DateTime
-from Products.CMFPlone.interfaces import ITranslationServiceTool
+from Products.CMFCore.utils import getToolByName
 
 
 class TestUTranslate(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.tool = getUtility(ITranslationServiceTool)
+        self.tool = getToolByName(self.portal, 'translation_service')
 
     def testUTranslate(self):
         # Test Unicode value
@@ -44,7 +39,7 @@ class TestUTranslate(PloneTestCase.PloneTestCase):
 class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.tool = getUtility(ITranslationServiceTool)
+        self.tool = getToolByName(self.portal, 'translation_service')
 
     def testLocalized_time(self):
         value = self.tool.ulocalized_time('Mar 9, 1997 1:45pm',

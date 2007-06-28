@@ -66,9 +66,6 @@
      interface="Products.CMFQuickInstallerTool.interfaces.IQuickInstallerTool"
      object="/portal_quickinstaller"/>
   <utility
-     interface="Products.CMFPlone.interfaces.ITranslationServiceTool"
-     object="/translation_service"/>
-  <utility
      interface="Products.GenericSetup.interfaces.ISetupTool"
      object="/portal_setup"/>
   <utility
