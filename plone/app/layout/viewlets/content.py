@@ -1,12 +1,12 @@
 from Acquisition import aq_inner
-from zope.component import getMultiAdapter, queryMultiAdapter, getUtility
+from zope.component import getMultiAdapter
 from plone.memoize.instance import memoize
 
 from plone.app.layout.viewlets import ViewletBase
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import ITranslationServiceTool
+
 
 class DocumentActionsViewlet(ViewletBase):
     def update(self):
@@ -71,7 +71,7 @@ class DocumentBylineViewlet(ViewletBase):
     def toLocalizedTime(self, time, long_format=None):
         """Convert time to localized time
         """
-        util = getUtility(ITranslationServiceTool)
+        util = getToolByName(self.context, 'translation_service')
         return util.ulocalized_time(time, long_format, self.context,
                                     domain='plonelocales')
 
