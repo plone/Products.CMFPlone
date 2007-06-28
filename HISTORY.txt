@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added proper byline on search results, optimized layout.
+      [limi]
+
+    - Adding support for the rel="tag" microformat. 
+      This closes http://dev.plone.org/plone/ticket/5351
+      [limi]
+
     - separate the kss resources to a development and production version,
       and change portal_javascript entries to switch to the new resources.
       Modes can be switched by setting portal_javascript to debug mode, or

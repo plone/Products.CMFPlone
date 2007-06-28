@@ -135,6 +135,22 @@
                 </span>
 
 
+                <span id="category"
+                      tal:define="categories result/Subject|nothing"
+                      tal:condition="categories">
+                    &mdash;
+                    <tal:filedunder i18n:translate="label_filed_under">filed under:</tal:filedunder>
+                        <span tal:repeat="category categories">
+                            <a href=""
+                               class="link-category"
+                               rel="tag"
+                               tal:content="category"
+                               tal:attributes="href string:${portal_url}/search?Subject%3Alist=${category}">
+                               Category
+                            </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
+                        </span>
+                </span>    
+
                 <span class="relevance" 
                       tal:condition="result/data_record_normalized_score_">
                     &mdash;
