@@ -384,7 +384,7 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 
 /* for highlighting of search terms */
 .highlightedSearchTerm {
-   background-color: #feff82;
+   background-color: #ffa;
 }
 
 dl.searchResults .highlightedSearchTerm {
@@ -403,7 +403,7 @@ dl.searchResults .highlightedSearchTerm {
 }
 /* for draggable elements */
 tr.dragging td {
-    background-color: yellow;
+    background-color: #ff6;
 }
 .draggingHook {
     cursor: move;

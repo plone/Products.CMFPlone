@@ -231,7 +231,7 @@ textarea#form\.description {
 }
 
 tr.selected { 
-    background-color: #ffc;
+    background-color: #ffa;
 }
 
 .kupu-save-message {
