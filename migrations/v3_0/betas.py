@@ -16,6 +16,8 @@ def beta1_beta2(portal):
 
     out = []
 
+    registerToolsAsUtilities(portal, out)
+
     migrateHistoryTab(portal, out)
 
     changeOrderOfActionProviders(portal, out)
@@ -50,6 +52,8 @@ def beta2_beta3(portal):
 
     out = []
 
+    registerToolsAsUtilities(portal, out)
+
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b2-3.0b3')
 
     removeSharingAction(portal, out)
@@ -65,6 +69,8 @@ def beta3_beta4(portal):
 
     out = []
 
+    registerToolsAsUtilities(portal, out)
+
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b3-3.0b4')
 
     moveKupuAndCMFPWControlPanel(portal, out)
@@ -72,8 +78,6 @@ def beta3_beta4(portal):
     updateLanguageControlPanel(portal, out)
 
     updateTopicTitle(portal, out)
-
-    registerToolsAsUtilities(portal, out)
 
     modifyKSSResourcesForDevelMode(portal, out)
 

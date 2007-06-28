@@ -144,6 +144,9 @@ def alpha1_alpha2(portal):
     """
     out = []
 
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
+
     # Update search and mailhost control panels to new formlib based ones
     updateSearchAndMailHostConfiglet(portal, out)
 
@@ -182,6 +185,9 @@ def alpha2_beta1(portal):
     """ 3.0-alpha2 -> 3.0-beta1
     """
     out = []
+
+    # register some tools as utilities
+    registerToolsAsUtilities(portal, out)
 
     # Add control panel action 
     addMaintenanceConfiglet(portal, out)
@@ -260,9 +266,6 @@ def alpha2_beta1(portal):
 
     # Add many_groups property to site properties
     addManyGroupsProperty(portal, out)
-
-    # register some tools as utilities
-    registerToolsAsUtilities(portal, out)
 
     # Replace obsolete PlonePAS version of plone tool
     restorePloneTool(portal, out)
