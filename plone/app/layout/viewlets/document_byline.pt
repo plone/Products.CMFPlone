@@ -36,6 +36,24 @@
             <tal:expired i18n:translate="time_expired">expired</tal:expired>
         </span>
 
+        <span id="category"
+              tal:define="categories context/Subject|nothing"
+              tal:condition="categories">
+            &mdash;
+            <tal:filedunder i18n:translate="label_filed_under">filed under:</tal:filedunder>
+            <ul>
+                <li tal:repeat="category categories">
+                    <a href=""
+                       class="link-category"
+                       rel="tag"
+                       tal:content="category"
+                       tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${category}">
+                       Category
+                    </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
+                </li>
+            </ul>
+        </span>    
+
         <div class="documentContributors"
              tal:condition="here/Contributors"
              i18n:translate="text_contributors">
