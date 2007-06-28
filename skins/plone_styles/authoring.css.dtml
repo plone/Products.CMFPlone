@@ -386,6 +386,11 @@ dl.collapsedInlineCollapsible dt.collapsibleHeader {
 .highlightedSearchTerm {
    background-color: #feff82;
 }
+
+dl.searchResults .highlightedSearchTerm {
+    background-color: transparent;
+    font-weight: bold;
+}
 /* for greying out inherited roles */
 .noInheritedRoles {
     color: #a0a0a0;
