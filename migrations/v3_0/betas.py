@@ -6,6 +6,7 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from alphas import addContentRulesAction
+from alphas import enableZope3Site
 from alphas import registerToolsAsUtilities
 
 from Acquisition import aq_base
@@ -16,6 +17,7 @@ def beta1_beta2(portal):
 
     out = []
 
+    enableZope3Site(portal, out)
     registerToolsAsUtilities(portal, out)
 
     migrateHistoryTab(portal, out)
@@ -52,6 +54,7 @@ def beta2_beta3(portal):
 
     out = []
 
+    enableZope3Site(portal, out)
     registerToolsAsUtilities(portal, out)
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b2-3.0b3')
@@ -69,6 +72,7 @@ def beta3_beta4(portal):
 
     out = []
 
+    enableZope3Site(portal, out)
     registerToolsAsUtilities(portal, out)
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0b3-3.0b4')

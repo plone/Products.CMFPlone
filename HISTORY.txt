@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added migration to the new five.localsitemanager lookup class.
+      [hannosch]
+
     - Added proper byline on search results, optimized layout.
       [limi]
 
@@ -11,7 +14,7 @@ Plone 3.0-beta4 - unreleased
       This closes http://dev.plone.org/plone/ticket/5351
       [limi]
 
-    - separate the kss resources to a development and production version,
+    - Separate the kss resources to a development and production version,
       and change portal_javascript entries to switch to the new resources.
       Modes can be switched by setting portal_javascript to debug mode, or
       by visiting the view @@kss_devel_mode/ui (this works with client side

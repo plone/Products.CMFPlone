@@ -1,6 +1,7 @@
 import os
 
 from five.localsitemanager import make_objectmanager_site
+from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 from zope.app.component.interfaces import ISite
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
@@ -145,6 +146,7 @@ def alpha1_alpha2(portal):
     out = []
 
     # register some tools as utilities
+    enableZope3Site(portal, out)
     registerToolsAsUtilities(portal, out)
 
     # Update search and mailhost control panels to new formlib based ones
@@ -187,6 +189,7 @@ def alpha2_beta1(portal):
     out = []
 
     # register some tools as utilities
+    enableZope3Site(portal, out)
     registerToolsAsUtilities(portal, out)
 
     # Add control panel action 
@@ -394,6 +397,13 @@ def enableZope3Site(portal, out):
     if not ISite.providedBy(portal):
         make_objectmanager_site(portal)
         out.append('Made the portal a Zope3 site.')
+    else:
+        sm = portal.getSiteManager()
+        if sm.utilities.LookupClass  != FiveVerifyingAdapterLookup:
+            sm.utilities.LookupClass = FiveVerifyingAdapterLookup
+            sm.utilities._createLookup()
+            sm.utilities.__parent__ = aq_base(sm)
+            sm.__parent__ = aq_base(portal)
 
 
 def migrateOldActions(portal, out):

@@ -171,6 +171,8 @@ from Products.CMFPlone.migrations.v3_0.betas import moveKupuAndCMFPWControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateLanguageControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateTopicTitle
 
+from five.localsitemanager.registry import FiveVerifyingAdapterLookup
+
 from zope.app.cache.interfaces.ram import IRAMCache
 from zope.app.component.hooks import clearSite
 from zope.app.component.interfaces import ISite
@@ -1244,6 +1246,17 @@ class TestMigrations_v3_0(MigrationTest):
         gsm = getGlobalSiteManager()
         sm = getSiteManager(self.portal)
         self.failIf(gsm is sm)
+        lc = sm.utilities.LookupClass
+        self.failUnless(lc == FiveVerifyingAdapterLookup)
+
+        # Test the lookupclass migration
+        sm.utilities.LookupClass = None
+
+        enableZope3Site(self.portal, [])
+
+        self.failUnless(sm.utilities.LookupClass == FiveVerifyingAdapterLookup)
+        self.failUnless(sm.utilities.__parent__ == sm)
+        self.failUnless(sm.__parent__ == self.portal)
 
     def testEnableZope3SiteTwice(self):
         # First we remove the site and site manager
@@ -1260,6 +1273,16 @@ class TestMigrations_v3_0(MigrationTest):
         gsm = getGlobalSiteManager()
         sm = getSiteManager(self.portal)
         self.failIf(gsm is sm)
+
+        # Test the lookupclass migration
+        sm.utilities.LookupClass = None
+
+        enableZope3Site(self.portal, [])
+        enableZope3Site(self.portal, [])
+
+        self.failUnless(sm.utilities.LookupClass == FiveVerifyingAdapterLookup)
+        self.failUnless(sm.utilities.__parent__ == sm)
+        self.failUnless(sm.__parent__ == self.portal)
 
     def testAddNewCSSFiles(self):
         cssreg = self.portal.portal_css
