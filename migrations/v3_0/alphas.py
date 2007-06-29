@@ -715,7 +715,6 @@ registration = (('mimetypes_registry', IMimetypesRegistryTool),
                 ('portal_setup', ISetupTool),
                 ('portal_syndication', ISyndicationTool),
                 ('portal_undo', IUndoTool),
-                ('portal_controlpanel', IControlPanel),
                 ('portal_interface', IInterfaceTool),
                 ('portal_migration', IMigrationTool),
                 ('portal_quickinstaller', IQuickInstallerTool),
@@ -734,7 +733,7 @@ invalid_regs = (ILanguageTool, IArchivistTool, IPortalModifierTool,
                 IJSRegistry, IUniqueIdHandler, IFactoryTool, IMembershipTool,
                 IGroupTool, IGroupDataTool, IMemberDataTool, IDiscussionTool,
                 ICachingPolicyManager, IRegistrationTool, IArchetypeTool,
-                ITranslationServiceTool,
+                ITranslationServiceTool, IControlPanel,
                )
 
 def registerToolsAsUtilities(portal, out):

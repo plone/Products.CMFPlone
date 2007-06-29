@@ -54,9 +54,6 @@
      interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
      object="/"/>
   <utility
-     interface="Products.CMFPlone.interfaces.IControlPanel"
-     object="/portal_controlpanel"/>
-  <utility
      interface="Products.CMFPlone.interfaces.IInterfaceTool"
      object="/portal_interface"/>
   <utility

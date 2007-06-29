@@ -10,7 +10,7 @@ from Products.CMFPlone.tests import PloneTestCase
 class TestControlPanel(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.controlpanel = getToolByName(self, "portal_controlpanel")
+        self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
         
         # get the expected default groups and configlets
         self.groups     = ['Plone', 'Products', 'Member']
