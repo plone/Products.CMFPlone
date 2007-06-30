@@ -49,6 +49,11 @@ function createTableOfContents() {
        return;
     }
     dest = dest[0];
+    if ( dest.hasChildNodes() ) {
+        while ( dest.childNodes.length >= 1 ) {
+            dest.removeChild( dest.firstChild );       
+        } 
+    }
 
     var content = getContentArea();
     if (!content) {
