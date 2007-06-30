@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Corrected status messages emitted by the join form and personalize
+      validators. This closes http://dev.plone.org/plone/ticket/6518.
+      [hannosch, wichert]
+
     - Unregister tools which are no longer action providers. This fixes
       http://dev.plone.org/plone/ticket/6730
       [wichert]
