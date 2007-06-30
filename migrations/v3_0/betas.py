@@ -361,7 +361,7 @@ def hidePropertiesAction(portal, out):
         actions = ti.listActions()
         index=[i for i in range(len(actions) )
                 if actions[i].category=="object" and 
-                   actions[i].id=="properties"]
+                   actions[i].id=="metadata"]
         if index:
             ti.deleteActions(index)
             out.append("Removed properties action from type %s" % ti.id)

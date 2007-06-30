@@ -1213,10 +1213,10 @@ class TestMigrations_v3_0_Actions(MigrationTest):
     def testRemovePropertiesActions(self):
         ti=self.types.getTypeInfo("Document")
         if ti.getActionObject("object/properties") is None:
-            ti.addAction("properties", "Properties", "action", "condition",
+            ti.addAction("metadata", "name", "action", "condition",
                     "permission", "object",)
         hidePropertiesAction(self.portal, [])
-        self.failUnless(ti.getActionObject("object/properties") is None)
+        self.failUnless(ti.getActionObject("object/metadata") is None)
 
 
     def beforeTearDown(self):
