@@ -48,6 +48,8 @@ def beta1_beta2(portal):
 
     cleanupActionProviders(portal, out)
 
+    hidePropertiesAction(portal, out)
+
     return out
 
 
@@ -350,3 +352,17 @@ def cleanupActionProviders(portal, out):
         if candidate is None or not IActionProvider.providedBy(candidate):
             at.deleteActionProvider(provider)
             out.append("%s is no longer an action provider" % provider)
+
+def hidePropertiesAction(portal, out):
+    tt = getToolByName(portal, 'portal_types', None)
+    if not IActionProvider.providedBy(tt):
+        return
+    for ti in tt.listTypeInfo():
+        actions = ti.listActions()
+        index=[i for i in range(len(actions) )
+                if actions[i].category=="object" and 
+                   actions[i].id=="properties"]
+        if index:
+            ti.deleteActions(index)
+            out.append("Removed properties action from type %s" % ti.id)
+

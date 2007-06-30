@@ -171,6 +171,7 @@ from Products.CMFPlone.migrations.v3_0.betas import moveKupuAndCMFPWControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateLanguageControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateTopicTitle
 from Products.CMFPlone.migrations.v3_0.betas import cleanupActionProviders
+from Products.CMFPlone.migrations.v3_0.betas import hidePropertiesAction
 
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 
@@ -1205,8 +1206,17 @@ class TestMigrations_v3_0_Actions(MigrationTest):
     def testProviderCleanup(self):
         self.actions.addActionProvider("portal_membership")
         self.failUnless("portal_membership" in self.actions.listActionProviders())
-        cleanupActionProviders(portal, [])
+        cleanupActionProviders(self.portal, [])
         self.failIf("portal_membership" in self.actions.listActionProviders())
+
+
+    def testRemovePropertiesActions(self):
+        ti=self.types.getTypeInfo("Document")
+        if ti.getActionObject("object/properties") is None:
+            ti.addAction("properties", "Properties", "action", "condition",
+                    "permission", "object",)
+        hidePropertiesAction(self.portal, [])
+        self.failUnless(ti.getActionObject("object/properties") is None)
 
 
     def beforeTearDown(self):

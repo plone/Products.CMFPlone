@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Remove the properties action from all FTIs.
+      [wichert]
+
     - Corrected status messages emitted by the join form and personalize
       validators. This closes http://dev.plone.org/plone/ticket/6518.
       [hannosch, wichert]
