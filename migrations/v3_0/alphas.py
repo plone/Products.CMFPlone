@@ -1358,10 +1358,8 @@ def restorePloneTool(portal, out):
 def updateImportStepsFromBaseProfile(portal, out):
     """Updates the available import steps for existing sites."""
 
-    # Just switching the profile context reads the import_steps.xml file from
-    # the base profile and registers the additional steps, like the
-    # componentregistry step.
-    loadMigrationProfile(portal, 'profile-Products.CMFPlone:plone', steps=[])
+    tool = getToolByName(portal, "portal_setup")
+    tool.setBaselineContext("profile-Products.CMFPlone:plone")
 
 
 def installI18NUtilities(portal, out):

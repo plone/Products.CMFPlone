@@ -170,6 +170,7 @@ from Products.CMFPlone.migrations.v3_0.betas import beta3_beta4
 from Products.CMFPlone.migrations.v3_0.betas import moveKupuAndCMFPWControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateLanguageControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateTopicTitle
+from Products.CMFPlone.migrations.v3_0.betas import cleanupActionProviders
 
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 
@@ -1199,6 +1200,14 @@ class TestMigrations_v3_0_Actions(MigrationTest):
         migrateHistoryTab(self.portal, [])
         objects = getattr(self.actions, 'object', None)
         self.failIf('rss' in objects.objectIds())
+
+
+    def testProviderCleanup(self):
+        self.actions.addActionProvider("portal_membership")
+        self.failUnless("portal_membership" in self.actions.listActionProviders())
+        cleanupActionProviders(portal, [])
+        self.failIf("portal_membership" in self.actions.listActionProviders())
+
 
     def beforeTearDown(self):
         if len(self.discussion._actions) > 0:
@@ -2982,6 +2991,7 @@ class TestMigrations_v3_0(MigrationTest):
     def testUpdateTopicTitleNoTool(self):
         self.portal._delObject('portal_types')
         updateTopicTitle(self.portal, [])
+
 
 
 def test_suite():

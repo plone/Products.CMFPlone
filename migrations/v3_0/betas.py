@@ -1,6 +1,7 @@
 from zope.component import queryUtility
 
 from Products.CMFActionIcons.interfaces import IActionIconsTool
+from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 
@@ -44,6 +45,8 @@ def beta1_beta2(portal):
     modifyKSSResources(portal, out)
 
     addContributorToCreationPermissions(portal, out)
+
+    cleanupActionProviders(portal, out)
 
     return out
 
@@ -338,3 +341,12 @@ def updateTopicTitle(portal, out):
         if topic is not None:
             topic.title = 'Collection'
 
+
+def cleanupActionProviders(portal, out):
+    """Remove no longer existing action proiders."""
+    at = getToolByName(portal, "portal_actions")
+    for provider in at.listActionProviders():
+        candidate = getToolByName(portal, provider, None)
+        if candidate is None or not IActionProvider.providedBy(candidate):
+            at.deleteActionProvider(provider)
+            out.append("%s is no longer an action provider" % provider)

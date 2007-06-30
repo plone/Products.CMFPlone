@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Unregister tools which are no longer action providers. This fixes
+      http://dev.plone.org/plone/ticket/6730
+      [wichert]
+
     - Added tests for sending mails via the contact form with Unicode input.
       The actual bug was fixed in SecureMailHost. This closes
       http://dev.plone.org/plone/ticket/6574.
