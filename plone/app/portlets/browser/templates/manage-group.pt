@@ -14,10 +14,10 @@
 </head>
 
 <body>
-
 <div metal:fill-slot="content">
 
-      <div id="content" class="documentEditable">
+  <div id="content" class="documentEditable">
+
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li>
@@ -49,7 +49,8 @@
       </div>
 
       <div class="configlet">
-            <metal:block metal:define-macro="props" tal:omit-tag="">
+
+        <metal:block metal:define-macro="props" tal:omit-tag="">
 
           <h1 class="documentFirstHeading"
               i18n:translate="title_manage_group_portlets">
@@ -62,20 +63,17 @@
             assigned to this group. Use the up, down, delete and edit links 
             to manage user portlets. Use the drop-down list to add new portlets.
           </p>
+
           <p i18n:translate="description_group_portlets_below">
             Note that group portlets are normally rendered below context portlets.
           </p>
 
         </metal:block>
 
-
+      </div>
     </div>
+  </div>
 
 </div>
-
-</div>
-
-</div>
-
 </body>
 </html>

@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Cleaned up some templates, added missing i18n markup. This closes
+      http://dev.plone.org/plone/ticket/6721.
+      [hannosch]
+
     - Fixed erroneous wording in add screen for classicportlet.
       Fixes https://dev.plone.org/plone/ticket/6703
       [elvix]

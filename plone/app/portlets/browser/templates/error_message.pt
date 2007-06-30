@@ -9,7 +9,9 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <dd>There was an error while rendering the portlet.</dd>
+    <dd i18n:translate="text_error_rendering_portlet">
+        There was an error while rendering the portlet.
+    </dd>
 
     <dd class="portletFooter">
         <span class="portletBottomLeft"></span>

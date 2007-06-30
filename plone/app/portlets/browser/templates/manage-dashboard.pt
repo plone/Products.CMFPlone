@@ -29,16 +29,17 @@
     <tal:main-macro metal:define-macro="main"
                     tal:define="memberinfo mtool/getMemberInfo;
                                 name python:memberinfo['fullname'] or member.getUserName() or member.getId()">
- 
+
     <div id="content" class="documentEditable">
 
-        <h5 class="hiddenStructure">Views</h5>
-        
+        <h5 class="hiddenStructure"
+             i18n:translate="heading_content_views">Content views</h5>
+
         <ul class="contentViews">
           <li>
             <a href=""
                tal:attributes="href string: ${portal_url}/dashboard"
-               i18n:translate="label_view">Dashboard</a>
+               i18n:translate="label_dashboard">Dashboard</a>
           </li>
           <li class="selected">
             <a href=""
@@ -63,6 +64,7 @@
             <h1 class="documentFirstHeading" i18n:translate="dashboard_title">
                 <span tal:content="name" i18n:name="user_name" />'s dashboard
             </h1>
+
             <div id="dashboard">
                 <div id="dashboard-portlets1" 
                   tal:content="structure provider:plone.dashboard1" />
@@ -73,7 +75,9 @@
                 <div id="dashboard-portlets4" 
                   tal:content="structure provider:plone.dashboard4" />
             </div>
+
             <div class="visualClear"><!-- --></div>
+
     </div> <!-- end simulated tabs -->
 
     </tal:main-macro>
@@ -82,4 +86,3 @@
 
 </body>
 </html>
-
