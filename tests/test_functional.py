@@ -14,7 +14,7 @@ from Globals import package_home
 from Testing.ZopeTestCase import FunctionalDocFileSuite as Suite
 from Products.CMFPlone.tests import PloneTestCase, GLOBALS
 
-UNITTESTS = ['messages.txt']
+UNITTESTS = ['messages.txt', 'mails.txt']
 
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)

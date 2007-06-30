@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Added tests for sending mails via the contact form with Unicode input.
+      The actual bug was fixed in SecureMailHost. This closes
+      http://dev.plone.org/plone/ticket/6574.
+      [hannosch]
+
     - Added migration to the new five.localsitemanager lookup class.
       [hannosch]
 
