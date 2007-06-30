@@ -187,6 +187,9 @@ class PloneGenerator:
             # Show off presentation mode
             fp.setPresentation(True)
 
+            # Mark as fully created
+            fp.unmarkCreationFlag()
+
             if language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
@@ -228,12 +231,13 @@ class PloneGenerator:
             folder.setLocallyAllowedTypes(['News Item'])
             folder.setImmediatelyAddableTypes(['News Item'])
             folder.setDefaultPage('aggregator')
+            folder.unmarkCreationFlag()
             if language is not None:
                 folder.setLanguage(language)
 
             if wftool.getInfoFor(folder, 'review_state') != 'published':
                 wftool.doActionFor(folder, 'publish')
-            
+
             topic = p.news.aggregator
             if language is not None:
                 topic.setLanguage(language)
@@ -244,7 +248,8 @@ class PloneGenerator:
             state_crit.setValue('published')
             topic.setSortCriterion('effective', True)
             topic.setLayout('folder_summary_view')
-            
+            topic.unmarkCreationFlag()
+
             if wftool.getInfoFor(topic, 'review_state') != 'published':
                 wftool.doActionFor(topic, 'publish')
 
@@ -271,6 +276,7 @@ class PloneGenerator:
             folder.setLocallyAllowedTypes(['Event'])
             folder.setImmediatelyAddableTypes(['Event'])
             folder.setDefaultPage('aggregator')
+            folder.unmarkCreationFlag()
             if language is not None:
                 folder.setLanguage(language)
             
@@ -278,6 +284,7 @@ class PloneGenerator:
                 wftool.doActionFor(folder, 'publish')
             
             topic = folder.aggregator
+            topic.unmarkCreationFlag()
             if language is not None:
                 topic.setLanguage(language)
             type_crit = topic.addCriterion('Type','ATPortalTypeCriterion')
@@ -318,6 +325,7 @@ class PloneGenerator:
             if language is not None:
                 topic.setLanguage(language)
             topic.setAcquireCriteria(True)
+            topic.unmarkCreationFlag()
             sort_crit = topic.addCriterion('start','ATSortCriterion')
             sort_crit.setReversed(True)
             date_crit = topic.addCriterion('start','ATFriendlyDateCriteria')
@@ -347,6 +355,7 @@ class PloneGenerator:
             members = getattr(p , 'Members')
             members.setTitle(members_title)
             members.setDescription(members_desc)
+            members.unmarkCreationFlag()
             if language is not None:
                 members.setLanguage(language)
             members.reindexObject()

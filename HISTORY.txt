@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Fixed _at_creation_flag on initial content. This closes
+      http://dev.plone.org/plone/ticket/6642.
+      [hannosch]
+
     - Remove the properties action from all FTIs.
       [wichert]
 

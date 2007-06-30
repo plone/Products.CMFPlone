@@ -286,6 +286,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.getRawLocallyAllowedTypes(), ('News Item',))
         self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('News Item',))
+        self.assertEqual(folder.checkCreationFlag(), False)
 
     def testEventsFolder(self):
         self.failUnless('events' in self.portal.objectIds())
@@ -294,6 +295,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.getRawLocallyAllowedTypes(), ('Event',))
         self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
+        self.assertEqual(folder.checkCreationFlag(), False)
 
     def testNewsTopic(self):
         # News topic is in place as default view and has a criterion to show
@@ -304,6 +306,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
         self.assertEqual(topic.buildQuery()['review_state'], 'published')
         self.assertEqual(topic.getLayout(), 'folder_summary_view')
+        self.assertEqual(topic.checkCreationFlag(), False)
 
     def testEventsTopic(self):
         # Events topic is in place as default view and has criterion to show
@@ -316,6 +319,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(query['review_state'], 'published')
         self.assertEqual(query['start']['query'].Date(), DateTime().Date())
         self.assertEqual(query['start']['range'], 'min')
+        self.assertEqual(topic.checkCreationFlag(), False)
 
     def testEventsSubTopic(self):
         # past Events sub-topic is in place and has criteria to show
@@ -329,6 +333,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(query['review_state'], 'published')
         self.assertEqual(query['start']['query'].Date(), DateTime().Date())
         self.assertEqual(query['start']['range'], 'max')
+        self.assertEqual(topic.checkCreationFlag(), False)
 
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
