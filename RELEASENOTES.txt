@@ -4,7 +4,7 @@ Plone 3.0 - May, 2007
 The following is a list of important things to note when installing or
 upgrading to Plone 3.0:
 
-* Zope 2.10.3+ is now required. Older versions of Zope will not work. Zope 2.11
+* Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope 2.11
   and later may or may not work.
 
 * The python ElementTree package is now required. This package can be
