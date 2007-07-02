@@ -1,5 +1,7 @@
+from AccessControl import getSecurityManager
 from Acquisition import aq_inner
-from zope.component import getMultiAdapter
+
+from zope.component import getMultiAdapter, queryMultiAdapter
 from plone.memoize.instance import memoize
 
 from plone.app.layout.viewlets import ViewletBase
@@ -42,11 +44,24 @@ class DocumentBylineViewlet(ViewletBase):
 
     @memoize
     def locked_icon(self):
-        if self.context_state.is_locked():
-            portal = self.portal_state.portal()
-            icon = portal.restrictedTraverse('lock_icon.gif')
-            return icon.tag(title='Locked')
-        return ""
+        if not getSecurityManager().checkPermission('Modify portal content', self.context):
+            return ""
+            
+        locked = False
+        lock_info = queryMultiAdapter((self.context, self.request), name='plone_lock_info')
+        if lock_info is not None:
+            locked = lock_info.is_locked()
+        else:
+            context = aq_inner(self.context)
+            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
+            locked = lockable and context.wl_isLocked()
+        
+        if not locked:
+            return ""
+            
+        portal = self.portal_state.portal()
+        icon = portal.restrictedTraverse('lock_icon.gif')
+        return icon.tag(title='Locked')
 
     @memoize
     def creator(self):
