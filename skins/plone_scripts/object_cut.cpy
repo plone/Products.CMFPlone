@@ -23,6 +23,13 @@ if not mtool.checkPermission('Copy or Move', context):
             mapping={u'title' : context.title_or_id()})
     raise Unauthorized, msg
 
+lock_info = context.restrictedTraverse('@@plone_lock_info')
+if lock_info.is_locked():
+    message = _(u'${title} is locked and cannot be cut',
+                mapping={u'title' : context.title_or_id()})
+    context.plone_utils.addPortalMessage(message, 'error')
+    return state.set(status = 'failure')
+
 parent = context.aq_inner.aq_parent
 try:
     parent.manage_cutObjects(context.getId(), REQUEST)

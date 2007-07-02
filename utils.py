@@ -806,6 +806,8 @@ def isLinked(obj):
         parent.manage_delObjects(obj.getId())
     except OFS.ObjectManager.BeforeDeleteException, e:
         linked = True
+    except: # ignore other exceptions, not useful to us at this point
+        pass
     saved.rollback()                    # roll back so nothing gets changed
     return linked
 
