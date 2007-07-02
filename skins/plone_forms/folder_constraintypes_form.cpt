@@ -186,12 +186,13 @@
 
                         <label for="locallyAllowedTypes"
                                 i18n:translate="label_locally_allowed_types">
-                            Addable types
+                            Secondary types
                         </label>
 
                         <div class="formHelp" i18n:translate="help_locally_allowed_types">
                                Select the content types that will be addable to this folder using the
-                               'more ...' link.
+                               'more ...' link only. If an item selected under 'Preferred types' above is
+                               <em>not</em> selected here, it will appear directly under the 'add' menu.
                         </div>
 
                         <!-- Errors go here -->
