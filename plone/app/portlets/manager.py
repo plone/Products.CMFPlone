@@ -16,6 +16,7 @@ from plone.portlets.interfaces import IPortletRenderer, ILocalPortletAssignable
 from plone.portlets.manager import PortletManagerRenderer as BasePortletManagerRenderer
 
 from plone.app.portlets.interfaces import IColumn
+from plone.app.portlets.interfaces import IDashboard
 
 import logging
 logger = logging.getLogger('portlets')
@@ -68,3 +69,10 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
             logger.exception('Error while rendering %r' % (self,))
             self.aq_inner.aq_parent.error_log.raising(sys.exc_info())
             return self.error_message()
+
+class DashboardPortletManagerRenderer(ColumnPortletManagerRenderer):
+    """Render a column of the dashboard
+    """
+    
+    adapts(Interface, IDefaultBrowserLayer, IBrowserView, IDashboard)
+    template = ViewPageTemplateFile('browser/templates/dashboard-column.pt')

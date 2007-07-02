@@ -15,13 +15,13 @@
     <adapter factory=".portletcontext.ContentContext" />
     <adapter factory=".portletcontext.PortalRootContext" />
     
-    <!-- Make a special renderer for the columns so we can control them
-      with a template
-    -->
-    <adapter 
-      factory=".manager.ColumnPortletManagerRenderer"
-      provides="plone.portlets.interfaces.IPortletManagerRenderer"
-      />
+    <!-- Make it possible to define a sane default dashboard -->
+    <subscriber
+        for="Products.PluggableAuthService.interfaces.events.IPrincipalCreatedEvent"
+        handler=".dashboard.new_user"
+        />
+        
+    <adapter factory=".dashboard.DefaultDashboard" />
     
     <!-- Make the site root and any ATContentType a possible portlet manager -->
     <class class="Products.CMFPlone.Portal.PloneSite">

@@ -73,6 +73,7 @@ class PortletManagerKSS(base):
         
         request['key'] = info['key']
         
+        request['viewname'] = view_name
         renderer = getMultiAdapter((context, request, view, manager,), IPortletManagerRenderer)
         renderer.update()
         ksscore.replaceInnerHTML(selector, renderer.__of__(context).render())

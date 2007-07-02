@@ -26,9 +26,7 @@
 
 <metal:main fill-slot="content"
     tal:define="errors options/state/getErrors | nothing">
-    <tal:main-macro metal:define-macro="main"
-                    tal:define="memberinfo mtool/getMemberInfo;
-                                name python:memberinfo['fullname'] or member.getUserName() or member.getId()">
+    <tal:main-macro metal:define-macro="main">
 
     <div id="content" class="documentEditable">
 
@@ -60,9 +58,8 @@
                 Portal status message
             </div>
 
-            <!-- Author information -->
-            <h1 class="documentFirstHeading" i18n:translate="dashboard_title">
-                <span tal:content="name" i18n:name="user_name" />'s dashboard
+            <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard">
+                Edit your dashboard
             </h1>
 
             <div id="dashboard">

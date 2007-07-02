@@ -53,11 +53,11 @@ class AddForm(formbase.AddFormBase):
         return super(AddForm, self).__call__()
     
     def referer(self):
-        return self.request.get('referer') or self.request.get('HTTP_REFERER', '')
+        return self.request.get('referer', '')
 
     def nextURL(self):
-        referer = self.request.form.get('referer', None)
-        if referer is not None:
+        referer = self.request.form.get('referer')
+        if referer:
             return referer
         else:
             addview = aq_parent(aq_inner(self.context))
@@ -98,8 +98,8 @@ class NullAddForm(BrowserView):
         return ''
     
     def nextURL(self):
-        referer = self.request.get('referer', self.request.get('HTTP_REFERER', None))
-        if referer is not None:
+        referer = self.request.get('referer')
+        if referer:
             return referer
         else:
             addview = aq_parent(aq_inner(self.context))
@@ -124,11 +124,11 @@ class EditForm(formbase.EditFormBase):
         return super(EditForm, self).__call__()
     
     def referer(self):
-        return self.request.form.get('referer') or self.request.get('HTTP_REFERER', '')
+        return self.request.get('referer', '')
 
     def nextURL(self):
-        referer = self.request.form.get('referer', None)
-        if referer is not None:
+        referer = self.request.form.get('referer')
+        if referer:
             return referer
         else:    
             portlet = aq_inner(self.context)

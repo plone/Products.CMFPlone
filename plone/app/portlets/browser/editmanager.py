@@ -1,3 +1,5 @@
+import urllib
+
 from Acquisition import Explicit, aq_parent, aq_inner
 from ZODB.POSException import ConflictError
 
@@ -119,6 +121,15 @@ class EditPortletManagerRenderer(Explicit):
                   'addview' : '%s/+/%s' % (addviewbase, p.addview)
                   } for p in self.manager.getAddablePortletTypes()]
         
+    @memoize
+    def referer(self):
+        view_name = self.request.get('viewname', None)
+        if view_name:
+            url = self.context.absolute_url() + '/' + view_name
+        else:
+            url = self.request['ACTUAL_URL']
+        return urllib.quote_plus(url)
+        
     # See note in plone.portlets.manager
     
     @memoize    
@@ -202,8 +213,8 @@ class ManagePortletAssignments(BrowserView):
         return ''
         
     def _nextUrl(self):
-        referer = self.request.get('referer', self.request.get('HTTP_REFERER', None))
-        if referer is None:
+        referer = self.request.get('referer')
+        if not referer:
             context = aq_parent(aq_inner(self.context))
             url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))    
             referer = '%s/@@manage-portlets' % (url,)

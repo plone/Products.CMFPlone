@@ -2,6 +2,19 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
+    <!-- Make a special renderer for the columns so we can control them
+      with a template
+    -->
+    <adapter 
+      factory="..manager.ColumnPortletManagerRenderer"
+      provides="plone.portlets.interfaces.IPortletManagerRenderer"
+      />
+      
+    <adapter 
+      factory="..manager.DashboardPortletManagerRenderer"
+      provides="plone.portlets.interfaces.IPortletManagerRenderer"
+      />
+
     <!-- Namespace traversal adapters for various types of portlets -->
     <adapter
         factory=".traversal.ContextPortletNamespace"

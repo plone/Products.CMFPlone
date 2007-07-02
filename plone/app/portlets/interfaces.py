@@ -46,7 +46,7 @@ class IDashboard(IPlacelessPortletManager):
     """
     
 class IDeferredPortletRenderer(IPortletRenderer):
-    """provide refresh and dynamic loading functionality"""
+    """Provide refresh and dynamic loading functionality"""
 
     def deferred_update():
         """refresh portlet data on KSS events (and only then)
@@ -73,4 +73,19 @@ class IDeferredPortletRenderer(IPortletRenderer):
 
         depending on this the render() method chooses whether to render the
         preload or full version (if initialized==True).
+        """
+
+class IDefaultDashboard(Interface):
+    """Define an adapter from the user/principal type (by default, this is
+    Products.PluggableAuthService.interfaces.authservice.IBasicUser) to
+    this interface and implement __call__ to return a mapping of dashboard
+    settings. When a new user is created, this adapter will be invoked to
+    build a default dashboard.
+    """
+    
+    def __call__(self):
+        """Create and return dashboard portlet assignments. Should be a 
+        mapping of dashboard column names ('plone.dashboard1', 
+        'plone.dashboard2', 'plone.dashboard3' and/or 'plone.dashboard4')
+        and a list of portlet assignmen instances.
         """
