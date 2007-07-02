@@ -4,6 +4,51 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Factored most of the "add menu" functionality out of 
+      plone.app.contentmenu into plone.app.content.browser.folderfactories.
+      This contains a view which powers the folder_factories view. The old 
+      template-based version is moved to plone_deprecated and is renamed
+      old_folder_factories. Closes http://dev.plone.org/plone/ticket/6370.
+      [optilude]
+
+    - Made the home link on the login success page link to the navigation root
+      rather than always linking to the site root. Fixes 
+      http://dev.plone.org/plone/ticket/6001.
+      [optilude]
+
+    - Made all portlet management functions use explicit referer URLs, rather
+      than relying on HTTP_REFERER. Hopefully this fixes problems with IE7
+      not passing this value properly. Should fix 
+      http://dev.plone.org/plone/ticket/6395 and 
+      http://dev.plone.org/plone/ticket/6641.
+      [optilude]
+
+    - Added an event handler to create a default dashboard when a new user
+      is created. This can be overridden using an adapter from IBasicUser to
+      IDefaultDashboard from plone.app.portlets.
+      Closes most of http://dev.plone.org/plone/ticket/6198.
+      [optilude]
+
+    - Added a message to the dashboard when it is empty, instructing users to
+      add some portlets.
+      Refers to http://dev.plone.org/plone/ticket/6198.
+      [optilude]
+
+    - Made the cut and delete items in the 'actions' menu fail with a status
+      message explaining the error, rather than an exception, when the context
+      is locked.
+      [optilude]
+
+    - Ensured that the 'rules' tab is not displayed if content rules are
+      disabled globally. Fixes http://dev.plone.org/plone/ticket/6449.
+      [optilude]
+      
+    - Show the locked icon to any user (including the one who holds the lock)
+      so long as they would normally have the "Modify portal content"
+      permission. This makes it easier to realise when you inadvertently
+      locked an object.
+      [optilude]
+
     - Fixed _at_creation_flag on initial content. This closes
       http://dev.plone.org/plone/ticket/6642.
       [hannosch]
