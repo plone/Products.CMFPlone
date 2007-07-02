@@ -26,7 +26,7 @@ from plone.portlets.interfaces import IPortletManager, IPortletManagerRenderer
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.icons.interfaces import IContentIcon
 
-from plone.app.contentmenu.menu import _allowedTypes
+from plone.app.content.browser.folderfactories import _allowedTypes
 
 deprecated(
     ('IndexIterator'),
