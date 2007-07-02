@@ -366,7 +366,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             except:
                 out.append(("Exception was thrown while cataloging",
                             logging.ERROR))
-                out += traceback.format_tb(sys.exc_traceback)
+                for line in traceback.format_tb(sys.exc_traceback):
+                    out.append((line, logging.ERROR))
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
                     raise
@@ -380,7 +381,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             except:
                 out.append((("Exception was thrown while updating "
                              "role mappings"), logging.ERROR))
-                out += traceback.format_tb(sys.exc_traceback)
+                for line in traceback.format_tb(sys.exc_traceback):
+                    out.append((line, logging.ERROR))
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
                     raise
