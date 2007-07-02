@@ -8,7 +8,8 @@
         for="Products.CMFCore.interfaces.ISiteRoot"
         name="dashboard"
         permission="plone.app.portlets.ManageOwnPortlets"
+        class=".dashboard.DashboardView"
         template="dashboard.pt"
         />
-            
+
 </configure>
