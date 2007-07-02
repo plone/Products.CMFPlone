@@ -193,6 +193,11 @@ class IContextState(Interface):
         action information: mapping[cat][id] == actioninfo
         """
         
+    def portlet_assignable():
+        """Whether or not the context is capable of having locally assigned
+        portlets.
+        """
+        
 class IViewView(Interface):
     """Marker interface which specifies that the current view is, in fact,
     a canonical "view" of the object, e.g. what may go on the "view" tab.
