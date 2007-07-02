@@ -1,0 +1,6 @@
+[default]
+title=Add item
+
+[security]
+View=0:Authenticated
+
