@@ -68,7 +68,7 @@
 
       <p tal:condition="python:not came_from">
         <a href=""
-           tal:attributes="href portal_url"
+           tal:attributes="href context/@@plone_portal_state/navigation_root_url"
            i18n:translate="label_login_continue_to_home_page">
           Continue to the
           <span tal:content="portal/title" i18n:name="portal_title">
