@@ -171,6 +171,9 @@ div.managedPortlet {
     min-height: 3em !important;
 }
 
+.managedPortlet a {
+    text-decoration: underline;
+}
 
 .managedPortletActions {
     display:block;
@@ -178,7 +181,7 @@ div.managedPortlet {
 }
 
 .managedPortletActions a {
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .managedPortletActions a.up,

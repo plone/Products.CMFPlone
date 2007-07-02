@@ -1076,6 +1076,10 @@ body.fullscreen #portal-searchbox {
 }
 
 /* Dashboard */
+#dashboard-info-message {
+    padding-top: 0.5em;
+}
+
 #dashboard {
     width: 68em;
 }
