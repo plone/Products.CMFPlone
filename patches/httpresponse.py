@@ -1,5 +1,6 @@
 from ZPublisher.HTTPResponse import HTTPResponse
 
+# XXX This patch can be removed once we require Zope 2.10.4 and it is released.
 
 def fixedGetHeader(self, name, literal=0):
     '''\
