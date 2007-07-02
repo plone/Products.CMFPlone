@@ -18,11 +18,16 @@ if isLinked(context):
     # there would yield a (disallowed) GET request without the intermediate
     # confirmation page (see `object_delete.cpy`)
     parent = context.aq_inner.aq_parent
-    parent.manage_delObjects(context.getId())
-
-    message = _(u'${title} has been deleted.',
-                mapping={u'title' : context.title_or_id()})
-    transaction_note('Deleted %s' % context.absolute_url())
+    
+    lock_info = context.restrictedTraverse('@@plone_lock_info')
+    if lock_info.is_locked():
+        message = _(u'${title} is locked and cannot be deleted.',
+            mapping={u'title' : context.title_or_id()})
+    else:
+        parent.manage_delObjects(context.getId())
+        message = _(u'${title} has been deleted.',
+                    mapping={u'title' : context.title_or_id()})
+        transaction_note('Deleted %s' % context.absolute_url())
 
     context.plone_utils.addPortalMessage(message)
     status = 'success'
