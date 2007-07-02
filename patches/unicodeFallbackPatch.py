@@ -1,3 +1,14 @@
+# The following hacks make sure that Unicode and utf-8 encoded strings can be
+# mixed in all page templates and tal snippets.
+
+# While the general direction is to require Unicode in all places, we need to
+# provide a gentle evolution path, as we cannot radically change this
+# requirement and end up with lots of broken code. Our strategy is to allow
+# only utf-8 encoded strings though in order to limit the performance impact
+# instead of supporting all encodings.
+
+# Therefor these patches will probably stay here for quite a while.
+
 # import hacks
 from unicodehacks import new__call__
 from unicodehacks import _nulljoin
