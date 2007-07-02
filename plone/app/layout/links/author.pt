@@ -1,4 +1,5 @@
-<tal:author define="portal_url view/portal_url">
+<tal:author define="portal_url view/portal_url"
+            i18n:domain="plone">
     <link rel="author"
           href=""
           title="Author information"
