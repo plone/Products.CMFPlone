@@ -1,27 +1,7 @@
 # Fixes to avoid interface failures, either by broken implementation
 # or broken interface declaration.
 
-# 1. Make WorkflowTool all_meta_types take and ignore an extra
-# ``interfaces`` argument to comply with the definition of
-# all_meta_types in Five.
-
-from Products.CMFCore.WorkflowTool import WorkflowTool
-
-orig_all_meta_types = WorkflowTool.all_meta_types.im_func
-def all_meta_types(self, interfaces=None):
-    return orig_all_meta_types(self)
-WorkflowTool.all_meta_types = all_meta_types
-
-# 2. Same as above, but now for TypesTool.
-
-from Products.CMFCore.TypesTool import TypesTool
-
-orig_all_meta_types = TypesTool.all_meta_types.im_func
-def all_meta_types(self, interfaces=None):
-    return orig_all_meta_types(self)
-TypesTool.all_meta_types = all_meta_types
-
-# 3. Provide some methods to ObjectManager to silent warnings from
+# 1. Provide some methods to ObjectManager to silent warnings from
 # zope.app.container.interfaces.IContainer
 
 from Globals import InitializeClass
