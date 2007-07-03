@@ -30,6 +30,9 @@
      interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
      object="/portal_actionicons"/>
   <utility
+     interface="Products.CMFCore.interfaces.IDiscussionTool"
+     object="/portal_discussion"/>
+  <utility
      interface="Products.CMFCore.interfaces.IMetadataTool"
      object="/portal_metadata"/>
   <utility
