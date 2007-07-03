@@ -3,7 +3,7 @@ from zope.component import adapts, queryUtility
 
 from zope.app.container.interfaces import INameChooser
 
-from Products.PluggableAuthService.interfaces.authservice import IBasicUser
+from Products.PluggableAuthService.interfaces.authservice import IPropertiedUser
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.constants import USER_CATEGORY
@@ -13,14 +13,14 @@ from plone.app.portlets import portlets
 
 from plone.app.portlets.storage import UserPortletAssignmentMapping
 
-def new_user(event):
+def new_user(principal, event):
     """Initialise the dashboard for a new user
     """
-    defaults = IDefaultDashboard(event.principal, None)
+    defaults = IDefaultDashboard(principal, None)
     if defaults is None:
         return
     
-    userid = event.principal.getId()
+    userid = principal.getId()
     portlets = defaults()
     for name in ('plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4'):
         assignments = portlets.get(name)
@@ -42,7 +42,7 @@ class DefaultDashboard(object):
     """
     
     implements(IDefaultDashboard)
-    adapts(IBasicUser)
+    adapts(IPropertiedUser)
     
     def __init__(self, principal):
         self.principal = principal

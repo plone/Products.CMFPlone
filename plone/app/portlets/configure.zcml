@@ -17,7 +17,8 @@
     
     <!-- Make it possible to define a sane default dashboard -->
     <subscriber
-        for="Products.PluggableAuthService.interfaces.events.IPrincipalCreatedEvent"
+        for="Products.PluggableAuthService.interfaces.authservice.IPropertiedUser
+            Products.PluggableAuthService.interfaces.events.IPrincipalCreatedEvent"
         handler=".dashboard.new_user"
         />
         
