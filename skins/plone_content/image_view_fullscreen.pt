@@ -10,7 +10,7 @@
 
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset='+context.plone_utils.getSiteEncoding())" />
     
-    <title tal:content="here/Title">
+    <title tal:content="here/pretty_title_or_id">
         Title
     </title>
 
