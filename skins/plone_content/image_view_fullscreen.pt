@@ -9,6 +9,10 @@
 <head>
 
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset='+context.plone_utils.getSiteEncoding())" />
+    
+    <title tal:content="here/Title">
+        Title
+    </title>
 
     <style type="text/css" media="screen">
     body {
