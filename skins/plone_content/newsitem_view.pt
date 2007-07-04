@@ -39,7 +39,7 @@
             <p metal:define-macro="imageCaption-field-view"
                class="discreet"
                tal:define="kss_class python:getKssClasses('imageCaption',
-                           templateId='kss_generic_macros', macro='imageCaption-field-view');"
+                           templateId=templateId, macro='imageCaption-field-view');"
                id="parent-fieldname-imageCaption"
                tal:attributes="class string: summary$kss_class;">
               <span metal:define-slot="inside" 
