@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Allow form tabbing using other elements than forms. This allows tabbing
+      between multiple forms, which is needed by the content rules config panel.
+      [wichert]
+
     - Factored most of the "add menu" functionality out of 
       plone.app.contentmenu into plone.app.content.browser.folderfactories.
       This contains a view which powers the folder_factories view. The old 
