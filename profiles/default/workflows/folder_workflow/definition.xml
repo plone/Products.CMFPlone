@@ -2,7 +2,7 @@
 <dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
              i18n:domain="plone"
              workflow_id="folder_workflow"
-             title="Folder Workflow [Plone]"
+             title="Community Workflow for Folders"
              state_variable="review_state"
              initial_state="visible"
              i18n:attributes="title">
@@ -52,11 +52,11 @@
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
-                  acquired="True">
+                  acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
-                  acquired="True">
+                  acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
@@ -65,7 +65,7 @@
    <permission-role>Owner</permission-role>
    <permission-role>Editor</permission-role>
   </permission-map>
-  <permission-map name="View" acquired="True">
+  <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
 
@@ -74,9 +74,8 @@
   <description>Visible to everyone, but not approved by the reviewers.</description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
-  <exit-transition transition_id="submit"/>
   <permission-map name="Access contents information"
-                  acquired="True">
+                  acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
@@ -94,7 +93,7 @@
    <permission-role>Owner</permission-role>
    <permission-role>Editor</permission-role>
   </permission-map>
-  <permission-map name="View" acquired="True">
+  <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
 

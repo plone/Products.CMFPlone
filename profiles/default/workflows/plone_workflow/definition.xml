@@ -2,7 +2,7 @@
 <dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
              i18n:domain="plone"
              workflow_id="plone_workflow"
-             title="Default Workflow [Plone]"
+             title="Community Workflow" description=""
              state_variable="review_state"
              initial_state="visible"
              i18n:attributes="title">
@@ -19,7 +19,7 @@
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
-                  acquired="True">
+                  acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
@@ -32,7 +32,7 @@
    <permission-role>Manager</permission-role>
    <permission-role>Reviewer</permission-role>
   </permission-map>
-  <permission-map name="View" acquired="True">
+  <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
 
@@ -74,7 +74,7 @@
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
-                  acquired="True">
+                  acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
@@ -85,7 +85,7 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
-  <permission-map name="View" acquired="True">
+  <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
@@ -95,7 +95,7 @@
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
   <permission-map name="Access contents information"
-                  acquired="True">
+                  acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
@@ -110,7 +110,7 @@
    <permission-role>Owner</permission-role>
    <permission-role>Editor</permission-role>
   </permission-map>
-  <permission-map name="View" acquired="True">
+  <permission-map name="View" acquired="False">
    <permission-role>Anonymous</permission-role>
   </permission-map>
 
