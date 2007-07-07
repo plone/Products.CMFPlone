@@ -162,21 +162,23 @@ class PersonalBarViewlet(ViewletBase):
         self.getIconFor = plone_utils.getIconFor
 
         self.anonymous = portal_state.anonymous()
+
+        if not self.anonymous:
         
-        member = portal_state.member()
-        userid = member.getId()
-        
-        if sm.checkPermission('Portlets: Manage own portlets', self.context):
-            self.homelink_url = self.portal_url + '/dashboard'
-        else:
-            self.homelink_url = self.portal_url + '/author/' + userid
-        
-        member_info = tools.membership().getMemberInfo(member.getId())
-        fullname = member_info.get('fullname', '')
-        if fullname:
-            self.user_name = fullname
-        else:
-            self.user_name = userid
+            member = portal_state.member()
+            userid = member.getId()
+            
+            if sm.checkPermission('Portlets: Manage own portlets', self.context):
+                self.homelink_url = self.portal_url + '/dashboard'
+            else:
+                self.homelink_url = self.portal_url + '/author/' + userid
+            
+            member_info = tools.membership().getMemberInfo(member.getId())
+            fullname = member_info.get('fullname', '')
+            if fullname:
+                self.user_name = fullname
+            else:
+                self.user_name = userid
 
 
 class PathBarViewlet(ViewletBase):
