@@ -37,12 +37,6 @@
         <fieldset>
             <legend>
                 <select name="type_id" onchange="form.submit()">
-                    <option
-                        value=""
-                        i18n:translate="label_default_type"
-                        tal:attributes="selected python:type_id == '' and 'selected' or None">
-                      (Default settings)
-                    </option>
 
                     <tal:option repeat="selectable view/selectable_types">
                         <option tal:content="selectable/title" i18n:translate=""
@@ -51,6 +45,12 @@
                                 Content type
                         </option>
                     </tal:option>
+                    <option
+                        value=""
+                        i18n:translate="label_default_type"
+                        tal:attributes="selected python:type_id == '' and 'selected' or None">
+                      (Default)
+                    </option>
                 </select>
                 <noscript>
                     <input type="submit"
@@ -75,6 +75,7 @@
 
                     <input id="allow_discussion"
                            type="checkbox"
+                           class="noborder"
                            name="allow_discussion:boolean"
                            tal:attributes="checked python:view.is_discussion_allowed() and 'checked' or None">
                     <label for="allow_discussion" i18n:translate="types_controlpanel_allow_discussion">
@@ -84,6 +85,7 @@
                     
                     <input id="versionable"
                            type="checkbox"
+                           class="noborder"
                            name="versionable"
                            tal:attributes="checked python:view.is_versionable() and 'checked' or None">
                     <label for="versionable" i18n:translate="types_controlpanel_versionable">
@@ -93,6 +95,7 @@
 
                     <input id="searchable"
                            type="checkbox"
+                           class="noborder"
                            name="searchable"
                            tal:attributes="checked python: view.is_searchable() and 'checked' or None">
                     <label for="searchable" i18n:translate="types_controlpanel_searchable">
@@ -116,8 +119,9 @@
                     <span tal:content="current_wf/title">Community Workflow</span>
                 </div>
 
-                <ul tal:repeat="desc current_wf/description"
-                    tal:condition="view/new_workflow_description">
+                <ul class="discreet"
+                    tal:repeat="desc current_wf/description"
+                    tal:condition="current_wf/description">
                     <li tal:content="desc">Workflow description</li>
                 </ul>
 
@@ -214,7 +218,8 @@
             <div tal:condition="view/have_new_workflow">
                 <img tal:replace="structure here/info_icon.gif" />
                 <span style="color: red" i18n:translate="types_controlpanel_warn_remap">
-                    Changing the workflow of a type may take a while, and may slow down Plone significantly during that period. 
+                    Changing the workflow of a type will take a while, and may slow down 
+                    the site significantly while the content is updated to the new setting. 
                 </span>
             </div>
 
