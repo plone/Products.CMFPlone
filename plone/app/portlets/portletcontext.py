@@ -53,13 +53,7 @@ class ContentContext(object):
         if not member:
             return None
 
-        try:
-            memberId = member.getUserId()
-        except AttributeError:
-            try:
-                memberId = member.getUserName()
-            except AttributeError:
-                memberId = member.getId()
+        memberId = member.getId()
 
         if not memberId:
             return None
