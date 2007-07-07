@@ -54,8 +54,8 @@ if not id:
 
 # do basic id validation
 
-# check for the magic 'login' alias
-if id == 'login':
+# check for reserved names
+if id in [ 'login', 'layout' ]:
     return _(u'${name} is reserved.', mapping={u'name' : id})
 
 # check for bad characters

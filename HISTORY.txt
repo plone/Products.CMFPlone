@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Blacklist the 'layout' id to prevent conflicts with the layout property
+      on dynamic view capable content. This fixes
+      http://dev.plone.org/plone/ticket/5970
+      [wichert]
+
     - Allow form tabbing using other elements than forms. This allows tabbing
       between multiple forms, which is needed by the content rules config panel.
       [wichert]
