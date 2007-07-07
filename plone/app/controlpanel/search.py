@@ -11,8 +11,11 @@ from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
+from plone.app.vocabularies.types import BAD_TYPES
+
 from form import ControlPanelForm
 from widgets import MultiCheckBoxThreeColumnWidget
+
 
 class ISearchSchema(Interface):
 
@@ -36,7 +39,7 @@ class ISearchSchema(Interface):
                                required=True,
                                missing_value=tuple(),
                                value_type=Choice(
-                                   vocabulary="plone.app.vocabularies.PortalTypes"))
+                                   vocabulary="plone.app.vocabularies.ReallyUserFriendlyTypes"))
 
 
 class SearchControlPanelAdapter(SchemaAdapterBase):
@@ -67,10 +70,12 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
 
     def get_types_not_searched(self):
         return [t for t in self.ttool.listContentTypes()
-                        if t not in self.context.types_not_searched]
+                        if t not in self.context.types_not_searched and
+                           t not in BAD_TYPES]
 
     def set_types_not_searched(self, value):
-        value = [t for t in self.ttool.listContentTypes() if t not in value]
+        value = [t for t in self.ttool.listContentTypes() if t not in value
+                   and t not in BAD_TYPES]
         self.context._updateProperty('types_not_searched', value)
 
     # This also defines the user friendly types

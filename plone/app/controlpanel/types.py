@@ -1,3 +1,4 @@
+from plone.app.vocabularies.types import BAD_TYPES
 from plone.app.workflow.remap import remap_workflow
 from plone.memoize.instance import memoize
 
@@ -120,7 +121,7 @@ type_id=%s' % (context.absolute_url() , type_id))
     @memoize
     def selectable_types(self):
         vocab_factory = getUtility(IVocabularyFactory,
-                                   name="plone.app.vocabularies.PortalTypes")
+                                   name="plone.app.vocabularies.ReallyUserFriendlyTypes")
         return [dict(id=v.value, title=v.token) for v in \
                 vocab_factory(self.context)]
 

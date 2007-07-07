@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0b6 Unreleased
 
+    - Do not show really user unfriendly types anymore in the search and types
+      control panels. This closes http://dev.plone.org/plone/ticket/6292.
+      [hannosch]
+
     - Consistently bicapitalized 'JavaScript'. This refs
       http://dev.plone.org/plone/ticket/6636.
       [hannosch]
