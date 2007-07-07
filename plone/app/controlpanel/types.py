@@ -174,7 +174,8 @@ type_id=%s' % (context.absolute_url() , type_id))
                 return dict(id='(Default)',
                         title=_(u"label_default_workflow_title",
                                 default=u"Default workflow (${title})",
-                                mapping=dict(title=pmf(default_workflow.title))))
+                                mapping=dict(title=pmf(default_workflow.title))),
+                        description=default_workflow.description)
         except IndexError:
             return dict(id='[none]', title=_(u"label_no_workflow",
                                              default=u"No workflow"))
@@ -193,7 +194,8 @@ type_id=%s' % (context.absolute_url() , type_id))
             workflows.insert(0, dict(id='(Default)',
                     title=_(u"label_default_workflow_title",
                             default=u"Default workflow (${title})",
-                            mapping=dict(title=pmf(default_workflow.title)))))
+                            mapping=dict(title=pmf(default_workflow.title)))),
+                    description=default_workflow.description)
 
         return workflows
 
