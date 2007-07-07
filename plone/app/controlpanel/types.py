@@ -161,7 +161,8 @@ type_id=%s' % (context.absolute_url() , type_id))
         except IndexError:
             return dict(id='[none]', title=_(u"No workflow"))
         wf = getattr(portal_workflow, wf_id)
-        return dict(id=wf.id, title=wf.title, description=wf.description)
+        desc = [s.strip() for s in wf.description.split('- ') if s]
+        return dict(id=wf.id, title=wf.title, description=desc)
 
     def available_workflows(self):
         vocab_factory = getUtility(IVocabularyFactory,
