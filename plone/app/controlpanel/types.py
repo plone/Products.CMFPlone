@@ -1,4 +1,3 @@
-from plone.app.vocabularies.types import BAD_TYPES
 from plone.app.workflow.remap import remap_workflow
 from plone.memoize.instance import memoize
 
@@ -25,7 +24,7 @@ class TypesControlPanel(BrowserView):
     def type_id(self):
         type_id = self.request.get('type_id', None)
         if type_id is None:
-            type_id = self.selectable_types()[0]['id']
+            type_id=''
         return type_id
 
     @property
@@ -47,44 +46,45 @@ class TypesControlPanel(BrowserView):
         cancel_button = form.get('form.button.Cancel', None) is not None
         type_id = form.get('old_type_id', None)
 
-        if submitted and type_id and not cancel_button:
-            portal_types = getToolByName(self.context, 'portal_types')
-            portal_repository = getToolByName(self.context,
-                                              'portal_repository')
-            portal_properties = getToolByName(self.context,
-                                              'portal_properties')
-            site_properties = getattr(portal_properties, 'site_properties')
+        if submitted and not cancel_button:
+            if type_id:
+                portal_types = getToolByName(self.context, 'portal_types')
+                portal_repository = getToolByName(self.context,
+                                                  'portal_repository')
+                portal_properties = getToolByName(self.context,
+                                                  'portal_properties')
+                site_properties = getattr(portal_properties, 'site_properties')
 
-            fti = getattr(portal_types, type_id)
+                fti = getattr(portal_types, type_id)
 
-            # Set FTI properties
+                # Set FTI properties
 
-            addable = form.get('addable', False)
-            allow_discussion = form.get('allow_discussion', False)
+                addable = form.get('addable', False)
+                allow_discussion = form.get('allow_discussion', False)
 
-            fti.manage_changeProperties(global_allow = bool(addable),
-                                        allow_discussion = bool(allow_discussion))
+                fti.manage_changeProperties(global_allow = bool(addable),
+                                            allow_discussion = bool(allow_discussion))
 
-            versionable = form.get('versionable', False)
-            versionable_types = list(portal_repository.getVersionableContentTypes())
-            if versionable and type_id not in versionable_types:
-                versionable_types.append(type_id)
-                # Add default versioning policies to the versioned type
-                for policy_id in DEFAULT_POLICIES:
-                    portal_repository.addPolicyForContentType(type_id,
-                                                              policy_id)
-            elif not versionable and type_id in versionable_types:
-                versionable_types.remove(type_id)
-            portal_repository.setVersionableContentTypes(versionable_types)
+                versionable = form.get('versionable', False)
+                versionable_types = list(portal_repository.getVersionableContentTypes())
+                if versionable and type_id not in versionable_types:
+                    versionable_types.append(type_id)
+                    # Add default versioning policies to the versioned type
+                    for policy_id in DEFAULT_POLICIES:
+                        portal_repository.addPolicyForContentType(type_id,
+                                                                  policy_id)
+                elif not versionable and type_id in versionable_types:
+                    versionable_types.remove(type_id)
+                portal_repository.setVersionableContentTypes(versionable_types)
 
-            searchable = form.get('searchable', False)
-            blacklisted = list(site_properties.getProperty('types_not_searched'))
-            if searchable and type_id in blacklisted:
-                blacklisted.remove(type_id)
-            elif not searchable and type_id not in blacklisted:
-                blacklisted.append(type_id)
-            site_properties.manage_changeProperties(types_not_searched = \
-                                                    blacklisted)
+                searchable = form.get('searchable', False)
+                blacklisted = list(site_properties.getProperty('types_not_searched'))
+                if searchable and type_id in blacklisted:
+                    blacklisted.remove(type_id)
+                elif not searchable and type_id not in blacklisted:
+                    blacklisted.append(type_id)
+                site_properties.manage_changeProperties(types_not_searched = \
+                                                        blacklisted)
 
             # Update workflow
 
@@ -101,6 +101,13 @@ class TypesControlPanel(BrowserView):
                 if state_map.has_key('[none]'):
                     state_map[None] = state_map['[none]']
                     del state_map['[none]']
+                if type_id:
+                    types=(type_id,)
+                else:
+                    wt = getToolByName(self.context, 'portal_workflow')
+                    tt = getToolByName(self.context, 'portal_types')
+                    nondefault = [info[0] for info in wt.listChainOverrides()]
+                    type_ids = [type for type in tt.listContentTypes() if type not in nondefault]
                 remap_workflow(context, type_ids=(type_id,), chain=chain,
                                state_map=state_map)
 
