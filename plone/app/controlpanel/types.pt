@@ -163,7 +163,7 @@
                 </ul>
 
                 <div tal:define="new_workflow view/new_workflow"
-                     tal:condition="python:view.have_new_workflow() and not view.new_workflow_is_none()">
+                     tal:condition="python:view.have_new_workflow() and not view.new_workflow_is_none() and view.new_workflow_is_different()">
 
                     <label for="states" i18n:translate="types_controlpanel_state_mapping">
                         State Mapping

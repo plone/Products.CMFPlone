@@ -91,25 +91,33 @@ class TypesControlPanel(BrowserView):
             if self.have_new_workflow() and \
                form.get('form.workflow.submitted', False) and \
                save_button:
-                new_wf = self.new_workflow()
-                if new_wf == '[none]':
-                    chain = ()
+                if self.new_workflow_is_different():
+                    new_wf = self.new_workflow()
+                    if new_wf == '[none]':
+                        chain = ()
+                    elif new_wf == '(Default)':
+                        chain = new_wf
+                    else:
+                        chain = (new_wf,)
+                    state_map = dict([(s['old_state'], s['new_state']) for s in \
+                                      form.get('new_wfstates', [])])
+                    if state_map.has_key('[none]'):
+                        state_map[None] = state_map['[none]']
+                        del state_map['[none]']
+                    if type_id:
+                        types=(type_id,)
+                    else:
+                        wt = getToolByName(self.context, 'portal_workflow')
+                        tt = getToolByName(self.context, 'portal_types')
+                        nondefault = [info[0] for info in wt.listChainOverrides()]
+                        type_ids = [type for type in tt.listContentTypes() if type not in nondefault]
+
+                    remap_workflow(context, type_ids=(type_id,), chain=chain,
+                                   state_map=state_map)
                 else:
-                    chain = (new_wf,)
-                state_map = dict([(s['old_state'], s['new_state']) for s in \
-                                  form.get('new_wfstates', [])])
-                if state_map.has_key('[none]'):
-                    state_map[None] = state_map['[none]']
-                    del state_map['[none]']
-                if type_id:
-                    types=(type_id,)
-                else:
-                    wt = getToolByName(self.context, 'portal_workflow')
-                    tt = getToolByName(self.context, 'portal_types')
-                    nondefault = [info[0] for info in wt.listChainOverrides()]
-                    type_ids = [type for type in tt.listContentTypes() if type not in nondefault]
-                remap_workflow(context, type_ids=(type_id,), chain=chain,
-                               state_map=state_map)
+                    portal_workflow = getToolByName(context, 'portal_workflow')
+                    portal_workflow.setChainForPortalTypes((type_id,), self.new_workflow())
+
 
                 self.request.response.redirect('%s/@@types-controlpanel?\
 type_id=%s' % (context.absolute_url() , type_id))
@@ -157,7 +165,11 @@ type_id=%s' % (context.absolute_url() , type_id))
         context = aq_inner(self.context)
         portal_workflow = getToolByName(context, 'portal_workflow')
         try:
-            wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
+            nondefault = [info[0] for info in portal_workflow.listChainOverrides()]
+            if self.type_id in nondefault:
+                wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
+            else:
+                return dict(id='(Default)', title=_(u"Default workflow"))
         except IndexError:
             return dict(id='[none]', title=_(u"No workflow"))
         wf = getattr(portal_workflow, wf_id)
@@ -167,8 +179,13 @@ type_id=%s' % (context.absolute_url() , type_id))
     def available_workflows(self):
         vocab_factory = getUtility(IVocabularyFactory,
                                    name="plone.app.vocabularies.Workflows")
-        return [dict(id=v.value, title=v.token) for v in \
-                vocab_factory(self.context)]
+        workflows = [dict(id=v.value, title=v.token) 
+                        for v in vocab_factory(self.context)]
+        if self.type_id:
+            # Only offer a default workflow option on a real type
+            # XXX Turn this into 'Default workflow (workflow title) with proper i18n
+            workflows.insert(0, dict(id='(Default)', title='Default workflow'))
+        return workflows
 
     @memoize
     def new_workflow(self):
@@ -182,6 +199,25 @@ type_id=%s' % (context.absolute_url() , type_id))
     @memoize
     def have_new_workflow(self):
         return self.current_workflow()['id'] != self.new_workflow()
+
+    @memoize
+    def default_workflow(self):
+        portal_workflow = getToolByName(self.context, 'portal_workflow')
+        return portal_workflow.getDefaultChain()[0]
+
+    @memoize
+    def real_workflow(self, wf):
+        if wf=='(Default)':
+            return self.default_workflow()
+        else:
+            return wf
+
+    @memoize
+    def new_workflow_is_different(self):
+        new_workflow = self.new_workflow()
+        current_workflow = self.current_workflow()['id']
+
+        return self.real_workflow(new_workflow)!=self.real_workflow(current_workflow)
 
     @memoize
     def new_workflow_is_none(self):
@@ -200,9 +236,8 @@ type_id=%s' % (context.absolute_url() , type_id))
 
     def new_workflow_available_states(self):
         current_workflow = self.current_workflow()['id']
-        new_workflow = self.new_workflow()
-
-        if new_workflow != current_workflow:
+        if self.new_workflow_is_different():
+            new_workflow = self.real_workflow(self.new_workflow())
             portal_workflow = getToolByName(self.context, 'portal_workflow')
             wf = getattr(portal_workflow, new_workflow)
             return [dict(id=s.id, title=s.title) for s in \
@@ -211,8 +246,8 @@ type_id=%s' % (context.absolute_url() , type_id))
             return []
 
     def suggested_state_map(self):
-        current_workflow = self.current_workflow()['id']
-        new_workflow = self.new_workflow()
+        current_workflow = self.real_workflow(self.current_workflow()['id'])
+        new_workflow = self.real_workflow(self.new_workflow())
 
         portal_workflow = getToolByName(self.context, 'portal_workflow')
 
@@ -223,7 +258,7 @@ type_id=%s' % (context.absolute_url() , type_id))
                          old_title = _(u"No workflow"),
                          suggested_id = default_state)]
 
-        elif new_workflow != current_workflow:
+        elif self.new_workflow_is_different():
             old_wf = getattr(portal_workflow, current_workflow)
             new_wf = getattr(portal_workflow, new_workflow)
 
