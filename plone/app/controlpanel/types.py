@@ -14,6 +14,11 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
+def format_description(text):
+    # We expect the workflow to be a text of '- ' divided bullet points.
+    return [s.strip() for s in text.split('- ') if s]
+
+
 class TypesControlPanel(BrowserView):
 
     # Actions
@@ -171,18 +176,16 @@ type_id=%s' % (context.absolute_url() , type_id))
                 wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
             else:
                 default_workflow = self.default_workflow(False)
-                desc = [s.strip() for s in default_workflow.description.split('- ') if s]
                 return dict(id='(Default)',
                         title=_(u"label_default_workflow_title",
                                 default=u"Default workflow (${title})",
                                 mapping=dict(title=pmf(default_workflow.title))),
-                        description=desc)
+                        description=format_description(default_workflow.description))
         except IndexError:
             return dict(id='[none]', title=_(u"label_no_workflow",
                                              default=u"No workflow"))
         wf = getattr(portal_workflow, wf_id)
-        desc = [s.strip() for s in wf.description.split('- ') if s]
-        return dict(id=wf.id, title=wf.title, description=desc)
+        return dict(id=wf.id, title=wf.title, description=format_description(wf.description))
 
     def available_workflows(self):
         vocab_factory = getUtility(IVocabularyFactory,
@@ -192,12 +195,11 @@ type_id=%s' % (context.absolute_url() , type_id))
         if self.type_id:
             # Only offer a default workflow option on a real type
             default_workflow = self.default_workflow(False)
-            desc = [s.strip() for s in default_workflow.description.split('- ') if s]
             workflows.insert(0, dict(id='(Default)',
                     title=_(u"label_default_workflow_title",
                             default=u"Default workflow (${title})",
                             mapping=dict(title=pmf(default_workflow.title))),
-                    description=desc))
+                    description=format_description(default_workflow.description)))
 
         return workflows
 
@@ -249,7 +251,7 @@ type_id=%s' % (context.absolute_url() , type_id))
         if self.new_workflow_is_different():
             new_workflow = self.real_workflow(self.new_workflow())
             wf = getattr(portal_workflow, new_workflow)
-            return [s.strip() for s in wf.description.split('- ') if s]
+            return format_description(wf.description)
 
         return None
 
