@@ -19,20 +19,22 @@
                 mdata context/portal_memberdata;
                 errors python:request.get('errors', {});
                 searchonly string:groups;
-                takeaction string:prefs_user_membership_edit;">
+                takeaction string:prefs_user_membership_edit;
+                mq python:modules['ZTUtils'].make_query
+                userquery python:mq(userid=userid)">
 
       <div id="content" class="documentEditable">
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li>
             <a href=""
-           tal:attributes="href string: $portal_url/prefs_user_details?userid=${userid}"
+           tal:attributes="href string: $portal_url/prefs_user_details?${userquery}"
            i18n:translate="label_user_properties">User Properties</a>
       </li>
 
       <li class="selected">
             <a href=""
-           tal:attributes="href string: $portal_url/${template_id}?userid=${userid}"
+           tal:attributes="href string: $portal_url/${template_id}?${userquery}"
            i18n:translate="label_group_memberships">Group Memberships</a>
       </li>
     </ul>
@@ -53,9 +55,9 @@
         <h1 class="documentFirstHeading"
             i18n:translate="heading_group_memberships_for">
           Group Memberships for
-          <span tal:content="string:${member/getUserName}"
+          <span tal:content="string:${member/getId}"
                 tal:omit-tag=""
-                i18n:name="username">username</span>
+                i18n:name="userid">user id</span>
         </h1>
 
         <a href=""

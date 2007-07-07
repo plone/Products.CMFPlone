@@ -42,7 +42,7 @@ if username or password:
 # they posted without typing a username or password into the form), we do
 # the following
 
-creator = mtool.getAuthenticatedMember().getUserName()
+creator = mtool.getAuthenticatedMember().getId()
 tb = dtool.getDiscussionFor(context)
 id = tb.createReply(title=subject, text=body_text, Creator=creator)
 reply = tb.getReply(id)

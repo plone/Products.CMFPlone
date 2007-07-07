@@ -23,7 +23,8 @@
 <metal:main fill-slot="content"
     tal:define="errors options/state/getErrors;">
     <tal:main-macro metal:define-macro="main"
-                    tal:define="author python:(len(request.traverse_subpath) > 0 and request.traverse_subpath[0]) or request.get('author', None);
+                    tal:define="url_unquote_plus python:modules['Products.PythonScripts.standard'].url_unquote_plus;
+                                author python:(len(request.traverse_subpath) > 0 and url_unquote_plus(request.traverse_subpath[0])) or request.get('author', None);
                                 portrait python: mtool.getPersonalPortrait(author);
                                 portal_types portal/portal_types;
                                 authorinfo python: mtool.getMemberInfo(author);">
@@ -45,7 +46,7 @@
  
     <div id="content"
          class="documentEditable"
-         tal:define="isOwner python:member.getUserName()==author"
+         tal:define="isOwner python:member.getId()==author"
          tal:attributes="class python: test(isOwner, 'documentEditable', '')">
 
         <h5 class="hiddenStructure"
@@ -55,7 +56,9 @@
             tal:condition="isOwner">
           <li class="selected">
             <a href=""
-               tal:attributes="href string: ${portal_url}/author/${member}"
+                tal:define="url_quote_plus python:modules['Products.PythonScripts.standard'].url_quote_plus;
+                            memberurl python:url_quote_plus(member.getId())"
+               tal:attributes="href string: ${portal_url}/author/${memberurl}"
                i18n:translate="label_view">View</a>
           </li>
           <li>
