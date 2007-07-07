@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Remove the community workflow and retitle the Plone workflow to community
+      workflow.
+      [wichert]
+
     - In the simple publication workflow, the author can now edit a published
       item. He cannot edit it while it is pending, though.
       [limi]

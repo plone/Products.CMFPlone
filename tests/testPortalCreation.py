@@ -798,8 +798,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
 
     def testWorkflowsInstalled(self):
-        for wf in ['community_workflow', 'community_folder_workflow', 'intranet_workflow',
-                    'intranet_folder_workflow', 'one_state_workflow', 'simple_publication_workflow']:
+        for wf in ['intranet_workflow', 'intranet_folder_workflow',
+                'one_state_workflow', 'simple_publication_workflow']:
             self.failUnless(wf in self.portal.portal_workflow.objectIds())
 
     def testAddPermisssionsGivenToContributorRole(self):

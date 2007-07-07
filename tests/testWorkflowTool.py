@@ -11,9 +11,7 @@ default_user = PloneTestCase.default_user
 # though there are some obvious downsides to this, it's better than just
 # asserting that there are X published states in all workflows, etc.
 workflow_dict = {
-      'community_folder_workflow':('private','published','visible',)
-    , 'community_workflow':('private','published','visible','pending',)
-    , 'folder_workflow':('private','published','visible',)
+      'folder_workflow':('private','published','visible',)
     , 'intranet_folder_workflow':('internal','private',)
     , 'intranet_workflow':('internal','internally_published','pending',
                            'private','external',)

@@ -2467,21 +2467,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(sheet.hasProperty('external_links_open_new_window'))
         self.failUnless(sheet.external_links_open_new_window == 'false')
 
-    def testAddMissingWorkflows(self):
-        self.portal.portal_workflow._delObject('community_workflow')
-        self.portal.portal_workflow.one_state_workflow.states.published.title = "Foo"
-        addMissingWorkflows(self.portal, [])
-        self.failUnless('community_workflow' in self.portal.portal_workflow.objectIds())
-        self.assertEquals("Foo", self.portal.portal_workflow.one_state_workflow.states.published.title)
-        
-    def testAddMissingWorkflowsTwice(self):
-        self.portal.portal_workflow._delObject('community_workflow')
-        self.portal.portal_workflow.one_state_workflow.states.published.title = "Foo"
-        addMissingWorkflows(self.portal, [])
-        addMissingWorkflows(self.portal, [])
-        self.failUnless('community_workflow' in self.portal.portal_workflow.objectIds())
-        self.assertEquals("Foo", self.portal.portal_workflow.one_state_workflow.states.published.title)
-        
     def testAddMissingWorkflowsNoTool(self):
         self.portal._delObject('portal_workflow')
         addMissingWorkflows(self.portal, [])

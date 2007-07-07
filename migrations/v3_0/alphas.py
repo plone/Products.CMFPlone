@@ -1283,8 +1283,7 @@ def addMissingWorkflows(portal, out):
     if wft is None:
         return
 
-    new_workflow_ids = ['community_workflow', 'community_folder_workflow',
-                        'intranet_workflow', 'intranet_folder_workflow',
+    new_workflow_ids = [ 'intranet_workflow', 'intranet_folder_workflow',
                         'one_state_workflow', 'simple_publication_workflow']
     encoding = 'utf-8'
     path_prefix = os.path.join(package_home(cmfplone_globals), 'profiles',
