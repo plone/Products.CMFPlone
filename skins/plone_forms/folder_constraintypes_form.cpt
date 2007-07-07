@@ -75,7 +75,7 @@
                 </label>
 
                 <div class="formHelp" i18n:translate="help_add_restriction_mode">
-                   Select the type restriction policy in this location.
+                   Select the restriction policy in this location.
                 </div>
 
                 <tal:mode condition="python:ifacetool.objectImplements(parent,'Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes')">
