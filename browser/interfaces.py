@@ -289,7 +289,7 @@ class IPlone(Interface):
 
     current_page_url = Attribute("The full url with query string")
 
-    isContextDefaultPage = Attribure("Boolean idicating that the context is "
+    isContextDefaultPage = Attribute("Boolean idicating that the context is "
                                      "the default page of its parent folder.")
 
     isStructuralFolder = Attribute("Boolean indicating that the context is a "
