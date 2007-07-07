@@ -194,7 +194,7 @@ type_id=%s' % (context.absolute_url() , type_id))
 
         if new_workflow != current_workflow:
             wf = getattr(portal_workflow, new_workflow)
-            return wf.description
+            return [s.strip() for s in wf.description.split('- ') if s]
 
         return None
 
