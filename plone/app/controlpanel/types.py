@@ -172,10 +172,12 @@ type_id=%s' % (context.absolute_url() , type_id))
             else:
                 default_workflow = self.default_workflow(False)
                 return dict(id='(Default)',
-                        title=_(u"Default workflow (${title})",
+                        title=_(u"label_default_workflow_title",
+                                default=u"Default workflow (${title})",
                                 mapping=dict(title=pmf(default_workflow.title))))
         except IndexError:
-            return dict(id='[none]', title=_(u"No workflow"))
+            return dict(id='[none]', title=_(u"label_no_workflow",
+                                             default=u"No workflow"))
         wf = getattr(portal_workflow, wf_id)
         desc = [s.strip() for s in wf.description.split('- ') if s]
         return dict(id=wf.id, title=wf.title, description=desc)
@@ -189,8 +191,9 @@ type_id=%s' % (context.absolute_url() , type_id))
             # Only offer a default workflow option on a real type
             default_workflow = self.default_workflow(False)
             workflows.insert(0, dict(id='(Default)',
-                title=_(u'Default workflow (${title})',
-                        mapping=dict(title=pmf(default_workflow.title)))))
+                    title=_(u"label_default_workflow_title",
+                            default=u"Default workflow (${title})",
+                            mapping=dict(title=pmf(default_workflow.title)))))
 
         return workflows
 
