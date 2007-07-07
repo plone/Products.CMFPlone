@@ -33,7 +33,7 @@ input {
     vertical-align: middle;
     background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
 }
-input:checkbox {
+input[checkbox] {
     background: none;
 }
 #searchGadget {
