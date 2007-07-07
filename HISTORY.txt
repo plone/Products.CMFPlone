@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - In the simple publication workflow, the author can now edit a published
+      item. He cannot edit it while it is pending, though.
+      [limi]
+
     - Blacklist the 'layout' id to prevent conflicts with the layout property
       on dynamic view capable content. This fixes
       http://dev.plone.org/plone/ticket/5970
