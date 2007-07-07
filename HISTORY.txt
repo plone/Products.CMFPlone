@@ -5,6 +5,7 @@ Changelog for Plone
 Plone 3.0-beta4 - unreleased
 
     - Images and Files no longer have a workflow, making them always visible.
+      This closes http://dev.plone.org/plone/ticket/6740
       [limi]
 
     - Workflow states now have a description. 
