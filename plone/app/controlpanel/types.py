@@ -187,6 +187,17 @@ type_id=%s' % (context.absolute_url() , type_id))
     def new_workflow_is_none(self):
         return self.new_workflow() == '[none]'
 
+    def new_workflow_description(self):
+        portal_workflow = getToolByName(self.context, 'portal_workflow')
+        current_workflow = self.current_workflow()['id']
+        new_workflow = self.new_workflow()
+
+        if new_workflow != current_workflow:
+            wf = getattr(portal_workflow, new_workflow)
+            return wf.description
+
+        return None
+
     def new_workflow_available_states(self):
         current_workflow = self.current_workflow()['id']
         new_workflow = self.new_workflow()

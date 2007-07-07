@@ -116,7 +116,8 @@
                     <span tal:content="current_wf/title">Community Workflow</span>
                 </div>
 
-                <ul tal:repeat="desc current_wf/description">
+                <ul tal:repeat="desc current_wf/description"
+                    tal:condition="view/new_workflow_description">
                     <li tal:content="desc">Workflow description</li>
                 </ul>
 
@@ -155,6 +156,12 @@
                     tal:condition="view/have_new_workflow"
                     />
             
+                <ul class="discreet"
+                    tal:repeat="desc view/new_workflow_description"
+                    tal:condition="view/new_workflow_description">
+                    <li tal:content="desc">Workflow description</li>
+                </ul>
+
                 <div tal:define="new_workflow view/new_workflow"
                      tal:condition="python:view.have_new_workflow() and not view.new_workflow_is_none()">
 
