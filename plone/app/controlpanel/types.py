@@ -184,7 +184,7 @@ type_id=%s' % (context.absolute_url() , type_id))
         if self.type_id:
             # Only offer a default workflow option on a real type
             # XXX Turn this into 'Default workflow (workflow title) with proper i18n
-            workflows.insert(0, dict(id='(Default)', title='Default workflow'))
+            workflows.insert(0, dict(id='(Default)', title=_(u'Default workflow'))
         return workflows
 
     @memoize
