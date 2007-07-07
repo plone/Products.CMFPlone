@@ -4,8 +4,13 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Images and Files now have no workflow in the new default simple 
+      publication setup.
+      [limi]
+
     - Workflow states now have a description. 
       This closes http://dev.plone.org/plone/ticket/6498
+      [limi, hannosch]
 
     - Remove the community workflow and retitle the Plone workflow to
       community workflow.

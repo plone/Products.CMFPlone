@@ -27,6 +27,8 @@
   <type type_id="ATSortCriterion"/>
   <type type_id="Discussion Item"/>
   <type type_id="Plone Site"/>
+  <type type_id="Image"/>
+  <type type_id="File"/>
   
   <!-- 
   <type type_id="Folder">
