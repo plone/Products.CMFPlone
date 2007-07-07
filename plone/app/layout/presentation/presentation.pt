@@ -16,28 +16,32 @@
     </tal:cache>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"
-          tal:define="charset here/site_properties/default_charset|string:utf-8"
-          tal:attributes="content string:text/html;;charset=${charset}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+              tal:define="charset here/site_properties/default_charset|string:utf-8"
+              tal:attributes="content string:text/html;;charset=${charset}" />
 
-<title tal:content="context/Title"></title>
+    <title tal:content="context/Title"></title>
 
-<link rel="stylesheet" href="ui/default/base.css" type="text/css" media="all"
-    tal:attributes="href string:${context/portal_url}/base.css" />
-<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj"
-    tal:attributes="href string:${context/portal_url}/s5_slides.css" />
-<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" 
-    tal:attributes="href string:${context/portal_url}/s5_outline.css" />
-<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" 
-    tal:attributes="href string:${context/portal_url}/s5_print.css" />
-<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" 
-    tal:attributes="href string:${context/portal_url}/s5_opera.css" />
+    <link rel="stylesheet" href="ui/default/base.css" type="text/css" media="all"
+        tal:attributes="href string:${context/portal_url}/base.css" />
+    <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj"
+        tal:attributes="href string:${context/portal_url}/s5_slides.css" />
+    <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" 
+        tal:attributes="href string:${context/portal_url}/s5_outline.css" />
+    <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" 
+        tal:attributes="href string:${context/portal_url}/s5_print.css" />
+    <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" 
+        tal:attributes="href string:${context/portal_url}/s5_opera.css" />
 
-<script type="text/javascript" tal:content="structure string:var base_url=&quot;${here/absolute_url}&quot;;">
-  var base_url="/";
-</script>
-<script src="ui/default/slides.js" type="text/javascript"
-      tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>      
+    <script type="text/javascript" tal:content="structure string:var base_url=&quot;${here/absolute_url}&quot;;">
+      var base_url="/";
+    </script>
+    <script src="ui/default/slides.js" type="text/javascript"
+          tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>      
+
+    <metal:baseslot define-slot="base">
+      <base tal:attributes="href here/renderBase" /><!--[if lt IE 7]></base><![endif]-->
+    </metal:baseslot>
     
 </head>
 <body>
