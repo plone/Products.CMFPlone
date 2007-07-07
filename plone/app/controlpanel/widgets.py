@@ -118,7 +118,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
 
     _joinButtonToMessageTemplate = u"""<tr class="%s">
 <td>%s</td><td>%s</td><td>%s</td>
-<tr>"""
+</tr>"""
 
     _image_template = u"""
 <img src="%s" alt="%s" height="11" width="14" />&nbsp;%s
