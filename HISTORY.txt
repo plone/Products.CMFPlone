@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Deprecated presentation.css since the presentation code uses the 
+      dedicated S5 CSS files now.
+      This closes http://dev.plone.org/plone/ticket/6304
+      [limi]
+
     - Images and Files no longer have a workflow, making them always visible.
       This closes http://dev.plone.org/plone/ticket/6740
       [limi]
