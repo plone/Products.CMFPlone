@@ -141,6 +141,9 @@ class LanguageTableWidget(MultiCheckBoxWidget):
 
     _table_end_template = u"""</tbody></table>"""
 
+    def associateLabelWithInputControl(self):
+        return None
+    
     def __init__(self, field, request):
         """Initialize the widget."""
         super(LanguageTableWidget, self).__init__(field,
