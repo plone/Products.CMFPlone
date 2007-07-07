@@ -42,7 +42,7 @@
                     <input type="hidden" name="text_override" value=""
                            tal:attributes="value python:  request.form['text']" />
                     <input type="hidden" name="Creator" value=""
-                           tal:attributes="value member/getUserName" />
+                           tal:attributes="value member/getId" />
 
                     <input class="standalone"
                            type="submit"
