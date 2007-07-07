@@ -22,7 +22,7 @@
     enabled="1" expression="" id="print.css" media="print" rel="stylesheet"
     rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="mobile.css" media="handheld"
+    enabled="0" expression="" id="mobile.css" media="handheld"
     rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="deprecated.css" media="screen"
