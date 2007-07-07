@@ -169,7 +169,10 @@ type_id=%s' % (context.absolute_url() , type_id))
             if self.type_id in nondefault:
                 wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
             else:
-                return dict(id='(Default)', title=_(u"Default workflow"))
+                default_workflow = self.default_workflow()
+                return dict(id='(Default)',
+                        title=_(u"Default workflow (${title})",
+                                mapping=dict(title=default_workflow)))
         except IndexError:
             return dict(id='[none]', title=_(u"No workflow"))
         wf = getattr(portal_workflow, wf_id)
@@ -184,7 +187,11 @@ type_id=%s' % (context.absolute_url() , type_id))
         if self.type_id:
             # Only offer a default workflow option on a real type
             # XXX Turn this into 'Default workflow (workflow title) with proper i18n
-            workflows.insert(0, dict(id='(Default)', title=_(u'Default workflow'))
+            default_workflow = self.default_workflow()
+            workflows.insert(0, dict(id='(Default)',
+                title=_(u'Default workflow (${title})',
+                        mapping=dict(title=default_workflow))))
+
         return workflows
 
     @memoize
