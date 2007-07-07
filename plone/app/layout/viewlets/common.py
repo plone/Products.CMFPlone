@@ -11,6 +11,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from cgi import escape
+from urllib import quote_plus
 
 
 class ViewletBase(BrowserView):
@@ -171,7 +172,7 @@ class PersonalBarViewlet(ViewletBase):
             if sm.checkPermission('Portlets: Manage own portlets', self.context):
                 self.homelink_url = self.portal_url + '/dashboard'
             else:
-                self.homelink_url = self.portal_url + '/author/' + userid
+                self.homelink_url = self.portal_url + '/author/' + quote_plus(userid)
             
             member_info = tools.membership().getMemberInfo(member.getId())
             fullname = member_info.get('fullname', '')
