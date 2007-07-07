@@ -779,6 +779,11 @@ ol.visualNoMarker {
     line-height: 1em;
 }
 
+.discreet ul {
+    list-style-image: none;    
+    list-style-type: disc;
+}
+
 textarea.proportional {
     font: 100% <dtml-var fontFamily>;
 }
