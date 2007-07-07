@@ -194,8 +194,8 @@ type_id=%s' % (context.absolute_url() , type_id))
             workflows.insert(0, dict(id='(Default)',
                     title=_(u"label_default_workflow_title",
                             default=u"Default workflow (${title})",
-                            mapping=dict(title=pmf(default_workflow.title)))),
-                    description=default_workflow.description)
+                            mapping=dict(title=pmf(default_workflow.title))),
+                    description=default_workflow.description))
 
         return workflows
 
