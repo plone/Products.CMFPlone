@@ -62,6 +62,14 @@
            </legend>
 
            <tal:block tal:condition="python:type_id!=''">
+
+               <p class="discreet"
+                  tal:content="view/selected_type_description"
+                  tal:condition="view/selected_type_description"
+                  i18n:translate="">
+                   Type description
+               </p>
+
                <div class="field">
                     <input id="addable"
                            type="checkbox"

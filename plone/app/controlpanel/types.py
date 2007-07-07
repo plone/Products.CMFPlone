@@ -149,6 +149,9 @@ type_id=%s' % (context.absolute_url() , type_id))
     def selected_type_title(self):
         return self.fti.Title()
 
+    def selected_type_description(self):
+        return self.fti.Description()
+
     def is_addable(self):
         return self.fti.getProperty('global_allow', False)
 
