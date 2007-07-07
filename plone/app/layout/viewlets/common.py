@@ -164,19 +164,19 @@ class PersonalBarViewlet(ViewletBase):
         self.anonymous = portal_state.anonymous()
         
         member = portal_state.member()
-        username = member.getUserName()
+        userid = member.getUserId()
         
         if sm.checkPermission('Portlets: Manage own portlets', self.context):
             self.homelink_url = self.portal_url + '/dashboard'
         else:
-            self.homelink_url = self.portal_url + '/author/' + username
+            self.homelink_url = self.portal_url + '/author/' + userid
         
         member_info = tools.membership().getMemberInfo(member.getId())
         fullname = member_info.get('fullname', '')
         if fullname:
             self.user_name = fullname
         else:
-            self.user_name = member.getUserName()
+            self.user_name = userid
 
 
 class PathBarViewlet(ViewletBase):
