@@ -3,6 +3,7 @@
              i18n:domain="plone"
              workflow_id="one_state_workflow"
              title="Single State Workflow"
+             description="- Essentially a workflow with no transitions, but has a Published state, so portlets and applications that expect that state will continue to work."
              state_variable="review_state"
              initial_state="published"
              i18n:attributes="title">

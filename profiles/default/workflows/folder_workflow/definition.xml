@@ -3,6 +3,10 @@
              i18n:domain="plone"
              workflow_id="folder_workflow"
              title="Community Workflow for Folders"
+             description="- Used in conjunction with the Community workflow.
+                          - Has no pending state.
+                          - Allows owner to publish the folder without approval.
+                         "
              state_variable="review_state"
              initial_state="visible"
              i18n:attributes="title">

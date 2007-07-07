@@ -779,7 +779,7 @@ ol.visualNoMarker {
     line-height: 1em;
 }
 
-.discreet ul {
+ul.discreet {
     list-style-image: none;    
     list-style-type: disc;
 }

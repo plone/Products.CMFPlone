@@ -4,8 +4,11 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
-    - Remove the community workflow and retitle the Plone workflow to community
-      workflow.
+    - Workflow states now have a description. 
+      This closes http://dev.plone.org/plone/ticket/6498
+
+    - Remove the community workflow and retitle the Plone workflow to
+      community workflow.
       [wichert]
 
     - In the simple publication workflow, the author can now edit a published

@@ -3,6 +3,10 @@
              i18n:domain="plone"
              workflow_id="simple_publication_workflow"
              title="Simple Publication Workflow"
+             description="- Simple workflow that is useful for basic web sites.
+                         - Things start out as private, and can either be submitted for review, or published directly.
+                         - The creator of a content item can edit the item even after it is published.
+                        "
              state_variable="review_state"
              initial_state="private"
              i18n:attributes="title">
