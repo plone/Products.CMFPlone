@@ -164,7 +164,7 @@ class PersonalBarViewlet(ViewletBase):
         self.anonymous = portal_state.anonymous()
         
         member = portal_state.member()
-        userid = member.getUserId()
+        userid = member.getId()
         
         if sm.checkPermission('Portlets: Manage own portlets', self.context):
             self.homelink_url = self.portal_url + '/dashboard'

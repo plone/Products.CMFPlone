@@ -26,7 +26,7 @@
 <metal:main fill-slot="content">
     <tal:main-macro metal:define-macro="main"
                     tal:define="memberinfo mtool/getMemberInfo;
-                                name python:memberinfo['fullname'] or member.getUserName() or member.getId()">
+                                name python:memberinfo['fullname'] or member.getId() or member.getId()">
 
     <div id="content" class="documentEditable">
 
