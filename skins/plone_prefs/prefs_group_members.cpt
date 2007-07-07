@@ -155,7 +155,7 @@
                         <tal:block tal:condition="python: not isGroup(this_user)">
                           <td>
                             <img src="user.gif" alt="" />
-                            <a href="" tal:attributes="href python:'prefs_user_details?' + mq(userid,this_user.getId())"
+                            <a href="" tal:attributes="href python:'prefs_user_details?' + mq(userid=this_user.getId())"
                                 tal:content="this_user/getId | default">
                                 <span i18n:translate="link_username_not_available">
                                     username not available
@@ -247,14 +247,14 @@
                   <td>
                       <tal:block tal:condition="python:not isGroup(this_user)">
                           <img src="user.gif" alt="" />
-                          <a href="" tal:attributes="href python:prefs_user_details?' + mq(userid=this_user.getId())"
+                          <a href="" tal:attributes="href python:'prefs_user_details?' + mq(userid=this_user.getId())"
                                    tal:content="this_user/getId | default">
                                    <span i18n:translate="link_username_not_available">username not available</span>
                           </a>
                       </tal:block>
                       <tal:block tal:condition="python: isGroup(this_user)">
                           <img src="group.gif" alt="" />
-                          <a href="" tal:attributes="href python:prefs_group_details?' + mq(groupname=this_user.getGroupName())"
+                          <a href="" tal:attributes="href python:'prefs_group_details?' + mq(groupname=this_user.getGroupName())"
                                      tal:content="this_user/getGroupTitleOrName | default">
                                      <span i18n:translate="link_groupname_not_available">
                                      groupname not available</span>
