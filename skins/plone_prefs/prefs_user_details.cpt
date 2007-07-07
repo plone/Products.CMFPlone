@@ -13,6 +13,8 @@
 
 <div metal:fill-slot="prefs_configlet_content"
      tal:define="userid python:request.get('userid', member.getId());
+                 mq python:modules['ZTUtils'].make_query;
+                 userquery python:mq(userid=userid);
                  member python:mtool.getMemberById(userid);
                  errors options/state/getErrors;">
 
@@ -21,7 +23,7 @@
     <ul class="contentViews">
       <li class="selected">
             <a href=""
-               tal:attributes="href string: $portal_url/${template_id}?userid=${userid}"
+               tal:attributes="href string: $portal_url/${template_id}?${userquqery}"
                i18n:translate="label_user_properties">
               User Properties
             </a>
@@ -29,7 +31,7 @@
             
       <li>
             <a href=""
-               tal:attributes="href string: $portal_url/prefs_user_memberships?userid=${userid}"
+               tal:attributes="href string: $portal_url/prefs_user_memberships?${userquery}"
                i18n:translate="label_group_memberships">
               Group Memberships
             </a>
