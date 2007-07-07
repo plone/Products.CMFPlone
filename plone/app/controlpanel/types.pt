@@ -27,7 +27,7 @@
         Workflow, visibility and versioning settings for your content types.
     </p>
     
-    <form method="POST" 
+    <form method="post" 
           tal:define="type_id view/type_id"
           tal:attributes="action string:${context/absolute_url}/@@types-controlpanel">
 
@@ -41,7 +41,7 @@
                         value=""
                         i18n:translate="label_default_type"
                         tal:attributes="selected python:type_id == '' and 'selected' or None">
-                      Default
+                      (Default settings)
                     </option>
 
                     <tal:option repeat="selectable view/selectable_types">
@@ -115,6 +115,13 @@
                     <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
                     <span tal:content="current_wf/title">Community Workflow</span>
                 </div>
+
+                <div class="discreet"
+                   tal:condition="current_wf/description" 
+                   tal:content="structure current_wf/description">
+                    Workflow description
+                </div>
+
             
                 <div class="field">
                     <label for="new_workflow" 
