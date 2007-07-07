@@ -9,6 +9,7 @@ from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as pmf
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -169,10 +170,10 @@ type_id=%s' % (context.absolute_url() , type_id))
             if self.type_id in nondefault:
                 wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
             else:
-                default_workflow = self.default_workflow()
+                default_workflow = self.default_workflow(False)
                 return dict(id='(Default)',
                         title=_(u"Default workflow (${title})",
-                                mapping=dict(title=default_workflow)))
+                                mapping=dict(title=pmf(default_workflow.title))))
         except IndexError:
             return dict(id='[none]', title=_(u"No workflow"))
         wf = getattr(portal_workflow, wf_id)
@@ -186,11 +187,10 @@ type_id=%s' % (context.absolute_url() , type_id))
                         for v in vocab_factory(self.context)]
         if self.type_id:
             # Only offer a default workflow option on a real type
-            # XXX Turn this into 'Default workflow (workflow title) with proper i18n
-            default_workflow = self.default_workflow()
+            default_workflow = self.default_workflow(False)
             workflows.insert(0, dict(id='(Default)',
                 title=_(u'Default workflow (${title})',
-                        mapping=dict(title=default_workflow))))
+                        mapping=dict(title=pmf(default_workflow.title)))))
 
         return workflows
 
@@ -208,9 +208,13 @@ type_id=%s' % (context.absolute_url() , type_id))
         return self.current_workflow()['id'] != self.new_workflow()
 
     @memoize
-    def default_workflow(self):
+    def default_workflow(self, id_only=True):
         portal_workflow = getToolByName(self.context, 'portal_workflow')
-        return portal_workflow.getDefaultChain()[0]
+        id = portal_workflow.getDefaultChain()[0]
+        if id_only:
+            return id
+        else:
+            return portal_workflow.getWorkflowById(id)
 
     @memoize
     def real_workflow(self, wf):
@@ -235,7 +239,8 @@ type_id=%s' % (context.absolute_url() , type_id))
         current_workflow = self.current_workflow()['id']
         new_workflow = self.new_workflow()
 
-        if new_workflow != current_workflow:
+        if self.new_workflow_is_different():
+            new_workflow = self.real_workflow(self.new_workflow())
             wf = getattr(portal_workflow, new_workflow)
             return [s.strip() for s in wf.description.split('- ') if s]
 
