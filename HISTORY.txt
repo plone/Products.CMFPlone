@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - Remove hard-to-cache recent portlet from the default front page. It's
+      on the default dashboard.
+      [optilude]
+
     - Moved the login.js script to only trigger on the login_form page, since
       that's where the login portlet posts to anyway. Carrying it around on
       every page doesn't make sense.

@@ -453,9 +453,7 @@ class PloneGenerator:
             left[u'navigation'] = portlets.navigation.Assignment()
         if u'login' not in left:
             left[u'login'] = portlets.login.Assignment()
-        if u'recent' not in left:
-            left[u'recent'] = portlets.recent.Assignment(count=5)
-
+        
         if u'review' not in right:
             right[u'review'] = portlets.review.Assignment(count=5)
         if u'news' not in right:
