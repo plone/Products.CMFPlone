@@ -14,6 +14,11 @@
   <javascript id="toc.js" insert-after="styleswitcher.js"/>    
   <javascript id="webstats.js" insert-after="toc.js"/>
 
+  <!-- new file -->
+  <javascript cacheable="True" compression="safe" cookable="True"
+              enabled="True" expression="" id="accessibility.js"
+              inline="False" insert-before="styleswitcher.js"/>
+
   <!-- Make these resources only render for logged-in users -->
   <javascript expression="not: portal/portal_membership/isAnonymousUser"
               id="dropdown.js" 
