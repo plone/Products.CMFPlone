@@ -7,7 +7,31 @@
               enabled="True" expression="not:here/@@plone_portal_state/anonymous"
               id="++resource++kukit-src.js" inline="False"/>
 
+  <!-- Move these, so they won't break up the rendering -->
   <javascript id="toc.js" insert-after="login.js"/>    
   <javascript id="webstats.js" insert-after="toc.js"/>
-              
+
+  <!-- Make these resources only render for logged-in users -->
+  <javascript expression="not: portal/portal_membership/isAnonymousUser"
+              id="dropdown.js" 
+              insert-after="webstats.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="table_sorter.js"
+              insert-after="dropdown.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="calendar_formfield.js"
+              insert-after="table_sorter.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="calendarpopup.js"
+              insert-after="calendar_formfield.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="formUnload.js"
+              insert-after="calendarpopup.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="formsubmithelpers.js"
+              insert-after="formUnload.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser"
+              id="unlockOnFormUnload.js"
+              insert-after="formsubmithelpers.js"/>
+ 
 </object>
