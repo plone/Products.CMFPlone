@@ -126,10 +126,7 @@ class ManageDashboardPortlets(BrowserView):
             raise Unauthorized, "Cannot get portlet assignments for anonymous through this view"
         
         member = membership.getAuthenticatedMember()
-        try:
-            memberId = member.getUserId()
-        except AttributeError:
-            memberId = member.getId()
+        memberId = member.getId()
         
         if memberId is None:
             raise KeyError, "Cannot find user id of current user" 
