@@ -45,12 +45,6 @@
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()"
     id="RTL.css" media="screen" rel="stylesheet" rendering="import"/>
- <stylesheet title="Small Text" cacheable="True" compression="safe"
-    cookable="True" enabled="1" expression="" id="textSmall.css"
-    media="screen" rel="alternate stylesheet" rendering="link"/>
- <stylesheet title="Large Text" cacheable="True" compression="safe"
-    cookable="True" enabled="1" expression="" id="textLarge.css"
-    media="screen" rel="alternate stylesheet" rendering="link"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
