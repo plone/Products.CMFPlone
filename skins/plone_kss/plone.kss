@@ -199,25 +199,8 @@ form.enableLockingProtection:load {
     action-client: plone-initLockingProtection;
 }
 
-/* Temporarily disabled because it acts foul with queryFormLeave.
-   This is realy an overwrite of the rule in at.kss !!!
-*/
-
-/*
-input[name="form_submit"]:click {
-    evt-click-preventdefault:     false;
-    action-cancel:                kssValidateForm;
-}
-*/
-
-
 /*  Selector for the sharing page in plone.app.workflow.
     the search_term parameters, puts the needed info into the request
-
-    the setAttribute action-client is needed to avoid the confirmation
-    dialog that comes from: /CMFPlone/skins/plone_ecmascript/formsubmithelpers.js 
-    this approach assumes that the kss actions are done *after* formsubmithelpers.js
-    has done it's thing.
  */
 
 #sharing-save-button:click {
