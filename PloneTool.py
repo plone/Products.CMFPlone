@@ -957,7 +957,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(View, obj):
             raise Unauthorized
-        return obj.getOwner().getUserName()
+        return obj.getOwner().getId()
 
     security.declarePublic('normalizeString')
     def normalizeString(self, text, relaxed=False):

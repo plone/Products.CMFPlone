@@ -4,6 +4,23 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - If we failed to send the user registration email but the user selected
+      his own password to not remove the newly created user but just warn
+      him that the email failed.
+      [wichert]
+
+    - Do not allow user registration if the site is configured to emai
+      password but no mail configuration has been set.
+      [wichert]
+
+    - Escape userids and groupnames in all templates so we can handle ids with
+      unfriendly characters.
+      [wichert]
+
+    - Cleanup handling of userids and loginnames: consistently use userids to
+      key all user information. 
+      [wichert]
+
     - Disable the mobile style sheet by default, since very few people use it,
       and we're planning to re-work this in 3.5 anyway. If you need it, simply
       turn it back on in portal_css.

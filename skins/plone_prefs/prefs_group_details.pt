@@ -14,7 +14,10 @@
 <div metal:fill-slot="prefs_configlet_content"
      tal:define="errors python:request.get('errors', {});
                  portal_roles mtool/getPortalRoles;
+                 mq python:modules['ZTUtils'].make_query;
                  groupname request/groupname | nothing;
+                 groupquery python:mq(groupname=groupname);
+                 groupkeyquery python:mq(key=groupname);
                  grouproles python:request.set('grouproles', []);
                  gtool context/portal_groups;
                  group python:gtool.getGroupById(groupname);
@@ -29,17 +32,17 @@
     <ul class="contentViews">
       <li>
         <a href=""
-           tal:attributes="href string:$here_url/prefs_group_members?groupname=${groupname}"
+           tal:attributes="href string:$here_url/prefs_group_members?${groupquery}"
            i18n:translate="label_group_members">Group Members</a>
       </li>
       <li class="selected">
         <a href=""
-           tal:attributes="href string:$here_url/${template_id}?groupname=${groupname}"
+           tal:attributes="href string:$here_url/${template_id}?${groupquery}"
            i18n:translate="label_group_properties">Group Properties</a>
       </li>
       <li>
         <a href=""
-           tal:attributes="href string:${portal_url}/@@manage-group-portlets?key=${groupname}"
+           tal:attributes="href string:${portal_url}/@@manage-group-portlets?${groupkeyquery}"
            i18n:translate="label_group_portlets">Group Portlets</a>
       </li>
     </ul>

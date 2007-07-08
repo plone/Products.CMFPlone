@@ -23,7 +23,7 @@
            id="user-name"
            tal:attributes="href string:${portal_url}/dashboard"
           ><span class="visualCaseSensitive"
-                 tal:content="python:author and author['fullname'] or user.getUserName()">
+                 tal:content="python:author and author['fullname'] or user.getId()">
                 John
            </span
        ></a></li>

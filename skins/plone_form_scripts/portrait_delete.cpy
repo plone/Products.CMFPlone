@@ -15,7 +15,7 @@ member=context.portal_membership.getAuthenticatedMember()
 
 context.portal_membership.deletePersonalPortrait(member.getId())
 
-tmsg='Deleted portrait for %s' % (member.getUserName())
+tmsg='Deleted portrait for %s' % (member.getId())
 transaction_note(tmsg)
 
 context.plone_utils.addPortalMessage(_(u'Your portrait has been deleted.'))

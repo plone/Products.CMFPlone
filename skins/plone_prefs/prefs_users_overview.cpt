@@ -148,13 +148,15 @@
         <tal:block repeat="this_user batch">
           <tr tal:define="oddrow repeat/this_user/odd;
                           userid this_user/userid;
+                          mq python:modules['ZTUtils'].make_query;
+                          userquery python:mq(userid=userid);
                           user python:mtool.getMemberById(userid)"
               tal:condition="python:user is not None"
               tal:attributes="class python:test(oddrow,'odd','even')">
 
                     <td>
               <a href="prefs_user_details"
-             tal:attributes="href string:$portal_url/prefs_user_details?userid=$userid">
+                 tal:attributes="href string:$portal_url/prefs_user_details?${userquery}">
             <tal:block replace="structure portal/user.gif"/>&nbsp;<span tal:replace="userid">username</span>
             (<span tal:replace="python:user.getProperty('fullname')">Full Name</span>)
               </a>

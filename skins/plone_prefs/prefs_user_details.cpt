@@ -23,7 +23,7 @@
     <ul class="contentViews">
       <li class="selected">
             <a href=""
-               tal:attributes="href string: $portal_url/${template_id}?${userquqery}"
+               tal:attributes="href string: $portal_url/${template_id}?${userquery}"
                i18n:translate="label_user_properties">
               User Properties
             </a>

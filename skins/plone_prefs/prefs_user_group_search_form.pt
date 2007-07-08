@@ -15,9 +15,10 @@
     tal:define="errors python:request.get('errors', {});
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start python:request.get('b_start',0);
-        searchonly request/searchonly | nothing;
-        searchstring request/searchstring | nothing;
-        searchfor request/searchonly | request/searching | nothing;">
+                searchonly request/searchonly | nothing;
+                searchstring request/searchstring | nothing;
+                searchfor request/searchonly | request/searching | nothing;
+                mq python:modules['ZTUtils'].make_query;">
 
     <h1 class="documentFirstHeading"
         i18n:translate="heading_search_usersandgroups">Search for Users and Groups</h1>
@@ -97,12 +98,12 @@
                 <img src="group.gif" alt="" tal:condition="usergroup/getGroupName | nothing" />
 
                 <a href="" tal:condition="not:usergroup/getGroupName | nothing"
-                    tal:attributes="href string:prefs_user_details?userid=${usergroup/getId}"
+                    tal:attributes="href python:'prefs_user_details?'+mq(userid=usergroup.getId())"
                     tal:content="usergroup/getUserName | default">
                     username not available
                 </a>
                 <a href="" tal:condition="usergroup/getGroupName | nothing"
-                    tal:attributes="href string:prefs_group_details?groupname=${usergroup/getGroupName}"
+                    tal:attributes="href python:'prefs_group_details?'+mq(groupname=usergroup.getGroupName())"
                     tal:content="usergroup/getGroupName | default">
                     groupname not available
                 </a>

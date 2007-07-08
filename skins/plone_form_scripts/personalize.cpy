@@ -46,7 +46,7 @@ if delete_portrait:
 
 member.setProperties(listed=listed, ext_editor=ext_editor, visible_ids=visible_ids)
 
-tmsg='Edited personal settings for %s' % member.getUserName()
+tmsg='Edited personal settings for %s' % member.getId()
 transaction_note(tmsg)
 
 context.plone_utils.addPortalMessage(_(u'Your personal settings have been saved.'))
