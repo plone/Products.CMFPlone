@@ -172,7 +172,6 @@ class PloneGenerator:
         migs.v2_1.alphas.addDefaultTypesToPortalFactory(p, out)
         migs.v2_1.rcs.enableSyndicationOnTopics(p, out)
         migs.v2_5.two51_two52.setLoginFormInCookieAuth(p, out)
-        migs.v2_5.two52_two53.createMimetypes(p, out)
         mt = getToolByName(p, 'portal_migration')
         mt.setInstanceVersion(mt.getFileSystemVersion())
 
