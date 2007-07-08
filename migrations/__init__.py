@@ -211,7 +211,7 @@ def registerMigrations():
 
     MigrationTool.registerUpgradePath('2.5.2',
                                       '2.5.3-rc1',
-                                      null)
+                                      v2_5.two52_two53.two52_two53)
 
     MigrationTool.registerUpgradePath('2.5.3-rc1',
                                       '2.5.3-final',
