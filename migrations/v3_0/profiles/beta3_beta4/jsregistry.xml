@@ -4,6 +4,10 @@
   <javascript id="plone_menu.js" remove="True"/>
   <javascript id="plone_javascripts.js" remove="True"/>
   <javascript cacheable="True" compression="safe" cookable="True"
-	      enabled="True" expression="not:here/@@plone_portal_state/anonymous"
-	      id="++resource++kukit-src.js" inline="False"/>
+              enabled="True" expression="not:here/@@plone_portal_state/anonymous"
+              id="++resource++kukit-src.js" inline="False"/>
+
+  <javascript id="toc.js" insert-after="login.js"/>    
+  <javascript id="webstats.js" insert-after="toc.js"/>
+              
 </object>
