@@ -34,4 +34,10 @@
               id="unlockOnFormUnload.js"
               insert-after="formsubmithelpers.js"/>
  
+ <!-- Remove unused JS -->
+ <javascript id="correctPREformatting.js" remove="True"/>
+ <javascript id="plone_minwidth.js" remove="True"/>
+ <javascript id="folder_contents_filter.js" remove="True"/>
+ <javascript id="fullscreenmode.js" remove="True"/>
+
 </object>

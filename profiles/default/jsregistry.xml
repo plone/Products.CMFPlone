@@ -1,22 +1,6 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
-<!-- Still useful? -->
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="False" expression="" id="correctPREformatting.js"
-    inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="" id="ie5fixes.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="False" expression="" id="plone_minwidth.js" inline="False"/>
-  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
-              id="folder_contents_filter.js"/>
-
-
-
-
-
-
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="event-registration.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
@@ -32,8 +16,6 @@
     enabled="True" expression="" id="cookie_functions.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="livesearch.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="" id="fullscreenmode.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="select_all.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
@@ -90,7 +72,7 @@
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser"
     id="unlockOnFormUnload.js" inline="False"/>
 
-
+ <!-- Kupu -->
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
