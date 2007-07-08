@@ -2,6 +2,12 @@
  * they point outside the site, or are special protocols
  * To disable this effect for links on a one-by-one-basis,
  * give them a class of 'link-plain'
+ *
+ * NOTE: This script is no longer hooked up, since we use CSS to do this now.
+ *       (see public.css for the implementation)
+ *       It's not removed from existing sites that use it, but new sites will
+ *       not have it enabled. The CSS approach works in all modern browsers,
+ *       but not Internet Explorer 6. It works fine in IE7, however.
  */
 
 function scanforlinks() {

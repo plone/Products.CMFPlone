@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - The mark_special_links javascript is no longer hooked up, since we use
+      CSS to do the various protocol-specific markers now.
+      It's *not* removed from existing sites that use it, but new sites
+      will not have it enabled. The CSS approach works in all modern browsers,
+      but not Internet Explorer 6. It works fine in IE7, however.
+      If you are upgrading from an earlier Plone release, you
+      might want to remove the script manually to reduce page weight.
+      [limi]
+
     - Moved several javascripts to be rendered for logged-in users only to 
       reduce the weight of the anonymous page load.
       [limi]
