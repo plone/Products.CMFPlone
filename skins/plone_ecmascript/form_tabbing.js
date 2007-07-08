@@ -217,8 +217,10 @@ ploneFormTabbing.initializeForm = function(form) {
         }
     }
 
-    var tabs = cssQuery(".enableFormTabbing li.formTab a,"+
-                        ".enableFormTabbing option.formTab");
+    var tabs = cssQuery("form.enableFormTabbing li.formTab a,"+
+                        "form.enableFormTabbing option.formTab,"+
+                        "div.enableFormTabbing li.formTab a,"+
+                        "div.enableFormTabbing option.formTab");
     if (!tab_inited && tabs.length > 0) {
         ploneFormTabbing.select(tabs[0]);
     }
@@ -236,7 +238,8 @@ ploneFormTabbing.initializeForm = function(form) {
 };
 
 ploneFormTabbing.initialize = function() {
-    var forms = cssQuery(".enableFormTabbing");
+    var forms = cssQuery("form.enableFormTabbing,"+
+                         "div.enableFormTabbing");
 
     for (var i=0; i<forms.length; i++) {
         ploneFormTabbing.initializeForm(forms[i]);
