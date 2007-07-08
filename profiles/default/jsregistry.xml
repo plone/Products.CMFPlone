@@ -36,8 +36,6 @@
     enabled="True" expression="" id="styleswitcher.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="sarissa.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="" id="login.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True" enabled="on"
     expression="" id="toc.js" inline="False"/>    
  <javascript cacheable="True" compression="none" cookable="True"
