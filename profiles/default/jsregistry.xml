@@ -21,6 +21,8 @@
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="dragdropreorder.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
+    enabled="False" expression="" id="mark_special_links.js" inline="False"/>
+ <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="collapsiblesections.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="form_tabbing.js" inline="False"/>
@@ -46,9 +48,6 @@
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser"
     id="dropdown.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
-    id="folder_contents_filter.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
     id="table_sorter.js" inline="False"/>
