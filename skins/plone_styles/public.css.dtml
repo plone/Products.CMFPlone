@@ -16,6 +16,10 @@
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
+/* Accessibility elements, applied by JS */
+body.largeText { font-size: 95%; }
+body.smallText { font-size: 60%; }
+
 /* Padding for the columns */
 
 #portal-column-one .visualPadding {
