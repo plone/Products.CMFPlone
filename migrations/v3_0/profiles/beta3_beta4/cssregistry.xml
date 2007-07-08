@@ -4,4 +4,7 @@
  <!-- These are now implemented using JS -->
  <stylesheet id="textLarge.css" remove="True" />
  <stylesheet id="textSmall.css" remove="True" />
+ <!-- Move the custom CSS back so it won't split from the main CSS -->
+ <stylesheet id="ploneCustom.css" insert-after="ploneKss.css" />
+
 </object>

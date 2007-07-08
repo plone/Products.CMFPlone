@@ -40,6 +40,9 @@
     enabled="1" expression="" id="ploneKss.css" media="all"
     rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="ploneCustom.css" media="all"
+    rel="stylesheet" rendering="import"/>
+ <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="not: portal/portal_membership/isAnonymousUser"
     id="member.css" media="screen" rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
@@ -57,7 +60,4 @@
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
     id="kupudrawerstyles.css" media="" rel="stylesheet" rendering="import"/>
- <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="ploneCustom.css" media="all"
-    rel="stylesheet" rendering="import"/>
 </object>
