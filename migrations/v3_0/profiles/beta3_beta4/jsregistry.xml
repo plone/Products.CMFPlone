@@ -11,7 +11,7 @@
        many other scripts -->
   <javascript id="sarissa.js" insert-after="cssQuery.js"/>    
   <!-- Move these, so they won't break up the rendering -->
-  <javascript id="toc.js" insert-after="login.js"/>    
+  <javascript id="toc.js" insert-after="styleswitcher.js"/>    
   <javascript id="webstats.js" insert-after="toc.js"/>
 
   <!-- Make these resources only render for logged-in users -->
