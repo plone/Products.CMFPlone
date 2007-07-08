@@ -99,6 +99,7 @@ from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFPlone.migrations.v2_5.two51_two52 import setLoginFormInCookieAuth
+from Products.CMFPlone.migrations.v2_5.two52_two53 import addMissingMimeTypes
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
@@ -1103,6 +1104,30 @@ class TestMigrations_v2_5_1(MigrationTest):
         self.failIf(len(out) > 0)
         self.failIfEqual(cookie_auth.getProperty('login_path'),
                          'require_login')
+
+class TestMigrations_v2_5_2(MigrationTest):
+
+    def afterSetUp(self):
+        self.mimetypes = self.portal.mimetypes_registry
+        
+    def testMissingMimeTypes(self):
+        # we're testing for 'text/x-web-markdown' and 'text/x-web-textile'
+        missing_types = ['text/x-web-markdown', 'text/x-web-textile']
+        # since we're running a full 2.5.4 instance in this test, the missing
+        # types might in fact already be there:
+        current_types = self.mimetypes.list_mimetypes()
+        types_to_delete = []
+        for mtype in missing_types:
+            if mtype in current_types:
+                types_to_delete.append(mtype)
+        if types_to_delete:
+            self.mimetypes.manage_delObjects(types_to_delete)
+        # now they're gone:
+        self.failIf(set(self.mimetypes.list_mimetypes()).issuperset(set(missing_types)))
+        out = []
+        addMissingMimeTypes(self.portal, out)
+        # now they're back:
+        self.failUnless(set(self.mimetypes.list_mimetypes()).issuperset(set(missing_types)))
 
 
 class TestMigrations_v3_0_Actions(MigrationTest):
@@ -2989,7 +3014,6 @@ class TestMigrations_v3_0(MigrationTest):
         updateTopicTitle(self.portal, [])
 
 
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -2998,6 +3022,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_1_3))
     suite.addTest(makeSuite(TestMigrations_v2_5))
     suite.addTest(makeSuite(TestMigrations_v2_5_1))
+    suite.addTest(makeSuite(TestMigrations_v2_5_2))
     suite.addTest(makeSuite(TestMigrations_v3_0))
     suite.addTest(makeSuite(TestMigrations_v3_0_Actions))
     return suite
