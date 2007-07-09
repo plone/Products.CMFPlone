@@ -46,11 +46,13 @@ class DocumentBylineViewlet(ViewletBase):
     def locked_icon(self):
         if not getSecurityManager().checkPermission('Modify portal content', self.context):
             return ""
-            
+
         locked = False
         lock_info = queryMultiAdapter((self.context, self.request), name='plone_lock_info')
         if lock_info is not None:
-            locked = lock_info.is_locked()
+            # the icon doesn't need to be printed for the person who
+            # locked this object
+            locked = lock_info.is_locked_for_current_user()
         else:
             context = aq_inner(self.context)
             lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
