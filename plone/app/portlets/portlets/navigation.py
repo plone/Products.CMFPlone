@@ -59,7 +59,7 @@ class INavigationPortlet(IPortletDataProvider):
             description=_(u"help_include_top_node",
                           default=u"Whether or not to show the top, or 'home' "
                                    "node in the navigation tree."),
-            default=True,
+            default=False,
             required=False)
             
     currentFolderOnly = schema.Bool(
@@ -105,11 +105,11 @@ class Assignment(base.Assignment):
     name = u""
     root = u""
     currentFolderOnly = False
-    includeTop = True
+    includeTop = False
     topLevel = 1
     bottomLevel = 0
     
-    def __init__(self, name=u"", root=u"", currentFolderOnly=False, includeTop=True, topLevel=1, bottomLevel=0):
+    def __init__(self, name=u"", root=u"", currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
