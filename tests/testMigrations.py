@@ -6,6 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from sets import Set
 from Products.CMFPlone.tests import PloneTestCase
 
 from OFS.SimpleItem import SimpleItem
@@ -4152,7 +4153,7 @@ class TestMigrations_v2_5_2(MigrationTest):
         out = []
         addMissingMimeTypes(self.portal, out)
         # now they're back:
-        self.failUnless(set(self.mimetypes.list_mimetypes()).issuperset(set(missing_types)))
+        self.failUnless(set(self.mimetypes.list_mimetypes()).issuperset(Set(missing_types)))
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -361,7 +361,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return _icons[(category, id)]
         try:
             actionicons = getToolByName(self, 'portal_actionicons')
-            iconinfo = actionicons.getActionIcon(category, id)
+            iconinfo = actionicons.getActionIcon(category, id, context=self)
             icon = _icons.setdefault((category, id), iconinfo)
         except KeyError:
             if default is not _marker:
