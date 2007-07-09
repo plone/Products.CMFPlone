@@ -27,9 +27,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'member.css',
                     'print.css',
                     'RTL.css',
-                    'mobile.css',
-                    'textSmall.css',
-                    'textLarge.css']
+                    'mobile.css',]
         for e in expected:
             self.failUnless(e in installedStylesheetIds, e)
 
@@ -45,15 +43,10 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
     def testDefaultJSIsInstalled(self):
         installedScriptIds = self.tool.getResourceIds()
         expected = [
-             'correctPREformatting.js',
-             'plone_minwidth.js',
              'calendar_formfield.js',
-             'ie5fixes.js',
              'calendarpopup.js',
              'collapsiblesections.js',
              'first_input_focus.js',
-             'folder_contents_filter.js',
-             'fullscreenmode.js',
              'highlightsearchterms.js',
              'mark_special_links.js',
              'select_all.js',
