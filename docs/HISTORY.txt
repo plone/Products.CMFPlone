@@ -2,7 +2,7 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 1.0b6 Unreleased
+plone.app.controlpanel - 1.0rc1 Released July 9, 2007
 
     - Do not show really user unfriendly types anymore in the search and types
       control panels. This closes http://dev.plone.org/plone/ticket/6292.
