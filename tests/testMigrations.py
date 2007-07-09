@@ -754,7 +754,7 @@ class TestMigrations_v2_5(MigrationTest):
         # should be positioned right underneath it
         if 'dropdown.js' in script_ids:
             posSE = jsreg.getResourcePosition('dragdropreorder.js')
-            posHST = jsreg.getResourcePosition('dropdown.js')
+            posHST = jsreg.getResourcePosition('select_all.js')
             self.failUnless((posSE - 1) == posHST)
 
     def testAddGetEventTypeIndex(self):
@@ -2425,7 +2425,7 @@ class TestMigrations_v3_0(MigrationTest):
         script_ids = jsreg.getResourceIds()
         self.failUnless('webstats.js' in script_ids)
         if 'webstats.js' in script_ids:
-            pos1 = jsreg.getResourcePosition('login.js')
+            pos1 = jsreg.getResourcePosition('toc.js')
             pos2 = jsreg.getResourcePosition('webstats.js')
             self.failUnless((pos2 - 1) == pos1)
         # check if enabled
@@ -2445,7 +2445,7 @@ class TestMigrations_v3_0(MigrationTest):
         script_ids = jsreg.getResourceIds()
         self.failUnless('webstats.js' in script_ids)
         if 'webstats.js' in script_ids:
-            pos1 = jsreg.getResourcePosition('login.js')
+            pos1 = jsreg.getResourcePosition('toc.js')
             pos2 = jsreg.getResourcePosition('webstats.js')
             self.failUnless((pos2 - 1) == pos1)
         # check if enabled 

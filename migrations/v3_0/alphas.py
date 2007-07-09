@@ -456,7 +456,7 @@ def addNewCSSFiles(portal, out):
     stylesheet_ids = cssreg.getResourceIds()
     if 'navtree.css' not in stylesheet_ids:
         cssreg.registerStylesheet('navtree.css', media='screen')
-        cssreg.moveResourceAfter('navtree.css', 'textLarge.css')
+        cssreg.moveResourceAfter('navtree.css', 'deprecated.css')
         out.append("Added navtree.css to the registry")
     if 'invisibles.css' not in stylesheet_ids:
         cssreg.registerStylesheet('invisibles.css', media='screen')
@@ -981,7 +981,7 @@ def addWebstatsJSFile(portal, out):
                     cookable = True,
                     compression = False)
             try:
-                jsreg.moveResourceAfter(script, 'login.js')
+                jsreg.moveResourceAfter(script, 'toc.js')
             except ValueError:
                 # put it at the bottom of the stack
                 jsreg.moveResourceToBottom(script)
