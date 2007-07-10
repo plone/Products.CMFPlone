@@ -8,6 +8,12 @@ Plone 3.0-beta4 - unreleased
       on the default dashboard.
       [optilude]
 
+    - Changed the behaviour of the "Allow comments" to be a checkbox instead
+      of having three settings. It now respects the global setting unless you
+      made a manual change on that particular document.
+      This closes http://dev.plone.org/plone/ticket/5977
+      [hannosch, limi]
+
     - Moved the login.js script to only trigger on the login_form page, since
       that's where the login portlet posts to anyway. Carrying it around on
       every page doesn't make sense.
@@ -53,7 +59,8 @@ Plone 3.0-beta4 - unreleased
       This closes http://dev.plone.org/plone/ticket/6304
       [limi]
 
-    - Images and Files no longer have a workflow, making them always visible.
+    - Images and Files no longer have a workflow in the new default setup,
+      making them always visible.
       This closes http://dev.plone.org/plone/ticket/6740
       [limi]
 
@@ -61,8 +68,8 @@ Plone 3.0-beta4 - unreleased
       This closes http://dev.plone.org/plone/ticket/6498
       [limi, hannosch]
 
-    - Remove the community workflow and retitle the Plone workflow to
-      community workflow.
+    - Remove the community workflow and re-title the Plone workflow to
+      "Community workflow".
       [wichert]
 
     - In the simple publication workflow, the author can now edit a published
@@ -75,7 +82,8 @@ Plone 3.0-beta4 - unreleased
       [wichert]
 
     - Allow form tabbing using other elements than forms. This allows tabbing
-      between multiple forms, which is needed by the content rules config panel.
+      between multiple forms, which is needed by the content rules config 
+      panel.
       [wichert]
 
     - Factored most of the "add menu" functionality out of 
