@@ -193,6 +193,16 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.assertEqual(False, view.have_portlets('plone.leftcolumn'))
         self.assertEqual(True, view.have_portlets('plone.rightcolumn'))
 
+    def testDisablePortlets(self):
+        view = Plone(self.portal, self.app.REQUEST)
+        view._initializeData()
+        data = view._data
+        self.assertEqual(True, data['sr'])
+        self.assertEqual('visualColumnHideOne', data['hidecolumns'])
+        view._initializeData(options={'no_portlets': True})
+        self.assertEqual(False, data['sr'])
+        self.assertEqual('visualColumnHideOneTwo', data['hidecolumns'])
+
     def testCropText(self):
         view = Plone(self.portal, self.app.REQUEST)
         self.assertEqual(view.cropText('Hello world', 7), 'Hello ...')
@@ -248,8 +258,23 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         tabs = view.prepareObjectTabs()
         self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
         self.assertEquals(['edit'], [t['id'] for t in tabs if t['selected']])
-        
-    
+
+    def testActionOverrideFromTemplate(self):
+        # We should be able to pass actions in from the template
+        # and have them override the calculated actions
+        view = Plone(self.portal, self.app.REQUEST)
+        view._initializeData()
+        data = view._data
+        self.failUnless(data['actions'])
+        self.failUnless(data['keyed_actions'])
+        self.failUnless(data['user_actions'])
+        no_actions = {'folder':[], 'user':[], 'global':[], 'workflow':[]}
+        view._initializeData(options={'actions':no_actions})
+        self.assertEqual(data['actions'], no_actions)
+        self.assertEqual(data['keyed_actions'], no_actions)
+        self.failIf(data['user_actions'])
+
+
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled method'''
 

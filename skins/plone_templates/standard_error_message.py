@@ -32,15 +32,16 @@ if error_log_url:
     error_log_id=error_log_url.split('?id=')[1]
 else:
     error_log_id=None
-    
 
-error_page=None
 
+no_actions = {'folder':[], 'user':[], 'global':[], 'workflow':[]}
 error_page=context.default_error_message(error_type=error_type,
                                          error_message=error_message,
                                          error_tb=error_tb,
                                          error_value=error_value,
                                          error_log_url=error_log_url,
-                                         error_log_id=error_log_id)
+                                         error_log_id=error_log_id,
+                                         no_portlets=True,
+                                         actions=no_actions)
 
 return error_page

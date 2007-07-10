@@ -86,6 +86,9 @@ class Plone(BrowserView):
         if view is None:
             view = self
 
+        show_portlets = not options.get('no_portlets', False)
+        def_actions = options.get('actions', None)
+
         # XXX: Can't store data as attributes directly because it will
         # insert the view into the acquisition chain. Someone should
         # come up with a way to prevent this or get rid of the globals
@@ -111,8 +114,8 @@ class Plone(BrowserView):
         self._data['member'] = portal_state.member()
         self._data['membersfolder'] =  mtool.getMembersFolder()
         self._data['isAnon'] =  portal_state.anonymous()
-        self._data['actions'] = actions = (options.get('actions', None) or context_state.actions())
-        self._data['keyed_actions'] =  context_state.keyed_actions()
+        self._data['actions'] = actions = def_actions or context_state.actions()
+        self._data['keyed_actions'] =  def_actions or context_state.keyed_actions()
         self._data['user_actions'] =  actions['user']
         self._data['workflow_actions'] =  actions['workflow']
         self._data['folder_actions'] =  actions['folder']
@@ -127,8 +130,8 @@ class Plone(BrowserView):
         self._data['ztu'] =  ZTUtils
         self._data['isFolderish'] =  context_state.is_folderish()
         
-        self._data['sl'] = have_left_portlets = self.have_portlets('plone.leftcolumn', view)
-        self._data['sr'] = have_right_portlets = self.have_portlets('plone.rightcolumn', view)
+        self._data['sl'] = have_left_portlets = show_portlets and self.have_portlets('plone.leftcolumn', view)
+        self._data['sr'] = have_right_portlets = show_portlets and self.have_portlets('plone.rightcolumn', view)
         self._data['hidecolumns'] =  self.hide_columns(have_left_portlets, have_right_portlets)
         
         self._data['here_url'] =  context_state.object_url()

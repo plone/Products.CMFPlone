@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - No longer do portlet and action calculations on error pages.
+      This will make them less resource intensive, and less likely to
+      throw their own errors (which resulted in an XSS issue).
+      Additionally, this means that there is now a means for any
+      template to avoid portlet and action processing as needed.
+      [alecm]
+
     - Remove hard-to-cache recent portlet from the default front page. It's
       on the default dashboard.
       [optilude]
