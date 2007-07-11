@@ -337,3 +337,12 @@ div.kupu-save-message:timeout {
    action-client: deleteNode;
 }
 
+/* check if the object if really locked before showing the icon */
+/* an xmlhttprequest might have just been sent on the object to */
+/* unlock just a few moment ago. So we need to be really sure   */
+/* that the object wasn't locked, to be sure, we do one more    */
+/* xmlhttprequest */
+#lock-icon:load{
+    action-server: updateLockInfo;
+}
+
