@@ -2,8 +2,9 @@
      tal:condition="view/show">
 
     <div class="documentByLine">
-
+      <span id="lock-icon">
         <img tal:replace="structure view/locked_icon" />
+      </span>
 
         <tal:name tal:condition="view/creator">
           <span class="documentAuthor"
@@ -52,7 +53,7 @@
                     </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
                 </li>
             </ul>
-        </span>    
+        </span>
 
         <div class="documentContributors"
              tal:condition="here/Contributors"
