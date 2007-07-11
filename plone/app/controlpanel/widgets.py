@@ -5,6 +5,7 @@ from zope.app.form.browser.widget import renderElement
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.schema.interfaces import ITitledTokenizedTerm
+from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.utils import getToolByName
@@ -312,8 +313,8 @@ def WeekdayWidget(field, request):
         gregorian = locale.dates.calendars.get('gregorian')
         weekdays = tuple(zip(gregorian.getDayNames(), range(0, 8)))
 
-    vocabulary = SimpleVocabulary.fromItems(weekdays)
-    return DropdownWidget(field, vocabulary, request)
+    terms = [SimpleTerm(item[1], title=item[0]) for item in weekdays]
+    return DropdownWidget(field, SimpleVocabulary(terms), request)
 
 
 class AllowedTypesWidget(MultiCheckBoxWidget):
