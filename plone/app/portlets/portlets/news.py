@@ -17,7 +17,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 class INewsPortlet(IPortletDataProvider):
 
     count = schema.Int(title=_(u'Number of items to display'),
-                       description=_(u'How many items to list'),
+                       description=_(u'How many items to list.'),
                        required=True,
                        default=5)
 
