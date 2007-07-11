@@ -4149,11 +4149,11 @@ class TestMigrations_v2_5_2(MigrationTest):
         if types_to_delete:
             self.mimetypes.manage_delObjects(types_to_delete)
         # now they're gone:
-        self.failIf(set(self.mimetypes.list_mimetypes()).issuperset(set(missing_types)))
+        self.failIf(Set(self.mimetypes.list_mimetypes()).issuperset(Set(missing_types)))
         out = []
         addMissingMimeTypes(self.portal, out)
         # now they're back:
-        self.failUnless(set(self.mimetypes.list_mimetypes()).issuperset(Set(missing_types)))
+        self.failUnless(Set(self.mimetypes.list_mimetypes()).issuperset(Set(missing_types)))
 
 def test_suite():
     from unittest import TestSuite, makeSuite
