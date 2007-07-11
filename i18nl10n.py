@@ -93,8 +93,11 @@ def ulocalized_time(time, long_format = None, context = None, domain='plone'):
             format=properties.localLongTimeFormat
         else:
             format=properties.localTimeFormat
-
-        return time.strftime(format)
+        
+        try:
+            return time.strftime(format)
+        except ValueError:
+            return None
     
     # get the format elements used in the formatstring
     formatelements = _interp_regex.findall(formatstring)
