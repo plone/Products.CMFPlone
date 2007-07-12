@@ -22,10 +22,13 @@
                  site_properties context/portal_properties/site_properties;
                  allowEnterPassword site_properties/validate_email|nothing;
                  mailpw site_properties/validate_email;
-                 mailconfigured python:not allowEnterPassword or (mailhost and mailfrom)">
+                 mailconfigured python:allowEnterPassword or (mailhost and mailfrom)">
 
   <h1 class="documentFirstHeading"
       i18n:translate="heading_registration_form">Registration Form</h1>
+
+ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX 
+ <h1 tal:content="allowEnterPassword"></h1>
 
   <div tal:condition="not:mailconfigured">
     <p i18n:translate="no_join_without_configured_mail">

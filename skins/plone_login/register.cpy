@@ -14,8 +14,8 @@ from ZODB.POSException import ConflictError
 
 REQUEST = context.REQUEST
 
+portal = context.portal_url.getPortalObject()
 portal_registration = context.portal_registration
-site_properties = context.portal_properties.site_properties
 
 username = REQUEST['username']
 
@@ -33,7 +33,7 @@ except AttributeError:
     context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 
-if site_properties.validate_email or REQUEST.get('mail_me', 0):
+if portal.validate_email or REQUEST.get('mail_me', 0):
     try:
         portal_registration.registeredNotify(username)
     except ConflictError:
@@ -46,7 +46,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
         #
         # (MSL 12/28/03) We also need to delete the just made member and return to the join_form.
         state.set(came_from='login_success')
-        if site_properties.validate_email:
+        if portal.validate_email:
             context.acl_users.userFolderDelUsers([username,], REQUEST=context.REQUEST)
             msg = _(u'status_fatal_password_mail',
                     default=u'Failed to create your account: we were unable to send your password to your email address: ${address}',

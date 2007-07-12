@@ -20,15 +20,16 @@ def minlimit(field):
 def notallowed(field):
     state.setError(field, _(u'This username is reserved. Please choose a different name.'), 'not_allowed')
 
+portal = context.portal_url.getPortalObject()
+
 if not username:
     missing('username')
 if not email:
     missing('email')
-if username and username == context.portal_url.getPortalObject().getId():
+if username and username == portal.getId():
     notallowed('username')
 
-properties = context.portal_properties.site_properties
-if not properties.validate_email:
+if not portal.validate_email:
      if password!=password_confirm:
          nomatch('password')
          nomatch('password_confirm')
