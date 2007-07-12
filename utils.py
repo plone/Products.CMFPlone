@@ -801,14 +801,17 @@ def isLinked(obj):
     # i.e. in case a link integrity exception was raised
     linked = False
     parent = obj.aq_inner.aq_parent
-    saved = transaction.savepoint()     # create a save point...
     try:
         parent.manage_delObjects(obj.getId())
     except OFS.ObjectManager.BeforeDeleteException, e:
         linked = True
     except: # ignore other exceptions, not useful to us at this point
         pass
-    saved.rollback()                    # roll back so nothing gets changed
+    # since this function is called first thing in `delete_confirmation.cpy`
+    # and therefore nothing can possibly have changed yet at this point, we
+    # might as well "begin" a new transaction instead of using a savepoint,
+    # which creates a funny exception when using zeo (see #6666)
+    transaction.begin()
     return linked
 
 # BBB Plone 3.5: Cyclic import errors are bad, deprecate these import locations.
