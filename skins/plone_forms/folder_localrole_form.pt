@@ -392,7 +392,7 @@
                           id="search_param"
                           tabindex=""
                           tal:attributes="tabindex tabindex/next;">
-                      <option value="fullname" i18n:translate="label_fullname">
+                      <option value="fullname" i18n:translate="label_full_name">
                           Full Name
                       </option>
                       <option value="login" i18n:translate="label_login_name">
