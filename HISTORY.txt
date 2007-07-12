@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-beta4 - unreleased
 
+    - validate_email is stored on the portal root, not in site_properties.
+      Make all scripts and templates aware of that.
+      [wichert]
+
     - No longer do portlet and action calculations on error pages.
       This will make them less resource intensive, and less likely to
       throw their own errors (which resulted in an XSS issue).
