@@ -1,6 +1,11 @@
 Changelog for Plone
 
     (name of developer listed in brackets)
+    
+Plone 3.0 - UNRELEASED
+
+    - fullscreen view for images has a title of it's parent now
+      [spliter]
 
 Plone 3.0-rc1 - released July 13, 2007
 
