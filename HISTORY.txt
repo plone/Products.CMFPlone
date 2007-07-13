@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0-rc1 - unreleased
+Plone 3.0-rc1 - released July 13, 2007
 
     - CMF has renamed getToolByInterfaceName to getUtilityByInterfaceName.
       Update our scripts accordingly.
