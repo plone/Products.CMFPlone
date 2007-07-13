@@ -24,7 +24,7 @@
                 grouptitle group/getGroupTitleOrName|groupname;
                 groupMembers group/getGroupMembers|nothing;
                 isGroup nocall:gtool/isGroup;
-                mq python:modules['ZTUtils'].make_query
+                mq python:modules['ZTUtils'].make_query;
                 groupquery python:mq(groupname=groupname);
                 groupkeyquery python:mq(key=groupname);">
 
