@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0-beta4 - unreleased
+Plone 3.0-rc1 - unreleased
 
     - validate_email is stored on the portal root, not in site_properties.
       Make all scripts and templates aware of that.

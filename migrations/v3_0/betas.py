@@ -71,8 +71,8 @@ def beta2_beta3(portal):
     return out
 
 
-def beta3_beta4(portal):
-    """ 3.0-beta3 -> 3.0-beta4
+def beta3_rc1(portal):
+    """ 3.0-beta3 -> 3.0-rc1
     """
 
     out = []
