@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - fixed inline editing for dates in event_view
+      [spliter]
+
     - fullscreen view for images has a title of it's parent now
       [spliter]
 

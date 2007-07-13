@@ -57,43 +57,58 @@
                                   tal:attributes="class string: summary$kss_class;
                                   title python:here.start()">
                                   <span metal:define-slot="inside" 
-                                        tal:replace="python:here.toLocalizedTime(here.start(),
+                                        class="explain"
+                                        tal:attributes="title python:here.start()"
+                                        tal:content="python:here.toLocalizedTime(here.start(),
                                         long_format=1)">Start Date Time</span>
                             </abbr>
                             <span i18n:translate="event_to">to</span> <br />
-                            <abbr class="dtend"
-                                  tal:attributes="title python:here.end()"
-                                  tal:content="python:here.toLocalizedTime(here.end(), long_format=1)">
-                                End Date Time
+                            <abbr metal:define-macro="enddate-field-view"
+                                  class="dtend"
+                                  tal:define="kss_class python:getKssClasses('endDate',
+                                              templateId=templateId, macro='enddate-field-view');"
+                                  id="parent-fieldname-endDate"
+                                  tal:attributes="class string: summary$kss_class;
+                                  title python:here.end()">
+                                  <span metal:define-slot="inside" 
+                                          class="explain"
+                                          tal:attributes="title python:here.end()"
+                                          tal:content="python:here.toLocalizedTime(here.end(),
+                                          long_format=1)">End Date Time</span>
                             </abbr>
                         </tal:differentday>
 
                         <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()"
                                      tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
-                            <abbr metal:define-macro="startdatesame-field-view"
-                                  class="dtstart"  
-                                  style="display:none"           
-                                  tal:define="kss_class python:getKssClasses('startDate',
+                            <span tal:replace="python:toLocalizedTime(here.start())">
+                                Start Date Time</span> <br />
+                            <span i18n:translate="event_from">from</span>  
+                            <span metal:define-macro="startdatesame-field-view"
+                                  class="dtstart"
+                                  tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0;
+                                              kss_class python:getKssClasses('startDate',
                                               templateId=templateId, macro='startdatesame-field-view');"
                                   id="parent-fieldname-startDate"
                                   tal:attributes="class string: summary$kss_class;
-                                  title python:here.start()">
+                                  title python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">
                                   <span metal:define-slot="inside" 
-                                        tal:content="python:here.toLocalizedTime(here.start(),
-                                        long_format=1)"
-                                        style="display: none;">Start Date Time</span>
-                            </abbr>
-                            <abbr class="dtend"
-                                  style="display: none;"
-                                  tal:attributes="title python:here.end()">
-                                <span style="display:none"
-                                      tal:content="python:here.toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
-                            </abbr>
-                            <span tal:replace="python:toLocalizedTime(here.start())">Start Date Time</span> <br />
-                            <span i18n:translate="event_from">from</span>
-                            <span tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
+                                        tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
+                            </span>
                             <span i18n:translate="event_to">to</span>
-                            <span tal:replace="python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">End Time</span>
+                            <span metal:define-macro="enddatesame-field-view"
+                                  class="dtend"
+                                  tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0;
+                                              kss_class python:getKssClasses('endDate',
+                                              templateId=templateId, macro='enddatesame-field-view');"
+                                  id="parent-fieldname-endDate"
+                                  tal:attributes="class string: summary$kss_class;
+                                  title python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">
+                                  <span metal:define-slot="inside" 
+                                        tal:replace="python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">End Time</span>
+                            </span>
+                            
+                            <!-- <span tal:replace="python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">End Time</span> -->
+                            
                         </tal:sameday>
 
                     </td>

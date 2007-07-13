@@ -33,6 +33,11 @@ textarea {
     filter:alpha(opacity=20); 
 }
 
+/* make spans within ABBR have a border in IE6 the same way it is in all other browsers */
+* html abbr .explain {
+    border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
+}
+
 /* Fix bottom margin on tabs in IE */
 #portal-globalnav li.selected a {
 position: relative;

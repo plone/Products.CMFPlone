@@ -114,6 +114,9 @@ abbr, acronym, .explain {
     background-color: transparent;
     cursor: help;
 }
+abbr .explain {
+    border-bottom: none;
+}
 q {
     font-family: Baskerville, Georgia, serif;
     font-style: italic;
