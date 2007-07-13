@@ -167,7 +167,7 @@ from Products.CMFPlone.migrations.v3_0.betas import addEditorToSecondaryEditorPe
 from Products.CMFPlone.migrations.v3_0.betas import updateEditActionConditionForLocking
 from Products.CMFPlone.migrations.v3_0.betas import addOnFormUnloadJS
 
-from Products.CMFPlone.migrations.v3_0.betas import beta3_beta4
+from Products.CMFPlone.migrations.v3_0.betas import beta3_rc1
 from Products.CMFPlone.migrations.v3_0.betas import moveKupuAndCMFPWControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateLanguageControlPanel
 from Products.CMFPlone.migrations.v3_0.betas import updateTopicTitle
@@ -2352,7 +2352,7 @@ class TestMigrations_v3_0(MigrationTest):
         # place. We must have both the devel and production resources.
         # They both should be uncompressed since kss compresses them
         # directly. Also they should have conditions that switches them.
-        beta3_beta4(self.portal)
+        beta3_rc1(self.portal)
         script_ids = jsreg.getResourceIds()
         self.failIf('++resource++kukit-src.js' in script_ids)
         resource1 = jsreg.getResource('++resource++kukit.js')
@@ -2934,7 +2934,7 @@ class TestMigrations_v3_0(MigrationTest):
         sm.unregisterUtility(provided=IRAMCache)
         util = queryUtility(IRAMCache)
         self.failUnless(util.maxAge == 86400)
-        beta3_beta4(self.portal)
+        beta3_rc1(self.portal)
         util = queryUtility(IRAMCache)
         self.failUnless(util.maxAge == 3600)
 
