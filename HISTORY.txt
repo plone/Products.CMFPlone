@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0-rc1 - unreleased
 
+    - CMF has renamed getToolByInterfaceName to getUtilityByInterfaceName.
+      Update our scripts accordingly.
+      [wichert]
+
     - validate_email is stored on the portal root, not in site_properties.
       Make all scripts and templates aware of that.
       [wichert]
