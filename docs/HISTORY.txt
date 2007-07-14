@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Use relative links on the calendar portlet for the previous and next
+      links, so the portlet can be cached independent of the context.
+      [hannosch]
+
     - Cleaned up some templates, added missing i18n markup. This closes
       http://dev.plone.org/plone/ticket/6721.
       [hannosch]
