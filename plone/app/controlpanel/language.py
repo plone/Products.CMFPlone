@@ -98,24 +98,8 @@ class ILanguageNegotiationSchema(Interface):
         required=False)
 
 
-class IMultilingualContentSchema(Interface):
-
-    force_language_urls = Bool(
-        title=_(u'label_force_different_urls',
-                default=u"Force different URLs for each language (redirect)."),
-        default=True,
-        required=False)
-
-    start_neutral = Bool(
-        title=_(u'label_start_neutral',
-                default=u"Create content initially as neutral language."),
-        default=True,
-        required=False)
-
-
 class ILanguageSchema(ILanguageSelectionSchema,
-                      ILanguageNegotiationSchema,
-                      IMultilingualContentSchema):
+                      ILanguageNegotiationSchema):
     """Combined schema for the adapter lookup.
     """
 
@@ -167,12 +151,6 @@ class LanguageControlPanelAdapter(SchemaAdapterBase):
 
     use_default_language = True
 
-    force_language_urls = \
-        ProxyFieldProperty(ILanguageSchema['force_language_urls'])
-
-    start_neutral = \
-        ProxyFieldProperty(ILanguageSchema['start_neutral'])
-
 
 languageselectionset = FormFieldsets(ILanguageSelectionSchema)
 languageselectionset.id = 'languageselection'
@@ -188,21 +166,11 @@ languagenegotiationset.description = _(u'description_negotiation_scheme',
                                                 "negotiation schemes that "
                                                 "apply to this site.")
 
-multilingualcontentset = FormFieldsets(IMultilingualContentSchema)
-multilingualcontentset.id = 'multilingualcontent'
-multilingualcontentset.label = _(u'label_multilingual_content',
-                                 default=u'Multilingual Content')
-multilingualcontentset.description = _(u'description_content_settings',
-                                       default=u"Check the settings that "
-                                                "apply to multilingual "
-                                                "content.")
-
 
 class LanguageControlPanel(ControlPanelForm):
 
     form_fields = FormFieldsets(languageselectionset,
-                                languagenegotiationset,
-                                multilingualcontentset)
+                                languagenegotiationset)
     form_fields['default_language'].custom_widget = LanguageDropdownChoiceWidget
     form_fields['supported_langs'].custom_widget = LanguageTableWidget
     form_fields['use_default_language'].custom_widget = DisabledCheckBoxWidget

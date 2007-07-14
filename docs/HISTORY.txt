@@ -2,6 +2,13 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
+plone.app.controlpanel - 1.0rc2 Unreleased
+
+    - Removed multilingual content settings from the language control panel.
+      These don't have any effect in a standard Plone site. LinguaPlone /
+      plone.app.multilingual features its own control panel.
+      [hannosch]
+
 plone.app.controlpanel - 1.0rc1 Released July 9, 2007
 
     - Do not show really user unfriendly types anymore in the search and types
