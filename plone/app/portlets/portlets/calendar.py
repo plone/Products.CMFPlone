@@ -26,37 +26,44 @@ from plone.portlets.interfaces import IPortletDataProvider
 
 PLMF = MessageFactory('plonelocales')
 
+
 class ICalendarPortlet(IPortletDataProvider):
     """A portlet displaying a calendar
     """
+
 
 class Assignment(base.Assignment):
     implements(ICalendarPortlet)
 
     title = _(u'Calendar')
 
+
 def _render_cachekey(fun, self):
+    context = aq_inner(self.context)
+    if not self.updated:
+        self.update()
+
     if self.calendar.getUseSession():
         raise ram.DontCache()
     else:
         key = StringIO()
-        print >> key, getToolByName(aq_inner(self.context), 'portal_url')()
-        print >> key, cache.get_language(aq_inner(self.context), self.request)
-        
+        print >> key, getToolByName(context, 'portal_url')()
+        print >> key, cache.get_language(context, self.request)
+
         year, month = self.getYearAndMonthToDisplay()
         print >> key, year
         print >> key, month
-        
+
         start = DateTime('%s/%s/1' % (year, month))
         end = DateTime('%s/%s/1' % self.getNextMonth(year, month)) - 1
-        
+
         def add(brain):
             key.write(brain.getPath())
             key.write('\n')
             key.write(brain.modified)
             key.write('\n\n')
-        
-        catalog = getToolByName(self.context, 'portal_catalog')
+
+        catalog = getToolByName(context, 'portal_catalog')
         brains = catalog(
             portal_type=self.calendar.getCalendarTypes(),
             review_state=self.calendar.getCalendarStates(),
@@ -67,14 +74,23 @@ def _render_cachekey(fun, self):
             add(brain)
 
         return key.getvalue()
-        
+
+
 class Renderer(base.Renderer):
 
     _render = ViewPageTemplateFile('calendar.pt')
-    
+    updated = False
+
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
+        self.updated = False
 
+    def update(self):
+        if self.updated:
+            return
+        self.updated = True
+
+        context = aq_inner(self.context)
         self.calendar = getToolByName(context, 'portal_calendar')
         self._ts = getToolByName(context, 'translation_service')
         self.url_quote_plus = url_quote_plus
