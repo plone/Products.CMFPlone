@@ -971,88 +971,88 @@ textarea.proportional {
 }
 
 /* Link types */
-.link-parent {
+#content .link-parent {
     display: block;
     background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
     padding: 1px 0px 10px 16px;
     font-size: &dtml-fontSmallSize;;
     text-decoration: none;
 }
-.link-category {
+#content .link-category {
     color: #74ae0b !important;
 }
-.link-user {
+#content .link-user {
     background: transparent url(&dtml-portal_url;/user.gif) 0 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-.link-comment {
+#content .link-comment {
     background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center left no-repeat;
     padding: 1px 0px 1px 16px !important; /* value:  */
 }
-.link-anchor {
+#content .link-anchor {
     color: &dtml-discreetColor;;
     text-decoration: none;
     font-weight: normal;
 }
-.link-presentation {
+#content .link-presentation {
     font-size: 90%;
     text-align: center;
 }
 
 /* Handling external/internal links, we first set the icon on all links, then 
    remove it from the ones that are local */
-a[href ^="http:"],
-a.link-external {
+#content a[href ^="http:"],
+#content a.link-external {
     background: transparent url(&dtml-portal_url;/link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="&dtml-portal_url;"] {
+#content a[href ^="&dtml-portal_url;"] {
     background: none;
     padding: 0;
 }    
 /* Protocol-specific links */
-a[href ^="mailto:"],
-a.link-mailto  {
+#content a[href ^="mailto:"],
+#content a.link-mailto  {
     background: transparent url(&dtml-portal_url;/mail_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="https:"],
-a.link-https {
+#content a[href ^="https:"],
+#content a.link-https {
     background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="news:"],
-a.link-news {
+#content a[href ^="news:"],
+#content a.link-news {
     background: transparent url(&dtml-portal_url;/topic_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="ftp:"],
-a.link-ftp {
+#content a[href ^="ftp:"],
+#content a.link-ftp {
     background: transparent url(&dtml-portal_url;/file_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="irc:"],
-a.link-irc {
+#content a[href ^="irc:"],
+#content a.link-irc {
     background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="callto:"],
-a.link-callto {
+#content a[href ^="callto:"],
+#content a.link-callto {
     background: transparent url(&dtml-portal_url;/phone_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="webcal:"],
-a.link-webcal {
+#content a[href ^="webcal:"],
+#content a.link-webcal {
     background: transparent url(&dtml-portal_url;/event_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-a[href ^="feed:"],
-a.link-feed {
+#content a[href ^="feed:"],
+#content a.link-feed {
     background: transparent url(&dtml-portal_url;/rss.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 18px;
 }
 
-.link-plain {
+#content .link-plain {
     background-image: none !important;
     padding: 0 !important;
 }
