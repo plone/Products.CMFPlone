@@ -87,8 +87,8 @@
                 </ul>
             </div>
             
-            <h1 class="documentFirstHeading" i18n:translate="title_dashboard">
-                <span tal:content="name" />'s dashboard
+            <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
+                <span tal:replace="name" i18n:name="user_name" />'s dashboard
             </h1>
             
             <dl tal:condition="view/empty"
