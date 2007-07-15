@@ -22,7 +22,7 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <dd class="portletItem lastItem"
+    <dd class="portletItem"
         tal:repeat="group groups">
 
         <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
@@ -33,7 +33,6 @@
 
                 <li tal:repeat="configlet configlets">
                     <a href=""
-                       style="display: block;"
                        tal:attributes="href configlet/url"
                        tal:condition="configlet/visible">
                         <img src="" alt="" tal:attributes="src python:'%s/%s' % (portal_url, getIconFor('controlpanel',configlet['id']));
