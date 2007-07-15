@@ -25,7 +25,7 @@ if not mtool.checkPermission('Copy or Move', context):
 
 lock_info = context.restrictedTraverse('@@plone_lock_info')
 if lock_info.is_locked():
-    message = _(u'${title} is locked and cannot be cut',
+    message = _(u'${title} is locked and cannot be cut.',
                 mapping={u'title' : context.title_or_id()})
     context.plone_utils.addPortalMessage(message, 'error')
     return state.set(status = 'failure')
