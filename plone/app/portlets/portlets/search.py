@@ -21,7 +21,7 @@ class ISearchPortlet(IPortletDataProvider):
             title = _(u"Enable LiveSearch"),
             description = _(u"Enables the LiveSearch feature, which shows "
                              "live results if the browser supports "
-                             "Javascript."),
+                             "JavaScript."),
             default = True,
             required = False)
 
