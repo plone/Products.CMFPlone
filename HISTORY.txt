@@ -8,10 +8,10 @@ Plone 3.0 - UNRELEASED
       area.
       [limi]
 
-    - fixed inline editing for dates in event_view
+    - Fixed inline editing for dates in event_view
       [spliter]
 
-    - fullscreen view for images has a title of it's parent now
+    - Fullscreen view for images has a title of it's parent now
       [spliter]
 
 Plone 3.0-rc1 - released July 13, 2007
