@@ -12,6 +12,6 @@ REQUEST=context.REQUEST
 try:
     response = context.portal_registration.mailPassword(REQUEST['userid'], REQUEST)
 except ValueError, e:
-    context.plone_utils.addPortalMessage(str(e))
+    context.plone_utils.addPortalMessage(_(str(e)))
     response = context.mail_password_form()
 return response
