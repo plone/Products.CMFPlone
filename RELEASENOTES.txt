@@ -146,7 +146,7 @@ Important notes for developers
 ------------------------------
 
 The latest information on migrating products to Plone 3.0 can be found online
-at http://plone.org/documentation/manual/migration-guide/version-specific/adjusting-third-party-products-from-plone-2-5-to-3.0/
+at http://plone.org/upgrade
 
 * Searching for users and groups using the portal_membership and portal_groups
   tools has been deprecated. Please use the search features of PAS directly
