@@ -87,7 +87,7 @@ Important notes for users
 * Plone now supports the Google Sitemap protocol, described in 
   https://www.google.com/webmasters/tools/docs/en/protocol.html
 
-  You can switch the sitemap feature on under Site Settings in the Site Setup
+  You can switch the site map feature on under Site Settings in the Site Setup
   page. When enabled the sitemap.xml.gz file is provided in the root of your
   portal.
 
@@ -168,7 +168,7 @@ at http://plone.org/upgrade
   action, there will be two "Sharing" tabs. Also note that the sharing action
   is now called @@sharing, not folder_local_role_form.
 
-* Portlets have been re-implemented using the Zope3 component architecture.
+* Portlets have been re-implemented using the Zope 3 component architecture.
   The base package, plone.portlets, is usable in plain Zope 3 and has been
   successfully used with Grok. See its README.txt for full details on the
   architecture (you are only likely to need this if you need to understand
@@ -217,9 +217,9 @@ at http://plone.org/upgrade
   not want the document-specific behavior that is provided on the IATDocument
   interface you should use the new ATDocumentBase base class instead.
 
-* Customising z3 views using customerize
+* Customising z3 views using Customerize
 
-* Products.CMFPlone.utils.BrowserView has been deprectaed. If you were using
+* Products.CMFPlone.utils.BrowserView has been deprecated. If you were using
   this as a base class please use Products.Five.BrowserView instead. To
   get a correctly acquisition wrapped context use aq_inner(self.context).
 
