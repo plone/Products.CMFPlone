@@ -999,6 +999,10 @@ textarea.proportional {
     text-align: center;
 }
 
+#content .link-wiki-add {
+    color: red;
+}
+
 /* Handling external/internal links, we first set the icon on all links, then 
    remove it from the ones that are local */
 #content a[href ^="http:"],

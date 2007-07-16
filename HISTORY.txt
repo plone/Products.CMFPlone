@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Harmonized the link classes for wiki links with the Plone standard,
+      made pages that haven't bee created yet red, made the entire link 
+      clickable, made the "+" superscript.
+      [limi]
+
     - The protocol-specific links should only be applied inside the content
       area.
       [limi]
