@@ -669,7 +669,7 @@ dl.searchResults span.documentByLine {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     font-weight: normal;
-    padding: 0.25em 1em;
+    padding: 0.25em 0.5em;
     text-transform: &dtml-textTransform;;
 }
 .listing .top {
@@ -685,7 +685,7 @@ dl.searchResults span.documentByLine {
 .listing td,
 .stx table td {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0.25em 1em;
+    padding: 0.25em 0.5em;
 }
 .listing a {
     text-decoration: none;
