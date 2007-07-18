@@ -174,6 +174,8 @@ from Products.CMFPlone.migrations.v3_0.betas import updateTopicTitle
 from Products.CMFPlone.migrations.v3_0.betas import cleanupActionProviders
 from Products.CMFPlone.migrations.v3_0.betas import hidePropertiesAction
 
+from Products.CMFPlone.migrations.v3_0.rcs import addIntelligentText
+
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 
 from zope.app.cache.interfaces.ram import IRAMCache
@@ -3012,6 +3014,38 @@ class TestMigrations_v3_0(MigrationTest):
     def testUpdateTopicTitleNoTool(self):
         self.portal._delObject('portal_types')
         updateTopicTitle(self.portal, [])
+
+    def testAddIntelligentText(self):
+        # Before migration, the mime type and transforms of
+        # intelligent text are not available.  They *are* here in a
+        # fresh site, so we may need to remove them first for testing.
+
+        # First we remove the transforms, as they depend on the
+        # mimetype being there.
+        missing_transforms = ["web_intelligent_plain_text_to_html",
+                              "html_to_web_intelligent_plain_text"]
+        ptr = self.portal.portal_transforms
+        current_transforms = ptr.objectIds()
+        for trans in missing_transforms:
+            if trans in current_transforms:
+                ptr.unregisterTransform(trans)
+
+        # Then we remove the mime type
+        mime_type = 'text/x-web-intelligent'
+        mtr = self.portal.mimetypes_registry
+        current_types = mtr.list_mimetypes()
+        if mime_type in current_types:
+            mtr.manage_delObjects((mime_type,))
+
+        # now all are gone:
+        self.failIf(mime_type in mtr.list_mimetypes())
+        self.failIf(set(ptr.objectIds()).issuperset(set(missing_transforms)))
+
+        out = []
+        addIntelligentText(self.portal, out)
+        # now all are back:
+        self.failUnless(mime_type in mtr.list_mimetypes())
+        self.failUnless(set(ptr.objectIds()).issuperset(set(missing_transforms)))
 
 
 def test_suite():
