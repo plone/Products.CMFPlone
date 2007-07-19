@@ -786,16 +786,20 @@ def scale_image(image_file, max_size=None, default_format=None):
 
 def isLinked(obj):
     """ check if the given content object is linked from another one """
-    # first check to see if the removal of the object was already confirmed,
-    # i.e. while replaying the request;  unfortunately this makes it necessary
+    # first check to see if link integrity handling has been enabled at all
+    # and if so, if the removal of the object was already confirmed, i.e.
+    # while replaying the request;  unfortunately this makes it necessary
     # to import from plone.app.linkintegrity here, hence the try block...
     try:
         from plone.app.linkintegrity.interfaces import ILinkIntegrityInfo
-        if ILinkIntegrityInfo(obj.REQUEST).isConfirmedItem(obj):
-            return True
+        info = ILinkIntegrityInfo(obj.REQUEST)
     except (ImportError, TypeError):
         # if p.a.li isn't installed the following check can be cut short...
         return False
+    if not info.integrityCheckingEnabled():
+        return False
+    if info.isConfirmedItem(obj):
+        return True
     # otherwise, when not replaying the request already, it is tried to
     # delete the object, making it possible to find out if it was referenced,
     # i.e. in case a link integrity exception was raised
