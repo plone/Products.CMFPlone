@@ -793,7 +793,7 @@ def isLinked(obj):
         from plone.app.linkintegrity.interfaces import ILinkIntegrityInfo
         if ILinkIntegrityInfo(obj.REQUEST).isConfirmedItem(obj):
             return True
-    except ImportError:
+    except (ImportError, TypeError):
         # if p.a.li isn't installed the following check can be cut short...
         return False
     # otherwise, when not replaying the request already, it is tried to
