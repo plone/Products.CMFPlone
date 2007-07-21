@@ -9,14 +9,11 @@
 ##title=Initial post-login actions
 ##
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 REQUEST=context.REQUEST
 
-# If someone has something on their clipboard, expire it.
-if REQUEST.get('__cp', None) is not None:
-    REQUEST.RESPONSE.expireCookie('__cp', path='/')
-
-membership_tool=context.portal_membership
+membership_tool=getToolByName(context, 'portal_membership')
 if membership_tool.isAnonymousUser():
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
     context.plone_utils.addPortalMessage(_(u'Login failed. Both login name and password are case sensitive, check that caps lock is not enabled.'), 'error')
@@ -35,7 +32,6 @@ if initial_login:
 elif must_change_password:
     state.set(status='change_password')
 
-membership_tool.setLoginTimes()
-membership_tool.createMemberArea()
+membership_tool.loginUser(REQUEST)
 
 return state

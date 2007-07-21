@@ -1,4 +1,5 @@
 import PIL
+from zope import event
 from cStringIO import StringIO
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
@@ -6,18 +7,21 @@ from Products.CMFPlone import ToolNames
 from Products.CMFPlone.utils import scale_image
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
+from AccessControl.SecurityManagement import getSecurityManager
 from Globals import InitializeClass, DTMLFile
 from zExceptions import BadRequest
 from ZODB.POSException import ConflictError
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base, aq_parent, aq_inner
+from Products.PlonePAS.events import UserLoggedInEvent
+from Products.PlonePAS.events import UserInitialLoginInEvent
+from Products.PlonePAS.events import UserLoggedOutEvent
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.permissions import SetOwnProperties
 from Products.CMFCore.permissions import SetOwnPassword
 from Products.CMFCore.permissions import View
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFCore.interfaces import IMembershipTool
 from AccessControl.requestmethod import postonly
 
 default_portrait = 'defaultUser.gif'
@@ -279,6 +283,86 @@ class MembershipTool(PloneBaseTool, BaseTool):
         return tuple(local_roles)
 
 
+    security.declareProtected(View, 'loginUser')
+    def loginUser(self, REQUEST=None):
+        """ Handle a login for the current user.
+
+        This method takes care of all the standard work that needs to be
+        done when a user logs in:
+        - clear the copy/cut/paste clipboard
+        - PAS credentials update
+        - sending a logged-in event
+        - storing the login time
+        - create the member area if it does not exist
+        """
+        user=getSecurityManager().getUser()
+        if user is None:
+            return
+
+        if self.setLoginTimes():
+            event.notify(UserInitialLoginInEvent(user))
+        else:
+            event.notify(UserLoggedInEvent(user))
+
+        if REQUEST is None:
+            REQUEST=getattr(self, 'REQUEST', None)
+        if REQUEST is None:
+            return
+
+        # Expire the clipboard
+        if REQUEST.get('__cp', None) is not None:
+            REQUEST.RESPONSE.expireCookie('__cp', path='/')
+
+        self.createMemberArea()
+
+        try:
+            pas = getToolByName(self, 'acl_users')
+            pas.credentials_cookie_auth.login()
+        except AttributeError:
+            # The cookie plugin may not be present
+            pass
+
+
+    security.declareProtected(View, 'logoutUser')
+    def logoutUser(self, REQUEST=None):
+        """Process a user logout.
+
+        This takes care of all the standard logout work:
+        - ask the user folder to logout
+        - expire a skin selection cookie
+        - invalidate a Zope session if there is one
+        """
+        # Invalidate existing sessions, but only if they exist.
+        sdm = getToolByName(self, 'session_data_manager', None)
+        if sdm is not None:
+                session = sdm.getSessionData(create=0)
+                if session is not None:
+                            session.invalidate()
+
+        if REQUEST is None:
+            REQUEST=getattr(self, 'REQUEST', None)
+        if REQUEST is not None:
+            pas = getToolByName(self, 'acl_users')
+            try:
+                pas.logout(REQUEST)
+            except:
+                # XXX Bare except copied from logout.cpy. This should be
+                # changed in the next Plone release.
+                pass
+
+            # Expire the skin cookie if it is not configured to persist
+            st = getToolByName(self, "portal_skins")
+            skinvar = st.getRequestVarname()
+            if REQUEST.has_key(skinvar) and not st.getCookiePersistence():
+                    portal = getToolByName(self, "portal_url").getPortalObject()
+                    path = '/' + portal.absolute_url(1)
+                    # XXX check if this path is sane
+                    REQUEST.RESPONSE.expireCookie(skinvar, path=path)
+
+        user=getSecurityManager().getUser()
+        if user is not None:
+            event.notify(UserLoggedOutEvent(user))
+
     security.declareProtected(View, 'immediateLogout')
     def immediateLogout(self):
         """ Log the current user out immediately.  Used by logout.py so that
@@ -289,14 +373,20 @@ class MembershipTool(PloneBaseTool, BaseTool):
     def setLoginTimes(self):
         """ Called by logged_in to set the login time properties
             even if members lack the "Set own properties" permission.
+
+            The return value indicates if this is the first logged
+            login time.
         """
+        res=False
         if not self.isAnonymousUser():
             member = self.getAuthenticatedMember()
             login_time = member.getProperty('login_time', '2000/01/01')
             if str(login_time) == '2000/01/01':
+                res=True
                 login_time = self.ZopeTime()
             member.setProperties(login_time=self.ZopeTime(),
                                  last_login_time=login_time)
+        return res
 
     security.declareProtected(ManagePortal, 'getBadMembers')
     def getBadMembers(self):

@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Move login and logout-handling code into the membership tool and
+      add sending of events when a user logs in or logs out. For Plone 3.5
+      we can move most of the code into event handlers.
+      [wichert]
+
     - Harmonized the link classes for wiki links with the Plone standard,
       made pages that haven't bee created yet red, made the entire link 
       clickable, made the "+" superscript.
