@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Updated componentregisty.xml to new style. As the object handler only
+      supports registering objects in the site itself now, we can remove all
+      the slashes.
+      [hannosch]
+
     - Updated the migration tool to use the "upgrade" terminology, to be
       consistent with the recent documentation. Also removed useless tab,
       all information is on one screen now.

@@ -7,6 +7,6 @@
      interface="five.customerize.interfaces.IViewTemplateContainer"/>
   <utility
      interface="Products.ResourceRegistries.interfaces.IKSSRegistry"
-     object="/portal_kss"/>
+     object="portal_kss"/>
  </utilities>
 </componentregistry>

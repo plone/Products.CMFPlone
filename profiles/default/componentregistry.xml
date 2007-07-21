@@ -4,7 +4,7 @@
  <utilities>
   <utility 
      interface="five.customerize.interfaces.IViewTemplateContainer"
-     object="/portal_view_customizations"/>
+     object="portal_view_customizations"/>
   <utility
      interface="plone.app.redirector.interfaces.IRedirectionStorage"
      factory="plone.app.redirector.storage.RedirectionStorage"/>
@@ -25,52 +25,52 @@
      factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"/>
   <utility
      interface="Products.ATContentTypes.interface.IATCTTool"
-     object="/portal_atct"/>
+     object="portal_atct"/>
   <utility
      interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
-     object="/portal_actionicons"/>
+     object="portal_actionicons"/>
   <utility
      interface="Products.CMFCore.interfaces.IDiscussionTool"
-     object="/portal_discussion"/>
+     object="portal_discussion"/>
   <utility
      interface="Products.CMFCore.interfaces.IMetadataTool"
-     object="/portal_metadata"/>
+     object="portal_metadata"/>
   <utility
      interface="Products.CMFCore.interfaces.IPropertiesTool"
-     object="/portal_properties"/>
+     object="portal_properties"/>
   <utility
      interface="Products.CMFCore.interfaces.ISiteRoot"
-     object="/"/>
+     object=""/>
   <utility
      interface="Products.CMFCore.interfaces.ISyndicationTool"
-     object="/portal_syndication"/>
+     object="portal_syndication"/>
   <utility
      interface="Products.CMFCore.interfaces.IUndoTool"
-     object="/portal_undo"/>
+     object="portal_undo"/>
   <utility
      interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
-     object="/portal_uidannotation"/>
+     object="portal_uidannotation"/>
   <utility
      interface="Products.CMFUid.interfaces.IUniqueIdGenerator"
-     object="/portal_uidgenerator"/>
+     object="portal_uidgenerator"/>
   <utility
      interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
-     object="/"/>
+     object=""/>
   <utility
      interface="Products.CMFPlone.interfaces.IInterfaceTool"
-     object="/portal_interface"/>
+     object="portal_interface"/>
   <utility
      interface="Products.CMFPlone.interfaces.IMigrationTool"
-     object="/portal_migration"/>
+     object="portal_migration"/>
   <utility
      interface="Products.CMFQuickInstallerTool.interfaces.IQuickInstallerTool"
-     object="/portal_quickinstaller"/>
+     object="portal_quickinstaller"/>
   <utility
      interface="Products.GenericSetup.interfaces.ISetupTool"
-     object="/portal_setup"/>
+     object="portal_setup"/>
   <utility
      interface="Products.MailHost.interfaces.IMailHost"
-     object="/MailHost"/>
+     object="MailHost"/>
   <utility
      interface="zope.app.cache.interfaces.ram.IRAMCache"
      factory="zope.app.cache.ram.RAMCache"/>
