@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Updated the migration tool to use the "upgrade" terminology, to be
+      consistent with the recent documentation. Also removed useless tab,
+      all information is on one screen now.
+      [limi]
+
     - Move login and logout-handling code into the membership tool and
       add sending of events when a user logs in or logs out. For Plone 3.5
       we can move most of the code into event handlers.

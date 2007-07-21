@@ -37,8 +37,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     _needUpdateRole = 0
 
     manage_options = (
-        { 'label' : 'Overview', 'action' : 'manage_overview' },
-        { 'label' : 'Migrate', 'action' : 'manage_migrate' },
+        { 'label' : 'Upgrade', 'action' : 'manage_migrate' },
         )
 
     security = ClassSecurityInfo()

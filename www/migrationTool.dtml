@@ -1,13 +1,13 @@
 <dtml-var manage_page_header>
 <dtml-var manage_tabs>
 
-<p>The migration tool allows you to handle migrating between versions of Plone.</p>
+<p>Upgrades Plone to newer versions.</p>
 
-<p>If you wish to upgrade to a new Plone instance, go to <a href="manage_migrate">migrate</a>.</p>
+<p>If you wish to upgrade to a new Plone instance, go to <a href="manage_migrate">upgrade</a>.</p>
 
 <hr />
 
-<p>Core Plone information</p>
+<p>Current Plone version information</p>
 
 <ul>
 <dtml-in coreVersionsList prefix="setup">

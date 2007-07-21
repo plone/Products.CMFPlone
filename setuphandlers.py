@@ -416,7 +416,7 @@ class PloneGenerator:
          'portal_types':'Controls the available content types in your portal',
          'plone_utils':'Various utility methods',
          'portal_metadata':'Controls metadata like keywords, copyrights, etc',
-         'portal_migration':'Handles migrations to newer Plone versions',
+         'portal_migration':'Upgrades to newer Plone versions',
          'portal_registration':'Handles registration of new users',
          'portal_skins':'Controls skin behaviour (search order etc)',
          'portal_syndication':'Generates RSS for folders',

@@ -1,39 +1,42 @@
 <dtml-var manage_page_header>
 <dtml-var manage_tabs>
 
+<p>Lets you upgrade this Plone site to newer versions.</p>
+
 <p>
-<b>Instance version:</b> &dtml-getInstanceVersion; <br />
-<b>File system version:</b> &dtml-getFileSystemVersion; <br />
+<b>Current site version:</b> <code>&dtml-getInstanceVersion;</code> <br />
+<b>File system version:</b> <code>&dtml-getFileSystemVersion;</code> <br />
 </p>
 
 <dtml-if unsupportedVersion>
-Your Plone instance is seriously out of date. Upgrading your version to the
-current version you have installed on the file system is no longer supported.
+Your Plone site is seriously out of date. Upgrading your version from the
+current site version is no longer supported in this version of Plone.
 Please upgrade your site by using an older version of Plone first.
 <dtml-else>
 
 <p><b>Note:</b> 
 <span style="background-color:red; color: white; font-weight: bold">Please
-ensure you have a backup of your Plone site before performing migration.</span>
-Migrations perform a catalog and security update, this may take a long time on
+ensure you have a backup of your Plone site before performing the upgrade.</span>
+Upgrading sometimes performs a catalog/security update, which may take a long time on
 large sites. Be patient.</p>
-
+<p>
 <span style="background-color:red; color: white; font-weight: bold">
-Also make sure you are not doing this migration as an Emergency user.</span> 
-
+Also make sure you are not doing this upgrade as an Emergency user.</span> 
+</p>
 <hr />
 
 <p>
 <dtml-if needUpgrading>
-Your Plone instance is out of date. Click "upgrade" to bring this Plone Zope
-version up to date with your file system.
+<img src="error_icon.gif" />
+<strong>Your Plone site is <em>not</em> up to date with the latest version.</strong>
+Click "upgrade" to bring your Plone site in sync with what's on your file system.
 
 <form action="upgrade"
            method="POST">
 
 <p>
 <input name="dry_run" type="checkbox" value="1:int" />
-Dry run - print the result of the migration without actually writing anything
+Dry run mode &mdash; run the migration and print the result without actually writing anything
 to the database.
 </p>
 
@@ -42,7 +45,8 @@ to the database.
 </form>
 
 <dtml-else>
-Your Plone instance is up to date. 
+<img src="confirm_icon.gif" />
+<strong>Your Plone site is up to date.</strong>
 </dtml-if>
 </p>
 </dtml-if>
@@ -52,17 +56,18 @@ Your Plone instance is up to date.
            method="POST">
 
 <p>
-If you're <strong>absolutely</strong> sure your Plone instance is not
-&dtml-getInstanceVersion;, choose the version you think it is below and click
-"force migrate". This will force the migration procedure from that version.
+If you're <strong>absolutely</strong> sure your current Plone site is not
+<code>&dtml-getInstanceVersion;</code>, choose the version you want to migrate
+from the pulldown below and click "force upgrade". 
+This will force the upgrade procedure from that version. 
 <i>You should not normally need to do this.</i>
 </p>
 <p>
-If your version is not listed below this means upgrading directly from your
-version is not supported anymore. Usually this happens for quite old versions
-of Plone after some time. Please upgrade your site to one of the releases listed
-below first. After you performed this migration you will be able to upgrade to
-the current version you have installed on the filesystem.
+If your version is not listed in the pull-down, this means upgrading directly 
+from your version is not supported anymore. If this is the case, please 
+upgrade your site to one of the releases in the list first. 
+After doing this, you will be able to upgrade to
+the current version you are attempting to upgrade to.
 </p>
 
 <select name="force_instance_version">
@@ -72,10 +77,21 @@ the current version you have installed on the filesystem.
 </select><br />
 
 <p>
-<input name="dry_run" type="checkbox" value="1:int" />Dry run - print the result of the migration without actually writing anything to the database.
+<input name="dry_run" type="checkbox" value="1:int" />
+Dry run mode &mdash; run the migration and print the result without actually writing anything
+to the database.
 </p>
 
 <input type="submit" value="Force Upgrade"/>
 </form>
+
+<p>Current Plone version information</p>
+
+<ul>
+<dtml-in coreVersionsList prefix="setup">
+    <li>&dtml-setup_key;: &dtml-setup_item;</li>
+</dtml-in>
+</ul>
+
 
 <dtml-var manage_page_footer>
