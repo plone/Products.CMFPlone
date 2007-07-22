@@ -4,14 +4,14 @@ from zope.formlib import form
 from zope.interface import implements
 
 from plone.app.portlets.portlets import base
-from plone.memoize.instance import memoize
 from plone.memoize import ram
+from plone.memoize.compress import xhtml_compress
+from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.cache import render_cachekey
 
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
 class IRecentPortlet(IPortletDataProvider):
@@ -42,17 +42,18 @@ class Renderer(base.Renderer):
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
 
-        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        context = aq_inner(self.context)
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
         self.anonymous = portal_state.anonymous()
         self.portal_url = portal_state.portal_url()
         self.typesToShow = portal_state.friendly_types()
 
-        plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
+        plone_tools = getMultiAdapter((context, self.request), name=u'plone_tools')
         self.catalog = plone_tools.catalog()
         
     @ram.cache(_render_cachekey)
     def render(self):
-        return self._template()
+        return xhtml_compress(self._template())
 
     @property
     def available(self):

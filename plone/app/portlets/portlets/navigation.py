@@ -11,8 +11,9 @@ from plone.app.portlets import cache
 from zope import schema
 from zope.formlib import form
 
-from plone.memoize.instance import memoize
 from plone.memoize import ram
+from plone.memoize.instance import memoize
+from plone.memoize.compress import xhtml_compress
 
 from Acquisition import aq_inner, aq_base, aq_parent
 from AccessControl import getSecurityManager
@@ -144,7 +145,7 @@ class Renderer(base.Renderer):
         
         self.properties = getToolByName(context, 'portal_properties').navtree_properties
         self.urltool = getToolByName(context, 'portal_url')
-        
+
     def title(self):
         return self.data.name or self.properties.name
 
@@ -226,7 +227,7 @@ class Renderer(base.Renderer):
 
     @ram.cache(_render_cachekey)
     def render(self):
-        return self._template()
+        return xhtml_compress(self._template())
 
     _template = ViewPageTemplateFile('navigation.pt')
     recurse = ViewPageTemplateFile('navigation_recurse.pt')

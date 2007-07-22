@@ -1,12 +1,10 @@
 from StringIO import StringIO
 from time import localtime
 
-from plone.app.portlets.portlets import base
+from plone.memoize import ram
+from plone.memoize.compress import xhtml_compress
 from plone.portlets.interfaces import IPortletDataProvider
 
-from zope import component
-from zope import schema
-from zope.formlib import form
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
@@ -18,11 +16,8 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote_plus
 
-from plone.memoize import ram
 from plone.app.portlets import cache
 from plone.app.portlets.portlets import base
-from plone.memoize.instance import memoize
-from plone.portlets.interfaces import IPortletDataProvider
 
 PLMF = MessageFactory('plonelocales')
 
@@ -78,7 +73,7 @@ def _render_cachekey(fun, self):
 
 class Renderer(base.Renderer):
 
-    _render = ViewPageTemplateFile('calendar.pt')
+    _template = ViewPageTemplateFile('calendar.pt')
     updated = False
 
     def __init__(self, context, request, view, manager, data):
@@ -111,7 +106,7 @@ class Renderer(base.Renderer):
 
     @ram.cache(_render_cachekey)
     def render(self):
-        return self._render()
+        return xhtml_compress(self._template())
 
     def getEventsForCalendar(self):
         context = aq_inner(self.context)

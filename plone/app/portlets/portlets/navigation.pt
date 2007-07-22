@@ -1,7 +1,7 @@
 <tal:block i18n:domain="plone">
 <dl class="portlet portletNavigationTree"  
     tal:define="root view/navigation_root">
-    
+
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href="#" 
@@ -19,26 +19,23 @@
 
     <dd class="portletItem lastItem">
         <ul class="portletNavigationTree navTreeLevel0">
-
             <li class="navTreeItem"
                 tal:condition="view/include_top">
-                <tal:block define="selectedClass view/root_item_class;
-                                   rootIsPortal view/root_is_portal;">
-                   <div>
-                       <a tal:attributes="href root/absolute_url;
-                                          title root/Description;
-                                          class selectedClass">
-                       <img src="" height="16" width="16" alt=""
-                            tal:condition="view/root_icon"
-                            tal:attributes="src view/root_icon" />
-                       <span tal:omit-tag=""
-                             tal:condition="rootIsPortal"
-                             i18n:translate="tabs_home">Home</span>
-                       <span tal:condition="not:rootIsPortal"
-                             tal:replace="root/Title">Root item title</span>
-                       </a>
-                   </div>
-                </tal:block>
+                <div tal:define="selectedClass view/root_item_class;
+                                 rootIsPortal view/root_is_portal;">
+                   <a tal:attributes="href root/absolute_url;
+                                      title root/Description;
+                                      class selectedClass">
+                   <img src="" height="16" width="16" alt=""
+                        tal:condition="view/root_icon"
+                        tal:attributes="src view/root_icon" />
+                   <span tal:omit-tag=""
+                         tal:condition="rootIsPortal"
+                         i18n:translate="tabs_home">Home</span>
+                   <span tal:condition="not:rootIsPortal"
+                         tal:replace="root/Title">Root item title</span>
+                   </a>
+                </div>
             </li>
             <li tal:replace="structure view/createNavTree">
                 SUBTREE

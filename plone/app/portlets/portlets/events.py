@@ -6,6 +6,7 @@ from zope.interface import implements
 from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
 from plone.memoize import ram
+from plone.memoize.compress import xhtml_compress
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.cache import render_cachekey
 
@@ -57,7 +58,7 @@ class Renderer(base.Renderer):
 
     @ram.cache(render_cachekey)
     def render(self):
-        return self._template()
+        return xhtml_compress(self._template())
 
     @property
     def available(self):

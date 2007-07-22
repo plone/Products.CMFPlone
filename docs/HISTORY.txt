@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Wrapped cached render results with a xhtml_compress method taken from
+      plone.memoize. This allows you to plug in whitespace removal libraries.
+      [hannosch]
+
     - Refactored calendar portlet and moved all calculations to the update
       method instead of doing it in its init.
       [hannosch]
