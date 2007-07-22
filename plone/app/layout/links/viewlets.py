@@ -1,6 +1,8 @@
 from StringIO import StringIO
 
 from plone.memoize import ram
+from plone.memoize.compress import xhtml_compress
+
 from zope import component
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
@@ -32,7 +34,7 @@ class FaviconViewlet(ViewletBase):
 
     @ram.cache(render_cachekey)
     def render(self):
-        return self._template()
+        return xhtml_compress(self._template())
 
 
 class SearchViewlet(ViewletBase):
@@ -41,7 +43,7 @@ class SearchViewlet(ViewletBase):
 
     @ram.cache(render_cachekey)
     def render(self):
-        return self._template()
+        return xhtml_compress(self._template())
 
 
 class AuthorViewlet(ViewletBase):
@@ -55,4 +57,4 @@ class NavigationViewlet(ViewletBase):
 
     @ram.cache(render_cachekey)
     def render(self):
-        return self._template()
+        return xhtml_compress(self._template())
