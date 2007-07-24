@@ -105,6 +105,9 @@
                   <div id="region-content"
                        class="documentContent">
 
+                    <span id="contentTopLeft"></span>
+                    <span id="contentTopRight"></span>
+                    
                     <a name="documentContent"></a>
 
                     <div metal:use-macro="here/global_statusmessage/macros/portal_message">
@@ -135,6 +138,9 @@
                       <div tal:replace="structure provider:plone.belowcontent" />
                     
                     </metal:sub>
+
+                    <span id="contentBottomLeft"></span>
+                    <span id="contentBottomRight"></span>
 
                   </div>
 
