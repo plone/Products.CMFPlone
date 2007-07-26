@@ -4,6 +4,11 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0rc2 Unreleased
 
+    - Fixed various bugs in the LanguageTableWidget. Removed broken code that
+      tried to show the country flags. Showing 150 flags is rather excessive.
+      This closes http://dev.plone.org/plone/ticket/6814.
+      [hannosch]
+
     - Removed multilingual content settings from the language control panel.
       These don't have any effect in a standard Plone site. LinguaPlone /
       plone.app.multilingual features its own control panel.
