@@ -4,6 +4,13 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0rc2 Unreleased
 
+    - Removed lots of irrelevant options from the language control panel. The
+      selection of the default language could use a simpler widget, but it's
+      too late to change that now. All advanced options should be made
+      available through control panels in add-ons which actually use these
+      settings. This closes http://dev.plone.org/plone/ticket/6784.
+      [hannosch]
+
     - Fixed various bugs in the LanguageTableWidget. Removed broken code that
       tried to show the country flags. Showing 150 flags is rather excessive.
       This closes http://dev.plone.org/plone/ticket/6814.

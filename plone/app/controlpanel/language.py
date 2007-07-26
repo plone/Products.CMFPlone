@@ -1,7 +1,6 @@
-from plone.fieldsets import FormFieldsets
-from plone.app.form.widgets import DisabledCheckBoxWidget
 from plone.app.form.widgets import LanguageDropdownChoiceWidget
 
+from zope.formlib.form import FormFields
 from zope.interface import Interface
 from zope.component import adapts
 from zope.interface import implements
@@ -22,16 +21,6 @@ from plone.app.controlpanel.widgets import LanguageTableWidget
 
 
 class ILanguageSelectionSchema(Interface):
-
-    display_flags = Bool(
-        title=_(u'label_display_flags',
-                default=u"Display flags for language selection"),
-                description=_(u"help_display_flags",
-                              default=u"(May be politically sensitive in some "
-                                       "areas, do not use this unless you "
-                                       "know that it is acceptable)."),
-                default=False,
-                required=False)
 
     use_combined_language_codes = Bool(
         title=_(u'label_allow_combined_language_codes',
@@ -64,42 +53,7 @@ class ILanguageSelectionSchema(Interface):
             vocabulary="plone.app.vocabularies.AvailableContentLanguages"))
 
 
-class ILanguageNegotiationSchema(Interface):
-
-    use_path_negotiation = Bool(
-        title=_(u'label_language_codes_in_url',
-                default=u"Use language codes in URL path for manual override."),
-        default=True,
-        required=False)
-
-    use_cookie_negotiation = Bool(
-        title=_(u'label_cookies_for_override',
-                default=u"Use cookie for manual override."),
-        default=True,
-        required=False)
-
-    use_cctld_negotiation = Bool(
-        title=_(u'label_ccTLD_language',
-                default=u"Use the virtual hostname of the Plone site."),
-        default=False,
-        required=False)
-
-    use_request_negotiation = Bool(
-        title=_(u'label_browser_language_negotiation',
-                default=u"Use browser language request negotiation."),
-        default=True,
-        required=False)
-
-    use_default_language = Bool(
-        title=_(u'text_default_fallback',
-                default=u"Default fallback (always enabled). This is the "
-                         "language specified as default above."),
-        default=True,
-        required=False)
-
-
-class ILanguageSchema(ILanguageSelectionSchema,
-                      ILanguageNegotiationSchema):
+class ILanguageSchema(ILanguageSelectionSchema):
     """Combined schema for the adapter lookup.
     """
 
@@ -107,7 +61,7 @@ class ILanguageSchema(ILanguageSelectionSchema,
 class LanguageControlPanelAdapter(SchemaAdapterBase):
 
     adapts(IPloneSiteRoot)
-    implements(ILanguageSchema)
+    implements(ILanguageSelectionSchema)
 
     def __init__(self, context):
         super(LanguageControlPanelAdapter, self).__init__(context)
@@ -131,49 +85,16 @@ class LanguageControlPanelAdapter(SchemaAdapterBase):
     supported_langs = \
         ProxyFieldProperty(ILanguageSchema['supported_langs'])
 
-    display_flags = \
-        ProxyFieldProperty(ILanguageSchema['display_flags'])
-
     use_combined_language_codes = \
         ProxyFieldProperty(ILanguageSchema['use_combined_language_codes'])
-
-    use_path_negotiation = \
-        ProxyFieldProperty(ILanguageSchema['use_path_negotiation'])
-
-    use_cookie_negotiation = \
-        ProxyFieldProperty(ILanguageSchema['use_cookie_negotiation'])
-
-    use_request_negotiation = \
-        ProxyFieldProperty(ILanguageSchema['use_request_negotiation'])
-
-    use_cctld_negotiation = \
-        ProxyFieldProperty(ILanguageSchema['use_cctld_negotiation'])
-
-    use_default_language = True
-
-
-languageselectionset = FormFieldsets(ILanguageSelectionSchema)
-languageselectionset.id = 'languageselection'
-languageselectionset.label = _(u'label_language_selection',
-                               default=u'Selection')
-
-languagenegotiationset = FormFieldsets(ILanguageNegotiationSchema)
-languagenegotiationset.id = 'languagenegotiation'
-languagenegotiationset.label = _(u'label_language_negotiation',
-                                 default=u'Negotiation')
-languagenegotiationset.description = _(u'description_negotiation_scheme',
-                                       default=u"Check the language "
-                                                "negotiation schemes that "
-                                                "apply to this site.")
 
 
 class LanguageControlPanel(ControlPanelForm):
 
-    form_fields = FormFieldsets(languageselectionset,
-                                languagenegotiationset)
+    form_fields = FormFields(ILanguageSelectionSchema)
     form_fields['default_language'].custom_widget = LanguageDropdownChoiceWidget
     form_fields['supported_langs'].custom_widget = LanguageTableWidget
-    form_fields['use_default_language'].custom_widget = DisabledCheckBoxWidget
+
     label = _(u"heading_language_settings", default="Language Settings")
     description = _(u"description_language_settings",
                     default="Settings related to interface languages and "
