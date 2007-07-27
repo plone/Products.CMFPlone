@@ -613,6 +613,7 @@ dl.searchResults span.documentByLine {
     width: 35%;
     clear: right;
     background-color: &dtml-backgroundColor;;
+    border-left: 4px solid &dtml-globalBorderColor;;
 }
 .callout {
     font-weight: bold;
