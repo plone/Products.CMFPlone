@@ -185,8 +185,14 @@ type_id=%s' % (context.absolute_url() , type_id))
                                 mapping=dict(title=pmf(default_workflow.title))),
                         description=format_description(default_workflow.description))
         except IndexError:
-            return dict(id='[none]', title=_(u"label_no_workflow",
-                                             default=u"No workflow"))
+            return dict(id='[none]',
+                    title=_(u"label_no_workflow",
+                        default=u"No workflow"),
+                    description=[
+                        _(u"description_no_workflow",
+                        default=u"This type has no workflow. The visibilty of "
+                                u"items of this type is determined by the "
+                                u"folder they are in.")])
         wf = getattr(portal_workflow, wf_id)
         return dict(id=wf.id, title=wf.title, description=format_description(wf.description))
 
