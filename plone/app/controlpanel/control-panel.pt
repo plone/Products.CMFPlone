@@ -58,9 +58,9 @@
                   metal:define-macro="master"
                   tal:define="is_fieldsets view/is_fieldsets"
                   tal:attributes="action request/URL;
-                                  class python: is_fieldsets and 'edit-form enableFormTabbing' or 'edit-form'"
+                                  class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default"
                   method="post"
-                  class="edit-form enableFormTabbing"
+                  class="edit-form enableUnloadProtection"
                   enctype="multipart/form-data"
                   id="zc.page.browser_form">
 
