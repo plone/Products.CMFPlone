@@ -2,7 +2,21 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 1.0rc2 Unreleased
+plone.app.controlpanel - 1.0rc3 Released July 28, 2007
+
+    - Fixed missing history entries.
+      [hannosch]
+
+plone.app.controlpanel - 1.0rc2 Released July 27, 2007
+
+    - Add a description to the no-workflow fallback. This fixes
+      http://dev.plone.org/plone/ticket/6812.
+      [wichert]
+
+    - Filter control panel doesn't warn you when you haven't saved your changes
+      Added enableUnloadFormProtection class to the control panel form.
+      This references http://dev.plone.org/plone/ticket/6654.
+      [duncan]
 
     - Removed lots of irrelevant options from the language control panel. The
       selection of the default language could use a simpler widget, but it's
