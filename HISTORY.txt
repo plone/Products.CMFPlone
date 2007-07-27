@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
     
-Plone 3.0 - UNRELEASED
+Plone 3.0-rc2 - released July 27, 2007
 
     - Added a description to the no-workflow information in the types
       control panel. This fixes http://dev.plone.org/plone/ticket/6812
