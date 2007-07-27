@@ -54,6 +54,13 @@ class ContentContext(object):
             return None
 
         memberId = member.getId()
+        if memberId is None:
+            # Basic users such as the special Anonymous users have no
+            # id, but we can use their username instead.
+            try:
+                memberId = member.getUserName()
+            except AttributeError:
+                pass
 
         if not memberId:
             return None
