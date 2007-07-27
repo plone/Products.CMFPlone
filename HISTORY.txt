@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Added a description to the no-workflow information in the types
+      control panel. This fixes http://dev.plone.org/plone/ticket/6812
+      [wichert]
+
     - Added in markup for the IDs #contentTopLeft, #contentTopRight,
       #contentBottomLeft, #contentBottomRight to allow rounded corners on the
       content well using the same technique as the portlets.
