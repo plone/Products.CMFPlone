@@ -109,3 +109,5 @@ def registerMigrations():
     registerUpgradePath('3.0-beta3', '3.0-rc1', v3_0.betas.beta3_rc1)
 
     registerUpgradePath('3.0-rc1', '3.0-rc2', v3_0.rcs.rc1_rc2)
+    registerUpgradePath('3.0-rc2', '3.0-rc3 (svn/unreleased)', null)
+
