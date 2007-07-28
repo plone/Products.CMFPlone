@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Removed httpresponse patch, which is obsolete with Zope 2.10.4 which we
+      do require now.
+      [hannosch]
+
 Plone 3.0-rc2 - released July 27, 2007
 
     - Added a description to the no-workflow information in the types
