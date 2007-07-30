@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Author profile template was showing left/right portlets, removed these.
+      [limi]
+
     - Removed httpresponse patch, which is obsolete with Zope 2.10.4 which we
       do require now.
       [hannosch]
