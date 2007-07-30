@@ -2,7 +2,7 @@
     
     <form method="post" action="#"
           tal:attributes="action context/absolute_url">
-        <input type="hidden" name="referer" tal:attributes="value request/ACTUAL_URL" />
+        <input type="hidden" name="referer" tal:attributes="value view/referer" />
 
         <label for="dest"
                class="hiddenStructure"
