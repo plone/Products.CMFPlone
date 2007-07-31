@@ -38,12 +38,14 @@ class MultiCheckBoxVocabularyWidget(MultiCheckBoxWidget):
             field.value_type.vocabulary, request)
 
 
-class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
+class MultiCheckBoxColumnsWidget(MultiCheckBoxWidget):
     """ """
+
+    how_many_columns = 2   # two by default
 
     def __init__(self, field, request):
         """Initialize the widget."""
-        super(MultiCheckBoxThreeColumnWidget, self).__init__(field,
+        super(MultiCheckBoxColumnsWidget, self).__init__(field,
             field.value_type.vocabulary, request)
 
     def renderItemsWithValues(self, values):
@@ -82,8 +84,10 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
             count += 1
 
         length = len(self.vocabulary)
-        break1 = length % 3 == 0 and length / 3 or length / 3 + 1
-        break2 = break1 * 2
+        cc = self.how_many_columns
+        breaks = [ length % cc == 0 and length / cc or length / cc + 1 ]
+        for b in range(2, cc):
+            breaks.append(breaks[0] * b)
 
         # Render normal values
         for term in self.vocabulary:
@@ -103,13 +107,18 @@ class MultiCheckBoxThreeColumnWidget(MultiCheckBoxWidget):
             rendered_items.append(rendered_item)
             count += 1
 
-            if (count == break1 or count == break2):
+            if count in breaks:
                 rendered_items.append('</div><div style="float:left; '
                                       'margin-right: 2em;">')
 
         rendered_items.append('</div><div style="clear:both">&nbsp;</div>')
 
         return rendered_items
+
+
+class MultiCheckBoxThreeColumnWidget(MultiCheckBoxColumnsWidget):
+    """ """
+    how_many_columns = 3
 
 
 class LanguageTableWidget(MultiCheckBoxWidget):
