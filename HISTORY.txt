@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Remapping the "(Default)" workflow to No Workflow didn't work. Fixed.
+      [optilude]
+
     - Remapping to "No Workflow" resulted in an error, fixed. Thanks to
       rsantos for the patch.
       [limi]
