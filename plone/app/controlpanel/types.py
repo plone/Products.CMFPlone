@@ -258,6 +258,10 @@ type_id=%s' % (context.absolute_url() , type_id))
         new_workflow = self.new_workflow()
 
         if self.new_workflow_is_different():
+            if self.new_workflow_is_none():
+                return format_description((u"- This type has no workflow. "
+                    u"The visibilty of items of this type is determined by "
+                    u"the folder they are in."))
             new_workflow = self.real_workflow(self.new_workflow())
             wf = getattr(portal_workflow, new_workflow)
             return format_description(wf.description)
