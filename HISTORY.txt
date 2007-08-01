@@ -4,14 +4,6 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
-    - Remapping the "(Default)" workflow to No Workflow didn't work.
-      Fixes http://dev.plone.org/plone/ticket/6818
-      [optilude]
-
-    - Remapping to "No Workflow" resulted in an error, fixed. Thanks to
-      rsantos for the patch. Fixes http://dev.plone.org/plone/ticket/6819
-      [limi]
-
     - Author profile template was showing left/right portlets, removed these.
       [limi]
 
