@@ -111,14 +111,14 @@ class TypesControlPanel(BrowserView):
                         state_map[None] = state_map['[none]']
                         del state_map['[none]']
                     if type_id:
-                        types=(type_id,)
+                        type_ids=(type_id,)
                     else:
                         wt = getToolByName(self.context, 'portal_workflow')
                         tt = getToolByName(self.context, 'portal_types')
                         nondefault = [info[0] for info in wt.listChainOverrides()]
                         type_ids = [type for type in tt.listContentTypes() if type not in nondefault]
 
-                    remap_workflow(context, type_ids=(type_id,), chain=chain,
+                    remap_workflow(context, type_ids=type_ids, chain=chain,
                                    state_map=state_map)
                 else:
                     portal_workflow = getToolByName(context, 'portal_workflow')
