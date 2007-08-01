@@ -2,6 +2,16 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
+plone.app.controlpanel - Unreleased
+
+    - Remapping the "(Default)" workflow to No Workflow didn't work.
+      Fixes http://dev.plone.org/plone/ticket/6818.
+      [optilude]
+
+    - Remapping to "No Workflow" resulted in an error, fixed. Thanks to
+      rsantos for the patch. Fixes http://dev.plone.org/plone/ticket/6819.
+      [limi]
+
 plone.app.controlpanel - 1.0rc3 Released July 28, 2007
 
     - Fixed missing history entries.
