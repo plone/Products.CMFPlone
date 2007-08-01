@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Remapping to "No Workflow" resulted in an error, fixed. Thanks to
+      rsantos for the patch.
+      [limi]
+
     - Author profile template was showing left/right portlets, removed these.
       [limi]
 
