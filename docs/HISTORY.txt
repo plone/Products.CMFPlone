@@ -12,6 +12,10 @@ plone.app.controlpanel - Unreleased
       rsantos for the patch. Fixes http://dev.plone.org/plone/ticket/6819.
       [limi]
 
+    - Made column checkbox widget easily subclassable for being able to use it
+      with different amount of columns from other packages.
+      [davconvent]
+
 plone.app.controlpanel - 1.0rc3 Released July 28, 2007
 
     - Fixed missing history entries.
