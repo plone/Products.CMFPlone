@@ -3,9 +3,9 @@
              i18n:domain="plone"
              workflow_id="intranet_folder_workflow"
              title="Intranet Workflow for Folders"
-             description="- Normally used with the Intranet/Extranet workflow on folder types.
-                          - Only has two states: Private and Internally Visible.
-                         "
+             description="
+- Normally used with the Intranet/Extranet workflow on folder types.
+- Only has two states: Private and Internally Visible."
              state_variable="review_state"
              initial_state="internal"
              i18n:attributes="title; description">

@@ -3,10 +3,10 @@
              i18n:domain="plone"
              workflow_id="intranet_workflow"
              title="Intranet/Extranet Workflow"
-             description="- An intranet workflow where content is only accessible if you are logged in.
-                          - Basic states are: Internal Draft, Pending Review, Internally Published and Private.
-                          - Also has an Externally Published state, so you can make selected content available to people outside the intranet.
-                         "
+             description="
+- An intranet workflow where content is only accessible if you are logged in.
+- Basic states are: Internal Draft, Pending Review, Internally Published and Private.
+- Also has an Externally Published state, so you can make selected content available to people outside the intranet."
              state_variable="review_state"
              initial_state="internal"
              i18n:attributes="title; description">

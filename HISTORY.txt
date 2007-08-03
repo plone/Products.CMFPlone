@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Reformatted the workflow descriptions in order to prevent insane amount
+      of whitespace to show up in the translations.
+      [hannosch]
+
     - Added i18n markup to the workflow descriptions in GenericSetup profiles.
       [hannosch]
 
