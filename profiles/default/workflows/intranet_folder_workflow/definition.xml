@@ -8,7 +8,7 @@
                          "
              state_variable="review_state"
              initial_state="internal"
-             i18n:attributes="title">
+             i18n:attributes="title; description">
 
  <permission>Access contents information</permission>
  <permission>List folder contents</permission>
@@ -16,7 +16,9 @@
  <permission>View</permission>
 
  <state state_id="internal" title="Internally visible" i18n:attributes="title">
-  <description>Visible to all intranet users.</description>
+  <description i18n:translate="">
+    Visible to all intranet users.
+  </description>
   <exit-transition transition_id="hide"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -52,7 +54,9 @@
   </permission-map>
  </state>
  <state state_id="private" title="Private" i18n:attributes="title">
-  <description>Can only be seen and edited by the owner.</description>
+  <description i18n:translate="">
+    Can only be seen and edited by the owner.
+  </description>
   <exit-transition transition_id="show_internally"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -90,7 +94,9 @@
              new_state="private" trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
+  <description i18n:translate="">
+    Making an item private means that it will not be visible to anyone but the owner and the site administrator.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow"
           i18n:translate="">Make private</action>
@@ -103,7 +109,9 @@
              new_state="internal" trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Makes the folder visible internally.</description>
+  <description i18n:translate="">
+    Makes the folder visible internally.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show_internally"
           category="workflow"
           i18n:translate="">Show internally</action>
@@ -114,7 +122,7 @@
 
  <variable variable_id="action" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Previous transition</description>
+  <description i18n:translate="">Previous transition</description>
   <default>
 
    <expression>transition/getId|nothing</expression>
@@ -124,7 +132,9 @@
  </variable>
  <variable variable_id="actor" for_catalog="False"
            for_status="True" update_always="True">
-  <description>The ID of the user who performed the last transition</description>
+  <description i18n:translate="">
+    The ID of the user who performed the last transition
+  </description>
   <default>
 
    <expression>user/getUserName</expression>
@@ -134,7 +144,7 @@
  </variable>
  <variable variable_id="comments" for_catalog="False"
            for_status="True" update_always="True">
-  <description>Comment about the last transition</description>
+  <description i18n:translate="">Comment about the last transition</description>
   <default>
 
    <expression>python:state_change.kwargs.get('comment', '')</expression>
@@ -144,7 +154,7 @@
  </variable>
  <variable variable_id="review_history" for_catalog="False"
            for_status="False" update_always="False">
-  <description>Provides access to workflow history</description>
+  <description i18n:translate="">Provides access to workflow history</description>
   <default>
 
    <expression>state_change/getHistory</expression>
@@ -156,7 +166,9 @@
  </variable>
  <variable variable_id="time" for_catalog="False"
            for_status="True" update_always="True">
-  <description>When the previous transition was performed</description>
+  <description i18n:translate="">
+    When the previous transition was performed
+  </description>
   <default>
 
    <expression>state_change/getDateTime</expression>

@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Added i18n markup to the workflow descriptions in GenericSetup profiles.
+      [hannosch]
+
     - Author profile template was showing left/right portlets, removed these.
       [limi]
 

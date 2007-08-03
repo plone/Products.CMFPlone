@@ -9,7 +9,7 @@
                          "
              state_variable="review_state"
              initial_state="visible"
-             i18n:attributes="title">
+             i18n:attributes="title; description">
 
  <permission>Access contents information</permission>
  <permission>List folder contents</permission>
@@ -17,7 +17,9 @@
  <permission>View</permission>
 
  <state state_id="private" title="Private" i18n:attributes="title">
-  <description>Can only be seen and edited by the owner.</description>
+  <description i18n:translate="">
+    Can only be seen and edited by the owner.
+  </description>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
@@ -52,7 +54,9 @@
 
  </state>
  <state state_id="published" title="Published" i18n:attributes="title">
-  <description>Visible to everyone, not editable by the owner.</description>
+  <description i18n:translate="">
+    Visible to everyone, not editable by the owner.
+  </description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -75,7 +79,9 @@
 
  </state>
  <state state_id="visible" title="Public draft" i18n:attributes="title">
-  <description>Visible to everyone, but not approved by the reviewers.</description>
+  <description i18n:translate="">
+    Visible to everyone, but not approved by the reviewers.
+  </description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information"
@@ -108,7 +114,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
+  <description i18n:translate="">
+    Making an item private means that it will not be visible to anyone but the owner and the site administrator.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow"
           i18n:translate="">Make private</action>
@@ -121,7 +129,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Publishing the item makes it visible to other users.</description>
+  <description i18n:translate="">
+    Publishing the item makes it visible to other users.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
           category="workflow"
           i18n:translate="">Publish</action>
@@ -134,7 +144,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
+  <description i18n:translate="">
+    If you submitted the item by mistake or want to perform additional edits, this will take it back.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow"
           i18n:translate="">Retract</action>
@@ -147,7 +159,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Promotes your folder to public draft state.</description>
+  <description i18n:translate="">
+    Promotes your folder to public draft state.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
           category="workflow"
           i18n:translate="">Promote to Draft</action>
@@ -158,7 +172,7 @@
 
  <variable variable_id="action"         for_catalog="False"
            for_status="True" update_always="True">
-  <description>Previous transition</description>
+  <description i18n:translate="">Previous transition</description>
   <default>
    
    <expression>transition/getId|nothing</expression>
@@ -168,7 +182,9 @@
  </variable>
  <variable variable_id="actor"          for_catalog="False"
            for_status="True" update_always="True">
-  <description>The ID of the user who performed the last transition</description>
+  <description i18n:translate="">
+    The ID of the user who performed the last transition
+  </description>
   <default>
    
    <expression>user/getId</expression>
@@ -178,7 +194,7 @@
  </variable>
  <variable variable_id="comments"       for_catalog="False"
            for_status="True" update_always="True">
-  <description>Comment about the last transition</description>
+  <description i18n:translate="">Comment about the last transition</description>
   <default>
    
    <expression>python:state_change.kwargs.get('comment', '')</expression>
@@ -188,7 +204,7 @@
  </variable>
  <variable variable_id="review_history" for_catalog="False"
            for_status="False" update_always="False">
-  <description>Provides access to workflow history</description>
+  <description i18n:translate="">Provides access to workflow history</description>
   <default>
    
    <expression>state_change/getHistory</expression>
@@ -200,7 +216,9 @@
  </variable>
  <variable variable_id="time"           for_catalog="False"
            for_status="True" update_always="True">
-  <description>When the previous transition was performed</description>
+  <description i18n:translate="">
+    When the previous transition was performed
+  </description>
   <default>
    
    <expression>state_change/getDateTime</expression>

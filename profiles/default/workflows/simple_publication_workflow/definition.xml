@@ -9,7 +9,7 @@
                         "
              state_variable="review_state"
              initial_state="private"
-             i18n:attributes="title">
+             i18n:attributes="title; description">
 
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
@@ -18,7 +18,9 @@
  <permission>View</permission>
 
  <state state_id="pending" title="Pending review" i18n:attributes="title">
-  <description>Waiting to be reviewed, not editable by the owner.</description>
+  <description i18n:translate="">
+    Waiting to be reviewed, not editable by the owner.
+  </description>
   <exit-transition transition_id="make_private"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
@@ -62,7 +64,9 @@
 
  </state>
  <state state_id="private" title="Private" i18n:attributes="title">
-  <description>Can only be seen and edited by the owner.</description>
+  <description i18n:translate="">
+    Can only be seen and edited by the owner.
+  </description>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
   <permission-map name="Access contents information"
@@ -102,7 +106,9 @@
   </permission-map>
  </state>
  <state state_id="published" title="Published" i18n:attributes="title">
-  <description>Visible to everyone, not editable by the owner.</description>
+  <description i18n:translate="">
+    Visible to everyone, not editable by the owner.
+  </description>
   <exit-transition transition_id="retract"/>
   <exit-transition transition_id="reject"/>
   <permission-map name="Access contents information"
@@ -135,7 +141,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Publishing the item makes it visible to other users.</description>
+  <description i18n:translate="">
+    Publishing the item makes it visible to other users.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
           category="workflow"
           i18n:translate="">Publish</action>
@@ -148,7 +156,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
+  <description i18n:translate="">
+    Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
           category="workflow"
           i18n:translate="">Send back</action>
@@ -161,7 +171,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
+  <description i18n:translate="">
+    If you submitted the item by mistake or want to perform additional edits, this will take it back.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow"
           i18n:translate="">Retract</action>
@@ -174,7 +186,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Puts your item in a review queue, so it can be published on the site.</description>
+  <description i18n:translate="">
+    Puts your item in a review queue, so it can be published on the site.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
           category="workflow"
           i18n:translate="">Submit for publication</action>

@@ -11,7 +11,7 @@
                          "
              state_variable="review_state"
              initial_state="visible"
-             i18n:attributes="title">
+             i18n:attributes="title; description">
 
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
@@ -19,7 +19,9 @@
  <permission>View</permission>
 
  <state state_id="pending" title="Pending review" i18n:attributes="title">
-  <description>Waiting to be reviewed, not editable by the owner.</description>
+  <description i18n:translate="">
+    Waiting to be reviewed, not editable by the owner.
+  </description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
@@ -44,7 +46,9 @@
 
  </state>
  <state state_id="private" title="Private" i18n:attributes="title">
-  <description>Can only be seen and edited by the owner.</description>
+  <description i18n:translate="">
+    Can only be seen and edited by the owner.
+  </description>
   <exit-transition transition_id="show"/>
   <permission-map name="Access contents information"
                   acquired="False">
@@ -76,7 +80,9 @@
 
  </state>
  <state state_id="published" title="Published" i18n:attributes="title">
-  <description>Visible to everyone, not editable by the owner.</description>
+  <description i18n:translate="">
+    Visible to everyone, not editable by the owner.
+  </description>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>
   <permission-map name="Access contents information"
@@ -96,7 +102,9 @@
   </permission-map>
  </state>
  <state state_id="visible" title="Public draft" i18n:attributes="title">
-  <description>Visible to everyone, but not approved by the reviewers.</description>
+  <description i18n:translate="">
+    Visible to everyone, but not approved by the reviewers.
+  </description>
   <exit-transition transition_id="hide"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="submit"/>
@@ -127,7 +135,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Making an item private means that it will not be visible to anyone but the owner and the site administrator.</description>
+  <description i18n:translate="">
+    Making an item private means that it will not be visible to anyone but the owner and the site administrator.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=hide"
           category="workflow"
           i18n:translate="">Make private</action>
@@ -140,7 +150,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Publishing the item makes it visible to other users.</description>
+  <description i18n:translate="">
+    Publishing the item makes it visible to other users.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=publish"
           category="workflow"
           i18n:translate="">Publish</action>
@@ -153,7 +165,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.</description>
+  <description i18n:translate="">
+    Sending the item back will return the item to the original author instead of publishing it. You should preferably include a reason for why it was not published.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=reject"
           category="workflow"
           i18n:translate="">Send back</action>
@@ -166,7 +180,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>If you submitted the item by mistake or want to perform additional edits, this will take it back.</description>
+  <description i18n:translate="">
+    If you submitted the item by mistake or want to perform additional edits, this will take it back.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=retract"
           category="workflow"
           i18n:translate="">Retract</action>
@@ -179,7 +195,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Promotes your private item to a public draft.</description>
+  <description i18n:translate="">
+    Promotes your private item to a public draft.
+  </description>
 
   <action url="%(content_url)s/content_status_modify?workflow_action=show"
           category="workflow"
@@ -193,7 +211,9 @@
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
-  <description>Puts your item in a review queue, so it can be published on the site.</description>
+  <description i18n:translate="">
+    Puts your item in a review queue, so it can be published on the site.
+  </description>
   <action url="%(content_url)s/content_status_modify?workflow_action=submit"
           category="workflow"
           i18n:translate="">Submit for publication</action>
@@ -203,7 +223,9 @@
  </transition>
 
  <worklist worklist_id="reviewer_queue" title="">
-  <description>Reviewer tasks</description>
+  <description i18n:translate="">
+    Reviewer tasks
+  </description>
   <action url="%(portal_url)s/search?review_state=pending"
           category="global">Pending (%(count)d)</action>
   <guard>
@@ -214,7 +236,9 @@
 
  <variable variable_id="action"         for_catalog="False"
            for_status="True" update_always="True">
-  <description>Previous transition</description>
+  <description i18n:translate="">
+    Previous transition
+  </description>
   <default>
    
    <expression>transition/getId|nothing</expression>
@@ -224,7 +248,9 @@
  </variable>
  <variable variable_id="actor"          for_catalog="False"
            for_status="True" update_always="True">
-  <description>The ID of the user who performed the last transition</description>
+  <description i18n:translate="">
+    The ID of the user who performed the last transition
+  </description>
   <default>
    
    <expression>user/getId</expression>
@@ -234,7 +260,9 @@
  </variable>
  <variable variable_id="comments"       for_catalog="False"
            for_status="True" update_always="True">
-  <description>Comment about the last transition</description>
+  <description i18n:translate="">
+    Comment about the last transition
+  </description>
   <default>
    
    <expression>python:state_change.kwargs.get('comment', '')</expression>
@@ -244,7 +272,9 @@
  </variable>
  <variable variable_id="review_history" for_catalog="False"
            for_status="False" update_always="False">
-  <description>Provides access to workflow history</description>
+  <description i18n:translate="">
+    Provides access to workflow history
+  </description>
   <default>
    
    <expression>state_change/getHistory</expression>
@@ -256,7 +286,9 @@
  </variable>
  <variable variable_id="time"           for_catalog="False"
            for_status="True" update_always="True">
-  <description>When the previous transition was performed</description>
+  <description i18n:translate="">
+    When the previous transition was performed
+  </description>
   <default>
    
    <expression>state_change/getDateTime</expression>
