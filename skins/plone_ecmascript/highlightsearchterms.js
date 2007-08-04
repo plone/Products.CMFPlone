@@ -53,10 +53,10 @@ function getSearchTermsFromURI(uri) {
             result = referrerSearch;
         }
     }
-    var qfinder = new RegExp("[searchterm|SearchableText]=([^&]*)", "gi");
+    var qfinder = new RegExp("(searchterm|SearchableText)=([^&]*)", "gi");
     var qq = qfinder.exec(query);
-    if (qq && qq[1]) {
-        var terms = qq[1].replace(/\+/g,' ').split(' ');
+    if (qq && qq[2]) {
+        var terms = qq[2].replace(/\+/g,' ').split(' ');
         for (var i=0; i < terms.length; i++) {
             if (terms[i] != '') {
                 result.push(terms[i]);

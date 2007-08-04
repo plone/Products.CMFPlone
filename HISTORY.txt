@@ -4,6 +4,14 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Corrected broken Javascript regular expression that caused almost arbitrary 
+      stuff in the query string to cause 'searchterm'-highlighting.
+      Thanks to Claytron for patch.
+      Fixes 
+      http://dev.plone.org/plone/ticket/6824
+      http://dev.plone.org/plone/ticket/6811
+      [elvix]
+
     - Reformatted the workflow descriptions in order to prevent insane amount
       of whitespace to show up in the translations.
       [hannosch]
