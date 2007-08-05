@@ -1,3 +1,5 @@
+from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
+
 from Products.MimetypesRegistry.mime_types.mtr_mimetypes import text_web_intelligent
 from types import InstanceType
 from Products.PortalTransforms.transforms.web_intelligent_plain_text_to_html import register as intel2html_register
@@ -14,6 +16,13 @@ def rc1_rc2(portal):
 
     return out
 
+def rc2_rc3(portal):
+    
+    out = []
+    
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0rc2-3.0rc3')
+    
+    return out
 
 def addIntelligentText(portal, out):
     """ add intelligenttext mime type and transforms that have been
