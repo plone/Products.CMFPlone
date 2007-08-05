@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Fixed permissions for iterate check-in/check-out so that non-manager
+      users can use it. Fixes http://dev.plone.org/plone/ticket/6645
+      [optilude]
+
     - Corrected broken Javascript regular expression that caused almost arbitrary 
       stuff in the query string to cause 'searchterm'-highlighting.
       Thanks to Claytron for patch.
