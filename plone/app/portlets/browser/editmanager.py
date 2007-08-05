@@ -124,10 +124,16 @@ class EditPortletManagerRenderer(Explicit):
     @memoize
     def referer(self):
         view_name = self.request.get('viewname', None)
+        key = self.request.get('key', None)
+        base_url = self.request['ACTUAL_URL']
+        
         if view_name:
-            return self.context.absolute_url() + '/' + view_name
-        else:
-            return self.request['ACTUAL_URL']
+            base_url = self.context.absolute_url() + '/' + view_name
+        
+        if key:
+            base_url += '?key=%s' % key
+        
+        return base_url
         
     # See note in plone.portlets.manager
     
