@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Fixed incorrect redirect when pressing the cancel button on the
+      sharing tab.  For Files it would cause you to download the file.
+      This fixes http://dev.plone.org/plone/ticket/6874
+      Fixed in plone.app.workflow.
+      [maurits]
+
     - Fix incorrect use of getActionById that caused an error when
       sending someone a link to an item in the site.  This fixes
       http://dev.plone.org/plone/ticket/6857
