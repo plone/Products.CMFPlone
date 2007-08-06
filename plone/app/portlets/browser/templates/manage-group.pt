@@ -16,7 +16,7 @@
 <body>
 <div metal:fill-slot="content">
 
-  <div id="content" class="documentEditable">
+  <div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -48,7 +48,7 @@
         Portal status message
       </div>
 
-      <div class="configlet">
+      <div id="content">
 
         <metal:block metal:define-macro="props" tal:omit-tag="">
 
