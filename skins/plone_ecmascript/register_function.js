@@ -84,9 +84,9 @@ if (typeof addDOMLoadEvent != 'undefined') {
 function getContentArea() {
     // returns our content area element
     if (W3CDOM) {
-        var node = document.getElementById('region-content');
+        var node = document.getElementById('content');
         if (!node) {
-            node = document.getElementById('content');
+            node = document.getElementById('region-content');
         }
         return node;
     }

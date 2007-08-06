@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Plone 3.0 has an ID "content" that only includes the actual content,
+      not everything in the content well. Adjusted the getContentArea()
+      method in register_function.js to prefer this if it's present.
+      This fixes http://dev.plone.org/plone/ticket/5701
+      [limi]
+
     - Fixed incorrect redirect when pressing the cancel button on the
       sharing tab.  For Files it would cause you to download the file.
       This fixes http://dev.plone.org/plone/ticket/6874
