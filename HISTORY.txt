@@ -4,6 +4,13 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Since the CSS isn't recalculated when if switch to https mid-flight,
+      we need to add https version of portal_url to the blacklist to avoid
+      getting the lock icon on local links. This fixes:
+      http://dev.plone.org/plone/ticket/6821
+      http://dev.plone.org/plone/ticket/6767
+      [limi]
+
     - Fixed permissions for iterate check-in/check-out so that non-manager
       users can use it. Fixes http://dev.plone.org/plone/ticket/6645
       [optilude]

@@ -1005,25 +1005,28 @@ textarea.proportional {
 }
 
 /* Handling external/internal links, we first set the icon on all links, then 
-   remove it from the ones that are local */
+   remove it from the ones that are local - for both http and https */
 #content a[href ^="http:"],
 #content a.link-external {
     background: transparent url(&dtml-portal_url;/link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-#content a[href ^="&dtml-portal_url;"] {
+#content a[href ^="https:"],
+#content a.link-https {
+    background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+#content a[href ^="&dtml-portal_url;"],
+#content a[href ^="<dtml-let url="portal_url()"><dtml-var "url.replace('http', 'https')"></dtml-let>"] {
     background: none;
     padding: 0;
-}    
+}
+
+
 /* Protocol-specific links */
 #content a[href ^="mailto:"],
 #content a.link-mailto  {
     background: transparent url(&dtml-portal_url;/mail_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-#content a[href ^="https:"],
-#content a.link-https {
-    background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 #content a[href ^="news:"],
