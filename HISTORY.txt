@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Adding a mini-login form to the login failure screen. This fixes
+      http://dev.plone.org/plone/ticket/6776
+
     - Since the CSS isn't recalculated if you switch to https mid-flight,
       we need to add https version of portal_url to the blacklist to avoid
       getting the lock icon on local links. This fixes:

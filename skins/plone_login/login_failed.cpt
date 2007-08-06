@@ -9,20 +9,20 @@
 <body>
 
 <div metal:fill-slot="main">
-  <div metal:define-macro="login_failed"
-       tal:define="login_name python:request.get('login_name', '');">
+  <div id="content"
+       metal:define-macro="login_failed"
+       tal:define="auth nocall:here/acl_users/credentials_cookie_auth|here/cookie_authentication|nothing;
+                   came_from request/came_from|request/HTTP_REFERER|nothing;
+                   came_from python:test(utool.isURLInPortal(came_from), came_from, None);
+                   errors options/state/getErrors;
+                   ac_name auth/name_cookie|string:__ac_name;
+                   ac_password auth/pw_cookie|string:__ac_password;
+                   ac_persist auth/persist_cookie|nothing;
+                   login_name python:request.get('login_name', request.get(ac_name, ''));">
 
-    <h1 class="documentFirstHeading"
-        i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
 
-    <p i18n:translate="description_not_logged_in_username_incorrect">
-      You are not currently logged in. Your user name and/or password
-      may be incorrect.
-    </p>
+    <metal:login use-macro="here/login_form/macros/login" />
 
-    <p><a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)" i18n:translate="description_failed_login_link">
-      Click here to have your password mailed to you if you have forgotten it.</a>
-    </p>
 
     <p i18n:translate="description_not_accept_cookies">
       If your user name and password are correct, the problem may be that
@@ -34,7 +34,7 @@
       your browser, here are some possible reasons:
     </p>
 
-    <ul>
+    <ul >
       <li i18n:translate="description_still_failure_reason1">
         You may be running web filtering software that
         disables cookies. If so, you will need to configure the
