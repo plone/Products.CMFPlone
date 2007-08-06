@@ -1,4 +1,4 @@
-Plone 3.0 - May, 2007
+Plone 3.0 - Aug, 2007
 =====================
 
 The following is a list of important things to note when installing or
