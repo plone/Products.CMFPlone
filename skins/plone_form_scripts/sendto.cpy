@@ -36,13 +36,9 @@ if not show:
     context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'), 'error')
     return state.set(status='failure')
 
-# Try to find the view action. If not found, use absolute_url()
-url = context.absolute_url()
-ti = context.getTypeInfo()
-if ti is not None:
-    view = ti.getActionById('view', '')
-    if view:
-        url = '/'.join((url, view))
+# Find the view action.
+context_state = context.restrictedTraverse("@@plone_context_state")
+url = '%s/%s' % (context.absolute_url(), context_state.view_template_id()) 
 
 variables = {'send_from_address' : REQUEST.send_from_address,
              'send_to_address'   : REQUEST.send_to_address,

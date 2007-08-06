@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Fix incorrect use of getActionById that caused an error when
+      sending someone a link to an item in the site.  This fixes
+      http://dev.plone.org/plone/ticket/6857
+      [maurits]
+
     - The wiki syntax support now supports both the [[link]] and ((link))
       syntax variations by default. Removed the preference for selecting
       between them, since it no longer does anything.
