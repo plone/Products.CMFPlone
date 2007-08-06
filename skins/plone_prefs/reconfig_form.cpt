@@ -351,13 +351,13 @@
                        class="noborder"
                        name="allowAnonymousViewAbout"
                        value=""
-                       id="cb_allowAnonymousViewAbout"
+                       id="cb_noallowAnonymousViewAbout"
                        tabindex=""
                        tal:attributes="tabindex tabindex;
                                        checked not:allowAnonymousViewAbout;"
                        />
 
-                <label for="cb_allowAnonymousViewAbout" i18n:translate="no">No</label>
+                <label for="cb_noallowAnonymousViewAbout" i18n:translate="no">No</label>
             </div>
 
             <div class="field"
