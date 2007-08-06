@@ -4,7 +4,7 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
-    - Since the CSS isn't recalculated when if switch to https mid-flight,
+    - Since the CSS isn't recalculated if you switch to https mid-flight,
       we need to add https version of portal_url to the blacklist to avoid
       getting the lock icon on local links. This fixes:
       http://dev.plone.org/plone/ticket/6821
