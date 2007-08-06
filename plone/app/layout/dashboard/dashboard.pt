@@ -28,7 +28,7 @@
                     tal:define="memberinfo mtool/getMemberInfo;
                                 name python:memberinfo['fullname'] or member.getId() or member.getId()">
 
-    <div id="content" class="documentEditable">
+    <div class="documentEditable">
 
         <h5 class="hiddenStructure">Views</h5>
         
@@ -49,7 +49,7 @@
           &nbsp;
         </div>
 
-        <div class="documentContent" id="region-content">
+        <div class="documentContent" id="content">
 
             <a name="documentContent"></a>
                     
