@@ -4,11 +4,12 @@ Plone 3.0 - May, 2007
 The following is a list of important things to note when installing or
 upgrading to Plone 3.0:
 
-* Unpacking the Plone archive with WinZip will not work: WinZip will trunacte
-  filenames without warning you. Other tools such as WinRar work fine.
+* Unpacking the Plone archive with WinZip will not work: WinZip will truncate
+  filenames without warning you. 7-Zip is a good open source alternative for
+  Windows that you can use instead: http://www.7-zip.org
 
-* Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope 2.11
-  and later may or may not work. Zope 3.x is not supported.
+* Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope
+  2.11 and later may or may not work. Zope 3.x is not supported.
 
 * The python ElementTree package is now required. This package can be
   downloaded from its homepage at http://effbot.org/downloads/#elementtree .
