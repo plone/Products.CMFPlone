@@ -12,11 +12,11 @@ upgrading to Plone 3.0:
   2.11 and later may or may not work. Zope 3.x is not supported.
 
 * The python ElementTree package is now required. This package can be
-  downloaded from its homepage at http://effbot.org/downloads/#elementtree .
+  downloaded from its home page at http://effbot.org/downloads/#elementtree .
 
 * The python lxml package is now required to run all tests. It is
   not needed for normal Plone use. This package can be downloaded
-  from its homepage at http://codespeak.net/lxml/ .
+  from its home page at http://codespeak.net/lxml/ .
 
 * The python openid packages are required to use the included OpenID support.
   They can be downloaded from the OpenID enabled site at
