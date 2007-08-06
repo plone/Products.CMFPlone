@@ -31,11 +31,11 @@
             </span>
         </span>
 
-        <span class="state-expired"
-              tal:condition="view/isExpired">
+        <tal:expired tal:condition="view/isExpired">
             &mdash;
-            <tal:expired i18n:translate="time_expired">expired</tal:expired>
-        </span>
+            <span class="state-expired"
+                  i18n:translate="time_expired">expired</span>
+        </tal:expired>
 
         <span id="category"
               tal:define="categories context/Subject|nothing"
