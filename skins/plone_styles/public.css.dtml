@@ -1016,8 +1016,7 @@ textarea.proportional {
     background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-#content a[href ^="&dtml-portal_url;"],
-#content a[href ^="<dtml-let url="portal_url()"><dtml-var "url.replace('http', 'https')"></dtml-let>"] {
+#content a[href ^="&dtml-portal_url;"] {
     background: none;
     padding: 0;
 }
