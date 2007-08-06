@@ -22,7 +22,7 @@
                 gtool context/portal_groups;
                 search_results python:test(not site_properties.many_groups, search_view.searchGroups(), searchstring and search_view.searchGroups(id=searchstring) or None);
                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;">
-    <div id="content" class="documentEditable"
+    <div class="documentEditable"
          tal:condition="python:checkPermission('Manage Groups', here)">
 
         <ul class="contentViews">
@@ -47,14 +47,14 @@
           &nbsp;
         </div>
 
-        <div class="documentContent" id="region-content">
+        <div class="documentContent">
             <a name="documentContent"></a>
 
             <div metal:use-macro="here/global_statusmessage/macros/portal_message">
                 Portal status message
             </div>
 
-            <div class="configlet">
+            <div id="content">
                 <h1 class="documentFirstHeading"
                     i18n:translate="heading_groups_overview">Groups Overview</h1>
 
@@ -233,26 +233,6 @@
                                />
                     </tal:block>
                 </form>
-
-                <h1 class="documentFirstHeading"
-                    i18n:translate="heading_roles_management">Roles Management</h1>
-
-                <p i18n:translate="description_roles_management"
-                   class="discreet">
-                    Roles are collections of permissions. The most common role is
-                    the Member role, which is any member of the portal. You can
-                    define additional roles, but you normally only do that when you
-                    need to create a new discrete unit of permissions that you can
-                    combine to make up a Group.
-                </p>
-
-                <p i18n:translate="description_roles_zmi"
-                   class="discreet">
-                    Currently, if you want to add a new role, you must use the
-                    Zope Management Interface, as adding roles is considered a
-                    development task.
-                </p>
-
             </div>
         </div>
     </div>

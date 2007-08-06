@@ -27,7 +27,7 @@
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
     </tal:conditional>
 
-      <div id="content" class="documentEditable">
+      <div class="documentEditable">
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
       <li>
@@ -59,7 +59,7 @@
       </div>
 
       <!-- When no group is specified, this gets used as the add group page page -->
-      <div class="configlet" tal:condition="not:group | nothing">
+      <div id="content" tal:condition="not:group | nothing">
         <metal:block metal:use-macro="template/macros/props">
           <metal:title metal:fill-slot="title">
         <h1 class="documentFirstHeading"

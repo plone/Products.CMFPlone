@@ -32,7 +32,7 @@
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
     </tal:conditional>
 
-    <div id="content" class="documentEditable">
+    <div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -57,7 +57,7 @@
       &nbsp;
     </div>
 
-    <div id="region-content" class="documentContent">
+    <div id="content" class="documentContent">
 
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
         Portal status message
