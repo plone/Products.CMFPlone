@@ -82,13 +82,6 @@ class ITextMarkupSchema(Interface):
 
 class IWikiMarkupSchema(Interface):
 
-    enable_mediawiki = Bool(title=_(u"Use Media wiki style syntax: "
-                                     "[[my link]]"),
-                            description=_(u"Use brackets rather than the "
-                                          "internationally usable default "
-                                          "(( ))."),
-                            default=False)
-
     wiki_enabled_types = Tuple(title=_(u"Choose which types will have wiki "
                                         "behavior."),
                                description=_(u"Each type chosen will have a "
