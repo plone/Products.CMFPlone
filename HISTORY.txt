@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - The wiki syntax support now supports both the [[link]] and ((link))
+      syntax variations by default. Removed the preference for selecting
+      between them, since it no longer does anything.
+
     - Adding a mini-login form to the login failure screen. This fixes
       http://dev.plone.org/plone/ticket/6776
 
