@@ -18,8 +18,8 @@ Plone 3.0 - UNRELEASED
       users can use it. Fixes http://dev.plone.org/plone/ticket/6645
       [optilude]
 
-    - Corrected broken Javascript regular expression that caused almost arbitrary 
-      stuff in the query string to cause 'searchterm'-highlighting.
+    - Corrected broken Javascript regular expression that caused almost
+      arbitrary stuff in the query string to cause 'searchterm'-highlighting.
       Thanks to Claytron for patch.
       Fixes 
       http://dev.plone.org/plone/ticket/6824
@@ -32,6 +32,14 @@ Plone 3.0 - UNRELEASED
 
     - Added i18n markup to the workflow descriptions in GenericSetup profiles.
       [hannosch]
+
+    - Remapping the "(Default)" workflow to No Workflow didn't work.
+      Fixes http://dev.plone.org/plone/ticket/6818
+      [optilude]
+
+    - Remapping to "No Workflow" resulted in an error, fixed. Thanks to
+      rsantos for the patch. Fixes http://dev.plone.org/plone/ticket/6819
+      [limi]
 
     - Author profile template was showing left/right portlets, removed these.
       [limi]
