@@ -234,27 +234,6 @@
                     </tal:block>
                 </form>
 
-                <h2 i18n:translate="heading_roles_description">About the different roles</h2>
-
-                <dl>
-                    <dt>Reader</dt>
-                    <dd>Users/groups with this role can read content.</dd>
-
-                    <dt>Editor</dt>
-                    <dd>Users/groups with this role can edit content.</dd>
-
-                    <dt>Contributor</dt>
-                    <dd>Users/groups with this role can add content.</dd>
-
-                    <dt>Reviewer</dt>
-                    <dd>Can review content and transition to approved/published states.</dd>
-
-                    <dt>Member</dt>
-                    <dd>The base-line role, every user in the site has this.</dd>
-
-                    <dt>Manager</dt>
-                    <dd>Can administer the entire site, including the Site Setup.</dd>
-                </dl>
             </div>
         </div>
     </div>
