@@ -7,9 +7,11 @@ Plone 3.0 - UNRELEASED
     - The wiki syntax support now supports both the [[link]] and ((link))
       syntax variations by default. Removed the preference for selecting
       between them, since it no longer does anything.
+      [limi]
 
     - Adding a mini-login form to the login failure screen. This fixes
       http://dev.plone.org/plone/ticket/6776
+      [limi]
 
     - Since the CSS isn't recalculated if you switch to https mid-flight,
       we need to add https version of portal_url to the blacklist to avoid
