@@ -58,13 +58,13 @@ class ISiteSchema(Interface):
                           default=False,
                           required=False)
 
-    enable_sitemap = Bool(title=_(u"Provide sitemap.xml.gz in the portal root"),
-                          description=_(u"A sitemap.xml.gz file might be "
-                              "useful for Google and lists all your content "
-                              "along with modification dates. Please note "
-                              "that generating the sitemap is an expensive "
-                              "operation which can be abused to slow down "
-                              "your site."),
+    enable_sitemap = Bool(title=_(u"Expose sitemap.xml.gz in the portal root"),
+                          description=_(u"Exposes your content as a file "
+                              "according to the sitemaps.org standard. You "
+                              "can submit this to compliant search engines "
+                              "like Google, Yahoo and Microsoft. It allows "
+                              "these search engines to more intelligently "
+                              "crawl your site."),
                           default=False,
                           required=False)
 
