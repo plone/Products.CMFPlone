@@ -101,14 +101,6 @@ h3, h4, h5, h6 {
 }
 /* End links */
 
-/* Code to work around IE's lacking support of sub-elements of the input element */
-.noborder,
-.documentEditable * .noborder {
-    border: none;
-    margin: 0;
-    background: none;
-    background-color: transparent;
-}
 /* End edit form elements */
 
 #visual-portal-wrapper {

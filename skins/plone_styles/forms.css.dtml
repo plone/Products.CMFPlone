@@ -33,6 +33,17 @@ input {
     vertical-align: middle;
     background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
 }
+
+/* Code to work around IE's lacking support of sub-elements of the input element */
+input[type=checkbox],
+.noborder,
+.documentEditable * .noborder {
+    border: none;
+    margin: 0;
+    background: none;
+    background-color: transparent;
+}
+
 #searchGadget {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
 }
