@@ -56,6 +56,22 @@ class ContextState(BrowserView):
         return self.canonical_object().absolute_url()
             
     @memoize
+    def view_url(self):
+        """URL to use for viewing
+
+        Files and Images get downloaded when they are directly
+        called, instead of with /view appended.  We want to avoid that.
+        """
+        context = aq_inner(self.context)
+        portal_properties = getToolByName(self.context, 'portal_properties')
+        site_properties = portal_properties.site_properties
+        use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
+        view_url = self.object_url()
+        if context.portal_type in use_view_action:
+            view_url = view_url + '/view'
+        return view_url
+
+    @memoize
     def view_template_id(self):
         context = aq_inner(self.context)
         browserDefault = IBrowserDefault(context, None)

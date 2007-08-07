@@ -43,6 +43,16 @@ class TestContextStateView(GlobalsTestCase):
         self.assertEquals(self.fview.canonical_object_url(), self.folder.absolute_url())
         self.assertEquals(self.dview.canonical_object_url(), self.folder.absolute_url())
         
+    def test_view_url(self):
+        self.assertEquals(self.fview.view_url(),
+                          self.folder.absolute_url())
+        self.assertEquals(self.dview.view_url(),
+                          self.folder.d1.absolute_url())
+        self.folder.invokeFactory('File', 'file1')
+        self.fileview = self.folder.file1.restrictedTraverse('@@plone_context_state')
+        self.assertEquals(self.fileview.view_url(),
+                          self.folder.file1.absolute_url() + '/view')
+                            
     def test_view_template_id(self):
         self.folder.setLayout('foo_view')
         self.assertEquals(self.fview.view_template_id(), 'foo_view')

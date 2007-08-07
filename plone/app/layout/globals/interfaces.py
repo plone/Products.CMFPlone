@@ -131,6 +131,13 @@ class IContextState(Interface):
         in its folder, in which case the folder is returned.
         """
         
+    def view_url():
+        """URL to use for viewing
+
+        Files and Images get downloaded when they are directly
+        called, instead of with /view appended.  We want to avoid that.
+        """
+
     def view_template_id():
         """The id of the view template of the context
         """
