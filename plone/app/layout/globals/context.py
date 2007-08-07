@@ -62,13 +62,14 @@ class ContextState(BrowserView):
         Files and Images get downloaded when they are directly
         called, instead of with /view appended.  We want to avoid that.
         """
-        context = aq_inner(self.context)
-        portal_properties = getToolByName(self.context, 'portal_properties')
-        site_properties = portal_properties.site_properties
-        use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
         view_url = self.object_url()
-        if context.portal_type in use_view_action:
-            view_url = view_url + '/view'
+        portal_properties = getToolByName(self.context, 'portal_properties', None)
+        if portal_properties is not None:
+            site_properties = getattr(portal_properties, 'site_properties', None)
+            if site_properties is not None:
+                use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
+                if aq_base(self.context).portal_type in use_view_action:
+                    view_url = view_url + '/view'
         return view_url
 
     @memoize
