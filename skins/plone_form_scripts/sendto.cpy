@@ -38,7 +38,7 @@ if not show:
 
 # Find the view action.
 context_state = context.restrictedTraverse("@@plone_context_state")
-url = '%s/%s' % (context.absolute_url(), context_state.view_template_id()) 
+url = context_state.view_url()
 
 variables = {'send_from_address' : REQUEST.send_from_address,
              'send_to_address'   : REQUEST.send_to_address,
