@@ -50,8 +50,6 @@ button {
     text-transform: &dtml-textTransform;;    
 }
 select {
-    color: &dtml-inputFontColor;;
-    background-color: White;
     vertical-align: top;
 }
 form {
