@@ -184,7 +184,7 @@
 
       </metal:block>
 
-      <div class="visualClear"></div>
+      <div class="visualClear"><!-- --></div>
     </div>
 <div id="kss-spinner"><img tal:attributes="src string:${portal_url}/spinner.gif" alt="" /></div>
 </body>
