@@ -16,7 +16,7 @@ ploneDnDReorder.doDown = function(e) {
     for (var i=0; i<ploneDnDReorder.rows.length; i++)
         ploneDnDReorder.rows[i].onmousemove = ploneDnDReorder.doDrag;
     ploneDnDReorder.dragging = target;
-    ploneDnDReorder.dragging._position = ploneDnDReorder.getPos(ploneDnDReorder.dragging);
+    ploneDnDReorder.dragging.parentNode._position = ploneDnDReorder.getPos(ploneDnDReorder.dragging.parentNode);
     addClassName(ploneDnDReorder.dragging, "dragging");
     return false;
 }
@@ -41,7 +41,7 @@ ploneDnDReorder.doDrag = function(e) {
     if (!target)
         return;
     if (target.id != ploneDnDReorder.dragging.id) {
-        ploneDnDReorder.swapElements(target, ploneDnDReorder.dragging);
+        ploneDnDReorder.swapElements(target, ploneDnDReorder.dragging.parentNode);
     }
     return false;
 }
@@ -98,7 +98,7 @@ ploneDnDReorder.doUp = function(e) {
 }
 
 ploneDnDReorder.updatePositionOnServer = function() {
-    var delta = ploneDnDReorder.getPos(ploneDnDReorder.dragging) - ploneDnDReorder.dragging._position;
+    var delta = ploneDnDReorder.getPos(ploneDnDReorder.dragging.parentNode) - ploneDnDReorder.dragging.parentNode._position;
 
     if (delta == 0) // nothing changed
         return;
@@ -106,25 +106,7 @@ ploneDnDReorder.updatePositionOnServer = function() {
     req.open("POST", "folder_moveitem", true);
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     // Strip off id prefix
-    var item_id = ploneDnDReorder.dragging.id.substr('folder-contents-item-'.length);
+    var item_id = ploneDnDReorder.dragging.parentNode.id.substr('folder-contents-item-'.length);
     req.send("item_id="+item_id+"&delta:int="+delta);
 }
 
-ploneDnDReorder.initializeDragDrop = function() {
-    ploneDnDReorder.table = cssQuery("table#sortable")[0];
-    if (!ploneDnDReorder.table)
-        return;
-    ploneDnDReorder.rows = cssQuery("table#sortable > tr," +
-                                    "table#sortable > tbody > tr");
-    var targets = cssQuery("table#sortable > tr > td," +
-                           "table#sortable > tbody > tr > td");
-    for (var i=0; i<targets.length; i++) {
-        if (hasClassName(targets[i], 'notDraggable'))
-            continue;
-        targets[i].onmousedown=ploneDnDReorder.doDown;
-        targets[i].onmouseup=ploneDnDReorder.doUp;
-        addClassName(targets[i], "draggingHook");
-    }
-}
-
-registerPloneFunction(ploneDnDReorder.initializeDragDrop);
