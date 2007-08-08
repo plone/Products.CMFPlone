@@ -55,8 +55,8 @@ function createTableOfContents() {
         } 
     }
 
-    var content = getContentArea();
-    if (!content) {
+    var content = cssQuery("#content");
+    if (content.length != 1) {
         return;
     }
 
@@ -95,7 +95,7 @@ function createTableOfContents() {
         i++;
     }
 
-    walkHeaders(content, func);
+    walkHeaders(content[0], func);
     if (ols.length > 0) {
         toc.style.display = "block";
         dest.appendChild(ols[0]);
