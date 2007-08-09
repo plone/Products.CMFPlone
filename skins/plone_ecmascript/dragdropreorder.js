@@ -15,9 +15,12 @@ ploneDnDReorder.doDown = function(e) {
         return;
     for (var i=0; i<ploneDnDReorder.rows.length; i++)
         ploneDnDReorder.rows[i].onmousemove = ploneDnDReorder.doDrag;
-    ploneDnDReorder.dragging = target;
-    ploneDnDReorder.dragging.parentNode._position = ploneDnDReorder.getPos(ploneDnDReorder.dragging.parentNode);
-    addClassName(ploneDnDReorder.dragging, "dragging");
+
+
+    ploneDnDReorder.dragging = target.parentNode;
+    var dragging = ploneDnDReorder.dragging;
+    dragging._position = ploneDnDReorder.getPos(dragging);
+    addClassName(dragging, "dragging");
     return false;
 }
 
@@ -35,13 +38,16 @@ ploneDnDReorder.getPos = function(node) {
 
 ploneDnDReorder.doDrag = function(e) {
     if (!e) var e = window.event; // IE compatibility
-    if (!ploneDnDReorder.dragging)
+
+    var dragging = ploneDnDReorder.dragging;
+    if (!dragging)
         return;
-    var target = this;//findContainer(e.target, ploneDnDReorder.isDraggable);
+    var target = this;
     if (!target)
         return;
-    if (target.id != ploneDnDReorder.dragging.id) {
-        ploneDnDReorder.swapElements(target, ploneDnDReorder.dragging.parentNode);
+
+    if (target.id != dragging.id) {
+        ploneDnDReorder.swapElements(target, dragging);
     }
     return false;
 }
@@ -83,22 +89,26 @@ ploneDnDReorder.swapElements = function(child1, child2) {
 
 ploneDnDReorder.doUp = function(e) {
     if (!e) var e = window.event; // IE compatibility
-    if (!ploneDnDReorder.dragging)
+
+    var dragging = ploneDnDReorder.dragging;
+    if (!dragging)
         return;
-    removeClassName(ploneDnDReorder.dragging, "dragging");
+
+    removeClassName(dragging, "dragging");
     ploneDnDReorder.updatePositionOnServer();
-    ploneDnDReorder.dragging._position = null;
+    dragging._position = null;
     try {
-        delete ploneDnDReorder.dragging._position;
+        delete dragging._position;
     } catch(e) {}
-    ploneDnDReorder.dragging = null;
+    dragging = null;
     for (var i=0; i<ploneDnDReorder.rows.length; i++)
         ploneDnDReorder.rows[i].onmousemove = null;
     return false;
 }
 
 ploneDnDReorder.updatePositionOnServer = function() {
-    var delta = ploneDnDReorder.getPos(ploneDnDReorder.dragging.parentNode) - ploneDnDReorder.dragging.parentNode._position;
+    var dragging = ploneDnDReorder.dragging;
+    var delta = ploneDnDReorder.getPos(dragging) - dragging._position;
 
     if (delta == 0) // nothing changed
         return;
@@ -106,7 +116,7 @@ ploneDnDReorder.updatePositionOnServer = function() {
     req.open("POST", "folder_moveitem", true);
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     // Strip off id prefix
-    var item_id = ploneDnDReorder.dragging.parentNode.id.substr('folder-contents-item-'.length);
+    var item_id = dragging.id.substr('folder-contents-item-'.length);
     req.send("item_id="+item_id+"&delta:int="+delta);
 }
 
