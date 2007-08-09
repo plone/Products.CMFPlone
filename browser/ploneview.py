@@ -40,7 +40,7 @@ _marker = []
 import zope.deferredimport
 zope.deferredimport.deprecated(
     "It has been replaced by plone.memoize.instance.memoize. This alias will " 
-    "be gone in Plone 3.5.",
+    "be removed in Plone 3.5.",
     cache_decorator = 'plone.memoize.instance:memoize',
     )
 
