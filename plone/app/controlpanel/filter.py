@@ -258,7 +258,12 @@ class FilterControlPanel(ControlPanelForm):
     form_fields['stripped_combinations'].custom_widget = combination_widget
 
     label = _("HTML Filter settings")
-    description = _("Plone filters HTML tags that are considered security \
-risks. Be aware of the implications before making changes below.")
+    description = _("""Plone filters HTML tags that are considered security risks. Be aware
+of the implications before making changes below. By default only tags
+defined in xhtml are permitted. In particular, to permit 'embed' as a
+tag you must both remove it from 'nasty tags' and add it to 'custom
+tags'. Although the form will update immediately to show any changes
+you make, your changes are not saved until you press the 'Save' button
+at the foot of the page.""")
     form_name = _("HTML Filter settings")
 
