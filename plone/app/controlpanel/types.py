@@ -15,8 +15,9 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 
-def format_description(text):
+def format_description(text, request=None):
     # We expect the workflow to be a text of '- ' divided bullet points.
+    text = translate(text.strip(), domain='plone', context=request)
     return [s.strip() for s in text.split('- ') if s]
 
 
@@ -196,11 +197,14 @@ type_id=%s' % (context.absolute_url() , type_id))
                 wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
             else:
                 default_workflow = self.default_workflow(False)
+                default_title = translate(default_workflow.title,
+                                          domain='plone',
+                                          context=self.request)
                 return dict(id='(Default)',
                         title=_(u"label_default_workflow_title",
                                 default=u"Default workflow (${title})",
-                                mapping=dict(title=pmf(default_workflow.title))),
-                        description=format_description(default_workflow.description))
+                                mapping=dict(title=default_title)),
+                        description=format_description(default_workflow.description, self.request))
         except IndexError:
             return dict(id='[none]',
                     title=_(u"label_no_workflow",
@@ -211,21 +215,34 @@ type_id=%s' % (context.absolute_url() , type_id))
                                 u"items of this type is determined by the "
                                 u"folder they are in.")])
         wf = getattr(portal_workflow, wf_id)
-        return dict(id=wf.id, title=wf.title, description=format_description(wf.description))
+        title = translate(wf.title,
+                          domain='plone',
+                          context=self.request)        
+        return dict(id=wf.id, title=title, description=format_description(wf.description, self.request))
 
     def available_workflows(self):
         vocab_factory = getUtility(IVocabularyFactory,
                                    name="plone.app.vocabularies.Workflows")
-        workflows = [dict(id=v.value, title=v.token) 
-                        for v in vocab_factory(self.context)]
+        workflows = []
+        for v in vocab_factory(self.context):
+            if v.title:
+                title = translate(v.title, context=self.request)
+            else:
+                title = translate(v.token, domain='plone', context=self.request)
+            workflows.append(dict(id=v.value, title=title) )
+        def _key(v):
+            return v['title']
+        workflows.sort(key=_key)
         if self.type_id:
             # Only offer a default workflow option on a real type
             default_workflow = self.default_workflow(False)
+            default_title = translate(default_workflow.title,
+                                      domain='plone', context=self.request)
             workflows.insert(0, dict(id='(Default)',
                     title=_(u"label_default_workflow_title",
                             default=u"Default workflow (${title})",
-                            mapping=dict(title=pmf(default_workflow.title))),
-                    description=format_description(default_workflow.description)))
+                            mapping=dict(title=default_title)),
+                    description=format_description(default_workflow.description, self.request)))
 
         return workflows
 
@@ -282,7 +299,7 @@ type_id=%s' % (context.absolute_url() , type_id))
                             u"folder they are in.")]
             new_workflow = self.real_workflow(self.new_workflow())
             wf = getattr(portal_workflow, new_workflow)
-            return format_description(wf.description)
+            return format_description(wf.description, self.request)
 
         return None
 
@@ -293,8 +310,11 @@ type_id=%s' % (context.absolute_url() , type_id))
             new_workflow = self.real_workflow(self.new_workflow())
             portal_workflow = getToolByName(self.context, 'portal_workflow')
             wf = getattr(portal_workflow, new_workflow)
-            return [dict(id=s.id, title=s.title) for s in \
-                    wf.states.objectValues()]
+            states = []
+            for s in wf.states.objectValues():
+                title = translate(s.title, domain='plone', context=self.request)
+                states.append(dict(id=s.id, title=title))
+            return states
         else:
             return []
 
@@ -318,11 +338,14 @@ type_id=%s' % (context.absolute_url() , type_id))
             new_states = set([s.id for s in new_wf.states.objectValues()])
             default_state = new_wf.initial_state
 
-            return [dict(old_id = old.id,
-                         old_title = old.title,
+            states = []
+            for old in old_wf.states.objectValues():
+                title = translate(old.title, domain='plone', context=self.request)
+                states.append(
+                    dict(old_id = old.id,
+                         old_title = title,
                          suggested_id = (old.id in new_states and \
-                                         old.id or default_state))
-                    for old in old_wf.states.objectValues()]
-
+                                         old.id or default_state)))
+            return states
         else:
             return []

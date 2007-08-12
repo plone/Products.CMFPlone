@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - Unreleased
 
+    - Internationalized the workflow part of the types control panel. All
+      descriptions, states and titles should be translated now.
+      [hannosch]
+
     - Fixed order of types in the dropdown. We sort by translated title now.
       [hannosch]
 

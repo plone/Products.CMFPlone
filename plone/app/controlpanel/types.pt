@@ -125,13 +125,15 @@
 
                 <div class="field">
                     <label i18n:translate="types_controlpanel_current_workflow">Current workflow:</label>
-                    <span tal:content="current_wf/title">Community Workflow</span>
+                    <span tal:content="current_wf/title"
+                          i18n:translate="">Community Workflow</span>
                 </div>
 
                 <ul class="discreet"
                     tal:repeat="desc current_wf/description"
                     tal:condition="current_wf/description">
-                    <li tal:content="desc">Workflow description</li>
+                    <li tal:content="desc"
+                        i18n:translate>Workflow description</li>
                 </ul>
 
                 <div class="field">
@@ -142,7 +144,8 @@
                         tal:define="selected_wf view/new_workflow">
                         
                         <tal:wfs repeat="wf view/available_workflows">
-                            <option tal:content="wf/title"
+                            <option i18n:translate=""
+                                    tal:content="wf/title"
                                     tal:attributes="selected python:wf['id'] == selected_wf and 'selected' or None;
                                                     value wf/id">Intranet Workflow
                             </option>
