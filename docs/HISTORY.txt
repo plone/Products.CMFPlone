@@ -4,6 +4,11 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - Unreleased
 
+    - When we remap the default workflow change the default workflow in
+      the workflow tool as well. This fixes part of
+      http://dev.plone.org/plone/ticket/6843.
+      [wichert]
+
     - Remapping the "(Default)" workflow to No Workflow didn't work.
       Fixes http://dev.plone.org/plone/ticket/6818.
       [optilude]
