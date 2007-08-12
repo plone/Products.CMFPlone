@@ -6,6 +6,7 @@ from OFS.SimpleItem import SimpleItem
 from OFS.PropertyManager import PropertyManager
 
 from zope.interface import implements
+from zope.i18n import translate
 
 from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation
@@ -99,10 +100,10 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                 if category=='' or g.split('|')[0]==category]
 
     security.declarePublic( 'enumConfiglets' )
-    def enumConfiglets(self,group=None):
-        portal=getToolByName(self,'portal_url').getPortalObject()
-        mtool = getToolByName(self,'portal_membership')
-        context=createExprContext(self,portal,self)
+    def enumConfiglets(self, group=None):
+        portal=getToolByName(self, 'portal_url').getPortalObject()
+        mtool = getToolByName(self, 'portal_membership')
+        context=createExprContext(self, portal, self)
         res = []
         for a in self.listActions():
             verified = 0
@@ -111,7 +112,15 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                     verified = 1
             if verified and a.category==group and a.testCondition(context):
                 res.append(a.getAction(context))
-        res.sort(lambda a,b:cmp(a['title'],b['title']))
+        # Translate the title for sorting
+        if getattr(self, 'REQUEST', None) is not None:
+            for a in res:
+                a['title'] = translate(a['title'],
+                                       domain='plone',
+                                       context=self.REQUEST)
+        def _title(v):
+            return v['title']
+        res.sort(key=_title)
         return res
 
     security.declareProtected( ManagePortal, 'unregisterConfiglet' )

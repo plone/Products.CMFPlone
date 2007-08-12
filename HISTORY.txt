@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Sort the configlets in the control panel by their translated title
+      instead of their English title.
+      [hannosch]
+
     - Fixed erroneous message when publishing multiple items and a subfolder
       with no items was present. Also synced status message with the
       content_status_modify script, so only one message is shown.
