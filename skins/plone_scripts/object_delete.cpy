@@ -10,6 +10,7 @@
 ##
 
 from AccessControl import Unauthorized
+from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -18,17 +19,18 @@ if REQUEST.get('REQUEST_METHOD', 'GET').upper() == 'GET':
     raise Unauthorized, 'This method can not be accessed using a GET request'
 
 parent = context.aq_inner.aq_parent
+title = safe_unicode(context.title_or_id())
 
 lock_info = context.restrictedTraverse('@@plone_lock_info')
 if lock_info.is_locked():
     message = _(u'${title} is locked and cannot be deleted.',
-            mapping={u'title' : context.title_or_id()})
+            mapping={u'title' : title})
     context.plone_utils.addPortalMessage(message, type='error')
     return state.set(status = 'failure')
 else:
     parent.manage_delObjects(context.getId())
     message = _(u'${title} has been deleted.',
-                mapping={u'title' : context.title_or_id()})
+                mapping={u'title' : title})
     transaction_note('Deleted %s' % context.absolute_url())
     context.plone_utils.addPortalMessage(message)
     return state.set(status = 'success')

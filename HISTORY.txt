@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Fixed a few status messages to work with content item titles with
+      non-ascii characters in them.
+      [hannosch]
+
     - Plone 3.0 has an ID "content" that only includes the actual content,
       not everything in the content well. Adjusted the getContentArea()
       method in register_function.js to prefer this if it's present.
