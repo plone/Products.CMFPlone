@@ -1,6 +1,5 @@
 from zope.component import getUtility
 
-from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
 
 from plone.portlets.interfaces import IPortletManager
@@ -16,11 +15,10 @@ class DashboardView(BrowserView):
     
     @memoize
     def empty(self):
-        context = aq_inner(self.context)
         dashboards = [getUtility(IPortletManager, name=name) for name in
                         ['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4']]
                         
-        portal_membership = getToolByName(context, 'portal_membership')
+        portal_membership = getToolByName(self.context, 'portal_membership')
         userid = portal_membership.getAuthenticatedMember().getId()
                         
         num_portlets = 0

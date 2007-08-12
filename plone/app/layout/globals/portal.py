@@ -24,7 +24,7 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def portal(self):
-        return getToolByName(aq_inner(self.context), 'portal_url').getPortalObject()
+        return getToolByName(self.context, 'portal_url').getPortalObject()
     
     @memoize_contextless
     def portal_title(self):
@@ -45,7 +45,7 @@ class PortalState(BrowserView):
     
     @memoize_contextless
     def default_language(self):
-        site_properties = getToolByName(aq_inner(self.context), "portal_properties").site_properties
+        site_properties = getToolByName(self.context, "portal_properties").site_properties
         return site_properties.getProperty('default_language', None)
 
     @memoize
@@ -92,18 +92,18 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def member(self):
-        tool = getToolByName(aq_inner(self.context), "portal_membership")
+        tool = getToolByName(self.context, "portal_membership")
         return tool.getAuthenticatedMember()
 
     @memoize_contextless
     def anonymous(self):
-        tool = getToolByName(aq_inner(self.context), "portal_membership")
+        tool = getToolByName(self.context, "portal_membership")
         return bool(tool.isAnonymousUser())
 
     @memoize_contextless
     def friendly_types(self):
-        site_properties = getToolByName(aq_inner(self.context), "portal_properties").site_properties
+        site_properties = getToolByName(self.context, "portal_properties").site_properties
         not_searched = site_properties.getProperty('types_not_searched', [])
 
-        types = getToolByName(aq_inner(self.context), "portal_types").listContentTypes()
+        types = getToolByName(self.context, "portal_types").listContentTypes()
         return [t for t in types if t not in not_searched]

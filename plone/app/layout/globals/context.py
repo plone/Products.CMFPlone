@@ -123,7 +123,7 @@ class ContextState(BrowserView):
         
     @memoize
     def workflow_state(self):
-        tool = getToolByName(aq_inner(self.context), "portal_workflow")
+        tool = getToolByName(self.context, "portal_workflow")
         return tool.getInfoFor(aq_inner(self.context), 'review_state', None)
     
     @memoize
@@ -173,7 +173,7 @@ class ContextState(BrowserView):
     
     @memoize
     def is_editable(self):
-        tool = getToolByName(aq_inner(self.context), "portal_membership")
+        tool = getToolByName(self.context, "portal_membership")
         return bool(tool.checkPermission('Modify portal content', aq_inner(self.context)))
     
     @memoize
@@ -190,7 +190,7 @@ class ContextState(BrowserView):
 
     @memoize
     def actions(self):
-        tool = getToolByName(aq_inner(self.context), "portal_actions")
+        tool = getToolByName(self.context, "portal_actions")
         return tool.listFilteredActionsFor(aq_inner(self.context),
                                            ignore_providers=BLACKLISTED_PROVIDERS,
                                            ignore_categories=BLACKLISTED_CATEGORIES)

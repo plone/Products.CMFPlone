@@ -20,7 +20,7 @@ class CommentsViewlet(ViewletBase):
                                             name=u'plone_portal_state')
         self.portal_url = self.portal_state.portal_url()
         self.portal_discussion = getToolByName(context, 'portal_discussion', None)
-        self.portal_membership = getToolByName(self.context, 'portal_membership', None)
+        self.portal_membership = getToolByName(context, 'portal_membership', None)
 
     def can_reply(self):
         return getSecurityManager().checkPermission('Reply to item', aq_inner(self.context))

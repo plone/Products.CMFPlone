@@ -1,4 +1,3 @@
-from Acquisition import aq_inner
 from Products.Five import BrowserView
 from zope.publisher.interfaces import NotFound
 from Products.CMFCore.utils import getToolByName
@@ -23,7 +22,7 @@ class SiteMapView(BrowserView):
         
         """
         # create the sitemap
-        catalog = getToolByName(aq_inner(self.context), "portal_catalog")
+        catalog = getToolByName(self.context, "portal_catalog")
         for item in catalog.searchResults({'Language':'all'}):
             yield {
                 'url': item.getURL(),
@@ -45,7 +44,7 @@ class SiteMapView(BrowserView):
     def __call__(self):
         """render the template and compress it"""
         # check if we are allowed to be shown"
-        sp = getToolByName(aq_inner(self.context), 'portal_properties').site_properties
+        sp = getToolByName(self.context, 'portal_properties').site_properties
         if not sp.enable_sitemap:
             raise NotFound(self.context, "sitemap.xml.gz", self.request)
 

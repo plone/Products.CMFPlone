@@ -98,7 +98,7 @@ class SearchBoxViewlet(ViewletBase):
 
         self.portal_url = portal_state.portal_url()
 
-        props = getToolByName(aq_inner(self.context), 'portal_properties')
+        props = getToolByName(self.context, 'portal_properties')
         livesearch = props.site_properties.getProperty('enable_livesearch', False)
         if livesearch:
             self.search_input_id = "searchGadget"
@@ -159,7 +159,7 @@ class PersonalBarViewlet(ViewletBase):
 
         self.user_actions = context_state.actions().get('user', None)
 
-        plone_utils = getToolByName(aq_inner(self.context), 'plone_utils')
+        plone_utils = getToolByName(self.context, 'plone_utils')
         self.getIconFor = plone_utils.getIconFor
 
         self.anonymous = portal_state.anonymous()
