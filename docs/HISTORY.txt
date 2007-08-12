@@ -4,6 +4,11 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - Unreleased
 
+    - The UI allowed to disable country-specific language variants even if
+      one was still active as the default language. You get a nice error
+      message now. This closes http://dev.plone.org/plone/ticket/6862.
+      [hannosch]
+
     - Use checkboxes instead of a evil MultiSelect for the wiki settings.
       This closes http://dev.plone.org/plone/ticket/6872 for real.
       [hannosch]

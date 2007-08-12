@@ -15,6 +15,7 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.statusmessages.interfaces import IStatusMessage
 
 from plone.app.controlpanel.form import ControlPanelForm
 from plone.app.controlpanel.widgets import LanguageTableWidget
@@ -85,8 +86,27 @@ class LanguageControlPanelAdapter(SchemaAdapterBase):
     supported_langs = \
         ProxyFieldProperty(ILanguageSchema['supported_langs'])
 
-    use_combined_language_codes = \
-        ProxyFieldProperty(ILanguageSchema['use_combined_language_codes'])
+    def get_use_combined_language_codes(self):
+        return aq_inner(self.context).use_combined_language_codes
+
+    def set_use_combined_language_codes(self, value):
+        context = aq_inner(self.context)
+        # We are disabling the combined codes, but still have one selected
+        # as the default.
+        default = context.getDefaultLanguage()
+        if len(default.split('-')) > 1:
+            # XXX This should be done in some kind of validate method instead,
+            # but I have no time to figure out that part of formlib right now
+            request = context.REQUEST
+            message = _(u"You cannot disable country-specific language "
+                         "variants, please choose a different default "
+                         "language first.")
+            IStatusMessage(request).addStatusMessage(message, type='error')
+        else:
+            context.use_combined_language_codes = value
+
+    use_combined_language_codes = property(get_use_combined_language_codes,
+                                           set_use_combined_language_codes)
 
 
 class LanguageControlPanel(ControlPanelForm):
