@@ -3,7 +3,6 @@ from plone.fieldsets import FormFieldsets
 from zope.interface import Interface
 from zope.component import adapts
 from zope.interface import implements
-from zope.schema import Bool
 from zope.schema import Choice
 from zope.schema import Tuple
 
@@ -14,8 +13,9 @@ from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
-from form import ControlPanelForm
-from widgets import AllowedTypesWidget
+from plone.app.controlpanel.form import ControlPanelForm
+from plone.app.controlpanel.widgets import AllowedTypesWidget
+from plone.app.controlpanel.widgets import MultiCheckBoxVocabularyWidget
 
 # For Archetypes markup
 
@@ -190,6 +190,7 @@ class MarkupControlPanel(ControlPanelForm):
 
     form_fields = FormFieldsets(textset, wikiset)
     form_fields['allowed_types'].custom_widget = AllowedTypesWidget
+    form_fields['wiki_enabled_types'].custom_widget = MultiCheckBoxVocabularyWidget
 
     label = _("Markup settings")
     description = _("Lets you control what markup is available when editing "

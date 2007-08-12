@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - Unreleased
 
+    - Use checkboxes instead of a evil MultiSelect for the wiki settings.
+      This closes http://dev.plone.org/plone/ticket/6872 for real.
+      [hannosch]
+
     - Internationalized the workflow part of the types control panel. All
       descriptions, states and titles should be translated now.
       [hannosch]
