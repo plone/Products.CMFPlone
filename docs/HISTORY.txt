@@ -4,6 +4,11 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - Unreleased
 
+    - Handle changing the workflow from a type to the default workflow if the
+      default workflow is the same as the previous workflow correctly. This
+      fixes part of http://dev.plone.org/plone/ticket/6843.
+      [wichert]
+
     - When we remap the default workflow change the default workflow in
       the workflow tool as well. This fixes part of
       http://dev.plone.org/plone/ticket/6843.

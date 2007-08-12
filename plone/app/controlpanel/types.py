@@ -93,7 +93,6 @@ class TypesControlPanel(BrowserView):
                                                         blacklisted)
 
             # Update workflow
-
             if self.have_new_workflow() and \
                form.get('form.workflow.submitted', False) and \
                save_button:
@@ -123,8 +122,14 @@ class TypesControlPanel(BrowserView):
                                    state_map=state_map)
                 else:
                     portal_workflow = getToolByName(context, 'portal_workflow')
-                    portal_workflow.setChainForPortalTypes((type_id,), self.new_workflow())
-
+                    if self.new_workflow()=='(Default)':
+                        # The WorkflowTool API can not handle this sanely
+                        cbt=portal_workflow._chains_by_type
+                        if cbt.has_key(type_id):
+                            del cbt[type_id]
+                    else:
+                        portal_workflow.setChainForPortalTypes((type_id,),
+                                self.new_workflow())
 
                 self.request.response.redirect('%s/@@types-controlpanel?\
 type_id=%s' % (context.absolute_url() , type_id))
@@ -269,6 +274,7 @@ type_id=%s' % (context.absolute_url() , type_id))
             return format_description(wf.description)
 
         return None
+
 
     def new_workflow_available_states(self):
         current_workflow = self.current_workflow()['id']
