@@ -1,5 +1,6 @@
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.memoize.view import memoize
@@ -63,6 +64,21 @@ class PresentationView(BrowserView):
         body = ('</%s>\n' % tag).join(body)
 
         return body
+
+    @memoize
+    def creator(self):
+        return self.context.Creator()
+
+    @memoize
+    def author(self):
+        membership = getToolByName(self.context, "portal_membership")
+        return membership.getMemberInfo(self.creator())
+
+    @memoize
+    def authorname(self):
+        author = self.author()
+        return author and author['fullname'] or self.creator()
+
 
 class PresentationViewlet(ViewletBase):
     def update(self):

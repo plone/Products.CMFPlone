@@ -69,7 +69,7 @@
         <div class="slide">
             <h1 tal:content="context/Title" />
             <h2 tal:content="context/Description" />
-            <h3 tal:content="context/Creator" />
+            <h3 tal:content="view/authorname" />
         </div>
         <tal:block content="structure view/content" /> 
     </tal:presentation>

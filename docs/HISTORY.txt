@@ -2,8 +2,9 @@ Changelog for plone.app.layout
 
     (name of developer listed in brackets)
 
-plone.app.layout - 0.1 Unreleased
+plone.app.layout - 1.0 Unreleased
 
-    - Initial package structure.
-      [zopeskel]
+    - Show the authors full name in presentation view. This fixes
+      http://dev.plone.org/plone/ticket/6810
+      [wichert]
 
