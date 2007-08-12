@@ -1,4 +1,5 @@
 <dl class="portlet portletCalendar"
+    i18n:domain="plone"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
                 query_string python:request.get('orig_query', None);
                 query_string python:(query_string is None and request.get('QUERY_STRING', None)) or query_string;

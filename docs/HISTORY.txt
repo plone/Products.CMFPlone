@@ -4,6 +4,11 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Verified translation of month names on the calendar portlet. Found a bit
+      of missing i18n markup in the process. This closes
+      http://dev.plone.org/plone/ticket/6880.
+      [hannosch]
+
     - Wrapped cached render results with a xhtml_compress method taken from
       plone.memoize. This allows you to plug in whitespace removal libraries.
       [hannosch]
