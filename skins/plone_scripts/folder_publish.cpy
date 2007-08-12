@@ -50,14 +50,16 @@ for o in objs:
             except Exception, e:
                 # skip this object but continue with sub-objects.
                 failed[obj_path]=e
-            
+
             subobject_paths = ["%s/%s" % ('/'.join(o.getPhysicalPath()), id) for id in o.objectIds()]
-            o.folder_publish( workflow_action, 
-                              subobject_paths, 
-                              comment=comment, 
-                              include_children=include_children, 
-                              effective_date=effective_date,
-                              expiration_date=expiration_date )
+            # Only call folder_publish on non empty folders
+            if subobject_paths:
+                o.folder_publish( workflow_action, 
+                                  subobject_paths, 
+                                  comment=comment, 
+                                  include_children=include_children, 
+                                  effective_date=effective_date,
+                                  expiration_date=expiration_date )
         else:
             o.content_status_modify( workflow_action,
                                      comment,
@@ -73,5 +75,5 @@ for o in objs:
 transaction_note( str(paths) + ' transitioned ' + workflow_action )
 
 # It is necessary to set the context to override context from content_status_modify
-context.plone_utils.addPortalMessage(_(u'Content has been changed.'))
+context.plone_utils.addPortalMessage(_(u'Item state changed.'))
 return state.set(context=context)

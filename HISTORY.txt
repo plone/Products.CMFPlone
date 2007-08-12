@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Fixed erroneous message when publishing multiple items and a subfolder
+      with no items was present. Also synced status message with the
+      content_status_modify script, so only one message is shown.
+      This closes http://dev.plone.org/plone/ticket/6553.
+      [hannosch]
+
     - Fixed a few status messages to work with content item titles with
       non-ascii characters in them.
       [hannosch]
