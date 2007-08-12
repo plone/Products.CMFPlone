@@ -4,6 +4,9 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - Unreleased
 
+    - Fixed order of types in the dropdown. We sort by translated title now.
+      [hannosch]
+
     - When updating the default workflow do not reset the workflow for types
       using the default workflow to the new default workflow. This fixes
       the last part of http://dev.plone.org/plone/ticket/6843.

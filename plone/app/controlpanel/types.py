@@ -2,6 +2,7 @@ from plone.app.workflow.remap import remap_workflow
 from plone.memoize.instance import memoize
 
 from zope.component import getUtility
+from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 
 from Acquisition import aq_inner
@@ -150,8 +151,17 @@ type_id=%s' % (context.absolute_url() , type_id))
     def selectable_types(self):
         vocab_factory = getUtility(IVocabularyFactory,
                                    name="plone.app.vocabularies.ReallyUserFriendlyTypes")
-        return [dict(id=v.value, title=v.token) for v in \
-                vocab_factory(self.context)]
+        types = []
+        for v in vocab_factory(self.context):
+            if v.title:
+                title = translate(v.title, context=self.request)
+            else:
+                title = translate(v.token, domain='plone', context=self.request)
+            types.append(dict(id=v.value, title=title) )
+        def _key(v):
+            return v['title']
+        types.sort(key=_key)
+        return types
 
     def selected_type_title(self):
         return self.fti.Title()
