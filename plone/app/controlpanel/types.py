@@ -117,6 +117,7 @@ class TypesControlPanel(BrowserView):
                         nondefault = [info[0] for info in wt.listChainOverrides()]
                         type_ids = [type for type in tt.listContentTypes() if type not in nondefault]
                         wt.setDefaultChain(','.join(chain))
+                        chain='(Default)'
 
                     remap_workflow(context, type_ids=type_ids, chain=chain,
                                    state_map=state_map)
