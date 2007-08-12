@@ -135,6 +135,12 @@ http://plone.org/upgrade
 
 * Member folders are no longer enabled by default.
 
+* In order to use the automatic indexing of Word and PDF files you will
+  need to install some external tools: indexing of MS Word files requires
+  the wvware product to be installed. For PDF files either the pdftotext
+  of xpdf suite is required.
+
+
 Important notes for developers
 ------------------------------
 
