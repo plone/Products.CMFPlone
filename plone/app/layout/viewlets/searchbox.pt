@@ -10,7 +10,7 @@
         <div class="LSBox">
         <input name="SearchableText"
                type="text"
-               size="15"
+               size="18"
                value=""
                title="Search Site"
                accesskey="4"

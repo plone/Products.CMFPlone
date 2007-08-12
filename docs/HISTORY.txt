@@ -4,6 +4,10 @@ Changelog for plone.app.layout
 
 plone.app.layout - 1.0 Unreleased
 
+    - Made the search box a bit wider, so the entire default text is shown
+      in languages with a rather long term.
+      [hannosch]
+
     - Show the authors full name in presentation view. This fixes
       http://dev.plone.org/plone/ticket/6810
       [wichert]
