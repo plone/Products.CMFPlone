@@ -1,8 +1,6 @@
 from Acquisition import aq_inner
 from Products.Five import BrowserView
-from zope.component import getUtility
 from zope.publisher.interfaces import NotFound
-from Products.CMFCore.interfaces import ICatalogTool
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 

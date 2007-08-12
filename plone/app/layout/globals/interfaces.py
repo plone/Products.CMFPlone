@@ -1,4 +1,4 @@
-from zope.interface import Interface, Attribute
+from zope.interface import Interface
 
 class IInterfaceInformation(Interface):
     """A view that gives information about interfaces provided by its context

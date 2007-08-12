@@ -1,4 +1,3 @@
-from zope.interface import implements
 from zope.component import getMultiAdapter
 
 from plone.app.layout.viewlets import ViewletBase
@@ -7,7 +6,6 @@ from plone.memoize import view, instance
 
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.CMFCore.utils import getToolByName
 from Acquisition import aq_inner, aq_parent
 
 

@@ -5,7 +5,7 @@ from zope.viewlet.interfaces import IViewlet
 from plone.app.layout.globals.interfaces import IViewView 
 
 from AccessControl import getSecurityManager
-from Acquisition import aq_base, aq_inner, aq_parent
+from Acquisition import aq_base, aq_inner
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile

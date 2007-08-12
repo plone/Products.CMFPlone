@@ -1,5 +1,3 @@
-from zope.component import getMultiAdapter
-
 from Products.Five.browser import BrowserView
 
 class LoginAlias(BrowserView):

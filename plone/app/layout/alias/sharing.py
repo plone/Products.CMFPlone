@@ -1,6 +1,4 @@
 from logging import getLogger
-from zope.component import getMultiAdapter
-
 from Products.Five.browser import BrowserView
 
 class FolderLocalroleFormAlias(BrowserView):
