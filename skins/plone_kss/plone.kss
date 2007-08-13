@@ -264,25 +264,22 @@ body:load {
 #foldercontents-title-column:click {
     action-server: foldercontents_update_table;
     evt-click-preventdefault: True;
-    foldercontents_sorton-sort_on: "sortable_title";
+    foldercontents_update_table-pagenumber: currentFormVar('pagenumber');
+    foldercontents_update_table-sort_on: "sortable_title";
 } 
 
 #foldercontents-modified-column:click {
     action-server: foldercontents_update_table;
     evt-click-preventdefault: True;
-    foldercontents_sorton-sort_on: "modified";
+    foldercontents_update_table-pagenumber: currentFormVar('pagenumber');
+    foldercontents_update_table-sort_on: "modified";
 } 
 
 #foldercontents-status-column:click {
     action-server: foldercontents_update_table;
     evt-click-preventdefault: True;
-    foldercontents_sorton-sort_on: "review_state";
-} 
-
-#foldercontents-order-column:click {
-    action-server: foldercontents_update_table;
-    evt-click-preventdefault: True;
-    foldercontents_sorton-sort_on: "getObjPositionInParent";
+    foldercontents_update_table-pagenumber: currentFormVar('pagenumber');
+    foldercontents_update_table-sort_on: "review_state";
 } 
 
 #foldercontents-selectall:click {
