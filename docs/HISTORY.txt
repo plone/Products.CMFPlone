@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets - Unreleased
 
+    - Add footer CSS classes to the search portlet. This fixes 
+      http://dev.plone.org/plone/ticket/6908.
+      [wichert]
+
     - Verified translation of month names on the calendar portlet. Found a bit
       of missing i18n markup in the process. This closes
       http://dev.plone.org/plone/ticket/6880.

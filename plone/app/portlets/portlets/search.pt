@@ -41,5 +41,7 @@
          i18n:translate="label_advanced_search">
        Advanced Search&hellip;
      </a>
+     <span class="portletBottomLeft"></span>
+     <span class="portletBottomRight"></span>
   </dd>
 </dl>
