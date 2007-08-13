@@ -18,7 +18,7 @@ upgrading to Plone 3.0:
   not needed for normal Plone use. This package can be downloaded
   from its home page at http://codespeak.net/lxml/ .
 
-* The python openid packages are required to use the included OpenID support.
+* The Python OpenID packages are required if you want to enable OpenID support.
   They can be downloaded from the OpenID enabled site at
   http://www.openidenabled.com/resources/downloads/python-openid/
 
