@@ -8,7 +8,9 @@ from zope.schema import Tuple
 
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleTerm
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -38,16 +40,26 @@ class WickedSettings(Persistent):
     """
     types_enabled = []
     enable_mediawiki = False
+
 wicked_type_regs = dict((factory.type, factory) for factory in \
                         wicked_basic_type_regs)
+
 class WickedTypesVocabulary(object):
     """Vocabulary factory for wickedized portal types.
     """
     implements(IVocabularyFactory)
 
     def __call__(self, context):
-        items = [(reg.type, reg.type) for key, reg in wicked_type_regs.items()]
-        return SimpleVocabulary.fromItems(items)
+        context = getattr(context, 'context', context)
+        ttool = getToolByName(context, 'portal_types')
+        items = []
+        # Pretty insane code, but wicked uses different internal names for
+        # the types :(
+        for t in ttool.listContentTypes():
+            for reg in wicked_basic_type_regs:
+                if reg.type_id == t:
+                    items.append(SimpleTerm(reg.type, reg.type, ttool[t].Title()))
+        return SimpleVocabulary(items)
 
 WickedTypesVocabularyFactory = WickedTypesVocabulary()
 

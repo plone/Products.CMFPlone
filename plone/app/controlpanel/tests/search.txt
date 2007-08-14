@@ -45,7 +45,7 @@ Make some changes
 
     >>> self.browser.getControl(name='form.enable_livesearch').value = False
     >>> self.browser.getControl(name='form.types_not_searched').value = \
-    ...     ['Event', 'Page']
+    ...     ['Event', 'Document']
     
 
 Click the save button:
@@ -70,7 +70,7 @@ Make sure the changes have been applied correctly to the tool:
     >>> 'Event' not in self.site_props.types_not_searched
     True
 
-    >>> 'Page' not in self.site_props.types_not_searched
+    >>> 'Document' not in self.site_props.types_not_searched
     True
 
     >>> 'File' in self.site_props.types_not_searched

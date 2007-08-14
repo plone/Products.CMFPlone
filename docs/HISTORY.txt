@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - Unreleased
 
+    - Fixed the translation of type names on the search and markup control
+      panels. This refs http://dev.plone.org/plone/ticket/6911.
+      [hannosch]
+
     - The UI allowed to disable country-specific language variants even if
       one was still active as the default language. You get a nice error
       message now. This closes http://dev.plone.org/plone/ticket/6862.
