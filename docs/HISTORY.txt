@@ -2,7 +2,7 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - Unreleased
+plone.app.controlpanel - 1.0 Released August 14, 2007
 
     - Fixed the translation of type names on the search and markup control
       panels. This refs http://dev.plone.org/plone/ticket/6911.
