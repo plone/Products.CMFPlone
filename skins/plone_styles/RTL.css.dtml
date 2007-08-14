@@ -301,4 +301,12 @@ dt span.documentByLine {
     left: 0px;
 }
 
+/* Kupu fixes */
+
+#kupu-zoom {
+    float: left !important;
+}
+#kupu-tb-buttons {
+    margin-right: 2em;
+}
 /* </dtml-with> */
