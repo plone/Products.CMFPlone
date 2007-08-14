@@ -1,3 +1,5 @@
+from zope.i18n import translate
+
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
@@ -92,5 +94,6 @@ class PresentationViewlet(ViewletBase):
         if self.presentation_enabled:
             url = "%s/presentation_view" % self.context.absolute_url()
             msg = _(u'Also available in presentation mode\u2026')
+            msg = translate(msg, domain='plone', context=self.request)
             return u'<p id="link-presentation"><a href="%s" rel="nofollow" class="link-presentation">%s</a></p>' % (url, msg)
         return u''

@@ -4,6 +4,10 @@ Changelog for plone.app.layout
 
 plone.app.layout - 1.0 Unreleased
 
+    - Fixed the translation of the 'Show this page in presentation mode...'
+      message.
+      [hannosch]
+
     - Made the search box a bit wider, so the entire default text is shown
       in languages with a rather long term.
       [hannosch]
