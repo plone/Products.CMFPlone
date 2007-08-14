@@ -76,10 +76,6 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         # validate_registration... (2.0.5)
         self.assertRaises(Unauthorized, self.portal.register)
 
-    def testInvalidCMFDefaultEmailFailsValidation(self):
-        # http://dev.plone.org/plone/ticket/3910
-        self.failIf(self.registration.isValidEmail('bogus@127.0.0.1'))
-
     def testNewIdAllowed(self):
         self.assertEqual(self.registration.isMemberIdAllowed('newuser'), 1)
 
