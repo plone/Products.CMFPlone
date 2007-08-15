@@ -249,6 +249,10 @@ type_id=%s' % (context.absolute_url() , type_id))
     @memoize
     def new_workflow(self):
         current_workflow = self.current_workflow()['id']
+        if self.type_id=='':
+            # If we are looking at the default workflow we need to show
+            # the real workflow
+            current_workflow=self.real_workflow(current_workflow)
         old_type_id = self.request.form.get('old_type_id', self.type_id)
         if old_type_id != self.type_id:
             return current_workflow

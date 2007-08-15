@@ -4,6 +4,11 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0 Released August 14, 2007
 
+    - If we are looking at settings for the default workflow lookup the
+      real workflow. This fixes http://dev.plone.org/plone/ticket/6843
+      (yes, that bug again).
+      [wichert]
+
     - Fixed the translation of type names on the search and markup control
       panels. This refs http://dev.plone.org/plone/ticket/6911.
       [hannosch]
