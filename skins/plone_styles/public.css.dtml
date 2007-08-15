@@ -77,6 +77,9 @@ h3, h4, h5, h6 {
     color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
+#content a:target {
+    background-color: #fd7 !important;
+}
 .documentContent li a {
     text-decoration: none;
     border-bottom: 1px #cccccc solid;
