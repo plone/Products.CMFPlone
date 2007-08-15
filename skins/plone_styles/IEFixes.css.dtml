@@ -162,4 +162,10 @@ body.fullscreen #portal-searchbox {
     overflow: visible;
 }
 
+
+/* IE doesn't know what to do with the caption element, hide it */
+table.ploneCalendar caption {
+    display: none !important;
+}
+
 /* </dtml-with> */
