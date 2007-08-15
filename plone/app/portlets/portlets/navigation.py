@@ -58,8 +58,9 @@ class INavigationPortlet(IPortletDataProvider):
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
             description=_(u"help_include_top_node",
-                          default=u"Whether or not to show the top, or 'home' "
-                                   "node in the navigation tree."),
+                          default=u"Whether or not to show the top, or 'root', "
+                                   "node in the navigation tree. This is affected " 
+                                   "by the 'Start level' setting."),
             default=False,
             required=False)
             
