@@ -169,10 +169,11 @@
 
       <div class="visualClear" id="clear-space-before-footer"><!-- --></div>
       
-      <div tal:define="portlet_assignable context/@@plone_context_state/portlet_assignable"
+      <div tal:define="context_state context/@@plone_context_state;
+                        portlet_assignable context_state/portlet_assignable"
             tal:condition="python:not sl and not sr and portlet_assignable and checkPermission('Portlets: Manage portlets', context)">
           <a class="managePortletsFallback"
-             tal:attributes="href string:${context/absolute_url}/@@manage-portlets"
+             tal:attributes="href string:${context_state/canonical_object_url}/@@manage-portlets"
              i18n:translate="manage_portlets_fallback">
              Manage portlets
           </a>

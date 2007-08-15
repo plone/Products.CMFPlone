@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Let the "manage portlets" fallback link (for when no columns are shown)
+      use the canonical object (i.e. object without default view), in the same
+      way that the column would have done. Fixes
+      http://dev.plone.org/plone/ticket/6927
+      [optilude]
+
     - Sort the configlets in the control panel by their translated title
       instead of their English title.
       [hannosch]
