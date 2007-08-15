@@ -35,7 +35,6 @@ input {
 }
 
 /* Code to work around IE's lacking support of sub-elements of the input element */
-input[type=checkbox],
 .noborder,
 .documentEditable * .noborder {
     border: none;
@@ -43,6 +42,14 @@ input[type=checkbox],
     background: none;
     background-color: transparent;
 }
+
+input[type=checkbox] {
+    border: none;
+    margin: 0;
+    background: none;
+    background-color: transparent;
+}
+
 
 #searchGadget {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
