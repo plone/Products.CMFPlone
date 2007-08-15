@@ -341,7 +341,7 @@ class PloneGenerator:
         if 'Members' in existing:
             # configure Members folder (already added by the content import)
             members_title = 'Users'
-            members_desc = "Container for portal users' home directories"
+            members_desc = "Container for users' home directories"
             if language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
@@ -350,7 +350,7 @@ class PloneGenerator:
                                            default='Users')
                     members_desc = util.translate(u'members-description',
                                           target_language=language,
-                                          default="Container for portal users' home directories")
+                                          default="Container for users' home directories")
 
             members = getattr(p , 'Members')
             members.setTitle(members_title)
