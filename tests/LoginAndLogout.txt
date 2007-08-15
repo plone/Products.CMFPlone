@@ -19,7 +19,7 @@ First we try to log in with bad credentials:
     >>> browser.getControl('Login Name').value = 'test_user_1_'
     >>> browser.getControl('Password').value = 'wrongpassword'
     >>> browser.getControl('Log in').click()
-    >>> "You are not currently logged in" in browser.contents
+    >>> "Login failed" in browser.contents
     True
     >>> browser.url
     'http://nohost/plone/login_form'
@@ -51,7 +51,7 @@ First we try to log in with bad credentials:
     >>> browser.getControl('Login Name').value = 'test_user_1_'
     >>> browser.getControl('Password').value = 'wrongpassword'
     >>> browser.getControl('Log in').click()
-    >>> 'You are not currently logged in.' in browser.contents
+    >>> "Login failed" in browser.contents
     True
     >>> browser.url
     'http://nohost/plone/login_form'
