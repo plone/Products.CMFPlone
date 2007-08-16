@@ -44,7 +44,7 @@ class INavigationPortlet(IPortletDataProvider):
             default=u"",
             required=False)
     
-    root = schema.TextLine(
+    root = schema.ASCIILine(
             title=_(u"label_navigation_root_path", default=u"Root path"),
             description=_(u'help_navigation_root',
                           default=u"A path that specifies the base folder "
@@ -52,7 +52,7 @@ class INavigationPortlet(IPortletDataProvider):
                                    "breadcrumbs and tabs will be rooted. "
                                    "Use '/' for the portal root, and "
                                    "'/folder1' to start at 'folder1'."),
-            default=u"",
+            default="",
             required=False)
                             
     includeTop = schema.Bool(
@@ -105,13 +105,13 @@ class Assignment(base.Assignment):
     title = _(u'Navigation')
     
     name = u""
-    root = u""
+    root = ""
     currentFolderOnly = False
     includeTop = False
     topLevel = 1
     bottomLevel = 0
     
-    def __init__(self, name=u"", root=u"", currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
+    def __init__(self, name=u"", root="", currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
@@ -201,7 +201,7 @@ class Renderer(base.Renderer):
         currentFolderOnly = self.data.currentFolderOnly or self.properties.getProperty('currentFolderOnlyInNavtree', False)
         topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
         
-        rootPath = getRootPath(self.context, currentFolderOnly, topLevel, self.data.root)
+        rootPath = getRootPath(self.context, currentFolderOnly, topLevel, str(self.data.root))
         
         if rootPath == self.urltool.getPortalPath():
             return portal
