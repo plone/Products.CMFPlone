@@ -30,6 +30,9 @@ from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.navtree import buildFolderTree
 
+from plone.app.vocabularies.catalog import SearchableTextSourceBinder
+from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
+
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 
 class INavigationPortlet(IPortletDataProvider):
@@ -44,7 +47,7 @@ class INavigationPortlet(IPortletDataProvider):
             default=u"",
             required=False)
     
-    root = schema.ASCIILine(
+    root = schema.Choice(
             title=_(u"label_navigation_root_path", default=u"Root path"),
             description=_(u'help_navigation_root',
                           default=u"A path that specifies the base folder "
@@ -52,8 +55,8 @@ class INavigationPortlet(IPortletDataProvider):
                                    "breadcrumbs and tabs will be rooted. "
                                    "Use '/' for the portal root, and "
                                    "'/folder1' to start at 'folder1'."),
-            default="",
-            required=False)
+            required=False,
+            source=SearchableTextSourceBinder({'is_folderish' : True}))
                             
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
@@ -235,6 +238,7 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(INavigationPortlet)
+    form_fields['root'].custom_widget = UberSelectionWidget
     label = _(u"Add Navigation Portlet")
     description = _(u"This portlet display a navigation tree.")
 
@@ -247,6 +251,7 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(INavigationPortlet)
+    form_fields['root'].custom_widget = UberSelectionWidget
     label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet display a navigation tree.")
     
