@@ -1,7 +1,7 @@
 <div i18n:domain="plone"
      tal:condition="view/show">
 
-    <div class="documentByLine">
+    <div class="documentByLine" id="plone-document-byline">
       <span id="lock-icon">
         <img tal:replace="structure view/locked_icon" />
       </span>
