@@ -5,7 +5,7 @@
              title="Intranet Workflow for Folders"
              description="
 - Normally used with the Intranet/Extranet workflow on folder types.
-- Only has two states: Private and Internally Visible."
+- Only has two states: Private and Internal Draft."
              state_variable="review_state"
              initial_state="internal"
              i18n:attributes="title; description">
@@ -15,7 +15,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
 
- <state state_id="internal" title="Internally visible" i18n:attributes="title">
+ <state state_id="internal" title="Internal draft" i18n:attributes="title">
   <description i18n:translate="">
     Visible to all intranet users.
   </description>
