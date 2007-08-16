@@ -233,7 +233,7 @@ ploneFormTabbing.initializeForm = function(form) {
     var buttons = cssQuery("div.formControls input[name=form_previous],\
                             div.formControls input[name=form_next]");
     for (var i=0; i<buttons.length; i++) {
-        addClassName(buttons[i], "hidden");
+        buttons[i].parentNode.removeChild(buttons[i]);
     }
 };
 
