@@ -149,8 +149,8 @@ function initializeMenus() {
     // add toggle function to header links
     var menu_headers = cssQuery('dl.actionMenu dt.actionMenuHeader a');
     if (window.kukit && kukit.log) {
-        // Only log if in kss (???)
-        kukit.log('plone.kss initializeMenus '+ menu_headers.length);
+        // Only log if in kss 
+        kukit.log('Initializing ' + menu_headers.length + ' menus.');
     } 
     for (var i=0; i < menu_headers.length; i++) {
         var menu_header = menu_headers[i];
