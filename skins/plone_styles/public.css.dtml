@@ -592,7 +592,7 @@ dl.searchResults span.documentByLine {
     background-color: &dtml-oddRowBackgroundColor;;
 }
 .visualHighlight {
-    background-color: &dtml-evenRowBackgroundColor;;
+    background-color: #ffc;
 }
 .discreet {
     color: &dtml-discreetColor;;
