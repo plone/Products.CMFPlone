@@ -11,12 +11,14 @@
         </label>
 
         <select name=":action" onchange="this.form.submit()">
-            <option tal:attributes="value python:request['ACTUAL_URL'].replace(context.absolute_url(), '')">
+            <option tal:attributes="value python:request['ACTUAL_URL'].replace(context.absolute_url(), '')"
+                    i18n:translate="label_add_portlet_ellipsis">
                 Add portlet&hellip;
             </option>
             <tal:options repeat="portlet view/addable_portlets">
                 <option tal:attributes="value string:${portlet/addview}"
-                        tal:content="portlet/title" />
+                        tal:content="portlet/title"
+                        i18n:translate="" />
             </tal:options>
 
         </select>
