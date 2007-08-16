@@ -615,6 +615,7 @@ dl.searchResults span.documentByLine {
     color: #CC9933;
     padding: 0px 1em;
 }
+
 .notify,
 .documentEditable * .notify {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
@@ -984,7 +985,7 @@ textarea.proportional {
 }
 
 /* Link types */
-#content .link-parent {
+a.link-parent {
     display: block;
     background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
     padding: 1px 0px 10px 16px;
