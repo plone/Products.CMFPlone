@@ -70,10 +70,6 @@
             </div>
         </tal:rights>
 
-        <tal:comment replace="nothing">
-            <span metal:use-macro="here/review_history/macros/review_history" />
-        </tal:comment>
-
     </div>
 
 </div>

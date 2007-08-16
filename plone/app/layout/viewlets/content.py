@@ -9,6 +9,9 @@ from plone.app.layout.viewlets import ViewletBase
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
+from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFPlone.utils import log
+
 
 class DocumentActionsViewlet(ViewletBase):
     def update(self):
@@ -91,3 +94,48 @@ class DocumentBylineViewlet(ViewletBase):
                                     domain='plonelocales')
 
     render = ViewPageTemplateFile("document_byline.pt")
+
+
+class WorkflowHistoryViewlet(ViewletBase):
+    def update(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.portal_url = self.portal_state.portal_url()
+        self.tools = getMultiAdapter((self.context, self.request),
+                                     name='plone_tools')
+    @memoize
+    def workflowHistory(self):
+        """Return workflow history of this context.
+
+        Taken from plone_scripts/getWorkflowHistory.py
+        """
+        workflow = self.tools.workflow()
+        membership = self.tools.membership()
+
+        history = []
+
+        # check if the current user has the proper permissions
+        if membership.checkPermission('Modify portal content', self.context):
+            try:
+                # get total history
+                review_history = workflow.getInfoFor(self.context, 'review_history')
+
+                # filter out the irrelevant stuff
+                review_history = [r for r in review_history if r['action']]
+                for r in review_history:
+                    r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
+                                                                                 self.context.portal_type)
+                    actorid = r['actor']
+                    r['actorid'] = actorid
+                    r['actor'] = membership.getMemberInfo(actorid)
+                    r['actor_home'] = self.portal_url + 'author/' + actorid
+                #reverse the list
+                history = self.context.reverseList(review_history)
+
+            except WorkflowException:
+                log( 'CMFPlone/skins/plone_scripts/getWorkflowHistory: '
+                     '%s has no associated workflow' % self.context.absolute_url() )
+
+        return history
+
+    render = ViewPageTemplateFile("review_history.pt")

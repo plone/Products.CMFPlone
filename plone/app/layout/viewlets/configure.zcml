@@ -221,6 +221,14 @@
         permission="zope2.View" 
         />
 
+    <!-- Render the workflow history -->
+    <browser:viewlet
+        name="plone.belowcontenttitle.workflowhistory"
+        manager=".interfaces.IBelowContentTitle"
+        class=".content.WorkflowHistoryViewlet"
+        permission="zope2.View" 
+        />
+
     <!-- Render comments -->
     <browser:viewlet
         name="plone.comments"
