@@ -56,6 +56,11 @@ a:link, a:visited {
     background: transparent;
 }
 
+/* Page break class for use when printing */
+div.pageBreak {
+    page-break-before: always;
+}
+
 /* Uncomment these to get link addresses inserted along with the link text
    when you print.
 #content a:link:after, 
