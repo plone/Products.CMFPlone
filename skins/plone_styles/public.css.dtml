@@ -649,7 +649,7 @@ dl.searchResults span.documentByLine {
 }
 
 /* The table used for listings - horizontal and vertical variants */
-.listing,
+table.listing,
 .stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
     border-collapse: collapse;
@@ -658,7 +658,7 @@ dl.searchResults span.documentByLine {
     font-size: &dtml-fontSmallSize;;
     margin: 1em 0em 1em 0em;
 }
-.listing th,
+table.listing th,
 .stx table th {
     background: &dtml-globalBackgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -668,45 +668,62 @@ dl.searchResults span.documentByLine {
     padding: 0.25em 0.5em;
     text-transform: &dtml-textTransform;;
 }
-.listing .top {
+table.listing .top {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
     text-align: right ! important;
     padding: 0em 0em 1em 0em;
 }
-.listing .listingCheckbox {
+table.listing .listingCheckbox {
     text-align: center;
 }
-.listing td,
+table.listing td,
 .stx table td {
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0.25em 0.5em;
 }
-.listing a {
+table.listing a {
     text-decoration: none;
 }
-.listing a:hover {
+table.listing a:hover {
     text-decoration: underline;
 }
-.listing img {
+table.listing img {
     vertical-align: middle;
 }
-.listing td a label,
+table.listing td a label,
 .stx table td a label {
     cursor: pointer;
 }
 
 /* Vertical addition class */
-.vertical {
+table.vertical {
     background-color: &dtml-backgroundColor;;	
 }
-.vertical th {
+table.vertical th {
     padding: 0.5em;
 }
-.vertical td {
+table.vertical td {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0.5em;
+}
+
+/* grid addition class */
+
+table.grid td {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0.5em;
+}
+
+/* plain table class with light gray borders */
+
+table.plain,
+table.plain td,
+table.plain th {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    border-collapse: collapse;
 }
 
 /* Batch selector */
