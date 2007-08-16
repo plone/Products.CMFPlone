@@ -29,6 +29,7 @@ from plone.app.portlets.browser.interfaces import IManageGroupPortletsView
 from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
 
 from plone.app.portlets import utils
+from plone.memoize.view import memoize
 
 class ManageContextualPortlets(BrowserView):
     implements(IManageContextualPortletsView)
@@ -203,10 +204,16 @@ class ManageContentTypePortlets(BrowserView):
     # View attributes
     
     def portal_type(self):
+        return self.fti().Title()
+                
+    def portal_type_icon(self):
+        ploneview = getMultiAdapter((self.context, self.request), name=u"plone")
+        return ploneview.getIcon(self.fti())
+           
+    @memoize
+    def fti(self):
         portal_types = getToolByName(aq_inner(self.context), 'portal_types')
         portal_type = self.request['key']
         for fti in portal_types.listTypeInfo():
             if fti.getId() == portal_type:
-                return fti.Title()
-        
-
+                return fti
