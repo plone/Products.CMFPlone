@@ -37,7 +37,6 @@
                 <input type="text"
                        size="10"
                        alt="Login Name"
-                       onclick="showCookieMessage('cookies_message')"
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');"
                        i18n:attributes="alt label_login_name;"/>
@@ -51,7 +50,6 @@
                 <input type="password"
                        size="10"
                        alt="Password"
-                       onclick="showCookieMessage('cookies_message')"
                        tal:attributes="name ac_password; id ac_password;"
                        i18n:attributes="alt label_password;"/>
             </div>
