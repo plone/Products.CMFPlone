@@ -25,17 +25,27 @@
         </h1>
         </metal:title_view>
 
+        <!-- XXX Beware. The outer node of the macro description-field-view,
+             was originally a P. However in inline editing mode, a FORM is
+             substituded. In IE, this will result broken DOM, cssQuery will
+             not select the buttons, so it will not work. The current workaround
+             applies a DIV node outside, and inside the DIV we put a P although
+             this would not be strictly necessary. This works now with IE and
+             cssQuery.
+        -->
         <metal:description_view define-macro="generic_description_view">
         <tal:archetypes condition="exists:here/getField">
-        <p metal:define-macro="description-field-view"
+        <div metal:define-macro="description-field-view"
            id="parent-fieldname-description"
            tal:define="kss_class python:getKssClasses('description',
                         templateId='kss_generic_macros', macro='description-field-view');"
            tal:condition="here/Description"
            tal:attributes="class string:documentDescription$kss_class;">
+           <p>
             <span metal:define-slot="inside" 
                   tal:replace="here/Description">Description</span>
-        </p>
+           </p>
+        </div>
         </tal:archetypes>
         <p class="documentDescription description"
            tal:content="here/Description"
