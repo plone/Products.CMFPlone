@@ -2,7 +2,16 @@ Changelog for plone.app.portlets
 
     (name of developer listed in brackets)
 
-plone.app.portlets - Unreleased
+plone.app.portlets 1.0.1 - August 18, 2007
+
+    - Remove use of login javascript methods.
+      [ree]
+
+    - Change event portlet to use getIcon. This fixes
+      http://dev.plone.org/plone/ticket/5075.
+      [limi]
+    
+plone.app.portlets 1.0 - August 17, 2007
 
     - Add footer CSS classes to the search portlet. This fixes 
       http://dev.plone.org/plone/ticket/6908.
