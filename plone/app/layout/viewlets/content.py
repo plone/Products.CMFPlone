@@ -133,7 +133,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                 history = self.context.reverseList(review_history)
 
             except WorkflowException:
-                log( 'CMFPlone/skins/plone_scripts/getWorkflowHistory: '
+                log( 'plone.app.layout.viewlets.content: '
                      '%s has no associated workflow' % self.context.absolute_url() )
 
         return history
