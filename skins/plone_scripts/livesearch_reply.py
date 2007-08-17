@@ -115,10 +115,11 @@ else:
         itemUrl = itemUrl + searchterm_query
 
         write('''<li class="LSRow">''')
-        write('''<img src="%s" alt="%s" width="%i" height="%i" />''' % (icon.url,
-                                                                        icon.description,
-                                                                        icon.width,
-                                                                        icon.height))
+        if icon.url is not None and icon.description is not None:
+            write('''<img src="%s" alt="%s" width="%i" height="%i" />''' % (icon.url,
+                                                                            icon.description,
+                                                                            icon.width,
+                                                                            icon.height))
         full_title = safe_unicode(pretty_title_or_id(result))
         if len(full_title) > MAX_TITLE:
             display_title = ''.join((full_title[:MAX_TITLE],'...'))
