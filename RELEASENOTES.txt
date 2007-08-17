@@ -199,7 +199,7 @@ at http://plone.org/documentation/manual/upgrade-guide/version/2.5-3.0/products
   allow you to keep configuration data associated with a particular portlet
   assignment, using formlib, and gives you a well-defined place to put
   Python logic powering the portlet. See plone.app.portlets.portlets for
-  plenty of examples, or http://svn.plone.org/svn/collective/collective.portlet.
+  plenty of examples, or http://svn.plone.org/svn/collective/collective.portlets.
   
   Note that the left_slots and right_slots properties are no longer used.
   The "manage portlets" screen will allow you to migrate existing properties
