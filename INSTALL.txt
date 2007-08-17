@@ -226,17 +226,17 @@ upgrading to Plone 3.0:
    directories with those same names (Products and lib) beforehand.
    Replace them with the two directories you just unpacked.
 
-  You have to restart your Zope to load these Products and new packages, then
-  test that they have installed correctly. You can do this by logging into the
-  ZMI - you should have
+   You have to restart your Zope to load these Products and new packages, then
+   test that they have installed correctly. You can do this by logging into the
+   ZMI - you should have
 
     1) The Plone Products (CMFPlone etc.) listed in the Products section
        of the Control_Panel
     2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI
        Root Folder
 
-  Complete the install test by adding a Plone Site from the pulldown in the
-  root folder.
+   Complete the install test by adding a Plone Site from the pulldown in the
+   root folder.
 
 *****************************************************************************
 * Make sure this is not done inside the Control Panel, but in the root of   *
@@ -244,23 +244,23 @@ upgrading to Plone 3.0:
 * instance inside the Control Panel, even though it doesn't make sense.     *
 *****************************************************************************
 
-  When you do this, it asks you to complete a form, specifying the site's 
-  ID (URL element), Title and Description. Complete these fields and hit the
-  "Add Plone Site" button. After a short while, you will end up in the ZMI
-  again, but should see your Plone site listed in there.
+   When you do this, it asks you to complete a form, specifying the site's 
+   ID (URL element), Title and Description. Complete these fields and hit the
+   "Add Plone Site" button. After a short while, you will end up in the ZMI
+   again, but should see your Plone site listed in there.
 
 ------------------------------------------------------------------------------
 
 4. Download and install optional products
 
-  The above steps install the "mandatory" products.
+   The above steps install the "mandatory" products.
 
-  Click Site Setup -> Add/Remove Products to install optional products bundled
-  with Plone.
+   Click Site Setup -> Add/Remove Products to install optional products bundled
+   with Plone.
 
-  For optional products not bundled with Plone:  Download the product, unpack
-  the product into your instance's Products directory, restart Zope, and
-  install them in Plone using Site Setup -> "Add/Remove Products."
+   For optional products not bundled with Plone:  Download the product, unpack
+   the product into your instance's Products directory, restart Zope, and
+   install them in Plone using Site Setup -> "Add/Remove Products."
 
 ==============================================================================
 Enjoy Plone, and don't forget to report any bugs or inconsistencies in the
