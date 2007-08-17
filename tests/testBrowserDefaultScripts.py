@@ -37,18 +37,6 @@ class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
         # Make sure we can't define a default page if no object in folder
         self.failUnless(self.folder.canSelectDefaultPage())
 
-    def testSetDefaultPageWithPage(self):
-        # Make sure we can define a Document as default page
-        self.folder.invokeFactory('Document', 'test', 
-                                  title='Test default page')
-        self.failUnless(self.folder.canSelectDefaultPage())
-        self.folder.saveDefaultPage('test')
-        self.failUnless(self.folder.test.isDefaultPageInFolder())
-
-    def testGetViewTemplateId(self):
-        self.folder.setLayout('atct_album_view')
-        self.assertEqual(self.folder.getViewTemplateId(), 'atct_album_view')
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

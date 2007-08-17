@@ -4,7 +4,6 @@ from types import UnicodeType, StringType
 import urlparse
 import transaction
 
-from zope.deprecation import deprecate
 from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo, Unauthorized
@@ -410,22 +409,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             else:
                 thread = [discussionContainer]
         return thread
-
-    security.declareProtected(ManagePortal, 'setDefaultSkin')
-    @deprecate("The setDefaultSkin method of the Plone tool has been "
-               "deprecated and will be removed in Plone 3.5.")
-    def setDefaultSkin(self, default_skin):
-        """Sets the default skin."""
-        st = getToolByName(self, 'portal_skins')
-        st.default_skin = default_skin
-
-    security.declarePublic('setCurrentSkin')
-    @deprecate("The setCurrentSkin method of the Plone tool has been "
-               "deprecated and will be removed in Plone 3.5.")
-    def setCurrentSkin(self, skin_name):
-        """Sets the current skin."""
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        portal.changeSkin(skin_name)
 
     security.declareProtected(ManagePortal, 'changeOwnershipOf')
     def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):
@@ -960,22 +943,19 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return obj.getOwner().getId()
 
     security.declarePublic('normalizeString')
-    def normalizeString(self, text, relaxed=False):
+    def normalizeString(self, text, relaxed=None):
         """Normalizes a title to an id.
+
+        The relaxed mode was removed in Plone 3.5. You should use either the
+        url or file name normalizer from the plone.i18n package instead.
 
         normalizeString() converts a whole string to a normalized form that
         should be safe to use as in a url, as a css id, etc.
-        
-        If relaxed=True, only those characters that are illegal as URLs and
-        leading or trailing whitespace is stripped.
 
         >>> ptool = self.portal.plone_utils
 
         >>> ptool.normalizeString("Foo bar")
         'foo-bar'
-
-        >>> ptool.normalizeString("Foo bar", relaxed=True)
-        'Foo bar'
         
         >>> ptool.normalizeString("Some!_are allowed, others&?:are not")
         'some-_are-allowed-others-are-not'
@@ -1032,7 +1012,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ptool.normalizeString(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
-        return utils.normalizeString(text, context=self, relaxed=relaxed)
+        return utils.normalizeString(text, context=self)
 
     security.declarePublic('listMetaTags')
     def listMetaTags(self, context):

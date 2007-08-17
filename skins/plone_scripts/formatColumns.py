@@ -2,7 +2,6 @@
 ##title=format a list of items into columns for better display
 
 # returns a list of lists of items
-# see folder_localrole_form.pt for an example
 
 rows=[]
 

@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed lots of deprecated code and zcml registrations.
+      [hannosch]
+
 Plone 3.0 - released August 17, 2007
 
     - Remove usage of login.js and Deprecate it.

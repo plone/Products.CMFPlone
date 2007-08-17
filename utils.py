@@ -5,8 +5,6 @@ from cStringIO import StringIO
 from PIL import Image
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.i18n.normalizer.interfaces import IFileNameNormalizer
-from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 
 import zope.interface
 from zope.interface import implementedBy
@@ -18,7 +16,6 @@ import OFS
 import Globals
 from Acquisition import aq_base, aq_inner, aq_parent
 from DateTime import DateTime
-from Products.Five import BrowserView as BaseView
 from Products.Five.bridge import fromZ2Interface
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
@@ -26,7 +23,7 @@ from Products.CMFPlone.interfaces.Translatable import ITranslatable
 import transaction
 
 from Products.PageTemplates.GlobalTranslationService import \
-     getGlobalTranslationService
+    getGlobalTranslationService
 
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = Globals.package_home(globals())
@@ -48,17 +45,8 @@ IMAGE_SCALE_PARAMS = {'scale': MEMBER_IMAGE_SCALE,
 
 _marker = []
 
-class BrowserView(BaseView):
-
-    def __init__(self, context, request):
-        self.context = [context]
-        self.request = request
-
 def parent(obj):
     return aq_parent(aq_inner(obj))
-
-def context(view):
-    return view.context[0]
 
 def createBreadCrumbs(context, request):
     view = getMultiAdapter((context, request), name='breadcrumbs_view')
@@ -208,7 +196,9 @@ def typesToList(context):
     wl = [t for t in all_types if not bl_dict.has_key(t)]
     return wl
 
-def normalizeString(text, context=None, encoding=None, relaxed=False):
+def normalizeString(text, context=None, encoding=None, relaxed=None):
+    # The relaxed mode was removed in Plone 3.5. You should use either the url
+    # or file name normalizer from the plone.i18n package instead.
     assert (context is not None) or (encoding is not None), \
            'Either context or encoding must be provided'
     # Make sure we are dealing with a stringish type
@@ -223,20 +213,8 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
             encoding = getSiteEncoding(context)
         text = unicode(text, encoding)
 
-    if not relaxed:
-        return queryUtility(IIDNormalizer).normalize(text)
+    return queryUtility(IIDNormalizer).normalize(text)
 
-    # BBB To be removed in Plone 3.5
-    log_deprecated("The relaxed mode of normalizeString is deprecated and will "
-                   "be removed in Plone 3.5. Please use either the url or file "
-                   "name normalizer from the plone.i18n package instead.")
-
-    request = getattr(context, 'REQUEST', None)
-    # If we have a request, get the preferred user normalizer
-    if request is not None:
-        return IUserPreferredFileNameNormalizer(request).normalize(text)
-
-    return queryUtility(IFileNameNormalizer).normalize(text)
 
 class IndexIterator(object):
     """BBB: This iterator was us ed for tabindex use, but for accessibility 
@@ -817,35 +795,3 @@ def isLinked(obj):
     # which creates a funny exception when using zeo (see #6666)
     transaction.begin()
     return linked
-
-# BBB Plone 3.5: Cyclic import errors are bad, deprecate these import locations.
-# Put these at the end to avoid an ImportError for safe_unicode
-from i18nl10n import utranslate
-from i18nl10n import ulocalized_time
-
-import zope.deprecation
-zope.deprecation.deprecated(
-    ('getGlobalTranslationService'),
-    "This reference to getGlobalTranslationService will be removed in Plone 3.5"
-    ". Please import it from Products.PageTemplates.GlobalTranslationService.")
-zope.deprecation.deprecated(
-    ('utranslate'),
-    "This reference to the utranslate method has been deprecated will be "
-    "removed in Plone 3.5. Please use the translate method of the "
-    "GlobalTranslationService instead.")
-zope.deprecation.deprecated(
-    ('ulocalized_time'),
-    "This reference to the ulocalized_time method has been deprecated will be "
-    "removed in Plone 3.5. Please import it from Products.CMFPlone.i18nl10n.")
-zope.deprecation.deprecated(
-    ('BrowserView'),
-    "Products.CMFPlone.utils.BrowserView will be removed in Plone 3.5. "
-    "Please use Products.Five.BrowserView instead.")
-zope.deprecation.deprecated(
-    ('context'),
-    "This method is only useful for classes derived from the deprectaed "
-    "Products.CMFPlone.utils.BrowserView class. Please use "
-    "Products.Five.BrowserView as base class and aq_inner(self.context) "
-    "to get the current context.")
-
-

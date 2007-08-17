@@ -126,15 +126,12 @@ def initialize(context):
 
     # Plone content
 
-    # LargePloneFolder is deprectated and will be removed in Plone 3.5.
     # Usage of PloneFolder is discouraged.
-    import PloneFolder, LargePloneFolder
+    import PloneFolder
     import Portal
 
-    contentClasses      = ( PloneFolder.PloneFolder,
-                            LargePloneFolder.LargePloneFolder, )
-    contentConstructors = ( PloneFolder.addPloneFolder,
-                            LargePloneFolder.addLargePloneFolder, )
+    contentClasses      = ( PloneFolder.PloneFolder, )
+    contentConstructors = ( PloneFolder.addPloneFolder, )
 
     # CMFCore and CMFDefault tools
     from Products.CMFCore import CachingPolicyManager

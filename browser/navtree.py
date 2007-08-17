@@ -169,7 +169,6 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['absolute_url'] = itemUrl
         newNode['getURL'] = itemUrl
         newNode['path'] = item.getPath()
-        newNode['icon'] = getattr(item, 'getIcon', None) # Deprecated, use item_icon
         newNode['item_icon'] = ploneview.getIcon(item)
         newNode['Creator'] = getattr(item, 'Creator', None)
         newNode['creation_date'] = getattr(item, 'CreationDate', None)

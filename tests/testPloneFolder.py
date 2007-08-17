@@ -173,27 +173,6 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         self.logout()
         self.assertEqual(self._contentIds(self.folder.A), [])
 
-        # -> For folders you also have to remove 'Access contents information'
-        # -> Never click around in the ZMI security screens, use the workflow!
-
-    def test_folder_contents(self):
-        self.folder.sub1.invokeFactory('Document', id='sub1doc1')
-
-        contents = self.folder.sub1.getFolderContents()
-        self.assertEqual(len(contents), 1)
-        self.assertEqual(contents[0].getId, 'sub1doc1')
-
-        self.failUnless(self.folder.sub1.old_folder_contents())
-        view = self.folder.sub1.restrictedTraverse("folder_contents")
-        self.failUnless(view())
-
-        self.folder.sub1.manage_permission('List folder contents', ['Manager'], acquire=0)
-
-        self.assertRaises(Unauthorized, self.folder.sub1.old_folder_contents)
-        def func():
-            return self.folder.sub1.restrictedTraverse("folder_contents")
-        self.assertRaises(Unauthorized, func)
-
 
 class TestManageDelObjects(PloneTestCase.PloneTestCase):
     # manage_delObjects should check 'Delete objects'
