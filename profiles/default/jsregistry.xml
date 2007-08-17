@@ -103,10 +103,6 @@
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
-    id="kupucontextmenu.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True"
-    expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
     id="kupuploneeditor.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True"
