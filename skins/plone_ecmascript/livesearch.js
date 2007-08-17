@@ -59,7 +59,7 @@ var livesearch = function (){
         };
 
         function _hide_delayed() {
-            // hides the result window after a showrt delay
+            // hides the result window after a short delay
             window.setTimeout("livesearch.hide('"+$form.id+"')", _hide_delay);
         };
 
