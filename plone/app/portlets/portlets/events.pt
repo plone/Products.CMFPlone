@@ -15,13 +15,16 @@
     <tal:events tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
                 tal:repeat="obj view/published_events">
     <dd class="portletItem"
-        tal:define="oddrow repeat/obj/odd"
+        tal:define="oddrow repeat/obj/odd;
+                    plone_view context/@@plone;
+                    getIcon nocall:plone_view/getIcon;
+                    item_icon python:getIcon(obj);"
         tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
         <a href="#"
            class="tile"
            tal:attributes="href obj/getURL;
                            title obj/Description">
-            <img src="#" alt="" tal:replace="structure here/event_icon.gif" />
+            <img tal:replace="structure item_icon/html_tag" />
             <span tal:replace="obj/pretty_title_or_id">
              Some Event 
             </span>
