@@ -59,8 +59,8 @@ Test if the sitemaps does appear:
     >>> self.browser.open("http://nohost/plone/sitemap.xml.gz")
     >>> headers = self.browser.headers
 
-    >>> headers['status']
-    '200 OK'
+    >>> headers['status'].lower()
+    '200 ok'
 
     >>> headers['content-type']
     'application/octet-stream'
