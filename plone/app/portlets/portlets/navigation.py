@@ -50,11 +50,9 @@ class INavigationPortlet(IPortletDataProvider):
     root = schema.Choice(
             title=_(u"label_navigation_root_path", default=u"Root path"),
             description=_(u'help_navigation_root',
-                          default=u"A path that specifies the base folder "
+                          default=u"A folder to use for the base folder "
                                    "where the navigation tree, sitemap, "
-                                   "breadcrumbs and tabs will be rooted. "
-                                   "Use '/' for the portal root, and "
-                                   "'/folder1' to start at 'folder1'."),
+                                   "breadcrumbs and tabs will be rooted. "),
             required=False,
             source=SearchableTextSourceBinder({'is_folderish' : True}))
                             
@@ -108,13 +106,13 @@ class Assignment(base.Assignment):
     title = _(u'Navigation')
     
     name = u""
-    root = ""
+    root = None
     currentFolderOnly = False
     includeTop = False
     topLevel = 1
     bottomLevel = 0
     
-    def __init__(self, name=u"", root="", currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
+    def __init__(self, name=u"", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
