@@ -205,6 +205,14 @@
         permission="zope2.View" 
         />
 
+    <!-- Render the workflow history -->
+    <browser:viewlet
+        name="plone.belowcontentbody.workflowhistory"
+        manager=".interfaces.IBelowContentBody"
+        class=".content.WorkflowHistoryViewlet"
+        permission="zope2.View" 
+        />
+
     <!-- Render the document actions -->
     <browser:viewlet
         name="plone.abovecontenttitle.documentactions"
@@ -218,14 +226,6 @@
         name="plone.belowcontenttitle.documentbyline"
         manager=".interfaces.IBelowContentTitle"
         class=".content.DocumentBylineViewlet"
-        permission="zope2.View" 
-        />
-
-    <!-- Render the workflow history -->
-    <browser:viewlet
-        name="plone.belowcontenttitle.workflowhistory"
-        manager=".interfaces.IBelowContentTitle"
-        class=".content.WorkflowHistoryViewlet"
         permission="zope2.View" 
         />
 
