@@ -4,6 +4,15 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Remove keywords/category listing from document byline and
+      instead render it as a viewlet right below that.
+      [maurits]
+
+    - Make workflow history visible again, as viewlet just below the
+      body of the content.  Fixes
+      http://dev.plone.org/plone/ticket/6933
+      [maurits]
+
     - Let the "manage portlets" fallback link (for when no columns are shown)
       use the canonical object (i.e. object without default view), in the same
       way that the column would have done. Fixes
