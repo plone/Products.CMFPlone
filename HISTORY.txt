@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
     
-Plone 3.0 - UNRELEASED
+Plone 3.0 - released August 17, 2007
 
     - Remove usage of login.js and Deprecate it.
       [ree, wichert]
