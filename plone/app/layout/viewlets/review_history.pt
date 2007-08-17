@@ -1,7 +1,8 @@
 <div class="reviewHistory"
-      metal:define-macro="review_history" 
-      i18n:domain="plone"
-      tal:define="history view/workflowHistory;">
+     id="review-history"
+     metal:define-macro="review_history" 
+     i18n:domain="plone"
+     tal:define="history view/workflowHistory;">
     <tal:history tal:condition="history">
       <dl id="history" class="collapsible inline collapsedOnLoad">
         <dt class="collapsibleHeader" i18n:translate="label_history">History</dt>

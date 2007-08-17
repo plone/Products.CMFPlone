@@ -1,4 +1,5 @@
 <div i18n:domain="plone"
+     id="document-byline"
      tal:condition="view/show">
 
     <div class="documentByLine" id="plone-document-byline">
