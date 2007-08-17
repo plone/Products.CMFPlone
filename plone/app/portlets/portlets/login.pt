@@ -68,7 +68,6 @@
                        name="submit"
                        value="Log in"
                        alt="Log in"
-                       tal:attributes="onclick string:javascript:return setLoginVars('$ac_name','login_name','$ac_password','pwd_empty','js_enabled','cookies_enabled');"
                        i18n:attributes="value label_log_in; alt label_log_in;"/>
             </div>
         </form>
