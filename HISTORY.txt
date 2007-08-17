@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed migration code for old releases. Migrating directly to Plone 3.5
+      is only supported using versions of Plone from 2.5 final or newer.
+      [hannosch]
+
     - Removed lots of deprecated code and zcml registrations.
       [hannosch]
 

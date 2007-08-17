@@ -1,7 +1,7 @@
 from Products.CMFPlone.MigrationTool import registerUpgradePath
 
 def executeMigrations():
-    import v2_1, v2_5, v3_0
+    import v2_5, v3_0
 
 def null(portal):
     """ This is a null migration, use it when nothing happens """
@@ -54,35 +54,29 @@ def registerMigrations():
     registerUpgradePath('2.1-rc2', '2.1-rc3', False)
     registerUpgradePath('2.1-rc3', '2.1', False)
 
-    # Currently supported migrations
-
     # Plone 2.1.x
 
-    registerUpgradePath('2.1', '2.1.1', v2_1.final_two11.final_two11)
-    registerUpgradePath('2.1.1', '2.1.2-rc1', v2_1.two11_two12.two11_two12rc1)
-
-    registerUpgradePath('2.1.2-rc1', '2.1.2-rc2', null)
-    registerUpgradePath('2.1.2-rc2', '2.1.2', v2_1.two11_two12.two12rc2_two12)
-    registerUpgradePath('2.1.2', '2.1.3-rc1', v2_1.two12_two13.two12_two13)
-
-    registerUpgradePath('2.1.3-rc1', '2.1.3', null)
-    registerUpgradePath('2.1.3', '2.1.4-rc1', null)
-
-    registerUpgradePath('2.1.4-rc1', '2.1.4', null)
+    registerUpgradePath('2.1', '2.1.1', False)
+    registerUpgradePath('2.1.1', '2.1.2-rc1', False)
+    registerUpgradePath('2.1.2-rc1', '2.1.2-rc2', False)
+    registerUpgradePath('2.1.2-rc2', '2.1.2', False)
+    registerUpgradePath('2.1.2', '2.1.3-rc1', False)
+    registerUpgradePath('2.1.3-rc1', '2.1.3', False)
+    registerUpgradePath('2.1.3', '2.1.4-rc1', False)
+    registerUpgradePath('2.1.4-rc1', '2.1.4', False)
 
     # Plone 2.5
 
-    registerUpgradePath('2.1.4', '2.5-alpha1', v2_5.alphas.two5_alpha1)
+    registerUpgradePath('2.1.4', '2.5-alpha1', False)
+    registerUpgradePath('2.5-alpha1', '2.5-alpha2', False)
+    registerUpgradePath('2.5-alpha2', '2.5-beta1', False)
+    registerUpgradePath('2.5-beta1', '2.5-beta2', False)
+    registerUpgradePath('2.5-beta2', '2.5-rc1', False)
+    registerUpgradePath('2.5-rc1', '2.5-rc2', False)
+    registerUpgradePath('2.5-rc2', '2.5-rc3', False)
+    registerUpgradePath('2.5-rc3', '2.5', False)
 
-    registerUpgradePath('2.5-alpha1', '2.5-alpha2', v2_5.alphas.alpha1_alpha2)
-    registerUpgradePath('2.5-alpha2', '2.5-beta1', v2_5.betas.alpha2_beta1)
-
-    registerUpgradePath('2.5-beta1', '2.5-beta2', v2_5.betas.beta1_beta2)
-    registerUpgradePath('2.5-beta2', '2.5-rc1', v2_5.rcs.beta2_rc1)
-
-    registerUpgradePath('2.5-rc1', '2.5-rc2', null)
-    registerUpgradePath('2.5-rc2', '2.5-rc3', null)
-    registerUpgradePath('2.5-rc3', '2.5', null)
+    # Currently supported migrations
 
     # Plone 2.5.x
 

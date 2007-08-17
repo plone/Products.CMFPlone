@@ -38,7 +38,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
     def testForceMigration(self):
         self.setRoles(['Manager'])
         # Make sure we don't embarrass ourselves again...
-        version = '2.1'
+        version = '2.5'
         while version is not None:
             version, msg = self.migration._upgrade(version)
         expect = 'Migration completed at version %s.' % \
