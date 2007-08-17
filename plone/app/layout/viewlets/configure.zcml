@@ -229,6 +229,14 @@
         permission="zope2.View" 
         />
 
+    <!-- Render the keywords -->
+    <browser:viewlet
+        name="plone.belowcontenttitle.keywords"
+        manager=".interfaces.IBelowContentTitle"
+        template="keywords.pt"
+        permission="zope2.View" 
+        />
+
     <!-- Render comments -->
     <browser:viewlet
         name="plone.comments"
