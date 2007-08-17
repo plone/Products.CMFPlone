@@ -6,8 +6,10 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<metal:head fill-slot="top_slot"
-            tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:head fill-slot="top_slot"
+                tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
 
 <div metal:fill-slot="main">
 
