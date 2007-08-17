@@ -40,10 +40,10 @@
            tal:define="kss_class python:getKssClasses('description',
                         templateId='kss_generic_macros', macro='description-field-view');"
            tal:condition="here/Description"
-           tal:attributes="class string:documentDescription$kss_class;">
-           <p>
-            <span metal:define-slot="inside" 
-                  tal:replace="here/Description">Description</span>
+           tal:attributes="class kss_class;">
+           <p class="documentDescription" 
+              metal:define-slot="inside"
+              tal:content="here/Description">Description
            </p>
         </div>
         </tal:archetypes>
