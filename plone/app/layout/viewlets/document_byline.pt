@@ -1,60 +1,57 @@
-<div i18n:domain="plone"
-     id="document-byline"
+<div class="documentByLine"
+     id="plone-document-byline"
+     i18n:domain="plone"
      tal:condition="view/show">
+  <span id="lock-icon">
+    <img tal:replace="structure view/locked_icon" />
+  </span>
 
-    <div class="documentByLine" id="plone-document-byline">
-      <span id="lock-icon">
-        <img tal:replace="structure view/locked_icon" />
-      </span>
+  <tal:name tal:condition="view/creator">
+    <span class="documentAuthor"
+          i18n:translate="label_by_author">
+      by
+      <a href="#"
+         tal:attributes="href string:${view/portal_url}/author/${view/creator}"
+         tal:content="view/authorname"
+         tal:omit-tag="not:view/author"
+         i18n:name="author">
+        Bob Dobalina
+      </a>
 
-        <tal:name tal:condition="view/creator">
-          <span class="documentAuthor"
-                i18n:translate="label_by_author">
-            by
-          <a href="#"
-             tal:attributes="href string:${view/portal_url}/author/${view/creator}"
-             tal:content="view/authorname"
-             tal:omit-tag="not:view/author"
-             i18n:name="author">
-            Bob Dobalina
-          </a>
+    </span>
+  </tal:name>
 
-          </span>
-        </tal:name>
+  <span class="documentModified">
+    &mdash;
+    <span i18n:translate="box_last_modified">
+      last modified
+    </span>
+    <span tal:replace="python:view.toLocalizedTime(here.ModificationDate(),long_format=1)">
+      August 16, 2001 at 23:35:59
+    </span>
+  </span>
 
-        <span class="documentModified">
-          &mdash;
-            <span i18n:translate="box_last_modified">
-            last modified
-            </span>
-            <span tal:replace="python:view.toLocalizedTime(here.ModificationDate(),long_format=1)">
-            August 16, 2001 at 23:35:59
-            </span>
-        </span>
+  <tal:expired tal:condition="view/isExpired">
+    &mdash;
+    <span class="state-expired"
+          i18n:translate="time_expired">expired</span>
+  </tal:expired>
 
-        <tal:expired tal:condition="view/isExpired">
-            &mdash;
-            <span class="state-expired"
-                  i18n:translate="time_expired">expired</span>
-        </tal:expired>
+  <div class="documentContributors"
+       tal:condition="here/Contributors"
+       i18n:translate="text_contributors">
+    Contributors:
+    <span i18n:name="name"
+          tal:omit-tag=""
+          tal:content="python: ', '.join(here.Contributors())">
+      Mary
+    </span>
+  </div>
 
-        <div class="documentContributors"
-             tal:condition="here/Contributors"
-             i18n:translate="text_contributors">
-            Contributors:
-            <span i18n:name="name"
-                  tal:omit-tag=""
-                  tal:content="python: ', '.join(here.Contributors())">
-              Mary
-            </span>
-        </div>
-
-        <tal:rights condition="here/Rights">
-            <div tal:replace="here/Rights">
-                Copyleft NiceCorp Inc.
-            </div>
-        </tal:rights>
-
+  <tal:rights condition="here/Rights">
+    <div tal:replace="here/Rights">
+      Copyleft NiceCorp Inc.
     </div>
+  </tal:rights>
 
 </div>
