@@ -14,14 +14,14 @@
           tal:define="livesearch view/enable_livesearch;"
           tal:attributes="action view/search_action">
       <div class="LSBox">
-        <input class="portlet-search-gadget inputLabel"
+        <input class="searchField inputLabel"
             name="SearchableText"
             type="text"
             size="15"
             title="Search Site"
             i18n:attributes="title title_search_title;"
             tal:attributes="value request/SearchableText|nothing;
-                            class python:livesearch and 'inputLabel portlet-search-gadget' or 'inputLabel portlet-search-gadget-nols'"
+                            class python:livesearch and 'inputLabel searchField' or 'inputLabel portlet-search-gadget-nols'"
             />
         <input class="searchButton"
             type="submit"
