@@ -1,5 +1,6 @@
 <div i18n:domain="plone"
      id="category"
+     class="documentByLine"
      tal:define="categories context/Subject|nothing"
      tal:condition="categories">
   &mdash;
