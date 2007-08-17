@@ -16,11 +16,11 @@ def rc1_rc2(portal):
 
     return out
 
-def rc2_rc3(portal):
+def rc2_final(portal):
     
     out = []
     
-    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0rc2-3.0rc3')
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0rc2-3.0final')
     
     return out
 

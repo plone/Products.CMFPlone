@@ -31,10 +31,10 @@
       />
       
   <genericsetup:registerProfile
-      name="3.0rc2-3.0rc3"
-      title="Migration profile for Plone 3.0-rc2 to Plone 3.0-rc3"
-      description="This profile contains configuration changes that are applied during the Plone 3.0-rc2 to 3.0-rc3 migration." 
-      directory="v3_0/profiles/rc2_rc3"
+      name="3.0rc2-3.0final"
+      title="Migration profile for Plone 3.0-rc2 to Plone 3.0-final"
+      description="This profile contains configuration changes that are applied during the Plone 3.0-rc2 to 3.0-final migration." 
+      directory="v3_0/profiles/rc2_final"
       for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />

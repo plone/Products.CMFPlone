@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0 - UNRELEASED
 
+    - Update migration code for final release.
+      [wichert]
+
     - Remove keywords/category listing from document byline and
       instead render it as a viewlet right below that.
       [maurits]
