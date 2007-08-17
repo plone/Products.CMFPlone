@@ -105,16 +105,34 @@ Important notes for users
   - a table of contents can be generated automatically based on the headers 
     used in the page.
 
-* KSS/Azax
+* With the new inline Ajax-powered editing of Plone, you no longer have to
+  reload a page or go to a separate screen to make a correction — simply edit
+  it directly by clicking on it.
 
 * In addition to the standard four-state workflow Plone has always used
   there Plone now includes special community, intranet, simple publication
   and one-state workflows. Switching between workflows can be done in an
   existing site using a new control panel.
 
-* versioning, staging and locking
+* Working Copy support - lets you work on two versions of your content in
+  parallel. With working copy support you can check out a parallel version of a
+  published document, and Plone will keep track of the two documents together.
+  You can then go off and polish your new document to perfection — and when
+  you're ready for the new version to go live, you just publish it.
 
-* content rules
+* Automatic locking and unlocking Prevents people from overwriting each others
+  changes, but makes it easy to unlock accidentally locked content. Plone gives
+  you a lightweight locking message that will tell you that a document was
+  locked, by whom, and how long ago — so you won't accidentally stomp on
+  somebody else's changes.
+
+* The new rules engine for content lets you perform operations on content with
+  event triggers. Do you want a mail to go out to the project group when
+  reports are uploaded to a certain location in your site? Want to move a file
+  from one location to another when it is added after a certain date?
+
+  Plone 3 ships with a powerful and configurable content rules engine that lets
+  you define triggers and perform operations when these events are triggered.
 
 
 Important notes for site and system administrators
