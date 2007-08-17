@@ -48,11 +48,11 @@ class INavigationPortlet(IPortletDataProvider):
             required=False)
     
     root = schema.Choice(
-            title=_(u"label_navigation_root_path", default=u"Root path"),
+            title=_(u"label_navigation_root_path", default=u"Root node"),
             description=_(u'help_navigation_root',
-                          default=u"A folder to use for the base folder "
-                                   "where the navigation tree, sitemap, "
-                                   "breadcrumbs and tabs will be rooted. "),
+                          default=u"You may search for and choose a folder "
+                                    "to act as the root of the navigation tree. "
+                                    "Leave blank to use the Plone site root."),
             required=False,
             source=SearchableTextSourceBinder({'is_folderish' : True}))
                             
