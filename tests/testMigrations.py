@@ -77,8 +77,6 @@ from Products.CMFPlone.migrations.v2_5.two52_two53 import addMissingMimeTypes
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import addDefaultAndForbiddenContentTypesProperties
-from Products.CMFPlone.migrations.v3_0.alphas import addMarkupConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import addIconForMarkupConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
@@ -685,40 +683,26 @@ class TestMigrations_v2_5_x(MigrationTest):
         
     def testAddIconForMarkupConfiglet(self):
         self.removeActionIconFromTool('MarkupSettings')
-        addIconForMarkupConfiglet(self.portal, [])
+        loadMigrationProfile(self.portal, self.profile, ('action-icons', ))
         self.failUnless('MarkupSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddIconForMarkupConfigletTwice(self):
-        self.removeActionIconFromTool('MarkupSettings')
-        addIconForMarkupConfiglet(self.portal, [])
-        addIconForMarkupConfiglet(self.portal, [])
+        # Test it twice
+        loadMigrationProfile(self.portal, self.profile, ('action-icons', ))
         self.failUnless('MarkupSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddIconForMarkupConfigletNoTool(self):
-        self.portal._delObject('portal_actionicons')
-        addIconForMarkupConfiglet(self.portal, [])
     
     def testAddMarkupConfiglet(self):
         self.removeActionFromTool('MarkupSettings', action_provider='portal_controlpanel')
-        addMarkupConfiglet(self.portal, [])
+        loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
+        self.failUnless('MarkupSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/MarkupSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@markup-controlpanel')
+        # Test it twice
+        loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
         self.failUnless('MarkupSettings' in [action.getId() for action in self.cp.listActions()])
         types = self.cp.getActionObject('Plone/MarkupSettings')
         self.assertEquals(types.action.text,
                           'string:${portal_url}/@@markup-controlpanel')
 
-    def testAddMarkupConfigletTwice(self):
-        self.removeActionFromTool('MarkupSettings', action_provider='portal_controlpanel')
-        addMarkupConfiglet(self.portal, [])
-        addMarkupConfiglet(self.portal, [])
-        self.failUnless('MarkupSettings' in [action.getId() for action in self.cp.listActions()])
-        types = self.cp.getActionObject('Plone/MarkupSettings')
-        self.assertEquals(types.action.text,
-                          'string:${portal_url}/@@markup-controlpanel')
-                          
-    def testAddMarkupConfigletNoTool(self):
-        self.portal._delObject('portal_controlpanel')
-        addMarkupConfiglet(self.portal, [])
-                              
     def testAddIconForTypesConfiglet(self):
         self.removeActionIconFromTool('TypesSettings')
         addIconForTypesConfiglet(self.portal, [])

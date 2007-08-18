@@ -103,8 +103,6 @@ def three0_alpha1(portal):
 
     # Add new properties for default- and forbidden content types
     addDefaultAndForbiddenContentTypesProperties(portal, out)
-    addMarkupConfiglet(portal, out)
-    addIconForMarkupConfiglet(portal, out)
 
     # Actions should gain a i18n_domain now, so their title and description are
     # returned as Messages
@@ -469,43 +467,6 @@ def addDefaultAndForbiddenContentTypesProperties(portal, out):
                     'text/x-web-textile',
                     'text/x-web-intelligent')
             out.append("Added 'forbidden_contenttypes' property to site_properties.")
-
-
-def addMarkupConfiglet(portal, out):
-    """Add the markup configlet."""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        gotMarkup = False
-        for configlet in controlPanel.listActions():
-            if configlet.getId() == 'MarkupSettings':
-                gotMarkup = True
-        if not gotMarkup:
-            controlPanel.registerConfiglet(
-                id         = 'MarkupSettings',
-                appId      = 'Plone',
-                name       = 'Markup',
-                action     = 'string:${portal_url}/@@markup-controlpanel',
-                category   = 'Plone',
-                permission = ManagePortal,
-            )
-            out.append("Added Markup Settings to the control panel")
-
-
-def addIconForMarkupConfiglet(portal, out):
-    """Adds an icon for the markup settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 'MarkupSettings':
-                break # We already have the icon
-        else:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='MarkupSettings',
-                icon_expr='edit.gif',
-                title='Markup',
-                )
-        out.append("Added markup configlet icon to actionicons tool.")     
 
 
 def addTypesConfiglet(portal, out):
