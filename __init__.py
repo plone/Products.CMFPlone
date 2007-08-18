@@ -66,9 +66,6 @@ def initialize(context):
     from StringIO import StringIO
     allow_class(StringIO)
 
-    # Make listPolicies importable TTW
-    ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
-
     # Make Unauthorized importable TTW
     ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
 
@@ -119,10 +116,6 @@ def initialize(context):
     # Register unicode splitter w/ ZCTextIndex
     # pipeline registry
     import UnicodeSplitter
-
-    # Register Plone skins directory
-    from Products.CMFCore import DirectoryView
-    DirectoryView.registerDirectory('skins', cmfplone_globals)
 
     # Plone content
 

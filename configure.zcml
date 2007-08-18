@@ -1,5 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:cmf="http://namespaces.zope.org/cmf"
            xmlns:five="http://namespaces.zope.org/five"
            i18n_domain="plone">
 
@@ -42,6 +43,12 @@
 
   <include file="deprecated.zcml"/>
   <include file="profiles.zcml"/>
+
+  <cmf:registerDirectory
+      name="skins"
+      directory="skins"
+      recursive="True"
+      />
 
   <five:implements
     class=".FactoryTool.FactoryTool"

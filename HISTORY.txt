@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Moved CMF skins registration into configure.zcml, removed security
+      declaration for no-longer existent listPolicies of the portal.
+      [hannosch]
+
     - Added basic migration folders, so PloneTestCase can effectively
       recognize a Plone 3.5 version.
       [hannosch]
