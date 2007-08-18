@@ -2,7 +2,7 @@ Installing Plone manually, step by step instructions.
 ==============================================================================
 
 The following is a list of important things to note when installing or
-upgrading to Plone 3.0:
+upgrading to Plone 3.5:
 
 * Unpacking the Plone archive with WinZip will not work: WinZip will truncate
   filenames without warning you. 7-Zip is a good open source alternative for
@@ -22,7 +22,7 @@ upgrading to Plone 3.0:
   They can be downloaded from the OpenID enabled site at
   http://www.openidenabled.com/resources/downloads/python-openid/
 
-* Plone 3.0 uses both Zope Products and python packages. The Zope Products
+* Plone 3.5 uses both Zope Products and python packages. The Zope Products
   are installed in the usual location: the Products directory of the Zope
   instance. Python package may be installed in the lib/python directory in the
   Zope instance, or anywhere on the standard python path.
