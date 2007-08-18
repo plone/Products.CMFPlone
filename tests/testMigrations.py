@@ -69,10 +69,7 @@ from Products.ResourceRegistries.interfaces import ICSSRegistry
 from Products.ResourceRegistries.interfaces import IJSRegistry
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 
-from Products.CMFPlone.migrations.v2_5.final_two51 import removePloneCssFromRR
-from Products.CMFPlone.migrations.v2_5.final_two51 import addEventRegistrationJS
 from Products.CMFPlone.migrations.v2_5.final_two51 import fixupPloneLexicon
-from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFPlone.migrations.v2_5.two51_two52 import setLoginFormInCookieAuth
 from Products.CMFPlone.migrations.v2_5.two52_two53 import addMissingMimeTypes
@@ -276,72 +273,48 @@ class MigrationTest(PloneTestCase.PloneTestCase):
             self.skins.addSkinSelection(skin, ','.join(path))
 
 
-class TestMigrations_v2_5_1(MigrationTest):
+class TestMigrations_v2_5_0(MigrationTest):
 
     def afterSetUp(self):
+        self.profile = 'profile-Products.CMFPlone.migrations:2.5final-2.5.1'
         self.actions = self.portal.portal_actions
-        self.memberdata = self.portal.portal_memberdata
-        self.catalog = self.portal.portal_catalog
-        self.skins = self.portal.portal_skins
-        self.types = self.portal.portal_types
-        self.workflow = self.portal.portal_workflow
         self.css = self.portal.portal_css
 
-    def testRemovePloneCssFromRR(self):
+    def testProfile(self):
         # Check to ensure that plone.css gets removed from portal_css
         self.css.registerStylesheet('plone.css', media='all')
         self.failUnless('plone.css' in self.css.getResourceIds())
-        removePloneCssFromRR(self.portal, [])
-        self.failIf('plone.css' in self.css.getResourceIds())
 
-    def testRemovePloneCssFromRRTwice(self):
-        # Should not fail if performed twice
-        self.css.registerStylesheet('plone.css', media='all')
-        self.failUnless('plone.css' in self.css.getResourceIds())
-        removePloneCssFromRR(self.portal, [])
-        removePloneCssFromRR(self.portal, [])
-        self.failIf('plone.css' in self.css.getResourceIds())
-
-    def testRemovePloneCssFromRRNoCSS(self):
-        # Should not fail if the stylesheet is missing
-        self.failIf('plone.css' in self.css.getResourceIds())
-        removePloneCssFromRR(self.portal, [])
-
-    def testRemovePloneCssFromRRNoTool(self):
-        # Should not fail if the tool is missing
-        self.portal._delObject('portal_css')
-        removePloneCssFromRR(self.portal, [])
-
-    def testAddEventRegistrationJS(self):
+        # Make sure event registration is added
         jsreg = self.portal.portal_javascripts
         # unregister first
         jsreg.unregisterResource('event-registration.js')
         script_ids = jsreg.getResourceIds()
         self.failIf('event-registration.js' in script_ids)
-        # migrate and test again
-        addEventRegistrationJS(self.portal, [])
+
+        # Prepare delete actions test
+        editActions = ('delete',)
+        for a in editActions:
+            self.removeActionFromTool(a, category='object_buttons')
+
+        loadMigrationProfile(self.portal, self.profile)
+
+        # delete action tests
+        actions = [x.id for x in self.actions.object_buttons.listActions()
+                   if x.id in editActions]
+        # check that all of our deleted actions are now present
+        for a in editActions:
+            self.failUnless(a in actions)
+        # ensure that they are present only once
+        self.failUnlessEqual(len(editActions), len(actions))
+
+        # event registration test
         script_ids = jsreg.getResourceIds()
         self.failUnless('event-registration.js' in script_ids)
         self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
 
-    def testAddEventRegistrationJSTwice(self):
-        # Should not break if migrated again
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('event-registration.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('event-registration.js' in script_ids)
-        # migrate and test again
-        addEventRegistrationJS(self.portal, [])
-        addEventRegistrationJS(self.portal, [])
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('event-registration.js' in script_ids)
-        self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
-
-    def testAddEventRegistrationJSNoTool(self):
-        # Should not break if the tool is missing
-        self.portal._delObject('portal_javascripts')
-        addEventRegistrationJS(self.portal, [])
+        # plone.css removcal test
+        self.failIf('plone.css' in self.css.getResourceIds())
 
     def testFixupPloneLexicon(self):
         # Should update the plone_lexicon pipeline
@@ -370,36 +343,17 @@ class TestMigrations_v2_5_1(MigrationTest):
         self.portal._delObject('portal_catalog')
         fixupPloneLexicon(self.portal, [])
 
-    def tesFixObjDeleteActionTwice(self):
-        # Should not error if performed twice
-        editActions = ('delete',)
-        for a in editActions:
-            self.removeActionFromTool(a)
-        fixObjDeleteAction(self.portal, [])
-        fixObjDeleteAction(self.portal, [])
-        actions = [x.id for x in self.actions.listActions()
-                   if x.id in editActions]
-        # check that all of our deleted actions are now present
-        for a in editActions:
-            self.failUnless(a in actions)
-        # ensure that they are present only once
-        self.failUnlessEqual(len(editActions), len(actions))
 
-    def testFixObjDeleteActionNoAction(self):
-        # Should add the action
-        editActions = ('delete',)
-        for a in editActions:
-            self.removeActionFromTool(a)
-        fixObjDeleteAction(self.portal, [])
-        actions = [x for x in self.actions.object_buttons.objectIds()
-                   if x in editActions]
-        for a in editActions:
-            self.failUnless(a in actions)
-        self.failUnlessEqual(len(editActions), len(actions))
+class TestMigrations_v2_5_1(MigrationTest):
 
-    def testFixObjDeleteActionNoTool(self):
-        self.portal._delObject('portal_actions')
-        fixObjDeleteAction(self.portal, [])
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.memberdata = self.portal.portal_memberdata
+        self.catalog = self.portal.portal_catalog
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+        self.css = self.portal.portal_css
 
     def testSetLoginFormInCookieAuth(self):
         setLoginFormInCookieAuth(self.portal, [])
@@ -2367,6 +2321,7 @@ class TestMigrations_v3_0(MigrationTest):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
+    suite.addTest(makeSuite(TestMigrations_v2_5_0))
     suite.addTest(makeSuite(TestMigrations_v2_5_1))
     suite.addTest(makeSuite(TestMigrations_v2_5_2))
     suite.addTest(makeSuite(TestMigrations_v3_0))

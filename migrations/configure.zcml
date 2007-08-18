@@ -4,6 +4,15 @@
     i18n_domain="plone">
 
   <genericsetup:registerProfile
+      name="2.5final-2.5.1"
+      title="Migration profile for Plone 2.5-final to Plone 2.5.1"
+      description="This profile contains configuration changes that are applied during the Plone 2.5-final to 2.5.1 migration." 
+      directory="v2_5/profiles/final_two51"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
       name="3.0b1-3.0b2"
       title="Migration profile for Plone 3.0-beta1 to Plone 3.0-beta2"
       description="This profile contains configuration changes that are applied during the Plone 3.0-beta1 to 3.0-beta2 migration." 
