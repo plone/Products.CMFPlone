@@ -1,15 +1,15 @@
-Plone 3.0 - Aug, 2007
-=====================
+Plone 3.5 - TBD
+===============
 
 The following is a list of important things to note when installing or
-upgrading to Plone 3.0:
+upgrading to Plone 3.5:
 
 * Unpacking the Plone archive with WinZip will not work: WinZip will truncate
   filenames without warning you. 7-Zip is a good open source alternative for
   Windows that you can use instead: http://www.7-zip.org
 
-* Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope
-  2.11 and later may or may not work. Zope 3.x is not supported.
+* Zope 2.11.0+ is now required. Older versions of Zope will not work. Zope
+  2.12 and later may or may not work. Zope 3.x is not supported.
 
 * The python ElementTree package is now required. This package can be
   downloaded from its home page at http://effbot.org/downloads/#elementtree .
@@ -22,117 +22,16 @@ upgrading to Plone 3.0:
   They can be downloaded from the OpenID enabled site at
   http://www.openidenabled.com/resources/downloads/python-openid/
 
-* Plone 3.0 uses both Zope Products and python packages. The Zope Products
+* Plone 3.5 uses both Zope Products and python packages. The Zope Products
   are installed in the usual location: the Products directory of the Zope
   instance. Python package may be installed in the lib/python directory in the
   Zope instance, or anywhere on the standard python path.
-
-* The GroupUserFolder user folder is no longer supported; instead Plone
-  now requires the Pluggable Authentication System (PAS). It may not be
-  possible to upgrade a site using GRUF with external user folders such as
-  LDAPUserFolder. In those cases it is advised to create a new site and move
-  the content over manually.
 
 
 Important notes for users
 -------------------------
 
-* The most significant new feature is undoubtedly KSS - Kinetic Style
-  Sheets - or, Plone's Ajax framework. This allows Plone to have a more
-  polished user interface elements and more powerful dynamic applications that
-  can refresh data in a page without having to reload the entire page. For
-  example, you can double-click the title of the page to instantly edit it. Or
-  switch between tabs nearly instantly. Or validate form fields before you hit
-  submit. And that's just the beginning.
-
-* Plone 3.0 now provides document versioning out of the box. Versioning allows
-  you to save old versions of a page, compare your current version to older
-  versions, and even to roll back to previous versions. Plone 3.0 also includes
-  document staging, the ability to work on a copy of a document while the old
-  version is still live.  Finally, Plone 3.0 includes locking, which prevents
-  two people from making changes to a document at the same time. Together,
-  versioning, staging and locking will make Plone 3.0 very appealing to folks
-  who are managing sophisticated sites with multiple people editing content at
-  the same time.
-
-* A link integrity feature has been added which can automatically
-  detect and prevent broken links in a site, or intelligently redirect users if
-  they use a broken link into a site. Plone will now:
-
-  - warn you when you try to delete a page that has incoming links from
-    elsewhere on your site
-
-  - automatically create redirects when you move or rename a page that has
-    incoming links
-
-* Portlets have been greatly enhanced. There is a new 'manage portlets' option
-  available in the site which allows you to
-
-  - instantly add, remove and reorder portlets
-
-  - control whether portlets get inherited from parent folders
-
-  - customize portlets per-user, per-group and per content type
-
-  - configure individual portlets, for example to change the number
-    of items shown in portlets.
-
-* Users now have a personal dashboard. They can customize this with
-  multiple portlets.
-  
-* Plone now supports the Google Sitemap protocol, described in 
-  https://www.google.com/webmasters/tools/docs/en/protocol.html
-
-  You can switch the site map feature on under Site Settings in the Site Setup
-  page. When enabled the sitemap.xml.gz file is provided in the root of your
-  portal.
-
-* The Plone Tableless skin has been removed. The standard Plone skin makes
-  very minimal use of tables and can be flexibly styled, as is demonstrated
-  by the new NuPlone theme.
-
-* Content types can now be configured through a new control panel. Using this
-  panel a number of new features are available:
-
-  - rich text fields in types can act as wiki fields, making it possible to
-    create wiki-style links by surrounding a phrase (( .. ))
-
-* The standard Page type has added two new options: 
-
-  - a toggle which allows pages to be shown as S5 presentations. This makes
-    it trivial to create simple presentations in Plone.
-
-  - a table of contents can be generated automatically based on the headers 
-    used in the page.
-
-* With the new inline Ajax-powered editing of Plone, you no longer have to
-  reload a page or go to a separate screen to make a correction — simply edit
-  it directly by clicking on it.
-
-* In addition to the standard four-state workflow Plone has always used
-  there Plone now includes special community, intranet, simple publication
-  and one-state workflows. Switching between workflows can be done in an
-  existing site using a new control panel.
-
-* Working Copy support - lets you work on two versions of your content in
-  parallel. With working copy support you can check out a parallel version of a
-  published document, and Plone will keep track of the two documents together.
-  You can then go off and polish your new document to perfection — and when
-  you're ready for the new version to go live, you just publish it.
-
-* Automatic locking and unlocking Prevents people from overwriting each others
-  changes, but makes it easy to unlock accidentally locked content. Plone gives
-  you a lightweight locking message that will tell you that a document was
-  locked, by whom, and how long ago — so you won't accidentally stomp on
-  somebody else's changes.
-
-* The new rules engine for content lets you perform operations on content with
-  event triggers. Do you want a mail to go out to the project group when
-  reports are uploaded to a certain location in your site? Want to move a file
-  from one location to another when it is added after a certain date?
-
-  Plone 3 ships with a powerful and configurable content rules engine that lets
-  you define triggers and perform operations when these events are triggered.
+* None so far.
 
 
 Important notes for site and system administrators
@@ -141,112 +40,23 @@ Important notes for site and system administrators
 For migration instructions please see the online Plone upgrade manual:
 http://plone.org/upgrade
 
-* Plone 3 now uses a new session authentication implementation based on the
-  new plone.session package. This system uses a cryptographic hash against
-  the userid of a successfully authenticated user to authenticate sessions.
-
-  This form of session authentication only works for users defined in the
-  user folder in the Plone site itself. Users defined in other user folders
-  (such as the global admin user defined in the Zope root) will work, but
-  use the authentication methods configured in their user folder. This
-  means that they will be less secure than users defined in the Plone site.
-
-* Member folders are no longer enabled by default.
-
-* In order to use the automatic indexing of Word and PDF files you will
-  need to install some external tools: indexing of MS Word files requires
-  the wvware product to be installed. For PDF files either the pdftotext
-  of xpdf suite is required.
+* No special notes so far.
 
 
 Important notes for developers
 ------------------------------
 
-The latest information on migrating products to Plone 3.0 can be found online
-at http://plone.org/documentation/manual/upgrade-guide/version/2.5-3.0/products
+The latest information on migrating products to Plone 3.5 can be found online
+at http://plone.org/documentation/manual/upgrade-guide
 
-* Searching for users and groups using the portal_membership and portal_groups
-  tools has been deprecated. Please use the search features of PAS directly
-  or use the PlonePAS pas_search browser view.
+* No developer notes yet.
 
-* There are new Reader, Editor and Contributor roles, roughly mapping to
-  View/Access contents information/List folder contents, Modify portal content
-  and Add portal content, respectively. They are to be used only as local
-  roles, via the improved "sharing" tab. 
-  
-  If you have custom workflows, you may want to amend them to use these roles. 
-  
-  If you use custom add permissions for your content types, you may want to
-  give them to the Contributor role by default.
-  
-* You are no longer expected to have a "Sharing" tab, implemented as an
-  action with id 'local_roles', on your custom content types. This is now a 
-  global action, in the 'object' category. If your type provides such an
-  action, there will be two "Sharing" tabs. Also note that the sharing action
-  is now called @@sharing, not folder_local_role_form.
-
-* Portlets have been re-implemented using the Zope 3 component architecture.
-  The base package, plone.portlets, is usable in plain Zope 3 and has been
-  successfully used with Grok. See its README.txt for full details on the
-  architecture (you are only likely to need this if you need to understand
-  how portlets are wired into Plone's core - you need to know considerably
-  less to understand how to use and make portlets, and there is a much
-  improved UI for site administrators).
-  
-  The easiest way to re-use an existing template-based portlet is to use a
-  Classic Portlet from the "Manage portlets" screen, although this will suffer
-  some performance overhead. It is better to make a new-style portlet. These
-  allow you to keep configuration data associated with a particular portlet
-  assignment, using formlib, and gives you a well-defined place to put
-  Python logic powering the portlet. See plone.app.portlets.portlets for
-  plenty of examples, or http://svn.plone.org/svn/collective/collective.portlet.
-  
-  Note that the left_slots and right_slots properties are no longer used.
-  The "manage portlets" screen will allow you to migrate existing properties
-  in a particular folder (those at the root of the portal are migrated when
-  Plone is upgraded). To manage portlet assignments, use the APIs described
-  in plone.portlets.interfaces, or see plone.app.portlets.browser.editmanager.
-
-* Skins: main_template now uses viewlet managers instead of metal macros
-  -> Alexander Limi or Florian Schulze to fill in stuff here. Affected
-  are at least header.pt, viewThreadsAtBottom and global_contentmenu
-
-* It is no longer possible to define workflows using python code. Instead
-  workflows have to be created via a GenericSetup profile.
-  
-* The new default workflow is simple_publication_workflow. If you have tests
-  which can't handle this, you should fix them. However, to get a test fixture
-  with the old plone_workflow as default, you can do:
-  
-    setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
-
-  This sets up the CMFPlone test fixture extension profile, which ensures
-  the default is plone_workflow.
-
-* The long deprecated Products.CMFCore.CMFPermissions module has been
-  removed. Code should now use its replacement Products.CMFCore.permissions
-
-* You can use the contentmigration product to write migrations for your own
-  products.  More information on this product can be found in the RichDocument
-  tutorial: http://plone.org/documentation/tutorial/richdocument/migrations/
-
-* If you have a custom content type that is derived from ATDocument but does
-  not want the document-specific behavior that is provided on the IATDocument
-  interface you should use the new ATDocumentBase base class instead.
-
-* Customising z3 views using Customerize
-
-* Products.CMFPlone.utils.BrowserView has been deprecated. If you were using
-  this as a base class please use Products.Five.BrowserView instead. To
-  get a correctly acquisition wrapped context use aq_inner(self.context).
 
 Preferred but not obligatory (right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* QuickInstaller-based installation should use GenericSetup profiles instead 
-
-* use events instead of manage_ methods (which will probably disappear in Plone
-  3.5 or 4.0)
+* Use events instead of manage_ methods (which will probably disappear in Plone
+  4.0 or 4.5)
 
 * Packaging technology:
 
