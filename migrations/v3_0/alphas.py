@@ -109,6 +109,9 @@ def three0_alpha1(portal):
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:2.5.x-3.0a1')
 
+    # Deal with the tableless skin disappearing
+    removeTablelessSkin(portal, out)
+
     # The ATCT tool has lost all type migration functionality and quite some
     # metadata and index information stored on it needs to be updated.
     upgradeATCTTool(portal, out)
@@ -122,9 +125,6 @@ def three0_alpha1(portal):
 
     # Migrate legacy portlets
     convertLegacyPortlets(portal, out)
-
-    # Deal with the tableless skin disappearing
-    removeTablelessSkin(portal, out)
 
     return out
 
@@ -146,14 +146,14 @@ def alpha1_alpha2(portal):
     # add form_tabbing.js
     addFormTabbingJS(portal, out)
 
-    # install the kss bits
-    installKss(portal, out)
-
     # install plone.app.redirector
     installRedirectorUtility(portal, out)
 
     # Add action for plone.app.contentrules
     addContentRulesAction(portal, out)
+
+    # Update expression on RTL.css
+    updateRtlCSSexpression(portal, out)
 
     # Add reader and editor roles
     addReaderAndEditorRoles(portal, out)
@@ -165,8 +165,8 @@ def alpha1_alpha2(portal):
     # script obsolete
     reorderUserActions(portal, out)
 
-    # Update expression on RTL.css
-    updateRtlCSSexpression(portal, out)
+    # install the kss bits
+    installKss(portal, out)
 
     return out
 
@@ -182,44 +182,46 @@ def alpha2_beta1(portal):
 
     # Add control panel action 
     addMaintenanceConfiglet(portal, out)
-    
+
     # Add action icon
     addIconForMaintenanceConfiglet(portal, out)
 
     # Add number_of_days_to_keep property
     addMaintenanceProperty(portal, out)
 
-    installS5(portal, out)
-    
     addTableContents(portal, out)
 
     # add input-label.js
     addFormInputLabelJS(portal, out)
-    
-    #modify member security settings to match new default policies
-    updateMemberSecurity(portal, out)
 
-    updatePASPlugins(portal, out)
-    
     # Update control panel actions
     updateSkinsAndSiteConfiglet(portal, out)
 
     # Rename some control panel titles
     updateConfigletTitles(portal, out)
 
+    # Install the filter and security control panels
+    addFilterAndSecurityConfiglets(portal, out)
+
     # Add icon for filter and security configlets
     addIconsForFilterAndSecurityConfiglets(portal, out)
+
+    # Add the types configlet
+    addTypesConfiglet(portal, out)
+    addIconForTypesConfiglet(portal, out)
 
     # add content rules configlet
     installContentRulesUtility(portal, out)
     addContentRulesConfiglet(portal, out)
     addIconForContentRulesConfiglet(portal, out)
 
-    # Install the filter and security control panels
-    addFilterAndSecurityConfiglets(portal, out)
-
     # Add the sitemap enabled property
     addSitemapProperty(portal, out)
+
+    #modify member security settings to match new default policies
+    updateMemberSecurity(portal, out)
+
+    updatePASPlugins(portal, out)
 
     # Use the unpacked kukit-src.js and pack it ourself
     updateKukitJS(portal, out)
@@ -227,7 +229,7 @@ def alpha2_beta1(portal):
     # Add a RAMCache for ResourceRegistries
     addCacheForResourceRegistry(portal, out)
 
-    # Compress cssQuery with full-encode like it's supposed to.
+    # Compress cssQuery with full-encode like it's supposed to
     updateCssQueryJS(portal, out)
 
     # Remove very old javascript
@@ -235,7 +237,7 @@ def alpha2_beta1(portal):
 
     # Add webstats.js for Google Analytics
     addWebstatsJSFile(portal,out)
-    
+
     # Add webstats_js property to site properties
     addWebstatsJSProperty(portal,out)
 
@@ -248,10 +250,6 @@ def alpha2_beta1(portal):
     # Add external_links_open_new_window property to site properties
     addExternalLinksOpenNewWindowProperty(portal, out)
 
-    # Add the types configlet
-    addTypesConfiglet(portal, out)
-    addIconForTypesConfiglet(portal, out)
-    
     # Add workflows that people may be missing
     addMissingWorkflows(portal, out)
 
@@ -741,40 +739,6 @@ def updateRtlCSSexpression(portal, out):
             rtl = cssreg.getResource('RTL.css')
             rtl.setExpression("python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
             out.append("Updated RTL.css expression.")
-
-
-def installS5(portal, out):
-    portalTypes = getToolByName(portal, 'portal_types', None)
-    if portalTypes is not None:
-        document = portalTypes.restrictedTraverse('Document', None)
-        if document:
-            for action in document.listActions():
-                if action.getId() == 's5_presentation':
-                    break # We already have the action
-            else:
-                document.addAction('s5_presentation',
-                    name='View as presentation',
-                    action="string:${object/absolute_url}/document_s5_presentation",
-                    condition='python:object.document_s5_alter(test=True)',
-                    permission='View',
-                    category='document_actions',
-                    visible=1,
-                    )
-            out.append("Added 's5_presentation' action to actions tool.")
-
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 's5_presentation':
-                break # We already have the icon
-        else:
-            iconsTool.addActionIcon(
-                category='plone',
-                action_id='s5_presentation',
-                icon_expr='fullscreenexpand_icon.gif',
-                title='View as presentation',
-                )
-        out.append("Added 's5_presentation' icon to actionicons tool.")
 
 
 def addIconForMaintenanceConfiglet(portal, out):

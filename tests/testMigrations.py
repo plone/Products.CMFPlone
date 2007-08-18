@@ -93,7 +93,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
 from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addLinkIntegritySwitch
-from Products.CMFPlone.migrations.v3_0.alphas import installS5
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
 from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
@@ -114,7 +113,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import addObjectProvidesIndex
 from Products.CMFPlone.migrations.v3_0.alphas import addExternalLinksOpenNewWindowProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForTypesConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import addMissingWorkflows
 from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
 from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
 from Products.CMFPlone.migrations.v3_0.alphas import installI18NUtilities
@@ -317,25 +315,10 @@ class TestMigrations_v2_5_0(MigrationTest):
         fixupPloneLexicon(self.portal, [])
         self.failUnless(isinstance(lexicon._pipeline[0], Splitter))
         self.failUnless(isinstance(lexicon._pipeline[1], CaseNormalizer))
-
-    def testFixupPloneLexiconTwice(self):
-        # Should not break if migrated again
-        lexicon = self.portal.portal_catalog.plone_lexicon
-        lexicon._pipeline = (object(), object())
-        fixupPloneLexicon(self.portal, [])
+        # Test it twice
         fixupPloneLexicon(self.portal, [])
         self.failUnless(isinstance(lexicon._pipeline[0], Splitter))
         self.failUnless(isinstance(lexicon._pipeline[1], CaseNormalizer))
-
-    def testFixupPloneLexiconNoLexicon(self):
-        # Should not break if plone_lexicon is missing
-        self.portal.portal_catalog._delObject('plone_lexicon')
-        fixupPloneLexicon(self.portal, [])
-
-    def testFixupPloneLexiconNoTool(self):
-        # Should not break if portal_catalog is missing
-        self.portal._delObject('portal_catalog')
-        fixupPloneLexicon(self.portal, [])
 
 
 class TestMigrations_v2_5_1(MigrationTest):
@@ -418,7 +401,7 @@ class TestMigrations_v3_0_Actions(MigrationTest):
 
     def testMigrateActions(self):
         self.failUnless(self.discussion._actions == (self.reply, ))
-        
+
         migrateOldActions(self.portal, [])
 
         reply_actions = getattr(self.actions, 'reply_actions', None)
@@ -439,10 +422,7 @@ class TestMigrations_v3_0_Actions(MigrationTest):
         # Make sure the original action has been removed
         self.failUnless(len(self.discussion._actions) == 0)
 
-    def testMigrateActionsTwice(self):
-        self.failUnless(self.discussion._actions == (self.reply, ))
-
-        migrateOldActions(self.portal, [])
+        # Test it twice
         migrateOldActions(self.portal, [])
 
         reply_actions = getattr(self.actions, 'reply_actions', None)
@@ -467,39 +447,26 @@ class TestMigrations_v3_0_Actions(MigrationTest):
         migrateOldActions(self.portal, [])
         reply = self.actions.reply_actions.reply
         self.assertEquals(reply.i18n_domain, '')        
-
         updateActionsI18NDomain(self.portal, [])
-        
         self.assertEquals(reply.i18n_domain, 'plone')
-
-    def testUpdateActionsI18NDomainTwice(self):
-        migrateOldActions(self.portal, [])
-        reply = self.actions.reply_actions.reply
-        self.assertEquals(reply.i18n_domain, '')        
-
+        # Test it twice
         updateActionsI18NDomain(self.portal, [])
-        updateActionsI18NDomain(self.portal, [])
-
         self.assertEquals(reply.i18n_domain, 'plone')
 
     def testHistoryActionID(self):
         migrateHistoryTab(self.portal, [])
         objects = getattr(self.actions, 'object', None)
         self.failIf('rss' in objects.objectIds())
-
-    def testHistoryActionIDTwice(self):
-        migrateHistoryTab(self.portal, [])
+        # Test it twice
         migrateHistoryTab(self.portal, [])
         objects = getattr(self.actions, 'object', None)
         self.failIf('rss' in objects.objectIds())
-
 
     def testProviderCleanup(self):
         self.actions.addActionProvider("portal_membership")
         self.failUnless("portal_membership" in self.actions.listActionProviders())
         cleanupActionProviders(self.portal, [])
         self.failIf("portal_membership" in self.actions.listActionProviders())
-
 
     def testRemovePropertiesActions(self):
         ti=self.types.getTypeInfo("Document")
@@ -508,7 +475,6 @@ class TestMigrations_v3_0_Actions(MigrationTest):
                     "permission", "object",)
         hidePropertiesAction(self.portal, [])
         self.failUnless(ti.getActionObject("object/metadata") is None)
-
 
     def beforeTearDown(self):
         if len(self.discussion._actions) > 0:
@@ -519,14 +485,10 @@ class TestMigrations_v2_5_x(MigrationTest):
 
     def afterSetUp(self):
         self.profile = 'profile-Products.CMFPlone.migrations:2.5.x-3.0a1'
-        self.actions = self.portal.portal_actions
         self.cp = self.portal.portal_controlpanel
         self.icons = self.portal.portal_actionicons
-        self.skins = self.portal.portal_skins
         self.types = self.portal.portal_types
-        self.workflow = self.portal.portal_workflow
         self.properties = self.portal.portal_properties
-        self.cp = self.portal.portal_controlpanel
 
     def disableSite(self, obj, iface=ISite):
         # We need our own disableSite method as the CMF portal implements
@@ -594,6 +556,18 @@ class TestMigrations_v2_5_x(MigrationTest):
         self.failUnless(sm.utilities.LookupClass == FiveVerifyingAdapterLookup)
         self.failUnless(sm.utilities.__parent__ == sm)
         self.failUnless(sm.__parent__ == self.portal)
+
+    def testUpdateFTII18NDomain(self):
+        doc = self.types.Document
+        doc.i18n_domain = ''
+        # Update FTI's
+        updateFTII18NDomain(self.portal, [])
+        # domain should have been updated
+        self.assertEquals(doc.i18n_domain, 'plone')
+        # Update FTI's twice
+        updateFTII18NDomain(self.portal, [])
+        # domain should have been updated
+        self.assertEquals(doc.i18n_domain, 'plone')
 
     def testAddNewCSSFiles(self):
         cssreg = self.portal.portal_css
@@ -672,50 +646,13 @@ class TestMigrations_v2_5_x(MigrationTest):
         self.assertEquals(cal.action.text,
                           'string:${portal_url}/@@calendar-controlpanel')
 
-    def testAddFormTabbingJS(self):
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('form_tabbing.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('form_tabbing.js' in script_ids)
-        # migrate and test again
-        addFormTabbingJS(self.portal, [])
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('form_tabbing.js' in script_ids)
-        # if collapsiblesections.js is available form_tabbing.js
-        # should be positioned right underneath it
-        if 'collapsiblesections.js' in script_ids:
-            posSE = jsreg.getResourcePosition('form_tabbing.js')
-            posHST = jsreg.getResourcePosition('collapsiblesections.js')
-            self.failUnless((posSE - 1) == posHST)
-
-    def testAddFormInputLabelJS(self):
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('input-label.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('input-label.js' in script_ids)
-        # migrate and test again
-        addFormInputLabelJS(self.portal, [])
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('input-label.js' in script_ids)
-
-    def testUpdateFTII18NDomain(self):
-        doc = self.types.Document
-        doc.i18n_domain = ''
-        # Update FTI's
-        updateFTII18NDomain(self.portal, [])
-        # domain should have been updated
-        self.assertEquals(doc.i18n_domain, 'plone')
-
-    def testUpdateFTII18NDomainTwice(self):
-        doc = self.types.Document
-        doc.i18n_domain = ''
-        # Update FTI's twice
-        updateFTII18NDomain(self.portal, [])
-        updateFTII18NDomain(self.portal, [])
-        # domain should have been updated
-        self.assertEquals(doc.i18n_domain, 'plone')
+    def testTablelessRemoval(self):
+        st = getToolByName(self.portal, "portal_skins")
+        if "Plone Tableless" not in st.getSkinSelections():
+            st.addSkinSelection('Plone Tableless', 'one,two', make_default=True)
+        removeTablelessSkin(self.portal, [])
+        self.failIf('Plone Tableless' in st.getSkinSelections())
+        self.failIf(st.default_skin == 'Plone Tableless')
 
     def testLegacyPortletsConverted(self):
         self.setRoles(('Manager',))
@@ -884,7 +821,6 @@ class TestMigrations_v2_5_x(MigrationTest):
                                   'foobar',]
         self.portal.right_slots = ['here/portlet_login/macros/portlet']
         
-        
         self.portal._delObject('Members')
         
         convertLegacyPortlets(self.portal, [])
@@ -952,17 +888,11 @@ class TestMigrations_v2_5_x(MigrationTest):
             self.failUnless(sm.queryUtility(i) is None)
 
 
-class TestMigrations_v3_0(MigrationTest):
+class TestMigrations_v3_0_alpha1(MigrationTest):
 
     def afterSetUp(self):
-        # self.profile = 'profile-Products.CMFPlone.migrations:2.5.x-3.0a1'
+        self.profile = 'profile-Products.CMFPlone.migrations:3.0a1-3.0a2'
         self.actions = self.portal.portal_actions
-        self.cp = self.portal.portal_controlpanel
-        self.icons = self.portal.portal_actionicons
-        self.skins = self.portal.portal_skins
-        self.types = self.portal.portal_types
-        self.workflow = self.portal.portal_workflow
-        self.properties = self.portal.portal_properties
         self.cp = self.portal.portal_controlpanel
 
     def testUpdateSearchAndMailHostConfiglet(self):
@@ -985,46 +915,135 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(mail.action.text,
                           'string:${portal_url}/@@mail-controlpanel')
 
-    def testAddIconForTypesConfiglet(self):
-        self.removeActionIconFromTool('TypesSettings')
-        addIconForTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-        addIconForTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+    def testAddFormTabbingJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('form_tabbing.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('form_tabbing.js' in script_ids)
+        # migrate and test again
+        addFormTabbingJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('form_tabbing.js' in script_ids)
+        # if collapsiblesections.js is available form_tabbing.js
+        # should be positioned right underneath it
+        if 'collapsiblesections.js' in script_ids:
+            posSE = jsreg.getResourcePosition('form_tabbing.js')
+            posHST = jsreg.getResourcePosition('collapsiblesections.js')
+            self.failUnless((posSE - 1) == posHST)
 
-    def testAddTypesConfiglet(self):
-        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
-        addTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
-        types = self.cp.getActionObject('Plone/TypesSettings')
-        self.assertEquals(types.action.text,
-                          'string:${portal_url}/@@types-controlpanel')
-        addTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
-        types = self.cp.getActionObject('Plone/TypesSettings')
-        self.assertEquals(types.action.text,
-                          'string:${portal_url}/@@types-controlpanel')
+    def testInstallRedirectorUtility(self):
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IRedirectionStorage)
+        installRedirectorUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRedirectionStorage) is None)
+        installRedirectorUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRedirectionStorage) is None)
+        
+    def testAddContentRulesAction(self):
+        self.portal.portal_actions.object._delObject('contentrules')
+        addContentRulesAction(self.portal, [])
+        self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
+        addContentRulesAction(self.portal, [])
+        self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
 
-    def testAddNewBeta2CSSFiles(self):
+    def testUpdateRtlCSSexpression(self):
         cssreg = self.portal.portal_css
-        added_ids = ['controlpanel.css']
-        for id in added_ids:
-            cssreg.unregisterResource(id)
-        stylesheet_ids = cssreg.getResourceIds()
-        for id in added_ids:
-            self.failIf('controlpanel.css' in stylesheet_ids)
-        loadMigrationProfile(self.portal,
-                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
-                steps=["cssregistry"])
-        stylesheet_ids = cssreg.getResourceIds()
-        for id in added_ids:
-            self.failUnless(id in stylesheet_ids)
-        # perform migration twice
-        loadMigrationProfile(self.portal,
-                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
-                steps=["cssregistry"])
-        for id in added_ids:
-            self.failUnless(id in stylesheet_ids)
+        rtl = cssreg.getResource('RTL.css')
+        rtl.setExpression('string:foo')
+        updateRtlCSSexpression(self.portal, [])
+        expr = rtl.getExpression()
+        self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
+        # Test it twice
+        updateRtlCSSexpression(self.portal, [])
+        expr = rtl.getExpression()
+        self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
+
+    def testAddReaderEditorRoles(self):
+        self.portal._delRoles(['Reader', 'Editor'])
+        addReaderAndEditorRoles(self.portal, [])
+        self.failUnless('Reader' in self.portal.valid_roles())
+        self.failUnless('Editor' in self.portal.valid_roles())
+        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
+        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
+        # Test it twice
+        addReaderAndEditorRoles(self.portal, [])
+        self.failUnless('Reader' in self.portal.valid_roles())
+        self.failUnless('Editor' in self.portal.valid_roles())
+        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
+        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
+
+    def testAddReaderEditorRolesPermissionOnly(self):
+        self.portal.manage_permission('View', [], True)
+        self.portal.manage_permission('Modify portal content', [], True)
+        addReaderAndEditorRoles(self.portal, [])
+        self.failUnless('Reader' in self.portal.valid_roles())
+        self.failUnless('Editor' in self.portal.valid_roles())
+        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
+        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
+        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
+
+    def testMigrateLocalroleForm(self):
+        fti = self.portal.portal_types['Document']
+        aliases = fti.getMethodAliases()
+        aliases['sharing'] = 'folder_localrole_form'
+        fti.setMethodAliases(aliases)
+        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object')
+        migrateLocalroleForm(self.portal, [])
+        self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])
+        test_action = fti.listActions()[-1]
+        self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
+        # Test it twice
+        migrateLocalroleForm(self.portal, [])
+        self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])
+        test_action = fti.listActions()[-1]
+        self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
+
+    def testReorderUserActions(self):
+        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
+        reorderUserActions(self.portal, [])
+        # build a dict that has the position as the value to make it easier to
+        # compare postions in the ordered list of actions
+        n = 0
+        sort = {}
+        for action in self.actions.user.objectIds():
+            sort[action] = n
+            n += 1
+        self.failUnless(sort['mystuff'] < sort['preferences'])
+        self.failUnless(sort['preferences'] < sort['undo'])
+        self.failUnless(sort['undo'] < sort['logout'])
+        self.failUnless(sort['login'] < sort['join'])
+        # Test it twice
+        reorderUserActions(self.portal, [])
+        n = 0
+        sort = {}
+        for action in self.actions.user.objectIds():
+            sort[action] = n
+            n += 1
+        self.failUnless(sort['mystuff'] < sort['preferences'])
+        self.failUnless(sort['preferences'] < sort['undo'])
+        self.failUnless(sort['undo'] < sort['logout'])
+        self.failUnless(sort['login'] < sort['join'])
+
+    def testReorderUserActionsIncompleteActions(self):
+        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
+        self.actions.user._delObject('preferences')
+        reorderUserActions(self.portal, [])
+        # build a dict that has the position as the value to make it easier to
+        # compare postions in the ordered list of actions
+        n = 0
+        sort = {}
+        for action in self.actions.user.objectIds():
+            sort[action] = n
+            n += 1
+        self.failUnless(sort['mystuff'] < sort['undo'])
+        self.failUnless(sort['undo'] < sort['logout'])
+        self.failUnless(sort['login'] < sort['join'])
 
     def testInstallKss(self, unregister=True):
         'Test kss migration'
@@ -1097,165 +1116,16 @@ class TestMigrations_v3_0(MigrationTest):
         'Test kss migration, twice'
         self.testInstallKss()
         self.testInstallKss(unregister=False)
-        
-    def testInstallRedirectorUtility(self):
-        sm = getSiteManager(self.portal)
-        sm.unregisterUtility(provided=IRedirectionStorage)
-        installRedirectorUtility(self.portal, [])
-        self.failIf(sm.queryUtility(IRedirectionStorage) is None)
 
-    def testInstallRedirectorUtilityTwice(self):
-        sm = getSiteManager(self.portal)
-        sm.unregisterUtility(provided=IRedirectionStorage)
-        installRedirectorUtility(self.portal, [])
-        installRedirectorUtility(self.portal, [])
-        self.failIf(sm.queryUtility(IRedirectionStorage) is None)
-        
-    def testAddContentRulesAction(self):
-        self.portal.portal_actions.object._delObject('contentrules')
-        addContentRulesAction(self.portal, [])
-        self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
-        
-    def testAddContentRulesActionTwice(self):
-        self.portal.portal_actions.object._delOb('contentrules')
-        addContentRulesAction(self.portal, [])
-        addContentRulesAction(self.portal, [])
-        self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
-        
-    def testAddContentRulesActionNoTool(self):
-        self.portal._delOb('portal_actions')
-        addContentRulesAction(self.portal, [])
-        
-    def testAddContentRulesActionNoCategory(self):
-        self.portal.portal_actions._delOb('object')
-        addContentRulesAction(self.portal, [])
-        
-    def testAddReaderEditorRoles(self):
-        self.portal._delRoles(['Reader', 'Editor'])
-        addReaderAndEditorRoles(self.portal, [])
-        self.failUnless('Reader' in self.portal.valid_roles())
-        self.failUnless('Editor' in self.portal.valid_roles())
-        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
-        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
-        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
-        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
-        
-    def testAddReaderEditorRolesPermissionOnly(self):
-        self.portal.manage_permission('View', [], True)
-        self.portal.manage_permission('Modify portal content', [], True)
-        addReaderAndEditorRoles(self.portal, [])
-        self.failUnless('Reader' in self.portal.valid_roles())
-        self.failUnless('Editor' in self.portal.valid_roles())
-        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
-        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
-        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
-        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
-        
-    def testAddReaderEditorRolesTwice(self):
-        self.portal._delRoles(['Reader', 'Editor'])
-        addReaderAndEditorRoles(self.portal, [])
-        addReaderAndEditorRoles(self.portal, [])
-        self.failUnless('Reader' in self.portal.valid_roles())
-        self.failUnless('Editor' in self.portal.valid_roles())
-        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager.listRoleIds())
-        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager.listRoleIds())
-        self.failUnless('View' in [r['name'] for r in self.portal.permissionsOfRole('Reader') if r['selected']])
-        self.failUnless('Modify portal content' in [r['name'] for r in self.portal.permissionsOfRole('Editor') if r['selected']])
 
-    def testMigrateLocalroleForm(self):
-        fti = self.portal.portal_types['Document']
-        aliases = fti.getMethodAliases()
-        aliases['sharing'] = 'folder_localrole_form'
-        fti.setMethodAliases(aliases)
-        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object')
-        migrateLocalroleForm(self.portal, [])
-        self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])
-        test_action = fti.listActions()[-1]
-        self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
+class TestMigrations_v3_0_alpha2(MigrationTest):
 
-    def testMigrateLocalroleFormTwice(self):
-        fti = self.portal.portal_types['Document']
-        aliases = fti.getMethodAliases()
-        aliases['sharing'] = 'folder_localrole_form'
-        fti.setMethodAliases(aliases)
-        fti.addAction('test', 'Test', 'string:${object_url}/folder_localrole_form', None, 'View', 'object')
-        migrateLocalroleForm(self.portal, [])
-        migrateLocalroleForm(self.portal, [])
-        self.assertEquals('@@sharing', fti.getMethodAliases()['sharing'])
-        test_action = fti.listActions()[-1]
-        self.assertEquals('string:${object_url}/@@sharing', test_action.getActionExpression())
-        
-    def testMigrateLocalroleFormNoTool(self):
-        self.portal._delObject('portal_types')
-        migrateLocalroleForm(self.portal, [])
-
-    def testReorderUserActions(self):
-        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
-        reorderUserActions(self.portal, [])
-        # build a dict that has the position as the value to make it easier to
-        # compare postions in the ordered list of actions
-        n = 0
-        sort = {}
-        for action in self.actions.user.objectIds():
-            sort[action] = n
-            n += 1
-        self.failUnless(sort['mystuff'] < sort['preferences'])
-        self.failUnless(sort['preferences'] < sort['undo'])
-        self.failUnless(sort['undo'] < sort['logout'])
-        self.failUnless(sort['login'] < sort['join'])
-
-    def testReorderUserActionsTwice(self):
-        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
-        reorderUserActions(self.portal, [])
-        reorderUserActions(self.portal, [])
-        # build a dict that has the position as the value to make it easier to
-        # compare postions in the ordered list of actions
-        n = 0
-        sort = {}
-        for action in self.actions.user.objectIds():
-            sort[action] = n
-            n += 1
-        self.failUnless(sort['mystuff'] < sort['preferences'])
-        self.failUnless(sort['preferences'] < sort['undo'])
-        self.failUnless(sort['undo'] < sort['logout'])
-        self.failUnless(sort['login'] < sort['join'])
-
-    def testReorderUserActionsNoTool(self):
-        self.portal._delObject('portal_actions')
-        reorderUserActions(self.portal, [])
-
-    def testReorderUserActionsIncompleteActions(self):
-        self.actions.user.moveObjectsToTop(['logout', 'undo', 'join'])
-        self.actions.user._delObject('preferences')
-        reorderUserActions(self.portal, [])
-        # build a dict that has the position as the value to make it easier to
-        # compare postions in the ordered list of actions
-        n = 0
-        sort = {}
-        for action in self.actions.user.objectIds():
-            sort[action] = n
-            n += 1
-        self.failUnless(sort['mystuff'] < sort['undo'])
-        self.failUnless(sort['undo'] < sort['logout'])
-        self.failUnless(sort['login'] < sort['join'])
-
-    def testUpdateRtlCSSexpression(self):
-        cssreg = self.portal.portal_css
-        rtl = cssreg.getResource('RTL.css')
-        rtl.setExpression('string:foo')
-        updateRtlCSSexpression(self.portal, [])
-        expr = rtl.getExpression()
-        self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
-
-    def testUpdateRtlCSSexpressionTwice(self):
-        # perform migration twice
-        cssreg = self.portal.portal_css
-        rtl = cssreg.getResource('RTL.css')
-        rtl.setExpression('string:foo')
-        updateRtlCSSexpression(self.portal, [])
-        updateRtlCSSexpression(self.portal, [])
-        expr = rtl.getExpression()
-        self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
+    def afterSetUp(self):
+        self.profile = 'profile-Products.CMFPlone.migrations:3.0a2-3.0b1'
+        self.actions = self.portal.portal_actions
+        self.cp = self.portal.portal_controlpanel
+        self.icons = self.portal.portal_actionicons
+        self.properties = self.portal.portal_properties
 
     def testAddMaintenanceConfiglet(self):
         self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
@@ -1265,10 +1135,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(main.title, 'Maintenance')
         self.assertEquals(main.action.text,
                           'string:${portal_url}/@@maintenance-controlpanel')
-
-    def testAddMaintenanceConfigletTwice(self):
-        self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
-        addMaintenanceConfiglet(self.portal, [])
+        # Test it twice
         addMaintenanceConfiglet(self.portal, [])
         self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
         main = self.cp.getActionObject('Plone/Maintenance')
@@ -1280,18 +1147,10 @@ class TestMigrations_v3_0(MigrationTest):
         # adds a site property to portal_properties
         self.removeSiteProperty('number_of_days_to_keep')
         addMaintenanceProperty(self.portal, [])
-        tool = self.portal.portal_properties
+        tool = self.properties
         sheet = tool.site_properties
         self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
-    
-    def testAddLinkIntegritySwitch(self):
-        # adds a site property to portal_properties
-        self.removeSiteProperty('enable_link_integrity_checks')
-        addLinkIntegritySwitch(self.portal, [])
-        tool = self.portal.portal_properties
-        sheet = tool.site_properties
-        self.failUnless(sheet.hasProperty('enable_link_integrity_checks'))
-    
+
     def testAddTableContents(self):
         css = self.portal.portal_css
         js = self.portal.portal_javascripts
@@ -1303,7 +1162,143 @@ class TestMigrations_v3_0(MigrationTest):
         addTableContents(self.portal, [])
         self.failUnless("toc.js" in js.getResourceIds())
         self.failUnless("toc.css" in css.getResourceIds())
-        
+
+    def testAddFormInputLabelJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('input-label.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('input-label.js' in script_ids)
+        # migrate and test again
+        addFormInputLabelJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('input-label.js' in script_ids)
+
+    def testUpdateSkinsAndSiteConfiglet(self):
+        skins = self.cp.getActionObject('Plone/PortalSkin')
+        site = self.cp.getActionObject('Plone/PloneReconfig')
+        skins.action = Expression('string:skins')
+        site.action = Expression('string:site')
+        updateSkinsAndSiteConfiglet(self.portal, [])
+        self.assertEquals(skins.title, 'Themes')
+        self.assertEquals(skins.action.text,
+                          'string:${portal_url}/@@skins-controlpanel')
+        self.assertEquals(site.title, 'Site settings')
+        self.assertEquals(site.action.text,
+                          'string:${portal_url}/@@site-controlpanel')
+        # Test it twice
+        updateSkinsAndSiteConfiglet(self.portal, [])
+        self.assertEquals(skins.title, 'Themes')
+        self.assertEquals(skins.action.text,
+                          'string:${portal_url}/@@skins-controlpanel')
+        self.assertEquals(site.title, 'Site settings')
+        self.assertEquals(site.action.text,
+                          'string:${portal_url}/@@site-controlpanel')
+
+    def testUpdateConfigletTitles(self):
+        collection = self.cp.getActionObject('Plone/portal_atct')
+        language = self.cp.getActionObject('Plone/PloneLanguageTool')
+        navigation = self.cp.getActionObject('Plone/NavigationSettings')
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        users = self.cp.getActionObject('Plone/UsersGroups')
+        users2 = self.cp.getActionObject('Plone/UsersGroups2')
+        updateConfigletTitles(self.portal, [])
+        self.assertEquals(collection.title, 'Collection')
+        self.assertEquals(language.title, 'Language')
+        self.assertEquals(navigation.title, 'Navigation')
+        self.assertEquals(types.title, 'Types')
+        self.assertEquals(users.title, 'Users and Groups')
+        self.assertEquals(users2.title, 'Users and Groups')
+        # Test it twice
+        updateConfigletTitles(self.portal, [])
+        self.assertEquals(collection.title, 'Collection')
+        self.assertEquals(language.title, 'Language')
+        self.assertEquals(navigation.title, 'Navigation')
+        self.assertEquals(types.title, 'Types')
+        self.assertEquals(users.title, 'Users and Groups')
+        self.assertEquals(users2.title, 'Users and Groups')
+
+    def testAddFilterAndSecurityConfiglets(self):
+        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
+        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
+        addFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
+        htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
+        self.assertEquals(htmlfilter.title, 'HTML Filtering')
+        self.assertEquals(htmlfilter.action.text,
+                          'string:${portal_url}/@@filter-controlpanel')
+        security = self.cp.getActionObject('Plone/SecuritySettings')
+        self.assertEquals(security.title, 'Security')
+        self.assertEquals(security.action.text,
+                          'string:${portal_url}/@@security-controlpanel')
+        # Test it twice
+        addFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
+        self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
+        htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
+        self.assertEquals(htmlfilter.title, 'HTML Filtering')
+        self.assertEquals(htmlfilter.action.text,
+                          'string:${portal_url}/@@filter-controlpanel')
+        security = self.cp.getActionObject('Plone/SecuritySettings')
+        self.assertEquals(security.title, 'Security')
+        self.assertEquals(security.action.text,
+                          'string:${portal_url}/@@security-controlpanel')
+
+    def testaddIconsForFilterAndSecurityConfiglets(self):
+        # Should add the filter and security action icons
+        self.removeActionIconFromTool('HtmlFilter')
+        self.removeActionIconFromTool('SecuritySettings')
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+        addIconsForFilterAndSecurityConfiglets(self.portal, [])
+        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddIconForTypesConfiglet(self):
+        self.removeActionIconFromTool('TypesSettings')
+        addIconForTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+        addIconForTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddTypesConfiglet(self):
+        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
+        addTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@types-controlpanel')
+        addTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@types-controlpanel')
+
+    def testInstallContentrulesUtility(self):
+        sm = getSiteManager(self.portal)
+        sm.unregisterUtility(provided=IRuleStorage)
+        installContentRulesUtility(self.portal, [])
+        installContentRulesUtility(self.portal, [])
+        self.failIf(sm.queryUtility(IRuleStorage) is None)
+
+    def testContentRulesConfiglet(self):
+        pc = self.portal.portal_controlpanel
+        self.removeActionIconFromTool('ContentRules')
+        self.removeActionFromTool('ContentRules', action_provider='portal_controlpanel')
+        addIconForContentRulesConfiglet(self.portal, [])
+        addContentRulesConfiglet(self.portal, [])
+        self.failUnless('ContentRules' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('ContentRules' in [x.getId() for x in pc.listActions()])
+
+    def testAddSitemapProperty(self):
+        self.removeSiteProperty('enable_sitemap')
+        addSitemapProperty(self.portal, [])
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.failUnless(sheet.hasProperty('enable_sitemap'))
+
     def testUpdateMemberSecurity(self):
         pprop = getToolByName(self.portal, 'portal_properties')
         self.assertEquals(
@@ -1326,35 +1321,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('Owner' in reg_roles)
         self.failUnless(acquire_check == '')
 
-
-    def testPloneS5(self):
-        pa = self.portal.portal_actions
-        self.removeActionIconFromTool('s5_presentation')
-        self.removeActionFromTool('s5_presentation', action_provider='portal_actions')
-        installS5(self.portal, [])
-        
-        self.folder.invokeFactory('Document', id="test_document")
-        doc_ids = self.portal.portal_actions.listFilteredActionsFor(self.folder.test_document)["document_actions"]
-        assert "s5_presentation" not in [ i["id"] for i in doc_ids ]
-        
-        self.folder.invokeFactory('News Item', id="test_news_item")
-        ni_ids = self.portal.portal_actions.listFilteredActionsFor(self.folder.test_news_item)["document_actions"]
-        assert "s5_presentation" not in [ i["id"] for i in ni_ids ]
-        
-        # add in something to the document
-        self.folder.test_document.setPresentation(True)
-        self.folder.test_document.setText("<h1>Test</h1><p>foo</p>")
-        
-        # now it should appear
-        doc_ids = self.portal.portal_actions.listFilteredActionsFor(self.folder.test_document)["document_actions"]
-        assert "s5_presentation" in [ i["id"] for i in doc_ids ]
-        
-        # and install again
-        self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
-        installS5(self.portal, [])
-        self.failUnless('s5_presentation' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-
     def testPASPluginInterfaces(self):
         pas = self.portal.acl_users
         from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlugin
@@ -1369,141 +1335,6 @@ class TestMigrations_v3_0(MigrationTest):
             except KeyError:
                 # Ignore unregistered interface types 
                 pass
-
-    def testInstallContentrulesUtility(self):
-        sm = getSiteManager(self.portal)
-        sm.unregisterUtility(provided=IRuleStorage)
-        installContentRulesUtility(self.portal, [])
-        installContentRulesUtility(self.portal, [])
-        self.failIf(sm.queryUtility(IRuleStorage) is None)
-
-    def testContentRulesConfiglet(self):
-        pc = self.portal.portal_controlpanel
-        self.removeActionIconFromTool('ContentRules')
-        self.removeActionFromTool('ContentRules', action_provider='portal_controlpanel')
-        addIconForContentRulesConfiglet(self.portal, [])
-        addContentRulesConfiglet(self.portal, [])
-        self.failUnless('ContentRules' in [x.getActionId() for x in self.icons.listActionIcons()])
-        self.failUnless('ContentRules' in [x.getId() for x in pc.listActions()])
-
-
-    def testUpdateSkinsAndSiteConfiglet(self):
-        skins = self.cp.getActionObject('Plone/PortalSkin')
-        site = self.cp.getActionObject('Plone/PloneReconfig')
-        skins.action = Expression('string:skins')
-        site.action = Expression('string:site')
-        updateSkinsAndSiteConfiglet(self.portal, [])
-        self.assertEquals(skins.title, 'Themes')
-        self.assertEquals(skins.action.text,
-                          'string:${portal_url}/@@skins-controlpanel')
-        self.assertEquals(site.title, 'Site settings')
-        self.assertEquals(site.action.text,
-                          'string:${portal_url}/@@site-controlpanel')
-    
-    def testUpdateSkinsAndSiteConfigletTwice(self):
-        # Should not fail if done twice
-        skins = self.cp.getActionObject('Plone/PortalSkin')
-        site = self.cp.getActionObject('Plone/PloneReconfig')
-        skins.action = Expression('string:skins')
-        site.action = Expression('string:site')
-        updateSkinsAndSiteConfiglet(self.portal, [])
-        updateSkinsAndSiteConfiglet(self.portal, [])
-        self.assertEquals(skins.title, 'Themes')
-        self.assertEquals(skins.action.text,
-                          'string:${portal_url}/@@skins-controlpanel')
-        self.assertEquals(site.title, 'Site settings')
-        self.assertEquals(site.action.text,
-                          'string:${portal_url}/@@site-controlpanel')
-
-    def testUpdateSkinsAndSiteConfigletNoTool(self):
-        # Should not fail if tool is missing
-        self.portal._delObject('portal_controlpanel')
-        updateSkinsAndSiteConfiglet(self.portal, [])
-
-    def testUpdateConfigletTitles(self):
-        collection = self.cp.getActionObject('Plone/portal_atct')
-        language = self.cp.getActionObject('Plone/PloneLanguageTool')
-        navigation = self.cp.getActionObject('Plone/NavigationSettings')
-        types = self.cp.getActionObject('Plone/TypesSettings')
-        users = self.cp.getActionObject('Plone/UsersGroups')
-        users2 = self.cp.getActionObject('Plone/UsersGroups2')
-        updateConfigletTitles(self.portal, [])
-        self.assertEquals(collection.title, 'Collection')
-        self.assertEquals(language.title, 'Language')
-        self.assertEquals(navigation.title, 'Navigation')
-        self.assertEquals(types.title, 'Types')
-        self.assertEquals(users.title, 'Users and Groups')
-        self.assertEquals(users2.title, 'Users and Groups')
-
-    def testUpdateConfigletTitlesTwice(self):
-        collection = self.cp.getActionObject('Plone/portal_atct')
-        language = self.cp.getActionObject('Plone/PloneLanguageTool')
-        navigation = self.cp.getActionObject('Plone/NavigationSettings')
-        types = self.cp.getActionObject('Plone/TypesSettings')
-        users = self.cp.getActionObject('Plone/UsersGroups')
-        users2 = self.cp.getActionObject('Plone/UsersGroups2')
-        updateConfigletTitles(self.portal, [])
-        updateConfigletTitles(self.portal, [])
-        self.assertEquals(collection.title, 'Collection')
-        self.assertEquals(language.title, 'Language')
-        self.assertEquals(navigation.title, 'Navigation')
-        self.assertEquals(types.title, 'Types')
-        self.assertEquals(users.title, 'Users and Groups')
-        self.assertEquals(users2.title, 'Users and Groups')
-
-    def testUpdateConfigletTitlesNoTool(self):
-        # Should not fail if tool is missing
-        self.portal._delObject('portal_controlpanel')
-        updateConfigletTitles(self.portal, [])
-
-    def testaddIconsForFilterAndSecurityConfigletsNoTool(self):
-        # Should not fail if portal_actionicons is missing
-        self.portal._delObject('portal_actionicons')
-        addIconsForFilterAndSecurityConfiglets(self.portal, [])
-
-    def testAddFilterAndSecurityConfiglets(self):
-        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
-        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
-        addFilterAndSecurityConfiglets(self.portal, [])
-        self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
-        self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
-        htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
-        self.assertEquals(htmlfilter.title, 'HTML Filtering')
-        self.assertEquals(htmlfilter.action.text,
-                          'string:${portal_url}/@@filter-controlpanel')
-        security = self.cp.getActionObject('Plone/SecuritySettings')
-        self.assertEquals(security.title, 'Security')
-        self.assertEquals(security.action.text,
-                          'string:${portal_url}/@@security-controlpanel')
-
-    def testAddFilterAndSecurityConfigletsTwice(self):
-        # Should not fail if done twice
-        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
-        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
-        addFilterAndSecurityConfiglets(self.portal, [])
-        addFilterAndSecurityConfiglets(self.portal, [])
-        self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
-        self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
-        htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
-        self.assertEquals(htmlfilter.title, 'HTML Filtering')
-        self.assertEquals(htmlfilter.action.text,
-                          'string:${portal_url}/@@filter-controlpanel')
-        security = self.cp.getActionObject('Plone/SecuritySettings')
-        self.assertEquals(security.title, 'Security')
-        self.assertEquals(security.action.text,
-                          'string:${portal_url}/@@security-controlpanel')
-
-    def testAddFilterAndSecurityConfigletsNoTool(self):
-        # Should not fail if tool is missing
-        self.portal._delObject('portal_controlpanel')
-        addFilterAndSecurityConfiglets(self.portal, [])
-
-    def testAddSitemapProperty(self):
-        self.removeSiteProperty('enable_sitemap')
-        addSitemapProperty(self.portal, [])
-        tool = self.portal.portal_properties
-        sheet = tool.site_properties
-        self.failUnless(sheet.hasProperty('enable_sitemap'))
 
     def testUpdateKukitJS(self):
         jsreg = self.portal.portal_javascripts
@@ -1538,7 +1369,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless('@@kss_devel_mode' in resource2.getExpression())
         self.failUnless('isoff' in resource1.getExpression())
         self.failUnless('ison' in resource2.getExpression())
-        
+
     def testAddCacheForResourceRegistry(self):
         ram_cache_id = 'ResourceRegistryCache'
         # first remove the cache manager and make sure it's removed
@@ -1563,14 +1394,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.failUnless(jsreg.ZCacheable_enabled())
         self.failIf(jsreg.ZCacheable_getManagerId() is None)
 
-    def testTablelessRemoval(self):
-        st = getToolByName(self.portal, "portal_skins")
-        if "Plone Tableless" not in st.getSkinSelections():
-            st.addSkinSelection('Plone Tableless', 'one,two', make_default=True)
-        removeTablelessSkin(self.portal, [])
-        self.failIf('Plone Tableless' in st.getSkinSelections())
-        self.failIf(st.default_skin == 'Plone Tableless')
-
     def testUpdateCssQueryJS(self):
         jsreg = self.portal.portal_javascripts
         jsreg.registerScript("folder_contents_hideAddItems.js")
@@ -1580,6 +1403,14 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf('folder_contents_hideAddItems.js' in jsreg.getResourceIds())
         # try double migration
         removeHideAddItemsJS(self.portal, [])
+
+    def testAddLinkIntegritySwitch(self):
+        # adds a site property to portal_properties
+        self.removeSiteProperty('enable_link_integrity_checks')
+        addLinkIntegritySwitch(self.portal, [])
+        tool = self.portal.portal_properties
+        sheet = tool.site_properties
+        self.failUnless(sheet.hasProperty('enable_link_integrity_checks'))
 
     def testAddWebstatsJSProperty(self):
         # adds a site property to portal_properties
@@ -1606,16 +1437,7 @@ class TestMigrations_v3_0(MigrationTest):
         # check if enabled
         res = jsreg.getResource('webstats.js')
         self.assertEqual(res.getEnabled(),True)
-
-    def testWebstatsJSTwice(self):
-        # Should not break if migrated again
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('webstats.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('webstats.js' in script_ids)
-        # migrate and test again
-        addWebstatsJSFile(self.portal, [])
+        # Test it twice
         addWebstatsJSFile(self.portal, [])
         script_ids = jsreg.getResourceIds()
         self.failUnless('webstats.js' in script_ids)
@@ -1626,23 +1448,6 @@ class TestMigrations_v3_0(MigrationTest):
         # check if enabled 
         res = jsreg.getResource('webstats.js') 
         self.assertEqual(res.getEnabled(),True)
-
-    def testaddIconsForFilterAndSecurityConfiglets(self):
-        # Should add the filter and security action icons
-        self.removeActionIconFromTool('HtmlFilter')
-        self.removeActionIconFromTool('SecuritySettings')
-        addIconsForFilterAndSecurityConfiglets(self.portal, [])
-        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
-        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testaddIconsForFilterAndSecurityConfigletsTwice(self):
-        # Should not fail if migrated again
-        self.removeActionIconFromTool('HtmlFilter')
-        self.removeActionIconFromTool('SecuritySettings')
-        addIconsForFilterAndSecurityConfiglets(self.portal, [])
-        addIconsForFilterAndSecurityConfiglets(self.portal, [])
-        self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
-        self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
 
     def testObjectProvidesIndex(self):
         catalog = getToolByName(self.portal, 'portal_catalog')
@@ -1666,10 +1471,6 @@ class TestMigrations_v3_0(MigrationTest):
         addExternalLinksOpenNewWindowProperty(self.portal, [])
         self.failUnless(sheet.hasProperty('external_links_open_new_window'))
         self.failUnless(sheet.external_links_open_new_window == 'false')
-
-    def testAddMissingWorkflowsNoTool(self):
-        self.portal._delObject('portal_workflow')
-        addMissingWorkflows(self.portal, [])
 
     def testAddManyGroupsProperty(self):
         # adds a site property to portal_properties
@@ -1703,13 +1504,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.failIf(sm.queryUtility(ICountries) is None)
         self.failIf(sm.queryUtility(IContentLanguages) is None)
         self.failIf(sm.queryUtility(IMetadataLanguages) is None)
-
-    def testInstallI18NUtilitiesTwice(self):
-        sm = getSiteManager()
-        sm.unregisterUtility(provided=ICountries)
-        sm.unregisterUtility(provided=IContentLanguages)
-        sm.unregisterUtility(provided=IMetadataLanguages)
-        installI18NUtilities(self.portal, [])
+        # Test it twice
         installI18NUtilities(self.portal, [])
         self.failIf(sm.queryUtility(ICountries) is None)
         self.failIf(sm.queryUtility(IContentLanguages) is None)
@@ -1729,15 +1524,43 @@ class TestMigrations_v3_0(MigrationTest):
         addEmailCharsetProperty(self.portal, [])
         self.failUnless(self.portal.hasProperty('email_charset'))
         self.assertEquals(self.portal.getProperty('email_charset'), 'utf-8')
-
-    def testAddEmailCharsetPropertyTwice(self):
-        out = []
-        if self.portal.hasProperty('email_charset'):
-            self.portal.manage_delProperties(['email_charset'])
-        addEmailCharsetProperty(self.portal, out)
-        addEmailCharsetProperty(self.portal, out)
+        # Test it twice
+        addEmailCharsetProperty(self.portal, [])
         self.failUnless(self.portal.hasProperty('email_charset'))
         self.assertEquals(self.portal.getProperty('email_charset'), 'utf-8')
+
+
+class TestMigrations_v3_0(MigrationTest):
+
+    def afterSetUp(self):
+        self.actions = self.portal.portal_actions
+        self.cp = self.portal.portal_controlpanel
+        self.icons = self.portal.portal_actionicons
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+        self.properties = self.portal.portal_properties
+
+    def testAddNewBeta2CSSFiles(self):
+        cssreg = self.portal.portal_css
+        added_ids = ['controlpanel.css']
+        for id in added_ids:
+            cssreg.unregisterResource(id)
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failIf('controlpanel.css' in stylesheet_ids)
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["cssregistry"])
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
+        # perform migration twice
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["cssregistry"])
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
 
     def testChangeOrderOfActionProviders(self):
         out = []
@@ -1750,15 +1573,7 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(
             self.actions.listActionProviders(),
             ('portal_workflow', 'portal_types', 'portal_actions'))
-
-    def testChangeOrderOfActionProvidersTwice(self):
-        out = []
-        self.actions.deleteActionProvider('portal_types')
-        self.actions.addActionProvider('portal_types')
-        self.assertEquals(
-            self.actions.listActionProviders(),
-            ('portal_workflow', 'portal_actions', 'portal_types'))
-        changeOrderOfActionProviders(self.portal, out)
+        # Test it twice
         changeOrderOfActionProviders(self.portal, out)
         self.assertEquals(
             self.actions.listActionProviders(),
@@ -1790,44 +1605,18 @@ class TestMigrations_v3_0(MigrationTest):
         del object_tabs
 
         cleanupOldActions(self.portal, out)
-
         self.failIf('reply' in object_.keys())
         self.failIf('logged_in' in user.keys())
         self.failIf('object_tabs' in self.actions.keys())
         self.failIf('global' in self.actions.keys())
 
-    def testCleanupOldActionsTwice(self):
-        out = []
-        reply = Action('reply', title='Reply')
-        logged_in = Action('logged_in', title='Logged in')
-        change_ownership = Action('change_ownership', title='Change ownership')
-
-        object_ = self.actions.object
-        object_tabs = getattr(self.actions, 'object_tabs', None)
-        if object_tabs is None:
-            category = 'object_tabs'
-            self.actions._setObject(category, ActionCategory(id=category))
-            object_tabs = self.actions.object_tabs
-        if getattr(self.actions, 'global', None) is None:
-            category = 'global'
-            self.actions._setObject(category, ActionCategory(id=category))
-
-        if not 'reply' in object_.keys():
-            object_._setObject('reply', reply)
-        user = self.actions.user
-        if not 'logged_in' in user.keys():
-            user._setObject('logged_in', logged_in)
-        if not 'change_ownership' in object_tabs.keys():
-            object_tabs._setObject('change_ownership', change_ownership)
-        del object_tabs
-
+        # Test it twice
         cleanupOldActions(self.portal, out)
-        cleanupOldActions(self.portal, out)
-
         self.failIf('reply' in object_.keys())
         self.failIf('logged_in' in user.keys())
         self.failIf('object_tabs' in self.actions.keys())
         self.failIf('global' in self.actions.keys())
+        
 
     def testCharsetCleanup(self):
         if not self.portal.hasProperty('default_charset'):
@@ -1864,13 +1653,21 @@ class TestMigrations_v3_0(MigrationTest):
         ait = getToolByName(self.portal, "portal_actionicons")
         document = pt.restrictedTraverse('Document')
 
-        action_ids = [x.getId() for x in document.listActions()]
-        assert "s5_presentation" not in action_ids
+        document.addAction('s5_presentation',
+            name='View as presentation',
+            action="string:${object/absolute_url}/document_s5_presentation",
+            condition='python:object.document_s5_alter(test=True)',
+            permission='View',
+            category='document_actions',
+            visible=1,
+            )
 
-        icon_ids = [x.getActionId() for x in ait.listActionIcons()]
-        assert "s5_presentation" not in icon_ids
-
-        installS5(self.portal, [])
+        ait.addActionIcon(
+            category='plone',
+            action_id='s5_presentation',
+            icon_expr='fullscreenexpand_icon.gif',
+            title='View as presentation',
+            )
 
         action_ids = [x.getId() for x in document.listActions()]
         assert "s5_presentation" in action_ids
@@ -1993,24 +1790,18 @@ class TestMigrations_v3_0(MigrationTest):
                       category='object')
         removeSharingAction(self.portal, [])
         self.failIf('local_roles' in [a.id for a in fti.listActions()])
-        
-    def testRemoveSharingActionNoTool(self):
-        self.portal._delOb('portal_types')
-        removeSharingAction(self.portal, [])
-        
-    def testRemoveSharingActionTwice(self):
-        fti = self.types['Document']
-        fti.addAction(id='local_roles', name='Sharing', 
-                      action='string:${object_url}/sharing',
-                      condition=None, permission='Manage properties',
-                      category='object')
-        removeSharingAction(self.portal, [])
+        # Test it twice
         removeSharingAction(self.portal, [])
         self.failIf('local_roles' in [a.id for a in fti.listActions()])
-        
+
     def testAddContributorToCreationPermissions(self):
         for p in ['Manage properties', 'Modify view template', 'Request review']:
             self.portal.manage_permission(p, ['Manager', 'Owner'], True)
+        addEditorToSecondaryEditorPermissions(self.portal, [])
+        for p in ['Manage properties', 'Modify view template', 'Request review']:
+            self.failUnless(p in [r['name'] for r in 
+                self.portal.permissionsOfRole('Editor') if r['selected']])
+        # Test it twice
         addEditorToSecondaryEditorPermissions(self.portal, [])
         for p in ['Manage properties', 'Modify view template', 'Request review']:
             self.failUnless(p in [r['name'] for r in 
@@ -2022,15 +1813,6 @@ class TestMigrations_v3_0(MigrationTest):
         roles = sorted([r['name'] for r in self.portal.rolesOfPermission('Manage properties') if r['selected']])
         self.assertEquals(['Editor', 'Manager'], roles)
         self.assertEquals(False, bool(self.portal.acquiredRolesAreUsedBy('Manage properties')))
-                                
-    def testAddEditorToSecondaryEditPermissionsTwice(self):
-        for p in ['Manage properties', 'Modify view template', 'Request review']:
-            self.portal.manage_permission(p, ['Manager', 'Owner'], True)
-        addEditorToSecondaryEditorPermissions(self.portal, [])
-        addEditorToSecondaryEditorPermissions(self.portal, [])
-        for p in ['Manage properties', 'Modify view template', 'Request review']:
-            self.failUnless(p in [r['name'] for r in 
-                self.portal.permissionsOfRole('Editor') if r['selected']])
 
     def testUpdateEditActionConditionForLocking(self):
         out = []
@@ -2049,18 +1831,7 @@ class TestMigrations_v3_0(MigrationTest):
                 if action.getId() == 'edit':
                     expressionCondition = action.condition
                     self.assertEquals(action.condition.text, "not:object/@@plone_lock_info/is_locked_for_current_user|python:True")
-
-    def testUpdateEditActionConditionForLockingTwice(self):
-        out = []
-        lockable_types = ['Document', 'Event', 'Favorite', 'File', 'Folder',
-                          'Image', 'Large Plone Folder', 'Link',
-                          'News Item', 'Topic']
-        for contentType in lockable_types:
-            fti = self.types.getTypeInfo(contentType)
-            for action in fti.listActions():
-                if action.getId() == 'edit':
-                    action.condition = ''
-        updateEditActionConditionForLocking(self.portal, out)
+        # Test it twice
         updateEditActionConditionForLocking(self.portal, out)
         for contentType in lockable_types:
             fti = self.types.getTypeInfo(contentType)
@@ -2091,15 +1862,7 @@ class TestMigrations_v3_0(MigrationTest):
         addOnFormUnloadJS(self.portal, [])
         script_ids = jsreg.getResourceIds()
         self.failUnless('unlockOnFormUnload.js' in script_ids)
-
-    def testAddOnFormUnloadRegistrationJSTwice(self):
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('unlockOnFormUnload.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('unlockOnFormUnload.js' in script_ids)
-        # migrate and test again
-        addOnFormUnloadJS(self.portal, [])
+        # Test it twice
         addOnFormUnloadJS(self.portal, [])
         script_ids = jsreg.getResourceIds()
         self.failUnless('unlockOnFormUnload.js' in script_ids)
@@ -2127,28 +1890,12 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(kupu.getCategory(), 'Plone')
         cmfpw = self.cp.getActionObject('Products/placefulworkflow')
         self.assertEquals(cmfpw.getCategory(), 'Products')
-
-    def testMoveKupuAndCMFPWControlPanelTwice(self):
-        # Should not fail if done twice
-        kupu = self.cp.getActionObject('Plone/kupu')
-        kupu.category = 'Products'
-        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
-        if cmfpw is None:
-            self.cp.registerConfiglet(**placeful_prefs_configlet)
-        cmfpw = self.cp.getActionObject('Products/placefulworkflow')
-        cmfpw.category = 'Plone'
-        # migrate
-        moveKupuAndCMFPWControlPanel(self.portal, [])
+        # Test it twice
         moveKupuAndCMFPWControlPanel(self.portal, [])
         kupu = self.cp.getActionObject('Plone/kupu')
         self.assertEquals(kupu.getCategory(), 'Plone')
         cmfpw = self.cp.getActionObject('Products/placefulworkflow')
         self.assertEquals(cmfpw.getCategory(), 'Products')
-
-    def testMoveKupuAndCMFPWControlPanelNoTool(self):
-        # Should not fail if tool is missing
-        self.portal._delObject('portal_controlpanel')
-        moveKupuAndCMFPWControlPanel(self.portal, [])
 
     def testUpdateLanguageControlPanel(self):
         lang = self.cp.getActionObject('Plone/PloneLanguageTool')
@@ -2156,37 +1903,19 @@ class TestMigrations_v3_0(MigrationTest):
         updateLanguageControlPanel(self.portal, [])
         self.assertEquals(lang.action.text,
                           'string:${portal_url}/@@language-controlpanel')
-
-    def testUpdateLanguageControlPanelTwice(self):
-        # Should not fail if done twice
-        lang = self.cp.getActionObject('Plone/PloneLanguageTool')
-        lang.action = Expression('string:lang')
-        updateLanguageControlPanel(self.portal, [])
+        # Test it twice
         updateLanguageControlPanel(self.portal, [])
         self.assertEquals(lang.action.text,
                           'string:${portal_url}/@@language-controlpanel')
-
-    def testUpdateLanguageControlPanelNoTool(self):
-        # Should not fail if tool is missing
-        self.portal._delObject('portal_controlpanel')
-        updateLanguageControlPanel(self.portal, [])
 
     def testUpdateTopicTitle(self):
         topic = self.types.get('Topic')
         topic.title = 'Unmigrated'
         updateTopicTitle(self.portal, [])
         self.failUnless(topic.title == 'Collection')
-
-    def testUpdateTopicTitleTwice(self):
-        topic = self.types.get('Topic')
-        topic.title = 'Unmigrated'
-        updateTopicTitle(self.portal, [])
+        # Test it twice
         updateTopicTitle(self.portal, [])
         self.failUnless(topic.title == 'Collection')
-
-    def testUpdateTopicTitleNoTool(self):
-        self.portal._delObject('portal_types')
-        updateTopicTitle(self.portal, [])
 
     def testAddIntelligentText(self):
         # Before migration, the mime type and transforms of
@@ -2228,6 +1957,8 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_5_1))
     suite.addTest(makeSuite(TestMigrations_v2_5_2))
     suite.addTest(makeSuite(TestMigrations_v2_5_x))
-    suite.addTest(makeSuite(TestMigrations_v3_0))
     suite.addTest(makeSuite(TestMigrations_v3_0_Actions))
+    suite.addTest(makeSuite(TestMigrations_v3_0_alpha1))
+    suite.addTest(makeSuite(TestMigrations_v3_0_alpha2))
+    suite.addTest(makeSuite(TestMigrations_v3_0))
     return suite
