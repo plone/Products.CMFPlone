@@ -76,7 +76,6 @@ from Products.CMFPlone.migrations.v2_5.two52_two53 import addMissingMimeTypes
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
-from Products.CMFPlone.migrations.v3_0.alphas import addNewCSSFiles
 from Products.CMFPlone.migrations.v3_0.alphas import addDefaultAndForbiddenContentTypesProperties
 from Products.CMFPlone.migrations.v3_0.alphas import addMarkupConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForMarkupConfiglet
@@ -521,9 +520,10 @@ class TestMigrations_v3_0_Actions(MigrationTest):
             self.discussion._actions = ()
 
 
-class TestMigrations_v3_0(MigrationTest):
+class TestMigrations_v2_5_x(MigrationTest):
 
     def afterSetUp(self):
+        self.profile = 'profile-Products.CMFPlone.migrations:2.5.x-3.0a1'
         self.actions = self.portal.portal_actions
         self.cp = self.portal.portal_controlpanel
         self.icons = self.portal.portal_actionicons
@@ -608,12 +608,12 @@ class TestMigrations_v3_0(MigrationTest):
         stylesheet_ids = cssreg.getResourceIds()
         for id in added_ids:
             self.failIf('navtree.css' in stylesheet_ids)
-        addNewCSSFiles(self.portal, [])
+        loadMigrationProfile(self.portal, self.profile, ('cssregistry', ))
         stylesheet_ids = cssreg.getResourceIds()
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
         # perform migration twice
-        addNewCSSFiles(self.portal, [])
+        loadMigrationProfile(self.portal, self.profile, ('cssregistry', ))
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
 
@@ -1109,7 +1109,21 @@ class TestMigrations_v3_0(MigrationTest):
         registerToolsAsUtilities(self.portal, [])
         for i in interfaces:
             self.failUnless(sm.queryUtility(i) is None)
-    
+
+
+class TestMigrations_v3_0(MigrationTest):
+
+    def afterSetUp(self):
+        # self.profile = 'profile-Products.CMFPlone.migrations:2.5.x-3.0a1'
+        self.actions = self.portal.portal_actions
+        self.cp = self.portal.portal_controlpanel
+        self.icons = self.portal.portal_actionicons
+        self.skins = self.portal.portal_skins
+        self.types = self.portal.portal_types
+        self.workflow = self.portal.portal_workflow
+        self.properties = self.portal.portal_properties
+        self.cp = self.portal.portal_controlpanel
+
     def testInstallKss(self, unregister=True):
         'Test kss migration'
         jstool = self.portal.portal_javascripts
@@ -2324,6 +2338,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_5_0))
     suite.addTest(makeSuite(TestMigrations_v2_5_1))
     suite.addTest(makeSuite(TestMigrations_v2_5_2))
+    suite.addTest(makeSuite(TestMigrations_v2_5_x))
     suite.addTest(makeSuite(TestMigrations_v3_0))
     suite.addTest(makeSuite(TestMigrations_v3_0_Actions))
     return suite
