@@ -99,11 +99,6 @@ def three0_alpha1(portal):
     # Migrate old ActionInformation to Actions and move them to the actions tool
     migrateOldActions(portal, out)
 
-    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:2.5.x-3.0a1')
-
-    # Add new properties for default- and forbidden content types
-    addDefaultAndForbiddenContentTypesProperties(portal, out)
-
     # Actions should gain a i18n_domain now, so their title and description are
     # returned as Messages
     updateActionsI18NDomain(portal, out)
@@ -111,6 +106,8 @@ def three0_alpha1(portal):
     # Type information should gain a i18n_domain now, so their title and
     # description are returned as Messages
     updateFTII18NDomain(portal, out)
+
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:2.5.x-3.0a1')
 
     # The ATCT tool has lost all type migration functionality and quite some
     # metadata and index information stored on it needs to be updated.
@@ -445,28 +442,6 @@ def migrateOldActions(portal, out):
         # Remove old actions from migrated providers
         provider._actions = ()
     out.append('Migrated old actions to new actions stored in portal_actions.')
-
-
-def addDefaultAndForbiddenContentTypesProperties(portal, out):
-    """Adds sitewide config for default and forbidden content types for AT textfields."""
-    propTool = getToolByName(portal, 'portal_properties', None)
-    if propTool is not None:
-        propSheet = getattr(aq_base(propTool), 'site_properties', None)
-        if propSheet is not None:
-            if not propSheet.hasProperty('default_contenttype'):
-                propSheet.manage_addProperty('default_contenttype', 'text/html', 'string')
-            out.append("Added 'default_contenttype' property to site_properties.")
-            if not propSheet.hasProperty('forbidden_contenttypes'):
-                propSheet.manage_addProperty('forbidden_contenttypes', [], 'lines')
-                propSheet.forbidden_contenttypes = (
-                    'text/structured',
-                    'text/x-rst',
-                    'text/plain-pre',
-                    'text/x-python',
-                    'text/x-web-markdown',
-                    'text/x-web-textile',
-                    'text/x-web-intelligent')
-            out.append("Added 'forbidden_contenttypes' property to site_properties.")
 
 
 def addTypesConfiglet(portal, out):

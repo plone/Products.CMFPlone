@@ -76,7 +76,6 @@ from Products.CMFPlone.migrations.v2_5.two52_two53 import addMissingMimeTypes
 
 from Products.CMFPlone.migrations.v3_0.alphas import enableZope3Site
 from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
-from Products.CMFPlone.migrations.v3_0.alphas import addDefaultAndForbiddenContentTypesProperties
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
@@ -615,72 +614,30 @@ class TestMigrations_v2_5_x(MigrationTest):
         for id in added_ids:
             self.failUnless(id in stylesheet_ids)
 
-    def testAddNewBeta2CSSFiles(self):
-        cssreg = self.portal.portal_css
-        added_ids = ['controlpanel.css']
-        for id in added_ids:
-            cssreg.unregisterResource(id)
-        stylesheet_ids = cssreg.getResourceIds()
-        for id in added_ids:
-            self.failIf('controlpanel.css' in stylesheet_ids)
-        loadMigrationProfile(self.portal,
-                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
-                steps=["cssregistry"])
-        stylesheet_ids = cssreg.getResourceIds()
-        for id in added_ids:
-            self.failUnless(id in stylesheet_ids)
-        # perform migration twice
-        loadMigrationProfile(self.portal,
-                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
-                steps=["cssregistry"])
-        for id in added_ids:
-            self.failUnless(id in stylesheet_ids)
-
     def testAddDefaultAndForbiddenContentTypesProperties(self):
         # Should add the forbidden_contenttypes and default_contenttype property
         self.removeSiteProperty('forbidden_contenttypes')
         self.removeSiteProperty('default_contenttype')
         self.failIf(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
         self.failIf(self.properties.site_properties.hasProperty('default_contenttype'))
-        addDefaultAndForbiddenContentTypesProperties(self.portal, [])
+        loadMigrationProfile(self.portal, self.profile, ('propertiestool', ))
         self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
         self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
-        self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
-            'text/structured',
-            'text/x-rst',
-            'text/plain-pre',
-            'text/x-python',
-            'text/x-web-markdown',
-            'text/x-web-textile',
-            'text/x-web-intelligent')
+        self.failUnless(self.properties.site_properties.forbidden_contenttypes ==
+            ('text/structured', 'text/restructured', 'text/x-rst',
+            'text/plain', 'text/plain-pre', 'text/x-python',
+            'text/x-web-markdown', 'text/x-web-intelligent', 'text/x-web-textile')
+        )
+        # Test it twice
+        loadMigrationProfile(self.portal, self.profile, ('propertiestool', ))
+        self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
+        self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
+        self.failUnless(self.properties.site_properties.forbidden_contenttypes ==
+            ('text/structured', 'text/restructured', 'text/x-rst',
+            'text/plain', 'text/plain-pre', 'text/x-python',
+            'text/x-web-markdown', 'text/x-web-intelligent', 'text/x-web-textile')
         )
 
-    def testAddDefaultAndForbiddenContentTypesPropertiesTwice(self):
-        # Should not fail if migrated again
-        self.removeSiteProperty('forbidden_contenttypes')
-        self.removeSiteProperty('default_contenttype')
-        self.failIf(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
-        self.failIf(self.properties.site_properties.hasProperty('default_contenttype'))
-        addDefaultAndForbiddenContentTypesProperties(self.portal, [])
-        self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
-            'text/structured',
-            'text/x-rst',
-            'text/plain-pre',
-            'text/x-python',
-            'text/x-web-markdown',
-            'text/x-web-textile',
-            'text/x-web-intelligent')
-        )
-        self.properties.site_properties.forbidden_contenttypes = ('text/x-rst',)
-        addDefaultAndForbiddenContentTypesProperties(self.portal, [])
-        self.failUnless(self.properties.site_properties.hasProperty('forbidden_contenttypes'))
-        self.failUnless(self.properties.site_properties.hasProperty('default_contenttype'))
-        # adding a second time should leave existing `forbidden_contenttypes` settings alone:
-        self.failUnless(self.properties.site_properties.forbidden_contenttypes == ( 
-            'text/x-rst', 
-            )
-        )
-        
     def testAddIconForMarkupConfiglet(self):
         self.removeActionIconFromTool('MarkupSettings')
         loadMigrationProfile(self.portal, self.profile, ('action-icons', ))
@@ -688,7 +645,7 @@ class TestMigrations_v2_5_x(MigrationTest):
         # Test it twice
         loadMigrationProfile(self.portal, self.profile, ('action-icons', ))
         self.failUnless('MarkupSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-    
+
     def testAddMarkupConfiglet(self):
         self.removeActionFromTool('MarkupSettings', action_provider='portal_controlpanel')
         loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
@@ -1107,6 +1064,27 @@ class TestMigrations_v3_0(MigrationTest):
         self.workflow = self.portal.portal_workflow
         self.properties = self.portal.portal_properties
         self.cp = self.portal.portal_controlpanel
+
+    def testAddNewBeta2CSSFiles(self):
+        cssreg = self.portal.portal_css
+        added_ids = ['controlpanel.css']
+        for id in added_ids:
+            cssreg.unregisterResource(id)
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failIf('controlpanel.css' in stylesheet_ids)
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["cssregistry"])
+        stylesheet_ids = cssreg.getResourceIds()
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
+        # perform migration twice
+        loadMigrationProfile(self.portal,
+                'profile-Products.CMFPlone.migrations:3.0b1-3.0b2',
+                steps=["cssregistry"])
+        for id in added_ids:
+            self.failUnless(id in stylesheet_ids)
 
     def testInstallKss(self, unregister=True):
         'Test kss migration'
