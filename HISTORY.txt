@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Refactored migration tests to use a simple loop in the tests for testing
+      the migration steps multiple times, instead of duplicating the code in
+      multiple test methods.
+      [hannosch]
+
     - Converted 2.5 final to 2.5.1 migration steps to a GS migration profile.
       [hannosch]
 
