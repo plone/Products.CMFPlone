@@ -846,12 +846,9 @@ textarea.proportional {
 #portal-colophon ul {
     list-style-image: none;
     list-style-type: none;
-    display: table-row;
-    list-style-type: none;
 }
 #portal-colophon ul li {
-    display: inline;
-    display: table-cell;
+    display: inline !important;
     font-size: &dtml-fontSmallSize;;
     padding: 0 0.75em;
 }
@@ -859,48 +856,6 @@ textarea.proportional {
     text-decoration: none;
     border-bottom: 1px #ccc solid;
     color: #666;
-}
-#portal-colophon .colophonWrapper {
-    display: table;
-    margin: 0 auto;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-#portal-colophon .colophonIcon {
-    display: block; /* This is for Mozilla, as it doesn't support
-                       inline-block. The colophon icons aren't in
-                       one line though. */
-    display: inline-block;
-    text-decoration: none;
-    overflow: hidden;
-    border: 0;
-    margin: 0 auto;
-    padding: 0;
-    padding-top: 15px;
-    height: 0px !important;
-    width: 80px;
-    vertical-align: top;
-}
-#portal-colophon a.colophonIcon {
-    cursor: pointer;
-}
-#portal-colophon .colophonIconPlone {
-    background-image: url(&dtml-portal_url;/plone_powered.gif);
-}
-#portal-colophon .colophonIcon508 {
-    background-image: url(&dtml-portal_url;/colophon_sec508.gif);
-}
-#portal-colophon .colophonIconWAI {
-    background-image: url(&dtml-portal_url;/colophon_wai-aa.gif);
-}
-#portal-colophon .colophonIconXHTML {
-    background-image: url(&dtml-portal_url;/colophon_xhtml.png);
-}
-#portal-colophon .colophonIconCSS {
-    background-image: url(&dtml-portal_url;/colophon_css.png);
-}
-#portal-colophon .colophonIconAnyBrowser {
-    background-image: url(&dtml-portal_url;/colophon_anybrowser.png);
 }
 
 .feedButton {
