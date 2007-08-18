@@ -5,7 +5,7 @@ Changelog for Plone
 Plone 3.5 - UNRELEASED
 
     - Refactored initial content creation into a separate extension profile,
-      thus making it possible to emit it. This refs
+      thus making it possible to skip it. This refs
       http://dev.plone.org/plone/ticket/6948.
       [hannosch]
 
