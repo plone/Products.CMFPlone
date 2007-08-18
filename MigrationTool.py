@@ -16,7 +16,7 @@ from Products.CMFCore.permissions import ManagePortal, View
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
-from Products.CMFPlone.utils import log, log_deprecated
+from Products.CMFPlone.utils import log
 from AccessControl.requestmethod import postonly
 
 _upgradePaths = {}
@@ -175,17 +175,6 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                     break
             products[p.id] = product_info
         return products
-
-    security.declareProtected(ManagePortal,'getPILVersion')
-    def getPILVersion(self):
-        """The version of the installed Python Imaging Library."""
-        log_deprecated("getPILVersion is deprecated and will be removed in "
-                       "Plone 3.5. Please use coreVersions instead.")
-        try:
-            from PIL.Image import VERSION
-        except ImportError:
-            VERSION = None
-        return VERSION
 
     security.declareProtected(ManagePortal, 'upgrade')
     def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=1):

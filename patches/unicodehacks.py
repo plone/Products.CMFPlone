@@ -5,19 +5,7 @@ from zope.tal.talinterpreter import _write_ValueError
 
 def _unicode_replace(structure):
     if isinstance(structure, str):
-        try:
-            text = structure.decode('utf-8')
-        except UnicodeDecodeError:
-            # XXX Maybe, raise an exception here instead of a warning?
-            warnings.warn(textwrap.dedent('''\
-
-            *** *** Insertion of non-unicode non-ascii non-utf8 encoded text in TAL is deprecated and will be broken in Plone 3.5 !!!
-
-            %s...
-            ''' % (repr(structure), )), DeprecationWarning, 2)
-            # XXX the next line is fool-proof and will substitute ??-s if the encoding was not
-            # unicode
-            text = structure.decode('utf-8', 'replace')
+        text = structure.decode('utf-8')
     else:
         text = unicode(structure)
     return text

@@ -608,7 +608,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         #XXX: Does this deserve deprecation?
         # utils.log_deprecated("plone_utils.isDefaultPage is deprecated and "
-        #                      "will be removed in plone 3.5, please use the "
+        #                      "will be removed in plone 4.0, please use the "
         #                      "isDefaultPage method of the IDefaultPage view "
         #                      "on the container.")
         if request is None:
@@ -635,7 +635,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         #XXX: Does this deserve deprecation?
         # utils.log_deprecated("plone_utils.getDefaultPage is deprecated and "
-        #                      "will be removed in plone 3.5, please use the "
+        #                      "will be removed in plone 4.0, please use the "
         #                      "getDefaultPage method of the IDefaultPage view "
         #                      "on the container.")
         if request is None:
