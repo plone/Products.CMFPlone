@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed some outdated Extentsion scripts.
+      [hannosch]
+
     - Removed deprecated tool related Zope2 interfaces. Extended the
       deprecation period for ConstrainTypes and NonStructuralFolder as these
       are still used in Plone Core.
