@@ -6,4 +6,7 @@
  <javascript cacheable="True" compression="safe" cookable="True"
    enabled="True" expression="" id="input-label.js" inline="False"
    insert-after="form_tabbing.js" />
+ <javascript cacheable="True" compression="safe" cookable="True" enabled="True"
+   expression="" id="toc.js" inline="False"
+   insert-after="styleswitcher.js" />
 </object>

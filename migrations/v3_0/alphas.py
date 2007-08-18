@@ -166,31 +166,10 @@ def alpha2_beta1(portal):
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0a2-3.0b1')
 
-    # Add control panel action 
-    addMaintenanceConfiglet(portal, out)
-
-    # Add action icon
-    addIconForMaintenanceConfiglet(portal, out)
-
-    # Add number_of_days_to_keep property
-    addMaintenanceProperty(portal, out)
-
-    addTableContents(portal, out)
-
-    # Update control panel actions
-    updateSkinsAndSiteConfiglet(portal, out)
-
-    # Rename some control panel titles
-    updateConfigletTitles(portal, out)
-
-    # Install the filter and security control panels
-    addFilterAndSecurityConfiglets(portal, out)
-
     # Add icon for filter and security configlets
     addIconsForFilterAndSecurityConfiglets(portal, out)
 
     # Add the types configlet
-    addTypesConfiglet(portal, out)
     addIconForTypesConfiglet(portal, out)
 
     # add content rules configlet
@@ -419,26 +398,6 @@ def migrateOldActions(portal, out):
     out.append('Migrated old actions to new actions stored in portal_actions.')
 
 
-def addTypesConfiglet(portal, out):
-    """Add the types configlet."""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        gotTypes = False
-        for configlet in controlPanel.listActions():
-            if configlet.getId() == 'TypesSettings':
-                gotTypes = True
-        if not gotTypes:
-            controlPanel.registerConfiglet(
-                id         = 'TypesSettings',
-                appId      = 'Plone',
-                name       = 'Types',
-                action     = 'string:${portal_url}/@@types-controlpanel',
-                category   = 'Plone',
-                permission = ManagePortal,
-            )
-            out.append("Added Types Settings to the control panel")
-
-
 def addIconForTypesConfiglet(portal, out):
     """Adds an icon for the types settings configlet. """
     iconsTool = getToolByName(portal, 'portal_actionicons', None)
@@ -630,52 +589,6 @@ def reorderUserActions(portal, out):
                     user_category.moveObjectsToTop([action])
 
 
-def addIconForMaintenanceConfiglet(portal, out):
-    """Adds an icon for the maintenance settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 'Maintenance':
-                break # We already have the icon
-        else:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='Maintenance',
-                icon_expr='maintenance_icon.gif',
-                title='Maintenance',
-                )
-        out.append("Added 'maintenance' icon to actionicons tool.")
-
-
-def addMaintenanceConfiglet(portal, out):
-    """Add the configlet for the calendar settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        havePanel = False
-        for configlet in controlPanel.listActions():
-            if configlet.getId() == 'Maintenance':
-                havePanel = True
-        if not havePanel:
-            controlPanel.registerConfiglet(id         = 'Maintenance',
-                                           appId      = 'Plone',
-                                           name       = 'Maintenance',
-                                           action     = 'string:${portal_url}/@@maintenance-controlpanel',
-                                           category   = 'Plone',
-                                           permission = ManagePortal,)
-            out.append("Added 'Maintenance' to the control panel")
-
-
-def addMaintenanceProperty(portal, out):
-    """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties', None)
-    if tool is not None:
-        sheet = getattr(tool, 'site_properties', None)
-        if sheet is not None:
-            if not sheet.hasProperty('number_of_days_to_keep'):
-                sheet.manage_addProperty('number_of_days_to_keep', 7, 'int')
-                out.append("Added 'number_of_days_to_keep' property to site properties")
-
-
 def addWebstatsJSProperty(portal, out):
     """ adds a site property to portal_properties"""
     tool = getToolByName(portal, 'portal_properties')
@@ -717,19 +630,6 @@ def addWebstatsJSFile(portal, out):
             out.append("Added " + script + " to portal_javascipts")
 
 
-def addTableContents(portal, out):
-    """ Adds in table of contents """
-    csstool = getToolByName(portal, "portal_css", None)
-    if csstool is not None:
-        if 'toc.css' not in csstool.getResourceIds():
-            csstool.manage_addStylesheet(id="toc.css",rel="stylesheet", enabled=True)
-    jstool = getToolByName(portal, "portal_javascripts", None)
-    if jstool is not None:
-        if 'toc.js' not in jstool.getResourceIds():
-            jstool.registerScript(id="toc.js", enabled=True)
-    out.append("Added in css and js for table of contents")
-
-
 def updateMemberSecurity(portal, out):
     pprop = getToolByName(portal, 'portal_properties')
     portal.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
@@ -759,46 +659,6 @@ def updatePASPlugins(portal, out):
         out.append("Added Plone Session Plugin.")
 
 
-def updateSkinsAndSiteConfiglet(portal, out):
-    """Use new configlets for the skins and site settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        skins = controlPanel.getActionObject('Plone/PortalSkin')
-        site = controlPanel.getActionObject('Plone/PloneReconfig')
-
-        if skins is not None:
-            skins.action = Expression('string:${portal_url}/@@skins-controlpanel')
-            skins.title = "Themes"
-        if site is not None:
-            site.action = Expression('string:${portal_url}/@@site-controlpanel')
-            site.title = "Site settings"
-
-
-def updateConfigletTitles(portal, out):
-    """Update titles of some configlets"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        collection = controlPanel.getActionObject('Plone/portal_atct')
-        language = controlPanel.getActionObject('Plone/PloneLanguageTool')
-        navigation = controlPanel.getActionObject('Plone/NavigationSettings')
-        types = controlPanel.getActionObject('Plone/TypesSettings')
-        users = controlPanel.getActionObject('Plone/UsersGroups')
-        users2 = controlPanel.getActionObject('Plone/UsersGroups2')
-
-        if collection is not None:
-            collection.title = "Collection"
-        if language is not None:
-            language.title = "Language"
-        if navigation is not None:
-            navigation.title = "Navigation"
-        if types is not None:
-            types.title = "Types"
-        if users is not None:
-            users.title = "Users and Groups"
-        if users2 is not None:
-            users2.title = "Users and Groups"
-
-
 def addIconsForFilterAndSecurityConfiglets(portal, out):
     """Adds icons for the filter and security configlets."""
     iconsTool = getToolByName(portal, 'portal_actionicons', None)
@@ -826,35 +686,6 @@ def addIconsForFilterAndSecurityConfiglets(portal, out):
                 title='Security Settings',
                 )
             out.append("Added 'security' icon to actionicons tool.")
-
-
-def addFilterAndSecurityConfiglets(portal, out):
-    """Add the configlets for the filter and security settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        haveFilter = False
-        haveSecurity = False
-        for configlet in controlPanel.listActions():
-            if configlet.getId() == 'HtmlFilter':
-                haveFilter = True
-            if configlet.getId() == 'SecuritySettings':
-                haveSecurity = True
-        if not haveFilter:
-            controlPanel.registerConfiglet(id         = 'HtmlFilter',
-                                           appId      = 'Plone',
-                                           name       = 'HTML Filtering',
-                                           action     = 'string:${portal_url}/@@filter-controlpanel',
-                                           category   = 'Plone',
-                                           permission = ManagePortal,)
-            out.append("Added html filter settings to the control panel")
-        if not haveSecurity:
-            controlPanel.registerConfiglet(id         = 'SecuritySettings',
-                                           appId      = 'SecuritySettings',
-                                           name       = 'Security',
-                                           action     = 'string:${portal_url}/@@security-controlpanel',
-                                           category   = 'Plone',
-                                           permission = ManagePortal,)
-            out.append("Added security settings to the control panel")
 
 
 def addSitemapProperty(portal, out):

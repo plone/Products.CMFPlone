@@ -79,20 +79,14 @@ from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
-from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installKss
 from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
 from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
-from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addLinkIntegritySwitch
-from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
-from Products.CMFPlone.migrations.v3_0.alphas import updateSkinsAndSiteConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import updateConfigletTitles
 from Products.CMFPlone.migrations.v3_0.alphas import addIconsForFilterAndSecurityConfiglets
-from Products.CMFPlone.migrations.v3_0.alphas import addFilterAndSecurityConfiglets
 from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 from Products.CMFPlone.migrations.v3_0.alphas import addCacheForResourceRegistry
@@ -105,7 +99,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import addIconForContentRulesConfi
 from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addObjectProvidesIndex
 from Products.CMFPlone.migrations.v3_0.alphas import addExternalLinksOpenNewWindowProperty
-from Products.CMFPlone.migrations.v3_0.alphas import addTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addIconForTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
 from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
@@ -960,12 +953,26 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
 
-    def testAddFormTabbingJS(self):
+    def testAddMaintenanceProperty(self):
+        # adds a site property to portal_properties
+        self.removeSiteProperty('number_of_days_to_keep')
+        # Test it twice
+        for i in range(2):
+            loadMigrationProfile(self.portal, self.profile, ('propertiestool', ))
+            tool = self.properties
+            sheet = tool.site_properties
+            self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
+
+    def testAddFormTabbingAndInputLabelAndTocJS(self):
         jsreg = self.portal.portal_javascripts
         # unregister first
         jsreg.unregisterResource('form_tabbing.js')
+        jsreg.unregisterResource('input-label.js')
+        jsreg.unregisterResource('toc.js')
         script_ids = jsreg.getResourceIds()
         self.failIf('form_tabbing.js' in script_ids)
+        self.failIf('input-label.js' in script_ids)
+        self.failIf("toc.js" in script_ids)
         # Test it twice
         for i in range(2):
             loadMigrationProfile(self.portal, self.profile, ('jsregistry', ))
@@ -977,99 +984,68 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
                 posSE = jsreg.getResourcePosition('form_tabbing.js')
                 posHST = jsreg.getResourcePosition('collapsiblesections.js')
                 self.failUnless((posSE - 1) == posHST)
-
-    def testAddMaintenanceConfiglet(self):
-        self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
-        # Test it twice
-        for i in range(2):
-            addMaintenanceConfiglet(self.portal, [])
-            self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
-            main = self.cp.getActionObject('Plone/Maintenance')
-            self.assertEquals(main.title, 'Maintenance')
-            self.assertEquals(main.action.text,
-                              'string:${portal_url}/@@maintenance-controlpanel')
-
-    def testAddMaintenanceProperty(self):
-        # adds a site property to portal_properties
-        self.removeSiteProperty('number_of_days_to_keep')
-        # Test it twice
-        for i in range(2):
-            addMaintenanceProperty(self.portal, [])
-            tool = self.properties
-            sheet = tool.site_properties
-            self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
-
-    def testAddTableContents(self):
-        css = self.portal.portal_css
-        js = self.portal.portal_javascripts
-        css.manage_removeStylesheet("toc.css")
-        js.manage_removeScript("toc.js")
-        # Test it twice
-        for i in range(2):
-            addTableContents(self.portal, [])
-            self.failUnless("toc.js" in js.getResourceIds())
-            self.failUnless("toc.css" in css.getResourceIds())
-
-    def testAddFormInputLabelJS(self):
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('input-label.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('input-label.js' in script_ids)
-        # Test it twice
-        for i in range(2):
-            loadMigrationProfile(self.portal, self.profile, ('jsregistry', ))
-            script_ids = jsreg.getResourceIds()
             self.failUnless('input-label.js' in script_ids)
+            self.failUnless("toc.js" in script_ids)
 
-    def testUpdateSkinsAndSiteConfiglet(self):
+    def testVariousConfiglets(self):
         skins = self.cp.getActionObject('Plone/PortalSkin')
         site = self.cp.getActionObject('Plone/PloneReconfig')
         skins.action = Expression('string:skins')
         site.action = Expression('string:site')
-        # Test it twice
-        for i in range(2):
-            updateSkinsAndSiteConfiglet(self.portal, [])
-            self.assertEquals(skins.title, 'Themes')
-            self.assertEquals(skins.action.text,
-                              'string:${portal_url}/@@skins-controlpanel')
-            self.assertEquals(site.title, 'Site settings')
-            self.assertEquals(site.action.text,
-                              'string:${portal_url}/@@site-controlpanel')
-
-    def testUpdateConfigletTitles(self):
         collection = self.cp.getActionObject('Plone/portal_atct')
         language = self.cp.getActionObject('Plone/PloneLanguageTool')
         navigation = self.cp.getActionObject('Plone/NavigationSettings')
-        types = self.cp.getActionObject('Plone/TypesSettings')
         users = self.cp.getActionObject('Plone/UsersGroups')
         users2 = self.cp.getActionObject('Plone/UsersGroups2')
+        collection.title = 'col'
+        language.title = 'lang'
+        navigation.title = 'navi'
+        users.title = 'us'
+        users2.title = 'us2'
+        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
+        self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
+        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
+        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
         # Test it twice
         for i in range(2):
-            updateConfigletTitles(self.portal, [])
+            loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
+            skins = self.cp.getActionObject('Plone/PortalSkin')
+            site = self.cp.getActionObject('Plone/PloneReconfig')
+            self.assertEquals(skins.title, 'Themes')
+            self.assertEquals(skins.action.text,
+                              'string:${portal_url}/@@skins-controlpanel')
+            self.assertEquals(site.title, 'Site')
+            self.assertEquals(site.action.text,
+                              'string:${portal_url}/@@site-controlpanel')
+            collection = self.cp.getActionObject('Plone/portal_atct')
+            language = self.cp.getActionObject('Plone/PloneLanguageTool')
+            navigation = self.cp.getActionObject('Plone/NavigationSettings')
+            users = self.cp.getActionObject('Plone/UsersGroups')
+            users2 = self.cp.getActionObject('Plone/UsersGroups2')
             self.assertEquals(collection.title, 'Collection')
             self.assertEquals(language.title, 'Language')
             self.assertEquals(navigation.title, 'Navigation')
-            self.assertEquals(types.title, 'Types')
             self.assertEquals(users.title, 'Users and Groups')
             self.assertEquals(users2.title, 'Users and Groups')
-
-    def testAddFilterAndSecurityConfiglets(self):
-        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
-        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
-        # Test it twice
-        for i in range(2):
-            addFilterAndSecurityConfiglets(self.portal, [])
             self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
+            self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
             self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
+            self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
             htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
             self.assertEquals(htmlfilter.title, 'HTML Filtering')
             self.assertEquals(htmlfilter.action.text,
                               'string:${portal_url}/@@filter-controlpanel')
+            main = self.cp.getActionObject('Plone/Maintenance')
+            self.assertEquals(main.title, 'Maintenance')
+            self.assertEquals(main.action.text,
+                              'string:${portal_url}/@@maintenance-controlpanel')
             security = self.cp.getActionObject('Plone/SecuritySettings')
             self.assertEquals(security.title, 'Security')
             self.assertEquals(security.action.text,
                               'string:${portal_url}/@@security-controlpanel')
+            types = self.cp.getActionObject('Plone/TypesSettings')
+            self.assertEquals(types.action.text,
+                              'string:${portal_url}/@@types-controlpanel')
 
     def testaddIconsForFilterAndSecurityConfiglets(self):
         # Should add the filter and security action icons
@@ -1087,16 +1063,6 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
         for i in range(2):
             addIconForTypesConfiglet(self.portal, [])
             self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddTypesConfiglet(self):
-        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
-        # Test it twice
-        for i in range(2):
-            addTypesConfiglet(self.portal, [])
-            self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
-            types = self.cp.getActionObject('Plone/TypesSettings')
-            self.assertEquals(types.action.text,
-                              'string:${portal_url}/@@types-controlpanel')
 
     def testInstallContentrulesUtility(self):
         sm = getSiteManager(self.portal)
