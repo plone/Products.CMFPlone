@@ -10,7 +10,6 @@ class MetadataTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/info_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 MetadataTool.__doc__ = BaseTool.__doc__
 

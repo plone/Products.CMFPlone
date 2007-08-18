@@ -37,8 +37,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
     memberarea_type = 'Folder'
     security = ClassSecurityInfo()
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     manage_options = (BaseTool.manage_options +
                       ( { 'label' : 'Portraits'
                      , 'action' : 'manage_portrait_fix'

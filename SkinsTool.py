@@ -14,8 +14,6 @@ class SkinsTool(PloneBaseTool, BaseTool):
     default_skin = ''
     request_varname = 'plone_skin'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
 
 SkinsTool.__doc__ = BaseTool.__doc__
 

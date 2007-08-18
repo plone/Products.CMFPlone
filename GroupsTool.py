@@ -15,9 +15,6 @@ class GroupsTool(PloneBaseTool, BaseTool):
     # No group workspaces by default
     groupWorkspacesCreationFlag = 0
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
-
     security.declarePublic('getGroupInfo')
     def getGroupInfo(self, groupId):
         """

@@ -15,7 +15,6 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/product_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 QuickInstallerTool.__doc__ = BaseTool.__doc__
 

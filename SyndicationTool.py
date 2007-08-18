@@ -13,8 +13,6 @@ class SyndicationTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/rss.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     security.declarePublic('getSyndicatableContent')
     def getSyndicatableContent(self, obj):
         """ Use the getFolderContents script, unless

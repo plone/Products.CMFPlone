@@ -20,8 +20,6 @@ from Products.GenericSetup.utils import importObjects
 from Products.GenericSetup.utils import XMLAdapterBase
 
 from Products.CMFCore.interfaces import IActionProvider
-from Products.CMFCore.interfaces.portal_actions \
-        import ActionProvider as z2IActionProvider
 from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.interfaces import IControlPanel
@@ -67,8 +65,7 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         fragment = self._doc.createDocumentFragment()
 
         provider = self.context
-        if not (IActionProvider.providedBy(provider) or
-                z2IActionProvider.isImplementedBy(provider)):
+        if not IActionProvider.providedBy(provider):
             return fragment
 
         actions = provider.listActions()

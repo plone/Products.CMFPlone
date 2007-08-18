@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed deprecated tool related Zope2 interfaces. Extended the
+      deprecation period for ConstrainTypes and NonStructuralFolder as these
+      are still used in Plone Core.
+      [hannosch]
+
     - Removed work-around code for insertion of non-unicode non-ascii non-utf8
       encoded text in TAL. This will produce an error now. Always use Unicode
       when using data in page templates and TAL.

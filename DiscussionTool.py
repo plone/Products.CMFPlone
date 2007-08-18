@@ -20,8 +20,6 @@ class DiscussionTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/discussionitem_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     security.declareProtected(ReplyToItem, 'cookReply')
     def cookReply(self, reply, text_format=None):
         """ TODO We need this because currently we can not easily change the

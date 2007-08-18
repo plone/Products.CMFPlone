@@ -30,9 +30,6 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
     implements(ITranslationServiceTool)
 
-    __implements__ = (PloneBaseTool.__implements__,
-                      SimpleItem.__implements__, )
-
     security.declarePublic('utranslate')
     def utranslate(self, *args, **kw):
         # Translate method to access the translation service

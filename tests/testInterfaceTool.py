@@ -12,8 +12,6 @@ from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.Document import Document
 
 from Products.CMFPlone.InterfaceTool import resolveInterface, getDottedName
-from Products.CMFPlone.InterfaceTool import InterfaceFinder
-from Products.CMFPlone.interfaces import PloneBaseTool
 from Products.CMFPlone.utils import classImplements
 
 
@@ -48,16 +46,6 @@ class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
         self.assertRaises(ValueError, resolveInterface, dotted_name)
 
 
-class TestInterfaceFinder(ZopeTestCase.ZopeTestCase):
-
-    def testAvailableInterfaces(self):
-        # Should find available interfaces
-        from Products.CMFPlone.interfaces import InterfaceTool
-        ifs = InterfaceFinder().findInterfaces(module=InterfaceTool)
-        self.failUnless(getDottedName(InterfaceTool.IInterfaceTool) in ifs)
-        self.failUnless(getDottedName(PloneBaseTool.IPloneBaseTool) in ifs)
-
-
 class TestInterfaceTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -88,23 +76,14 @@ class TestInterfaceTool(PloneTestCase.PloneTestCase):
         self.failUnless(self.interface.objectImplements(b, getDottedName(DublinCore)))
         self.failUnless(self.interface.objectImplements(b, getDottedName(MyPortalContent)))
 
-    def testNamesAndDescriptions(self):
-        from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool
-        nd = self.interface.namesAndDescriptions(getDottedName(IInterfaceTool))
-        nd2 = IInterfaceTool.namesAndDescriptions()
-        nd2 = [(n, d.getDoc()) for n, d in nd2]
-        self.assertEquals(nd, nd2)
-
 
 def test_suite():
     # Normalize dotted names
     from Products.CMFPlone.tests.testInterfaceTool import TestInterfaceResolution
-    from Products.CMFPlone.tests.testInterfaceTool import TestInterfaceFinder
     from Products.CMFPlone.tests.testInterfaceTool import TestInterfaceTool
 
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestInterfaceResolution))
-    suite.addTest(makeSuite(TestInterfaceFinder))
     suite.addTest(makeSuite(TestInterfaceTool))
     return suite

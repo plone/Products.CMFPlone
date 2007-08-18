@@ -10,8 +10,6 @@ class UndoTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/undo_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
 UndoTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(UndoTool)

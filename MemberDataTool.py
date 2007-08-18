@@ -14,9 +14,6 @@ class MemberDataTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/user.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
-
     def __init__(self):
         BaseTool.__init__(self)
         self.portraits=BTreeFolder2(id='portraits')

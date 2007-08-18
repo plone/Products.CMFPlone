@@ -91,9 +91,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     implements(IPloneTool)
 
-    __implements__ = (PloneBaseTool.__implements__,
-                      SimpleItem.__implements__, )
-
     security.declareProtected(ManageUsers, 'setMemberProperties')
     def setMemberProperties(self, member, **properties):
         pas = getToolByName(self, 'acl_users')

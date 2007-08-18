@@ -25,8 +25,6 @@ class WorkflowTool(PloneBaseTool, BaseTool):
     plone_tool = 1
     toolicon = 'skins/plone_images/workflow_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     # TODO this should not make it into 1.0
     # Refactor me, my maker was tired
     def flattenTransitions(self, objs, container=None):

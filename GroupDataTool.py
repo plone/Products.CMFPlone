@@ -11,7 +11,6 @@ class GroupDataTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/group.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 GroupDataTool.__doc__ = BaseTool.__doc__
 

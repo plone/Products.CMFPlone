@@ -323,8 +323,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     manage_catalogAdvanced = DTMLFile('www/catalogAdvanced', globals())
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__)
-
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
 

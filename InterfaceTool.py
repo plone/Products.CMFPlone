@@ -1,6 +1,4 @@
 from types import ModuleType, ListType, TupleType
-from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool \
-     as z2IInterfaceTool
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Acquisition import aq_base
 from Products.CMFCore.utils import registerToolInterface
@@ -23,9 +21,6 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ This tool exposes the interface package for TTW applications,
     by accepting a dotted name of an interface and exporting the
     IInterface API """
-
-    __implements__ = (PloneBaseTool.__implements__, z2IInterfaceTool,
-                      SimpleItem.__implements__, )
 
     implements(IInterfaceTool)
 

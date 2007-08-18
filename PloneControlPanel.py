@@ -16,7 +16,6 @@ from Products.CMFCore.utils import _checkPermission, getToolByName, UniqueObject
 from Products.CMFCore.utils import registerToolInterface
 
 import ToolNames
-from interfaces.PloneControlPanel import IControlPanel as z2IControlPanel
 from interfaces import IControlPanel
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
@@ -45,11 +44,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     """Weave together the various sources of "actions" which
     are apropos to the current user and context.
     """
-
-    __implements__ = (PloneBaseTool.__implements__,
-                      z2IControlPanel,
-                      ActionProviderBase.__implements__,
-                      SimpleItem.__implements__, )
 
     implements(IControlPanel)
 

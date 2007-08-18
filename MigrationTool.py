@@ -31,8 +31,6 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = 'Plone Migration Tool'
     toolicon = 'skins/plone_images/site_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, SimpleItem.__implements__, )
-
     _needRecatalog = 0
     _needUpdateRole = 0
 

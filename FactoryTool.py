@@ -187,8 +187,6 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     implements(IFactoryTool)
 
-    __implements__ = (PloneBaseTool.__implements__, SimpleItem.__implements__, )
-
     manage_options = ( ({'label':'Overview', 'action':'manage_overview'}, \
                         {'label':'Documentation', 'action':'manage_docs'}, \
                         {'label':'Factory Types', 'action':'manage_portal_factory_types'},) +

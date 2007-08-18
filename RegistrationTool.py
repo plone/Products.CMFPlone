@@ -50,7 +50,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/pencil_icon.gif'
     plone_tool = 1
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
     md5key = None
     _v_md5base = None
 

@@ -11,8 +11,6 @@ class CalendarTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/event_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     firstweekday = 0 # 0 is Monday
 
     security.declarePublic('getDayNumbers')

@@ -1,7 +1,5 @@
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFPlone.interfaces.PloneBaseTool import IPloneBaseTool \
-     as z2IPloneBaseTool
 from Products.CMFPlone.interfaces import IPloneBaseTool
 from Acquisition import aq_base
 from Acquisition import aq_parent
@@ -134,8 +132,6 @@ class PloneBaseTool:
     """
 
     security = ClassSecurityInfo()
-
-    __implements__ = z2IPloneBaseTool
 
     implements(IPloneBaseTool)
 

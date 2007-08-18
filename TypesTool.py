@@ -10,8 +10,6 @@ class TypesTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/document_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     security.declarePublic('listTypeTitles')
     def listTypeTitles(self, container=None):
         """ Return a dictionary of id/Title combinations """

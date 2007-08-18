@@ -13,7 +13,7 @@ from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import IPropertiesTool, ISimpleItemWithProperties
-from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool as z2IPropertiesTool
+
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
@@ -28,8 +28,6 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         ))
 
     implements(IPropertiesTool)
-    __implements__ = ((z2IPropertiesTool,) +
-                      (Folder.__implements__, ))
 
     manage_options = ((Folder.manage_options[0],) +
                         BaseTool.manage_options)

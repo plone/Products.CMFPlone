@@ -12,8 +12,6 @@ class ActionsTool(PloneBaseTool, BaseTool):
     meta_type = ToolNames.ActionsTool
     toolicon = 'skins/plone_images/confirm_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     security = ClassSecurityInfo()
 
     #

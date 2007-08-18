@@ -12,8 +12,6 @@ class URLTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/link_icon.gif'
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
-
     security.declarePublic('isURLInPortal')
     def isURLInPortal(self, url):
         """ Check if a given url is on the same host and contains the portal
