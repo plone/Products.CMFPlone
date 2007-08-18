@@ -1,7 +1,4 @@
-from StringIO import StringIO
-import textwrap
-import warnings
-from zope.tal.talinterpreter import _write_ValueError
+from collections import deque
 
 def _unicode_replace(structure):
     if isinstance(structure, str):
@@ -27,40 +24,29 @@ def new__call__(self, econtext):
     return self._expr % tuple([_unicode_replace(var(econtext)) for var in self._vars])
 
 
-class FasterStringIO(StringIO):
+class FasterStringIO(object):
     """Append-only version of StringIO, which ignores any initial buffer.
 
-    This let's us have much faster write() and getvalue methods.
-
-    Most of this code was taken from zope.tal.talinterpreter.py licenced under
-    the ZPL 2.1.
+    Implemented by using an internal deque instead.
     """
     def __init__(self, buf=None):
-        self.buf = ''
-        self.len = 0
-        self.buflist = []
-        self.bufappend = self.buflist.append
-        self.pos = 0
-        self.closed = False
-        self.softspace = 0
+        self.buf = buf = deque()
+        self.bufappend = buf.append
 
     def close(self):
-        if not self.closed:
-            self.write = _write_ValueError
-            StringIO.close(self)
+        self.buf.clear()
 
     def seek(self, pos, mode=0):
         raise RuntimeError("FasterStringIO.seek() not allowed")
 
     def write(self, s):
         self.bufappend(s)
-        self.len = self.pos = self.pos + len(s)
 
     def getvalue(self):
-        if self.buflist:
-            try:
-                self.buf = u''.join(self.buflist)
-            except UnicodeDecodeError:
-                self.buf = u''.join([_unicode_replace(value) for value in self.buflist])
-            self.buflist = []
-        return self.buf
+        buf = self.buf
+        try:
+            result = u''.join(buf)
+        except UnicodeDecodeError:
+            result = u''.join([_unicode_replace(value) for value in buf])
+        buf.clear()
+        return result

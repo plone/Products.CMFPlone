@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Replaced our FasterStringIO implementation by one based on
+      collections.deque, which is a faster than StringIO.
+      [hannosch]
+
     - Removed more deprecated code, adjusted some comments.
       [hannosch]
 
