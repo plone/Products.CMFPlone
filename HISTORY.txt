@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0.1 - UNRELEASED
 
+    - Adjusted some deprecation warnings to a later Plone version, as we
+      haven't removed all usage of the underlying functions from Plone itself.
+      [hannosch]
 
 Plone 3.0 - released August 17, 2007
 

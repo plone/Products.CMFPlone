@@ -410,13 +410,3 @@ class IPlone(Interface):
 
     def cropText(text, length, ellipsis):
         """ Crop text on a word boundary """
-
-# XXX We should remove the portlet views itself in Plone 3.5 and therefor also
-# the zcml registrations in deprecated.zcml. Once this is done and we don't
-# use the interfaces anymore, we can deprecate those as well.
-# zope.deprecation.deprecated(
-#    ('INavigationPortlet', 'INewsPortlet', 'IEventsPortlet', 'IRecentPortlet',
-#     'ICalendarPortlet'),
-#     "Plone's portlets are based on plone.app.portlets now. The old portlet "
-#     "interfaces will be removed in Plone 4.0."
-#    )

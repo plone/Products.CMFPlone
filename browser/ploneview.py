@@ -441,10 +441,6 @@ class Plone(BrowserView):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.keyed_actions()
 
-    # @deprecate("The getCurrentUrl method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "current_page_url method of the plone_context_state adapter "
-    #            "instead.")
     def getCurrentUrl(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.current_page_url()
@@ -456,91 +452,49 @@ class Plone(BrowserView):
         portal_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_portal_state')
         return portal_state.is_rtl()
 
-    # @deprecate("The isDefaultPageInFolder method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "is_default_page method of the plone_context_state adapter "
-    #            "instead.")
     def isDefaultPageInFolder(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_default_page()
 
-    # @deprecate("The isStructuralFolder method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "is_structural_folder method of the plone_context_state adapter "
-    #            "instead.")
     def isStructuralFolder(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_structural_folder()
 
-    # @deprecate("The navigationRootPath method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "navigation_root_path method of the plone_portal_state adapter "
-    #            "instead.")
     def navigationRootPath(self):
         portal_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_portal_state')
         return portal_state.navigation_root_path()
 
-    # @deprecate("The navigationRootUrl method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "navigation_root_url method of the plone_portal_state adapter "
-    #            "instead.")
     def navigationRootUrl(self):
         portal_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_portal_state')
         return portal_state.navigation_root_url()
 
-    # @deprecate("The getParentObject method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "parent method of the plone_context_state adapter instead.")
     def getParentObject(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.parent()
 
-    # @deprecate("The getCurrentFolder method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "folder method of the plone_context_state adapter instead.")
     def getCurrentFolder(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.folder()
 
-    # @deprecate("The getCurrentFolderUrl method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "absolute_url method on the result of the folder method of the "
-    #            "plone_context_state adapter instead.")
     def getCurrentFolderUrl(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.folder().absolute_url()
 
-    # @deprecate("The getCurrentObjectUrl method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "canonical_object_url method of the plone_context_state "
-    #            "adapter instead.")
     @memoize
     def getCurrentObjectUrl(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.canonical_object_url()
 
-    # @deprecate("The isFolderOrFolderDefaultPage method of the Plone view has "
-    #            "been deprecated and will be removed in Plone 3.5. Use either "
-    #            "the is_structural_folder or is_default_page method of the "
-    #            "plone_context_state adapter instead.")
     @memoize
     def isFolderOrFolderDefaultPage(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_structural_folder() or context_state.is_default_page()
 
-    # @deprecate("The isPortalOrPortalDefaultPage method of the Plone view has "
-    #            "been deprecated and will be removed in Plone 3.5. Use the "
-    #            "is_portal_root method of the plone_context_state adapter "
-    #            "instead.")
     @memoize
     def isPortalOrPortalDefaultPage(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.is_portal_root()
         
-    # @deprecate("The getViewTemplateId method of the Plone view has been "
-    #            "deprecated and will be removed in Plone 3.5. Use the "
-    #            "view_template_id method of the plone_context_state adapter "
-    #            "instead.")
     @memoize
     def getViewTemplateId(self):
         context_state = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_context_state')
