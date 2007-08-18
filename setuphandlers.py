@@ -511,7 +511,6 @@ def importFinalSteps(context):
     pprop = getToolByName(site, 'portal_properties')
     pmembership = getToolByName(site, 'portal_membership')
     gen = PloneGenerator()
-    gen.addDefaultPortlets(site)
     gen.performMigrationActions(site)
     gen.enableSyndication(site, out)
     gen.assignTitles(site, out)
@@ -523,12 +522,13 @@ def importContent(context):
     """
     Final Plone content import step.
     """
-    # Only run step if a flag file is present (e.g. not an extension profile)
+    # Only run step if a flag file is present
     if context.readDataFile('plone-content.txt') is None:
         return
     out = []
     site = context.getSite()
     gen = PloneGenerator()
+    gen.addDefaultPortlets(site)
     gen.setupPortalContent(site)
 
 def updateWorkflowRoleMappings(context):

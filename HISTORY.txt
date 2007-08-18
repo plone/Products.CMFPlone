@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Refactored initial content creation into a separate extension profile,
+      thus making it possible to emit it. This refs
+      http://dev.plone.org/plone/ticket/6948.
+      [hannosch]
+
     - Removed dependency checking code for everything contained in the Plone
       Core tarball. The number of dependencies is just too huge by now to
       check them all. We still check external dependencies like Python, Zope,

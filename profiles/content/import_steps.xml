@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<import-steps>
+ <import-step id="content" version="20050927-01"
+              handler="Products.CMFCore.exportimport.content.importSiteStructure"
+              title="Content">
+  <dependency step="plone-final"/>
+    Import the site's structure and content.
+ </import-step>
+ <import-step id="plone-content" version="20061230-01"
+              handler="Products.CMFPlone.setuphandlers.importContent"
+              title="Plone Content Import">
+  <dependency step="content"/>
+  <dependency step="plone-final"/>
+    Plone content import
+ </import-step>
+</import-steps>

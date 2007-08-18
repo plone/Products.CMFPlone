@@ -10,7 +10,16 @@
       description="Profile for a default Plone."
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       />
-      
+
+  <genericsetup:registerProfile
+      name="plone-content"
+      title="Plone Initial Content"
+      directory="profiles/content"
+      description="Extension profile to configure initial content"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
   <genericsetup:registerProfile
       name="testfixture"
       title="Plone Test Fixture"

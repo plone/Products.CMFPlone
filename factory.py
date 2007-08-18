@@ -14,13 +14,15 @@ from interfaces import IPloneSiteRoot
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
+_CONTENT_PROFILE = 'Products.CMFPlone:plone-content'
 
 
 class HiddenProfiles(object):
     implements(INonInstallable)
 
     def getNonInstallableProfiles(self):
-        return [u'Products.Archetypes:Archetypes',
+        return [_CONTENT_PROFILE,
+                u'Products.Archetypes:Archetypes',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
                 u'Products.CMFFormController:CMFFormController',
@@ -66,7 +68,8 @@ def addPloneSite(dispatcher, id, title='', description='',
                  create_userfolder=1, email_from_address='',
                  email_from_name='', validate_email=0,
                  profile_id=_DEFAULT_PROFILE, snapshot=False,
-                 RESPONSE=None, extension_ids=()):
+                 RESPONSE=None, extension_ids=(),
+                 setup_content=False):
     """ Add a PloneSite to 'dispatcher', configured according to 'profile_id'.
     """
     site = PloneSite(id)
@@ -78,6 +81,8 @@ def addPloneSite(dispatcher, id, title='', description='',
 
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
+    if setup_content:
+        setup_tool.runAllImportStepsFromProfile('profile-%s' % _CONTENT_PROFILE)
     for extension_id in extension_ids:
         setup_tool.runAllImportStepsFromProfile('profile-%s' % extension_id)
 
