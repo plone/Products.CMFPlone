@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+ <javascript cacheable="True" compression="safe" cookable="True"
+   enabled="True" expression="" id="form_tabbing.js" inline="False"
+   insert-after="collapsiblesections.js"/>
+ <javascript cacheable="True" compression="safe" cookable="True"
+   enabled="True" expression="" id="input-label.js" inline="False"
+   insert-after="form_tabbing.js" />
+</object>

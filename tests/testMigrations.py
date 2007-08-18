@@ -80,17 +80,11 @@ from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
-from Products.CMFPlone.migrations.v3_0.alphas import addFormInputLabelJS
 from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installKss
-from Products.CMFPlone.migrations.v3_0.alphas import installRedirectorUtility
-from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesAction
 from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
 from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
-from Products.CMFPlone.migrations.v3_0.alphas import updateRtlCSSexpression
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addLinkIntegritySwitch
 from Products.CMFPlone.migrations.v3_0.alphas import addTableContents
@@ -791,7 +785,9 @@ class TestMigrations_v3_0_alpha1(MigrationTest):
         mail.action = Expression('string:mail')
         # Test it twice
         for i in range(2):
-            updateSearchAndMailHostConfiglet(self.portal, [])
+            loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
+            search = self.cp.getActionObject('Plone/SearchSettings')
+            mail = self.cp.getActionObject('Plone/MailHost')
             self.assertEquals(search.title, 'Search')
             self.assertEquals(search.action.text,
                               'string:${portal_url}/@@search-controlpanel')
@@ -799,38 +795,13 @@ class TestMigrations_v3_0_alpha1(MigrationTest):
             self.assertEquals(mail.action.text,
                               'string:${portal_url}/@@mail-controlpanel')
 
-    def testAddFormTabbingJS(self):
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('form_tabbing.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('form_tabbing.js' in script_ids)
-        # Test it twice
-        for i in range(2):
-            addFormTabbingJS(self.portal, [])
-            script_ids = jsreg.getResourceIds()
-            self.failUnless('form_tabbing.js' in script_ids)
-            # if collapsiblesections.js is available form_tabbing.js
-            # should be positioned right underneath it
-            if 'collapsiblesections.js' in script_ids:
-                posSE = jsreg.getResourcePosition('form_tabbing.js')
-                posHST = jsreg.getResourcePosition('collapsiblesections.js')
-                self.failUnless((posSE - 1) == posHST)
-
     def testInstallRedirectorUtility(self):
         sm = getSiteManager(self.portal)
         sm.unregisterUtility(provided=IRedirectionStorage)
         # Test it twice
         for i in range(2):
-            installRedirectorUtility(self.portal, [])
+            loadMigrationProfile(self.portal, self.profile, ('componentregistry', ))
             self.failIf(sm.queryUtility(IRedirectionStorage) is None)
-
-    def testAddContentRulesAction(self):
-        self.portal.portal_actions.object._delObject('contentrules')
-        # Test it twice
-        for i in range(2):
-            addContentRulesAction(self.portal, [])
-            self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
 
     def testUpdateRtlCSSexpression(self):
         cssreg = self.portal.portal_css
@@ -838,7 +809,7 @@ class TestMigrations_v3_0_alpha1(MigrationTest):
         rtl.setExpression('string:foo')
         # Test it twice
         for i in range(2):
-            updateRtlCSSexpression(self.portal, [])
+            loadMigrationProfile(self.portal, self.profile, ('cssregistry', ))
             expr = rtl.getExpression()
             self.failUnless(expr == "python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
 
@@ -989,6 +960,24 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
 
+    def testAddFormTabbingJS(self):
+        jsreg = self.portal.portal_javascripts
+        # unregister first
+        jsreg.unregisterResource('form_tabbing.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('form_tabbing.js' in script_ids)
+        # Test it twice
+        for i in range(2):
+            loadMigrationProfile(self.portal, self.profile, ('jsregistry', ))
+            script_ids = jsreg.getResourceIds()
+            self.failUnless('form_tabbing.js' in script_ids)
+            # if collapsiblesections.js is available form_tabbing.js
+            # should be positioned right underneath it
+            if 'collapsiblesections.js' in script_ids:
+                posSE = jsreg.getResourcePosition('form_tabbing.js')
+                posHST = jsreg.getResourcePosition('collapsiblesections.js')
+                self.failUnless((posSE - 1) == posHST)
+
     def testAddMaintenanceConfiglet(self):
         self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
         # Test it twice
@@ -1029,7 +1018,7 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
         self.failIf('input-label.js' in script_ids)
         # Test it twice
         for i in range(2):
-            addFormInputLabelJS(self.portal, [])
+            loadMigrationProfile(self.portal, self.profile, ('jsregistry', ))
             script_ids = jsreg.getResourceIds()
             self.failUnless('input-label.js' in script_ids)
 
@@ -1355,6 +1344,7 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
 class TestMigrations_v3_0(MigrationTest):
 
     def afterSetUp(self):
+        self.profile = 'profile-Products.CMFPlone.migrations:3.0b1-3.0b2'
         self.actions = self.portal.portal_actions
         self.cp = self.portal.portal_controlpanel
         self.icons = self.portal.portal_actionicons
@@ -1362,6 +1352,13 @@ class TestMigrations_v3_0(MigrationTest):
         self.types = self.portal.portal_types
         self.workflow = self.portal.portal_workflow
         self.properties = self.portal.portal_properties
+
+    def testAddContentRulesAction(self):
+        self.portal.portal_actions.object._delObject('contentrules')
+        # Test it twice
+        for i in range(2):
+            loadMigrationProfile(self.portal, self.profile, ('actions', ))
+            self.failUnless('contentrules' in self.portal.portal_actions.object.objectIds())
 
     def testAddNewBeta2CSSFiles(self):
         cssreg = self.portal.portal_css
@@ -1640,11 +1637,9 @@ class TestMigrations_v3_0(MigrationTest):
         sm.unregisterUtility(provided=IRAMCache)
         util = queryUtility(IRAMCache)
         self.failUnless(util.maxAge == 86400)
-        # Test it twice
-        for i in range(2):
-            beta3_rc1(self.portal)
-            util = queryUtility(IRAMCache)
-            self.failUnless(util.maxAge == 3600)
+        beta3_rc1(self.portal)
+        util = queryUtility(IRAMCache)
+        self.failUnless(util.maxAge == 3600)
 
     def testMoveKupuAndCMFPWControlPanel(self):
         kupu = self.cp.getActionObject('Plone/kupu')

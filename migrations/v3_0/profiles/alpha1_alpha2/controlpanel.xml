@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel" meta_type="Plone Control Panel Tool"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="plone">
+ <configlet title="Mail" action_id="MailHost" appId="MailHost"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@mail-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Search" action_id="SearchSettings" appId="Plone"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@search-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+</object>

@@ -6,7 +6,6 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
-from alphas import addContentRulesAction
 from alphas import enableZope3Site
 from alphas import registerToolsAsUtilities
 
@@ -26,9 +25,6 @@ def beta1_beta2(portal):
     changeOrderOfActionProviders(portal, out)
     updateEditActionConditionForLocking(portal, out)
     addOnFormUnloadJS(portal, out)
-
-    # Add the action a second time, now to the correct action category
-    addContentRulesAction(portal, out)
 
     cleanupOldActions(portal, out)
 

@@ -137,23 +137,7 @@ def alpha1_alpha2(portal):
     enableZope3Site(portal, out)
     registerToolsAsUtilities(portal, out)
 
-    # Update search and mailhost control panels to new formlib based ones
-    updateSearchAndMailHostConfiglet(portal, out)
-
-    # remove generated.css from ResourceRegistries
-    removeGeneratedCSS(portal, out)
-
-    # add form_tabbing.js
-    addFormTabbingJS(portal, out)
-
-    # install plone.app.redirector
-    installRedirectorUtility(portal, out)
-
-    # Add action for plone.app.contentrules
-    addContentRulesAction(portal, out)
-
-    # Update expression on RTL.css
-    updateRtlCSSexpression(portal, out)
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0a1-3.0a2')
 
     # Add reader and editor roles
     addReaderAndEditorRoles(portal, out)
@@ -180,6 +164,8 @@ def alpha2_beta1(portal):
     enableZope3Site(portal, out)
     registerToolsAsUtilities(portal, out)
 
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0a2-3.0b1')
+
     # Add control panel action 
     addMaintenanceConfiglet(portal, out)
 
@@ -190,9 +176,6 @@ def alpha2_beta1(portal):
     addMaintenanceProperty(portal, out)
 
     addTableContents(portal, out)
-
-    # add input-label.js
-    addFormInputLabelJS(portal, out)
 
     # Update control panel actions
     updateSkinsAndSiteConfiglet(portal, out)
@@ -525,61 +508,6 @@ def installProduct(product, portal, out, hidden=False):
         installOrReinstallProduct(portal, product, out, hidden=hidden)
 
 
-def updateSearchAndMailHostConfiglet(portal, out):
-    """Use new configlets for the search and mailhost settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        search = controlPanel.getActionObject('Plone/SearchSettings')
-        mail = controlPanel.getActionObject('Plone/MailHost')
-
-        if search is not None:
-            search.title = "Search"
-            search.action = Expression('string:${portal_url}/@@search-controlpanel')
-        if mail is not None:
-            mail.title = "Mail"
-            mail.action = Expression('string:${portal_url}/@@mail-controlpanel')
-
-
-def removeGeneratedCSS(portal, out):
-    # remove generated.css from the portal_css registries
-    cssreg = getToolByName(portal, 'portal_css', None)
-    stylesheet_ids = cssreg.getResourceIds()
-    if 'generated.css' in stylesheet_ids:
-        cssreg.unregisterResource('generated.css')
-        out.append("Removed generated.css from the registry")
-
-
-def addFormTabbingJS(portal, out):
-    """Add form_tabbing.js to ResourceRegistries.
-    """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
-    script = 'form_tabbing.js'
-    if jsreg is not None:
-        script_ids = jsreg.getResourceIds()
-        # Failsafe: first make sure the stylesheet doesn't exist in the list
-        if script not in script_ids:
-            jsreg.registerScript(script)
-            try:
-                jsreg.moveResourceAfter(script, 'collapsiblesections.js')
-            except ValueError:
-                # put it at the bottom of the stack
-                jsreg.moveResourceToBottom(script)
-            out.append("Added " + script + " to portal_javascipt")
-
-
-def addFormInputLabelJS(portal, out):
-    """Add input-label.js to ResourceRegistries.
-    """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
-    script = 'input-label.js'
-    if jsreg is not None:
-        script_ids = jsreg.getResourceIds()
-        # Failsafe: first make sure the stylesheet doesn't exist in the list
-        if script not in script_ids:
-            jsreg.registerScript(script)
-            out.append("Added " + script + " to portal_javascipt")
-
-
 registration = (('mimetypes_registry', IMimetypesRegistryTool),
                 ('portal_transforms', IPortalTransformsTool),
                 ('portal_atct', IATCTTool),
@@ -632,34 +560,6 @@ def registerToolsAsUtilities(portal, out):
             sm.unregisterUtility(provided=reg)
 
     out.append("Registered tools as utilities.")
-
-
-def installRedirectorUtility(portal, out):
-    from plone.app.redirector.interfaces import IRedirectionStorage
-    from plone.app.redirector.storage import RedirectionStorage
-    
-    sm = getSiteManager(portal)
-    if sm.queryUtility(IRedirectionStorage) is None:
-        sm.registerUtility(RedirectionStorage(), IRedirectionStorage)
-
-    out.append("Registered redirector utility")
-
-
-def addContentRulesAction(portal, out):
-    portal_actions = getToolByName(portal, 'portal_actions', None)
-    if portal_actions is not None:
-        object_category = getattr(portal_actions, 'object', None)
-        if object_category is not None:
-            if 'contentrules' not in object_category.objectIds():
-                new_action = Action('contentrules',
-                                    title='Rules',
-                                    description='',
-                                    url_expr='string:${plone_context_state/canonical_object_url}/@@manage-content-rules',
-                                    available_expr="python:plone_context_state.canonical_object().restrictedTraverse('@@plone_interface_info').provides('plone.contentrules.engine.interfaces.IRuleAssignable')",
-                                    permissions='Content rules: Manage rules',
-                                    visible=True)
-                object_category._setObject('contentrules', new_action)
-                out.append("Added content rules action to object category")
 
 
 def installContentRulesUtility(portal, out):
@@ -728,17 +628,6 @@ def reorderUserActions(portal, out):
             for action in new_actions:
                 if action in user_category.objectIds():
                     user_category.moveObjectsToTop([action])
-
-
-def updateRtlCSSexpression(portal, out):
-    # update expression on rtl css file
-    cssreg = getToolByName(portal, 'portal_css', None)
-    if cssreg is not None:
-        stylesheet_ids = cssreg.getResourceIds()
-        if 'RTL.css' in stylesheet_ids:
-            rtl = cssreg.getResource('RTL.css')
-            rtl.setExpression("python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()")
-            out.append("Updated RTL.css expression.")
 
 
 def addIconForMaintenanceConfiglet(portal, out):
