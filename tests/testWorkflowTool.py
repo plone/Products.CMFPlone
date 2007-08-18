@@ -6,7 +6,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 default_user = PloneTestCase.default_user
 
-# XXX - Ugh...Rather than use and update ambiguous numbers,
+# INFO - Ugh...Rather than use and update ambiguous numbers,
 # we maintain a mapping of the various workflows to stats
 # though there are some obvious downsides to this, it's better than just
 # asserting that there are X published states in all workflows, etc.

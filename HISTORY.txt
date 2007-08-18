@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed more deprecated code, adjusted some comments.
+      [hannosch]
+
     - Tweaked sortable_title method to give reasonable results for titles with
       many numbers in them, like '1.2.3 document'.
       [hannosch]

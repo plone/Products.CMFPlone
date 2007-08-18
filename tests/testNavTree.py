@@ -474,10 +474,6 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         root = getNavigationRoot(self.portal)
         self.assertEqual(root, '/'.join(self.portal.getPhysicalPath()))
 
-    # XXX: If we re-enable this in PloneTool, we should fix up this test
-    # def testGetNavigationRootPropertyEmptyWithVirtualHost(self):
-    #    self.fail('Test missing (see Sprout, which this code was stolen from)')
-
     def testGetNavigationRootPropertyIsRoot(self):
         self.portal.portal_properties.navtree_properties.manage_changeProperties(root='/')
         root = getNavigationRoot(self.portal)

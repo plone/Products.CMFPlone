@@ -91,13 +91,6 @@ class TestGroupData(PloneTestCase.PloneTestCase, WarningInterceptor):
         g.removeMember(default_user)
         self.assertEqual(len(g.getGroupMembers()), 0)
 
-    #def testSetProperties(self):
-    #    # XXX: ERROR!
-    #    g = self.groups.getGroupById('foo')
-    #    g.setProperties(email='foo@bar.com')
-    #    gd = self.groupdata._members['foo']
-    #    self.assertEqual(gd.email, 'foo@bar.com')
-
     def testSetGroupProperties(self):
         g = self.groups.getGroupById('foo')
         g.setGroupProperties({'email': 'foo@bar.com'})
