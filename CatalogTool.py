@@ -146,7 +146,7 @@ registerIndexableAttribute('object_provides', object_provides)
 
 
 def zero_fill(matchobj):
-    return matchobj.group().zfill(8)
+    return matchobj.group().zfill(6)
 
 num_sort_regex = re.compile('\d+')
 
@@ -158,7 +158,7 @@ def sortable_title(obj, portal, **kwargs):
 
     >>> self.folder.setTitle('Plone42 _foo')
     >>> sortable_title(self.folder, self.portal)
-    'plone00000042 _foo'
+    'plone000042 _foo'
     """
     title = getattr(obj, 'Title', None)
     if title is not None:
@@ -169,7 +169,7 @@ def sortable_title(obj, portal, **kwargs):
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat
-            sortabletitle = safe_unicode(sortabletitle)[:30].encode('utf-8')
+            sortabletitle = safe_unicode(sortabletitle)[:40].encode('utf-8')
             return sortabletitle
     return ''
 

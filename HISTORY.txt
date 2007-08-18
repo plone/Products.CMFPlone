@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Tweaked sortable_title method to give reasonable results for titles with
+      many numbers in them, like '1.2.3 document'.
+      [hannosch]
+
     - Moved CMF skins registration into configure.zcml, removed security
       declaration for no-longer existent listPolicies of the portal.
       [hannosch]
