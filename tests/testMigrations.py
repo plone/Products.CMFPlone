@@ -79,8 +79,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import migrateOldActions
 from Products.CMFPlone.migrations.v3_0.alphas import updateActionsI18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import updateFTII18NDomain
 from Products.CMFPlone.migrations.v3_0.alphas import convertLegacyPortlets
-from Products.CMFPlone.migrations.v3_0.alphas import addIconForCalendarSettingsConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import addCalendarConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addMaintenanceConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import updateSearchAndMailHostConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addFormTabbingJS
@@ -638,63 +636,41 @@ class TestMigrations_v2_5_x(MigrationTest):
             'text/x-web-markdown', 'text/x-web-intelligent', 'text/x-web-textile')
         )
 
-    def testAddIconForMarkupConfiglet(self):
+    def testAddIconForMarkupAndCalendarConfiglet(self):
         self.removeActionIconFromTool('MarkupSettings')
+        self.removeActionIconFromTool('CalendarSettings')
         loadMigrationProfile(self.portal, self.profile, ('action-icons', ))
         self.failUnless('MarkupSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('CalendarSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
         # Test it twice
         loadMigrationProfile(self.portal, self.profile, ('action-icons', ))
         self.failUnless('MarkupSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+        self.failUnless('CalendarSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
 
-    def testAddMarkupConfiglet(self):
+    def testAddMarkupAndCalendarConfiglet(self):
         self.removeActionFromTool('MarkupSettings', action_provider='portal_controlpanel')
+        self.removeActionFromTool('CalendarSettings', action_provider='portal_controlpanel')
         loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
         self.failUnless('MarkupSettings' in [action.getId() for action in self.cp.listActions()])
+        self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
         types = self.cp.getActionObject('Plone/MarkupSettings')
+        cal = self.cp.getActionObject('Plone/CalendarSettings')
         self.assertEquals(types.action.text,
                           'string:${portal_url}/@@markup-controlpanel')
+        self.assertEquals(cal.title, 'Calendar')
+        self.assertEquals(cal.action.text,
+                          'string:${portal_url}/@@calendar-controlpanel')
         # Test it twice
         loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
         self.failUnless('MarkupSettings' in [action.getId() for action in self.cp.listActions()])
+        self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
         types = self.cp.getActionObject('Plone/MarkupSettings')
+        cal = self.cp.getActionObject('Plone/CalendarSettings')
         self.assertEquals(types.action.text,
                           'string:${portal_url}/@@markup-controlpanel')
-
-    def testAddIconForTypesConfiglet(self):
-        self.removeActionIconFromTool('TypesSettings')
-        addIconForTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddIconForTypesConfigletTwice(self):
-        self.removeActionIconFromTool('TypesSettings')
-        addIconForTypesConfiglet(self.portal, [])
-        addIconForTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddIconForTypesConfigletNoTool(self):
-        self.portal._delObject('portal_actionicons')
-        addIconForTypesConfiglet(self.portal, [])      
-                          
-    def testAddTypesConfiglet(self):
-        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
-        addTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
-        types = self.cp.getActionObject('Plone/TypesSettings')
-        self.assertEquals(types.action.text,
-                          'string:${portal_url}/@@types-controlpanel')
-
-    def testAddTypesConfigletTwice(self):
-        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
-        addTypesConfiglet(self.portal, [])
-        addTypesConfiglet(self.portal, [])
-        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
-        types = self.cp.getActionObject('Plone/TypesSettings')
-        self.assertEquals(types.action.text,
-                          'string:${portal_url}/@@types-controlpanel')
-
-    def testAddTypesConfigletNoTool(self):
-        self.portal._delObject('portal_controlpanel')
-        addTypesConfiglet(self.portal, [])
+        self.assertEquals(cal.title, 'Calendar')
+        self.assertEquals(cal.action.text,
+                          'string:${portal_url}/@@calendar-controlpanel')
 
     def testAddFormTabbingJS(self):
         jsreg = self.portal.portal_javascripts
@@ -926,82 +902,6 @@ class TestMigrations_v2_5_x(MigrationTest):
         self.assertEquals(1, len(rp))
         self.failUnless(isinstance(rp[0], portlets.login.Assignment))
 
-    def testAddIconForCalendarSettingsConfiglet(self):
-        # Should add the calendar action icon
-        self.removeActionIconFromTool('CalendarSettings')
-        addIconForCalendarSettingsConfiglet(self.portal, [])
-        self.failUnless('CalendarSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddIconForCalendarSettingsConfigletTwice(self):
-        # Should not fail if migrated again
-        self.removeActionIconFromTool('CalendarSettings')
-        addIconForCalendarSettingsConfiglet(self.portal, [])
-        addIconForCalendarSettingsConfiglet(self.portal, [])
-        self.failUnless('CalendarSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddIconForCalendarSettingsConfigletNoTool(self):
-        # Should not fail if portal_actionicons is missing
-        self.portal._delObject('portal_actionicons')
-        addIconForCalendarSettingsConfiglet(self.portal, [])
-
-    def testAddCalendarConfiglet(self):
-        self.removeActionFromTool('CalendarSettings', action_provider='portal_controlpanel')
-        addCalendarConfiglet(self.portal, [])
-        self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
-        cal = self.cp.getActionObject('Plone/CalendarSettings')
-        self.assertEquals(cal.title, 'Calendar')
-        self.assertEquals(cal.action.text,
-                          'string:${portal_url}/@@calendar-controlpanel')
-    
-    def testAddCalendarConfigletTwice(self):
-        # Should not fail if done twice
-        self.removeActionFromTool('CalendarSettings', action_provider='portal_controlpanel')
-        addCalendarConfiglet(self.portal, [])
-        addCalendarConfiglet(self.portal, [])
-        self.failUnless('CalendarSettings' in [x.getId() for x in self.cp.listActions()])
-        cal = self.cp.getActionObject('Plone/CalendarSettings')
-        self.assertEquals(cal.title, 'Calendar')
-        self.assertEquals(cal.action.text,
-                          'string:${portal_url}/@@calendar-controlpanel')
-    
-    def testAddCalendarConfigletNoTool(self):
-        # Should not fail if tool is missing
-        self.portal._delObject('portal_controlpanel')
-        addCalendarConfiglet(self.portal, [])
-
-    def testUpdateSearchAndMailHostConfiglet(self):
-        search = self.cp.getActionObject('Plone/SearchSettings')
-        mail = self.cp.getActionObject('Plone/MailHost')
-        search.action = Expression('string:search')
-        mail.action = Expression('string:mail')
-        updateSearchAndMailHostConfiglet(self.portal, [])
-        self.assertEquals(search.title, 'Search')
-        self.assertEquals(search.action.text,
-                          'string:${portal_url}/@@search-controlpanel')
-        self.assertEquals(mail.title, 'Mail')
-        self.assertEquals(mail.action.text,
-                          'string:${portal_url}/@@mail-controlpanel')
-    
-    def testUpdateSearchAndMailHostConfigletTwice(self):
-        # Should not fail if done twice
-        search = self.cp.getActionObject('Plone/SearchSettings')
-        mail = self.cp.getActionObject('Plone/MailHost')
-        search.action = Expression('string:search')
-        mail.action = Expression('string:mail')
-        updateSearchAndMailHostConfiglet(self.portal, [])
-        updateSearchAndMailHostConfiglet(self.portal, [])
-        self.assertEquals(search.title, 'Search')
-        self.assertEquals(search.action.text,
-                          'string:${portal_url}/@@search-controlpanel')
-        self.assertEquals(mail.title, 'Mail')
-        self.assertEquals(mail.action.text,
-                          'string:${portal_url}/@@mail-controlpanel')
-    
-    def testUpdateSearchAndMailHostConfigletNoTool(self):
-        # Should not fail if tool is missing
-        self.portal._delObject('portal_controlpanel')
-        updateSearchAndMailHostConfiglet(self.portal, [])
-
     def testRegisterToolsAsUtilities(self):
         sm = getSiteManager(self.portal)
         interfaces = (ISiteRoot, IPloneSiteRoot, IInterfaceTool,
@@ -1064,6 +964,46 @@ class TestMigrations_v3_0(MigrationTest):
         self.workflow = self.portal.portal_workflow
         self.properties = self.portal.portal_properties
         self.cp = self.portal.portal_controlpanel
+
+    def testUpdateSearchAndMailHostConfiglet(self):
+        search = self.cp.getActionObject('Plone/SearchSettings')
+        mail = self.cp.getActionObject('Plone/MailHost')
+        search.action = Expression('string:search')
+        mail.action = Expression('string:mail')
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.title, 'Search')
+        self.assertEquals(search.action.text,
+                          'string:${portal_url}/@@search-controlpanel')
+        self.assertEquals(mail.title, 'Mail')
+        self.assertEquals(mail.action.text,
+                          'string:${portal_url}/@@mail-controlpanel')
+        updateSearchAndMailHostConfiglet(self.portal, [])
+        self.assertEquals(search.title, 'Search')
+        self.assertEquals(search.action.text,
+                          'string:${portal_url}/@@search-controlpanel')
+        self.assertEquals(mail.title, 'Mail')
+        self.assertEquals(mail.action.text,
+                          'string:${portal_url}/@@mail-controlpanel')
+
+    def testAddIconForTypesConfiglet(self):
+        self.removeActionIconFromTool('TypesSettings')
+        addIconForTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+        addIconForTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+
+    def testAddTypesConfiglet(self):
+        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
+        addTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@types-controlpanel')
+        addTypesConfiglet(self.portal, [])
+        self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
+        types = self.cp.getActionObject('Plone/TypesSettings')
+        self.assertEquals(types.action.text,
+                          'string:${portal_url}/@@types-controlpanel')
 
     def testAddNewBeta2CSSFiles(self):
         cssreg = self.portal.portal_css
@@ -1335,19 +1275,6 @@ class TestMigrations_v3_0(MigrationTest):
         self.assertEquals(main.title, 'Maintenance')
         self.assertEquals(main.action.text,
                           'string:${portal_url}/@@maintenance-controlpanel')
-
-    def testAddIconForMaintenanceConfiglet(self):
-        # Should add the maintenance action icon
-        self.removeActionIconFromTool('Maintenance')
-        addIconForCalendarSettingsConfiglet(self.portal, [])
-        self.failUnless('Maintenance' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testAddIconForMaintenanceConfigletTwice(self):
-        # Should add the maintenance action icon
-        self.removeActionIconFromTool('Maintenance')
-        addIconForCalendarSettingsConfiglet(self.portal, [])
-        addIconForCalendarSettingsConfiglet(self.portal, [])
-        self.failUnless('Maintenance' in [x.getActionId() for x in self.icons.listActionIcons()])
 
     def testAddMaintenanceProperty(self):
         # adds a site property to portal_properties

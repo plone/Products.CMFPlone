@@ -123,12 +123,6 @@ def three0_alpha1(portal):
     # Migrate legacy portlets
     convertLegacyPortlets(portal, out)
 
-    # Add icon for calendar settings configlet
-    addIconForCalendarSettingsConfiglet(portal, out)
-
-    # Install the calendar settings control panel
-    addCalendarConfiglet(portal, out)
-
     # Deal with the tableless skin disappearing
     removeTablelessSkin(portal, out)
 
@@ -531,41 +525,6 @@ def installProduct(product, portal, out, hidden=False):
     """Quickinstalls a product if it is not installed yet."""
     if product in portal.Control_Panel.Products.objectIds():
         installOrReinstallProduct(portal, product, out, hidden=hidden)
-
-
-def addIconForCalendarSettingsConfiglet(portal, out):
-    """Adds an icon for the calendar settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 'CalendarSettings':
-                break # We already have the icon
-        else:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='CalendarSettings',
-                icon_expr='event_icon.gif',
-                title='Calendar Settings',
-                )
-        out.append("Added 'calendar' icon to actionicons tool.")
-
-
-def addCalendarConfiglet(portal, out):
-    """Add the configlet for the calendar settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        haveCalendar = False
-        for configlet in controlPanel.listActions():
-            if configlet.getId() == 'CalendarSettings':
-                haveCalendar = True
-        if not haveCalendar:
-            controlPanel.registerConfiglet(id         = 'CalendarSettings',
-                                           appId      = 'Plone',
-                                           name       = 'Calendar',
-                                           action     = 'string:${portal_url}/@@calendar-controlpanel',
-                                           category   = 'Plone',
-                                           permission = ManagePortal,)
-            out.append("Added calendar settings to the control panel")
 
 
 def updateSearchAndMailHostConfiglet(portal, out):

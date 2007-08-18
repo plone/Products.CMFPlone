@@ -6,5 +6,9 @@
               title="Markup Settings" priority="0"
               icon_expr="edit.gif"
               i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="CalendarSettings"
+              title="Calendar Settings" priority="0"
+              icon_expr="event_icon.gif"
+              i18n:attributes="title"/>
 
 </action-icons>
