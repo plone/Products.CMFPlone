@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Added basic migration folders, so PloneTestCase can effectively
+      recognize a Plone 3.5 version.
+      [hannosch]
+
     - Refactored initial content creation into a separate extension profile,
       thus making it possible to skip it. This refs
       http://dev.plone.org/plone/ticket/6948.
