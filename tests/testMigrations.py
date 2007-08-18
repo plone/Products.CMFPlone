@@ -280,25 +280,33 @@ class TestMigrations_v2_5_0(MigrationTest):
         self.actions = self.portal.portal_actions
         self.css = self.portal.portal_css
 
-    def testProfile(self):
+    def testRemovePloneCssFromRR(self):
         # Check to ensure that plone.css gets removed from portal_css
         self.css.registerStylesheet('plone.css', media='all')
         self.failUnless('plone.css' in self.css.getResourceIds())
+        loadMigrationProfile(self.portal, self.profile, ('cssregistry', ))
+        # plone.css removcal test
+        self.failIf('plone.css' in self.css.getResourceIds())
 
+    def testAddEventRegistrationJS(self):
         # Make sure event registration is added
         jsreg = self.portal.portal_javascripts
         # unregister first
         jsreg.unregisterResource('event-registration.js')
         script_ids = jsreg.getResourceIds()
         self.failIf('event-registration.js' in script_ids)
+        loadMigrationProfile(self.portal, self.profile, ('jsregistry', ))
+        # event registration test
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('event-registration.js' in script_ids)
+        self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
 
+    def tesFixObjDeleteAction(self):
         # Prepare delete actions test
         editActions = ('delete',)
         for a in editActions:
             self.removeActionFromTool(a, category='object_buttons')
-
-        loadMigrationProfile(self.portal, self.profile)
-
+        loadMigrationProfile(self.portal, self.profile, ('actions', ))
         # delete action tests
         actions = [x.id for x in self.actions.object_buttons.listActions()
                    if x.id in editActions]
@@ -307,14 +315,6 @@ class TestMigrations_v2_5_0(MigrationTest):
             self.failUnless(a in actions)
         # ensure that they are present only once
         self.failUnlessEqual(len(editActions), len(actions))
-
-        # event registration test
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('event-registration.js' in script_ids)
-        self.assertEqual(jsreg.getResourcePosition('event-registration.js'), 0)
-
-        # plone.css removcal test
-        self.failIf('plone.css' in self.css.getResourceIds())
 
     def testFixupPloneLexicon(self):
         # Should update the plone_lexicon pipeline
