@@ -164,55 +164,30 @@ def alpha2_beta1(portal):
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0a2-3.0b1')
 
-    # Add the sitemap enabled property
-    addSitemapProperty(portal, out)
-
-    #modify member security settings to match new default policies
-    updateMemberSecurity(portal, out)
-
-    updatePASPlugins(portal, out)
-
     # Use the unpacked kukit-src.js and pack it ourself
     updateKukitJS(portal, out)
-
-    # Add a RAMCache for ResourceRegistries
-    addCacheForResourceRegistry(portal, out)
-
-    # Compress cssQuery with full-encode like it's supposed to
-    updateCssQueryJS(portal, out)
-
-    # Remove very old javascript
-    removeHideAddItemsJS(portal, out)
-
-    # Add webstats.js for Google Analytics
-    addWebstatsJSFile(portal,out)
-
-    # Add webstats_js property to site properties
-    addWebstatsJSProperty(portal,out)
-
-    # Add the object_provides catalog index
-    addObjectProvidesIndex(portal, out)
 
     # Remove the mystuff user action
     removeMyStuffAction(portal, out)
 
-    # Add external_links_open_new_window property to site properties
-    addExternalLinksOpenNewWindowProperty(portal, out)
+    #modify member security settings to match new default policies
+    updateMemberSecurity(portal, out)
+    updatePASPlugins(portal, out)
+
+    # Add a RAMCache for ResourceRegistries
+    addCacheForResourceRegistry(portal, out)
+
+    # Add the object_provides catalog index
+    addObjectProvidesIndex(portal, out)
 
     # Add workflows that people may be missing
     addMissingWorkflows(portal, out)
-
-    # Add many_groups property to site properties
-    addManyGroupsProperty(portal, out)
 
     # Replace obsolete PlonePAS version of plone tool
     restorePloneTool(portal, out)
 
     # Install PloneLanguageTool
     installProduct('PloneLanguageTool', portal, out, hidden=True)
-
-    # Add email_charset property
-    addEmailCharsetProperty(portal, out)
 
     return out
 
@@ -545,47 +520,6 @@ def reorderUserActions(portal, out):
                     user_category.moveObjectsToTop([action])
 
 
-def addWebstatsJSProperty(portal, out):
-    """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties')
-    sheet = tool.site_properties
-    if not sheet.hasProperty('webstats_js'):
-        sheet.manage_addProperty('webstats_js','','string')
-        out.append("Added 'webstats_js' property to site properties")
-
-
-def addLinkIntegritySwitch(portal, out):
-    """ adds a site property to portal_properties """
-    tool = getToolByName(portal, 'portal_properties', None)
-    if tool is not None:
-        sheet = getattr(tool, 'site_properties', None)
-        if sheet is not None:
-            if not sheet.hasProperty('enable_link_integrity_checks'):
-                sheet.manage_addProperty('enable_link_integrity_checks', True, 'boolean')
-                out.append("Added 'enable_link_integrity_checks' property to site properties")
-
-
-def addWebstatsJSFile(portal, out):
-    """Add webstats.js for Google Analytics and other trackers support.
-    """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
-    script = 'webstats.js'
-    if jsreg is not None:
-        script_ids = jsreg.getResourceIds()
-        # Failsafe: first make sure the stylesheet doesn't exist in the list
-        if script not in script_ids:
-            jsreg.registerScript(script,
-                    enabled = True,
-                    cookable = True,
-                    compression = False)
-            try:
-                jsreg.moveResourceAfter(script, 'toc.js')
-            except ValueError:
-                # put it at the bottom of the stack
-                jsreg.moveResourceToBottom(script)
-            out.append("Added " + script + " to portal_javascipts")
-
-
 def updateMemberSecurity(portal, out):
     pprop = getToolByName(portal, 'portal_properties')
     portal.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
@@ -613,16 +547,6 @@ def updatePASPlugins(portal, out):
         manage_addSessionPlugin(portal.acl_users, 'session')
         activatePluginInterfaces(portal, "session", sout)
         out.append("Added Plone Session Plugin.")
-
-
-def addSitemapProperty(portal, out):
-    tool = getToolByName(portal, 'portal_properties', None)
-    if tool is not None:
-        sheet = getattr(tool, 'site_properties', None)
-        if sheet is not None:
-            if not sheet.hasProperty('enable_sitemap'):
-                sheet.manage_addProperty('enable_sitemap', False, 'boolean')
-                out.append("Added 'enable_sitemap' property to site properties")
 
 
 def updateKukitJS(portal, out):
@@ -676,47 +600,6 @@ def removeTablelessSkin(portal, out):
         out.append("Changed the default skin to 'Plone Default'")
 
 
-def updateCssQueryJS(portal, out):
-    """Compress cssQuery with full-encode like it's supposed to.
-    """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
-    script_id = 'cssQuery.js'
-    if jsreg is not None:
-        script_ids = jsreg.getResourceIds()
-        resource = jsreg.getResource(script_id)
-        if resource is not None:
-            resource.setCompression('full-encode')
-            out.append("Set 'full-encode' compression on %s" % script_id)
-
-
-def removeHideAddItemsJS(portal, out):
-    """Remove very old javascript.
-    """
-    jsreg = getToolByName(portal, 'portal_javascripts', None)
-    script_id = 'folder_contents_hideAddItems.js'
-    if jsreg is not None:
-        jsreg.unregisterResource(script_id)
-        out.append('Removed %s from portal_javascripts.' % script_id)
-
-
-def addContentRulesConfiglet(portal, out):
-    """Add the configlet for the contentrules settings"""
-    controlPanel = getToolByName(portal, 'portal_controlpanel', None)
-    if controlPanel is not None:
-        haveContentRules = False
-        for configlet in controlPanel.listActions():
-            if configlet.getId() == 'ContentRulesSettings':
-                haveContentRules = True
-        if not haveContentRules:
-            controlPanel.registerConfiglet(id         = 'ContentRules',
-                                           appId      = 'Plone',
-                                           name       = 'Content Rules',
-                                           action     = 'string:${portal_url}/@@rules-controlpanel',
-                                           category   = 'Plone',
-                                           permission = 'Content rules: Manage rules',)
-            out.append("Added 'Content Rules Settings' to the control panel")
-
-
 def addObjectProvidesIndex(portal, out):
     """Add the object_provides index to the portal_catalog.
     """
@@ -735,15 +618,6 @@ def removeMyStuffAction(portal, out):
     if 'mystuff' in category.objectIds():
         category.manage_delObjects(ids=['mystuff'])
         out.append("Removed the mystuff user action")
-
-
-def addExternalLinksOpenNewWindowProperty(portal, out):
-    """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties')
-    sheet = tool.site_properties
-    if not sheet.hasProperty('external_links_open_new_window'):
-        sheet.manage_addProperty('external_links_open_new_window','false','string')
-        out.append("Added 'external_links_open_new_window' property to site properties")
 
 
 def addMissingWorkflows(portal, out):
@@ -802,16 +676,6 @@ def addMissingWorkflows(portal, out):
         out.append("Added workflow %s" % wf_id)
 
 
-def addManyGroupsProperty(portal, out):
-    """ adds a site property to portal_properties"""
-    tool = getToolByName(portal, 'portal_properties')
-    sheet = tool.site_properties
-    if not sheet.hasProperty('many_groups'):
-        sheet.manage_addProperty('many_groups',
-                getattr(sheet, 'many_users', False) ,'boolean')
-        out.append("Added 'many_groups' property to site properties")
-
-
 def restorePloneTool(portal, out):
     tool = getToolByName(portal, "plone_utils")
     if tool.meta_type == 'PlonePAS Utilities Tool':
@@ -830,10 +694,3 @@ def updateImportStepsFromBaseProfile(portal, out):
 
     tool = getToolByName(portal, "portal_setup")
     tool.setBaselineContext("profile-Products.CMFPlone:plone")
-
-
-def addEmailCharsetProperty(portal, out):
-    # Add email_charset property
-    if not portal.hasProperty('email_charset'):
-        portal.manage_addProperty('email_charset', 'utf-8', 'string')
-    out.append("Added 'email_charset' property to the portal.")

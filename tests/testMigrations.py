@@ -84,21 +84,13 @@ from Products.CMFPlone.migrations.v3_0.alphas import installKss
 from Products.CMFPlone.migrations.v3_0.alphas import addReaderAndEditorRoles
 from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
-from Products.CMFPlone.migrations.v3_0.alphas import addLinkIntegritySwitch
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
-from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 from Products.CMFPlone.migrations.v3_0.alphas import addCacheForResourceRegistry
-from Products.CMFPlone.migrations.v3_0.alphas import removeHideAddItemsJS
-from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSProperty
-from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSFile
 from Products.CMFPlone.migrations.v3_0.alphas import removeTablelessSkin
 from Products.CMFPlone.migrations.v3_0.alphas import addObjectProvidesIndex
-from Products.CMFPlone.migrations.v3_0.alphas import addExternalLinksOpenNewWindowProperty
-from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
 from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
 from Products.CMFPlone.migrations.v3_0.alphas import installProduct
-from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 
 from Products.CMFPlone.migrations.v3_0.betas import migrateHistoryTab
 from Products.CMFPlone.migrations.v3_0.betas import changeOrderOfActionProviders
@@ -947,19 +939,25 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
 
-    def testAddMaintenanceProperty(self):
-        # adds a site property to portal_properties
-        self.removeSiteProperty('number_of_days_to_keep')
+    def testAddVariousProperties(self):
+        PROPERTIES = ('enable_link_integrity_checks', 'enable_sitemap',
+                      'external_links_open_new_window', 'many_groups',
+                      'number_of_days_to_keep', 'webstats_js')
+        for prop in PROPERTIES:
+            self.removeSiteProperty(prop)
+        sheet = self.properties.site_properties
         # Test it twice
         for i in range(2):
             loadMigrationProfile(self.portal, self.profile, ('propertiestool', ))
-            tool = self.properties
-            sheet = tool.site_properties
-            self.failUnless(sheet.hasProperty('number_of_days_to_keep'))
+            for prop in PROPERTIES:
+                self.failUnless(sheet.hasProperty(prop))
 
-    def testAddFormTabbingAndInputLabelAndTocJS(self):
+    def testAddVariousJavaScripts(self):
         jsreg = self.portal.portal_javascripts
-        RESOURCES = ('form_tabbing.js', 'input-label.js', 'toc.js')
+        jsreg.registerScript("folder_contents_hideAddItems.js")
+        self.failUnless('folder_contents_hideAddItems.js' in jsreg.getResourceIds())
+        RESOURCES = ('form_tabbing.js', 'input-label.js', 'toc.js',
+                     'webstats.js')
         for r in RESOURCES:
             jsreg.unregisterResource(r)
         script_ids = jsreg.getResourceIds()
@@ -969,14 +967,57 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
         for i in range(2):
             loadMigrationProfile(self.portal, self.profile, ('jsregistry', ))
             script_ids = jsreg.getResourceIds()
+            # Removed script
+            self.failIf('folder_contents_hideAddItems.js' in script_ids)
             for r in RESOURCES:
                 self.failUnless(r in script_ids)
-            # if collapsiblesections.js is available form_tabbing.js
-            # should be positioned right underneath it
+            # form_tabbing tests
             if 'collapsiblesections.js' in script_ids:
                 posSE = jsreg.getResourcePosition('form_tabbing.js')
                 posHST = jsreg.getResourcePosition('collapsiblesections.js')
                 self.failUnless((posSE - 1) == posHST)
+            # webstats tests
+            if 'webstats.js' in script_ids:
+                pos1 = jsreg.getResourcePosition('toc.js')
+                pos2 = jsreg.getResourcePosition('webstats.js')
+                self.failUnless((pos2 - 1) == pos1)
+            # check if enabled
+            res = jsreg.getResource('webstats.js')
+            self.assertEqual(res.getEnabled(), True)
+
+    def testUpdateKukitJS(self):
+        jsreg = self.portal.portal_javascripts
+        # put into old state first
+        jsreg.unregisterResource('++resource++kukit.js')
+        jsreg.unregisterResource('++resource++kukit-devel.js')
+        script_ids = jsreg.getResourceIds()
+        self.failIf('++resource++kukit.js' in script_ids)
+        self.failIf('++resource++kukit-devel.js' in script_ids)
+        self.failIf('++resource++kukit-src.js' in script_ids)
+        jsreg.registerScript('++resource++kukit.js', compression="none")
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('++resource++kukit.js' in script_ids)
+        # migrate and test again
+        updateKukitJS(self.portal, [])
+        script_ids = jsreg.getResourceIds()
+        self.failUnless('++resource++kukit-src.js' in script_ids)
+        resource = jsreg.getResource('++resource++kukit-src.js')
+        self.failUnless(resource.getCompression() == 'full')
+        # Run the last migration and check that everything is in its
+        # place. We must have both the devel and production resources.
+        # They both should be uncompressed since kss compresses them
+        # directly. Also they should have conditions that switches them.
+        beta3_rc1(self.portal)
+        script_ids = jsreg.getResourceIds()
+        self.failIf('++resource++kukit-src.js' in script_ids)
+        resource1 = jsreg.getResource('++resource++kukit.js')
+        resource2 = jsreg.getResource('++resource++kukit-devel.js')
+        self.failUnless(resource1.getCompression() == 'none')
+        self.failUnless(resource2.getCompression() == 'none')
+        self.failUnless('@@kss_devel_mode' in resource1.getExpression())
+        self.failUnless('@@kss_devel_mode' in resource2.getExpression())
+        self.failUnless('isoff' in resource1.getExpression())
+        self.failUnless('ison' in resource2.getExpression())
 
     def testVariousConfiglets(self):
         skins = self.cp.getActionObject('Plone/PortalSkin')
@@ -1053,13 +1094,14 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
             for i in INTERFACES:
                 self.failIf(sm.queryUtility(i) is None)
 
-    def testAddSitemapProperty(self):
-        self.removeSiteProperty('enable_sitemap')
-        sheet = self.properties.site_properties
+    def testAddEmailCharsetProperty(self):
+        if self.portal.hasProperty('email_charset'):
+            self.portal.manage_delProperties(['email_charset'])
         # Test it twice
         for i in range(2):
-            addSitemapProperty(self.portal, [])
-            self.failUnless(sheet.hasProperty('enable_sitemap'))
+            loadMigrationProfile(self.portal, self.profile, ('properties', ))
+            self.failUnless(self.portal.hasProperty('email_charset'))
+            self.assertEquals(self.portal.getProperty('email_charset'), 'utf-8')
 
     def testUpdateMemberSecurity(self):
         pprop = getToolByName(self.portal, 'portal_properties')
@@ -1097,40 +1139,6 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
                 # Ignore unregistered interface types 
                 pass
 
-    def testUpdateKukitJS(self):
-        jsreg = self.portal.portal_javascripts
-        # put into old state first
-        jsreg.unregisterResource('++resource++kukit.js')
-        jsreg.unregisterResource('++resource++kukit-devel.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('++resource++kukit.js' in script_ids)
-        self.failIf('++resource++kukit-devel.js' in script_ids)
-        self.failIf('++resource++kukit-src.js' in script_ids)
-        jsreg.registerScript('++resource++kukit.js', compression="none")
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('++resource++kukit.js' in script_ids)
-        # migrate and test again
-        updateKukitJS(self.portal, [])
-        script_ids = jsreg.getResourceIds()
-        self.failUnless('++resource++kukit-src.js' in script_ids)
-        resource = jsreg.getResource('++resource++kukit-src.js')
-        self.failUnless(resource.getCompression() == 'full')
-        # Run the last migration and check that everything is in its
-        # place. We must have both the devel and production resources.
-        # They both should be uncompressed since kss compresses them
-        # directly. Also they should have conditions that switches them.
-        beta3_rc1(self.portal)
-        script_ids = jsreg.getResourceIds()
-        self.failIf('++resource++kukit-src.js' in script_ids)
-        resource1 = jsreg.getResource('++resource++kukit.js')
-        resource2 = jsreg.getResource('++resource++kukit-devel.js')
-        self.failUnless(resource1.getCompression() == 'none')
-        self.failUnless(resource2.getCompression() == 'none')
-        self.failUnless('@@kss_devel_mode' in resource1.getExpression())
-        self.failUnless('@@kss_devel_mode' in resource2.getExpression())
-        self.failUnless('isoff' in resource1.getExpression())
-        self.failUnless('ison' in resource2.getExpression())
-
     def testAddCacheForResourceRegistry(self):
         ram_cache_id = 'ResourceRegistryCache'
         # first remove the cache manager and make sure it's removed
@@ -1155,54 +1163,6 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
             self.failUnless(jsreg.ZCacheable_enabled())
             self.failIf(jsreg.ZCacheable_getManagerId() is None)
 
-    def testUpdateCssQueryJS(self):
-        jsreg = self.portal.portal_javascripts
-        jsreg.registerScript("folder_contents_hideAddItems.js")
-        self.failUnless('folder_contents_hideAddItems.js' in jsreg.getResourceIds())
-        # Test it twice
-        for i in range(2):
-            removeHideAddItemsJS(self.portal, [])
-            self.failIf('folder_contents_hideAddItems.js' in jsreg.getResourceIds())
-
-    def testAddLinkIntegritySwitch(self):
-        # adds a site property to portal_properties
-        self.removeSiteProperty('enable_link_integrity_checks')
-        tool = self.portal.portal_properties
-        sheet = tool.site_properties
-        # Test it twice
-        for i in range(2):
-            addLinkIntegritySwitch(self.portal, [])
-            self.failUnless(sheet.hasProperty('enable_link_integrity_checks'))
-
-    def testAddWebstatsJSProperty(self):
-        # adds a site property to portal_properties
-        self.removeSiteProperty('webstats_js')
-        tool = self.portal.portal_properties
-        sheet = tool.site_properties
-        # Test it twice
-        for i in range(2):
-            addWebstatsJSProperty(self.portal, [])
-            self.failUnless(sheet.hasProperty('webstats_js'))
-
-    def testAddWebstatsJS(self):
-        jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('webstats.js')
-        script_ids = jsreg.getResourceIds()
-        self.failIf('webstats.js' in script_ids)
-        # Test it twice
-        for i in range(2):
-            addWebstatsJSFile(self.portal, [])
-            script_ids = jsreg.getResourceIds()
-            self.failUnless('webstats.js' in script_ids)
-            if 'webstats.js' in script_ids:
-                pos1 = jsreg.getResourcePosition('toc.js')
-                pos2 = jsreg.getResourcePosition('webstats.js')
-                self.failUnless((pos2 - 1) == pos1)
-            # check if enabled
-            res = jsreg.getResource('webstats.js')
-            self.assertEqual(res.getEnabled(),True)
-
     def testObjectProvidesIndex(self):
         catalog = getToolByName(self.portal, 'portal_catalog')
         if 'object_provides' in catalog.indexes():
@@ -1212,28 +1172,6 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
         for i in range(2):
             addObjectProvidesIndex(self.portal, [])
             self.failUnless('object_provides' in catalog.indexes())
-
-    def testAddExternalLinksOpenNewWindowProperty(self):
-        # adds a site property to portal_properties
-        tool = self.portal.portal_properties
-        sheet = tool.site_properties
-        # Test it twice
-        for i in range(2):
-            self.removeSiteProperty('external_links_open_new_window')
-            addExternalLinksOpenNewWindowProperty(self.portal, [])
-            self.failUnless(sheet.hasProperty('external_links_open_new_window'))
-            self.failUnless(sheet.external_links_open_new_window == 'false')
-
-    def testAddManyGroupsProperty(self):
-        # adds a site property to portal_properties
-        tool = self.portal.portal_properties
-        sheet = tool.site_properties
-        self.removeSiteProperty('many_groups')
-        # Test it twice
-        for i in range(2):
-            addManyGroupsProperty(self.portal, [])
-            self.failUnless(sheet.hasProperty('many_groups'))
-            self.failUnless(sheet.many_groups == False)
 
     def testMigratePloneTool(self):
         from Products.CMFPlone import ToolNames
@@ -1254,15 +1192,6 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
             installProduct('PloneLanguageTool', self.portal, [])
             self.failUnless(qi.isProductInstalled('PloneLanguageTool'))
             self.failUnless('portal_languages' in self.portal.keys())
-
-    def testAddEmailCharsetProperty(self):
-        if self.portal.hasProperty('email_charset'):
-            self.portal.manage_delProperties(['email_charset'])
-        # Test it twice
-        for i in range(2):
-            addEmailCharsetProperty(self.portal, [])
-            self.failUnless(self.portal.hasProperty('email_charset'))
-            self.assertEquals(self.portal.getProperty('email_charset'), 'utf-8')
 
 
 class TestMigrations_v3_0(MigrationTest):
