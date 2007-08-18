@@ -69,7 +69,7 @@ def addPloneSite(dispatcher, id, title='', description='',
                  email_from_name='', validate_email=0,
                  profile_id=_DEFAULT_PROFILE, snapshot=False,
                  RESPONSE=None, extension_ids=(),
-                 setup_content=False):
+                 setup_content=True):
     """ Add a PloneSite to 'dispatcher', configured according to 'profile_id'.
     """
     site = PloneSite(id)
