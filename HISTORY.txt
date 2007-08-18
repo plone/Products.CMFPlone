@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed dependency checking code for everything contained in the Plone
+      Core tarball. The number of dependencies is just too huge by now to
+      check them all. We still check external dependencies like Python, Zope,
+      PIL and elementree though.
+      [hannosch]
+
     - Removed some outdated Extentsion scripts.
       [hannosch]
 
