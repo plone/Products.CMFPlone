@@ -67,4 +67,10 @@
     i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
+ <configlet title="Content Rules" action_id="ContentRules" appId="Plone"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@rules-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Content rules: Manage rules</permission>
+ </configlet>
 </object>

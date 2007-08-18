@@ -21,7 +21,6 @@ from Products.CMFActionIcons.interfaces import IActionIconsTool
 from Products.CMFCalendar.interfaces import ICalendarTool
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFCore.ActionInformation import ActionCategory
-from Products.CMFCore.Expression import Expression
 from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import ICachingPolicyManager
 from Products.CMFCore.interfaces import ICatalogTool
@@ -40,7 +39,6 @@ from Products.CMFCore.interfaces import IUndoTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFDiffTool.interfaces import IDiffTool
 from Products.CMFEditions.interfaces import IArchivistTool
@@ -166,17 +164,6 @@ def alpha2_beta1(portal):
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0a2-3.0b1')
 
-    # Add icon for filter and security configlets
-    addIconsForFilterAndSecurityConfiglets(portal, out)
-
-    # Add the types configlet
-    addIconForTypesConfiglet(portal, out)
-
-    # add content rules configlet
-    installContentRulesUtility(portal, out)
-    addContentRulesConfiglet(portal, out)
-    addIconForContentRulesConfiglet(portal, out)
-
     # Add the sitemap enabled property
     addSitemapProperty(portal, out)
 
@@ -220,9 +207,6 @@ def alpha2_beta1(portal):
 
     # Replace obsolete PlonePAS version of plone tool
     restorePloneTool(portal, out)
-
-    # install plone.app.i18n
-    installI18NUtilities(portal, out)
 
     # Install PloneLanguageTool
     installProduct('PloneLanguageTool', portal, out, hidden=True)
@@ -398,23 +382,6 @@ def migrateOldActions(portal, out):
     out.append('Migrated old actions to new actions stored in portal_actions.')
 
 
-def addIconForTypesConfiglet(portal, out):
-    """Adds an icon for the types settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 'TypesSettings':
-                break # We already have the icon
-        else:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='TypesSettings',
-                icon_expr='document_icon.gif',
-                title='Types',
-                )
-        out.append("Added types configlet icon to actionicons tool.")            
-
-
 def updateActionsI18NDomain(portal, out):
     actions = portal.portal_actions.listActions()
     domainless_actions = [a for a in actions if not a.i18n_domain]
@@ -519,17 +486,6 @@ def registerToolsAsUtilities(portal, out):
             sm.unregisterUtility(provided=reg)
 
     out.append("Registered tools as utilities.")
-
-
-def installContentRulesUtility(portal, out):
-    from plone.contentrules.engine.interfaces import IRuleStorage
-    from plone.contentrules.engine.storage import RuleStorage
-    
-    sm = getSiteManager(portal)
-    if sm.queryUtility(IRuleStorage) is None:
-        sm.registerUtility(RuleStorage(), IRuleStorage)
-
-    out.append("Registered content rules storage utility")
 
 
 def addReaderAndEditorRoles(portal, out):
@@ -659,35 +615,6 @@ def updatePASPlugins(portal, out):
         out.append("Added Plone Session Plugin.")
 
 
-def addIconsForFilterAndSecurityConfiglets(portal, out):
-    """Adds icons for the filter and security configlets."""
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    filterIcon = False
-    securityIcon = False
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 'HtmlFilter':
-                filterIcon = True
-            if icon.getActionId() == 'SecuritySettings':
-                securityIcon = True
-        if not filterIcon:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='HtmlFilter',
-                icon_expr='htmlfilter_icon.gif',
-                title='Html Filter Settings',
-                )
-            out.append("Added 'filter' icon to actionicons tool.")
-        if not securityIcon:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='SecuritySettings',
-                icon_expr='lock_icon.gif',
-                title='Security Settings',
-                )
-            out.append("Added 'security' icon to actionicons tool.")
-
-
 def addSitemapProperty(portal, out):
     tool = getToolByName(portal, 'portal_properties', None)
     if tool is not None:
@@ -788,23 +715,6 @@ def addContentRulesConfiglet(portal, out):
                                            category   = 'Plone',
                                            permission = 'Content rules: Manage rules',)
             out.append("Added 'Content Rules Settings' to the control panel")
-
-
-def addIconForContentRulesConfiglet(portal, out):
-    """Adds an icon for the maintenance settings configlet. """
-    iconsTool = getToolByName(portal, 'portal_actionicons', None)
-    if iconsTool is not None:
-        for icon in iconsTool.listActionIcons():
-            if icon.getActionId() == 'ContentRules':
-                break # We already have the icon
-        else:
-            iconsTool.addActionIcon(
-                category='controlpanel',
-                action_id='ContentRules',
-                icon_expr='contentrules_icon.gif',
-                title='Content Rules',
-                )
-        out.append("Added 'Content Rules Settings' icon to actionicons tool.")
 
 
 def addObjectProvidesIndex(portal, out):
@@ -920,27 +830,6 @@ def updateImportStepsFromBaseProfile(portal, out):
 
     tool = getToolByName(portal, "portal_setup")
     tool.setBaselineContext("profile-Products.CMFPlone:plone")
-
-
-def installI18NUtilities(portal, out):
-    from plone.app.i18n.locales.interfaces import ICountries
-    from plone.app.i18n.locales.countries import Countries
-
-    from plone.app.i18n.locales.interfaces import IContentLanguages
-    from plone.app.i18n.locales.languages import ContentLanguages
-
-    from plone.app.i18n.locales.interfaces import IMetadataLanguages
-    from plone.app.i18n.locales.languages import MetadataLanguages
-
-    sm = getSiteManager(portal)
-    if sm.queryUtility(ICountries) is None:
-        sm.registerUtility(Countries(), ICountries)
-    if sm.queryUtility(IContentLanguages) is None:
-        sm.registerUtility(ContentLanguages(), IContentLanguages)
-    if sm.queryUtility(IMetadataLanguages) is None:
-        sm.registerUtility(MetadataLanguages(), IMetadataLanguages)
-
-    out.append("Registered plone.app.i18n utilities.")
 
 
 def addEmailCharsetProperty(portal, out):

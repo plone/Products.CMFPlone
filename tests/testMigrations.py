@@ -86,7 +86,6 @@ from Products.CMFPlone.migrations.v3_0.alphas import migrateLocalroleForm
 from Products.CMFPlone.migrations.v3_0.alphas import reorderUserActions
 from Products.CMFPlone.migrations.v3_0.alphas import addLinkIntegritySwitch
 from Products.CMFPlone.migrations.v3_0.alphas import updatePASPlugins
-from Products.CMFPlone.migrations.v3_0.alphas import addIconsForFilterAndSecurityConfiglets
 from Products.CMFPlone.migrations.v3_0.alphas import addSitemapProperty
 from Products.CMFPlone.migrations.v3_0.alphas import updateKukitJS
 from Products.CMFPlone.migrations.v3_0.alphas import addCacheForResourceRegistry
@@ -94,15 +93,10 @@ from Products.CMFPlone.migrations.v3_0.alphas import removeHideAddItemsJS
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSProperty
 from Products.CMFPlone.migrations.v3_0.alphas import addWebstatsJSFile
 from Products.CMFPlone.migrations.v3_0.alphas import removeTablelessSkin
-from Products.CMFPlone.migrations.v3_0.alphas import installContentRulesUtility
-from Products.CMFPlone.migrations.v3_0.alphas import addIconForContentRulesConfiglet
-from Products.CMFPlone.migrations.v3_0.alphas import addContentRulesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addObjectProvidesIndex
 from Products.CMFPlone.migrations.v3_0.alphas import addExternalLinksOpenNewWindowProperty
-from Products.CMFPlone.migrations.v3_0.alphas import addIconForTypesConfiglet
 from Products.CMFPlone.migrations.v3_0.alphas import addManyGroupsProperty
 from Products.CMFPlone.migrations.v3_0.alphas import restorePloneTool
-from Products.CMFPlone.migrations.v3_0.alphas import installI18NUtilities
 from Products.CMFPlone.migrations.v3_0.alphas import installProduct
 from Products.CMFPlone.migrations.v3_0.alphas import addEmailCharsetProperty
 
@@ -965,47 +959,43 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
 
     def testAddFormTabbingAndInputLabelAndTocJS(self):
         jsreg = self.portal.portal_javascripts
-        # unregister first
-        jsreg.unregisterResource('form_tabbing.js')
-        jsreg.unregisterResource('input-label.js')
-        jsreg.unregisterResource('toc.js')
+        RESOURCES = ('form_tabbing.js', 'input-label.js', 'toc.js')
+        for r in RESOURCES:
+            jsreg.unregisterResource(r)
         script_ids = jsreg.getResourceIds()
-        self.failIf('form_tabbing.js' in script_ids)
-        self.failIf('input-label.js' in script_ids)
-        self.failIf("toc.js" in script_ids)
+        for r in RESOURCES:
+            self.failIf(r in script_ids)
         # Test it twice
         for i in range(2):
             loadMigrationProfile(self.portal, self.profile, ('jsregistry', ))
             script_ids = jsreg.getResourceIds()
-            self.failUnless('form_tabbing.js' in script_ids)
+            for r in RESOURCES:
+                self.failUnless(r in script_ids)
             # if collapsiblesections.js is available form_tabbing.js
             # should be positioned right underneath it
             if 'collapsiblesections.js' in script_ids:
                 posSE = jsreg.getResourcePosition('form_tabbing.js')
                 posHST = jsreg.getResourcePosition('collapsiblesections.js')
                 self.failUnless((posSE - 1) == posHST)
-            self.failUnless('input-label.js' in script_ids)
-            self.failUnless("toc.js" in script_ids)
 
     def testVariousConfiglets(self):
         skins = self.cp.getActionObject('Plone/PortalSkin')
         site = self.cp.getActionObject('Plone/PloneReconfig')
         skins.action = Expression('string:skins')
         site.action = Expression('string:site')
-        collection = self.cp.getActionObject('Plone/portal_atct')
-        language = self.cp.getActionObject('Plone/PloneLanguageTool')
-        navigation = self.cp.getActionObject('Plone/NavigationSettings')
-        users = self.cp.getActionObject('Plone/UsersGroups')
-        users2 = self.cp.getActionObject('Plone/UsersGroups2')
-        collection.title = 'col'
-        language.title = 'lang'
-        navigation.title = 'navi'
-        users.title = 'us'
-        users2.title = 'us2'
-        self.removeActionFromTool('HtmlFilter', action_provider='portal_controlpanel')
-        self.removeActionFromTool('Maintenance', action_provider='portal_controlpanel')
-        self.removeActionFromTool('SecuritySettings', action_provider='portal_controlpanel')
-        self.removeActionFromTool('TypesSettings', action_provider='portal_controlpanel')
+        RENAMED_CONFIGLETS = [
+            ('Plone/portal_atct', 'Collection'),
+            ('Plone/PloneLanguageTool', 'Language'),
+            ('Plone/NavigationSettings', 'Navigation'),
+            ('Plone/UsersGroups', 'Users and Groups'),
+            ('Plone/UsersGroups2', 'Users and Groups')]
+        for ren in RENAMED_CONFIGLETS:
+            conf = self.cp.getActionObject(ren[0])
+            conf.title = 'wrongtitle'
+        ADDED_CONFIGLETS = ('ContentRules', 'HtmlFilter', 'Maintenance',
+                            'SecuritySettings', 'TypesSettings')
+        for add in ADDED_CONFIGLETS:
+            self.removeActionFromTool(add, action_provider='portal_controlpanel')
         # Test it twice
         for i in range(2):
             loadMigrationProfile(self.portal, self.profile, ('controlpanel', ))
@@ -1017,20 +1007,12 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
             self.assertEquals(site.title, 'Site')
             self.assertEquals(site.action.text,
                               'string:${portal_url}/@@site-controlpanel')
-            collection = self.cp.getActionObject('Plone/portal_atct')
-            language = self.cp.getActionObject('Plone/PloneLanguageTool')
-            navigation = self.cp.getActionObject('Plone/NavigationSettings')
-            users = self.cp.getActionObject('Plone/UsersGroups')
-            users2 = self.cp.getActionObject('Plone/UsersGroups2')
-            self.assertEquals(collection.title, 'Collection')
-            self.assertEquals(language.title, 'Language')
-            self.assertEquals(navigation.title, 'Navigation')
-            self.assertEquals(users.title, 'Users and Groups')
-            self.assertEquals(users2.title, 'Users and Groups')
-            self.failUnless('HtmlFilter' in [x.getId() for x in self.cp.listActions()])
-            self.failUnless('Maintenance' in [x.getId() for x in self.cp.listActions()])
-            self.failUnless('SecuritySettings' in [x.getId() for x in self.cp.listActions()])
-            self.failUnless('TypesSettings' in [action.getId() for action in self.cp.listActions()])
+            for ren in RENAMED_CONFIGLETS:
+                conf = self.cp.getActionObject(ren[0])
+                self.assertEquals(conf.title, ren[1])
+            actionids = [x.getId() for x in self.cp.listActions()]
+            for add in ADDED_CONFIGLETS:
+                self.failUnless(add in actionids)
             htmlfilter = self.cp.getActionObject('Plone/HtmlFilter')
             self.assertEquals(htmlfilter.title, 'HTML Filtering')
             self.assertEquals(htmlfilter.action.text,
@@ -1047,41 +1029,29 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
             self.assertEquals(types.action.text,
                               'string:${portal_url}/@@types-controlpanel')
 
-    def testaddIconsForFilterAndSecurityConfiglets(self):
-        # Should add the filter and security action icons
-        self.removeActionIconFromTool('HtmlFilter')
-        self.removeActionIconFromTool('SecuritySettings')
+    def testaddIconsForVariousConfiglets(self):
+        ICONS = ('ContentRules', 'HtmlFilter', 'Maintenance',
+                 'SecuritySettings', 'TypesSettings')
+        for i in ICONS:
+            self.removeActionIconFromTool(i)
         # Test it twice
         for i in range(2):
-            addIconsForFilterAndSecurityConfiglets(self.portal, [])
-            self.failUnless('HtmlFilter' in [x.getActionId() for x in self.icons.listActionIcons()])
-            self.failUnless('SecuritySettings' in [x.getActionId() for x in self.icons.listActionIcons()])
+            loadMigrationProfile(self.portal, self.profile, ('action-icons', ))
+            iconids = [x.getActionId() for x in self.icons.listActionIcons()]
+            for i in ICONS:
+                self.failUnless(i in iconids)
 
-    def testAddIconForTypesConfiglet(self):
-        self.removeActionIconFromTool('TypesSettings')
+    def testInstallContentrulesAndLanguageUtilities(self):
+        sm = getSiteManager()
+        INTERFACES = (IRuleStorage, ICountries, IContentLanguages,
+                      IMetadataLanguages)
+        for i in INTERFACES:
+            sm.unregisterUtility(provided=i)
         # Test it twice
         for i in range(2):
-            addIconForTypesConfiglet(self.portal, [])
-            self.failUnless('TypesSettings' in [x.getActionId() for x in self.icons.listActionIcons()])
-
-    def testInstallContentrulesUtility(self):
-        sm = getSiteManager(self.portal)
-        sm.unregisterUtility(provided=IRuleStorage)
-        # Test it twice
-        for i in range(2):
-            installContentRulesUtility(self.portal, [])
-            self.failIf(sm.queryUtility(IRuleStorage) is None)
-
-    def testContentRulesConfiglet(self):
-        pc = self.portal.portal_controlpanel
-        self.removeActionIconFromTool('ContentRules')
-        self.removeActionFromTool('ContentRules', action_provider='portal_controlpanel')
-        # Test it twice
-        for i in range(2):
-            addIconForContentRulesConfiglet(self.portal, [])
-            addContentRulesConfiglet(self.portal, [])
-            self.failUnless('ContentRules' in [x.getActionId() for x in self.icons.listActionIcons()])
-            self.failUnless('ContentRules' in [x.getId() for x in pc.listActions()])
+            loadMigrationProfile(self.portal, self.profile, ('componentregistry', ))
+            for i in INTERFACES:
+                self.failIf(sm.queryUtility(i) is None)
 
     def testAddSitemapProperty(self):
         self.removeSiteProperty('enable_sitemap')
@@ -1274,18 +1244,6 @@ class TestMigrations_v3_0_alpha2(MigrationTest):
             restorePloneTool(self.portal, [])
             tool = self.portal.plone_utils
             self.assertEquals(ToolNames.UtilsTool, tool.meta_type)
-
-    def testInstallI18NUtilities(self):
-        sm = getSiteManager()
-        sm.unregisterUtility(provided=ICountries)
-        sm.unregisterUtility(provided=IContentLanguages)
-        sm.unregisterUtility(provided=IMetadataLanguages)
-        # Test it twice
-        for i in range(2):
-            installI18NUtilities(self.portal, [])
-            self.failIf(sm.queryUtility(ICountries) is None)
-            self.failIf(sm.queryUtility(IContentLanguages) is None)
-            self.failIf(sm.queryUtility(IMetadataLanguages) is None)
 
     def testInstallPloneLanguageTool(self):
         CMFSite.manage_delObjects(self.portal, ['portal_languages'])

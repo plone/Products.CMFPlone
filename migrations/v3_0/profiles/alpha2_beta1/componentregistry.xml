@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <adapters/>
+ <utilities>
+  <utility
+     interface="plone.contentrules.engine.interfaces.IRuleStorage"
+     factory="plone.contentrules.engine.storage.RuleStorage"/>
+  <utility 
+     interface="plone.app.i18n.locales.interfaces.ICountries"
+     factory="plone.app.i18n.locales.countries.Countries"/>
+  <utility
+     interface="plone.app.i18n.locales.interfaces.IContentLanguages"
+     factory="plone.app.i18n.locales.languages.ContentLanguages"/>
+  <utility
+     interface="plone.app.i18n.locales.interfaces.IMetadataLanguages"
+     factory="plone.app.i18n.locales.languages.MetadataLanguages"/>
+ </utilities>
+</componentregistry>
