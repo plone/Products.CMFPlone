@@ -275,7 +275,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.failIf(data['user_actions'])
 
 
-class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
+class TestVisibleIdsEnabled(PloneTestCase.PloneContentLessTestCase):
     '''Tests the visibleIdsEnabled method'''
 
     def afterSetUp(self):

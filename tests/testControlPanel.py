@@ -7,7 +7,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import PloneTestCase
 
 
-class TestControlPanel(PloneTestCase.PloneTestCase):
+class TestControlPanel(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")

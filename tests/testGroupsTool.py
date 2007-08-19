@@ -154,7 +154,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase, WarningInterceptor):
         self._free_warning_output()
 
 
-class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
+class TestGroupWorkspacesFolder(PloneTestCase.PloneContentLessTestCase, WarningInterceptor):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership

@@ -17,7 +17,7 @@ html = """\
 """
 
 
-class TestDAVProperties(PloneTestCase.PloneTestCase):
+class TestDAVProperties(PloneTestCase.PloneContentLessTestCase):
 
     def testPropertiesToolTitle(self):
         ptool = getToolByName(self.portal, 'portal_properties')

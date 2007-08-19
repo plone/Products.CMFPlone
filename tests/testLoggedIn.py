@@ -9,7 +9,7 @@ from DateTime import DateTime
 from time import sleep
 
 
-class TestLogin(PloneTestCase.PloneTestCase):
+class TestLogin(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership

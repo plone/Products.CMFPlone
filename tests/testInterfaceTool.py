@@ -46,7 +46,7 @@ class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
         self.assertRaises(ValueError, resolveInterface, dotted_name)
 
 
-class TestInterfaceTool(PloneTestCase.PloneTestCase):
+class TestInterfaceTool(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.interface = self.portal.portal_interface

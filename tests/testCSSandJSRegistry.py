@@ -8,7 +8,7 @@ from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
 from Products.CMFCore.utils import getToolByName
 
 
-class TestCSSRegistry(PloneTestCase.PloneTestCase):
+class TestCSSRegistry(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.tool = getToolByName(self.portal, CSSTOOLNAME)
@@ -32,7 +32,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
             self.failUnless(e in installedStylesheetIds, e)
 
 
-class TestJSRegistry(PloneTestCase.PloneTestCase):
+class TestJSRegistry(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.tool = getToolByName(self.portal, JSTOOLNAME)

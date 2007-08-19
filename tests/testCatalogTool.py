@@ -27,7 +27,7 @@ base_content = ['Members', 'aggregator', 'aggregator',
                 default_user, 'front-page', 'doc']
 
 
-class TestCatalogSetup(PloneTestCase.PloneTestCase):
+class TestCatalogSetup(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog

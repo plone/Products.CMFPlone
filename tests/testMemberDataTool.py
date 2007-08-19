@@ -11,7 +11,7 @@ from OFS.Image import Image
 default_user = PloneTestCase.default_user
 
 
-class TestMemberDataTool(PloneTestCase.PloneTestCase):
+class TestMemberDataTool(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.memberdata = self.portal.portal_memberdata

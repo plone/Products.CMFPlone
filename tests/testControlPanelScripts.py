@@ -88,7 +88,7 @@ class TestNoGETControlPannel(PloneTestCase.FunctionalTestCase):
         
         
 
-class TestPrefsUserManage(PloneTestCase.PloneTestCase):
+class TestPrefsUserManage(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
@@ -148,7 +148,7 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         self.failIfEqual(barney.getProperty('email'), 'barney@bedrock.com')
 
 
-class TestAccessControlPanelScripts(PloneTestCase.FunctionalTestCase):
+class TestAccessControlPanelScripts(PloneTestCase.FunctionalContentLessTestCase):
     '''Yipee, functional tests'''
 
     def afterSetUp(self):

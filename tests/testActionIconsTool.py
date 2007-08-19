@@ -5,7 +5,7 @@
 from Products.CMFPlone.tests import PloneTestCase
 
 
-class TestActionIconsTool(PloneTestCase.PloneTestCase):
+class TestActionIconsTool(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.actionicons = self.portal.portal_actionicons

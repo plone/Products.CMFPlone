@@ -13,7 +13,7 @@ from Products.CMFPlone.tests.utils import MockMailHost
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
 
-class MockMailHostTestCase(PloneTestCase.FunctionalTestCase):
+class MockMailHostTestCase(PloneTestCase.FunctionalContentLessTestCase):
 
     def afterSetUp(self):
         self.portal._original_MailHost = self.portal.MailHost

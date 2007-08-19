@@ -22,7 +22,7 @@ RE_REMOVE_NAVTREE = re.compile('\s*href="http://.*?#portlet-navigation-tree"')
 RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav">.*</ul>', re.S)
 
 
-class TestPloneToolBrowserDefault(FunctionalTestCase):
+class TestPloneToolBrowserDefault(PloneTestCase.FunctionalContentLessTestCase):
     """Test the PloneTool's browserDefault() method in various use cases.
     This class basically tests the functionality when items have default pages
     and actions that resolve to actual objects. The cases where a default_page
@@ -249,7 +249,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.portal.plone_utils.browserDefault(self.folder),
                             (self.folder, ['d1']))
 
-class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
+class TestPortalBrowserDefault(PloneTestCase.PloneContentLessTestCase):
     """Test the BrowserDefaultMixin as implemented by the root portal object
     """
     

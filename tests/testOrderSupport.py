@@ -208,7 +208,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('bar'), 3)
 
 
-class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
+class TestOrderSupportInPortal(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.setRoles(['Manager'])

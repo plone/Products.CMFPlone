@@ -5,7 +5,7 @@
 from Products.CMFPlone.tests import PloneTestCase
 
 
-class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
+class TestQuickInstallerTool(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.qi = self.portal.portal_quickinstaller

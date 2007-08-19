@@ -5,7 +5,7 @@
 from Products.CMFPlone.tests import PloneTestCase
 
 
-class TestSomething(PloneTestCase.PloneTestCase):
+class TestSomething(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         pass

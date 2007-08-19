@@ -6,7 +6,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
 
-class TestGetObjSize(PloneTestCase.PloneTestCase):
+class TestGetObjSize(PloneTestCase.PloneContentLessTestCase):
 
     def testZeroInt(self):
         self.assertEqual(self.portal.getObjSize(None, 0), "0 kB")
@@ -48,7 +48,7 @@ class TestGetObjSize(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.getObjSize(None, 'barney'), 'barney')
 
     
-class TestGetObjSizedItem(PloneTestCase.PloneTestCase):
+class TestGetObjSizedItem(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.ob = dummy.SizedItem()

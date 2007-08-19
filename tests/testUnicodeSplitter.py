@@ -24,7 +24,7 @@ def _setlocale(*names):
     return saved
 
 
-class TestSplitter(PloneTestCase.PloneTestCase):
+class TestSplitter(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.splitter = Splitter()
@@ -88,7 +88,7 @@ class TestSplitter(PloneTestCase.PloneTestCase):
             _setlocale(saved)
 
 
-class TestCaseNormalizer(PloneTestCase.PloneTestCase):
+class TestCaseNormalizer(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.normalizer = CaseNormalizer()

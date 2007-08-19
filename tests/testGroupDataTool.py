@@ -16,7 +16,7 @@ def sortTuple(t):
     return tuple(l)
 
 
-class TestGroupDataTool(PloneTestCase.PloneTestCase):
+class TestGroupDataTool(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.acl_users = self.portal.acl_users
@@ -151,7 +151,7 @@ class TestGroupData(PloneTestCase.PloneTestCase, WarningInterceptor):
         self._free_warning_output()
 
 
-class TestMethodProtection(PloneTestCase.PloneTestCase):
+class TestMethodProtection(PloneTestCase.PloneContentLessTestCase):
     # GroupData has wrong security declarations
 
     def afterSetUp(self):

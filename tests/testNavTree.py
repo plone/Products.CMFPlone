@@ -494,7 +494,7 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         directlyProvides(self.folder, INavigationRoot)
         root = getNavigationRoot(self.folder.folder1.doc1)
         self.assertEqual(root, folderPath)
-        
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

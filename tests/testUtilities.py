@@ -1,7 +1,7 @@
 from Products.CMFCore.utils import getToolInterface
 from Products.CMFPlone.tests import PloneTestCase
 
-class TestUtilities(PloneTestCase.PloneTestCase):
+class TestUtilities(PloneTestCase.PloneContentLessTestCase):
     def testToolRegistration(self):
         from Products.CMFPlone.migrations.v3_0.alphas import registration
 

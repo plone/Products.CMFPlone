@@ -124,7 +124,7 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.topic.Title(), 'Foo')
 
 
-class TestContentTypeInformation(PloneTestCase.PloneTestCase):
+class TestContentTypeInformation(PloneTestCase.PloneContentLessTestCase):
 
     def afterSetUp(self):
         self.types = self.portal.portal_types

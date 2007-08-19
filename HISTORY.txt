@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Use new contentless test class for all tests that don't depend on any.
+      [hannosch]
+
     - Replaced our FasterStringIO implementation by one based on
       collections.deque, which is a faster than StringIO.
       [hannosch]
