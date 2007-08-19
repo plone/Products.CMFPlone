@@ -93,9 +93,12 @@ class DefaultPage(BrowserView):
                     return lookupTranslationId(context, page)
 
             # 4. Test for default sitewide default_page setting
-            site_properties = portal.portal_properties.site_properties
-            for page in site_properties.getProperty('default_page', []):
-                if ids.has_key(page):
-                    return lookupTranslationId(context, page)
+            pp = getattr(portal, 'portal_properties', None)
+            if pp is not None:
+                site_properties = getattr(pp, 'site_properties', None)
+                if site_properties is not None:
+                    for page in site_properties.getProperty('default_page', []):
+                        if ids.has_key(page):
+                            return lookupTranslationId(context, page)
 
         return None

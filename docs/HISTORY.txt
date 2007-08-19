@@ -2,7 +2,12 @@ Changelog for plone.app.layout
 
     (name of developer listed in brackets)
 
-plone.app.layout - 1.0 Unreleased
+plone.app.layout - 1.0.1 Unreleased
+
+    - Made code in defaultpage.py a bit more tolerant of missing tools.
+      [hannosch]
+
+plone.app.layout - 1.0 Released
 
     - Fixed the translation of the 'Show this page in presentation mode...'
       message.
