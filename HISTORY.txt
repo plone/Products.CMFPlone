@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Noted the new hard dependency on python-gettext that was introduced in
+      the PlacelessTranslationService product.
+      [hannosch]
+
     - Use new contentless test class for all tests that don't depend on any.
       [hannosch]
 

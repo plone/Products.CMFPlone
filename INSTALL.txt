@@ -11,6 +11,9 @@ upgrading to Plone 3.5:
 * Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope
   2.11 and later may or may not work. Zope 3.x is not supported.
 
+* The python-gettext package is now required. This package can be
+  downloaded from its home page at http://pypi.python.org/pypi/python-gettext .
+
 * The python ElementTree package is now required. This package can be
   downloaded from its home page at http://effbot.org/downloads/#elementtree .
 
@@ -51,9 +54,9 @@ upgrading to Plone 3.5:
   There is also a so-called "Universal installer" that works on all
   UNIX-derivatives, that does all of this for you and more. If you're new to
   Plone, it is probably a better choice, since it downloads and compiles
-  dependencies (Zope, PIL, elementtree) for you. This document assumes that
-  you have some familiarity with the Zope and Plone structure and want to set
-  it up manually.
+  dependencies (Zope, PIL, elementtree, python-gettext) for you. This document
+  assumes that you have some familiarity with the Zope and Plone structure and
+  want to set it up manually.
 
 ==============================================================================
 
@@ -85,6 +88,11 @@ upgrading to Plone 3.5:
   - Python ElementTree
     Not included in the Plone tarball.
     http://effbot.org/downloads/#elementtree
+
+  - Python Gettext
+    Not included in the Plone tarball.
+    http://pypi.python.org/pypi/python-gettext
+
 
   **The following Zope product dependencies are included in the Plone tarball**
 

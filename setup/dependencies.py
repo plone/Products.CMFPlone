@@ -65,3 +65,11 @@ except ImportError:
          "transformation. Please download it from "
          "http://effbot.org/downloads/#elementtree"),
          severity=logging.INFO)
+
+try:
+    from pythongettext import msgfmt
+except ImportError:
+    log(("python-gettext not found. Plone needs python-gettext for "
+         "compilation of translation files. Please download it from "
+         "http://pypi.python.org/pypi/python-gettext"),
+         severity=logging.INFO)
