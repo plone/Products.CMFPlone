@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0.1 - UNRELEASED
 
+    - NuPlone didn't set the background color explicitly on the body element,
+      fixed.
+      [limi]
+
     - Adjusted some deprecation warnings to a later Plone version, as we
       haven't removed all usage of the underlying functions from Plone itself.
       [hannosch]
