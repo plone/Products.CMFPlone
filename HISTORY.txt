@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed PTSTranslationDomain utilities. PTS exposes all translation files
+      as pure Zope3 translation utilities now, so these aren't needed anymore.
+      [hannosch]
+
     - Noted the new hard dependency on python-gettext that was introduced in
       the PlacelessTranslationService product.
       [hannosch]
