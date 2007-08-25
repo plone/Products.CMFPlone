@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Removed tests for isRTL method of PTS. The method was deprecated in the
+      last release and is gone now.
+      [hannosch]
+
     - Removed PTSTranslationDomain utilities. PTS exposes all translation files
       as pure Zope3 translation utilities now, so these aren't needed anymore.
       [hannosch]

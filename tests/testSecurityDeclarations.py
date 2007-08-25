@@ -307,23 +307,6 @@ except DiscussionNotAllowed: pass
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
-    # isRTL
-
-    try:
-        from Products import PlacelessTranslationService
-    except ImportError:
-        pass
-    else:
-        def testImport_PTS(self):
-            self.check('from Products import PlacelessTranslationService')
-
-        def testImport_isRTL(self):
-            self.check('from Products.PlacelessTranslationService import isRTL')
-
-        def testAccess_isRTL(self):
-            self.check('import Products.PlacelessTranslationService;'
-                       'print Products.PlacelessTranslationService.isRTL')
-
     # getToolByName
 
     def testImport_getToolByName(self):
