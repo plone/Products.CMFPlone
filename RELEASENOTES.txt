@@ -11,6 +11,9 @@ upgrading to Plone 3.5:
 * Zope 2.11.0+ is now required. Older versions of Zope will not work. Zope
   2.12 and later may or may not work. Zope 3.x is not supported.
 
+* The python-gettext package is now required. This package can be
+  downloaded from its home page at http://pypi.python.org/pypi/python-gettext .
+
 * The python ElementTree package is now required. This package can be
   downloaded from its home page at http://effbot.org/downloads/#elementtree .
 
@@ -40,8 +43,17 @@ Important notes for site and system administrators
 For migration instructions please see the online Plone upgrade manual:
 http://plone.org/upgrade
 
-* No special notes so far.
-
+* The way in which PlacelessTranslationService handles translation files (*.po)
+  has significantly changed. The mo file cache found in INSTANCE_HOME/var/pts
+  does no longer exist and will be deleted when found. Instead po files will be
+  compiled to mo files inside the products i18n folders as it already happened
+  for po files inside locales folders. This means the (Unix/Windows/...) user
+  running the Zope process needs to have write access to all Products folder at
+  least once and whenever changes where done to the po files. Inside the ZMI
+  the Control_Panel entry for PlacelessTranslationService does no longer exist.
+  In order to reload message catalog the Zope process has to be restarted.
+  Internally all po files are registered directly as ITranslationDomain
+  utilities and will be handled by the Zope3/Five translation service.
 
 Important notes for developers
 ------------------------------
