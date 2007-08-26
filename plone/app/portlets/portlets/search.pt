@@ -9,39 +9,41 @@
       <span class="portletTopRight"></span>
   </dt>
 
-  <dd class="portletItem odd">
-    <form name="searchform" action="search"
-          tal:define="livesearch view/enable_livesearch;"
-          tal:attributes="action view/search_action">
-      <div class="LSBox">
-        <input class="searchField inputLabel"
-            name="SearchableText"
-            type="text"
-            size="15"
-            title="Search Site"
-            i18n:attributes="title title_search_title;"
-            tal:attributes="value request/SearchableText|nothing;
-                            class python:livesearch and 'inputLabel searchField portlet-search-gadget' or 'inputLabel searchField portlet-search-gadget-nols'"
-            />
-        <input class="searchButton"
-            type="submit"
-            value="Search"
-            i18n:attributes="value label_search;"/>
-
-        <div class="LSResult" style="" tal:condition="livesearch">
-          <div class="LSShadow"></div>
+    <dd class="portletItem">
+      <form name="searchform" action="search"
+            tal:define="livesearch view/enable_livesearch;"
+            tal:attributes="action view/search_action">
+        <div class="LSBox">
+          <input class="searchField inputLabel"
+              name="SearchableText"
+              type="text"
+              size="15"
+              title="Search Site"
+              i18n:attributes="title title_search_title;"
+              tal:attributes="value request/SearchableText|nothing;
+                              class python:livesearch and 'inputLabel searchField portlet-search-gadget' or 'inputLabel searchField portlet-search-gadget-nols'"
+              />
+          <input class="searchButton"
+              type="submit"
+              value="Search"
+              i18n:attributes="value label_search;"/>
+  
+          <div class="LSResult" style="" tal:condition="livesearch">
+            <div class="LSShadow"></div>
+          </div>
         </div>
-      </div>
-    </form>
-
+      </form>
+      <div class="visualClear"><!-- --></div>
+    </dd>
+    
     <dd class="portletFooter">
-      <a href="#"
+        <a href="#"
          class="tile"
          tal:attributes="href view/search_form"
          i18n:translate="label_advanced_search">
-       Advanced Search&hellip;
-     </a>
-     <span class="portletBottomLeft"></span>
-     <span class="portletBottomRight"></span>
-  </dd>
+        Advanced Search&hellip;
+        </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
 </dl>
