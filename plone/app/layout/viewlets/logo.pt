@@ -4,5 +4,4 @@
    tal:attributes="href view/navigation_root_url"
    i18n:domain="plone">
     <img src="logo.jpg" alt=""
-         tal:replace="structure view/logo_tag" />
-</a>
+         tal:replace="structure view/logo_tag" /></a>
