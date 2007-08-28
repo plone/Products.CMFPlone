@@ -7,7 +7,7 @@ from zope.component import adapts, getMultiAdapter
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-from Acquisition import Explicit, aq_inner, aq_parent
+from Acquisition import Explicit, aq_inner, aq_parent, aq_acquire
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import isDefaultPage
@@ -67,7 +67,7 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
             raise
         except Exception:
             logger.exception('Error while rendering %r' % (self,))
-            self.aq_inner.aq_parent.error_log.raising(sys.exc_info())
+            aq_acquire(self, 'error_log').raising(sys.exc_info())
             return self.error_message()
 
 class DashboardPortletManagerRenderer(ColumnPortletManagerRenderer):
