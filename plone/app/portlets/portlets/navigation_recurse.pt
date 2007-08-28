@@ -5,7 +5,8 @@
 
 <metal:main define-macro="nav_main">
 <tal:navitem repeat="node children">
-<li tal:define="children      node/children;
+<li tal:define="show_children node/show_children;
+                children      node/children;
                 item_url      node/getURL;
                 item_icon     node/item_icon;
                 remote_url    node/getRemoteUrl;
@@ -31,7 +32,7 @@
     </div>
 
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
-        tal:condition="nocall:children">  
+        tal:condition="python: len(children) > 0 and show_children">  
         <span tal:replace="structure python:view.recurse(children=children, level=level+1, bottomLevel=bottomLevel)" />
     </ul>
     </tal:level>
