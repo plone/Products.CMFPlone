@@ -3,7 +3,7 @@
     xmlns:browser="http://namespaces.zope.org/browser">
 
     <browser:viewlet  
-        name="plone.tags"
+        name="plone.analytics"
         manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
         class=".view.AnalyticsViewlet"
         permission="zope2.View" 

@@ -12,5 +12,6 @@
     <include package=".sitemap" />
     <include package=".dashboard" />
     <include package=".presentation" />
+    <include package=".analytics" />
 
 </configure>
