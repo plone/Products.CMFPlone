@@ -33,7 +33,7 @@
             action="folder_object"
             tal:attributes="action here_url">
 
-        <h1>
+        <h1 class="documentFirstHeading">
           <tal:block replace="structure python:getattr(here, here.getIcon(1)).tag(alt=here.portal_type)"/>
           <span tal:content="python: view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)" tal:omit-tag="">Directory Id</span>
         </h1>
