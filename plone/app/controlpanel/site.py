@@ -70,10 +70,10 @@ class ISiteSchema(Interface):
 
     webstats_js = SourceText(title=_(u'JavaScript for web statistics support'),
                         description=_(u"For enabling web statistics support "
-                            "for e.g. Google Analytics. Look at "
-                            "http://plone.org for snippets which you can "
-                            "paste here. Do not paste Google Analytics code "
-                            "here directly; it will not work."),
+                              "from external providers (for e.g. Google "
+                              "Analytics). Paste the code snippets provided. "
+                              "It will be included in the rendered HTML as "
+                              "entered near the end of the page."),
                         default=u'',
                         required=False)
 
