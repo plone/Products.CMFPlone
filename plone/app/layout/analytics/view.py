@@ -9,7 +9,7 @@ class AnalyticsViewlet(BrowserView):
     implements(IViewlet)
 
     def __init__(self, context, request, view, manager):
-        super(BrowserView, self).__init__(context, request)
+        super(AnalyticsViewlet, self).__init__(context, request)
         self.__parent__ = view
         self.context = context
         self.request = request
