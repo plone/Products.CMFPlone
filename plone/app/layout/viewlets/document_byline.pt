@@ -2,8 +2,10 @@
      id="plone-document-byline"
      i18n:domain="plone"
      tal:condition="view/show">
-  <span id="lock-icon">
-    <img tal:replace="structure view/locked_icon" />
+  <span id="lock-icon"
+        tal:define="lock_icon view/locked_icon"
+        tal:condition="lock_icon">
+      <img tal:replace="structure lock_icon" />
   </span>
 
   <tal:name tal:condition="view/creator">
