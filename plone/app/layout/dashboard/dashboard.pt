@@ -1,0 +1,126 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+
+<tal:comment replace="nothing">
+    Please note that this template fills the "content" slot instead of the
+    "main" slot, this is done so we can provide stuff like the content
+    tabs. This also means that we have to supply things that are normally
+    present from main_template.
+</tal:comment>
+
+<metal:left fill-slot="column_one_slot" />
+<metal:right fill-slot="column_two_slot" />
+
+<metal:main fill-slot="content">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="memberinfo mtool/getMemberInfo;
+                                name python:memberinfo['fullname'] or member.getId() or member.getId()">
+
+    <div class="documentEditable">
+
+        <h5 class="hiddenStructure">Views</h5>
+        
+        <ul class="contentViews">
+          <li class="selected">
+            <a href=""
+               tal:attributes="href string: ${portal_url}/dashboard"
+               i18n:translate="label_view">Dashboard</a>
+          </li>
+          <li>
+            <a href=""
+               tal:attributes="href string:${portal_url}/@@manage-dashboard"
+               i18n:translate="label_edit">Edit</a>
+          </li>
+        </ul>
+
+        <div class="contentActions">
+          &nbsp;
+        </div>
+
+        <div class="documentContent" id="content">
+
+            <a name="documentContent"></a>
+                    
+            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+                Portal status message
+            </div>
+
+            <div id="dashboard-actions"
+                 tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+                             groups python:controlPanel.getGroups('member');
+                             getIconFor nocall:putils/getIconFor" >
+                <ul>
+                    <li class="portalUser">
+                        <a href="personalize_form" 
+                           tal:attributes="href string:${portal_url}/author/${member/getId}"
+                           i18n:translate="">Profile</a>
+                    </li>
+                    <tal:groups condition="groups">
+                        <tal:group repeat="group groups">
+                            <tal:configlets repeat="configlet python:controlPanel.enumConfiglets(group=group['id'])">
+                                <li tal:condition="configlet/visible">
+                                    <a href=""          
+                                       tal:attributes="href configlet/url">
+                                        <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                                                                           alt configlet/title;"
+                                             i18n:attributes="alt"
+                                             tal:on-error="string:" />
+                                    <tal:configletname tal:content="configlet/title"
+                                                       i18n:translate=""></tal:configletname>
+                                    </a>
+                                </li>
+                            </tal:configlets>
+                        </tal:group>
+                    </tal:groups>
+                </ul>
+            </div>
+            
+            <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
+                <span tal:replace="name" i18n:name="user_name" />'s dashboard
+            </h1>
+            
+            <dl tal:condition="view/empty"
+                class="portalMessage info visualClear" id="dashboard-info-message">
+                <dt i18n:translate="">Info</dt>
+                <dd i18n:translate="info_empty_dashboard">
+                    Your dashboard is currently empty. Click the 
+                    <em>edit</em> tab to assign some personal 
+                    portlets.
+                </dd>
+            </dl>
+                
+            <div id="dashboard">
+                
+                <div class="visualClear"><!-- --></div>
+                <div id="dashboard-portlets1" 
+                  tal:content="structure provider:plone.dashboard1" />
+                <div id="dashboard-portlets2" 
+                  tal:content="structure provider:plone.dashboard2" />
+                <div id="dashboard-portlets3" 
+                  tal:content="structure provider:plone.dashboard3" />
+                <div id="dashboard-portlets4" 
+                  tal:content="structure provider:plone.dashboard4" />
+            </div>
+            <div class="visualClear"><!-- --></div>
+        </div>
+
+    </div> <!-- end simulated tabs -->
+
+    </tal:main-macro>
+
+</metal:main>
+
+</body>
+</html>

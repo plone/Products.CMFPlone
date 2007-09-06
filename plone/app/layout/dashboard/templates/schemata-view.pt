@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="mars">
+
+  <body>
+    <metal:main fill-slot="main"
+                tal:define="kssClassesView context/@@kss_field_decorator_view;
+                            getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                            templateId template/getId">
+
+      <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+      <h1 metal:use-macro="context/kss_generic_macros/macros/generic_title_view">
+          Title or id
+      </h1>
+
+      <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+      <p metal:use-macro="context/kss_generic_macros/macros/generic_description_view">
+          Description
+      </p>
+
+      <div tal:replace="structure provider:plone.abovecontentbody" />
+
+      <metal:textfield use-macro="context/folder_listing/macros/text-field-view" />
+
+      <tal:defaultfields repeat="field view/getDefaultFields">
+        <tal:mode define="mode string:view;">
+        <metal:use_field use-macro="context/widgets/field/macros/view">
+          Field Macro
+        </metal:use_field>
+        </tal:mode>
+      </tal:defaultfields>
+
+      <tal:schemata repeat="fieldset view/getCollapsibleSchemata">
+        <dl class="collapsible inline collapsedOnLoad"
+            tal:define="set_id fieldset/name;"
+            tal:attributes="id string:viewfieldset-$set_id;"
+            tal:condition="fieldset/fields|nothing">
+          <dt class="collapsibleHeader"
+              tal:content="set_id"
+              i18n:translate="">Fieldset name</dt>
+          <dd class="collapsibleContent">
+            <tal:field repeat="field fieldset/fields">
+              <tal:mode define="mode string:view;">
+              <metal:use_field use-macro="context/widgets/field/macros/view">
+                Field Macro
+              </metal:use_field>
+              </tal:mode>
+            </tal:field>
+          </dd>
+        </dl>
+      </tal:schemata>
+
+      <div class="field"
+           tal:condition="python:hasattr(context.aq_explicit, 'contentIds')">
+        <h3 i18n:translate="title_folder_listing">Content</h3>
+        <metal:footer use-macro="context/folder_listing/macros/base_macros/listing" />
+      </div>
+
+      <div metal:use-macro="context/document_relateditems/macros/relatedItems">
+          show related items if they exist
+      </div>
+
+      <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </metal:main>
+  </body>
+</html>
