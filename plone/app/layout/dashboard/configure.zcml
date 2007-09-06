@@ -1,15 +1,39 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
+    xmlns="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-    <include package="plone.app.portlets" />
+    <browser:page
+        for="Products.ATContentTypes.interface.IATContentType"
+        name="schemata.html"
+        permission="zope.Public"
+        class=".schemata-view.schemataView"
+        />
 
+    <implements
+        class=".schemata-view.schemataView"
+        interface="plone.app.layout.globals.interfaces.IViewView"
+        />
+
+<!--
     <browser:page
         for="Products.CMFCore.interfaces.ISiteRoot"
-        name="dashboard"
-        permission="plone.app.portlets.ManageOwnPortlets"
-        class=".dashboard.DashboardView"
-        template="dashboard.pt"
+        name="mars-search.html"
+        permission="zope.Public"
+        class=".search.SearchView"
         />
+-->
+
+<!--
+    <adapter factory=".search.SearchViewAdapter" />
+-->
+    <!-- Default page layout for the search form-->
+<!--
+    <adapter
+        for=".search.ISearchView"
+        factory=".search.search_named_template_adapter"
+        name="default"
+        provides="zope.formlib.namedtemplate.INamedTemplate"
+        />
+-->
 
 </configure>
