@@ -130,7 +130,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                     actorid = r['actor']
                     r['actorid'] = actorid
                     r['actor'] = membership.getMemberInfo(actorid)
-                    r['actor_home'] = self.portal_url + 'author/' + actorid
+                    r['actor_home'] = self.portal_url + '/author/' + actorid
                 #reverse the list
                 history = self.context.reverseList(review_history)
 
