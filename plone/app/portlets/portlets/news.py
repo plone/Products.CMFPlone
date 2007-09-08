@@ -84,7 +84,7 @@ class AddForm(base.AddForm):
     description = _(u"This portlet displays recent News Items.")
 
     def create(self, data):
-        return Assignment(count=data.get('count', 5))
+        return Assignment(count=data.get('count', 5), state=data.get('state', ('published',)))
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(INewsPortlet)
