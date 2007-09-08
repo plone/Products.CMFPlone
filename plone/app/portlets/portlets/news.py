@@ -26,7 +26,6 @@ class INewsPortlet(IPortletDataProvider):
                          description=_(u"Items in which workflow state to show."),
                          default=('published', ),
                          required=True,
-                         max_length=1,
                          value_type=schema.Choice(
                              vocabulary="plone.app.vocabularies.WorkflowStates")
                          )
@@ -73,9 +72,6 @@ class Renderer(base.Renderer):
         catalog = getToolByName(context, 'portal_catalog')
         limit = self.data.count
         state = self.data.state
-        # We don't support querying for more than one state at a time yet
-        if len(state) > 0:
-            state = state[0]
         return catalog(portal_type='News Item',
                        review_state=state,
                        sort_on='Date',

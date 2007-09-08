@@ -60,10 +60,6 @@ class TestPortlet(PortletsTestCase):
 
 class TestRenderer(PortletsTestCase):
 
-    def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
         request = request or self.folder.REQUEST
@@ -74,10 +70,17 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def test_published_news_items(self):
-        r = self.renderer(assignment=news.Assignment(count=5))
+        self.setRoles(('Manager',))
+        self.portal.invokeFactory('News Item', 'n1')
+        self.portal.invokeFactory('News Item', 'n2')
+        self.portal.portal_workflow.doActionFor(self.portal.n1, 'publish')
+        
+        r = self.renderer(assignment=news.Assignment(count=5, state=('draft',)))
         self.assertEquals(0, len(r.published_news_items()))
-        r = self.renderer(assignment=news.Assignment(count=5, state=('visible', )))
-        self.assertEquals(0, len(r.published_news_items()))
+        r = self.renderer(assignment=news.Assignment(count=5, state=('published', )))
+        self.assertEquals(1, len(r.published_news_items()))
+        r = self.renderer(assignment=news.Assignment(count=5, state=('published', 'private',)))
+        self.assertEquals(2, len(r.published_news_items()))
 
     def test_all_news_link(self):
         r = self.renderer(assignment=news.Assignment(count=5))

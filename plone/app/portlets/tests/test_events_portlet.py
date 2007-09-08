@@ -73,11 +73,18 @@ class TestRenderer(PortletsTestCase):
 
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
-    def test_published_events(self):
-        r = self.renderer(assignment=events.Assignment(count=5))
+    def test_published_news_items(self):
+        self.setRoles(('Manager',))
+        self.portal.invokeFactory('Event', 'e1')
+        self.portal.invokeFactory('Event', 'e2')
+        self.portal.portal_workflow.doActionFor(self.portal.e1, 'publish')
+        
+        r = self.renderer(assignment=events.Assignment(count=5, state=('draft',)))
         self.assertEquals(0, len(r.published_events()))
-        r = self.renderer(assignment=events.Assignment(count=5, state=('visible', )))
-        self.assertEquals(0, len(r.published_events()))
+        r = self.renderer(assignment=events.Assignment(count=5, state=('published', )))
+        self.assertEquals(1, len(r.published_events()))
+        r = self.renderer(assignment=events.Assignment(count=5, state=('published', 'private',)))
+        self.assertEquals(2, len(r.published_events()))
 
     def test_all_events_link(self):
         r = self.renderer(assignment=events.Assignment(count=5))
