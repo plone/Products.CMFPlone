@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <adapters/>
+ <utilities>
+  <utility 
+     interface="five.customerize.interfaces.IViewTemplateContainer"
+     object="portal_view_customizations"/>
+ </utilities>
+</componentregistry>
