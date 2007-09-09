@@ -42,11 +42,13 @@ upgrading to Plone 3.5:
 **SUMMARY**
 
   1) Download and install Zope
-  2) Find your instance's Products directory
-  3) Download and install the Plone tarball - http://plone.org/download
+  2) Download and install the Plone tarball - http://plone.org/download
      (you most likely have it already since you're reading this, but make
       sure you still have the latest version)
-  4) Download and install optional products
+  3) Install the products from the Plone tarball in your instance.
+  4) Install the packges from the Plone tarball in your instance.
+
+  5) Download and install optional products and packages
 
   For alternative install docs, try http://plone.org/documentation. They may
   be more up to date, and have useful illustrations to go with them.

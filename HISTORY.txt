@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Modify installation summary a bit. It is still just a summary: the
+      complete instructions are further down in the file. This fixes 
+      http://dev.plone.org/plone/ticket/6983
+      [wichert]
+
     - Removed tests for isRTL method of PTS. The method was deprecated in the
       last release and is gone now.
       [hannosch]
