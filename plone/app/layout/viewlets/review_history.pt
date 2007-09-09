@@ -22,7 +22,7 @@
             <tr tal:define="odd repeat/item/odd;
                             rhComments item/comments|nothing;
                             state item/review_state|nothing"
-                tal:attributes="class python:odd and 'odd' or 'even'"
+                tal:attributes="class python:odd and 'even' or 'odd'"
                 tal:condition="item/action">
               <td i18n:translate="" tal:content="item/transition_title"
                   tal:attributes="class string:state-${state}">
