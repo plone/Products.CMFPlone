@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.5 - UNRELEASED
 
+    - Deprecate the ITranslatable interface. This interface is LinguaPlone-
+      specific and has thus been moved to LinguaPlone.
+      [wichert]
+
     - Modify installation summary a bit. It is still just a summary: the
       complete instructions are further down in the file. This fixes 
       http://dev.plone.org/plone/ticket/6983

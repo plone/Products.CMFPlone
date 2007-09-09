@@ -1,3 +1,4 @@
+from zope.deprecation import deprecated
 from Interface import Interface
 
 class ITranslatable(Interface):
@@ -61,3 +62,8 @@ class ITranslatable(Interface):
         """
         Returns the language of this translation - same as DC
         """
+
+deprecated("ITranslatable",
+        "Please use Products.LinguaPlone.interfaces.ITranslatable instead. "
+        "This interface will be removed in Plone 4.0")
+
