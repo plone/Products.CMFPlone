@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0.1 - UNRELEASED
 
+    - Added migration for view customization container and utility.
+      [witsch]
+
     - NuPlone didn't set the background color explicitly on the body element,
       fixed.
       [limi]
