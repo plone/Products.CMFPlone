@@ -1052,14 +1052,6 @@ body.fullscreen #portal-searchbox {
     z-index: 3;
 }
 
-/* Padding for the columns */
-#portal-column-one .visualPadding {
-    padding: 2em 0em 1em 2em;
-}
-#portal-column-two .visualPadding {
-    padding: 2em 2em 1em 0em;
-}
-
 /* Kupu image alignment classes */
 .image-left {
    float: left;
