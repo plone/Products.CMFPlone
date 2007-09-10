@@ -2,10 +2,20 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 1.0.1 Unreleased
+plone.app.controlpanel - 1.0.1 Released September 10, 2007
+
+    - Updated help text to match implementation.
+      [fschulze]
 
     - Fixed test in site.txt to work in Zope 2.11.
       [hannosch]
+
+    - If we are looking at settings for the default workflow lookup the real
+      workflow. This fixes #6843 (yes, that bug again).
+      [wichert]
+
+    - Another small string update while we're at it.
+      [limi]
 
 plone.app.controlpanel - 1.0 Released August 14, 2007
 
