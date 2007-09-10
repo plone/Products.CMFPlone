@@ -11,6 +11,7 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFPlone.utils import log
+import logging
 
 
 class DocumentActionsViewlet(ViewletBase):
@@ -136,7 +137,7 @@ class WorkflowHistoryViewlet(ViewletBase):
 
             except WorkflowException:
                 log( 'plone.app.layout.viewlets.content: '
-                     '%s has no associated workflow' % self.context.absolute_url() )
+                     '%s has no associated workflow' % self.context.absolute_url(), severity=logging.DEBUG)
 
         return history
 
