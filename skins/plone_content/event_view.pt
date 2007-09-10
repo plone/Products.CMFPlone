@@ -17,14 +17,18 @@
 
         <div class="vevent">
 
-        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
-            Title or id
+        <h1 class="documentFirstHeading"> 
+            <metal:field use-macro="python:here.widget('title', mode='view')">
+            Title
+            </metal:field>
         </h1>
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <p metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
+        <p class="documentDescription">
+            <metal:field use-macro="python:here.widget('description', mode='view')">
             Description
+            </metal:field>
         </p>
         
         <div tal:replace="structure provider:plone.abovecontentbody" />
@@ -37,12 +41,10 @@
 
                 <tr>
                     <th i18n:translate="event_what">What</th>
-                    <td metal:define-macro="subject-field-view"
-                        tal:define="kss_class python:getKssClasses('subject',
-                                    templateId=templateId, macro='subject-field-view');"
-                        id="parent-fieldname-subject"
-                        tal:attributes="class string:summary$kss_class;">
-                        <span metal:define-slot="inside" tal:replace="python:' '.join(here.Subject())" />
+                    <td class="summary">
+                        <metal:field use-macro="python:here.widget('subject', mode='view')">
+                        Categories
+                        </metal:field>
                     </td>
                 </tr>
                 <tr>
@@ -115,27 +117,19 @@
                 </tr>
                 <tr tal:condition="here/location">
                     <th i18n:translate="event_where">Where</th>
-                    <td metal:define-macro="location-field-view"
-                        class="location" 
-                        tal:define="kss_class python:getKssClasses('location',
-                                    templateId=templateId, macro='location-field-view');"
-                        id="parent-fieldname-location"
-                        tal:attributes="class string: summary$kss_class;">
-                      <span metal:define-slot="inside" 
-                            tal:replace="here/location">Oslo,
-                            Norway</span></td>
+                    <td class="location">
+                        <metal:field use-macro="python:here.widget('location', mode='view')">
+                        Location
+                        </metal:field>
+                    </td>
                 </tr>
                 <tr tal:condition="here/contact_name">
                     <th i18n:translate="contact_name">Contact Name</th>
-                    <td metal:define-macro="contactName-field-view"
-                        class="fn"
-                        tal:define="kss_class python:getKssClasses('contactName',
-                                    templateId=templateId, macro='contactName-field-view');"
-                        id="parent-fieldname-contactName"
-                        tal:attributes="class string: summary$kss_class;">
-                      <span metal:define-slot="inside" 
-                            tal:replace="here/contact_name">Oslo,
-                            John Smith</span></td>
+                    <td class="fn">
+                        <metal:field use-macro="python:here.widget('contactName', mode='view')">
+                        Contact Name
+                        </metal:field>
+                    </td>
                 </tr>
                 <tr tal:define="contact_email here/contact_email"
                     tal:condition="here/contact_email">
@@ -148,26 +142,19 @@
                 </tr>
                 <tr tal:condition="here/contact_phone">
                     <th i18n:translate="contact_phone">Contact Phone</th>
-                    <td metal:define-macro="contactPhone-field-view"
-                        class="tel"
-                        tal:define="kss_class python:getKssClasses('contactPhone',
-                                    templateId=templateId, macro='contactPhone-field-view');"
-                        id="parent-fieldname-contactPhone"
-                        tal:attributes="class string: summary$kss_class;">
-                      <span metal:define-slot="inside" 
-                            tal:replace="here/contact_phone">Oslo,
-                            555-GET-PLONE</span></td>
+                    <td class="tel">
+                        <metal:field use-macro="python:here.widget('contactPhone', mode='view')">
+                        Phone number
+                        </metal:field>
+                    </td>
                 </tr>
                 <tr tal:condition="here/getAttendees|nothing">
                     <th i18n:translate="contact_attendees">Attendees</th>
-                    <td metal:define-macro="attendees-field-view" 
-                        tal:define="kss_class python:getKssClasses('attendees',
-                                    templateId=templateId, macro='attendees-field-view');"
-                        id="parent-fieldname-attendees"
-                        tal:attributes="class string: summary$kss_class;">
-                      <span metal:define-slot="inside" 
-                            tal:replace="python: ', '.join(here.getAttendees())">Oslo,
-                            Person 1, Person 2</span></td>
+                    <td class="attendees">
+                        <metal:field use-macro="python:here.widget('attendees', mode='view')">
+                        Attendees
+                        </metal:field>
+                    </td>
                 </tr>
                 <tr>
                     <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
@@ -191,16 +178,9 @@
         </div>
 
 
-        <div metal:define-macro="text-field-view"
-             id="parent-fieldname-text" class="stx"
-             tal:define="kss_class python:getKssClasses('text',
-                         templateId=templateId, macro='text-field-view');
-                         text here/getText|nothing"
-             tal:condition="text"
-             tal:attributes="class python:test(here.Format() in ('text/structured',
-                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
-            <div metal:define-slot="inside" tal:replace="structure text">The body</div>
-        </div>
+        <metal:field use-macro="python:here.widget('text', mode='view')">
+        Body text
+        </metal:field>
 
         <p tal:condition="here/event_url|nothing">
             <a class="url"

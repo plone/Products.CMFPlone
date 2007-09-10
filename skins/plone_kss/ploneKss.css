@@ -12,6 +12,7 @@
 
 .inlineEditable {
     padding: 1px;
+    display: block;
 }
 
 body.kssActive .inlineEditable:hover {
@@ -25,6 +26,7 @@ body.kssActive .inlineEditable:hover {
 body.kssActive .inlineEditable a:hover {
     cursor: pointer;
 }
+
 
 
 .inlineForm .formHelp,

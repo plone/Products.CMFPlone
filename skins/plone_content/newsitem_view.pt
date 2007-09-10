@@ -17,14 +17,18 @@
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
-            Title or id
+        <h1 class="documentFirstHeading"> 
+            <metal:field use-macro="python:here.widget('title', mode='view')">
+            Title
+            </metal:field>
         </h1>
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
-            News summary
+        <p class="documentDescription">
+            <metal:field use-macro="python:here.widget('description', mode='view')">
+            Description
+            </metal:field>
         </p>
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
@@ -36,14 +40,11 @@
                id="parent-fieldname-image">
                <img tal:replace="structure python: here.tag(scale='mini', css_class='newsImage')" src="" alt="" />
             </a>
-            <p metal:define-macro="imageCaption-field-view"
-               class="discreet"
-               tal:define="kss_class python:getKssClasses('imageCaption',
-                           templateId=templateId, macro='imageCaption-field-view');"
-               id="parent-fieldname-imageCaption"
-               tal:attributes="class string: summary$kss_class;">
-              <span metal:define-slot="inside" 
-                   tal:replace="here/getImageCaption">Image Caption</span></p>
+            <p class="discreet">
+              <metal:field use-macro="python:here.widget('imageCaption', mode='view')">
+              Image Caption
+              </metal:field>
+            </p>
         </div>
 
         <p tal:condition="python: not len_text and is_editable"
