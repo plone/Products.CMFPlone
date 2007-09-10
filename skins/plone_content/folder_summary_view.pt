@@ -12,31 +12,31 @@
     <metal:main-macro define-macro="main"
                       tal:define="kssClassesView context/@@kss_field_decorator_view;
                                   getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                                  templateId template/getId;
-                                  text here/getText|nothing;">
+                                  templateId template/getId">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 class="documentFirstHeading"> 
-            <metal:field use-macro="python:here.widget('title', mode='view')">
-            Title
-            </metal:field>
+        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
+            Title or id
         </h1>
 
-        <p class="documentDescription">
-            <metal:field use-macro="python:here.widget('description', mode='view')">
+        <p metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
             Description
-            </metal:field>
         </p>
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
-        <tal:bodytext condition="text">
-        <metal:field use-macro="python:here.widget('text', mode='view')">
-        Body text
-        </metal:field>
-        </tal:bodytext>
-        
+        <div metal:define-macro="text-field-view"
+             id="parent-fieldname-text" class="stx"
+             tal:define="kss_class python:getKssClasses('text',
+                         templateId=templateId, macro='text-field-view');
+                         text here/getText|nothing"
+             tal:condition="text"
+             tal:attributes="class python:test(here.Format() in ('text/structured',
+                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+            <div metal:define-slot="inside" tal:replace="structure text">The body</div>
+        </div>
+
         <metal:listingmacro define-macro="listing">
         <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
                             limit_display limit_display|request/limit_display|nothing;
