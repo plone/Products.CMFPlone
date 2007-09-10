@@ -17,61 +17,33 @@
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
-            Title or id
+        <h1 class="documentFirstHeading"> 
+            <metal:field use-macro="python:here.widget('title', mode='view')">
+            Title
+            </metal:field>
         </h1>
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <p metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
-          Description
+        <p class="documentDescription">
+            <metal:field use-macro="python:here.widget('description', mode='view')">
+            Description
+            </metal:field>
         </p>
 
         <div tal:replace="structure provider:plone.abovecontentbody" />
 
+
         <p>
-            <a href=""
-               tal:attributes="href here_url">
-                <img src="" tal:define="icon python:here.getIcon(1)" tal:attributes="src string:${portal_url}/${icon}" alt="" />
-                <tal:block i18n:translate="label_click_to_get_file">
-                Click here to get the file
-                </tal:block>
-            </a>
+            <metal:field use-macro="python:here.widget('file', mode='view')">
+            File
+            </metal:field>
         </p>
 
-        <small class="discreet">
-            <span i18n:translate="label_size">
-            Size
-            </span>
-            
-            <span tal:condition="size"
-                tal:content="size">
-            257 KB
-            </span>
-    
-            <span tal:condition="python:test(size,0,1)" i18n:translate="no_file_uploaded">
-              (No file has been uploaded yet)
-            </span>
-    
-            -
-            
-            <span i18n:translate="label_file_type">
-            File type
-            </span>
-    
-            <span tal:content="content_type">
-            Content type
-            </span>
-        </small>
-    
-        <div class="row"
-             tal:condition="python: content_type.startswith('text')">
-    
-                <h2 i18n:translate="heading_file_contents">File contents</h2>
-    
-                <pre tal:content="here/get_data|here/data|nothing">
-                </pre>
-
+        <div tal:condition="python: content_type.startswith('text')">
+            <h2 i18n:translate="heading_file_contents">File contents</h2>
+            <pre tal:content="here/get_data|here/data|nothing">
+            </pre>
         </div>
 
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">

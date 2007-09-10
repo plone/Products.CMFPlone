@@ -15,14 +15,18 @@
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
 
-        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
-            Title or id
+        <h1 class="documentFirstHeading"> 
+            <metal:field use-macro="python:here.widget('title', mode='view')">
+            Title
+            </metal:field>
         </h1>
 
         <div tal:replace="structure provider:plone.belowcontenttitle" />
 
-        <p  metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
+        <p class="documentDescription">
+            <metal:field use-macro="python:here.widget('description', mode='view')">
             Description
+            </metal:field>
         </p>
     
         <div tal:replace="structure provider:plone.abovecontentbody" />
