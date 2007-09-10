@@ -20,7 +20,7 @@ It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:replace="struct
 
 <span i18n:name="document_url" tal:omit-tag="" tal:replace="structure options/url | here/absolute_url" />
 </div>
---
+-- 
 <span tal:replace="structure here/email_from_name" />
 
 </div>

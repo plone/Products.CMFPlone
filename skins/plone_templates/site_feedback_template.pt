@@ -13,7 +13,7 @@ The message sent was:
 <span i18n:name="message" tal:omit-tag="" tal:content="options/message | nothing" />
 
 </div>
---
+-- 
 <span tal:replace="portal/email_from_name" />
 
 </div>
