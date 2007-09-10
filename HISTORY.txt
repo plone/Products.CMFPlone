@@ -9,6 +9,7 @@ Plone 3.0.1 - UNRELEASED
       it's now very easy to add inline editing to your custom types, look
       at document_view.pt for an example. You just call the widget in view
       mode, and Plone takes care of the rest.
+      http://dev.plone.org/plone/ticket/6705
       [limi]
 
     - Added migration for view customization container and utility.
