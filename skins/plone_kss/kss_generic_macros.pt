@@ -20,7 +20,7 @@
         </h1>
         </tal:archetypes>
         <h1 tal:content="object_title" class="documentFirstHeading"
-            tal:condition="python:here==portal">
+            tal:condition="not:exists:here/getField">
             Title or id
         </h1>
         </metal:title_view>
@@ -49,7 +49,8 @@
         </tal:archetypes>
         <p class="documentDescription description"
            tal:content="here/Description"
-           tal:condition="python:here.Description() and here==portal">
+           tal:define="have_at exists:here/getField"
+           tal:condition="python:here.Description() and not have_at">
             Description
         </p>
         </metal:description_view>
