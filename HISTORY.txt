@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0.1 - UNRELEASED
 
+    - Let the Editor role get 'Delete objects' permission, making it easier
+      to delegate content management in a folder.
+      http://dev.plone.org/plone/ticket/7078
+
     - Added a wide range of proxy roles to check_id script, should allow it to
       work with all but the most unusual workflows.  Eventually this should
       be converted to trusted code.
