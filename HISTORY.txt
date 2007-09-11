@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 3.0.1 - UNRELEASED
 
+    - Added a wide range of proxy roles to check_id script, should allow it to
+      work with all but the most unusual workflows.  Eventually this should
+      be converted to trusted code.
+      http://dev.plone.org/plone/ticket/6999
+      [alecm]
+
     - Fixed all the default view templates to use Archetypes' view mode for
       the widgets instead of using a special KSS template. This means that
       it's now very easy to add inline editing to your custom types, look

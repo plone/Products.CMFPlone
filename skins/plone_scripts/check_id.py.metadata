@@ -1,2 +1,2 @@
 [default]
-proxy = Manager
+proxy = Manager, Owner, Authenticated, Anonymous

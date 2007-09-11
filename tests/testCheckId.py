@@ -214,7 +214,6 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         r = self.folder.foo.check_id('_foo')
         self.assertEqual(r, None)   # success
 
-
     def testParentMethodAliasDisallowed(self):
         # Note that the check is skipped when we don't have
         # the "Add portal content" permission.
@@ -238,6 +237,14 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         except AttributeError, e:
             self.fail(e)
 
+    def testProxyRoles(self):
+        # Proxy roles should cover missing view permission for all but the
+        # most unusual workflows.
+        proxy_roles = self.folder.check_id._proxy_roles
+        self.failUnless('Manager' in proxy_roles)
+        self.failUnless('Owner' in proxy_roles)
+        self.failUnless('Authenticated' in proxy_roles)
+        self.failUnless('Anonymous' in proxy_roles)
 
 class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
     '''Tests the visibleIdsEnabled script'''
