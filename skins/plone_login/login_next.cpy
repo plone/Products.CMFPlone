@@ -40,15 +40,16 @@ if came_from is not None:
     if not context.portal_url.isURLInPortal(came_from):
         came_from = ''
 
-js_enabled = REQUEST.get('js_enabled','1') != '0'
-if came_from and js_enabled:
+if came_from:
     # If javascript is not enabled, it is possible that cookies are not enabled.
     # If cookies aren't enabled, the redirect will log the user out, and confusion
     # may arise.  Redirect only if we know for sure that cookies are enabled.
 
     util.addPortalMessage(_(u'Welcome! You are now logged in.'))
     came_from = util.urlunparse((scheme, location, path, parameters, query, fragment))
-    REQUEST.RESPONSE.redirect(came_from)
+
+    # redirect immediately
+    return REQUEST.RESPONSE.redirect(came_from)
 
 state.set(came_from=came_from)
 
