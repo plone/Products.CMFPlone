@@ -99,6 +99,12 @@ Plone 3.5 - UNRELEASED
 
     - Removed lots of deprecated code and zcml registrations.
       [hannosch]
+      
+Plone 3.0.1 - UNRELEASED
+  
+    - Let the Editor role get 'Delete objects' permission, making it easier
+      to delegate content management in a folder.
+      http://dev.plone.org/plone/ticket/7078
 
 Plone 3.0 - released August 17, 2007
 

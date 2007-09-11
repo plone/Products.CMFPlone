@@ -79,6 +79,7 @@
     <permission name="Delete objects" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
+      <role name="Editor"/>
     </permission>
     <permission name="FTP access" acquire="True">
       <role name="Manager"/>
