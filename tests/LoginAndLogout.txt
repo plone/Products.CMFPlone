@@ -26,6 +26,7 @@ First we try to log in with bad credentials:
 
 And then we try again with the right credentials:
 
+    >>> browser.open('http://nohost/plone')
     >>> browser.getLink('Log in').click()
     >>> browser.url
     'http://nohost/plone/login_form'
@@ -35,7 +36,7 @@ And then we try again with the right credentials:
     >>> "You are now logged in" in browser.contents
     True
     >>> browser.url
-    'http://nohost/plone/login_form'
+    'http://nohost/plone'
     >>> browser.getLink('Log out').click()
     >>> browser.url
     'http://nohost/plone/logged_out'
@@ -64,14 +65,18 @@ And then we try again with the right credentials:
     >>> browser.getControl('Login Name').value = 'test_user_1_'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
+
+Verify that we are given a status message saying we've logged in:
+    
     >>> 'You are now logged in' in browser.contents
     True
-    >>> browser.url
-    'http://nohost/plone/login_form'
 
-We landed in ``login_form`` because we don't have JavaScript enabled
-and therefore Plone thinks we don't have cookies and displays a
-warning.  We're logged in however even on the next page load:
+The returned view is the default view of the current context:
+
+    >>> browser.url
+    'http://nohost/plone'
+    
+Let's reload the page and then try logging out:
 
     >>> browser.reload()
     >>> browser.getLink('Log out').click()
@@ -84,9 +89,31 @@ Login with user defined in root user folder
 A user defined in the root user folder should be able to log in into
 the site:
 
+    >>> browser.getLink('Home').click()
     >>> self.app.acl_users.userFolderAddUser('rootuser', 'secret', [], [])
     >>> browser.getControl('Login Name').value = 'rootuser'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
     >>> 'You are now logged in' in browser.contents
     True
+
+Redirection to login page on unauthorized exception
+---------------------------------------------------
+
+Let's logout again and then try editing the personal member folder
+of test_user_1_:
+
+    >>> browser.reload()
+    >>> browser.getLink('Log out').click()
+    >>> browser.open('%s/edit' % folder.absolute_url())
+    >>> 'require_login' in browser.url
+    True
+
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/edit'
+
+We were automatically redirected to the page that triggered the
+login request.
