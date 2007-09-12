@@ -65,7 +65,7 @@
                     
                     <dl>
                     
-                    <tal:firstparent condition="nocall:first_parent">
+                    <tal:firstparent condition="first_parent/absolute_url | nothing">
                         <tal:entry define="result_url first_parent/absolute_url;
                                            result_type python:first_parent.getTypeInfo().getId();
                                            item_icon python:plone_view.getIcon(first_parent);
@@ -112,7 +112,7 @@
 
                             </dt>
             
-                            <dd tal:content="python:plone_view.cropText(similar.Description, desc_length, desc_ellipsis)"> Description </dd>
+                            <dd tal:content="python:plone_view.cropText(similar.Description or '', desc_length, desc_ellipsis)"> Description </dd>
 
                         </tal:entry>
                     </tal:similar>
