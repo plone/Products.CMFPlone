@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0.1 - UNRELEASED
 
+    - Made default_error_message more robust when the NotFound path traverses
+      a view.
+      [ldr]
+
     - Let the Editor role get 'Delete objects' permission, making it easier
       to delegate content management in a folder.
       http://dev.plone.org/plone/ticket/7078
