@@ -98,8 +98,8 @@ def registerMigrations():
 
     # Plone 3.0
 
-    registerUpgradePath('2.5.4-devel (svn/unreleased)', '3.0-alpha1', v3_0.alphas.three0_alpha1)
     registerUpgradePath('2.5.3-final', '3.0-alpha1', v3_0.alphas.three0_alpha1)
+    registerUpgradePath('2.5.4-devel (svn/unreleased)', '3.0-alpha1', v3_0.alphas.three0_alpha1)
 
     registerUpgradePath('3.0-alpha1', '3.0-alpha2', v3_0.alphas.alpha1_alpha2)
     registerUpgradePath('3.0-alpha2', '3.0-beta1', v3_0.alphas.alpha2_beta1)
@@ -113,5 +113,5 @@ def registerMigrations():
 
     # Plone 3.0.x
 
-    registerUpgradePath('3.0', '3.0.1 (svn/unreleased)', v3_0.final_three0x.final_three01)
+    registerUpgradePath('3.0', '3.0.1', v3_0.final_three0x.final_three01)
 
