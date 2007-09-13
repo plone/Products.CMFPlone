@@ -2,6 +2,9 @@ Changelog for Plone
 
     (name of developer listed in brackets)
     
+Plone 3.0.2 - UNRELEASED
+
+
 Plone 3.0.1 - released September 13, 2007
 
     - Made default_error_message more robust when the NotFound path traverses
