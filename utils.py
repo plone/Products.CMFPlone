@@ -763,7 +763,11 @@ def scale_image(image_file, max_size=None, default_format=None):
     return new_file, mimetype
 
 def isLinked(obj):
-    """ check if the given content object is linked from another one """
+    """ check if the given content object is linked from another one
+        WARNING: don't use this function in your code!!
+            it is a helper for the link integrity code and will potentially
+            abort the ongoing transaction, giving you unexpected results...
+    """
     # first check to see if link integrity handling has been enabled at all
     # and if so, if the removal of the object was already confirmed, i.e.
     # while replaying the request;  unfortunately this makes it necessary
