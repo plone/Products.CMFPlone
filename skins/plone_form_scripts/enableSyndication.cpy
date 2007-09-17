@@ -13,12 +13,12 @@ from Products.CMFPlone.utils import safe_unicode
 
 if context.portal_syndication.isSiteSyndicationAllowed():
     context.portal_syndication.enableSyndication(context)
-    message=_(u'Syndication enabled')
+    message='Syndication enabled'
 else:
-    message=_(u'Syndication not allowed')
+    message='Syndication not allowed'
 
 from Products.CMFPlone.utils import transaction_note
 transaction_note('%s for %s at %s' % (message, safe_unicode(context.title_or_id()), context.absolute_url()))
 
-context.plone_utils.addPortalMessage(message)
+context.plone_utils.addPortalMessage(_(message))
 return state
