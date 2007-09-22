@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.4 - Unreleased
 
+    - Remove silly root check from stripGRUFLocalRolePrefix script to
+      fix migration bug. http://dev.plone.org/plone/ticket/5817
+      [alecm]
+
     - No longer call invokeFactory twice when creating objects in
       portal_factory.  Fixes http://dev.plone.org/plone/ticket/6595
       Nice catch nouri :-)
