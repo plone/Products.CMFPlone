@@ -1,7 +1,7 @@
 <div metal:define-macro="portlet-add-form" class="section" i18n:domain="plone">
     
     <form method="post" action="#"
-          tal:attributes="action context/absolute_url">
+          tal:attributes="action view/context_url">
         <input type="hidden" name="referer" tal:attributes="value view/referer" />
 
         <label for="dest"
@@ -11,7 +11,7 @@
         </label>
 
         <select name=":action" onchange="this.form.submit()">
-            <option tal:attributes="value python:request['ACTUAL_URL'].replace(context.absolute_url(), '')"
+            <option tal:attributes="value python:request['ACTUAL_URL'].replace(view.context_url(), '')"
                     i18n:translate="label_add_portlet_ellipsis">
                 Add portlet&hellip;
             </option>
@@ -47,15 +47,15 @@
                     <span class="managedPortletActions">
                     <a href="#" class="up"
                        tal:condition="not:repeat/portlet/start"
-                       tal:attributes="href string:${portlet/up_url}&referer=${view/referer}">&uarr;</a>
+                       tal:attributes="href string:${portlet/up_url}&referer=${view/url_quote_referer}">&uarr;</a>
                     <a href="#" class="down"
                        tal:condition="not:repeat/portlet/end"
-                       tal:attributes="href string:${portlet/down_url}&referer=${view/referer}">&darr;</a>
+                       tal:attributes="href string:${portlet/down_url}&referer=${view/url_quote_referer}">&darr;</a>
                     <a href="#" class="delete"
-                       tal:attributes="href string:${portlet/delete_url}&referer=${view/referer}">&times;</a>
+                       tal:attributes="href string:${portlet/delete_url}&referer=${view/url_quote_referer}">&times;</a>
                     </span>
                     <a tal:omit-tag="not:portlet/editview"
-                       tal:attributes="href string:${portlet/editview}?referer=${view/referer}"
+                       tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
                        tal:content="portlet/title" />
                 </div>
             </div>

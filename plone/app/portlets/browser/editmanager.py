@@ -39,6 +39,8 @@ from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from Products.Five.browser import BrowserView 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
+from Products.PythonScripts.standard import url_quote
+
 from plone.portlets.utils import hashPortletInfo
 
 class EditPortletManagerRenderer(Explicit):
@@ -115,7 +117,7 @@ class EditPortletManagerRenderer(Explicit):
         
     def addable_portlets(self):
         baseUrl = self.baseUrl()
-        addviewbase = baseUrl.replace(self.context.absolute_url(), '')
+        addviewbase = baseUrl.replace(self.context_url(), '')
         return [ {'title' : p.title,
                   'description' : p.description,
                   'addview' : '%s/+/%s' % (addviewbase, p.addview)
@@ -128,19 +130,26 @@ class EditPortletManagerRenderer(Explicit):
         base_url = self.request['ACTUAL_URL']
         
         if view_name:
-            base_url = self.context.absolute_url() + '/' + view_name
+            base_url = self.context_url() + '/' + view_name
         
         if key:
             base_url += '?key=%s' % key
         
         return base_url
-        
+
+    @memoize
+    def url_quote_referer(self):
+        return url_quote(self.referer())
+    
     # See note in plone.portlets.manager
     
     @memoize    
     def _lazyLoadAssignments(self, manager):
         return self.__parent__.getAssignmentsForManager(manager)
     
+    @memoize
+    def context_url(self):
+        return str(getMultiAdapter((self.context, self.request), name='absolute_url'))
           
 class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for contextual portlets
