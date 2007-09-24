@@ -84,10 +84,8 @@ def installOrReinstallProduct(portal, product_name, out, hidden=False):
     if not qi.isProductInstalled(product_name):
         qi.installProduct(product_name, hidden=hidden)
         # Refresh skins
-        if getattr(aq_base(portal), '_v_skindata', None) is not None:
-            portal._v_skindata = None
-        if getattr(aq_base(portal), 'setupCurrentSkin', None) is not None:
-            portal.setupCurrentSkin()
+        portal.clearCurrentSkin()
+        portal.setupCurrentSkin(portal.REQUEST)
         out.append('Installed %s.' % product_name)
     else:
         info = qi._getOb(product_name)
