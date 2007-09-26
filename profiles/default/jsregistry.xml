@@ -61,7 +61,7 @@
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
     id="calendar_formfield.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
+    enabled="False" expression="not: portal/portal_membership/isAnonymousUser" 
     id="calendarpopup.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
