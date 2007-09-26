@@ -69,29 +69,28 @@ function toggleCollapsible(event) {
 function activateCollapsibles() {
     if (!W3CDOM) {return false;}
 
-    var collapsibles = cssQuery('dl.collapsible');
-    for (var i=0; i < collapsibles.length; i++) {
-        var collapsible = collapsibles[i];
+    $('dl.collapsible').each(function() {
+        $('dt.collapsibleHeader', this).click(toggleCollapsible);
+        var collapsible = $(this);
 
-        var collapsible_header = cssQuery('dt.collapsibleHeader', collapsible)[0];
-        collapsible_header.onclick = toggleCollapsible;
-
-        if (hasClassName(collapsible, 'inline')) {
+        if (collapsible.hasClass('inline')) {
             // the collapsible should be inline
-            if (hasClassName(collapsible, 'collapsedOnLoad')) {
-                replaceClassName(collapsible, 'collapsedOnLoad', 'collapsedInlineCollapsible');
+            if (collapsible.hasClass('collapsedOnLoad')) {
+                collapsible.removeClass('collapsedOnLoad');
+                collapsible.addClass('collapsedInlineCollapsible');
             } else {
-                addClassName(collapsible, 'expandedInlineCollapsible');
+                collapsible.addClass('expandedInlineCollapsible');
             }
         } else {
             // the collapsible is a block
-            if (hasClassName(collapsible, 'collapsedOnLoad')) {
-                replaceClassName(collapsible, 'collapsedOnLoad', 'collapsedBlockCollapsible');
+            if (collapsible.hasClass('collapsedOnLoad')) {
+                collapsible.removeClass('collapsedOnLoad');
+                collapsible.addClass('collapsedBlockCollapsible');
             } else {
-                addClassName(collapsible, 'expandedBlockCollapsible');
+                collapsible.addClass('expandedBlockCollapsible');
             }
         }
-    }
+    });
 };
 
 registerPloneFunction(activateCollapsibles);
