@@ -1,11 +1,11 @@
 function setBaseFontSize(fontsize, reset) {
-    var body = cssQuery('body')[0];
+    var body = $('body');
     if (reset == 1) {
-        removeClassName(body, 'smallText');
-        removeClassName(body, 'largeText');
+        body.removeClass('smallText');
+        body.removeClass('largeText');
         createCookie("fontsize", fontsize, 365);
     }
-    addClassName(body, fontsize);
+    body.addClass(fontsize);
 };
 
 function initBaseFontSize() {
