@@ -48,7 +48,9 @@ class ContentContext(object):
 
     def _getUserId(self):
         membership = getToolByName(self.context, 'portal_membership', None)
-
+        if membership is None:
+            return None
+        
         member = membership.getAuthenticatedMember()
         if not member:
             return None
