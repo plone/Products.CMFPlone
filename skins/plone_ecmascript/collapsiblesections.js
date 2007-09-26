@@ -69,27 +69,13 @@ function toggleCollapsible(event) {
 function activateCollapsibles() {
     if (!W3CDOM) {return false;}
 
+    $('dl.collapsible dt.collapsibleHeader').click(toggleCollapsible);
     $('dl.collapsible').each(function() {
-        $('dt.collapsibleHeader', this).click(toggleCollapsible);
-        var collapsible = $(this);
-
-        if (collapsible.hasClass('inline')) {
-            // the collapsible should be inline
-            if (collapsible.hasClass('collapsedOnLoad')) {
-                collapsible.removeClass('collapsedOnLoad');
-                collapsible.addClass('collapsedInlineCollapsible');
-            } else {
-                collapsible.addClass('expandedInlineCollapsible');
-            }
-        } else {
-            // the collapsible is a block
-            if (collapsible.hasClass('collapsedOnLoad')) {
-                collapsible.removeClass('collapsedOnLoad');
-                collapsible.addClass('collapsedBlockCollapsible');
-            } else {
-                collapsible.addClass('expandedBlockCollapsible');
-            }
-        }
+        var state = $(this).hasClass('collapsedOnLoad') ?
+                    'collapsed' : 'expanded';
+        var type = $(this).hasClass('inline') ? 'Inline' :'Block';
+        $(this).removeClass('collapsedOnLoad')
+               .addClass(state + type + 'Collapsible');
     });
 };
 
