@@ -49,9 +49,7 @@ function toggleCollapsible(event) {
     }
 };
 
-function activateCollapsibles() {
-    if (!W3CDOM) {return false;}
-
+$(function() {
     $('dl.collapsible dt.collapsibleHeader:first').click(toggleCollapsible);
     $('dl.collapsible').each(function() {
         var state = $(this).hasClass('collapsedOnLoad') ?
@@ -60,6 +58,4 @@ function activateCollapsibles() {
         $(this).removeClass('collapsedOnLoad')
                .addClass(state + type + 'Collapsible');
     });
-};
-
-registerPloneFunction(activateCollapsibles);
+});
