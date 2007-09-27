@@ -31,45 +31,33 @@
  * 'collapsedInlineCollapsible' and 'expandedInlineCollapsible' instead of
  * 'collapsedBlockCollapsible' and 'expandedBlockCollapsible'.
  *
- * This file uses functions from register_function.js, cssQuery.js and
- * nodeutils.js.
+ * This file uses functions from register_function.js
  *
  */
 
-function isCollapsible(node) {
-    if (hasClassName(node, 'collapsible')) {
-        return true;
-    }
-    return false;
-};
-
 function toggleCollapsible(event) {
-    if (!event) var event = window.event; // IE compatibility
+    var container = $(this).parents('dl.collapsible:eq(0)');
+    if (!container) return true;
 
-    if (!this.tagName && (this.tagName == 'DT' || this.tagName == 'dt')) {
-        return true;
-    }
-
-    var container = findContainer(this, isCollapsible);
-    if (!container) {
-        return true;
-    }
-
-    if (hasClassName(container, 'collapsedBlockCollapsible')) {
-        replaceClassName(container, 'collapsedBlockCollapsible', 'expandedBlockCollapsible');
-    } else if (hasClassName(container, 'expandedBlockCollapsible')) {
-        replaceClassName(container, 'expandedBlockCollapsible', 'collapsedBlockCollapsible');
-    } else if (hasClassName(container, 'collapsedInlineCollapsible')) {
-        replaceClassName(container, 'collapsedInlineCollapsible', 'expandedInlineCollapsible');
-    } else if (hasClassName(container, 'expandedInlineCollapsible')) {
-        replaceClassName(container, 'expandedInlineCollapsible', 'collapsedInlineCollapsible');
+    if (container.hasClass('collapsedBlockCollapsible')) {
+        container.removeClass('collapsedBlockCollapsible')
+                 .addClass('expandedBlockCollapsible');
+    } else if (container.hasClass('expandedBlockCollapsible')) {
+        container.removeClass('expandedBlockCollapsible')
+                 .addClass('collapsedBlockCollapsible');
+    } else if (container.hasClass('collapsedInlineCollapsible')) {
+        container.removeClass('collapsedInlineCollapsible')
+                 .addClass('expandedInlineCollapsible');
+    } else if (container.hasClass('expandedInlineCollapsible')) {
+        container.removeClass('expandedInlineCollapsible')
+                 .addClass('collapsedInlineCollapsible');
     }
 };
 
 function activateCollapsibles() {
     if (!W3CDOM) {return false;}
 
-    $('dl.collapsible dt.collapsibleHeader').click(toggleCollapsible);
+    $('dl.collapsible dt.collapsibleHeader:eq(0)').click(toggleCollapsible);
     $('dl.collapsible').each(function() {
         var state = $(this).hasClass('collapsedOnLoad') ?
                     'collapsed' : 'expanded';
