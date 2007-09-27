@@ -36,7 +36,7 @@
  */
 
 function toggleCollapsible(event) {
-    var container = $(this).parents('dl.collapsible:eq(0)');
+    var container = $(this).parents('dl.collapsible:first');
     if (!container) return true;
 
     var type = container.hasClass('inline') ? 'Inline' :'Block';
@@ -52,7 +52,7 @@ function toggleCollapsible(event) {
 function activateCollapsibles() {
     if (!W3CDOM) {return false;}
 
-    $('dl.collapsible dt.collapsibleHeader:eq(0)').click(toggleCollapsible);
+    $('dl.collapsible dt.collapsibleHeader:first').click(toggleCollapsible);
     $('dl.collapsible').each(function() {
         var state = $(this).hasClass('collapsedOnLoad') ?
                     'collapsed' : 'expanded';
