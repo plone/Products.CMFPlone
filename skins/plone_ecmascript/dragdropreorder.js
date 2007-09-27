@@ -35,11 +35,17 @@ ploneDnDReorder.swapElements = function(child1, child2) {
     var parent = child1.parent();
     var items = parent.children('[id]');
     items.removeClass('even').removeClass('odd');
-    // swap the two elements, using a textnode as a position marker
-    var t = parent[0].insertBefore(document.createTextNode(''), child1[0]);
-    child1.insertBefore(child2);
-    child2.insertBefore(t);
-    $(t).remove();
+    if (child1[0].swapNode) {
+        // IE proprietary method
+        child1[0].swapNode(child2)
+    } else {
+        // swap the two elements, using a textnode as a position marker
+        var t = parent[0].insertBefore(document.createTextNode(''),
+                                       child1[0]);
+        child1.insertBefore(child2);
+        child2.insertBefore(t);
+        $(t).remove();
+    }
     // odd and even are 0-based, so we want them the other way around
     parent.children('[id]:odd').addClass('even');
     parent.children('[id]:even').addClass('odd');
