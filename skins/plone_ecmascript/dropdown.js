@@ -29,9 +29,6 @@
  * link inside the actionMenuContent element, then the menu will be closed and
  * the link followed.
  *
- * This file uses functions from register_function.js, cssQuery.js and
- * nodeutils.js.
- *
  */
 
 function hideAllMenus() {
