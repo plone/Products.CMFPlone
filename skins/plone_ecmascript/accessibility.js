@@ -7,10 +7,9 @@ function setBaseFontSize(fontsize, reset) {
     body.addClass(fontsize);
 };
 
-function initBaseFontSize() {
+$(function() {
     var fontsize = readCookie("fontsize");
     if (fontsize != null) {
         setBaseFontSize(fontsize, 0);
     }
-};
-registerPloneFunction(initBaseFontSize);
+});
