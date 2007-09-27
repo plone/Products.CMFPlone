@@ -31,8 +31,6 @@
  * 'collapsedInlineCollapsible' and 'expandedInlineCollapsible' instead of
  * 'collapsedBlockCollapsible' and 'expandedBlockCollapsible'.
  *
- * This file uses functions from register_function.js
- *
  */
 
 function toggleCollapsible(event) {
