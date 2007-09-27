@@ -37,7 +37,7 @@ ploneDnDReorder.swapElements = function(child1, child2) {
     items.removeClass('even').removeClass('odd');
     if (child1[0].swapNode) {
         // IE proprietary method
-        child1[0].swapNode(child2)
+        child1[0].swapNode(child2[0])
     } else {
         // swap the two elements, using a textnode as a position marker
         var t = parent[0].insertBefore(document.createTextNode(''),
