@@ -38,13 +38,9 @@ function toggleCollapsible(event) {
     if (!container) return true;
 
     var type = container.hasClass('inline') ? 'Inline' :'Block';
-    if (container.hasClass('collapsed' + type + 'Collapsible')) {
-        container.removeClass('collapsed' + type + 'Collapsible')
-                 .addClass('expanded' + type + 'Collapsible');
-    } else if (container.hasClass('expanded' + type + 'Collapsible')) {
-        container.removeClass('expanded' + type + 'Collapsible')
-                 .addClass('collapsed' + type + 'Collapsible');
-    }
+    // toggle between collapsed and expanded classes
+    container.toggleClass('collapsed' + type + 'Collapsible')
+             .toggleClass('expanded' + type + 'Collapsible');
 };
 
 $(function() {
