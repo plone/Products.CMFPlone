@@ -39,18 +39,13 @@ function toggleCollapsible(event) {
     var container = $(this).parents('dl.collapsible:eq(0)');
     if (!container) return true;
 
-    if (container.hasClass('collapsedBlockCollapsible')) {
-        container.removeClass('collapsedBlockCollapsible')
-                 .addClass('expandedBlockCollapsible');
-    } else if (container.hasClass('expandedBlockCollapsible')) {
-        container.removeClass('expandedBlockCollapsible')
-                 .addClass('collapsedBlockCollapsible');
-    } else if (container.hasClass('collapsedInlineCollapsible')) {
-        container.removeClass('collapsedInlineCollapsible')
-                 .addClass('expandedInlineCollapsible');
-    } else if (container.hasClass('expandedInlineCollapsible')) {
-        container.removeClass('expandedInlineCollapsible')
-                 .addClass('collapsedInlineCollapsible');
+    var type = container.hasClass('inline') ? 'Inline' :'Block';
+    if (container.hasClass('collapsed' + type + 'Collapsible')) {
+        container.removeClass('collapsed' + type + 'Collapsible')
+                 .addClass('expanded' + type + 'Collapsible');
+    } else if (container.hasClass('expanded' + type + 'Collapsible')) {
+        container.removeClass('expanded' + type + 'Collapsible')
+                 .addClass('collapsed' + type + 'Collapsible');
     }
 };
 
