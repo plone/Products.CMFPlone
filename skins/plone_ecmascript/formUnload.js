@@ -64,22 +64,25 @@ if (!window.beforeunload) (function() {
         });
     }
     Class.addForms = function() {
-        $.each(arguments, function(element) {
-            if (element.tagName.toLowerCase() == 'form')
-                this.addForm(element);
+        var self = this;
+        $.each(arguments, function() {
+            if (this.tagName.toLowerCase() == 'form')
+                self.addForm(this);
             else
-                this.addForms.apply(this, $(element).find('form'));
+                self.addForms.apply(self, $.makeArray($(this).find('form')));
         });
     }
     Class.removeForms = function() {
-        $.each(arguments, function(element) {
-            if (element.tagName.toLowerCase() == 'form') {
-                this.forms = $.grep(this.forms, function(form) {
-                    return form != element;
+        var self = this;
+        $.each(arguments, function() {
+            if (this.tagName.toLowerCase() == 'form') {
+                var el = this;
+                self.forms = $.grep(self.forms, function(form) {
+                    return form != el;
                 });
-                $(element).unbind('submit', this.onsubmit);
+                $(element).unbind('submit', self.onsubmit);
             } else
-                this.removeForms.apply(this, $(element).find('form'));
+                self.removeForms.apply(self, $.makeArray($(this).find('form')));
         });
     }
 
@@ -140,6 +143,6 @@ if (!window.beforeunload) (function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         var content = getContentArea();
         if (tool && content)
-            tool.addForms.apply(tool, $('form.enableUnloadProtection'));
+            tool.addForms.apply(tool, $.makeArray($('form.enableUnloadProtection')));
     });
 })();
