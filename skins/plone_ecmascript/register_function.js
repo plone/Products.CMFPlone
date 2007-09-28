@@ -83,11 +83,6 @@ if (typeof addDOMLoadEvent != 'undefined') {
 
 function getContentArea() {
     // returns our content area element
-    if (W3CDOM) {
-        var node = document.getElementById('content');
-        if (!node) {
-            node = document.getElementById('region-content');
-        }
-        return node;
-    }
+    var node = $('#region-content #content');
+    return node.length ? node[0] : null;
 } 
