@@ -11,6 +11,10 @@ plone.app.layout - 1.0.1 Unreleased
     - Made code in defaultpage.py a bit more tolerant of missing tools.
       [hannosch]
 
+    - Upgraded the sitemap template to conform with the 0.9 specs from
+      http://www.sitemaps.org and fixed the caching to use the filename.
+      [deo]
+
 plone.app.layout - 1.0 Released
 
     - Fixed the translation of the 'Show this page in presentation mode...'
