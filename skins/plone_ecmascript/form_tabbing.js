@@ -50,7 +50,7 @@ ploneFormTabbing._buildTabs = function(container, legends) {
     if (legends.length > threshold) {
         var tabs = document.createElement("select");
         var tabtype = 'option';
-        $(tabs).change(handler);
+        $(tabs).change(handler).addClass('noUnloadProtection');
     } else {
         var tabs = document.createElement("ul");
         var tabtype = 'li';
@@ -119,6 +119,9 @@ ploneFormTabbing.initializeForm = function() {
         this, fieldsets.children('legend'));
     $(this).prepend(tabs);
     fieldsets.addClass("formPanel");
+    
+    // The fieldset.current hidden may change, but is not content
+    $(this).find('input[name=fieldset.current]').addClass('noUnloadProtection');
 
     var tab_inited = false;
 
