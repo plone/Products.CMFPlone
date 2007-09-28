@@ -3,53 +3,57 @@ from zope.publisher.interfaces import NotFound
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from cStringIO import StringIO
 from gzip import GzipFile
+from cStringIO import StringIO
 
 from plone.memoize import ram
 
 def _render_cachekey(fun, self):
-    return "sitemap" # fixed cache key only for that one as the sitemap is global
+    # Cache by filename
+    return self.filename
 
 class SiteMapView(BrowserView):
+    """Creates the sitemap as explained in the specifications.
+
+    http://www.sitemaps.org/protocol.php
+    """
 
     template = ViewPageTemplateFile('sitemap.xml')
 
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.filename = 'sitemap.xml.gz'
+
     def objects(self):
-        """create the google sitemap as explained in 
-        
-        https://www.google.com/webmasters/tools/docs/en/protocol.html
-        
-        """
-        # create the sitemap
-        catalog = getToolByName(self.context, "portal_catalog")
-        for item in catalog.searchResults({'Language':'all'}):
+        """Returns the data to create the sitemap."""
+        catalog = getToolByName(self.context, 'portal_catalog')
+        for item in catalog.searchResults({'Language': 'all'}):
             yield {
-                'url': item.getURL(),
-                'modificationdate': item.modified.toZone("GMT+0").strftime("%Y-%m-%dT%H:%M:%S+00:00"),
+                'loc': item.getURL(),
+                'lastmod': item.modified.ISO8601(),
+                #'changefreq': 'always', # hourly/daily/weekly/monthly/yearly/never
+                #'prioriy': 0.5, # 0.0 to 1.0
             }
 
     @ram.cache(_render_cachekey)
     def generate(self):
-        """generate the gzipped sitemap"""
+        """Generates the Gzipped sitemap."""
         xml = self.template()
         fp = StringIO()
-        gzip = GzipFile("sitemap.xml.gz","w",9,fp)
+        gzip = GzipFile(self.filename, 'w', 9, fp)
         gzip.write(xml)
         gzip.close()
         data = fp.getvalue()
         fp.close()
         return data
-        
+
     def __call__(self):
-        """render the template and compress it"""
-        # check if we are allowed to be shown"
+        """Checks if the sitemap feature is enable and returns it."""
         sp = getToolByName(self.context, 'portal_properties').site_properties
         if not sp.enable_sitemap:
-            raise NotFound(self.context, "sitemap.xml.gz", self.request)
+            raise NotFound(self.context, self.filename, self.request)
 
-        # set the headers
-        self.request.RESPONSE.setHeader("Content-Type",
-                "application/octet-stream")
-
+        self.request.response.setHeader('Content-Type',
+                                        'application/octet-stream')
         return self.generate()
