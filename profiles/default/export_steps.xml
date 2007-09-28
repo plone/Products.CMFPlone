@@ -130,4 +130,9 @@
               title="Kupu Settings">
   Export Kupu settings
  </export-step>
+ <export-step id="languagetool"
+           handler="Products.PloneLanguageTool.exportimport.exportLanguageTool"
+           title="Plone Language Tool">
+  Export language settings.
+ </export-step>
 </export-steps>
