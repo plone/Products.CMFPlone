@@ -83,6 +83,6 @@ if (typeof addDOMLoadEvent != 'undefined') {
 
 function getContentArea() {
     // returns our content area element
-    var node = $('#region-content #content');
+    var node = $('#region-content,#content');
     return node.length ? node[0] : null;
 } 
