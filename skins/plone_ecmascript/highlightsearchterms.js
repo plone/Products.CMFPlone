@@ -1,19 +1,22 @@
 function highlightTermInNode(node, word) {
     var contents = node.nodeValue;
-    var index = contents.toLowerCase().indexOf(word);
-    if (index < 0) return;
     if ($(node).parent().hasClass("highlightedSearchTerm")) return;
     
     // replace the node with [before]<span>word</span>[after]
-    $(node)
-        .before(document.createTextNode(contents.substr(0, index)))
-        .before(
-            $('<span>')
-                .addClass("highlightedSearchTerm")
-                .text(contents.substr(index, word.length))
-        )
-        .before(document.createTextNode(contents.substr(index+word.length)))
-        .remove();
+    while ((index = contents.toLowerCase().indexOf(word)) > -1) {
+        $(node)
+            .before(document.createTextNode(contents.substr(0, index)))
+            .before(
+                $('<span>')
+                    .addClass("highlightedSearchTerm")
+                    .text(contents.substr(index, word.length))
+            )
+            .before(document.createTextNode(contents.substr(index+word.length)));
+        var next = node.previousSibling; // text after the span
+        $(node).remove(); 
+        // wash, rinse and repeat
+        node = next; contents = node.nodeValue;
+    }
 }
 
 function highlightSearchTerms(terms, startnode) {
