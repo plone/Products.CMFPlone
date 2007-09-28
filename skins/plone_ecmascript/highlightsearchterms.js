@@ -1,6 +1,6 @@
 function highlightTermInNode(node, word) {
     var contents = node.nodeValue;
-    var index = contents.toLowerCase().indexOf(word.toLowerCase());
+    var index = contents.toLowerCase().indexOf(word);
     if (index < 0) return;
     if ($(node).parent().hasClass("highlightedSearchTerm")) return;
     
@@ -18,10 +18,11 @@ function highlightTermInNode(node, word) {
 
 function highlightSearchTerms(terms, startnode) {
     if (!terms || !startnode) return;
+    terms = $.map(terms, 'a.toLowerCase()');
 
     $.each(terms, function(i, term) {
         // don't highlight reserved catalog search terms
-        if (!term || /(not|and|or)/.test(term.toLowerCase())) return;
+        if (!term || /(not|and|or)/.test(term)) return;
         walkTextNodes(startnode, highlightTermInNode, term);
     });
 }
