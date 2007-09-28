@@ -74,19 +74,13 @@ function replaceClassName(node, old_class, new_class, ignore_missing) {
 };
 
 function walkTextNodes(node, func, data) {
-    // traverse childnodes and call func when a textnode is found
-    if (!node){return false}
-    if (node.hasChildNodes) {
-        // we can't use for (i in childNodes) here, because the number of
-        // childNodes might change (higlightsearchterms)
-        for (var i=0;i<node.childNodes.length;i++) {
-            walkTextNodes(node.childNodes[i], func, data);
-        }
-        if (node.nodeType == 3) {
-            // this is a text node
-            func(node, data);
-        }
-    }
+    // find all nodes, and call a function for all it's textnodes
+    $(node).find('*').each(function() {
+        $.each(this.childNodes, function() {
+            if (this.nodeType == 3)
+                func(this, data);
+        });
+    });
 };
 
 /* These are two functions, because getInnerTextFast doesn't always return the
