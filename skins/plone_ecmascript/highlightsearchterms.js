@@ -2,8 +2,8 @@ function highlightTermInNode(node, word) {
     var contents = node.nodeValue;
     if ($(node).parent().hasClass("highlightedSearchTerm")) return;
     
-    // replace the node with [before]<span>word</span>[after]
     while ((index = contents.toLowerCase().indexOf(word)) > -1) {
+        // replace the node with [before]<span>word</span>[after]
         $(node)
             .before(document.createTextNode(contents.substr(0, index)))
             .before(
