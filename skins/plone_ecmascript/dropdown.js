@@ -56,10 +56,7 @@ function actionMenuMouseOver(event) {
     if (!menu_id) return true;
 
     var switch_menu = $('dl.actionMenu.activated').length > 0;
-    // hide all other menus
-    $('dl.actionMenu:not(#' + menu_id + ')')
-        .removeClass('activated').addClass('deactivated');
-
+    $('dl.actionMenu').removeClass('activated').addClass('deactivated');
     if (switch_menu)
         $('#' + menu_id).removeClass('deactivated').addClass('activated');
 };
