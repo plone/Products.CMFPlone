@@ -12,16 +12,17 @@ easily lead to denial of service attack.
     >>> self.portal.portal_properties.site_properties.getProperty("enable_sitemap")
     False
 
+
 Disabled sitemap
 ----------------
 
-Trying to download the sitemap while it is not enabled results in an
-error:
+Trying to download the sitemap while it is not enabled results in an error:
 
     >>> self.browser.open('http://nohost/plone/sitemap.xml.gz')
     Traceback (most recent call last):
     ...
     HTTPError: HTTP Error 404: Not Found
+
 
 Obtain the sitemap
 ------------------
@@ -35,8 +36,7 @@ we can now open the sitemap:
     >>> self.browser.open('http://nohost/plone/sitemap.xml.gz')
     >>> self.browser.url
     'http://nohost/plone/sitemap.xml.gz'
-    
-    
+
 Get the contents and decode them
     >>> data = self.browser.contents
     >>> from gzip import GzipFile
@@ -45,7 +45,7 @@ Get the contents and decode them
     >>> fp = GzipFile(fileobj=sio)
     >>> xml = fp.read()
     >>> fp.close()
-    
+
 Not sure how to test the XML now as it also contains dates but for now
 we will just search for some URLs and tags.
 
@@ -53,4 +53,3 @@ we will just search for some URLs and tags.
     True
     >>> xml.find('<loc>http://nohost/plone/front-page</loc>')!=-1
     True
-
