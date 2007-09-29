@@ -207,10 +207,12 @@
   <dependency step="typeinfo"/>
   Import Kupu settings
  </import-step>
+ <!--
  <import-step id="languagetool" version="20070615-01"
            handler="Products.PloneLanguageTool.exportimport.importLanguageTool"
            title="Plone Language Tool">
   <dependency step="toolset"/>
   Import language settings.
  </import-step>
+ -->
 </import-steps>
