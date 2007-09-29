@@ -4,10 +4,9 @@ Changelog for Plone
     
 Plone 3.0.2 - UNRELEASED
 
-    - Add missing registration of GenericSetup import and export steps for
+    - Reverted addition of the GenericSetup import and export steps from
       PloneLanguageTool.
-      [wichert]
-
+      [hannosch, wichert]
 
 Plone 3.0.1 - released September 13, 2007
 
