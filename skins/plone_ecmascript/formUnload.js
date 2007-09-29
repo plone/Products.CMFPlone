@@ -69,7 +69,7 @@ if (!window.beforeunload) (function() {
             if (this.tagName.toLowerCase() == 'form')
                 self.addForm(this);
             else
-                self.addForms.apply(self, $.makeArray($(this).find('form')));
+                self.addForms.apply(self, $(this).find('form').get());
         });
     }
     Class.removeForms = function() {
@@ -82,7 +82,7 @@ if (!window.beforeunload) (function() {
                 });
                 $(element).unbind('submit', self.onsubmit);
             } else
-                self.removeForms.apply(self, $.makeArray($(this).find('form')));
+                self.removeForms.apply(self, $(this).find('form').get());
         });
     }
 
@@ -147,6 +147,6 @@ if (!window.beforeunload) (function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         var content = getContentArea();
         if (tool && content)
-            tool.addForms.apply(tool, $.makeArray($('form.enableUnloadProtection')));
+            tool.addForms.apply(tool, $('form.enableUnloadProtection').get());
     });
 })();
