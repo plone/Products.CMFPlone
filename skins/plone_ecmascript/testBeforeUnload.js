@@ -235,9 +235,6 @@ Class.testAddRemoveForm = function() {
     this.assertEquals(2, this.bu.forms.length);
     this.bu.removeForms(div);
     this.assertEquals(1, this.bu.forms.length);
-
-    this.bu.removeForms(null);
-    this.assertEquals(1, this.bu.forms.length);
 }
 
 Class.testSubmit = function() {
