@@ -29,7 +29,9 @@
         <ul class="portletNavigationTree navTreeLevel0">
 
             <li class="navTreeItem"
-                tal:condition="view/includeTop">
+                tal:define="root_title root/Title|nothing;
+                            can_see_root python:view.includeTop() and (root == portal or root_title is not None)"
+                tal:condition="can_see_root">
                 <tal:block define="typeClass string:visualIcon contenttype-${view/rootTypeName};
                                    selectedClass python:test(path('view/isPortalOrDefaultChild'), 'navTreeCurrentItem', '');
                                   ">
@@ -42,7 +44,7 @@
                              tal:condition="python:root == portal"
                              i18n:translate="tabs_home">Home</span>
                        <span tal:condition="python:root != portal"
-                             tal:replace="root/Title">Home</span>
+                             tal:replace="root_title">Home</span>
                        </a>
                    </div>
                 </tal:block>

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.4 - Unreleased
 
+    - Fix navigation portlet when top-level is private.
+      http://dev.plone.org/plone/ticket/6772
+      [alecm]
+
     - Made Plone use 1/10th of the memory on file uploads. Details in
       http://dev.plone.org/plone/ticket/7027
       (also fixed in Plone 3.0.x)
