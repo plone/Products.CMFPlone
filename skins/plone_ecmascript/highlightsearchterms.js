@@ -2,7 +2,7 @@ function highlightTermInNode(node, word) {
     var contents = node.nodeValue;
     if ($(node).parent().hasClass("highlightedSearchTerm")) return;
     
-    while ((index = contents.toLowerCase().indexOf(word)) > -1) {
+    while (contents && (index = contents.toLowerCase().indexOf(word)) > -1) {
         // replace the node with [before]<span>word</span>[after]
         $(node)
             .before(document.createTextNode(contents.substr(0, index)))
@@ -26,7 +26,7 @@ function highlightSearchTerms(terms, startnode) {
     $.each(terms, function(i, term) {
         // don't highlight reserved catalog search terms
         if (!term || /(not|and|or)/.test(term)) return;
-        $(startnode).find('*').contents().each(function() {
+        $(startnode).find('*').andSelf().contents().each(function() {
             if (this.nodeType == 3) highlightTermInNode(this, term);
         });
     });

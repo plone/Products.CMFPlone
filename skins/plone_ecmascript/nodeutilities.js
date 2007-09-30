@@ -38,7 +38,7 @@ function replaceClassName(node, old_class, new_class, ignore_missing) {
 
 function walkTextNodes(node, func, data) {
     // find all nodes, and call a function for all it's textnodes
-    $(node).find('*').contents().each(function() {
+    $(node).find('*').andSelf().contents().each(function() {
         if (this.nodeType == 3) func(this, data);
     });
 };
