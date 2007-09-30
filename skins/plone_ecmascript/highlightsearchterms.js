@@ -26,7 +26,9 @@ function highlightSearchTerms(terms, startnode) {
     $.each(terms, function(i, term) {
         // don't highlight reserved catalog search terms
         if (!term || /(not|and|or)/.test(term)) return;
-        walkTextNodes(startnode, highlightTermInNode, term);
+        $(startnode).find('*').contents().each(function() {
+            if (this.nodeType == 3) highlightTermInNode(this, term);
+        });
     });
 }
 
