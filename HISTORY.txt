@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.5.4 - Unreleased
 
+    - Migration has been much improved, especially for big sites. We only 
+      reindex once — no matter what version you're migrating from — and there
+      are several improvements to the actual migration code too. Migration now
+      takes 2-4 times less time, and is more likely to succeed. So if you had
+      problems migrating from 2.0 or 2.1 earlier, try this version.
+      Reference: http://dev.plone.org/plone/changeset/14945
+      [hannosch]
+
     - Fix navigation portlet when top-level is private.
       http://dev.plone.org/plone/ticket/6772
       [alecm]
