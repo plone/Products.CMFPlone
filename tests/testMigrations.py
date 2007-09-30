@@ -153,6 +153,8 @@ from Products.CMFPlone.migrations.v2_5.final_two51 import fixObjDeleteAction
 
 from Products.CMFPlone.migrations.v2_5.two51_two52 import setLoginFormInCookieAuth
 from Products.CMFPlone.migrations.v2_5.two52_two53 import addMissingMimeTypes
+from Products.CMFPlone.migrations.v2_5.two53_two54 import addGSSteps
+from Products.CMFPlone.migrations.v2_5.two53_two54 import PROF_ID
 
 from Products.CMFDynamicViewFTI.migrate import migrateFTI
 
@@ -4155,6 +4157,53 @@ class TestMigrations_v2_5_2(MigrationTest):
         # now they're back:
         self.failUnless(Set(self.mimetypes.list_mimetypes()).issuperset(Set(missing_types)))
 
+class TestMigrations_v2_5_4(MigrationTest):
+
+    def afterSetUp(self):
+        self.setup = self.portal.portal_setup
+
+    def testAddGSSteps(self):
+        # unset the gs profile
+        self.setup._import_context_id = ''
+        self.assertEqual(self.setup.getImportContextID(), '')
+        addGSSteps(self.portal, [])
+        self.assertEqual(self.setup.getImportContextID(),
+                         PROF_ID)
+
+    def testAddGSStepsAlreadyThere(self):
+        # set a bogus existing profile, ensure we don't change it
+        self.setup._import_context_id = 'profile-Bogus:bogus'
+        self.assertEqual(self.setup.getImportContextID(),
+                         'profile-Bogus:bogus')
+        addGSSteps(self.portal, [])
+        self.assertEqual(self.setup.getImportContextID(),
+                         'profile-Bogus:bogus')
+
+    def testAddGSStepsNoPloneStep(self):
+        # if the plone step is not there, don't set it
+        # first remove it from the registry
+        self.setup._import_context_id = ''
+        from Products.GenericSetup.registry import _profile_registry
+        _profile_registry._profile_ids.remove(PROF_ID)
+        prof_info = _profile_registry._profile_info[PROF_ID]
+        del _profile_registry._profile_info[PROF_ID]
+
+        # Then go through the normal migration process
+        self.assertEqual(self.setup.getImportContextID(),
+                         '')
+        addGSSteps(self.portal, [])
+        self.assertEqual(self.setup.getImportContextID(),
+                         '')
+        # restore registry, because this is not undone by the transaction
+        _profile_registry._profile_ids.append(PROF_ID)
+        _profile_registry._profile_info[PROF_ID] = prof_info
+
+    def testAddGSStepsNoTool(self):
+        # do nothing if there's no tool
+        self.portal._delObject('portal_setup')
+        addGSSteps(self.portal, [])
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -4166,6 +4215,7 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_5))
     suite.addTest(makeSuite(TestMigrations_v2_5_1))
     suite.addTest(makeSuite(TestMigrations_v2_5_2))
+    suite.addTest(makeSuite(TestMigrations_v2_5_4))
 
     return suite
 

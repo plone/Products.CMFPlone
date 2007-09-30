@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.5.4 - Unreleased
 
+    - Add migration to set the default GS profile when upgrading from 2.1.
+      [alecm]
+
     - Migration has been much improved, especially for big sites. We only 
       reindex once — no matter what version you're migrating from — and there
       are several improvements to the actual migration code too. Migration now
