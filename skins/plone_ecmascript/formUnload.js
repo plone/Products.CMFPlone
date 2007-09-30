@@ -121,8 +121,8 @@ if (!window.beforeunload) (function() {
     Class.chk_form = function(form) {
         // Find all form elements that are a) not marked as not-protected
         // or b) not a descendant of a non-protected element.
-        var elems = $(form).find(':not(.noUnloadProtection) ' +
-                                 ':input:not(.UnloadProtection)');
+        var elems = $(form).find('> :input:not(.UnloadProtection),' +
+            ':not(.noUnloadProtection) :input:not(.UnloadProtection)');
         for (var i = 0; element = elems.get(i++);) {
             if (this.isElementChanged(element))
                 return true;
