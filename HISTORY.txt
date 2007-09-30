@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.5.4 - Unreleased
 
+    - Made Plone use 1/10th of the memory on file uploads. Details in
+      http://dev.plone.org/plone/ticket/7027
+      (also fixed in Plone 3.0.x)
+      [zegor]
+
     - Use a button/script combo for product reinstall from the control
       panel.  http://dev.plone.org/plone/ticket/6457
       [alecm]
