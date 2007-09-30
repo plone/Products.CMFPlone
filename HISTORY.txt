@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 2.5.4 - Unreleased
+Plone 2.5.4 - Final - released October 1, 2007
 
     - Add migration to set the default GS profile when upgrading from 2.1.
       [alecm]
