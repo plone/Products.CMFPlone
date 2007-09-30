@@ -12,7 +12,7 @@ if (!window.beforeunload) (function() {
         this.handlers = [this.isAnyFormChanged];
         this.submitting = false;
 
-        this.execute = function(event) {
+        this.execute = function() {
             // NOTE: this handler is not jQuery-wrapped!
             // First clean out dead references to make sure we only work on
             // forms that are actually in the dom. This is needed in
