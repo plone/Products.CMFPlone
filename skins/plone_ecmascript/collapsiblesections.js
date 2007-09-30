@@ -33,7 +33,7 @@
  *
  */
 
-function toggleCollapsible(event) {
+function toggleCollapsible() {
     var container = $(this).parents('dl.collapsible:first');
     if (!container) return true;
 
