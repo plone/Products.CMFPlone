@@ -211,7 +211,7 @@ function ReplaceClassNameTestCase() {
 
     this.testCleanup = function() {
         replaceClassName(this.node, 'bar', 'spam');
-        this.assertEquals(this.node.className, "foo spam hamEggs", this.node.className);
+        this.assertEquals(this.node.className, "foo hamEggs spam", this.node.className);
     }
 
     this.testPartial = function() {
