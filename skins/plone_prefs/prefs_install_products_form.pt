@@ -150,16 +150,24 @@
                             </a>
                         </li>
                         
-                        <li tal:condition="python:QI.isProductAvailable(product['id'])"> 
-                            <a tal:condition="python:prodver != product['installedVersion']" 
-                               tal:attributes="href string:${QI/absolute_url}/reinstallProducts?products=${pid}"> 
-                                <img alt="" src=""
-                                     tal:replace="structure here/error_icon.gif" />
-                                <span i18n:translate="label_outdated_product_reinstall">
-                                    This product has been upgraded, click here to reinstall.
-                                    Filesystem version is <b i18n:name="version" tal:content="python:QI.getProductVersion(product['id'])">version</b>
-                                </span>
-                            </a>
+                        <li tal:condition="python:QI.isProductAvailable(product['id'])">
+                          <span tal:condition="python:prodver != product['installedVersion']">
+                            <img alt="" src=""
+                                 tal:replace="structure here/error_icon.gif" />
+                            <span i18n:translate="label_outdated_product_reinstall">
+                              This product has been upgraded.
+                              Filesystem version is <b i18n:name="version" tal:content="python:QI.getProductVersion(product['id'])">version</b>.
+                               Reinstall:
+                              <span i18n:name="reinstall_button">
+                                <input class="context"
+                                       type="submit"
+                                       value="product"
+                                       name="prefs_reinstallProducts:method"
+                                       tal:attributes="value pid;"
+                                       />
+                              </span>
+                            </span>
+                          </span>
                         </li>
                         
                         <li tal:condition="python:not QI.isProductAvailable(product['id'])">
