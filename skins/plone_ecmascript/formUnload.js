@@ -103,7 +103,7 @@ if (!window.beforeunload) (function() {
     c['select-one'] = function(ele) {
         for (var i = 0; opt=ele[i++];) {
             if (opt.selected != opt.defaultSelected) {
-                if (i===0 && opt.selected) continue; /* maybe no default */
+                if (i===1 && opt.selected) continue; /* maybe no default */
                 return true;
             }
         }
