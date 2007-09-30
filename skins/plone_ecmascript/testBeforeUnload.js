@@ -219,7 +219,6 @@ Class.testAddForm = function() {
 Class.testAddRemoveForm = function() {
     this.setHtml(this.FORMS);
     var div = document.getElementById("DIV1");
-    this.bu.addForms(null);
     this.assertEquals(0, this.bu.forms.length);
 
     this.bu.addForms(div);
