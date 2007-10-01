@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0.2 - UNRELEASED
 
+    - Remove silly root check from stripGRUFLocalRolePrefix script to
+      fix migration bug. http://dev.plone.org/plone/ticket/5817
+      [alecm]
+
     - Made Plone use 1/10th of the memory on file uploads. Details in
       http://dev.plone.org/plone/ticket/7027
       (also backported to Plone 2.5.x)

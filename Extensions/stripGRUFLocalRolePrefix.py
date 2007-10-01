@@ -5,20 +5,16 @@ from Acquisition import aq_base
 def do(self): 
     """Do it!""" 
     print '---' 
-    removePrefix(self, root=True) 
+    removePrefix(self) 
     # Reindex security settings recursively
     self.reindexObjectSecurity()
     print '---' 
     return 'Done!' 
      
-def removePrefix(folder, root=False): 
+def removePrefix(folder): 
     """Recursive function""" 
     for id in folder.objectIds(): 
         obj = folder._getOb(id) 
-         
-        if root == True and not obj.meta_type == 'Plone Site': 
-            continue 
-
         local_roles = getattr(aq_base(obj), '__ac_local_roles__', None) 
 
         if local_roles is not None: 
@@ -37,4 +33,4 @@ def removePrefix(folder, root=False):
                 print 'New: ', local_roles 
 
         if obj.objectIds(): 
-            removePrefix(obj, root=False)
+            removePrefix(obj)
