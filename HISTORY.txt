@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0.2 - UNRELEASED
 
+    - Use a button/script combo for product reinstall from the control
+      panel.  http://dev.plone.org/plone/ticket/6457
+      [alecm]
+
     - Remove silly root check from stripGRUFLocalRolePrefix script to
       fix migration bug. http://dev.plone.org/plone/ticket/5817
       [alecm]
