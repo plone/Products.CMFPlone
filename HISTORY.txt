@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.0.2 - UNRELEASED
 
+    - Add migration to set the default GS profile when upgrading from 2.1.
+      [alecm]
+ 
     - Use a button/script combo for product reinstall from the control
       panel.  http://dev.plone.org/plone/ticket/6457
       [alecm]
