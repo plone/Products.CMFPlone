@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0.2 - UNRELEASED
 
+    - Fixed missing i18n markup in folder_constraintypes_form for portal types
+      translation. This closes http://dev.plone.org/plone/ticket/7067.
+      [hannosch, naro]
+
     - Add migration to set the default GS profile when upgrading from 2.1.
       [alecm]
  

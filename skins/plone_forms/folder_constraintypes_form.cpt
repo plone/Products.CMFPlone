@@ -151,7 +151,8 @@
                             />
                             <label for="#"
                                    tal:attributes="for type/getId"
-                                   tal:content="type/title_or_id">Type</label>
+                                   tal:content="type/Title"
+                                   i18n:translate="">Type</label>
                             <br/>
                         </tal:block>
                     </div>
@@ -199,7 +200,8 @@
                             />
                             <label for="#"
                                    tal:attributes="for string:${type/getId}_allowed"
-                                   tal:content="type/title_or_id">Type</label>
+                                   tal:content="type/Title"
+                                   i18n:translate="">Type</label>
                             <br/>
                         </tal:block>
                     </div>
