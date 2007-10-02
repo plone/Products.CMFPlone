@@ -35,18 +35,19 @@ class CatalogBrainContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.brain = brain
-        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
 
     @property
     def url(self):
+        portal_url = getToolByName(self.context, 'portal_url')
         path = self.brain['getIcon']
         if path is None or path == '':
             return
-        path = path.split('/')[-1]
-        return "%s/%s" % (self.portal_url, path)
+        portal_path = portal_url.getPortalPath()
+        path = path[len(portal_path):]
+        return "%s/%s" % (portal_url(), path)
 
     @property
     def description(self):
@@ -64,15 +65,15 @@ class CMFContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
 
     @property
     def url(self):
+        portal_url = getToolByName(self.context, 'portal_url')()
         path = self.obj.getIcon(1)
-        return "%s/%s" % (self.portal_url, path)
+        return "%s/%s" % (portal_url, path)
 
     @property
     def description(self):
@@ -90,15 +91,15 @@ class FTIContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
 
     @property
     def url(self):
+        portal_url = getToolByName(self.context, 'portal_url')()
         path = self.obj.getIcon()
-        return "%s/%s" % (self.portal_url, path)
+        return "%s/%s" % (portal_url, path)
 
     @property
     def description(self):
@@ -116,14 +117,14 @@ class PloneSiteContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
 
     @property
     def url(self):
-        return "%s/site_icon.gif" % self.portal_url
+        portal_url = getToolByName(self.context, 'portal_url')()
+        return "%s/site_icon.gif" % portal_url
 
     @property
     def description(self):
@@ -141,16 +142,16 @@ class DefaultContentIcon(BaseIcon):
         self.context = context
         self.request = request
         self.obj = obj
-        self.portal_url = getToolByName(aq_inner(context), 'portal_url')()
 
     width = 16
     height = 16
 
     @property
     def url(self):
+        portal_url = getToolByName(self.context, 'portal_url')()
         if self.obj is None:
             return None
-        return "%s/error_icon.gif" % self.portal_url
+        return "%s/error_icon.gif" % portal_url
 
     @property
     def description(self):
