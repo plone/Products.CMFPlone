@@ -279,4 +279,16 @@ Class.testIdOverride = function() {
     this.bu.chkId['INPUTTEXT'] = function() { return false; }
     this.assertFalse(this.bu.execute());
 }
+
+Class.testNoUnloadProtection = function() {
+    this.setHtml(this.FORM1);
+    this.bu.addForms(document.getElementById('FORM1'));
+    $('#INPUTTEXT').val('changed');
+    this.assertTrue(this.bu.execute());
+    $('#INPUTTEXT').addClass('noUnloadProtection');
+    this.assertFalse(this.bu.execute());
+    $('#INPUTTEXT').removeClass('noUnloadProtection')
+        .wrap('<div>').parent().addClass('noUnloadProtection');
+    this.assertFalse(this.bu.execute());
+}
 testcase_registry.registerTestCase(PloneBeforeUnloadTestCase, 'beforeunload');
