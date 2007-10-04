@@ -2,6 +2,13 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
+plone.app.controlpanel - 1.0.2 Unreleased
+
+    - Fixed language control panel to only show one language option and fix
+      its description. This closes http://dev.plone.org/plone/ticket/6963 and
+      http://dev.plone.org/plone/ticket/6946.
+      [hannosch]
+
 plone.app.controlpanel - 1.0.1 Released September 10, 2007
 
     - Updated help text to match implementation.

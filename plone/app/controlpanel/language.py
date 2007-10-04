@@ -6,19 +6,16 @@ from zope.component import adapts
 from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Choice
-from zope.schema import List
 
 from Acquisition import aq_inner
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.statusmessages.interfaces import IStatusMessage
 
 from plone.app.controlpanel.form import ControlPanelForm
-from plone.app.controlpanel.widgets import LanguageTableWidget
 
 
 class ILanguageSelectionSchema(Interface):
@@ -33,30 +30,13 @@ class ILanguageSelectionSchema(Interface):
         required=False)
 
     default_language = Choice(
-        title=_(u"heading_default_language",
-                default=u"Default language"),
-        description=_(u"description_default_language",
-                      default=u"If content requested is not available in the "
-                               "language the user requested, content will be "
-                               "presented in this default language."),
+        title=_(u"heading_site_language",
+                default=u"Site language"),
+        description=_(u"description_site_language",
+                      default=u"The language used for the content and the UI "
+                               "of this site."),
         required=True,
-        vocabulary="plone.app.vocabularies.SupportedContentLanguages")
-
-    supported_langs = List(
-        title=_(u"heading_allowed_languages",
-                default=u"Allowed languages"),
-        description=_(u"description_allowed_languages",
-                      default=u"Select the languages that can be added in "
-                               "your portal."),
-        required=True,
-        missing_value=list('en'),
-        value_type=Choice(
-            vocabulary="plone.app.vocabularies.AvailableContentLanguages"))
-
-
-class ILanguageSchema(ILanguageSelectionSchema):
-    """Combined schema for the adapter lookup.
-    """
+        vocabulary="plone.app.vocabularies.AvailableContentLanguages")
 
 
 class LanguageControlPanelAdapter(SchemaAdapterBase):
@@ -77,14 +57,11 @@ class LanguageControlPanelAdapter(SchemaAdapterBase):
             value = value[0]
         supported_langs = context.getSupportedLanguages()
         if value not in supported_langs:
-            value = supported_langs[0]
+            context.supported_langs = [value]
         context.setDefaultLanguage(value)
 
     default_language = property(get_default_language,
                                 set_default_language)
-
-    supported_langs = \
-        ProxyFieldProperty(ILanguageSchema['supported_langs'])
 
     def get_use_combined_language_codes(self):
         return aq_inner(self.context).use_combined_language_codes
@@ -99,7 +76,7 @@ class LanguageControlPanelAdapter(SchemaAdapterBase):
             # but I have no time to figure out that part of formlib right now
             request = context.REQUEST
             message = _(u"You cannot disable country-specific language "
-                         "variants, please choose a different default "
+                         "variants, please choose a different site "
                          "language first.")
             IStatusMessage(request).addStatusMessage(message, type='error')
         else:
@@ -113,7 +90,6 @@ class LanguageControlPanel(ControlPanelForm):
 
     form_fields = FormFields(ILanguageSelectionSchema)
     form_fields['default_language'].custom_widget = LanguageDropdownChoiceWidget
-    form_fields['supported_langs'].custom_widget = LanguageTableWidget
 
     label = _(u"heading_language_settings", default="Language Settings")
     description = _(u"description_language_settings",
