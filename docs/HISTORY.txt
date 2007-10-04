@@ -4,6 +4,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.0.2 - unreleased
 
+    - Fixed i18n markup bug in manage-content-type.pt.
+      [hannosch]
+
     - Made prevMonth and nextMonth links in calendar portlet to work without
       KSS. This closes http://dev.plone.org/plone/ticket/7052.
       [hannosch]
