@@ -44,9 +44,6 @@
     enabled="True" expression="" id="styleswitcher.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True" enabled="True"
     expression="" id="toc.js" inline="False"/>    
- <javascript cacheable="True" compression="none" cookable="True"
-    enabled="True" expression=""
-    id="webstats.js" inline="False"/>
 
 <!-- Only for logged-in users -->
  <javascript cacheable="True" compression="safe" cookable="True"

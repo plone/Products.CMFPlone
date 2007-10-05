@@ -9,3 +9,11 @@ def final_three01(portal):
     
     return out
 
+def three01_three02(portal):
+    
+    out = []
+    
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0.1-3.0.2')
+    
+    return out
+
