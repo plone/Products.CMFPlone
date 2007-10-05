@@ -4,6 +4,14 @@ Changelog for Plone
     
 Plone 3.0.2 - UNRELEASED
 
+    - Set the media for ploneKss.css to screen so it can be merged with the
+      other CSS files.
+      [wichert]
+
+    - Add the language control panel when migration from previous Plone
+      versions.
+      [wichert]
+
     - Fixed missing i18n markup in folder_constraintypes_form for portal types
       translation. This closes http://dev.plone.org/plone/ticket/7067.
       [hannosch, naro]

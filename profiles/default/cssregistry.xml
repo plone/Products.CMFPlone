@@ -58,7 +58,7 @@
     enabled="1" expression="" id="forms.css" media="screen" rel="stylesheet"
     rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
-    enabled="1" expression="" id="ploneKss.css" media="all"
+    enabled="1" expression="" id="ploneKss.css" media="screen"
     rel="stylesheet" rendering="import"/>
  <stylesheet title="" cacheable="True" compression="safe" cookable="True"
     enabled="1" expression="" id="ploneCustom.css" media="all"
