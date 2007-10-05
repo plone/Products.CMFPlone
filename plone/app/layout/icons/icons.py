@@ -41,13 +41,8 @@ class CatalogBrainContentIcon(BaseIcon):
 
     @property
     def url(self):
-        portal_url = getToolByName(self.context, 'portal_url')
         path = self.brain['getIcon']
-        if path is None or path == '':
-            return
-        portal_path = portal_url.getPortalPath()
-        path = path[len(portal_path):]
-        return "%s/%s" % (portal_url(), path)
+        return self.request.physicalPathToURL(path)
 
     @property
     def description(self):
