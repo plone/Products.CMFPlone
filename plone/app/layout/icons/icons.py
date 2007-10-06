@@ -6,6 +6,7 @@ from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
 from plone.app.layout.icons.interfaces import IContentIcon
 
+import urllib
 
 class BaseIcon(object):
     """Helper base class for html rendering
@@ -41,8 +42,10 @@ class CatalogBrainContentIcon(BaseIcon):
 
     @property
     def url(self):
-        path = self.brain['getIcon']
-        return self.request.physicalPathToURL(path)
+        path = self.brain.getIcon
+        quoted_url = self.request.physicalPathToURL(path)
+        # XXX: Avoid double URL quoting
+        return urllib.unquote(quoted_url)
 
     @property
     def description(self):
