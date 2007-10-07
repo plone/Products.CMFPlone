@@ -173,6 +173,9 @@ ploneFormTabbing.initializeForm = function(form) {
         }
     }
 
+    if (legends.length == 0)
+        return;
+
     var tabs = ploneFormTabbing._buildTabs(form, legends);
     form.insertBefore(tabs, form.firstChild);
 

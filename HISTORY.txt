@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.0.2 - UNRELEASED
 
+    - Modify form_tabbing.js to not touch the edit form if there's no
+      fieldsets.
+      [nouri]
+
     - Set the media for ploneKss.css to screen so it can be merged with the
       other CSS files.
       [wichert]
