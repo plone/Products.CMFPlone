@@ -115,6 +115,9 @@ ploneFormTabbing.initializeDL = function() {
 
 ploneFormTabbing.initializeForm = function() {
     var fieldsets = $(this).children('fieldset');
+    
+    if (!fieldsets.length) return;
+    
     var tabs = ploneFormTabbing._buildTabs(
         this, fieldsets.children('legend'));
     $(this).prepend(tabs);
