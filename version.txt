@@ -1,1 +1,1 @@
-2.5.5-devel (SVN/UNRELEASED)
+2.5.5-final
