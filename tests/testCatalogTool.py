@@ -939,6 +939,12 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         self.failUnless(IContentish.providedBy(w))
         self.failUnless(IIndexableObjectWrapper.providedBy(w))
 
+    def test_getIcon(self):
+        doc = self.doc
+        iconname = doc.getIcon(relative_to_portal=1)
+        wrapped = ExtensibleIndexableObjectWrapper(doc, self.portal)
+        self.failUnlessEqual(wrapped.getIcon, iconname)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

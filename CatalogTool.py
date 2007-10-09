@@ -314,6 +314,13 @@ def is_default_page(obj, portal, **kwargs):
 registerIndexableAttribute('is_default_page', is_default_page)
 
 
+def getIcon(obj, **kwargs):
+    """Make sure we index icon relative to portal"""
+    return obj.getIcon(True)
+
+registerIndexableAttribute('getIcon', getIcon)
+
+
 class CatalogTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.CatalogTool
