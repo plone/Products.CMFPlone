@@ -163,7 +163,7 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
 # XXX This test fails for the wrong reasons; Hanno is looking into it.
 #        event1_date = self.portal.event1.start_date.strftime('%Y[s%m[s%d[s')
 #        event1_date = event1_date.replace('[s','%s')%(u'\u5e74', u'\u6708',
-                                                      u'\u65e5')
+#                                                     u'\u65e5')
 #        self.failUnless(event1_date.encode('utf-8')
 #                        in response.getBody())
 
