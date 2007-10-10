@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
     
-Plone 3.0.2 - UNRELEASED
+Plone 3.0.2 - released October 10, 2007
 
     - Give 'Modify portal content' permission to the Owner role by default.
       This allows sane use of workflow-less content types. Fixes
