@@ -113,7 +113,11 @@ of test_user_1_:
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/edit'
+    'http://nohost/plone/Members/test_user_1_/atct_edit'
 
 We were automatically redirected to the page that triggered the
 login request.
+
+Note that we end up at atct_edit instead of edit. This happens because the CMFCore
+DynamicType before-publish-traversal hook resolves method aliases and updates the
+request.
