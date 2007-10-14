@@ -92,4 +92,12 @@
         editview=".search.EditForm"
         />
 
+    <plone:portlet
+        name="portlets.Language"
+        interface=".language.ILanguagePortlet"
+        assignment=".language.Assignment"
+        renderer=".language.Renderer"
+        addview=".language.AddForm"
+        />
+
 </configure>

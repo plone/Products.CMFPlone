@@ -4,6 +4,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.0.2 - unreleased
 
+    - Add a language selection portlet.
+      [wichert]
+
     - Fixed i18n markup bug in manage-content-type.pt.
       [hannosch]
 
