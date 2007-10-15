@@ -1,5 +1,5 @@
-from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, getUtility
+from zope.interface import implements
+from zope.component import getMultiAdapter, getUtility
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from AccessControl import Unauthorized
@@ -228,7 +228,14 @@ class ManagePortletsViewlet(BrowserView):
     the __parent__ is the viewlet, not the ultimate parent).
     """
     implements(IManagePortletsView)
-    adapts(Interface, IDefaultBrowserLayer, IManagePortletsView)
+    
+    def __init__(self, context, request, view, manager):
+        super(ManagePortletsViewlet, self).__init__(context, request)
+        self.__parent__ = view
+        self.context = context
+        self.request = request
+        self.view = view
+        self.manager = manager
     
     @property
     def category(self):
