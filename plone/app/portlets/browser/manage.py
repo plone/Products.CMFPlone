@@ -1,5 +1,6 @@
-from zope.interface import implements
-from zope.component import getMultiAdapter, getUtility
+from zope.interface import implements, Interface
+from zope.component import adapts, getMultiAdapter, getUtility
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
@@ -217,3 +218,41 @@ class ManageContentTypePortlets(BrowserView):
         for fti in portal_types.listTypeInfo():
             if fti.getId() == portal_type:
                 return fti
+                
+class ManagePortletsViewlet(BrowserView):
+    """A general base class for viewlets that want to be rendered on the
+    manage portlets view. This makes it possible to have a viewlet that 
+    renders a portlet manager, and still have the generic edit manager
+    renderer work (it doesn't work otherwise, because the edit manager
+    renderer is registered on IManagePortletsView, but inside a viewlet,
+    the __parent__ is the viewlet, not the ultimate parent).
+    """
+    implements(IManagePortletsView)
+    adapts(Interface, IDefaultBrowserLayer, IManagePortletsView)
+    
+    @property
+    def category(self):
+        return self._parent().category
+    
+    @property
+    def key(self):
+        return self._parent().key
+    
+    def getAssignmentMappingUrl(self, manager):
+        return self._parent().getAssignmentMappingUrl(manager)
+        
+    def getAssignmentsForManager(self, manager):
+        return self._parent().getAssignmentsForManager(manager)
+        
+    @memoize
+    def _parent(self):
+        parent = self.__parent__
+        while parent is not None and not IManagePortletsView.providedBy(parent):
+            parent = parent.__parent__
+        return parent
+        
+    def update(self):
+        pass
+        
+    def render(self):
+        return ''
