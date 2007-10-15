@@ -159,7 +159,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     def __init__(self, context, request, view, manager):
         EditPortletManagerRenderer.__init__(self, context, request, view, manager)
         self.template = ViewPageTemplateFile('templates/edit-manager-contextual.pt')
-    
+        
     def blacklist_status_action(self):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
         return baseUrl + '/@@set-portlet-blacklist-status'

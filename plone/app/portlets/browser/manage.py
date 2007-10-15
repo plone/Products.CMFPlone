@@ -239,27 +239,43 @@ class ManagePortletsViewlet(BrowserView):
     
     @property
     def category(self):
-        return self._parent().category
+        return self.ultimate_parent().category
     
     @property
     def key(self):
-        return self._parent().key
+        return self.ultimate_parent().key
     
     def getAssignmentMappingUrl(self, manager):
-        return self._parent().getAssignmentMappingUrl(manager)
+        return self.ultimate_parent().getAssignmentMappingUrl(manager)
         
     def getAssignmentsForManager(self, manager):
-        return self._parent().getAssignmentsForManager(manager)
+        return self.ultimate_parent().getAssignmentsForManager(manager)
         
     @memoize
-    def _parent(self):
+    def ultimate_parent(self):
         parent = self.__parent__
-        while parent is not None and not IManagePortletsView.providedBy(parent):
+        while parent is not None and hasattr(parent, '__parent__') and parent.__parent__ is not None:
             parent = parent.__parent__
         return parent
         
-    def update(self):
-        pass
+    # Subclasses need to implement update() and render() - or
+    # we can use ZCML with the template attribute (hence we don't
+    # put these here)
+    
+class ManageContextualPortletsViewlet(ManagePortletsViewlet):
+    """A viewlet base class for viewlets that need to render on the
+    manage contextual portlets screen.
+    """
+    implements(IManageContextualPortletsView)
         
-    def render(self):
-        return ''
+class ManageGroupPortletsViewlet(ManagePortletsViewlet):
+    """A viewlet base class for viewlets that need to render on the
+    manage group portlets screen.
+    """
+    implements(IManageGroupPortletsView)
+    
+class ManageContentTypePortletsViewlet(ManagePortletsViewlet):
+    """A viewlet base class for viewlets that need to render on the
+    manage content type portlets screen.
+    """
+    implements(IManageContentTypePortletsView)
