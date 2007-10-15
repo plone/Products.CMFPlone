@@ -24,14 +24,11 @@ class Renderer(base.Renderer):
         self.selector=LanguageSelector(context, request, None, None)
         self.languages=self.selector.languages()
 
-
     def show(self):
         return self.selector.available() and self.languages
 
-
     def showFlags(self):
         return self.selector.showFlags()
-
 
     def update(self):
         pass
