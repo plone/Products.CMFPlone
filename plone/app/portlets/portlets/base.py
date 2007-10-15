@@ -69,6 +69,7 @@ class Renderer(Explicit):
         self.context = context
         self.request = request
         self.view = view
+        self.__parent__ = view
         self.manager = manager
         self.data = data
 
