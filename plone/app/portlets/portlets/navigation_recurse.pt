@@ -22,12 +22,12 @@
     <tal:level define="item_class string:state-${node/normalized_review_state}">
 
       <div tal:define="item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class">
-        
+
         <a tal:attributes="href python:link_remote and remote_url or item_url;
                            title node/Description;
                            class string:$item_class">
             <img tal:replace="structure item_icon/html_tag" />
-            <span tal:replace="node/Title">Selected Item Title</span>
+            <span tal:content="node/Title">Selected Item Title</span>
         </a>
         
     </div>
