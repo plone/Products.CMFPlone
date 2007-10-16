@@ -20,7 +20,7 @@
                                    name lang/name"
                        tal:attributes="href string:${here/absolute_url}/switchLanguage?set_language=${code};
                                        title name">
-                        <tal:flag condition="showFlags and flag">
+                        <tal:flag condition="python:showFlags and flag">
                             <img width="14"
                                  height="11"
                                  alt=""
