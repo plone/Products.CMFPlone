@@ -21,7 +21,4 @@
     <viewlet name="plone.footer" />
     <viewlet name="plone.colophon" />
   </order>
-  <hidden manager="plone.portalheader" skinname="Plone Default">
-    <viewlet name="plone.personal_bar" />
-  </hidden>
 </object>
