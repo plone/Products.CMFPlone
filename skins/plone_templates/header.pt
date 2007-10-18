@@ -10,7 +10,7 @@
           tal:define="charset site_properties/default_charset|string:utf-8"
           tal:attributes="content string:text/html;;charset=${charset}" />
 
-    <title tal:define="safe_unicode nocall:modules/Products/CMFPlone/utils/safe_unicode;
+    <title tal:define="safe_unicode python:modules['Products.CMFPlone.utils'].safe_unicode;
                        portal_title portal_properties/title;
                        page_title object_title">
 
