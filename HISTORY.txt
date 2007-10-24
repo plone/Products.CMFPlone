@@ -9,6 +9,9 @@ Plone 3.0.3 - unreleased
       and shouldn't be filtered. Fixes:
       http://dev.plone.org/plone/ticket/6712 and
       http://dev.plone.org/plone/ticket/7251
+      No migration performed, as we don't want to adjust custom filtering - 
+      if you want to update this in your existing site, go to the HTML
+      Filtering control panel and remove these from being filtered.
       [limi]
 
     
