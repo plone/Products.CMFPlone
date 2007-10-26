@@ -8,6 +8,7 @@ from controlpanel import IControlPanel
 from events import ISiteManagerCreatedEvent
 from interface import IInterfaceTool
 from installable import INonInstallable
+from migration import ICustomMigrationStep
 from migration import IMigrationTool
 from siteroot import IPloneSiteRoot
 from siteroot import IMigratingPloneSiteRoot

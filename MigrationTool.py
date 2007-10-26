@@ -4,6 +4,7 @@ import sys
 
 import transaction
 from zope.interface import implements
+from zope.component import queryAdapter
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass, DTMLFile, DevelopmentMode
@@ -13,7 +14,7 @@ from ZODB.POSException import ConflictError
 from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.permissions import ManagePortal, View
-from Products.CMFPlone.interfaces import IMigrationTool
+from Products.CMFPlone.interfaces import IMigrationTool, ICustomMigrationStep
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.utils import versionTupleFromString
 from Products.CMFPlone.utils import log, log_deprecated
@@ -207,6 +208,14 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         while newv is not None:
             out.append(("Attempting to upgrade from: %s" % newv, logging.INFO))
             try:
+                cmsgs = self._applyCustomMigration(newv)
+                if cmsgs:
+                    if isinstance(cmsgs, str):
+                        cmsgs = [cmsgs]
+                    if isinstance(cmsgs, list):
+                        if len(cmsgs) == 1:
+                            cmsgs.append(logging.INFO)
+                        out.append(cmsgs)
                 newv, msgs = self._upgrade(newv)
                 if msgs:
                     for msg in msgs:
@@ -320,6 +329,12 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             return None, ("Migration stopped at version %s." % version,)
         res = function(self.aq_parent)
         return newversion, res
+
+    def _applyCustomMigration(self, version):
+        """Used for registering custom hooks"""
+        custom = queryAdapter(self.aq_parent, ICustomMigrationStep, name=unicode(version))
+        if custom is not None:
+            return custom.migrate()
 
 def registerUpgradePath(oldversion, newversion, function):
     """ Basic register func """
