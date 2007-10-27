@@ -1,12 +1,5 @@
 from zope.interface import Interface
 
-class ICustomMigrationStep(Interface):
-    """For injecting custom migration at arbitrary steps
-       of the migration process"""
-
-    def migrate():
-        """Perform the custom migration step"""
-
 class IMigrationTool(Interface):
     """Handles migrations between Plone releases."""
 
