@@ -3,7 +3,6 @@ from StringIO import StringIO
 from zope import component
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
-from plone.memoize import ram
 
 def get_language(context, request):
     portal_state = component.getMultiAdapter(

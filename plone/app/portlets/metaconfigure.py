@@ -1,5 +1,4 @@
 from zope.interface import Interface
-from zope.component import getGlobalSiteManager
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.publisher.interfaces.browser import IBrowserView
