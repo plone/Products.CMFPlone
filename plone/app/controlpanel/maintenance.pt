@@ -13,7 +13,8 @@
 
 <div metal:fill-slot="prefs_configlet_main">
 
-    <div metal:define-macro="form">
+    <div metal:define-macro="form"
+         tal:condition="view/available">
 
         <div id="viewspace" metal:define-slot="viewspace">
 
@@ -176,6 +177,29 @@
             tal:condition="extra_script"
             tal:content="structure extra_script">
         </script>
+
+    </div>
+
+    <div tal:condition="not: view/available">
+
+         <h1 class="documentFirstHeading"
+             i18n:translate=""
+             tal:condition="view/label"
+             tal:content="view/label">
+             Do something
+         </h1>
+
+         <a href=""
+            class="link-parent"
+            tal:attributes="href string: $portal_url/plone_control_panel"
+            i18n:translate="label_up_to_plone_setup">
+             Up to Site Setup
+         </a>
+
+         <p i18n:translate="text_not_allowed_manage_server"
+            tal:condition="view/description">
+             You are not allowed to manage the Zope server.
+         </p>
 
     </div>
 

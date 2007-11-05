@@ -9,6 +9,8 @@ from zope.interface import Interface
 from zope.interface import implements
 from zope.schema import Int
 
+from AccessControl import getSecurityManager
+from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -64,6 +66,10 @@ class MaintenanceControlPanel(FieldsetsEditForm):
 
     @form.action(_(u'Pack database now'), name=u'pack')
     def handle_edit_action(self, action, data):
+        if not self.available():
+            self.status = _(u'text_not_allowed_manage_server',
+                            default=u'You are not allowed to manage the Zope server.')
+            return
         form.applyChanges(self.context, self.form_fields, data, self.adapters)
         value = data.get('days', None)
         # skip the actual pack method in tests
@@ -75,6 +81,10 @@ class MaintenanceControlPanel(FieldsetsEditForm):
 
     @form.action(_(u'Shut down'), validator=null_validator, name=u'shutdown')
     def handle_shutdown_action(self, action, data):
+        if not self.available():
+            self.status = _(u'text_not_allowed_manage_server',
+                            default=u'You are not allowed to manage the Zope server.')
+            return
         context = aq_inner(self.context)
         cpanel = context.unrestrictedTraverse('/Control_Panel')
         result = cpanel.manage_shutdown()
@@ -82,6 +92,10 @@ class MaintenanceControlPanel(FieldsetsEditForm):
 
     @form.action(_(u'Restart'), validator=null_validator)
     def handle_restart_action(self, action, data):
+        if not self.available():
+            self.status = _(u'text_not_allowed_manage_server',
+                            default=u'You are not allowed to manage the Zope server.')
+            return
         context = aq_inner(self.context)
         cpanel = context.unrestrictedTraverse('/Control_Panel')
         url = self.request.get('URL')
@@ -91,6 +105,11 @@ class MaintenanceControlPanel(FieldsetsEditForm):
         </head>
         <body>Zope is restarting</body></html>
         """ % escape(url, 1)
+
+    def available(self):
+        root = aq_inner(self.context).getPhysicalRoot()
+        sm = getSecurityManager()
+        return sm.checkPermission(view_management_screens, root)
 
     def isRestartable(self):
         if os.environ.has_key('ZMANAGED'):
