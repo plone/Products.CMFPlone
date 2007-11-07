@@ -48,7 +48,7 @@ class FasterStringIO(StringIO):
     the ZPL 2.1.
     """
     def __init__(self, buf=None):
-        self.buf = ''
+        self.buf = u''
         self.len = 0
         self.buflist = []
         self.bufappend = self.buflist.append
