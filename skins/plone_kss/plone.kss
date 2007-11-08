@@ -205,6 +205,7 @@ form.enableLockingProtection:load {
   evt-click-preventdefault: true;
   action-server: updateSharingInfo;
   updateSharingInfo-kssSubmitForm: currentForm();
+  updateSharingInfo-error: plone-submitCurrentForm;
 }
 
 #sharing-user-group-search:keydown {
