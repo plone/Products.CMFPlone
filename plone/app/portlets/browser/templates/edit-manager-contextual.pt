@@ -16,6 +16,30 @@
 
       <input type="hidden" name="manager" tal:attributes="value view/manager_name" />
 
+      <div tal:define="status view/context_blacklist_status">
+
+        <span tal:omit-tag=""
+              i18n:translate="label_portlets_parent_folders">
+            Parent portlets:
+        </span> 
+
+        <select name="context_status:int" size="1">
+
+            <option value="1"
+                    tal:attributes="selected python:status == True and 'selected' or None"
+                    i18n:translate="portlets_value_block">
+                Block
+            </option>
+
+            <option value="-1"
+                    tal:attributes="selected python:(status == False or status == None) and 'selected' or None"
+                    i18n:translate="portlets_value_show">
+                Do not block
+            </option>
+
+        </select>
+      </div>
+
       <div tal:define="status view/group_blacklist_status">
 
         <span tal:omit-tag=""
@@ -38,7 +62,7 @@
             <option value="-1"
                     tal:attributes="selected python:status == False and 'selected' or None"
                     i18n:translate="portlets_value_show">
-                Always show
+                Do not block
             </option>
 
         </select>
@@ -68,38 +92,8 @@
             <option value="-1"
                     tal:attributes="selected python:status == False and 'selected' or None"
                     i18n:translate="portlets_value_show">
-                Always show
+                Do not block
             </option>
-        </select>
-      </div>
-
-      <div tal:define="status view/context_blacklist_status">
-
-        <span tal:omit-tag=""
-              i18n:translate="label_portlets_parent_folders">
-            Parent portlets:
-        </span> 
-
-        <select name="context_status:int" size="1">
-
-            <option value="0"
-                    tal:attributes="selected python:status == None and 'selected' or None"
-                    i18n:translate="portlets_value_use_parent">
-              Use parent settings
-            </option>
-
-            <option value="1"
-                    tal:attributes="selected python:status == True and 'selected' or None"
-                    i18n:translate="portlets_value_block">
-                Block
-            </option>
-
-            <option value="-1"
-                    tal:attributes="selected python:status == False and 'selected' or None"
-                    i18n:translate="portlets_value_show">
-                Always show
-            </option>
-
         </select>
       </div>
 
