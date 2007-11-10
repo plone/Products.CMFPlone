@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0.3 - unreleased
+Plone 3.0.3 - released November 9, 2007 
 
     - Allowed the abbr, acronym, var, dfn, samp, address, bdo, thead, tfoot,
       col, and colgroup tags by default, since they are harmless, valid XHTML
