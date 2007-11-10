@@ -2,6 +2,9 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+Plone 3.0.4 - UNRELEASED
+
+
 Plone 3.0.3 - released November 9, 2007 
 
     - Allowed the abbr, acronym, var, dfn, samp, address, bdo, thead, tfoot,
