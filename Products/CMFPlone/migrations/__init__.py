@@ -1,7 +1,7 @@
 from Products.CMFPlone.MigrationTool import registerUpgradePath
 
 def executeMigrations():
-    import v2_5, v3_0, v3_5
+    import v2_5, v3_0, v4_0
 
 def null(portal):
     """ This is a null migration, use it when nothing happens """
