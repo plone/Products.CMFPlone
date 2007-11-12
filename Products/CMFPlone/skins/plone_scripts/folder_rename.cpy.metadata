@@ -1,0 +1,9 @@
+[default]
+title=Rename items
+
+[validators]
+validators=validate_folder_rename
+ 
+[actions]
+action.failure=traverse_to:string:folder_rename_form
+action.success=redirect_to:request/orig_template|string:folder_contents

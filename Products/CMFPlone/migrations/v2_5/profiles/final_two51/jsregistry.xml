@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+
+  <javascript cacheable="True" compression="safe" cookable="True"
+     enabled="True" expression="" id="event-registration.js" inline="False"
+     insert-before='register_function.js' />
+
+</object>

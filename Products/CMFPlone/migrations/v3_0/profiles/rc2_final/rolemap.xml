@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<rolemap>
+  <permissions>
+    <permission name="iterate : Check in content"
+                acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+      <role name="Editor"/>
+    </permission>
+    <permission name="iterate : Check out content"
+                acquire="True">
+      <role name="Owner"/>
+      <role name="Manager"/>
+      <role name="Editor"/>
+    </permission>
+  </permissions>
+</rolemap>

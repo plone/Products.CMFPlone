@@ -1,0 +1,157 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:five="http://namespaces.zope.org/five"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+   i18n_domain="plone"
+   >
+
+  <genericsetup:importStep
+      name="controlpanel"
+      handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
+      title="Control Panel"
+      description="Import Plone control panel actions.">
+   <depends name="actions" />
+   <depends name="componentregistry" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="factorytool"
+      handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
+      title="Portal Factory Tool"
+      description="Import type registration for the portal factory tool.">
+   <depends name="componentregistry" />
+   <depends name="typeinfo" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="memberdata-properties"
+      handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
+      title="MemberData Properties"
+      description="Import MemberData properties.">
+   <depends name="componentregistry" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="plone-archetypes"
+      handler="Products.CMFPlone.setuphandlers.importArchetypes"
+      title="Plone Archetypes Import"
+      description="Plone Archetypes import.">
+   <depends name="componentregistry" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="plone-content"
+      handler="Products.CMFPlone.setuphandlers.importContent"
+      title="Plone Content Import"
+      description="Plone content import.">
+   <depends name="content" />
+   <depends name="plone-final" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="plone-final"
+      handler="Products.CMFPlone.setuphandlers.importFinalSteps"
+      title="Final Plone Config"
+      description="Final Plone configuration.">
+   <depends name="kss_mimetype" />
+   <depends name="plone_various" />
+   <depends name="portlets" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="plone-site"
+      handler="Products.CMFPlone.setuphandlers.importSite"
+      title="Plone Site Config"
+      description="Plone site configuration.">
+  </genericsetup:importStep>
+
+ <genericsetup:importStep
+     name="plone_various"
+     handler="Products.CMFPlone.setuphandlers.importVarious"
+     title="Various Plone Settings"
+     description="Plone specific settings">
+  <depends name="catalog"/>
+  <depends name="cssregistry"/>
+  <depends name="kssregistry"/>
+  <depends name="jsregistry"/>
+  <depends name="propertiestool"/>
+  <depends name="rolemap"/>
+  <depends name="skins"/>
+  <depends name="typeinfo"/>
+ </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="propertiestool"
+      handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
+      title="Plone Properties"
+      description="Import plone properties tool and subobjects.">
+   <depends name="componentregistry" />
+  </genericsetup:importStep>
+
+  <adapter
+     factory=".factorytool.PortalFactoryXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IFactoryTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".propertiestool.PlonePropertiesToolXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IPropertiesTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.ISimpleItemWithProperties
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+     provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+     for="Products.CMFCore.interfaces.ISiteRoot"
+     />
+
+  <adapter
+     factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+     provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+     for="Products.ATContentTypes.interface.IATContentType"
+     />
+
+  <adapter
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFCore.interfaces.IMemberDataTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".controlpanel.ControlPanelXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IControlPanel
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <!-- Mark ATCT objects as IDAVAware so CMFSetup can export/import them -->
+  <five:implements
+     class="Products.ATContentTypes.content.document.ATDocument"
+     interface="Products.GenericSetup.interfaces.IDAVAware"
+     />
+
+  <!-- XXX: Temporarily disable ATTopic exporting until we have an
+       actual exporter or Marshaller -->
+  <five:implements
+     class="Products.ATContentTypes.content.topic.ATTopic"
+     interface="Products.CMFPlone.exportimport.content.IDisabledExport"
+     />
+
+  <adapter
+     factory=".content.NullExporterAdapter"
+     provides="Products.GenericSetup.interfaces.IFilesystemExporter"
+     for="Products.CMFPlone.exportimport.content.IDisabledExport"
+     />
+
+</configure>

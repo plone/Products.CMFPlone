@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+ <javascript enabled="False" update="" id="++resource++effects.js"/>
+ <javascript enabled="False" update="" id="++resource++prototype.js"/>
+</object>

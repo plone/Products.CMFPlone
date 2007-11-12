@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+  <head><title></title></head>
+  <body>
+
+        <metal:title_view define-macro="generic_title_view">
+        <tal:archetypes condition="exists:here/getField">
+        <h1 metal:define-macro="title-field-view"
+            tal:define="kss_class python:getKssClasses('title',
+                        templateId='kss_generic_macros', macro='title-field-view');"
+            id="parent-fieldname-title"
+            tal:attributes="class string:documentFirstHeading$kss_class;">
+            <span metal:define-slot="inside" 
+                  tal:replace="object_title">title</span>
+        </h1>
+        </tal:archetypes>
+        <h1 tal:content="object_title" class="documentFirstHeading"
+            tal:condition="not:exists:here/getField">
+            Title or id
+        </h1>
+        </metal:title_view>
+
+        <!-- XXX Beware. The outer node of the macro description-field-view,
+             was originally a P. However in inline editing mode, a FORM is
+             substituded. In IE, this will result broken DOM, cssQuery will
+             not select the buttons, so it will not work. The current workaround
+             applies a DIV node outside, and inside the DIV we put a P although
+             this would not be strictly necessary. This works now with IE and
+             cssQuery.
+        -->
+        <metal:description_view define-macro="generic_description_view">
+        <tal:archetypes condition="exists:here/getField">
+        <div metal:define-macro="description-field-view"
+           id="parent-fieldname-description"
+           tal:define="kss_class python:getKssClasses('description',
+                        templateId='kss_generic_macros', macro='description-field-view');"
+           tal:condition="here/Description"
+           tal:attributes="class kss_class;">
+           <p class="documentDescription" 
+              metal:define-slot="inside"
+              tal:content="here/Description">Description
+           </p>
+        </div>
+        </tal:archetypes>
+        <p class="documentDescription description"
+           tal:content="here/Description"
+           tal:define="have_at exists:here/getField"
+           tal:condition="python:here.Description() and not have_at">
+            Description
+        </p>
+        </metal:description_view>
+
+  </body>
+</html>

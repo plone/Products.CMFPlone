@@ -1,0 +1,6 @@
+[validators]
+validators = validate_effective_expiry_date
+
+[actions]
+action.failure=redirect_to_action:string:metadata
+action.success=redirect_to_action:string:view

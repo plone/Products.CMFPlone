@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <utilities>
+  <utility factory="Products.CMFPlone.PloneTool.PloneTool"
+     interface="Products.CMFPlone.interfaces.basetool.IPloneTool"/>
+  <utility
+     interface="Products.ResourceRegistries.interfaces.IKSSRegistry"
+     object="portal_kss"/>
+ </utilities>
+</componentregistry>

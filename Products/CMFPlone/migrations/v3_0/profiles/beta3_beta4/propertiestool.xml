@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="site_properties" meta_type="Plone Property Sheet">
+  <!-- Note - for newly created sites, this is False, but it represents a 
+       behavioural change we may not want for migration
+    -->
+  <property name="disable_nonfolderish_sections" type="boolean">True</property>
+ </object>
+</object>

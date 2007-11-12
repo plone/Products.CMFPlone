@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<object name="Event"
+   meta_type="Factory-based Type Information with dynamic views"
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Event</property>
+ <property name="description"
+      i18n:translate="">Information about an upcoming event, which can be displayed in the calendar.</property>
+ <property name="content_icon">event_icon.gif</property>
+ <property name="content_meta_type">ATEvent</property>
+ <property name="product">ATContentTypes</property>
+ <property name="factory">addATEvent</property>
+ <property name="immediate_view">event_view</property>
+ <property name="global_allow">True</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types"/>
+ <property name="allow_discussion">False</property>
+ <property name="default_view">event_view</property>
+ <property name="view_methods">
+  <element value="event_view"/>
+ </property>
+ <alias from="(Default)" to="(dynamic view)"/>
+ <alias from="edit" to="atct_edit"/>
+ <alias from="sharing" to="@@sharing"/>
+ <alias from="view" to="(selected layout)"/>
+ <action title="View" action_id="view" category="object" condition_expr=""
+    url_expr="string:${object_url}" visible="True"
+    i18n:attributes="title">
+  <permission value="View"/>
+ </action>
+ <action title="Edit" action_id="edit" category="object" condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+    url_expr="string:${object_url}/edit" visible="True"
+    i18n:attributes="title">
+  <permission value="Modify portal content"/>
+ </action>
+ <action title="References" action_id="references" category="object"
+    condition_expr="object/archetype_tool/has_graphviz"
+    url_expr="string:${object_url}/reference_graph" visible="True"
+    i18n:attributes="title">
+  <permission value="Modify portal content"/>
+  <permission value="Review portal content"/>
+ </action>
+ <action title="iCalendar" action_id="ics" category="document_actions"
+    condition_expr="" url_expr="string:${object_url}/ics_view" visible="True"
+    i18n:attributes="title">
+  <permission value="View"/>
+ </action>
+ <action title="vCalendar" action_id="vcs" category="document_actions"
+    condition_expr="" url_expr="string:${object_url}/vcs_view" visible="True"
+    i18n:attributes="title">
+  <permission value="View"/>
+ </action>
+ <action title="History" action_id="history" category="object"
+    condition_expr="" url_expr="string:${object_url}/atct_history"
+    visible="False" i18n:attributes="title">
+  <permission value="ATContentTypes: View history"/>
+ </action>
+ <action title="External Edit" action_id="external_edit" category="object"
+    condition_expr="object/externalEditorEnabled"
+    url_expr="string:${object_url}/external_edit" visible="False"
+    i18n:attributes="title">
+  <permission value="Modify portal content"/>
+ </action>
+</object>

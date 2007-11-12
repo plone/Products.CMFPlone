@@ -1,0 +1,84 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+      <head>
+          <script type="text/javascript" metal:fill-slot="javascript_head_slot">
+          </script>
+          <metal:block fill-slot="top_slot"
+                       tal:define="dummy python:request.set('disable_border',1)" />
+          <metal:block fill-slot="column_one_slot" />
+          <metal:block fill-slot="column_two_slot" />
+      </head>
+<body>
+
+  <div metal:fill-slot="main"
+       tal:define="auth nocall:here/acl_users/credentials_cookie_auth|here/cookie_authentication|nothing;
+                   came_from request/came_from|request/HTTP_REFERER|nothing;
+                   came_from python:test(utool.isURLInPortal(came_from), came_from, None);
+                   errors options/state/getErrors;
+                   ac_name auth/name_cookie|string:__ac_name;
+                   ac_password auth/pw_cookie|string:__ac_password;
+                   ac_persist auth/persist_cookie|nothing;
+                   login_name python:request.get('login_name', request.get(ac_name, ''));">
+
+<tal:reallyloggedout condition="isAnon">
+  <h1 class="documentFirstHeading"
+      i18n:translate="heading_signed_out">You are now logged out</h1>
+
+  <p class="documentDescription"
+     i18n:translate="description_loginagain">You can log in again below.</p>
+
+  <p i18n:translate="description_no_account"
+     tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
+     tal:condition="python: join and checkPermission('Add portal member', here)">
+
+  If you do not have an account here, head over to the
+
+  <span i18n:name="registration_form">
+      <a href=""
+         tal:define="join python:join.pop();
+                     join join;
+                     join python:join+test(join.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from);"
+         tal:attributes="href join"
+         i18n:translate="description_no_account_registration_linktext">
+          registration form</a></span>.
+
+  </p>
+
+    <dl class="portalMessage error"
+        id="enable_cookies_message"
+        style="display:none">
+        <dt i18n:translate="">
+            Error
+        </dt>
+        <dd i18n:translate="enable_cookies_message_before_login">
+            Cookies are not enabled. You must enable cookies before you can log in.
+        </dd>
+    </dl>
+
+  <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
+      Since cookie authentication is disabled, cookie-based login is not available.
+  </div>
+
+  <metal:login use-macro="here/login_form/macros/login" />
+
+</tal:reallyloggedout>
+
+<tal:notloggedoutafterall tal:condition="not: isAnon">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_quit_to_log_out">Quit your web browser to log out</h1>
+    
+    <p i18n:translate="description_quit_to_log_out">
+    Because you are logged in via HTTP authentication 
+    (i.e. the Zope Management Interface), the only
+    way to log out is to quit your web browser.
+    </p>
+</tal:notloggedoutafterall>
+
+</div>
+</body>
+</html>

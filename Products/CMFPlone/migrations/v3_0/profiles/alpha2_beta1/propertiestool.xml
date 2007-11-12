@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="site_properties" meta_type="Plone Property Sheet">
+  <property name="enable_link_integrity_checks" type="boolean">True</property>
+  <property name="enable_sitemap" type="boolean">False</property>
+  <property name="external_links_open_new_window" type="string">False</property>
+  <property name="many_groups" type="boolean">False</property>
+  <property name="number_of_days_to_keep" type="int">7</property>
+  <property name="webstats_js" type="string"></property>
+ </object>
+</object>

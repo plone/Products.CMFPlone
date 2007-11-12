@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<site>
+ <property name="email_charset" type="string">utf-8</property>
+</site>

@@ -1,0 +1,55 @@
+<dtml-var manage_page_header>
+<dtml-var manage_tabs>
+
+<p>This is a simple tool for purging members who have uploaded non-image files
+as their member portraits in an attempted cross site scripting attack.  The
+issue which allowed such portraits to be uploaded has been resolved, and this
+tool will remove any existing bad portraits and give you the option of removing
+the members to whom those portraits belonged.
+</p>
+
+<hr />
+<dtml-if search_for_bad_members>
+  <dtml-let ids="getBadMembers()">
+    <dtml-if ids>
+      <p>Found <dtml-var "len(ids)"> bad member portraits and removed them.
+         You may optionally delete these members as well using the form below.
+      </p>
+      <form name="purge_bad_members"
+            method="POST"
+            action="manage_portrait_fix">
+        <ul>
+          <dtml-in ids>
+            <li><dtml-var sequence-item></li>
+            <input type="hidden"
+                   name="member_ids:list"
+                   value="&dtml-sequence-item;"/>
+          </dtml-in>
+        </ul>
+        <input type="checkbox"
+               name="delete_memberareas:bool"
+               checked="true">Delete member areas
+        <br />
+        <input type="submit"
+               name="purge_bad_members"
+               value="Remove These Members" />
+      </form>
+    <dtml-else>
+      <p>No bad members found</p>
+    </dtml-if>
+  </dtml-let>
+<dtml-elif purge_bad_members>
+  
+  <dtml-let deleted="deleteMembers(member_ids, REQUEST.get('delete_memberareas', False), REQUEST=REQUEST)">
+    <dtml-call "portal_memberdata.pruneMemberDataContents()">
+    <p>Deleted <dtml-var "len(deleted)"> bad members</p>
+  </dtml-let>
+<dtml-else>
+  <form name="get_bad_members"
+        method="POST"
+        action="manage_portrait_fix">
+
+    <input type="submit" name="search_for_bad_members"
+           value="Remove Bad Portraits" />
+  </form>
+</dtml-if>

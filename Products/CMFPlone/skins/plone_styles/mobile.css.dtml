@@ -1,0 +1,334 @@
+/*
+** Plone style sheet for mobile/handheld browsers. Mainly tested on Opera
+** for mobile devices, feedback/donations to help support other platforms
+** are welcome.
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+body {
+    font-family: <dtml-var fontFamily>;
+    background-color: &dtml-backgroundColor;;
+    color: &dtml-fontColor;;
+    margin: 0;
+    padding: 0;
+}
+table {
+    font-size: 100%;
+}
+a {
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+p {
+    margin: 0.5em 0em 1em 0em;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    color: &dtml-fontColor; ! important; 
+}
+h1 {
+    font-size: 160%;
+}
+h2 {
+    font-size: 150%;
+}
+h3 {
+    font-size: 140%;
+    border-bottom: none;
+    font-weight: bold;
+}
+h4 {
+    font-size: 120%;
+    border-bottom: none;
+    font-weight: bold;
+}
+h5 {
+    font-size: 100%;
+    border-bottom: none;
+    font-weight: bold;
+}
+h6 {
+    font-size: &dtml-fontSmallSize;;
+    border-bottom: none;
+    font-weight: bold;
+}
+label {
+    font-weight: bold;
+}
+
+#portal-searchbox {
+    font-size: 10px;
+}
+#portal-globalnav {
+    /* Navigational Plone Tabs(tm), implemented by customizing the a and li tags */
+    background-color: transparent;
+    border-collapse: collapse;
+    padding: 0;
+    padding-left: 0.2em;
+    list-style: none;
+    margin: 0;
+    height: auto;
+    line-height: normal;
+}
+#portal-globalnav li {
+    display: inline;
+}
+#portal-globalnav li a {
+    /* The normal, unselected tabs. They are all links */
+    background-color: transparent;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;; 
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
+    height: auto;
+    margin-right: 0.1em;
+    padding: 0em 0.2em;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+}
+#portal-globalnav li.selected a {
+    /* The selected tab. There's only one of this */
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-globalBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
+}
+#portal-personaltools {
+    /* Bar with personalized menu (user preferences, favorites etc) */
+    background-color: &dtml-globalBackgroundColor;;
+    border-top-color: &dtml-globalBorderColor;;
+    border-top-style: &dtml-borderStyle;;
+    border-top-width: &dtml-borderWidth;;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
+    color: &dtml-fontColor;;
+    margin: 0;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    list-style: none;
+}
+#portal-personaltools li {
+    margin-left: 0.2em;
+    display: inline;
+}
+#portal-personaltools li a {
+    text-decoration: none;
+    color: &dtml-globalFontColor;;
+}
+.visualCaseSensitive {
+    text-transform: none;
+}
+#portal-breadcrumbs {
+    /* The path bar, including breadcrumbs and add to favorites */
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    text-transform: &dtml-textTransform;;
+}
+.contentViews {
+    background-color: transparent;
+    border-collapse: collapse;
+    padding-left: 0.1em;
+    line-height: normal;
+    margin: 0.2em 0 0 0;
+    /* white-space: nowrap; */
+    list-style: none;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+.contentViews li {
+    display: inline;
+}
+.contentViews li a {
+    background-color: transparent;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-style: &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
+    height: auto;
+    margin-right: 0.2em;
+    padding: 0;
+    line-height: normal;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+    z-index: 1;
+}
+.contentViews .selected a {
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-bottom: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
+}
+
+/*
+** begin ECMAScript Content Action Menus
+*/
+
+.contentActions {
+    border-collapse: collapse;
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    color: &dtml-contentViewFontColor;;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    padding: 0 0 0 0.2em;
+    z-index: 2;
+    height: 1.2em;
+}
+.contentActions ul,
+.contentActions li {
+    margin: 0;
+    list-style: none;
+    list-style-image: none;
+    display: inline;
+    color: &dtml-fontColor;;
+    text-align: left;
+}
+.contentActions ul {
+    padding: 0;
+    margin: 0;
+}
+.contentActions li {
+    float: right;
+    z-index: 4;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    padding: 0 0 0 0.2em;
+    margin: 0 0.2em 0 0;
+}
+.actionItems li {
+    background-image: none;
+}
+.contentActions a {
+    text-decoration: none;
+    color: &dtml-contentViewFontColor;;
+    padding: 0 0.6em 0 0;
+}
+.contentActions .actionMenu .actionMenuContent {
+    display: none;
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    right: -1px;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+.contentActions .actionMenu .actionMenuContent ul {
+    display: block;
+    background: &dtml-contentViewBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+    margin: 0.2em 0 0 0;
+    padding: 0;
+    cursor: pointer;
+}
+.actionMenu .actionMenuContent li {
+    font-size: 10px !important;
+    float: none;
+    background: transparent;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+.actionMenu .actionMenuContent li a {
+    display: block;
+    white-space: nowrap;
+    padding: 0 0.2em;
+    margin: 0.2em 0;
+}
+.actionMenu .actionMenuContent .actionSeparator a {
+    margin-top: 0.2em;
+    padding-top: 0.2em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+/*
+** end ECMAScript Content Action Menus
+*/
+
+.documentEditable .documentContent {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    padding: 0.5em;
+}
+
+/* .system-message and #error-handling are reST error indicators */
+.portalMessage,
+.system-message,
+#error-handling {
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    color: &dtml-fontColor;;
+    font-size: &dtml-fontSmallSize;;
+    font-weight: bold;
+    margin: 2em 0em 1em 0em;
+    padding: 0.5em 1em;
+    vertical-align: middle;
+}
+.portalMessage a {
+    color: &dtml-fontColor;;
+}
+.documentDescription {
+    /* The summary text describing the document */
+    font-weight: bold;
+    display: block;
+    margin: 0.5em 0em;
+}
+.documentByLine {
+    text-align: right;
+    font-size: &dtml-fontSmallSize;;
+    clear: both;
+    font-weight: normal;
+    color: &dtml-discreetColor;;
+}
+
+#portal-footer {
+    background-color: &dtml-globalBackgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    float: none;
+    margin: 2em 0em 1em 0em;
+    padding: 0.5em 0em 1em 0em;
+    text-align: center;
+}
+
+.hiddenStructure,
+#portal-logo,
+#portal-searchbox,
+#portal-siteactions,
+#portal-column-one,
+#portal-column-two,
+.addFavorite,
+.documentActions,
+#portal-colophon,
+.netscape4 {
+    display: none;
+}
+
+
+/* </dtml-with> */

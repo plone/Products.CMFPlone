@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+ <javascript id="folder_contents_hideAddItems.js" remove="True"/>
+ <javascript compression="full-encode" id="cssQuery.js" update="True"/>
+ <javascript cacheable="True" compression="safe" cookable="True"
+   enabled="True" expression="" id="form_tabbing.js" inline="False"
+   insert-after="collapsiblesections.js"/>
+ <javascript cacheable="True" compression="safe" cookable="True"
+   enabled="True" expression="" id="input-label.js" inline="False"
+   insert-after="form_tabbing.js"/>
+ <javascript cacheable="True" compression="safe" cookable="True"
+   enabled="True" expression="" id="toc.js" inline="False"
+   insert-after="styleswitcher.js"/>
+ <javascript cacheable="True" compression="none" cookable="True"
+   enabled="True" expression="" id="webstats.js" inline="False"
+   insert-after="toc.js"/>
+</object>

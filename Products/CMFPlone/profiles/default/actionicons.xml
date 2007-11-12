@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<action-icons xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+ <action-icon category="plone" action_id="sendto"
+              title="Send-to" priority="0"
+              icon_expr="mail_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="print"
+              title="Print" priority="0"
+              icon_expr="print_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="rss"
+              title="Syndication" priority="0"
+              icon_expr="rss.gif"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="extedit"
+              title="ExternalEdit" priority="0"
+              icon_expr="extedit_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="addtofavorites"
+              title="AddToFavorites" priority="0"
+              icon_expr="favorite_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="QuickInstaller"
+              title="Add/Remove Products" priority="0"
+              icon_expr="product_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="PloneReconfig"
+              title="Portal Settings" priority="0"
+              icon_expr="logoIcon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="UsersGroups"
+              title="Users and Groups Administration"
+              priority="0" icon_expr="group.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="UsersGroups2"
+              title="Users and Groups Administration"
+              priority="0" icon_expr="group.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="MemberPrefs"
+              title="Personal Preferences" priority="0"
+              icon_expr="user.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="MemberPassword"
+              title="Change Password" priority="0"
+              icon_expr="lock_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="MailHost"
+              title="Mail Settings" priority="0"
+              icon_expr="mail_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="HtmlFilter"
+              title="Html Filter Settings" priority="0"
+              icon_expr="htmlfilter_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="PortalSkin"
+              title="Skins" priority="0"
+              icon_expr="skins_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="errorLog"
+              title="Error Log" priority="0"
+              icon_expr="error_log_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="TypesSettings"
+              title="Types Settings" priority="0"
+              icon_expr="document_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="MarkupSettings"
+              title="Markup Settings" priority="0"
+              icon_expr="edit.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="ZMI"
+              title="Zope Management Interface" priority="0"
+              icon_expr="zope_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="SearchSettings"
+              title="Search Settings" priority="0"
+              icon_expr="search_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="NavigationSettings"
+              title="Navigation Settings" priority="0"
+              icon_expr="navigation_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="CalendarSettings"
+              title="Calendar Settings" priority="0"
+              icon_expr="event_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="SecuritySettings"
+              title="Security Settings" priority="0"
+              icon_expr="lock_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="full_screen"
+              title="Toggle full screen mode" priority="0"
+              icon_expr="fullscreenexpand_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="kupu"
+              title="Kupu visual editor" priority="0"
+              icon_expr="kupuimages/kupu_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="object_buttons" action_id="cut"
+              title="Cut" priority="0"
+              icon_expr="cut_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="object_buttons" action_id="copy"
+              title="Copy" priority="0"
+              icon_expr="copy_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="object_buttons" action_id="paste"
+              title="Paste" priority="0"
+              icon_expr="paste_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="object_buttons" action_id="delete"
+              title="Delete" priority="0"
+              icon_expr="delete_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="PloneLanguageTool"
+              title="Language Settings" priority="0"
+              icon_expr="flag-plone.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="portal_atct"
+              title="Collection Settings" priority="0"
+              icon_expr="topic_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="ics"
+              title="iCalendar export" priority="0"
+              icon_expr="icon_export_ical.png"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="vcs"
+              title="vCalendar export" priority="0"
+              icon_expr="icon_export_vcal.png"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="rotate_clockwise"
+              title="Rotate clockwise" priority="0"
+              icon_expr="icon_rotate_clockwise.png"
+              i18n:attributes="title"/>
+ <action-icon category="plone"
+              action_id="rotate_counter_clockwise"
+              title="Rotate clockwise" priority="0"
+              icon_expr="icon_rotate_counter_clockwise.png"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="rotate_180"
+              title="Rotate 180" priority="0"
+              icon_expr="icon_rotate_180.png"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="flip_horizontal"
+              title="Flip horizontal" priority="0"
+              icon_expr="icon_flip_horizontal.png"
+              i18n:attributes="title"/>
+ <action-icon category="plone" action_id="flip_vertical"
+              title="Flip vertical" priority="0"
+              icon_expr="icon_flip_vertical.png"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="Maintenance"
+              title="Maintenance" priority="0"
+              icon_expr="maintenance_icon.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel"
+              action_id="ContentRules"
+              title="Content Rules" priority="0"
+              icon_expr="contentrules_icon.gif"
+              i18n:attributes="title"/>
+</action-icons>

@@ -1,0 +1,365 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:border fill-slot="top_slot">
+    <tal:border define="dummy python:request.set('enable_border',1)" />
+    </metal:border>
+
+    <metal:calendar fill-slot="javascript_head_slot">
+    <!-- ECMAScript calendar -->
+    <style type="text/css" media="all"
+        tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
+    <script type="text/javascript"
+        tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" charset="iso-8859-1"
+        tal:condition="exists: portal/jscalendar/calendar-en.js"
+        tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
+    </metal:calendar>
+</head>
+
+<body>
+
+    <div metal:fill-slot="main"
+         tal:define="errors options/state/getErrors;
+                     lockable python:hasattr(here, 'wl_isLocked');
+                     isLocked python:lockable and here.wl_isLocked();">
+
+    <div metal:use-macro="here/document_actions/macros/document_actions">
+        Document actions (print, sendto etc)
+    </div>
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_edit_properties">Edit Properties</h1>
+
+    <p i18n:translate="description_edit_properties">
+    This information, also referred to as <em>metadata</em> is the
+    collection of information that is used to categorize an
+    object, assign effective dates and expiration dates,
+    language, and keywords.
+    </p>
+
+
+    <form name="edit_form"
+        action=""
+        method="post"
+        tal:attributes="action string:${here/getId}/${template/getId}">
+
+        <fieldset>
+
+            <legend i18n:translate="legend_item_properties">
+            Item Properties
+            </legend>
+
+            <div class="field">
+            <label i18n:translate="label_allow_discussion">
+              Allow comments on this item?
+            </label>
+
+            <div class="formHelp" i18n:translate="help_allow_discussion">
+              'Default' will use the site-wide setting for comments.
+            </div>
+
+            <metal:block tal:define="val request/allowDiscussion | python: here.portal_discussion.isDiscussionAllowedFor(here);
+                                     val python:test(not hasattr(here,'allow_discussion'),None,val);
+                                     val python:test(val=='off',0,val);
+                                     val python:test(val=='on',1,val);">
+              <input class="noborder"
+                     type="radio"
+                     name="allowDiscussion"
+                     value="default"
+                     id="discussion_default"
+                     tal:attributes="checked python:val is None;"
+                     />
+              <label for="discussion_default"
+                     i18n:translate="label_discussion_default">
+                Use default setting for comments
+              </label>
+              <br />
+
+              <input class="noborder"
+                     type="radio"
+                     name="allowDiscussion"
+                     value="on"
+                     id="discussion_on"
+                     tal:attributes="checked python:test(val == 1, '1', None);"
+                     />
+              <label for="discussion_on"
+                     i18n:translate="label_discussion_enabled">
+                Always allow comments
+              </label>
+              <br />
+
+              <input class="noborder"
+                     type="radio"
+                     name="allowDiscussion"
+                     value="off"
+                     id="discussion_off"
+                     tal:attributes="checked python:test(val == 0, '1', None);"
+                     />
+              <label for="discussion_off" i18n:translate="label_discussion_disabled">Never allow comments</label>
+
+
+            </metal:block>
+            </div>
+
+            <div class="field">
+                <label i18n:translate="label_keywords">Keywords</label>
+
+                <div class="formHelp" i18n:translate="help_keyword">
+                  Keywords relate different types of content to each other.
+                  Don't select too many categories.
+                </div>
+
+                <div tal:define="contentSubjects here/Subject;
+                                 allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
+                                 catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
+                                 allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
+                                 dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
+
+                <tal:block define="allowRolesToAddKeywords site_properties/allowRolesToAddKeywords"
+                           condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
+
+                    <div style="width: 45%; float: right;">
+
+                        <label for="entered_subjects" i18n:translate="label_new_keywords">New keywords</label>
+
+                        <div class="formHelp" i18n:translate="help_new_keyword">
+                        Each new keyword must be on a separate line.
+                        </div>
+
+                        <textarea id="entered_subjects"
+                                  name="subject:lines"
+                                  rows="11"
+                                  cols="15"
+                                  wrap="off"
+                                  tal:define="subject python:request.get('subject',[])"
+                                  tal:content="python:'\n'.join(subject)"
+                                  >selected keywords</textarea>&nbsp;
+
+                        </div>
+                </tal:block>
+
+                <div style="width: 45%">
+                    <label for="predefined_subjects"
+                           i18n:translate="label_existing_keywords">
+                      Existing keywords
+                    </label>
+
+                <div>
+                </div>
+
+                <select id="predefined_subjects"
+                        name="predefined_subjects:list"
+                        size="14"
+                        multiple="multiple">
+                  <option value="#"
+                          i18n:domain="plone-metadata"
+                          i18n:translate=""
+                          tal:repeat="subject allowedSubjects"
+                          tal:content="subject"
+                          tal:attributes="value subject;
+                                          selected python:test(subject in contentSubjects, 'selected', None)">
+                    an existing keyword
+                  </option>
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="field"
+               tal:define="error errors/effective_date | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="effective_date"
+                   i18n:translate="label_effective_date">
+              Effective Date
+            </label>
+
+            <div class="formHelp" i18n:translate="help_effective_date">
+                The date when the item will be available 
+                (of course it needs to be published too). 
+                If no date is selected the item will be 
+                effective immediately.
+            </div>
+
+            <div tal:define="inputname  string:effective_date;
+                             formname   string:edit_form;
+                             formvalue  request/effective_date | nothing;
+                             inputvalue python:test(here.effective_date, here.effective_date, '');
+                             inputvalue python:test(formvalue,formvalue,inputvalue);">
+
+              <div tal:content="error">Validation error output</div>
+
+              <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
+                Gets the calendar code.
+              </div>
+            </div>
+          </div>
+
+          <div class="field"
+               tal:define="error errors/expiration_date | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="expiration_date"
+                   i18n:translate="label_expiration_date">
+              Expiration Date
+            </label>
+
+            <div class="formHelp" i18n:translate="help_expiration_date">
+              The date when the item expires. This will automatically
+              make the item invisible for others at the given date.
+              If no date is chosen, it will never expire.
+            </div>
+
+            <div tal:define="inputname  string:expiration_date;
+                             formname   string:edit_form;
+                             formvalue  request/expiration_date | nothing;
+                             inputvalue python:test(here.expiration_date, here.expiration_date, '');
+                             inputvalue python:test(formvalue,formvalue,inputvalue);">
+
+              <div tal:content="error">Validation error output</div>
+
+              <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
+                Gets the calendar code.
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="format"
+                   i18n:translate="label_mimetype">
+              MIME type
+            </label>
+
+            <div class="formHelp" i18n:translate="help_mimetype">
+              The MIME-type of the item. If you don't know what this
+              does, just leave it.
+            </div>
+
+            <select name="format"
+                    id="format"
+                    tal:define="format request/format | here/Format;">
+              <option value=""
+                      i18n:translate="label_choose_mime">
+                Choose MIME-type
+              </option>
+              <option tal:repeat="mimetype putils/availableMIMETypes"
+                      tal:attributes="value python:mimetype;
+                                      selected python:test(format == mimetype, 'selected', None);"
+                      tal:content="mimetype" />
+            </select>
+          </div>
+
+          <div class="field"
+               tal:define="sel_language language;">
+
+            <label for="language"
+                   i18n:translate="label_language">
+              Language
+            </label>
+
+            <div class="formHelp" i18n:translate="help_language">
+              The language of this item.
+            </div>
+
+            <div>
+              <!-- ISO-639-2 language selector for Plone -->
+              <select name="language"
+                      id="language"
+                      >
+                <option tal:repeat="language here/availableLanguages"
+                        tal:attributes="value python:language[0];
+                                        selected python:test(sel_language == language[0], 'selected', None)"
+                        tal:content="structure python:language[1]">
+                  Language
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="rights"
+                   i18n:translate="label_copyrights">
+              Copyrights
+            </label>
+
+            <div class="formHelp" i18n:translate="help_copyrights">
+              The copyrights on this item.
+            </div>
+
+            <input type="text"
+                   id="rights"
+                   name="rights"
+                   size="25"
+                   value=""
+                   tal:attributes="value request/rights | here/Rights;"
+                   i18n:domain="plone-metadata"
+                   i18n:attributes="value"
+                   />
+          </div>
+
+          <div class="field">
+            <label for="contributors"
+                   i18n:translate="label_contributors">
+              Contributors
+            </label>
+
+            <div class="formHelp" i18n:translate="help_contributors">
+              The names of people that have contributed to this item.
+              Each contributor should be on a separate line.
+            </div>
+
+            <textarea name="contributors:lines"
+                      id="contributors"
+                      rows="5"
+                      cols="25"
+                      tal:define="contributors request/contributors | here/Contributors;"
+                      tal:content="python:'\n'.join(contributors)"
+                      >contributors</textarea>
+          </div>
+
+          <div class="formControls"
+               tal:define="process_creation request/process_creation|nothing;">
+
+            <img src="" class="context"
+                   tal:define="locked portal_object/lock_icon.gif;"
+                   tal:condition="isLocked"
+                   tal:replace="structure python:locked.tag(title='This item is locked')"
+                   alt="Object locked"
+                   i18n:attributes="alt label_object_locked;"/>
+
+            <input class="context"
+                   type="submit"
+                   name="form.button.Save"
+                   value="Save"
+                   i18n:attributes="value label_save;"
+                   tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
+
+
+            <input class="standalone"
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value label_cancel;" />
+          </div>
+        </fieldset>
+
+        <input type="hidden" name="form.submitted" value="1" />
+
+      </form>
+
+      <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+      </div>
+
+    </div>
+
+  </body>
+</html>
+

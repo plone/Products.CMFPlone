@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="navtree_properties" meta_type="Plone Property Sheet">
+  <property name="metaTypesNotToList" type="lines" purge="False">
+   <element value="ChangeSet"/>
+   <element value="ATRelativePathCriterion"/>
+  </property>
+ </object>
+ <object name="site_properties" meta_type="Plone Property Sheet">
+  <property name="localTimeFormat" type="string">%b %d, %Y</property>
+  <property name="localLongTimeFormat"
+     type="string">%b %d, %Y %I:%M %p</property>
+  <property name="calendar_starting_year" type="int">2001</property>
+  <property name="types_not_searched" type="lines" purge="False">
+   <element value="ChangeSet"/>
+    <element value="ATRelativePathCriterion"/>
+  </property>
+  <property name="number_of_days_to_keep" type="int">7</property>
+  <property name="enable_link_integrity_checks" type="boolean">True</property>
+  <property name="icon_visibility" type="string">enabled</property>
+  <property name="forbidden_contenttypes" type="lines" purge="False">
+   <element value="text/restructured"/>
+   <element value="text/plain"/>
+  </property>
+ </object>
+</object>

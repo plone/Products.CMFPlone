@@ -1,0 +1,86 @@
+Plone 3.5 - TBD
+===============
+
+The following is a list of important things to note when installing or
+upgrading to Plone 3.5:
+
+* Unpacking the Plone archive with WinZip will not work: WinZip will truncate
+  filenames without warning you. 7-Zip is a good open source alternative for
+  Windows that you can use instead: http://www.7-zip.org
+
+* Zope 2.11.0+ is now required. Older versions of Zope will not work. Zope
+  2.12 and later may or may not work. Zope 3.x is not supported.
+
+* The python-gettext package is now required. This package can be
+  downloaded from its home page at http://pypi.python.org/pypi/python-gettext .
+
+* The python ElementTree package is now required. This package can be
+  downloaded from its home page at http://effbot.org/downloads/#elementtree .
+
+* The python lxml package is now required to run all tests. It is
+  not needed for normal Plone use. This package can be downloaded
+  from its home page at http://codespeak.net/lxml/ .
+
+* The Python OpenID packages are required if you want to enable OpenID support.
+  They can be downloaded from the OpenID enabled site at
+  http://www.openidenabled.com/resources/downloads/python-openid/
+
+* Plone 3.5 uses both Zope Products and python packages. The Zope Products
+  are installed in the usual location: the Products directory of the Zope
+  instance. Python package may be installed in the lib/python directory in the
+  Zope instance, or anywhere on the standard python path.
+
+
+Important notes for users
+-------------------------
+
+* None so far.
+
+
+Important notes for site and system administrators
+--------------------------------------------------
+
+For migration instructions please see the online Plone upgrade manual:
+http://plone.org/upgrade
+
+* The way in which PlacelessTranslationService handles translation files (*.po)
+  has significantly changed. The mo file cache found in INSTANCE_HOME/var/pts
+  does no longer exist and will be deleted when found. Instead po files will be
+  compiled to mo files inside the products i18n folders as it already happened
+  for po files inside locales folders. This means the (Unix/Windows/...) user
+  running the Zope process needs to have write access to all Products folder at
+  least once and whenever changes where done to the po files. Inside the ZMI
+  the Control_Panel entry for PlacelessTranslationService does no longer exist.
+  In order to reload message catalog the Zope process has to be restarted.
+  Internally all po files are registered directly as ITranslationDomain
+  utilities and will be handled by the Zope3/Five translation service.
+
+Important notes for developers
+------------------------------
+
+The latest information on migrating products to Plone 3.5 can be found online
+at http://plone.org/documentation/manual/upgrade-guide
+
+* No developer notes yet.
+
+
+Preferred but not obligatory (right now)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Use events instead of manage_ methods (which will probably disappear in Plone
+  4.0 or 4.5)
+
+* Packaging technology:
+
+  - Use python packages instead of Zope products. Creating python packages
+    is very easy using the paster tool. See
+    http://plone.org/documentation/how-to/use-paster/ for more information.
+
+  - Use ploneit or ploneout to create development and/or production
+    environments
+
+  - Releasing packages as eggs and registering them with the Python Cheese
+    Shop (http://cheeseshop.python.org/) makes it simple for people to
+    install them and all required dependencies if they are using a system
+    such as ploneout, ploneit or workingenv.
+

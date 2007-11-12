@@ -1,0 +1,243 @@
+/*
+** Plone style sheet - Portlets
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+/* Fallback for edit screen if both columns are hidden */
+.managePortletsFallback {
+    margin: 0 0 0 1em;
+}
+
+/* Main portlet elements */
+.portlet {
+    margin: 1px 0 1em 0;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    background-color: &dtml-backgroundColor;;
+}
+.portlet a {
+    text-decoration: none;
+}
+.portlet a.tile {
+    display: block;
+}
+
+/* XXX: The two below rules should really be in the rule above, but that makes the items grow/shrink on :hover (navtree) - need to investigate how to make it not do that. ~limi, Dec 2005 */
+.portletItem a,
+.portletFooter a {
+    border-bottom: none;
+}
+
+.portletItem a:visited,
+.portletFooter a:visited {
+    color: &dtml-linkColor;;
+}
+.portletHeader {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 1em;
+    text-transform: &dtml-textTransform;;
+    font-weight: normal;
+    line-height: 1.6em;
+}
+.portletHeader a {
+    color: &dtml-fontColor;;
+}
+.portletItem {
+    margin: 0;
+    padding: 1em;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+.portletItem ol {
+    margin: 0 0 0 1em;
+}
+.portletItemDetails {
+    text-align: right;
+    display: block;
+    color: &dtml-fontColor;;
+}
+.portletFooter {
+    background-color: &dtml-evenRowBackgroundColor;;
+    margin: 0;
+    padding: 0.25em 1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: dotted &dtml-borderStyle; none &dtml-borderStyle;;
+    text-align: right;
+}
+
+/* Elements that enable layout with rounded corners */
+.portletTopLeft {}
+.portletTopRight {}
+.portletBottomLeft {}
+.portletBottomRight {}
+
+/*
+** Calendar elements - used in the calendar rendering
+*/
+.dayPopup {
+    background-color: &dtml-helpBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; Black;
+    padding: 0.2em;
+    position: absolute;
+    visibility: hidden;
+    width: 12em;
+    z-index: 2;
+}
+.date {
+    font-weight: bold;
+}
+.portletCalendar {
+    width: 100%;
+    margin: 1px 0 1em 0;
+    width: 100%;
+}
+.portletCalendar dt {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: normal;
+    text-align: center;
+    line-height: 1.6em;
+    border-bottom: none;
+}
+.portletCalendar dd {
+    margin: 0;
+    padding: 0;
+}
+.portletCalendar a {
+    text-decoration: none;
+}
+.portletCalendar a:hover {
+    text-decoration: none;
+}
+.ploneCalendar {
+    border-collapse: collapse;
+    border-spacing:0;
+    width: 100%;
+}
+.ploneCalendar td {
+    background-color: transparent;
+    width: 14%;
+    text-align: center;
+    padding: 2px;
+}
+.ploneCalendar .weekdays th {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; none;
+    text-align: center;
+    padding: 2px;
+    font-weight: normal;
+}
+.ploneCalendar .event {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: bold;
+}
+.ploneCalendar .todayevent {
+    background-color: &dtml-globalBackgroundColor;;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+    font-weight: bold;
+}
+.ploneCalendar .todaynoevent {
+    border-collapse: collapse;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+}
+
+.managePortletsLink {
+    text-align: center;
+}
+
+div.portlets-manager div.section {
+    padding-top: 1em !important;
+}
+
+div.managedPortlet {
+    padding-top:0.5em;
+    padding-bottom:0.5em;
+}
+
+.managedPortlet .portletHeader {
+    min-height: 3em !important;
+}
+
+.managedPortlet a {
+    text-decoration: underline;
+}
+
+.managedPortletActions {
+    display:block;
+    float:right;
+}
+
+.managedPortletActions a {
+    text-decoration: none;
+}
+
+.managedPortletActions a.up,
+.managedPortletActions a.down {
+    color:blue !important;
+}
+
+.managedPortletActions a.delete {
+    color:red !important;
+}
+
+/* Table of Contents styling - essentially a portlet with smaller fonts and aligned right + limited in width */
+.toc {
+    float: right;
+    width: 30%;
+    font-size: 90%;
+    margin: 0 0 0.5em 0.5em;
+}
+
+
+
+<dtml-comment>
+/* Commented out for now, since the calendar markup has changed slightly ~limi */
+
+
+.calendarPrevious {
+    background-image: url(&dtml-portal_url;/arrowLeft.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    float: left;
+}
+.calendarNext {
+    background-image: url(&dtml-portal_url;/arrowRight.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    float: right;
+}
+.calendarPrevious,
+.calendarNext {
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    padding-top: <dtml-var "_['arrowLeft.gif'].height">px;
+    height: 0px !important;
+    height /**/: <dtml-var "_['arrowLeft.gif'].height">px;
+    cursor: pointer;
+}
+.calendarNext {
+    padding-top: <dtml-var "_['arrowRight.gif'].height">px;
+    height: 0px !important;
+    height /**/: <dtml-var "_['arrowRight.gif'].height">px;
+}
+
+</dtml-comment>
+
+/* </dtml-with> */

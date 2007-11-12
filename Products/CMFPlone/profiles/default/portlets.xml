@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<portlets>
+  
+
+ <!-- Columns (portlet managers) -->
+  
+ <portletmanager 
+   name="plone.leftcolumn" 
+   type="plone.app.portlets.interfaces.ILeftColumn"
+   />
+   
+ <portletmanager 
+   name="plone.rightcolumn" 
+   type="plone.app.portlets.interfaces.IRightColumn"
+   />
+   
+ <portletmanager 
+   name="plone.dashboard1" 
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager 
+   name="plone.dashboard2" 
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager 
+   name="plone.dashboard3" 
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager 
+   name="plone.dashboard4" 
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ 
+ <!-- Portlet type registrations -->
+
+ <portlet 
+   addview="portlets.Calendar"
+   title="Calendar portlet"
+   description="A portlet which can render a calendar."
+   />
+
+ <portlet 
+   addview="portlets.Classic"
+   title="Classic portlet"
+   description="A portlet which can render a classic template-based portlet"
+   />
+ 
+ <portlet 
+   addview="portlets.News"
+   title="News"
+   description="A portlet which can render a listing of recent news"
+   />
+  
+ <portlet 
+   addview="portlets.Events"
+   title="Events"
+   description="A portlet which can render a listing of recent events"
+   />
+
+ <portlet 
+   addview="portlets.Login"
+   title="Login"
+   description="A portlet which can render a log-in box"
+   for="plone.app.portlets.interfaces.IColumn"
+   />
+  
+ <portlet 
+   addview="portlets.Navigation"
+   title="Navigation"
+   description="A portlet which can render a navigation tree"
+   for="plone.app.portlets.interfaces.IColumn"
+   />
+
+ <portlet 
+   addview="portlets.Recent"
+   title="Recent items"
+   description="A portlet which can render a listing of recently changed items."
+   />
+
+ <portlet 
+   addview="portlets.Review"
+   title="Review list"
+   description="A portlet which can render a listing on the review queue."
+   />
+
+ <portlet 
+   addview="portlets.rss"
+   title="RSS Feed"
+   description="A portlet which can receive and render an RSS feed."
+   />
+
+ <portlet 
+   addview="portlets.Search"
+   title="Search"
+   description="A portlet which shows a search box."
+   />
+
+</portlets>

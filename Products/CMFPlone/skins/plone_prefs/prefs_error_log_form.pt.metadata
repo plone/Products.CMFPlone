@@ -1,0 +1,5 @@
+[default]
+title=Error Log
+
+[security]
+View = 0:Manager

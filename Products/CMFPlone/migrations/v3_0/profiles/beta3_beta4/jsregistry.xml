@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+  <javascript id="kupuspellchecker.js" remove="True"/>
+  <javascript id="plone_menu.js" remove="True"/>
+  <javascript id="plone_javascripts.js" remove="True"/>
+  <javascript cacheable="True" compression="safe" cookable="True"
+              enabled="True" expression="not:here/@@plone_portal_state/anonymous"
+              id="++resource++kukit-src.js" inline="False"/>
+
+  <!-- Sarissa should be almost at the top, because it's a dependency for
+       many other scripts -->
+  <javascript id="sarissa.js" insert-after="cssQuery.js"/>    
+  <!-- Move these, so they won't break up the rendering -->
+  <javascript id="toc.js" insert-after="styleswitcher.js"/>    
+  <javascript id="webstats.js" insert-after="toc.js"/>
+
+  <!-- new file -->
+  <javascript cacheable="True" compression="safe" cookable="True"
+              enabled="True" expression="" id="accessibility.js"
+              inline="False" insert-before="styleswitcher.js"/>
+
+  <!-- Make these resources only render for logged-in users -->
+  <javascript expression="not: portal/portal_membership/isAnonymousUser"
+              id="dropdown.js" 
+              insert-after="webstats.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="table_sorter.js"
+              insert-after="dropdown.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="calendar_formfield.js"
+              insert-after="table_sorter.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="calendarpopup.js"
+              insert-after="calendar_formfield.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="formUnload.js"
+              insert-after="calendarpopup.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser" 
+              id="formsubmithelpers.js"
+              insert-after="formUnload.js"/>
+  <javascript expression="not: portal/portal_membership/isAnonymousUser"
+              id="unlockOnFormUnload.js"
+              insert-after="formsubmithelpers.js"/>
+ 
+ <!-- Remove unused JS -->
+ <javascript id="correctPREformatting.js" remove="True"/>
+ <javascript id="plone_minwidth.js" remove="True"/>
+ <javascript id="folder_contents_filter.js" remove="True"/>
+ <javascript id="fullscreenmode.js" remove="True"/>
+ <javascript id="login.js" remove="True"/>
+
+</object>

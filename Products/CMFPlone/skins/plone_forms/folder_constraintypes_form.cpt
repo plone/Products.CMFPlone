@@ -1,0 +1,237 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:block fill-slot="javascript_head_slot">
+    <!-- maybe someone can put that into nice kss -->
+    <script type="text/javascript">
+        <!--
+        function show_submenu(show) {
+            var details = document.getElementById('details');
+
+            if (show) {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+        function check_mode(ident) {
+            // The logic here is that from #6151, comment 12.
+            preferred = document.getElementById(ident);
+            allowed = document.getElementById(ident + '_allowed');
+            allowed_hidden = document.getElementById(ident + '_allowed_hidden');
+
+            // type is not preferred, so it is not allowed, too.
+            // We uncheck and disable (ghost) the allowed checkbox
+            if ( preferred.checked == false ) {
+              allowed.checked = false;
+              allowed.disabled = true;
+            }
+
+            // type _is_ preferred, so user _may_ want to make it
+            // an "allowed-only" type by checking the "allowed" checkbox.
+            // We need to enable (unghost) the allowed checkbox
+            if ( preferred.checked == true ) {
+              allowed.disabled = false;
+            }
+
+        }
+        //-->
+    </script>
+</metal:block>
+  <body>
+
+    <div metal:fill-slot="main">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_set_content_type_restrictions">
+        Restrict what types of content can be added
+      </h1>
+
+      <form name="constraintypes_form"
+            action="."
+            method="post"
+            tal:attributes="action string:$here_url/$template_id"
+            tal:define="errors options/state/getErrors;">
+
+        <input type="hidden" name="form.submitted" value="1"/>
+
+        <tal:items define="currentMode    request/constrainTypesMode | here/getConstrainTypesMode;
+                           currentAllow   request/currentAllow | here/getLocallyAllowedTypes;
+                           currentPrefer  request/currentPrefer | here/getImmediatelyAddableTypes;
+                           availableTypes here/getDefaultAddableTypes;
+                           parent plone_view/getParentObject">
+
+            <div class="field">
+                <label for="enableAddRestrictions" 
+                        i18n:translate="label_type_restrictions">
+                    Type restrictions
+                </label>
+
+                <div class="formHelp" i18n:translate="help_add_restriction_mode">
+                   Select the restriction policy in this location.
+                </div>
+
+                <tal:mode condition="python:ifacetool.objectImplements(parent,'Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes')">
+                    <input type="radio"
+                           name="constrainTypesMode:int"
+                           id="mode_acquire"
+                           value="-1"
+                           class="noborder"
+                           tal:attributes="checked python:test('-1' == str(currentMode), 'checked', None)"/>
+                    <label for="mode_acquire" i18n:translate="constraintypes_mode_acquire">
+                        Use parent folder setting
+                    </label>
+                    <br />
+                </tal:mode>
+
+                <input type="radio"
+                       name="constrainTypesMode:int"
+                       id="mode_disable"
+                       value="0"
+                       class="noborder"
+                       onclick="show_submenu(false)"
+                       tal:attributes="checked python:test('0' == str(currentMode), 'checked', None)"/>
+                <label for="mode_disable" i18n:translate="label_constraintypes_allow_standard">
+                    Allow the standard types to be added
+                </label>
+                <br />
+                <input type="radio"
+                       name="constrainTypesMode:int"
+                       id="mode_enable"
+                       value="1"
+                       class="noborder"
+                       onclick="show_submenu(true)"
+                       tal:attributes="checked python:test('1' == str(currentMode), 'checked', None)"/>
+                <label for="mode_enable" i18n:translate="label_constraintypes_specify_manually">
+                    Specify types manually
+                </label>
+                <br />
+            </div>
+
+            <!-- Manually selected Fields, normally collapsed -->
+            <div class="field">
+
+                <div id="details" tal:attributes="style python:'display:%s'%test('1' == str(currentMode), 'block', 'none')">
+
+                <!-- Addable to the Menu -->
+                <div id="details"
+                     tal:define="error errors/currentPrefer | nothing;"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <label for="currentPrefer" 
+                            i18n:translate="label_immediately_addable_types">
+                        Allowed types
+                    </label>
+
+                    <div class="formHelp" i18n:translate="help_immediately_addable_types">
+                        Controls what types are addable in this location.
+                    </div>
+
+                    <!-- Errors go here -->
+                    <div tal:content="error">Validation error output</div>
+
+                    <div style="float:left; margin-right: 2em;"
+                         tal:define="typeLists python:here.createMultiColumnList(availableTypes, numCols=3, sort_on='title_or_id');"
+                         tal:repeat="sublist typeLists">
+                        <tal:block tal:repeat="type sublist">
+                            <input name="currentPrefer:list"
+                                   class="noborder"
+                                   type="checkbox"
+                                   tal:attributes="value type/getId;
+                                                   id type/getId;
+                                                   onclick string:check_mode('${type/getId}');
+                                                   checked python:test(type.getId() in currentPrefer or type.getId() in currentAllow, 'checked', None);"
+                            />
+                            <label for="#"
+                                   tal:attributes="for type/getId"
+                                   tal:content="type/Title"
+                                   i18n:translate="">Type</label>
+                            <br/>
+                        </tal:block>
+                    </div>
+
+                </div>
+
+                <div class="visualClear" id="clear-space-before-addable-types"><!-- --></div>
+                <br />
+
+                <!-- Types addable over the more... option in the menu -->
+                <div class="field"
+                     tal:define="error errors/locallyAllowedTypes | nothing;"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <label for="locallyAllowedTypes"
+                            i18n:translate="label_locally_allowed_types">
+                        Secondary types
+                    </label>
+
+                    <div class="formHelp" i18n:translate="help_locally_allowed_types">
+                           Select which types should be available in the
+                           'More&hellip;' submenu <em>instead</em> of in the main pulldown.
+                           This is useful to indicate that these are not the preferred types
+                           in this location, but are allowed if you really need them.
+                    </div>
+
+                    <!-- Errors go here -->
+                    <div tal:content="error">Validation error output</div>
+
+                    <div style="float:left; margin-right: 2em;"
+                         tal:define="typeLists python:here.createMultiColumnList(availableTypes, numCols=3, sort_on='title_or_id');"
+                         tal:repeat="sublist typeLists">
+                        <tal:block tal:repeat="type sublist">
+                            <input name="currentAllow:list"
+                                   class="noborder"
+                                   type="checkbox"
+                                   tal:define="tid      type/getId;
+                                               disabled python:test(tid not in currentAllow, 'disabled', None);
+                                               checked  python:test(tid in currentAllow and tid not in currentPrefer, 'checked', None);"
+                                   tal:attributes="value type/getId;
+                                                   id string:${type/getId}_allowed;
+                                                   onclick string:check_mode('${type/getId}');
+                                                   disabled disabled;
+                                                   checked checked;"
+                            />
+                            <label for="#"
+                                   tal:attributes="for string:${type/getId}_allowed"
+                                   tal:content="type/Title"
+                                   i18n:translate="">Type</label>
+                            <br/>
+                        </tal:block>
+                    </div>
+                </div>
+            </div>
+            </div> <!-- /manually selected -->
+
+            <div class="visualClear" id="clear-space-before-form-controls"><!-- --></div>
+            <br />
+
+            <!-- Form Actions -->
+            <div class="formControls">
+                <input class="context"
+                    type="submit"
+                    name="form.button.Save"
+                    value="Save"
+                    i18n:attributes="value label_save;"
+                />
+                <input class="standalone"
+                    type="submit"
+                    name="form.button.Cancel"
+                    value="Cancel"
+                    i18n:attributes="value label_cancel;"
+                />
+            </div> <!-- /Form Actions -->
+
+        </tal:items>
+      </form>
+
+    </div>
+
+  </body>
+</html>

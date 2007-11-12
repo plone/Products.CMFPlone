@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                size here/size">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 class="documentFirstHeading"> 
+            <metal:field use-macro="python:here.widget('title', mode='view')">
+            Title
+            </metal:field>
+        </h1>
+    
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <p class="documentDescription">
+            <metal:field use-macro="python:here.widget('description', mode='view')">
+            Description
+            </metal:field>
+        </p>
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <a href=""
+           class="discreet"
+           tal:attributes="href string:$here_url/image_view_fullscreen">
+            <tal:block condition="size" replace="structure python: here.tag(scale='preview')" />
+            <br />
+            <span class="visualNoPrint">
+                <img src="" alt="" tal:replace="structure here/search_icon.gif" />
+                <span i18n:translate="label_click_to_view_full_image">Click to view full-size image&hellip;</span>
+            </span>
+        </a>
+
+        <span class="discreet visualNoPrint">
+        &mdash;
+            <span i18n:translate="label_size">Size</span>:
+
+            <span tal:define="size python:here.getObjSize(here)"
+                  tal:content="size">
+                File size
+            </span>
+
+            <span tal:condition="python:test(size, 0, 1)"
+                  i18n:translate="no_image_uploaded">
+                (No image has been uploaded yet)
+            </span>
+        </span>
+
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
+        </div>
+        
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</div>
+
+</body>
+
+</html>
+

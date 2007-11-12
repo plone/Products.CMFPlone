@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<action-icons xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+ <action-icon category="controlpanel" action_id="MarkupSettings"
+              title="Markup Settings" priority="0"
+              icon_expr="edit.gif"
+              i18n:attributes="title"/>
+ <action-icon category="controlpanel" action_id="CalendarSettings"
+              title="Calendar Settings" priority="0"
+              icon_expr="event_icon.gif"
+              i18n:attributes="title"/>
+</action-icons>

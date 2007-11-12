@@ -1,0 +1,59 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
+<!-- The Favorites Box -->
+
+<div metal:define-macro="portlet"
+     tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
+     tal:condition="python: folder is not None">
+
+<dl class="portlet" id="portlet-favorites"
+         tal:define="favorites python:folder.getFolderContents({'portal_type': 'Favorite'});
+                     limit python:10;
+                     over_limit python:len(favorites)>limit;
+                     favorites python: favorites[:limit]">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href=""
+           class="tile"
+           tal:attributes="href string:${folder/absolute_url}/folder_contents"
+           i18n:translate="box_my_favorites"
+           >My Favorites
+         </a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem odd" tal:condition="favorites">
+        <ul class="visualNoMarker">
+            <li tal:repeat="o favorites">
+                <a href=""
+                   class="tile"
+                   tal:attributes="href o/getRemoteUrl"
+                   tal:content="o/pretty_title_or_id">Favorite title
+                </a>
+            </li>
+        </ul>
+    </dd>
+
+    <dd class="portletFooter">
+        <a href=""
+           class="tile"
+           tal:attributes="href string:${folder/absolute_url}/folder_contents"
+           i18n:translate="box_morelink">
+            More&hellip;
+        </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>
+
+</div>
+
+</body>
+
+</html>

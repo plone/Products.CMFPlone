@@ -1,0 +1,312 @@
+/*  Style sheet for RTL (right-to-left) languages  */
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+h1 {
+    padding-left: 4em;
+    padding-right: 0;
+}
+ol {
+    margin: 0.5em 1.5em 0 0;
+}
+#portal-logo img {
+    margin: 1em 2em 1em 0em;
+}
+#portal-siteactions {
+    float: left;
+    padding: 3px 0 3px 2em;
+}
+#portal-searchbox {
+    padding: 0 0 0 2em;
+    float: left;
+    clear: left;
+}
+/* end goofy horizontal scroll problem */
+
+#portal-globalnav {
+    padding: 0em 2em 0em 0em !important;
+}
+#portal-globalnav li a {
+    float: right;
+    margin-left: 0.5em !important;
+    margin-bottom: -3px;
+}
+* html #portal-globalnav {
+    height: 0.1%;
+}
+#portal-personaltools {
+    /* empty personaltools background and border and set on newly added portal-personaltools-wrapper instead */
+    background: none;
+    border: none;
+    /* other hacks / fixes - smoothift */
+    display: table;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+#portal-personaltools-wrapper{
+    /* settings from #portal-personaltools */
+    background-color: &dtml-globalBackgroundColor;;
+    border-top-color: &dtml-globalBorderColor;;
+    border-top-style: &dtml-borderStyle;;
+    border-top-width: &dtml-borderWidth;;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
+    /* new settings */
+    display: block;
+    height : 2em;
+    clear: both;
+}
+#portal-personaltools .portalUser {
+    background: transparent url(&dtml-portal_url;/user.gif) 100% 50% no-repeat;
+    margin: 0;
+    padding-right: 18px; /* fix for overlapping icon - smoothify */
+    padding-left: 1em; /* fix for overlapping icon - smoothify */
+    display: table-cell;
+}
+#portal-personaltools li {
+    background: transparent url(&dtml-portal_url;/rtl-linkOpaque.gif) 100% 50% no-repeat;
+    margin: 0;
+    padding-right: 10px; /* fix for overlapping icon - smoothify */
+    padding-left: 1em; /* fix for overlapping icon - smoothify */
+    display: table-cell;
+}
+.contentViews {
+    padding-right: 1em;
+    margin-right: 0;
+    height: 1.4em;
+}
+.contentViews li a {
+    margin-left: 0.5em;
+    margin-bottom: -1px;
+    float: right;
+    display: block;
+}
+.contentActions {
+    clear: both;
+    text-align: left;
+    padding: 0 1em 0 0;
+}
+.contentActions ul,
+.contentActions li {
+    text-align: right;
+}
+.contentActions li {
+    float: left;
+    border-left: none;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+.contentActions .actionMenu {
+    left: -1px;
+}
+.documentActions ul {
+    float: left;
+    clear: left;
+}
+* html .actionMenu .actionMenuHeader a {
+    float: left;
+}
+.actionMenu.activated .actionMenuHeader a,
+.actionMenu.deactivated .actionMenuHeader a {
+    padding: 0 0.5em !important;
+    cursor: pointer;
+}
+.newsAbout {
+    float: left;
+    text-align: left;
+}
+.newsFooter li {
+    display: inline;
+    margin: 0 0 0 1em;
+}
+.tileImage {
+    float: left;
+} 
+.newsImageContainer {
+    float: left; 
+    margin: 0 1em 0.5em 0;
+}
+.documentActions {
+    float: left;
+}
+.documentByLine {
+    text-align: left;
+}
+.productCredits {
+    text-align: left;
+}
+
+.standalone,
+.documentEditable * .standalone {
+    padding: 1px 15px 1px 1px;
+    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/rtl-linkOpaque.gif) 90% 1px no-repeat;
+}
+.context,
+.documentEditable * .context {
+    padding: 1px 15px 1px 1px;
+    background: transparent url(&dtml-portal_url;/rtl-linkTransparent.gif) 90% 1px no-repeat;
+}
+.destructive,
+.documentEditable * .destructive {
+    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/rtl-linkTransparent.gif) 90% 1px no-repeat;
+    padding: 1px 15px 1px 1px;
+}
+input.searchButton {
+    padding: 1px 15px 1px 1px;
+    background-position: 90% 1px;
+}
+.field {
+    right: 0;
+    margin: 0 0 1em 1em;
+}
+.fieldRequired {
+    background: url(&dtml-portal_url;/required.gif) center right no-repeat;
+    padding: 0 8px 0 0;
+}
+.card {
+    float: right;
+}
+.listing th,
+.stx table th {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+.listing .top {
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    text-align: left ! important;
+}
+.listing td,
+.stx table td {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    text-align: right;
+}
+ul.configletDetails {
+    margin: 0em 4em 1em 1em;
+}
+.portletDetails {
+    text-align: left;
+}
+.portletMore {
+    text-align: left;
+}
+.portletClose {
+    float: left;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+.listingBar span.previous,
+.listingPrevious {
+    text-align: right;
+    float: right;
+    margin-left: 1em;
+}
+.listingBar span.next,
+.listingNext {
+    text-align: left;
+    float: left;
+    margin-right: 1em;
+}
+.link-parent {
+    padding: 1px 16px 1px 0;
+    background: transparent url(&dtml-portal_url;/arrowUp.gif) 100% 5px no-repeat;
+}
+.link-user {
+    padding: 1px 16px 1px 0;
+}
+
+/* No way to get these to work with IE, it seems - suggestions welcome --limi */
+.link-external,
+.link-https,
+.link-mailto,
+.link-news,
+.link-ftp,
+.link-irc,
+.link-callto {
+    padding: 0;
+    background: none;
+}
+.link-comment {
+    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center right no-repeat;
+    padding: 1px 16px 1px 0 !important;
+}
+.hiddenStructure {
+    margin: -1px -1px 0 0;
+}
+#portal-column-one .visualPadding {
+    padding: 2em 2em 1em 0em;
+}
+#portal-column-two .visualPadding {
+    padding: 2em 0em 1em 2em;
+}
+.contentActions .hiddenStructure {
+    right: -200px;
+}
+.visualClear {
+    margin: -1px -1px 0 0;
+}
+.label {
+    padding-left: 0.5em;
+}
+.ploneCalendar td {
+    text-align: left;
+}
+.ploneCalendar #calendar-previous {
+    background-image: url(&dtml-portal_url;/arrowRight.gif);
+}
+.ploneCalendar #calendar-next {
+    background-image: url(&dtml-portal_url;/arrowLeft.gif);
+}
+.navTreeLevel0 { margin: 0; }
+.navTreeLevel1 { margin-left: 0em; margin-right: 1em;}
+.navTreeLevel2 { margin-left: 0em; margin-right: 0.75em; }
+.navTreeLevel3 { margin-left: 0em; margin-right: 0.75em; }
+.navTreeLevel4 { margin-left: 0em; margin-right: 0.75em; }
+.navTreeLevel5 { margin-left: 0em; margin-right: 0.75em; }
+
+/* set sitemap borders and margins for right alignment  - smoothify */
+#portal-sitemap .navTreeLevel1,
+#portal-sitemap .navTreeLevel2 {
+    padding-left: 0;
+    padding-right: 1em;
+    border-left: none;
+    border-right: 0.5em solid &dtml-globalBorderColor;;
+    margin: 0 0.5em 0 0;
+}
+
+/* set sitemap borders and margins for right alignment  - smoothify */
+#portal-sitemap .navTreeLevel2 {
+    border-right: 0.5em solid &dtml-globalBackgroundColor;;
+    margin: 0 0.6em 0 0;
+}
+
+/* Hacks to set fix overlapping icons in folder listing - smoothify */
+dt span.documentByLine {
+    padding-top: 4px;
+    padding-right: 4px;
+}
+
+#content dl dd {
+    clear: both;
+}
+
+/* Fix to big header which causes a horizontal scrollbar to appear */
+#portal-top {
+    margin-right: 1px;
+}
+
+/* LiveSearch */
+.livesearchContainer {
+    right: auto;
+    left: 0px;
+}
+
+/* Kupu fixes */
+
+#kupu-zoom {
+    float: left !important;
+}
+#kupu-tb-buttons {
+    margin-right: 2em;
+}
+/* </dtml-with> */

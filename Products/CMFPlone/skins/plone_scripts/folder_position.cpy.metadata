@@ -1,0 +1,6 @@
+[default]
+title = Order items
+
+[actions]
+action.failure=traverse_to:string:folder_contents
+action.success=redirect_to:string:folder_contents

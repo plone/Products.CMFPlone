@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <div metal:fill-slot="main">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_select_default_page">Select default page</h1>
+
+      <div class="discreet" i18n:translate="description_select_default_page">
+        Please select item which will be displayed as the default page of the
+        folder.
+      </div>
+
+
+      <form name="default_page_form"
+            action="."
+            method="post"
+            tal:attributes="action string:$here_url/$template_id">
+
+        <input type="hidden" name="form.submitted" value="1"/>
+    
+        <tal:items define="availableTypes site_properties/default_page_types | python:[];
+                           items python:[item for item in here.getFolderContents() if
+                                            not item.is_folderish or item.portal_type in availableTypes];
+                           cur_page here/getDefaultPage|nothing">
+        <tal:hasItems condition="items">
+            <dl>
+                <tal:item repeat="item items">
+                    <dt tal:define="item_typeinfo python: here.portal_types.getTypeInfo(item.portal_type);
+                                    item_icon string:$portal_url/${item_typeinfo/getIcon};">
+                        <input type="radio" name="objectId" value="" 
+                            tal:attributes="value item/getId;
+                                            id item/getId;
+                                            checked python:test(item.getId==cur_page,'checked',None);"/>
+                        <img src="" alt=""
+                            tal:attributes="src item_icon;
+                                            alt item_typeinfo/Title" />
+                        <label tal:attributes="for item/getId"
+                               tal:content="item/pretty_title_or_id">
+                            Item title
+                        </label>
+                    </dt>
+                    <dd tal:content="item/Description">
+                        Item Description
+                    </dd>
+                </tal:item>
+
+            </dl>
+
+          <div class="formControls">
+            <input class="context"
+                   type="submit"
+                   name="form.button.Save"
+                   value="Save"
+                   i18n:attributes="value label_save;"
+                   />
+            <input class="context"
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value label_cancel;"
+                   />
+          </div>
+
+        </tal:hasItems>
+        <tal:noitems condition="not:nocall:items">
+          <div i18n:translate="help_no_selectable_default_pages">
+             There are no items in this folder that can be selected as 
+             a default view page.
+          </div>
+          <div class="formControls">
+                <input class="context"
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Ok"
+                   i18n:attributes="value label_ok;"
+                   />
+          </div>
+        </tal:noitems>
+        </tal:items>
+    
+      </form>
+
+    </div>
+
+  </body>
+</html>

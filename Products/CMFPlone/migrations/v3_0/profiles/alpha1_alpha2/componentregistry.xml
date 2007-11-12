@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <adapters/>
+ <utilities>
+  <utility
+     interface="plone.app.redirector.interfaces.IRedirectionStorage"
+     factory="plone.app.redirector.storage.RedirectionStorage"/>
+ </utilities>
+</componentregistry>

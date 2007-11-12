@@ -1,0 +1,9 @@
+[default]
+title=Navigation Setup
+
+[security]
+View = 0:Manager
+
+[actions]
+action.success=traverse_to:string:prefs_navigation_set
+action.failure=traverse_to:string:prefs_navigation_form

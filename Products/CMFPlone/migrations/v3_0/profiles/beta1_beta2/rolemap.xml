@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<rolemap>
+  <permissions>
+    <permission name="CMFEditions: Access previous versions"
+                acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+      <role name="Reviewer"/>
+      <role name="Contributor" />
+    </permission>
+    <permission name="CMFEditions: Apply version control"
+                acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+      <role name="Reviewer"/>
+      <role name="Contributor" />
+    </permission>
+    <permission name="CMFEditions: Checkout to location"
+                acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+      <role name="Reviewer"/>
+    </permission>
+    <permission name="CMFEditions: Revert to previous versions"
+                acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+      <role name="Reviewer"/>
+    </permission>
+    <permission name="CMFEditions: Save new version"
+                acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Editor"/>
+      <role name="Reviewer"/>
+      <role name="Contributor" />
+    </permission>
+  </permissions>
+</rolemap>

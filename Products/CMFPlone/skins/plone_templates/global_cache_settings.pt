@@ -1,0 +1,6 @@
+<metal:cacheheaders define-macro="cacheheaders">
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)" />
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Language', lang)" />
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')" />
+    <metal:block tal:content="structure python:here.enableHTTPCompression(request=request, debug=0)" />
+</metal:cacheheaders>

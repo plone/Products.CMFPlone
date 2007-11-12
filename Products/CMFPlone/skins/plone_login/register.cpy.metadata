@@ -1,0 +1,11 @@
+[default]
+title=Register a User
+proxy=Manager,Anonymous
+
+[validators]
+validators = join_form_validate
+ 
+[actions]
+action.failure=traverse_to:string:join_form
+action.success=traverse_to:string:registered
+action.prefs=traverse_to:string:prefs_users_overview

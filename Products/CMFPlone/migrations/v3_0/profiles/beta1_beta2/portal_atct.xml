@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<atcttool>
+ <topic_indexes>
+  <index name="object_provides" description="" enabled="False"
+     friendlyName="">
+   <criteria>ATCurrentAuthorCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATReferenceCriterion</criteria>
+   <criteria>ATSelectionCriterion</criteria>
+   <criteria>ATSimpleIntCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
+  </index>
+   <index name="Subject" description="The keywords used to describe an item"
+     enabled="True" friendlyName="Categories">
+  </index>
+  <index name="UID" description="" enabled="False" friendlyName="">
+   <criteria>ATBooleanCriterion</criteria>
+   <criteria>ATCurrentAuthorCriterion</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATListCriterion</criteria>
+   <criteria>ATPortalTypeCriterion</criteria>
+   <criteria>ATReferenceCriterion</criteria>
+   <criteria>ATSelectionCriterion</criteria>
+   <criteria>ATSimpleIntCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
+  </index>
+ </topic_indexes>
+ <topic_metadata>
+  <metadata name="effective"
+     description="The time and date an item becomes publicly available (non-ISO)"
+     />
+  <metadata name="ExpirationDate"
+     description="The time and date an item is no longer publicly available"
+     />
+  <metadata name="modified"
+     description="The time and date an item was last modified (non-ISO)"
+     />
+  <metadata name="Subject" 
+    friendlyName="Categories"
+    />
+  <metadata name="UID" description="" enabled="False" friendlyName=""/>
+  <metadata name="effective"
+     description="The time and date an item becomes publicly available (non-ISO)"
+     />
+  <metadata name="ExpirationDate"
+     description="The time and date an item is no longer publicly available"
+     />
+  <metadata name="modified"
+     description="The time and date an item was last modified (non-ISO)"
+     />
+  <metadata name="Subject" 
+    friendlyName="Categories"
+    />
+  <metadata name="expires"
+    description="The time and date an item is no longer publicly available (non-ISO)"
+    />
+
+  <metadata name="UID" description="" enabled="False" friendlyName=""/>
+ </topic_metadata>
+</atcttool>

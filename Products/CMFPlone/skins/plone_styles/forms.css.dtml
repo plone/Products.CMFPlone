@@ -1,0 +1,263 @@
+/*
+** Plone style sheet - Form Elements
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+textarea {
+    font: 100% Monaco, "Courier New", Courier, monospace;
+    border: 1px solid #ddd;
+    border-color:#666 #ddd #ddd #666;
+    color: &dtml-inputFontColor;;
+    background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
+    width: 100%;
+}
+input {
+    font-family: <dtml-var fontFamily>;
+    visibility: visible;
+    border: 1px solid #ddd;
+    border-color:#666 #ddd #ddd #666;
+    color: &dtml-inputFontColor;;
+    vertical-align: middle;
+    background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
+}
+
+/* Code to work around IE's lacking support of sub-elements of the input element */
+.noborder,
+.documentEditable * .noborder {
+    border: none;
+    margin: 0;
+    background: none;
+    background-color: transparent;
+}
+
+input[type=checkbox] {
+    border: none;
+    margin: 0;
+    background: none;
+    background-color: transparent;
+}
+
+
+#searchGadget {
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+}
+
+button {
+    font-family: <dtml-var fontFamily>;
+    visibility: visible;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    color: &dtml-inputFontColor;;
+    vertical-align: middle;
+    background-color: &dtml-globalBackgroundColor;;
+    padding: 1px;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    text-transform: &dtml-textTransform;;    
+}
+select {
+    vertical-align: top;
+}
+form {
+    border: none;
+    margin: 0;
+}
+fieldset {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    margin: 1em 0em 1em 0em;
+    padding: 0em 1em 1em 1em;
+    line-height: 1.5em;
+    width: auto;
+}
+legend {
+    background: &dtml-backgroundColor;;
+    padding: 0.5em;
+    font-size: 90%;
+}
+label {
+    font-weight: bold;
+}
+optgroup {
+  font-style: normal;
+  font-weight: bold;
+  color: #999;
+  padding-left: 0.25em;
+}
+option {
+  color: black;
+}
+optgroup > option {
+  padding: 0 0.25em 0 1em;
+}
+
+dl.enableFormTabbing dd {
+    margin-left: 0;
+    padding-top: 2em;
+}
+
+#login-form {
+    max-width: 30em; 
+    margin: 0 auto;
+}
+#login-form .field {
+    clear: none;
+}
+#login-form input {
+    font-size: 150%;
+}
+#login-form input.context {
+    padding: 1px 10px 1px 20px;
+    background-position: 9px 5px;
+    margin-bottom: 1em;
+}
+
+#forgotten-password {
+    float: right; 
+    width: 35%; 
+    margin: 0 1em;
+}
+
+.standalone,
+.documentEditable * .standalone {
+    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
+    color: &dtml-fontColor;;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+}
+.context,
+.formControls .actionButtons .button,
+.documentEditable * .context {
+    background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
+    color: &dtml-fontColor;;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+}
+.destructive,
+.documentEditable * .destructive {
+    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    color: &dtml-fontColor;;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+}
+input.searchButton {
+    margin-bottom: &dtml-borderWidth; ! important;
+    color: &dtml-fontColor;;
+    font-size: &dtml-fontSmallSize;;
+    background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
+    cursor: pointer;
+    padding: 1px 1px 1px 19px;
+    text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+}
+.searchSection {
+    color: &dtml-discreetColor;;
+    margin-top: 0.25em;
+}
+.searchSection label:hover {
+    color: &dtml-fontColor;;
+}
+
+/* The edit form elements */
+.field {
+    top: 0;
+    left: 0;
+    margin: 0 1em 1em 0;
+    clear: both;
+}
+.field .field {
+    margin: 0;
+}
+.fieldRequired {
+    background: url(&dtml-portal_url;/required.gif) center left no-repeat;
+    padding: 0 0 0 8px;
+    color: &dtml-backgroundColor;;
+}
+.fieldUploadFile {
+    text-align: right; 
+    margin-right: 0.75em;
+    display: none;
+}
+.fieldTextFormat {
+    text-align: right;
+    margin-right: 0.75em
+}
+.formHelp {
+    font-size: 90%;
+    color: &dtml-discreetColor;;
+    margin: 0 0 0.2em 0;
+}
+.formHelp:hover {
+    color: &dtml-fontColor;;
+    cursor: default;
+}
+div.error {
+    /* Class for error indication in forms */
+    background-color: #fdc; 
+    border: 1px solid #d00;
+    padding: 0.5em;
+    margin: 0 0 1em 0;
+    width: 95%;
+}
+.error .fieldRequired {
+   color: #d00;
+}
+
+
+/* Styles to make the editing widgets look more like their view counterparts */
+#archetypes-fieldname-title input, input#form\.title {
+    font-size: 160%;
+    font-family: <dtml-var headingFontFamily>;
+    font-weight: normal;
+    width: 99%;
+}
+#archetypes-fieldname-description textarea, textarea#form\.description {
+    font: 100% <dtml-var fontFamily>;
+    font-weight: bold;
+}
+input.inputLabelActive {
+  color: &dtml-discreetColor;;
+}
+
+textarea#form\.description {
+    height: 6em;
+    width: 99%;
+}
+
+tr.selected { 
+    background-color: #ffa;
+}
+
+.kupu-save-message {
+  color: white;
+  font-weight: bold;
+  background-color: red;
+  padding: 0.3em;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999;
+}
+
+/* </dtml-with> */

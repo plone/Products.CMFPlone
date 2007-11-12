@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel" meta_type="Plone Control Panel Tool"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="plone">
+ <configlet title="Maintenance" action_id="Maintenance"
+    appId="Plone" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@maintenance-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Site" action_id="PloneReconfig" appId="Plone"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@site-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Themes" action_id="PortalSkin" appId="PortalSkin"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@skins-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="HTML Filtering" action_id="HtmlFilter" appId="HtmlFilter"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@filter-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Security" action_id="SecuritySettings"
+    appId="SecuritySettings" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@security-controlpanel"
+    visible="True" i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Types" action_id="TypesSettings"
+    appId="TypesSettings" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@types-controlpanel"
+    visible="True" i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Collection" action_id="portal_atct"
+    appId="ATContentTypes" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
+    visible="True" i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Language" action_id="PloneLanguageTool"
+    appId="PloneLanguageTool" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@language-controlpanel"
+    visible="True" i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Navigation" action_id="NavigationSettings"
+    appId="Plone" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_navigation_form" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Users and Groups" action_id="UsersGroups"
+    appId="UsersGroups" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_users_overview" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Users and Groups" action_id="UsersGroups2"
+    appId="UsersGroups" category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/prefs_groups_overview" visible="False"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+ <configlet title="Content Rules" action_id="ContentRules" appId="Plone"
+    category="Plone" condition_expr=""
+    url_expr="string:${portal_url}/@@rules-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Content rules: Manage rules</permission>
+ </configlet>
+</object>

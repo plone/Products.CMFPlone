@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<import-steps>
+ <import-step id="archetypes-various" version="20070318-01"
+              handler="Products.Archetypes.setuphandlers.setupArchetypes"
+              title="Archetypes setup">
+  <dependency step="componentregistry"/>
+  
+   
+     Archetypes installation step.
+  
+ </import-step>
+ <import-step id="archetypetool" version="20070318-01"
+              handler="Products.Archetypes.exportimport.archetypetool.importArchetypeTool"
+              title="Archetype Tool">
+  <dependency step="archetypes-various"/>
+  
+    
+    Import Archetype type specific configuration.
+  
+ </import-step>
+ <import-step id="kupu-setup" version="20061211-01"
+              handler="Products.kupu.plone.exportimport.importKupuSettings"
+              title="Kupu Settings">
+  <dependency step="toolset"/>
+  
+  
+  Import Kupu settings
+ 
+ </import-step>
+ <import-step id="mimetypes-registry-various"
+              version="20070309-01"
+              handler="Products.MimetypesRegistry.setuphandlers.setupMimetypesRegistry"
+              title="MimetypesRegistry setup">
+  <dependency step="componentregistry"/>
+  
+  
+    MimetypesRegistry installation step.
+ 
+ </import-step>
+ <import-step id="plonepas" version="20061230-01"
+              handler="Products.PlonePAS.setuphandlers.setupPlonePAS"
+              title="PlonePAS setup">
+  <dependency step="componentregistry"/>
+  <dependency step="controlpanel"/>
+  <dependency step="memberdata-properties"/>
+  <dependency step="plonepas-contents"/>
+  <dependency step="rolemap"/>
+  
+  
+  
+  
+  
+  
+    PlonePAS installation step.
+ 
+ </import-step>
+ <import-step id="portal-transforms-various"
+              version="20070309-01"
+              handler="Products.PortalTransforms.setuphandlers.setupPortalTransforms"
+              title="PortalTransforms setup">
+  <dependency step="componentregistry"/>
+  
+  
+    PortalTransforms installation step.
+ 
+ </import-step>
+</import-steps>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<object name="portal_properties" meta_type="Plone Properties Tool">
+ <object name="site_properties" meta_type="Plone Property Sheet">
+  <property name="default_contenttype" type="string">text/html</property>
+  <property name="forbidden_contenttypes" type="lines">
+   <element value="text/structured"/>
+   <element value="text/restructured"/>
+   <element value="text/x-rst"/>
+   <element value="text/plain"/>
+   <element value="text/plain-pre"/>
+   <element value="text/x-python"/>
+   <element value="text/x-web-markdown"/>
+   <element value="text/x-web-intelligent"/>
+   <element value="text/x-web-textile"/>
+  </property>
+ </object>
+</object>
