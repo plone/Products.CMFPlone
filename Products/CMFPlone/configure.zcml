@@ -4,6 +4,7 @@
            xmlns:five="http://namespaces.zope.org/five"
            i18n_domain="plone">
 
+  <include package="Products.CMFCore" />
   <include package="Products.GenericSetup" />
   <include package="plone.app.contentmenu" />
   <include package="plone.app.content" />
