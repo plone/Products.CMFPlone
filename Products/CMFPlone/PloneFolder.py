@@ -208,8 +208,7 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
 
     security = ClassSecurityInfo()
 
-    __implements__ = DefaultDublinCoreImpl.__implements__ + \
-                     (PortalFolderBase.__implements__,WriteLockInterface)
+    __implements__ = PortalFolderBase.__implements__,WriteLockInterface
 
     implements(IWriteLock)
 
