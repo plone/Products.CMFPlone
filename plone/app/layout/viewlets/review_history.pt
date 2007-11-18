@@ -29,16 +29,19 @@
                 action
               </td>
 
-              <td>
+              <td tal:define="actorid python:item.get('actorid');
+                              actor python:item.get('actor');
+                              fullname actor/fullname|nothing;
+                              username actor/username|nothing">
                 <a href="/Members/runyaga"
-                   tal:define="actorid python:item.get('actorid');
-                               actor python:item.get('actor');
-                               fullname actor/fullname|nothing;
-                               username actor/username|nothing"
+                   tal:condition="item/actor_home"
                    tal:attributes="href item/actor_home"
                    tal:content="python:fullname or username or actorid">
                   runyaga
                 </a>
+                <span tal:condition="not: item/actor_home" 
+                  tal:content="python:fullname or username or actorid"
+                />
               </td>
 
               <td>
