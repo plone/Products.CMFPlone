@@ -9,6 +9,8 @@ from plone.app.layout.viewlets import ViewletBase
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
+from Products.CMFPlone import PloneMessageFactory as _
+
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFPlone.utils import log
 import logging
@@ -130,8 +132,18 @@ class WorkflowHistoryViewlet(ViewletBase):
                                                                                  self.context.portal_type)
                     actorid = r['actor']
                     r['actorid'] = actorid
-                    r['actor'] = membership.getMemberInfo(actorid)
-                    r['actor_home'] = self.portal_url + '/author/' + actorid
+                    if actorid is None:
+                        # action performed by an anonymous user
+                        r['actor'] = {'username': _(u'label_anonymous_user', default=u'Anonymous User')}
+                        r['actor_home'] = ''
+                    else:
+                        r['actor'] = membership.getMemberInfo(actorid)
+                        if r['actor'] is not None:
+                            r['actor_home'] = self.portal_url + '/author/' + actorid
+                        else:
+                            # member info is not available
+                            # the user was probably deleted
+                            r['actor_home'] = ''
                 #reverse the list
                 history = self.context.reverseList(review_history)
 
