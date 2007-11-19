@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Fix TypeError when an anonymous user locks content.  Fixes
+      http://dev.plone.org/plone/ticket/7246
+      [maurits]
 
 Plone 3.0.3 - released November 9, 2007 
 
