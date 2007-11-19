@@ -4,6 +4,12 @@ Changelog for plone.app.layout
 
 plone.app.layout - 1.0.1 Unreleased
 
+    - Fixed workflow history viewlet to handle entries with
+      usernames that don't exist any more (deleted users) and 
+      also anonymous users.
+      This fixes http://dev.plone.org/plone/ticket/7250.
+      [rsantos]
+
     - Added website statistics inclusion viewlet to configure.zcml so it
       actually works.
       [fschulze]
