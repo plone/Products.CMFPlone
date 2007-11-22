@@ -61,6 +61,11 @@ if (!window.beforeunload) (function() {
     Class.onsubmit = function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         tool.submitting = true;
+        // Also set this on the unlocking tool!
+        // This way the tool knows we are in submitting,
+        // and can prevent unlocking.
+        var lockingtool = window.onunload && window.onunload.tool;
+        lockingtool.submitting = true;
     }
     Class.addForm = function(form) {
         for (var i = 0; i < this.forms.length; i++) {
