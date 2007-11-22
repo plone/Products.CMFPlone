@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Avoid the unlock handler to act if we are submitting with ok button.
+      (Fixes ConflictError-s in case of an object is created without
+      the portal factory.)
+      [ree]
+
     - Fix TypeError when an anonymous user locks content.  Fixes
       http://dev.plone.org/plone/ticket/7246
       [maurits]
