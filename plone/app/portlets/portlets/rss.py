@@ -241,7 +241,7 @@ class Renderer(base.DeferredRenderer):
 
     def update(self):
         """update data before rendering. we never do that for the RSS portlet"""
-        pass
+        self.deferred_update()
 
     def _getFeed(self):
         """return a feed object but do not update it"""

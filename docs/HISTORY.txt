@@ -4,6 +4,12 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.0.2 - unreleased
 
+    - Always try to refresh the RSS feed when rendering it instead of waiting
+      for KSS to do trigger an updated. This is needed for the very common
+      situation where most users are anonymous and the the feeds would expire
+      (or never be loaded) and never (re)loaded.
+      [wichert]
+      
     - Add a language selection portlet.
       [wichert]
 
