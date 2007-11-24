@@ -240,7 +240,8 @@ class Renderer(base.DeferredRenderer):
         feed.update()
 
     def update(self):
-        """update data before rendering. we never do that for the RSS portlet"""
+        """update data before rendering. We can not wait for KSS since users
+        may not be using KSS."""
         self.deferred_update()
 
     def _getFeed(self):
