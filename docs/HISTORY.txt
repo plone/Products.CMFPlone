@@ -4,6 +4,9 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0.3 Unreleased
 
+    - Fixed description in filter control panel to be recognizable by i18ndude.
+      [hannosch]
+
     - Protected the maintenance control panel with the View management screens
       permission at the Zope root folder. This closes
       http://dev.plone.org/plone/ticket/6973.
