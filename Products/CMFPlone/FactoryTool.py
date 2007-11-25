@@ -27,6 +27,22 @@ from ZODB.POSException import ConflictError
 
 FACTORY_INFO = '__factory__info__'
 
+
+class FauxArchetypeTool(object):
+    """A faux archetypes tool which prevents content from being indexed."""
+
+    __allow_access_to_unprotected_subobjects__ = 1
+    
+    def __init__(self, tool):
+        self.tool = tool
+
+    def getCatalogsByType(self, type_name):
+        return []
+
+    def __getitem__(self, id):
+        return getattr(self.tool, id)
+
+
 # ##############################################################################
 # A class used for generating the temporary folder that will
 # hold temporary objects.  We need a separate class so that
@@ -154,6 +170,10 @@ class TempFolder(TempFolderBase):
         else:
             type_name = self.getId()
             try:
+                # We fake an archetype tool which returns no catalogs for the
+                # object to be indexed in to avoid it showing up in the catalog
+                # in the first place.
+                self.archetype_tool = FauxArchetypeTool(getToolByName(self, 'archetype_tool'))
                 self.invokeFactory(id=id, type_name=type_name)
             except ConflictError:
                 raise

@@ -2,7 +2,12 @@ Changelog for Plone
 
     (name of developer listed in brackets)
     
-Plone 3.5 - UNRELEASED
+Plone 4.0 - UNRELEASED
+
+    - Use a FauxArchetypeTool which returns no catalogs for CatalogMultiplex
+      aware objects in portal factory. This prevents most temporary objects
+      from being indexed in the first place.
+      [tesdal, hannosch]
 
     - Avoid the unlock handler to act if we are submitting with ok button.
       (Fixes ConflictError-s in case of an object is created without
