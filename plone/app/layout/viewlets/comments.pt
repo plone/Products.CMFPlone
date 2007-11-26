@@ -1,7 +1,8 @@
 <tal:block define="userHasReplyPermission view/can_reply;
                    isDiscussionAllowed view/is_discussion_allowed;
                    replies view/get_replies;
-                   isAnon view/is_anonymous">
+                   isAnon view/is_anonymous"
+           i18n:domain="plone">
     <div class="discussion"
          tal:condition="python:replies or (userHasReplyPermission and isDiscussionAllowed) or (isAnon and not userHasReplyPermission and isDiscussionAllowed)">
         <form name="reply"
