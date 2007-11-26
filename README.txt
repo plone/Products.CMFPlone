@@ -4,4 +4,4 @@ plone.app.layout Package Readme
 Overview
 --------
 
-Layout mechanisms for Plone 3.
+Layout mechanisms for Plone
