@@ -1,0 +1,43 @@
+We need a fake request.
+
+    >>> from zope.publisher.browser import TestRequest
+    >>> request = TestRequest(HTTP_ACCEPT_LANGUAGE='cs')
+
+Now we need a view on the content.
+
+    >>> from zope.publisher.interfaces.browser import IBrowserView
+    >>> from Products.Five.browser import BrowserView as View
+    >>> view = View(self.portal, request)
+
+    >>> from plone.app.layout.viewlets.interfaces import IPortalFooter
+    >>> from Products.Five.viewlet.manager import ViewletManager
+    >>> from plone.app.viewletmanager.manager import OrderedViewletManager
+    >>> Footer = ViewletManager('left', IPortalFooter,
+    ...                             bases=(OrderedViewletManager,))
+
+Now we can instantiate the manager.
+
+    >>> manager = Footer(self.portal, request, view)
+
+Initially there is portal-colophon etc.
+
+    >>> manager.update()
+    >>> manager.render()
+    u'\n  <div id="portal-colophon">...
+    
+Set analytics (webstats_js) code through the controlpanel
+
+    >>> from plone.app.controlpanel.site import ISiteSchema
+    >>> props = ISiteSchema(self.portal)
+    >>> props.webstats_js = u"<script>window.title='Hello'</script>"
+    >>> manager.update()
+    >>> manager.render()
+    u'<script>window.title=\'Hello\'</script>\n  <div id="portal-colophon">...
+    
+Now enter some non-ascii text
+
+    >>> props.webstats_js = u"<script>window.title='C\xedsa\u0159'</script>"
+    >>> manager.update()
+    >>> manager.render()
+    u'<script>window.title=\'C\xedsa\u0159\'</script>\n  <div id="portal-colophon">...
+
