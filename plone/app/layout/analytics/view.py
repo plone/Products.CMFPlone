@@ -3,7 +3,7 @@ from zope.viewlet.interfaces import IViewlet
 
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
-
+from Products.CMFPlone.utils import safe_unicode
 
 class AnalyticsViewlet(BrowserView):
     implements(IViewlet)
@@ -22,6 +22,6 @@ class AnalyticsViewlet(BrowserView):
     def render(self):
         """render the webstats snippet"""
         ptool = getToolByName(self.context, "portal_properties")
-        snippet = ptool.site_properties.webstats_js
+        snippet = safe_unicode(ptool.site_properties.webstats_js)
         return snippet
 
