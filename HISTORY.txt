@@ -3,6 +3,9 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 3.0.4 - UNRELEASED
+    - No longer require a _catalog property on portal_catalog for migration.
+      This avoids migration errors on sites with e.g. QueueCatalog installed.
+      [alecm]
 
     - Added diff tool entry for Folder type.
       Fixes http://dev.plone.org/plone/ticket/7253
