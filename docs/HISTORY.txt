@@ -4,6 +4,10 @@ Changelog for plone.app.layout
 
 plone.app.layout - 1.0.1 Unreleased
 
+    - Allow non ascii characters in webstats_js code. 
+      Fixes http://dev.plone.org/plone/ticket/7359
+      [naro]
+
     - Fixed workflow history viewlet to handle entries with
       usernames that don't exist any more (deleted users) and
       also anonymous users.
