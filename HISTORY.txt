@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Added diff tool entry for Folder type.
+      Fixes http://dev.plone.org/plone/ticket/7253
+      [alecm]
+
     - Fix for user titles on ownership_form, which were showing the
       currrent member title instead of prospective owners.  Thanks to
       younga for the fix.
