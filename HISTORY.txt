@@ -3,6 +3,11 @@ Changelog for Plone
     (name of developer listed in brackets)
 
 Plone 3.0.4 - UNRELEASED
+
+    - Allow non ascii characters in webstats_js code. 
+      Fixes http://dev.plone.org/plone/ticket/7359
+      [naro]
+
     - No longer require a _catalog property on portal_catalog for migration.
       This avoids migration errors on sites with e.g. QueueCatalog installed.
       [alecm]
