@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<object>
+ <difftypes>
+  <type portal_type="Folder">
+   <field name="any" difftype="Compound Diff for AT types"/>
+  </type>
+ </difftypes>
+</object>
