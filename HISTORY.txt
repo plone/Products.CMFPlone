@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Complete support for show_ymd to the calendar widget template. This makes
+      it possible to create time-only widgets.
+      [wichert]
+
     - Allow non ascii characters in webstats_js code. 
       Fixes http://dev.plone.org/plone/ticket/7359
       [naro]
