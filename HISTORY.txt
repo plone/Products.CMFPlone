@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.4 - Final - released October 8, 2007
 
+    - Add support for show_ymd to the calendar widget template. This makes
+      it possible to create time-only widgets.
+      [wichert]
+
     - No longer require a _catalog property on portal_catalog for migration.
       This avoids migration errors on sites with e.g. QueueCatalog installed.
       [alecm]

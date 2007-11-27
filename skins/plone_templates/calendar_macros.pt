@@ -9,6 +9,7 @@
          tabindex tabindex/next|tabindex|nothing;
          inputIndex uniqueItemIndex/next;
          show_hm show_hm | python:1;
+         show_ymd show_ymd | python:1;
          starting_year starting_year | nothing;
          ending_year ending_year | nothing;
          future_years future_years | nothing;
@@ -30,7 +31,21 @@
       <input type="hidden" tal:attributes="name string:$inputname;
 	     id input_id;
 	     value python:not show_hm and inputvalue and hasattr(inputvalue, 'strftime') and inputvalue.strftime('%Y/%m/%d') or inputvalue"/>
-
+      <tal:ymd condition="not:show_ymd">
+          <input type="hidden"
+                 id="ic_year" 
+                 value="1900"
+                 tal:attributes="id string:${input_id}_year;"/>
+          <input type="hidden"
+                 id="ic_month" 
+                 value="1"
+                 tal:attributes="id string:${input_id}_month;"/>
+          <input type="hidden"
+                 id="ic_day" 
+                 value="1"
+                 tal:attributes="id string:${input_id}_day;"/>
+       </tal:ymd>
+      <tal:ymd condition="show_ymd">
       <span tal:condition="python:len(years)!=1">
 	<select name="ic_year"
 		id="ic_year"
@@ -116,6 +131,7 @@
 
       <a tal:condition="show_jscal"
          tal:attributes="onclick string:return showJsCalendar('${input_id}_month', '$input_id', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', $yearStart, $yearEnd);"><img alt="" src="" tal:replace="structure here/popup_calendar.gif" /></a>
+      </tal:ymd>
 
       <span tal:condition="show_hm">
 	<select name="ic_hour"
