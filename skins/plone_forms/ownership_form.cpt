@@ -120,7 +120,7 @@
                        <option value=""
                                tal:attributes="value user/userid;
                                                selected python:test(user['userid']==owner, 'selected', None);"
-                               tal:content="member/title">username</option>
+                               tal:content="user/title">username</option>
                      </tal:block>
                   </select>
               </div>
