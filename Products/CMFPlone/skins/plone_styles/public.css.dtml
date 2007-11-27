@@ -233,6 +233,9 @@ form.searchPage input.searchButton {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     color: &dtml-globalFontColor;;
 }
+.LSTable {
+    margin: 1em 0;
+}
 .LSRow {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
     white-space: normal;
