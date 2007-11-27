@@ -93,16 +93,15 @@ def addGetEventTypeIndex(portal, out):
     """Adds the getEventType KeywordIndex."""
     catalog = getToolByName(portal, 'portal_catalog', None)
     if catalog is not None:
-        try:
-            index = catalog._catalog.getIndex('getEventType')
-        except KeyError:
-            pass
-        else:
+        if 'getEventType' in catalog.indexes():
+            index = [i for i in catalog.index_objects() if
+                                         i.getId() == 'getEventType']
             indextype = index.__class__.__name__
             if indextype == 'KeywordIndex':
                 return 0
             catalog.delIndex('getEventType')
-            out.append("Deleted %s 'getEventType' from portal_catalog." % indextype)
+            out.append("Deleted %s 'getEventType' from portal_catalog." %
+                       indextype)
 
         catalog.addIndex('getEventType', 'KeywordIndex')
         out.append("Added KeywordIndex 'getEventType' to portal_catalog.")

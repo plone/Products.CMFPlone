@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.5.4 - Final - released October 8, 2007
 
+    - No longer require a _catalog property on portal_catalog for migration.
+      This avoids migration errors on sites with e.g. QueueCatalog installed.
+      [alecm]
+
     - Add migration to set the default GS profile when upgrading from 2.1.
       [alecm]
 
