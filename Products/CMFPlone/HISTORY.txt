@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Fix for user titles on ownership_form, which were showing the
+      currrent member title instead of prospective owners.  Thanks to
+      younga for the fix.
+      Fixes http://dev.plone.org/plone/ticket/7286
+      [alecm]
+
     - Use a FauxArchetypeTool which returns no catalogs for CatalogMultiplex
       aware objects in portal factory. This prevents most temporary objects
       from being indexed in the first place.
