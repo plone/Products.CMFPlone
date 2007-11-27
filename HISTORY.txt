@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Fix to the Table of Contents code generation, so it doesn't produce
+      invalid HTML even if you feed it an invalid nesting structure.
+      Fixes http://dev.plone.org/plone/ticket/6930
+      Thanks to davisagli for the fix.
+      [limi]
+
     - Avoid the unlock handler to act if we are submitting with ok button.
       (Fixes ConflictError-s in case of an object is created without
       the portal factory.)

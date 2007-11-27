@@ -78,13 +78,16 @@ function createTableOfContents() {
         anchor.name = 'section-' + i;
         node.parentNode.insertBefore(anchor, node);
 
-        var level = node.nodeName.substring(1);
+        var level = node.nodeName.substring(1) - 1;
         // if the current level is deeper, add ol tags
         while (ols.length < level) {
             var ol = document.createElement('ol');
             if (ols.length > 0) {
-                ols[ols.length - 1].appendChild(ol);
-            }
+                if (!ols[ols.length - 1].lastChild) {
+                    // create a blank li for cases where, e.g., we have a subheading before any headings
+                    ols[ols.length - 1].appendChild(document.createElement('li'));
+                }
+                ols[ols.length - 1].lastChild.appendChild(ol);            }
             ols.push(ol);
         }
         // if the current level is higher, remove ol tags
