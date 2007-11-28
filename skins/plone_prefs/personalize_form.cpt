@@ -84,10 +84,6 @@
                             <div metal:use-macro="top_macro"/>
                         </tal:macro>
 
-                        <tal:macro condition="showTop">
-                            <div metal:use-macro="top_macro"/>
-                        </tal:macro>
-
                         <div class="field"
                              tal:define="error errors/fullname | nothing;
                                          fullname python:request.get('fullname', member.getProperty('fullname', ''));"
@@ -131,10 +127,6 @@
                                    />
 
                         </div>
-                        
-                        <tal:macro condition="showAfterPrimary">
-                            <div metal:use-macro="after_primary"/>
-                        </tal:macro>
                         
                         <tal:macro condition="showAfterPrimary">
                             <div metal:use-macro="after_primary"/>
@@ -405,10 +397,6 @@
                             <label for="pdelete" i18n:translate="label_delete_portrait">Delete Portrait</label>
 
                         </div>
-                        
-                        <tal:macro condition="showBottom">
-                            <div metal:use-macro="bottom_macro" />
-                        </tal:macro>
                         
                         <tal:macro condition="showBottom">
                             <div metal:use-macro="bottom_macro" />
