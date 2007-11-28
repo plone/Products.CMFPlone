@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Undeprecated fullscreen.js - it still exists in the actions, but is
+      turned off by default. It shouldn't have been moved to the 
+      plone_deprecated skin layer. If you want to use it, you'll need to
+      add it to the JS registry manually, though - as we don't include it
+      in the default JS setup, since it's not in use by default.
+      [limi]
+
     - Remove duplicate calling of customization macros
       in personalize_form.cpt
       Fixes http://dev.plone.org/plone/ticket/7359
