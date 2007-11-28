@@ -4,20 +4,15 @@
 
 # $Id$
 
-from plone.app.blob import db   # needs to be imported first to set up ZODB
 from Products.PloneTestCase.ptc import *
 
 # Make the test fixture extension profile active
 from zope.interface import classImplements
 from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.interfaces import ITestCasePloneSiteRoot
-
 classImplements(PloneSite, ITestCasePloneSiteRoot)
 
-from plone.app.blob.tests import setupPackage
-setupPackage()
-
-setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture', 'plone.app.blob:testing'])
+setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
 
 
 class PloneTestCase(PloneTestCase):
