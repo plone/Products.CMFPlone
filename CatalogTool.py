@@ -43,7 +43,6 @@ from Products.CMFCore.interfaces import ISiteRoot
 
 from zope.interface import Interface, implements, providedBy
 from zope.component import adapts, getMultiAdapter
-from zope.component.interface import interfaceToName
 
 from plone.app.content.interfaces import IIndexableObjectWrapper
 
@@ -140,7 +139,7 @@ registerIndexableAttribute('allowedRolesAndUsers', allowedRolesAndUsers)
 
 
 def object_provides(object, portal, **kw):
-    return [interfaceToName(portal, i) for i in providedBy(object).flattened()]
+    return [i.__identifier__ for i in providedBy(object).flattened()]
 
 registerIndexableAttribute('object_provides', object_provides)
 

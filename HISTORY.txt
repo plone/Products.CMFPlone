@@ -41,6 +41,10 @@ Plone 3.0.4 - UNRELEASED
       http://dev.plone.org/plone/ticket/7246
       [maurits]
 
+    - Index interface.__identifier__ instead of interfaceToName(interface),
+      a 5x speed improvement when reindexing.
+      [mj]
+
 Plone 3.0.3 - released November 9, 2007 
 
     - Allowed the abbr, acronym, var, dfn, samp, address, bdo, thead, tfoot,

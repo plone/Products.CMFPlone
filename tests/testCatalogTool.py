@@ -2,6 +2,9 @@
 # CatalogTool tests
 #
 
+import unittest
+import zope.interface
+
 from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
@@ -946,6 +949,26 @@ class TestExtensibleIndexableObjectWrapper(PloneTestCase.PloneTestCase):
         self.failUnlessEqual(wrapped.getIcon, iconname)
 
 
+class TestObjectProvidedIndexExtender(unittest.TestCase):
+    def _index(self, object):
+        from Products.CMFPlone.CatalogTool import object_provides
+        return object_provides(object, None)
+    
+    def testNoInterfaces(self):
+        class Dummy(object):
+            pass
+        self.assertEqual(self._index(Dummy()), ['zope.interface.Interface'])
+        
+    def testSimpleInterface(self):
+        class IDummy(zope.interface.Interface):
+            pass
+        class Dummy(object):
+            zope.interface.implements(IDummy)
+        self.assertEqual(self._index(Dummy()), [
+            'Products.CMFPlone.tests.testCatalogTool.IDummy',
+            'zope.interface.Interface'])
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -959,4 +982,5 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogExpirationFiltering))
     suite.addTest(makeSuite(TestExtensibleIndexableObjectWrapper))
     suite.addTest(makeSuite(TestCatalogSorting))
+    suite.addTest(makeSuite(TestObjectProvidedIndexExtender))
     return suite
