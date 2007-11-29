@@ -22,11 +22,11 @@ class ControlPanelTestCase(FunctionalTestCase):
         
         self.ptool = getToolByName(self.portal, 'portal_properties')
         self.site_props = self.ptool.site_properties
-        
-    def loginAsManager(self):
+
+    def loginAsManager(self, user='root', pwd='secret'):
         """points the browser to the login screen and logs in as user root with Manager role."""
         self.browser.open('http://nohost/plone/')
         self.browser.getLink('Log in').click()
-        self.browser.getControl('Login Name').value = 'root'
-        self.browser.getControl('Password').value = 'secret'
+        self.browser.getControl('Login Name').value = user
+        self.browser.getControl('Password').value = pwd
         self.browser.getControl('Log in').click()
