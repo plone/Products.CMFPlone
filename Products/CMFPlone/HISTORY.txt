@@ -45,6 +45,10 @@ Plone 3.0.4 - UNRELEASED
     - Move our GenericSetup import step registrations to zcml.
       [wichert]
 
+    - Index interface.__identifier__ instead of interfaceToName(interface),
+      a 5x speed improvement when reindexing.
+      [mj]
+
     - Added a 'do-not-use' warning to the ZMI security screen for Plone content
       objects. Sharing tab or workflows are what you are looking for.
       [hannosch]
