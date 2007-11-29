@@ -2,7 +2,7 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 1.0.3 Unreleased
+plone.app.controlpanel - 1.0.3 Released November 30, 2007
 
     - Fixed description in filter control panel to be recognizable by i18ndude.
       [hannosch]
