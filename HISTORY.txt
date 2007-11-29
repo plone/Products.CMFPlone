@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - User search on the Sharing tab now matches by login name in addition to
+      full name. Fixes http://dev.plone.org/plone/ticket/6853
+      [erikrose]
+
     - Undeprecated fullscreen.js - it still exists in the actions, but is
       turned off by default. It shouldn't have been moved to the 
       plone_deprecated skin layer. If you want to use it, you'll need to
