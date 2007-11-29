@@ -11,6 +11,10 @@ Plone 4.0 - UNRELEASED
 
 Plone 3.0.4 - UNRELEASED
 
+    - User search on the Sharing tab now matches by login name in addition to
+      full name. Fixes http://dev.plone.org/plone/ticket/6853
+      [erikrose]
+
     - Complete support for show_ymd to the calendar widget template. This makes
       it possible to create time-only widgets.
       [wichert]
