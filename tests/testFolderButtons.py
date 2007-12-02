@@ -2,11 +2,15 @@
 # Tests for scripts behind folder_contents view
 #
 
-from AccessControl import Unauthorized
+from zExceptions import Forbidden
+from zope.interface import directlyProvides
+from zope import component
+from zope.app.container.interfaces import IObjectRemovedEvent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.setup import default_user
 from Products.PloneTestCase.setup import default_password
-
+from Products.CMFPlone.tests.dummy import DeletedItem, ICantBeDeleted, \
+                                          disallow_delete_handler
 import transaction
 
 PloneTestCase.installProduct('SiteAccess', quiet=1)
@@ -92,6 +96,18 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='bar')
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.bar.invokeFactory('Document', id='doc2')
+        undeletable = DeletedItem('no_delete', 'Just Try!')
+        # make it undeletable
+        directlyProvides(undeletable, ICantBeDeleted)
+        component.provideHandler(disallow_delete_handler, [ICantBeDeleted,
+                                                           IObjectRemovedEvent])
+        self.folder._setObject('no_delete', undeletable)
+
+    def beforeTearDown(self):
+        # unregister our deletion event subscriber
+        component.getSiteManager().unregisterHandler(disallow_delete_handler,
+                                                     [ICantBeDeleted,
+                                                      IObjectRemovedEvent])
 
     def testFolderDeletion(self):
         # Make sure object gets deleted
@@ -130,9 +146,27 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.setRequestMethod('POST')
         self.folder.folder_delete()
 
+    def testObjectDeleteFailureIsCleanedUp(self):
+        doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
+        doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
+        undeletable_path = '/'.join(self.folder.no_delete.getPhysicalPath())
+        self.app.REQUEST.set('paths', [doc1_path, undeletable_path, doc2_path])
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.folder.folder_delete()
+        # The two deletable object should have been deleted
+        self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
+        self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
+        # but the undeletable object will still be in place
+        undeletable = getattr(self.folder, 'no_delete', None)
+        self.failIfEqual(undeletable, None)
+        # manage_beforeDelete will have been called, but the change it
+        # makes should have been rolled back
+        self.failIf(undeletable.manage_before_delete_called)
+
     def testGETRaisesUnauthorized(self):
         # folder_delete requires a non-GET request and will fial otherwise
-        self.assertRaises(Unauthorized, self.folder.folder_delete)
+        self.assertRaises(Forbidden, self.folder.folder_delete)
 
 
 
@@ -153,6 +187,8 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # Make sure object gets published
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
 
@@ -160,6 +196,8 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # Make sure catalog gets updated
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
         results = self.catalog(path=doc_path)
         self.assertEqual(len(results),1)
@@ -170,14 +208,54 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         self.login('reviewer')
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish('publish',paths=[doc1_path,doc2_path])
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
         self.assertEqual(self.wtool.getInfoFor(self.folder.bar.doc2, 'review_state',None), 'published')
 
     def testNoErrorOnBadPaths(self):
-        # Ensure we don't fail on a bad path
-        self.app.REQUEST.set('paths', ['/garbage/path'])
-        self.folder.content_status_history()
+        # Ensure we don't fail on a bad path, but transition the good ones
+        doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
+        doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
+        paths=[doc1_path, '/garbage/path', doc2_path]
+        self.login('reviewer')
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.folder.folder_publish('publish', paths=paths)
+        self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1,
+                                               'review_state', None),
+                         'published')
+        self.assertEqual(self.wtool.getInfoFor(self.folder.bar.doc2,
+                                               'review_state', None),
+                         'published')
+
+    def testPublisFailureIsCleanedUp(self):
+        # Ensure we don't fail on a bad path, but transition the good ones
+
+        # First we add a failing notifySuccess method to the workflow
+        # via a nasty monkey-patch
+        from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
+        def notifySuccess(self, obj, action, result):
+            raise Exception, 'Cannot transition'
+        orig_notify = DCWorkflowDefinition.notifySuccess
+        DCWorkflowDefinition.notifySuccess = notifySuccess
+
+        # now we perform the transition
+        doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
+        self.login('reviewer')
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.folder.folder_publish('publish', paths=[doc1_path])
+        # because an error was raised during post transition the
+        # transaction should have been rolled-back and the state
+        # should not have changed
+        self.failIfEqual(self.wtool.getInfoFor(self.folder.foo.doc1,
+                                               'review_state', None),
+                         'published')
+
+        # undo our nasty patch
+        DCWorkflowDefinition.notifySuccess = orig_notify
 
 
 class TestFolderCutCopy(PloneTestCase.PloneTestCase):
