@@ -165,7 +165,8 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
             paths.append('/'.join(o.getPhysicalPath()))
 
         # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')        self.folder.folder_publish(workflow_action = 'publish', 
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
                                    include_children = False)
         for o in (self.folder.d1, self.folder.f1):

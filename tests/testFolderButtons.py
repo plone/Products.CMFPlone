@@ -9,7 +9,7 @@ from zope.app.container.interfaces import IObjectRemovedEvent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.setup import default_user
 from Products.PloneTestCase.setup import default_password
-from Products.CMFPlone.tests.dummy import DeletedItem, ICantBeDeleted, \
+from Products.CMFPlone.tests.dummy import Item, ICantBeDeleted, \
                                           disallow_delete_handler
 import transaction
 
@@ -96,7 +96,7 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='bar')
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.bar.invokeFactory('Document', id='doc2')
-        undeletable = DeletedItem('no_delete', 'Just Try!')
+        undeletable = Item('no_delete', 'Just Try!')
         # make it undeletable
         directlyProvides(undeletable, ICantBeDeleted)
         component.provideHandler(disallow_delete_handler, [ICantBeDeleted,
@@ -162,7 +162,7 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.failIfEqual(undeletable, None)
         # manage_beforeDelete will have been called, but the change it
         # makes should have been rolled back
-        self.failIf(undeletable.manage_before_delete_called)
+        self.failIf(hasattr(undeletable, 'delete_attempted'))
 
     def testGETRaisesUnauthorized(self):
         # folder_delete requires a non-GET request and will fial otherwise

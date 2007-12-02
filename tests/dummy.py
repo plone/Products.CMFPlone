@@ -47,7 +47,6 @@ class Item(SimpleItem):
         if title is not None:
             self.title = title
 
-
 class SizedItem(Item):
     '''Item maintaining a size'''
 
@@ -192,4 +191,5 @@ class ICantBeDeleted(Interface):
 
 
 def disallow_delete_handler(obj, event):
+    obj.delete_attempted = True
     raise Exception, "You can't delete this!"
