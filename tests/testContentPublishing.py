@@ -128,6 +128,9 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         paths = []
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
+
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
                                    include_children = True)
@@ -143,6 +146,9 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         paths = []
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
+
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
                                    effective_date = '1/1/2001',
@@ -161,7 +167,9 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         paths = []
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
-        self.folder.folder_publish(workflow_action = 'publish', 
+
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')        self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
                                    include_children = False)
         for o in (self.folder.d1, self.folder.f1):

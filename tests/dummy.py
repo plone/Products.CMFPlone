@@ -6,7 +6,7 @@
 
 import os
 
-from zope.interface import implements
+from zope.interface import Interface, implements
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
@@ -186,3 +186,9 @@ class ImageComputedProps(Item):
         return getattr(self, '_longdesc', '')
 
     longdesc = ComputedAttribute(get_longdesc, 1)
+
+class ICantBeDeleted(Interface):
+    """A marker indicating that an object can't be deleted"""
+
+def disallow_delete_handler(obj, event):
+    raise Exception, "You can't delete this!"

@@ -2,6 +2,29 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+Plone 2.5.5 - Unreleased
+
+    - Moved most folder_publish and folder_delete logic into PloneTool
+      methods.  Added savepoints and rollbacks for folder publish and
+      delete actions, so that partial deletions/transitions are not
+      committed.  Made folder_publish require POST. Thanks to rossp
+      for finding this.
+      [alecm]
+
+    - Add support for show_ymd to the calendar widget template. This
+      makes it possible to create time-only widgets.
+      [wiggy]
+
+    - Fix 2.1 migration issue for sites using QueueCatalog.
+      [alecm]
+
+    - Fix issues with non-ASCII characters in potal title.
+      http://dev.plone.org/plone/ticket/6628
+      [witsch]
+
+    - Fix security hole due to unsafe use of python pickles.
+      [MJ, witsch, hanno]
+
 Plone 2.5.4 - Final - released October 8, 2007
 
     - Add support for show_ymd to the calendar widget template. This makes
