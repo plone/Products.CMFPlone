@@ -1290,8 +1290,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 else:
                     raise
             if getattr(o, 'isPrincipiaFolderish', None) and include_children:
-                subobject_paths = ["%s/%s" % ('/'.join(path, id)) for id in
-                                                                  o.objectIds()]
+                subobject_paths = ["%s/%s" % (path, id) for id in o.objectIds()]
                 self.transitionObjectsByPaths(workflow_action, subobject_paths,
                                               comment, expiration_date,
                                               effective_date, include_children,
