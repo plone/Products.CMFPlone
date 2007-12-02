@@ -11,6 +11,13 @@ Plone 4.0 - UNRELEASED
 
 Plone 3.0.4 - UNRELEASED
 
+    - Moved most folder_publish and folder_delete logic into PloneTool
+      methods.  Added savepoints and rollbacks for folder publish and
+      delete actions, so that partial deletions/transitions are not
+      committed.  Made folder_publish require POST. Thanks to rossp
+      for finding this.
+      [alecm]
+
     - User search on the Sharing tab now matches by login name in addition to
       full name. Fixes http://dev.plone.org/plone/ticket/6853
       [erikrose]

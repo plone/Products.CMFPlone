@@ -1188,4 +1188,72 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             return None
 
+    # This is public because we don't know what permissions the user
+    # has on the objects to be deleted.  The restrictedTraverse and
+    # manage_delObjects calls should handle permission checks for us.
+    security.declarePublic('deleteObjectsByPaths')
+    def deleteObjectsByPaths(self, paths, handle_errors=True, REQUEST=None):
+        failure = {}
+        success = []
+        # use the portal for traversal in case we have relative paths
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        traverse = portal.restrictedTraverse
+        for path in paths:
+            # Skip and note any errors
+            if handle_errors:
+                sp = transaction.savepoint()
+            try:
+                obj = traverse(path)
+                obj_parent = aq_parent(aq_inner(obj))
+                obj_parent.manage_delObjects([obj.getId()])
+                success.append('%s (%s)' % (obj.title_or_id(), path))
+            except ConflictError:
+                raise
+            except Exception, e:
+                if handle_errors:
+                    sp.rollback()
+                    failure[path]= e
+                else:
+                    raise
+        transaction_note('Deleted %s' % (', '.join(success)))
+        return success, failure
+    deleteObjectsByPaths = postonly(deleteObjectsByPaths)
+
+    security.declarePublic('transitionObjectsByPaths')
+    def transitionObjectsByPaths(self, workflow_action, paths, comment='',
+                                 expiration_date=None, effective_date=None,
+                                 include_children=False, handle_errors=True,
+                                 REQUEST=None):
+        failure = {}
+        # use the portal for traversal in case we have relative paths
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        traverse = portal.restrictedTraverse
+        for path in paths:
+            if handle_errors:
+                sp = transaction.savepoint()
+            try:
+                o = traverse(path, None)
+                if o is not None:
+                    o.content_status_modify(workflow_action,
+                                            comment,
+                                            effective_date=effective_date,
+                                            expiration_date=expiration_date)
+            except ConflictError:
+                raise
+            except Exception, e:
+                if handle_errors:
+                    # skip this object but continue with sub-objects.
+                    sp.rollback()
+                    failure[path]= e
+                else:
+                    raise
+            if getattr(o, 'isPrincipiaFolderish', None) and include_children:
+                subobject_paths = ["%s/%s" % (path, id) for id in o.objectIds()]
+                self.transitionObjectsByPaths(workflow_action, subobject_paths,
+                                              comment, expiration_date,
+                                              effective_date, include_children,
+                                              handle_errors)
+        return failure
+    transitionObjectsByPaths = postonly(transitionObjectsByPaths)
+
 InitializeClass(PloneTool)

@@ -15,10 +15,6 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 plone_utils=context.plone_utils
 REQUEST=context.REQUEST
-workflow = context.portal_workflow
-content_status_modify=context.content_status_modify
-failed = {}
-success = {}
 
 if workflow_action is None:
     context.plone_utils.addPortalMessage(_(u'You must select a publishing action.'), 'error')
@@ -27,50 +23,9 @@ if not paths:
     context.plone_utils.addPortalMessage(_(u'You must select content to change.'), 'error')
     return state.set(status='failure')
 
-objs = context.getObjectsFromPathList(paths)
-
-for o in objs:
-    obj_path = '/'.join(o.getPhysicalPath())
-    try:
-        if o.isPrincipiaFolderish and include_children:
-            
-            # call the script to do the workflow action
-            # catch it if there is not workflow action for this object
-            # but continue with subobjects.
-            # Since we can have mixed portal_type objects it can occur
-            # quite easily that the workflow_action doesn't work for some objects
-            # but we need to keep on going.
-            try:
-                o.content_status_modify( workflow_action,
-                                         comment,
-                                         effective_date=effective_date,
-                                         expiration_date=expiration_date )
-            except ConflictError:
-                raise
-            except Exception, e:
-                # skip this object but continue with sub-objects.
-                failed[obj_path]=e
-
-            subobject_paths = ["%s/%s" % ('/'.join(o.getPhysicalPath()), id) for id in o.objectIds()]
-            # Only call folder_publish on non empty folders
-            if subobject_paths:
-                o.folder_publish( workflow_action, 
-                                  subobject_paths, 
-                                  comment=comment, 
-                                  include_children=include_children, 
-                                  effective_date=effective_date,
-                                  expiration_date=expiration_date )
-        else:
-            o.content_status_modify( workflow_action,
-                                     comment,
-                                     effective_date=effective_date,
-                                     expiration_date=expiration_date )
-                                     
-            success[obj_path]=comment
-    except ConflictError:
-        raise
-    except Exception, e:
-        failed[obj_path]=e
+failed = plone_utils.transitionObjectsByPaths(workflow_action, paths, comment,
+                                              expiration_date, effective_date,
+                                              include_children, REQUEST=REQUEST)
 
 transaction_note( str(paths) + ' transitioned ' + workflow_action )
 

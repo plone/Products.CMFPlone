@@ -6,7 +6,7 @@
 
 import os
 
-from zope.interface import implements
+from zope.interface import Interface, implements
 from zope.interface import Interface
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -46,7 +46,6 @@ class Item(SimpleItem):
             self.id = id
         if title is not None:
             self.title = title
-
 
 class SizedItem(Item):
     '''Item maintaining a size'''
@@ -186,3 +185,11 @@ class IDummyUtility(Interface):
 class DummyUtility(SimpleItem):
     implements(IDummyUtility)
 
+
+class ICantBeDeleted(Interface):
+    """A marker indicating that an object can't be deleted"""
+
+
+def disallow_delete_handler(obj, event):
+    obj.delete_attempted = True
+    raise Exception, "You can't delete this!"
