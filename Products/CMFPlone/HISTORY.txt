@@ -109,7 +109,7 @@ Plone 3.0.4 - UNRELEASED
       [hannosch]
 
     - Added basic migration folders, so PloneTestCase can effectively
-      recognize a Plone 3.5 version.
+      recognize a Plone 4.0 version.
       [hannosch]
 
     - Refactored initial content creation into a separate extension profile,
@@ -144,7 +144,7 @@ Plone 3.0.4 - UNRELEASED
       multiple test methods.
       [hannosch]
 
-    - Removed migration code for old releases. Migrating directly to Plone 3.5
+    - Removed migration code for old releases. Migrating directly to Plone 4.0
       is only supported using versions of Plone from 2.5 final or newer.
       [hannosch]
 
@@ -345,7 +345,7 @@ Plone 3.0-rc2 - released July 27, 2007
       [limi]
 
     - Move login and logout-handling code into the membership tool and
-      add sending of events when a user logs in or logs out. For Plone 3.5
+      add sending of events when a user logs in or logs out. For Plone 4.0
       we can move most of the code into event handlers.
       [wichert]
 
@@ -427,7 +427,7 @@ Plone 3.0-rc1 - released July 13, 2007
       [wichert]
 
     - Disable the mobile style sheet by default, since very few people use it,
-      and we're planning to re-work this in 3.5 anyway. If you need it, simply
+      and we're planning to re-work this in 4.0 anyway. If you need it, simply
       turn it back on in portal_css.
       [limi]
 
@@ -1277,7 +1277,7 @@ Plone 3.0-alpha2 - released February 13, 2007
     - Deleted folder_localrole_form and its scripts, since this is now 
       provided in the @@sharing view. That felt good. Added an alias with
       a deprecation warning in plone.app.layout so that old links still work.
-      The alias will be gone in 3.5.
+      The alias will be gone in 4.0.
       [optilude]
 
     - Moved accessibility elements from base.css to invisibles.css, since they
@@ -1481,7 +1481,7 @@ Plone 3.0-alpha1 - released November 24, 2006
       exist, the old fallback (content_status_modify) is still used.
       [optilude]
 
-    - Plone 3.5 will introduce the role "Power User" to make it possible to
+    - Plone 4.0 will introduce the role "Power User" to make it possible to
       hide advanced functionality from casual users. It you have any
       deployments that use this role name, now would be a good time to rename
       that role and stop using it in product code.
@@ -3627,7 +3627,7 @@ Plone 2.1.1 - Coloma - Released October 13, 2005
 Plone 2.1 - Plaid - Released September 6, 2005
 
     - Added deprecation warning for DTML in CSS. We will most likely get rid
-      of this in Plone 3.0 or 3.5 to reduce complexity. If we are going to
+      of this in Plone 3.0 or 4.0 to reduce complexity. If we are going to
       support variables in CSS, ResourceRegistries should handle it, not DTML.
       [limi]
 

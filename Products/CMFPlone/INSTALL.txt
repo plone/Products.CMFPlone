@@ -2,14 +2,14 @@ Installing Plone manually, step by step instructions.
 ==============================================================================
 
 The following is a list of important things to note when installing or
-upgrading to Plone 3.5:
+upgrading to Plone 4.0:
 
 * Unpacking the Plone archive with WinZip will not work: WinZip will truncate
   filenames without warning you. 7-Zip is a good open source alternative for
   Windows that you can use instead: http://www.7-zip.org
 
-* Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope
-  2.11 and later may or may not work. Zope 3.x is not supported.
+* Zope 2.11+ is now required. Older versions of Zope will not work. Zope
+  2.12 and later may or may not work. Zope 3.x is not supported.
 
 * The python-gettext package is now required. This package can be
   downloaded from its home page at http://pypi.python.org/pypi/python-gettext .
@@ -25,7 +25,7 @@ upgrading to Plone 3.5:
   They can be downloaded from the OpenID enabled site at
   http://www.openidenabled.com/resources/downloads/python-openid/
 
-* Plone 3.5 uses both Zope Products and python packages. The Zope Products
+* Plone 4.0 uses both Zope Products and python packages. The Zope Products
   are installed in the usual location: the Products directory of the Zope
   instance. Python package may be installed in the lib/python directory in the
   Zope instance, or anywhere on the standard python path.
@@ -77,9 +77,9 @@ upgrading to Plone 3.5:
 
   **MANDATORY**
 
-  - Zope 2.10.4 or later (does not run on Zope 3 or Zope 2.11)
+  - Zope 2.11+ or later (does not run on Zope 3)
     Not included in the Plone tarball.
-    http://www.zope.org/Products/Zope/2.10.4
+    http://www.zope.org/Products/Zope/2.11.0
 
   - Python Imaging Library 1.1.5 or newer
     Not included in the Plone tarball.
@@ -99,44 +99,28 @@ upgrading to Plone 3.5:
   **The following Zope product dependencies are included in the Plone tarball**
 
   - ATContentTypes
-  - ATReferenceBrowserWidget
   - AdvancedQuery
   - Archetypes
   - CMFActionIcons
   - CMFCalendar
-  - CMFCore
   - CMFDefault
   - CMFDiffTool
-  - CMFDynamicViewFTI
   - CMFEditions
-  - CMFFormController
   - CMFPlacefulWorkflow
-  - CMFPlone
-  - CMFQuickInstallerTool
   - CMFTestCase
   - CMFTopic
   - CMFUid
   - DCWorkflow
   - ExtendedPathIndex
   - ExternalEditor
-  - GenericSetup
   - GroupUserFolder
   - Kupu
   - Marshall
   - MimetypesRegistry
   - NuPlone
-  - PasswordResetTool
-  - PlacelessTranslationService
-  - PloneLanguageTool
-  - PlonePAS
   - PloneTestCase
   - PloneTranslations
-  - PluggableAuthService
-  - PluginRegistry
   - PortalTransforms
-  - ResourceRegistries
-  - SecureMailHost
-  - Statusmessages
   - Validation
   - ZopeVersionControl
 
@@ -174,6 +158,22 @@ upgrading to Plone 3.5:
   - plone.session
   - plone.theme
   - wicked
+  - Products.ATReferenceBrowserWidget
+  - Products.CMFCore
+  - Products.CMFDynamicViewFTI
+  - Products.CMFFormController
+  - Products.CMFPlone
+  - Products.CMFQuickInstallerTool
+  - Products.GenericSetup
+  - Products.PasswordResetTool
+  - Products.PlacelessTranslationService
+  - Products.PloneLanguageTool
+  - Products.PlonePAS
+  - Products.PluggableAuthService
+  - Products.PluginRegistry
+  - Products.ResourceRegistries
+  - Products.SecureMailHost
+  - Products.statusmessages
 
 ==============================================================================
 

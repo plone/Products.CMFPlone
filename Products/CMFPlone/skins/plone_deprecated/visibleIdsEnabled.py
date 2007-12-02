@@ -8,7 +8,7 @@
 ##title=
 ##
 context.plone_log("The visibleIdsEnabled script is deprecated and will be "
-                  "removed in plone 3.5.  Use the visibleIdsEnabled method "
+                  "removed in plone 4.0. Use the visibleIdsEnabled method "
                   "of the @@plone view instead.")
 
 return context.restrictedTraverse('@@plone').visibleIdsEnabled()

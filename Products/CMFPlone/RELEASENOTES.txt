@@ -1,8 +1,8 @@
-Plone 3.5 - TBD
+Plone 4.0 - TBD
 ===============
 
 The following is a list of important things to note when installing or
-upgrading to Plone 3.5:
+upgrading to Plone 4.0:
 
 * Unpacking the Plone archive with WinZip will not work: WinZip will truncate
   filenames without warning you. 7-Zip is a good open source alternative for
@@ -25,7 +25,7 @@ upgrading to Plone 3.5:
   They can be downloaded from the OpenID enabled site at
   http://www.openidenabled.com/resources/downloads/python-openid/
 
-* Plone 3.5 uses both Zope Products and python packages. The Zope Products
+* Plone 4.0 uses both Zope Products and python packages. The Zope Products
   are installed in the usual location: the Products directory of the Zope
   instance. Python package may be installed in the lib/python directory in the
   Zope instance, or anywhere on the standard python path.
@@ -58,7 +58,7 @@ http://plone.org/upgrade
 Important notes for developers
 ------------------------------
 
-The latest information on migrating products to Plone 3.5 can be found online
+The latest information on migrating products to Plone 4.0 can be found online
 at http://plone.org/documentation/manual/upgrade-guide
 
 * No developer notes yet.
@@ -67,20 +67,15 @@ at http://plone.org/documentation/manual/upgrade-guide
 Preferred but not obligatory (right now)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Use events instead of manage_ methods (which will probably disappear in Plone
-  4.0 or 4.5)
-
 * Packaging technology:
 
   - Use python packages instead of Zope products. Creating python packages
     is very easy using the paster tool. See
     http://plone.org/documentation/how-to/use-paster/ for more information.
 
-  - Use ploneit or ploneout to create development and/or production
-    environments
+  - Use ploneout to create development and/or production environments.
 
-  - Releasing packages as eggs and registering them with the Python Cheese
-    Shop (http://cheeseshop.python.org/) makes it simple for people to
+  - Releasing packages as eggs and registering them with the Python Package
+    Index (http://pypi.python.org/) makes it simple for people to
     install them and all required dependencies if they are using a system
-    such as ploneout, ploneit or workingenv.
-
+    such as ploneout.

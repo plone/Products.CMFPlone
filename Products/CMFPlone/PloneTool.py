@@ -949,7 +949,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def normalizeString(self, text, relaxed=None):
         """Normalizes a title to an id.
 
-        The relaxed mode was removed in Plone 3.5. You should use either the
+        The relaxed mode was removed in Plone 4.0. You should use either the
         url or file name normalizer from the plone.i18n package instead.
 
         normalizeString() converts a whole string to a normalized form that

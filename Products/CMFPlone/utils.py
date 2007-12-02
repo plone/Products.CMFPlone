@@ -203,7 +203,7 @@ def typesToList(context):
     return wl
 
 def normalizeString(text, context=None, encoding=None, relaxed=None):
-    # The relaxed mode was removed in Plone 3.5. You should use either the url
+    # The relaxed mode was removed in Plone 4.0. You should use either the url
     # or file name normalizer from the plone.i18n package instead.
     assert (context is not None) or (encoding is not None), \
            'Either context or encoding must be provided'
@@ -223,10 +223,10 @@ def normalizeString(text, context=None, encoding=None, relaxed=None):
 
 
 class IndexIterator(object):
-    """BBB: This iterator was us ed for tabindex use, but for accessibility 
+    """BBB: This iterator was used for tabindex use, but for accessibility 
        reasons, we have deprecated it, and it now returns None always. Should 
-       be removed in Plone 3.5.
-       
+       be removed in Plone 4.0.
+
        Below are the different use cases we used to have, all return None now:
 
         >>> i = IndexIterator(pos=10, mainSlot=True)
