@@ -230,7 +230,7 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
                                                'review_state', None),
                          'published')
 
-    def testPublisFailureIsCleanedUp(self):
+    def testPublishFailureIsCleanedUp(self):
         # Ensure we don't fail on a bad path, but transition the good ones
 
         # First we add a failing notifySuccess method to the workflow
