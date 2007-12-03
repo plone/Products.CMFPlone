@@ -18,12 +18,12 @@ Plone 2.5.5 - Unreleased
     - Fix 2.1 migration issue for sites using QueueCatalog.
       [alecm]
 
-    - Fix issues with non-ASCII characters in potal title.
+    - Fix issues with non-ASCII characters in portal title.
       http://dev.plone.org/plone/ticket/6628
-      [witsch]
+      [hannosch]
 
     - Fix security hole due to unsafe use of python pickles.
-      [MJ, witsch, hanno]
+      [MJ, witsch, hannosch]
 
 Plone 2.5.4 - Final - released October 8, 2007
 
