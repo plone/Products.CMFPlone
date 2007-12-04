@@ -138,7 +138,11 @@ def importControlPanel(context):
     """Import Plone control panel.
     """
     site = context.getSite()
-    tool = getToolByName(site, 'portal_controlpanel')
+    tool = getToolByName(site, 'portal_controlpanel', None)
+    if tool is None:
+        logger = context.getLogger('controlpanel')
+        logger.info('Nothing to import.')
+        return
 
     importObjects(tool, '', context)
 

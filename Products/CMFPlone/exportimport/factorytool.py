@@ -62,7 +62,11 @@ def importFactoryTool(context):
     """Import Factory Tool configuration.
     """
     site = context.getSite()
-    tool = getToolByName(site, 'portal_factory')
+    tool = getToolByName(site, 'portal_factory', None)
+    if tool is None:
+        logger = context.getLogger("factorytool")
+        logger.info("Nothing to import.")
+        return
 
     importObjects(tool, '', context)
 
