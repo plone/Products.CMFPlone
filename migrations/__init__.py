@@ -229,4 +229,8 @@ def registerMigrations():
                                       '2.5.5',
                                       null)
 
+    MigrationTool.registerUpgradePath('2.5.5',
+                                      '2.5.6-devel (SVN/UNRELEASED)',
+                                      null)
+
 
