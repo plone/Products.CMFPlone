@@ -125,6 +125,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
 
+        # folder_publish requires a non-GET request
         self.setRequestMethod('POST')
         self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
@@ -142,6 +143,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
 
+        # folder_publish requires a non-GET request
         self.setRequestMethod('POST')
         self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
@@ -162,6 +164,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         for o in (self.folder.d1, self.folder.f1):
             paths.append('/'.join(o.getPhysicalPath()))
 
+        # folder_publish requires a non-GET request
         self.setRequestMethod('POST')
         self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
