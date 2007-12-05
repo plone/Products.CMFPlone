@@ -9,7 +9,6 @@ if __name__ == '__main__':
 from cStringIO import StringIO
 from zExceptions import Forbidden
 from zope.interface import directlyProvides
-from zope import component
 from zope.app.container.interfaces import IObjectRemovedEvent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.setup import default_user
@@ -20,6 +19,24 @@ import transaction
 
 PloneTestCase.installProduct('SiteAccess', quiet=1)
 
+try:
+    from zope.component import provideHandler
+    unprovideHandler = lambda x,y: None
+except ImportError:
+    # Zope 2.8 subscriber registration nonsense, we need to enable container
+    # events to use the subscriber here
+    from zope.app.tests import ztapi
+    from Products.Five.event import doMonkies, undoMonkies
+    from Products.Five import zcml
+    import Products.Five as Five
+    def provideHandler(factory, for_):
+        doMonkies()
+        zcml.load_config('event.zcml', package=Five)
+        ztapi.handle(for_, factory)
+    def unprovideHandler(factory, for_):
+        # this doesn't really unregister the handler, but the effect is the
+        # same
+        undoMonkies()
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
     # Tests for folder_rename and folder_rename_form
@@ -113,15 +130,16 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         undeletable = DeletedItem('no_delete', 'Just Try!')
         # make it undeletable
         directlyProvides(undeletable, ICantBeDeleted)
-        component.provideHandler(disallow_delete_handler, [ICantBeDeleted,
-                                                           IObjectRemovedEvent])
+        provideHandler(disallow_delete_handler, (ICantBeDeleted,
+                                                 IObjectRemovedEvent))
         self.folder._setObject('no_delete', undeletable)
         # folder_delete requires a non-GET request
         self.app.REQUEST.set('REQUEST_METHOD', 'POST')
 
     def beforeTearDown(self):
         # ideally we would unregister our event handler here, in 3.0 we will
-        pass
+        unprovideHandler(disallow_delete_handler, (ICantBeDeleted,
+                                                   IObjectRemovedEvent))
 
     def testFolderDeletion(self):
         # Make sure object gets deleted

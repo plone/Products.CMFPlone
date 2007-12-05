@@ -108,6 +108,7 @@ except ImportError:
     log(("PIL not found. Plone needs PIL 1.1.5 or newer. "
          "Please download it from http://www.pythonware.com/products/pil/ or "
          "http://effbot.org/downloads/#Imaging"))
+    raise ImportError, 'PIL is required'
 
 try:
     from elementtree import ElementTree
