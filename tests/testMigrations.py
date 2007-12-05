@@ -1145,7 +1145,7 @@ class TestMigrations_v2_5_4(MigrationTest):
         self.assertEqual(self.setup.getImportContextID(), '')
         addGSSteps(self.portal, [])
         self.assertEqual(self.setup.getImportContextID(),
-                         PROF_ID)
+                         'profile-' + PROF_ID)
 
     def testAddGSStepsAlreadyThere(self):
         # set a bogus existing profile, ensure we don't change it

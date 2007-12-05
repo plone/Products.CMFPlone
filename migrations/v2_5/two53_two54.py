@@ -19,5 +19,5 @@ def addGSSteps(portal, out):
         if not setup_tool.getImportContextID():
             # make sure the profile is there
             if PROF_ID in [i['id'] for i in setup_tool.listProfileInfo()]:
-                setup_tool.setImportContext(PROF_ID)
+                setup_tool.setImportContext('profile-' + PROF_ID)
     out.append('Set plone GS profile as default')

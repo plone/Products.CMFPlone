@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - GenericSetup profile ids now have to have a prefix for certain calls.
+      Fixes http://dev.plone.org/plone/ticket/7435
+      [witsch]
+
     - Moved folder_rename logic into PloneTool and added
       savepoint+rollback there as well.  Additionally, folder_rename
       now requires POST requests.
