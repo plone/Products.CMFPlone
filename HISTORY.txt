@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Moved folder_rename logic into PloneTool and added
+      savepoint+rollback there as well.  Additionally, folder_rename
+      now requires POST requests.
+      [alecm]
+
     - Moved most folder_publish and folder_delete logic into PloneTool
       methods.  Added savepoints and rollbacks for folder publish and
       delete actions, so that partial deletions/transitions are not

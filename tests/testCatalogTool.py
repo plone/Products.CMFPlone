@@ -512,6 +512,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         # The bug in fact talks about folder_rename
         title = 'Test Folder - Snooze!'
         foo_path = '/'.join(self.folder.foo.getPhysicalPath())
+        self.setRequestMethod('POST')
         self.folder.folder_rename(paths=[foo_path], new_ids=['foo'], new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
@@ -524,6 +525,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         title = 'Test Folder - Snooze!'
         transaction.savepoint(optimistic=True) # make rename work
         foo_path = '/'.join(self.folder.foo.getPhysicalPath())
+        self.setRequestMethod('POST')
         self.folder.folder_rename(paths=[foo_path], new_ids=['bar'], new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
