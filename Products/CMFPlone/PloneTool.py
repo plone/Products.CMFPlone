@@ -38,6 +38,7 @@ from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.statusmessages.interfaces import IStatusMessage
 from AccessControl.requestmethod import postonly
+from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 
 # BBB Plone 4.0
 try:
@@ -1208,6 +1209,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 obj_parent.manage_delObjects([obj.getId()])
                 success.append('%s (%s)' % (obj.title_or_id(), path))
             except ConflictError:
+                raise
+            except LinkIntegrityNotificationException:
                 raise
             except Exception, e:
                 if handle_errors:
