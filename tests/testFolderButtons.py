@@ -6,6 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
+from cStringIO import StringIO
 from zExceptions import Forbidden
 from zope.interface import directlyProvides
 from zope import component
@@ -29,6 +30,8 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='bar')
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.bar.invokeFactory('Document', id='doc2')
+        # folder_rename requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
 
     def testTitleIsUpdatedOnTitleChange(self):
         # Make sure our title is updated on the object
@@ -90,6 +93,13 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('paths', ['/garbage/path'])
         self.folder.folder_rename_form()
 
+    def testGETRaises(self):
+        # folder_rename requires a non-GET request and will fail otherwise
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
+        self.assertRaises(Forbidden, self.folder.folder_rename,
+                          [doc1_path], ['bar'], ['Baz'])
+
 
 class TestFolderDelete(PloneTestCase.PloneTestCase):
     # Tests for folder_delete.py
@@ -106,6 +116,8 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         component.provideHandler(disallow_delete_handler, [ICantBeDeleted,
                                                            IObjectRemovedEvent])
         self.folder._setObject('no_delete', undeletable)
+        # folder_delete requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
 
     def beforeTearDown(self):
         # ideally we would unregister our event handler here, in 3.0 we will
@@ -115,8 +127,6 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         # Make sure object gets deleted
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc_path])
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
 
@@ -124,8 +134,6 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         # Make sure catalog gets updated
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc_path])
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         results = self.catalog(path=doc_path)
         self.failIf(results)
@@ -135,8 +143,6 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc1_path,doc2_path])
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
@@ -144,8 +150,6 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
     def testNoErrorOnBadPaths(self):
         # Ensure we don't fail on a bad path
         self.app.REQUEST.set('paths', ['/garbage/path'])
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
 
     def testObjectDeleteFailureIsCleanedUp(self):
@@ -153,8 +157,6 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         undeletable_path = '/'.join(self.folder.no_delete.getPhysicalPath())
         self.app.REQUEST.set('paths', [doc1_path, undeletable_path, doc2_path])
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_delete()
         # The two deletable object should have been deleted
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
@@ -167,7 +169,8 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.failIf(undeletable.manage_before_delete_called)
 
     def testGETRaisesUnauthorized(self):
-        # folder_delete requires a non-GET request and will fial otherwise
+        # folder_delete requires a non-GET request and will fail otherwise
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
         self.assertRaises(Forbidden, self.folder.folder_delete)
 
 
@@ -184,13 +187,13 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.bar.invokeFactory('Document', id='doc2')
         self.portal.acl_users._doAddUser('reviewer', 'secret', ['Reviewer'], [])
+        # folder_publish requires a non-GET request
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
 
     def testFolderPublishing(self):
         # Make sure object gets published
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
 
@@ -198,8 +201,6 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # Make sure catalog gets updated
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
         results = self.catalog(path=doc_path)
         self.assertEqual(len(results),1)
@@ -210,8 +211,6 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         self.login('reviewer')
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish('publish',paths=[doc1_path,doc2_path])
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
         self.assertEqual(self.wtool.getInfoFor(self.folder.bar.doc2, 'review_state',None), 'published')
@@ -222,8 +221,6 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         paths=[doc1_path, '/garbage/path', doc2_path]
         self.login('reviewer')
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish('publish', paths=paths)
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1,
                                                'review_state', None),
@@ -246,8 +243,6 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # now we perform the transition
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
-        # folder_delete requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_publish('publish', paths=[doc1_path])
         # because an error was raised during post transition the
         # transaction should have been rolled-back and the state
@@ -258,6 +253,12 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
 
         # undo our nasty patch
         DCWorkflowDefinition.notifySuccess = orig_notify
+
+    def testGETRaises(self):
+        # folder_rename requires a non-GET request and will fail otherwise
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
+        self.assertRaises(Forbidden, self.folder.folder_publish,
+                          'publish', paths=['bogus'])
 
 
 class TestFolderCutCopy(PloneTestCase.PloneTestCase):
@@ -324,8 +325,10 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         newParams += "&form.button.renameAll=Rename All"
         newParams += "&new_ids:list=%s" % 'new-id'
         newParams += "&new_titles:list=%s" % 'New title'
-                
-        response = self.publish('%s?%s' % (editFormPath, newParams,), self.basic_auth)
+
+        data = StringIO(newParams)
+        response = self.publish(editFormPath, self.basic_auth,
+                                request_method='POST', stdin=data)
         self.assertStatusEqual(response.getStatus(), 302)
         
         # Make sure we landed in the right place
@@ -380,8 +383,10 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         newParams += "&form.button.renameAll=Rename All"
         newParams += "&new_ids:list=%s" % 'new-id'
         newParams += "&new_titles:list=%s" % 'New title'
-                
-        response = self.publish('%s?%s' % (editFormPath, newParams,), self.basic_auth)
+
+        data = StringIO(newParams)
+        response = self.publish(editFormPath, self.basic_auth,
+                                request_method='POST', stdin=data)
         self.assertStatusEqual(response.getStatus(), 302)
         
         # Make sure we landed in the right place

@@ -37,7 +37,9 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         folder_path = '/'.join(self.folder.foo.folder1.getPhysicalPath())
         transaction.savepoint(optimistic=True) # make rename work
         # Make the folder the default page
+        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
         self.folder.folder_rename(paths=[folder_path], new_ids=['index_html'], new_titles=['Default Folderish Document'])
+        self.app.REQUEST.set('REQUEST_METHOD', 'GET')
 
     def getModificationPermissions(self):
         return [ModifyPortalContent,
