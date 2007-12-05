@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 2.5.5 - Unreleased
+Plone 2.5.5 - Final - released December 4, 2007
 
     - Moved folder_rename logic into PloneTool and added
       savepoint+rollback there as well.  Additionally, folder_rename

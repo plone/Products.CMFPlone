@@ -34,9 +34,9 @@ Installing Plone manually, step by step instructions.
 
   **MANDATORY**
 
-  - Zope 2.9.7+ (does not comply with Zope 2.10.x and does not run natively on
+  - Zope 2.9.8+ (does not comply with Zope 2.10.x and does not run natively on
     Zope 3)
-     http://www.zope.org/Products/Zope/2.9.7
+     http://www.zope.org/Products/Zope/2.9.8
    or
     Zope 2.8.9+
      http://www.zope.org/Products/Zope/2.8.9
@@ -50,22 +50,22 @@ Installing Plone manually, step by step instructions.
   - CMFQuickInstallerTool 1.6.1 or newer
      Included in the Plone tarball
 
-  - GroupUserFolder 3.54.3 or newer
+  - GroupUserFolder 3.54.4 or newer
      Included in the Plone tarball
 
-  - CMFFormController 2.0.8 or newer
+  - CMFFormController 2.0.10 or newer
      Included in the Plone tarball
 
   - SecureMailHost 1.0.5 or newer
      Included in the Plone tarball
 
-  - Archetypes 1.4.4 or newer
+  - Archetypes 1.4.6 or newer
      Included in the Plone tarball
 
-  - ATContentTypes 1.1.6 or newer
+  - ATContentTypes 1.1.8 or newer
      Included in the Plone tarball
 
-  - ATReferenceBrowserWidget 1.7.1 or newer
+  - ATReferenceBrowserWidget 1.7.2 or newer
      Included in the Plone tarball
 
   - ResourceRegistries 1.3.9 or newer
@@ -90,19 +90,19 @@ Installing Plone manually, step by step instructions.
   - Placeless Translation Service 1.3.7 or newer
      Included in the Plone tarball
 
-  - PloneTranslations 3.0.2
+  - PloneTranslations 3.0.8
      Included in the Plone tarball
 
-  - PloneLanguageTool 1.6 or newer
+  - PloneLanguageTool 1.8 or newer
      Included in the Plone tarball
 
-  - CMFPlacefulWorkflow 1.0.5 or newer
+  - CMFPlacefulWorkflow 1.0.6 or newer
      Included in the Plone tarball
 
-  - PlonePAS 2.4 or newer
+  - PlonePAS 2.5 or newer
      Included in the Plone tarball
 
-  - PasswordResetTool 0.4.3 or newer
+  - PasswordResetTool 0.4.4 or newer
      Included in the Plone tarball
 
   - PluggableAuthService 1.4.2 or newer
@@ -119,7 +119,7 @@ Installing Plone manually, step by step instructions.
 
   **OPTIONAL**
 
-  - CacheFu 1.0.2 or newer
+  - CacheFu 1.0.3 or newer
      Included in the Plone tarball
      In order to use CacheFu, you must copy or link the directories
      ``CacheSetup``, ``CMFSquidTool``, ``PageCacheManager``, and
