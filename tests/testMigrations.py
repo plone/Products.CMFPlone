@@ -178,6 +178,8 @@ from Products.CMFPlone.migrations.v3_0.betas import hidePropertiesAction
 
 from Products.CMFPlone.migrations.v3_0.rcs import addIntelligentText
 
+from Products.CMFPlone.migrations.v3_0.final_three0x import installNewModifiers
+
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 
 from zope.app.cache.interfaces.ram import IRAMCache
@@ -3095,6 +3097,40 @@ class TestMigrations_v3_0(MigrationTest):
         # now all are back:
         self.failUnless(mime_type in mtr.list_mimetypes())
         self.failUnless(set(ptr.objectIds()).issuperset(set(missing_transforms)))
+
+    def testInstallNewModifiers(self):
+        # ensure the new modifiers are installed
+        modifiers = self.portal.portal_modifier
+        self.failUnless('AbortVersioningOfLargeFilesAndImages' in
+                                                          modifiers.objectIds())
+        modifiers.manage_delObjects(['AbortVersioningOfLargeFilesAndImages',
+                                     'SkipVersioningOfLargeFilesAndImages'])
+        self.failIf('AbortVersioningOfLargeFilesAndImages' in
+                                                          modifiers.objectIds())
+        installNewModifiers(self.portal, [])
+        self.failUnless('AbortVersioningOfLargeFilesAndImages' in
+                                                          modifiers.objectIds())
+        self.failUnless('SkipVersioningOfLargeFilesAndImages' in
+                                                          modifiers.objectIds())
+
+    def testInstallNewModifiersTwice(self):
+        # ensure that we get no errors when run twice
+        modifiers = self.portal.portal_modifier
+        installNewModifiers(self.portal, [])
+        installNewModifiers(self.portal, [])
+
+    def testInstallNewModifiersDoesNotStompChanges(self):
+        # ensure that reinstalling doesn't kill customizations
+        modifiers = self.portal.portal_modifier
+        modifiers.AbortVersioningOfLargeFilesAndImages.max_size = 1000
+        installNewModifiers(self.portal, [])
+        self.assertEqual(modifiers.AbortVersioningOfLargeFilesAndImages.max_size,
+                         1000)
+
+    def testInstallNewModifiersNoTool(self):
+        # make sure there are no errors if the tool is missing
+        self.portal._delObject('portal_modifier')
+        installNewModifiers(self.portal, [])
 
 
 def test_suite():

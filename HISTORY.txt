@@ -4,10 +4,15 @@ Changelog for Plone
 
 Plone 3.0.4 - UNRELEASED
 
+    - Added migration to enable workaround for CMFEditions large file
+      handling issue.
+      Related to http://dev.plone.org/plone/ticket/7223
+      [alecm]
+
     - In livesearch reply, html quote the description to disable the
       inclusion of arbitrary html and executing arbitrary javascript
       when the search result is displayed. 
-      Fixes https://dev.plone.org/plone/ticket/7439
+      Fixes http://dev.plone.org/plone/ticket/7439
       [ree]
 
     - GenericSetup profile ids now have to have a prefix for certain calls.
