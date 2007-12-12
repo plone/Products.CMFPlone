@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0.5 - UNRELEASED
 
+    - If you are using the fullscreenmode.js script, you can now pass in a
+      'minimal=1' argument in the URL to make a page start out in the minimal 
+      mode.
+      [fschulze] [limi]
+
 Plone 3.0.4 - released December 7, 2007
 
     - Added migration to enable workaround for CMFEditions large file

@@ -1,29 +1,34 @@
-function toggleFullScreenMode() {
-    var body = cssQuery('body')[0];
-    if(document.getElementById('icon-full_screen')) {
-    var fsicon = document.getElementById('icon-full_screen'); }
+function setFullScreenMode(fs) {
+    var icon = document.getElementById('icon-full_screen');
 
-    if (hasClassName(body, 'fullscreen')) {
-        // unset cookie
-        removeClassName(body, 'fullscreen');
-        createCookie('fullscreenMode', '');
-        if(fsicon) { fsicon.src = 'fullscreenexpand_icon.gif'; }
-    } else {
+    if (fs) {
         // set cookie
-        addClassName(body, 'fullscreen');
+        addClassName(document.body, 'fullscreen');
         createCookie('fullscreenMode', '1');
-        if(fsicon) { fsicon.src = 'fullscreencollapse_icon.gif'; }
+        if(icon) { icon.src = 'fullscreencollapse_icon.gif'; }
+    } else {
+        // unset cookie
+        removeClassName(document.body, 'fullscreen');
+        createCookie('fullscreenMode', '');
+        if(icon) { icon.src = 'fullscreenexpand_icon.gif'; }
     }
 };
 
+function toggleFullScreenMode() {
+    setFullScreenMode(hasClassName(document.body, 'fullscreen') == false);
+};
+
 function fullscreenModeLoad() {
-    if(document.getElementById('icon-full_screen')) {
-    var fsicon = document.getElementById('icon-full_screen'); }
-    // based on cookie
-    if (readCookie('fullscreenMode') == '1') {
-        var body = cssQuery('body')[0];
-        addClassName(body, 'fullscreen');
-        if(fsicon) { fsicon.src = 'fullscreencollapse_icon.gif'; }
+    // based on query string
+    var queryparts = window.location.search.slice(1).split('&');
+    for (var i=0; i<queryparts.length; i++) {
+        var parts = queryparts[i].split('=');
+        if (parts[0] == 'minimal' && parts[1] != null) {
+            setFullScreenMode(parts[1] == '1');
+            return;
+        }
     }
+    // based on cookie
+    setFullScreenMode(readCookie('fullscreenMode') == '1');
 };
 registerPloneFunction(fullscreenModeLoad)
