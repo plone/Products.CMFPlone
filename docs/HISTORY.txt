@@ -20,6 +20,11 @@ plone.app.portlets 1.0.2 - unreleased
       KSS. This closes http://dev.plone.org/plone/ticket/7052.
       [hannosch]
 
+    - Make render_cachekey include the manager and assignment names, otherwise
+      portlets that happen to have the same brains in their _data have the same
+      cachekey.
+      [ldr]
+
 plone.app.portlets 1.0.1 - August 18, 2007
 
     - Remove use of login javascript methods.
