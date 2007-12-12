@@ -13,6 +13,8 @@ def render_cachekey(fun, self):
     key = StringIO()
     print >> key, getToolByName(aq_inner(self.context), 'portal_url')()
     print >> key, get_language(aq_inner(self.context), self.request)
+    print >> key, self.manager.__name__
+    print >> key, self.data.__name__
 
     def add(brain):
         key.write(brain.getPath())
@@ -20,7 +22,6 @@ def render_cachekey(fun, self):
         key.write(brain.modified)
         key.write('\n\n')
 
-    catalog = getToolByName(self.context, 'portal_catalog')
     for brain in self._data():
         add(brain)
 
