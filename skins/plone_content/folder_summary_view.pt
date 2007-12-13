@@ -75,16 +75,16 @@
                        tal:condition="python:item_type != 'Link'"
                        tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
                         <img src="" alt=""
-                             tal:condition="item_object/image_thumb|nothing"
-                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
+                             tal:condition="exists:item_object/image_thumb"
+                             tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
                     </a>
 
                     <a href="#"
                        tal:condition="python:item_type == 'Link'"
                        tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
                         <img src="" alt=""
-                             tal:condition="item_object/image_thumb|nothing"
-                             tal:replace="structure python: item_object.tag(scale='thumb', css_class='tileImage')" />
+                             tal:condition="exists:item_object/image_thumb"
+                             tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
                     </a>
 
                     <h2 class="tileHeadline"
