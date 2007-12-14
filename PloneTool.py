@@ -1243,7 +1243,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         for path in paths:
             # Skip and note any errors
             if handle_errors:
-                sp = transaction.savepoint()
+                sp = transaction.savepoint(optimistic=True)
             try:
                 obj = traverse(path)
                 obj_parent = aq_parent(aq_inner(obj))
@@ -1272,7 +1272,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         traverse = portal.restrictedTraverse
         for path in paths:
             if handle_errors:
-                sp = transaction.savepoint()
+                sp = transaction.savepoint(optimistic=True)
             try:
                 o = traverse(path, None)
                 if o is not None:
@@ -1310,7 +1310,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             new_id = new_ids[i]
             new_title = new_titles[i]
             if handle_errors:
-                sp = transaction.savepoint()
+                sp = transaction.savepoint(optimistic=True)
             try:
                 obj = traverse(path, None)
                 obid = obj.getId()

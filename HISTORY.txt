@@ -2,6 +2,12 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
+Plone 2.5.6 - Unreleased
+
+    - Fixed issues when non-savepoint supporting connections are
+      involved in a folder_delete, folder_publish, or folder_rename.
+      [alecm]
+
 Plone 2.5.5 - Final - released December 4, 2007
 
     - Moved folder_rename logic into PloneTool and added
