@@ -2,7 +2,7 @@
 <dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
              i18n:domain="plone"
              workflow_id="intranet_folder_workflow"
-             title="Intranet/Extranet Workflow for Folders"
+             title="Intranet Workflow for Folders"
              description="
 - Normally used with the Intranet/Extranet workflow on folder types.
 - Only has two states: Private and Internal Draft."
