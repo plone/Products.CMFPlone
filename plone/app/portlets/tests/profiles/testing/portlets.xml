@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<portlets>
+
+    <portletmanager 
+        name="test.testcolumn" 
+        type="plone.app.portlets.tests.test_configuration.ITestColumn"
+        />
+
+    <portlet 
+        addview="portlets.test.Test"
+        title="Test portlet"
+        description="A test portlet"
+        />
+        
+    <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test">
+            <property name="test">Test prop</property>
+    </assignment>
+
+</portlets>

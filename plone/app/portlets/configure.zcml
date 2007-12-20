@@ -5,6 +5,8 @@
 
     <include package="plone.portlets" />
     
+    <five:registerPackage package="." initialize=".initialize" />
+    
     <include file="permissions.zcml" />
     
     <include package=".browser" />

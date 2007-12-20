@@ -4,4 +4,6 @@
   <adapter factory=".portlets.PortletsXMLAdapter"
            name="plone.portlets" />
 
+  <adapter factory=".portlets.PropertyPortletAssignmentExportImportHandler" />
+
 </configure>
