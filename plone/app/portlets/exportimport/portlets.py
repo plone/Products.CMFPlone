@@ -65,7 +65,6 @@ class PropertyPortletAssignmentExportImportHandler(object):
     def import_node(self, interface, child):
         """Import a single <property /> node
         """
-        
         property_name = child.getAttribute('name')
         
         field = interface.get(property_name, None)
@@ -262,6 +261,9 @@ class PortletsXMLAdapter(XMLAdapterBase):
                         name = chooser.chooseName(None, assignment)
                     
                     mapping[name] = assignment
+
+                # aq-wrap it so that complex fields will work
+                assignment = assignment.__of__(site)
 
                 # 3. Use an adapter to update the portlet settings
                 

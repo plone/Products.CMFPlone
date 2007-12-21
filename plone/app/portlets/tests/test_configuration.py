@@ -38,7 +38,7 @@ class ITestPortlet(IPortletDataProvider):
     test_text = schema.TextLine(title=u"Test")
     test_bool = schema.Bool(title=u"Test")
     test_tuple = schema.Tuple(title=u"Test",
-                              value_type=schema.ASCIILine(title=u"Test"))
+                              value_type=schema.Choice(vocabulary="plone.app.vocabularies.WorkflowStates"))
 
 class TestAssignment(base.Assignment):
     implements(ITestPortlet)
@@ -192,7 +192,7 @@ class TestGenericSetup(PortletsTestCase):
         assignment = mapping['test.portlet1']
         self.assertEquals('Test prop 1', assignment.test_text)
         self.assertEquals(False, assignment.test_bool)
-        self.assertEquals(('One', 'Two'), assignment.test_tuple)
+        self.assertEquals((u'published', u'private'), assignment.test_tuple)
         
         assignment = mapping['test.portlet2']
         self.assertEquals('Test prop 2', assignment.test_text)

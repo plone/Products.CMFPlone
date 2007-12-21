@@ -23,8 +23,8 @@
             <property name="test_text">Test prop 1</property>
             <property name="test_bool">False</property>
             <property name="test_tuple">
-                <element>One</element>
-                <element>Two</element>
+                <element>published</element>
+                <element>private</element>
             </property>
     </assignment>
     
