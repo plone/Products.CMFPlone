@@ -12,12 +12,35 @@
         description="A test portlet"
         />
         
+    <!-- 'name' and 'insert-before' are optional -->
+    
     <assignment
         manager="test.testcolumn"
         category="context"
         key="/"
-        type="portlets.test.Test">
+        type="portlets.test.Test"
+        name="test.portlet1">
             <property name="test">Test prop</property>
     </assignment>
+    
+    <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test"
+        name="test.portlet2"
+        insert-before="test.portlet1">
+            <property name="test">Test prop</property>
+    </assignment>
+    
+        <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test"
+        name="test.portlet3"
+        insert-before="*">
+            <property name="test">Test prop</property>
+    </assignment>    
 
 </portlets>

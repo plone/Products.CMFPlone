@@ -59,8 +59,8 @@ class PropertyPortletAssignmentExportImportHandler(object):
             field = getattr(interface, property_name, None)
             if field is None:
                 continue
-                
             
+            field.set(self.assignment, property_value)
     
     def export_assignment(interface, fragment):
         # XXX: How do we want this to work?
@@ -175,7 +175,6 @@ class PortletsXMLAdapter(XMLAdapterBase):
                  
             # Portlet assignments                                
             elif child.nodeName.lower() == 'assignment':
-                
                 # 1. Determine the assignment mapping and the name
                 manager = child.getAttribute('manager')
                 category = child.getAttribute('category')
@@ -195,7 +194,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     portlet_factory = getUtility(IFactory, name=type_)
                     assignment = portlet_factory()
                     
-                    if name is not None:
+                    if not name:
                         chooser = INameChooser(mapping)
                         name = chooser.chooseName(None, assignment)
                     
@@ -207,6 +206,23 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 assignment_handler = IPortletAssignmentExportImportHandler(assignment)
                 assignment_handler.import_assignment(portlet_interface, child)
     
+                # 4. Handle ordering
+                
+                insert_before = child.getAttribute('insert-before')
+                if insert_before:
+                    position = None
+                    keys = list(mapping.keys())
+                    
+                    if insert_before == "*":
+                        position = 0
+                    elif insert_before in keys:
+                        position = keys.index(insert_before)
+                    
+                    if position is not None:
+                        keys.remove(name)
+                        keys.insert(position, name)
+                        mapping.updateOrder(keys)
+                        
     def _extractPortlets(self):
         """Write portlet managers and types to XML
         """

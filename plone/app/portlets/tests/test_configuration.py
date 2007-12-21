@@ -172,13 +172,18 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals('portlets.test.Test', portlet_type.addview)
         self.assertEquals(None, portlet_type.for_)
         
-    def testAssignmentCreated(self):
+    def testAssignmentCreatedAndOrdered(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(1, len(mapping))
-        assignment = list(mapping.values())[0]
-        self.failUnless(isinstance(assignment, TestAssignment))
-        self.assertEquals("Test prop", assignment.test)
+        self.assertEquals(3, len(mapping))
+        self.assertEquals(['test.portlet3', 'test.portlet2', 'test.portlet1'], list(mapping.keys()))
+        
+    def testAssignmentPropertiesSet(self):
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        assignment = mapping['test.portlet1']
+        self.assertEquals('Test prop', assignment.test)
+        
 
 def test_suite():
     from unittest import TestSuite, makeSuite
