@@ -182,7 +182,7 @@ class TestGenericSetup(PortletsTestCase):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
         assignment = mapping['test.portlet1']
-        self.assertEquals('Test prop', assignment.test)
+        self.assertEquals('Test prop 1', assignment.test)
         
 
 def test_suite():

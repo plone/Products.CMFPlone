@@ -20,7 +20,7 @@
         key="/"
         type="portlets.test.Test"
         name="test.portlet1">
-            <property name="test">Test prop</property>
+            <property name="test">Test prop 1</property>
     </assignment>
     
     <assignment
@@ -30,7 +30,7 @@
         type="portlets.test.Test"
         name="test.portlet2"
         insert-before="test.portlet1">
-            <property name="test">Test prop</property>
+            <property name="test">Test prop 2</property>
     </assignment>
     
         <assignment
@@ -40,7 +40,7 @@
         type="portlets.test.Test"
         name="test.portlet3"
         insert-before="*">
-            <property name="test">Test prop</property>
+            <property name="test">Test prop 3</property>
     </assignment>    
 
 </portlets>

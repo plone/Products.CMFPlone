@@ -12,6 +12,9 @@ from zope.component import getUtility
 from zope.component.interfaces import IFactory
 from zope.component.interfaces import IComponentRegistry
 
+from zope.schema.interfaces import IFromUnicode
+from zope.schema.interfaces import ICollection
+
 from zope.app.container.interfaces import INameChooser
 
 from Products.GenericSetup.interfaces import IBody
@@ -50,21 +53,81 @@ class PropertyPortletAssignmentExportImportHandler(object):
         
     def import_assignment(self, interface, node):
         for child in node.childNodes:
-            if child.nodeName != 'property':
-                continue
-                                    
-            property_name = child.getAttribute('name')
-            property_value = child.nodeValue
-            
-            field = getattr(interface, property_name, None)
-            if field is None:
-                continue
-            
-            field.set(self.assignment, property_value)
+            if child.nodeName == 'property':
+                self.import_node(interface, child)
     
-    def export_assignment(interface, fragment):
+    def export_assignment(self, interface, fragment):
         # XXX: How do we want this to work?
         pass
+        
+    # Helper methods
+    
+    def import_node(self, interface, child):
+        """Import a single <property /> node
+        """
+        
+        property_name = child.getAttribute('name')
+        
+        field = interface.get(property_name, None)
+        if field is None:
+            return
+        
+        field = field.bind(self.assignment)
+        value = None
+        
+        # If we have a collection, we need to look at the value_type.
+        # We look for <element>value</element> child nodes and get the
+        # value from there
+        if ICollection.providedBy(field):
+            value_type = field.value_type
+            value = []
+            for element in child.childNodes:
+                if element.nodeName != 'element':
+                    continue
+                element_value = self.extract_text(element)
+                value.append(self.from_unicode(value_type, element))
+            value = self.field_typecast(field, value)
+        
+        # Otherwise, just get the value of the <property /> node
+        else:
+            value = self.extract_text(child)
+            value = self.from_unicode(field, value)
+            
+        field.validate(value)
+        field.set(self.assignment, value)
+        
+    def extract_text(self, node):
+        node.normalize()
+        text = u""
+        for child in node.childNodes:
+            if child.nodeType == node.TEXT_NODE:
+                text += child.nodeValue
+        return text
+        
+    def from_unicode(self, field, value):
+        
+        # XXX: Bool incorrectly omits to declare that it implements
+        # IFromUnicode, even though it does.
+        import zope.schema
+        if IFromUnicode.providedBy(field) or isinstance(field, zope.schema.Bool):
+            return field.fromUnicode(value)
+        else:
+            return self.field_typecast(field, value)
+    
+    def field_typecast(self, field, value):
+        # A slight hack to force sequence types to the right type
+        typecast = getattr(field, '_type', None)
+        if typecast is not None:
+            if not isinstance(typecast, (list, tuple)):
+                typecast = (typecast,)
+            for tc in reversed(typecast):
+                if callable(tc):
+                    try:
+                        value = tc(value)
+                        break
+                    except:
+                        pass
+        return value
 
 class PortletsXMLAdapter(XMLAdapterBase):
     """In- and exporter for a local portlet configuration
