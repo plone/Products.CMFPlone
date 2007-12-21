@@ -20,7 +20,12 @@
         key="/"
         type="portlets.test.Test"
         name="test.portlet1">
-            <property name="test">Test prop 1</property>
+            <property name="test_text">Test prop 1</property>
+            <property name="test_bool">False</property>
+            <property name="test_tuple">
+                <element>One</element>
+                <element>Two</element>
+            </property>
     </assignment>
     
     <assignment
@@ -30,17 +35,17 @@
         type="portlets.test.Test"
         name="test.portlet2"
         insert-before="test.portlet1">
-            <property name="test">Test prop 2</property>
+            <property name="test_text">Test prop 2</property>
+            <property name="test_bool">True</property>
+            <property name="test_tuple" />
     </assignment>
     
-        <assignment
+    <assignment
         manager="test.testcolumn"
         category="context"
         key="/"
         type="portlets.test.Test"
         name="test.portlet3"
-        insert-before="*">
-            <property name="test">Test prop 3</property>
-    </assignment>    
+        insert-before="*" />
 
 </portlets>

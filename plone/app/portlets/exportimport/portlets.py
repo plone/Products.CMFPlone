@@ -85,7 +85,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
                 if element.nodeName != 'element':
                     continue
                 element_value = self.extract_text(element)
-                value.append(self.from_unicode(value_type, element))
+                value.append(self.from_unicode(value_type, element_value))
             value = self.field_typecast(field, value)
         
         # Otherwise, just get the value of the <property /> node

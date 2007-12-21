@@ -35,11 +35,18 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
 
 class ITestPortlet(IPortletDataProvider):
-    test = schema.TextLine(title=u"Test")
+    test_text = schema.TextLine(title=u"Test")
+    test_bool = schema.Bool(title=u"Test")
+    test_tuple = schema.Tuple(title=u"Test",
+                              value_type=schema.ASCIILine(title=u"Test"))
 
 class TestAssignment(base.Assignment):
     implements(ITestPortlet)
-    test = u""
+    
+    test_text = None
+    test_bool = None
+    test_tuple = None
+    
     title = "Sample portlet"
 
 class TestRenderer(base.Renderer):
@@ -181,8 +188,21 @@ class TestGenericSetup(PortletsTestCase):
     def testAssignmentPropertiesSet(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        
         assignment = mapping['test.portlet1']
-        self.assertEquals('Test prop 1', assignment.test)
+        self.assertEquals('Test prop 1', assignment.test_text)
+        self.assertEquals(False, assignment.test_bool)
+        self.assertEquals(('One', 'Two'), assignment.test_tuple)
+        
+        assignment = mapping['test.portlet2']
+        self.assertEquals('Test prop 2', assignment.test_text)
+        self.assertEquals(True, assignment.test_bool)
+        self.assertEquals((), assignment.test_tuple)
+        
+        assignment = mapping['test.portlet3']
+        self.assertEquals(None, assignment.test_text)
+        self.assertEquals(None, assignment.test_bool)
+        self.assertEquals(None, assignment.test_tuple)
         
 
 def test_suite():
