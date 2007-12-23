@@ -20,8 +20,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
 from Products.CMFCore.permissions import AccessContentsInformation, \
                         ManagePortal, ManageUsers, ModifyPortalContent, View
-from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
-from Products.CMFCore.interfaces.Discussions import Discussable
+from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
+from Products.CMFCore.interfaces import IDiscussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces import IPloneTool
@@ -229,7 +229,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         def tuplify(value):
             return tuple(filter(None, value))
 
-        if DublinCore.isImplementedBy(obj):
+        if IDublinCore.providedBy(obj):
             if title is None:
                 title = getfield(REQUEST, 'title')
             if description is None:
@@ -251,7 +251,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if expiration_date == '':
                 expiration_date = 'None'
 
-        if Discussable.isImplementedBy(obj) or \
+        if IDiscussable.providedBy(obj) or \
             getattr(obj, '_isDiscussable', None):
             disc_tool = getToolByName(self, 'portal_discussion')
             if allowDiscussion is None:
@@ -269,7 +269,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 allowDiscussion = 1
             disc_tool.overrideDiscussionFor(obj, allowDiscussion)
 
-        if MutableDublinCore.isImplementedBy(obj):
+        if IMutableDublinCore.providedBy(obj):
             if title is not None:
                 obj.setTitle(title)
             if description is not None:

@@ -37,10 +37,6 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin):
 
     implements(IPloneSiteRoot)
 
-    __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
-                     OrderedContainer.__implements__ + \
-                     BrowserDefaultMixin.__implements__
-
     manage_renameObject = OrderedContainer.manage_renameObject
 
     moveObject = OrderedContainer.moveObject

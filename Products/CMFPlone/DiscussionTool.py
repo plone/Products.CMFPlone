@@ -9,8 +9,6 @@ from StructuredText.StructuredText import HTML
 from DocumentTemplate.DT_Util import html_quote
 
 from Acquisition import aq_base
-from Products.CMFCore.interfaces.Discussions \
-        import DiscussionResponse as IDiscussionResponse
 
 from plone.intelligenttext.transforms import convertWebIntelligentPlainTextToHtml
 

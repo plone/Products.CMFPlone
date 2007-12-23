@@ -51,8 +51,6 @@ class ReplaceableWrapper:
 class OrderedContainer(Folder):
     """Folder with subobject ordering support."""
 
-    __implements__ = (IOrderedContainer, IZopeOrderedContainer)
-
     security = ClassSecurityInfo()
 
     security.declareProtected(ModifyPortalContent, 'moveObject')
@@ -208,8 +206,6 @@ class BasePloneFolder(CMFCatalogAware, PortalFolderBase, DefaultDublinCoreImpl):
 
     security = ClassSecurityInfo()
 
-    __implements__ = PortalFolderBase.__implements__,WriteLockInterface
-
     implements(IWriteLock)
 
     manage_options = Folder.manage_options + \
@@ -355,8 +351,6 @@ class PloneFolder(BasePloneFolder, OrderedContainer):
     """A Plone Folder."""
     meta_type = 'Plone Folder'
     security=ClassSecurityInfo()
-    __implements__ = BasePloneFolder.__implements__ + \
-                     OrderedContainer.__implements__
 
     manage_renameObject = OrderedContainer.manage_renameObject
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
