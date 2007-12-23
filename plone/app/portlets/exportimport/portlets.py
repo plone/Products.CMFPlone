@@ -12,8 +12,9 @@ from zope.component import getUtility
 from zope.component.interfaces import IFactory
 from zope.component.interfaces import IComponentRegistry
 
-from zope.schema.interfaces import IFromUnicode
+from zope.schema.interfaces import IField
 from zope.schema.interfaces import ICollection
+from zope.schema.interfaces import IFromUnicode
 
 from zope.app.container.interfaces import INameChooser
 
@@ -56,9 +57,15 @@ class PropertyPortletAssignmentExportImportHandler(object):
             if child.nodeName == 'property':
                 self.import_node(interface, child)
     
-    def export_assignment(self, interface, fragment):
-        # XXX: How do we want this to work?
-        pass
+    def export_assignment(self, interface, doc, node):
+        for field_name in interface:
+            field = interface[field_name]
+            
+            if not IField.providedBy(field):
+                continue
+            
+            child = self.export_field(doc, field)
+            node.appendChild(child)
         
     # Helper methods
     
@@ -94,6 +101,25 @@ class PropertyPortletAssignmentExportImportHandler(object):
             
         field.validate(value)
         field.set(self.assignment, value)
+        
+    def export_field(self, doc, field):
+        """Turn a zope.schema field into a node and return it
+        """
+        
+        field = field.bind(self.assignment)
+        value = field.get(self.assignment)
+        
+        child = doc.createElement('property')
+        child.setAttribute('name', field.__name__)
+        
+        if ICollection.providedBy(field):
+            for e in value:
+                list_element = doc.createElement('element')
+                list_element.appendChild(doc.createTextNode(str(e)))
+        else:
+            child.appendChild(doc.createTextNode(str(value)))
+            
+        return child
         
     def extract_text(self, node):
         node.normalize()
@@ -225,7 +251,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     portlet = PortletType()
                     portlet.title = child.getAttribute('title')
                     portlet.description = child.getAttribute('description')
-                    portlet.addview = addview
+                    portlet.addview = str(addview)
                     
                     for_ = child.getAttribute('for')
                     if for_:

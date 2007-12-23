@@ -11,7 +11,8 @@ class IPortletAssignmentExportImportHandler(Interface):
         Settings are expected to be found in children of the node.
         """
         
-    def export_assignment(interface, fragment):
+    def export_assignment(interface, doc, node):
         """Export the properties of the given assignment with the given 
-        portlet type interface into the XML document fragment.
+        portlet type interface as XML nodes appended to the given node.
+        Use the doc object to create new nodes.
         """
