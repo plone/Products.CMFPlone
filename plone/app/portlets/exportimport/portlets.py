@@ -27,6 +27,7 @@ from Products.GenericSetup.utils import _resolveDottedName
 
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
 
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.utils import assignment_mapping_from_key
@@ -313,6 +314,31 @@ class PortletsXMLAdapter(XMLAdapterBase):
                         keys.remove(name)
                         keys.insert(position, name)
                         mapping.updateOrder(keys)
+            
+            # Blacklisting (portlet blocking/unblocking)
+            elif child.nodeName.lower() == 'blacklist':
+                manager = child.getAttribute('manager')
+                category = child.getAttribute('category')
+                location = str(child.getAttribute('location'))
+                status = child.getAttribute('status')
+                
+                manager = getUtility(IPortletManager, name=manager)
+                
+                if location.startswith('/'):
+                    location = location[1:]
+                
+                item = site.unrestrictedTraverse(location, None)
+                if item is None:
+                    continue
+                    
+                assignable = queryMultiAdapter((item, manager), ILocalPortletAssignmentManager)
+                
+                if status.lower() == 'block':
+                    assignable.setBlacklistStatus(category, True)
+                elif status.lower() == 'show':
+                    assignable.setBlacklistStatus(category, False)
+                elif status.lower() == 'acquire':
+                    assignable.setBlacklistStatus(category, None)
                         
     def _extractPortlets(self):
         """Write portlet managers and types to XML

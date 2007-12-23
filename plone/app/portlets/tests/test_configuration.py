@@ -12,8 +12,15 @@ from Products.Five.browser import BrowserView
 from Products.PloneTestCase.layer import PloneSite
 from Testing import ZopeTestCase
 
-from plone.portlets.interfaces import IPortletType, IPortletRenderer, IPortletManager
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletType
+from plone.portlets.interfaces import IPortletRenderer
+from plone.portlets.interfaces import IPortletManager
+
 from plone.portlets.constants import CONTEXT_CATEGORY
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+
 from plone.portlets.manager import PortletManager
 
 from plone.app.portlets.interfaces import IPortletTypeInterface
@@ -204,6 +211,14 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(None, assignment.test_bool)
         self.assertEquals(None, assignment.test_tuple)
         
+    def testBlacklisting(self):
+        news = self.portal.news
+        manager = getUtility(IPortletManager, name=u"test.testcolumn")
+        
+        assignable = getMultiAdapter((news, manager), ILocalPortletAssignmentManager)
+        self.assertEquals(True, assignable.getBlacklistStatus(CONTEXT_CATEGORY))
+        self.assertEquals(False, assignable.getBlacklistStatus(GROUP_CATEGORY))
+        self.assertEquals(None, assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY))
 
 def test_suite():
     from unittest import TestSuite, makeSuite
