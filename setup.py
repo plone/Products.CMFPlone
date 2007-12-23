@@ -26,6 +26,7 @@ setup(name='Products.CMFPlone',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Archetypes',
           'Products.ATReferenceBrowserWidget',
           'Products.CMFCore',
           'Products.CMFDynamicViewFTI',
