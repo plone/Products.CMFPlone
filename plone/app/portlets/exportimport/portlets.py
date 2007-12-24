@@ -421,6 +421,27 @@ class PortletsXMLAdapter(XMLAdapterBase):
              mapping = mapping.__of__(site)
              extractMapping(manager_name, CONTEXT_CATEGORY, u"/", mapping)
 
+        # Export blacklistings in the portal root        
+        for manager_name, manager in getUtilitiesFor(IPortletManager):
+            assignable = queryMultiAdapter((site, manager), ILocalPortletAssignmentManager)       
+            if assignable is None:
+                continue
+            for category in (USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY, CONTEXT_CATEGORY,):
+                child = self._doc.createElement('blacklist')
+                child.setAttribute('manager', manager_name)
+                child.setAttribute('category', category)
+                child.setAttribute('location', u"/")
+            
+                status = assignable.getBlacklistStatus(category)
+                if status == True:
+                    child.setAttribute('status', u'block')
+                elif status == False:
+                    child.setAttribute('status', u'show')
+                else:
+                    child.setAttribute('status', u'acquire')
+                    
+                fragment.appendChild(child)
+
         return fragment
 
 def importPortlets(context):

@@ -290,11 +290,19 @@ class TestGenericSetup(PortletsTestCase):
   <property name="test_tuple"/>
   <property name="test_text">Test prop 1</property>
  </assignment>
+ <blacklist category="user" location="/" manager="test.testcolumn"
+    status="acquire"/>
+ <blacklist category="group" location="/" manager="test.testcolumn"
+    status="show"/>
+ <blacklist category="content_type" location="/" manager="test.testcolumn"
+    status="block"/>
+ <blacklist category="context" location="/" manager="test.testcolumn"
+    status="acquire"/>
 </portlets>
 """
 
         body = handler.body
-        self.assertEquals(expected.strip(), body.strip())
+        self.assertEquals(expected.strip(), body.strip(), body)
         
 
 def test_suite():

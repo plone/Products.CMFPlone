@@ -93,5 +93,26 @@
         location="/news"
         status="acquire"
         />
+        
+    <blacklist
+        manager="test.testcolumn"
+        category="content_type"
+        location="/"
+        status="block"
+        />
+    
+    <blacklist
+        manager="test.testcolumn"
+        category="group"
+        location="/"
+        status="show"
+        />
+        
+    <blacklist
+        manager="test.testcolumn"
+        category="context"
+        location="/"
+        status="acquire"
+        />
 
 </portlets>
