@@ -4,7 +4,7 @@ from zope.app.container.interfaces import INameChooser
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 
-from plone.portlets.constants import CONTEXT_CATEGORY
+from plone.portlets.constants import CONTEXT_CATEGORY, USER_CATEGORY
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
@@ -17,10 +17,13 @@ from plone.app.portlets.portlets import navigation
 from plone.app.portlets.portlets import recent
 from plone.app.portlets.portlets import review
 
+from plone.app.portlets.storage import PortletAssignmentMapping
+from plone.app.portlets.storage import UserPortletAssignmentMapping
+
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 
-def assignment_mapping_from_key(context, manager_name, category, key):
+def assignment_mapping_from_key(context, manager_name, category, key, create=False):
     """Given the name of a portlet manager, the name of a category, and a
     key in that category, return the IPortletAssignmentMapping. 
     Raise a KeyError if it cannot be found.
@@ -38,7 +41,13 @@ def assignment_mapping_from_key(context, manager_name, category, key):
             raise KeyError, "Cannot find object at path %s" % path
         return getMultiAdapter((obj, manager), IPortletAssignmentMapping)
     else:
-        return manager[category][key]
+        mapping = manager[category]
+        if key not in mapping and create:
+            if category == USER_CATEGORY:
+                mapping[key] = UserPortletAssignmentMapping()
+            else:
+                mapping[key] = PortletAssignmentMapping()
+        return mapping[key]
 
 def assignment_from_key(context, manager_name, category, key, name):
     """Given the name of a portlet manager, the name of a category, a

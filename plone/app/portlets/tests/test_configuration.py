@@ -1,13 +1,19 @@
-from transaction import commit
+import time
+import transaction
 
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getUtility, queryUtility, getMultiAdapter
 from zope.component.interfaces import IFactory
+
+from zope.component import getSiteManager
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.Five.browser import BrowserView
+
+from Products.GenericSetup.interfaces import IBody
+from Products.GenericSetup.context import TarballExportContext
 
 from Products.PloneTestCase.layer import PloneSite
 from Testing import ZopeTestCase
@@ -22,6 +28,7 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.portlets.manager import PortletManager
+from plone.portlets.utils import registerPortletType
 
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.interfaces import IColumn
@@ -128,7 +135,7 @@ class TestPortletGSLayer(TestPortletZCMLLayer):
         portal_setup = portal.portal_setup
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
         
-        commit()
+        transaction.commit()
         ZopeTestCase.close(app)
 
     @classmethod
@@ -219,6 +226,76 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(True, assignable.getBlacklistStatus(CONTEXT_CATEGORY))
         self.assertEquals(False, assignable.getBlacklistStatus(GROUP_CATEGORY))
         self.assertEquals(None, assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY))
+
+    def testPurge(self):
+        sm = getSiteManager()
+        context = TarballExportContext(self.portal.portal_setup)
+        handler = getMultiAdapter((sm, context), IBody, name=u'plone.portlets')
+        handler._purgePortlets()
+        
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertEquals(None, manager)
+        
+    def testExport(self):
+        sm = getSiteManager()
+        context = TarballExportContext(self.portal.portal_setup)
+        handler = getMultiAdapter((sm, context), IBody, name=u'plone.portlets')
+        handler._purgePortlets()
+        
+        time.sleep(1)
+        
+        portal_setup = self.portal.portal_setup
+        portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
+
+        expected = """\
+<?xml version="1.0"?>
+<portlets>
+ <portletmanager name="test.testcolumn"
+    type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
+ <portlet title="Test portlet" addview="portlets.test.Test"
+    description="A test portlet"/>
+ <assignment name="test.portlet6" category="group" key="Reviewers"
+    manager="test.testcolumn" type="portlets.test.Test">
+  <property name="test_bool"/>
+  <property name="test_tuple"/>
+  <property name="test_text"/>
+ </assignment>
+ <assignment name="test.portlet4" category="content_type" key="Folder"
+    manager="test.testcolumn" type="portlets.test.Test">
+  <property name="test_bool"/>
+  <property name="test_tuple"/>
+  <property name="test_text"/>
+ </assignment>
+ <assignment name="test.portlet5" category="content_type" key="Folder"
+    manager="test.testcolumn" type="portlets.test.Test">
+  <property name="test_bool"/>
+  <property name="test_tuple"/>
+  <property name="test_text"/>
+ </assignment>
+ <assignment name="test.portlet3" category="context" key="/"
+    manager="test.testcolumn" type="portlets.test.Test">
+  <property name="test_bool"/>
+  <property name="test_tuple"/>
+  <property name="test_text"/>
+ </assignment>
+ <assignment name="test.portlet2" category="context" key="/"
+    manager="test.testcolumn" type="portlets.test.Test">
+  <property name="test_bool">True</property>
+  <property name="test_tuple"/>
+  <property name="test_text">Test prop 2</property>
+ </assignment>
+ <assignment name="test.portlet1" category="context" key="/"
+    manager="test.testcolumn" type="portlets.test.Test">
+  <property name="test_bool">False</property>
+  <property name="test_tuple"/>
+  <property name="test_text">Test prop 1</property>
+ </assignment>
+</portlets>
+"""
+
+        body = handler.body
+        self.assertEquals(expected.strip(), body.strip())
+        
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -48,6 +48,33 @@
         name="test.portlet3"
         insert-before="*" />
         
+    <assignment
+        manager="test.testcolumn"
+        category="content_type"
+        key="Folder"
+        type="portlets.test.Test"
+        name="test.portlet4"
+        insert-before="test.portlet1"
+        />
+        
+    <assignment
+        manager="test.testcolumn"
+        category="content_type"
+        key="Folder"
+        type="portlets.test.Test"
+        name="test.portlet5"
+        insert-before="test.portlet1"
+        />
+        
+    <assignment
+        manager="test.testcolumn"
+        category="group"
+        key="Reviewers"
+        type="portlets.test.Test"
+        name="test.portlet6"
+        insert-before="test.portlet1"
+        />
+        
     <blacklist
         manager="test.testcolumn"
         category="context"

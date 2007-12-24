@@ -1,6 +1,6 @@
 from zope.interface import implements
 from zope.interface import Interface
-from zope.interface import directlyProvides
+from zope.interface import alsoProvides
 from zope.interface import providedBy
 
 from zope.component import adapts
@@ -28,13 +28,17 @@ from Products.GenericSetup.utils import _resolveDottedName
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
 
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.utils import assignment_mapping_from_key
 
 from plone.app.portlets.exportimport.interfaces import IPortletAssignmentExportImportHandler
 
-from plone.portlets.constants import USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+from plone.portlets.constants import CONTEXT_CATEGORY
 
 from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
@@ -106,19 +110,19 @@ class PropertyPortletAssignmentExportImportHandler(object):
     def export_field(self, doc, field):
         """Turn a zope.schema field into a node and return it
         """
-        
         field = field.bind(self.assignment)
         value = field.get(self.assignment)
         
         child = doc.createElement('property')
         child.setAttribute('name', field.__name__)
         
-        if ICollection.providedBy(field):
-            for e in value:
-                list_element = doc.createElement('element')
-                list_element.appendChild(doc.createTextNode(str(e)))
-        else:
-            child.appendChild(doc.createTextNode(str(value)))
+        if value is not None:
+            if ICollection.providedBy(field):
+                for e in value:
+                    list_element = doc.createElement('element')
+                    list_element.appendChild(doc.createTextNode(str(e)))
+            else:
+                child.appendChild(doc.createTextNode(str(value)))
             
         return child
         
@@ -167,17 +171,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
     def _exportNode(self):
         """Export portlet managers and portlet types
         """
-        
-        # hack around an issue where _getObjectNode expects to have the context
-        # a meta_type and a getId method, which isn't the case for a component
-        # registry
-        if IComponentRegistry.providedBy(self.context):
-            self.context.meta_type = 'ComponentRegistry'
-            self.context.getId = dummyGetId
-        node = self._getObjectNode('portlets')
-        if IComponentRegistry.providedBy(self.context):
-            del(self.context.meta_type)
-            del(self.context.getId)
+        node = self._doc.createElement('portlets')
         node.appendChild(self._extractPortlets())
         self._logger.info('Portlets exported')
         return node
@@ -197,6 +191,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         """Unregister all portlet managers and portlet types
         """
         
+        # Purge portlet types
+        
         registeredPortletTypes = [r.name for r in self.context.registeredUtilities()
                                         if r.provided == IPortletType]
                                     
@@ -204,14 +200,24 @@ class PortletsXMLAdapter(XMLAdapterBase):
             if name in registeredPortletTypes:
                 self.context.unregisterUtility(provided=IPortletType, name=name)
         
+        # Purge portlets assigned to the site root
+        site = self.environ.getSite()
+        
+        for name, portletManager in getUtilitiesFor(IPortletManager):
+            assignable = queryMultiAdapter((site, portletManager), IPortletAssignmentMapping)
+            if assignable is not None:
+                for key in list(assignable.keys()):
+                    del assignable[key]
+
+        # Purge portlet manager registrations - this will also get rid of
+        # global portlet registrations, since these utilities disappear
+        
         portletManagerRegistrations = [r for r in self.context.registeredUtilities()
                                         if r.provided.isOrExtends(IPortletManager)]
         
         for registration in portletManagerRegistrations:
             self.context.unregisterUtility(provided=registration.provided,
                                            name=registration.name)
-        
-        # XXX: Should we purge assignments? What about context assignments?
 
     def _initPortlets(self, node):
         """Actually import portlet data
@@ -229,18 +235,19 @@ class PortletsXMLAdapter(XMLAdapterBase):
             
             # Portlet managers
             if child.nodeName.lower() == 'portletmanager':
-                manager = PortletManager()
                 name = child.getAttribute('name')
                 
-                managerType = child.getAttribute('type')
-                if managerType:
-                    directlyProvides(manager, _resolveDottedName(managerType))
-                
-                manager[USER_CATEGORY] = PortletCategoryMapping()
-                manager[GROUP_CATEGORY] = PortletCategoryMapping()
-                manager[CONTENT_TYPE_CATEGORY] = PortletCategoryMapping()
-                
                 if name not in registeredPortletManagers:
+                    manager = PortletManager()
+                
+                    managerType = child.getAttribute('type')
+                    if managerType:
+                        alsoProvides(manager, _resolveDottedName(managerType))
+                
+                    manager[USER_CATEGORY] = PortletCategoryMapping()
+                    manager[GROUP_CATEGORY] = PortletCategoryMapping()
+                    manager[CONTENT_TYPE_CATEGORY] = PortletCategoryMapping()
+                
                     self.context.registerUtility(component=manager,
                                                  provided=IPortletManager,
                                                  name=name)
@@ -270,7 +277,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 key = child.getAttribute('key')
                 type_ = child.getAttribute('type')
                 
-                mapping = assignment_mapping_from_key(site, manager, category, key)
+                mapping = assignment_mapping_from_key(site, manager, category, key, create=True)
                 
                 # 2. Either find or create the assignment
                 
@@ -344,11 +351,16 @@ class PortletsXMLAdapter(XMLAdapterBase):
         """Write portlet managers and types to XML
         """
         fragment = self._doc.createDocumentFragment()
+        site = self.environ.getSite()
         
         registeredPortletTypes = [r.name for r in self.context.registeredUtilities()
                                             if r.provided == IPortletType]
         portletManagerRegistrations = [r for r in self.context.registeredUtilities()
                                             if r.provided.isOrExtends(IPortletManager)]
+        
+        portletSchemata = dict([(iface, name,) for name, iface in getUtilitiesFor(IPortletTypeInterface)])
+        
+        # Export portlet manager registrations
         
         for r in portletManagerRegistrations:
             child = self._doc.createElement('portletmanager')
@@ -360,6 +372,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
             
             fragment.appendChild(child)
             
+        # Export portlet type registrations
+            
         for name, portletType in getUtilitiesFor(IPortletType):
             if name in registeredPortletTypes:
                 child = self._doc.createElement('portlet')
@@ -369,8 +383,43 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 
                 if portletType.for_:
                     child.setAttribute('for', _getDottedName(portletType.for_))
+                    
+                fragment.appendChild(child)
 
-        # XXX: Should we export assignments? Recursively?
+        def extractMapping(manager_name, category, key, mapping):
+            for name, assignment in mapping.items():                        
+                type_ = None
+                for schema in providedBy(assignment).flattened():
+                    type_ = portletSchemata.get(schema, None)
+                    if type_ is not None:
+                        break
+                
+                if type_ is not None:
+                    child = self._doc.createElement('assignment')
+                    child.setAttribute('manager', manager_name)
+                    child.setAttribute('category', category)
+                    child.setAttribute('key', key)
+                    child.setAttribute('type', type_)
+                    child.setAttribute('name', name)
+                
+                    assignment = assignment.__of__(mapping)
+                    handler = IPortletAssignmentExportImportHandler(assignment)
+                    handler.export_assignment(schema, self._doc, child)
+                    fragment.appendChild(child)
+
+        # Export assignments in the global categories
+        for category in (USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY,):
+            for manager_name, manager in getUtilitiesFor(IPortletManager):
+                for key, mapping in manager.get(category, {}).items():
+                    mapping = mapping.__of__(site)
+                    extractMapping(manager_name, category, key, mapping)
+                    
+
+        # Export assignments at the root of the portal (only)
+        for manager_name, manager in getUtilitiesFor(IPortletManager):
+             mapping = queryMultiAdapter((site, manager), IPortletAssignmentMapping)
+             mapping = mapping.__of__(site)
+             extractMapping(manager_name, CONTEXT_CATEGORY, u"/", mapping)
 
         return fragment
 
