@@ -31,9 +31,10 @@ def new_user(principal, event):
                 if category is not None:
                     manager = category.get(userid, None)
                     if manager is None:
-                        manager = category[userid] = UserPortletAssignmentMapping()
+                        manager = category[userid] = UserPortletAssignmentMapping(manager=name,
+                                                                                  category=USER_CATEGORY,
+                                                                                  name=userid)                    
                     chooser = INameChooser(manager)
-            
                     for assignment in assignments:
                         manager[chooser.chooseName(None, assignment)] = assignment
     

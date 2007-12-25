@@ -23,7 +23,9 @@ class TestAssignmentFromKey(PortletsTestCase):
         setSite(self.portal)
         self.manager = getUtility(IPortletManager, name=u'plone.leftcolumn')
         self.cat = self.manager[USER_CATEGORY]
-        self.cat[user_name] = PortletAssignmentMapping()
+        self.cat[user_name] = PortletAssignmentMapping(manager=u'plone.leftcolumn',
+                                                       category=USER_CATEGORY,
+                                                       name=user_name)
 
     def testGetPortletFromContext(self):
         mapping = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)

@@ -16,6 +16,7 @@
   <div metal:use-macro="context/@@base-pageform.html/macros/form">
     <metal:block fill-slot="extra_info">
      <input type="hidden" name="referer" value="" tal:attributes="value view/referer" />
+     URL: <b tal:content="context/absolute_url" />
     </metal:block>
   </div>
   

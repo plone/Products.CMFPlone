@@ -55,14 +55,13 @@
         />
     </class>
     
-    <!-- Register the name chooser explicitly - including zope.app.container
-    seems to cause other conflicts with Five and Plone
+    <!-- Register a name chooser
      -->
      
      <adapter
         provides="zope.app.container.interfaces.INameChooser"
         for="plone.portlets.interfaces.IPortletAssignmentMapping"
-        factory="zope.app.container.contained.NameChooser"
+        factory=".storage.PortletsNameChooser"
         />
     
 </configure>

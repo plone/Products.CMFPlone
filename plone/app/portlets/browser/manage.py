@@ -119,7 +119,9 @@ class ManageDashboardPortlets(BrowserView):
         category = column[USER_CATEGORY]
         mapping = category.get(userId, None)
         if mapping is None:
-            mapping = category[userId] = UserPortletAssignmentMapping()
+            mapping = category[userId] = UserPortletAssignmentMapping(manager=manager.__name__,
+                                                                      category=USER_CATEGORY,
+                                                                      name=userId)
         return mapping.values()
     
     def _getUserId(self):
@@ -163,7 +165,9 @@ class ManageGroupPortlets(BrowserView):
         category = column[GROUP_CATEGORY]
         mapping = category.get(key, None)
         if mapping is None:
-            mapping = category[key] = PortletAssignmentMapping()
+            mapping = category[key] = PortletAssignmentMapping(manager=manager.__name__,
+                                                               category=GROUP_CATEGORY,
+                                                               name=key)
         return mapping.values()
     
     # View attributes
@@ -199,7 +203,9 @@ class ManageContentTypePortlets(BrowserView):
         category = column[CONTENT_TYPE_CATEGORY]
         mapping = category.get(pt, None)
         if mapping is None:
-            mapping = category[pt] = PortletAssignmentMapping()
+            mapping = category[pt] = PortletAssignmentMapping(manager=manager.__name__,
+                                                              category=CONTENT_TYPE_CATEGORY,
+                                                              name=pt)
         return mapping.values()
     
     # View attributes

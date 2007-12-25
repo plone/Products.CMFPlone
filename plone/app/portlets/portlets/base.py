@@ -33,7 +33,13 @@ class Assignment(SimpleItem, Contained):
     """
     
     implements(IPortletAssignment)
-        
+    
+    __name__ = ''
+    
+    @property
+    def id(self):
+        return getattr(self, '__name__', '')
+    
     @property
     def title(self):
         return self.template

@@ -2,7 +2,13 @@ Changelog for plone.app.portlets
 
     (name of developer listed in brackets)
 
-plone.app.portlets 1.0.2 - unreleased
+plone.app.portlets 1.0.5
+
+    - Provide proper 'id' implementations for assignment mappings and 
+      assignments. This makes absolute_url() work properly.
+      [optilude]
+
+plone.app.portlets 1.0.2
 
     - Always try to refresh the RSS feed when rendering it instead of waiting
       for KSS to do trigger an updated. This is needed for the very common
@@ -25,7 +31,7 @@ plone.app.portlets 1.0.2 - unreleased
       cachekey.
       [ldr]
 
-plone.app.portlets 1.0.1 - August 18, 2007
+plone.app.portlets 1.0.1
 
     - Remove use of login javascript methods.
       [ree]
@@ -34,7 +40,7 @@ plone.app.portlets 1.0.1 - August 18, 2007
       http://dev.plone.org/plone/ticket/5075.
       [limi]
     
-plone.app.portlets 1.0 - August 17, 2007
+plone.app.portlets 1.0
 
     - Add footer CSS classes to the search portlet. This fixes 
       http://dev.plone.org/plone/ticket/6908.
@@ -119,7 +125,7 @@ plone.app.portlets 1.0 - August 17, 2007
       uploading from WebDAV. :)
       [optilude]
 
-plone.app.portlets - 1.0b1 Released March 5, 2007
+plone.app.portlets
 
     - Initial implementation.
       [optilude]

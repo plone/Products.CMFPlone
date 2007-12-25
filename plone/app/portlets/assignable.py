@@ -7,6 +7,7 @@ from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletManager
 
 from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
+from plone.portlets.constants import CONTEXT_CATEGORY
 
 from BTrees.OOBTree import OOBTree
 
@@ -23,5 +24,13 @@ def localPortletAssignmentMappingAdapter(context, manager):
         local = annotations[CONTEXT_ASSIGNMENT_KEY] = OOBTree()
     portlets = local.get(manager.__name__, None)
     if portlets is None:
-        portlets = local[manager.__name__] = PortletAssignmentMapping()
+        portlets = local[manager.__name__] = PortletAssignmentMapping(manager=manager.__name__,
+                                                                      category=CONTEXT_CATEGORY)
+
+    # XXX: For graceful migration
+    if not getattr(portlets, '__manager__', ''):
+        portlets.__manager__ = manager.__name__
+    if not getattr(portlets, '__category__', ''):
+        portlets.__category__ = CONTEXT_CATEGORY
+    
     return portlets
