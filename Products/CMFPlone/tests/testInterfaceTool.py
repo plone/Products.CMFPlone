@@ -5,40 +5,37 @@
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-from Products.CMFCore.interfaces.DublinCore import DublinCore
-from Products.CMFCore.interfaces.Contentish import Contentish
+from zope.interface import implements
+
+from Products.CMFCore.interfaces import IDublinCore
+from Products.CMFCore.interfaces import IContentish
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDefault.Document import Document
 
 from Products.CMFPlone.InterfaceTool import resolveInterface, getDottedName
-from Products.CMFPlone.utils import classImplements
 
 
-class MyPortalContent(Contentish): pass
+class IMyPortalContent(IContentish):
+    pass
 
 class A(PortalContent, DefaultDublinCoreImpl):
-    __implements__ = PortalContent.__implements__, \
-                     DefaultDublinCoreImpl.__implements__
-classImplements(A, A.__implements__)
+    pass
 
 class B(PortalContent, DefaultDublinCoreImpl):
-    __implements__ = MyPortalContent, \
-                     DefaultDublinCoreImpl.__implements__
-classImplements(B, B.__implements__)
-
+    implements(IMyPortalContent)
 
 class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
 
     def testResolveDublinCore(self):
         # DublinCore should be resolved
-        dotted_name = getDottedName(DublinCore)
-        self.assertEqual(resolveInterface(dotted_name), DublinCore)
+        dotted_name = getDottedName(IDublinCore)
+        self.assertEqual(resolveInterface(dotted_name), IDublinCore)
 
     def testResolveContentish(self):
         # Contentish should be resolved
-        dotted_name = getDottedName(Contentish)
-        self.assertEqual(resolveInterface(dotted_name), Contentish)
+        dotted_name = getDottedName(IContentish)
+        self.assertEqual(resolveInterface(dotted_name), IContentish)
 
     def testResolveNonInterface(self):
         # Should raise ValueError when called with non-Interface
@@ -53,28 +50,28 @@ class TestInterfaceTool(PloneTestCase.PloneContentLessTestCase):
 
     def testContentImplements(self):
         content = PortalContent()
-        self.failUnless(self.interface.objectImplements(content, getDottedName(Contentish)))
+        self.failUnless(self.interface.objectImplements(content, getDottedName(IContentish)))
 
     def testDocumentImplements(self):
         document = Document(id='foo')
-        self.failUnless(self.interface.objectImplements(document, getDottedName(Contentish)))
-        self.failUnless(self.interface.objectImplements(document, getDottedName(DublinCore)))
+        self.failUnless(self.interface.objectImplements(document, getDottedName(IContentish)))
+        self.failUnless(self.interface.objectImplements(document, getDottedName(IDublinCore)))
 
     def testDCImplements(self):
         dc = DefaultDublinCoreImpl()
-        self.failUnless(self.interface.objectImplements(dc, getDottedName(DublinCore)))
+        self.failUnless(self.interface.objectImplements(dc, getDottedName(IDublinCore)))
 
     def testAImplements(self):
         a = A()
-        self.failUnless(self.interface.objectImplements(a, getDottedName(Contentish)))
-        self.failUnless(self.interface.objectImplements(a, getDottedName(DublinCore)))
-        self.failIf(self.interface.objectImplements(a, getDottedName(MyPortalContent)))
+        self.failUnless(self.interface.objectImplements(a, getDottedName(IContentish)))
+        self.failUnless(self.interface.objectImplements(a, getDottedName(IDublinCore)))
+        self.failIf(self.interface.objectImplements(a, getDottedName(IMyPortalContent)))
 
     def testBImplements(self):
         b = B()
-        self.failUnless(self.interface.objectImplements(b, getDottedName(Contentish)))
-        self.failUnless(self.interface.objectImplements(b, getDottedName(DublinCore)))
-        self.failUnless(self.interface.objectImplements(b, getDottedName(MyPortalContent)))
+        self.failUnless(self.interface.objectImplements(b, getDottedName(IContentish)))
+        self.failUnless(self.interface.objectImplements(b, getDottedName(IDublinCore)))
+        self.failUnless(self.interface.objectImplements(b, getDottedName(IMyPortalContent)))
 
 
 def test_suite():
