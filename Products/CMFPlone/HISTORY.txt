@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Adjusted versions overview in the control panel to prefix CMF to the
+      version number.
+      [hannosch]
+
     - Updated webdav_enabled method in utils.py to check for
       webdav.interfaces.IWriteLock interface in addition to the old Zope2
       interface.

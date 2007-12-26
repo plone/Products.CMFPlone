@@ -116,7 +116,7 @@
             
             <ul>
                 <li>Plone <span tal:replace="mt/getInstanceVersion" /></li>
-                <li><span tal:replace="sys/CMF" /></li>
+                <li>CMF <span tal:replace="sys/CMF" /></li>
                 <li>Zope <span tal:replace="sys/Zope" /></li>
                 <li>Python <span tal:replace="sys/Python" /></li>
             <tal:pil condition="sys/PIL">
