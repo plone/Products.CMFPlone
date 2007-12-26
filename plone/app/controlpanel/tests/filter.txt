@@ -62,14 +62,7 @@ Look at the defaults
     script
 
     >>> print_all_of('stripped_tags')
-    abbr
-    acronym
-    address
-    bdo
     button
-    col
-    colgroup
-    dfn
     fieldset
     form
     input
@@ -81,14 +74,10 @@ Look at the defaults
     optgroup
     option
     param
-    samp
     script
     select
     style
     textarea
-    tfoot
-    thead
-    var
 
     >>> print_all_of('custom_tags')
     u
@@ -157,7 +146,7 @@ Kupu tag stripping
 Initially 'table' is not stripped by kupu and is valid in safe_html:
 
     >>> print ', '.join(kupu_tool.get_stripped_tags())
-    abbr, acronym, ..., style, textarea, ...
+    button, fieldset, ..., style, textarea
     >>> print sorted(safe_html._config['valid_tags'])
     [..., 'sup', 'table', 'tbody', ...]
 
@@ -166,7 +155,7 @@ that table appears in kupu's list of stripped tags and is no longer in
 safe_html's list of valid tags.
 
     >>> print ', '.join(sorted(kupu_tool.get_stripped_tags()))
-    abbr, ..., style, textarea, ...
+    button, ..., style, textarea
 
     >>> def findControl(nameprefix, value):
     ...    i = 0
@@ -181,16 +170,15 @@ safe_html's list of valid tags.
     >>> findControl("form.stripped_tags.", "").value = "table"
     >>> browser.getControl(name="form.actions.save").click()
     >>> print_all_of('stripped_tags')
-    abbr
+    button
     ...
     style
     table
     textarea
-    ...
     >>> print sorted(safe_html._config['valid_tags'])
     [..., 'sup', 'tbody', ...]
     >>> print ', '.join(sorted(kupu_tool.get_stripped_tags()))
-    abbr, ..., style, table, textarea, ...
+    button, ..., style, table, textarea
 
 Now remove 'table' from stripped tags and it will disappear from kupu
 and reappear in safe_html.
@@ -201,13 +189,12 @@ and reappear in safe_html.
     >>> browser.getControl(name="form.stripped_tags.remove").click()
     >>> browser.getControl(name="form.actions.save").click()
     >>> print_all_of('stripped_tags')
-    abbr
+    button
     ...
     style
     textarea
-    ...
     >>> browser.getControl(name="form.actions.save").click()
     >>> print sorted(safe_html._config['valid_tags'])
     [..., 'sup', 'table', 'tbody', ...]
     >>> print ', '.join(sorted(kupu_tool.get_stripped_tags()))
-    abbr, acronym, ..., style, textarea, ...
+    button, ..., style, textarea
