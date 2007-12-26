@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Updated migration steps to new GS API.
+      [hannosch]
+
     - Avoid deprecation warning in MembershipTool setPassword.
       [hannosch]
 
