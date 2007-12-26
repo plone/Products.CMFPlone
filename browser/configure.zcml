@@ -76,4 +76,16 @@
             factory=".navtree.SitemapNavtreeStrategy"
             provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
+   <view
+       name="props" type="*"
+       provides="zope.traversing.interfaces.ITraversable" 
+       for="*"
+       factory=".namespace.props"
+    />
+
+   <subscriber
+       for="zope.app.container.interfaces.IObjectAddedEvent"
+       handler=".namespace.applyProperties"
+       />
+
 </configure>

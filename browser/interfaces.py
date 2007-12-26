@@ -1,4 +1,5 @@
 from zope.interface import Interface
+from zope.interface.common.mapping import IFullMapping
 
 import zope.deferredimport
 import zope.deprecation
@@ -410,3 +411,9 @@ class IPlone(Interface):
 
     def cropText(text, length, ellipsis):
         """ Crop text on a word boundary """
+
+class IPropertyBag(IFullMapping):
+    """Identifies a property bag that holds properties to be applied to a
+    certain context.
+    """
+
