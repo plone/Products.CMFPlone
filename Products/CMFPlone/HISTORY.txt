@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Removed the browser version specific access key information from the
+      accessibility page. It was always outdated.
+      [hannosch]
+
     - Adjusted versions overview in the control panel to prefix CMF to the
       version number.
       [hannosch]

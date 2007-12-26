@@ -75,63 +75,6 @@
         <li i18n:translate="accesskey_accesskey_details"><code>0</code> &mdash; Access Key details</li>
     </ul>
 
-    <h3 i18n:translate="heading_access_keys_usage">Using access keys in different web browsers</h3>
-
-    <dl>
-        <dt i18n:translate="label_ie5_win">Internet Explorer 5+ (Windows)</dt>
-        <dd i18n:translate="description_accesskey_ie5_win">
-        Hold down the <code>Alt</code> key, press the number or letter of the 
-        access key, release both keys then press <code>ENTER</code>.
-        </dd>
-
-        <dt i18n:translate="label_mozilla_win">Firefox, Mozilla and Netscape 7+ (Windows)</dt>
-        <dd i18n:translate="description_accesskey_mozilla_win">
-        Hold down the <code>Alt</code> key and press the number or letter of 
-        the access key.
-        </dd>
-
-        <dt i18n:translate="label_mozilla_mac">Firefox, Mozilla and Netscape 7+ (Mac OS X)</dt>
-        <dd i18n:translate="description_accesskey_mozilla_mac">
-        Hold down the <code>Ctrl</code> key and press the number or letter of 
-        the access key.
-        </dd>
-
-        <dt i18n:translate="label_safari_mac">Safari and Omniweb (Mac OS X)</dt>
-        <dd i18n:translate="description_accesskey_safari_mac">
-        Hold down the <code>Ctrl</code> key and press the number or letter of 
-        the access key.
-        </dd>
-
-        <dt i18n:translate="label_konqueror_linux">Konqueror (Linux)</dt>
-        <dd i18n:translate="description_accesskey_konqueror_linux">
-        Press and release the <code>Ctrl</code> key, then press the number or letter of 
-        the access key.
-        </dd>
-
-        <dt i18n:translate="label_ie4_win">Internet Explorer 4 (Windows)</dt>
-        <dd i18n:translate="description_accesskey_ie4_win">
-        Hold down the <code>Alt</code> key and press the number or letter of 
-        the access key.
-        </dd>
-        
-        <dt i18n:translate="label_ie5_mac">Internet Explorer 5+ (Mac)</dt>
-        <dd i18n:translate="description_accesskey_ie5_mac">
-        Hold down the <code>Ctrl</code> key and press the number or letter of 
-        the access key.
-        </dd>
-
-        <dt i18n:translate="label_ie4_mac">Internet Explorer 4.5 (Mac)</dt>
-        <dd i18n:translate="description_accesskey_ie4_mac">
-        Access keys are not supported, please use a different browser.
-        </dd>
-
-        <dt i18n:translate="label_netscape6_all">Netscape 6 and earlier (All platforms)</dt>
-        <dd i18n:translate="description_accesskey_netscape6_all">
-        Access keys are not supported, please use a different browser.
-        </dd>
-
-    </dl>
-
     <h2 i18n:translate="heading_accessibility_statement">Accessibility Statement</h2>
 
     <p i18n:translate="description_accessibility_statement">
