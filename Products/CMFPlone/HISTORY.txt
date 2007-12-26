@@ -4,6 +4,14 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Adjusted first parts of InterfaceTool to recognize both Zope2 and
+      zope.interface interfaces.
+      [hannosch]
+
+    - Changed getObjPositionInParent script to use the zope.interface-style
+      IDiscussable interface instead of an old Zope2 interface.
+      [hannosch]
+
     - Use a FauxArchetypeTool which returns no catalogs for CatalogMultiplex
       aware objects in portal factory. This prevents most temporary objects
       from being indexed in the first place.

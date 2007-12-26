@@ -1,3 +1,7 @@
+from zope.dottedname.resolve import resolve
+from zope.interface import implements
+from zope.interface import Interface
+
 from types import ModuleType, ListType, TupleType
 from Products.CMFPlone.interfaces import IInterfaceTool
 from Acquisition import aq_base
@@ -10,12 +14,11 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 from Interface.Implements import getImplements, flattenInterfaces
-from Interface import Interface
+from Interface import Interface as z2Interface
 from Interface.IMethod import IMethod
 
-from zope.interface import implements
-
 _marker = ('module_finder',)
+
 
 class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ This tool exposes the interface package for TTW applications,
@@ -33,7 +36,7 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Asserts if an object implements a given interface """
         obj = aq_base(obj)
         iface = resolveInterface(dotted_name)
-        return iface.isImplementedBy(obj)
+        return iface.providedBy(obj)
 
     security.declarePublic('classImplements')
     def classImplements(self, obj, dotted_name):
@@ -60,7 +63,8 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
                 result = flattenInterfaces(impl)
             else:
                 result = (impl, )
-            return [ iface for iface in result if iface is not Interface ]
+            return [ iface for iface in result if iface is not z2Interface ]
+        return None
 
     def getBaseInterfacesOf(self, object):
         """Returns all base interfaces of an object but no direct interfaces
@@ -84,7 +88,7 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         * methods with signature and trimmed doc string
         * attributes with trimemd doc string
         """
-        bases = [ base for base in iface.getBases() if base is not Interface ]
+        bases = [ base for base in iface.getBases() if base is not z2Interface ]
 
         attributes = []
         methods = []
@@ -112,12 +116,10 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return result
 
 def resolveInterface(dotted_name):
-    parts = dotted_name.split('.')
-    m_name = '.'.join(parts[:-1])
-    k_name = parts[-1]
-    module = __import__(m_name, globals(), locals(), [k_name])
-    klass = getattr(module, k_name)
-    if not issubclass(klass, Interface):
+    klass = resolve(dotted_name)
+    if issubclass(klass, Interface):
+        return klass
+    elif not issubclass(klass, z2Interface):
         raise ValueError, '%r is not a valid Interface.' % dotted_name
     return klass
 
@@ -145,7 +147,7 @@ def _trim_doc_string(text):
 def visitBaseInterfaces(iface, lst):
     bases = iface.getBases()
     for base in bases:
-        if base is Interface or base in lst:
+        if base is z2Interface or base in lst:
             return
         lst.append(base)
         visitBaseInterfaces(iface, lst)
@@ -165,9 +167,9 @@ class InterfaceFinder:
         self._visited[module] = None
         for sym in dir(module):
             ob=getattr(module, sym)
-            if type(ob) is type(Interface) and \
-               issubclass(ob, Interface) and \
-               ob is not Interface:
+            if type(ob) is type(z2Interface) and \
+               issubclass(ob, z2Interface) and \
+               ob is not z2Interface:
                 self.found(ob)
             elif type(ob) is ModuleType and ob not in self._visited.keys():
                 self.findInterfaces(module=ob)
