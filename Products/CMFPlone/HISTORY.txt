@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Avoid deprecation warning in MembershipTool setPassword.
+      [hannosch]
+
     - Removed the browser version specific access key information from the
       accessibility page. It was always outdated.
       [hannosch]
