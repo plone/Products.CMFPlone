@@ -4,7 +4,7 @@
            i18n_domain="plone">
 
   <!-- The following declarations are deprecated and will be removed in
-       Plone 4.0. -->
+       Plone 5.0. -->
 
   <five:deprecatedManageAddDelete
       class=".Portal.PloneSite" />

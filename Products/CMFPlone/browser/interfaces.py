@@ -5,25 +5,25 @@ import zope.deprecation
 
 zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. " 
-    "This alias will be removed in Plone 4.0",
+    "This alias will be removed in Plone 5.0",
     INavigationRoot = 'plone.app.layout.navigation.interfaces:INavigationRoot',
     )
 
 zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. " 
-    "This alias will be removed in Plone 4.0",
+    "This alias will be removed in Plone 5.0",
     IDefaultPage = 'plone.app.layout.navigation.interfaces:IDefaultPage',
     )
 
 zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. " 
-    "This alias will be removed in Plone 4.0",
+    "This alias will be removed in Plone 5.0",
     INavigationQueryBuilder = 'plone.app.layout.navigation.interfaces:INavigationQueryBuilder',
     )
 
 zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.interfaces. " 
-    "This alias will be removed in Plone 4.0",
+    "This alias will be removed in Plone 5.0",
     INavtreeStrategy = 'plone.app.layout.navigation.interfaces:INavtreeStrategy',
     )
 
@@ -415,5 +415,5 @@ zope.deprecation.deprecated(
    ('INavigationPortlet', 'INewsPortlet', 'IEventsPortlet', 'IRecentPortlet',
     'ICalendarPortlet'),
     "Plone's portlets are based on plone.app.portlets now. The old portlet "
-    "interfaces will be removed in Plone 4.0."
+    "interfaces will be removed in Plone 5.0."
    )

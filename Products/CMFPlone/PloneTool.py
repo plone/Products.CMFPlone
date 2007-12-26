@@ -40,7 +40,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from AccessControl.requestmethod import postonly
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
 
-# BBB Plone 4.0
+# BBB Plone 5.0
 try:
     from Products.LinguaPlone.interfaces import ITranslatable
 except ImportError:

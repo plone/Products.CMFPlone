@@ -28,7 +28,7 @@ from plone.app.layout.navigation.navtree import buildFolderTree
 import zope.deferredimport
 zope.deferredimport.deprecated(
     "It has been moved to plone.app.layout.navigation.defaultpage. " 
-    "This alias will be removed in Plone 4.0",
+    "This alias will be removed in Plone 5.0",
     DefaultPage = 'plone.app.layout.navigation.defaultpage:DefaultPage',
     )
     

@@ -21,7 +21,7 @@ from Products.Five.bridge import fromZ2Interface
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 
-# BBB Plone 4.0
+# BBB Plone 5.0
 try:
     from Products.LinguaPlone.interfaces import ITranslatable
 except ImportError:
