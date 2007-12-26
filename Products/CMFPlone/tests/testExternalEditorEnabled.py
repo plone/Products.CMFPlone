@@ -44,9 +44,6 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
     def testFailOnUnSupportedObjects(self):
         # ATCT Folders are editable by default now
         self.failUnless(self.folder.externalEditorEnabled())
-        # But if __dav_marshall__ is set to False then they aren't.
-        self.folder.__dav_marshall__ = False
-        self.failIf(self.folder.externalEditorEnabled())
 
     def testFailWithoutUseExtEditPermission(self):
         self.portal.manage_permission('Use external editor',

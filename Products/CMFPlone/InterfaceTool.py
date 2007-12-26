@@ -36,14 +36,18 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Asserts if an object implements a given interface """
         obj = aq_base(obj)
         iface = resolveInterface(dotted_name)
-        return iface.providedBy(obj)
+        if issubclass(iface, Interface):
+            return iface.providedBy(obj)
+        return iface.isImplementedBy(obj)
 
     security.declarePublic('classImplements')
     def classImplements(self, obj, dotted_name):
         """ Asserts if an object's class implements a given interface """
         klass = aq_base(obj).__class__
         iface = resolveInterface(dotted_name)
-        return iface.isImplementedBy(klass)
+        if issubclass(iface, Interface):
+            return iface.providedBy(obj)
+        return iface.isImplementedBy(obj)
 
     security.declarePublic('namesAndDescriptions')
     def namesAndDescriptions(self, dotted_name, all=0):

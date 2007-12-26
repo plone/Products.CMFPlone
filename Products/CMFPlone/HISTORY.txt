@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Updated webdav_enabled method in utils.py to check for
+      webdav.interfaces.IWriteLock interface in addition to the old Zope2
+      interface.
+      [hannosch]
+
     - Adjusted first parts of InterfaceTool to recognize both Zope2 and
       zope.interface interfaces.
       [hannosch]
