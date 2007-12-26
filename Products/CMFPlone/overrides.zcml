@@ -1,4 +1,6 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+           i18n_domain="plone">
 
     <include package="Products.CMFCore" file="overrides.zcml" />
     <include package="plone.app.form" file="overrides.zcml" />
@@ -14,5 +16,16 @@
         provides="Products.PageTemplates.interfaces.IUnicodeEncodingConflictResolver"
         component="Products.CMFPlone.unicodeconflictresolver.UTF8EncodingConflictResolver"
         />
+
+    <!-- Our version depends on the plone-site step, which sets up the
+         local site manager during tests. -->
+    <genericsetup:importStep
+        name="componentregistry"
+        handler="Products.GenericSetup.components.importComponentRegistry"
+        title="Local Component Registry"
+        description="Import local component registry configuration.">
+      <depends name="plone-site"/>
+      <depends name="toolset"/>
+    </genericsetup:importStep>
 
 </configure>
