@@ -10,6 +10,8 @@ Plone 3.0.5 - UNRELEASED
       [fschulze] [limi]
       
     - Hiding page history, page navigation, and busy icon (spinner) in print.css
+      Related to https://dev.plone.org/plone/ticket/7433
+                 https://dev.plone.org/plone/ticket/7402
       [siebo]
 
 Plone 3.0.4 - released December 7, 2007
