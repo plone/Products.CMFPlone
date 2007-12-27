@@ -91,6 +91,9 @@ div.top,
 #portal-footer,
 #portal-colophon,
 .skipnav,
+ #kss-spinner,
+ #review-history,
+ .listingBar,
 .visualNoPrint {
     display: none;
 }
