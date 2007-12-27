@@ -35,6 +35,11 @@ Plone 4.0 - UNRELEASED
       aware objects in portal factory. This prevents most temporary objects
       from being indexed in the first place.
       [tesdal, hannosch]
+      
+    - Hiding page history, page navigation, and busy icon (spinner) in print.css
+      Related to https://dev.plone.org/plone/ticket/7433
+                 https://dev.plone.org/plone/ticket/7402
+      [siebo]
 
 Plone 3.0.4 - UNRELEASED
 
