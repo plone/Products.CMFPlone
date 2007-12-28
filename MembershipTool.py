@@ -259,7 +259,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
                 user.changePassword(password)
             else:
                 acl_users._doChangeUser(member.getUserId(), password, member.getRoles(), domains)
-            self.credentialsChanged(password)
+            self.credentialsChanged(password, REQUEST=REQUEST)
         else:
             raise BadRequest, 'Not logged in.'
     setPassword = postonly(setPassword)

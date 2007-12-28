@@ -1143,35 +1143,35 @@ class TestMigrations_v2_5_4(MigrationTest):
 
     def testAddGSSteps(self):
         # unset the gs profile
-        self.setup._import_context_id = ''
-        self.assertEqual(self.setup.getImportContextID(), '')
+        self.setup._baseline_context_id = ''
+        self.assertEqual(self.setup.getBaselineContextID(), '')
         addGSSteps(self.portal, [])
-        self.assertEqual(self.setup.getImportContextID(),
+        self.assertEqual(self.setup.getBaselineContextID(),
                          'profile-' + PROF_ID)
 
     def testAddGSStepsAlreadyThere(self):
         # set a bogus existing profile, ensure we don't change it
-        self.setup._import_context_id = 'profile-Bogus:bogus'
-        self.assertEqual(self.setup.getImportContextID(),
+        self.setup._baseline_context_id = 'profile-Bogus:bogus'
+        self.assertEqual(self.setup.getBaselineContextID(),
                          'profile-Bogus:bogus')
         addGSSteps(self.portal, [])
-        self.assertEqual(self.setup.getImportContextID(),
+        self.assertEqual(self.setup.getBaselineContextID(),
                          'profile-Bogus:bogus')
 
     def testAddGSStepsNoPloneStep(self):
         # if the plone step is not there, don't set it
         # first remove it from the registry
-        self.setup._import_context_id = ''
+        self.setup._baseline_context_id = ''
         from Products.GenericSetup.registry import _profile_registry
         _profile_registry._profile_ids.remove(PROF_ID)
         prof_info = _profile_registry._profile_info[PROF_ID]
         del _profile_registry._profile_info[PROF_ID]
 
         # Then go through the normal migration process
-        self.assertEqual(self.setup.getImportContextID(),
+        self.assertEqual(self.setup.getBaselineContextID(),
                          '')
         addGSSteps(self.portal, [])
-        self.assertEqual(self.setup.getImportContextID(),
+        self.assertEqual(self.setup.getBaselineContextID(),
                          '')
         # restore registry, because this is not undone by the transaction
         _profile_registry._profile_ids.append(PROF_ID)

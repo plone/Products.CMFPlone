@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0.5 - UNRELEASED
 
+    - Backported changeset 18612 and 18615 from trunk. This fixes some
+      deprecation warnings.
+      [hannosch]
+
     - If you are using the fullscreenmode.js script, you can now pass in a
       'minimal=1' argument in the URL to make a page start out in the minimal 
       mode.
