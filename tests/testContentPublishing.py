@@ -165,7 +165,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
             paths.append('/'.join(o.getPhysicalPath()))
 
         # folder_publish requires a non-GET request
-        self.app.REQUEST.set('REQUEST_METHOD', 'POST')
+        self.setRequestMethod('POST')
         self.folder.folder_publish(workflow_action = 'publish', 
                                    paths = paths, 
                                    include_children = False)
