@@ -149,11 +149,12 @@ class RSSFeed(object):
                 try:
                     link = item.links[0]['href']
                     itemdict = {
-                    'title' : item.title,
-                    'url' : link,
-                    'summary' : item.summary,
-                    'updated' : DateTime(item.updated),
+                        'title' : item.title,
+                        'url' : link,
+                        'summary' : item.summary,
                     }
+                    if hasattr(item, "updated"):
+                        itemdict['updated']=DateTime(item.updated)
                 except: # XXX. more specific here, I am not quite sure which elements are guaranteed to be there.
                     continue
                 self._items.append(itemdict)
