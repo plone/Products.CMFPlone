@@ -61,15 +61,17 @@
    addview="portlets.Login"
    title="Login"
    description="A portlet which can render a log-in box"
-   for="plone.app.portlets.interfaces.IColumn"
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+ </portlet>
   
  <portlet 
    addview="portlets.Navigation"
    title="Navigation"
    description="A portlet which can render a navigation tree"
-   for="plone.app.portlets.interfaces.IColumn"
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+ </portlet>
 
  <portlet 
    addview="portlets.Recent"
