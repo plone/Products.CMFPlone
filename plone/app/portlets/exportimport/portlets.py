@@ -27,6 +27,8 @@ from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
 
+from Products.CMFPlone.utils import log_deprecated
+
 def dummyGetId():
     return ''
 
@@ -111,9 +113,26 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     portlet.description = str(child.getAttribute('description'))
                     portlet.addview = addview
                     
-                    for_ = child.getAttribute('for')
-                    if for_:
+                    for_ = []
+                    for subNode in child.childNodes:
+                        if subNode.nodeName.lower() == 'for':
+                            interface_name = str(
+                              subNode.getAttribute('interface')
+                              )
+                            for_.append(interface_name)
+                    
+                    interface_name = child.getAttribute('for')
+                    if interface_name:
+                        log_deprecated('The "for" attribute of the portlet ' \
+                          'node in portlets.xml is deprecated and will be ' \
+                          'removed in Plone 4.0. Use children nodes of the ' \
+                          'form <for interface="zope.interface.Interface" /> ' \
+                          'instead.')
+                        for_.append(interface_name)
                         portlet.for_ = _resolveDottedName(str(for_))
+                    
+                    for_ = [_resolveDottedName(i) for i in for_]
+                    portlet.for_ = for_
 
                     self.context.registerUtility(component=portlet, 
                                                  provided=IPortletType, 
@@ -144,9 +163,15 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 child.setAttribute('title', portletType.title)
                 child.setAttribute('description', portletType.description)
                 
-                if portletType.for_:
-                    child.setAttribute('for', _getDottedName(portletType.for_))
-
+                if portletType.for_ and portletType.for_ != []:
+                    for i in portletType.for_:
+                        subNode = self._doc.createElement('for')
+                        subNode.setAttribute('interface',
+                          _getDottedName(i))
+                        child.appendChild(subNode)
+                
+                fragment.appendChild(child)
+        
         return fragment
 
 def importPortlets(context):
