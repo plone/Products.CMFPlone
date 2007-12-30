@@ -72,28 +72,6 @@
                        />
             </div>
 
-
-            <tal:condition condition="python:checkPermission('View Groups', portal)">
-            <div class="field"
-                 tal:define="gtool context/portal_groups;
-                             grouplist gtool/listGroups;"
-                 tal:condition="grouplist">
-                 <label for="groupname"
-                        i18n:translate="legend_group"> Group </label>
-
-                 <div class="formHelp" i18n:translate="help_search_group"> 
-                     Find users in the selected group.
-                 </div>
-
-                 <select id="groupname" name="groupname">
-                     <option value="" i18n:translate="search_any_group"> Any Group </option>
-                     <option tal:repeat="group grouplist"
-                             tal:attributes="value group/getGroupName"
-                             tal:content="python: group.title or group.getGroupName()">group name</option>
-                 </select>
-            </div>
-            </tal:condition>
-
             <div class="field" 
                  tal:condition="is_manager"
                  tal:define="memberRoles request/roles|nothing;
