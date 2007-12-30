@@ -139,7 +139,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
         
         for_ = portletType.for_
         #BBB
-        for_ = _BBB_for(for_)
+        for_ = self._BBB_for(for_)
         
         if for_ and for_ != [Interface]:
             for i in for_:

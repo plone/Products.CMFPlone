@@ -56,7 +56,7 @@ _XML_MULTIPLE_INTERFACES = """<?xml version="1.0"?>
 </portlet>
 """
 
-_XML_DEFAULT_INTERFACE = """<?xml version="1.0"?>
+_XML_EXPLICIT_DEFAULT_INTERFACE = """<?xml version="1.0"?>
 <portlet addview="portlets.New" title="Foo" description="Foo">
   <for interface="zope.interface.Interface" />
 </portlet>
