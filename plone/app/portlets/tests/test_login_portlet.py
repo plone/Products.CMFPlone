@@ -1,6 +1,8 @@
 from zope.component import getUtility, getMultiAdapter, queryMultiAdapter
 from zope.app.component.hooks import setHooks, setSite
 
+from Products.GenericSetup.utils import _getDottedName
+
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignment
@@ -23,6 +25,12 @@ class TestPortlet(PortletsTestCase):
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Login')
         self.assertEquals(portlet.addview, 'portlets.Login')
+
+    def testRegisteredInterfaces(self):
+        portlet = getUtility(IPortletType, name='portlets.Login')
+        registered_interfaces = [_getDottedName(i) for i in portlet.for_] 
+        self.assertEquals(['plone.app.portlets.interfaces.IColumn'],
+          registered_interfaces)
 
     def testInterfaces(self):
         portlet = login.Assignment()
