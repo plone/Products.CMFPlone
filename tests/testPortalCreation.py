@@ -788,7 +788,46 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
         portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
-        
+    
+    def testAddablePortletsInColumns(self):
+        for name in (u'plone.leftcolumn', u'plone.rightcolumn'):
+            column = getUtility(IPortletManager, name=name)
+            addable_types = [
+              p.addview for p in column.getAddablePortletTypes()
+              ]
+            addable_types.sort()
+            self.assertEqual([
+              'portlets.Calendar',
+              'portlets.Classic',
+              'portlets.Events',
+              'portlets.Login',
+              'portlets.Navigation',
+              'portlets.News',
+              'portlets.Recent',
+              'portlets.Review',
+              'portlets.Search',
+              'portlets.rss'
+              ], addable_types)
+    
+    def testAddablePortletsInDashboard(self):
+        for name in ('plone.dashboard1', 'plone.dashboard2',
+          'plone.dashboard3', 'plone.dashboard4'):
+            column = getUtility(IPortletManager, name=name)
+            addable_types = [
+              p.addview for p in column.getAddablePortletTypes()
+              ]
+            addable_types.sort()
+            self.assertEqual([
+              'portlets.Calendar',
+              'portlets.Classic',
+              'portlets.Events',
+              'portlets.News',
+              'portlets.Recent',
+              'portlets.Review',
+              'portlets.Search',
+              'portlets.rss'
+              ], addable_types)
+
     def testReaderEditorRoles(self):
         self.failUnless('Reader' in self.portal.valid_roles())
         self.failUnless('Editor' in self.portal.valid_roles())
