@@ -34,7 +34,7 @@ class TestExportPortlets(PortletsTestCase):
     
     def test_extractPortletNode_defaultManagerInterface(self):
         node = parseString(_XML_EXPLICIT_DEFAULT_INTERFACE).documentElement
-        self.importer._initPortletNode(Node)
+        self.importer._initPortletNode(node)
         portlet = getUtility(IPortletType, 'portlets.New')
         node = self.exporter._extractPortletNode('portlets.New', portlet)
         file = StringIO()

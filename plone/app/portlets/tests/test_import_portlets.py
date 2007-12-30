@@ -98,18 +98,18 @@ class TestImportPortlets(PortletsTestCase):
         self.assertEqual([IColumn], portlet.for_)
     
     def test_initPortletNode_extend(self):
-        node = parseString(_EXTENDME_SETUP).documentElement
+        node = parseString(_XML_EXTENDME_SETUP).documentElement
         self.importer._initPortletNode(node)
-        node = parseString(_EXTENDME_EXTENSION).documentElement
+        node = parseString(_XML_EXTENDME_EXTENSION).documentElement
         self.importer._initPortletNode(node) 
         portlet = queryUtility(IPortletType, name="portlets.New")
         self.failUnless(portlet is not None)
         self.assertEqual([IDashboard], portlet.for_)
     
     def test_initPortletNode_purge(self):
-        node = parseString(_PURGME_SETUP).documentElement
+        node = parseString(_XML_PURGEME_SETUP).documentElement
         self.importer._initPortletNode(node)
-        node = parseString(_PURGEME_PURGE).documentElement
+        node = parseString(_XML_PURGEME_PURGE).documentElement
         self.importer._initPortletNode(node)
         portlet = queryUtility(IPortletType, name="portlets.New")
         self.failUnless(portlet is not None)
