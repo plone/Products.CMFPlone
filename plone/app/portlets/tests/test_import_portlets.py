@@ -189,6 +189,5 @@ _XML_PURGEME_PURGE = """<?xml version="1.0"?>
 """
 
 _XML_BBB_INTERFACE = """<?xml version="1.0"?>
-<portlet addview="portlets.BBB" title="Foo" description="Foo" for="plone.app.por
-tlets.interfaces.IColumn" />
+<portlet addview="portlets.BBB" title="Foo" description="Foo" for="plone.app.portlets.interfaces.IColumn" />
 """
