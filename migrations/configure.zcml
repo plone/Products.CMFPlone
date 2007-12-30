@@ -66,5 +66,15 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <genericsetup:registerProfile
+      name="3.0.4-3.1a1"
+      title="Migration profile for Plone 3.0.4 to 3.1-alpha1"
+      description="This profile contains configuration changes that are applied
+during the Plone 3.0.4 to 3.1-alpha1 migration."
+      directory="v3_0/profiles/three0_alpha1"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
 </configure>
 
