@@ -40,8 +40,7 @@ class TestExportPortlets(PortletsTestCase):
         file = StringIO()
         node.writexml(file)
         file.seek(0)
-        self.assertEqual("""<portlet title="Foo" addview="portlets.New" descript
-ion="Foo"/>""", file.read())
+        self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"/>""", file.read())
 
 def test_suite():
     from unittest import TestSuite, makeSuite

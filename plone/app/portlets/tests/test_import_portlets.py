@@ -102,7 +102,7 @@ class TestImportPortlets(PortletsTestCase):
         self.importer._initPortletNode(node)
         node = parseString(_XML_EXTENDME_EXTENSION).documentElement
         self.importer._initPortletNode(node) 
-        portlet = queryUtility(IPortletType, name="portlets.New")
+        portlet = queryUtility(IPortletType, name="portlets.ExtendMe")
         self.failUnless(portlet is not None)
         self.assertEqual([IDashboard], portlet.for_)
     
@@ -111,7 +111,7 @@ class TestImportPortlets(PortletsTestCase):
         self.importer._initPortletNode(node)
         node = parseString(_XML_PURGEME_PURGE).documentElement
         self.importer._initPortletNode(node)
-        portlet = queryUtility(IPortletType, name="portlets.New")
+        portlet = queryUtility(IPortletType, name="portlets.PurgeMe")
         self.failUnless(portlet is not None)
         self.assertEqual([IColumn], portlet.for_)
         self.assertEqual('Bar', portlet.title)
