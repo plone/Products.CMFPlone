@@ -7,6 +7,7 @@ from zope.component import adapts
 from zope.component import getSiteManager
 from zope.component import getUtilitiesFor
 from zope.component import queryMultiAdapter
+from zope.component import queryUtility
 from zope.component.interfaces import IComponentRegistry
 
 from Products.GenericSetup.interfaces import IBody
@@ -81,9 +82,6 @@ class PortletsXMLAdapter(XMLAdapterBase):
                                            name=registration.name)
 
     def _initPortlets(self, node):
-        registeredPortletTypes = [r.name for r in self.context.registeredUtilities()
-                                    if r.provided == IPortletType]
-                                        
         registeredPortletManagers = [r.name for r in self.context.registeredUtilities()
                                         if r.provided.isOrExtends(IPortletManager)]
         
@@ -106,37 +104,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                                                  name=name)
                                                  
             elif child.nodeName.lower() == 'portlet':
-                addview = str(child.getAttribute('addview'))
-                if addview not in registeredPortletTypes:
-                    portlet = PortletType()
-                    portlet.title = str(child.getAttribute('title'))
-                    portlet.description = str(child.getAttribute('description'))
-                    portlet.addview = addview
-                    
-                    for_ = []
-                    for subNode in child.childNodes:
-                        if subNode.nodeName.lower() == 'for':
-                            interface_name = str(
-                              subNode.getAttribute('interface')
-                              )
-                            for_.append(interface_name)
-                    
-                    interface_name = child.getAttribute('for')
-                    if interface_name:
-                        log_deprecated('The "for" attribute of the portlet ' \
-                          'node in portlets.xml is deprecated and will be ' \
-                          'removed in Plone 4.0. Use children nodes of the ' \
-                          'form <for interface="zope.interface.Interface" /> ' \
-                          'instead.')
-                        for_.append(interface_name)
-                        portlet.for_ = _resolveDottedName(str(for_))
-                    
-                    for_ = [_resolveDottedName(i) for i in for_]
-                    portlet.for_ = for_
-
-                    self.context.registerUtility(component=portlet, 
-                                                 provided=IPortletType, 
-                                                 name=addview)
+                self._initPortletNode(child)
     
     def _extractPortlets(self):
         fragment = self._doc.createDocumentFragment()
@@ -158,21 +126,158 @@ class PortletsXMLAdapter(XMLAdapterBase):
             
         for name, portletType in getUtilitiesFor(IPortletType):
             if name in registeredPortletTypes:
-                child = self._doc.createElement('portlet')
-                child.setAttribute('addview', portletType.addview)
-                child.setAttribute('title', portletType.title)
-                child.setAttribute('description', portletType.description)
-                
-                if portletType.for_ and portletType.for_ != []:
-                    for i in portletType.for_:
-                        subNode = self._doc.createElement('for')
-                        subNode.setAttribute('interface',
-                          _getDottedName(i))
-                        child.appendChild(subNode)
-                
-                fragment.appendChild(child)
+                fragment.appendChild(self._extractPortletNode(name,
+                  portletType))
         
         return fragment
+    
+    def _extractPortletNode(self, name, portletType):
+        child = self._doc.createElement('portlet')
+        child.setAttribute('addview', portletType.addview)
+        child.setAttribute('title', portletType.title)
+        child.setAttribute('description', portletType.description)
+        
+        for_ = portletType.for_
+        #BBB
+        for_ = _BBB_for(for_)
+        
+        if for_ and for_ != [Interface]:
+            for i in for_:
+                subNode = self._doc.createElement('for')
+                subNode.setAttribute('interface', _getDottedName(i))
+                child.appendChild(subNode)
+        return child
+    
+    def _removePortlet(self, name):
+        if queryUtility(IPortletType, name=name):
+            self.context.unregisterUtility(provided=IPortletType, name=name)
+            return True
+        else:
+            self._logger.warning('Unable to unregister portlet type ' \
+              '%s because it is not registered.' % name)
+            return False
+    
+    def _checkBasicPortletNodeErrors(self, node, registeredPortletTypes):
+        addview = str(node.getAttribute('addview'))
+        extend = node.hasAttribute('extend')
+        purge = node.hasAttribute('purge')
+        exists = addview in registeredPortletTypes
+        
+        if extend and purge:
+            self._logger.warning('Cannot extend and purge the same ' \
+              'portlet type %s!' % addview)
+            return True
+        if extend and not exists:
+            self._logger.warning('Cannot extend portlet type ' \
+              '%s because it is not registered.' % addview)
+            return True
+        if exists and not purge and not extend:
+            self._logger.warning('Cannot register portlet type ' \
+              '%s because it is already registered.' % addview)
+            return True
+        
+        return False
+
+    def _modifyForList(self, node, for_):
+        """Examine the "for_" nodes within a "portlet" node to populate,
+        extend, and/or remove interface names from an existing list for_
+        """
+        modified_for = for_
+         
+        for subNode in node.childNodes:
+            if subNode.nodeName.lower() == 'for':
+                interface_name = str(
+                  subNode.getAttribute('interface')
+                  )
+                if subNode.hasAttribute('remove'):
+                    if interface_name in modified_for:
+                        modified_for.remove(interface_name)
+                elif interface_name not in modified_for:
+                    modified_for.append(interface_name)
+        
+        #BBB
+        interface_name = str(node.getAttribute('for'))
+        if interface_name:
+            log_deprecated('The "for" attribute of the portlet node in ' \
+            'portlets.xml is deprecated and will be removed in Plone 4.0.' \
+            'Use children nodes of the form <for interface="zope.interface.' \
+            'Interface" /> instead.')
+            modified_for.append(interface_name)
+        
+        return modified_for
+    
+    #BBB
+    def _BBB_for(self, for_):
+        if for_ is None:
+            return [Interface]
+        if type(for_) not in (tuple, list):
+            return [for_]
+        return for_
+    
+    def _initPortletNode(self, node):
+        registeredPortletTypes = [
+          r.name for r in self.context.registeredUtilities() \
+          if r.provided == IPortletType
+          ]
+        addview = str(node.getAttribute('addview'))
+        extend = node.hasAttribute('extend')
+        purge = node.hasAttribute('purge')
+        
+        #In certain cases, continue to the next node
+        if node.hasAttribute('remove'):
+            self._removePortlet(name=addview)
+            return
+        if self._checkBasicPortletNodeErrors(node, registeredPortletTypes):
+            return
+
+        #To extend a portlet type that is registered, we modify the title and
+        #description if provided by the profile, then look up the portlet
+        #manager interfaces specified by its for_ attribute
+        if extend:
+            portlet = queryUtility(IPortletType, name = addview)
+            if str(node.getAttribute('title')):
+                 portlet.title = str(node.getAttribute('title'))
+            if str(node.getAttribute('description')):
+                 portlet.description = str(node.getAttribute('description'))
+            for_ = portlet.for_
+            
+            #BBB - to cover old-style for_ attributes that equal None or a
+            #single interface
+            for_ = self._BBB_for(for_)
+            
+            for_ = [_getDottedName(i) for i in for_]
+        
+        #If not extending an already-registered portlet type,
+        #then create a new one with the correct attributes.
+        if not extend:
+             portlet = PortletType()
+             portlet.title = str(node.getAttribute('title'))
+             portlet.description = str(node.getAttribute('description'))
+             portlet.addview = addview
+             for_ = []
+
+        #Process the node's child "for" nodes to add or remove portlet
+        #manager interface names to the for_ list
+        for_ = self._modifyForList(node, for_)
+        for_ = [_resolveDottedName(i) for i in for_ \
+          if _resolveDottedName(i) is not None]
+        
+        #Store the for_ attribute, with [Interface] as the default
+        if for_ == []:
+            for_ = [Interface]
+        portlet.for_ = for_
+        
+        #If "purge" is specified, then remove the old portlet
+        #type. We do so immediately before registering the new
+        #portlet type to ensure that no errors occur while
+        #creating the new portlet type.
+        if purge:
+            self._removePortlet(addview)
+        #If creating a new portlet type, then register it.
+        if not extend:
+            self.context.registerUtility(component=portlet,
+                                         provided=IPortletType,
+                                         name=addview)
 
 def importPortlets(context):
     """Import portlet managers and portlets
@@ -214,4 +319,3 @@ def exportPortlets(context):
         body = exporter.body
         if body is not None:
             context.writeDataFile(filename, body, exporter.mime_type)
-
