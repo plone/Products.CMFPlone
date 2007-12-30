@@ -1,5 +1,8 @@
+from StringIO import StringIO
+
 from zope.app.component.hooks import setSite, setHooks
 from zope.component import getSiteManager
+from zope.component import getUtility
 from zope.component import queryUtility
 from zope.interface import Interface
 
@@ -61,12 +64,6 @@ class TestImportPortlets(PortletsTestCase):
         self.assertEqual(['plone.app.portlets.interfaces.IColumn'],
           self.importer._modifyForList(node, []))
     
-    def test_BBB_for(self):
-        self.assertEqual([Interface], self.importer._BBB_for(None))
-        self.assertEqual([], self.importer._BBB_for([]))
-        self.assertEqual([Interface], self.importer._BBB_for(Interface))
-        self.assertEqual([Interface], self.importer._BBB_for([Interface]))
-    
     def test_initPortletNode_basic(self):
         node = parseString(_XML_BASIC).documentElement
         self.importer._initPortletNode(node)
@@ -117,10 +114,56 @@ class TestImportPortlets(PortletsTestCase):
         self.assertEqual('Bar', portlet.title)
         self.assertEqual('Bar', portlet.description)
 
+class TestExportPortlets(PortletsTestCase):
+
+    def afterSetUp(self):
+        setHooks()
+        setSite(self.portal)
+        sm = getSiteManager(self.portal)
+        self.importer = self.exporter = \
+          PortletsXMLAdapter(sm, DummySetupEnviron())
+
+    def test_extractPortletNode(self):
+        node = parseString(_XML_MULTIPLE_INTERFACES).documentElement
+        self.importer._initPortletNode(node)
+        portlet = getUtility(IPortletType, 'portlets.New')
+        node = self.exporter._extractPortletNode('portlets.New', portlet)
+        file = StringIO()
+        node.writexml(file)
+        file.seek(0)
+        self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"><for interface="plone.app.portlets.interfaces.IColumn"/><for interface="plone.app.portlets.interfaces.IDashboard"/></portlet>""", file.read())
+
+    def test_extractPortletNode_defaultManagerInterface(self):
+        node = parseString(_XML_EXPLICIT_DEFAULT_INTERFACE).documentElement
+        self.importer._initPortletNode(node)
+        portlet = getUtility(IPortletType, 'portlets.New')
+        node = self.exporter._extractPortletNode('portlets.New', portlet)
+        file = StringIO()
+        node.writexml(file)
+        file.seek(0)
+        self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"/>""", file.read())
+
+class TestHelperMethods(PortletsTestCase):
+
+    def afterSetUp(self):
+        setHooks()
+        setSite(self.portal)
+        sm = getSiteManager(self.portal)
+        self.importer = self.exporter = PortletsXMLAdapter(sm,
+          DummySetupEnviron())
+    
+    def test_BBB_for(self):
+        self.assertEqual([Interface], self.importer._BBB_for(None))
+        self.assertEqual([], self.importer._BBB_for([]))
+        self.assertEqual([Interface], self.importer._BBB_for(Interface))
+        self.assertEqual([Interface], self.importer._BBB_for([Interface]))
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestImportPortlets))
+    suite.addTest(makeSuite(TestExportPortlets))
+    suite.addTest(makeSuite(TestHelperMethods))
     return suite
 
 _XML_INVALID_EXTEND_AND_PURGE = """<?xml version="1.0"?>
@@ -185,6 +228,12 @@ _XML_PURGEME_SETUP = """<?xml version="1.0"?>
 _XML_PURGEME_PURGE = """<?xml version="1.0"?>
 <portlet addview="portlets.PurgeMe" purge="" title="Bar" description="Bar">
   <for interface="plone.app.portlets.interfaces.IColumn" />
+</portlet>
+"""
+
+_XML_EXPLICIT_DEFAULT_INTERFACE = """<?xml version="1.0"?>
+<portlet addview="portlets.New" title="Foo" description="Foo">
+  <for interface="zope.interface.Interface" />
 </portlet>
 """
 
