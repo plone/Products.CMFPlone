@@ -182,7 +182,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
         """Examine the "for_" nodes within a "portlet" node to populate,
         extend, and/or remove interface names from an existing list for_
         """
-        modified_for = for_
+        modified_for = [_getDottedName(i) for i in for_]
          
         for subNode in node.childNodes:
             if subNode.nodeName.lower() == 'for':
@@ -203,6 +203,9 @@ class PortletsXMLAdapter(XMLAdapterBase):
             'Use children nodes of the form <for interface="zope.interface.' \
             'Interface" /> instead.')
             modified_for.append(interface_name)
+        
+        modified_for = [_resolveDottedName(name) for name in modified_for \
+          if _resolveDottedName(name) is not None] 
         
         return modified_for
     
@@ -230,50 +233,40 @@ class PortletsXMLAdapter(XMLAdapterBase):
         if self._checkBasicPortletNodeErrors(node, registeredPortletTypes):
             return
 
-        #To extend a portlet type that is registered, we modify the title and
-        #description if provided by the profile, then look up the portlet
-        #manager interfaces specified by its for_ attribute
+        #Retrieve or create the portlet type and determine the current list
+        #of associated portlet manager interfaces (for_)
         if extend:
+            #To extend a portlet type that is registered, we modify the title
+            #and description if provided by the profile.
             portlet = queryUtility(IPortletType, name = addview)
             if str(node.getAttribute('title')):
                  portlet.title = str(node.getAttribute('title'))
             if str(node.getAttribute('description')):
                  portlet.description = str(node.getAttribute('description'))
             for_ = portlet.for_
-            
-            #BBB - to cover old-style for_ attributes that equal None or a
-            #single interface
-            for_ = self._BBB_for(for_)
-            
-            for_ = [_getDottedName(i) for i in for_]
-        
-        #If not extending an already-registered portlet type,
-        #then create a new one with the correct attributes.
-        if not extend:
+        else:
+             #Otherwise, create a new portlet type with the correct attributes.
              portlet = PortletType()
              portlet.title = str(node.getAttribute('title'))
              portlet.description = str(node.getAttribute('description'))
              portlet.addview = addview
              for_ = []
 
+        #BBB - to cover old-style for_ attributes that equal None or a
+        #single interface
+        for_ = self._BBB_for(for_)
+
         #Process the node's child "for" nodes to add or remove portlet
         #manager interface names to the for_ list
         for_ = self._modifyForList(node, for_)
-        for_ = [_resolveDottedName(i) for i in for_ \
-          if _resolveDottedName(i) is not None]
         
         #Store the for_ attribute, with [Interface] as the default
         if for_ == []:
             for_ = [Interface]
         portlet.for_ = for_
         
-        #If "purge" is specified, then remove the old portlet
-        #type. We do so immediately before registering the new
-        #portlet type to ensure that no errors occur while
-        #creating the new portlet type.
         if purge:
             self._removePortlet(addview)
-        #If creating a new portlet type, then register it.
         if not extend:
             self.context.registerUtility(component=portlet,
                                          provided=IPortletType,

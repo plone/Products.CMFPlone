@@ -57,11 +57,11 @@ class TestImportPortlets(PortletsTestCase):
           )        
     
     def test_modifyForList(self):
-        node = parseString(_XML_COLUMN2).documentElement
-        self.assertEqual(['foo.IColumn1'],
-          self.importer._modifyForList(node, ['foo.IColumn2']))
+        node = parseString(_XML_SWITCH_COLUMNS).documentElement
+        self.assertEqual([IColumn],
+          self.importer._modifyForList(node, [IDashboard]))
         node = parseString(_XML_BBB_INTERFACE).documentElement
-        self.assertEqual(['plone.app.portlets.interfaces.IColumn'],
+        self.assertEqual([IColumn],
           self.importer._modifyForList(node, []))
     
     def test_initPortletNode_basic(self):
@@ -182,10 +182,10 @@ _XML_EXTEND_EXISTING = """<?xml version="1.0"?>
 <portlet addview="portlets.Exists" extend="" />
 """
 
-_XML_COLUMN2 = """<?xml version="1.0"?>
+_XML_SWITCH_COLUMNS = """<?xml version="1.0"?>
 <portlet addview="portlets.Exists" extend="">
-  <for interface="foo.IColumn1" />
-  <for interface="foo.IColumn2" remove="" />
+  <for interface="plone.app.portlets.interfaces.IColumn" />
+  <for interface="plone.app.portlets.interfaces.IDashboard" remove ="" />
 </portlet>
 """
 
