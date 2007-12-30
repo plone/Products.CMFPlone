@@ -151,7 +151,7 @@ _XML_BASIC = """<?xml version="1.0"?>
   <for interface="plone.app.portlets.interfaces.IColumn" />
 </portlet>
 
-_XML_MULTIPLE_INTERFACES6 = """<?xml version="1.0"?>
+_XML_MULTIPLE_INTERFACES = """<?xml version="1.0"?>
 <portlet addview="portlets.New" title="Foo" description="Foo">
   <for interface="plone.app.portlets.interfaces.IColumn" />
   <for interface="plone.app.portlets.interfaces.IDashboard" />
