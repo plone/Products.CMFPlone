@@ -6,6 +6,7 @@
    addview="portlets.Calendar"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" />
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
@@ -14,6 +15,7 @@
    addview="portlets.Classic"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" /> 
    <for interface="plone.app.portlets.interfaces.IDashboard" />  
  </portlet>
@@ -22,6 +24,7 @@
    addview="portlets.News"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" /> 
    <for interface="plone.app.portlets.interfaces.IDashboard" />  
  </portlet>
@@ -30,6 +33,7 @@
    addview="portlets.Events"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" />
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
@@ -38,6 +42,7 @@
    addview="portlets.Recent"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" />
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
@@ -46,6 +51,7 @@
    addview="portlets.Review"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" />
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
@@ -54,6 +60,7 @@
    addview="portlets.rss"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" />
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
@@ -62,6 +69,7 @@
    addview="portlets.Search"
    extend=""
    >
+   <for interface="zope.interface.Interface" remove="" />
    <for interface="plone.app.portlets.interfaces.IColumn" />
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
