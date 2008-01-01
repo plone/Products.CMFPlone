@@ -26,7 +26,7 @@ setup(name='Products.CMFPlone',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'Archetypes',
+          'Products.Archetypes',
           'Products.ATReferenceBrowserWidget',
           'Products.CMFActionIcons',
           'Products.CMFCalendar',
