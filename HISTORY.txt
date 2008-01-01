@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.0.5 - UNRELEASED
 
+    - Remove utility registration for portal_quickinstall and portal_setup:
+      they may run arbitrary code that relies on having a full acquisition
+      chain including a request container.
+      [wichert]
+
     - Backported changeset 18612 and 18615 from trunk. This fixes some
       deprecation warnings.
       [hannosch]
