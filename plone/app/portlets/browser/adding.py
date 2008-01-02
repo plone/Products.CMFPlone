@@ -18,6 +18,10 @@ class PortletAdding(SimpleItem, BrowserView):
     context = None
     request = None
 
+    # This is necessary so that context.absolute_url() works properly on the 
+    # add form, which in turn fixes the <base /> URL
+    id = '+'
+
     def add(self, content):
         """Add the rule to the context
         """

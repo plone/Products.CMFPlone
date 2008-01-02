@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.0.5
 
+    - Made absolute_url() work properly on the custom adding views. This is
+      necessary for the <base /> URL to be set correctly.
+      [optilude]
+
     - Handle RSS feed entries which do not have an update timestamp correctly.
       This fixes http://dev.plone.org/plone/ticket/7515
       [wichert]
