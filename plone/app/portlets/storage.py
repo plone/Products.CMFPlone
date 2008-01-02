@@ -1,5 +1,6 @@
 from zope.interface import implements
 from zope.component import adapts
+from zope.component import getUtility
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.publisher.interfaces.browser import IBrowserPublisher
@@ -11,6 +12,8 @@ from zope.app.container.traversal import ItemTraverser
 
 from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
+
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets import constants
@@ -74,18 +77,58 @@ class PortletsNameChooser(NameChooser):
         self.context = context
 
     def chooseName(self, name, object):
+        """Choose a name based on a the portlet title
+        
+        >>> from plone.app.portlets.storage import PortletAssignmentMapping
+        >>> mapping = PortletAssignmentMapping()
+        
+        >>> from zope.app.container.interfaces import INameChooser
+        >>> chooser = INameChooser(mapping)
+        
+        >>> from plone.app.portlets.portlets import base
+        >>> class DummyAssignment(base.Assignment):
+        ...     title = u""
+        
+        >>> dummy = DummyAssignment()
+        >>> dummy.title = u"A test title"
+        
+        >>> chooser.chooseName(None, dummy)
+        'a-test-title'
+        
+        >>> chooser.chooseName(None, dummy)
+        'a-test-title'
+        
+        >>> mapping[u'a-test-title'] = dummy
+        >>> chooser.chooseName(None, dummy)
+        'a-test-title-1'
+        
+        >>> dummy.title = 'RSS: http://plone.org'
+        >>> chooser.chooseName(None, dummy)
+        'RSS-http-plone.org'
+        
+        >>> dummy.title = None
+        >>> chooser.chooseName(None, dummy)
+        'dummyassignment'
+        
+        >>> mapping[u'dummyassignment'] = dummy
+        >>> delattr(dummy, 'title')
+        >>> chooser.chooseName(None, dummy)
+        'dummyassignment-1'
+        
+        
+        """
         container = self.context
 
         if not name:
-            name = object.title
+            name = getattr(object, 'title', None)
 
         if not name:
             name = object.__class__.__name__
             
-        name = name.lower()
+        name = getUtility(IIDNormalizer).normalize(name)
 
-        i = 1
-        new_name = "%s-%d" % (name, i)
+        i = 0
+        new_name = name
         while new_name in container and i <= ATTEMPTS:
             i += 1
             new_name = "%s-%d" % (name, i)
