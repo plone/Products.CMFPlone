@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
+ <javascript cacheable="True" compression="none" cookable="True"
+    enabled="True" expression="" id="jquery.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="event-registration.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
@@ -56,7 +58,7 @@
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
     id="calendar_formfield.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
+    enabled="False" expression="not: portal/portal_membership/isAnonymousUser" 
     id="calendarpopup.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
