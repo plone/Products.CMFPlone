@@ -2,6 +2,7 @@
  * These should be placed inline
  * We have to be certain they are loaded before anything that uses them 
  */
+// Deprecated, use jquery methods directly instead
 
 // check for ie5 mac
 var bugRiddenCrashPronePieceOfJunk = (
@@ -16,78 +17,19 @@ var W3CDOM = (!bugRiddenCrashPronePieceOfJunk &&
                typeof document.createElement != 'undefined' );
 
 // cross browser function for registering event handlers
-var registerEventListener = undefined;
-
-if (typeof addEvent != 'undefined') {
-    // use Dean Edwards' function if available
-    registerEventListener = function (elem, event, func) {
-        addEvent(elem, event, func);
-        return true;
-    }
-} else if (window.addEventListener) {
-    registerEventListener = function (elem, event, func) {
-        elem.addEventListener(event, func, false);
-        return true;
-    }
-} else if (window.attachEvent) {
-    registerEventListener = function (elem, event, func) {
-        var result = elem.attachEvent("on"+event, func);
-        return result;
-    }
-} else {
-    registerEventListener = function (elem, event, func) {
-        // maybe we could implement something with an array
-        return false;
-    }
+var registerEventListener = function(elem, event, func) {
+    $(elem).bind(event, func);
 }
 
 // cross browser function for unregistering event handlers
-var unRegisterEventListener = undefined;
-
-if (typeof removeEvent != 'undefined') {
-    // use Dean Edwards' function if available
-    unRegisterEventListener = function (elem, event, func) {
-        removeEvent(element, event, func);
-        return true;
-    }
-} else if (window.removeEventListener) {
-    unRegisterEventListener = function (elem, event, func) {
-        elem.removeEventListener(event, func, false);
-        return true;
-    }
-} else if (window.detachEvent) {
-    unRegisterEventListener = function (elem, event, func) {
-        var result = elem.detachEvent("on"+event, func);
-        return result;
-    }
-} else {
-    unRegisterEventListener = function (elem, event, func) {
-        // maybe we could implement something with an array
-        return false;
-    }
+var unRegisterEventListener = function(elem, event, func) {
+    $(elem).unbind(event, func);
 }
 
-var registerPloneFunction = undefined;
-
-if (typeof addDOMLoadEvent != 'undefined') {
-    registerPloneFunction = function (func) {
-        // registers a function to fire ondomload.
-        addDOMLoadEvent(func);
-    }
-} else {
-    registerPloneFunction = function (func) {
-        // registers a function to fire onload.
-        registerEventListener(window, "load", func);
-    }
-}
+var registerPloneFunction = $;
 
 function getContentArea() {
     // returns our content area element
-    if (W3CDOM) {
-        var node = document.getElementById('content');
-        if (!node) {
-            node = document.getElementById('region-content');
-        }
-        return node;
-    }
+    var node = $('#region-content,#content');
+    return node.length ? node[0] : null;
 } 

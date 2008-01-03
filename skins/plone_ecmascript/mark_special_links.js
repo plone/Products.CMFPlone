@@ -10,96 +10,37 @@
  *       but not Internet Explorer 6. It works fine in IE7, however.
  */
 
-function scanforlinks() {
-    // terminate if we hit a non-compliant DOM implementation
-    if (!W3CDOM) { return false; }
-
+$(function() {
     // first make external links open in a new window, afterwards do the
     // normal plone link wrapping in only the content area
 
-    if (typeof external_links_open_new_window == 'string') {
-        if (external_links_open_new_window.toLowerCase() == 'true') {
-             external_links_open_new_window = Boolean(true)
-         } else {
-             external_links_open_new_window = Boolean(false)
-         }
-    }
+    if (typeof external_links_open_new_window == 'string')
+        var elonw = external_links_open_new_window.toLowerCase() == 'true';
+    else elonw = false;
 
-    var this_site = window.location.protocol
-                    + '//'
-                    + window.location.host;
-    var links;
+    var url = window.location.protocol + '//' + window.location.host;
 
-    if ((typeof external_links_open_new_window != 'undefined') &&
-        (external_links_open_new_window == true)) {
-        links = document.getElementsByTagName('a');
-        for (i=0; i < links.length; i++) {
-            if ( (links[i].getAttribute('href'))
-                 && (links[i].className.indexOf('link-plain')==-1) ) {
-                var linkval = links[i].getAttribute('href');
+    if (elonw)
+        // all http links (without the link-plain class), not within this site
+        $('a[href^=http]:not(.link-plain):not([href^=' + url + '])')
+            .attr('target', '_blank');
 
-                // check if the link href is a relative link, or an absolute link to
-                // the current host.
-                if (linkval.toLowerCase().indexOf(this_site)==0) {
-                    // absolute link internal to our host - do nothing
-                } else if (linkval.indexOf('http:') != 0) {
-                    // not a http-link. Possibly an internal relative link, but also
-                    // possibly a mailto or other protocol add tests for relevant
-                    // protocols as you like.
-                    // do nothing
-                } else {
-                    // we are in here if the link points to somewhere else than our
-                    // site.
-                    // set external_links_open_new_window in Site setup / Theme
-                    // to true if you want external links to be opened in a new
-                    // window.
-                    links[i].setAttribute('target', '_blank');
-                }
-            }
-        }
-    }
+    var protocols = /^(mailto|ftp|news|irc|h323|sip|callto|https|feed|webcal)/;
+    var contentarea = $(getContentArea());
 
-    var contentarea = getContentArea();
-    if (!contentarea)
-        return false;
-
-    var protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip',
-                     'callto', 'https', 'feed', 'webcal'];
-
-    links = contentarea.getElementsByTagName('a');
-    for (i=0; i < links.length; i++) {
-        if ( (links[i].getAttribute('href'))
-             && (links[i].className.indexOf('link-plain')==-1) ) {
-            var linkval = links[i].getAttribute('href');
-
-            // check if the link href is a relative link, or an absolute link to
-            // the current host.
-            if (linkval.toLowerCase().indexOf(this_site)==0) {
-                // absolute link internal to our host - do nothing
-            } else if (linkval.indexOf('http:') != 0) {
-                // not a http-link. Possibly an internal relative link, but also
-                // possibly a mailto or other protocol add tests for relevant
-                // protocols as you like.
-                // h323, sip and callto are internet telephony VoIP protocols
-                for (p=0; p < protocols.length; p++) {
-                    if (linkval.indexOf(protocols[p]+':') == 0) {
-                        // if the link matches one of the listed protocols, add
-                        // className = link-protocol
-                        wrapNode(links[i], 'span', 'link-'+protocols[p]);
-                        break;
-                    }
-                }
-            } else {
-                // we are in here if the link points to somewhere else than our
-                // site.
-                if ( links[i].getElementsByTagName('img').length == 0 ) {
-                    // we do not want to mess with those links that already have
-                    // images in them
-                    wrapNode(links[i], 'span', 'link-external');
-                }
-            }
-        }
-    }
-};
-
-registerPloneFunction(scanforlinks);
+    // All links with an http href (without the link-plain class), not within this site,
+    // and no img children should be wrapped in a link-external span
+    contentarea.find(
+        'a[href^=http]:not(.link-plain):not([href^=' + url + ']):not(:has(img))')
+        .wrap('<span>').parent().addClass('link-external')
+    // All links without an http href (without the link-plain class), not within this site,
+    // and no img children should be wrapped in a link-[protocol] span
+    contentarea.find(
+        'a[href]:not([href^=http]):not(.link-plain):not([href^=' + url + ']):not(:has(img))')
+        .each(function() {
+            // those without a http link may have another interesting protocol
+            // wrap these in a link-[protocol] span
+            if (res = protocols.exec(this.href))
+                $(this).wrap('<span>').parent().addClass('link-', res[0]);
+        });
+});

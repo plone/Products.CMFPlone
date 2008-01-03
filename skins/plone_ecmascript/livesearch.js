@@ -12,18 +12,6 @@ var livesearch = function (){
 
     // constants for better compression
     var _LSHighlight = "LSHighlight";
-    var _cssQuery = cssQuery;
-    var _registerEventListener = registerEventListener;
-    var _removeClassName = removeClassName;
-    var _addClassName = addClassName;
-
-    function _isform($node) {
-        // return true if the node is a form. used for findContainer in _setup.
-        if ($node.tagName && ($node.tagName == 'FORM' || $node.tagName == 'form')) {
-            return true;
-        }
-        return false;
-    };
 
     function _searchfactory($form, $inputnode) {
         // returns the search functions in a dictionary.
@@ -33,40 +21,30 @@ var livesearch = function (){
         var $lastsearch = null;
         var $request = null;
         var $cache = {};
-        var $querytarget = "livesearch_reply?q=";
-        if (typeof portal_url != "undefined") {
+        var $querytarget = "livesearch_reply";
+        if (typeof portal_url != "undefined")
             $querytarget = portal_url + "/" + $querytarget;
-        }
-        var $$result = _cssQuery("div.LSResult", $form);
-        if ($$result.length != 1)
-            return;
-        $$result = $$result[0];
-        var $shadow = _cssQuery("div.LSShadow", $form);
-        if ($shadow.length != 1)
-            return;
-        $shadow = $shadow[0];
-        var $path = _cssQuery("input[name=path]", $form);
-        if ($path.length == 1) {
-            $path = $path[0];
-        } else {
-            $path = null;
-        }
+        var $$result = $form.find('div.LSResult');
+        var $shadow = $form.find('div.LSShadow');
+        var $path = $form.find('input[name=path]');
 
         function _hide() {
             // hides the result window
-            $$result.style.display = "none";
+            $$result.hide();
             $lastsearch = null;
         };
 
         function _hide_delayed() {
             // hides the result window after a short delay
-            window.setTimeout("livesearch.hide('"+$form.id+"')", _hide_delay);
+            window.setTimeout(
+                'livesearch.hide("' + $form.attr('id') + '")',
+                _hide_delay);
         };
 
         function _show($data) {
             // shows the result
-            $$result.style.display = "block";
-            $shadow.innerHTML = $data;
+            $$result.show();
+            $shadow.html($data);
         };
 
         function _search() {
@@ -75,55 +53,44 @@ var livesearch = function (){
                 // do nothing if the input didn't change
                 return;
             }
-            if ($request && $request.readyState < 4) {
+            $lastsearch = $inputnode.value;
+            
+            if ($request && $request.readyState < 4)
                 // abort any pending request
                 $request.abort();
-            }
+                
             // Do nothing as long as we have less then two characters - 
             // the search results makes no sense, and it's harder on the server.
             if ($inputnode.value.length < 2) {
                 _hide();
                 return;
             }
-            if ($path && $path.checked) {
-                $$current_path = "&path=" + encodeURIComponent($path.value);
-            } else {
-                $$current_path = "";
-            }
+            
+            var $$query = { q: $inputnode.value };
+            if ($path[0].checked)
+                $$query['path'] = $path.val();
+            // turn into a string for use as a cache key
+            $$query = $.param($$query);
+
             // check cache
-            if ($cache[$$current_path]) {
-                var $data = $cache[$$current_path][$inputnode.value];
-                if ($data) {
-                    _show($data);
-                    return;
-                }
+            if ($cache[$$query]) {
+                _show($cache[$$query]);
+                return;
             }
-            // prepare the search request
-            $request = new XMLHttpRequest();
-            $request.onreadystatechange = function() {
-                if ($request.readyState == 4) {
-                    if ($request.status > 299 ||
-                        $request.status < 200 ||
-                        $request.responseText.length < 10) {
-                        return;
-                    }
-                    // show results if there are any and cache them
-                    _show($request.responseText);
-                    if (!$cache[$$current_path]) {
-                        $cache[$$current_path] = {};
-                    }
-                    $cache[$$current_path][$lastsearch] = $request.responseText;
-                }
-            };
-            $request.open("GET", $querytarget + encodeURIComponent($inputnode.value) + $$current_path);
-            $lastsearch = $inputnode.value;
-            // start the actual request
-            $request.send(null);
+
+            // the search request (retrieve as text, not a document)
+            $request = $.get($querytarget, $$query, function($data) {
+                // show results if there are any and cache them
+                _show($data);
+                $cache[$$query] = $data;
+            }, 'text');
         };
 
         function _search_delayed() {
             // search after a small delay, used by onfocus
-            window.setTimeout("livesearch.search('"+$form.id+"')", _search_delay);
+            window.setTimeout(
+                'livesearch.search("' + $form.attr('id') + '")', 
+                _search_delay);
         };
 
         return {
@@ -140,98 +107,57 @@ var livesearch = function (){
         // necessary, because IE doesn't have a way to get the target of
         // an event in a way we need it.
         var $timeout = null;
-        var $$result = _cssQuery("div.LSResult", $form);
-        if ($$result.length != 1)
-            return;
-        $$result = $$result[0];
-        var $shadow = _cssQuery("div.LSShadow", $form);
-        if ($shadow.length != 1)
-            return;
-        $shadow = $shadow[0];
+        var $$result = $form.find('div.LSResult');
+        var $shadow = $form.find('div.LSShadow');
 
-        function _keyUp($event) {
+        function _keyUp() {
             // select the previous element
-            var $listitems = _cssQuery("li", $shadow);
-            var i;
-            for (i=0; i<$listitems.length; i++) {
-                if (hasClassName($listitems[i], _LSHighlight))
-                    break;
-            }
-            if (i < $listitems.length) {
-                _removeClassName($listitems[i], _LSHighlight);
-                i--;
-                if (i < 0)
-                    i = $listitems.length - 1;
-                _addClassName($listitems[i], _LSHighlight);
-            } else {
-                _addClassName($listitems[$listitems.length - 1], _LSHighlight);
-            }
-            if (typeof $event.preventDefault != "undefined")
-                $event.preventDefault();
+            $cur = $shadow.find('li.LSHighlight').removeClass(_LSHighlight);
+            $prev = $cur.prev('li');
+            if (!$prev.length) $prev = $shadow.find('li:last');
+            $prev.addClass(_LSHighlight);
+            return false;
         };
 
-        function _keyDown($event) {
+        function _keyDown() {
             // select the next element
-            var $listitems = _cssQuery("li", $shadow);
-            var i;
-            for (i=0; i<$listitems.length; i++) {
-                if (hasClassName($listitems[i], _LSHighlight))
-                    break;
-            }
-            if (i < $listitems.length) {
-                _removeClassName($listitems[i], _LSHighlight);
-                i++;
-                if (i >= $listitems.length)
-                    i = 0;
-                _addClassName($listitems[i], _LSHighlight);
-            } else {
-                _addClassName($listitems[0], _LSHighlight);
-            }
-            if (typeof $event.preventDefault != "undefined")
-                $event.preventDefault();
+            $cur = $shadow.find('li.LSHighlight').removeClass(_LSHighlight);
+            $next = $cur.next('li');
+            if (!$next.length) $next = $shadow.find('li:first');
+            $next.addClass(_LSHighlight);
+            return false;
         };
 
-        function _keyEscape($event) {
+        function _keyEscape() {
             // hide results window
-            var $highlights = _cssQuery("li.LSHighlight", $shadow);
-            for (var i=0; i<$highlights.length; i++) {
-                _removeClassName($highlights[i], _LSHighlight);
-            }
-            $$result.style.display = "none";
+            $shadow.find('li.LSHighlight').removeClass(_LSHighlight);
+            $$result.hide();
         };
 
         function _handler($event) {
             // dispatch to specific functions and handle the search timer
-            if (!$event) var $event = window.event;
             window.clearTimeout($timeout);
             switch ($event.keyCode) {
-                case 38: _keyUp($event);
-                    break;
-                case 40: _keyDown($event);
-                    break;
-                case 27: _keyEscape($event);
-                    break;
+                case 38: return _keyUp();
+                case 40: return _keyDown();
+                case 27: return _keyEscape();
                 case 37: break; // keyLeft
                 case 39: break; // keyRight
                 default: {
-                    $timeout = window.setTimeout("livesearch.search('"+$form.id+"')", _search_delay);
+                    $timeout = window.setTimeout(
+                        'livesearch.search("' + $form.attr('id') + '")',
+                        _search_delay);
                 }
             }
         };
 
-        function _submit($event) {
+        function _submit() {
             // check whether a search result was selected with the keyboard
             // and open it
-            if (!$event) var $event = window.event;
-            var $targets = _cssQuery("li.LSHighlight a", $shadow);
-            if ($targets.length > 0) {
-                var $target = $targets[0].href;
-                if (!$target)
-                    return true;
-                window.location = $target;
-                return false;
-            }
-            return true;
+            var $target = $shadow.find('li.LSHighlight a').attr('href');
+            if (!$target) return;
+            window.location = $target;
+            return false;
         };
 
         return {
@@ -240,34 +166,24 @@ var livesearch = function (){
         }
     };
 
-    function _setup($inputnode, $number) {
-        // set up all the event handlers and other stuff
-        var $form = findContainer($inputnode, _isform);
-
+    function _setup(i) {
         // add an id which is used by other functions to find the correct node
-        $form.id = "livesearch"+$number;
-        $form.style['white-space'] = 'nowrap';
-        $inputnode.setAttribute("autocomplete","off");
-
+        var $id = 'livesearch' + i;
+        var $form = $(this).parents('form:first');
         var $key_handler = _keyhandlerfactory($form);
-        _search_handlers[$form.id] = _searchfactory($form, $inputnode);
-        $form.onsubmit = $key_handler.submit;
-        _registerEventListener($inputnode, "keydown", $key_handler.handler);
-        _registerEventListener($inputnode, "focus", _search_handlers[$form.id].search_delayed);
-        _registerEventListener($inputnode, "blur", _search_handlers[$form.id].hide_delayed);
+        _search_handlers[$id] = _searchfactory($form, this);
+
+        $form.attr('id', $id).css('white-space', 'nowrap').submit($key_handler.submit);
+        $(this).attr('autocomplete','off')
+               .keydown($key_handler.handler)
+               .focus(_search_handlers[$id].search_delayed)
+               .blur(_search_handlers[$id].hide_delayed);
     };
 
-    function _init() {
-        if (!W3CDOM)
-            return; // the browser doesn't support enough functions
+    $(function() {
         // find all search fields and set them up
-        var $gadgets = _cssQuery("#searchGadget, input.portlet-search-gadget");
-        for (var i=0; i < $gadgets.length; i++) {
-            _setup($gadgets[i], i);
-        }
-    };
-
-    registerPloneFunction(_init);
+        $("#searchGadget,input.portlet-search-gadget").each(_setup);
+    });
 
     return {
         search: function(id) {

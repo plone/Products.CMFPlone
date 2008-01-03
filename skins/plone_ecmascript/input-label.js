@@ -5,90 +5,35 @@
    and the class "inputLabelActive" is removed. When the field looses focus,
    then the game starts again if the value is empty, if not then the field
    is left as is. When the form is submitted, the values are cleaned up
-   before they are sent to the server. If there already is a submit function,
-   then it will be called afterwards.
+   before they are sent to the server.
 */
 
 var ploneInputLabel = {
-    focus: function() {
-        return function(e) {
-            var target;
-            if (!e) var e = window.event;
-            if (e.target) target = e.target;
-            else if (e.srcElement) target = e.srcElement;
-            if (target.nodeType == 3) // defeat Safari bug
-                target = target.parentNode;
-            if (hasClassName(target, "inputLabelActive") && (target.value == target.title)) {
-                target.value = '';
-                removeClassName(target, "inputLabelActive");
-            }
-        }
+    focus: function(e) {
+        var t = $(e.target);
+        if (t.hasClass('inputLabelActive') && t.val() == t.attr('title'))
+            t.val('').removeClass('inputLabelActive');
     },
 
-    blur: function() {
-        return function(e) {
-            var target;
-            if (!e) var e = window.event;
-            if (e.target) target = e.target;
-            else if (e.srcElement) target = e.srcElement;
-            if (target.nodeType == 3) // defeat Safari bug
-                target = target.parentNode;
-            if (target.value == '') {
-                addClassName(target, "inputLabelActive");
-                target.value = target.title;
-            }
-        }
+    blur: function(e) {
+        var t = $(e.target);
+        if (!t.val())
+            t.addClass('inputLabelActive').val(t.attr('title'));
     },
 
-    isForm: function(node) {
-        return (node.tagName && node.tagName.toLowerCase() == 'form')
-    },
-
-    submit: function() {
-        return function(e) {
-            var target;
-
-            if (!e) var e = window.event;
-            if (e.target) target = e.target;
-            else if (e.srcElement) target = e.srcElement;
-            if (target.nodeType == 3) // defeat Safari bug
-                target = target.parentNode;
-
-            var elements = cssQuery("input[title].inputLabelActive");
-
-            for (var i=0; i<elements.length; i++) {
-                var element = elements[i];
-                if (hasClassName(element, "inputLabelActive") && (element.value == element.title)) {
-                    element.value = '';
-                    removeClassName(element, "inputLabelActive");
-                }
-            }
-            if (target.inputLabelData.oldsubmit)
-                return this.inputLabelData.oldsubmit();
-        }
-    },
-
-    init: function() {
-        // look for input elements with a title and inputLabel class
-        var elements = cssQuery("input[title].inputLabel");
-        for (var i=0; i<elements.length; i++) {
-            var element = elements[i];
-            var form = findContainer(element, ploneInputLabel.isForm);
-
-            if (element.value == '') {
-                element.value = element.title;
-                replaceClassName(element, "inputLabel", "inputLabelActive");
-            }
-            registerEventListener(element, 'focus', ploneInputLabel.focus());
-            registerEventListener(element, 'blur', ploneInputLabel.blur());
-            if (form.onsubmit != ploneInputLabel.submit) {
-                if (typeof form.inputLabelData == 'undefined')
-                    form.inputLabelData = new Object();
-                form.inputLabelData.oldsubmit = form.onsubmit;
-                form.onsubmit = ploneInputLabel.submit();
-            }
-        }
+    submit: function(e) {
+        $('input[title].inputLabelActive').filter(function() {
+            return $(this).val() == this.title;
+        }).val('').removeClass('inputLabelActive');
     }
 };
 
-registerPloneFunction(ploneInputLabel.init);
+$(function() {
+    $('form:has(input[title].inputLabel)').submit(ploneInputLabel.submit);
+    $('input[title].inputLabel').each(function() {
+        $(this).focus(ploneInputLabel.focus).blur(ploneInputLabel.blur);
+        if (!$(this).val())
+            $(this).val(this.title)
+                   .removeClass('inputLabel').addClass('inputLabelActive');
+    });
+});

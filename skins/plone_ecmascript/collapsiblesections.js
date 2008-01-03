@@ -31,67 +31,27 @@
  * 'collapsedInlineCollapsible' and 'expandedInlineCollapsible' instead of
  * 'collapsedBlockCollapsible' and 'expandedBlockCollapsible'.
  *
- * This file uses functions from register_function.js, cssQuery.js and
- * nodeutils.js.
- *
  */
 
-function isCollapsible(node) {
-    if (hasClassName(node, 'collapsible')) {
-        return true;
-    }
-    return false;
+(function() {
+_toggleCollapsible = function() {
+    var $container = $(this).parents('dl.collapsible:first');
+    if (!$container) return true;
+
+    var $type = $container.hasClass('inline') ? 'Inline' :'Block';
+    // toggle between collapsed and expanded classes
+    $container.toggleClass('collapsed' + $type + 'Collapsible')
+              .toggleClass('expanded' + $type + 'Collapsible');
 };
 
-function toggleCollapsible(event) {
-    if (!event) var event = window.event; // IE compatibility
-
-    if (!this.tagName && (this.tagName == 'DT' || this.tagName == 'dt')) {
-        return true;
-    }
-
-    var container = findContainer(this, isCollapsible);
-    if (!container) {
-        return true;
-    }
-
-    if (hasClassName(container, 'collapsedBlockCollapsible')) {
-        replaceClassName(container, 'collapsedBlockCollapsible', 'expandedBlockCollapsible');
-    } else if (hasClassName(container, 'expandedBlockCollapsible')) {
-        replaceClassName(container, 'expandedBlockCollapsible', 'collapsedBlockCollapsible');
-    } else if (hasClassName(container, 'collapsedInlineCollapsible')) {
-        replaceClassName(container, 'collapsedInlineCollapsible', 'expandedInlineCollapsible');
-    } else if (hasClassName(container, 'expandedInlineCollapsible')) {
-        replaceClassName(container, 'expandedInlineCollapsible', 'collapsedInlineCollapsible');
-    }
-};
-
-function activateCollapsibles() {
-    if (!W3CDOM) {return false;}
-
-    var collapsibles = cssQuery('dl.collapsible');
-    for (var i=0; i < collapsibles.length; i++) {
-        var collapsible = collapsibles[i];
-
-        var collapsible_header = cssQuery('dt.collapsibleHeader', collapsible)[0];
-        collapsible_header.onclick = toggleCollapsible;
-
-        if (hasClassName(collapsible, 'inline')) {
-            // the collapsible should be inline
-            if (hasClassName(collapsible, 'collapsedOnLoad')) {
-                replaceClassName(collapsible, 'collapsedOnLoad', 'collapsedInlineCollapsible');
-            } else {
-                addClassName(collapsible, 'expandedInlineCollapsible');
-            }
-        } else {
-            // the collapsible is a block
-            if (hasClassName(collapsible, 'collapsedOnLoad')) {
-                replaceClassName(collapsible, 'collapsedOnLoad', 'collapsedBlockCollapsible');
-            } else {
-                addClassName(collapsible, 'expandedBlockCollapsible');
-            }
-        }
-    }
-};
-
-registerPloneFunction(activateCollapsibles);
+$(function() {
+    $('dl.collapsible dt.collapsibleHeader:first').click(_toggleCollapsible);
+    $('dl.collapsible').each(function() {
+        var $state = $(this).hasClass('collapsedOnLoad') ?
+                     'collapsed' : 'expanded';
+        var $type = $(this).hasClass('inline') ? 'Inline' :'Block';
+        $(this).removeClass('collapsedOnLoad')
+               .addClass($state + $type + 'Collapsible');
+    });
+});
+})();
