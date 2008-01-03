@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 4.0 - UNRELEASED
 
+    - Fixed document_view to only compute the main text of the page once.
+      [hannosch]
+
     - Updated migration steps to new GS API.
       [hannosch]
 
