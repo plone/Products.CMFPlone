@@ -8,11 +8,13 @@
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="register_function.js" inline="False"/>
  <javascript cacheable="True" compression="full-encode" cookable="True"
-    enabled="True" expression="" id="cssQuery.js" inline="False"/>
+    enabled="False" expression="" id="cssQuery.js" inline="False"/>
  <!-- Sarissa should be almost at the top, because it's a dependency for
       many other scripts -->
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="sarissa.js" inline="False"/>
+ <javascript cacheable="True" compression="safe" cookable="True"
+    enabled="True" expression="" id="jquery-integration.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="plone_javascript_variables.js"
     inline="False"/>
