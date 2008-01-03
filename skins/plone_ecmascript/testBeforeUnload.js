@@ -219,7 +219,6 @@ Class.testAddForm = function() {
 Class.testAddRemoveForm = function() {
     this.setHtml(this.FORMS);
     var div = document.getElementById("DIV1");
-    this.bu.addForms(null);
     this.assertEquals(0, this.bu.forms.length);
 
     this.bu.addForms(div);
@@ -235,9 +234,6 @@ Class.testAddRemoveForm = function() {
     this.bu.addForms(form3);
     this.assertEquals(2, this.bu.forms.length);
     this.bu.removeForms(div);
-    this.assertEquals(1, this.bu.forms.length);
-
-    this.bu.removeForms(null);
     this.assertEquals(1, this.bu.forms.length);
 }
 
@@ -281,6 +277,18 @@ Class.testIdOverride = function() {
     document.getElementById("INPUTTEXT").value = "37";
     this.assertTrue(this.bu.execute());
     this.bu.chkId['INPUTTEXT'] = function() { return false; }
+    this.assertFalse(this.bu.execute());
+}
+
+Class.testNoUnloadProtection = function() {
+    this.setHtml(this.FORM1);
+    this.bu.addForms(document.getElementById('FORM1'));
+    $('#INPUTTEXT').val('changed');
+    this.assertTrue(this.bu.execute());
+    $('#INPUTTEXT').addClass('noUnloadProtection');
+    this.assertFalse(this.bu.execute());
+    $('#INPUTTEXT').removeClass('noUnloadProtection')
+        .wrap('<div>').parent().addClass('noUnloadProtection');
     this.assertFalse(this.bu.execute());
 }
 testcase_registry.registerTestCase(PloneBeforeUnloadTestCase, 'beforeunload');
