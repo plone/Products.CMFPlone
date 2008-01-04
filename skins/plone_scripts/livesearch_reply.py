@@ -12,6 +12,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
 from Products.PythonScripts.standard import url_quote_plus
+from Products.PythonScripts.standard import html_quote
 
 ploneUtils = getToolByName(context, 'plone_utils')
 pretty_title_or_id = ploneUtils.pretty_title_or_id
@@ -122,6 +123,8 @@ else:
         display_description = safe_unicode(result.Description)
         if len(display_description) > MAX_DESCRIPTION:
             display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
+        # need to quote it, to avoid injection of html containing javascript and other evil stuff
+        display_description = html_quote(display_description)
         write('''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (display_description))
         write('''</li>''')
         full_title, display_title, display_description = None, None, None
