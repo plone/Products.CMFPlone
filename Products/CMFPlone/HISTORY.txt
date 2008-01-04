@@ -10,6 +10,10 @@ Plone 4.0 - UNRELEASED
     - Updated migration steps to new GS API.
       [hannosch]
 
+    - Fixed issues when non-savepoint supporting connections are
+      involved in a folder_delete, folder_publish, or folder_rename.
+      [alecm]
+
     - Avoid deprecation warning in MembershipTool setPassword.
       [hannosch]
 
