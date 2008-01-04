@@ -2,6 +2,14 @@ Changelog for plone.app.portlets
 
     (name of developer listed in brackets)
 
+
+plone.app.portlets UNRELEASED
+
+    - Correct getRootPath to not add a trailing / to paths if there
+      are no context subelements. This was breaking webcouturier.dropdownmenu
+      in situations where one of the sections was a navigation root.
+      [wichert]
+
 plone.app.portlets 1.0.5
 
     - Made absolute_url() work properly on the custom adding views. This is

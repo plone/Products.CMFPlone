@@ -370,9 +370,11 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         contextPath = '/'.join(context.getPhysicalPath())
         if not contextPath.startswith(rootPath):
             return None
-        contextSubPathElements = contextPath[len(rootPath)+1:].split('/')
-        if len(contextSubPathElements) < topLevel:
-            return None
-        rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLevel])
+        contextSubPathElements = contextPath[len(rootPath)+1:]
+        if contextSubPathElements:
+            contextSubPathElements = contextSubPathElements.split('/')
+            if len(contextSubPathElements) < topLevel:
+                return None
+            rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLeve])
     
     return rootPath
