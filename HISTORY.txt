@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0.5 - UNRELEASED
 
+    - Fixed issues when non-savepoint supporting connections are
+      involved in a folder_delete, folder_publish, or folder_rename.
+      [alecm]
+
     - Remove utility registration for portal_quickinstall and portal_setup:
       they may run arbitrary code that relies on having a full acquisition
       chain including a request container.
