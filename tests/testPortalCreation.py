@@ -865,7 +865,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testSubsequentProfileImportSucceeds(self):
         # Subsequent profile imports fail (#5439)
         self.loginAsPortalOwner()
-        setup_tool = getToolByName(self, "portal_setup")
+        setup_tool = getToolByName(self.portal, "portal_setup")
         # this will raise an error if it fails
         profile = setup_tool.getBaselineContextID()
         setup_tool.runAllImportStepsFromProfile(profile, purge_old=True)
