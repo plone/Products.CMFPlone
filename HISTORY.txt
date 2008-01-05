@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0.5 - UNRELEASED
+Plone 3.0.5 - released January 5, 2008
 
     - Fixed issues when non-savepoint supporting connections are
       involved in a folder_delete, folder_publish, or folder_rename.
