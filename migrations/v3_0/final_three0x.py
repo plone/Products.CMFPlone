@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from Products.CMFEditions.StandardModifiers import install
+from Products.CMFPlone.migrations.v3_0.alphas import registerToolsAsUtilities
 
 
 def final_three01(portal):
@@ -25,6 +26,15 @@ def three03_three04(portal):
     
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0.3-3.0.4')
     installNewModifiers(portal, out)
+
+    return out
+
+
+def three04_three05(portal):
+    
+    out = []
+    
+    registerToolsAsUtilities(portal, out)
 
     return out
 
