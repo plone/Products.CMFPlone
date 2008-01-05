@@ -375,6 +375,6 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
             contextSubPathElements = contextSubPathElements.split('/')
             if len(contextSubPathElements) < topLevel:
                 return None
-            rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLeve])
+            rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLevel])
     
     return rootPath

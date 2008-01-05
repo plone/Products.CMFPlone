@@ -5,6 +5,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - Fixed undefined variable name introduced in the last change.
+      [hannosch]
+
     - Correct getRootPath to not add a trailing / to paths if there
       are no context subelements. This was breaking webcouturier.dropdownmenu
       in situations where one of the sections was a navigation root.
