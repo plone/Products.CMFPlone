@@ -30,7 +30,10 @@
                i18n:attributes="title title_next_item"
                tal:condition="next"
                tal:attributes="href next/url">
-               <span>Next: </span> <span tal:replace="next/title" />
+               <span i18n:translate="label_next_item"
+                     tal:omit-tag="">
+                 Next: </span> <span tal:replace="next/title" />
+
                <img src="" alt="Right arrow" 
                     i18n:attributes="alt label_next_item_arrow"
                     tal:attributes="src string:$portal_url/arrowRight.gif" />
