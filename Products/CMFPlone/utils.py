@@ -366,7 +366,9 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     m(id, *args, **kw)
     ob = container._getOb( id )
 
-    return fti._finishConstruction(ob)
+    if safe_hasattr(ob, '_setPortalTypeName'):
+        ob._setPortalTypeName(fti.getId())
+    return ob
 
 
 def safeToInt(value):
