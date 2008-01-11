@@ -39,7 +39,7 @@ upgrading to Plone 3.0:
 **SUMMARY**
 
   1) Download and install Zope
-  2) Find your instance's Products directory
+  2) Find your instance's home directory
   3) Download and install the Plone tarball - http://plone.org/download
      (you most likely have it already since you're reading this, but make
       sure you still have the latest version)
