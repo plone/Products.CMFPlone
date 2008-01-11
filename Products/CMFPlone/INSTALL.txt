@@ -23,7 +23,7 @@ upgrading to Plone 4.0:
 
 * The Python OpenID packages are required if you want to enable OpenID support.
   They can be downloaded from the OpenID enabled site at
-  http://www.openidenabled.com/resources/downloads/python-openid/
+  http://openidenabled.com/python-openid/
 
 * Plone 4.0 uses both Zope Products and python packages. The Zope Products
   are installed in the usual location: the Products directory of the Zope
