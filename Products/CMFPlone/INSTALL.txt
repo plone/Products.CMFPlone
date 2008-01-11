@@ -46,7 +46,7 @@ upgrading to Plone 4.0:
      (you most likely have it already since you're reading this, but make
       sure you still have the latest version)
   3) Install the products from the Plone tarball in your instance.
-  4) Install the packges from the Plone tarball in your instance.
+  4) Install the packages from the Plone tarball in your instance.
 
   5) Download and install optional products and packages
 
