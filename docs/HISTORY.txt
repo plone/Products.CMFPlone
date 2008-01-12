@@ -3,6 +3,17 @@ Changelog for plone.app.layout
     (name of developer listed in brackets)
 
 
+plone.app.layout - 1.1 UNRELEASED
+
+    - Added viewlet for RSS link.
+      [fschulze]
+
+    - Added dependency on plone.app.viewletmanager.
+      [fschulze]
+
+    - Make viewlet managers in head section order- and filterable.
+      [fschulze]
+
 plone.app.layout - 1.0.6 UNRELEASED
 
     - Catch KeyError for presentation or tableContents when document
