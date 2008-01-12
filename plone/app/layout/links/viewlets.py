@@ -3,19 +3,17 @@ from StringIO import StringIO
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 
-from zope.component import getMultiAdapter
+from zope import component
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from Acquisition import aq_inner
 
 from plone.app.layout.viewlets import ViewletBase
 
-from Products.CMFCore.utils import getToolByName
-
 
 def get_language(context, request):
-    portal_state = getMultiAdapter((context, request),
-                                   name=u'plone_portal_state')
+    portal_state = component.getMultiAdapter(
+        (context, request), name=u'plone_portal_state')
     return portal_state.locale().getLocaleID()
 
 
@@ -60,14 +58,3 @@ class NavigationViewlet(ViewletBase):
     @ram.cache(render_cachekey)
     def render(self):
         return xhtml_compress(self._template())
-
-class RSSViewlet(ViewletBase):
-    def render(self):
-        syntool = getToolByName(self.context, 'portal_syndication')
-        if syntool.isSyndicationAllowed(self.context):
-            context_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_context_state')
-            url = '%s/RSS' % context_state.object_url()
-            return '''<link rel="alternate" href="%s" title="RSS 1.0"
-                            type="application/rss+xml" />''' % url
-        return ''

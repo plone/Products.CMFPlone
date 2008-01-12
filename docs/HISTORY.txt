@@ -2,17 +2,64 @@ Changelog for plone.app.layout
 
     (name of developer listed in brackets)
 
-plone.app.layout - 1.0.1 Unreleased
+
+plone.app.layout - 1.0.6 UNRELEASED
+
+    - Catch KeyError for presentation or tableContents when document
+      has an out-of-date schema.  Can happen when migrating from Plone
+      2.5 to 3.0.  Fall back to False for those attributes then.
+      [maurits]
+
+plone.app.layout - 1.0.5 Released January 3rd, 2008
+
+    - Do not create an empty <ul> in the personal actions bar if there are
+      no items in it. This fixes an XHTML syntax error.
+      [wichert]
+
+plone.app.layout - 1.0.4 Released December 6th, 2007
+
+    - Added i18n domain to comment.pt.
+      [martior]
 
     - Allow non ascii characters in webstats_js code. 
       Fixes http://dev.plone.org/plone/ticket/7359
       [naro]
 
     - Fixed workflow history viewlet to handle entries with
-      usernames that don't exist any more (deleted users) and
+      usernames that don't exist any more (deleted users) and 
       also anonymous users.
       This fixes http://dev.plone.org/plone/ticket/7250.
       [rsantos]
+
+plone.app.layout - 1.0.3 Released
+
+    - Made getIcon urls relative to portal root.
+      [tesdal]
+
+plone.app.layout - 1.0.2 Released
+
+    - Fixed getIcon code for use with ++resource++ and to use a safer method
+      of getting the correct url.
+      [optilude]
+
+    - Upgraded the sitemap template to conform with the 0.9 specs from
+      http://www.sitemaps.org and fixed the caching to use the filename.
+      [deo]
+
+plone.app.layout - 1.0.1 Released
+
+    - Lower logging level of 'no associated workflow' to avoid a log entry
+      on each view.
+      [ldr]
+
+    - Fixed default language in globals.
+      [wichert]
+
+    - Fixed link to actor in history viewlet.
+      [naro]
+
+    - Avoid locking on non lockable types in byline viewlet.
+      [jfroche]
 
     - Added website statistics inclusion viewlet to configure.zcml so it
       actually works.
@@ -20,10 +67,6 @@ plone.app.layout - 1.0.1 Unreleased
 
     - Made code in defaultpage.py a bit more tolerant of missing tools.
       [hannosch]
-
-    - Upgraded the sitemap template to conform with the 0.9 specs from
-      http://www.sitemaps.org and fixed the caching to use the filename.
-      [deo]
 
 plone.app.layout - 1.0 Released
 

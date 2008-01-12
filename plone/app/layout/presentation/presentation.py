@@ -85,10 +85,13 @@ class PresentationView(BrowserView):
 class PresentationViewlet(ViewletBase):
     def update(self):
         getPresentation = getattr(self.context.aq_base, "getPresentation", None)
-        if getPresentation is not None and getPresentation():
-            self.presentation_enabled = True
-        else:
-            self.presentation_enabled = False
+        self.presentation_enabled = False
+        if getPresentation is not None:
+            try:
+                self.presentation_enabled = getPresentation()
+            except KeyError:
+                # schema not updated yet
+                self.presentation_enabled = False
 
     def render(self):
         if self.presentation_enabled:

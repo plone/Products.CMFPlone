@@ -8,14 +8,12 @@
         name="plone.htmlhead"
         provides=".interfaces.IHtmlHead"
         permission="zope2.View"
-        class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.htmlhead.links"
         provides=".interfaces.IHtmlHeadLinks"
         permission="zope2.View"
-        class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
         />
 
     <browser:viewletManager

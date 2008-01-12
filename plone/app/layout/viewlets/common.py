@@ -66,7 +66,11 @@ class TableOfContentsViewlet(ViewletBase):
         getTableContents = getattr(obj, 'getTableContents', None)
         self.enabled = False
         if getTableContents is not None:
-            self.enabled = getTableContents()
+            try:
+                self.enabled = getTableContents()
+            except KeyError:
+                # schema not updated yet
+                self.enabled = False
 
 
 class SkipLinksViewlet(ViewletBase):
