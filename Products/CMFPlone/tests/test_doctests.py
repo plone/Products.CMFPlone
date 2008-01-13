@@ -20,6 +20,7 @@ def test_suite():
                          test_class=PloneTestCase.FunctionalTestCase),
         DocTestSuite('Products.CMFPlone.TranslationServiceTool'),
         DocTestSuite('Products.CMFPlone.utils'),
+        DocTestSuite('Products.CMFPlone.workflow'),
         )
 
     return TestSuite(suites)

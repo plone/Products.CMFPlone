@@ -2,7 +2,13 @@
 # Tests the workflow tool
 #
 
+from zope.interface import directlyProvides
+from zope.component import provideAdapter, getGlobalSiteManager
+
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests.dummy import Dummy, DummyWorkflowChainAdapter
+from Products.CMFDefault.interfaces import IDocument
+from Products.CMFCore.interfaces import IWorkflowTool
 
 default_user = PloneTestCase.default_user
 
@@ -107,6 +113,19 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(internal_pub_states),
                          all_states.count('internally_published'))
 
+    def testAdaptationBasedWorkflowOverride(self):
+        # We take a piece of dummy content and register a dummy
+        # workflow chain adapter for it.
+        content = Dummy()
+        directlyProvides(content, IDocument)
+        provideAdapter(DummyWorkflowChainAdapter,
+                        adapts=(IDocument, IWorkflowTool))
+        self.assertEqual(self.workflow.getChainFor(content),
+                         ('Static Workflow',))
+        # undo our registration so we don't break tests
+        components = getGlobalSiteManager()
+        components.unregisterAdapter(DummyWorkflowChainAdapter,
+                                     required=(IDocument, IWorkflowTool))
 
 def test_suite():
     from unittest import TestSuite, makeSuite

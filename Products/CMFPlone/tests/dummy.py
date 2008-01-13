@@ -6,10 +6,11 @@
 
 import os
 
-from zope.interface import Interface, implements
+from zope.interface import Interface, implements, implementer
 from zope.interface import Interface
 
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import IWorkflowChain
 
 from ComputedAttribute import ComputedAttribute
 from OFS.SimpleItem import SimpleItem
@@ -193,3 +194,28 @@ class ICantBeDeleted(Interface):
 def disallow_delete_handler(obj, event):
     obj.delete_attempted = True
     raise Exception, "You can't delete this!"
+
+
+class DummyContent(Dummy):
+    """Dummy DynamicType object"""
+
+    def getPortalTypeName(self):
+        return getattr(self, 'portal_type')
+
+class DummyWorkflowTool(object):
+    """A dummy workflow tool for testing adaptation based workflow"""
+
+    def __init__(self, id='portal_workflow'):
+        self._chains_by_type = {}
+
+    def setChainForPortalTypes(self, types, chain):
+        for ptype in types:
+            self._chains_by_type[ptype] = chain
+
+    def getDefaultChainFor(self, context):
+        return ('Default Workflow',)
+
+@implementer(IWorkflowChain)
+def DummyWorkflowChainAdapter(context, tool):
+    """A dummy adapter to IWorkflowChain"""
+    return ('Static Workflow',)
