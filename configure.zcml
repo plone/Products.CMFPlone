@@ -98,4 +98,10 @@
       provides="plone.app.content.interfaces.IIndexableObjectWrapper"
       factory=".CatalogTool.ExtensibleIndexableObjectWrapper" />
 
+  <!-- Adapter for default workflow lookup -->
+  <adapter
+      factory=".workflow.ToolWorkflowChain"
+      trusted="y"
+      />
+
 </configure>
