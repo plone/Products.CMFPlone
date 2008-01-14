@@ -1,1 +1,1 @@
-3.0.6 (svn/unreleased)
+3.1-alpha1 (svn/unreleased)
