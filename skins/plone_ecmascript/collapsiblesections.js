@@ -34,7 +34,7 @@
  */
 
 (function() {
-_toggleCollapsible = function() {
+var _toggleCollapsible = function() {
     var $container = jq(this).parents('dl.collapsible:first');
     if (!$container) return true;
 
