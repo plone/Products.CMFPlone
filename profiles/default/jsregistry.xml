@@ -22,7 +22,7 @@
     enabled="True" expression="" id="nodeutilities.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="cookie_functions.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression="" id="livesearch.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="select_all.js" inline="False"/>
@@ -30,7 +30,7 @@
     enabled="True" expression="" id="dragdropreorder.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="False" expression="" id="mark_special_links.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression="" id="collapsiblesections.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="form_tabbing.js" inline="False"/>
@@ -42,7 +42,7 @@
     enabled="True" expression="" id="se-highlight.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="first_input_focus.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression="" id="accessibility.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="styleswitcher.js" inline="False"/>
