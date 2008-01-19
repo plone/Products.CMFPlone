@@ -15,7 +15,7 @@ function toggleSelect(selectbutton, id, initialState, formName) {
     // create and use a property on the button itself so you don't have to 
     // use a global variable and we can have as much groups on a page as we like.
     selectbutton.isSelected = !state;
-    $(selectbutton).attr('src', portal_url+'/select_'+(state?'all':'none')+'_icon.gif');
-    var base = formName ? $(document.forms[formName]) : $(document);
+    jq(selectbutton).attr('src', portal_url+'/select_'+(state?'all':'none')+'_icon.gif');
+    var base = formName ? jq(document.forms[formName]) : jq(document);
     base.find(':checkbox[name=' + id + ']').attr('checked', !state);
 }

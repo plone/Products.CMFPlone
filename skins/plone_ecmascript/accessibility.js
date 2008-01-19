@@ -1,5 +1,5 @@
 function setBaseFontSize($fontsize, $reset) {
-    var $body = $('body');
+    var $body = jq('body');
     if ($reset) {
         $body.removeClass('smallText').removeClass('largeText');
         createCookie("fontsize", $fontsize, 365);
@@ -7,7 +7,7 @@ function setBaseFontSize($fontsize, $reset) {
     $body.addClass($fontsize);
 };
 
-$(function() {
+jq(function() {
     var $fontsize = readCookie("fontsize");
     if ($fontsize) setBaseFontSize($fontsize, 0);
 });

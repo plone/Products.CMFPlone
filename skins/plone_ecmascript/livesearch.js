@@ -70,7 +70,7 @@ var livesearch = function (){
             if ($path[0].checked)
                 $$query['path'] = $path.val();
             // turn into a string for use as a cache key
-            $$query = $.param($$query);
+            $$query = jq.param($$query);
 
             // check cache
             if ($cache[$$query]) {
@@ -79,7 +79,7 @@ var livesearch = function (){
             }
 
             // the search request (retrieve as text, not a document)
-            $request = $.get($querytarget, $$query, function($data) {
+            $request = jq.get($querytarget, $$query, function($data) {
                 // show results if there are any and cache them
                 _show($data);
                 $cache[$$query] = $data;
@@ -169,20 +169,20 @@ var livesearch = function (){
     function _setup(i) {
         // add an id which is used by other functions to find the correct node
         var $id = 'livesearch' + i;
-        var $form = $(this).parents('form:first');
+        var $form = jq(this).parents('form:first');
         var $key_handler = _keyhandlerfactory($form);
         _search_handlers[$id] = _searchfactory($form, this);
 
         $form.attr('id', $id).css('white-space', 'nowrap').submit($key_handler.submit);
-        $(this).attr('autocomplete','off')
+        jq(this).attr('autocomplete','off')
                .keydown($key_handler.handler)
                .focus(_search_handlers[$id].search_delayed)
                .blur(_search_handlers[$id].hide_delayed);
     };
 
-    $(function() {
+    jq(function() {
         // find all search fields and set them up
-        $("#searchGadget,input.portlet-search-gadget").each(_setup);
+        jq("#searchGadget,input.portlet-search-gadget").each(_setup);
     });
 
     return {

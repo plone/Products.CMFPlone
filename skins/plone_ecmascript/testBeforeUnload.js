@@ -283,11 +283,11 @@ Class.testIdOverride = function() {
 Class.testNoUnloadProtection = function() {
     this.setHtml(this.FORM1);
     this.bu.addForms(document.getElementById('FORM1'));
-    $('#INPUTTEXT').val('changed');
+    jq('#INPUTTEXT').val('changed');
     this.assertTrue(this.bu.execute());
-    $('#INPUTTEXT').addClass('noUnloadProtection');
+    jq('#INPUTTEXT').addClass('noUnloadProtection');
     this.assertFalse(this.bu.execute());
-    $('#INPUTTEXT').removeClass('noUnloadProtection')
+    jq('#INPUTTEXT').removeClass('noUnloadProtection')
         .wrap('<div>').parent().addClass('noUnloadProtection');
     this.assertFalse(this.bu.execute());
 }

@@ -32,19 +32,19 @@
  */
 
 function hideAllMenus() {
-    $('dl.actionMenu').removeClass('activated').addClass('deactivated');
+    jq('dl.actionMenu').removeClass('activated').addClass('deactivated');
 };
 
 function toggleMenuHandler(event) {
     // swap between activated and deactivated
-    $(this).parents('.actionMenu:first')
+    jq(this).parents('.actionMenu:first')
         .toggleClass('deactivated')
         .toggleClass('activated');
     return false;
 };
 
 function actionMenuDocumentMouseDown(event) {
-    if ($(event.target).parents('.actionMenu:first').length)
+    if (jq(event.target).parents('.actionMenu:first').length)
         // target is part of the menu, so just return and do the default
         return true;
 
@@ -52,26 +52,26 @@ function actionMenuDocumentMouseDown(event) {
 };
 
 function actionMenuMouseOver(event) {
-    var menu_id = $(this).parents('.actionMenu:first').attr('id');
+    var menu_id = jq(this).parents('.actionMenu:first').attr('id');
     if (!menu_id) return true;
 
-    var switch_menu = $('dl.actionMenu.activated').length > 0;
-    $('dl.actionMenu').removeClass('activated').addClass('deactivated');
+    var switch_menu = jq('dl.actionMenu.activated').length > 0;
+    jq('dl.actionMenu').removeClass('activated').addClass('deactivated');
     if (switch_menu)
-        $('#' + menu_id).removeClass('deactivated').addClass('activated');
+        jq('#' + menu_id).removeClass('deactivated').addClass('activated');
 };
 
-$(function() {
-    $(document).mousedown(actionMenuDocumentMouseDown);
+jq(function() {
+    jq(document).mousedown(actionMenuDocumentMouseDown);
 
     hideAllMenus();
 
     // add toggle function to header links
-    $('dl.actionMenu dt.actionMenuHeader a')
+    jq('dl.actionMenu dt.actionMenuHeader a')
         .click(toggleMenuHandler)
         .mouseover(actionMenuMouseOver);
         
     // add hide function to all links in the dropdown, so the dropdown closes
     // when any link is clicked
-    $('dl.actionMenu > dd.actionMenuContent').click(hideAllMenus);
+    jq('dl.actionMenu > dd.actionMenuContent').click(hideAllMenus);
 });

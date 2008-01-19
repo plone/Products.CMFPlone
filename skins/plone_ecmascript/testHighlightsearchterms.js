@@ -12,7 +12,7 @@ function HighlightTermInNodeTestCase() {
 
     this.testManyInOneNode = function() {
         highlightTermInNode(this.sandbox.firstChild, 'foo');
-        count = $(this.sandbox).find('span.highlightedSearchTerm').length;
+        count = jq(this.sandbox).find('span.highlightedSearchTerm').length;
         this.assertEquals(count, 5);
     }
 

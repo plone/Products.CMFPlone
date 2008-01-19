@@ -10,7 +10,7 @@
  *       but not Internet Explorer 6. It works fine in IE7, however.
  */
 
-$(function() {
+jq(function() {
     // first make external links open in a new window, afterwards do the
     // normal plone link wrapping in only the content area
 
@@ -22,11 +22,11 @@ $(function() {
 
     if (elonw)
         // all http links (without the link-plain class), not within this site
-        $('a[href^=http]:not(.link-plain):not([href^=' + url + '])')
+        jq('a[href^=http]:not(.link-plain):not([href^=' + url + '])')
             .attr('target', '_blank');
 
     var protocols = /^(mailto|ftp|news|irc|h323|sip|callto|https|feed|webcal)/;
-    var contentarea = $(getContentArea());
+    var contentarea = jq(getContentArea());
 
     // All links with an http href (without the link-plain class), not within this site,
     // and no img children should be wrapped in a link-external span
@@ -41,6 +41,6 @@ $(function() {
             // those without a http link may have another interesting protocol
             // wrap these in a link-[protocol] span
             if (res = protocols.exec(this.href))
-                $(this).wrap('<span>').parent().addClass('link-', res[0]);
+                jq(this).wrap('<span>').parent().addClass('link-', res[0]);
         });
 });

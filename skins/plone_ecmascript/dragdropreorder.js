@@ -5,7 +5,7 @@ ploneDnDReorder.table = null;
 ploneDnDReorder.rows = null;
 
 ploneDnDReorder.doDown = function(e) {
-    var dragging =  $(this).parents('.draggable:first');
+    var dragging =  jq(this).parents('.draggable:first');
     if (!dragging.length) return;
     ploneDnDReorder.rows.mousemove(ploneDnDReorder.doDrag);
 
@@ -26,8 +26,8 @@ ploneDnDReorder.doDrag = function(e) {
     var target = this;
     if (!target) return;
 
-    if ($(target).attr('id') != dragging.attr('id'))
-        ploneDnDReorder.swapElements($(target), dragging);
+    if (jq(target).attr('id') != dragging.attr('id'))
+        ploneDnDReorder.swapElements(jq(target), dragging);
     return false;
 }
 
@@ -44,7 +44,7 @@ ploneDnDReorder.swapElements = function(child1, child2) {
                                        child1[0]);
         child1.insertBefore(child2);
         child2.insertBefore(t);
-        $(t).remove();
+        jq(t).remove();
     }
     // odd and even are 0-based, so we want them the other way around
     parent.children('[id]:odd').addClass('even');

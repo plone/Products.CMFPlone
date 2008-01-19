@@ -18,18 +18,18 @@ var W3CDOM = (!bugRiddenCrashPronePieceOfJunk &&
 
 // cross browser function for registering event handlers
 var registerEventListener = function(elem, event, func) {
-    $(elem).bind(event, func);
+    jq(elem).bind(event, func);
 }
 
 // cross browser function for unregistering event handlers
 var unRegisterEventListener = function(elem, event, func) {
-    $(elem).unbind(event, func);
+    jq(elem).unbind(event, func);
 }
 
 var registerPloneFunction = $;
 
 function getContentArea() {
     // returns our content area element
-    var node = $('#region-content,#content');
+    var node = jq('#region-content,#content');
     return node.length ? node[0] : null;
 } 

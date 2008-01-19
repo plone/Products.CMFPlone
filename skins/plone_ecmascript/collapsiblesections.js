@@ -35,7 +35,7 @@
 
 (function() {
 _toggleCollapsible = function() {
-    var $container = $(this).parents('dl.collapsible:first');
+    var $container = jq(this).parents('dl.collapsible:first');
     if (!$container) return true;
 
     var $type = $container.hasClass('inline') ? 'Inline' :'Block';
@@ -44,13 +44,13 @@ _toggleCollapsible = function() {
               .toggleClass('expanded' + $type + 'Collapsible');
 };
 
-$(function() {
-    $('dl.collapsible dt.collapsibleHeader:first').click(_toggleCollapsible);
-    $('dl.collapsible').each(function() {
-        var $state = $(this).hasClass('collapsedOnLoad') ?
+jq(function() {
+    jq('dl.collapsible dt.collapsibleHeader:first').click(_toggleCollapsible);
+    jq('dl.collapsible').each(function() {
+        var $state = jq(this).hasClass('collapsedOnLoad') ?
                      'collapsed' : 'expanded';
-        var $type = $(this).hasClass('inline') ? 'Inline' :'Block';
-        $(this).removeClass('collapsedOnLoad')
+        var $type = jq(this).hasClass('inline') ? 'Inline' :'Block';
+        jq(this).removeClass('collapsedOnLoad')
                .addClass($state + $type + 'Collapsible');
     });
 });

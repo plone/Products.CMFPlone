@@ -5,8 +5,8 @@ if (typeof(plone)=='undefined')
 plone.UnlockHandler = {    
     init: function() {
         // set up the handler, if there are any forms
-        if ($('form.enableUnlockProtection').length)
-            $(window).unload(plone.UnlockHandler.execute);
+        if (jq('form.enableUnlockProtection').length)
+            jq(window).unload(plone.UnlockHandler.execute);
     },
     
     execute: function() {
@@ -16,14 +16,14 @@ plone.UnlockHandler = {
         // and it also would be harmful (ConflictError)
         if (this.submitting) return;
 
-        var baseUrl = $('base').attr('href');
+        var baseUrl = jq('base').attr('href');
         if (!baseUrl) {
             var pieces = window.location.href.split('/');
             pieces.pop();
             baseUrl = pieces.join('/');
         }
-        $.get(baseUrl + '/@@plone_lock_operations/safe_unlock');
+        jq.get(baseUrl + '/@@plone_lock_operations/safe_unlock');
     }
 };
 
-$(plone.UnlockHandler.init);
+jq(plone.UnlockHandler.init);

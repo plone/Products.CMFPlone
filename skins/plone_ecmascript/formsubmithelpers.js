@@ -1,13 +1,13 @@
 function inputSubmitOnClick(event) {
-    if ($(this).hasClass('submitting') && !$(this).hasClass('allowMultiSubmit'))
+    if (jq(this).hasClass('submitting') && !jq(this).hasClass('allowMultiSubmit'))
         return confirm(window.form_resubmit_message);
     else
-        $(this).addClass('submitting');
+        jq(this).addClass('submitting');
 }
 
-$(function() {
-    $(':submit').each(function() {
+jq(function() {
+    jq(':submit').each(function() {
       if (!this.onclick)
-        $(this).click(inputSubmitOnClick);
+        jq(this).click(inputSubmitOnClick);
     });
 });

@@ -21,16 +21,16 @@ var ploneFormTabbing = {};
 
 ploneFormTabbing._toggleFactory = function(container, tab_ids, panel_ids) {
     return function(e) {
-        $(tab_ids).removeClass('selected');
-        $(panel_ids).addClass('hidden');
+        jq(tab_ids).removeClass('selected');
+        jq(panel_ids).addClass('hidden');
 
         var orig_id = this.tagName.toLowerCase() == 'a' ? 
-            '#' + this.id : $(this).val();
+            '#' + this.id : jq(this).val();
         var id = orig_id.replace(/^#fieldsetlegend-/, "#fieldset-");
-        $(orig_id).addClass('selected');
-        $(id).removeClass('hidden');
+        jq(orig_id).addClass('selected');
+        jq(id).removeClass('hidden');
 
-        $(container).find("input[name=fieldset.current]").val(orig_id);
+        jq(container).find("input[name=fieldset.current]").val(orig_id);
         return false;
     }
 };
@@ -50,44 +50,44 @@ ploneFormTabbing._buildTabs = function(container, legends) {
     if (legends.length > threshold) {
         var tabs = document.createElement("select");
         var tabtype = 'option';
-        $(tabs).change(handler).addClass('noUnloadProtection');
+        jq(tabs).change(handler).addClass('noUnloadProtection');
     } else {
         var tabs = document.createElement("ul");
         var tabtype = 'li';
     }
-    $(tabs).addClass('formTabs');
+    jq(tabs).addClass('formTabs');
 
     legends.each(function() {
         var tab = document.createElement(tabtype);
-        $(tab).addClass('formTab');
+        jq(tab).addClass('formTab');
 
         if (legends.length > threshold) {
-            $(tab).text($(this).text());
+            jq(tab).text(jq(this).text());
             tab.id = this.id;
             tab.value = '#' + this.id;
         } else {
             var a = document.createElement("a");
             a.id = this.id;
             a.href = "#" + this.id;
-            $(a).click(handler);
+            jq(a).click(handler);
             var span = document.createElement("span");
-            $(span).text($(this).text());
+            jq(span).text(jq(this).text());
             a.appendChild(span);
             tab.appendChild(a);
         }
         tabs.appendChild(tab);
-        $(this).remove();
+        jq(this).remove();
     });
     
-    $(tabs).children(':first').addClass('firstFormTab');
-    $(tabs).children(':last').addClass('lastFormTab');
+    jq(tabs).children(':first').addClass('firstFormTab');
+    jq(tabs).children(':last').addClass('lastFormTab');
     
     return tabs;
 };
 
 ploneFormTabbing.select = function($which) {
     if (typeof $which == "string")
-        $which = $($which.replace(/^#fieldset-/, "#fieldsetlegend-"));
+        $which = jq($which.replace(/^#fieldset-/, "#fieldsetlegend-"));
 
     if ($which[0].tagName.toLowerCase() == 'a') {
         $which.click();
@@ -104,9 +104,9 @@ ploneFormTabbing.select = function($which) {
 };
 
 ploneFormTabbing.initializeDL = function() {
-    var tabs = ploneFormTabbing._buildTabs(this, $(this).children('dt'));
-    $(this).before(tabs);
-    $(this).children('dd').addClass('formPanel');
+    var tabs = ploneFormTabbing._buildTabs(this, jq(this).children('dt'));
+    jq(this).before(tabs);
+    jq(this).children('dd').addClass('formPanel');
 
     tabs = tabs.find('li.formTab a,option.formTab');
     if (tabs.length)
@@ -114,42 +114,42 @@ ploneFormTabbing.initializeDL = function() {
 };
 
 ploneFormTabbing.initializeForm = function() {
-    var fieldsets = $(this).children('fieldset');
+    var fieldsets = jq(this).children('fieldset');
     
     if (!fieldsets.length) return;
     
     var tabs = ploneFormTabbing._buildTabs(
         this, fieldsets.children('legend'));
-    $(this).prepend(tabs);
+    jq(this).prepend(tabs);
     fieldsets.addClass("formPanel");
     
     // The fieldset.current hidden may change, but is not content
-    $(this).find('input[name=fieldset.current]').addClass('noUnloadProtection');
+    jq(this).find('input[name=fieldset.current]').addClass('noUnloadProtection');
 
     var tab_inited = false;
 
-    $(this).find('.formPanel:has(div.field.error)').each(function() {
+    jq(this).find('.formPanel:has(div.field.error)').each(function() {
         var id = this.id.replace(/^fieldset-/, "#fieldsetlegend-");
-        var tab = $(id);
+        var tab = jq(id);
         tab.addClass("notify");
         if (tab.length && !tab_inited)
             tab_inited = ploneFormTabbing.select(tab);
     });
 
-    $(this).find('.formPanel:has(div.field span.fieldRequired)')
+    jq(this).find('.formPanel:has(div.field span.fieldRequired)')
         .each(function() {
         var id = this.id.replace(/^fieldset-/, "#fieldsetlegend-");
-        $(id).addClass('required');
+        jq(id).addClass('required');
     });
 
     if (!tab_inited) {
-        $('input[name=fieldset.current][value^=#]').each(function() {
-            tab_inited = ploneFormTabbing.select($(this).val());
+        jq('input[name=fieldset.current][value^=#]').each(function() {
+            tab_inited = ploneFormTabbing.select(jq(this).val());
         });
     }
 
     if (!tab_inited) {
-        var tabs = $("form.enableFormTabbing li.formTab a,"+
+        var tabs = jq("form.enableFormTabbing li.formTab a,"+
                      "form.enableFormTabbing option.formTab,"+
                      "div.enableFormTabbing li.formTab a,"+
                      "div.enableFormTabbing option.formTab");
@@ -157,13 +157,13 @@ ploneFormTabbing.initializeForm = function() {
             ploneFormTabbing.select(tabs.filter(':first'));
     }
 
-    $("#archetypes-schemata-links").addClass('hiddenStructure');
-    $("div.formControls input[name=form_previous]," +
+    jq("#archetypes-schemata-links").addClass('hiddenStructure');
+    jq("div.formControls input[name=form_previous]," +
       "div.formControls input[name=form_next]").remove();
 };
 
-$(function() {
-    $("form.enableFormTabbing,div.enableFormTabbing")
+jq(function() {
+    jq("form.enableFormTabbing,div.enableFormTabbing")
         .each(ploneFormTabbing.initializeForm);
-    $("dl.enableFormTabbing").each(ploneFormTabbing.initializeDL);
+    jq("dl.enableFormTabbing").each(ploneFormTabbing.initializeDL);
 });

@@ -17,8 +17,8 @@ if (!window.beforeunload) (function() {
             // First clean out dead references to make sure we only work on
             // forms that are actually in the dom. This is needed in
             // combination with KSS and/or other dynamic replacements.
-            var domforms = $('form'); 
-            self.forms = $.grep(self.forms, function(form) {
+            var domforms = jq('form'); 
+            self.forms = jq.grep(self.forms, function(form) {
                 return domforms.index(form) > -1;
             });             
             
@@ -26,7 +26,7 @@ if (!window.beforeunload) (function() {
             if (self.submitting) return;
 
             var message;
-            $.each(self.handlers, function(i, fn) {
+            jq.each(self.handlers, function(i, fn) {
                 message = message || fn.apply(self);
             });
             if (message===true) message = self.message;
@@ -58,35 +58,35 @@ if (!window.beforeunload) (function() {
         plone.UnlockHandler.submitting = true;
     }
     Class.addForm = function(form) {
-        if ($.inArray(form, this.forms) > -1) return;
+        if (jq.inArray(form, this.forms) > -1) return;
         this.forms.push(form);
-        $(form).submit(this.onsubmit);
+        jq(form).submit(this.onsubmit);
         var elements = form.getElementsByTagName('input');
         // store hidden input's defaultValue to work around a moz bug
-        $(form).find('input:hidden').each(function() {
-            $(this).attr('originalValue', this.defaultValue);
+        jq(form).find('input:hidden').each(function() {
+            jq(this).attr('originalValue', this.defaultValue);
         });
     }
     Class.addForms = function() {
         var self = this;
-        $.each(arguments, function() {
+        jq.each(arguments, function() {
             if (this.tagName.toLowerCase() == 'form')
                 self.addForm(this);
             else
-                self.addForms.apply(self, $(this).find('form').get());
+                self.addForms.apply(self, jq(this).find('form').get());
         });
     }
     Class.removeForms = function() {
         var self = this;
-        $.each(arguments, function() {
+        jq.each(arguments, function() {
             if (this.tagName.toLowerCase() == 'form') {
                 var el = this;
-                self.forms = $.grep(self.forms, function(form) {
+                self.forms = jq.grep(self.forms, function(form) {
                     return form != el;
                 });
-                $(element).unbind('submit', self.onsubmit);
+                jq(element).unbind('submit', self.onsubmit);
             } else
-                self.removeForms.apply(self, $(this).find('form').get());
+                self.removeForms.apply(self, jq(this).find('form').get());
         });
     }
 
@@ -100,8 +100,8 @@ if (!window.beforeunload) (function() {
     }
     // hidden: cannot tell on Mozilla without special treatment
     c.hidden = function(ele) {
-        var orig = $(ele).attr('originalValue');
-        return orig && ($(ele).val() != orig);
+        var orig = jq(ele).attr('originalValue');
+        return orig && (jq(ele).val() != orig);
     }
 
     c['select-one'] = function(ele) {
@@ -125,7 +125,7 @@ if (!window.beforeunload) (function() {
     Class.chk_form = function(form) {
         // Find all form elements that are a) not marked as not-protected
         // or b) not a descendant of a non-protected element.
-        var elems = $(form).find('> :input:not(.noUnloadProtection),' +
+        var elems = jq(form).find('> :input:not(.noUnloadProtection),' +
             ':not(.noUnloadProtection) :input:not(.noUnloadProtection)');
         for (var i = 0; element = elems.get(i++);) {
             if (this.isElementChanged(element))
@@ -147,10 +147,10 @@ if (!window.beforeunload) (function() {
     // Can't use jQuery handlers here as kupu and kss rely on direct access.
     window.onbeforeunload = new BeforeUnloadHandler().execute;
     
-    $(function() {
+    jq(function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         var content = getContentArea();
         if (tool && content)
-            tool.addForms.apply(tool, $('form.enableUnloadProtection').get());
+            tool.addForms.apply(tool, jq('form.enableUnloadProtection').get());
     });
 })();
