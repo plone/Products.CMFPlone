@@ -4,6 +4,9 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0.4 Unreleased
 
+    - Changed import of FormFieldsets to avoid a deprecation warning.
+      [hannosch]
+
     - Fixed filter control panel tests.
       [hannosch]
 

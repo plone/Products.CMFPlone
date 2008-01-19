@@ -1,4 +1,4 @@
-from plone.fieldsets import FormFieldsets
+from plone.fieldsets.fieldsets import FormFieldsets
 
 from zope.interface import Interface
 from zope.component import adapts
