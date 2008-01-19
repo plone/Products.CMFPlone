@@ -26,7 +26,7 @@ var unRegisterEventListener = function(elem, event, func) {
     jq(elem).unbind(event, func);
 }
 
-var registerPloneFunction = $;
+var registerPloneFunction = jq;
 
 function getContentArea() {
     // returns our content area element
