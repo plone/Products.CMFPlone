@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - Fix missing variable on the language portlet renderer. This fixes
+      NuPlone which relies on the language selector portlet.
+      [wichert]
+
     - Fixed undefined variable name introduced in the last change.
       [hannosch]
 
