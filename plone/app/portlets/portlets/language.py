@@ -28,7 +28,7 @@ class Renderer(base.Renderer):
         self.portal_url = portal_state.portal_url()
 
     def show(self):
-        return self.selector.available() and self.languages
+        return self.selector.available() and len(self.languages)>1
 
     def showFlags(self):
         return self.selector.showFlags()

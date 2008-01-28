@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - Only show the language portlet if more than one language is available.
+      This brings it in sync with the language selection viewlet.
+      [wichert]
+
     - Fix missing variable on the language portlet renderer. This fixes
       NuPlone which relies on the language selector portlet.
       [wichert]
