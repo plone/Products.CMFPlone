@@ -2,7 +2,16 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0.5 - UNRELEASED
+Plone 3.0.5 - released January 5, 2008
+
+    - Fixed issues when non-savepoint supporting connections are
+      involved in a folder_delete, folder_publish, or folder_rename.
+      [alecm]
+
+    - Remove utility registration for portal_quickinstall and portal_setup:
+      they may run arbitrary code that relies on having a full acquisition
+      chain including a request container.
+      [wichert]
 
     - Backported changeset 18612 and 18615 from trunk. This fixes some
       deprecation warnings.
@@ -17,6 +26,11 @@ Plone 3.0.5 - UNRELEASED
       Related to http://dev.plone.org/plone/ticket/7433
                  http://dev.plone.org/plone/ticket/7402
       [siebo]
+
+    - Removed 'Groups' dropdown from Users tab, as it did not and could not
+      work.
+      Fixes http://dev.plone.org/plone/ticket/7260
+      [derek_richardson]
 
 Plone 3.0.4 - released December 7, 2007
 

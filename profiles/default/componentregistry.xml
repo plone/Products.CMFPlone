@@ -63,12 +63,6 @@
      interface="Products.CMFPlone.interfaces.IMigrationTool"
      object="portal_migration"/>
   <utility
-     interface="Products.CMFQuickInstallerTool.interfaces.IQuickInstallerTool"
-     object="portal_quickinstaller"/>
-  <utility
-     interface="Products.GenericSetup.interfaces.ISetupTool"
-     object="portal_setup"/>
-  <utility
      interface="Products.MailHost.interfaces.IMailHost"
      object="MailHost"/>
   <utility

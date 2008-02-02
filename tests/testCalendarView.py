@@ -6,12 +6,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests.PloneTestCase import default_user
 from Products.CMFPlone.tests.PloneTestCase import default_password
 
-from zope.app.testing.ztapi import provideUtility
-from zope.app.testing.ztapi import unprovideUtility
-
-from zope.i18n.simpletranslationdomain import SimpleTranslationDomain
-from zope.i18n.interfaces import ITranslationDomain
-
 from DateTime import DateTime
 
 from Products.ATContentTypes.tests.utils import FakeRequestSession
@@ -139,33 +133,6 @@ class TestCalendarPortlet(PloneTestCase.FunctionalTestCase):
         self.failUnless('event1' in response.getBody())
         self.failUnless('event2' in response.getBody())
         self.failUnless('event3' in response.getBody())
-
-    def testLocalizedCalendarWithEvents(self):
-        self.populateSite()
-
-        # set up some messages to test the calendar date/time formatting
-        messages = {
-            ('ja', 'date_format_long'): u'${Y}\u5e74${m}\u6708${d}\u65e5 ${H}\u6642${M}\u5206',
-            ('ja', 'date_format_short'): u'${Y}\u5e74${m}\u6708${d}\u65e5'}
-        dates = SimpleTranslationDomain('plonelocales', messages)
-        provideUtility(ITranslationDomain, dates, 'plonelocales')
-
-        # Allow Japanese language
-        self.portal.portal_languages.addSupportedLanguage('ja')
-        response = self.publish(self.portal_path, self.basic_auth,
-                                env={'HTTP_ACCEPT_LANGUAGE': 'ja'})
-        self.assertEquals(response.getStatus(), 200)
-        self.failUnless('portletCalendar' in response.getBody())
-        self.failUnless('event1' in response.getBody())
-        self.failUnless('event2' in response.getBody())
-        self.failUnless('event3' in response.getBody())
-        # construct our date
-# XXX This test fails for the wrong reasons; Hanno is looking into it.
-#        event1_date = self.portal.event1.start_date.strftime('%Y[s%m[s%d[s')
-#        event1_date = event1_date.replace('[s','%s')%(u'\u5e74', u'\u6708',
-#                                                     u'\u65e5')
-#        self.failUnless(event1_date.encode('utf-8')
-#                        in response.getBody())
 
 
 def test_suite():
