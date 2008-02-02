@@ -1,3 +1,5 @@
+import logging
+
 from zope.interface import implements
 from zope.interface import Interface
 from zope.interface import directlyProvides
@@ -28,6 +30,7 @@ from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
 
+from Products.CMFPlone.utils import log
 from Products.CMFPlone.utils import log_deprecated
 
 def dummyGetId():
@@ -192,8 +195,19 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 if subNode.hasAttribute('remove'):
                     if interface_name in modified_for:
                         modified_for.remove(interface_name)
+                    else:
+                        addview = str(node.getAttribute('addview'))
+                        log('Portlet type %s is already not ' % addview + \
+                          'registered as addable to portlet managers with ' \
+                          'interface %s.' % interface_name,
+                          severity = logging.WARNING)
                 elif interface_name not in modified_for:
                     modified_for.append(interface_name)
+                else:
+                    addview = str(node.getAttribute('addview'))
+                    log('Portlet type %s is already registered ' % addview + \
+                      'as addable to portlet managers with interface ' \
+                      '%s.' % interface_name, severity = logging.WARNING)
         
         #BBB
         interface_name = str(node.getAttribute('for'))

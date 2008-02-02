@@ -64,6 +64,13 @@ class TestImportPortlets(PortletsTestCase):
         self.assertEqual([IColumn],
           self.importer._modifyForList(node, []))
     
+    def test_initPortletNode_duplicateInterfaces(self): 
+        node = parseString(_XML_DUPLICATE_INTERFACES).documentElement 
+        self.importer._initPortletNode(node) 
+        portlet = queryUtility(IPortletType, name="portlets.New") 
+        self.failUnless(portlet is not None) 
+        self.assertEqual([IColumn], portlet.for_) 
+    
     def test_initPortletNode_basic(self):
         node = parseString(_XML_BASIC).documentElement
         self.importer._initPortletNode(node)
@@ -102,6 +109,8 @@ class TestImportPortlets(PortletsTestCase):
         portlet = queryUtility(IPortletType, name="portlets.ExtendMe")
         self.failUnless(portlet is not None)
         self.assertEqual([IDashboard], portlet.for_)
+        self.assertEqual('Bar', portlet.title)
+        self.assertEqual('Bar', portlet.description)
     
     def test_initPortletNode_purge(self):
         node = parseString(_XML_PURGEME_SETUP).documentElement
@@ -113,6 +122,16 @@ class TestImportPortlets(PortletsTestCase):
         self.assertEqual([IColumn], portlet.for_)
         self.assertEqual('Bar', portlet.title)
         self.assertEqual('Bar', portlet.description)
+    
+    def test_initPortletNode_remove(self):
+        node = parseString(_XML_REMOVEME_SETUP).documentElement
+        self.importer._initPortletNode(node)
+        portlet = queryUtility(IPortletType, name='portlets.RemoveMe')
+        self.failUnless(portlet is not None)
+        node = parseString(_XML_REMOVEME_REMOVE).documentElement
+        self.importer._initPortletNode(node)
+        portlet = queryUtility(IPortletType, name='portlets.RemoveMe')
+        self.failUnless(portlet is None)
 
 class TestExportPortlets(PortletsTestCase):
 
@@ -202,6 +221,13 @@ _XML_MULTIPLE_INTERFACES = """<?xml version="1.0"?>
 </portlet>
 """
 
+_XML_DUPLICATE_INTERFACES = """<?xml version="1.0"?> 
+<portlet addview="portlets.New" title="Foo" description="Foo"> 
+  <for interface="plone.app.portlets.interfaces.IColumn" /> 
+  <for interface="plone.app.portlets.interfaces.IColumn" /> 
+</portlet> 
+"""
+
 _XML_DEFAULT_INTERFACE = """<?xml version="1.0"?>
 <portlet addview="portlets.New" title="Foo" description="Foo" />
 """
@@ -213,7 +239,7 @@ _XML_EXTENDME_SETUP = """<?xml version="1.0"?>
 """
 
 _XML_EXTENDME_EXTENSION = """<?xml version="1.0"?>
-<portlet addview="portlets.ExtendMe" extend="">
+<portlet addview="portlets.ExtendMe" extend="" title="Bar" description="Bar">
   <for interface="plone.app.portlets.interfaces.IColumn" remove="" />
   <for interface="plone.app.portlets.interfaces.IDashboard" />
 </portlet>
@@ -229,6 +255,14 @@ _XML_PURGEME_PURGE = """<?xml version="1.0"?>
 <portlet addview="portlets.PurgeMe" purge="" title="Bar" description="Bar">
   <for interface="plone.app.portlets.interfaces.IColumn" />
 </portlet>
+"""
+
+_XML_REMOVEME_SETUP = """<?xml version="1.0"?>
+<portlet addview="portlets.RemoveMe" title="Foo" description="Foo" />
+"""
+
+_XML_REMOVEME_REMOVE = """<?xml version="1.0"?>
+<portlet addview="portlets.RemoveMe" remove="" />
 """
 
 _XML_EXPLICIT_DEFAULT_INTERFACE = """<?xml version="1.0"?>
