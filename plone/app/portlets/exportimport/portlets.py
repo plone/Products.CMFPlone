@@ -1,5 +1,3 @@
-import logging
-
 from zope.interface import implements
 from zope.interface import Interface
 from zope.interface import directlyProvides
@@ -29,9 +27,6 @@ from plone.portlets.constants import USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE
 from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
-
-from Products.CMFPlone.utils import log
-from Products.CMFPlone.utils import log_deprecated
 
 def dummyGetId():
     return ''
@@ -197,25 +192,26 @@ class PortletsXMLAdapter(XMLAdapterBase):
                         modified_for.remove(interface_name)
                     else:
                         addview = str(node.getAttribute('addview'))
-                        log('Portlet type %s is already not ' % addview + \
-                          'registered as addable to portlet managers with ' \
-                          'interface %s.' % interface_name,
-                          severity = logging.WARNING)
+                        self._logger.warning('Portlet type %s ' % addview + \
+                          'is already not registered as addable to ' + \
+                          'portlet managers with interface ' + \
+                          '%s.' % interface_name)
                 elif interface_name not in modified_for:
                     modified_for.append(interface_name)
                 else:
                     addview = str(node.getAttribute('addview'))
-                    log('Portlet type %s is already registered ' % addview + \
-                      'as addable to portlet managers with interface ' \
-                      '%s.' % interface_name, severity = logging.WARNING)
+                    self._logger.warning('Portlet type %s is ' % addview + \
+                      'already registered as addable to portlet managers ' \
+                      'with interface %s.' % interface_name)
         
         #BBB
         interface_name = str(node.getAttribute('for'))
         if interface_name:
-            log_deprecated('The "for" attribute of the portlet node in ' \
-            'portlets.xml is deprecated and will be removed in Plone 4.0.' \
-            'Use children nodes of the form <for interface="zope.interface.' \
-            'Interface" /> instead.')
+            self._logger.warning('Deprecation Warning The "for" ' + \
+              'attribute of the portlet node in portlets.xml is ' + \
+              'deprecated and will be removed in Plone 4.0. Use children ' \
+              'nodes of the form <for interface="foo.BarInterface" /> ' + \
+              'instead.')
             modified_for.append(interface_name)
         
         modified_for = [_resolveDottedName(name) for name in modified_for \
