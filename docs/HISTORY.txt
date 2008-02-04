@@ -5,6 +5,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - Fixed logic error in getRootPath in the last change.
+      [hannosch]
+
     - Only show the language portlet if more than one language is available.
       This brings it in sync with the language selection viewlet.
       [wichert]
