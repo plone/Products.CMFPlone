@@ -1,8 +1,7 @@
 <dl class="portlet portletCalendar"
     i18n:domain="plone"
     tal:define="portal_url context/@@plone_portal_state/portal_url;
-                query_string python:request.get('orig_query', None);
-                query_string python:(query_string is None and request.get('QUERY_STRING', None)) or query_string;
+                query_string view/getQueryString;
                 url_quote_plus nocall:view/url_quote_plus;
                 showPrevMonth view/showPrevMonth;
                 showNextMonth view/showNextMonth;
@@ -15,7 +14,7 @@
            tal:define="prevMonthMonth view/prevMonthMonth;
                        prevMonthYear view/prevMonthYear"
            tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
-                           href python:'?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string)); 
+                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string)); 
                            class string:kssCalendarChange kssattr-year-${prevMonthYear} kssattr-month-${prevMonthMonth} calendarPrevious;"
            tal:condition="showPrevMonth"
            i18n:attributes="title title_previous_month;">&laquo;</a>
@@ -34,7 +33,7 @@
            tal:define="nextMonthMonth view/nextMonthMonth;
                        nextMonthYear view/nextMonthYear"
            tal:attributes="id python:showNextMonth and 'calendar-next' or '';
-                           href python:'?%s&amp;month:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));
+                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));
                            class string:kssCalendarChange kssattr-year-${nextMonthYear} kssattr-month-${nextMonthMonth} calendarNext;"
            tal:condition="showNextMonth"
            i18n:attributes="title title_next_month;">&raquo;</a>

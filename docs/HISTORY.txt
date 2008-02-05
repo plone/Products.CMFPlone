@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - Fixed None value in query_string in calendar portlet. This closes
+      http://dev.plone.org/plone/ticket/7331.
+      [hannosch]
+
     - Fixed logic error in getRootPath in the last change.
       [hannosch]
 

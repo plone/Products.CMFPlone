@@ -211,6 +211,16 @@ class Renderer(base.Renderer):
         states = self.calendar.getCalendarStates()
         return ''.join(map(lambda x : 'review_state=%s&amp;' % self.url_quote_plus(x), states))
 
+    def getQueryString(self):
+        request = self.request
+        query_string = request.get('orig_query',
+                                   request.get('QUERY_STRING', None))
+        if len(query_string) == 0:
+            query_string = ''
+        else:
+            query_string = '%s&amp;' % query_string
+        return query_string
+
 
 class AddForm(base.NullAddForm):
 
