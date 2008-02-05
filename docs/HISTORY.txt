@@ -4,6 +4,10 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0.4 Unreleased
 
+    - Fixed vocabulary in skins control panel to support proper i18n.
+      This closes http://dev.plone.org/plone/ticket/7766.
+      [hannosch]
+
     - Changed import of FormFieldsets to avoid a deprecation warning.
       [hannosch]
 

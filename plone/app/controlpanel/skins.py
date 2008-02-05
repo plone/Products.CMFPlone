@@ -13,6 +13,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from form import ControlPanelForm
 from widgets import DropdownChoiceWidget
 
+from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 ICON_VISIBILITY_CHOICES = {
@@ -20,6 +21,11 @@ ICON_VISIBILITY_CHOICES = {
     _(u"Never show icons"): 'disabled',
     _(u"Always show icons"): 'enabled',
 }
+
+ICON_VISIBILITY_VOCABULARY = SimpleVocabulary(
+    [SimpleTerm(v, v, k) for k, v in ICON_VISIBILITY_CHOICES.items()]
+    )
+
 
 class ISkinsSchema(Interface):
 
@@ -49,8 +55,7 @@ class ISkinsSchema(Interface):
                              description=_(u"If disabled the content icons "
                                             "in folder listings and portlets "
                                             "won't be visible."),
-                             vocabulary=SimpleVocabulary.fromItems(
-                                            ICON_VISIBILITY_CHOICES.items()))
+                             vocabulary=ICON_VISIBILITY_VOCABULARY)
 
 
 class SkinsControlPanelAdapter(SchemaAdapterBase):
