@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.0.6 - UNRELEASED
 
+    - Five.testbrowser tests could not log in via the login_form.
+      [stefan]
+
 Plone 3.0.5 - released January 5, 2008
 
     - Fixed issues when non-savepoint supporting connections are
