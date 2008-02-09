@@ -60,6 +60,12 @@ class TestPortlet(PortletsTestCase):
 
 class TestRenderer(PortletsTestCase):
 
+    def afterSetUp(self):
+        setHooks()
+        setSite(self.portal)
+        # Make sure News Items use simple_publication_workflow
+        self.portal.portal_workflow.setChainForPortalTypes(['News Item'], ['simple_publication_workflow'])
+
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
         request = request or self.folder.REQUEST

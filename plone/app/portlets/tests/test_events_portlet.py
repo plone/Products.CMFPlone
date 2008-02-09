@@ -63,6 +63,8 @@ class TestRenderer(PortletsTestCase):
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
+        # Make sure Events use simple_publication_workflow
+        self.portal.portal_workflow.setChainForPortalTypes(['Event'], ['simple_publication_workflow'])
 
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
@@ -73,7 +75,7 @@ class TestRenderer(PortletsTestCase):
 
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
-    def test_published_news_items(self):
+    def test_published_events(self):
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Event', 'e1')
         self.portal.invokeFactory('Event', 'e2')
