@@ -137,8 +137,13 @@ Check that the filtering works
     True
     >>> 'My Page' in browser.contents
     True
-    >>> '<p>Testing that works.</p>' in browser.contents
-    True
+
+Must use print here to take advantage of whitespace folding
+(whitespace in the body text may vary depending on the tidy_html transform).
+
+    >>> print browser.contents
+    <!DOCTYPE...
+    <p>Testing that works.</p>...
 
 Kupu tag stripping
 ==================
