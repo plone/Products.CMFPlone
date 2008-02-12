@@ -204,7 +204,7 @@ class TestGenericSetup(PortletsTestCase):
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
         
         assignment = mapping['test.portlet1']
-        self.assertEquals('Test prop 1', assignment.test_text)
+        self.assertEquals(u'Test pr\xf6p 1', assignment.test_text)
         self.assertEquals(False, assignment.test_bool)
         self.assertEquals((u'published', u'private'), assignment.test_tuple)
         
@@ -288,7 +288,7 @@ class TestGenericSetup(PortletsTestCase):
     manager="test.testcolumn" type="portlets.test.Test">
   <property name="test_bool">False</property>
   <property name="test_tuple"/>
-  <property name="test_text">Test prop 1</property>
+  <property name="test_text">Test pröp 1</property>
  </assignment>
  <blacklist category="user" location="/" manager="test.testcolumn"
     status="acquire"/>

@@ -20,7 +20,7 @@
         key="/"
         type="portlets.test.Test"
         name="test.portlet1">
-            <property name="test_text">Test prop 1</property>
+            <property name="test_text">Test pröp 1</property>
             <property name="test_bool">False</property>
             <property name="test_tuple">
                 <element>published</element>
