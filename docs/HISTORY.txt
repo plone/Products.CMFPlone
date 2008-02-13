@@ -2,7 +2,11 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 1.0.4 Unreleased
+plone.app.controlpanel - 1.0.4 Released February 13, 2008
+
+    - Take advantage of NORMALIZE_WHITESPACE to be independent of the tidy_html
+      transform.
+      [shh42]
 
     - Fixed vocabulary in skins control panel to support proper i18n.
       This closes http://dev.plone.org/plone/ticket/7766.
