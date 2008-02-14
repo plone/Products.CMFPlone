@@ -1,3 +1,4 @@
+import operator
 from zope.interface import implements
 from zope.component import getMultiAdapter
 from plone.portlets.interfaces import IPortletDataProvider
@@ -24,6 +25,7 @@ class Renderer(base.Renderer):
         base.Renderer.__init__(self, context, request, view, manager, data)
         self.selector=LanguageSelector(context, request, None, None)
         self.languages=self.selector.languages()
+        self.languages.sort(key=operator.itemgetter("native"))
         portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
         self.portal_url = portal_state.portal_url()
 

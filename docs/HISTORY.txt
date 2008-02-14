@@ -5,6 +5,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - Sort the languages in the language portlet using their native name.
+      [wichert]
+
     - Fixed None value in query_string in calendar portlet. This closes
       http://dev.plone.org/plone/ticket/7331.
       [hannosch]
