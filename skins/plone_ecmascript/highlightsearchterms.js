@@ -21,9 +21,9 @@ function highlightTermInNode(node, word) {
 
 function highlightSearchTerms(terms, startnode) {
     if (!terms || !startnode) return;
-    terms = jq.map(terms, 'a.toLowerCase()');
 
     jq.each(terms, function(i, term) {
+        term = term.toLowerCase();
         // don't highlight reserved catalog search terms
         if (!term || /(not|and|or)/.test(term)) return;
         jq(startnode).find('*').andSelf().contents().each(function() {
