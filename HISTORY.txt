@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.0.6 - UNRELEASED
 
+    - Make @@plone_lock_info not required for object_cut, object_delete and
+      delete_confirmation scripts (not all content is lockable.)
+      [ldr]
+
     - Five.testbrowser tests could not log in via the login_form.
       [stefan]
 

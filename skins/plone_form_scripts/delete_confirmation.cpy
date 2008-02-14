@@ -24,8 +24,12 @@ if isLinked(context):
     parent = context.aq_inner.aq_parent
     title = safe_unicode(context.title_or_id())
 
-    lock_info = context.restrictedTraverse('@@plone_lock_info')
-    if lock_info.is_locked():
+    try:
+        lock_info = context.restrictedTraverse('@@plone_lock_info')
+    except AttributeError:
+        lock_info = None
+    
+    if lock_info is not None and lock_info.is_locked():
         message = _(u'${title} is locked and cannot be deleted.',
             mapping={u'title' : title})
     else:
