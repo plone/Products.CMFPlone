@@ -193,3 +193,48 @@ function createLink(link, desc, bName) {
     return a;
 }
 
+
+// from the kupu test runner
+var skipped_tests = [];
+// Mark a specific test as failing under Opera. When Opera is
+// fixed (or the test rewritten to cope with it) the flagged test
+// will then fail.
+function opera_is_broken(self, fname) {
+    var fn = self[fname];
+    if (navigator.userAgent.toLowerCase().indexOf("opera") == -1) {
+        return; // Browser is not opera.
+    }
+    //self.debug('Invert test '+fname+'for broken browser');
+    function test() {
+        try {
+            fn.call(self);
+        } catch(e) {
+            // The function threw an exception, which is what we
+            // expect.
+            return
+        };
+        self.assert(false, 'expected test '+fname+' to fail, but it passed!');
+    };
+    self[fname] = test;
+    skipped_tests.push(fname);
+}
+// To demonstrate fairness, mark a specific test as failing under IE.
+function ie_is_broken(self, fname) {
+    var fn = self[fname];
+    if (!_SARISSA_IS_IE) {
+        return; // Browser is not opera.
+    }
+    //self.debug('Invert test '+fname+'for broken browser');
+    function test() {
+        try {
+            fn.call(self);
+        } catch(e) {
+            // The function threw an exception, which is what we
+            // expect.
+            return
+        };
+        self.assert(false, 'expected test '+fname+' to fail, but it passed!');
+    };
+    self[fname] = test;
+    skipped_tests.push(fname);
+}
