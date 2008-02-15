@@ -5,6 +5,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+
+plone.app.portlets 1.0.6
+
     - Sort the languages in the language portlet using their native name.
       [wichert]
 
