@@ -2,7 +2,10 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0.6 - UNRELEASED
+Plone 3.0.7 - UNRELEASED
+
+
+Plone 3.0.6 - released Febuary 15, 2008 
 
     - Make @@plone_lock_info not required for object_cut, object_delete and
       delete_confirmation scripts (not all content is lockable.)
@@ -10,6 +13,7 @@ Plone 3.0.6 - UNRELEASED
 
     - Five.testbrowser tests could not log in via the login_form.
       [stefan]
+
 
 Plone 3.0.5 - released January 5, 2008
 
