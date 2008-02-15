@@ -61,7 +61,7 @@ function actionMenuMouseOver(event) {
         jq('#' + menu_id).removeClass('deactivated').addClass('activated');
 };
 
-jq(function() {
+function initializeMenus() {
     jq(document).mousedown(actionMenuDocumentMouseDown);
 
     hideAllMenus();
@@ -74,4 +74,6 @@ jq(function() {
     // add hide function to all links in the dropdown, so the dropdown closes
     // when any link is clicked
     jq('dl.actionMenu > dd.actionMenuContent').click(hideAllMenus);
-});
+};
+
+jq(initializeMenus);

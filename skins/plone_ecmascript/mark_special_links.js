@@ -10,7 +10,7 @@
  *       but not Internet Explorer 6. It works fine in IE7, however.
  */
 
-jq(function() {
+function scanforlinks() {
     // first make external links open in a new window, afterwards do the
     // normal plone link wrapping in only the content area
 
@@ -43,4 +43,5 @@ jq(function() {
             if (res = protocols.exec(this.href))
                 jq(this).wrap('<span>').parent().addClass('link-', res[0]);
         });
-});
+};
+jq(scanforlinks);

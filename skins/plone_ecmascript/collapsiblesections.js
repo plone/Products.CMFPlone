@@ -33,19 +33,16 @@
  *
  */
 
-(function() {
-var _toggleCollapsible = function() {
-    var $container = jq(this).parents('dl.collapsible:first');
-    if (!$container) return true;
+function activateCollapsibles() {
+    jq('dl.collapsible dt.collapsibleHeader:first').click(function() {
+        var $container = jq(this).parents('dl.collapsible:first');
+        if (!$container) return true;
 
-    var $type = $container.hasClass('inline') ? 'Inline' :'Block';
-    // toggle between collapsed and expanded classes
-    $container.toggleClass('collapsed' + $type + 'Collapsible')
-              .toggleClass('expanded' + $type + 'Collapsible');
-};
-
-jq(function() {
-    jq('dl.collapsible dt.collapsibleHeader:first').click(_toggleCollapsible);
+        var $type = $container.hasClass('inline') ? 'Inline' :'Block';
+        // toggle between collapsed and expanded classes
+        $container.toggleClass('collapsed' + $type + 'Collapsible')
+                  .toggleClass('expanded' + $type + 'Collapsible');
+    });
     jq('dl.collapsible').each(function() {
         var $state = jq(this).hasClass('collapsedOnLoad') ?
                      'collapsed' : 'expanded';
@@ -53,5 +50,5 @@ jq(function() {
         jq(this).removeClass('collapsedOnLoad')
                .addClass($state + $type + 'Collapsible');
     });
-});
-})();
+};
+jq(activateCollapsibles);
