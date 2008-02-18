@@ -21,7 +21,7 @@ plone.portlets, as well as a standard set of portlets that ship with Plone.
       url='http://svn.plone.org/svn/plone/plone.app.portlets',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['plone.app'],
+      namespace_packages = ['plone', 'plone.app'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
