@@ -15,6 +15,7 @@
   <include package="plone.app.linkintegrity" />
   <include package="plone.app.openid" />
   <include package="plone.app.portlets" />
+  <include package="plone.app.protect" />
   <include package="plone.app.redirector" />
   <include package="plone.app.viewletmanager" />
   <include package="plone.app.vocabularies" />
@@ -23,6 +24,7 @@
   <include package="plone.session" />
 
   <!-- viewlets zope 3 layers support for themes -->
+  <include package="plone.browserlayer" />
   <include package="plone.theme" />
 
   <!-- kss -->
