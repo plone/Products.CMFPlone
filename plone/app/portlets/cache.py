@@ -1,5 +1,3 @@
-from StringIO import StringIO
-
 from zope import component
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -10,19 +8,25 @@ def get_language(context, request):
     return portal_state.locale().getLocaleID()
 
 def render_cachekey(fun, self):
-    key = StringIO()
-    print >> key, getToolByName(aq_inner(self.context), 'portal_url')()
-    print >> key, get_language(aq_inner(self.context), self.request)
-    print >> key, self.manager.__name__
-    print >> key, self.data.__name__
+    """
+    Generates a key based on:
 
+    * Portal URL
+    * Negotiated language
+    * Portlet manager
+    * Assignment
+    * Fingerprint of the data used by the portlet
+    
+    """
+    
     def add(brain):
-        key.write(brain.getPath())
-        key.write('\n')
-        key.write(brain.modified)
-        key.write('\n\n')
+        return "%s\n%s\n\n" % (brain.getPath(), brain.modified)
 
-    for brain in self._data():
-        add(brain)
+    fingerprint = "".join(map(add, self._data()))
 
-    return key.getvalue()
+    return "".join(
+        getToolByName(aq_inner(self.context), 'portal_url')(),
+        get_language(aq_inner(self.context), self.request),
+        self.manager.__name__,
+        self.data.__name__,
+        fingerprint)
