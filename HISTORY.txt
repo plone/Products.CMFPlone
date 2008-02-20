@@ -2,7 +2,13 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.0.7 - UNRELEASED
+Plone 3.1 - UNRELEASED
+
+    - PLIP224: Install plone.app.protect
+      [wichert]
+
+    - PLIP220: Install plone.browserlayer
+      [wichert]
 
 
 Plone 3.0.6 - released Febuary 15, 2008 
