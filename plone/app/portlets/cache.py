@@ -22,11 +22,11 @@ def render_cachekey(fun, self):
     def add(brain):
         return "%s\n%s\n\n" % (brain.getPath(), brain.modified)
 
-    fingerprint = "".join(add(brain) for brain in self._data())
+    fingerprint = "".join(map(add, self._data()))
 
-    return "".join(
+    return "".join((
         getToolByName(aq_inner(self.context), 'portal_url')(),
         get_language(aq_inner(self.context), self.request),
         self.manager.__name__,
         self.data.__name__,
-        fingerprint)
+        fingerprint))
