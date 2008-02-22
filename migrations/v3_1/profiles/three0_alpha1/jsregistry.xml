@@ -4,7 +4,8 @@
     enabled="True" expression="" id="jquery.js" inline="False"
     insert-top="" />
   <!-- cssQuery is left enabled on migrated sites only; we do move it -->
-  <javascript id="cssQuery.js" update="" insert-after="jquery.js" />
+  <javascript id="cssQuery.js" update="" enabled="true"
+    insert-after="jquery.js" />
  	<javascript cacheable="True" compression="safe" cookable="True" 
     enabled="True" expression="" id="jquery-integration.js" inline="False"
     insert-after="cssQuery.js" />
