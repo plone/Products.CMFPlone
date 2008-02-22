@@ -7,6 +7,8 @@ def three0_alpha1(portal):
     out = []
 
     loadMigrationProfile(portal, 'profile-Products.CMFPlone:plone')
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0.6-3.1alpha1')
+
     addBrowserLayer(portal, out)
 
     return out
