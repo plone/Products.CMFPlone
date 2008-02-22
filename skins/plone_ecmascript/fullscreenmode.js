@@ -21,7 +21,7 @@ function toggleFullScreenMode() {
 jq(function() {
     // test for a 'minimal=x' query parameter, where x == 1 means go fullscreen
     minimal = jQuery.grep(window.location.search.slice(1).split('&'),
-                          "a.indexOf('minimal=') == 0");
+                          function(a) { a.indexOf('minimal=') == 0 });
     if (minimal.length && minimal[0].length > 8) {
         setFullScreenMode(minimal[0][8] == '1');
         return;
