@@ -11,10 +11,6 @@
     enabled="True" expression="" id="event-registration.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="register_function.js" inline="False"/>
- <!-- Sarissa should be almost at the top, because it's a dependency for
-      many other scripts -->
- <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="" id="sarissa.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="plone_javascript_variables.js"
     inline="False"/>
@@ -73,6 +69,10 @@
     id="unlockOnFormUnload.js" inline="False"/>
 
  <!-- Kupu -->
+ <javascript cacheable="True" compression="safe" cookable="True"
+    enabled="True"
+    expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
+    id="sarissa.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
