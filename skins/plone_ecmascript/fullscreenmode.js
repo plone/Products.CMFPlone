@@ -1,34 +1,31 @@
-function setFullScreenMode(fs) {
-    var icon = document.getElementById('icon-full_screen');
+function setFullScreenMode(full) {
+    var body = jq('body');
 
-    if (fs) {
+    if (full) {
         // set cookie
-        addClassName(document.body, 'fullscreen');
+        jq('body').addClass('fullscreen')
         createCookie('fullscreenMode', '1');
-        if(icon) { icon.src = 'fullscreencollapse_icon.gif'; }
+        jq('#icon-full_screen').attr('src', 'fullscreencollapse_icon.gif');
     } else {
         // unset cookie
-        removeClassName(document.body, 'fullscreen');
+        jq('body').removeClass('fullscreen')
         createCookie('fullscreenMode', '');
-        if(icon) { icon.src = 'fullscreenexpand_icon.gif'; }
+        jq('#icon-full_screen').attr('src', 'fullscreenexpand_icon.gif');
     }
 };
 
 function toggleFullScreenMode() {
-    setFullScreenMode(hasClassName(document.body, 'fullscreen') == false);
-};
+    setFullScreenMode(!jq('body').hasClass('fullscreen'));
+}
 
-function fullscreenModeLoad() {
-    // based on query string
-    var queryparts = window.location.search.slice(1).split('&');
-    for (var i=0; i<queryparts.length; i++) {
-        var parts = queryparts[i].split('=');
-        if (parts[0] == 'minimal' && parts[1] != null) {
-            setFullScreenMode(parts[1] == '1');
-            return;
-        }
+jq(function() {
+    // test for a 'minimal=x' query parameter, where x == 1 means go fullscreen
+    minimal = jQuery.grep(window.location.search.slice(1).split('&'),
+                          "a.indexOf('minimal=') == 0");
+    if (minimal.length && minimal[0].length > 8) {
+        setFullScreenMode(minimal[0][8] == '1');
+        return;
     }
     // based on cookie
     setFullScreenMode(readCookie('fullscreenMode') == '1');
-};
-registerPloneFunction(fullscreenModeLoad)
+});

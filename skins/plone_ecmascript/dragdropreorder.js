@@ -1,122 +1,87 @@
-var ploneDnDReorder = {}
+var ploneDnDReorder = {};
 
 ploneDnDReorder.dragging = null;
 ploneDnDReorder.table = null;
 ploneDnDReorder.rows = null;
 
-ploneDnDReorder.isDraggable = function(node) {
-    return hasClassName(node, 'draggable');
+ploneDnDReorder.doDown = function(e) {
+    var dragging =  jq(this).parents('.draggable:first');
+    if (!dragging.length) return;
+    ploneDnDReorder.rows.mousemove(ploneDnDReorder.doDrag);
+
+    ploneDnDReorder.dragging = dragging;
+    dragging._position = ploneDnDReorder.getPos(dragging);
+    dragging.addClass("dragging");
+    return false;
 };
 
-ploneDnDReorder.doDown = function(e) {
-    if (!e) var e = window.event; // IE compatibility
-    var target = findContainer(this, ploneDnDReorder.isDraggable);
-    if (target == null)
-        return;
-    for (var i=0; i<ploneDnDReorder.rows.length; i++)
-        ploneDnDReorder.rows[i].onmousemove = ploneDnDReorder.doDrag;
-
-
-    ploneDnDReorder.dragging = target.parentNode;
-    var dragging = ploneDnDReorder.dragging;
-    dragging._position = ploneDnDReorder.getPos(dragging);
-    addClassName(dragging, "dragging");
-    return false;
-}
-
 ploneDnDReorder.getPos = function(node) {
-    var children = node.parentNode.childNodes;
-    var pos = 0;
-    for (var i=0; i<children.length; i++) {
-        if (node == children[i])
-            return pos;
-        if (hasClassName(children[i], "draggable"))
-            pos++;
-    }
-    return null;
-}
+    var pos = node.parent().children('.draggable').index(node[0]);
+    return pos == -1 ? null : pos;
+};
 
 ploneDnDReorder.doDrag = function(e) {
-    if (!e) var e = window.event; // IE compatibility
-
     var dragging = ploneDnDReorder.dragging;
-    if (!dragging)
-        return;
+    if (!dragging) return;
     var target = this;
-    if (!target)
-        return;
+    if (!target) return;
 
-    if (target.id != dragging.id) {
-        ploneDnDReorder.swapElements(target, dragging);
-    }
+    if (jq(target).attr('id') != dragging.attr('id')) {
+        ploneDnDReorder.swapElements(jq(target), dragging);
+    };
     return false;
-}
+};
 
 ploneDnDReorder.swapElements = function(child1, child2) {
-    // currently, this works by building a list of all the
-    // children, swapping the elements in this list, then
-    // removing all the children and replacing them with our
-    // list. there must be a more efficient way, but other approaches
-    // i tried were buggy.
-    var parent = child1.parentNode;
-    var children = parent.childNodes;
-    var items = new Array();
-    for (var i = 0; i < children.length; i++) {
-        var node = children[i];
-        items[i] = node;
-        if (node.id) {
-            removeClassName(node, "even");
-            removeClassName(node, "odd");
-            if (node.id == child1.id)
-                items[i] = child2;
-            if (node.id == child2.id)
-                items[i] = child1;
-        }
-    }
-    Sarissa.clearChildNodes(parent);
-    var pos = 0;
-    for (var i = 0; i < items.length; i++) {
-        var node = parent.appendChild(items[i]);
-        if (node.id) {
-            if (pos % 2)
-                addClassName(node, "even");
-            else
-                addClassName(node, "odd");
-            pos++;
-        }
-    }
-}
+    var parent = child1.parent();
+    var items = parent.children('[id]');
+    items.removeClass('even').removeClass('odd');
+    if (child1[0].swapNode) {
+        // IE proprietary method
+        child1[0].swapNode(child2[0]);
+    } else {
+        // swap the two elements, using a textnode as a position marker
+        var t = parent[0].insertBefore(document.createTextNode(''),
+                                       child1[0]);
+        child1.insertBefore(child2);
+        child2.insertBefore(t);
+        jq(t).remove();
+    };
+    // odd and even are 0-based, so we want them the other way around
+    parent.children('[id]:odd').addClass('even');
+    parent.children('[id]:even').addClass('odd');
+};
 
 ploneDnDReorder.doUp = function(e) {
-    if (!e) var e = window.event; // IE compatibility
-
     var dragging = ploneDnDReorder.dragging;
-    if (!dragging)
-        return;
+    if (!dragging) return;
 
-    removeClassName(dragging, "dragging");
+    dragging.removeClass("dragging");
     ploneDnDReorder.updatePositionOnServer();
     dragging._position = null;
     try {
         delete dragging._position;
-    } catch(e) {}
+    } catch(e) {};
     dragging = null;
-    for (var i=0; i<ploneDnDReorder.rows.length; i++)
-        ploneDnDReorder.rows[i].onmousemove = null;
+    ploneDnDReorder.rows.unbind('mousemove', ploneDnDReorder.doDrag);
     return false;
-}
+};
 
 ploneDnDReorder.updatePositionOnServer = function() {
     var dragging = ploneDnDReorder.dragging;
+    if (!dragging) return;
+
     var delta = ploneDnDReorder.getPos(dragging) - dragging._position;
 
-    if (delta == 0) // nothing changed
+    if (delta == 0) {
+        // nothing changed
         return;
-    var req = new XMLHttpRequest();
-    req.open("POST", "folder_moveitem", true);
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    };
     // Strip off id prefix
-    var item_id = dragging.id.substr('folder-contents-item-'.length);
-    req.send("item_id="+item_id+"&delta:int="+delta);
-}
+    var args = {
+        item_id: dragging.attr('id').substr('folder-contents-item-'.length)
+    };
+    args['delta:int'] = delta;
+    jQuery.post('folder_moveitem', args)
+};
 

@@ -1,17 +1,13 @@
-function setBaseFontSize(fontsize, reset) {
-    var body = cssQuery('body')[0];
-    if (reset == 1) {
-        removeClassName(body, 'smallText');
-        removeClassName(body, 'largeText');
-        createCookie("fontsize", fontsize, 365);
+function setBaseFontSize($fontsize, $reset) {
+    var $body = jq('body');
+    if ($reset) {
+        $body.removeClass('smallText').removeClass('largeText');
+        createCookie("fontsize", $fontsize, 365);
     }
-    addClassName(body, fontsize);
+    $body.addClass($fontsize);
 };
 
-function initBaseFontSize() {
-    var fontsize = readCookie("fontsize");
-    if (fontsize != null) {
-        setBaseFontSize(fontsize, 0);
-    }
-};
-registerPloneFunction(initBaseFontSize);
+jq(function() {
+    var $fontsize = readCookie("fontsize");
+    if ($fontsize) setBaseFontSize($fontsize, 0);
+});

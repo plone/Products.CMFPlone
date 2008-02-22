@@ -11,16 +11,9 @@ function HighlightTermInNodeTestCase() {
     }
 
     this.testManyInOneNode = function() {
-        walkTextNodes(this.sandbox, highlightTermInNode, 'foo');
-        var count = new Array();
-        count[0] = 0;
-        walkTextNodes(this.sandbox,
-                      function(node, count) {
-                        if (node.parentNode.className == 'highlightedSearchTerm') {
-                            count[0]++;
-                        }
-                      }, count);
-        this.assertEquals(count[0], 5);
+        highlightTermInNode(this.sandbox.firstChild, 'foo');
+        count = jq(this.sandbox).find('span.highlightedSearchTerm').length;
+        this.assertEquals(count, 5);
     }
 
     this.tearDown = function() {

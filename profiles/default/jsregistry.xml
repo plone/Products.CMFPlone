@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
+ <javascript cacheable="True" compression="none" cookable="True"
+    enabled="True" expression="" id="jquery.js" inline="False"/>
+ <javascript cacheable="True" compression="full-encode" cookable="True"
+    enabled="False" expression="" id="cssQuery.js" inline="False"/>
+ <javascript cacheable="True" compression="safe" cookable="True"
+    enabled="True" expression="" id="jquery-integration.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="event-registration.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="register_function.js" inline="False"/>
- <javascript cacheable="True" compression="full-encode" cookable="True"
-    enabled="True" expression="" id="cssQuery.js" inline="False"/>
  <!-- Sarissa should be almost at the top, because it's a dependency for
       many other scripts -->
  <javascript cacheable="True" compression="safe" cookable="True"
@@ -18,7 +22,7 @@
     enabled="True" expression="" id="nodeutilities.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="cookie_functions.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression="" id="livesearch.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="select_all.js" inline="False"/>
@@ -26,7 +30,7 @@
     enabled="True" expression="" id="dragdropreorder.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="False" expression="" id="mark_special_links.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression="" id="collapsiblesections.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="form_tabbing.js" inline="False"/>
@@ -38,7 +42,7 @@
     enabled="True" expression="" id="se-highlight.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="first_input_focus.js" inline="False"/>
- <javascript cacheable="True" compression="safe" cookable="True"
+ <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression="" id="accessibility.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="styleswitcher.js" inline="False"/>
@@ -56,7 +60,7 @@
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
     id="calendar_formfield.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
-    enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 
+    enabled="False" expression="not: portal/portal_membership/isAnonymousUser" 
     id="calendarpopup.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser" 

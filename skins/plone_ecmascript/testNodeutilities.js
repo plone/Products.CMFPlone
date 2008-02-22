@@ -170,17 +170,20 @@ function RemoveClassNameTestCase() {
 
     this.testRemove = function() {
         removeClassName(this.node, 'bar');
-        this.assertTrue(this.node.className.indexOf('bar') < 0, this.node.className);
+        var current = jq.trim(this.node.className).replace(/\s+/g, ' ');
+        this.assertTrue(current.indexOf('bar') < 0, current);
     }
 
     this.testCleanup = function() {
         removeClassName(this.node, 'bar');
-        this.assertEquals(this.node.className, "foo hamEggs", this.node.className);
+        var current = jq.trim(this.node.className).replace(/\s+/g, ' ');
+        this.assertEquals(current, "foo hamEggs", current);
     }
 
     this.testPartial = function() {
         removeClassName(this.node, 'ham');
-        this.assertEquals(this.node.className, "foo bar hamEggs", this.node.className);
+        var current = jq.trim(this.node.className).replace(/\s+/g, ' ');
+        this.assertEquals(current, "foo bar hamEggs", current);
     }
 
     this.tearDown = function() {
@@ -211,22 +214,26 @@ function ReplaceClassNameTestCase() {
 
     this.testCleanup = function() {
         replaceClassName(this.node, 'bar', 'spam');
-        this.assertEquals(this.node.className, "foo spam hamEggs", this.node.className);
+        var current = jq.trim(this.node.className).replace(/\s+/g, ' ');
+        this.assertEquals(current, "foo hamEggs spam", current);
     }
 
     this.testPartial = function() {
         replaceClassName(this.node, 'ham', 'spam');
-        this.assertEquals(this.node.className, "foo bar hamEggs", this.node.className);
+        var current = jq.trim(this.node.className).replace(/\s+/g, ' ');
+        this.assertEquals(current, "foo bar hamEggs", current);
     }
 
     this.testMissing = function() {
         replaceClassName(this.node, 'bacon', 'spam');
-        this.assertEquals(this.node.className, "foo bar hamEggs", this.node.className);
+        var current = jq.trim(this.node.className).replace(/\s+/g, ' ');
+        this.assertEquals(current, "foo bar hamEggs", current);
     }
 
     this.testIgnoreMissing = function() {
         replaceClassName(this.node, 'bacon', 'spam', true);
-        this.assertEquals(this.node.className, "foo bar hamEggs spam", this.node.className);
+        var current = jq.trim(this.node.className).replace(/\s+/g, ' ');
+        this.assertEquals(current, "foo bar hamEggs spam", current);
     }
 
     this.tearDown = function() {

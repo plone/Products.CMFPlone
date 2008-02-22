@@ -2,11 +2,11 @@
 // The calendar popup show/hide:
 
     function showDay(date) {
-        document.getElementById('day' + date).style.visibility = 'visible';
+        $('#day' + date).css({'visibility': 'visible'});
         return true;
     }    
     function hideDay(date) {
-        document.getElementById('day' + date).style.visibility = 'hidden';
+        $('#day' + date).css({'visibility': 'hidden'});
         return true;
     }
 
