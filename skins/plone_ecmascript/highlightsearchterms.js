@@ -53,7 +53,7 @@ function getSearchTermsFromURI(uri) {
     var qq = qfinder.exec(query);
     if (qq && qq[2]) {
         var terms = qq[2].replace(/\+/g,' ').split(' ');
-        result.push.apply(result, jq.grep(terms, 'a != ""'));
+        result.push.apply(result, jq.grep(terms, function(a) { return a != ""}));
         return result;
     }
     return result.length == 0 ? false : result;
