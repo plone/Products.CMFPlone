@@ -20,6 +20,8 @@
     enabled="True" expression="" id="cookie_functions.js" inline="False"/>
  <javascript cacheable="True" compression="full" cookable="True"
     enabled="True" expression="" id="livesearch.js" inline="False"/>
+ <javascript cacheable="True" compression="safe" cookable="True" 
+    enabled="False" expression="" id="fullscreenmode.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True" expression="" id="select_all.js" inline="False"/>
  <javascript cacheable="True" compression="safe" cookable="True"
