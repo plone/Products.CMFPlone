@@ -78,4 +78,6 @@
            class="Products.CMFPlone.TranslationServiceTool.TranslationServiceTool"/>
  <required tool_id="portal_diff"
            class="Products.CMFDiffTool.CMFDiffTool.CMFDiffTool"/>
+ <required tool_id="marshaller_registry"
+           class="Products.Marshall.registry.Registry"/>
 </tool-setup>
