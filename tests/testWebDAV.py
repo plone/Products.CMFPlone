@@ -1417,8 +1417,7 @@ class TestPUTDefaultMarshaller(PloneTestCase.FunctionalTestCase):
         self.assertEqual(obj.getLocation(), 'Mainstage')
         self.assertEqual(obj.start(), DateTime('2005/10/28 19:00:00 GMT-2'))
         self.assertEqual(obj.end(), DateTime('2005/10/28 21:00:00 GMT-2'))
-        # XXX Broken!
-        # self.assertEqual(obj.Subject(), ('Appointment',))
+        self.assertEqual(obj.Subject(), ('Appointment',))
 
         response = self.publish(self.folder_path + '/' + name +
                                 '/' + obj.getId() + '/manage_DAVget',
@@ -1427,8 +1426,7 @@ class TestPUTDefaultMarshaller(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 200)
         body = response.getBody()
         self.failUnless('BEGIN:VCALENDAR' in body, body)
-        # XXX Broken!
-        # self.failUnless('Appointment' in body, body)
+        self.failUnless('Appointment' in body, body)
         self.failUnless('Mainstage' in body, body)
 
 def test_suite():
