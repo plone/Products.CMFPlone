@@ -32,15 +32,6 @@ Plone 3.0.5 - released January 5, 2008
       chain including a request container.
       [wichert]
 
-    - Fixed issues when non-savepoint supporting connections are
-      involved in a folder_delete, folder_publish, or folder_rename.
-      [alecm]
-
-    - Remove utility registration for portal_quickinstall and portal_setup:
-      they may run arbitrary code that relies on having a full acquisition
-      chain including a request container.
-      [wichert]
-
     - Backported changeset 18612 and 18615 from trunk. This fixes some
       deprecation warnings.
       [hannosch]
