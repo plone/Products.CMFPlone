@@ -2,15 +2,18 @@ function highlightTermInNode(node, word) {
     var contents = node.nodeValue;
     if (jq(node).parent().hasClass("highlightedSearchTerm")) return;
     
+    // Internet Explorer cannot create simple <span> tags without content
+    // otherwise it'd be jq('<span>').addClass(...).text(content)
+    var highlight = function(content) {
+        return jq('<span class="highlightedSearchTerm">' + 
+                  content + '</span>');
+    }
+    
     while (contents && (index = contents.toLowerCase().indexOf(word)) > -1) {
         // replace the node with [before]<span>word</span>[after]
         jq(node)
             .before(document.createTextNode(contents.substr(0, index)))
-            .before(
-                jq('<span>')
-                    .addClass("highlightedSearchTerm")
-                    .text(contents.substr(index, word.length))
-            )
+            .before(highlight(contents.substr(index, word.length)))
             .before(document.createTextNode(contents.substr(index+word.length)));
         var next = node.previousSibling; // text after the span
         jq(node).remove(); 
