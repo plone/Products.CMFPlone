@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.0.7'
+version = '1.1'
 
 setup(name='plone.app.portlets',
       version=version,
@@ -26,7 +26,7 @@ plone.portlets, as well as a standard set of portlets that ship with Plone.
       zip_safe=False,
       install_requires=[
         'setuptools',
-        'plone.portlets >=1.0.5',
+        'plone.portlets >=1.1',
       ],
       entry_points="""
       # -*- Entry points: -*-
