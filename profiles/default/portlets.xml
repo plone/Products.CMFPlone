@@ -37,62 +37,88 @@
    addview="portlets.Calendar"
    title="Calendar portlet"
    description="A portlet which can render a calendar."
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
 
  <portlet 
    addview="portlets.Classic"
    title="Classic portlet"
    description="A portlet which can render a classic template-based portlet"
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" /> 
+   <for interface="plone.app.portlets.interfaces.IDashboard" />  
+ </portlet>
  
  <portlet 
    addview="portlets.News"
    title="News"
    description="A portlet which can render a listing of recent news"
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" /> 
+   <for interface="plone.app.portlets.interfaces.IDashboard" />  
+ </portlet>
   
  <portlet 
    addview="portlets.Events"
    title="Events"
    description="A portlet which can render a listing of recent events"
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
 
  <portlet 
    addview="portlets.Login"
    title="Login"
    description="A portlet which can render a log-in box"
-   for="plone.app.portlets.interfaces.IColumn"
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+ </portlet>
   
  <portlet 
    addview="portlets.Navigation"
    title="Navigation"
    description="A portlet which can render a navigation tree"
-   for="plone.app.portlets.interfaces.IColumn"
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+ </portlet>
 
  <portlet 
    addview="portlets.Recent"
    title="Recent items"
    description="A portlet which can render a listing of recently changed items."
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
 
  <portlet 
    addview="portlets.Review"
    title="Review list"
    description="A portlet which can render a listing on the review queue."
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
 
  <portlet 
    addview="portlets.rss"
    title="RSS Feed"
    description="A portlet which can receive and render an RSS feed."
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
 
  <portlet 
    addview="portlets.Search"
    title="Search"
    description="A portlet which shows a search box."
-   />
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
 
 </portlets>
