@@ -10,6 +10,16 @@ Plone 3.1 - UNRELEASED
     - PLIP220: Install plone.browserlayer
       [wichert]
 
+    - PLIPs 205 and 218: Allow registering portlet types to multiple portlet
+      manager interfaces, require portlet types to be explicitly registered
+      for portlet manager interfaces, enable modifying registrations through
+      GenericSetup, and restrict most default Plone portlet types to left/
+      right/dashboard columns.
+      [sirgarr]
+    
+    - PLIP207: Allow custom portlet managers, i.e., allow specifying an
+      alternative portlet manager class through GenericSetup.
+      [sirgarr]
 
 Plone 3.0.6 - released Febuary 15, 2008 
 
@@ -19,7 +29,6 @@ Plone 3.0.6 - released Febuary 15, 2008
 
     - Five.testbrowser tests could not log in via the login_form.
       [stefan]
-
 
 Plone 3.0.5 - released January 5, 2008
 
