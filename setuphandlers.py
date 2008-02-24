@@ -73,7 +73,11 @@ class PloneGenerator:
         qi.installProduct('CMFDiffTool', locked=0, forceProfile=True)
         qi.installProduct('CMFEditions', locked=0, forceProfile=True)
         qi.installProduct('PloneLanguageTool', locked=1, hidden=1, forceProfile=True)
-        qi.installProduct('plone.browserlayer', locked=1, forceProfile=True)
+
+    def installDependencies(self, p):
+        st=getToolByName(p, "portal_setup")
+        st.runAllImportStepsFromProfile("profile-Products.CMFPlone:dependencies")
+
 
     def addCacheHandlers(self, p):
         """ Add RAM and AcceleratedHTTP cache handlers """
@@ -519,6 +523,7 @@ def importFinalSteps(context):
     site.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
     pprop.site_properties.allowAnonymousViewAbout = False
     pmembership.memberareaCreationFlag = False
+    gen.installDependencies(site)
 
 def importContent(context):
     """

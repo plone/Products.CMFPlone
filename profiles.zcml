@@ -12,6 +12,15 @@
       />
       
   <genericsetup:registerProfile
+      name="dependencies"
+      title="Mandatory dependencies for a Plone site"
+      directory="profiles/dependencies"
+      description="Load all profiles from other packages/products that are needed for a full Plone site."
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
       name="testfixture"
       title="Plone Test Fixture"
       directory="profiles/testfixture"
