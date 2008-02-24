@@ -29,7 +29,11 @@ class HiddenProfiles(object):
                 u'Products.PortalTransforms:PortalTransforms',
                 u'Products.PloneLanguageTool:PloneLanguageTool',
                 u'Products.PlonePAS:PlonePAS',
-                u'kupu:default']
+                u'plone.browserlayer:default',
+                u'plone.app.protect:default',
+                u'kupu:default',
+                u'Products.CMFPlone:dependencies',
+                ]
 
 
 def addPloneSiteForm(dispatcher):
