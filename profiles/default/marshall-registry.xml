@@ -14,34 +14,6 @@
             predicate_name="default">
   
  </predicate>
- <predicate id="calendar-extension-demarshall"
-            title=".ics -&gt; calendar"
-            expression="python: mode in ('demarshall',) and object.getPortalTypeName() in ('Folder',) and (filename.endswith('.ics') or filename.endswith('.vcs'))"
-            component="calendaring_calendar"
-            predicate_name="default">
-  
- </predicate>
- <predicate id="calendar-mime-demarshall"
-            title="text/calendar -&gt; calendar"
-            expression="python: mode in ('demarshall',) and object.getPortalTypeName() in ('Folder',) and content_type in ('text/calendar',)"
-            component="calendaring_calendar"
-            predicate_name="default">
-  
- </predicate>
- <predicate id="event-mime-demarshall"
-            title="text/calendar -&gt; event"
-            expression="python: mode in ('demarshall',) and object.getPortalTypeName() in ('Event',) and content_type in ('text/calendar',)"
-            component="calendaring_event"
-            predicate_name="default">
-  
- </predicate>
- <predicate id="event-default-marshall"
-            title="event -&gt; .ics"
-            expression="python: mode in ('marshall',) and object.getPortalTypeName() in ('Event',)"
-            component="calendaring_event"
-            predicate_name="default">
-  
- </predicate>
  <predicate id="primary-field"
             title="Use Primary Field as File Source/Destination"
             expression="" component="primary_field"
