@@ -130,9 +130,4 @@
               title="Kupu Settings">
   Export Kupu settings
  </export-step>
- <export-step id="marshaller-registry" version="20070713-01"
-              handler="Products.Marshall.profile.exportMarshallRegistry"
-              title="Marshall Registry">
-  Export Marshaller Registry
- </export-step>
 </export-steps>

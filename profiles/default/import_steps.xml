@@ -207,10 +207,4 @@
   <dependency step="typeinfo"/>
   Import Kupu settings
  </import-step>
- <import-step id="marshaller-registry" version="20070713-01"
-              handler="Products.Marshall.profile.importMarshallRegistry"
-              title="Marshall Registry">
-  <dependency step="toolset"/>
-  Import Marshaller Registry
- </import-step>
 </import-steps>

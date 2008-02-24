@@ -6,11 +6,11 @@
  </predicate>
  <predicate name="ATLink_ext" content_type_name="Link"
     predicate_type="extension">
-  <argument value="link,url,desktop"/>
+  <argument value="link,url"/>
  </predicate>
  <predicate name="ATEvent_ext" content_type_name="Event"
     predicate_type="extension">
-  <argument value="event,evt"/>
+  <argument value="event"/>
  </predicate>
  <predicate name="ATFavorite_ext" content_type_name="Favorite"
     predicate_type="extension">
@@ -18,20 +18,11 @@
  </predicate>
  <predicate name="ATDocument_ext" content_type_name="Document"
     predicate_type="extension">
-  <argument value="txt,stx,rst,rest,py,htm,html,xml"/>
+  <argument value="txt,stx,rst,rest,py"/>
  </predicate>
  <predicate name="ATImage_ext" content_type_name="Image"
     predicate_type="extension">
-  <argument value="jpg,jpeg,png,gif,ico,bmp"/>
- </predicate>
- <predicate name="calendar_mime" content_type_name="Folder"
-    predicate_type="major_minor">
-  <argument value="text"/>
-  <argument value="calendar"/>
- </predicate>
- <predicate name="calendar_ext" content_type_name="Folder"
-    predicate_type="extension">
-  <argument value="ics,vcs"/>
+  <argument value="jpg,jpeg,png,gif"/>
  </predicate>
  <predicate name="image" content_type_name="Image"
     predicate_type="major_minor">
@@ -43,34 +34,15 @@
   <argument value="application"/>
   <argument value="xhtml+xml"/>
  </predicate>
- <predicate name="application_xml" content_type_name="Document"
-    predicate_type="major_minor">
-  <argument value="application"/>
-  <argument value="xml"/>
- </predicate>
  <predicate name="message_rfc822" content_type_name="Document"
     predicate_type="major_minor">
   <argument value="message"/>
   <argument value="rfc822"/>
  </predicate>
- <predicate name="url" content_type_name="Link" predicate_type="major_minor">
-  <argument value="text"/>
-  <argument value="x-url"/>
- </predicate>
- <predicate name="text_unknown" content_type_name="File"
-    predicate_type="major_minor">
-  <argument value="text"/>
-  <argument value="x-unknown-content-type"/>
- </predicate>
  <predicate name="text" content_type_name="Document"
     predicate_type="major_minor">
   <argument value="text"/>
   <argument value=""/>
- </predicate>
- <predicate name="desktop" content_type_name="Link"
-    predicate_type="major_minor">
-  <argument value="application"/>
-  <argument value="x-desktop"/>
  </predicate>
  <predicate name="application" content_type_name="File"
     predicate_type="major_minor">
@@ -86,9 +58,5 @@
     predicate_type="major_minor">
   <argument value="video"/>
   <argument value=""/>
- </predicate>
- <predicate name="catch-all" content_type_name="File"
-    predicate_type="name_regex">
-  <argument value=".*"/>
  </predicate>
 </object>

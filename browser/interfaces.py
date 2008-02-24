@@ -410,4 +410,3 @@ class IPlone(Interface):
 
     def cropText(text, length, ellipsis):
         """ Crop text on a word boundary """
-

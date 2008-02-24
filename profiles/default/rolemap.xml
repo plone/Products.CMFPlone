@@ -21,11 +21,6 @@
       <role name="Owner"/>
       <role name="Contributor"/>
     </permission>
-    <permission name="Add Folders" acquire="True">
-      <role name="Manager"/>
-      <role name="Owner"/>
-      <role name="Contributor"/>
-    </permission>
     <permission name="Add portal folders" acquire="True">
       <role name="Manager"/>
       <role name="Owner"/>
@@ -196,22 +191,6 @@
                 acquire="True">
         <role name="Editor" />
         <role name="Owner" />
-    </permission>
-    <permission name="WebDAV access"
-                acquire="True">
-        <role name="Reader" />
-        <role name="Editor" />
-        <role name="Contributor" />
-    </permission>
-    <permission name="WebDAV Lock items" acquire="True">
-      <role name="Manager"/>
-      <role name="Owner"/>
-      <role name="Contributor"/>
-    </permission>
-    <permission name="WebDAV Unlock items" acquire="True">
-      <role name="Manager"/>
-      <role name="Owner"/>
-      <role name="Contributor"/>
     </permission>
   </permissions>
 </rolemap>

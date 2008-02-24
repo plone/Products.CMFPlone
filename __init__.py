@@ -149,7 +149,6 @@ def initialize(context):
     import CalendarTool, ActionIconsTool, QuickInstallerTool
     import GroupDataTool, GroupsTool
     import TranslationServiceTool
-    import ContentTypeRegistry
 
     tools = ( MembershipTool.MembershipTool,
               MemberDataTool.MemberDataTool,
@@ -177,7 +176,6 @@ def initialize(context):
               GroupsTool.GroupsTool,
               GroupDataTool.GroupDataTool,
               TranslationServiceTool.TranslationServiceTool,
-              ContentTypeRegistry.DelegatingContentTypeRegistry,
             )
 
     from Products.CMFCore.utils import ContentInit
