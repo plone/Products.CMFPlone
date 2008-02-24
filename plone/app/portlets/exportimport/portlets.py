@@ -122,7 +122,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
                     list_element = doc.createElement('element')
                     list_element.appendChild(doc.createTextNode(str(e)))
             else:
-                child.appendChild(doc.createTextNode(str(value)))
+                child.appendChild(doc.createTextNode(unicode(value)))
             
         return child
         
