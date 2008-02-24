@@ -211,7 +211,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if msgs:
                     for msg in msgs:
                         # if string make list
-                        if type(msg) == type(''):
+                        if isinstance(msg, basestring):
                             msg = [msg,]
                         # if no status, add one
                         if len(msg) == 1:

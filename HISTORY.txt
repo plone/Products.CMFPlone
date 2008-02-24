@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
+    - Teach the migration tool to correctly handle unicode log messages.
+      [wichert]
+
     - Add a new dependencies GenericSetup profile to CMFPlone which is
       loaded at the end of Plone site creation. This allows use of
       GenericSetup profile dependencies for Plone itself. 
