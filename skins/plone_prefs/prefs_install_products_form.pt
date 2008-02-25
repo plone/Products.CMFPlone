@@ -11,7 +11,10 @@
 <body>
 
 
-<div metal:fill-slot="prefs_configlet_main" i18n:domain="plone" tal:define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
+<div metal:fill-slot="prefs_configlet_main" i18n:domain="plone"
+        tal:define="QI python:context.portal_url.getPortalObject().portal_quickinstaller;
+                    IH QI/getInstanceHome;
+                    usingBO python:(IH.find('/parts/') &gt; 0) or (IH.find('\\parts\\') &gt; 0)">
     
     <h1 class="documentFirstHeading"
         i18n:translate="heading_addremove_products">Add/Remove Products</h1>
@@ -29,10 +32,19 @@
     in the lists below. 
     </p>
 
-    <p class="discreet" i18n:translate="description_product_location">
+    <p class="discreet" i18n:translate="description_product_location" tal:condition="not:usingBO">
       To make new products show up here, put them in the directory
-      <strong i18n:name="location" tal:content="string:${QI/getInstanceHome}/Products">[$INSTANCE_HOME/Products]</strong>
+      <strong i18n:name="location" tal:content="string:${IH}/Products">[$INSTANCE_HOME/Products]</strong>
       on the file system, and restart the server process.
+    </p>
+
+    <p class="discreet" i18n:translate="description_buildout_instructions" tal:condition="usingBO">
+      To make new products show up here,
+      add them to your buildout configuration,
+      run buildout, and restart the server process.
+      For detailed instructions see
+      <a href="http://plone.org/documentation/tutorial/buildout/installing-a-third-party-product">
+        Installing a third party product</a>.
     </p>
 
     <form style="float: left;"
