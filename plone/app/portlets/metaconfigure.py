@@ -1,4 +1,4 @@
-from zope.interface import Interface
+from zope.interface import Interface, alsoProvides
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.publisher.interfaces.browser import IBrowserView
@@ -6,9 +6,14 @@ from zope.publisher.interfaces.browser import IBrowserView
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 
+from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.browser.interfaces import IPortletAdding
 
 from zope.component.zcml import adapter
+from zope.component.zcml import utility
+
+from zope.component.interfaces import IFactory
+from zope.component.factory import Factory
 
 from Products.Five.metaclass import makeClass
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -27,7 +32,27 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     using formlib and deriving from base.AddForm and an editview (optional)
     using formlib and deriving from base.EditForm, can use this directive
     to avoid having to regiter each of those components individually.
+    
+    In addition, we register the portlet interface using IPortletTypeInterface
+    and an IFactory utility, in order to help the GenericSetup handler and
+    other generic code instantiate portlets.
     """
+
+    # Register the portlet interface as named utility so that we can find it
+    # again (in the GS handler)
+    
+    alsoProvides(interface, IPortletTypeInterface)
+    utility(_context, 
+            provides=IPortletTypeInterface,
+            name=name,
+            component=interface)
+            
+    # Register a factory
+    
+    utility(_context,
+            provides=IFactory,
+            name=name,
+            component=Factory(assignment))
 
     # Set permissions on the assignment class
     

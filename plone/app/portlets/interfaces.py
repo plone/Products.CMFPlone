@@ -5,6 +5,12 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 
+class IPortletTypeInterface(Interface):
+    """IInterface for portlet type interfaces. The portlet ZCML directive
+    will register the portlet type interface as a utility providing this
+    interface, with a name corresponding to the addview of the portlet.
+    """
+
 class IUserPortletAssignmentMapping(IPortletAssignmentMapping):
     """A portlet assignment mapping that's user-specific
     """
