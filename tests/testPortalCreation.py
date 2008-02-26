@@ -797,17 +797,18 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
               ]
             addable_types.sort()
             self.assertEqual([
-              'portlets.Calendar',
-              'portlets.Classic',
-              'portlets.Events',
-              'portlets.Login',
-              'portlets.Navigation',
-              'portlets.News',
-              'portlets.Recent',
-              'portlets.Review',
-              'portlets.Search',
-              'portlets.rss'
-              ], addable_types)
+                'plone.portlet.collection.Collection', 
+                'plone.portlet.static.Static', 
+                'portlets.Calendar', 
+                'portlets.Classic', 
+                'portlets.Events', 
+                'portlets.Login', 
+                'portlets.Navigation', 
+                'portlets.News',
+                'portlets.Recent', 
+                'portlets.Review', 
+                'portlets.Search', 
+                'portlets.rss'], addable_types)
     
     def testAddablePortletsInDashboard(self):
         for name in ('plone.dashboard1', 'plone.dashboard2',
@@ -818,6 +819,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
               ]
             addable_types.sort()
             self.assertEqual([
+              'plone.portlet.collection.Collection', 
+              'plone.portlet.static.Static', 
               'portlets.Calendar',
               'portlets.Classic',
               'portlets.Events',
