@@ -38,6 +38,10 @@
   <!-- all AT text fields and object wikified -->
   <!-- include package="wicked.plone" file="all-at.zcml" / -->
   
+  <!-- extra portlets -->
+  <include package="plone.portlet.static" />
+  <include package="plone.portlet.collection" />
+  
   <include package=".browser" />
   <include package=".exportimport" />
   <include package=".migrations" />

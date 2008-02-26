@@ -16,9 +16,10 @@ def three0_alpha1(portal):
     loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0.6-3.1alpha1')
 
     addBrowserLayer(portal, out)
+    addCollectionAndStaticPortlets(portal, out)
     migratePortletTypeRegistrations(portal, out)
     removeDoubleGenericSetupSteps(portal, out)
-
+    
     return out
 
 
@@ -28,6 +29,14 @@ def addBrowserLayer(portal, out):
         qi.installProduct("plone.browserlayer", locked=True)
         out.append("Installed plone.browserlayer")
 
+def addCollectionAndStaticPortlets(portal, out):
+    qi=getToolByName(portal, "portal_quickinstaller")
+    if not qi.isProductInstalled("plone.portlet.static"):
+        qi.installProduct("plone.portlet.static", locked=True)
+        out.append("Installed plone.portlet.static")
+    if not qi.isProductInstalled("plone.portlet.collection"):
+        qi.installProduct("plone.portlet.collection", locked=True)
+        out.append("Installed plone.portlet.collection")
 
 def migratePortletTypeRegistrations(portal, out):
     for name, portletType in getUtilitiesFor(IPortletType):

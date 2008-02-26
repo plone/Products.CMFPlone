@@ -4,11 +4,15 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
+    - PLIP184: Install plone.portlet.static and plone.portlet.collection
+      [optilude]
+
     - prefs_install_products_form.pt directed users to add new add-on products
       to $INSTANCE_HOME/Products. Bad advice for buildout users. Now, it
       will look for "/parts/" (or "\parts\") in path and give buildout
       instructions if found.
       [smcmahon]
+
 
     - Remove double registered GenericSetup steps from the persistent registry.
       [wichert]

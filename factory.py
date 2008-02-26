@@ -31,6 +31,8 @@ class HiddenProfiles(object):
                 u'Products.PlonePAS:PlonePAS',
                 u'plone.browserlayer:default',
                 u'plone.app.protect:default',
+                u'plone.portlet.static:default',
+                u'plone.portlet.collection:default',
                 u'kupu:default',
                 u'Products.CMFPlone:dependencies',
                 ]

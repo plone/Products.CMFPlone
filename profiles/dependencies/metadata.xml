@@ -3,5 +3,7 @@
   <version>3.1</version>
   <dependencies>
     <dependency>profile-plone.browserlayer:default</dependency>
+    <dependency>profile-plone.portlet.static:default</dependency>
+    <dependency>profile-plone.portlet.collection:default</dependency>
   </dependencies>
 </metadata>
