@@ -28,7 +28,7 @@
                                                  title python: name;
                                                  class python: selected and 'currentItem' or '';" />
                         </tal:flag>
-                        <span tal:replace="lang/native">Native language name</span>
+                        <span tal:replace="lang/native|lang/name">Native language name</span>
                     </a>
 
                 </span>

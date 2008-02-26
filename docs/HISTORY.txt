@@ -5,11 +5,6 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1 - UNRELEASED
 
-    - Do not link to news_listing from the news portlet: that template has
-      been removed from Plone. This fixes
-      http://dev.plone.org/plone/ticket/7872
-      [wichert]
-
     - PLIP203: Add the ability to export and import portlet assignments and
       blacklisting.
       [optilude]
@@ -24,6 +19,19 @@ plone.app.portlets 1.1 - UNRELEASED
     - PLIP207: Allow custom portlet managers, i.e., allow specifying an
       alternative portlet manager class through GenericSetup.
       [sirgarr]
+
+
+plone.app.portlets 1.0.7 (UNRELEASED)
+
+    - Make the language portlet handle languages without a native name
+      correctly.
+      [wichert]
+
+    - Do not link to news_listing from the news portlet: that template has
+      been removed from Plone. This fixes
+      http://dev.plone.org/plone/ticket/7872
+      [wichert]
+
 
 plone.app.portlets 1.0.6
 

@@ -25,7 +25,10 @@ class Renderer(base.Renderer):
         base.Renderer.__init__(self, context, request, view, manager, data)
         self.selector=LanguageSelector(context, request, None, None)
         self.languages=self.selector.languages()
-        self.languages.sort(key=operator.itemgetter("native"))
+
+        def key(info):
+            return info.get("native", info["name"])
+        self.languages.sort(key=key)
         portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
         self.portal_url = portal_state.portal_url()
 
