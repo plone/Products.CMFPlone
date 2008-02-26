@@ -38,6 +38,10 @@ from plone.app.portlets import portlets
 
 from Products.CMFPlone.interfaces import IMigrationTool
 
+from Products.PlonePAS.plugins.local_role import LocalRolesManager
+from borg.localrole.utils import setup_localrole_plugin
+
+
 class HiddenProducts(object):
     implements(INonInstallable)
 
@@ -477,6 +481,7 @@ def importVarious(context):
     gen.installProducts(site)
     gen.addCacheHandlers(site)
     gen.addCacheForResourceRegistry(site)
+    replace_local_role_manager(site, [])
 
 def importFinalSteps(context):
     """
@@ -519,3 +524,18 @@ def updateWorkflowRoleMappings(context):
     site = context.getSite()
     portal_workflow = getToolByName(site, 'portal_workflow')
     portal_workflow.updateRoleMappings()
+
+def replace_local_role_manager(portal, out):
+    """Installs the borg local role manager in place of the standard one from
+    PlonePAS"""
+    uf = getToolByName(portal, 'acl_users', None)
+    # Make sure we have a PAS user folder
+    if uf is not None and hasattr(aq_base(uf), 'plugins'):
+        # Remove the original plugin if it's there
+        if 'local_roles' in uf.objectIds():
+            orig_lr = getattr(uf, 'local_roles')
+            if isinstance(orig_lr, LocalRolesManager):
+                uf.plugins.removePluginById('local_roles')
+                out.append("Deactivated original 'local_roles' plugin")
+        # Install the borg.localrole plugin if it's not already there
+        out.append(setup_localrole_plugin(portal))

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
+    - PLIP208: Use borg.localrole for local role assignment via adaptation.
+      [alecm]
+
     - PLIP203: Move portlet assignment setup on site creation to use the new
       GenericSetup syntax.
 

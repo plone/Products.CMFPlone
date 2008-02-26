@@ -8,6 +8,8 @@ from Products.CMFPlone.migrations.migration_util import loadMigrationProfile
 from Products.GenericSetup.browser.manage import ImportStepsView
 from Products.GenericSetup.browser.manage import ExportStepsView
 
+from Products.CMFPlone.setuphandlers import replace_local_role_manager
+
 def three0_alpha1(portal):
     """3.0.6 -> 3.1alpha1
     """
@@ -20,6 +22,7 @@ def three0_alpha1(portal):
     migratePortletTypeRegistrations(portal, out)
     removeDoubleGenericSetupSteps(portal, out)
     reinstallCMFPlacefulWorkflow(portal, out)
+    replace_local_role_manager(portal, out)
 
     return out
 

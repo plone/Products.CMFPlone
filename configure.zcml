@@ -41,7 +41,12 @@
   <!-- extra portlets -->
   <include package="plone.portlet.static" />
   <include package="plone.portlet.collection" />
-  
+
+  <!-- local role PAS plugin -->
+  <include package="borg.localrole" />
+  <include package="borg.localrole"
+           file="default.zcml" />
+
   <include package=".browser" />
   <include package=".exportimport" />
   <include package=".migrations" />

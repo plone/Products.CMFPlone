@@ -182,6 +182,7 @@ from Products.CMFPlone.migrations.v3_0.rcs import addIntelligentText
 from Products.CMFPlone.migrations.v3_0.final_three0x import installNewModifiers
 
 from Products.CMFPlone.migrations.v3_1.alphas import reinstallCMFPlacefulWorkflow
+from Products.CMFPlone.setuphandlers import replace_local_role_manager
 
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 
@@ -206,6 +207,8 @@ from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.constants import CONTEXT_CATEGORY as CONTEXT_PORTLETS
 
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from Products.PlonePAS.interfaces.plugins import ILocalRolesPlugin
 
 class BogusMailHost(SimpleItem):
     meta_type = 'Bad Mailer'
@@ -3157,6 +3160,61 @@ class TestMigrations_v3_1(MigrationTest):
     def testReinstallCMFPlacefulWorkflowNoTool(self):
         self.portal._delObject('portal_quickinstaller')
         reinstallCMFPlacefulWorkflow(self.portal, [])
+
+    def testReplaceLocalRoleManager(self):
+        # first we replace the local role manager with the one from PlonePAS
+        uf = self.portal.acl_users
+        # deactivate and remove the borg plugin
+        uf.plugins.removePluginById('borg_localroles')
+        uf.manage_delObjects(['borg_localroles'])
+        # activate the standard plugin
+        uf.plugins.activatePlugin(ILocalRolesPlugin, 'local_roles')
+        # Bring things back to normal
+        replace_local_role_manager(self.portal, [])
+        plugins = uf.plugins.listPlugins(ILocalRolesPlugin)
+        self.failUnlessEqual(len(plugins), 1)
+        self.failUnlessEqual(plugins[0][0], 'borg_localroles')
+
+    def testReplaceLocalRoleManagerTwice(self):
+        # first we replace the local role manager with the one from PlonePAS
+        uf = self.portal.acl_users
+        # deactivate and remove the borg plugin
+        uf.plugins.removePluginById('borg_localroles')
+        uf.manage_delObjects(['borg_localroles'])
+        # activate the standard plugin
+        uf.plugins.activatePlugin(ILocalRolesPlugin, 'local_roles')
+        # run the migration twice
+        replace_local_role_manager(self.portal, [])
+        replace_local_role_manager(self.portal, [])
+        plugins = uf.plugins.listPlugins(ILocalRolesPlugin)
+        self.failUnlessEqual(len(plugins), 1)
+        self.failUnlessEqual(plugins[0][0], 'borg_localroles')
+
+    def testReplaceLocalRoleManagerNoPlugin(self):
+        # first we replace the local role manager with the one from PlonePAS
+        uf = self.portal.acl_users
+        # deactivate and remove the borg plugin
+        uf.plugins.removePluginById('borg_localroles')
+        uf.manage_delObjects(['borg_localroles'])
+        # delete the standard plugin
+        uf.manage_delObjects(['local_roles'])
+        # Run the migration, which shouldn't fail even if the expected
+        # plugin is missing
+        replace_local_role_manager(self.portal, [])
+        plugins = uf.plugins.listPlugins(ILocalRolesPlugin)
+        self.failUnlessEqual(len(plugins), 1)
+        self.failUnlessEqual(plugins[0][0], 'borg_localroles')
+
+    def testReplaceLocalRoleManagerNoPAS(self):
+        uf = self.portal.acl_users
+        # delete the plugin registry
+        uf._delObject('plugins')
+        replace_local_role_manager(self.portal, [])
+
+    def testReplaceLocalRoleManagerNoUF(self):
+        # Delete the user folder
+        uf = self.portal._delObject('acl_users')
+        replace_local_role_manager(self.portal, [])
 
 
 def test_suite():
