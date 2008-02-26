@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
+    - PLIP202: Added formlib inline validation and editing support.
+      [optilude]
+
     - PLIP184: Install plone.portlet.static and plone.portlet.collection
       [optilude]
 

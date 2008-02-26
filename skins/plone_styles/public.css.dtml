@@ -36,7 +36,9 @@ h1, h2 {
 }
 /* Compensate for the inline editing hover, since we have a 1px border */
 body.kssActive h2.inlineEditable:hover,
-body.kssActive h1.inlineEditable:hover {
+body.kssActive h1.inlineEditable:hover,
+body.kssActive h2.formlibInlineEditable:hover,
+body.kssActive h1.formlibInlineEditable:hover {
     padding-bottom: 1px;
 }
 

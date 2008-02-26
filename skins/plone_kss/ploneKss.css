@@ -10,12 +10,15 @@
     margin-left: -10px;
 }
 
+
+.formlibInlineEditable,
 .inlineEditable {
     padding: 1px;
     display: block;
 }
 
-body.kssActive .inlineEditable:hover {
+body.kssActive .inlineEditable:hover,
+body.kssActive .formlibInlineEditable:hover {
     padding: 0;
     border: 1px solid #ddd;
     border-color: #666 #ddd #ddd #666;
@@ -23,11 +26,18 @@ body.kssActive .inlineEditable:hover {
     background: White url(input_background.gif) repeat-x;
 }
 
-body.kssActive .inlineEditable a:hover {
+body.kssActive .inlineEditable a:hover,
+body.kssActive .formlibInlineEditable a:hover {
     cursor: pointer;
 }
 
-
+body.kssActive .formlibInlineForm:hover,
+body.kssActive .formlibInlineForm a:hover {
+    padding 1px;
+    border: none;
+    cursor: normal;
+    background none;
+}
 
 .inlineForm .formHelp,
 .inlineForm .fieldRequired,
