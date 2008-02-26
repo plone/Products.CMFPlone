@@ -19,7 +19,8 @@ def three0_alpha1(portal):
     addCollectionAndStaticPortlets(portal, out)
     migratePortletTypeRegistrations(portal, out)
     removeDoubleGenericSetupSteps(portal, out)
-    
+    reinstallCMFPlacefulWorkflow(portal, out)
+
     return out
 
 
@@ -71,3 +72,10 @@ def removeDoubleGenericSetupSteps(portal, out):
         out.append("Removed doubly registered GenericSetup export steps: %s" %
                 " ".join(steps))
 
+def reinstallCMFPlacefulWorkflow(portal, out):
+    qi = getToolByName(portal, 'portal_quickinstaller', None)
+    if qi is not None:
+        installed = qi.isProductInstalled('CMFPlacefulWorkflow')
+        if installed:
+            qi.reinstallProducts(['CMFPlacefulWorkflow'])
+            out.append('Reinstalled CMFPlacefulWorkflow')

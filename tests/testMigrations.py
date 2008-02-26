@@ -48,6 +48,7 @@ from Products.CMFEditions.interfaces import IStorageTool
 from Products.CMFFormController.interfaces import IFormControllerTool
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
 from Products.CMFPlacefulWorkflow.global_symbols import placeful_prefs_configlet
+from Products.CMFPlacefulWorkflow.interfaces import IPlacefulMarker
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.interfaces import IFactoryTool
 from Products.CMFPlone.interfaces import IInterfaceTool
@@ -180,6 +181,8 @@ from Products.CMFPlone.migrations.v3_0.rcs import addIntelligentText
 
 from Products.CMFPlone.migrations.v3_0.final_three0x import installNewModifiers
 
+from Products.CMFPlone.migrations.v3_1.alphas import reinstallCMFPlacefulWorkflow
+
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
 
 from zope.app.cache.interfaces.ram import IRAMCache
@@ -188,6 +191,7 @@ from zope.app.component.interfaces import ISite
 from zope.component import getGlobalSiteManager
 from zope.component import getSiteManager
 from zope.component import getUtility, getMultiAdapter, queryUtility
+from zope.interface import noLongerProvides
 
 from plone.app.i18n.locales.interfaces import IContentLanguages
 from plone.app.i18n.locales.interfaces import ICountries
@@ -3131,6 +3135,29 @@ class TestMigrations_v3_0(MigrationTest):
         self.portal._delObject('portal_modifier')
         installNewModifiers(self.portal, [])
 
+class TestMigrations_v3_1(MigrationTest):
+
+    def afterSetUp(self):
+        self.qi = self.portal.portal_quickinstaller
+        self.wf = self.portal.portal_workflow
+
+    def testReinstallCMFPlacefulWorkflow(self):
+        # first the product needs to be installed
+        self.qi.installProduct('CMFPlacefulWorkflow')
+        # We remove the new marker, to ensure it's added on reinstall
+        if IPlacefulMarker.providedBy(self.wf):
+            noLongerProvides(self.wf, IPlacefulMarker)
+        reinstallCMFPlacefulWorkflow(self.portal, [])
+        self.failUnless(IPlacefulMarker.providedBy(self.wf))
+
+    def testReinstallCMFPlacefulWorkflowDoesNotInstall(self):
+        reinstallCMFPlacefulWorkflow(self.portal, [])
+        self.failIf(self.qi.isProductInstalled('CMFPlacefulWorkflow'))
+
+    def testReinstallCMFPlacefulWorkflowNoTool(self):
+        self.portal._delObject('portal_quickinstaller')
+        reinstallCMFPlacefulWorkflow(self.portal, [])
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -3144,4 +3171,5 @@ def test_suite():
     suite.addTest(makeSuite(TestMigrations_v2_5_4))
     suite.addTest(makeSuite(TestMigrations_v3_0))
     suite.addTest(makeSuite(TestMigrations_v3_0_Actions))
+    suite.addTest(makeSuite(TestMigrations_v3_1))
     return suite
