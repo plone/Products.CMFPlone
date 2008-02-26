@@ -133,12 +133,6 @@
   <dependency step="typeinfo"/>
     Plone specific settings
  </import-step>
- <import-step id="portlets" version="20060820-01"
-               handler="plone.app.portlets.exportimport.portlets.importPortlets"
-               title="Portlet Managers">
-    <dependency step="componentregistry"/>
-    Import local portlet manager configuration.
- </import-step>
  <import-step id="properties" version="20041215-01"
               handler="Products.CMFCore.exportimport.properties.importSiteProperties"
               title="Site Properties">

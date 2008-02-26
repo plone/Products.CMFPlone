@@ -368,11 +368,6 @@ class PloneGenerator:
             if wftool.getInfoFor(members, 'review_state') != 'published':
                 wftool.doActionFor(members, 'publish')
             
-            # Disable portlets here
-            rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=p)
-            portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
-            portletAssignments.setBlacklistStatus(CONTEXT_PORTLETS, True)
-            
             # add index_html to Members area
             if 'index_html' not in members.objectIds():
                 addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
@@ -447,27 +442,6 @@ class PloneGenerator:
                 setattr(aq_get(portal, oid), 'title', title)
         out.append('Assigned titles to portal tools.')
 
-    def addDefaultPortlets(self, portal):
-        leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn', context=portal)
-        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn', context=portal)
-        
-        left = getMultiAdapter((portal, leftColumn,), IPortletAssignmentMapping, context=portal)
-        right = getMultiAdapter((portal, rightColumn,), IPortletAssignmentMapping, context=portal)
-        
-        if u'navigation' not in left:
-            left[u'navigation'] = portlets.navigation.Assignment()
-        if u'login' not in left:
-            left[u'login'] = portlets.login.Assignment()
-        
-        if u'review' not in right:
-            right[u'review'] = portlets.review.Assignment(count=5)
-        if u'news' not in right:
-            right[u'news'] = portlets.news.Assignment(count=5)
-        if u'events' not in right:
-            right[u'events'] = portlets.events.Assignment(count=5)
-        if u'calendar' not in right:
-            right[u'calendar'] = portlets.calendar.Assignment()
-
 def importSite(context):
     """
     Import site settings.
@@ -516,7 +490,6 @@ def importFinalSteps(context):
     pprop = getToolByName(site, 'portal_properties')
     pmembership = getToolByName(site, 'portal_membership')
     gen = PloneGenerator()
-    gen.addDefaultPortlets(site)
     gen.performMigrationActions(site)
     gen.enableSyndication(site, out)
     gen.assignTitles(site, out)

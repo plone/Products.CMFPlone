@@ -4,7 +4,10 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
-    - PLIP202: Added formlib inline validation and editing support.
+    - PLIP203: Move portlet assignment setup on site creation to use the new
+      GenericSetup syntax.
+
+    - PLIP202: Add formlib inline validation and editing support.
       [optilude]
 
     - PLIP184: Install plone.portlet.static and plone.portlet.collection
