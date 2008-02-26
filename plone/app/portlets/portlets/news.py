@@ -64,7 +64,7 @@ class Renderer(base.Renderer):
         if 'news' in portal.objectIds():
             return '%s/news' % portal_url
         else:
-            return '%s/news_listing' % portal_url
+            return None
 
     @memoize
     def _data(self):

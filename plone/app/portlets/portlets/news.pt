@@ -32,13 +32,16 @@
     </dd>
     </tal:newsitems>
 
-    <dd class="portletFooter">
+    <dd class="portletFooter"
+         tal:condition="view/all_news_link">
         <a href=""
            tal:attributes="href view/all_news_link"
            i18n:translate="box_more_news_link">
           More news&hellip;
         </a>
+    </dd>
+    <tal:block condition="not:view/all_news_link">
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </dd>
+    </tal:block>
 </dl>

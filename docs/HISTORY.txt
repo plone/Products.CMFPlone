@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1 - UNRELEASED
 
+    - Do not link to news_listing from the news portlet: that template has
+      been removed from Plone.
+      [wichert]
+
     - PLIP203: Add the ability to export and import portlet assignments and
       blacklisting.
       [optilude]
