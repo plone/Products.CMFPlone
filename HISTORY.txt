@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
+    - PLIP217: Use adaptation to determine workflow chain.
+      [alecm]
+
     - PLIP208: Use borg.localrole for local role assignment via adaptation.
       [alecm]
 
