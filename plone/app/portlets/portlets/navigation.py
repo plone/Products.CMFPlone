@@ -54,7 +54,8 @@ class INavigationPortlet(IPortletDataProvider):
                                     "to act as the root of the navigation tree. "
                                     "Leave blank to use the Plone site root."),
             required=False,
-            source=SearchableTextSourceBinder({'is_folderish' : True}))
+            source=SearchableTextSourceBinder({'is_folderish' : True},
+                                              default_query='path:'))
                             
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
