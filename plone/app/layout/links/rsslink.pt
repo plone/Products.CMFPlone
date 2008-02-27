@@ -1,0 +1,5 @@
+<link rel="alternate" href="" title="RSS 1.0"
+      type="application/rss+xml"
+      tal:condition="view/allowed"
+      tal:attributes="href view/url"
+      />

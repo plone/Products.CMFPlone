@@ -62,12 +62,15 @@ class NavigationViewlet(ViewletBase):
         return xhtml_compress(self._template())
 
 class RSSViewlet(ViewletBase):
-    def render(self):
+    def update(self):
+        super(RSSViewlet, self).update()
         syntool = getToolByName(self.context, 'portal_syndication')
         if syntool.isSyndicationAllowed(self.context):
+            self.allowed = True
             context_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_context_state')
-            url = '%s/RSS' % context_state.object_url()
-            return '''<link rel="alternate" href="%s" title="RSS 1.0"
-                            type="application/rss+xml" />''' % url
-        return ''
+            self.url = '%s/RSS' % context_state.object_url()
+        else:
+            self.allowed = False
+
+    render = ViewPageTemplateFile('rsslink.pt')
