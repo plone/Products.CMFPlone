@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
+    - PLIP213: Moved RSS link macro to a viewlet in plone.app.layout.links.
+      [fschulze]
+
     - PLIP217: Use adaptation to determine workflow chain.
       [alecm]
 
