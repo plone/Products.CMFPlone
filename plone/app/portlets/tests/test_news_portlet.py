@@ -102,7 +102,7 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(assignment=news.Assignment(count=5))
         self.failUnless(r.all_news_link().endswith('/news'))
         self.portal._delObject('news')
-        self.failUnless(r.all_news_link().endswith('/news_listing'))
+        self.assertEqual(r.all_news_link(), None)
 
 def test_suite():
     from unittest import TestSuite, makeSuite
