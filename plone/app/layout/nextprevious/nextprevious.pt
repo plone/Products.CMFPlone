@@ -1,6 +1,7 @@
 <tal:nextPrevious define="enabled view/enabled|nothing;
                           isViewTemplate view/isViewTemplate | nothing"
-                  condition="python:enabled and isViewTemplate">
+                  condition="python:enabled and isViewTemplate"
+                  i18n:domain="plone">
 
     <tal:block define="portal_url view/portal_url;">
 
@@ -20,7 +21,9 @@
 
                 <span i18n:translate="label_previous_item"
                       tal:omit-tag="">
-                Previous: </span> <span tal:replace="previous/title" />
+                    Previous:
+                    <span i18n:name="itemtitle" tal:replace="previous/title" />
+                </span>
             </a>
           </tal:previous>
 
@@ -32,13 +35,14 @@
                tal:attributes="href next/url">
                <span i18n:translate="label_next_item"
                      tal:omit-tag="">
-                 Next: </span> <span tal:replace="next/title" />
+                 Next:
+                 <span i18n:name="itemtitle" tal:replace="next/title" />
+               </span>
 
                <img src="" alt="Right arrow" 
                     i18n:attributes="alt label_next_item_arrow"
                     tal:attributes="src string:$portal_url/arrowRight.gif" />
             </a>
-
 
           &nbsp;
 

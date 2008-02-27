@@ -16,9 +16,13 @@ plone.app.layout - 1.1 UNRELEASED
 
 plone.app.layout - 1.0.6 UNRELEASED
 
+    - Added i18n markup to nextprevious.pt.
+      This closes http://dev.plone.org/plone/ticket/7537.
+      [hannosch]
+
     - Catch KeyError for presentation or tableContents when document
       has an out-of-date schema.  Can happen when migrating from Plone
-      2.5 to 3.0.  Fall back to False for those attributes then.
+      2.5 to 3.0. Fall back to False for those attributes then.
       [maurits]
 
 plone.app.layout - 1.0.5 Released January 3rd, 2008
