@@ -3,7 +3,7 @@ Sitemap testing
 
 First some initial setup code:
 
-    >>> self.loginAsManager()
+    >>> self.loginAsPortalOwner()
 
 There is a site property which controls accesso to the sitemap. This defaults
 to off, since generating the sitemap is an expensive operation which can
@@ -49,7 +49,7 @@ Get the contents and decode them
 Not sure how to test the XML now as it also contains dates but for now
 we will just search for some URLs and tags.
 
-    >>> xml.find('<loc>http://nohost/plone/Members/test_user_1_</loc>')!=-1
-    True
     >>> xml.find('<loc>http://nohost/plone/front-page</loc>')!=-1
+    True
+    >>> xml.find('<loc>http://nohost/plone/news</loc>')!=-1
     True

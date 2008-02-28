@@ -29,16 +29,6 @@ class SiteMapTestCase(FunctionalTestCase):
         self.ptool = self.getToolByName('portal_properties')
         self.site_props = self.ptool.site_properties
 
-    def loginAsManager(self):
-        """points the browser to the login screen and logs in as user root
-        with Manager role."""
-
-        self.browser.open('http://nohost/plone/')
-        self.browser.getLink('Log in').click()
-        self.browser.getControl('Login Name').value = 'root'
-        self.browser.getControl('Password').value = 'secret'
-        self.browser.getControl('Log in').click()
-
     def getToolByName(self, name):
         """docstring for getToolByName"""
         return getToolByName(self.portal, name)
