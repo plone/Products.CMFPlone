@@ -75,6 +75,14 @@
         insert-before="test.portlet1"
         />
         
+    <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test"
+        name="test.portlet7"
+        remove="" />
+        
     <blacklist
         manager="test.testcolumn"
         category="context"

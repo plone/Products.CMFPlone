@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1 - UNRELEASED
 
+    - Made it possible to remove single portlet assignments by using the
+      "remove" attribute.
+      [fschulze]
+
     - PLIP203: Add the ability to export and import portlet assignments and
       blacklisting.
       [optilude]

@@ -219,6 +219,32 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(None, assignment.test_bool)
         self.assertEquals(None, assignment.test_tuple)
         
+    def testAssignmentRemoval(self):
+        portal_setup = self.portal.portal_setup
+        portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
+
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+
+        # initally there should be no portlet7
+        self.assertEqual(mapping.get('test.portlet7', None), None)
+
+        # now we add one
+        portlet_factory = getUtility(IFactory, name='portlets.test.Test')
+        assignment = portlet_factory()
+        mapping['test.portlet7'] = assignment
+
+        # make sure it's there
+        self.assertNotEqual(mapping.get('test.portlet7', None), None)
+
+        # wait a bit or we get duplicate ids on import
+        time.sleep(1)
+        # run the profile
+        portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
+
+        # and should have got rid of it again
+        self.assertEqual(mapping.get('test.portlet7', None), None)
+
     def testBlacklisting(self):
         news = self.portal.news
         manager = getUtility(IPortletManager, name=u"test.testcolumn")

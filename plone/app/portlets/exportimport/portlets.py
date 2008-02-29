@@ -359,8 +359,13 @@ class PortletsXMLAdapter(XMLAdapterBase):
         name = node.getAttribute('name')
         if name:
             assignment = mapping.get(name, None)
-        
-        if assignment is None:                    
+
+        if node.hasAttribute('remove'):
+            if assignment is not None:
+                del mapping[name]
+            return
+
+        if assignment is None:
             portlet_factory = getUtility(IFactory, name=type_)
             assignment = portlet_factory()
             
