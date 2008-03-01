@@ -197,7 +197,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
     # 
 
     def _purgePortlets(self):
-        """Unregister all portlet managers and portlet types
+        """Unregister all portlet managers and portlet types, and remove
+        portlets assigned to the site root
         """
         
         # Purge portlet types
