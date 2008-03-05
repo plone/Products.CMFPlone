@@ -28,7 +28,7 @@ jq(function() {
         }
         while (stack.length > level) stack.pop();
         
-        jq(this).before(jq('<a>').attr('name', 'section-' + i));
+        jq(this).before(jq('<a name="section-' + i + '" />'));
 
         jq('<li>').append(
             jq('<a>').text(jq(this).text())
