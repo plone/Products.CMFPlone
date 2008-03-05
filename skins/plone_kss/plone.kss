@@ -62,6 +62,7 @@ how to handle them all in one rule.
 dl.kssPortletRefresh:timeout {
     evt-timeout-delay: 60000;
     action-server: refreshPortlet;
+    refreshPortlet-portlethash: kssAttr("portlethash", True);
     refreshPortlet-name: nodeAttr(id);
 }
 */
