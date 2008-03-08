@@ -1,4 +1,4 @@
-<tal:search define="portal_url view/portal_url">
+<tal:search define="portal_url view/site_url">
     <link rel="search"
           href=""
           title="Search this site"

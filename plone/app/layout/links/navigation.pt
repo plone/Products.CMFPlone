@@ -1,4 +1,4 @@
-<tal:navigation define="portal_url view/portal_url"
+<tal:navigation define="portal_url view/site_url"
                 i18n:domain="plone">
     <link rel="home"
           href=""

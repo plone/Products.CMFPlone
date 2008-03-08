@@ -24,7 +24,7 @@ def render_cachekey(fun, self):
     # Include the name of the viewlet as the underlying cache key only
     # takes the module and function name into account, but not the class
     print >> key, self.__name__
-    print >> key, self.portal_url
+    print >> key, self.site_url
     print >> key, get_language(aq_inner(self.context), self.request)
 
     return key.getvalue()
