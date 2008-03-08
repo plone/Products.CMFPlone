@@ -114,7 +114,7 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
              permission=edit_permission)
              
 def portletRendererDirective(_context, portlet, class_=None, template=None,
-        for_=None, layer=None, view=None, manager=None):
+        for_=Interface, layer=IDefaultBrowserLayer, view=IBrowserView, manager=IPortletManager):
     """Register a custom/override portlet renderer
     """
     
