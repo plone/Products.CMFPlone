@@ -34,6 +34,10 @@ class Renderer(base.Renderer):
 
     def show(self):
         return self.selector.available() and len(self.languages)>1
+    
+    @property
+    def available(self):
+        return self.show()
 
     def showFlags(self):
         return self.selector.showFlags()

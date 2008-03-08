@@ -1,5 +1,4 @@
-<tal:block condition="view/show"
-           i18n:domain="plone">
+<tal:block i18n:domain="plone">
 
 <dl class="portlet portletLanguage">
     <dt class="portletHeader">

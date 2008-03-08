@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1 - UNRELEASED
     
+    - Made the language portlet's 'available' property work properly, avoiding
+      ugly blank columns.
+      [optilude]
+    
     - Made sure the manage portlets div is not shown to anonymous users.
       http://dev.plone.org/plone/ticket/7911.
       [optilude]
