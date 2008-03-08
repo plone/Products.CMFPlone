@@ -201,6 +201,16 @@ div.managedPortlet {
     margin: 0 0 0.5em 0.5em;
 }
 
+/* Static text portlet */
+.portletStaticText ul {
+    list-style-image: url(&dtml-portal_url;/bullet.gif);
+    list-style-type: square; 
+    margin: 0.5em 0 0 1.5em;
+}
+
+.portletStaticText ol {
+    margin: 0.5em 0 0 2em;
+}
 
 
 <dtml-comment>
