@@ -90,6 +90,7 @@
                               tal:condition="python:item_type == 'Link'">
                             <img tal:replace="structure item_icon/html_tag" />
                             <a href="#"
+                               class="link-plain"
                                tal:content="item_title_or_id"
                                tal:attributes="href item/getRemoteUrl;
                                                class string:${item_wf_state_class} link-plain">
