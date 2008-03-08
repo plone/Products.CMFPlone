@@ -1,7 +1,6 @@
-plone.app.layout Package Readme
-=========================
+Introduction
+============
 
-Overview
---------
+This package contains various visual components for Plone, such as viewlets
+and general views.
 
-Layout mechanisms for Plone

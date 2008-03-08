@@ -1,105 +1,117 @@
-Changelog for plone.app.layout
+Changelog
+=========
 
-    (name of developer listed in brackets)
+1.1 UNRELEASED
+--------------
+
+- Rename the portal_url instance variable to site_url in the ViewletBase
+  class. This prevents getToolByName(..., 'portal_url') from returning
+  the URL string instead of the portal_url tool, which can causes unexpected
+  and subtle breakage.
+  [wichert]
+
+- Added viewlet for RSS link.
+  [fschulze]
+
+- Added dependency on plone.app.viewletmanager.
+  [fschulze]
+
+- Make viewlet managers in head section order- and filterable.
+  [fschulze]
+
+1.0.6 UNRELEASED
+----------------
+
+- Added i18n markup to nextprevious.pt.
+  This closes http://dev.plone.org/plone/ticket/7537.
+  [hannosch]
+
+- Catch KeyError for presentation or tableContents when document
+  has an out-of-date schema.  Can happen when migrating from Plone
+  2.5 to 3.0. Fall back to False for those attributes then.
+  [maurits]
 
 
-plone.app.layout - 1.1 UNRELEASED
+1.0.5 Released January 3rd, 2008
+--------------------------------
 
-    - Rename the portal_url instance variable to site_url in the ViewletBase
-      class. This prevents getToolByName(..., 'portal_url') from returning
-      the URL string instead of the portal_url tool, which can causes unexpected
-      and subtle breakage.
-      [wichert]
+- Do not create an empty <ul> in the personal actions bar if there are
+  no items in it. This fixes an XHTML syntax error.
+  [wichert]
 
-    - Added viewlet for RSS link.
-      [fschulze]
 
-    - Added dependency on plone.app.viewletmanager.
-      [fschulze]
+1.0.4 Released December 6th, 2007
+---------------------------------
 
-    - Make viewlet managers in head section order- and filterable.
-      [fschulze]
+- Added i18n domain to comment.pt.
+  [martior]
 
-plone.app.layout - 1.0.6 UNRELEASED
+- Allow non ascii characters in webstats_js code. 
+  Fixes http://dev.plone.org/plone/ticket/7359
+  [naro]
 
-    - Added i18n markup to nextprevious.pt.
-      This closes http://dev.plone.org/plone/ticket/7537.
-      [hannosch]
+- Fixed workflow history viewlet to handle entries with
+  usernames that don't exist any more (deleted users) and 
+  also anonymous users.
+  This fixes http://dev.plone.org/plone/ticket/7250.
+  [rsantos]
 
-    - Catch KeyError for presentation or tableContents when document
-      has an out-of-date schema.  Can happen when migrating from Plone
-      2.5 to 3.0. Fall back to False for those attributes then.
-      [maurits]
 
-plone.app.layout - 1.0.5 Released January 3rd, 2008
+1.0.3 Released November 9, 2007
+--------------------------------
 
-    - Do not create an empty <ul> in the personal actions bar if there are
-      no items in it. This fixes an XHTML syntax error.
-      [wichert]
+- Made getIcon urls relative to portal root.
+  [tesdal]
 
-plone.app.layout - 1.0.4 Released December 6th, 2007
 
-    - Added i18n domain to comment.pt.
-      [martior]
+1.0.2 Released October 8th, 2007
+--------------------------------
 
-    - Allow non ascii characters in webstats_js code. 
-      Fixes http://dev.plone.org/plone/ticket/7359
-      [naro]
+- Fixed getIcon code for use with ++resource++ and to use a safer method
+  of getting the correct url.
+  [optilude]
 
-    - Fixed workflow history viewlet to handle entries with
-      usernames that don't exist any more (deleted users) and 
-      also anonymous users.
-      This fixes http://dev.plone.org/plone/ticket/7250.
-      [rsantos]
+- Upgraded the sitemap template to conform with the 0.9 specs from
+  http://www.sitemaps.org and fixed the caching to use the filename.
+  [deo]
 
-plone.app.layout - 1.0.3 Released
 
-    - Made getIcon urls relative to portal root.
-      [tesdal]
+1.0.1
+-----
 
-plone.app.layout - 1.0.2 Released
+- Lower logging level of 'no associated workflow' to avoid a log entry
+  on each view.
+  [ldr]
 
-    - Fixed getIcon code for use with ++resource++ and to use a safer method
-      of getting the correct url.
-      [optilude]
+- Fixed default language in globals.
+  [wichert]
 
-    - Upgraded the sitemap template to conform with the 0.9 specs from
-      http://www.sitemaps.org and fixed the caching to use the filename.
-      [deo]
+- Fixed link to actor in history viewlet.
+  [naro]
 
-plone.app.layout - 1.0.1 Released
+- Avoid locking on non lockable types in byline viewlet.
+  [jfroche]
 
-    - Lower logging level of 'no associated workflow' to avoid a log entry
-      on each view.
-      [ldr]
+- Added website statistics inclusion viewlet to configure.zcml so it
+  actually works.
+  [fschulze]
 
-    - Fixed default language in globals.
-      [wichert]
+- Made code in defaultpage.py a bit more tolerant of missing tools.
+  [hannosch]
 
-    - Fixed link to actor in history viewlet.
-      [naro]
 
-    - Avoid locking on non lockable types in byline viewlet.
-      [jfroche]
+1.0 Released August 17th, 2007
+------------------------------
 
-    - Added website statistics inclusion viewlet to configure.zcml so it
-      actually works.
-      [fschulze]
+- Fixed the translation of the 'Show this page in presentation mode...'
+  message.
+  [hannosch]
 
-    - Made code in defaultpage.py a bit more tolerant of missing tools.
-      [hannosch]
+- Made the search box a bit wider, so the entire default text is shown
+  in languages with a rather long term.
+  [hannosch]
 
-plone.app.layout - 1.0 Released
-
-    - Fixed the translation of the 'Show this page in presentation mode...'
-      message.
-      [hannosch]
-
-    - Made the search box a bit wider, so the entire default text is shown
-      in languages with a rather long term.
-      [hannosch]
-
-    - Show the authors full name in presentation view. This fixes
-      http://dev.plone.org/plone/ticket/6810
-      [wichert]
+- Show the authors full name in presentation view. This fixes
+  http://dev.plone.org/plone/ticket/6810
+  [wichert]
 

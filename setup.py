@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
+import os
 
 version = '1.1'
 
 setup(name='plone.app.layout',
       version=version,
       description="Layout mechanisms for Plone",
-      long_description="""\
-plone.app.layout contains various visual components for Plone, such as 
-viewlets and general views.
-""",
+      long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
         "Framework :: Plone",
         "Framework :: Zope2",
@@ -27,6 +26,8 @@ viewlets and general views.
       install_requires=[
         'setuptools',
         'plone.app.viewletmanager>=1.2dev',
+        'plone.memoize',
+        'plone.portlets',
       ],
       entry_points="""
       # -*- Entry points: -*-
