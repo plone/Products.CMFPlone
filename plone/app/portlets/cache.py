@@ -13,20 +13,24 @@ def render_cachekey(fun, self):
 
     * Portal URL
     * Negotiated language
+    * Anonymous user flag
     * Portlet manager
     * Assignment
     * Fingerprint of the data used by the portlet
     
     """
+    context = aq_inner(self.context)
     
     def add(brain):
         return "%s\n%s\n\n" % (brain.getPath(), brain.modified)
-
     fingerprint = "".join(map(add, self._data()))
+
+    anonymous = getToolByName(context, 'portal_membership').isAnonymousUser()
 
     return "".join((
         getToolByName(aq_inner(self.context), 'portal_url')(),
         get_language(aq_inner(self.context), self.request),
+        str(anonymous),
         self.manager.__name__,
         self.data.__name__,
         fingerprint))

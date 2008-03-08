@@ -40,6 +40,16 @@ class TestCacheKey(PortletsTestCase):
 
         self.failUnless(key1 != key2)
 
+    def testAnonymousFlag(self):
+        context = self.folder
+        renderer = MockRenderer(context, context.REQUEST)
+
+        key1 = render_cachekey(None, renderer)
+        self.logout()
+        key2 = render_cachekey(None, renderer)
+
+        self.assertNotEqual(key1, key2)
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
