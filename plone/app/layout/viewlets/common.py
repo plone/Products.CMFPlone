@@ -1,6 +1,7 @@
 from zope.interface import implements, alsoProvides
 from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
+from zope.deprecation.deprecation import deprecate
 
 from plone.app.layout.globals.interfaces import IViewView 
 
@@ -26,6 +27,12 @@ class ViewletBase(BrowserView):
         self.request = request
         self.view = view
         self.manager = manager
+
+    @property
+    @deprecate("Use site_url instead. ViewlewBase.portal_url will be removed in Plone 4")
+    def portal_url(self):
+        return self.site_url
+
 
     def update(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
@@ -171,7 +178,7 @@ class PersonalBarViewlet(ViewletBase):
             if sm.checkPermission('Portlets: Manage own portlets', self.context):
                 self.homelink_url = self.site_url + '/dashboard'
             else:
-                self.homelink_url = self.portal_url + '/author/' + quote_plus(userid)
+                self.homelink_url = self.site_url + '/author/' + quote_plus(userid)
             
             member_info = tools.membership().getMemberInfo(member.getId())
             fullname = member_info.get('fullname', '')

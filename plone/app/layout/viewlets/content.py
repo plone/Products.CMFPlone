@@ -18,9 +18,8 @@ import logging
 
 class DocumentActionsViewlet(ViewletBase):
     def update(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.portal_url = self.portal_state.portal_url()
+        super(DocumentActionsViewlet, self).update()
+
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
         plone_utils = getToolByName(self.context, 'plone_utils')
@@ -101,9 +100,7 @@ class DocumentBylineViewlet(ViewletBase):
 
 class WorkflowHistoryViewlet(ViewletBase):
     def update(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.portal_url = self.portal_state.portal_url()
+        super(WorkflowHistoryViewlet, self).update()
         self.tools = getMultiAdapter((self.context, self.request),
                                      name='plone_tools')
     @memoize
@@ -137,7 +134,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                     else:
                         r['actor'] = membership.getMemberInfo(actorid)
                         if r['actor'] is not None:
-                            r['actor_home'] = self.portal_url + '/author/' + actorid
+                            r['actor_home'] = self.site_url + '/author/' + actorid
                         else:
                             # member info is not available
                             # the user was probably deleted

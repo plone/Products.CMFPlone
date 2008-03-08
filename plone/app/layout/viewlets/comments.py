@@ -1,7 +1,5 @@
 from urllib import quote as url_quote
 
-from zope.component import getMultiAdapter
-
 from Acquisition import aq_inner, aq_parent
 from AccessControl import getSecurityManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -15,12 +13,9 @@ class CommentsViewlet(ViewletBase):
     render = ViewPageTemplateFile('comments.pt')
 
     def update(self):
-        context = aq_inner(self.context)
-        self.portal_state = getMultiAdapter((context, self.request),
-                                            name=u'plone_portal_state')
-        self.portal_url = self.portal_state.portal_url()
-        self.portal_discussion = getToolByName(context, 'portal_discussion', None)
-        self.portal_membership = getToolByName(context, 'portal_membership', None)
+        super(CommentsViewlet, self).update()
+        self.portal_discussion = getToolByName(self.context, 'portal_discussion', None)
+        self.portal_membership = getToolByName(self.context, 'portal_membership', None)
 
     def can_reply(self):
         return getSecurityManager().checkPermission('Reply to item', aq_inner(self.context))
@@ -58,7 +53,7 @@ class CommentsViewlet(ViewletBase):
         return self.portal_state.anonymous()
 
     def login_action(self):
-        return '%s/login_form?came_from=%s' % (self.portal_url, url_quote(self.request.get('URL', '')),)
+        return '%s/login_form?came_from=%s' % (self.site_url, url_quote(self.request.get('URL', '')),)
 
     def can_manage(self):
         return getSecurityManager().checkPermission('Manage portal', aq_inner(self.context))
