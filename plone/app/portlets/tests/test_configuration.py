@@ -221,6 +221,8 @@ class TestGenericSetup(PortletsTestCase):
         
     def testAssignmentRemoval(self):
         portal_setup = self.portal.portal_setup
+        
+        time.sleep(1)
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
         mapping = assignment_mapping_from_key(self.portal,
