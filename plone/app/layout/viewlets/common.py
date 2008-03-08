@@ -30,7 +30,7 @@ class ViewletBase(BrowserView):
     def update(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_portal_state')
-        self.portal_url = self.portal_state.portal_url()
+        self.site_url = self.portal_state.portal_url()
 
     def render(self):
         raise NotImplementedError(
@@ -95,12 +95,10 @@ class SearchBoxViewlet(ViewletBase):
     render = ViewPageTemplateFile('searchbox.pt')
 
     def update(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
+        super(SearchBoxViewlet, self).update()
+
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
-
-        self.portal_url = portal_state.portal_url()
 
         props = getToolByName(self.context, 'portal_properties')
         livesearch = props.site_properties.getProperty('enable_livesearch', False)
@@ -117,16 +115,15 @@ class LogoViewlet(ViewletBase):
     render = ViewPageTemplateFile('logo.pt')
 
     def update(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
+        super(LogoViewlet, self).update()
 
-        self.navigation_root_url = portal_state.navigation_root_url()
+        self.navigation_root_url = self.portal_state.navigation_root_url()
 
-        portal = portal_state.portal()
+        portal = self.portal_state.portal()
         logoName = portal.restrictedTraverse('base_properties').logoName
         self.logo_tag = portal.restrictedTraverse(logoName).tag()
 
-        self.portal_title = portal_state.portal_title()
+        self.portal_title = self.portal_state.portal_title()
 
 
 class GlobalSectionsViewlet(ViewletBase):
@@ -151,26 +148,24 @@ class PersonalBarViewlet(ViewletBase):
     render = ViewPageTemplateFile('personal_bar.pt')
 
     def update(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
+        super(PersonalBarViewlet, self).update()
+
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
         tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
         
         sm = getSecurityManager()
 
-        self.portal_url = portal_state.portal_url()
-
         self.user_actions = context_state.actions().get('user', None)
 
         plone_utils = getToolByName(self.context, 'plone_utils')
         self.getIconFor = plone_utils.getIconFor
 
-        self.anonymous = portal_state.anonymous()
+        self.anonymous = self.portal_state.anonymous()
 
         if not self.anonymous:
         
-            member = portal_state.member()
+            member = self.portal_state.member()
             userid = member.getId()
             
             if sm.checkPermission('Portlets: Manage own portlets', self.context):
@@ -190,12 +185,11 @@ class PathBarViewlet(ViewletBase):
     render = ViewPageTemplateFile('path_bar.pt')
 
     def update(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
+        super(PathBarViewlet, self).update()
 
-        self.navigation_root_url = portal_state.navigation_root_url()
+        self.navigation_root_url = self.portal_state.navigation_root_url()
 
-        self.is_rtl = portal_state.is_rtl()
+        self.is_rtl = self.portal_state.is_rtl()
 
         breadcrumbs_view = getMultiAdapter((self.context, self.request),
                                            name='breadcrumbs_view')

@@ -5,6 +5,12 @@ Changelog for plone.app.layout
 
 plone.app.layout - 1.1 UNRELEASED
 
+    - Rename the portal_url instance variable to site_url in the ViewletBase
+      class. This prevents getToolByName(..., 'portal_url') from returning
+      the URL string instead of the portal_url tool, which can causes unexpected
+      and subtle breakage.
+      [wichert]
+
     - Added viewlet for RSS link.
       [fschulze]
 

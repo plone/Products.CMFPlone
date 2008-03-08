@@ -32,9 +32,7 @@ class DocumentActionsViewlet(ViewletBase):
 
 class DocumentBylineViewlet(ViewletBase):
     def update(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.portal_url = self.portal_state.portal_url()
+        super(DocumentBylineViewlet, self).update()
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
         self.tools = getMultiAdapter((self.context, self.request),
