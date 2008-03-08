@@ -10,11 +10,11 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+    <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                plone_view context/@@plone;
+                                getIcon nocall:plone_view/getIcon;"
                     tal:repeat="obj view/published_news_items">
     <dd tal:define="oddrow repeat/obj/odd;
-                    plone_view context/@@plone;
-                    getIcon nocall:plone_view/getIcon;
                     item_icon python:getIcon(obj);"
          tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
