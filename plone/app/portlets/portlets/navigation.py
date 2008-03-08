@@ -245,6 +245,7 @@ class AddForm(base.AddForm):
         return Assignment(name=data.get('name', u""),
                           root=data.get('root', u""),
                           currentFolderOnly=data.get('currentFolderOnly', False),
+                          includeTop=data.get('includeTop', False),
                           topLevel=data.get('topLevel', 0),
                           bottomLevel=data.get('bottomLevel', 0))
 
