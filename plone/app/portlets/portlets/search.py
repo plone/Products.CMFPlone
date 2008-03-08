@@ -29,7 +29,7 @@ class Assignment(base.Assignment):
     implements(ISearchPortlet)
 
     def __init__(self, enableLivesearch=True):
-        self.enableLivesearch=True
+        self.enableLivesearch=enableLivesearch
 
     @property
     def title(self):
