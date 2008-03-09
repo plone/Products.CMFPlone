@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1 - UNRELEASED
+Plone 3.1beta1 - released March 9, 2008
 
     - Added setup code and migration to ensure that the "Sharing" page action
       is protected by the correct permission.
@@ -71,6 +71,7 @@ Plone 3.1 - UNRELEASED
       alternative portlet manager class through GenericSetup.
       [sirgarr]
 
+
 Plone 3.0.6 - released Febuary 15, 2008 
 
     - Make @@plone_lock_info not required for object_cut, object_delete and
@@ -79,6 +80,7 @@ Plone 3.0.6 - released Febuary 15, 2008
 
     - Five.testbrowser tests could not log in via the login_form.
       [stefan]
+
 
 Plone 3.0.5 - released January 5, 2008
 
