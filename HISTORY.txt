@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1beta1 - released March 9, 2008
+Plone 3.1-beta1 - released March 9, 2008
 
     - Added setup code and migration to ensure that the "Sharing" page action
       is protected by the correct permission.
