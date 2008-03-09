@@ -15,7 +15,7 @@ def three0_beta1(portal):
     """
     out = []
 
-    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0.6-3.1alpha1')
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:3.0.6-3.1beta1')
 
     addBrowserLayer(portal, out)
     addCollectionAndStaticPortlets(portal, out)
