@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
+    - Added setup code and migration to ensure that the "Sharing" page action
+      is protected by the correct permission.
+      http://dev.plone.org/plone/ticket/7652
+      [optilude]
+
     - Fix batching on standard folder listings. Thanks to erral for the patch!
       http://dev.plone.org/plone/ticket/7508
       https://dev.plone.org/plone/ticket/6091
