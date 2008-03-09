@@ -46,7 +46,7 @@
                             limit_display limit_display|request/limit_display|nothing;
                             more_url more_url|request/more_url|string:folder_contents;
                             contentsMethod python:test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
-                            folderContents folderContents|python:contentsMethod(contentFilter, batch=True, b_size=limit_display or 100);
+                            folderContents folderContents|python:contentsMethod(contentFilter, batch=True);
                             use_view_action site_properties/typesUseViewActionInListings|python:();
                             over_limit python: limit_display and len(folderContents) > limit_display;
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
