@@ -188,7 +188,10 @@ class PortletsXMLAdapter(XMLAdapterBase):
         self._logger.info('Portlets imported')
 
     def _initProvider(self, node):
-        if self.environ.shouldPurge():
+        purge = self.environ.shouldPurge()
+        if node.hasAttribute('purge'):
+            purge = self._convertToBoolean(node.getAttribute('purge'))
+        if purge:
             self._purgePortlets()
         self._initPortlets(node)
     

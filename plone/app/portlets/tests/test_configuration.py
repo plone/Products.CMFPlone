@@ -15,6 +15,7 @@ from Products.Five.browser import BrowserView
 
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.context import TarballExportContext
+from Products.GenericSetup.tests.common import DummyImportContext
 
 from Products.PloneTestCase.layer import PloneSite
 from Testing import ZopeTestCase
@@ -259,7 +260,7 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(False, assignable.getBlacklistStatus(GROUP_CATEGORY))
         self.assertEquals(None, assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY))
 
-    def testPurge(self):
+    def testPurgeMethod(self):
         sm = getSiteManager()
         context = TarballExportContext(self.portal.portal_setup)
         handler = getMultiAdapter((sm, context), IBody, name=u'plone.portlets')
@@ -267,7 +268,23 @@ class TestGenericSetup(PortletsTestCase):
         
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
         self.assertEquals(None, manager)
-        
+
+    def testPurge(self):
+        from plone.app.portlets.exportimport.portlets import importPortlets
+
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertNotEquals(None, manager)
+
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets purge="True">
+            </portlets>
+        """
+        importPortlets(context)
+
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertEquals(None, manager)
+
     def testExport(self):
         sm = getSiteManager()
         context = TarballExportContext(self.portal.portal_setup)
