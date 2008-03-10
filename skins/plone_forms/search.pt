@@ -163,7 +163,8 @@
                 </span>
             </span>
 
-
+	    </dd>
+	    
         </tal:entry>
         </tal:results>
         </dl>
