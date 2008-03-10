@@ -181,7 +181,7 @@ from Products.CMFPlone.migrations.v3_0.rcs import addIntelligentText
 
 from Products.CMFPlone.migrations.v3_0.final_three0x import installNewModifiers
 
-from Products.CMFPlone.migrations.v3_1.alphas import reinstallCMFPlacefulWorkflow
+from Products.CMFPlone.migrations.v3_1.betas import reinstallCMFPlacefulWorkflow
 from Products.CMFPlone.setuphandlers import replace_local_role_manager
 
 from five.localsitemanager.registry import FiveVerifyingAdapterLookup
