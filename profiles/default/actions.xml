@@ -243,7 +243,7 @@
    <property name="icon_expr"></property>
    <property name="available_expr"></property>
    <property name="permissions">
-    <element value="Change local roles"/>
+    <element value="Sharing page: Delegate roles"/>
    </property>
    <property name="visible">True</property>
   </object>
