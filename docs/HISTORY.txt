@@ -5,8 +5,13 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Added option to remove individual portal managers and purge global
+      portlet manager assignments with GS profiles.
+      [fschulze]
+
     - Added option to purge portlet configuration in extension profiles.
       [fschulze]
+
 
 plone.app.portlets 1.1.0a1 (2008-03-09)
 

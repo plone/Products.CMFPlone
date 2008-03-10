@@ -38,6 +38,9 @@ from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.utils import assignment_mapping_from_key
 
+from plone.app.portlets.exportimport.portlets import importPortlets
+
+
 class DummyView(BrowserView):
     pass
 
@@ -270,8 +273,6 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(None, manager)
 
     def testPurge(self):
-        from plone.app.portlets.exportimport.portlets import importPortlets
-
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
         self.assertNotEquals(None, manager)
 
@@ -284,6 +285,51 @@ class TestGenericSetup(PortletsTestCase):
 
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
         self.assertEquals(None, manager)
+
+    def testManagerRemove(self):
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertNotEquals(None, manager)
+
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <portletmanager 
+                    name="test.testcolumn" 
+                    remove="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertEquals(None, manager)
+
+    def testManagerPurge(self):
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <portletmanager 
+                    name="test.testcolumn" 
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        self.assertRaises(KeyError,
+                          assignment_mapping_from_key,
+                          self.portal, manager_name=u"test.testcolumn",
+                          category=GROUP_CATEGORY, key="Reviewers")
+
+        self.assertRaises(KeyError,
+                          assignment_mapping_from_key,
+                          self.portal, manager_name=u"test.testcolumn",
+                          category=CONTENT_TYPE_CATEGORY, key="Folder")
+
+        # context assignments aren't purged
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(3, len(mapping))
 
     def testExport(self):
         sm = getSiteManager()

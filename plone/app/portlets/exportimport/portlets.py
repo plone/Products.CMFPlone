@@ -264,25 +264,39 @@ class PortletsXMLAdapter(XMLAdapterBase):
     def _initPortletManagerNode(self, node):
         """Create a portlet manager from a node
         """
-        registeredPortletManagers = [r.name for r in self.context.registeredUtilities()
-                                        if r.provided.isOrExtends(IPortletManager)]
-        managerClass = node.getAttribute('class')
-        if managerClass:
-            manager = _resolveDottedName(managerClass)()
-        else:
-            manager = PortletManager()
-        
         name = str(node.getAttribute('name'))
         
-        managerType = node.getAttribute('type')
-        if managerType:
-             alsoProvides(manager, _resolveDottedName(managerType))
-        
-        manager[USER_CATEGORY] = PortletCategoryMapping()
-        manager[GROUP_CATEGORY] = PortletCategoryMapping()
-        manager[CONTENT_TYPE_CATEGORY] = PortletCategoryMapping()
-        
+        if node.hasAttribute('remove'):
+            if self._convertToBoolean(node.getAttribute('remove')):
+                self.context.unregisterUtility(provided=IPortletManager,
+                                               name=name)
+                return
+
+        if node.hasAttribute('purge'):
+            if self._convertToBoolean(node.getAttribute('purge')):
+                manager = getUtility(IPortletManager, name=name)
+                for category in manager.keys():
+                    for portlet in manager[category].keys():
+                        del manager[category][portlet]
+                return
+
+        registeredPortletManagers = [r.name for r in self.context.registeredUtilities()
+                                        if r.provided.isOrExtends(IPortletManager)]
         if name not in registeredPortletManagers:
+            managerClass = node.getAttribute('class')
+            if managerClass:
+                manager = _resolveDottedName(managerClass)()
+            else:
+                manager = PortletManager()
+        
+            managerType = node.getAttribute('type')
+            if managerType:
+                 alsoProvides(manager, _resolveDottedName(managerType))
+        
+            manager[USER_CATEGORY] = PortletCategoryMapping()
+            manager[GROUP_CATEGORY] = PortletCategoryMapping()
+            manager[CONTENT_TYPE_CATEGORY] = PortletCategoryMapping()
+        
             self.context.registerUtility(component=manager,
                                          provided=IPortletManager,
                                          name=name)
