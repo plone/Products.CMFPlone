@@ -134,6 +134,8 @@ class TestPortletGSLayer(TestPortletZCMLLayer):
         portal = app.plone
         
         portal_setup = portal.portal_setup
+        # wait a bit or we get duplicate ids on import
+        time.sleep(1)
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
         
         transaction.commit()
@@ -222,6 +224,7 @@ class TestGenericSetup(PortletsTestCase):
     def testAssignmentRemoval(self):
         portal_setup = self.portal.portal_setup
         
+        # wait a bit or we get duplicate ids on import
         time.sleep(1)
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
