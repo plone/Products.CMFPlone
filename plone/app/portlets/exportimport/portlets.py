@@ -373,8 +373,11 @@ class PortletsXMLAdapter(XMLAdapterBase):
         manager = node.getAttribute('manager')
         category = node.getAttribute('category')
         key = node.getAttribute('key')
-        type_ = node.getAttribute('type')
         
+        purge = False
+        if node.hasAttribute('purge'):
+            purge = self._convertToBoolean(node.getAttribute('purge'))
+
         mapping = assignment_mapping_from_key(site, manager, category, key, create=True)
         
         # 2. Either find or create the assignment
@@ -388,6 +391,13 @@ class PortletsXMLAdapter(XMLAdapterBase):
             if assignment is not None:
                 del mapping[name]
             return
+
+        if purge:
+            for portlet in mapping.keys():
+                del mapping[portlet]
+            return
+
+        type_ = node.getAttribute('type')
 
         if assignment is None:
             portlet_factory = getUtility(IFactory, name=type_)

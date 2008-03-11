@@ -5,6 +5,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Added option to purge all assignments specified by category and key.
+      [fschulze]
+
     - Added option to remove individual portal managers and purge global
       portlet manager assignments as well as assignments to the site root
       with GS profiles.

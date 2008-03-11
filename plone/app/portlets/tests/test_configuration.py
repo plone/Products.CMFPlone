@@ -254,6 +254,78 @@ class TestGenericSetup(PortletsTestCase):
         # and should have got rid of it again
         self.assertEqual(mapping.get('test.portlet7', None), None)
 
+    def testAssignmentPurging(self):
+        # initially there should be 3 assignments on the root
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(3, len(mapping))
+
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <assignment
+                    manager="test.testcolumn" 
+                    category="context"
+                    key="/"
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        # now they should be gone
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(0, len(mapping))
+
+        # group assignments should still be there
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=GROUP_CATEGORY, key="Reviewers")
+        self.assertEquals(1, len(mapping))
+
+        # and be purgable
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <assignment
+                    manager="test.testcolumn" 
+                    category="group"
+                    key="Reviewers"
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        # now they should be gone
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=GROUP_CATEGORY, key="Reviewers")
+        self.assertEquals(0, len(mapping))
+
+        # also content type assignments should still be there
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTENT_TYPE_CATEGORY, key="Folder")
+        self.assertEquals(2, len(mapping))
+
+        # and be purgable
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <assignment
+                    manager="test.testcolumn" 
+                    category="content_type"
+                    key="Folder"
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        # now they should be gone
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTENT_TYPE_CATEGORY, key="Folder")
+        self.assertEquals(0, len(mapping))
+
     def testBlacklisting(self):
         news = self.portal.news
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
