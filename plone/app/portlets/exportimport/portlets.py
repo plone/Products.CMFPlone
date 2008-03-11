@@ -275,9 +275,15 @@ class PortletsXMLAdapter(XMLAdapterBase):
         if node.hasAttribute('purge'):
             if self._convertToBoolean(node.getAttribute('purge')):
                 manager = getUtility(IPortletManager, name=name)
+                # remove global assignments
                 for category in manager.keys():
                     for portlet in manager[category].keys():
                         del manager[category][portlet]
+                # remove assignments from root
+                site = self.environ.getSite()
+                mapping = queryMultiAdapter((site, manager), IPortletAssignmentMapping)
+                for portlet in mapping.keys():
+                    del mapping[portlet]
                 return
 
         registeredPortletManagers = [r.name for r in self.context.registeredUtilities()

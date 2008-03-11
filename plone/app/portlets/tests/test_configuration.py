@@ -326,10 +326,10 @@ class TestGenericSetup(PortletsTestCase):
                           self.portal, manager_name=u"test.testcolumn",
                           category=CONTENT_TYPE_CATEGORY, key="Folder")
 
-        # context assignments aren't purged
+        # context assignment at the root are purged as well
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(3, len(mapping))
+        self.assertEquals(0, len(mapping))
 
     def testExport(self):
         sm = getSiteManager()
