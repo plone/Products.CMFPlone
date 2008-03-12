@@ -4,25 +4,28 @@ from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.cache import render_cachekey
 
 class MockBrain(object):
+    def __init__(self, path=u"some/path", modified=u"2002-01-01"):
+        self.path = path
+        self.modified = modified
+    
     def getPath(self):
-        return u"some/path"
-
-    modified = u"2002-01-01"
+        return self.path
 
 class MockLocation(object):
     def __init__(self, name):
         self.__name__ = name
 
 class MockRenderer(object):
+    manager = MockLocation('some_manager')
+    data = MockLocation('some_assignment')
+    data_brains = [MockBrain(), MockBrain()]
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
         
     def _data(self):
-        return [MockBrain(), MockBrain()]
-
-    manager = MockLocation('some_manager')
-    data = MockLocation('some_assignment')
+        return self.data_brains
 
 class TestCacheKey(PortletsTestCase):
 
@@ -49,6 +52,14 @@ class TestCacheKey(PortletsTestCase):
         key2 = render_cachekey(None, renderer)
 
         self.assertNotEqual(key1, key2)
+
+    def testNonASCIIPath(self):
+        # http://dev.plone.org/plone/ticket/7086
+        context = self.folder
+        renderer = MockRenderer(context, context.REQUEST)
+        renderer.data_brains = [
+            MockBrain("Pr\xc5\xafvodce"), MockBrain("p\xc5\x99i")]
+        render_cachekey(None, renderer)
 
 def test_suite():
     from unittest import TestSuite, makeSuite

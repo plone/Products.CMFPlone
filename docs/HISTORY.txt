@@ -66,6 +66,10 @@ plone.app.portlets 1.1.0a1 (2008-03-09)
 
 plone.app.portlets 1.0.7 (UNRELEASED)
 
+    - Allow non-ASCII object paths while calculating cache key for
+      portlets.  This fixes http://dev.plone.org/plone/ticket/7086
+      [nouri]
+
     - Make the language portlet handle languages without a native name
       correctly.
       [wichert]

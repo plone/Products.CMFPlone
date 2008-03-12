@@ -22,7 +22,8 @@ def render_cachekey(fun, self):
     context = aq_inner(self.context)
     
     def add(brain):
-        return "%s\n%s\n\n" % (brain.getPath(), brain.modified)
+        path = brain.getPath().decode('ascii', 'replace')
+        return "%s\n%s\n\n" % (path, brain.modified)
     fingerprint = "".join(map(add, self._data()))
 
     anonymous = getToolByName(context, 'portal_membership').isAnonymousUser()
