@@ -12,10 +12,13 @@
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
-<ul id="portal-personaltools">
+<ul id="portal-personaltools"
+    tal:define="actions python:here.getOrderedUserActions(keyed_actions=keyed_actions)"
+    tal:condition="python: not isAnon or actions">
+
    <tal:block condition="not: isAnon">
-       <li class="portalUser" 
-           tal:define="author python:mtool.getMemberInfo(user.getId())"><a 
+       <li class="portalUser"
+           tal:define="author python:mtool.getMemberInfo(user.getId())"><a
            id="user-name"
            tal:attributes="href string:${portal_url}/author/${user/getId}">
            <span class="visualCaseSensitive"
@@ -25,18 +28,18 @@
        </a></li>
    </tal:block>
 
-    <tal:actions tal:repeat="action python:here.getOrderedUserActions(keyed_actions=keyed_actions)">
-        <li tal:define="icon python:getIconFor(action['category'], action['id'], None);
-                        class_name string:visualIcon actionicon-${action/category}-${action/id};
-                        class_name python:test(icon, class_name, nothing);"
-            tal:attributes="class class_name">
-            <a href=""
-               tal:attributes="href action/url;
-                               class python:test(icon, 'visualIconPadding', nothing);">
-               <tal:actionname i18n:translate="" tal:content="action/title">dummy</tal:actionname>
-            </a>
-        </li>
-    </tal:actions>
+   <tal:actions tal:repeat="action actions">
+       <li tal:define="icon python:getIconFor(action['category'], action['id'], None);
+                       class_name string:visualIcon actionicon-${action/category}-${action/id};
+                       class_name python:test(icon, class_name, nothing);"
+           tal:attributes="class class_name">
+           <a href=""
+              tal:attributes="href action/url;
+                              class python:test(icon, 'visualIconPadding', nothing);">
+              <tal:actionname i18n:translate="" tal:content="action/title">dummy</tal:actionname>
+           </a>
+       </li>
+   </tal:actions>
 
 </ul>
 </div>
