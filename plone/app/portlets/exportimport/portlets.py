@@ -373,6 +373,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         manager = node.getAttribute('manager')
         category = node.getAttribute('category')
         key = node.getAttribute('key')
+        #convert unicode to str as unicode paths are not allowed in restrictedTraverse called in assignment_mapping_from_key 
+        key = key.encode()
         
         purge = False
         if node.hasAttribute('purge'):
