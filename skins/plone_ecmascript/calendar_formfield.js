@@ -56,7 +56,7 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
     var input_id_year = document.getElementById(input_id_year);
     var input_id_month = document.getElementById(input_id_month);
     var input_id_day = document.getElementById(input_id_day);
-    var format = 'y/mm/dd';
+    var format = '%Y/%m/%d';
 
     var dateEl = input_id;
     var mustCreate = false;
