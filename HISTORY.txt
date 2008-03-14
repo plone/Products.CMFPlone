@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.1 - Unreleased
 
+    - Correct styling of ul elements in portlets. This corrects styling of
+      the language portlet and is very common in custom sites.
+      [wichert]
+
+
 
 Plone 3.1-beta1 - released March 9, 2008
 
