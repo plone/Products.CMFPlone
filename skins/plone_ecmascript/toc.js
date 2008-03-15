@@ -13,7 +13,7 @@ jq(function() {
     // Get headers in document order
     jq(content).find('*').filter(function() { return /^h[1234]$/.test(this.tagName.toLowerCase()) })
               .not('.documentFirstHeading').each(function(i) {
-        var level = this.nodeName[1] - 1;
+        var level = this.nodeName.charAt(1) - 1;
         // size the stack to the current level
         while (stack.length < level) {
             var ol = jq('<ol>');
@@ -31,7 +31,7 @@ jq(function() {
         jq(this).before(jq('<a name="section-' + i + '" />'));
 
         jq('<li>').append(
-            jq('<a>').text(jq(this).text())
+            jq('<a />').text(jq(this).text())
                     .attr('href', location + '#section-' + i))
             .appendTo(jq(stack[stack.length - 1]));
     });
