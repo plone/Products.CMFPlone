@@ -46,16 +46,36 @@ class HiddenProducts(object):
     implements(INonInstallable)
 
     def getNonInstallableProducts(self):
-        return ['Archetypes', 'ATContentTypes', 'ATReferenceBrowserWidget',
-                'CMFActionIcons', 'CMFCalendar', 'CMFDefault', 'CMFPlone',
-                'CMFTopic', 'CMFUid', 'DCWorkflow', 'GroupUserFolder',
-                'PasswordResetTool', 'wicked.at', 'kupu', 'PloneLanguageTool',
-                'Kupu', 'CMFFormController', 'MimetypesRegistry',
-                'PortalTransforms', 'CMFDiffTool', 'CMFEditions',
-                'Products.ATReferenceBrowserWidget',
-                'Products.CMFFormController',
-                'Products.PloneLanguageTool',
-               ]
+        return [
+            'Archetypes', 'Products.Archetypes',
+            'ATContentTypes', 'Products.ATContentTypes',
+            'ATReferenceBrowserWidget', 'Products.ATReferenceBrowserWidget',
+            'CMFActionIcons', 'Products.CMFActionIcons',
+            'CMFCalendar', 'Products.CMFCalendar',
+            'CMFDefault', 'Products.CMFDefault',
+            'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
+            'CMFTopic', 'Products.CMFTopic',
+            'CMFUid', 'Products.CMFUid',
+            'DCWorkflow', 'Products.DCWorkflow',
+            'GroupUserFolder', 'Products.GroupUserFolder',
+            'PasswordResetTool', 'Products.PasswordResetTool',
+            'PlonePAS', 'Products.PlonePAS',
+            'wicked.at',
+            'kupu', 'Products.kupu',
+            'PloneLanguageTool', 'Products.PloneLanguageTool',
+            'Kupu', 'Products.Kupu',
+            'CMFFormController', 'Products.CMFFormController',
+            'MimetypesRegistry', 'Products.MimetypesRegistry',
+            'PortalTransforms', 'Products.PortalTransforms',
+            'CMFDiffTool', 'Products.CMFDiffTool',
+            'CMFEditions', 'Products.CMFEditions',
+            'Products.NuPlone',
+            'plone.app.protect',
+            'plone.browserlayer',
+            'plone.portlet.static',
+            'plone.portlet.collection',
+            'borg.localrole',
+            ]
 
 
 class PloneGenerator:
