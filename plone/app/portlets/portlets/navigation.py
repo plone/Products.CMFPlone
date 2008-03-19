@@ -1,5 +1,3 @@
-from StringIO import StringIO
-
 from zope.interface import implements, Interface
 from zope.component import adapts, getMultiAdapter, queryUtility
 
@@ -10,12 +8,9 @@ from plone.app.portlets.portlets import base
 from zope import schema
 from zope.formlib import form
 
-from plone.memoize import ram
 from plone.memoize.instance import memoize
-from plone.memoize.compress import xhtml_compress
 
 from Acquisition import aq_inner, aq_base, aq_parent
-from AccessControl import getSecurityManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
@@ -208,7 +203,7 @@ class Renderer(base.Renderer):
         pass
 
     def render(self):
-        return xhtml_compress(self._template())
+        return self._template()
 
     _template = ViewPageTemplateFile('navigation.pt')
     recurse = ViewPageTemplateFile('navigation_recurse.pt')

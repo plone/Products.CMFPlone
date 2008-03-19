@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Removed last remains of caching for the navigation portlet.
+      This closes https://dev.plone.org/plone/ticket/7726.
+      [hannosch]
+
     - Added first day of week to calendar portlet cache key.
       [hannosch]
 
