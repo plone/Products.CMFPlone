@@ -83,8 +83,14 @@
                     
                     <ul class="configletDetails"
                         tal:define="product_file python:container.portal_quickinstaller.getProductFile(pid);
+                                    product_desc python:container.portal_quickinstaller.getProductDescription(pid);
                                     has_error product/hasError"
-                        tal:condition="python: product_file or has_error">
+                        tal:condition="python: product_file or product_desc or has_error">
+                        <li tal:condition="product_desc">
+                            <p tal:content="product_desc">
+                                product description
+                            </p>
+                        </li>
                         <li tal:condition="product_file">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
                                 <img src="" alt="" 
@@ -94,7 +100,6 @@
                                 </span>
                             </a>
                         </li>
-                        
                         <li tal:condition="has_error">    
                             <a tal:attributes="href string:${QI/absolute_url}/${pid}/prefs_installed_product_overview">
                                 <img src="" alt="" 
@@ -152,8 +157,15 @@
                         </span>
                     </label>
     
-                    <ul class="configletDetails">
-                        <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
+                    <ul class="configletDetails"
+                        tal:define="product_file python:container.portal_quickinstaller.getProductFile(pid);
+                                    product_desc python:container.portal_quickinstaller.getProductDescription(pid);">
+                        <li tal:condition="product_desc">
+                            <p tal:content="product_desc">
+                                product description
+                            </p>
+                        </li>
+                        <li tal:condition="product_file">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" >
                                 <img alt="" src=""
                                      tal:replace="structure here/book_icon.gif" />

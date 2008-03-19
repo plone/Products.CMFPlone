@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.1 - Unreleased
 
+    - Include the short product description for extension profile based
+      add-ons in the add-ons control panel. This gives non-Zope2 products a
+      way to provide more information, as their readme.txt cannot be found.
+      [hannosch]
+
     - Updated list of non-installable products, now that quickinstaller
       recognizes non-Zope2-products.
       [hannosch]
