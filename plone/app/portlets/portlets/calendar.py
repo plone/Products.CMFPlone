@@ -44,6 +44,7 @@ def _render_cachekey(fun, self):
         key = StringIO()
         print >> key, getToolByName(context, 'portal_url')()
         print >> key, cache.get_language(context, self.request)
+        print >> key, self.calendar.getFirstWeekDay()
 
         year, month = self.getYearAndMonthToDisplay()
         print >> key, year

@@ -5,6 +5,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Added first day of week to calendar portlet cache key.
+      [hannosch]
+
     - Added option to purge all assignments specified by category and key.
       [fschulze]
 
