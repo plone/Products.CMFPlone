@@ -1,5 +1,6 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter
+from zope.event import notify
 
 from plone.fieldsets.form import FieldsetsEditForm
 from zope.formlib import form
@@ -11,7 +12,9 @@ from Products.statusmessages.interfaces import IStatusMessage
 from plone.app.form import named_template_adapter
 from plone.app.form.validators import null_validator
 
+from plone.app.controlpanel.events import ConfigurationChangedEvent
 from plone.app.controlpanel.interfaces import IPloneControlPanelForm
+
 
 class ControlPanelForm(FieldsetsEditForm):
     """A simple form to be used as a basis for control panel screens."""
@@ -23,6 +26,7 @@ class ControlPanelForm(FieldsetsEditForm):
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
             self.status = _("Changes saved.")
+            notify(ConfigurationChangedEvent(self, data))
             self._on_save(data)
         else:
             self.status = _("No changes made.")

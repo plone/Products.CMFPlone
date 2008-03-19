@@ -139,4 +139,7 @@
       provides="zope.formlib.namedtemplate.INamedTemplate"
       />
 
+  <subscriber
+      handler=".events.handleConfigurationChangedEvent" />
+
 </configure>
