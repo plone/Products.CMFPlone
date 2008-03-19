@@ -1,4 +1,3 @@
-import calendar
 from Products.CMFCalendar.CalendarTool import CalendarTool as BaseTool
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
@@ -33,7 +32,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
         >>> ctool.getDayNumbers()[0] == fwday
         True
         """
-        firstweekday = calendar.firstweekday()+1
+        firstweekday = self._getCalendar().firstweekday()+1
         return [i%7 for i in range(firstweekday, firstweekday + 7)]
 
 CalendarTool.__doc__ = BaseTool.__doc__
