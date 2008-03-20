@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - label_group_members was used twice.  Renamed the second one to
+      label_group_portlets (which is in plone.pot already).
+      [maurits]
+
     - Removed last remains of caching for the navigation portlet.
       This closes https://dev.plone.org/plone/ticket/7726.
       [hannosch]
