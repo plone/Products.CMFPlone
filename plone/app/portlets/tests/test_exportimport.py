@@ -4,6 +4,7 @@ from zope.app.component.hooks import setSite, setHooks
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
+from zope.i18nmessageid import Message
 from zope.interface import Interface
 
 from xml.dom.minidom import parseString
@@ -97,7 +98,23 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.assertEqual('Foo', portlet.title)
         self.assertEqual('Bar', portlet.description)
         self.assertEqual([IColumn], portlet.for_)
-    
+
+    def test_initPortletNode_i18n(self):
+        node = parseString(_XML_BASIC_I18N).documentElement
+        self.importer._initPortletNode(node)
+        portlet = queryUtility(IPortletType, name="portlets.New")
+        self.failUnless(portlet is not None)
+        self.assertEqual([IColumn], portlet.for_)
+        # XXX Missing i18n support in the exportimport code
+        self.failUnless(isinstance(portlet.title, Message))
+        self.failUnless(isinstance(portlet.description, Message))
+        self.assertEquals(u"title_foo_portlet", portlet.title)
+        self.assertEquals(u"description_foo_portlet", portlet.description)
+        self.assertEquals(u"Foo", portlet.title.default)
+        self.assertEquals(u"Bar", portlet.description.default)
+        self.assertEquals(u"foodomain", portlet.title.domain)
+        self.assertEquals(u"foodomain", portlet.description.domain)
+
     def test_initPortletNode_multipleInterfaces(self):
         node = parseString(_XML_MULTIPLE_INTERFACES).documentElement
         self.importer._initPortletNode(node)
@@ -269,6 +286,16 @@ _XML_SWITCH_COLUMNS = """<?xml version="1.0"?>
 
 _XML_BASIC = """<?xml version="1.0"?>
 <portlet addview="portlets.New" title="Foo" description="Bar">
+  <for interface="plone.app.portlets.interfaces.IColumn" />
+</portlet>
+"""
+
+_XML_BASIC_I18N = """<?xml version="1.0"?>
+<portlet xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="foodomain"
+    addview="portlets.New" title="Foo" description="Bar"
+    i18n:attributes="title title_foo_portlet;
+                     description description_foo_portlet">
   <for interface="plone.app.portlets.interfaces.IColumn" />
 </portlet>
 """

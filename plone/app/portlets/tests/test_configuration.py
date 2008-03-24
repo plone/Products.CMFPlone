@@ -1,6 +1,7 @@
 import time
 import transaction
 
+from zope.i18nmessageid import Message
 from zope.interface import Interface
 from zope.component import getUtility, queryUtility, getMultiAdapter
 from zope.component.interfaces import IFactory
@@ -195,11 +196,18 @@ class TestGenericSetup(PortletsTestCase):
     
     def testPortletTypeRegistered(self):
         portlet_type = getUtility(IPortletType, name=u"portlets.test.Test")
-        self.assertEquals("Test portlet", portlet_type.title)
-        self.assertEquals("A test portlet", portlet_type.description)
         self.assertEquals('portlets.test.Test', portlet_type.addview)
         self.assertEquals([Interface], portlet_type.for_)
-        
+        # XXX Missing i18n support in the exportimport code
+        self.failUnless(isinstance(portlet_type.title, Message))
+        self.failUnless(isinstance(portlet_type.description, Message))
+        self.assertEquals(u"title_test_portlet", portlet_type.title)
+        self.assertEquals(u"description_test_portlet", portlet_type.description)
+        self.assertEquals(u"Test portlet", portlet_type.title.default)
+        self.assertEquals(u"A test portlet", portlet_type.description.default)
+        self.assertEquals(u"plone", portlet_type.title.domain)
+        self.assertEquals(u"plone", portlet_type.description.domain)
+
     def testAssignmentCreatedAndOrdered(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")

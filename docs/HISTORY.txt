@@ -5,6 +5,13 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Added tests for the (not yet implemented) i18n markup support in
+      portlets.xml.
+      [hannosch]
+
+    - Added missing i18n markup to portlets.xml.
+      [hannosch]
+
     - label_group_members was used twice.  Renamed the second one to
       label_group_portlets (which is in plone.pot already).
       [maurits]
