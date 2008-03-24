@@ -65,8 +65,7 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
             if appperm['name'] == 'Anonymous' and \
                appperm['selected'] == 'SELECTED':
                 return True
-            else:
-                return False
+        return False
 
     def set_enable_self_reg(self, value):
         app_perms = self.portal.rolesOfPermission(permission='Add portal member')
