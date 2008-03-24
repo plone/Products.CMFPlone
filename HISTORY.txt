@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1 - Unreleased
 
+    - Added missing i18n markup to portlets.xml file. This refs
+      http://dev.plone.org/plone/ticket/7768.
+      [hannosch]
+
     - Fixed out-of-sync calendar days and weekdays in the calendar portlet.
       This closes http://dev.plone.org/plone/ticket/7931.
       [hannosch]
