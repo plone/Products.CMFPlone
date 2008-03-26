@@ -15,13 +15,13 @@
   <include package="plone.app.linkintegrity" />
   <include package="plone.app.openid" />
   <include package="plone.app.portlets" />
-  <include package="plone.app.protect" />
   <include package="plone.app.redirector" />
   <include package="plone.app.viewletmanager" />
   <include package="plone.app.vocabularies" />
   <include package="plone.app.workflow" />
   <include package="plone.memoize" />
   <include package="plone.session" />
+  <include package="plone.protect" />
 
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
