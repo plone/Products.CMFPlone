@@ -2,7 +2,7 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 1.0.5 Unreleased
+plone.app.controlpanel - 1.0.5 Released March 26, 2008
 
     - `Enable self registration flag` in security control panel was broken
       in some cases with custom roles. Patch provided by davidray, thx!
