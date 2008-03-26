@@ -70,7 +70,6 @@ class HiddenProducts(object):
             'CMFDiffTool', 'Products.CMFDiffTool',
             'CMFEditions', 'Products.CMFEditions',
             'Products.NuPlone',
-            'plone.app.protect',
             'plone.browserlayer',
             'plone.portlet.static',
             'plone.portlet.collection',
