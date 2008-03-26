@@ -104,7 +104,7 @@ ploneFormTabbing.select = function($which) {
 };
 
 ploneFormTabbing.initializeDL = function() {
-    var tabs = ploneFormTabbing._buildTabs(this, jq(this).children('dt'));
+    var tabs = jq(ploneFormTabbing._buildTabs(this, jq(this).children('dt')));
     jq(this).before(tabs);
     jq(this).children('dd').addClass('formPanel');
 
