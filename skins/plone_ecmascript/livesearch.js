@@ -67,7 +67,7 @@ var livesearch = function (){
             }
             
             var $$query = { q: $inputnode.value };
-            if ($path[0].checked)
+            if ($path.length && $path[0].checked)
                 $$query['path'] = $path.val();
             // turn into a string for use as a cache key
             $$query = jq.param($$query);
