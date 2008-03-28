@@ -15,6 +15,8 @@ from plone.app.form.validators import null_validator
 from plone.app.controlpanel.events import ConfigurationChangedEvent
 from plone.app.controlpanel.interfaces import IPloneControlPanelForm
 
+from plone.protect import CheckAuthenticator
+
 
 class ControlPanelForm(FieldsetsEditForm):
     """A simple form to be used as a basis for control panel screens."""
@@ -23,6 +25,7 @@ class ControlPanelForm(FieldsetsEditForm):
 
     @form.action(_(u'label_save', default=u'Save'), name=u'save')
     def handle_edit_action(self, action, data):
+        CheckAuthenticator(self.request)
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
             self.status = _("Changes saved.")

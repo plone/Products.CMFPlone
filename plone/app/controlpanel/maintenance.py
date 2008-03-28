@@ -20,6 +20,8 @@ from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from plone.app.controlpanel.interfaces import IPloneControlPanelForm
 
+from plone.protect import CheckAuthenticator
+
 
 class IMaintenanceSchema(Interface):
 
@@ -66,6 +68,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
 
     @form.action(_(u'Pack database now'), name=u'pack')
     def handle_edit_action(self, action, data):
+        CheckAuthenticator(self.request)
         if not self.available():
             self.status = _(u'text_not_allowed_manage_server',
                             default=u'You are not allowed to manage the Zope server.')
@@ -81,6 +84,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
 
     @form.action(_(u'Shut down'), validator=null_validator, name=u'shutdown')
     def handle_shutdown_action(self, action, data):
+        CheckAuthenticator(self.request)
         if not self.available():
             self.status = _(u'text_not_allowed_manage_server',
                             default=u'You are not allowed to manage the Zope server.')
@@ -92,6 +96,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
 
     @form.action(_(u'Restart'), validator=null_validator)
     def handle_restart_action(self, action, data):
+        CheckAuthenticator(self.request)
         if not self.available():
             self.status = _(u'text_not_allowed_manage_server',
                             default=u'You are not allowed to manage the Zope server.')

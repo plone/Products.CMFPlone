@@ -187,6 +187,9 @@
                                tal:replace="structure action/render" />
                     </span>
                 </div>
+
+                <input tal:replace="structure context/@@authenticator/authenticator" />
+
             </form>
         </div>
 

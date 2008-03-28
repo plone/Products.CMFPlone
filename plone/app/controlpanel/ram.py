@@ -20,6 +20,8 @@ from Products.statusmessages.interfaces import IStatusMessage
 from plone.app.controlpanel.form import ControlPanelForm
 from plone.app.controlpanel.form import _template
 
+from plone.protect import CheckAuthenticator
+
 
 class IRAMCacheSchema(Interface):
 
@@ -86,12 +88,14 @@ class RAMCacheControlPanel(ControlPanelForm):
 
     @form.action(_(u'Clear cache'), validator=null_validator, name=u'clearall')
     def handle_clearall_action(self, action, data):
+        CheckAuthenticator(self.request)
         context = aq_inner(self.context)
         getUtility(IRAMCache).invalidateAll()
         self.status = _(u'Cleared the cache.')
 
     @form.action(_(u'label_save', default=u'Save'), name=u'save')
     def handle_edit_action(self, action, data):
+        CheckAuthenticator(self.request)
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
             self.status = _("Changes saved.")
