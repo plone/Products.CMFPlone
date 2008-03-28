@@ -5,6 +5,10 @@ Changelog for Plone
 
 Plone 3.1-rc1 - released March 28, 2008
 
+    - Adjust 2.5.x - 3.0-alpha1 migration so portlets are not added twice
+      for migrated sites.
+      [wichert]
+
     - Added missing i18n markup to portlets.xml file. This refs
       http://dev.plone.org/plone/ticket/7768.
       [hannosch]
