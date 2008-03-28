@@ -582,7 +582,7 @@ def updateFTII18NDomain(portal, out):
 
 def addPortletManagers(portal, out):
     """Add new portlets managers."""
-    loadMigrationProfile(portal, 'profile-Products.CMFPlone:plone',
+    loadMigrationProfile(portal, 'profile-Products.CMFPlone.migrations:2.5-3.0a1',
             steps=['portlets'])
     
 
