@@ -62,6 +62,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
     def testCreateFailsWithLocalRoleBlocked(self):
         # Ensure that local role blocking works for blocking content creation
         self.login('user1')
+        self.setupAuthenticator()
         folder = self.membership.getHomeFolder('user1')
         folder.manage_addLocalRoles('user2', ('Owner',))
         folder.invokeFactory('Folder', id='subfolder')
@@ -77,6 +78,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # Make sure that blocking a acquisition in a folder does not interfere
         # with assigning a role in subfolders
         self.login('user1')
+        self.setupAuthenticator()
         folder = self.membership.getHomeFolder('user1')
         folder.manage_addLocalRoles('user2', ('Owner',))
         folder.invokeFactory('Folder', id='subfolder')
@@ -95,6 +97,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # Test for http://dev.plone.org/plone/ticket/4055 which seems to be
         # invalid
         self.login('user1')
+        self.setupAuthenticator()
         folder = self.membership.getHomeFolder('user1')
         self.setRequestMethod('POST')
         folder.manage_addLocalRoles('user2', ('Owner',))
@@ -147,6 +150,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         self.portal.portal_workflow.updateRoleMappings()
 
         self.login('user1')
+        self.setupAuthenticator()
         self.setRequestMethod('POST')
         folder = self.membership.getHomeFolder('user1')
         self.setRequestMethod('GET')

@@ -121,6 +121,7 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='sub2')
         self.folder.invokeFactory('Document', id='doc1')
         self.folder.invokeFactory('Document', id='doc2')
+        self.setupAuthenticator()
 
     def _contentIds(self, folder):
         return [ob.getId() for ob in folder.listFolderContents()]

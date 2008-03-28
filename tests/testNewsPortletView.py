@@ -21,6 +21,7 @@ class TestNewsPortletView(PloneTestCase.PloneTestCase):
         self.url = self.portal.portal_url
         self.news = self.portal.news
         self.workflow = self.portal.portal_workflow
+        self.setupAuthenticator()
 
     def testImplementsINewsPortlet(self):
         """NewsPortlet must implement INewsPortlet"""

@@ -14,6 +14,9 @@ classImplements(PloneSite, ITestCasePloneSiteRoot)
 
 setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
 
+from plone.protect.authenticator import AuthenticatorView
+from re import match
+
 
 class PloneTestCase(PloneTestCase):
     """This is a stub now, but in case you want to try
@@ -23,6 +26,15 @@ class PloneTestCase(PloneTestCase):
     def setRequestMethod(self, method):
         self.app.REQUEST.set('REQUEST_METHOD', method)
         self.app.REQUEST.method = method
+
+    def getAuthenticator(self):
+        tag = AuthenticatorView('context', 'request').authenticator()
+        pattern = '<input .*name="(\w+)".*value="(\w+)"'
+        return match(pattern, tag).groups()
+
+    def setupAuthenticator(self):
+        name, token = self.getAuthenticator()
+        self.app.REQUEST.form[name] = token
 
 
 class FunctionalTestCase(Functional, PloneTestCase):

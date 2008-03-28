@@ -345,6 +345,8 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='aaa', text='aaa', title='ccc')
         self.folder.invokeFactory('Document', id='bbb', text='bbb')
 
+        self.setupAuthenticator()
+
     def addUser2ToGroup(self):
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup(group2, None, [], [])
@@ -484,6 +486,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Folder', id='foo')
+        self.setupAuthenticator()
 
     def testFolderTitleIsUpdatedOnEdit(self):
         # Test for catalog that searches to ensure folder titles are
@@ -714,6 +717,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.catalog = self.portal.portal_catalog
         self.workflow = self.portal.portal_workflow
         self.folder.invokeFactory('Document', id='doc')
+        self.setupAuthenticator()
 
     def testVisibleIsDefault(self):
         state = self.workflow.getInfoFor(self.folder.doc, 'review_state')

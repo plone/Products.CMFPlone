@@ -12,6 +12,7 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
         self.workflow = self.portal.portal_workflow
+        self.setupAuthenticator()
 
     def testAddDocument(self):
         self.failIf(self.catalog(id='new'))

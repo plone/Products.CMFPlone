@@ -878,6 +878,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.members = self.membership.getMembersFolder()
         self.catalog = self.portal.portal_catalog
         self.mem_index_type = "Script (Python)"
+        self.setupAuthenticator()
 
     def testMembersIndexHtml(self):
         # index_html for Members folder should be a Page Template

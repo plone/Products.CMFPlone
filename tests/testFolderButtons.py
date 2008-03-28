@@ -28,6 +28,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.folder.bar.invokeFactory('Document', id='doc2')
         # folder_rename requires a non-GET request
         self.setRequestMethod('POST')
+        self.setupAuthenticator()
 
     def testTitleIsUpdatedOnTitleChange(self):
         # Make sure our title is updated on the object
@@ -114,6 +115,7 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.folder._setObject('no_delete', undeletable)
         # folder_delete requires a non-GET request
         self.setRequestMethod('POST')
+        self.setupAuthenticator()
 
     def beforeTearDown(self):
         # unregister our deletion event subscriber
@@ -192,6 +194,7 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # Make sure object gets published
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
+        self.setupAuthenticator()
         self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
 
@@ -199,6 +202,7 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # Make sure catalog gets updated
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
+        self.setupAuthenticator()
         self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
         results = self.catalog(path=doc_path)
         self.assertEqual(len(results),1)
@@ -209,6 +213,7 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         self.login('reviewer')
+        self.setupAuthenticator()
         self.folder.folder_publish('publish',paths=[doc1_path,doc2_path])
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
         self.assertEqual(self.wtool.getInfoFor(self.folder.bar.doc2, 'review_state',None), 'published')
@@ -219,6 +224,7 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         paths=[doc1_path, '/garbage/path', doc2_path]
         self.login('reviewer')
+        self.setupAuthenticator()
         self.folder.folder_publish('publish', paths=paths)
         self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1,
                                                'review_state', None),
@@ -241,6 +247,7 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # now we perform the transition
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
+        self.setupAuthenticator()
         self.folder.folder_publish('publish', paths=[doc1_path])
         # because an error was raised during post transition the
         # transaction should have been rolled-back and the state
@@ -323,6 +330,7 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         newParams += "&form.button.renameAll=Rename All"
         newParams += "&new_ids:list=%s" % 'new-id'
         newParams += "&new_titles:list=%s" % 'New title'
+        newParams += '&%s=%s' % self.getAuthenticator()
 
         data = StringIO(newParams)
         response = self.publish(editFormPath, self.basic_auth,
@@ -381,6 +389,7 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         newParams += "&form.button.renameAll=Rename All"
         newParams += "&new_ids:list=%s" % 'new-id'
         newParams += "&new_titles:list=%s" % 'New title'
+        newParams += '&%s=%s' % self.getAuthenticator()
 
         data = StringIO(newParams)
         response = self.publish(editFormPath, self.basic_auth,

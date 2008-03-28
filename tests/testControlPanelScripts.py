@@ -18,8 +18,10 @@ class TestNoGETControlPannel(PloneTestCase.FunctionalTestCase):
         self.folder_path = '/'+self.folder.absolute_url(1)
         self.setRoles(['Manager'])
         self.portal.portal_membership.addMember('bribri', 'secret', ['Manager'], [])
+        self.login('bribri')
 
     def _onlyPOST(self, path, qstring='', success=200, rpath=None):
+        qstring += '&%s=%s' % self.getAuthenticator()
         basic_auth = '%s:%s' % ('bribri', 'secret')
         env = dict()
         if rpath:
@@ -93,6 +95,7 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.membership.memberareaCreationFlag = 0
+        self.setupAuthenticator()
 
     def addMember(self, username, fullname, email, roles, last_login_time):
         self.membership.addMember(username, 'secret', roles, [])

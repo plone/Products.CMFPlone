@@ -55,6 +55,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.createMemberarea('user1')
         self.workflow = self.portal.portal_workflow
+        self.setupAuthenticator()
 
     def _checkMD(self, obj, **changes):
         """ check the DublinCore Metadata on obj - it must inherit from DublinCore """

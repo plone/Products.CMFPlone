@@ -21,6 +21,7 @@ class TestRecentPortletView(PloneTestCase.PloneTestCase):
         self.url = self.portal.portal_url
         #self.recent = self.portal.recent
         self.workflow = self.portal.portal_workflow
+        self.setupAuthenticator()
 
     def testImplementsIRecentPortlet(self):
         """RecentPortlet must implement IRecentPortlet"""

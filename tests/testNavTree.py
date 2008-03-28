@@ -34,6 +34,7 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.populateSite()
+        self.setupAuthenticator()
 
     def populateSite(self):
         """

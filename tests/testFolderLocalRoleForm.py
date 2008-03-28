@@ -21,6 +21,7 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         self.portal.acl_users.addRole('Baz')
         # Cannot assign a role I do not have myself...
         self.setRoles(['Member', 'Foo', 'Bar', 'Baz'])
+        self.setupAuthenticator()
 
     def testFolderLocalRoleAddPostOnly(self):
         # Should try to use get on assing a local role

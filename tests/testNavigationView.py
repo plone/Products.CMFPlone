@@ -30,6 +30,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         # Apply a default layer for view lookups to work in Zope 2.9+
         setDefaultSkin(self.request)
         self.populateSite()
+        self.setupAuthenticator()
         
     def populateSite(self):
         self.setRoles(['Manager'])
