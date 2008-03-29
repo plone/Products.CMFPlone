@@ -1,0 +1,97 @@
+The following are integration tests trying to make sure the CSRF
+protection in Plone 3.1 actually works.  Plone 3.1 comes with the
+packages implemented for `PLIP 224: CSRF protection framework
+<http://plone.org/products/plone/roadmap/224>`_, so they already
+should have been set up.  This can be checked indirectly by making
+sure the authenticator view exists:
+
+  >>> portal.restrictedTraverse('@@authenticator')
+  <Products.Five.metaclass.AuthenticatorView object at ...>
+
+The same can be checked again from a testbrowser:
+
+  >>> from Products.Five.testbrowser import Browser
+  >>> browser = Browser()
+  >>> browser.open('http://nohost/plone/@@authenticator')
+  >>> browser.contents
+  '<Products.Five.metaclass.AuthenticatorView object at ...>'
+
+So far, so good, but the important bit about this is that it should protect
+Plone from CSRF attacks, so we try to test that.  A CSRF attack works by
+having an already logged in portal member, preferably with administrator
+rights, browse a web page of another (or even the same) site and trick them
+into making a malicious request by clicking a link or submitting a form using
+their credentials.
+
+The typical attack would use an invisible `<iframe>` with a form and some
+javascript for auto-submitting it on load. Since the testbrowser doesn't
+support javascript, the submit button needs to be hit manually in this test,
+but that shouldn't make a difference in terms of testing if the protection
+framework actually works.
+
+So first we need a logged in user with manager rights:
+
+  >>> self.setRoles(('Manager',))
+  >>> from Products.PloneTestCase import PloneTestCase as ptc
+  >>> browser.open('http://nohost/plone/login_form')
+  >>> browser.getControl(name='__ac_name').value = ptc.default_user
+  >>> browser.getControl(name='__ac_password').value = ptc.default_password
+  >>> browser.getControl('Log in').click()
+  >>> browser.getLink('Site Setup')
+  <Link text='Site Setup' url='http://nohost/plone/plone_control_panel'>
+
+Also, the form used for the attack needs to be created.  Normally this would
+happen on another domain, but for the purposes of this test it will happen on
+the same site, since it is the only one the testbrowser knows about:
+
+  >>> folder.invokeFactory('News Item', id='important', title='some important news!')
+  'important'
+  >>> folder.important.setText(' \
+  ... <form action="join_form" method="post"> \
+  ... <input type="hidden" name="fullname" value="John Doe" /> \
+  ... <input type="hidden" name="username" value="john" /> \
+  ... <input type="hidden" name="email" value="john@spam-factory.com" /> \
+  ... <input type="hidden" name="password" value="johnnyrulez" /> \
+  ... <input type="hidden" name="password_confirm" value="johnnyrulez" /> \
+  ... <input type="hidden" name="form.submitted" value="1" /> \
+  ... <input type="submit" name="form.button.Register" value="Click me!" /> \
+  ... </form> \
+  ... ', mimetype='text/html')
+  >>> folder.important.getField('text').default_output_type = 'text/html'
+  >>> portal.portal_workflow.doActionFor(folder.important, 'publish')
+
+Also the portal happens to be configured for users to get to pick their own
+passwords.  Again, this is only relevant for this test as otherwise outgoing
+mails would have to be handled making things unnecessarily complicated:
+
+  >>> self.portal.validate_email = False
+
+Now let's say with some social engineering the user who logged in above is
+lured to take a look at the "important" information and unsuspectingly even
+clicks the button presented:
+
+  >>> browser.getLink('Home').click()
+  >>> browser.getLink('some important news!').click()
+  >>> browser.getControl('Click me!').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+  >>> self.failIf(portal.acl_users.getUser('john'), 'user found?')
+
+So, he was protected from the attack — phew.  But of course, he should still
+be able to add new users himself if he wishes so:
+
+  >>> browser.open('http://nohost/plone/join_form')
+  >>> browser.getControl(name='_authenticator')
+  <Control name='_authenticator' type='hidden'>
+
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('User Name').value = 'john'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Password').value = 'y0d4Wg'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg'
+  >>> browser.getControl('Register').click()
+  >>> browser.contents
+  '...Welcome!...You have been registered...'
+  >>> self.failUnless(portal.acl_users.getUser('john'), 'user not found?')
+
