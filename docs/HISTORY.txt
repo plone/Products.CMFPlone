@@ -4,6 +4,8 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.0.6 Unreleased
 
+    - Added authenticator token and verification calls for CSRF protection.
+      [witsch]
 
 plone.app.controlpanel - 1.0.5 Released March 26, 2008
 
