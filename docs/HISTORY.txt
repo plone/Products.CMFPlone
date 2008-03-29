@@ -4,6 +4,9 @@ Changelog
 1.1 UNRELEASED
 --------------
 
+- Made handling of self.context in portal.py consistent.
+  [hannosch]
+
 - Rename the portal_url instance variable to site_url in the ViewletBase
   class. This prevents getToolByName(..., 'portal_url') from returning
   the URL string instead of the portal_url tool, which can causes unexpected

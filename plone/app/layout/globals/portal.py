@@ -15,16 +15,12 @@ from interfaces import IPortalState
 class PortalState(BrowserView):
     """Information about the state of the portal
     """
-    
     implements(IPortalState)
-    
-    def __init__(self, context, request):
-        BrowserView.__init__(self, context, request)
-        self._context = [context]
 
     @memoize_contextless
     def portal(self):
-        return getToolByName(self.context, 'portal_url').getPortalObject()
+        context = aq_inner(self.context)
+        return getToolByName(context, 'portal_url').getPortalObject()
     
     @memoize_contextless
     def portal_title(self):
@@ -45,7 +41,8 @@ class PortalState(BrowserView):
     
     @memoize_contextless
     def default_language(self):
-        site_properties = getToolByName(self.context, "portal_properties").site_properties
+        context = aq_inner(self.context)
+        site_properties = getToolByName(context, "portal_properties").site_properties
         return site_properties.getProperty('default_language', None)
 
     @memoize
@@ -92,18 +89,21 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def member(self):
-        tool = getToolByName(self.context, "portal_membership")
+        context = aq_inner(self.context)
+        tool = getToolByName(context, "portal_membership")
         return tool.getAuthenticatedMember()
 
     @memoize_contextless
     def anonymous(self):
-        tool = getToolByName(self.context, "portal_membership")
+        context = aq_inner(self.context)
+        tool = getToolByName(context, "portal_membership")
         return bool(tool.isAnonymousUser())
 
     @memoize_contextless
     def friendly_types(self):
-        site_properties = getToolByName(self.context, "portal_properties").site_properties
+        context = aq_inner(self.context)
+        site_properties = getToolByName(context, "portal_properties").site_properties
         not_searched = site_properties.getProperty('types_not_searched', [])
 
-        types = getToolByName(self.context, "portal_types").listContentTypes()
+        types = getToolByName(context, "portal_types").listContentTypes()
         return [t for t in types if t not in not_searched]
