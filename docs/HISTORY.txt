@@ -4,6 +4,10 @@ Changelog
 1.1 UNRELEASED
 --------------
 
+- Fixed permission in workflow history viewlet. This closes
+  http://dev.plone.org/plone/ticket/5507.
+  [hannosch]
+
 - Made handling of self.context in portal.py consistent.
   [hannosch]
 

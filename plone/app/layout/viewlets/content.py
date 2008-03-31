@@ -115,7 +115,8 @@ class WorkflowHistoryViewlet(ViewletBase):
         history = []
 
         # check if the current user has the proper permissions
-        if membership.checkPermission('Modify portal content', self.context):
+        if (membership.checkPermission('Request review', self.context) or
+            membership.checkPermission('Review portal content', self.context)):
             try:
                 # get total history
                 review_history = workflow.getInfoFor(self.context, 'review_history')
