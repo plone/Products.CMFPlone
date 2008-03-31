@@ -124,6 +124,7 @@
    <element value="text/x-web-markdown"/>
    <element value="text/x-web-intelligent"/>
    <element value="text/x-web-textile"/>
+   <element value="text/x-html-captioned"/>
   </property>
   <property name="default_contenttype" type="string">text/html</property>
   <property name="enable_sitemap" type="boolean">False</property>
