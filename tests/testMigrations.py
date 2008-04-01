@@ -3143,10 +3143,13 @@ class TestMigrations_v3_1(MigrationTest):
     def afterSetUp(self):
         self.qi = self.portal.portal_quickinstaller
         self.wf = self.portal.portal_workflow
+        self.ps = self.portal.portal_setup
 
     def testReinstallCMFPlacefulWorkflow(self):
         # first the product needs to be installed
         self.qi.installProduct('CMFPlacefulWorkflow')
+        # Delete existing logs to prevent race condition
+        self.ps.manage_delObjects(self.ps.objectIds())
         # We remove the new marker, to ensure it's added on reinstall
         if IPlacefulMarker.providedBy(self.wf):
             noLongerProvides(self.wf, IPlacefulMarker)
