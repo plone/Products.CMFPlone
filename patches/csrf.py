@@ -36,7 +36,10 @@ def applyPatches():
     from Products.CMFDefault.RegistrationTool import RegistrationTool
     RegistrationTool.editMember = patch(RegistrationTool.editMember)
 
-    from Products.PlonePAS import pas
+    from Products.PlonePAS.tools.groupdata import GroupData
+    GroupData.addMember = patch(GroupData.addMember)
+    GroupData.removeMember = patch(GroupData.removeMember)
+
     from Products.PluggableAuthService.PluggableAuthService import \
          PluggableAuthService as PAS
     PAS.userFolderAddUser = patch(PAS.userFolderAddUser)

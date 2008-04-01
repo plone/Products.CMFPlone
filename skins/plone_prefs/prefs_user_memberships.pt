@@ -82,6 +82,7 @@
                      value="Add user to selected groups"
                      tal:condition="batch"
                      i18n:attributes="value label_add_user_to_group;" />
+              <input tal:replace="structure context/@@authenticator/authenticator" />
             </form>
           </metal:block>
 
@@ -127,6 +128,7 @@
                      value="Remove selected groups"
                      i18n:attributes="value label_remove_selected_groups;"
                      tal:condition="groups" />
+              <input tal:replace="structure context/@@authenticator/authenticator" />
             </form>
           </metal:block>
         </div>
