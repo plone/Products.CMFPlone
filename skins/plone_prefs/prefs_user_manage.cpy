@@ -28,7 +28,7 @@ for user in users:
         # If the email field was disabled (ie: non-writeable), the
         # property might not exist.
         if user.email != member.getProperty('email'):
-            setMemberProperties(member, email=user.email)
+            setMemberProperties(member, REQUEST=context.REQUEST, email=user.email)
 
     # If reset password has been checked email user a new password
     if hasattr(user, 'resetpassword'):

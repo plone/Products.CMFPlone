@@ -84,6 +84,8 @@
             Render the personalize_form core template
             </metal:login>
 
+            <input tal:replace="structure context/@@authenticator/authenticator" />
+
         </form>
 
       </div>

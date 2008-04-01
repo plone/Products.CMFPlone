@@ -97,7 +97,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                       SimpleItem.__implements__, )
 
     security.declareProtected(ManageUsers, 'setMemberProperties')
-    def setMemberProperties(self, member, **properties):
+    def setMemberProperties(self, member, REQUEST=None, **properties):
         pas = getToolByName(self, 'acl_users')
         if safe_hasattr(member, 'getId'):
             member = member.getId()

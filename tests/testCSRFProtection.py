@@ -32,6 +32,14 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
                                 request_method='POST', stdin=data)
         self.assertEqual(response.getStatus(), status)
 
+    def test_PloneTool_setMemberProperties(self):
+        member = self.portal.portal_membership.getMemberById
+        email = 'john@spamfactory.com'
+        self.assertNotEqual(member(ptc.default_user).getProperty('email'), email)
+        self.checkAuthenticator('/prefs_user_edit',
+            'userid=%s&email=%s' % (ptc.default_user, email))
+        self.assertEqual(member(ptc.default_user).getProperty('email'), email)
+
     def test_PloneTool_changeOwnershipOf(self):
         self.assertNotEqual(self.portal.getOwner().getUserName(), ptc.default_user)
         self.checkAuthenticator('/change_ownership',

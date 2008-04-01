@@ -10,6 +10,7 @@ def applyPatches():
     """ apply csrf-protection decorator to all relevant methods """
 
     from Products.CMFPlone.PloneTool import PloneTool as PT
+    PT.setMemberProperties = patch(PT.setMemberProperties)
     PT.changeOwnershipOf = patch(PT.changeOwnershipOf)
     PT.acquireLocalRoles = patch(PT.acquireLocalRoles)
     PT.deleteObjectsByPaths = patch(PT.deleteObjectsByPaths)

@@ -37,7 +37,7 @@ if not processed.get('listed'):
 if not processed.get('visible_ids'):
     processed['visible_ids'] = 0
 
-context.plone_utils.setMemberProperties(member, **processed)
+context.plone_utils.setMemberProperties(member, REQUEST=REQUEST, **processed)
 
 context.plone_utils.addPortalMessage(_(u'Changes made.'))
 return state
