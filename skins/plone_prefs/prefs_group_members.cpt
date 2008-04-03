@@ -69,7 +69,7 @@
               i18n:translate="heading_group_members">Group Members</h1>
           <a href=""
              class="link-parent"
-             tal:attributes="href string: $portal_url/prefs_groups_overview"
+             tal:attributes="href string:$portal_url/prefs_groups_overview"
              i18n:translate="label_up_to_groups_overview">
             Up to Groups Overview
           </a>
@@ -89,7 +89,7 @@
 
           <a href=""
              class="link-parent"
-             tal:attributes="href string: $portal_url/prefs_groups_overview"
+             tal:attributes="href string:$portal_url/prefs_groups_overview"
              i18n:translate="label_up_to_groups_overview">
             Up to Groups Overview
           </a>

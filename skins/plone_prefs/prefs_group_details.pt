@@ -96,7 +96,7 @@
 
         <a href=""
            class="link-parent"
-           tal:attributes="href string: $portal_url/prefs_groups_overview"
+           tal:attributes="href string:$portal_url/prefs_groups_overview"
            i18n:translate="label_up_to_groups_overview">
         Up to Groups Overview
         </a>
@@ -123,7 +123,7 @@
 
                    <div tal:content="group/getGroupName | string:" />
                    <input type="hidden" name="groupname" value="groupname" id="groupname"
-                                 tal:attributes="value group/getGroupName | string: "/>
+                                 tal:attributes="value group/getGroupName | string:"/>
                 </div>
 
                  <tal:set tal:condition="targetobject/management_page_charset|nothing"

@@ -26,7 +26,7 @@
             <ul class="contentViews">
               <li>
                 <a href=""
-                   tal:attributes="href string: ${portal_url}/author/${member}"
+                   tal:attributes="href string:${portal_url}/author/${member}"
                    i18n:translate="label_view">View</a>
               </li>
               <li class="selected">
