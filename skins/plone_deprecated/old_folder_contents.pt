@@ -180,7 +180,7 @@
                         <span tal:attributes="class item_type_class">
                             <img tal:replace="structure item_icon/html_tag" />
                             <a href="#" tal:attributes="href  url;
-                                                      title string: $item_type: $item_description;
+                                                      title string:$item_type: $item_description;
                                                       class item_wf_state_class;">
                                 <strong tal:omit-tag="python:not isBrowserDefault">
                                 <label tal:content="item_title_or_id"

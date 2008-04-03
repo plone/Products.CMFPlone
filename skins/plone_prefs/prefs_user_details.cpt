@@ -23,7 +23,7 @@
     <ul class="contentViews">
       <li class="selected">
             <a href=""
-               tal:attributes="href string: $portal_url/${template_id}?${userquery}"
+               tal:attributes="href string:$portal_url/${template_id}?${userquery}"
                i18n:translate="label_user_properties">
               User Properties
             </a>
@@ -31,7 +31,7 @@
             
       <li>
             <a href=""
-               tal:attributes="href string: $portal_url/prefs_user_memberships?${userquery}"
+               tal:attributes="href string:$portal_url/prefs_user_memberships?${userquery}"
                i18n:translate="label_group_memberships">
               Group Memberships
             </a>
@@ -60,7 +60,7 @@
     
         <a href=""
            class="link-parent"
-           tal:attributes="href string: $portal_url/prefs_users_overview"
+           tal:attributes="href string:$portal_url/prefs_users_overview"
            i18n:translate="label_up_to_usersoverview">
           Up to Users Overview
         </a>
