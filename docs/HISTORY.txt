@@ -4,6 +4,9 @@ Changelog
 1.1 UNRELEASED
 --------------
 
+- Fix invalid leading space in all 'Up to Site Setup' links.
+  [wichert]
+
 - Fixed permission in workflow history viewlet. This closes
   http://dev.plone.org/plone/ticket/5507.
   [hannosch]
