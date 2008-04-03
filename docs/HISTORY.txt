@@ -4,8 +4,12 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.1 Unreleased
 
+    - Fix invalid leading space in all 'Up to Site Setup' links.
+      [wichert]
+
     - Added authenticator token and verification calls for CSRF protection.
       [witsch]
+
 
 plone.app.controlpanel - 1.0.5 Released March 26, 2008
 
