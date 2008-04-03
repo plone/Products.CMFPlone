@@ -21,7 +21,7 @@
 
     <a href=""
        class="link-parent"
-       tal:attributes="href string:$portal_url/prefs_error_log_form"
+       tal:attributes="href string: $portal_url/prefs_error_log_form"
        i18n:translate="label_back_to_errorlog">
     Back to Error Log
     </a>
@@ -48,7 +48,7 @@
 
                 <dt align="left" valign="top"
                     i18n:translate="label_user_name">User Name</dt>
-                <dd tal:content="string:${entry/username} (${entry/userid})">joe (joe)</dd>
+                <dd tal:content="string: ${entry/username} (${entry/userid})">joe (joe)</dd>
 
                 <dt align="left" valign="top"
                     i18n:translate="label_request_url">Request URL</dt>
@@ -82,7 +82,7 @@
 
         <a href=""
            class="link-parent"
-           tal:attributes="href string:$portal_url/prefs_error_log_form"
+           tal:attributes="href string: $portal_url/prefs_error_log_form"
            i18n:translate="label_back_to_errorlog">
         Back to Error Log
         </a>

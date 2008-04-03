@@ -59,7 +59,7 @@
             <a href=""
                 tal:define="url_quote_plus python:modules['Products.PythonScripts.standard'].url_quote_plus;
                             memberurl python:url_quote_plus(member.getId())"
-               tal:attributes="href string:${portal_url}/author/${memberurl}"
+               tal:attributes="href string: ${portal_url}/author/${memberurl}"
                i18n:translate="label_view">View</a>
           </li>
           <li>

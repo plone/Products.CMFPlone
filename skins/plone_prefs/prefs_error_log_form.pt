@@ -18,7 +18,7 @@
          
     <a href=""
        class="link-parent"
-       tal:attributes="href string:$portal_url/plone_control_panel"
+       tal:attributes="href string: $portal_url/plone_control_panel"
        i18n:translate="label_up_to_plone_setup">
         Up to Site Setup
     </a>
@@ -89,7 +89,7 @@
                             tal:condition="python: test(entry['time'] > updatetime,1,0)">
                         
                             <td tal:content="python:toLocalizedTime(DateTime(entry['time']), long_format=True)">13:04:41</td>
-                            <td tal:content="string:${entry/username} (${entry/userid})">joe</td>
+                            <td tal:content="string: ${entry/username} (${entry/userid})">joe</td>
                             <td>
                                 <a href="showEntry"
                                    tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">

@@ -56,7 +56,7 @@
                                   tal:define="kss_class python:getKssClasses('startDate',
                                               templateId=templateId, macro='startdate-field-view');"
                                   id="parent-fieldname-startDate"
-                                  tal:attributes="class string:summary$kss_class;
+                                  tal:attributes="class string: summary$kss_class;
                                   title python:here.start()">
                                   <span metal:define-slot="inside" 
                                         class="explain"
@@ -70,7 +70,7 @@
                                   tal:define="kss_class python:getKssClasses('endDate',
                                               templateId=templateId, macro='enddate-field-view');"
                                   id="parent-fieldname-endDate"
-                                  tal:attributes="class string:summary$kss_class;
+                                  tal:attributes="class string: summary$kss_class;
                                   title python:here.end()">
                                   <span metal:define-slot="inside" 
                                           class="explain"
@@ -91,7 +91,7 @@
                                               kss_class python:getKssClasses('startDate',
                                               templateId=templateId, macro='startdatesame-field-view');"
                                   id="parent-fieldname-startDate"
-                                  tal:attributes="class string:summary$kss_class;
+                                  tal:attributes="class string: summary$kss_class;
                                   title python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">
                                   <span metal:define-slot="inside" 
                                         tal:replace="python:test(ampm, here.start().AMPMMinutes(), here.start().TimeMinutes())">Start Time</span>
@@ -103,7 +103,7 @@
                                               kss_class python:getKssClasses('endDate',
                                               templateId=templateId, macro='enddatesame-field-view');"
                                   id="parent-fieldname-endDate"
-                                  tal:attributes="class string:summary$kss_class;
+                                  tal:attributes="class string: summary$kss_class;
                                   title python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">
                                   <span metal:define-slot="inside" 
                                         tal:replace="python:test(ampm, here.end().AMPMMinutes(), here.end().TimeMinutes())">End Time</span>
