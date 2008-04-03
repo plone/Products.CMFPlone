@@ -5,6 +5,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Fix invalid leading space in all 'Up to Site Setup' links.
+      [wichert]
+
     - Added tests for the (not yet implemented) i18n markup support in
       portlets.xml.
       [hannosch]
