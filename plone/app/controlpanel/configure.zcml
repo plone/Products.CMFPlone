@@ -69,6 +69,13 @@
       />
 
   <browser:page
+      name="overview-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".overview.OverviewControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
       name="ramcache-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".ram.RAMCacheControlPanel"
