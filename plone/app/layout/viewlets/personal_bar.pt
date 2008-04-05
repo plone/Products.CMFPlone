@@ -19,7 +19,8 @@
    </tal:block>
 
     <tal:actions tal:repeat="action view/user_actions">
-        <li tal:define="icon python:view.getIconFor(action['category'], action['id'], None);
+        <li tal:define="icon action/icon | nothing;
+                        icon python:icon is not None and icon or view.getIconFor(action['category'], action['id'], None);
                         class_name string:visualIcon actionicon-${action/category}-${action/id};
                         class_name python:icon is not None and class_name or nothing;"
             tal:attributes="class class_name">

@@ -12,24 +12,25 @@
         <ul tal:condition="content_actions" class="actionItems">
             <li tal:repeat="action content_actions"
                 tal:attributes="id string:contentaction-${action/id};">
-          
+
                 <a class="" href=""
+                   tal:define="icon python:view.icon(action)"
                    tal:attributes="href action/url;">
-            
+
                     <img alt="" src=""
                          tal:condition="icon"
-                         tal:replace="structure python:view.icon(action)" />
-                
+                         tal:attributes="src icon; alt action/title;" />
+
                     <tal:action tal:content="action/title" i18n:translate="">
-                    Action name
+                        Action name
                     </tal:action>
-                </a>
-            
+                </a>            
+
             </li>
         </ul>
 
         <div tal:replace="structure provider:plone.contentmenu" />
-    
+
     </tal:block>
 
 </div>

@@ -4,6 +4,10 @@ Changelog
 1.1 UNRELEASED
 --------------
 
+- Allow the use of the icon attribute on action directly instead of using the
+  actionicons tool.
+  [hannosch]
+
 - Fix invalid leading space in all 'Up to Site Setup' links.
   [wichert]
 
