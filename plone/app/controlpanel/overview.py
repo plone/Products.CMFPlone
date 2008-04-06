@@ -5,8 +5,9 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 
 from Products.CMFCore.utils import getToolByName
-from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.app.controlpanel.form import ControlPanelView
 
 
 def three_column_list(input_list):
@@ -28,7 +29,7 @@ def three_column_list(input_list):
     return final
 
 
-class OverviewControlPanel(BrowserView):
+class OverviewControlPanel(ControlPanelView):
 
     template = ViewPageTemplateFile('overview.pt')
 

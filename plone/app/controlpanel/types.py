@@ -11,8 +11,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import PloneMessageFactory as pmf
-from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.app.controlpanel.form import ControlPanelView
 
 
 def format_description(text, request=None):
@@ -21,7 +22,7 @@ def format_description(text, request=None):
     return [s.strip() for s in text.split('- ') if s]
 
 
-class TypesControlPanel(BrowserView):
+class TypesControlPanel(ControlPanelView):
 
     # Actions
 

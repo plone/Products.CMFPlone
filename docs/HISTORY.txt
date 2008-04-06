@@ -4,6 +4,13 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.1 Unreleased
 
+    - Added new IPloneControlPanelView marker interface and let all views and
+      forms implement it.
+      [hannosch]
+
+    - Added new yet unused controlpanel overview page.
+      [hannosch]
+
     - Fix invalid leading space in all 'Up to Site Setup' links.
       [wichert]
 

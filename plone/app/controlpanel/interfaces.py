@@ -2,7 +2,12 @@ from zope.interface import Attribute
 from zope.interface import Interface
 
 
-class IPloneControlPanelForm(Interface):
+class IPloneControlPanelView(Interface):
+    """A marker interface for views showing a controlpanel.
+    """
+
+
+class IPloneControlPanelForm(IPloneControlPanelView):
     """Forms using plone.app.controlpanel
     """
     

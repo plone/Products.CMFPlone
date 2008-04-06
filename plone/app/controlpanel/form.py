@@ -6,6 +6,7 @@ from plone.fieldsets.form import FieldsetsEditForm
 from zope.formlib import form
 
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 
@@ -13,9 +14,16 @@ from plone.app.form import named_template_adapter
 from plone.app.form.validators import null_validator
 
 from plone.app.controlpanel.events import ConfigurationChangedEvent
+from plone.app.controlpanel.interfaces import IPloneControlPanelView
 from plone.app.controlpanel.interfaces import IPloneControlPanelForm
 
 from plone.protect import CheckAuthenticator
+
+
+class ControlPanelView(BrowserView):
+    """A simple view to be used as a basis for control panel screens."""
+
+    implements(IPloneControlPanelView)
 
 
 class ControlPanelForm(FieldsetsEditForm):
