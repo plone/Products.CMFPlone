@@ -41,7 +41,7 @@
                 </h3>
                 <div class="documentByLine"
                      tal:define="creator reply/Creator;
-                                 anonymous_creator python:creator=='Anonymous User';
+                                 anonymous_creator python:creator in ('Anonymous User', '');
                                  mi python:not anonymous_creator and view.member_info(creator);
                                  fullname python: mi and mi['fullname'] or creator;" >
                     <span i18n:translate="label_comment_by">Posted by</span>
