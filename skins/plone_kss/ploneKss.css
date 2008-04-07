@@ -36,7 +36,7 @@ body.kssActive .formlibInlineForm a:hover {
     padding 1px;
     border: none;
     cursor: normal;
-    background none;
+    background: none;
 }
 
 .inlineForm .formHelp,
