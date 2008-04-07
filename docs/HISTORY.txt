@@ -4,6 +4,10 @@ Changelog
 1.1 UNRELEASED
 --------------
 
+- Displaying 'Anonymous User' also when the comment creator is an empty
+  string. This fixes http://dev.plone.org/plone/ticket/7712.
+  [rsantos]
+
 - Allow the use of the icon attribute on action directly instead of using the
   actionicons tool.
   [hannosch]
