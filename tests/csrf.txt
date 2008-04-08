@@ -142,3 +142,22 @@ know the current passwort to exploit this, but we'll check nevertheless:
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+On the admin side of things there's also the user preferences:
+
+  >>> self.setRoles(('Manager'),)
+  >>> browser.open('http://nohost/plone/prefs_user_details?userid=%s' % ptc.default_user)
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Changes made...'
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('E-mail').value = 'john.doe@foo-security.net'
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
