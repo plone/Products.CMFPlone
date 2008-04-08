@@ -786,6 +786,7 @@ table.plain th {
     float: right;
     width: 20em;
     clear: right;
+    margin: 0 0 0.5em 1em;
 }
 
 /* Useful deviations from regular style on elements */
