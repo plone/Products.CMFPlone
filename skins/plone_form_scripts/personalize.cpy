@@ -12,7 +12,7 @@ from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
 member=context.portal_membership.getAuthenticatedMember()
-member.setProperties(context.REQUEST)
+member.setProperties(properties=context.REQUEST, REQUEST=REQUEST)
 member_context=context.portal_membership.getHomeFolder(member.getId())
 context.portal_skins.updateSkinCookie()
 

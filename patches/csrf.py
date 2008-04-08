@@ -34,6 +34,13 @@ def applyPatches():
     MT.deleteLocalRoles = patch(MT.deleteLocalRoles)
     MT.deleteMembers = patch(MT.deleteMembers)
 
+    from Products.CMFCore.MemberDataTool import MemberData as MD
+    original_setProperties = MD.setProperties
+    def setProperties(self, properties=None, REQUEST=None, **kw):
+        return original_setProperties(self, properties, **kw)
+    setProperties.__doc__ = original_setProperties.__doc__
+    MD.setProperties = patch(setProperties)
+
     from Products.CMFDefault.RegistrationTool import RegistrationTool
     RegistrationTool.editMember = patch(RegistrationTool.editMember)
 
