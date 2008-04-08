@@ -121,3 +121,24 @@ existing invalid, in which case submitting should yield an error:
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+Next up is the password form.  Well, technically an attacker would need to
+know the current passwort to exploit this, but we'll check nevertheless:
+
+  >>> browser.open('http://nohost/plone/password_form')
+  >>> browser.getControl('Current password').value = ptc.default_password
+  >>> browser.getControl('New password').value = 'y0d4Wg'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg'
+  >>> browser.getControl('Change Password').click()
+  >>> browser.contents
+  '...Info...Password changed...'
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Current password').value = 'y0d4Wg'
+  >>> browser.getControl('New password').value = 'y0d4Wg!'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
+  >>> browser.getControl('Change Password').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
