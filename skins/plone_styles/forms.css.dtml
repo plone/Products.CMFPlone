@@ -108,7 +108,7 @@ dl.enableFormTabbing dd {
 }
 
 #login-form {
-    max-width: 30em; 
+    width: 30em; 
     margin: 0 auto;
 }
 #login-form .field {
