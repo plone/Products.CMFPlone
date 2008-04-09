@@ -1042,11 +1042,10 @@ a.link-parent {
 
 /* Fullscreen
 **
-** Fullscreen mode is disabled by default. In case you are going to re-anable it
-** for your site, you need to un-comment the block below 
+** Fullscreen mode is disabled by default. The styles below are used only in case you have it
+** enabled.
 */
 
-/*
 body.fullscreen #portal-logo,
 body.fullscreen #portal-siteactions {
     display: none;
@@ -1060,7 +1059,7 @@ body.fullscreen #portal-searchbox {
     position: relative;
     z-index: 3;
 }
-*/
+
 
 /* Kupu image alignment classes */
 .image-left {
