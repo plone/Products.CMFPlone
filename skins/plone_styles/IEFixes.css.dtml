@@ -155,10 +155,10 @@ dd.portletFooter {
 }
 
 /* fix for the horizontal scroll due to the floated searchbox without width definition */
-#portal-searchbox {
+* html #portal-searchbox {
     overflow: auto; 
 }
-body.fullscreen #portal-searchbox {
+* html body.fullscreen #portal-searchbox {
     overflow: visible;
 }
 
