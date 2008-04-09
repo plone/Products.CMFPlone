@@ -168,4 +168,9 @@ table.ploneCalendar caption {
     display: none !important;
 }
 
+/* IE6 adds gap between portalMessage's DT and DD. We need to minimize it */
+* html dl.portalMessage dt {
+    margin-right: 0;
+}
+
 /* </dtml-with> */

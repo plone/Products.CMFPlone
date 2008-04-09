@@ -519,6 +519,8 @@ form.searchPage input.searchButton {
 
 dl.portalMessage {
     font-size: &dtml-fontSmallSize;;
+    background-color: #ffffe3; 
+    border: 1px solid #996;    
 }
 dl.portalMessage a {
     color: black;
@@ -527,7 +529,6 @@ dl.portalMessage a {
 }
 dl.portalMessage dt {
     background-color: #996; 
-    border: 1px solid #996;
     font-weight: bold;
     float: left;
     margin: 0 0.5em 0 0;
@@ -536,27 +537,33 @@ dl.portalMessage dt {
     line-height: 1.25em;
 }
 dl.portalMessage dd {
-    background-color: #ffffe3;
-    border: 1px solid #996;
     padding: 0.5em 0.5em; 
     margin: 0;
     line-height: 1.25em;
 }
+dl.warning {
+    border-color: #d80;
+}
 dl.warning dt {
-    background-color: #d80; 
-    border: 1px solid #d80;
+    background-color: #d80;
+}
+dl.error {
+    border-color: #d00;    
 }
 dl.error dt {
     background-color: #d00; 
-    border-color: #d00;
+}
+dl.warning {
+    border-color: #d80;    
 }
 dl.warning dd {
     background-color: #fd7; 
-    border-color: #d80;
+}
+dl.error {
+    border-color: #d80;    
 }
 dl.error dd {
     background-color: #fd7; 
-    border-color: #d80;
 }
 
 .documentDescription {
