@@ -231,7 +231,12 @@ ul.configletDetails li a {
 ul.configletDetails li label {
     font-weight: bold;
 }
-
+ul.configletDetails li.configletDescription {
+    display: block;
+    color: &dtml-discreetColor;;
+    font-size: &dtml-fontSmallSize;;
+    margin: 0;
+}
 /* Additional STX workaround classes */
 .stx table p {
     margin: 0;

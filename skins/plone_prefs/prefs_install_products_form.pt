@@ -86,10 +86,10 @@
                                     product_desc python:container.portal_quickinstaller.getProductDescription(pid);
                                     has_error product/hasError"
                         tal:condition="python: product_file or product_desc or has_error">
-                        <li tal:condition="product_desc">
-                            <p tal:content="product_desc">
+                        <li class="configletDescription"
+                            tal:condition="product_desc" 
+                            tal:content="product_desc">
                                 product description
-                            </p>
                         </li>
                         <li tal:condition="product_file">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
@@ -160,10 +160,10 @@
                     <ul class="configletDetails"
                         tal:define="product_file python:container.portal_quickinstaller.getProductFile(pid);
                                     product_desc python:container.portal_quickinstaller.getProductDescription(pid);">
-                        <li tal:condition="product_desc">
-                            <p tal:content="product_desc">
+                        <li class="configletDescription"
+                            tal:condition="product_desc" 
+                            tal:content="product_desc">
                                 product description
-                            </p>
                         </li>
                         <li tal:condition="product_file">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" >
