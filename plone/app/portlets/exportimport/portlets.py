@@ -28,6 +28,7 @@ from Products.GenericSetup.utils import _resolveDottedName
 
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 
@@ -47,6 +48,23 @@ from plone.portlets.registration import PortletType
 
 def dummyGetId():
     return ''
+
+HAS_BLACKLIST = True
+try:
+    from Products.GenericSetup.interfaces import IComponentsHandlerBlacklist
+except ImportError:
+    HAS_BLACKLIST = False
+
+if HAS_BLACKLIST:
+    class Blacklist(object):
+        implements(IComponentsHandlerBlacklist)
+
+        def getExcludedInterfaces(self):
+            return (_getDottedName(IPortletType),
+                    _getDottedName(IPortletManager),
+                    _getDottedName(IPortletManagerRenderer),
+                    )
+
 
 class PropertyPortletAssignmentExportImportHandler(object):
     """Import portlet assignment settings based on zope.schema properties

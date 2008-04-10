@@ -5,6 +5,13 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Use the new GenericSetup.components blacklist feature when available.
+      This gives our exportimport code full control over all components
+      providing either IPortletType, IPortletManager or
+      IPortletManagerRenderer. This fixes
+      http://dev.plone.org/plone/ticket/7149.
+      [hannosch]
+
     - Fix invalid leading space in all 'Up to Site Setup' links.
       [wichert]
 
