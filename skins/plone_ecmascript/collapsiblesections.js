@@ -34,7 +34,7 @@
  */
 
 function activateCollapsibles() {
-    jq('dl.collapsible dt.collapsibleHeader:first').click(function() {
+    jq('dl.collapsible').find('dt.collapsibleHeader:first').click(function() {
         var $container = jq(this).parents('dl.collapsible:first');
         if (!$container) return true;
 
@@ -42,8 +42,7 @@ function activateCollapsibles() {
         // toggle between collapsed and expanded classes
         $container.toggleClass('collapsed' + $type + 'Collapsible')
                   .toggleClass('expanded' + $type + 'Collapsible');
-    });
-    jq('dl.collapsible').each(function() {
+    }).end().each(function() {
         var $state = jq(this).hasClass('collapsedOnLoad') ?
                      'collapsed' : 'expanded';
         var $type = jq(this).hasClass('inline') ? 'Inline' :'Block';
