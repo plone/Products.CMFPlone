@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - Add a test to demonstrate #6100 and #7860. This is fixed in 
+      plone.portlets already.
+      [optilude]
+
     - Use the new GenericSetup.components blacklist feature when available.
       This gives our exportimport code full control over all components
       providing either IPortletType, IPortletManager or

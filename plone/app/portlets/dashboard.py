@@ -22,6 +22,7 @@ def new_user(principal, event):
     
     userid = principal.getId()
     portlets = defaults()
+    
     for name in ('plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4'):
         assignments = portlets.get(name)
         if assignments:
@@ -33,7 +34,7 @@ def new_user(principal, event):
                     if manager is None:
                         manager = category[userid] = UserPortletAssignmentMapping(manager=name,
                                                                                   category=USER_CATEGORY,
-                                                                                  name=userid)                    
+                                                                                  name=userid)
                     chooser = INameChooser(manager)
                     for assignment in assignments:
                         manager[chooser.chooseName(None, assignment)] = assignment

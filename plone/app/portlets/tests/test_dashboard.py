@@ -1,7 +1,9 @@
-from zope.component import getUtility
+from zope.component import getUtility, getMultiAdapter
 from zope.event import notify
 
 from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletRetriever
+
 from plone.portlets.constants import USER_CATEGORY
 
 from Products.PluggableAuthService.events import PrincipalCreated
@@ -25,6 +27,21 @@ class TestDashboard(PortletsTestCase):
 
         self.failUnless('fakeuser' in user_portlets)
         self.failUnless(len(user_portlets['fakeuser']) > 0)
+  
+    def test_non_ascii_usernames_created(self):
+        user1, pass1 = u'user1\xa9'.encode('utf-8'), 'pass1'
+        uf = self.portal.acl_users
+        
+        # Bug #6100 - Would throw a unicode decode error in event handler
+        # in dashboard.py
+        uf.userFolderAddUser(user1, pass1, ['Manager'], [])
+
+        col = getUtility(IPortletManager, name='plone.dashboard1')
+        retriever = getMultiAdapter((self.portal, col), IPortletRetriever)
+        
+        # Bug #7860 - Would throw a unicode decode error when fetching
+        # portlets
+        retriever.getPortlets()
    
 def test_suite():
     from unittest import TestSuite, makeSuite
