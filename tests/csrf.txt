@@ -161,3 +161,37 @@ On the admin side of things there's also the user preferences:
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+Make sure users and roles can be managed through the control panel.  First
+we need to alter the security settings so that no email roundtrip is required
+anymore (which at the same time tests the security control panel):
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Security').click()
+  >>> browser.getControl('Let users select their own passwords').selected = True
+  >>> browser.getControl('Save').click()
+
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getControl('Add New User').click()
+  >>> browser.getControl('User Name').value = 'johnny'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Password').value = 'y0d4Wg!'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
+  >>> browser.getControl('Register').click()
+  >>> browser.contents
+  '...Info...User added...'
+
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getControl('Show all').click()
+  >>> browser.getControl(name='users.roles:list:records').value = ['Manager'] * 3
+  >>> browser.getControl('Apply Changes').click()
+  >>> browser.contents
+  '...Info...Changes applied...'
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='users.roles:list:records').value = ['Manager'] * 3
+  >>> browser.getControl('Apply Changes').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
