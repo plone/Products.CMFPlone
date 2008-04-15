@@ -88,6 +88,9 @@
 
           <metal:block metal:fill-slot="removables">
 
+            <form method="post"
+                  tal:attributes="action template_id">
+
         <h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
          <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
 
@@ -120,8 +123,6 @@
 
             </table>
             <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-            <form method="post"
-                  tal:attributes="action template_id">
               <input class="destructive"
                      type="submit"
                      name="prefs_user_membership_edit:method"
