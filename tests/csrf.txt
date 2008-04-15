@@ -195,3 +195,29 @@ anymore (which at the same time tests the security control panel):
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+Let's also try to grant a role to that user:
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getControl('Show all').click()
+  >>> browser.getLink('johnny').click()
+  >>> browser.getLink('Group Memberships').click()
+  >>> browser.getControl(name='searchstring').value = 'Admin'
+  >>> browser.getForm(name='groups').getControl('Search').click()
+  >>> browser.getControl(name='add:list').value = ['Administrators']
+  >>> browser.getControl('Add user to selected groups').click()
+  >>> browser.contents
+  '...Group Memberships for...johnny...
+   ...Current Group Memberships...
+   ...Administrators...
+   ...AuthenticatedUsers...'
+
+  >>> browser.getControl(name='searchstring').value = 'Review'
+  >>> browser.getForm(name='groups').getControl('Search').click()
+  >>> browser.getControl(name='add:list').value = ['Reviewers']
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Add user to selected groups').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
