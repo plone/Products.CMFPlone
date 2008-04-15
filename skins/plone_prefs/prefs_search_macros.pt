@@ -84,23 +84,23 @@
               </td>
 
               <td>
-        <tal:block tal:condition="obj/getGroupName | nothing">
+                <tal:block tal:condition="obj/getGroupName | nothing">
                   <img src="group.gif" alt="" />
                   <a href="" tal:attributes="href python:'prefs_group_details?'+mq(groupname=obj.getGroupName())"
                             tal:content="obj/getGroupName | default">
                         <span i18n:translate="link_groupname_not_available">
                             groupname not available
                         </span>
-                </a>
-        </tal:block>
-        <tal:block tal:condition="not:obj/getGroupName | nothing">
+                  </a>
+                </tal:block>
+                <tal:block tal:condition="not:obj/getGroupName | nothing">
                   <img src="user.gif" alt="" />
                   <a href="" tal:attributes="href python:'prefs_user_details?'+mq(userid=obj.getId())"
                         tal:content="obj/getUserName | default">
                         <span i18n:translate="link_username_not_available">
                             username not available
                         </span>
-                </a>
+                  </a>
                 </tal:block>
               </td>
             </tr>
@@ -112,8 +112,8 @@
 
         <tal:block condition="python:searchstring and results">
 
-    <input type="hidden" value="b_start" name="b_start" 
-           tal:attributes="value b_start"/>
+        <input type="hidden" value="b_start" name="b_start" 
+               tal:attributes="value b_start"/>
 
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
@@ -129,7 +129,8 @@
         </tal:block>
 
         <metal:block metal:define-slot="removables" />
-    </form>
+      </form>
     </div>
+
   </body>
 </html>
