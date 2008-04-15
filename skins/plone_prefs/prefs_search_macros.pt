@@ -128,8 +128,10 @@
 
         </tal:block>
 
-        <metal:block metal:define-slot="removables" />
       </form>
+
+      <metal:block metal:define-slot="removables" />
+
     </div>
 
   </body>
