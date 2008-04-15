@@ -74,8 +74,6 @@
           </metal:block>
 
           <metal:block metal:fill-slot="actions" >
-            <form method="post"
-                  tal:attributes="action template_id">
               <input class="context"
                      type="submit"
                      name="prefs_user_membership_edit:method"
@@ -83,7 +81,6 @@
                      tal:condition="batch"
                      i18n:attributes="value label_add_user_to_group;" />
               <input tal:replace="structure context/@@authenticator/authenticator" />
-            </form>
           </metal:block>
 
           <metal:block metal:fill-slot="removables">
