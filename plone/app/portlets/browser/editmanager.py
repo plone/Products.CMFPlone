@@ -52,12 +52,13 @@ class EditPortletManagerRenderer(Explicit):
     implements(IPortletManagerRenderer)
     adapts(Interface, IDefaultBrowserLayer, IManageColumnPortletsView, IPortletManager)
 
+    template = ViewPageTemplateFile('templates/edit-manager.pt')
+
     def __init__(self, context, request, view, manager):
         self.__parent__ = view
         self.manager = manager # part of interface
         self.context = context
         self.request = request
-        self.template = ViewPageTemplateFile('templates/edit-manager.pt')
         self.__updated = False
         
     @property
@@ -156,9 +157,10 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     """
     adapts(Interface, IDefaultBrowserLayer, IManageContextualPortletsView, IPortletManager)
 
+    template = ViewPageTemplateFile('templates/edit-manager-contextual.pt')
+
     def __init__(self, context, request, view, manager):
         EditPortletManagerRenderer.__init__(self, context, request, view, manager)
-        self.template = ViewPageTemplateFile('templates/edit-manager-contextual.pt')
         
     def blacklist_status_action(self):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))

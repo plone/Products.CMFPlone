@@ -5,6 +5,11 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.0 (UNRELEASED)
 
+    - ViewPageTemplate is meant to be used as a class variable and only
+      works as instance variable by accident in current Zope. This fixes
+      errors in Philipp and Hanno's aq refactor branch of Zope2.
+      [wichert]
+
     - Add a test to demonstrate #6100 and #7860. This is fixed in 
       plone.portlets already.
       [optilude]
