@@ -102,6 +102,9 @@ class MailControlPanelAdapter(SchemaAdapterBase):
     def set_smtp_userid(self, value):
         if safe_hasattr(self.context, 'smtp_userid'):
             self.context.smtp_userid = value
+            #SecureMailhost 1.x also uses this:
+            if safe_hasattr(self.context, '_smtp_userid'):
+                self.context._smtp_userid = value
         elif safe_hasattr(self.context, 'smtp_uid'):
             self.context.smtp_uid = value
 
@@ -116,6 +119,9 @@ class MailControlPanelAdapter(SchemaAdapterBase):
         if value is not None:
             if safe_hasattr(self.context, 'smtp_pass'):
                 self.context.smtp_pass = value
+                #SecureMailhost 1.x also uses this:
+                if safe_hasattr(self.context, '_smtp_pass'):
+                    self.context._smtp_pass = value
             elif safe_hasattr(self.context, 'smtp_pwd'):
                 self.context.smtp_pwd = value
 
