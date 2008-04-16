@@ -12,7 +12,8 @@
    <criteria>ATFriendlyDateCriteria</criteria>
    <criteria>ATDateRangeCriterion</criteria>
   </index>
-  <index name="Creator" description="" enabled="True" friendlyName="">
+  <index name="Creator" description="" enabled="True" friendlyName="Creator"
+     i18n:attributes="description; friendlyName">
    <criteria>ATSelectionCriterion</criteria>
    <criteria>ATCurrentAuthorCriterion</criteria>
    <criteria>ATSimpleStringCriterion</criteria>
@@ -25,7 +26,8 @@
    <criteria>ATFriendlyDateCriteria</criteria>
    <criteria>ATDateRangeCriterion</criteria>
   </index>
-  <index name="Description" description="" enabled="True" friendlyName="">
+  <index name="Description" description="" enabled="True" friendlyName="Description"
+     i18n:attributes="description; friendlyName">
    <criteria>ATSimpleStringCriterion</criteria>
   </index>
   <index name="effective"
