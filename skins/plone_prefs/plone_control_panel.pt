@@ -82,9 +82,7 @@
                         <li tal:condition="configlet/visible">
                             <a href=""          
                                tal:attributes="href configlet/url">
-                                <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
-                                                                   alt configlet/title;"
-                                     i18n:attributes="alt"
+                                <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);"
                                      tal:on-error="string:" />
                             <tal:configletname tal:content="configlet/title"
                                                i18n:translate=""></tal:configletname>
