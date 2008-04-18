@@ -197,6 +197,8 @@
         <div metal:use-macro="here/document_relateditems/macros/relatedItems">
             show related items if they exist
         </div>
+        
+        <span class="visualClear"><!-- --></span>
 
         <div tal:replace="structure provider:plone.belowcontentbody" />
 
