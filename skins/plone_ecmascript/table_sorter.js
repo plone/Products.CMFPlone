@@ -37,7 +37,7 @@ function sort() {
         table.attr('sorted', reverse ? '' : name);
 
         // appending the tr nodes in sorted order will remove them from their old ordering
-        tbody.append(jq.map(data, 'a[3]'));
+        tbody.append(jq.map(data, function(a) { return a[3]; }));
         // jquery :odd and :even are 0 based
         tbody.find('tr').removeClass('odd').removeClass('even')
             .filter(':odd').addClass('even').end()
