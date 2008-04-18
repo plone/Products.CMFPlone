@@ -26,8 +26,9 @@
                     Title
                 </span>
                 <span class="portletItemDetails" 
-                      tal:condition="exists:item/updated"
-                      tal:content="python:toLocalizedTime(item['updated'])">19.02.2007</span>
+                      tal:condition="exists:item/updated">
+                      <span tal:omit-tag="" tal:content="python:toLocalizedTime(item['updated'])">19.02.2007</span>
+                </span>
             </a>
         </dd>
     </tal:rss>
