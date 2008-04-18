@@ -151,11 +151,11 @@ class RSSFeed(object):
                     itemdict = {
                         'title' : item.title,
                         'url' : link,
-                        'summary' : item.summary,
+                        'summary' : item.get('description',''),
                     }
                     if hasattr(item, "updated"):
                         itemdict['updated']=DateTime(item.updated)
-                except: # XXX. more specific here, I am not quite sure which elements are guaranteed to be there.
+                except AttributeError:
                     continue
                 self._items.append(itemdict)
             self._loaded = True
@@ -228,12 +228,12 @@ class Renderer(base.DeferredRenderer):
     @property
     def initializing(self):
         """should return True if deferred template should be displayed"""
-	feed=self._getFeed()
-	if not feed.loaded:
-		return True
-	if feed.needs_update:
-		return True
-	return False
+        feed=self._getFeed()
+        if not feed.loaded:
+            return True
+        if feed.needs_update:
+            return True
+        return False
             
     def deferred_update(self):
         """refresh data for serving via KSS"""
