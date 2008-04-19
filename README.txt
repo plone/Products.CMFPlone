@@ -11,9 +11,9 @@ The general approach taken is to re-use as much of formlib as possible. This
 lead to the decision to use formlib's EditForm's functionality, as these
 provide the most automation found in formlib today.
 
-As a result of this decision we needed to take a slightly unconvential approach
-as EditForm's only work on one single context, as they are targetted at editing
-content objects, which usually are available as one context only.
+As a result of this decision we needed to take a slightly unconventional
+approach as EditForm's only work on one single context, as they are targeted
+at editing content objects, which usually are available as one context only.
 
 Control panels on the other side most commonly present settings from various
 sources and group these in a user-friendly way. In order to still be able to use
@@ -28,8 +28,8 @@ Following this approach a control panel consists of at least three classes:
     panel with the help of zope.schema. This gives us automatic type checking
     and some other basic validation of the settings. It also lets us specify
     vocabularies to be used for Choice-type properties.
-    
-  - An adapater implementing the above interface, exposing all the different
+
+  - An adapter implementing the above interface, exposing all the different
     settings as properties. As we don't want to have those control panels
     available all over the place, we restrict them to adapt the 'IPloneSiteRoot'
     only. Sometimes we use the 'SchemaAdapterBase' class from CMFDefault.formlib
@@ -39,7 +39,7 @@ Following this approach a control panel consists of at least three classes:
     encoded strings in site encoding rather than unicode or use Zope2's DateTime
     class instead of Python's datetime package.
 
-  - And finally the form itself. We can use the common baseclass
+  - And finally the form itself. We can use the common base class
     'ControlPanelForm' to provide us with a consistent look and feel for all
     control panels. This is accomplished by using the 'control-panel.pt'
     template. For most cases this should be the only template that needs to be
@@ -50,7 +50,7 @@ Following this approach a control panel consists of at least three classes:
     where the default implementation needs the current locale to be present as
     part of the REQUEST, which is not the case in a Zope2 environment so far.
 
-    The form is also the place to specifiy custom widgets for some properties.
+    The form is also the place to specify custom widgets for some properties.
     There are some custom widgets available in the widgets.py module in this
     package.
 

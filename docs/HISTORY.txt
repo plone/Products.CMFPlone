@@ -2,7 +2,7 @@ Changelog for plone.app.controlpanel
 
     (name of developer listed in brackets)
 
-plone.app.controlpanel - 1.1 Unreleased
+plone.app.controlpanel - 1.1 Released April 19. 2008
 
     - Added new IPloneControlPanelView marker interface and let all views and
       forms implement it.
