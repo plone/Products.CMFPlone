@@ -3,7 +3,7 @@ Changelog for plone.app.portlets
     (name of developer listed in brackets)
 
 
-plone.app.portlets 1.1.0 (UNRELEASED)
+plone.app.portlets 1.1.0 (2008-04-20)
     
     - fixed #8025 so that the named feeds now work to. Changed the package to
       use a different field.
