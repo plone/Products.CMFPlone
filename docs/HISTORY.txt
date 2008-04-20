@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1 UNRELEASED
---------------
+1.1.0 Released April 20th, 2008
+-------------------------------
 
 - Displaying 'Anonymous User' also when the comment creator is an empty
   string. This fixes http://dev.plone.org/plone/ticket/7712.
@@ -38,8 +38,8 @@ Changelog
 - Make viewlet managers in head section order- and filterable.
   [fschulze]
 
-1.0.6 UNRELEASED
-----------------
+1.0.6 
+-----
 
 - Added i18n markup to nextprevious.pt.
   This closes http://dev.plone.org/plone/ticket/7537.
