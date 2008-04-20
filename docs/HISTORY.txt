@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 
 plone.app.portlets 1.1.0 (UNRELEASED)
+    
+    - fixed #8025 so that the named feeds now work to. Changed the package to
+      use a different field.
+      [mrtopf]
 
     - ViewPageTemplate is meant to be used as a class variable and only
       works as instance variable by accident in current Zope. This fixes
