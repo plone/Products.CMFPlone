@@ -234,7 +234,7 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
         if objPath is not None:
             if objPath == itemPath:
                 isCurrent = True
-            elif objPath.startswith(itemPath) and len(objPhysicalPath) > len(itemPhysicalPath):
+            elif objPath.startswith(itemPath + '/') and len(objPhysicalPath) > len(itemPhysicalPath):
                 isCurrentParent = True
 
         relativeDepth = len(itemPhysicalPath) - rootDepth
