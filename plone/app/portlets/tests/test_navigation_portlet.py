@@ -390,6 +390,21 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 1)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/doc11')
     
+    def testIsCurrentParentWithOverlapingNames(self):
+        self.setRoles(['Manager',])
+        self.portal.invokeFactory('Folder', 'folder2x')
+        self.portal.folder2x.invokeFactory('Document', 'doc2x1')
+        self.setRoles(['Member',])
+        view = self.renderer(self.portal.folder2x.doc2x1)
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        
+        folder2x_node = [n for n in tree['children'] if n['path'] == '/plone/folder2x'][0]
+        self.failUnless(folder2x_node['currentParent'])
+        
+        folder2_node = [n for n in tree['children'] if n['path'] == '/plone/folder2'][0]
+        self.failIf(folder2_node['currentParent'])
+    
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

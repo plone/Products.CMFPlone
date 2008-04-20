@@ -4,8 +4,11 @@ Changelog for plone.app.portlets
 
 
 plone.app.portlets 1.1.0 (2008-04-20)
+
+    - Added test for #7942. The fix is in plone.app.layout.
+      [optilude]
     
-    - fixed #8025 so that the named feeds now work to. Changed the package to
+    - Fixed #8025 so that the named feeds now work to. Changed the package to
       use a different field.
       [mrtopf]
 
