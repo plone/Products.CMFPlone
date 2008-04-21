@@ -4,7 +4,8 @@ Changelog for Plone
 
 Plone 3.1 - UNRELEASED
 
-    - Added protection against CSRF attacks to various methods and forms.
+    - Added protection against CSRF attacks to various methods and
+      forms (see `tests/csrf.txt`).
       [witsch]
 
     - Fixed typo in ploneKss.css
