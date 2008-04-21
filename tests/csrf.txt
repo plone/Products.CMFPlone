@@ -252,8 +252,34 @@ first:
   >>> browser.contents
   '...Info...Renamed...a-folder...to...folder...'
 
-Removing the item again, too:
+"Sharing" the item is next:
 
+  >>> browser.getLink('Sharing').click()
+  >>> browser.url
+  'http://nohost/plone/folder/@@sharing'
+  >>> browser.getControl(name='entries.role_Editor:records').value
+  []
+
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/folder/@@sharing'
+  >>> browser.contents
+  '...Info...Changes saved...'
+  >>> browser.getControl(name='entries.role_Editor:records').value
+  ['True']
+
+And finally removing the item again, too:
+
+  >>> browser.getLink('View').click()
   >>> browser.getLink('Delete').click()
   >>> browser.url
   'http://nohost/plone/folder/delete_confirmation'
