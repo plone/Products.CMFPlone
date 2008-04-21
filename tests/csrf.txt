@@ -226,3 +226,29 @@ FIXME: actually the authenticator shouldn't appear twice, but oh well... :)
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+Plone's "object actions" should also be protected.  Let's check renaming
+first:
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink(url='createObject?type_name=Folder').click()
+  >>> browser.getControl('Title').value = 'a folder'
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/a-folder/'
+
+  >>> browser.getLink('Rename').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('New Short Name').value = 'folder'
+  >>> browser.getControl('Rename All').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl('New Short Name').value = 'folder'
+  >>> browser.getControl('Rename All').click()
+  >>> browser.url
+  'http://nohost/plone/folder/'
+  >>> browser.contents
+  '...Info...Renamed...a-folder...to...folder...'
+
