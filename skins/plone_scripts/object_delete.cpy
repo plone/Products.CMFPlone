@@ -32,6 +32,9 @@ if lock_info is not None and lock_info.is_locked():
     context.plone_utils.addPortalMessage(message, type='error')
     return state.set(status = 'failure')
 else:
+    authenticator = context.restrictedTraverse('@@authenticator', None)
+    if not authenticator.verify():
+        raise 'Forbidden'
     parent.manage_delObjects(context.getId())
     message = _(u'${title} has been deleted.',
                 mapping={u'title' : title})

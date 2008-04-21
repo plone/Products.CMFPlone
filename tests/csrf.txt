@@ -252,3 +252,21 @@ first:
   >>> browser.contents
   '...Info...Renamed...a-folder...to...folder...'
 
+Removing the item again, too:
+
+  >>> browser.getLink('Delete').click()
+  >>> browser.url
+  'http://nohost/plone/folder/delete_confirmation'
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Delete').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl('Delete').click()
+  >>> browser.url
+  'http://nohost/plone'
+  >>> browser.contents
+  '...Info...a folder has been deleted...'
+
