@@ -195,7 +195,7 @@ anymore (which at the same time tests the security control panel):
   ...
   HTTPError: HTTP Error 403: Forbidden
 
-Let's also try to grant a role to that user:
+Let's also try adding that user to a group:
 
   >>> browser.open('http://nohost/plone/plone_control_panel')
   >>> browser.getLink('Users and Groups').click()
