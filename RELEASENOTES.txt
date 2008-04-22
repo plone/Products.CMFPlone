@@ -1,8 +1,8 @@
-Plone 3.0 - Aug, 2007
+Plone 3.1 - Apr, 2008
 =====================
 
 The following is a list of important things to note when installing or
-upgrading to Plone 3.0:
+upgrading to Plone 3.1:
 
 * Unpacking the Plone archive with WinZip will not work: WinZip will truncate
   filenames without warning you. 7-Zip is a good open source alternative for
@@ -21,6 +21,7 @@ upgrading to Plone 3.0:
 * The Python OpenID packages are required if you want to enable OpenID support.
   They can be downloaded from the OpenID enabled site at
   http://www.openidenabled.com/resources/downloads/python-openid/
+  Your python must also be compiled with SSL support.
 
 * Plone 3.0 uses both Zope Products and python packages. The Zope Products
   are installed in the usual location: the Products directory of the Zope
@@ -37,102 +38,28 @@ upgrading to Plone 3.0:
 Important notes for users
 -------------------------
 
-* The most significant new feature is undoubtedly KSS - Kinetic Style
-  Sheets - or, Plone's Ajax framework. This allows Plone to have a more
-  polished user interface elements and more powerful dynamic applications that
-  can refresh data in a page without having to reload the entire page. For
-  example, you can double-click the title of the page to instantly edit it. Or
-  switch between tabs nearly instantly. Or validate form fields before you hit
-  submit. And that's just the beginning.
+Plone 3.1 adds new features to Plone 3, while maintaining full compatibility
+with Plone 3.0. All products written for Plone 3.0 should work normally on
+Plone 3.1 as well.
 
-* Plone 3.0 now provides document versioning out of the box. Versioning allows
-  you to save old versions of a page, compare your current version to older
-  versions, and even to roll back to previous versions. Plone 3.0 also includes
-  document staging, the ability to work on a copy of a document while the old
-  version is still live.  Finally, Plone 3.0 includes locking, which prevents
-  two people from making changes to a document at the same time. Together,
-  versioning, staging and locking will make Plone 3.0 very appealing to folks
-  who are managing sophisticated sites with multiple people editing content at
-  the same time.
+A complete list of changes can be found online at
+http://plone.org/products/plone/releases/3.1 . The most important changes are:
 
-* A link integrity feature has been added which can automatically
-  detect and prevent broken links in a site, or intelligently redirect users if
-  they use a broken link into a site. Plone will now:
+* new portlets have been added: a rich text field portlet which can show
+  arbitrary text as well as a portlet which will show items from a collection.
 
-  - warn you when you try to delete a page that has incoming links from
-    elsewhere on your site
+* Products and packages can now define dependencies, which will automatically
+  be installed when necessary.
 
-  - automatically create redirects when you move or rename a page that has
-    incoming links
+* The jQuery javascript library is now used throughout Plone and is available
+  for use by add-on products. Of course KSS is still present as well.
 
-* Portlets have been greatly enhanced. There is a new 'manage portlets' option
-  available in the site which allows you to
+* GenericSetup profiles can now be used to manage creation and removal
+  of both content rules and portlets.
 
-  - instantly add, remove and reorder portlets
+* Security sensitive forms accessible by users are now protected against
+  Cross Site Request Forging-attacks.
 
-  - control whether portlets get inherited from parent folders
-
-  - customize portlets per-user, per-group and per content type
-
-  - configure individual portlets, for example to change the number
-    of items shown in portlets.
-
-* Users now have a personal dashboard. They can customize this with
-  multiple portlets.
-  
-* Plone now supports the Google Sitemap protocol, described in 
-  https://www.google.com/webmasters/tools/docs/en/protocol.html
-
-  You can switch the site map feature on under Site Settings in the Site Setup
-  page. When enabled the sitemap.xml.gz file is provided in the root of your
-  portal.
-
-* The Plone Tableless skin has been removed. The standard Plone skin makes
-  very minimal use of tables and can be flexibly styled, as is demonstrated
-  by the new NuPlone theme.
-
-* Content types can now be configured through a new control panel. Using this
-  panel a number of new features are available:
-
-  - rich text fields in types can act as wiki fields, making it possible to
-    create wiki-style links by surrounding a phrase (( .. ))
-
-* The standard Page type has added two new options: 
-
-  - a toggle which allows pages to be shown as S5 presentations. This makes
-    it trivial to create simple presentations in Plone.
-
-  - a table of contents can be generated automatically based on the headers 
-    used in the page.
-
-* With the new inline Ajax-powered editing of Plone, you no longer have to
-  reload a page or go to a separate screen to make a correction — simply edit
-  it directly by clicking on it.
-
-* In addition to the standard four-state workflow Plone has always used
-  there Plone now includes special community, intranet, simple publication
-  and one-state workflows. Switching between workflows can be done in an
-  existing site using a new control panel.
-
-* Working Copy support - lets you work on two versions of your content in
-  parallel. With working copy support you can check out a parallel version of a
-  published document, and Plone will keep track of the two documents together.
-  You can then go off and polish your new document to perfection — and when
-  you're ready for the new version to go live, you just publish it.
-
-* Automatic locking and unlocking Prevents people from overwriting each others
-  changes, but makes it easy to unlock accidentally locked content. Plone gives
-  you a lightweight locking message that will tell you that a document was
-  locked, by whom, and how long ago — so you won't accidentally stomp on
-  somebody else's changes.
-
-* The new rules engine for content lets you perform operations on content with
-  event triggers. Do you want a mail to go out to the project group when
-  reports are uploaded to a certain location in your site? Want to move a file
-  from one location to another when it is added after a certain date?
-
-  Plone 3 ships with a powerful and configurable content rules engine that lets
-  you define triggers and perform operations when these events are triggered.
 
 
 Important notes for site and system administrators
@@ -159,8 +86,8 @@ http://plone.org/upgrade
   of xpdf suite is required.
 
 
-Important notes for developers
-------------------------------
+Important notes for developers new to Plone 3
+---------------------------------------------
 
 The latest information on migrating products to Plone 3.0 can be found online
 at http://plone.org/documentation/manual/upgrade-guide/version/2.5-3.0/products
@@ -246,7 +173,7 @@ Preferred but not obligatory (right now)
 * QuickInstaller-based installation should use GenericSetup profiles instead 
 
 * use events instead of manage_ methods (which will probably disappear in Plone
-  3.5 or 4.0)
+  4.0)
 
 * Packaging technology:
 
