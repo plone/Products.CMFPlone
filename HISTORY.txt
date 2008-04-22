@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1 - UNRELEASED
+Plone 3.1 - released April 22, 2008
 
     - Added protection against CSRF attacks to various methods and
       forms (see `tests/csrf.txt`).
