@@ -7,6 +7,9 @@ plone.app.controlpanel - 1.1.1 Unreleased
 
 plone.app.controlpanel - 1.1 Released April 19. 2008
 
+    - Fixed saving of esmtp username and password in SecureMailHost
+      [csenger]
+
     - Added new IPloneControlPanelView marker interface and let all views and
       forms implement it.
       [hannosch]
