@@ -18,7 +18,7 @@
     </dt>
 
     <dd class="portletItem lastItem">
-        <ul class="portletNavigationTree navTreeLevel0">
+        <ul class="navTree navTreeLevel0">
             <li class="navTreeItem"
                 tal:condition="view/include_top">
                 <div tal:define="selectedClass view/root_item_class;
