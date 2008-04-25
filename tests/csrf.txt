@@ -340,3 +340,39 @@ And finally removing the item again, too:
   >>> browser.contents
   '...Info...a folder has been deleted...'
 
+
+More tests: Managing Workflow State
+-----------------------------------
+
+Changing the workflow state of object, i.e. submitting and publishing them etc
+also needs to be protected.  Let's create a folder again to test this:
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink(url='createObject?type_name=Folder').click()
+  >>> browser.getControl('Title').value = 'another folder'
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/another-folder/'
+
+Now we submit the document for review.  Unfortunately, this cannot be easily
+protected, since it's not using a form and hence the link itself would have to
+contain the authenticator token.  However, this a bad idea because the token
+could easily get "lost".  Changing the workflow state using the "Advanced"
+publishing process can be protected, though, so let's try this instead:
+
+  >>> browser.getLink('Advanced...').click()
+  >>> browser.url
+  'http://nohost/plone/another-folder/content_status_history'
+  >>> browser.getControl('Publish').selected = True
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Item state changed...'
+
+  >>> browser.getLink('Advanced...').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Retract').selected = True
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
