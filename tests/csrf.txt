@@ -1,3 +1,9 @@
+CSRF protection tests
+=====================
+
+Some background & an example attack
+-----------------------------------
+
 The following are integration tests trying to make sure the CSRF
 protection in Plone 3.1 actually works.  Plone 3.1 comes with the
 packages implemented for `PLIP 224: CSRF protection framework
@@ -60,9 +66,10 @@ the same site, since it is the only one the testbrowser knows about:
   >>> folder.important.getField('text').default_output_type = 'text/html'
   >>> portal.portal_workflow.doActionFor(folder.important, 'publish')
 
-Also the portal happens to be configured for users to get to pick their own
-passwords.  Again, this is only relevant for this test as otherwise outgoing
-mails would have to be handled making things unnecessarily complicated:
+Coincidentally the portal happens to be configured for users to get to pick
+their own passwords.  Again, this is only relevant for this test as otherwise
+outgoing mails would have to be handled making things unnecessarily
+complicated:
 
   >>> self.portal.validate_email = False
 
@@ -95,6 +102,9 @@ be able to add new users himself if he wishes so:
   '...Welcome!...You have been registered...'
   >>> self.failUnless(portal.acl_users.getUser('john'), 'user not found?')
 
+
+More tests: User Preferences
+----------------------------
 
 Now that the basics have been tested and demonstrated in detail, the remainder
 of this test will try to swiftly cover all forms that need protection, or
@@ -161,6 +171,10 @@ On the admin side of things there's also the user preferences:
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+
+More tests: Managing Users & Groups
+-----------------------------------
+
 Make sure users and roles can be managed through the control panel.  First
 we need to alter the security settings so that no email roundtrip is required
 anymore (which at the same time tests the security control panel):
@@ -225,6 +239,10 @@ FIXME: actually the authenticator shouldn't appear twice, but oh well... :)
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
+
+
+More tests: Object Actions
+--------------------------
 
 Plone's "object actions" should also be protected.  Let's check renaming
 first:
