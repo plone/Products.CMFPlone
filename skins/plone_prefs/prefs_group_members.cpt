@@ -292,6 +292,8 @@
                     tal:condition="batch"
                     i18n:attributes="value label_add_users_to_group;" />
 
+            <input tal:replace="structure context/@@authenticator/authenticator" />
+
           </form>
         </tal:ifgroups>
       </div>

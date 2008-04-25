@@ -240,6 +240,32 @@ FIXME: actually the authenticator shouldn't appear twice, but oh well... :)
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+There's an alternative way to adding a user to a group in which the group in
+question is selected first and the user can then be added via the "Group
+Members" tab:
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getLink(url='/prefs_groups_overview').click()
+  >>> browser.getLink('Administrators').click()
+  >>> browser.getControl('Show all').click()
+  >>> browser.getControl(name='add:list').getControl(value='johnny').selected = True
+  >>> browser.getControl('Add selected groups and users to this group').click()
+  >>> browser.contents
+  '...Info...Changes made...
+   ...Members of the Administrators group...
+   ...Current group members...
+   ...johnny...john@foo-security.com...
+   ...Remove selected groups / users...'
+
+  >>> browser.getControl('Show all').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='add:list').getControl(value='john').selected = True
+  >>> browser.getControl('Add selected groups and users to this group').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
 
 More tests: Object Actions
 --------------------------
