@@ -376,3 +376,30 @@ publishing process can be protected, though, so let's try this instead:
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+Again, there's an alternative way of accomplishing this, namely using the
+"Change State" button of the "folder contents" view:
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink('Contents').click()
+  >>> form = browser.getForm(name='folderContentsForm')
+  >>> form.getControl(name='paths:list').getControl(value='/plone/another-folder').selected = True
+  >>> url = browser.url                                     # remember url...
+  >>> browser.getControl('Change State').click()
+  >>> browser.getControl(name='orig_template').value = url  # gives 404 otherwise
+  >>> browser.getControl('Retract').selected = True
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Item state changed...'
+
+  >>> form = browser.getForm(name='folderContentsForm')
+  >>> form.getControl(name='paths:list').getControl(value='/plone/another-folder').selected = True
+  >>> url = browser.url                                     # remember url...
+  >>> browser.getControl('Change State').click()
+  >>> browser.getControl(name='orig_template').value = url  # gives 404 otherwise
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Publish').selected = True
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
