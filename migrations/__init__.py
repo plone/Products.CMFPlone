@@ -131,4 +131,5 @@ def registerMigrations():
 
     # Plone 3.1.x
     registerUpgradePath('3.1', '3.1.1', null)
+    registerUpgradePath('3.1.1', '3.1.2 (svn/unreleased)', null)
 
