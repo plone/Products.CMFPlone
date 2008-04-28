@@ -2,8 +2,17 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1.1 - unreleased
+Plone 3.1 - released April 28, 2008
 
+    - Fix CSRF protection for changing the workflow state through the
+      "advanced" publishing process form and via the "change state"
+      button of the "folder contents" view. This fixes
+      http://dev.plone.org/plone/ticket/8066
+      [witsch]
+
+    - Fix CSRF protection for adding a user to a group via the "group members"
+      tab. Fixes http://dev.plone.org/plone/ticket/8024
+      [witsch]
 
 
 Plone 3.1 - released April 22, 2008
