@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1 - released April 28, 2008
+Plone 3.1.1 - released April 28, 2008
 
     - Fix CSRF protection for changing the workflow state through the
       "advanced" publishing process form and via the "change state"
