@@ -10,7 +10,7 @@ from plone.app.layout.viewlets.common import ViewletBase
 
 
 class CommentsViewlet(ViewletBase):
-    render = ViewPageTemplateFile('comments.pt')
+    index = ViewPageTemplateFile('comments.pt')
 
     def update(self):
         super(CommentsViewlet, self).update()

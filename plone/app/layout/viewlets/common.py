@@ -29,7 +29,7 @@ class ViewletBase(BrowserView):
         self.manager = manager
 
     @property
-    @deprecate("Use site_url instead. ViewlewBase.portal_url will be removed in Plone 4")
+    @deprecate("Use site_url instead. ViewletBase.portal_url will be removed in Plone 4")
     def portal_url(self):
         return self.site_url
 
@@ -40,8 +40,12 @@ class ViewletBase(BrowserView):
         self.site_url = self.portal_state.portal_url()
 
     def render(self):
+        # defer to index method, because that's what gets overridden by the template ZCML attribute
+        return self.index()
+        
+    def index(self):
         raise NotImplementedError(
-            '`render` method must be implemented by subclass.')
+            '`index` method must be implemented by subclass.')
 
 
 class TitleViewlet(ViewletBase):
@@ -54,7 +58,7 @@ class TitleViewlet(ViewletBase):
         self.page_title = self.context_state.object_title
         self.portal_title = self.portal_state.portal_title
 
-    def render(self):
+    def index(self):
         portal_title = safe_unicode(self.portal_title())
         page_title = safe_unicode(self.page_title())
         if page_title == portal_title:
@@ -66,7 +70,7 @@ class TitleViewlet(ViewletBase):
 
 
 class TableOfContentsViewlet(ViewletBase):
-    render = ViewPageTemplateFile('toc.pt')
+    index = ViewPageTemplateFile('toc.pt')
 
     def update(self):
         obj = aq_base(self.context)
@@ -81,7 +85,7 @@ class TableOfContentsViewlet(ViewletBase):
 
 
 class SkipLinksViewlet(ViewletBase):
-    render = ViewPageTemplateFile('skip_links.pt')
+    index = ViewPageTemplateFile('skip_links.pt')
 
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
@@ -90,7 +94,7 @@ class SkipLinksViewlet(ViewletBase):
 
 
 class SiteActionsViewlet(ViewletBase):
-    render = ViewPageTemplateFile('site_actions.pt')
+    index = ViewPageTemplateFile('site_actions.pt')
 
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
@@ -99,7 +103,7 @@ class SiteActionsViewlet(ViewletBase):
 
 
 class SearchBoxViewlet(ViewletBase):
-    render = ViewPageTemplateFile('searchbox.pt')
+    index = ViewPageTemplateFile('searchbox.pt')
 
     def update(self):
         super(SearchBoxViewlet, self).update()
@@ -119,7 +123,7 @@ class SearchBoxViewlet(ViewletBase):
 
 
 class LogoViewlet(ViewletBase):
-    render = ViewPageTemplateFile('logo.pt')
+    index = ViewPageTemplateFile('logo.pt')
 
     def update(self):
         super(LogoViewlet, self).update()
@@ -134,7 +138,7 @@ class LogoViewlet(ViewletBase):
 
 
 class GlobalSectionsViewlet(ViewletBase):
-    render = ViewPageTemplateFile('sections.pt')
+    index = ViewPageTemplateFile('sections.pt')
 
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
@@ -152,7 +156,7 @@ class GlobalSectionsViewlet(ViewletBase):
 
 
 class PersonalBarViewlet(ViewletBase):
-    render = ViewPageTemplateFile('personal_bar.pt')
+    index = ViewPageTemplateFile('personal_bar.pt')
 
     def update(self):
         super(PersonalBarViewlet, self).update()
@@ -189,7 +193,7 @@ class PersonalBarViewlet(ViewletBase):
 
 
 class PathBarViewlet(ViewletBase):
-    render = ViewPageTemplateFile('path_bar.pt')
+    index = ViewPageTemplateFile('path_bar.pt')
 
     def update(self):
         super(PathBarViewlet, self).update()
@@ -203,7 +207,7 @@ class PathBarViewlet(ViewletBase):
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
 
 class ContentActionsViewlet(ViewletBase):
-    render = ViewPageTemplateFile('contentactions.pt')
+    index = ViewPageTemplateFile('contentactions.pt')
     
     def update(self):
         context = aq_inner(self.context)

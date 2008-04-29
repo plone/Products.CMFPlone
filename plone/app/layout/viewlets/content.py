@@ -26,7 +26,7 @@ class DocumentActionsViewlet(ViewletBase):
         self.getIconFor = plone_utils.getIconFor
         self.actions = self.context_state.actions().get('document_actions', None)
 
-    render = ViewPageTemplateFile("document_actions.pt")
+    index = ViewPageTemplateFile("document_actions.pt")
 
 
 class DocumentBylineViewlet(ViewletBase):
@@ -95,7 +95,7 @@ class DocumentBylineViewlet(ViewletBase):
         return util.ulocalized_time(time, long_format, self.context,
                                     domain='plonelocales')
 
-    render = ViewPageTemplateFile("document_byline.pt")
+    index = ViewPageTemplateFile("document_byline.pt")
 
 
 class WorkflowHistoryViewlet(ViewletBase):
@@ -149,4 +149,4 @@ class WorkflowHistoryViewlet(ViewletBase):
 
         return history
 
-    render = ViewPageTemplateFile("review_history.pt")
+    index = ViewPageTemplateFile("review_history.pt")
