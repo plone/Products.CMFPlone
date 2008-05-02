@@ -68,9 +68,5 @@
   <utility
      interface="zope.app.cache.interfaces.ram.IRAMCache"
      factory="zope.app.cache.ram.RAMCache"/>
-  <utility 
-      interface="plone.keyring.interfaces.IKeyManager"
-      factory="plone.keyring.keymanager.KeyManager"
-      />
  </utilities>
 </componentregistry>

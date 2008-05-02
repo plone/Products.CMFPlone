@@ -4,5 +4,6 @@
   <dependencies>
     <dependency>profile-plone.portlet.static:default</dependency>
     <dependency>profile-plone.portlet.collection:default</dependency>
+    <dependency>profile-plone.protect:default</dependency>
   </dependencies>
 </metadata>
