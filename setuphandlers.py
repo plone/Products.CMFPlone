@@ -73,6 +73,7 @@ class HiddenProducts(object):
             'plone.portlet.static',
             'plone.portlet.collection',
             'borg.localrole',
+            'plone.keyring'
             ]
 
 
