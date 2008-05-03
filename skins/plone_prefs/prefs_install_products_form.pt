@@ -56,9 +56,7 @@
             <legend i18n:translate="legend_install_products_available">Products available for install</legend>
 
             <ul class="configlets">
-                <li tal:define="products QI/listInstallableProducts;
-                                dummy python:products.sort();
-                               "
+                <li tal:define="products QI/listInstallableProducts;"
                     tal:repeat="product products">
                 <tal:product define="pid product/id">
                     
@@ -131,9 +129,7 @@
             <legend i18n:translate="legend_installed_products">Installed products</legend> 
 
             <ul class="configlets">
-                <tal:products tal:define="products QI/listInstalledProducts;
-                                          dummy python:products.sort();
-                                         "
+                <tal:products tal:define="products QI/listInstalledProducts;"
                               tal:repeat="product products">
                 <tal:filter condition="python: not product['isHidden'] and not product['isLocked']">
 

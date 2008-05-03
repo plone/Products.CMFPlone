@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 3.1.2 - unreleased
 
+    - Updated add-on installation screen to sort by title instead of id.
+      This closes http://dev.plone.org/plone/ticket/8012.
+      [hannosch]
 
 
 Plone 3.1.1 - released April 28, 2008
