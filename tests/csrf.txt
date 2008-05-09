@@ -403,3 +403,28 @@ Again, there's an alternative way of accomplishing this, namely using the
   ...
   HTTPError: HTTP Error 403: Forbidden
 
+
+More tests: Plone Control Panel
+-------------------------------
+
+Some parts of the control panel have already been tested, but the "configlets"
+haven't.  Luckily they're all using the same view, so testing one of them will
+suffice to make sure the protection works everywhere:
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Security').click()
+  >>> browser.getControl('Enable self-registration').selected
+  False
+  >>> browser.getControl('Enable self-registration').selected = True
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Changes saved...'
+
+  >>> browser.getLink('Security').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Enable self-registration').selected = False
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
