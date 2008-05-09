@@ -341,6 +341,36 @@ And finally removing the item again, too:
   '...Info...a folder has been deleted...'
 
 
+More tests: Folder contents
+---------------------------
+
+The "folder contents" view needs to contain the authenticator token in order
+to check the removal of its content.  To check if everything's in place, we
+simply create an object and then delete it again via the "folder contents":
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink(url='createObject?type_name=Document').click()
+  >>> browser.getControl('Title').value = 'a document'
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/a-document'
+
+  >>> browser.getLink('Home').click()
+  >>> browser.getLink('Contents').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('a document').selected = True
+  >>> browser.getControl('Delete').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl('a document').selected = True
+  >>> browser.getControl('Delete').click()
+  >>> browser.contents
+  '...Info...Item(s) deleted...'
+
+
 More tests: Managing Workflow State
 -----------------------------------
 
