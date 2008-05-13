@@ -438,8 +438,8 @@ More tests: Plone Control Panel
 -------------------------------
 
 Some parts of the control panel have already been tested, but the "configlets"
-haven't.  Luckily they're all using the same view, so testing one of them will
-suffice to make sure the protection works everywhere:
+haven't.  Luckily most of them are using the same form handlers and template,
+so testing one of them already makes sure the protection works in most cases:
 
   >>> browser.open('http://nohost/plone/plone_control_panel')
   >>> browser.getLink('Security').click()
@@ -457,4 +457,41 @@ suffice to make sure the protection works everywhere:
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
+
+Exceptions to the rule are the "RAM Cache Settings" and "Maintenance"
+configlets, which are tested separately.  The former isn't linked from the
+"Site Setup" overview, so we have to navigate there directly:
+
+  >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
+  >>> browser.getControl('Clear cache').click()
+  >>> browser.contents
+  '...Info...Cleared the cache...'
+
+  >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Clear cache').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+The "Maintenance" configlet has some special security limitations, which is
+why we need to log in as the portal owner first:
+
+  >>> credentials = ptc.portal_owner, ptc.default_password
+  >>> browser = Browser()
+  >>> browser.addHeader('Authorization', 'Basic %s:%s' % credentials)
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Maintenance').click()
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=1).value = 'invalid!'
+  >>> browser.getControl('Shut down').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Maintenance').click()
+  >>> browser.getControl('Shut down').click()
+  >>> browser.contents
+  '...Zope is shutting down...'
 
