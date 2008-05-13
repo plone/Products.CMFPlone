@@ -229,12 +229,8 @@ Let's also try adding that user to a group:
   >>> browser.getControl(name='searchstring').value = 'Review'
   >>> browser.getForm(name='groups').getControl('Search').click()
   >>> browser.getControl(name='add:list').value = ['Reviewers']
-
-FIXME: actually the authenticator shouldn't appear twice, but oh well... :)
-
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl(name='_authenticator', index=1).value = 'invalid!'
-
   >>> browser.getControl('Add user to selected groups').click()
   Traceback (most recent call last):
   ...
