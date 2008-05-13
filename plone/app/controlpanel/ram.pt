@@ -10,12 +10,6 @@
 
 <div metal:fill-slot="extra_info">
 
-    <form action="."
-          tal:attributes="action request/URL"
-          method="post"
-          class="edit-form"
-          enctype="multipart/form-data">
-
         <fieldset>
             <legend i18n:translate="heading_ramcache_stats">
                 RAM Cache statistics
@@ -56,8 +50,6 @@
             </div>
 
         </fieldset>
-
-    </form>
 
 </div>
 
