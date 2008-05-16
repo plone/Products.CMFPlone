@@ -84,6 +84,9 @@
                              i18n:attributes="value label_save;"
                              />
               </div>
+
+              <input tal:replace="structure context/@@authenticator/authenticator" />
+
         </form>
       </fieldset>
     </tal:block>
@@ -154,6 +157,9 @@
                              i18n:attributes="value label_save;"
                              />
               </div>
+
+              <input tal:replace="structure context/@@authenticator/authenticator" />
+
         </form>
       </fieldset>
 
@@ -206,6 +212,9 @@
                     i18n:attributes="value label_perform_search;"
                     />
           </div>
+
+          <input tal:replace="structure context/@@authenticator/authenticator" />
+
         </form>
       </fieldset>
     </tal:block>
