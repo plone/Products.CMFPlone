@@ -40,7 +40,7 @@
                   runyaga
                 </a>
                 <span tal:condition="not: item/actor_home" 
-                  tal:content="python:fullname or username or actorid"
+                      tal:replace="python:fullname or username or actorid"
                 />
               </td>
 
