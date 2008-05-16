@@ -20,7 +20,9 @@
           <tal:block tal:repeat="item history">
             <tr tal:define="odd repeat/item/odd;
                             rhComments item/comments|nothing;
-                            state item/review_state|nothing"
+                            state item/review_state|nothing;
+                            actor item/actor;
+                            actor_name python:actor and (actor['fullname'] or actor['username']) or item['actorid']"
                 tal:attributes="class python:odd and 'even' or 'odd'"
                 tal:condition="item/action">
               <td i18n:translate="" tal:content="item/transition_title"
@@ -32,11 +34,9 @@
                 <a href="/Members/runyaga"
                    tal:condition="item/actor_home"
                    tal:attributes="href item/actor_home"
-                   tal:content="python:actor['fullname'] or actor['username']">
-                  runyaga
-                </a>
+                   tal:content="actor_name"> runyaga </a>
                 <span tal:condition="not: item/actor_home" 
-                  tal:replace="actor/fullname"/>
+                    tal:replace="actor_name"/>
               </td>
 
               <td>
