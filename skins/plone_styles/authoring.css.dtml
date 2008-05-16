@@ -249,7 +249,8 @@ ul.configletDetails li.configletDescription {
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
-.reviewHistory {
+.reviewHistory,
+.contentHistory {
     display: inline;
     font-size: 110% !important; 
     color: Black;
