@@ -140,8 +140,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                             # member info is not available
                             # the user was probably deleted
                             r['actor_home'] = ''
-                #reverse the list
-                history = self.context.reverseList(review_history)
+                history.reverse()
 
             except WorkflowException:
                 log( 'plone.app.layout.viewlets.content: '
