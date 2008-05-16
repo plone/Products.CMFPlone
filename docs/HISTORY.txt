@@ -1,11 +1,18 @@
 Changelog
 =========
 
+1.2 - Unreleased
+----------------
+
+- Add a new content history viewlet which combines workflow history and
+  content versions. Render this instead of the workflow history viewlet.
+  [wichert]
+
 1.1.1 - Unreleased
 ------------------
 
-- Use 'index' attribute rather than 'render' for setting viewlet templates, so that
-  they can be overridden using the 'template' ZCML attribute.
+- Use 'index' attribute rather than 'render' for setting viewlet templates, so
+  that they can be overridden using the 'template' ZCML attribute.
   [davisagli]
 
 1.1.0 Released April 20th, 2008

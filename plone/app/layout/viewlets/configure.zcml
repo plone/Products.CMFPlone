@@ -207,11 +207,11 @@
         permission="zope2.View" 
         />
 
-    <!-- Render the workflow history -->
+    <!-- Render the content history -->
     <browser:viewlet
-        name="plone.belowcontentbody.workflowhistory"
+        name="plone.belowcontentbody.contenthistory"
         manager=".interfaces.IBelowContentBody"
-        class=".content.WorkflowHistoryViewlet"
+        class=".content.ContentHistoryViewlet"
         permission="zope2.View" 
         />
 

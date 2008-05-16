@@ -150,3 +150,51 @@ class WorkflowHistoryViewlet(ViewletBase):
         return history
 
     index = ViewPageTemplateFile("review_history.pt")
+
+
+class ContentHistoryViewlet(WorkflowHistoryViewlet):
+    index = ViewPageTemplateFile("content_history.pt")
+
+    @memoize
+    def getUserInfo(self, userid):
+        mt=self.tools.membership()
+        info=mt.getMemberInfo(userid)
+        if info is None:
+            return dict(actor_home="",
+                        actor=dict(fullname=userid))
+
+        if not info.get("fullname", None):
+            info["fullname"]=userid
+
+        return dict(actor=info,
+                    actor_home="%s/author/%s" % (self.site_url, userid))
+
+    @memoize
+    def revisionHistory(self):
+        rt=getToolByName(self.context, "portal_repository")
+        version_history=rt.getHistory(aq_inner(self.context), countPurged=False);
+
+        def morphVersionDataToHistoryFormat(vdata):
+            userid=vdata.sys_metadata["principal"]
+            info=dict(action=_(u"edit"),
+                      transition_title=_(u"Edit"),
+                      actorid=userid,
+                      time=vdata.sys_metadata["timestamp"],
+                      comments=vdata.comment,
+                      review_state=vdata.sys_metadata["review_state"])
+            info.update(self.getUserInfo(userid))
+            return info
+
+        version_history=[morphVersionDataToHistoryFormat(h)
+                            for h in version_history]
+
+        return version_history
+
+
+    @memoize
+    def fullHistory(self):
+        history=self.workflowHistory() + self.revisionHistory()
+        history.sort(key=lambda x: x["time"], reverse=True)
+        return history
+
+
