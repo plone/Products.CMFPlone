@@ -140,6 +140,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                             # member info is not available
                             # the user was probably deleted
                             r['actor_home'] = ''
+                history = review_history
                 history.reverse()
 
             except WorkflowException:
