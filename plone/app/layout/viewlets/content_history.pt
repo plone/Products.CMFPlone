@@ -3,7 +3,7 @@
      i18n:domain="plone"
      tal:define="history view/fullHistory;"
      tal:condition="history">
-      <dl id="history" class="collapsible inline collapsedOnLoad">
+      <dl id="history" class="collapsible collapsedOnLoad">
         <dt class="collapsibleHeader" i18n:translate="label_history">History</dt>
         <dd class="collapsibleContent">
 
