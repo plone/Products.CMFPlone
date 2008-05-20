@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Purge old zope2 Interface interfaces for Zope 2.12 compatibility.
+  [elro]
+
 - Add a new content history viewlet which combines workflow history and
   content versions. Render this instead of the workflow history viewlet.
   [wichert]

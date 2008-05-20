@@ -9,8 +9,6 @@ from Products.Five.browser import BrowserView
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder \
-     as z2INonStructuralFolder
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
@@ -148,9 +146,6 @@ class ContextState(BrowserView):
         if not folderish:
             return False
         elif INonStructuralFolder.providedBy(context):
-            return False
-        elif z2INonStructuralFolder.isImplementedBy(context):
-            # BBB: for z2 interface compat
             return False
         else:
             return folderish
