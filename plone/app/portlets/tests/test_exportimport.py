@@ -106,8 +106,10 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.failUnless(portlet is not None)
         self.assertEqual([IColumn], portlet.for_)
         # XXX Missing i18n support in the exportimport code
-        self.failUnless(isinstance(portlet.title, Message))
-        self.failUnless(isinstance(portlet.description, Message))
+        self.failUnless(isinstance(portlet.title, Message),
+                        "Portlet title should be a Message instance")
+        self.failUnless(isinstance(portlet.description, Message),
+                        "Portlet description should be a Message instance")
         self.assertEquals(u"title_foo_portlet", portlet.title)
         self.assertEquals(u"description_foo_portlet", portlet.description)
         self.assertEquals(u"Foo", portlet.title.default)

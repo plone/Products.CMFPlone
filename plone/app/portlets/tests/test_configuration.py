@@ -199,8 +199,10 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals('portlets.test.Test', portlet_type.addview)
         self.assertEquals([Interface], portlet_type.for_)
         # XXX Missing i18n support in the exportimport code
-        self.failUnless(isinstance(portlet_type.title, Message))
-        self.failUnless(isinstance(portlet_type.description, Message))
+        self.failUnless(isinstance(portlet_type.title, Message),
+                        "Portlet title should be a Message instance")
+        self.failUnless(isinstance(portlet_type.description, Message),
+                        "Portlet description should be a Message instance")
         self.assertEquals(u"title_test_portlet", portlet_type.title)
         self.assertEquals(u"description_test_portlet", portlet_type.description)
         self.assertEquals(u"Test portlet", portlet_type.title.default)
