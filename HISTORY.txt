@@ -12,6 +12,10 @@ Plone 3.1.2 - unreleased
       This closes http://dev.plone.org/plone/ticket/8012.
       [hannosch]
 
+    - Sarissa.js is also used by KSS; load it for non-anon users as well (like
+      the KSS libraries). This closes http://dev.plone.org/plone/ticket/8141
+      [mj]
+
 
 Plone 3.1.1 - released April 28, 2008
 

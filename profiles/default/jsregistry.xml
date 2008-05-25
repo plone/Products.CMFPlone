@@ -70,11 +70,13 @@
     enabled="True" expression="not: portal/portal_membership/isAnonymousUser"
     id="unlockOnFormUnload.js" inline="False"/>
 
- <!-- Kupu -->
+ <!-- Sarissa is used by both Kupu and KSS -->
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True"
-    expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
+    expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request) or not here.restrictedTraverse('@@plone_portal_state').anonymous()"
     id="sarissa.js" inline="False"/>
+
+ <!-- Kupu -->
  <javascript cacheable="True" compression="safe" cookable="True"
     enabled="True"
     expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)"
