@@ -3,7 +3,7 @@ Changelog for plone.app.portlets
     (name of developer listed in brackets)
 
 
-plone.app.portlets 1.unreleased
+plone.app.portlets 1.1.2 (2008-06-01)
 
     - Fixed i18n markup. 
       Fixes http://dev.plone.org/plone/ticket/7068#comment:4
