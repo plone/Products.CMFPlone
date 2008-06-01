@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.unreleased
 
+    - Fixed i18n markup. 
+      Fixes http://dev.plone.org/plone/ticket/7068#comment:4
+      [naro] 
+
     - The portletNavigationTree class was used for both the dl and the top
       ul. This makes things inconsistent since other levels in the tree
       used a navTree class for the ul, and uses the same class for two

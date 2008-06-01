@@ -101,7 +101,7 @@
           <input class="context"
                  type="submit"
                  value="Save settings"
-                 i18n:attributes="label_save_settings"/>
+                 i18n:attributes="value label_save_settings"/>
       </div>
 
     </form>
