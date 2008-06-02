@@ -1,274 +1,302 @@
-Changelog for plone.app.controlpanel
+Changelog
+=========
 
-    (name of developer listed in brackets)
+1.1.1 Unreleased
+----------------
 
-plone.app.controlpanel - 1.1.1 Unreleased
+- Fix nested forms in RAMCache control panel.
+  [witsch]
 
-    - Fix nested forms in RAMCache control panel.
-      [witsch]
 
+1.1 - April 19. 2008
+--------------------
 
-plone.app.controlpanel - 1.1 Released April 19. 2008
+- Fixed saving of esmtp username and password in SecureMailHost
+  [csenger]
 
-    - Fixed saving of esmtp username and password in SecureMailHost
-      [csenger]
+- Added new IPloneControlPanelView marker interface and let all views and
+  forms implement it.
+  [hannosch]
 
-    - Added new IPloneControlPanelView marker interface and let all views and
-      forms implement it.
-      [hannosch]
+- Added new yet unused controlpanel overview page.
+  [hannosch]
 
-    - Added new yet unused controlpanel overview page.
-      [hannosch]
+- Fix invalid leading space in all 'Up to Site Setup' links.
+  [wichert]
 
-    - Fix invalid leading space in all 'Up to Site Setup' links.
-      [wichert]
+- Added authenticator token and verification calls for CSRF protection.
+  [witsch]
 
-    - Added authenticator token and verification calls for CSRF protection.
-      [witsch]
 
+1.0.5 - March 26, 2008
+----------------------
 
-plone.app.controlpanel - 1.0.5 Released March 26, 2008
+- `Enable self registration flag` in security control panel was broken
+  in some cases with custom roles. Patch provided by davidray, thx!
+  This closes http://dev.plone.org/plone/ticket/7690.
+  [hannosch]
 
-    - `Enable self registration flag` in security control panel was broken
-      in some cases with custom roles. Patch provided by davidray, thx!
-      This closes http://dev.plone.org/plone/ticket/7690.
-      [hannosch]
+- Added an IConfigurationChangedEvent which is fired on each successful
+  change of any configuration setting and a subscriber which empties all
+  RAM caches when some configuration changed. This closes
+  http://dev.plone.org/plone/ticket/7008.
+  [hannosch]
 
-    - Added an IConfigurationChangedEvent which is fired on each successful
-      change of any configuration setting and a subscriber which empties all
-      RAM caches when some configuration changed. This closes
-      http://dev.plone.org/plone/ticket/7008.
-      [hannosch]
 
-plone.app.controlpanel - 1.0.4 Released February 13, 2008
+1.0.4 - February 13, 2008
+-------------------------
 
-    - Take advantage of NORMALIZE_WHITESPACE to be independent of the tidy_html
-      transform.
-      [shh42]
+- Take advantage of NORMALIZE_WHITESPACE to be independent of the tidy_html
+  transform.
+  [shh42]
 
-    - Fixed vocabulary in skins control panel to support proper i18n.
-      This closes http://dev.plone.org/plone/ticket/7766.
-      [hannosch]
+- Fixed vocabulary in skins control panel to support proper i18n.
+  This closes http://dev.plone.org/plone/ticket/7766.
+  [hannosch]
 
-    - Changed import of FormFieldsets to avoid a deprecation warning.
-      [hannosch]
+- Changed import of FormFieldsets to avoid a deprecation warning.
+  [hannosch]
 
-    - Fixed filter control panel tests.
-      [hannosch]
+- Fixed filter control panel tests.
+  [hannosch]
 
-plone.app.controlpanel - 1.0.3 Released November 30, 2007
 
-    - Fixed description in filter control panel to be recognizable by i18ndude.
-      [hannosch]
+1.0.3 - November 30, 2007
+--------------------------
 
-    - Protected the maintenance control panel with the View management screens
-      permission at the Zope root folder. This closes
-      http://dev.plone.org/plone/ticket/6973.
-      [hannosch]
+- Fixed description in filter control panel to be recognizable by i18ndude.
+  [hannosch]
 
-plone.app.controlpanel - 1.0.2 Released October 7, 2007
+- Protected the maintenance control panel with the View management screens
+  permission at the Zope root folder. This closes
+  http://dev.plone.org/plone/ticket/6973.
+  [hannosch]
 
-    - Fixed language control panel to only show one language option and fix
-      its description. This closes http://dev.plone.org/plone/ticket/6963 and
-      http://dev.plone.org/plone/ticket/6946.
-      [hannosch]
 
-plone.app.controlpanel - 1.0.1 Released September 10, 2007
+1.0.2 - October 7, 2007
+-----------------------
 
-    - Updated help text to match implementation.
-      [fschulze]
+- Fixed language control panel to only show one language option and fix
+  its description. This closes http://dev.plone.org/plone/ticket/6963 and
+  http://dev.plone.org/plone/ticket/6946.
+  [hannosch]
 
-    - Fixed test in site.txt to work in Zope 2.11.
-      [hannosch]
 
-    - If we are looking at settings for the default workflow lookup the real
-      workflow. This fixes #6843 (yes, that bug again).
-      [wichert]
+1.0.1 - September 10, 2007
+--------------------------
 
-    - Another small string update while we're at it.
-      [limi]
+- Updated help text to match implementation.
+  [fschulze]
 
-plone.app.controlpanel - 1.0 Released August 14, 2007
+- Fixed test in site.txt to work in Zope 2.11.
+  [hannosch]
 
-    - If we are looking at settings for the default workflow lookup the
-      real workflow. This fixes http://dev.plone.org/plone/ticket/6843
-      (yes, that bug again).
-      [wichert]
+- If we are looking at settings for the default workflow lookup the real
+  workflow. This fixes #6843 (yes, that bug again).
+  [wichert]
 
-    - Fixed the translation of type names on the search and markup control
-      panels. This refs http://dev.plone.org/plone/ticket/6911.
-      [hannosch]
+- Another small string update while we're at it.
+  [limi]
 
-    - The UI allowed to disable country-specific language variants even if
-      one was still active as the default language. You get a nice error
-      message now. This closes http://dev.plone.org/plone/ticket/6862.
-      [hannosch]
-
-    - Use checkboxes instead of a evil MultiSelect for the wiki settings.
-      This closes http://dev.plone.org/plone/ticket/6872 for real.
-      [hannosch]
-
-    - Internationalized the workflow part of the types control panel. All
-      descriptions, states and titles should be translated now.
-      [hannosch]
-
-    - Fixed order of types in the dropdown. We sort by translated title now.
-      [hannosch]
 
-    - When updating the default workflow do not reset the workflow for types
-      using the default workflow to the new default workflow. This fixes
-      the last part of http://dev.plone.org/plone/ticket/6843.
-      [wichert]
-
-    - Handle changing the workflow from a type to the default workflow if the
-      default workflow is the same as the previous workflow correctly. This
-      fixes part of http://dev.plone.org/plone/ticket/6843.
-      [wichert]
+1.0 - August 14, 2007
+---------------------
 
-    - When we remap the default workflow change the default workflow in
-      the workflow tool as well. This fixes part of
-      http://dev.plone.org/plone/ticket/6843.
-      [wichert]
+- If we are looking at settings for the default workflow lookup the
+  real workflow. This fixes http://dev.plone.org/plone/ticket/6843
+  (yes, that bug again).
+  [wichert]
 
-    - Remapping the "(Default)" workflow to No Workflow didn't work.
-      Fixes http://dev.plone.org/plone/ticket/6818.
-      [optilude]
+- Fixed the translation of type names on the search and markup control
+  panels. This refs http://dev.plone.org/plone/ticket/6911.
+  [hannosch]
 
-    - Remapping to "No Workflow" resulted in an error, fixed. Thanks to
-      rsantos for the patch. Fixes http://dev.plone.org/plone/ticket/6819.
-      [limi]
+- The UI allowed to disable country-specific language variants even if
+  one was still active as the default language. You get a nice error
+  message now. This closes http://dev.plone.org/plone/ticket/6862.
+  [hannosch]
 
-    - Made column checkbox widget easily subclassable for being able to use it
-      with different amount of columns from other packages.
-      [davconvent]
+- Use checkboxes instead of a evil MultiSelect for the wiki settings.
+  This closes http://dev.plone.org/plone/ticket/6872 for real.
+  [hannosch]
 
-plone.app.controlpanel - 1.0rc3 Released July 28, 2007
+- Internationalized the workflow part of the types control panel. All
+  descriptions, states and titles should be translated now.
+  [hannosch]
 
-    - Fixed missing history entries.
-      [hannosch]
+- Fixed order of types in the dropdown. We sort by translated title now.
+  [hannosch]
 
-plone.app.controlpanel - 1.0rc2 Released July 27, 2007
+- When updating the default workflow do not reset the workflow for types
+  using the default workflow to the new default workflow. This fixes
+  the last part of http://dev.plone.org/plone/ticket/6843.
+  [wichert]
 
-    - Add a description to the no-workflow fallback. This fixes
-      http://dev.plone.org/plone/ticket/6812.
-      [wichert]
+- Handle changing the workflow from a type to the default workflow if the
+  default workflow is the same as the previous workflow correctly. This
+  fixes part of http://dev.plone.org/plone/ticket/6843.
+  [wichert]
 
-    - Filter control panel doesn't warn you when you haven't saved your changes
-      Added enableUnloadFormProtection class to the control panel form.
-      This references http://dev.plone.org/plone/ticket/6654.
-      [duncan]
+- When we remap the default workflow change the default workflow in
+  the workflow tool as well. This fixes part of
+  http://dev.plone.org/plone/ticket/6843.
+  [wichert]
 
-    - Removed lots of irrelevant options from the language control panel. The
-      selection of the default language could use a simpler widget, but it's
-      too late to change that now. All advanced options should be made
-      available through control panels in add-ons which actually use these
-      settings. This closes http://dev.plone.org/plone/ticket/6784.
-      [hannosch]
+- Remapping the "(Default)" workflow to No Workflow didn't work.
+  Fixes http://dev.plone.org/plone/ticket/6818.
+  [optilude]
 
-    - Fixed various bugs in the LanguageTableWidget. Removed broken code that
-      tried to show the country flags. Showing 150 flags is rather excessive.
-      This closes http://dev.plone.org/plone/ticket/6814.
-      [hannosch]
+- Remapping to "No Workflow" resulted in an error, fixed. Thanks to
+  rsantos for the patch. Fixes http://dev.plone.org/plone/ticket/6819.
+  [limi]
 
-    - Removed multilingual content settings from the language control panel.
-      These don't have any effect in a standard Plone site. LinguaPlone /
-      plone.app.multilingual features its own control panel.
-      [hannosch]
+- Made column checkbox widget easily subclassable for being able to use it
+  with different amount of columns from other packages.
+  [davconvent]
 
-plone.app.controlpanel - 1.0rc1 Released July 9, 2007
 
-    - Do not show really user unfriendly types anymore in the search and types
-      control panels. This closes http://dev.plone.org/plone/ticket/6292.
-      [hannosch]
+1.0rc3 - July 28, 2007
+----------------------
 
-    - Consistently bicapitalized 'JavaScript'. This refs
-      http://dev.plone.org/plone/ticket/6636.
-      [hannosch]
+- Fixed missing history entries.
+  [hannosch]
 
-    - Fixed another spelling error on the filter control panel. This closes
-      http://dev.plone.org/plone/ticket/6653.
-      [hannosch]
 
-    - Fixed two spelling errors on the filter control panel. This closes
-      http://dev.plone.org/plone/ticket/6644.
-      [hannosch]
+1.0rc2 - July 27, 2007
+----------------------
 
-    - Added and used the new LanguageTableWidget for the available language
-      listing.
-      [hannosch]
+- Add a description to the no-workflow fallback. This fixes
+  http://dev.plone.org/plone/ticket/6812.
+  [wichert]
 
-    - Use the new LanguageDropdownChoiceWidget for the default language field.
-      [hannosch]
+- Filter control panel doesn't warn you when you haven't saved your changes
+  Added enableUnloadFormProtection class to the control panel form.
+  This references http://dev.plone.org/plone/ticket/6654.
+  [duncan]
 
-    - Added first working version of the new language control panel. It still
-      needs two new locale aware widgets for the language listings. This refs
-      http://dev.plone.org/plone/ticket/5442.
-      [hannosch]
+- Removed lots of irrelevant options from the language control panel. The
+  selection of the default language could use a simpler widget, but it's
+  too late to change that now. All advanced options should be made
+  available through control panels in add-ons which actually use these
+  settings. This closes http://dev.plone.org/plone/ticket/6784.
+  [hannosch]
 
-    - Added support for optional descriptions on fieldsets.
-      [hannosch]
+- Fixed various bugs in the LanguageTableWidget. Removed broken code that
+  tried to show the country flags. Showing 150 flags is rather excessive.
+  This closes http://dev.plone.org/plone/ticket/6814.
+  [hannosch]
 
-    - Added RAMCache control panel. You can invoke it via
-      http://portal/@@ramcache-controlpanel.
-      [hannosch]
+- Removed multilingual content settings from the language control panel.
+  These don't have any effect in a standard Plone site. LinguaPlone /
+  plone.app.multilingual features its own control panel.
+  [hannosch]
 
-    - Localized the calendar control panel weekday names based on the Zope 3
-      locales information, which is available from the portal_state view.
-      [hannosch]
 
-    - Removed title customization from the types control panel. This is
-      currently not possible in any i18n-safe way. This closes
-      http://dev.plone.org/plone/ticket/6551.
-      [hannosch]
+1.0rc1 - July 9, 2007
+---------------------
 
-plone.app.controlpanel - 1.0b5 Released May 5, 2007
+- Do not show really user unfriendly types anymore in the search and types
+  control panels. This closes http://dev.plone.org/plone/ticket/6292.
+  [hannosch]
 
-    - Fixed dummy on_save method to accept the data argument.
-      [hannosch]
+- Consistently bicapitalized 'JavaScript'. This refs
+  http://dev.plone.org/plone/ticket/6636.
+  [hannosch]
 
-plone.app.controlpanel - 1.0b4 Released May 5, 2007
+- Fixed another spelling error on the filter control panel. This closes
+  http://dev.plone.org/plone/ticket/6653.
+  [hannosch]
 
-    - Pass data to the on-save template method.
-      [optilude]
+- Fixed two spelling errors on the filter control panel. This closes
+  http://dev.plone.org/plone/ticket/6644.
+  [hannosch]
 
-    - Add a callback method from the save button handler. This makes it easier
-      to react when saving is finished (successfully) - otherwise, the schema
-      adapter properties are simple set one-by-one and you can't do anything
-      when form saving is complete. The alternative is to override the button
-      handler, but then we lose some of the consistency that plone.app.form
-      tries to introduce.
-      [optilude]
+- Added and used the new LanguageTableWidget for the available language
+  listing.
+  [hannosch]
 
-    - Wording.
-      [limi]
+- Use the new LanguageDropdownChoiceWidget for the default language field.
+  [hannosch]
 
-plone.app.controlpanel - 1.0b3 Released May 1, 2007
+- Added first working version of the new language control panel. It still
+  needs two new locale aware widgets for the language listings. This refs
+  http://dev.plone.org/plone/ticket/5442.
+  [hannosch]
 
-    - Adjusted the mail control panel to store the email settings on the portal
-      root intead of in the site properties. This closes
-      http://dev.plone.org/plone/ticket/6173.
-      [hannosch]
+- Added support for optional descriptions on fieldsets.
+  [hannosch]
 
-plone.app.controlpanel - 1.0b2 Released March 23, 2007
+- Added RAMCache control panel. You can invoke it via
+  http://portal/@@ramcache-controlpanel.
+  [hannosch]
 
-    - Spelling corrections and wording.
-      [limi]
+- Localized the calendar control panel weekday names based on the Zope 3
+  locales information, which is available from the portal_state view.
+  [hannosch]
 
-    - Replace getToolByNames by getUtility.
-      [hannosch]
+- Removed title customization from the types control panel. This is
+  currently not possible in any i18n-safe way. This closes
+  http://dev.plone.org/plone/ticket/6551.
+  [hannosch]
 
-plone.app.controlpanel - 1.0b1 Released March 5, 2007
 
-    - Lots more control panels.
-      [hannosch, optilude, limi, siebo, aclark, jladage, andrewb]
+1.0b5 - May 5, 2007
+-------------------
 
-plone.app.controlpanel - 1.0a2 Released February 6, 2007
+- Fixed dummy on_save method to accept the data argument.
+  [hannosch]
 
-    - Additional control panels.
-      [tomster, whit]
 
-    - Groundwork and first control panels.
-      [hannosch]
+1.0b4 - May 5, 2007
+-------------------
 
-    - Initial package structure.
-      [zopeskel]
+- Pass data to the on-save template method.
+  [optilude]
+
+- Add a callback method from the save button handler. This makes it easier
+  to react when saving is finished (successfully) - otherwise, the schema
+  adapter properties are simple set one-by-one and you can't do anything
+  when form saving is complete. The alternative is to override the button
+  handler, but then we lose some of the consistency that plone.app.form
+  tries to introduce.
+  [optilude]
+
+- Wording.
+  [limi]
+
+
+1.0b3 - May 1, 2007
+-------------------
+
+- Adjusted the mail control panel to store the email settings on the portal
+  root intead of in the site properties. This closes
+  http://dev.plone.org/plone/ticket/6173.
+  [hannosch]
+
+
+1.0b2 - March 23, 2007
+----------------------
+
+- Spelling corrections and wording.
+  [limi]
+
+- Replace getToolByNames by getUtility.
+  [hannosch]
+
+
+1.0b1 - March 5, 2007
+---------------------
+
+- Lots more control panels.
+  [hannosch, optilude, limi, siebo, aclark, jladage, andrewb]
+
+
+1.0a2 - February 6, 2007
+------------------------
+
+- Additional control panels.
+  [tomster, whit]
+
+- Groundwork and first control panels.
+  [hannosch]
+

@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
-import sys, os
+import os
 
 version = '1.1.1'
 
 setup(name='plone.app.controlpanel',
       version=version,
       description="Formlib-based controlpanels for Plone.",
-      long_description="""\
-""",
+      long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
@@ -26,3 +26,4 @@ setup(name='plone.app.controlpanel',
         'setuptools',
       ],
       )
+
