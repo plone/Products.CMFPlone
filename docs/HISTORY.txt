@@ -4,6 +4,9 @@ Changelog for plone.app.controlpanel
 
 plone.app.controlpanel - 1.1.1 Unreleased
 
+    - Fix nested forms in RAMCache control panel.
+      [witsch]
+
 
 plone.app.controlpanel - 1.1 Released April 19. 2008
 
