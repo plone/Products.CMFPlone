@@ -24,6 +24,11 @@ setup(name='plone.app.controlpanel',
       zip_safe=False,
       install_requires=[
         'setuptools',
+        'plone.app.form',
+        'plone.app.workflow',
+        'plone.fieldsets',
+        'plone.memoize',
+        'plone.protect',
       ],
       )
 

@@ -4,6 +4,12 @@ Changelog
 1.1.1 Unreleased
 ----------------
 
+- Declare dependencies for plone.* packages.
+  [wichert]
+
+- Reformat documetation in reST and include it in the package description.
+  [wichert]
+
 - Fix nested forms in RAMCache control panel.
   [witsch]
 
