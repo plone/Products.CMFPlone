@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1.2 - unreleased
+Plone 3.1.2 - June 3, 2008
 
     - Apply fix for http://dev.plone.org/plone/ticket/8159. This fixes
       the event listing of future events. Fix from Sergey Volobuev.
@@ -92,7 +92,7 @@ Plone 3.1-beta1 - released March 9, 2008
 
     - Fix batching on standard folder listings. Thanks to erral for the patch!
       http://dev.plone.org/plone/ticket/7508
-      https://dev.plone.org/plone/ticket/6091
+      http://dev.plone.org/plone/ticket/6091
       [optilude]
 
     - Fix folder_summary_view display of Link objects.
