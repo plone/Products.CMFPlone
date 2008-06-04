@@ -510,3 +510,25 @@ why we need to log in as the portal owner first:
   >>> browser.contents
   '...Zope is shutting down...'
 
+
+More tests: Plone Session Plugin
+--------------------------------
+
+The PAS plugin allows to manage the server secrets, which are in turn used to
+generate the authenticator tokens used to protect from CSRF attacks.  The
+methods used to clear and generate new secrets should be protected, of course,
+so let's make sure:
+
+  >>> browser.open('http://nohost/plone/acl_users/session/manage_secret')
+  >>> browser.getControl('New secret').click()
+  >>> browser.contents
+  '...New secret created...'
+
+  >>> browser.open('http://nohost/plone/acl_users/session/manage_secret')
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=1).value = 'invalid!'
+  >>> browser.getControl('New secret').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
