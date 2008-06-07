@@ -4,7 +4,7 @@ Changelog
 1.2 - Unreleased
 ----------------
 
-- Added RAM caching to the colophon and footer viewlets.
+- Added RAM caching to the colophon, footer and path bar viewlets.
   [hannosch]
 
 - Purge old zope2 Interface interfaces for Zope 2.12 compatibility.

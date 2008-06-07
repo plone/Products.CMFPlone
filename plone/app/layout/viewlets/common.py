@@ -13,10 +13,11 @@ from plone.memoize.compress import xhtml_compress
 from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner
 from DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import isDefaultPage
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
 
 from plone.app.layout.globals.interfaces import IViewView
 
@@ -215,21 +216,44 @@ class PersonalBarViewlet(ViewletBase):
                 self.user_name = userid
 
 
-# utils.isDefaultPage(context, request)
+def render_path_bar_cachekey(fun, self):
+    key = StringIO()
+    context = aq_inner(self.context)
+    title = getattr(context, 'Title', None)
+    if callable(title):
+        title = title()
+    print >> key, self.__name__
+    print >> key, get_language(context, self.request)
+    print >> key, self.navigation_root_url
+    print >> key, self.request.getURL()
+    print >> key, title
+    print >> key, isDefaultPage(context, self.request)
+    return key.getvalue()
+
 
 class PathBarViewlet(ViewletBase):
-    index = ViewPageTemplateFile('path_bar.pt')
 
-    def update(self):
-        super(PathBarViewlet, self).update()
+    _template = ViewPageTemplateFile('path_bar.pt')
 
-        self.navigation_root_url = self.portal_state.navigation_root_url()
+    @ram.cache(render_path_bar_cachekey)
+    def render(self):
+        return xhtml_compress(self._template())
 
-        self.is_rtl = self.portal_state.is_rtl()
+    @property
+    def navigation_root_url(self):
+        return self.portal_state.navigation_root_url()
 
-        breadcrumbs_view = getMultiAdapter((self.context, self.request),
+    @property
+    def is_rtl(self):
+        return self.portal_state.is_rtl()
+
+    @property
+    def breadcrumbs(self):
+        context = aq_inner(self.context)
+        breadcrumbs_view = getMultiAdapter((context, self.request),
                                            name='breadcrumbs_view')
-        self.breadcrumbs = breadcrumbs_view.breadcrumbs()
+        return breadcrumbs_view.breadcrumbs()
+
 
 class ContentActionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('contentactions.pt')
