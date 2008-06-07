@@ -7,7 +7,9 @@ from plone.memoize.instance import memoize
 from plone.app.layout.viewlets import ViewletBase
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
+from Products.CMFEditions.Permissions import AccessPreviousVersions
 
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -171,8 +173,13 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
     @memoize
     def revisionHistory(self):
-        rt=getToolByName(self.context, "portal_repository")
-        version_history=rt.getHistory(aq_inner(self.context), countPurged=False);
+        context = aq_inner(self.context)
+        rt=getToolByName(context, "portal_repository")
+        allowed = _checkPermission(AccessPreviousVersions, context)
+        if not allowed:
+            return []
+
+        version_history=rt.getHistory(context, countPurged=False);
 
         def morphVersionDataToHistoryFormat(vdata):
             userid=vdata.sys_metadata["principal"]
