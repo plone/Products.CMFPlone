@@ -1,33 +1,14 @@
-from StringIO import StringIO
-
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 
 from zope.component import getMultiAdapter
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
-from Acquisition import aq_inner
-
 from plone.app.layout.viewlets import ViewletBase
+from plone.app.layout.viewlets.common import get_language
+from plone.app.layout.viewlets.common import render_cachekey
 
 from Products.CMFCore.utils import getToolByName
-
-
-def get_language(context, request):
-    portal_state = getMultiAdapter((context, request),
-                                   name=u'plone_portal_state')
-    return portal_state.locale().getLocaleID()
-
-
-def render_cachekey(fun, self):
-    key = StringIO()
-    # Include the name of the viewlet as the underlying cache key only
-    # takes the module and function name into account, but not the class
-    print >> key, self.__name__
-    print >> key, self.site_url
-    print >> key, get_language(aq_inner(self.context), self.request)
-
-    return key.getvalue()
 
 
 class FaviconViewlet(ViewletBase):

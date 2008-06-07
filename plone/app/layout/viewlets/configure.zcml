@@ -272,7 +272,7 @@
         name="plone.footer"
         for="*"
         manager=".interfaces.IPortalFooter"
-        template="footer.pt"
+        class=".common.FooterViewlet"
         permission="zope.Public"
         />
         
@@ -281,7 +281,7 @@
         name="plone.colophon"
         for="*"
         manager=".interfaces.IPortalFooter"
-        template="colophon.pt"
+        class=".common.ColophonViewlet"
         permission="zope.Public"
         />
 
