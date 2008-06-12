@@ -11,7 +11,6 @@ from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
-from Products.CMFPlone.interfaces import ITranslationServiceTool
 
 from zope.deprecation import deprecate, deprecated
 from zope.interface import implements, alsoProvides
@@ -203,7 +202,7 @@ class Plone(BrowserView):
         return False
     
     @memoize
-    def prepareObjectTabs(self, default_tab='view', sort_first=frozenset(['folderContents'])):
+    def prepareObjectTabs(self, default_tab='view', sort_first=['folderContents']):
         """Prepare the object tabs by determining their order and working
         out which tab is selected. Used in global_contentviews.pt
         """
@@ -222,7 +221,6 @@ class Plone(BrowserView):
         else:
             action_list = actions['object']
 
-        first_tabs = []
         tabs = []
         
         found_selected = False
@@ -263,15 +261,19 @@ class Plone(BrowserView):
             if current_id == default_tab:
                 fallback_action = item
 
-            if current_id in sort_first:
-                first_tabs.append(item)
-            else:
-                tabs.append(item)
+            tabs.append(item)
 
         if not found_selected and fallback_action is not None:
             fallback_action['selected'] = True
 
-        return first_tabs + tabs
+        def sortOrder(tab):
+            try:
+                return sort_first.index(tab['id'])
+            except ValueError:
+                return 255
+
+        tabs.sort(key=sortOrder)
+        return tabs
 
     # XXX: This can't be request-memoized, because it won't necessarily remain
     # valid across traversals. For example, you may get tabs on an error 
