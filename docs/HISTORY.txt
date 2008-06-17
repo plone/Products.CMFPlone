@@ -3,6 +3,14 @@ Changelog for plone.app.portlets
     (name of developer listed in brackets)
 
 
+plone.app.portlets 1.x
+
+    - Fix an accidental bug I introduced earlier: restore portletBottomLeft
+      and portletBottomLeft spans in the news portlets with a more-news
+      link.
+      [wichert]
+
+
 plone.app.portlets 1.1.2 (2008-06-01)
 
     - Fixed i18n markup. 
