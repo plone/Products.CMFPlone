@@ -202,7 +202,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
     @memoize
     def fullHistory(self):
-        history=self.workflowHistory(complete=workflowHistory) + self.revisionHistory()
+        history=self.workflowHistory(complete=True) + self.revisionHistory()
         history.sort(key=lambda x: x["time"], reverse=True)
         return history
 
