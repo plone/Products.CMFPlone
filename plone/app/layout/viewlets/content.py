@@ -106,7 +106,7 @@ class WorkflowHistoryViewlet(ViewletBase):
         self.tools = getMultiAdapter((self.context, self.request),
                                      name='plone_tools')
     @memoize
-    def workflowHistory(self):
+    def workflowHistory(self, complete=False):
         """Return workflow history of this context.
 
         Taken from plone_scripts/getWorkflowHistory.py
@@ -123,8 +123,10 @@ class WorkflowHistoryViewlet(ViewletBase):
                 # get total history
                 review_history = workflow.getInfoFor(self.context, 'review_history')
 
-                # filter out the irrelevant stuff
-                review_history = [r for r in review_history if r['action']]
+                if not complete:
+                    # filter out automatic transitions.
+                    review_history = [r for r in review_history if r['action']]
+
                 for r in review_history:
                     r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
                                                                                  self.context.portal_type)
@@ -200,7 +202,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
     @memoize
     def fullHistory(self):
-        history=self.workflowHistory() + self.revisionHistory()
+        history=self.workflowHistory(complete=workflowHistory) + self.revisionHistory()
         history.sort(key=lambda x: x["time"], reverse=True)
         return history
 
