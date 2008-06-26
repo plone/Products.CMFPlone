@@ -48,10 +48,8 @@
               </td>
 
               <td>
-                <span tal:condition="rhComments">
-                  <span tal:replace="rhComments"> some comments </span>
-                </span>
-
+                <span tal:condition="rhComments" tal:replace="rhComments">
+                  some comments</span>
                 <span tal:condition="not: rhComments" i18n:translate="no_comments">
                   No comments.
                 </span>
