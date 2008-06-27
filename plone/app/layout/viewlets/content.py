@@ -114,7 +114,7 @@ class WorkflowHistoryViewlet(ViewletBase):
         workflow = self.tools.workflow()
         membership = self.tools.membership()
 
-        history = []
+        review_history = []
 
         # check if the current user has the proper permissions
         if (membership.checkPermission('Request review', self.context) or
@@ -126,6 +126,8 @@ class WorkflowHistoryViewlet(ViewletBase):
                 if not complete:
                     # filter out automatic transitions.
                     review_history = [r for r in review_history if r['action']]
+                else:
+                    review_history = list(review_history)
 
                 for r in review_history:
                     r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
@@ -144,14 +146,13 @@ class WorkflowHistoryViewlet(ViewletBase):
                             # member info is not available
                             # the user was probably deleted
                             r['actor_home'] = ''
-                history = list(review_history)
-                history.reverse()
+                review_history.reverse()
 
             except WorkflowException:
                 log( 'plone.app.layout.viewlets.content: '
                      '%s has no associated workflow' % self.context.absolute_url(), severity=logging.DEBUG)
 
-        return history
+        return review_history
 
     index = ViewPageTemplateFile("review_history.pt")
 
