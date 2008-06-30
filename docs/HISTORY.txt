@@ -4,6 +4,11 @@ Changelog
 1.1.1 - Unreleased
 ------------------
 
+- Made PersonalBarViewlet tolerate users who don't have a Plone user object, as
+  when using OpenID or apachepas. This fixes
+  http://dev.plone.org/plone/ticket/7712.
+  [erikrose]
+
 - Use 'index' attribute rather than 'render' for setting viewlet templates, so that
   they can be overridden using the 'template' ZCML attribute.
   [davisagli]

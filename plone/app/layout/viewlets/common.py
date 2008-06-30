@@ -185,7 +185,12 @@ class PersonalBarViewlet(ViewletBase):
                 self.homelink_url = self.site_url + '/author/' + quote_plus(userid)
             
             member_info = tools.membership().getMemberInfo(member.getId())
-            fullname = member_info.get('fullname', '')
+            # member_info is None if there's no Plone user object, as when
+            # using OpenID.
+            if member_info:
+                fullname = member_info.get('fullname', '')
+            else:
+                fullname = None
             if fullname:
                 self.user_name = fullname
             else:
