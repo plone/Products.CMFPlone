@@ -6,7 +6,7 @@ Changelog
 
 - Made PersonalBarViewlet tolerate users who don't have a Plone user object, as
   when using OpenID or apachepas. This fixes
-  http://dev.plone.org/plone/ticket/7712.
+  http://dev.plone.org/plone/ticket/7296.
   [erikrose]
 
 - Use 'index' attribute rather than 'render' for setting viewlet templates, so that
