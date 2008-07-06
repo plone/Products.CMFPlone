@@ -53,7 +53,7 @@
               <td>
                 <span tal:condition="rhComments" tal:replace="rhComments">
                   some comments</span>
-                <span tal:condition="not: rhComments" i18n:translate="no_comments">
+                <span tal:condition="not: rhComments" i18n:translate="no_comments" tal:omit-tag="">
                   No comments.
                 </span>
               </td>
