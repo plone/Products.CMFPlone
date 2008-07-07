@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.1 - Unreleased
-------------------
+1.1.3 Released July 7th, 2008
+------------------------------
 
 - Made PersonalBarViewlet tolerate users who don't have a Plone user object, as
   when using OpenID or apachepas. This fixes
