@@ -3,7 +3,7 @@ Changelog for plone.app.portlets
     (name of developer listed in brackets)
 
 
-plone.app.portlets 1.x
+plone.app.portlets 1.1.3 (2008-07-07)
 
     - Fix an accidental bug I introduced earlier: restore portletBottomLeft
       and portletBottomLeft spans in the news portlets with a more-news

@@ -49,7 +49,7 @@ class TestDashboard(PortletsTestCase):
     def test_disable_dasboard_breaks_event_portlet(self):
         # Bug #8230: disabling the dashboard breaks the event portlet
         self.portal.manage_permission('Portlets: Manage own portlets',
-                roles=[], acquire=0)
+                roles=['Manager'], acquire=0)
         self.loginAsPortalOwner()
 
         portlet = getUtility(IPortletType, name='portlets.Events')
