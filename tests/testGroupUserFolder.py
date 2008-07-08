@@ -321,7 +321,7 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase, WarningInterceptor):
         pass
 
     def testGroupGetMemberIds(self):
-        self.assertEqual(self.group.getMemberIds(), (default_user,))
+        self.assertEqual(list(self.group.getMemberIds()), [default_user])
 
     def beforeTearDown(self):
         self._free_warning_output()
