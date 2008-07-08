@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.4
+-----
+
+- Adjusted deprecation warnings to point to Plone 4.0 instead of Plone 3.5
+  since we changed the version numbering again.
+  [hannosch]
+
 1.1.3 Released July 7th, 2008
 ------------------------------
 
