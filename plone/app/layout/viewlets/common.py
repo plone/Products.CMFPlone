@@ -44,7 +44,7 @@ class ViewletBase(BrowserView):
     """
     implements(IViewlet)
 
-    def __init__(self, context, request, view, manager):
+    def __init__(self, context, request, view, manager=None):
         super(ViewletBase, self).__init__(context, request)
         self.__parent__ = view
         self.context = context

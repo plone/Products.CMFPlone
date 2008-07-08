@@ -4,6 +4,10 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Changed ViewletBase so viewlets can be registered as zope.contentproviders.
+  This closes https://dev.plone.org/plone/ticket/7868.
+  [hannosch]
+
 - Added RAM caching to the colophon, footer and path bar viewlets.
   [hannosch]
 
