@@ -14,7 +14,7 @@
 #1 for use-macro
 #0 for render path expression
 context.plone_log("The prepare_slots script is deprecated and will be "
-                  "removed in plone 3.5.  If you are using this directly, "
+                  "removed in Plone 4.0.  If you are using this directly, "
                   "you are probably doing something very wrong.")
 
 from AccessControl import Unauthorized

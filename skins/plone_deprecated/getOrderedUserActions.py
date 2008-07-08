@@ -9,7 +9,7 @@
 ##
 
 context.plone_log("The getOrderedUserActions script is deprecated and will be "
-                  "removed in Plone 3.5.")
+                  "removed in Plone 4.0.")
 
 if keyed_actions is None:
     keyed_actions=context.keyFilteredActions()

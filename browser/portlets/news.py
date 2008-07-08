@@ -33,5 +33,5 @@ class NewsPortlet(BrowserView):
 zope.deprecation.deprecated(
   ('NewsPortlet', ),
    "Plone's portlets are based on plone.app.portlets now. The old portlets "
-   "will be removed in Plone 3.5."
+   "will be removed in Plone 4.0."
   )

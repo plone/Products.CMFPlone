@@ -14,9 +14,9 @@ class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
     __implements__ = BasePloneFolder.__implements__
 
     def __init__(self, id, title=''):
-        # BBB To be removed in Plone 3.5
+        # BBB To be removed in Plone 4.0
         log_deprecated("LargePloneFolder is deprecated and will be removed in "
-                       "Plone 3.5. Please use ATBTreeFolder from ATCT instead.")
+                       "Plone 4.0. Please use ATBTreeFolder from ATCT instead.")
         BTreeFolder2Base.__init__(self, id)
         BasePloneFolder.__init__(self, id, title)
         self.id=id
@@ -55,9 +55,9 @@ InitializeClass(LargePloneFolder)
 
 def addLargePloneFolder(self, id, title='', description='', REQUEST=None):
     """ add a BTree-backed Plone Folder """
-    # BBB To be removed in Plone 3.5
+    # BBB To be removed in Plone 4.0
     log_deprecated("LargePloneFolder is deprecated and will be removed in "
-                   "Plone 3.5. Please use ATBTreeFolder from ATCT instead.")
+                   "Plone 4.0. Please use ATBTreeFolder from ATCT instead.")
 
     obj = LargePloneFolder(id, title=title)
     obj.setDescription(description)

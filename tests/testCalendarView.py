@@ -10,7 +10,7 @@ from DateTime import DateTime
 
 from Products.ATContentTypes.tests.utils import FakeRequestSession
 
-# BBB Plone 3.5
+# BBB Plone 4.0
 import warnings
 showwarning = warnings.showwarning
 warnings.showwarning = lambda *a, **k: None

@@ -11,7 +11,7 @@
 from Products.CMFPlone import PloneMessageFactory as _
 
 context.plone_log("The rejectAnonymous script is deprecated and will be "
-                  "removed in Plone 3.5.")
+                  "removed in Plone 4.0.")
 
 if context.portal_membership.isAnonymousUser():
 

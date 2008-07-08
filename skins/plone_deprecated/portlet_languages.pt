@@ -3,7 +3,7 @@
       i18n:domain="plone">
 <body>
 
-<!-- This portlet is deprecated and will be removed in Plone 3.5 -->
+<!-- This portlet is deprecated and will be removed in Plone 4.0 -->
 
 <div metal:define-macro="portlet"
      tal:define="PTS modules/Products/PlacelessTranslationService | nothing;"

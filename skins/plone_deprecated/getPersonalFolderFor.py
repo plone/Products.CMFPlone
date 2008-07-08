@@ -15,7 +15,7 @@
 #this script is acquired.
 
 context.plone_log("The getPersonalFolderFor script is deprecated and will be "
-                  "removed in Plone 3.5.")
+                  "removed in Plone 4.0.")
 
 folder=context.portal_membership.getHomeFolder(member)
 return getattr(folder,'.personal', None)

@@ -7,7 +7,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 context.plone_log("The getViewTemplateId script is deprecated and will be "
-                  "removed in plone 3.5.  Use the getViewTemplateId method "
+                  "removed in Plone 4.0. Use the getViewTemplateId method "
                   "of the @@plone view instead.")
 
 return context.restrictedTraverse('@@plone').getViewTemplateId()

@@ -9,7 +9,7 @@
 ##a
 
 context.plone_log("The navigationCurrent script is deprecated and will be "
-                  "removed in Plone 3.5.")
+                  "removed in Plone 4.0.")
 
 checkPermission=context.portal_membership.checkPermission
 

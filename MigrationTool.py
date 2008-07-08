@@ -180,7 +180,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     def getPILVersion(self):
         """The version of the installed Python Imaging Library."""
         log_deprecated("getPILVersion is deprecated and will be removed in "
-                       "Plone 3.5. Please use coreVersions instead.")
+                       "Plone 4.0. Please use coreVersions instead.")
         try:
             from PIL.Image import VERSION
         except ImportError:

@@ -4,7 +4,7 @@
 <body>
 
 <!-- Should have been removed once the related items list on the view templates
-     was in place (Plone 2.1), will be removed in Plone 3.5 -->
+     was in place (Plone 2.1), will be removed in Plone 4.0 -->
 
 <div metal:define-macro="portlet"
      tal:define="related here/navigationLocalRelated;

@@ -12,7 +12,7 @@
 #show up in the keyedActions.
 
 context.plone_log("The keyFilteredActions script is deprecated and will be "
-                  "removed in plone 3.5.  Use the keyFilteredActions method "
+                  "removed in Plone 4.0.  Use the keyFilteredActions method "
                   "of the @@plone view instead.")
 
 return context.restrictedTraverse('@@plone').keyFilteredActions(actions)

@@ -8,7 +8,7 @@
 ##title=Calendar Presentation Helper
 ##
 context.plone_log("The getNextMonth script is deprecated and will be "
-                  "removed in plone 3.5.  Use the getNextMonth method "
+                  "removed in Plone 4.0. Use the getNextMonth method "
                   "of the @@calendar_view view instead.")
 
 return context.restrictedTraverse('@@calendar_view').getNextMonth(month, year)

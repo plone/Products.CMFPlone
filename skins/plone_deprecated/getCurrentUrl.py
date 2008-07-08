@@ -8,7 +8,7 @@
 ##title=Return the current full URL including query string
 ##
 context.plone_log("The getCurrentURL script is deprecated and will be "
-                  "removed in plone 3.5.  Use the getCurrentURL method "
+                  "removed in Plone 4.0. Use the getCurrentURL method "
                   "of the @@plone view instead.")
 
 return context.restrictedTraverse('@@plone').getCurrentUrl()

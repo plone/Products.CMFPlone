@@ -1,7 +1,7 @@
 ##parameters=event
 
 context.plone_log("The getEventString script is deprecated and will be "
-                  "removed in Plone 3.5.")
+                  "removed in Plone 4.0.")
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode

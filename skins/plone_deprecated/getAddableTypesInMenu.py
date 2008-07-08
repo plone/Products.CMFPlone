@@ -8,7 +8,7 @@
 ##title=Return a list of the content type ftis filtered by getImmediatelyAddableTypes(), if available.
 
 context.plone_log("The getAddableTypesInMenu script is deprecated and will be "
-                  "removed in Plone 3.5.")
+                  "removed in Plone 4.0.")
 
 INTERFACE = "Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes"
 

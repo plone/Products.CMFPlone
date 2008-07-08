@@ -8,7 +8,7 @@
 ##title=
 ##
 context.plone_log("The hide_columns script is deprecated and will be "
-                  "removed in plone 3.5.  You should not be using this.")
+                  "removed in Plone 4.0. You should not be using this.")
 
 column_left=sl
 column_right=sr

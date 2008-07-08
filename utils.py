@@ -226,9 +226,9 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
     if not relaxed:
         return queryUtility(IIDNormalizer).normalize(text)
 
-    # BBB To be removed in Plone 3.5
+    # BBB To be removed in Plone 4.0
     log_deprecated("The relaxed mode of normalizeString is deprecated and will "
-                   "be removed in Plone 3.5. Please use either the url or file "
+                   "be removed in Plone 4.0. Please use either the url or file "
                    "name normalizer from the plone.i18n package instead.")
 
     request = getattr(context, 'REQUEST', None)
@@ -241,7 +241,7 @@ def normalizeString(text, context=None, encoding=None, relaxed=False):
 class IndexIterator(object):
     """BBB: This iterator was us ed for tabindex use, but for accessibility 
        reasons, we have deprecated it, and it now returns None always. Should 
-       be removed in Plone 3.5.
+       be removed in Plone 4.0.
        
        Below are the different use cases we used to have, all return None now:
 
@@ -822,7 +822,7 @@ def isLinked(obj):
     transaction.begin()
     return linked
 
-# BBB Plone 3.5: Cyclic import errors are bad, deprecate these import locations.
+# BBB Plone 4.0: Cyclic import errors are bad, deprecate these import locations.
 # Put these at the end to avoid an ImportError for safe_unicode
 from i18nl10n import utranslate
 from i18nl10n import ulocalized_time
@@ -830,20 +830,20 @@ from i18nl10n import ulocalized_time
 import zope.deprecation
 zope.deprecation.deprecated(
     ('getGlobalTranslationService'),
-    "This reference to getGlobalTranslationService will be removed in Plone 3.5"
+    "This reference to getGlobalTranslationService will be removed in Plone 4.0"
     ". Please import it from Products.PageTemplates.GlobalTranslationService.")
 zope.deprecation.deprecated(
     ('utranslate'),
     "This reference to the utranslate method has been deprecated will be "
-    "removed in Plone 3.5. Please use the translate method of the "
+    "removed in Plone 4.0. Please use the translate method of the "
     "GlobalTranslationService instead.")
 zope.deprecation.deprecated(
     ('ulocalized_time'),
     "This reference to the ulocalized_time method has been deprecated will be "
-    "removed in Plone 3.5. Please import it from Products.CMFPlone.i18nl10n.")
+    "removed in Plone 4.0. Please import it from Products.CMFPlone.i18nl10n.")
 zope.deprecation.deprecated(
     ('BrowserView'),
-    "Products.CMFPlone.utils.BrowserView will be removed in Plone 3.5. "
+    "Products.CMFPlone.utils.BrowserView will be removed in Plone 4.0. "
     "Please use Products.Five.BrowserView instead.")
 zope.deprecation.deprecated(
     ('context'),

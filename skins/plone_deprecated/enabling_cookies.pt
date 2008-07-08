@@ -3,7 +3,7 @@
 
 <body>
 
-<!-- This template will be removed in Plone 3.5. -->
+<!-- This template will be removed in Plone 4.0. -->
 
 <div metal:fill-slot="main">
 

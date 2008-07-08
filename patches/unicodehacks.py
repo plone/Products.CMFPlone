@@ -11,7 +11,7 @@ def _unicode_replace(structure):
             # XXX Maybe, raise an exception here instead of a warning?
             warnings.warn(textwrap.dedent('''\
 
-            *** *** Insertion of non-unicode non-ascii non-utf8 encoded text in TAL is deprecated and will be broken in Plone 3.5 !!!
+            *** *** Insertion of non-unicode non-ascii non-utf8 encoded text in TAL is deprecated and will be broken in Plone 4.0 !!!
 
             %s...
             ''' % (repr(structure), )), DeprecationWarning, 2)

@@ -414,7 +414,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(ManagePortal, 'setDefaultSkin')
     @deprecate("The setDefaultSkin method of the Plone tool has been "
-               "deprecated and will be removed in Plone 3.5.")
+               "deprecated and will be removed in Plone 4.0.")
     def setDefaultSkin(self, default_skin):
         """Sets the default skin."""
         st = getToolByName(self, 'portal_skins')
@@ -422,7 +422,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('setCurrentSkin')
     @deprecate("The setCurrentSkin method of the Plone tool has been "
-               "deprecated and will be removed in Plone 3.5.")
+               "deprecated and will be removed in Plone 4.0.")
     def setCurrentSkin(self, skin_name):
         """Sets the current skin."""
         portal = getToolByName(self, 'portal_url').getPortalObject()

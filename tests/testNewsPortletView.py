@@ -4,7 +4,7 @@
 
 from Products.CMFPlone.tests import PloneTestCase
 
-# BBB Plone 3.5
+# BBB Plone 4.0
 import warnings
 showwarning = warnings.showwarning
 warnings.showwarning = lambda *a, **k: None
