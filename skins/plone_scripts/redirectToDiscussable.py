@@ -15,4 +15,4 @@ if context.portal_type == 'Discussion Item':
     redirect_target = pu.getDiscussionThread(context)[0]
     state = redirect_target.restrictedTraverse("@@plone_context_state")
   
-    context.REQUEST.response.redirect(state.view_url + '#' + context.id)
+    context.REQUEST.response.redirect(state.view_url() + '#' + context.id)
