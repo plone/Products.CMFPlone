@@ -2,6 +2,12 @@ Changelog for plone.app.portlets
 
     (name of developer listed in brackets)
 
+plone.app.portlets 1.1.4
+
+    - Disabled two tests for a not yet implemented feature regarding better
+      i18n support.
+      [hannosch]
+
 
 plone.app.portlets 1.1.3 (2008-07-07)
 

@@ -194,7 +194,7 @@ class TestGenericSetup(PortletsTestCase):
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
         self.failUnless(ITestColumn.providedBy(manager))
     
-    def testPortletTypeRegistered(self):
+    def disabled_testPortletTypeRegistered(self):
         portlet_type = getUtility(IPortletType, name=u"portlets.test.Test")
         self.assertEquals('portlets.test.Test', portlet_type.addview)
         self.assertEquals([Interface], portlet_type.for_)
