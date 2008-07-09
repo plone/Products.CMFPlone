@@ -1,47 +1,29 @@
-import urllib
-
-from Acquisition import Explicit, aq_parent, aq_inner
-from ZODB.POSException import ConflictError
-
-from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, queryMultiAdapter, getUtilitiesFor
-
-from zope.annotation.interfaces import IAnnotations
-
-from zope.publisher.interfaces.http import IHTTPRequest
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-
-from zope.contentprovider.interfaces import UpdateNotCalled
-
 from plone.memoize.view import memoize
 
-from plone.portlets.interfaces import IPortletRetriever
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletManagerRenderer
-from plone.portlets.interfaces import IPortletRenderer
-from plone.portlets.interfaces import ILocalPortletAssignable
-from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
-
-from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
-
 from plone.portlets.constants import CONTEXT_CATEGORY
-from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletManagerRenderer
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.utils import hashPortletInfo
 
-from plone.app.portlets.interfaces import IDashboard, IPortletPermissionChecker
+from zope.interface import implements, Interface
+from zope.component import adapts, getMultiAdapter, queryMultiAdapter
+from zope.contentprovider.interfaces import UpdateNotCalled
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+
+from Acquisition import Explicit, aq_parent, aq_inner
+
+from Products.Five.browser import BrowserView 
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.PythonScripts.standard import url_quote
 
 from plone.app.portlets.browser.interfaces import IManageColumnPortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
+from plone.app.portlets.interfaces import IDashboard, IPortletPermissionChecker
 
-from Products.Five.browser import BrowserView 
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from Products.PythonScripts.standard import url_quote
-
-from plone.portlets.utils import hashPortletInfo
 
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
@@ -119,11 +101,13 @@ class EditPortletManagerRenderer(Explicit):
     def addable_portlets(self):
         baseUrl = self.baseUrl()
         addviewbase = baseUrl.replace(self.context_url(), '')
-        return [ {'title' : p.title,
-                  'description' : p.description,
-                  'addview' : '%s/+/%s' % (addviewbase, p.addview)
-                  } for p in self.manager.getAddablePortletTypes()]
-        
+        portlets =  [{
+            'title' : p.title,
+            'description' : p.description,
+            'addview' : '%s/+/%s' % (addviewbase, p.addview)
+            } for p in self.manager.getAddablePortletTypes()]
+        return portlets
+
     @memoize
     def referer(self):
         view_name = self.request.get('viewname', None)
