@@ -18,6 +18,13 @@ Changelog
   and content versions. Render this instead of the workflow history viewlet.
   [wichert]
 
+1.1.4 - Unreleased
+------------------
+
+- Changed IContentIcon to expose users to the title of the FTI instead of the
+  portal_type. This closes http://dev.plone.org/plone/ticket/8246.
+  [hannosch]
+
 1.1.1 - Unreleased
 ------------------
 
