@@ -4,6 +4,13 @@ Changelog
 1.1.2 Unreleased
 ----------------
 
+- Simplified the mail control panel to present all information on one tab.
+  In case of validation errors the panel behaved in most unintuitive ways.
+  This closes http://dev.plone.org/plone/ticket/7425,
+  http://dev.plone.org/plone/ticket/7694 and
+  http://dev.plone.org/plone/ticket/6916.
+  [hannosch]
+
 
 1.1.1 - June 2, 2008
 --------------------

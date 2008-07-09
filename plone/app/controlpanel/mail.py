@@ -1,8 +1,7 @@
-from plone.fieldsets.fieldsets import FormFieldsets
-
 from zope.interface import Interface
 from zope.component import adapts
 from zope.component import getUtility
+from zope.formlib import form
 from zope.interface import implements
 from zope.schema import Int
 from zope.schema import Password
@@ -20,7 +19,9 @@ from Products.CMFPlone.utils import safe_hasattr
 
 from form import ControlPanelForm
 
-class IMailHostSchema(Interface):
+class IMailSchema(Interface):
+    """Combined schema for the adapter lookup.
+    """
 
     smtp_host = TextLine(title=_(u'label_smtp_server',
                                  default=u'SMTP server'),
@@ -57,9 +58,6 @@ class IMailHostSchema(Interface):
                          default=None,
                          required=False)
 
-
-class IMailFromSchema(Interface):
-
     email_from_name = TextLine(title=_(u"Site 'From' name"),
                                description=_(u"Plone generates e-mail using "
                                               "this name as the e-mail "
@@ -76,11 +74,6 @@ class IMailFromSchema(Interface):
                                               "contact form."),
                                default=None,
                                required=True)
-
-
-class IMailSchema(IMailHostSchema, IMailFromSchema):
-    """Combined schema for the adapter lookup.
-    """
 
 
 class MailControlPanelAdapter(SchemaAdapterBase):
@@ -145,18 +138,9 @@ class MailControlPanelAdapter(SchemaAdapterBase):
                                   set_email_from_address)
 
 
-mailhostset = FormFieldsets(IMailHostSchema)
-mailhostset.id = 'mailhost'
-mailhostset.label = _(u'Mail server')
-
-mailfromset = FormFieldsets(IMailFromSchema)
-mailfromset.id = 'mailfrom'
-mailfromset.label = _(u'Mail sender')
-
-
 class MailControlPanel(ControlPanelForm):
 
-    form_fields = FormFieldsets(mailhostset, mailfromset)
+    form_fields = form.FormFields(IMailSchema)
     form_fields['email_from_address'].custom_widget = ASCIIWidget
     label = _("Mail settings")
     description = _("Mail settings for this site.")
