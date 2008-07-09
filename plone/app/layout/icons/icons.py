@@ -47,7 +47,9 @@ class CatalogBrainContentIcon(BaseIcon):
 
     @property
     def description(self):
-        return self.brain['portal_type']
+        context = aq_inner(self.context)
+        tt = getToolByName(context, 'portal_types')
+        return tt.get(self.brain['portal_type']).Title()
 
     @property
     def title(self):
@@ -73,7 +75,9 @@ class CMFContentIcon(BaseIcon):
 
     @property
     def description(self):
-        return self.obj.portal_type
+        context = aq_inner(self.context)
+        tt = getToolByName(context, 'portal_types')
+        return tt.get(self.obj.portal_type).Title()
 
     @property
     def title(self):
@@ -99,7 +103,7 @@ class FTIContentIcon(BaseIcon):
 
     @property
     def description(self):
-        return self.obj.Metatype()
+        return self.obj.Title()
 
     @property
     def title(self):

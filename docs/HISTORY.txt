@@ -4,6 +4,10 @@ Changelog
 1.1.4
 -----
 
+- Changed IContentIcon to expose users to the title of the FTI instead of the
+  portal_type. This closes http://dev.plone.org/plone/ticket/8246.
+  [hannosch]
+
 - Adjusted deprecation warnings to point to Plone 4.0 instead of Plone 3.5
   since we changed the version numbering again.
   [hannosch]
