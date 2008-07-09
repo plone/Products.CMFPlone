@@ -101,11 +101,14 @@ class EditPortletManagerRenderer(Explicit):
     def addable_portlets(self):
         baseUrl = self.baseUrl()
         addviewbase = baseUrl.replace(self.context_url(), '')
+        def sort_key(v):
+            return v.get('title')
         portlets =  [{
             'title' : p.title,
             'description' : p.description,
             'addview' : '%s/+/%s' % (addviewbase, p.addview)
             } for p in self.manager.getAddablePortletTypes()]
+        portlets.sort(key=sort_key)
         return portlets
 
     @memoize

@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.4
 
+    - Sort the addable portlets in the management screen by their title.
+      This closes http://dev.plone.org/plone/ticket/8227.
+      [hannosch]
+
     - Disabled two tests for a not yet implemented feature regarding better
       i18n support.
       [hannosch]
