@@ -66,9 +66,10 @@ class ContextState(BrowserView):
         portal_properties = getToolByName(self.context, 'portal_properties', None)
         if portal_properties is not None:
             site_properties = getattr(portal_properties, 'site_properties', None)
-            if site_properties is not None:
+            portal_type = getattr(aq_base(self.context), 'portal_type', None)
+            if site_properties is not None and portal_type is not None:
                 use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
-                if aq_base(self.context).portal_type in use_view_action:
+                if portal_type in use_view_action:
                     view_url = view_url + '/view'
         return view_url
 
