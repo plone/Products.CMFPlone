@@ -161,6 +161,11 @@ class WorkflowHistoryViewlet(ViewletBase):
 class ContentHistoryViewlet(WorkflowHistoryViewlet):
     index = ViewPageTemplateFile("content_history.pt")
 
+    def update(self):
+        super(ContentHistoryViewlet, self).update()
+        self.context_state = getMultiAdapter((self.context, self.request),
+                                             name=u'plone_context_state')
+
     @memoize
     def getUserInfo(self, userid):
         mt=self.tools.membership()
@@ -178,12 +183,11 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
     @memoize
     def revisionHistory(self):
         context = aq_inner(self.context)
-        rt=getToolByName(context, "portal_repository")
+        rt = getToolByName(context, "portal_repository")
         allowed = _checkPermission(AccessPreviousVersions, context)
-        if not allowed:
-            return []
-
+        context_url = context.absolute_url()
         version_history=rt.getHistory(context, countPurged=False);
+        can_diff = getToolByName(context, "portal_diff", None) is not None
 
         def morphVersionDataToHistoryFormat(vdata):
             userid=vdata.sys_metadata["principal"]
@@ -193,7 +197,19 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                       actorid=userid,
                       time=vdata.sys_metadata["timestamp"],
                       comments=vdata.comment,
-                      review_state=vdata.sys_metadata["review_state"])
+                      version_id=vdata.version_id,
+                      review_state=vdata.sys_metadata["review_state"],
+                      preview_url="%s/versions_history_form?version_id=%s#version_preview" %
+                                  (context_url, vdata.version_id),
+                      revert_url="%s/revertversion?version_id=%s#" %
+                                  (context_url, vdata.version_id),
+                      )
+            if can_diff:
+                if vdata.version_id>0:
+                    info["diff_previous_url"]=("%s/version_diff?version_id1=%s&version_id2=%s" %
+                            (context_url, vdata.version_id, vdata.version_id-1))
+                info["diff_current_url"]=("%s/version_diff?version_id1=current&version_id2=%s" %
+                            (context_url, vdata.version_id))
             info.update(self.getUserInfo(userid))
             return info
 
