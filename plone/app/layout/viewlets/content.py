@@ -130,6 +130,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                     review_history = list(review_history)
 
                 for r in review_history:
+                    r['type'] = 'workflow'
                     r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
                                                                                  self.context.portal_type)
                     actorid = r['actor']
@@ -186,7 +187,8 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
         def morphVersionDataToHistoryFormat(vdata):
             userid=vdata.sys_metadata["principal"]
-            info=dict(action=_(u"edit"),
+            info=dict(type='versioning',
+                      action=_(u"edit"),
                       transition_title=_(u"Edit"),
                       actorid=userid,
                       time=vdata.sys_metadata["timestamp"],
