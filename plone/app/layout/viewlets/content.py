@@ -161,11 +161,6 @@ class WorkflowHistoryViewlet(ViewletBase):
 class ContentHistoryViewlet(WorkflowHistoryViewlet):
     index = ViewPageTemplateFile("content_history.pt")
 
-    def update(self):
-        super(ContentHistoryViewlet, self).update()
-        self.context_state = getMultiAdapter((self.context, self.request),
-                                             name=u'plone_context_state')
-
     @memoize
     def getUserInfo(self, userid):
         mt=self.tools.membership()
