@@ -46,6 +46,8 @@
 </head>
 <body>
 
+<noscript>Note: The slideshow mode requires javascript.</noscript>
+
 <div class="layout">
     <div id="controls"><!-- DO NOT EDIT --></div>
     <div id="currentSlide"><!-- DO NOT EDIT --></div>

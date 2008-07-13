@@ -21,6 +21,10 @@ Changelog
 1.1.4 - Unreleased
 ------------------
 
+- Added note that Javascript is required for presentation mode. This closes
+  http://dev.plone.org/plone/ticket/7575 and
+  http://dev.plone.org/plone/ticket/7573
+
 - Fixed plone_context_state's view_url method to work with contexts that don't
   have a portal_type.  This closes http://dev.plone.org/plone/ticket/8028.
   [davisagli]
