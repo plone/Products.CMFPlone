@@ -295,7 +295,7 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(self.user.getGroups(), [PREFIX+default_group])
 
     def testUserGetGroupNames(self):
-        self.assertEqual(self.user.getGroupNames(), [default_group]) # XXX: Should be tuple
+        self.assertEqual(self.user.getGroupNames(), [default_group])
 
     # Group interface
 
@@ -311,17 +311,13 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(tuple(self.group.getRoles()), ('Authenticated',))
 
     def testGroupGetGroups(self):
-        self.assertEqual(self.group.getGroups(), []) # XXX: Should be tuple
+        self.assertEqual(self.group.getGroups(), [])
 
     def testGroupGetGroupNames(self):
-        self.assertEqual(self.group.getGroupNames(), []) # XXX: Should be tuple
-
-    def testGroupGetMembers(self):
-        # XXX: No getMembers! GroupData-wrapper provides getGroupMembers.
-        pass
+        self.assertEqual(self.group.getGroupNames(), [])
 
     def testGroupGetMemberIds(self):
-        self.assertEqual(self.group.getMemberIds(), (default_user,))
+        self.assertEqual(tuple(self.group.getMemberIds()), (default_user,))
 
     def beforeTearDown(self):
         self._free_warning_output()
