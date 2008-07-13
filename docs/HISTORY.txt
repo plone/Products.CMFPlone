@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Adjusted analytics test to new HTML output.
+  [hannosch]
+
 - Changed ViewletBase so viewlets can be registered as zope.contentproviders.
   This closes http://dev.plone.org/plone/ticket/7868.
   [hannosch]

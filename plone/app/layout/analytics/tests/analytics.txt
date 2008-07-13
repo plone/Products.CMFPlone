@@ -22,8 +22,8 @@ Now we can instantiate the manager.
 Initially there is portal-colophon etc.
 
     >>> manager.update()
-    >>> manager.render()
-    u'\n  <div id="portal-colophon">...
+    >>> '<div id="portal-colophon">' in manager.render()
+    True
     
 Set analytics (webstats_js) code through the controlpanel
 
