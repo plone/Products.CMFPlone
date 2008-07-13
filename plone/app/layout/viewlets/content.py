@@ -180,6 +180,8 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         context = aq_inner(self.context)
         rt = getToolByName(context, "portal_repository")
         allowed = _checkPermission(AccessPreviousVersions, context)
+        if not allowed:
+            return []
         context_url = context.absolute_url()
         version_history=rt.getHistory(context, countPurged=False);
         can_diff = getToolByName(context, "portal_diff", None) is not None
