@@ -41,6 +41,12 @@ class ISiteSchema(Interface):
                        default=False,
                        required=False)
 
+    enable_inline_editing = Bool(title=_(u"Enable inline editing"),
+                                 description=_(u"Check this to enable "
+                                                "inline editing on the site."),
+                                 default=True,
+                                 required=False)
+
     enable_link_integrity_checks = Bool(title=_(u"Enable link integrity "
                                                  "checks"),
                           description=_(u"Determines if the users should get "
@@ -122,6 +128,7 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     webstats_js = property(get_webstats_js, set_webstats_js)
 
     visible_ids = ProxyFieldProperty(ISiteSchema['visible_ids'])
+    enable_inline_editing = ProxyFieldProperty(ISiteSchema['enable_inline_editing'])
     enable_link_integrity_checks = ProxyFieldProperty(ISiteSchema['enable_link_integrity_checks'])
     ext_editor = ProxyFieldProperty(ISiteSchema['ext_editor'])
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
