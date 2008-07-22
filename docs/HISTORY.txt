@@ -4,9 +4,15 @@ Changelog
 1.1.4
 -----
 
+- Refactor default_page: move all logic out of the view to separate methods
+  so they can be called without a request (which is not used at all). 
+  Deprecate parameters which were not in the interface and were never used.
+  [wichert]
+
 - Added note that Javascript is required for presentation mode. This closes
   http://dev.plone.org/plone/ticket/7575 and
   http://dev.plone.org/plone/ticket/7573
+  [limi]
 
 - Fixed plone_context_state's view_url method to work with contexts that don't
   have a portal_type.  This closes http://dev.plone.org/plone/ticket/8028.
