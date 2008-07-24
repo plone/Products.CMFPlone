@@ -133,4 +133,5 @@ def registerMigrations():
     registerUpgradePath('3.1', '3.1.1', null)
     registerUpgradePath('3.1.1', '3.1.2', v3_1.final_three1x.three11_three12)
     registerUpgradePath('3.1.2', '3.1.3', null)
+    registerUpgradePath('3.1.3', '3.1.4', null)
 
