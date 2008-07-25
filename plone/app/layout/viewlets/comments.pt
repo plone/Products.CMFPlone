@@ -62,6 +62,9 @@
                       style="display: inline;"
                       tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
                       tal:condition="python:userHasReplyPermission and isDiscussionAllowed">
+                    <input type="hidden"
+                           name="subject"
+                           tal:attributes="value reply/pretty_title_or_id" />
                     <input class="standalone"
                            type="submit"
                            value="Reply"

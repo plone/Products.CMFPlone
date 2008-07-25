@@ -24,6 +24,11 @@ Changelog
 1.1.4 - Unreleased
 ------------------
 
+- Fixed comments.pt to pass the title of the comment you are replying to into
+  the discussion_reply_form. This closes 
+  https://dev.plone.org/plone/ticket/8323
+  [calvinhp]
+
 - Refactor default_page: move all logic out of the view to separate methods
   so they can be called without a request (which is not used at all). 
   Deprecate parameters which were not in the interface and were never used.
