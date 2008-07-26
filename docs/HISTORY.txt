@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.4
 
+    - Refactored the review portlet a bit and added the review state dependent
+      color coding to it. This closes http://dev.plone.org/plone/ticket/6957.
+      [hannosch]
+
     - Sort the addable portlets in the management screen by their title.
       This closes http://dev.plone.org/plone/ticket/8227.
       [hannosch]

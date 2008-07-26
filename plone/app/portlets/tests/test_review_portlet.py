@@ -1,6 +1,7 @@
 from zope.component import getUtility, getMultiAdapter
 from zope.app.component.hooks import setHooks, setSite
 
+from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.utils import _getDottedName
 
 from plone.portlets.interfaces import IPortletType
@@ -66,6 +67,9 @@ class TestRenderer(PortletsTestCase):
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Document', 'doc1')
+        self.portal.invokeFactory('Document', 'doc2')
 
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
@@ -79,6 +83,10 @@ class TestRenderer(PortletsTestCase):
     def test_review_items(self):
         r = self.renderer(assignment=review.Assignment())
         self.assertEquals(0, len(r.review_items()))
+        wf = getToolByName(self.portal, 'portal_workflow')
+        wf.doActionFor(self.portal.doc1, 'submit')
+        r = self.renderer(assignment=review.Assignment())
+        self.assertEquals(1, len(r.review_items()))
 
     def test_full_news_link(self):
         r = self.renderer(assignment=review.Assignment())

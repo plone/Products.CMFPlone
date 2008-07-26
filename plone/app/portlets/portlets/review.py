@@ -1,9 +1,11 @@
 from zope import schema
 from zope.component import getMultiAdapter
+from zope.component import queryUtility
 from zope.formlib import form
 from zope.interface import implements
 
 from plone.app.portlets.portlets import base
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 
@@ -27,15 +29,12 @@ class Renderer(base.Renderer):
 
     render = ViewPageTemplateFile('review.pt')
 
-    def __init__(self, *args):
-        base.Renderer.__init__(self, *args)
-
-        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
-        self.anonymous = portal_state.anonymous()
-        self.portal_url = portal_state.portal_url()
-
-        plone_tools = getMultiAdapter((self.context, self.request), name=u'plone_tools')
-        self.workflow = plone_tools.workflow()
+    @property
+    def anonymous(self):
+        context = aq_inner(self.context)
+        portal_state = getMultiAdapter((context, self.request),
+                                       name=u'plone_portal_state')
+        return portal_state.anonymous()
 
     @property
     def available(self):
@@ -45,14 +44,39 @@ class Renderer(base.Renderer):
         return self._data()
 
     def full_review_link(self):
-        return '%s/full_review_list' % self.portal_url
+        context = aq_inner(self.context)
+        portal_state = getMultiAdapter((context, self.request),
+                                       name=u'plone_portal_state')
+        return '%s/full_review_list' % portal_state.portal_url()
 
     @memoize
     def _data(self):
         if self.anonymous:
             return []
+        context = aq_inner(self.context)
+        workflow = getToolByName(context, 'portal_workflow')
 
-        return self.workflow.getWorklistsResults()
+        plone_view = getMultiAdapter((context, self.request), name=u'plone')
+        getIcon = plone_view.getIcon
+        toLocalizedTime = plone_view.toLocalizedTime
+
+        idnormalizer = queryUtility(IIDNormalizer)
+        norm = idnormalizer.normalize
+        objects = workflow.getWorklistsResults()
+        items = []
+        for obj in objects:
+            review_state = workflow.getInfoFor(obj, 'review_state')
+            items.append(dict(
+                path = obj.absolute_url(),
+                title = obj.pretty_title_or_id(),
+                description = obj.Description(),
+                icon = getIcon(obj).html_tag(),
+                creator = obj.Creator(),
+                review_state = review_state,
+                review_state_class = 'state-%s ' % norm(review_state),
+                mod_date = toLocalizedTime(obj.ModificationDate()),
+            ))
+        return items
 
 
 class AddForm(base.NullAddForm):

@@ -10,27 +10,23 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:items tal:define="plone_view context/@@plone;
-                           getIcon nocall:plone_view/getIcon;
-                           toLocalizedTime nocall:plone_view/toLocalizedTime;"
-               tal:repeat="o view/review_items">
+    <tal:items tal:repeat="o view/review_items">
         <dd class="portletItem"
             tal:define="oddrow repeat/o/odd;
-                        item_icon python:getIcon(o);"
+                        review_state o/review_state;"
             tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
             <a href="#"
-               class="visualIconPadding tile"
-               tal:attributes="href string:${o/absolute_url}/view;
-                               title o/Description">
-                <img tal:replace="structure item_icon/html_tag" />
+               tal:attributes="href string:${o/path}/view;
+                               title o/description;
+                               class string:${o/review_state_class}visualIconPadding tile">
+                <img tal:replace="structure o/icon" />
                 <span tal:replace="o/pretty_title_or_id">
                     Title
                 </span>
-                <span class="portletItemDetails"
-                      tal:define="moddate o/ModificationDate;">
-                    <span tal:replace="o/Creator">Jim Smith</span> &mdash;
-                    <span tal:replace="python:toLocalizedTime(moddate)"> May 5</span>
+                <span class="portletItemDetails">
+                    <span tal:replace="o/creator">Jim Smith</span> &mdash;
+                    <span tal:replace="o/mod_date"> May 5</span>
                 </span>
             </a>
 
