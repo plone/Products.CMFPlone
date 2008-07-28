@@ -15,8 +15,8 @@
     <h1 class="documentFirstHeading"
         i18n:translate="heading_control_panel">Site Setup</h1>
 
-    <p class="documentDescription" i18n:translate="description_controlpanel">
-        Configuration area for Plone and installed add-ons.
+    <p class="documentDescription" i18n:translate="description_control_panel">
+        Configuration area for Plone and add-on Products.
     </p>
 
     <dl class="portalMessage warning"
