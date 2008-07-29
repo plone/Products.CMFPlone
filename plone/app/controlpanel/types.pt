@@ -92,15 +92,6 @@
                     </label>
                     <br />
                     
-                    <input id="versionable"
-                           type="checkbox"
-                           class="noborder"
-                           name="versionable"
-                           tal:attributes="checked python:view.is_versionable() and 'checked' or None">
-                    <label for="versionable" i18n:translate="types_controlpanel_versionable">
-                        Versioned
-                    </label>
-                    <br />
 
                     <input id="searchable"
                            type="checkbox"
@@ -112,6 +103,20 @@
                     </label>
 
                 </div>
+
+                <div class="field">
+                    <label for="versionpolicy" i18n:translate="types_controlpanel_versionpolicy">
+                        Versioning policy: 
+                    </label>
+                    <select id="versionpolicy" name="versionpolicy"
+                            tal:define="current_policy view/current_versioning_policy">
+                        <option tal:repeat="policy view/versioning_policies"
+                                tal:attributes="value policy/id;
+                                                selected python:policy['id']==current_policy and 'selected' or None"
+                                tal:content="policy/title">No versioning</option>
+                    </select>
+                </div>
+
                 
                 <div class="field">
                     <a tal:attributes="href string:${context/absolute_url}/@@manage-content-type-portlets?key=${type_id}"

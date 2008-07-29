@@ -8,9 +8,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from Acquisition import aq_inner
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone import PloneMessageFactory as pmf
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.controlpanel.form import ControlPanelView
@@ -21,6 +19,24 @@ def format_description(text, request=None):
     text = translate(text.strip(), domain='plone', context=request)
     return [s.strip() for s in text.split('- ') if s]
 
+
+# These are convenient / user friendly versioning policies.
+VERSION_POLICIES = [
+        dict(id="off",
+             policy=(),
+             title=(u"versioning_off",
+                     default=u"No versioning")),
+                          
+        dict(id="manual",
+             policy=("version_on_revert",),
+             title=_(u"versioning_manual",
+                     default=u"Manual")),
+
+        dict(id="automatic",
+             policy=("at_edit_autoversion", "version_on_revert"),
+             title=_(u"versioning_automatic",
+                     default=u"Automatic")),
+        ]
 
 class TypesControlPanel(ControlPanelView):
 
@@ -74,17 +90,27 @@ class TypesControlPanel(ControlPanelView):
                 fti.manage_changeProperties(global_allow = bool(addable),
                                             allow_discussion = bool(allow_discussion))
 
-                versionable = form.get('versionable', False)
-                versionable_types = list(portal_repository.getVersionableContentTypes())
-                if versionable and type_id not in versionable_types:
-                    versionable_types.append(type_id)
-                    # Add default versioning policies to the versioned type
-                    for policy_id in DEFAULT_POLICIES:
-                        portal_repository.addPolicyForContentType(type_id,
-                                                                  policy_id)
-                elif not versionable and type_id in versionable_types:
-                    versionable_types.remove(type_id)
-                portal_repository.setVersionableContentTypes(versionable_types)
+                version_policy = form.get('versionpolicy', "off")
+                if version_policy!=self.current_versioning_policy():
+                    newpolicy=[p for p in VERSION_POLICIES if p["id"]==version_policy][0]
+
+
+                    versionable_types = list(portal_repository.getVersionableContentTypes())
+                    if not newpolicy["policy"]:
+                        if type_id in versionable_types:
+                            versionable_types.remove(type_id)
+                    else:
+                        if type_id not in versionable_types:
+                            versionable_types.append(type_id)
+
+                    for policy in portal_repository.listPolicies():
+                        policy_id = policy.getId()
+                        if policy_id in newpolicy["policy"]:
+                            portal_repository.addPolicyForContentType(type_id, policy_id)
+                        else:
+                            portal_repository.removePolicyFromContentType(type_id, policy_id)
+
+                    portal_repository.setVersionableContentTypes(versionable_types)
 
                 searchable = form.get('searchable', False)
                 blacklisted = list(site_properties.getProperty('types_not_searched'))
@@ -149,6 +175,9 @@ type_id=%s' % (context.absolute_url() , type_id))
 
     # View
 
+    def versioning_policies(self):
+        return VERSION_POLICIES
+
     @memoize
     def selectable_types(self):
         vocab_factory = getUtility(IVocabularyFactory,
@@ -177,10 +206,15 @@ type_id=%s' % (context.absolute_url() , type_id))
     def is_discussion_allowed(self):
         return self.fti.getProperty('allow_discussion', False)
 
-    def is_versionable(self):
-        context = aq_inner(self.context)
-        portal_repository = getToolByName(context, 'portal_repository')
-        return (self.type_id in portal_repository.getVersionableContentTypes())
+    def current_versioning_policy(self):
+        portal_repository = getToolByName(self.context, 'portal_repository')
+        if self.type_id not in portal_repository.getVersionableContentTypes():
+            return "off"
+        policy = set(portal_repository.getPolicyMap().get(self.type_id, ()))
+        for info in VERSION_POLICIES:
+            if set(info["policy"]) == policy:
+                return info["id"]
+        return None
 
     def is_searchable(self):
         context = aq_inner(self.context)

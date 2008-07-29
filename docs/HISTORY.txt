@@ -4,6 +4,12 @@ Changelog
 1.1.2 Unreleased
 ----------------
 
+- Refactor handling of versioning policies in the types control panel:
+  allow the admin to choose from three common versioning policies (no
+  versioning, manual versioning and automatic versioning) which map to
+  CMFEditions settings.
+  [wichert]
+
 - Added checkbox for enabling/disabling inline editing.
   [fschulze]
 
