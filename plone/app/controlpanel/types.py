@@ -24,7 +24,7 @@ def format_description(text, request=None):
 VERSION_POLICIES = [
         dict(id="off",
              policy=(),
-             title=(u"versioning_off",
+             title=_(u"versioning_off",
                      default=u"No versioning")),
                           
         dict(id="manual",
