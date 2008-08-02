@@ -86,7 +86,5 @@ setup(name='Products.CMFPlone',
           'wicked',
           'five.customerize',
           'five.localsitemanager',
-          'zope.i18n [compile]',
-          'slimmer',
       ],
       )
