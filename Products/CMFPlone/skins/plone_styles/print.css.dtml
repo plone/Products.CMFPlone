@@ -1,0 +1,101 @@
+/*
+** Plone Print style sheet for CSS2-capable browsers.
+** Copyright Plone Foundation, et al
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will 
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade. 
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+body {
+    font-family: Baskerville, Georgia, Garamond, Times, serif;
+    font-size: 11pt !important;
+}
+h1, h2, h3, h4, h5, h6 {
+    border: none;
+    font-family: Baskerville, Georgia, Garamond, Times, serif;
+}
+div, p, ul, dl, ol {
+    width: auto;
+}
+ul, ol, dl {
+    padding-right: 0.5em;	
+}
+ul { 
+    list-style-type: square;
+}
+.documentDescription {
+    font-weight: bold;
+}
+pre {
+    border: 1pt dotted black;
+    white-space: pre;
+    font-size: 8pt;
+    overflow: auto;
+    padding: 1em 0;
+}
+table.listing,
+table.listing td {
+    border: 1pt solid black;
+    border-collapse: collapse;
+}
+a {
+    color: Black !important;
+    padding: 0 !important;
+    text-decoration: none !important;
+}
+a:link, a:visited {
+    color: #520;
+    background: transparent;
+}
+
+/* Page break class for use when printing */
+div.pageBreak {
+    page-break-before: always;
+}
+
+/* Uncomment these to get link addresses inserted along with the link text
+   when you print.
+#content a:link:after, 
+#content a:visited:after {
+   content: " [" attr(href) "] ";
+}
+*/
+
+/* Hide all the elements that are irrelevant for printing */
+div.top,
+#portal-logo,
+#portal-siteactions,
+.hiddenStructure,
+#portal-searchbox,
+#portal-globalnav,
+#portal-personaltools,
+#portal-breadcrumbs,
+#portal-column-one,
+#portal-column-two,
+#portal-languageselector,
+.contentViews,
+.contentActions,
+.help,
+.legend,
+.portalMessage,
+.documentActions,
+.documentByLine,
+.netscape4,
+#portal-footer,
+#portal-colophon,
+.skipnav,
+ #kss-spinner,
+ #review-history,
+ #content-history,
+ .listingBar,
+.visualNoPrint {
+    display: none;
+}

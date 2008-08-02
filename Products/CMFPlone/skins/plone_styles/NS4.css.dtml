@@ -1,0 +1,73 @@
+/* 
+** Plone style sheet for Netscape 4 and other non-CSS2-compatible browsers.
+** Copyright Plone Foundation, et al.
+*/
+
+/* Do not remove this, it's required to get the variables needed to render the CSS
+<dtml-with base_properties>
+*/
+
+/* Don't remove this either, this is a CSS trick to hide things from all browsers 
+   that are not Netscape 4 - aka. Fabrice's Inversion (google it :) 
+   Any standards-compliant browser will ignore the styles below, unless you insert
+   a comment in them (which you shouldn't do).
+   */
+
+/*/*//*/ 
+
+body, p, table, td, th, ul, li, dd, dt, dl, h1, h2, h3, h4, h5, h6, div, span, input {
+    font-family: Verdana;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+p, ul, li, dt, dd, dl, table, td, th, .documentDescription, #portal-breadcrumbs, .documentDescription, #portal-footer, #portal-colophon, div.content, div.documentByLine, input, textarea {
+    font-size: 14px;
+}
+
+.documentDescription {
+    font-weight: bold;
+}
+
+#portal-columns{
+}
+
+#portal-columns #portal-column-one {
+    float: left;
+    clear: left;
+    width: 15%;
+    padding: 2em 0em 1em 2em;
+}
+
+#portal-columns #portal-column-two {
+    float: left;
+    clear: right;
+    width: 15%;
+    padding: 2em 2em 1em 0em;
+}
+
+#portal-columns #portal-column-content {
+    float: left;
+    clear: none;
+    width: 62%;
+    padding: 0.5em 2em 1em 2em;
+}
+
+#portal-globalnav li, 
+#personalbar li, 
+.contentViews li,
+#itemMenu li {
+    display: none;
+}
+
+/* End of Fabrice's Inversion: */
+
+/* */
+
+   
+/* End of the variable inclusion
+</dtml-with>
+*/
+

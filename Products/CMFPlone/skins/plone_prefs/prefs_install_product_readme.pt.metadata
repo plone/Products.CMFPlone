@@ -1,0 +1,5 @@
+[default]
+title=Product Description
+
+[security]
+View=0:Authenticated

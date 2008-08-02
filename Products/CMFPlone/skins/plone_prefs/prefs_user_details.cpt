@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_content"
+     tal:define="userid python:request.get('userid', member.getId());
+                 mq python:modules['ZTUtils'].make_query;
+                 userquery python:mq(userid=userid);
+                 member python:mtool.getMemberById(userid);
+                 errors options/state/getErrors;">
+
+      <div id="content" class="documentEditable">
+    <!-- simulating views on the groups/user pages until we have real objects. -->
+    <ul class="contentViews">
+      <li class="selected">
+            <a href=""
+               tal:attributes="href string:$portal_url/${template_id}?${userquery}"
+               i18n:translate="label_user_properties">
+              User Properties
+            </a>
+      </li>
+            
+      <li>
+            <a href=""
+               tal:attributes="href string:$portal_url/prefs_user_memberships?${userquery}"
+               i18n:translate="label_group_memberships">
+              Group Memberships
+            </a>
+      </li>
+    </ul>
+    
+    <div class="contentActions">
+      &nbsp;
+    </div>        
+    
+    <div id="region-content" class="documentContent">
+      <a name="documentContent"></a>
+      
+      <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>
+
+      <div class="configlet">
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_prefs_user_details">
+          User Properties for
+          <span tal:content="member/getId | default"
+                tal:omit-tag=""
+                i18n:name="username">username</span>
+        </h1>
+    
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string:$portal_url/prefs_users_overview"
+           i18n:translate="label_up_to_usersoverview">
+          Up to Users Overview
+        </a>
+
+        <p i18n:translate="label_change_member_properties">
+          Change user properties.
+        </p>
+    
+        <form action=""
+                  name="users"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="enableUnloadProtection enableAutoFocus"
+                  tal:condition="user | nothing"
+              tal:attributes="action template_id">
+
+            <input type="hidden" name="userid" value="username"
+                   tal:attributes="value member/getId" />
+
+            <metal:login use-macro="here/personalize_form/macros/user_form">
+            Render the personalize_form core template
+            </metal:login>
+
+        </form>
+
+      </div>
+    </div>
+      </div>
+    </div>
+  </body>
+</html>

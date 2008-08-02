@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<import-steps>
+ <import-step id="update-workflow-rolemap" version="20070429-01"
+              handler="Products.CMFPlone.setuphandlers.updateWorkflowRoleMappings"
+              title="Update workflow role mappings">
+  <dependency step="workflow"/>
+    Update workflow role map after workflow changes in an extension profile.
+    This is only necessary if the 'structure' step has imported content.
+ </import-step>
+</import-steps>

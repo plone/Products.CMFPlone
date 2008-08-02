@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+
+<body>
+
+<!-- THE SECTION TABS DEFINITION -->
+<div metal:define-macro="portal_tabs"
+     tal:omit-tag=""
+     tal:define="selected_tabs python:here.selectedTabs('index_html', here, portal_tabs);
+                 selected_portal_tab selected_tabs/portal;"
+     tal:condition="portal_tabs">
+    <h5 class="hiddenStructure" i18n:translate="heading_sections">Sections</h5>
+
+    <ul id="portal-globalnav">
+        <tal:tabs tal:repeat="tab portal_tabs"><li tal:attributes="id string:portaltab-${tab/id};
+                            class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
+            <a href="" 
+               tal:content="tab/name"
+               tal:attributes="href tab/url;
+                               title tab/description|nothing">
+            Tab Name
+            </a></li></tal:tabs>
+    </ul>
+</div>
+
+</body>
+</html>

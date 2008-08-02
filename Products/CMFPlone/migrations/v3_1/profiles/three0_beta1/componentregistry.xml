@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <adapters/>
+ <utilities>
+  <utility 
+      interface="plone.keyring.interfaces.IKeyManager"
+      factory="plone.keyring.keymanager.KeyManager"
+      />
+ </utilities>
+</componentregistry>

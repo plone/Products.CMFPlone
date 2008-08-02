@@ -1,0 +1,17 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+    <include package="plone.app.form" file="overrides.zcml" />
+    <include package="plone.app.portlets" file="overrides.zcml" />
+
+    <adapter
+        for="zope.publisher.interfaces.http.IHTTPRequest"
+        provides="zope.i18n.interfaces.IUserPreferredLanguages"
+        factory="Products.Five.i18n.PTSLanguages"
+        />
+
+    <utility
+        provides="Products.PageTemplates.interfaces.IUnicodeEncodingConflictResolver"
+        component="Products.CMFPlone.unicodeconflictresolver.UTF8EncodingConflictResolver"
+        />
+
+</configure>

@@ -1,0 +1,60 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+<body>
+
+<!-- Should have been removed once the related items list on the view templates
+     was in place (Plone 2.1), will be removed in Plone 4.0 -->
+
+<div metal:define-macro="portlet"
+     tal:define="related here/navigationLocalRelated;
+                 relatedLocal related/local;
+                 relatedRemote related/remote;"
+     tal:condition="python: relatedLocal or relatedRemote">
+
+<dl class="portlet"
+    id="portlet-related">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span i18n:translate="box_related">Related</span>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem odd" tal:condition="relatedLocal">
+        <h5 i18n:translate="box_local_resources">Local resources</h5>
+        <ul class="visualNoMarker">
+            <li tal:repeat="related relatedLocal">
+                <a href=""
+                   class="tile"
+                   tal:attributes="href string:${related/url}/view">
+                   <img src="" alt=""
+                        tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
+                   &nbsp;<span tal:replace="related/title">Object related by keyword</span>
+                </a>
+            </li>
+        </ul>
+    </dd>
+
+    <dd class="portletItem even lastItem" tal:condition="relatedRemote">
+        <h5 i18n:translate="box_external_links">External links</h5>
+        <ul class="visualNoMarker">
+            <li tal:repeat="related relatedRemote">
+                <a href=""
+                   class="tile"
+                   tal:attributes="href string:${related/url}/view">
+                   <img src="" alt=""
+                        tal:attributes="src string:$portal_url/${related/icon};alt here/Title" />
+                   &nbsp;<span tal:replace="related/title">Object related by keyword</span>
+                </a>
+            </li>
+        </ul>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>
+
+</div>
+</body>
+</html>

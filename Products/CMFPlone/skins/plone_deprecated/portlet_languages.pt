@@ -1,0 +1,80 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+<body>
+
+<!-- This portlet is deprecated and will be removed in Plone 4.0 -->
+
+<div metal:define-macro="portlet"
+     tal:define="PTS modules/Products/PlacelessTranslationService | nothing;"
+     tal:condition="PTS">
+
+    <dl class="portlet" id="portlet-language"
+        tal:define="served_languages here/portal_languages/listSupportedLanguages;
+                    boundLanguages here/portal_languages/getLanguageBindings;
+                    prefLang python:boundLanguages[0];">
+
+        <dt class="portletHeader" i18n:translate="label_language">
+            Language
+        </dt>
+
+        <dd class="portletItem odd"
+            tal:condition="python:len(served_languages) > 8">
+
+            <form action="switchLanguage"
+                  method="post"
+                  tal:attributes="action string:${here/absolute_url}/switchLanguage" > 
+
+                <select name="set_language" onchange="this.form.submit()" >
+                    <option tal:repeat="lang served_languages"
+                            tal:content="python:here.portal_languages.getNameForLanguageCode(lang[0]) or lang[1]"
+                            tal:attributes="selected python:prefLang == lang[0];
+                                            value python:lang[0]">Language</option>
+                </select>
+
+            </form>
+
+        </dd>
+
+        <tal:languages tal:repeat="lang served_languages">
+        <dd class="portletItem even"
+            tal:condition="python:len(served_languages) &lt; 9"
+            tal:define="oddrow repeat/lang/odd"
+            tal:attributes="class python:test(oddrow, 'portletItem even', 'portletItem odd')">
+
+            <strong tal:omit-tag="python:prefLang != lang[0]"
+                    tal:define="code python:lang[0]">
+
+                <a href=""
+                   tal:attributes="href string:${here/absolute_url}/switchLanguage?set_language=${code}">
+
+                    <img width="14" height="11" alt=""
+                         tal:define="flag python: here.portal_languages.getFlagForLanguageCode(code)"
+                         tal:condition="here/portal_languages/showFlags | nothing"
+                         tal:attributes="src string:${portal_url}${flag};
+                                         title python: lang[1]"/>
+ 
+                    <span tal:replace="python:here.portal_languages.getNameForLanguageCode(lang[0]) or lang[1]">
+                        Language
+                    </span>
+                </a>
+
+            </strong>
+                
+        </dd>
+        </tal:languages>
+
+        <dd class="portletFooter"
+            tal:condition="python: member.has_role('Manager')">
+
+            <a href=""
+               i18n:translate="label_language_settings_link"
+               tal:attributes="href string:${portal_url}/@@language-controlpanel">
+                Language settings&#8230;
+            </a>
+        </dd>
+    </dl>
+
+</div>
+</body>
+</html>

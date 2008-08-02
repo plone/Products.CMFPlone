@@ -1,0 +1,302 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
+<body>
+
+<tal:comment replace="nothing">
+    Please note that this template fills the "content" slot instead of the
+    "main" slot, this is done so we can provide stuff like the content
+    tabs. This also means that we have to supply things that are normally
+    present from main_template.
+</tal:comment>
+
+<metal:main fill-slot="content"
+    tal:define="errors options/state/getErrors;">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="url_unquote_plus python:modules['Products.PythonScripts.standard'].url_unquote_plus;
+                                author python:(len(request.traverse_subpath) > 0 and url_unquote_plus(request.traverse_subpath[0])) or request.get('author', None);
+                                portrait python: mtool.getPersonalPortrait(author);
+                                portal_types portal/portal_types;
+                                authorinfo python: mtool.getMemberInfo(author);">
+
+        <tal:noAuthor condition="not: authorinfo">
+        <dl class="portalMessage error">
+            <dt i18n:translate="">
+                Error
+            </dt>
+            <dd i18n:translate="text_no_user_by_name">
+                No user by that name.
+            </dd>
+        </dl>
+        </tal:noAuthor>
+
+
+
+        <tal:haveAuthor condition="authorinfo">
+ 
+    <div class="documentEditable"
+         tal:define="isOwner python:member.getId()==author"
+         tal:attributes="class python: test(isOwner, 'documentEditable', '')">
+
+        <h5 class="hiddenStructure"
+            tal:condition="isOwner">Views</h5>
+        
+        <ul class="contentViews"
+            tal:condition="isOwner">
+          <li class="selected">
+            <a href=""
+                tal:define="url_quote_plus python:modules['Products.PythonScripts.standard'].url_quote_plus;
+                            memberurl python:url_quote_plus(member.getId())"
+               tal:attributes="href string:${portal_url}/author/${memberurl}"
+               i18n:translate="label_view">View</a>
+          </li>
+          <li>
+            <a href=""
+               tal:attributes="href string:${portal_url}/personalize_form"
+               i18n:translate="label_edit">Edit</a>
+          </li>
+        </ul>
+
+        <div class="contentActions"
+             tal:condition="isOwner">
+          &nbsp;
+        </div>
+
+        <div class="documentContent" id="content">
+
+            <a name="documentContent"></a>
+                    
+            <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+                Portal status message
+            </div>
+
+            <!-- Author information -->
+            <h1 class="documentFirstHeading" tal:condition="authorinfo/fullname" tal:content="authorinfo/fullname">
+                Author name
+            </h1>
+
+            <h1 class="documentFirstHeading" tal:condition="not: authorinfo/fullname" tal:content="author">
+                Author ID
+            </h1>
+
+            <div class="discreet">
+                <tal:location condition="authorinfo/location"
+                              i18n:translate="text_location">
+                    Location:
+                    <span tal:content="authorinfo/location"
+                          tal:omit-tag=""
+                          i18n:name="location">
+                        Some location
+                    </span>
+                </tal:location>
+
+                <tal:language condition="authorinfo/language">
+                &mdash;
+                <span i18n:translate="label_main_language">Main Language:</span>
+                <span tal:replace="authorinfo/language">Some language</span>
+                </tal:language>
+            </div>
+
+            <img src=""
+                 alt=""
+                 class="portraitPhoto"
+                 width="75"
+                 style="float: left; margin: 1em;"
+                 tal:attributes="src portrait/absolute_url" />
+                      
+
+            <p class="documentDescription" tal:content="authorinfo/description">
+                Author description.
+            </p>
+
+            <div class="visualClear"><!-- --></div>
+            
+            <p tal:condition="python:mtool.getHomeFolder(id=author)">
+            <a href="#" tal:attributes="href python:mtool.getHomeFolder(id=author).absolute_url()"
+               i18n:translate="label_author_internal_home_page">Author's home page in this site&hellip;</a>
+            </p>
+
+            <p tal:condition="python: not mtool.getHomeFolder(id=author) and authorinfo['home_page']">
+            <a href="#" 
+               rel="nofollow"
+               tal:attributes="href authorinfo/home_page"
+               i18n:translate="label_author_external_home_page">Author's external home page&hellip;</a>
+            </p>
+
+            <div class="formControls" tal:condition="isAnon">
+            <form 
+              tal:define="pss modules/Products/PythonScripts/standard"
+              tal:attributes="action string:$portal_url/login_form">
+               <input class="standalone"
+                   type="submit"
+                   value="Log in to send feedback"
+                   i18n:attributes="value label_login_to_send_feedback;"
+                   />
+            </form>
+            </div>
+
+            <!-- feedback form -->        
+            <tal:feedbackForm
+                tal:condition="not:isAnon"
+                tal:define="email_from_address portal/email_from_address">
+
+            <tal:noemailsetup tal:condition="not:email_from_address">
+                <p class="discreet"
+                   i18n:translate="text_no_email_setup">
+                    This site doesn't have a valid email setup, so you cannot use
+                    any contact forms. 
+                </p>
+            </tal:noemailsetup>
+
+            <tal:emailsetup tal:condition="email_from_address">
+                <tal:owner tal:condition="not:isOwner">
+                    <p class="discreet"
+                       i18n:translate="description_author_feedback">
+                        If you want to contact this author, fill in the form
+                        below.
+                    </p>
+
+                    <form name="feedback_form"
+                          action=""
+                          method="post"
+                          tal:attributes="action string:$here_url/$template_id">
+
+                    <fieldset>
+
+                    <legend i18n:translate="legend_feedback_for_author">Feedback for author</legend>
+
+                    <div class="field"
+                      tal:define="error errors/subject|nothing"
+                      tal:attributes="class python:test(error, 'field error', 'field')">
+                      <label for="subject" i18n:translate="label_subject">
+                        Subject
+                      </label>
+
+                      <span class="fieldRequired" title="Required"
+                              i18n:attributes="title title_required;"
+                              i18n:translate="label_required">(Required)</span>
+
+                      <br />
+                      <input type="text" 
+                             id="subject" 
+                             name="subject" 
+                             size="25" 
+                             value="" 
+                             tal:attributes="value request/subject|nothing"
+                             />
+                    </div>
+                    <div class="field"
+                      tal:define="error errors/message|nothing"
+                      tal:attributes="class python:test(error, 'field error', 'field')">
+                      <label for="message" i18n:translate="label_message">
+                        Message
+                      </label>
+        
+                      <span class="fieldRequired" title="Required"
+                              i18n:attributes="title title_required;"
+                              i18n:translate="label_required">(Required)</span>
+
+                      <textarea name="message"
+                                id="message"
+                                rows="5"
+                                cols="25"
+                                tal:content="request/message|nothing"
+                                ></textarea>
+                    </div>
+        
+                    <div class="formControls">
+
+                        <input class="context"
+                               type="submit"
+                               name="form.button.Send"
+                               value="Send"
+                               i18n:attributes="value label_send;" />
+
+                    </div>
+
+                    </fieldset>
+
+                    <input type="hidden" name="author" value="" tal:attributes="value author" />
+                    <input type="hidden" name="referer" value="" 
+                      tal:attributes="value python:request.get('referer', request.get('HTTP_REFERER', 'unknown url') )" />
+                    <input type="hidden" name="form.submitted" value="1" />
+
+                    </form>
+                </tal:owner>
+            </tal:emailsetup>
+            </tal:feedbackForm>
+            <!-- listing of content created by this user -->
+        
+            <tal:authorContent define="author_content python:here.author_find_content(author);"
+                               condition="author_content">
+        
+                <h2 i18n:translate="heading_author_content">
+                    Latest content created by this user
+                </h2>
+                
+                <div metal:define-macro="user_content_listing">
+                <table class="listing" summary="Lists content written by an author grouped by content type" i18n:attributes="summary summary_author_content_list;">
+                    <tal:repeat repeat="content_by_type author_content">
+                      <tal:grouping define="getTypeInfo nocall:portal_types/getTypeInfo;
+                                            content_type_ content_by_type/portal_type;
+                                            type_title python: getTypeInfo(content_type_) or None"
+                                    condition="type_title">		
+                        <tr>
+                            <th colspan="2"
+                                i18n:translate=""
+                                tal:define="getTypeInfo nocall:portal_types/getTypeInfo;
+                                            content_type_ content_by_type/portal_type;
+                                            type_title python: getTypeInfo(content_type_) or None"
+                                tal:content="python:type_title and type_title.Title() or content_type_ + ' is not available'">
+                                Type
+                            </th>
+                        </tr>
+                        <tal:repeat repeat="item content_by_type/content_items">
+                            <tr>
+                                <td>
+                                    <a href="" tal:attributes="href item/getURL"
+                                       tal:content="item/pretty_title_or_id">title</a>
+                                </td>
+                                <td tal:content="python:toLocalizedTime(item.Date)">
+                                    Date
+                                </td>
+                            </tr>
+                        </tal:repeat>
+                      </tal:grouping>
+                    </tal:repeat>
+                </table>
+                </div>
+
+                <a href=""
+                   tal:attributes="href string:$here_url/search?Creator=${author}&amp;sort_on=Date&amp;sort_order=reverse"
+                   i18n:translate="go_to_search_author_content">
+                    All content created by 
+                    <span i18n:name="user" tal:omit-tag="" tal:content="python:authorinfo['fullname'] or author"/>&hellip;
+                </a>
+
+            </tal:authorContent>
+
+        </div>
+    </div> <!-- end simulated tabs -->
+        
+    </tal:haveAuthor>
+
+    </tal:main-macro>
+
+</metal:main>
+
+</body>
+</html>
+

@@ -1,0 +1,59 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+<body>
+<div metal:define-macro="portlet"
+     tal:define="DateTime python:modules['DateTime'].DateTime;
+                 results here/my_worklist;"
+     tal:condition="results">
+
+<dl class="portlet" id="portlet-workflow-review">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span i18n:translate="box_review_list">Review List</span>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:items repeat="o results">
+    <dd class="portletItem"
+        tal:define="oddrow repeat/o/odd;
+                    item_icon python:plone_view.getIcon(o);"
+        tal:attributes="class python:test(oddrow, 'portletItem even','portletItem odd')">
+
+        <a href="#"
+           class="visualIconPadding tile"
+           tal:attributes="href string:${o/absolute_url}/view;
+                           title o/Description">
+            <img width="16" height="16"
+                 src="" alt=""
+                 tal:condition="item_icon/url"
+                 tal:attributes="src item_icon/url;
+                                 alt item_icon/description;
+                                 title item_icon/title;
+                                 width item_icon/width;
+                                 height item_icon/height;" />
+            <span tal:replace="o/pretty_title_or_id">
+            Extended Calendar Product
+            </span>
+            <span class="portletItemDetails"
+                  tal:define="moddate o/ModificationDate;"
+                  tal:content="python:toLocalizedTime(moddate)">May 5</span>
+        </a>
+
+    </dd>
+    </tal:items>
+
+    <dd class="portletFooter">
+        <a href="#" 
+           class="tile"
+           tal:attributes="href string:${portal_url}/full_review_list"
+           i18n:translate="box_full_review_list">Full review list&hellip;</a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+
+</div>
+</body>
+</html>

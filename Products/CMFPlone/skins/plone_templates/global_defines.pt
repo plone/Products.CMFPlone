@@ -1,0 +1,13 @@
+<!-- 
+The expressions that used to generate these globals have been 
+moved to (much faster) Python code in CMFPlone/browser/ploneview.py
+
+!!!! Do not add any more defines here, under penalty of death !!!!
+-->
+
+<metal:globaldefine define-macro="defines" 
+      tal:define="
+        global plone_view context/@@plone;
+        global view nocall:view | nocall:plone_view;
+        foo plone_view/globalize;
+        " />

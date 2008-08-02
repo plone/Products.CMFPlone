@@ -1,0 +1,87 @@
+/*
+** Plone style sheet - Invisible and accessibility-related elements.
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+
+/* New navtree styles */
+
+.portletNavigationTree {
+    padding: 0; 
+    list-style: none !important;
+    list-style-image: none !important; 
+    line-height: 1em;
+}
+.navTree {
+    list-style: none; 
+    list-style-image: none; 
+    margin-top: 1px;
+}
+.navTree li {
+    margin-bottom: 1px;
+}
+.navTreeItem {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+.navTreeItem a,
+dd.portletItem .navTreeItem a {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    text-decoration: none;
+    padding-top: 0.2em;
+    padding-bottom: 0.25em;
+}
+.navTreeItem a:hover,
+dd.portletItem .navTreeItem a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+.navTreeCurrentItem {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+}
+li.navTreeCurrentItem {
+    display: block;
+    padding: 0 0 0 1px;
+    margin: 0 0 2px -1px;
+}
+li.navTreeCurrentItem a,
+li.navTreeCurrentItem a:hover {
+    display: block;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBackgroundColor;;
+    min-height: 1.6em;
+    line-height: 1.6em;
+    height: auto;
+}
+
+/* Another workaround for broken Internet Explorer */
+* html li.navTreeCurrentItem a,
+* html li.navTreeCurrentItem a:hover {
+    height: 1.6em;
+}
+
+.navTreeLevel0 { margin: 0; }
+.navTreeLevel1 { margin-left: 1em;}
+.navTreeLevel2 { margin-left: 0.75em; }
+.navTreeLevel3 { margin-left: 0.75em; }
+.navTreeLevel4 { margin-left: 0.75em; }
+.navTreeLevel5 { margin-left: 0.75em; }
+
+/* </dtml-with> */

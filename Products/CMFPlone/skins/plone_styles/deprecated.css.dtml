@@ -1,0 +1,25 @@
+/* Deprecated CSS elements - do not depend on these, they will disappear in
+   the next version of Plone. They are here for backwards compatibility only. */
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+/* .system-message and #error-handling are reST error indicators */
+div.portalMessage,
+p.portalMessage,
+.system-message,
+#error-handling {
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    color: &dtml-fontColor;;
+    font-size: &dtml-fontSmallSize;;
+    margin: 1em 0em;
+    padding: 0.5em 1em 0.5em 3em;
+    vertical-align: middle;
+    background-image: url(&dtml-portal_url;/info_icon.gif);
+    background-repeat: no-repeat;
+    background-position: 5px 50%;
+}
+
+
+/* </dtml-with> */

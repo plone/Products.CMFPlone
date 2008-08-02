@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+
+<body>
+
+<!-- THE SEARCHBOX DEFINITION -->
+<div id="portal-searchbox" metal:define-macro="quick_search">
+    <form name="searchform"
+          action="search"
+          tal:define="livesearch site_properties/enable_livesearch|nothing;
+                      folder context/@@plone_context_state/folder;
+                      folder_path python:'/'.join(folder.getPhysicalPath())"
+          tal:attributes="action string:${portal_url}/search">
+
+        <label for="searchGadget" class="hiddenStructure"
+                    i18n:translate="text_search">Search Site</label>
+
+        <div class="LSBox">
+        <input name="SearchableText"
+               type="text"
+               size="15"
+               value=""
+               title="Search Site"
+               accesskey="4"
+               i18n:attributes="title title_search_site;"
+               tal:attributes="value request/SearchableText|nothing;
+                               id python:test(livesearch, 'searchGadget', '')"
+               class="inputLabel" />
+
+        <input class="searchButton"
+               type="submit"
+               value="Search"
+               i18n:attributes="value label_search;" />
+    
+        <div class="searchSection">
+            <input id="searchbox_currentfolder_only" 
+                   type="checkbox" 
+                   name="path" 
+                   tal:attributes="value folder_path"
+                   />
+            <label for="searchbox_currentfolder_only" 
+                   i18n:translate="label_searchbox_currentfolder_only"
+                   style="cursor: pointer">
+                only in current section
+            </label>
+        </div>
+
+        <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
+        </div>
+    </form>
+
+    <div id="portal-advanced-search"
+         class="hiddenStructure">
+        <a href="#"
+           tal:attributes="href string:$portal_url/search_form"
+           i18n:translate="label_advanced_search"
+           accesskey="5">
+            Advanced Search&hellip;
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

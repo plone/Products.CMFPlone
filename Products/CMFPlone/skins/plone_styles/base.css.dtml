@@ -1,0 +1,156 @@
+/*
+** Plone style sheet - Base Elements
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade.
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+
+body {
+    font: &dtml-fontBaseSize; <dtml-var fontFamily>;
+    background-color: &dtml-backgroundColor;;
+    color: &dtml-fontColor;;
+    margin: 0;
+    padding: 0;
+}
+table {
+    font-size: 100%;
+}
+a {
+    color: &dtml-linkColor;;
+    background-color: transparent;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+p {
+    margin: 0 0 0.75em 0;
+    line-height: 1.5em;
+}
+p img {
+    border: none;
+    margin: 0;
+}
+hr {
+    border: 0;
+    height: &dtml-borderWidth;;
+    color: &dtml-globalBorderColor;;
+    background-color: &dtml-globalBorderColor;;
+    margin: 0.5em 0 1em 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: &dtml-fontColor;;
+    font-family: <dtml-var headingFontFamily>;
+    margin: 0.75em 0 0.25em 0;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    color: &dtml-fontColor; ! important;
+    text-decoration: none;
+}
+h1 {
+    font-size: 160%;
+}
+h2 {
+    font-size: 150%;
+}
+h3 {
+    font-size: 125%;
+    border-bottom: none;
+    font-weight: bold;
+}
+h4 {
+    font-size: 110%;
+    border-bottom: none;
+    font-weight: bold;
+}
+h5 {
+    font-size: 100%;
+    border-bottom: none;
+    font-weight: bold;
+}
+h6 {
+    font-size: &dtml-fontSmallSize;;
+    border-bottom: none;
+    font-weight: bold;
+}
+ul {
+    line-height: 1.5em;
+    padding: 0;
+}
+ol {
+    line-height: 1.5em;
+    padding: 0;
+}
+li {
+    margin-bottom: 0.5em;
+}
+dt {
+    font-weight: bold;
+}
+dd {
+    line-height: 1.5em;
+    margin-bottom: 1em;
+}
+abbr, acronym, .explain {
+    border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
+    color: &dtml-fontColor;;
+    background-color: transparent;
+    cursor: help;
+}
+abbr .explain {
+    border-bottom: none;
+}
+q {
+    font-family: Baskerville, Georgia, serif;
+    font-style: italic;
+    font-size: 120%;
+}
+blockquote {
+    padding-left: 0.5em;
+    margin-left: 0;
+    border-left: 4px solid &dtml-globalBorderColor;;
+    color: &dtml-discreetColor;;
+}
+code, tt {
+    font-family: Monaco, "Courier New", Courier, monospace;
+    font-size: 120%;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    padding: 0 0.1em;
+}
+pre {
+    font-family: Monaco, "Courier New", Courier, monospace;
+    font-size: 100%;
+    padding: 1em;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    overflow: auto;
+}
+ins {
+    color: green;
+    text-decoration: none;
+}
+del {
+    color: red;
+    text-decoration: line-through;
+}
+
+/* </dtml-with> */

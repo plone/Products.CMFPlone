@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="top_slot"
+               tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+    
+    <div metal:fill-slot="main"
+         tal:define="useSelf python:isStructuralFolder and not isContextDefaultPage;
+                     folder_warning python:useSelf and here.portal_type != 'Topic';">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="alert_really_delete_folder"
+          tal:condition="folder_warning">
+        Do you really want to delete this folder and all its contents?
+      </h1>
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="alert_really_delete"
+          tal:condition="not:folder_warning">
+        Do you really want to delete this item?
+      </h1>
+
+      <ul>
+          <li tal:content="object_title">The item title (ID)</li>
+      </ul>
+
+      <form method="POST"
+            action="#"
+            tal:attributes="action current_page_url">
+        <div class="formControls">
+
+          <input type="hidden"
+                 name="form.submitted"
+                 value="1"
+                 />
+
+          <input class="destructive"
+                 type="submit"
+                 value="Delete"
+                 i18n:attributes="value;"
+                 />
+          <input class="standalone"
+                 type="submit"
+                 value="Cancel"
+                 name="form.button.Cancel"
+                 i18n:attributes="value label_cancel;"
+                 />
+        </div>
+
+        <input tal:replace="structure context/@@authenticator/authenticator" />
+
+      </form>
+
+
+    </div>
+
+  </body>
+</html>

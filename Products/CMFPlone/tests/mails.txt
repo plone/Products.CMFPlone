@@ -1,0 +1,58 @@
+Mail related functional tests
+=============================
+
+Some initial setup:
+
+  >>> from Products.Five.testbrowser import Browser
+  >>> browser = Browser()
+
+We need to fake a valid mail setup:
+
+  >>> portal.email_from_address = "mail@plone.test"
+  >>> mailhost = self.portal.MailHost
+
+Contact form
+------------
+
+Let's go to the contact form:
+
+  >>> browser.open('http://nohost/plone')
+  >>> browser.getLink('Contact').click()
+  >>> browser.url
+  'http://nohost/plone/contact-info'
+
+Now fill in the form:
+
+  >>> form = browser.getForm(name='feedback_form')
+
+  >>> form.getControl(name='sender_fullname').value = 'T\xc3\xa4st user'
+  >>> form.getControl(name='sender_from_address').value = 'test@plone.test'
+  >>> form.getControl(name='subject').value = 'Some t\xc3\xa4st subject.'
+  >>> form.getControl(name='message').value = 'Another t\xc3\xa4st message.'
+
+And submit it:
+
+  >>> form.submit()
+  
+  >>> browser.url
+  'http://nohost/plone/contact-info'
+
+As part of our test setup, we replaced the original MailHost with our
+own version.  Our version doesn't mail messages, it just collects them
+in a list called ``messages``:
+
+  >>> len(mailhost.messages)
+  1
+  >>> msg = mailhost.messages[0]
+
+Now that we have the message, we want to look at its contents:
+
+  >>> msg.mto
+  ['mail@plone.test']
+
+  >>> msg.mfrom
+  'mail@plone.test'
+
+  >>> from base64 import b64decode
+  >>> b64decode(msg.message.get_payload())
+  '...You are receiving this mail because T\xc3\xa4st user\ntest@plone.test...is sending feedback about the site administered by you at...The message sent was:...Another t\xc3\xa4st message...

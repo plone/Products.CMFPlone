@@ -1,0 +1,193 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+    <div metal:fill-slot="main">
+    <metal:main-macro define-macro="main"
+                      tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                  templateId template/getId">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
+            Title or id
+        </h1>
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <p metal:use-macro="here/kss_generic_macros/macros/generic_description_view">
+            Description
+        </p>
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <div metal:define-macro="text-field-view"
+             id="parent-fieldname-text" class="stx"
+             tal:define="kss_class python:getKssClasses('text',
+                         templateId=templateId, macro='text-field-view');
+                         text here/getText|nothing"
+             tal:condition="text"
+             tal:attributes="class python:test(here.Format() in ('text/structured',
+                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+            <div metal:define-slot="inside" tal:replace="structure text">The body</div>
+        </div>
+
+        <metal:listingmacro define-macro="listing">
+        <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
+                            limit_display limit_display|request/limit_display|nothing;
+                            more_url more_url|request/more_url|string:folder_contents;
+                            folderContents python:here.portal_type=='Topic' and here.queryCatalog(contentFilter, batch=True) or here.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
+                            use_view_action site_properties/typesUseViewActionInListings|python:();
+                            over_limit python: limit_display and len(folderContents) > limit_display;
+                            folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
+                            batch folderContents">
+        <tal:listing condition="folderContents">
+
+            <tal:block tal:repeat="item folderContents">
+                <div class="tileItem visualIEFloatFix vevent" 
+                     tal:define="item_url item/getURL|item/absolute_url;
+                                       item_id item/getId|item/id;
+                                       item_title_or_id item/pretty_title_or_id;
+                                       item_description item/Description;
+                                       item_type item/portal_type;
+                                       item_type_title item/Type;
+                                       item_type_class python: 'contenttype-' + normalizeString(item_type);
+                                       item_modified item/ModificationDate;
+                                       item_created item/CreationDate;
+                                       item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
+                                       item_wf_state_class python:'state-' + normalizeString(item_wf_state);
+                                       item_creator item/Creator;
+                                       item_start item/start/ISO|item/StartDate|nothing;
+                                       item_end item/end/ISO|item/EndDate|nothing;
+                                       item_object item/getObject;
+                                   "
+                     tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+
+                    <a href="#"
+                       tal:condition="python:item_type != 'Link'"
+                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
+                        <img src="" alt=""
+                             tal:condition="exists:item_object/image_thumb"
+                             tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
+                    </a>
+
+                    <a href="#"
+                       class="link-plain"
+                       tal:condition="python:item_type == 'Link'"
+                       tal:attributes="href item/getRemoteUrl">
+                        <img src="" alt=""
+                             tal:condition="exists:item_object/image_thumb"
+                             tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
+                    </a>
+
+                    <h2 class="tileHeadline"
+                        metal:define-macro="listitem">
+
+                        <a href="#"
+                           class="summary url"
+                           tal:condition="python:item_type != 'Link'"
+                           tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);"
+                           tal:content="item_title_or_id">
+                            Item Title
+                        </a>
+
+                        <a href="#"
+                           class="link-plain"
+                           tal:condition="python:item_type == 'Link'"
+                           tal:content="item_title_or_id"
+                           tal:attributes="href item/getRemoteUrl;">
+                            External Link
+                        </a>
+                    </h2>
+
+                    <div class="documentByLine" tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon">
+                    <tal:event condition="python: item_type == 'Event'">
+                         <span tal:condition="python: item_type == 'Event'"
+                               i18n:translate="label_event_byline">
+                             (<span tal:content="string:${item/location}"
+                                    class="location"
+                                    i18n:name="location">Oslo</span>, from
+                              <abbr class="dtstart"
+                                    tal:attributes="title python:item_start"
+                                    tal:content="python:toLocalizedTime(item_start,long_format=1)"
+                                    i18n:name="start">from date</abbr> to
+                              <abbr class="dtend"
+                                    tal:attributes="title python:item_end"
+                                    tal:content="python:toLocalizedTime(item_end,long_format=1)"
+                                    i18n:name="end">to date</abbr>)
+                         </span>
+                    </tal:event>
+                    <tal:newsitem condition="python: item_type == 'News Item'">
+                        <tal:name tal:condition="item_creator"
+                            tal:define="author python:mtool.getMemberInfo(item_creator)">
+                          <span i18n:translate="label_by_author">
+                            by
+                          <a href="#"
+                             tal:attributes="href string:${portal_url}/author/${item_creator}"
+                             tal:content="python:author and author['fullname'] or item_creator"
+                             tal:omit-tag="not:author"
+                             i18n:name="author">
+                            Bob Dobalina
+                          </a>
+                          </span>
+                        </tal:name>
+                        &mdash;
+                        <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
+                        August 16, 2001 at 23:35:59
+                        </span>
+                    </tal:newsitem>
+                    </div>
+
+                    <p class="tileBody">
+                        <span tal:omit-tag="" tal:condition="not:item_description">
+                            &nbsp;
+                        </span>
+                        <span class="description" tal:content="item_description">
+                            description
+                        </span>
+                    </p>
+
+                    <p class="tileFooter">
+                        <a href=""
+                           tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);"
+                           i18n:translate="read_more">
+                        Read More&hellip;
+                        </a>
+                    </p>
+
+                    <div class="visualClear"><!-- --></div>
+
+                </div>
+            </tal:block>
+
+            <!-- Navigation -->
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+        </tal:listing>
+        <metal:empty metal:define-slot="no_items_in_listing">
+            <p class="discreet"
+               tal:condition="not: folderContents"
+               i18n:translate="description_no_items_in_folder">
+                There are currently no items in this folder.
+            </p>
+        </metal:empty>
+
+        </tal:foldercontents>
+        </metal:listingmacro>
+
+        <metal:subtopics use-macro="here/atct_topic_view/macros/folderlisting_macro" />
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </metal:main-macro>
+    </div>
+
+</body>
+</html>

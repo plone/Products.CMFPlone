@@ -1,0 +1,10 @@
+[default]
+title=Group members
+
+[actions]
+action.success          = traverse_to:string:prefs_group_members
+action.failure          = traverse_to:string:prefs_group_members
+action.success..Search  = traverse_to:string:prefs_group_members
+action.success..Add     = traverse_to:string:prefs_group_members_add
+action.success..Edit    = traverse_to:string:prefs_group_members_delete
+

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <utilities>
+  <utility
+     interface="plone.app.viewletmanager.interfaces.IViewletSettingsStorage"
+     factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"/>
+ </utilities>
+</componentregistry>

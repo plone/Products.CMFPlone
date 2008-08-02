@@ -1,0 +1,264 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="top_slot">
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0');
+                             dummy python:request.set('enable_border', 1);" />
+  </metal:block>
+
+  <metal:calendar fill-slot="javascript_head_slot">
+    <!-- ECMAScript calendar -->
+    <style type="text/css" media="all"
+            tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" charset="iso-8859-1"
+            tal:condition="exists: portal/jscalendar/calendar-en.js"
+            tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
+  </metal:calendar>
+
+  <body>
+
+    <!--
+      NOTE: This form is used in two different ways - from folder_contents,
+      allowing you to publish several things at once, and from the state
+      drop-down. In the first case, the 'paths' request parameter is set;
+      in the second case, giving the relative paths to the content object
+      to manipulate; in the second case, this parameter is omitted and the
+      path of the context is used.
+    -->
+
+    <div metal:fill-slot="main"
+         tal:define="errors options/state/getErrors;
+                     review_state wf_state;
+                     paths python:request.get('paths', ['/'.join(here.getPhysicalPath())]);
+                     batch python:here.getObjectsFromPathList(paths,batch=True);
+                     folders_in_publishing python:[o.getId for o in batch if o.isPrincipiaFolderish];
+                     came_from python:request.get('HTTP_REFERER', here.absolute_url()).split('?')[0];
+                     dummy python:request.set('orig_template', came_from);
+                     ">
+
+      <metal:block tal:condition="python: paths and not batch"
+                   tal:replace="python:here.redirectToReferrer('The item(s) you selected are no longer available.')"/>
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_publishing_process">Publishing process</h1>
+
+      <p i18n:translate="description_publishing_process_short">
+        An item's status (also called its review state) determines who
+        can see it. Another way to control the visibility of an item is
+        with its <strong>Publishing Date</strong>. An item is not publicly
+        searchable before its publishing date. This will prevent the item
+        from showing up in portlets and folder listings, although the item
+        will still be available if accessed directly via its URL.
+      </p>
+
+      <form id="edit_form"
+            class="enableAutoFocus"
+            name="edit_form"
+            method="post"
+            action="content_status_modify"
+            tal:attributes="action string:$here_url/$template_id"
+            tal:condition="not:python:paths and not batch">
+
+          <div class="field" tal:condition="batch">
+            <label for="" i18n:translate="label_affected_content">Affected content</label>
+            <div tal:define="dummy python:request.set('ids_checked', 1);">
+              <table summary="Affected content" i18n:attributes="summary summary_affected_content;"
+                     metal:use-macro="here/old_folder_contents/macros/folder_listing">
+              </table>
+            </div>
+          </div>
+
+          <div class="field formSingleCheckbox"
+               tal:condition="folders_in_publishing|nothing">
+
+            <input type="checkbox"
+                   class="formElement"
+                   id="include_children"
+                   name="include_children"
+                   />
+            <label for="include_children" i18n:translate="label_include_contained_objects">
+              Include contained items
+            </label>
+
+            <div class="formHelp"
+                 i18n:translate="help_include_contained_objects">
+              If checked, this will attempt to modify the status of all content 
+              in any selected folders and their subfolders.
+            </div>
+
+          </div>
+
+          <div class="field" tal:define="error errors/effective_date | nothing;">
+            <label i18n:translate="label_effective_date">Publishing Date</label>
+            <div class="formHelp"
+                 i18n:translate="help_effective_date">
+              The date when the item will be published. If no date is selected the
+              item will be published immediately.
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+            <div tal:define="inputname  string:effective_date;
+                             formname   string:edit_form;
+                             effective python:test(request.get('paths'), None, here.EffectiveDate()) ;
+                             inputvalue python:test(effective and effective!='None', effective, request.get('effective_date', ''));"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+              <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
+                calendar pop-up
+              </div>
+
+            </div>
+          </div>
+
+          <div class="field"
+               tal:define="error errors/expiration_date | nothing;">
+            <label i18n:translate="label_expiration_date">Expiration Date</label>
+            <div class="formHelp"
+                 i18n:translate="help_expiration_date">
+              The date when the item expires. This will automatically
+              make the item invisible for others at the given date.
+              If no date is chosen, it will never expire.
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+            <div class="field">
+              <div tal:define="inputname  string:expiration_date;
+                               formname   string:edit_form;
+                               expiration here/ExpirationDate;
+                               inputvalue python:test(expiration and expiration!='None', expiration, request.get('expiration_date', ''));"
+                   tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <div metal:use-macro="here/calendar_macros/macros/calendarDatePickerBox">
+                  calendar pop-up
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="comment" 
+                   i18n:translate="label_comments">Comments</label>
+
+            <div class="formHelp"
+                 i18n:translate="help_publishing_comments">
+              Will be added to the publishing history. If multiple
+              items are selected, this comment will be attached to all
+              of them.
+            </div>
+            <textarea id="comment"
+                      name="comment"
+                      cols="60"
+                      rows="5"
+                      tal:content="request/comment|nothing"
+                      ></textarea>
+          </div>
+
+          <div class="field">
+            <label i18n:translate="label_change_status">Change State</label>
+            <div class="formHelp"
+                 i18n:translate="help_change_status">
+              Select the new state for the selected items.
+            </div>
+
+            <div tal:define="error_workflow_action errors/workflow_action|nothing;
+                             objs request/paths|nothing;
+                             target python:test(objs, objs, here);"
+                 tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
+
+              <div tal:condition="error_workflow_action">
+                <tal:block content="error_workflow_action">Error</tal:block>
+                <br />
+              </div>
+
+              <span tal:replace="nothing">
+                For usability we will want to signify what state we are
+                currently in. DCWorkflow only returns what transitions are
+                available. But we want to visually represent what *state* we
+                are currently in along with possible transitions.
+              </span>
+
+              <input class="noborder"
+                     id="workflow_action"
+                     type="radio"
+                     name="workflow_action"
+                     title=""
+                     value=""
+                     tal:attributes="value review_state;
+                                     title review_state;
+                                     checked python:test(request.get('workflow_action', review_state)==review_state,1,0);" />
+              <label for="workflow_action"
+                     i18n:translate="label_no_change">No change</label>
+              <br />
+
+              <tal:block define="transitions python:wtool.getTransitionsFor(target, here)"
+                         repeat="transition transitions">
+                  <input class="noborder"
+                         id=""
+                         type="radio"
+                         name="workflow_action"
+                         title=""
+                         value=""
+                         i18n:attributes="title"
+                         tal:attributes="value transition/id;
+                                         id    transition/id;
+                                         title transition/name;
+                                         checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', None)" />
+                  <label for=""
+                         i18n:translate=""
+                         tal:attributes="for transition/id;"
+                         tal:content="transition/name"
+                         >Transition Name</label>
+                         <br />
+              </tal:block>
+
+            </div>
+
+          </div>
+
+          <div class="formControls">
+            <input class="context"
+                   type="submit"
+                   name="form.button.Publish"
+                   value="Save"
+                   i18n:attributes="value label_save;"
+                   tal:condition="not:request/paths|folders_in_publishing|nothing"/>
+            <input class="context"
+                   type="submit"
+                   name="form.button.FolderPublish"
+                   value="Save"
+                   i18n:attributes="value label_save;"
+                   tal:condition="request/paths|folders_in_publishing|nothing"/>
+            <input class="standalone"
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value label_cancel;" />
+          </div>
+
+
+          <span tal:replace="nothing">
+            ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE
+            THESE INTO YOUR FORM ####
+          </span>
+          <input type="hidden" name="form.submitted" value="1" />
+          <input type="hidden" name="orig_template"
+                 tal:condition="request/orig_template|nothing"
+                 tal:attributes="value request/orig_template"/>
+
+          <input tal:replace="structure context/@@authenticator/authenticator" />
+
+      </form>
+
+    </div>
+
+  </body>
+</html>

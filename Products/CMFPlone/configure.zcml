@@ -1,0 +1,118 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           i18n_domain="plone">
+
+  <include package="plone.app.contentmenu" />
+  <include package="plone.app.content" />
+  <include package="plone.app.contentrules" />
+  <include package="plone.app.controlpanel" />
+  <include package="plone.app.customerize" />
+  <include package="plone.app.form" />
+  <include package="plone.app.i18n" />
+  <include package="plone.app.iterate" />
+  <include package="plone.app.layout" />
+  <include package="plone.app.linkintegrity" />
+  <include package="plone.app.openid" />
+  <include package="plone.app.portlets" />
+  <include package="plone.app.redirector" />
+  <include package="plone.app.viewletmanager" />
+  <include package="plone.app.vocabularies" />
+  <include package="plone.app.workflow" />
+  <include package="plone.memoize" />
+  <include package="plone.session" />
+  <include package="plone.protect" />
+
+  <!-- viewlets zope 3 layers support for themes -->
+  <include package="plone.browserlayer" />
+  <include package="plone.theme" />
+
+  <!-- kss -->
+  <include package="kss.core" />
+  <include package="plone.app.kss" />
+  <include package="archetypes.kss" />
+
+  <!-- wicked -->
+  <include package="wicked.plone" file="selective-atct.zcml" />
+
+  <!-- all AT text fields and object wikified -->
+  <!-- include package="wicked.plone" file="all-at.zcml" / -->
+  
+  <!-- extra portlets -->
+  <include package="plone.portlet.static" />
+  <include package="plone.portlet.collection" />
+
+  <!-- local role PAS plugin -->
+  <include package="borg.localrole" />
+  <include package="borg.localrole"
+           file="default.zcml" />
+
+  <include package=".browser" />
+  <include package=".exportimport" />
+  <include package=".migrations" />
+
+  <include file="deprecated.zcml"/>
+  <include file="profiles.zcml"/>
+
+  <five:implements
+    class=".FactoryTool.FactoryTool"
+    interface=".interfaces.IFactoryTool"
+    />
+
+  <five:implements
+    class=".FactoryTool.FactoryTool"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+
+  <five:implements
+    class=".FactoryTool.TempFolder"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+
+  <five:implements
+    class="Products.PluggableAuthService.PluggableAuthService.PluggableAuthService"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+
+  <five:implements
+    class="Products.PluggableAuthService.plugins.BasePlugin.BasePlugin"
+    interface=".interfaces.IHideFromBreadcrumbs"
+    />
+
+  <utility component=".i18nl10n.plonedomain"
+           name="plone" />
+
+  <utility component=".i18nl10n.atctdomain"
+           name="atcontenttypes" />
+
+  <utility component=".i18nl10n.pltdomain"
+           name="plonelanguagetool" />
+
+  <utility component=".i18nl10n.prtdomain"
+           name="passwordresettool" />
+
+  <utility component=".i18nl10n.cmfpwdomain"
+           name="cmfplacefulworkflow" />
+
+  <utility component=".i18nl10n.cmfedomain"
+           name="cmfeditions" />
+
+  <utility factory=".factory.HiddenProfiles"
+           name="Products.CMFPlone" />
+
+  <utility factory=".setuphandlers.HiddenProducts"
+           name="Products.CMFPlone" />
+           
+  <!-- Default wrapper for indexing -->
+  <adapter
+      for="* Products.CMFCore.interfaces.ISiteRoot"
+      provides="plone.app.content.interfaces.IIndexableObjectWrapper"
+      factory=".CatalogTool.ExtensibleIndexableObjectWrapper" />
+
+  <!-- Adapter for default workflow lookup -->
+  <adapter
+      factory=".workflow.ToolWorkflowChain"
+      trusted="y"
+      />
+
+</configure>

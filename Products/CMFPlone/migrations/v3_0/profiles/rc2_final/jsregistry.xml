@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+  <!-- Removing old Kupu JS -->
+  <javascript id="kupucontextmenu.js" remove="True"/>    
+</object>
+

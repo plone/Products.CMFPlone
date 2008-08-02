@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en"
+      lang="en"
+      i18n:domain="plone">
+
+<body>
+<ul metal:define-macro="site_actions"
+    id="portal-siteactions"
+    tal:define="site_actions actions/site_actions|nothing;
+                getIconFor nocall:putils/getIconFor;
+                accesskeys python: {'sitemap' : '3', 'accessibility' : '0', 'contact' : '9'};"
+    tal:condition="site_actions">
+
+    <li tal:repeat="saction site_actions"
+        tal:attributes="id string:siteaction-${saction/id}"><a
+           href=""
+           tal:define="title saction/title;
+                       id saction/id;
+                       accesskey python: accesskeys.get(id, '');"
+           i18n:attributes="title"
+           i18n:translate=""
+           tal:content="title"
+           tal:attributes="href saction/url;
+                           title title;
+                           accesskey accesskey;"
+           >Site action</a></li>
+
+</ul>
+</body>
+</html>

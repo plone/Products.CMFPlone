@@ -1,0 +1,6 @@
+[default]
+title=Delete an object
+
+[actions]
+action.success=redirect_to:python:object.aq_inner.aq_parent.absolute_url()
+action.failure=redirect_to:object/absolute_url

@@ -1,0 +1,4 @@
+[actions]
+action.success=redirect_to:request/orig_template|string:folder_contents
+action.success_no_edit=redirect_to:request/orig_template|string:folder_contents
+action.failure=redirect_to:request/orig_template|string:folder_contents

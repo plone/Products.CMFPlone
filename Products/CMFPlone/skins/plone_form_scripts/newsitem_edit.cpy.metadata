@@ -1,0 +1,6 @@
+[validators]
+validators=validate_id,validate_title,validate_newsitem_edit
+
+[actions]
+action.failure=redirect_to_action:string:edit
+action.success=redirect_to_action:string:view

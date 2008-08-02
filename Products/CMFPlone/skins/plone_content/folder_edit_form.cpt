@@ -1,0 +1,140 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:border fill-slot="top_slot">
+    <tal:border define="dummy python:request.set('enable_border',1)" />
+  </metal:border>
+
+  <body>
+
+    <div metal:fill-slot="main"
+         tal:define="errors options/state/getErrors">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_edit_item">
+        Edit
+        <span i18n:name="itemtype">
+          <span i18n:translate=""
+                tal:omit-tag="">Folder</span>
+        </span>
+      </h1>
+
+      <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+      </div>
+
+      <p class="discreet" i18n:translate="">
+          A folder which can contain other items.
+      </p>
+
+      <form name="edit_form"
+            method="post"
+            enctype="multipart/form-data"
+            class="enableUnloadProtection"
+            action="."
+            tal:attributes="action string:${here_url}/${template/getId}" >
+
+          <div class="field"
+               tal:condition="python:site_properties.getProperty('visible_ids', None) and
+                              len(utool.getRelativeContentPath(here))"
+               tal:define="error errors/id | nothing;
+                           id python:request.get('id', test(here.show_id(),here.getId(),''));"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="id" i18n:translate="label_short_name">Short Name</label>
+
+            <div class="formHelp" i18n:translate="help_shortname">
+                Should not contain spaces, underscores or mixed case.
+                Short Name is part of the item's web address.
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+            <input type="text"
+                   id="id"
+                   name="id"
+                   value=""
+                   size="40"
+                   tal:attributes="value id;"
+                   />
+
+          </div>
+
+          <input type="hidden"
+                 name="id"
+                 tal:condition="python:not site_properties.getProperty('visible_ids', '') or
+                                not len(utool.getRelativeContentPath(here))"
+                 tal:define="id python:request.get('id', here.getId())"
+                 tal:attributes="value id"
+                 />
+
+          <div class="field"
+               id="archetypes-fieldname-title"
+               tal:define="error errors/title|nothing;
+                           Title request/title | here/Title;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="title" i18n:translate="label_title">Title</label>
+
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <input type="text"
+                         id="title"
+                         name="title"
+                         value=""
+                         size="40"
+                         tal:attributes="value Title;"
+                         />
+
+          </div>
+
+          <div class="field"
+               tal:define="description request/description | here/Description ">
+
+            <label for="description" i18n:translate="label_description">Description</label>
+
+            <div class="formHelp" i18n:translate="help_description">
+              A short summary of the content
+            </div>
+
+            <textarea cols="80"
+                      rows="5"
+                      id="description"
+                      name="description"
+                      tal:content="description"
+                      >
+              Description
+            </textarea>
+          </div>
+
+          <div class="formControls"
+               tal:define="process_creation request/process_creation|nothing;">
+
+            <input class="context"
+                   type="submit"
+                   name="form.button.Save"
+                   value="Save"
+                   i18n:attributes="value label_save;" />
+            <input class="standalone"
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value label_cancel;" />
+          </div>
+
+        <input type="hidden" name="form.submitted" value="1" />
+
+      </form>
+
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+<body>
+<div metal:define-macro="portlet"
+     tal:define="view context/@@news_view;
+                 results python:view.published_news_items()[:5];
+                 news_link view/all_news_link"
+     tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
+
+    <dl class="portlet" id="portlet-news">
+
+        <dt class="portletHeader">
+            <span class="portletTopLeft"></span>
+            <a href="#" 
+               class="tile"
+               tal:condition="python:'news' in portal.contentIds()"
+               tal:attributes="href string:${utool}/news"
+               i18n:translate="box_news">News</a>
+            <a href="#" 
+               class="tile"
+               tal:condition="python:'news' not in portal.contentIds()"
+               tal:attributes="href string:${utool}/news_listing"
+               i18n:translate="box_news">News</a>
+            <span class="portletTopRight"></span>
+        </dt>
+
+        <tal:newsitems tal:repeat="obj results">
+        <dd tal:define="oddrow repeat/obj/odd"
+             tal:attributes="class python:test(oddrow, 'portletItem even', 'portletItem odd')">
+
+            <a href=""
+               class="tile"
+               tal:attributes="href obj/getURL;
+                               title obj/Description">
+                <tal:block replace="structure here/newsitem_icon.gif"/>
+                <span tal:replace="obj/pretty_title_or_id">
+                Plone 2.1 announced!
+                </span>
+                <span class="portletItemDetails"
+                      tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
+            </a>
+        </dd>
+        </tal:newsitems>
+
+        <dd class="portletFooter">
+            <a href=""
+               tal:attributes="href news_link"
+               i18n:translate="box_more_news_link"
+               >
+              More news&hellip;
+            </a>
+            <span class="portletBottomLeft"></span>
+            <span class="portletBottomRight"></span>
+        </dd>
+    </dl>
+
+</div>
+</body>
+</html>

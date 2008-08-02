@@ -1,0 +1,242 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors options/state/getErrors;
+                 mailhost context/MailHost/smtp_host|nothing;
+                 mailfrom context/email_from_address|nothing;
+                 site_properties context/portal_properties/site_properties;
+                 allowEnterPassword not:utool/getPortalObject/validate_email|nothing;
+                 mailpw site_properties/validate_email;
+                 mailconfigured python:allowEnterPassword or (mailhost and mailfrom)">
+
+  <h1 class="documentFirstHeading"
+      i18n:translate="heading_registration_form">Registration Form</h1>
+
+
+  <div tal:condition="not:mailconfigured">
+    <p i18n:translate="no_join_without_configured_mail">
+      This site has not configured its email settings. Until email has
+      been configured it is not possible to create an account.
+    </p>
+  </div>
+  <form action=""
+        class="enableAutoFocus enableUnloadProtection"
+        method="post"
+        tal:condition="mailconfigured"
+        tal:define="allowEnterPassword site_properties/validate_email|nothing;"
+        tal:attributes="action template_id" >
+
+    <fieldset>
+
+      <legend i18n:translate="legend_personal_details">
+          Personal Details
+      </legend>
+
+      <input type="hidden" name="came_from" value=""
+             tal:condition="request/came_from|nothing"
+             tal:attributes="value request/came_from" />
+      <input type="hidden" name="last_visit:date" value="ZopeTime"
+             tal:attributes="value here/ZopeTime" />
+      <input type="hidden" name="prev_visit:date" value="ZopeTime"
+             tal:attributes="value here/ZopeTime" />
+      <input type="hidden" name="came_from_prefs" value=""
+             tal:attributes="value request/came_from_prefs|nothing" />
+
+      <div class="row"
+           tal:define="error errors/fullname| nothing;
+                       fullname request/fullname | nothing;"
+           tal:attributes="class python:test(error, 'field error', 'field')">
+
+        <label for="fullname"
+               i18n:translate="label_full_name">Full Name</label>
+
+        <div class="formHelp" i18n:translate="help_full_name_creation">
+          Enter full name, eg. John Smith.
+        </div>
+
+        <div tal:content="error">Validation error output</div>
+
+        <input type="text"
+               name="fullname"
+               id="fullname"
+               size="30"
+               value="fullname"
+               tal:attributes="value fullname;"
+               />
+
+      </div>
+
+      <div class="field"
+           tal:define="error errors/username| nothing;
+                       username request/username | nothing;"
+           tal:attributes="class python:test(error, 'field error', 'field')">
+
+        <label for="username"
+               i18n:translate="label_user_name">User Name</label>
+
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title title_required;"
+              i18n:translate="label_required">(Required)</span>
+
+              <div i18n:translate="help_user_name_creation_casesensitive"
+                   class="formHelp">
+                Enter a user name, usually something like
+                'jsmith'. No spaces or special characters.
+                Usernames and passwords are case sensitive,
+                make sure the caps lock key is not enabled.
+                This is the name used to log in.
+              </div>
+
+              <div tal:content="error">Validation error output</div>
+
+              <input type="text"
+                     name="username"
+                     id="username"
+                     size="30"
+                     value="username"
+                     tal:attributes="value username;"
+                     />
+      </div>
+
+      <div class="field"
+           tal:define="error errors/email | nothing;
+                       email request/email | nothing;"
+           tal:attributes="class python:test(error, 'field error', 'field')">
+
+        <label for="email"
+               i18n:translate="label_email">E-mail</label>
+
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title title_required;"
+              i18n:translate="label_required">(Required)</span>
+
+              <div class="formHelp" i18n:translate="help_email_creation">
+                Enter an email address. This is necessary in case the password
+                is lost. We respect your privacy, and will not give the address
+                away to any third parties or expose it anywhere.
+              </div>
+
+              <div tal:content="error">Validation error output</div>
+
+              <input type="text"
+                     name="email"
+                     id="email"
+                     size="30"
+                     tal:attributes="value email;"
+                     />
+      </div>
+
+
+      <div class="field"
+           tal:condition="not: allowEnterPassword"
+           tal:define="error errors/password | nothing;
+                       password request/password | nothing;"
+           tal:attributes="class python:test(error, 'field error', 'field')">
+
+        <label for="password"
+               i18n:translate="label_password">Password</label>
+
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title title_required;"
+              i18n:translate="label_required">(Required)</span>
+
+              <div class="formHelp" i18n:translate="help_password_creation">
+                Minimum 5 characters.
+              </div>
+
+              <div tal:content="error">Validation error output</div>
+
+              <input type="password"
+                     name="password"
+                     id="password"
+                     size="10"
+                     value=""
+                     />
+      </div>
+
+      <div class="field"
+           tal:condition="not: allowEnterPassword"
+           tal:define="error errors/password_confirm | nothing;
+                       password_confirm request/password_confirm | nothing;"
+           tal:attributes="class python:test(error, 'field error', 'field')">
+
+
+        <label for="password_confirm"
+               i18n:translate="label_confirm_password">Confirm password</label>
+
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title title_required;"
+              i18n:translate="label_required">(Required)</span>
+
+              <div class="formHelp" i18n:translate="help_confirm_password">
+                Re-enter the password. Make sure the passwords are identical.
+              </div>
+
+              <div tal:content="error">Validation error output</div>
+
+              <input type="password"
+                     name="password_confirm"
+                     id="password_confirm"
+                     size="10"
+                     value=""
+                     />
+      </div>
+
+      <div class="field"
+           tal:condition="not: allowEnterPassword"
+           tal:define="mail_me request/mail_me|nothing">
+
+        <input type="checkbox"
+               class="noborder"
+               name="mail_me"
+               size="30"
+               id="cb_mailme"
+               tal:attributes="checked python:test(mail_me, 'checked', None);"
+               />
+        <label for="cb_mailme" i18n:translate="label_mail_password">Send a mail with the password</label>
+      </div>
+
+      <div class="field"
+           tal:condition="allowEnterPassword">
+
+        <div class="formHelp" i18n:translate="label_password_change_mail">
+          A URL will be generated and e-mailed to you; follow the link
+          to reach a page where you can change your password and
+          complete the registration process. 
+        </div>
+      </div>
+
+      <div class="formControls">
+        <input class="context"
+               type="submit"
+               name="form.button.Register"
+               value="Register"
+               i18n:attributes="value label_register;" />
+      </div>
+
+    </fieldset>
+
+    <input type="hidden" name="form.submitted" value="1" />
+
+    <input tal:replace="structure context/@@authenticator/authenticator" />
+
+  </form>
+</div>
+
+</body>
+</html>

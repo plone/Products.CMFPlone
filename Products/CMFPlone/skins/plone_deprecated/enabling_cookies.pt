@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      metal:use-macro="here/main_template/macros/master">
+
+<body>
+
+<!-- This template will be removed in Plone 4.0. -->
+
+<div metal:fill-slot="main">
+
+<h1 i18n:translate="heading_enable_cookies">How to Enable Cookies</h1>
+
+<ul>
+  <li><a i18n:translate="heading_internet_explorer" href="" tal:attributes="href string:${request/URL}#ie">Internet Explorer</a></li>
+  <li><a i18n:translate="heading_mozilla" href="" tal:attributes="href string:${request/URL}#mozilla">Mozilla</a></li>
+  <li><a i18n:translate="heading_opera" href="" tal:attributes="href string:${request/URL}#opera">Opera</a></li>
+  <li><a i18n:translate="heading_netscape_navigator" href="" tal:attributes="href string:${request/URL}#netscape">Netscape Navigator</a></li>
+</ul>
+
+<h3 id="ie" i18n:translate="heading_internet_explorer">Internet Explorer</h3>
+
+<h4 i18n:translate="heading_ie_version_6x">Version 6.x</h4>
+
+<ol>
+  <li i18n:translate="text_ie6_cookies_step1">Click Tools on the menu at the top of your browser and select Internet Options</li>
+  <li i18n:translate="text_ie6_cookies_step2">Click the Privacy tab at the top of the screen</li>
+  <li i18n:translate="text_ie6_cookies_step3">Move the slider to Medium and click OK</li>
+</ol>
+
+
+<h4 i18n:translate="heading_ie_version_5x">Version 5.x</h4>
+
+<ol>
+  <li i18n:translate="text_ie5_cookies_step1">Click Tools on the menu at the top of your browser and select Internet Options</li>
+  <li i18n:translate="text_ie5_cookies_step2">Click the Security tab at the top of the screen</li>
+  <li i18n:translate="text_ie5_cookies_step3">Click Custom Level and scroll down to the Cookies section</li>
+  <li i18n:translate="text_ie5_cookies_step4">Set "Allow per-session cookies" to Enable and click OK</li>
+</ol>
+
+<h4 i18n:translate="heading_ie_version_4x">Version 4.x</h4>
+
+<ol>
+  <li i18n:translate="text_ie4_cookies_step1">Click View on the menu at the top of your browser and select Internet Options</li>
+  <li i18n:translate="text_ie4_cookies_step2">Click the Security tab at the top of the screen</li>
+  <li i18n:translate="text_ie4_cookies_step3">Click Custom Level and scroll down to the Cookies section</li>
+  <li i18n:translate="text_ie4_cookies_step4">Select "Always accept cookies" or "Prompt before accepting cookies" and click OK</li>
+</ol>
+
+<h3 id="mozilla" i18n:translate="heading_mozilla">Mozilla</h3>
+
+<h4 i18n:translate="heading_moz_version_1x">Version 1.x</h4>
+
+<ol>
+  <li i18n:translate="text_moz_cookies_step1">Click Edit on the menu at the top of your browser and select Preferences</li>
+  <li i18n:translate="text_moz_cookies_step2">Find "Privacy &amp; Security" in the menu on the left.  If there is a [+] to the left of "Privacy &amp; Security", click it.</li>
+  <li i18n:translate="text_moz_cookies_step3">Select "Cookies".</li>
+  <li i18n:translate="text_moz_cookies_step4">Select "Enable cookies for the originating web site only" or "Enable all cookies" and click "OK"</li>
+</ol>
+
+<h3 id="opera" i18n:translate="heading_opera">Opera</h3>
+
+<ol>
+  <li i18n:translate="text_opera_cookies_step1">Press F12</li>
+  <li i18n:translate="text_opera_cookies_step2">Click "Enable cookies"</li>
+</ol>
+
+<h3 id="netscape" i18n:translate="heading_netscape_navigator">Netscape Navigator</h3>
+
+<h4 i18n:translate="heading_netscape_version_6x">Version 6.x</h4>
+
+<ol>
+  <li i18n:translate="text_netscape6_cookies_step1">Click Edit on the menu at the top of your browser and select Preferences</li>
+  <li i18n:translate="text_netscape6_cookies_step2">Find "Privacy &amp; Security" in the menu on the left.  If there is a triangle pointing to the right next to Privacy &amp; Security, click it.</li>
+  <li i18n:translate="text_netscape6_cookies_step3">Select "Cookies" under "Privacy &amp; Security"</li>
+  <li i18n:translate="text_netscape6_cookies_step4">Select "Enable cookies for the originating web site only" or "Enable all cookies" and click "OK"</li>
+</ol>
+
+<h4 i18n:translate="heading_netscape_version_4x">Version 4.x</h4>
+
+<ol>
+  <li i18n:translate="text_netscape4_cookies_step1">Click Edit on the menu at the top of your browser and select Preferences</li>
+  <li i18n:translate="text_netscape4_cookies_step2">Select "Advanced"</li>
+  <li i18n:translate="text_netscape4_cookies_step3">Select "Accept all cookies" or "Accept only cookies that get sent back to the originating server" and click OK</li>
+</ol>
+
+</div>
+</body>
+</html>

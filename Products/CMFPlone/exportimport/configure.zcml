@@ -1,0 +1,73 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:five="http://namespaces.zope.org/five"
+   i18n_domain="cmf"
+   >
+
+  <adapter
+     factory=".factorytool.PortalFactoryXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IFactoryTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".propertiestool.PlonePropertiesToolXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IPropertiesTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.ISimpleItemWithProperties
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+     provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+     for="Products.CMFCore.interfaces.ISiteRoot"
+     />
+
+  <adapter
+     factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+     provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+     for="Products.ATContentTypes.interface.IATContentType"
+     />
+
+  <adapter
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFCore.interfaces.IMemberDataTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".controlpanel.ControlPanelXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IControlPanel
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <!-- Mark ATCT objects as IDAVAware so CMFSetup can export/import them -->
+  <five:implements
+     class="Products.ATContentTypes.content.document.ATDocument"
+     interface="Products.GenericSetup.interfaces.IDAVAware"
+     />
+
+  <!-- XXX: Temporarily disable ATTopic exporting until we have an
+       actual exporter or Marshaller -->
+  <five:implements
+     class="Products.ATContentTypes.content.topic.ATTopic"
+     interface="Products.CMFPlone.exportimport.content.IDisabledExport"
+     />
+
+  <adapter
+     factory=".content.NullExporterAdapter"
+     provides="Products.GenericSetup.interfaces.IFilesystemExporter"
+     for="Products.CMFPlone.exportimport.content.IDisabledExport"
+     />
+
+</configure>

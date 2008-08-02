@@ -1,0 +1,134 @@
+<dtml-let form_title="'Membership Tool Role Mappings'">
+<dtml-if manage_page_header>
+ <dtml-var manage_page_header>
+<dtml-else>
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.or
+ <html lang="en">
+ <head>
+ <title>&dtml-form_title;</title>
+ </head>
+ <body bgcolor="#FFFFFF" link="#000099" vlink="#555555">
+ <h3>&dtml-form_title;</h3>
+</dtml-if>
+</dtml-let>
+
+<dtml-var name="manage_tabs">
+
+<h2>Membership role mappings</h2>
+
+<p>Use this screen if you are using a userfolder other than the built-in folder
+existing role names to roles understood by the CMF.</p>
+
+<dtml-in expr="getPortalRoles()">
+  <dtml-if name="sequence-start">
+    <table border="1" cellpadding="3">
+      <tr>
+        <td class="form-label"><b>Portal Role</b></td>
+        <td class="form-label"><b>User Folder-defined Role</b></td>
+        <td>&nbsp;</td>
+      </tr>
+  </dtml-if>
+
+  <tr>
+    <form method="post" action="setRoleMapping">
+    <td class="form-label"><dtml-var name="sequence-item"><input type="hidden" n
+    <td class="form-element"><input type="text" size="30" name="userfolder_role"
+              value="<dtml-var expr="getMappedRole(_['sequence-item'])">"></td>
+    <td><input type="submit" value="Set Mapping"></td>
+    </form>
+  </tr>
+
+  <dtml-if name="sequence-end">
+    </table>
+  </dtml-if>
+</dtml-in>
+
+<p><hr></p>
+
+<h2>Control creation of member areas</h2>
+
+<p>This feature controls whether users
+will have their own folder created upon first login or not.</p>
+
+<form method="post" action="setMemberareaCreationFlag">
+
+<dtml-if expr="getMemberareaCreationFlag() == 1">
+  <p><b>Member areas are created upon first login.</b>
+  <input type="submit" value=" Turn folder creation off ">
+<dtml-else>
+  <p><b>No member areas are created.</b>
+  <input type="submit" value=" Turn folder creation on ">
+</dtml-if>
+
+</form>
+
+<p><hr></p>
+
+<h2>Set member area type</h2>
+
+<p>Select the (folderish) type to use when creating new
+member areas. You have all the freedom you want but be aware that
+non-folderish types may cause problems.</p>
+
+<form action="manage_setMemberAreaType" method="post">
+<table cellspacing="2">
+<tr>
+  <td align="left" valign="top">
+    <div class="form-label">Member area type</div>
+  </td>
+  <td align="left" valign="top">
+    <select name="type_name">
+      <dtml-let types="[x.getId() for x in portal_types.listTypeInfo()]"
+                dummy="types.sort()">
+        <dtml-in types>
+          <dtml-let id="_['sequence-item']">
+            <option
+              <dtml-if expr="id == memberarea_type">
+                selected="selected"
+              </dtml-if>
+              name="<dtml-var id>"><dtml-var id></option>
+          </dtml-let>
+        </dtml-in>
+      </dtml-let>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td>
+  </td>
+  <td align="left" valign="top">
+    <input class="form-element" type="submit" value=" Change ">
+  </td>
+</tr>
+</table>
+</form>
+
+<p><hr></p>
+
+<h2>Set members folder</h2>
+
+<p>The members folder has to be in the same container as the membership tool.</p>
+
+<form action="manage_setMembersFolderById" method="post">
+<table cellspacing="2">
+<tr>
+  <td align="left" valign="top">
+    <div class="form-label">Members folder id</div>
+  </td>
+  <td align="left" valign="top">
+    <input class="form-element" type="text" name="id"
+        value="&dtml-membersfolder_id;">
+  </td>
+</tr>
+<tr>
+  <td>
+  </td>
+  <td align="left" valign="top">
+    <input class="form-element" type="submit" value=" Change ">
+  </td>
+</tr>
+</table>
+</form>
+
+</body>
+</html>

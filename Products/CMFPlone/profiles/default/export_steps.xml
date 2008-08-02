@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<export-steps>
+ <export-step id="action-icons"
+              handler="Products.CMFActionIcons.exportimport.exportActionIconsTool"
+              title="Action Icons">
+  Export action icon definitions
+ </export-step>
+ <export-step id="actions"
+              handler="Products.CMFCore.exportimport.actions.exportActionProviders"
+              title="Action Providers">
+  Export actions tool's action providers and their actions.
+ </export-step>
+ <export-step id="atcttool"
+              handler="Products.ATContentTypes.exportimport.atcttool.exportATCTTool"
+              title="ATContentTypes Tool">
+  Export ATContentTypes specific configuration.
+ </export-step>
+ <export-step id="catalog"
+              handler="Products.CMFCore.exportimport.catalog.exportCatalogTool"
+              title="Catalog Tool">
+   Export Catalog subobjects, indexes and columns
+ </export-step>
+ <export-step id="componentregistry"
+              handler="Products.GenericSetup.components.exportComponentRegistry"
+              title="Local Component Registry">
+   Export local component registry configuration.
+ </export-step>
+ <export-step id="content"
+              handler="Products.CMFCore.exportimport.content.exportSiteStructure"
+              title="Content">
+  Export the site's structure and content.
+ </export-step>
+ <export-step id="content_type_registry"
+              handler="Products.CMFCore.exportimport.contenttyperegistry.exportContentTypeRegistry"
+              title="Content Type Registry">
+  Export content type registry's predicates / bindings.
+ </export-step>
+ <export-step id="controlpanel"
+              handler="Products.CMFPlone.exportimport.controlpanel.exportControlPanel"
+              title="Control Panel">
+  Export Plone control panel actions.
+ </export-step>
+ <export-step id="cookieauth"
+              handler="Products.CMFCore.exportimport.cookieauth.exportCookieCrumbler"
+              title="Cookie Authentication">
+  Export cookie crumbler settings
+ </export-step>
+ <export-step id="cssregistry"
+              handler="Products.ResourceRegistries.exportimport.cssregistry.exportCSSRegistry"
+              title="Stylesheet registry">
+   Export stylesheet registry
+ </export-step>
+ <export-step id="kssregistry"
+              handler="Products.ResourceRegistries.exportimport.kssregistry.exportKSSRegistry"
+              title="KSS registry">
+   Export stylesheet registry
+ </export-step>
+ <export-step id="factorytool"
+              handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
+              title="Portal Factory Tool">
+  Export type registration for the portal factory tool.
+ </export-step>
+ <export-step id="jsregistry"
+              handler="Products.ResourceRegistries.exportimport.jsregistry.exportJSRegistry"
+              title="Javascript registry">
+   Export javascript registry
+ </export-step>
+ <export-step id="mailhost"
+              handler="Products.CMFCore.exportimport.mailhost.exportMailHost"
+              title="MailHost">
+  Export the mailhost's settings and properties
+ </export-step>
+ <export-step id="memberdata-properties"
+              handler="Products.CMFPlone.exportimport.memberdata_properties.exportMemberDataProperties"
+              title="MemberData properties">
+   Export MemberData properties
+ </export-step>
+ <export-step id="properties"
+              handler="Products.CMFCore.exportimport.properties.exportSiteProperties"
+              title="Site Properties">
+  Export site properties.
+ </export-step>
+ <export-step id="propertiestool"
+              handler="Products.CMFPlone.exportimport.propertiestool.exportPloneProperties"
+              title="Plone Properties">
+  Export plone properties tool and subobjects.
+ </export-step>
+ <export-step id="rolemap"
+              handler="Products.GenericSetup.rolemap.exportRolemap"
+              title="Role / Permission Map">
+  Export custom roles and non-default role-permission mappings.
+ </export-step>
+ <export-step id="skins"
+              handler="Products.CMFCore.exportimport.skins.exportSkinsTool"
+              title="Skins Tool">
+  Export skins tool's filesystem directory views and skin path definitions.
+ </export-step>
+ <export-step id="step_registries"
+              handler="Products.GenericSetup.tool.exportStepRegistries"
+              title="Step Registries">
+  Export current contents of import step registry and export step registry.
+ </export-step>
+ <export-step id="toolset"
+              handler="Products.GenericSetup.tool.exportToolset"
+              title="Required Tools">
+  Export required / forbidden tools.
+ </export-step>
+ <export-step id="typeinfo"
+              handler="Products.CMFCore.exportimport.typeinfo.exportTypesTool"
+              title="Types Tool">
+  Export types tool's type information objects.
+ </export-step>
+ <export-step id="workflows"
+              handler="Products.CMFCore.exportimport.workflow.exportWorkflowTool"
+              title="Workflow Tool">
+  Export workflow tool's workflow definitions and supporting scripts.
+ </export-step>
+ <export-step id="viewlets"
+              handler="plone.app.viewletmanager.exportimport.storage.exportViewletSettingsStorage"
+              title="Viewlet Settings">
+  Export viewlet settings
+ </export-step>
+ <export-step id="kupu-setup" version="20061211-01"
+              handler="Products.kupu.plone.exportimport.exportKupuSettings"
+              title="Kupu Settings">
+  Export Kupu settings
+ </export-step>
+</export-steps>

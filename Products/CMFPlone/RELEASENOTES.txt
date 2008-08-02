@@ -1,0 +1,191 @@
+Plone 3.1 - Apr, 2008
+=====================
+
+The following is a list of important things to note when installing or
+upgrading to Plone 3.1:
+
+* Unpacking the Plone archive with WinZip will not work: WinZip will truncate
+  filenames without warning you. 7-Zip is a good open source alternative for
+  Windows that you can use instead: http://www.7-zip.org
+
+* Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope
+  2.11 and later may or may not work. Zope 3.x is not supported.
+
+* The python ElementTree package is now required. This package can be
+  downloaded from its home page at http://effbot.org/downloads/#elementtree .
+
+* The python lxml package is now required to run all tests. It is
+  not needed for normal Plone use. This package can be downloaded
+  from its home page at http://codespeak.net/lxml/ .
+
+* The Python OpenID packages are required if you want to enable OpenID support.
+  They can be downloaded from the OpenID enabled site at
+  http://www.openidenabled.com/resources/downloads/python-openid/
+  Your python must also be compiled with SSL support.
+
+* Plone 3.0 uses both Zope Products and python packages. The Zope Products
+  are installed in the usual location: the Products directory of the Zope
+  instance. Python package may be installed in the lib/python directory in the
+  Zope instance, or anywhere on the standard python path.
+
+* The GroupUserFolder user folder is no longer supported; instead Plone
+  now requires the Pluggable Authentication System (PAS). It may not be
+  possible to upgrade a site using GRUF with external user folders such as
+  LDAPUserFolder. In those cases it is advised to create a new site and move
+  the content over manually.
+
+
+Important notes for users
+-------------------------
+
+Plone 3.1 adds new features to Plone 3, while maintaining full compatibility
+with Plone 3.0. All products written for Plone 3.0 should work normally on
+Plone 3.1 as well.
+
+A complete list of changes can be found online at
+http://plone.org/products/plone/releases/3.1 . The most important changes are:
+
+* new portlets have been added: a rich text field portlet which can show
+  arbitrary text as well as a portlet which will show items from a collection.
+
+* Products and packages can now define dependencies, which will automatically
+  be installed when necessary.
+
+* The jQuery javascript library is now used throughout Plone and is available
+  for use by add-on products. Of course KSS is still present as well.
+
+* GenericSetup profiles can now be used to manage creation and removal
+  of both content rules and portlets.
+
+* Security sensitive forms accessible by users are now protected against
+  Cross Site Request Forging-attacks.
+
+
+
+Important notes for site and system administrators
+--------------------------------------------------
+
+For migration instructions please see the online Plone upgrade manual:
+http://plone.org/upgrade
+
+* Plone 3 now uses a new session authentication implementation based on the
+  new plone.session package. This system uses a cryptographic hash against
+  the userid of a successfully authenticated user to authenticate sessions.
+
+  This form of session authentication only works for users defined in the
+  user folder in the Plone site itself. Users defined in other user folders
+  (such as the global admin user defined in the Zope root) will work, but
+  use the authentication methods configured in their user folder. This
+  means that they will be less secure than users defined in the Plone site.
+
+* Member folders are no longer enabled by default.
+
+* In order to use the automatic indexing of Word and PDF files you will
+  need to install some external tools: indexing of MS Word files requires
+  the wvware product to be installed. For PDF files either the pdftotext
+  of xpdf suite is required.
+
+
+Important notes for developers new to Plone 3
+---------------------------------------------
+
+The latest information on migrating products to Plone 3.0 can be found online
+at http://plone.org/documentation/manual/upgrade-guide/version/2.5-3.0/products
+
+* Searching for users and groups using the portal_membership and portal_groups
+  tools has been deprecated. Please use the search features of PAS directly
+  or use the PlonePAS pas_search browser view.
+
+* There are new Reader, Editor and Contributor roles, roughly mapping to
+  View/Access contents information/List folder contents, Modify portal content
+  and Add portal content, respectively. They are to be used only as local
+  roles, via the improved "sharing" tab. 
+  
+  If you have custom workflows, you may want to amend them to use these roles. 
+  
+  If you use custom add permissions for your content types, you may want to
+  give them to the Contributor role by default.
+  
+* You are no longer expected to have a "Sharing" tab, implemented as an
+  action with id 'local_roles', on your custom content types. This is now a 
+  global action, in the 'object' category. If your type provides such an
+  action, there will be two "Sharing" tabs. Also note that the sharing action
+  is now called @@sharing, not folder_local_role_form.
+
+* Portlets have been re-implemented using the Zope 3 component architecture.
+  The base package, plone.portlets, is usable in plain Zope 3 and has been
+  successfully used with Grok. See its README.txt for full details on the
+  architecture (you are only likely to need this if you need to understand
+  how portlets are wired into Plone's core - you need to know considerably
+  less to understand how to use and make portlets, and there is a much
+  improved UI for site administrators).
+  
+  The easiest way to re-use an existing template-based portlet is to use a
+  Classic Portlet from the "Manage portlets" screen, although this will suffer
+  some performance overhead. It is better to make a new-style portlet. These
+  allow you to keep configuration data associated with a particular portlet
+  assignment, using formlib, and gives you a well-defined place to put
+  Python logic powering the portlet. See plone.app.portlets.portlets for
+  plenty of examples, or http://svn.plone.org/svn/collective/collective.portlets.
+  
+  Note that the left_slots and right_slots properties are no longer used.
+  The "manage portlets" screen will allow you to migrate existing properties
+  in a particular folder (those at the root of the portal are migrated when
+  Plone is upgraded). To manage portlet assignments, use the APIs described
+  in plone.portlets.interfaces, or see plone.app.portlets.browser.editmanager.
+
+* Skins: main_template now uses viewlet managers instead of metal macros
+  -> Alexander Limi or Florian Schulze to fill in stuff here. Affected
+  are at least header.pt, viewThreadsAtBottom and global_contentmenu
+
+* It is no longer possible to define workflows using python code. Instead
+  workflows have to be created via a GenericSetup profile.
+  
+* The new default workflow is simple_publication_workflow. If you have tests
+  which can't handle this, you should fix them. However, to get a test fixture
+  with the old plone_workflow as default, you can do:
+  
+    setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
+
+  This sets up the CMFPlone test fixture extension profile, which ensures
+  the default is plone_workflow.
+
+* The long deprecated Products.CMFCore.CMFPermissions module has been
+  removed. Code should now use its replacement Products.CMFCore.permissions
+
+* You can use the contentmigration product to write migrations for your own
+  products.  More information on this product can be found in the RichDocument
+  tutorial: http://plone.org/documentation/tutorial/richdocument/migrations/
+
+* If you have a custom content type that is derived from ATDocument but does
+  not want the document-specific behavior that is provided on the IATDocument
+  interface you should use the new ATDocumentBase base class instead.
+
+* Customising z3 views using Customerize
+
+* Products.CMFPlone.utils.BrowserView has been deprecated. If you were using
+  this as a base class please use Products.Five.BrowserView instead. To
+  get a correctly acquisition wrapped context use aq_inner(self.context).
+
+Preferred but not obligatory (right now)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* QuickInstaller-based installation should use GenericSetup profiles instead 
+
+* use events instead of manage_ methods (which will probably disappear in Plone
+  4.0)
+
+* Packaging technology:
+
+  - Use python packages instead of Zope products. Creating python packages
+    is very easy using the paster tool. See
+    http://plone.org/documentation/how-to/use-paster/ for more information.
+
+  - Use ploneit or ploneout to create development and/or production
+    environments
+
+  - Releasing packages as eggs and registering them with the Python Cheese
+    Shop (http://cheeseshop.python.org/) makes it simple for people to
+    install them and all required dependencies if they are using a system
+    such as ploneout, ploneit or workingenv.
+

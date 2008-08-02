@@ -1,0 +1,11 @@
+[default]
+title=User Properties
+
+[security]
+View=0:Authenticated
+
+[validators]
+validators=validate_emailaddr
+
+[actions]
+action.success=traverse_to:string:prefs_user_edit

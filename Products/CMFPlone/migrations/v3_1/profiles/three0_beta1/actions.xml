@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<object name="portal_actions" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ 
+ <object name="object">
+  <object name="local_roles" meta_type="CMF Action" i18n:domain="plone">
+   <property name="permissions">
+    <element value="Sharing page: Delegate roles"/>
+   </property>
+  </object>
+ </object>
+  
+</object>

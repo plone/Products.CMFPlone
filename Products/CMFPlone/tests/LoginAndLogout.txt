@@ -1,0 +1,123 @@
+Logging in and out
+==================
+
+A very simple and underdocumented testbrowser test.  This is all about
+logging in and out.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+Using the Login Form
+--------------------
+
+First we try to log in with bad credentials:
+
+    >>> browser.open('http://nohost/plone/')
+    >>> browser.getLink('Log in').click()
+    >>> browser.url
+    'http://nohost/plone/login_form'
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'wrongpassword'
+    >>> browser.getControl('Log in').click()
+    >>> "Login failed" in browser.contents
+    True
+    >>> browser.url
+    'http://nohost/plone/login_form'
+
+And then we try again with the right credentials:
+
+    >>> browser.open('http://nohost/plone')
+    >>> browser.getLink('Log in').click()
+    >>> browser.url
+    'http://nohost/plone/login_form'
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> "You are now logged in" in browser.contents
+    True
+    >>> browser.url
+    'http://nohost/plone'
+    >>> browser.getLink('Log out').click()
+    >>> browser.url
+    'http://nohost/plone/logged_out'
+
+Using the Login Portlet
+-----------------------
+
+First we try to log in with bad credentials:
+
+    >>> browser.getLink('Home').click()
+    >>> browser.url
+    'http://nohost/plone'
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'wrongpassword'
+    >>> browser.getControl('Log in').click()
+    >>> "Login failed" in browser.contents
+    True
+    >>> browser.url
+    'http://nohost/plone/login_form'
+
+And then we try again with the right credentials:
+
+    >>> browser.getLink('Home').click()
+    >>> browser.url
+    'http://nohost/plone'
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+Verify that we are given a status message saying we've logged in:
+    
+    >>> 'You are now logged in' in browser.contents
+    True
+
+The returned view is the default view of the current context:
+
+    >>> browser.url
+    'http://nohost/plone'
+    
+Let's reload the page and then try logging out:
+
+    >>> browser.reload()
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+
+Login with user defined in root user folder
+-------------------------------------------
+
+A user defined in the root user folder should be able to log in into
+the site:
+
+    >>> browser.getLink('Home').click()
+    >>> self.app.acl_users.userFolderAddUser('rootuser', 'secret', [], [])
+    >>> browser.getControl('Login Name').value = 'rootuser'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> 'You are now logged in' in browser.contents
+    True
+
+Redirection to login page on unauthorized exception
+---------------------------------------------------
+
+Let's logout again and then try editing the personal member folder
+of test_user_1_:
+
+    >>> browser.reload()
+    >>> browser.getLink('Log out').click()
+    >>> browser.open('%s/edit' % folder.absolute_url())
+    >>> 'require_login' in browser.url
+    True
+
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/atct_edit'
+
+We were automatically redirected to the page that triggered the
+login request.
+
+Note that we end up at atct_edit instead of edit. This happens because the CMFCore
+DynamicType before-publish-traversal hook resolves method aliases and updates the
+request.

@@ -1,0 +1,3 @@
+[default]
+title=Get information about the running Zope
+proxy=Manager

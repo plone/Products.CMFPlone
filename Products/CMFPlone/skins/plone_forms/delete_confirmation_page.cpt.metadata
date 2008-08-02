@@ -1,0 +1,11 @@
+[default]
+title=Rename items
+
+[validators]
+validators=
+validators..Cancel=
+
+[actions]
+action.success=traverse_to:string:object_delete
+action.success..Cancel=redirect_to_action:string:view
+action.failure=traverse_to:delete_confirmation

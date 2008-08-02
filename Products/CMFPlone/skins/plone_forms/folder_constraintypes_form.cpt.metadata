@@ -1,0 +1,15 @@
+[default]
+title=Restrict addable types
+
+[security]
+View=0:Authenticated
+
+[validators]
+validators=validate_folder_constraintypes
+validators..Cancel=
+
+[actions]
+action.success=traverse_to:string:folder_constraintypes_form
+action.success..Cancel=redirect_to_action:string:view
+action.success..Save=traverse_to:string:setConstrainTypes
+action.failure=traverse_to:string:folder_constraintypes_form

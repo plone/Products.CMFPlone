@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master">
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_install_log_for">
+        Install log for 
+        <span tal:content="here/id" tal:omit-tag="" i18n:name="productname">
+            Product Name
+        </span>
+    </h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string:$portal_url/prefs_install_products_form"
+       i18n:translate="back_to_addremove_products">
+        Back to Add/Remove Products
+    </a>
+
+    <dl>
+        <dt i18n:translate="label_status">Status</dt>
+        <dd tal:content="here/getStatus">Some status</dd>
+        
+        <dt tal:condition="here/hasError" 
+            i18n:translate="label_error">Error</dt>
+        <dd tal:condition="here/hasError">
+            <tal:block replace="structure here/error_icon.gif"/>
+            
+            <tal:errormsg i18n:translate="error_installed_product">
+                There were Errors during install, check Transcript
+            </tal:errormsg>
+        </dd>
+
+        <tal:exists condition="here/getTypes">
+        <dt i18n:translate="label_types">Types</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="type here/getTypes"
+                    tal:content="type">
+                Type
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+
+        <tal:exists condition="here/getSkins">
+        <dt i18n:translate="label_skins">Skins</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="skin here/getSkins"
+                    tal:content="skin">
+                Skin
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getActions">
+        <dt i18n:translate="label_actions">Actions</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="action here/getActions"
+                    tal:content="action">
+                Action
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getPortalObjects">
+        <dt i18n:translate="label_portal_objects">Portal Objects</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="object here/getPortalObjects"
+                    tal:content="object">
+                Object
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getWorkflows">
+        <dt i18n:translate="label_workflows">Workflows</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="wf here/getWorkflows"
+                    tal:content="wf">
+                Workflow
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getSlots">
+        <dt i18n:translate="label_portlets">Portlets</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="portlet here/getSlots"
+                    tal:content="portlet">
+                Portlet
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+
+    </dl>
+
+    <h2 i18n:translate="heading_installed_transcript">Transcript</h2>
+    
+    <pre tal:content="structure python:here.getTranscriptAsText().replace('\n','&lt;br/&gt;')">
+        Issue transcript.
+    </pre>
+
+</div>
+
+</body>
+</html>

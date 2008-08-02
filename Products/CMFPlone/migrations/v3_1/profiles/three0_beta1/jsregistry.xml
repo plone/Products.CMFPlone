@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+  <javascript cacheable="True" compression="none" cookable="True" 
+    enabled="True" expression="" id="jquery.js" inline="False"
+    insert-top="" />
+  <!-- cssQuery is left enabled on migrated sites only; we do move it -->
+  <javascript id="cssQuery.js" update="" enabled="true"
+    insert-after="jquery.js" />
+ 	<javascript cacheable="True" compression="safe" cookable="True" 
+    enabled="True" expression="" id="jquery-integration.js" inline="False"
+    insert-after="cssQuery.js" />
+  <javascript id="sarissa.js" update="" insert-before="kupunoi18n.js"
+    expression="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=request)" />
+  <javascript id="livesearch.js" update="" compression="full" />
+  <javascript cacheable="True" compression="safe" cookable="True" 
+    enabled="False" expression="" id="fullscreenmode.js" inline="False"
+    insert-after="livesearch.js" />
+  <javascript id="collapsiblesections.js" update="" compression="full" />
+  <javascript id="accessibility.js" update="" compression="full" />
+  <!-- calendarpopup.js has been deprecated and disabled on new sites, 
+       migration leaves it enabled -->
+  <!-- new resources needed for kss -->
+  <javascript cacheable="True" compression="none" cookable="True"
+    enabled="True" expression=""
+    id="++resource++base2-dom-fp.js" inline="False"
+    insert-before="++resource++kukit.js"/>
+  <javascript cacheable="True" compression="safe" cookable="True"
+    enabled="False" expression=""
+    id="++resource++cssQuery-compat.js" inline="False"
+    insert-before="++resource++base2-dom-fp.js"/>
+</object>

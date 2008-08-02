@@ -1,0 +1,152 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:block fill-slot="column_one_slot" />
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+                 groups python:controlPanel.getGroups('site');
+                 getIconFor nocall:putils/getIconFor">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_control_panel">Site Setup</h1>
+
+    <p class="documentDescription" i18n:translate="description_control_panel">
+      Configuration area for Plone and add-on Products.
+    </p>
+
+    <div tal:define="mt context/portal_migration;
+                     sys mt/coreVersions;
+                     mailhost context/MailHost/smtp_host|nothing;
+                     mailfrom context/email_from_address|nothing">
+
+        <dl class="portalMessage warning"
+            tal:condition="python:not (mailhost and mailfrom)">
+            <dt i18n:translate="">
+                Warning
+            </dt>
+            <dd i18n:translate="text_no_mailhost_configured">
+            You have not configured a mail host or a site 'From'
+            address, various features including contact forms, email
+            notification and password reset will not work. Go to the
+            <tal:link i18n:name="label_mail_control_panel_link">
+                <a href=""
+                   i18n:translate="text_no_mailhost_configured_control_panel_link"
+                   tal:attributes="href string:${portal_url}/@@mail-controlpanel"
+                >Mail control panel</a>
+            </tal:link>
+            to fix this.
+            </dd>
+        </dl>
+
+        <dl class="portalMessage warning"
+            tal:condition="not:sys/PIL">
+            <dt i18n:translate="">
+                Warning
+            </dt>
+            <dd i18n:translate="text_no_pil_installed">
+            Warning: PIL is not installed properly, image scaling will not work.
+            </dd>
+        </dl>
+
+
+    </div>
+
+    <div class="visualClear"><!-- --></div>
+
+    <tal:configletgroup tal:repeat="group groups">
+
+        <h2 tal:content="group/title"
+            i18n:translate="">Plone Configlet Group Title</h2>
+
+        <div tal:define="allconfiglets python:controlPanel.enumConfiglets(group=group['id']);
+                         configlets python:here.createMultiColumnList(allconfiglets, numCols=3);">
+
+            <div tal:repeat="sublist configlets"
+                 tal:condition="configlets"
+                 style="float:left; margin-right: 1em; width: 29%">
+
+                <ul class="configlets" tal:condition="sublist">
+
+                    <tal:configlet repeat="configlet sublist">
+                        <li tal:condition="configlet/visible">
+                            <a href=""          
+                               tal:attributes="href configlet/url">
+                                <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);"
+                                     tal:on-error="string:" />
+                            <tal:configletname tal:content="configlet/title"
+                                               i18n:translate=""></tal:configletname>
+                            </a>
+                        </li>
+                    </tal:configlet>
+
+                </ul>
+
+            </div>
+
+            <div class="visualClear"><!-- --></div>
+
+            <div class="discreet"
+                 tal:condition="not:allconfiglets"
+                 i18n:translate="label_no_prefs_panels_available">
+                No preference panels available.
+            </div>
+
+        </div>
+
+        <div class="visualClear"><!-- --></div>
+
+    </tal:configletgroup>                        
+
+    <tal:versions define="mt here/portal_migration;
+                          sys mt/coreVersions">
+            <h2 i18n:translate="heading_plone_version_overview">Plone Version Overview</h2>
+            
+            <ul>
+                <li>Plone <span tal:replace="mt/getInstanceVersion" /></li>
+                <li>CMF <span tal:replace="sys/CMF" /></li>
+                <li>Zope <span tal:replace="sys/Zope" /></li>
+                <li>Python <span tal:replace="sys/Python" /></li>
+            <tal:pil condition="sys/PIL">
+                <li>PIL <span tal:replace="sys/PIL" /></li>
+            </tal:pil>
+        </ul>
+    </tal:versions>
+    
+    <tal:debugmode define="QI python:context.portal_url.getPortalObject().portal_quickinstaller">
+        <p tal:condition="not:QI/isDevelopmentMode" 
+           class="discreet"
+           i18n:translate="description_production_mode">
+          You are running in "production mode". This is the preferred mode of
+          operation for a live Plone site, but means that some
+          configuration changes will not take effect until your server is
+          restarted or a product refreshed. If this is a development instance,
+          and you want to enable debug mode, edit your zope.conf file to say
+          'debug-mode on' &mdash; then restart the server process.
+        </p>
+
+        <p tal:condition="QI/isDevelopmentMode"
+           class="discreet"
+           i18n:translate="description_debug_mode">
+          Note: You are running in "debug mode". This mode is intended for
+          sites that are under development. This allows many configuration
+          changes to be immediately visible, but will make your site
+          run more slowly. To turn off debug mode, edit your zope.conf file to
+          say 'debug-mode off' &mdash; then restart the server process.
+        </p>
+    </tal:debugmode>
+
+</div>
+
+</body>
+</html>

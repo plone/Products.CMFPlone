@@ -1,0 +1,70 @@
+<div metal:define-macro="byline"
+     i18n:domain="plone"
+     tal:condition="python: not isAnon or site_properties.allowAnonymousViewAbout"
+     tal:define="plone_view context/@@plone;
+                 locked portal/lock_icon.gif;
+                 creator context/Creator;">
+
+    <div class="documentByLine">
+
+        <img src="" alt=""
+           tal:define="lock_info context/@@plone_lock_info | nothing"
+           tal:condition="python:lock_info is not None and lock_info.is_locked() and checkPermission('Modify portal content', here)"
+           tal:replace="structure python:locked.tag(title='Locked')"
+           />
+
+        <tal:name tal:condition="creator"
+            tal:define="author python:mtool.getMemberInfo(creator)">
+          <span class="documentAuthor"
+                i18n:translate="label_by_author">
+            by
+          <a href="#"
+             tal:attributes="href string:${portal_url}/author/${creator}"
+             tal:content="python:author and author['fullname'] or creator"
+             tal:omit-tag="not:author"
+             i18n:name="author">
+            Bob Dobalina
+          </a>
+
+          &mdash;
+          
+          </span>
+        </tal:name>
+
+        <span class="documentModified">
+            <span i18n:translate="box_last_modified">
+            last modified
+            </span>
+            <span tal:replace="python:plone_view.toLocalizedTime(here.ModificationDate(),long_format=1)">
+            August 16, 2001 at 23:35:59
+            </span>
+        </span>
+
+        <span class="state-expired"
+            tal:condition="python:portal.isExpired(here)"
+            i18n:translate="time_expired">
+        &mdash; expired
+        </span>
+
+        <div class="documentContributors"
+             tal:condition="here/Contributors"
+             i18n:translate="text_contributors">
+            Contributors:
+            <span i18n:name="name"
+                  tal:omit-tag=""
+                  tal:content="python: ', '.join(here.Contributors())">
+              Mary
+            </span>
+        </div>
+
+        <tal:rights condition="here/Rights">
+            <div tal:replace="here/Rights">
+                Copyleft NiceCorp Inc.
+            </div>
+        </tal:rights>
+
+        <span metal:use-macro="here/review_history/macros/review_history" />
+
+    </div>
+
+</div>

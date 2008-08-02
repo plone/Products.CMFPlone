@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<object name="portal_kss" meta_type="KSS Registry">
+ <kineticstylesheet cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="at.kss"/>
+ <kineticstylesheet cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="plone.kss"/>
+ <kineticstylesheet cacheable="True" compression="safe" cookable="True"
+    enabled="0" expression="" id="at_experimental.kss"/>
+ <kineticstylesheet cacheable="True" compression="safe" cookable="True"
+    enabled="0" expression="" id="plone_experimental.kss"/>
+ <kineticstylesheet cacheable="True" compression="safe" cookable="True"
+    enabled="1" expression="" id="++resource++plone.app.form.kss"/>
+</object>

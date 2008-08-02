@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+
+<body>
+
+<!-- THE PERSONAL BAR DEFINITION -->
+
+<div metal:define-macro="personal_bar"
+      id="portal-personaltools-wrapper"
+      tal:define="actions context/@@plone_context_state/actions;
+                  getIconFor nocall:putils/getIconFor;">
+
+<h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
+
+<ul id="portal-personaltools"
+    class="visualInline">
+   <tal:block condition="not: isAnon">
+       <li class="portalUser" 
+           tal:define="author python:mtool.getMemberInfo(user.getId())"><a 
+           id="user-name"
+           tal:attributes="href string:${portal_url}/dashboard"
+          ><span class="visualCaseSensitive"
+                 tal:content="python:author and author['fullname'] or user.getId()">
+                John
+           </span
+       ></a></li>
+   </tal:block>
+
+    <tal:actions tal:repeat="action actions/user">
+        <li tal:define="icon python:getIconFor(action['category'], action['id'], None);
+                        class_name string:visualIcon actionicon-${action/category}-${action/id};
+                        class_name python:test(icon, class_name, nothing);"
+            tal:attributes="class class_name">
+            <a href=""
+               tal:attributes="href action/url;
+                               class python:test(icon, 'visualIconPadding', nothing);"
+            ><tal:actionname i18n:translate="" 
+                             tal:content="action/title">dummy</tal:actionname
+            ></a>
+        </li>
+    </tal:actions>
+
+</ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+ <bindings>
+  <type type_id="ATRelativePathCriterion"/>
+ </bindings>
+</object>

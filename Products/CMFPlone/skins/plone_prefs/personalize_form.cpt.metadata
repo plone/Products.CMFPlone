@@ -1,0 +1,15 @@
+[default]
+title=Personal Preferences
+
+[security]
+View=0:Authenticated
+
+[validators]
+validators=validate_pas_emailaddr,validate_personalize
+validators..Cancel=
+
+[actions]
+action.success=traverse_to:string:personalize
+action.success..PortraitDelete=traverse_to:string:portrait_delete
+action.success..Cancel=redirect_to:string:plone_memberprefs_panel
+action.failure=traverse_to:string:personalize_form

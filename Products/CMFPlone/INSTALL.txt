@@ -1,0 +1,269 @@
+Installing Plone manually, step by step instructions.
+==============================================================================
+
+The following is a list of important things to note when installing or
+upgrading to Plone 3.0:
+
+* Unpacking the Plone archive with WinZip will not work: WinZip will truncate
+  filenames without warning you. 7-Zip is a good open source alternative for
+  Windows that you can use instead: http://www.7-zip.org
+
+* Zope 2.10.4+ is now required. Older versions of Zope will not work. Zope
+  2.11 and later may or may not work. Zope 3.x is not supported.
+
+* The python ElementTree package is now required. This package can be
+  downloaded from its home page at http://effbot.org/downloads/#elementtree .
+
+* The python lxml package is now required to run all tests. It is
+  not needed for normal Plone use. This package can be downloaded
+  from its home page at http://codespeak.net/lxml/ .
+
+* The Python OpenID packages are required if you want to enable OpenID support.
+  They can be downloaded from the OpenID enabled site at
+  http://www.openidenabled.com/python-openid/
+
+* Plone 3.0 uses both Zope Products and python packages. The Zope Products
+  are installed in the usual location: the Products directory of the Zope
+  instance. Python package may be installed in the lib/python directory in the
+  Zope instance, or anywhere on the standard python path.
+
+* The GroupUserFolder user folder is no longer supported; instead Plone
+  now requires the Pluggable Authentication System (PAS). It may not be
+  possible to upgrade a site using GRUF with external user folders such as
+  LDAPUserFolder. In those cases it is advised to create a new site and move
+  the content over manually.
+
+
+==============================================================================
+
+**SUMMARY**
+
+  1) Download and install Zope
+  2) Find your instance's home directory
+  3) Download and install the Plone tarball - http://plone.org/download
+     (you most likely have it already since you're reading this, but make
+      sure you still have the latest version)
+  4) Download and install optional products
+
+  For alternative install docs, try http://plone.org/documentation. They may
+  be more up to date, and have useful illustrations to go with them.
+  
+  There is also a so-called "Universal installer" that works on all
+  UNIX-derivatives, that does all of this for you and more. If you're new to
+  Plone, it is probably a better choice, since it downloads and compiles
+  dependencies (Zope, PIL, elementtree) for you. This document assumes that
+  you have some familiarity with the Zope and Plone structure and want to set
+  it up manually.
+
+==============================================================================
+
+**ASSUMPTIONS**
+
+  1) You are running a *nix server
+  2) You are comfortable with standard Unix commands, including
+     * wget or svn
+     * tar
+     * symlinking
+  3) You are familiar with logging into the Zope Management Interface
+
+==============================================================================
+
+**REQUIREMENTS**
+
+  **MANDATORY**
+
+  - Zope 2.10.4 or later (does not run on Zope 3 or Zope 2.11)
+    Not included in the Plone tarball.
+    http://www.zope.org/Products/Zope/2.10.4
+
+  - Python Imaging Library 1.1.5 or newer
+    Not included in the Plone tarball.
+    http://effbot.org/downloads/#Imaging
+    Note: You have to build PIL with JPEG and PNG support. See the README
+    of PIL for more information.
+
+  - Python ElementTree
+    Not included in the Plone tarball.
+    http://effbot.org/downloads/#elementtree
+
+  **The following Zope product dependencies are included in the Plone tarball**
+
+  - ATContentTypes
+  - ATReferenceBrowserWidget
+  - AdvancedQuery
+  - Archetypes
+  - CMFActionIcons
+  - CMFCalendar
+  - CMFCore
+  - CMFDefault
+  - CMFDiffTool
+  - CMFDynamicViewFTI
+  - CMFEditions
+  - CMFFormController
+  - CMFPlacefulWorkflow
+  - CMFPlone
+  - CMFQuickInstallerTool
+  - CMFTestCase
+  - CMFTopic
+  - CMFUid
+  - DCWorkflow
+  - ExtendedPathIndex
+  - ExternalEditor
+  - GenericSetup
+  - GroupUserFolder
+  - Kupu
+  - Marshall
+  - MimetypesRegistry
+  - NuPlone
+  - PasswordResetTool
+  - PlacelessTranslationService
+  - PloneLanguageTool
+  - PlonePAS
+  - PloneTestCase
+  - PloneTranslations
+  - PluggableAuthService
+  - PluginRegistry
+  - PortalTransforms
+  - ResourceRegistries
+  - SecureMailHost
+  - Statusmessages
+  - Validation
+  - ZopeVersionControl
+
+  **The following python package dependencies are included in the Plone tarball**
+
+  - archetypes.kss
+  - five.customerize
+  - five.localsitemanager
+  - kss.core
+  - plone.app.content
+  - plone.app.contentmenu
+  - plone.app.contentrules
+  - plone.app.controlpanel
+  - plone.app.customerize
+  - plone.app.form
+  - plone.app.i18n
+  - plone.app.iterate
+  - plone.app.kss
+  - plone.app.layout
+  - plone.app.linkintegrity
+  - plone.app.openid
+  - plone.app.portlets
+  - plone.app.redirector
+  - plone.app.viewletmanager
+  - plone.app.vocabularies
+  - plone.app.workflow
+  - plone.contentrules
+  - plone.fieldsets
+  - plone.i18n
+  - plone.intelligenttext
+  - plone.locking
+  - plone.memoize
+  - plone.openid
+  - plone.portlets
+  - plone.session
+  - plone.theme
+  - wicked
+
+==============================================================================
+
+**INSTALLATION PROCEDURE:**
+------------------------------------------------------------------------------
+
+1. Download and install Zope
+
+  Install Zope and start it. Check that it's running.
+
+*****************************************************************************
+* If you want to run Plone on FreeBSD, you'll need to up the thread stack   *
+* size of your python interpreter or else Zope will repeatedly crash!       *
+* Compile python with 'make WANT_HUGE_STACK_SIZE=yes' or use the compiler   *
+* option CFLAG: -DTHREAD_STACK_SIZE=0x100000                                *
+* Also see: http://plone.org/documentation/faq/plone-on-bsd-python-stack    *
+*****************************************************************************
+
+2. Find your instance's home directory.
+
+   The location of this varies from system to system, so to avoid hunting for
+   it, go to the Zope Management Interface (ZMI) Control Panel in your Zope's
+   root, which will likely be at one of the following URLs:
+
+   http://yourhost:8080/Control_Panel/manage_main
+   http://yourhost:9673/Control_Panel/manage_main (if you're using Debian)
+   http://yourhost/Control_Panel/manage_main (if you're proxying through a
+                                              front end webserver on port 80)
+
+   This page will tell you your INSTANCE_HOME. There are two important
+   directories in the site's INSTANCE_HOME directory: the Products folder
+   in which Zope Products can be installed and the lib/python directory
+   which is used for python packages that will only be used by this Zope
+   instance. 
+
+   About $SOFTWARE_HOME/Products folder:
+
+   Older products will sometimes instruct you to install in
+   SOFTWARE_HOME/Products. SOFTWARE_HOME refers to the lib/python sub-folder
+   of the Zope folder. We strongly discourage installing packages in these
+   places for two reasons:
+
+    * These folders affect all Plone sites using that version of Zope.
+    * If you reinstall Zope, Plone will be replaced.
+
+   Any time you're asked to place packages into a Products folder, choose
+   the INSTANCE_HOME/Products folder instead. Thank you!
+
+------------------------------------------------------------------------------
+
+3. Download and install the Plone tarball
+
+   Unpack the Plone tarball.
+
+   The results will be a directory named Plone-xxxx where
+   xxxx is the version. This should contain two subdirectories: Products
+   and lib.
+
+   Go to your $INSTANCE_HOME directory and remove the two existing
+   directories with those same names (Products and lib) beforehand.
+   Replace them with the two directories you just unpacked.
+
+   You have to restart your Zope to load these Products and new packages, then
+   test that they have installed correctly. You can do this by logging into the
+   ZMI - you should have
+
+    1) The Plone Products (CMFPlone etc.) listed in the Products section
+       of the Control_Panel
+    2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI
+       Root Folder
+
+   Complete the install test by adding a Plone Site from the pulldown in the
+   root folder.
+
+*****************************************************************************
+* Make sure this is not done inside the Control Panel, but in the root of   *
+* the Zope site. Zope will unfortunately not stop you from addding a Plone  *
+* instance inside the Control Panel, even though it doesn't make sense.     *
+*****************************************************************************
+
+   When you do this, it asks you to complete a form, specifying the site's 
+   ID (URL element), Title and Description. Complete these fields and hit the
+   "Add Plone Site" button. After a short while, you will end up in the ZMI
+   again, but should see your Plone site listed in there.
+
+------------------------------------------------------------------------------
+
+4. Download and install optional products
+
+   The above steps install the "mandatory" products.
+
+   Click Site Setup -> Add/Remove Products to install optional products bundled
+   with Plone.
+
+   For optional products not bundled with Plone:  Download the product, unpack
+   the product into your instance's Products directory, restart Zope, and
+   install them in Plone using Site Setup -> "Add/Remove Products."
+
+==============================================================================
+Enjoy Plone, and don't forget to report any bugs or inconsistencies in the
+Plone bug tracker: http://dev.plone.org/plone/
+
+Thank you for using Plone!

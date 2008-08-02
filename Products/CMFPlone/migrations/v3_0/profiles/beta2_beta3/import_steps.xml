@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<import-steps>
+ <import-step id="viewlets" version="20070503-01"
+              handler="plone.app.viewletmanager.exportimport.storage.importViewletSettingsStorage"
+              title="Viewlet Settings">
+  <dependency step="componentregistry"/>
+    Import viewlet settings
+ </import-step>
+</import-steps>

@@ -1,0 +1,61 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           i18n_domain="plone">
+
+  <!-- The following declarations are deprecated and will be removed in
+       Plone 4.0. -->
+
+  <browser:page
+      for="*"
+      name="news_view"
+      class=".browser.portlets.news.NewsPortlet"
+      permission="zope.Public"
+      allowed_interface=".browser.interfaces.INewsPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="events_view"
+      class=".browser.portlets.events.EventsPortlet"
+      permission="zope.Public"
+      allowed_interface=".browser.interfaces.IEventsPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="navigation_view"
+      class=".browser.portlets.navigation.NavigationPortlet"
+      permission="zope.Public"
+      allowed_interface=".browser.interfaces.INavigationPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="calendar_view"
+      class=".browser.portlets.calendar.CalendarPortlet"
+      permission="zope.Public"
+      allowed_interface=".browser.interfaces.ICalendarPortlet"
+      />
+
+  <browser:page
+      for="*"
+      name="recent_view"
+      class=".browser.portlets.recent.RecentPortlet"
+      permission="zope.Public"
+      allowed_interface=".browser.interfaces.IRecentPortlet"
+      />
+
+  <five:deprecatedManageAddDelete
+      class=".Portal.PloneSite" />
+
+  <five:deprecatedManageAddDelete
+      class=".PloneFolder.PloneFolder" />
+
+  <five:deprecatedManageAddDelete
+      class=".CatalogTool.CatalogTool" />
+
+  <five:deprecatedManageAddDelete
+      class="Products.kupu.plone.plonelibrarytool.PloneKupuLibraryTool" />
+
+</configure>

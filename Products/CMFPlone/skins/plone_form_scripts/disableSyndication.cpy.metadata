@@ -1,0 +1,7 @@
+[validators]
+validators = 
+
+[actions]
+action.success = traverse_to:string:synPropertiesForm
+action.failure = traverse_to:string:synPropertiesForm
+

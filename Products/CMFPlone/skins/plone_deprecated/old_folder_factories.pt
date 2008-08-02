@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
+<body>
+
+<div metal:fill-slot="main">
+
+    <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
+        <tal:block tal:define="pps python:modules['Products.PythonScripts.standard'];
+                               type_name python:pps.url_quote(request.get('type_name'));
+                               creation_url string:$here_url/createObject?type_name=$type_name;
+                               dummy python:request.response.redirect(creation_url); " />
+    </metal:block>
+
+    <h1 class="documentFirstHeading" i18n:translate="heading_add_new_item">Add new item</h1>
+
+    <p class="documentDescription"
+       i18n:translate="description_add_new_item">
+        Select the type of item you want to add to your folder.
+    </p>
+
+    <p tal:define="addContext plone_view/getCurrentFolder;
+                   showSettings addContext/canConstrainTypes;">
+        <a href="#" tal:condition="showSettings"
+                    title="Configure which content types can be added here"
+                    i18n:attributes="title title_configure_addable_content_types;"
+                    tal:attributes="href string:${addContext/absolute_url}/folder_constraintypes_form;"
+                    i18n:translate="folder_add_settings_long">
+            Click to configure what type of items can be added here&hellip;
+        </a>
+    </p>
+
+    <div metal:define-macro="addlist"
+         tal:define="filterOut here/getNotAddableTypes;
+                     create_id id | nothing;
+                     id_query string:&amp;id=$create_id;
+                     query python:test(create_id, id_query, '');">
+
+        <form name="quickAdd" action="createObject" method="post">
+            <input name="id"
+                   type="hidden"
+                   value=""
+                   tal:attributes="value create_id"
+                   tal:condition="create_id"/>
+            <tal:typelist define="allowedContentTypes python:here.sortObjects(here.allowedContentTypes());"
+                          repeat="ctype allowedContentTypes">
+            
+                <dl tal:define="pss modules/Products/PythonScripts/standard;
+                                     Title ctype/Title;
+                                     Id ctype/getId;
+                                     normalized_id python:normalizeString(Id);
+                                     item_icon python:plone_view.getIcon(ctype);"
+                     tal:condition="python:test(Id not in filterOut, 1, 0)">
+                    <dt>
+                        <input type="radio" name="type_name"
+                               tal:attributes="value Id;
+                                               id string:form-field-${normalized_id}" />
+                        <label tal:attributes="class string:contenttype-${normalized_id};
+                                               for string:form-field-${normalized_id};">
+                            <img tal:attributes="src item_icon/url" alt="" />
+                            <span tal:replace="python:here.utranslate(Title)">Type title</span>
+                        </label>                                 
+                    </dt>
+                    <dd tal:content="ctype/Description">Type description</dd>
+                </dl>
+
+            </tal:typelist>
+            
+            <div class="formControls">
+                <input class="standalone"
+                      type="submit"
+                      value="Add"
+                      i18n:attributes="value label_add"
+                      />
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

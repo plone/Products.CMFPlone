@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
+<body>
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="label_site_map">Site map</h1>
+
+    <p class="documentDescription"
+       i18n:translate="description_site_map">
+    An overview of the available content on this site. Keep the pointer still
+    over an item for a few seconds to get its description.
+    </p>
+
+    <ul id="portal-sitemap"
+        class="navTreeLevel0 visualNoMarker"
+        tal:define="view context/@@sitemap_view;">
+        <tal:sitemap replace="structure view/createSiteMap" />
+    </ul>
+
+</metal:main>
+</body>
+</html>

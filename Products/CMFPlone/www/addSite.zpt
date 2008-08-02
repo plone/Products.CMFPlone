@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8"
+      tal:define="charset context/management_page_charset | string:utf-8;"
+      tal:attributes="content string:text/html;;charset=$charset;"/>
+
+<title>Zope</title>
+<link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+
+</head>
+<body bgcolor="#ffffff" link="#000099" alink="#000099" vlink="#000099" onload="siteid.focus()">
+
+  <div class="form-title">
+  Add Plone Site
+  </div>
+  
+<form action="addPloneSite" method="post">
+    <div class="form-help">
+    Enter an ID and click the button below to create a new Plone site.
+    </div>
+    <div class="form-label">
+    Id
+    </div>
+    <input type="text" name="id" size="40" id="siteid" /> <span class="form-help">(No special characters or spaces)</span>
+
+    <div class="form-label">
+    Title
+    </div>
+    <input type="text" name="title" size="40" value="Site" />
+
+    <input type="hidden" name="create_userfolder" value="1" />
+
+    <div class="form-label">
+    Description
+    </div>
+    
+    <textarea name="description" cols="60" rows="10"
+     style="width: 95%"></textarea>
+
+    <tal:baseprofile condition="python: len(options['base_profiles']) > 1">
+      <div class="form-label">
+        Base Profile
+      </div>
+      <div class="form-help">
+        You normally don't need to change anything here unless you have 
+        specific reasons and know what you are doing.
+      </div>
+
+      <tal:profiles tal:repeat="info options/base_profiles">
+        <input type="radio"
+               name="profile_id:string"
+               value="profile"
+               tal:attributes="value info/id;
+                               checked python: options['default_profile']==info['id'] and 'checked' or nothing"
+               />
+        <span tal:replace="info/title">profile title</span>
+        <br />
+      </tal:profiles>
+    </tal:baseprofile>
+
+    <tal:extensionprofiles condition="options/extension_profiles">
+      <div class="form-label">
+        Extension Profiles
+      </div>
+      <div class="form-help">
+          You normally don't need to select anything here unless you have 
+          specific reasons and know what you are doing. Leave it blank if you
+          want a default Plone site.
+      </div>
+      <select name="extension_ids:list"
+              id="extension_ids" multiple="True" size="5">
+        <option tal:repeat="info options/extension_profiles"
+                tal:attributes="value info/id"
+                tal:content="info/title">PROFILE TITLE</option>
+      </select>
+    </tal:extensionprofiles>
+    
+    <div class="form-element">
+    <input class="form-element" type="submit" name="submit" 
+     value=" Add Plone Site " />
+    </div>
+
+  </form>
+
+  <p>
+  <strong>NOTE:</strong>
+  You may only use ASCII characters for <code>Id</code>, <code>Title</code>, 
+  and <code>Description</code> in this form!
+  You can change the values later from the Plone UI, but during creation of a
+  Plone site characters outside the A-Z and numbers range are not allowed.
+  </p>
+
+  </body>
+</html>
+

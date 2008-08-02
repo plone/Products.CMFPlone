@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<export-steps>
+ <export-step id="viewlets"
+              handler="plone.app.viewletmanager.exportimport.storage.exportViewletSettingsStorage"
+              title="Viewlet Settings">
+  Export viewlet settings
+ </export-step>
+</export-steps>

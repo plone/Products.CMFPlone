@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
+<body>
+
+<div metal:fill-slot="main">
+  <div id="content"
+       metal:define-macro="login_failed"
+       tal:define="auth nocall:here/acl_users/credentials_cookie_auth|here/cookie_authentication|nothing;
+                   came_from request/came_from|request/HTTP_REFERER|nothing;
+                   came_from python:test(utool.isURLInPortal(came_from), came_from, None);
+                   errors options/state/getErrors;
+                   ac_name auth/name_cookie|string:__ac_name;
+                   ac_password auth/pw_cookie|string:__ac_password;
+                   ac_persist auth/persist_cookie|nothing;
+                   login_name python:request.get('login_name', request.get(ac_name, ''));">
+
+
+    <metal:login use-macro="here/login_form/macros/login" />
+
+
+    <p i18n:translate="description_not_accept_cookies">
+      If your user name and password are correct, the problem may be that
+      your browser is not configured to accept cookies.
+    </p>
+
+    <p i18n:translate="description_still_failure">
+      If you are still reaching this page after correctly configuring
+      your browser, here are some possible reasons:
+    </p>
+
+    <ul >
+      <li i18n:translate="description_still_failure_reason1">
+        You may be running web filtering software that
+        disables cookies. If so, you will need to configure the
+        software so that it enables you to accept cookies from
+        <span tal:content="utool" tal:omit-tag="" i18n:name="url">url</span>
+      </li>
+      <li i18n:translate="description_still_failure_reason2">
+        Your computer may be behind a firewall or proxy server
+        that prevents cookies from being sent to or from your browser.
+        If so, you will need to ask your systems administrator if the
+        problem can be fixed.
+      </li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>
