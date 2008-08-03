@@ -119,20 +119,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.normalizeString("p.u,n;c(t)u!a@t#i$o%n"),
                          'p-u-n-c-t-u-a-t-i-o-n')
 
-    def testNormalizeStringLower(self):
-        # Strings are lowercased
-        self.assertEqual(self.utils.normalizeString("UppERcaSE"), 'uppercase')
-
-    def testNormalizeStringStrip(self):
-        # Punctuation and spaces are trimmed, multiples reduced to 1
-        self.assertEqual(self.utils.normalizeString(" a string    "),
-                         'a-string')
-        self.assertEqual(self.utils.normalizeString(">here is another!"),
-                         'here-is-another')
-        self.assertEqual(
-            self.utils.normalizeString("one with !@#$!@#$ stuff in the middle"),
-            'one-with-stuff-in-the-middle')
-
     def testNormalizeStringFileExtensions(self):
         # If there is something that looks like a file extensions
         # it will be preserved.
@@ -140,44 +126,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
                          'this-is-a-file.gif')
         self.assertEqual(self.utils.normalizeString("this is. also. a file.html"),
                          'this-is-also-a-file.html')
-
-    def testNormalizeStringAccents(self):
-        # European accented chars will be transliterated to rough
-        # ASCII equivalents
-        input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"
-        self.assertEqual(self.utils.normalizeString(input),
-                         'eksempel-eoa-norsk-eoa')
-
-    def testNormalizeStringUTF8(self):
-        # In real life, input will not be Unicode...
-        input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5".encode('utf-8')
-        self.assertEqual(self.utils.normalizeString(input),
-                         'eksempel-eoa-norsk-eoa')
-
-    def testNormalizeGreek(self):
-        # Greek letters (not supported by UnicodeData)
-        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'el')
-        input = (u'\u039d\u03af\u03ba\u03bf\u03c2 '
-                 u'\u03a4\u03b6\u03ac\u03bd\u03bf\u03c2')
-        self.assertEqual(self.utils.normalizeString(input, relaxed=True),
-                         'Nikos Tzanos')
-
-    def testNormalizeGreekUTF8(self):
-        # Greek letters (not supported by UnicodeData)
-        self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'el')
-        input = (u'\u039d\u03af\u03ba\u03bf\u03c2 '
-                 u'\u03a4\u03b6\u03ac\u03bd\u03bf\u03c2').encode('utf-8')
-        self.assertEqual(self.utils.normalizeString(input, relaxed=True),
-                         'Nikos Tzanos')
-
-    def testNormalizeStringHex(self):
-        # Everything that can't be transliterated will be hex'd
-        self.assertEqual(
-            self.utils.normalizeString(u"\u9ad8\u8054\u5408 Chinese"),
-            '9ad880545408-chinese')
-        self.assertEqual(
-            self.utils.normalizeString(u"\uc774\ubbf8\uc9f1 Korean"),
-            'c774bbf8c9f1-korean')
 
     def testNormalizeStringIgnoredCharacters(self):
         # Some characters should be ignored

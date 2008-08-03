@@ -330,6 +330,13 @@ Plone 3.1-beta1 - released March 9, 2008
       [sirgarr]
 
 
+Plone 3.0.7
+
+    - Don't test the internal policy of the normalization logic. This is
+      covered by the tests in plone.i18n.
+      [hannosch]
+
+
 Plone 3.0.6 - released Febuary 15, 2008 
 
     - Make @@plone_lock_info not required for object_cut, object_delete and
