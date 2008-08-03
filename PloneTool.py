@@ -1009,13 +1009,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         normalizeString() uses normalizeUnicode() to convert stray unicode
         characters. it will attempt to transliterate many of the accented
-        letters to rough ASCII equivalents:
-
-        >>> ptool.normalizeString(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5")
-        'eksempel-eoa-norsk-eoa'
-
-        for characters that we can't transliterate, we just return the hex codes of
-        the byte(s) in the character. not pretty, but about the best we can do.
+        letters to rough ASCII equivalents for characters that we can't
+        transliterate, we just return the hex codes of the byte(s) in the
+        character. not pretty, but about the best we can do.
 
         >>> ptool.normalizeString(u"\u9ad8\u8054\u5408 Chinese")
         '9ad880545408-chinese'

@@ -2,7 +2,11 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1 - UNRELEASED
+Plone 3.0.7 - UNRELEASED
+
+    - Don't test the internal policy of the normalization logic. This is
+      covered by the tests in plone.i18n.
+      [hannosch]
 
     - Fix folder_summary_view display of Link objects.
       http://dev.plone.org/plone/ticket/7509
