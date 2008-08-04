@@ -4,6 +4,12 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Added 'pwreset_finish' to the ignore_came_from list in login_next.cpy.
+      Back-ported from r21501. This closes
+      http://dev.plone.org/plone/ticket/5548 and
+      http://dev.plone.org/plone/ticket/8356.
+      [hannosch/dunlapm]
+
     - Corrected behavior in the URL tool to more intelligently handle relative
       URLs in isURLInPortal. The new functionality requires the current context
       to be passed in to figure out urls beginning with any number of the '../'

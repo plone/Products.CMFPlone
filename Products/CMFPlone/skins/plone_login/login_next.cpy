@@ -32,7 +32,7 @@ if came_from is not None:
     if template_id in ['login', 'login_success', 'login_password', 'login_failed',
                        'login_form', 'logged_in', 'logged_out', 'registered',
                        'mail_password', 'mail_password_form', 'join_form',
-                       'require_login', 'member_search_results',
+                       'require_login', 'member_search_results', 'pwreset_finish',
                        # We need localhost in the list, or Five.testbrowser tests
                        # won't be able to log in via login_form (since r17128).
                        'localhost']:
