@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Modified getSectionFromURL to return an empty string instead of None
+      which prevents main_template assigning the nonsense CSS class of "None".
+      This closes http://dev.plone.org/plone/ticket/8283.
+      [dunlapm]
+
     - Added 'pwreset_finish' to the ignore_came_from list in login_next.cpy.
       Back-ported from r21501. This closes
       http://dev.plone.org/plone/ticket/5548 and
@@ -27,7 +32,7 @@ Plone 3.1.5 - Unreleased
 
     - Fixed prefs_groups_overview.cpt so that hitting enter in the search
       box does not add a new group. Closes
-      https://dev.plone.org/plone/ticket/6187
+      http://dev.plone.org/plone/ticket/6187
       thanks to claytron for the patch
       [calvinhp]
 
@@ -47,7 +52,7 @@ Plone 3.1.5 - Unreleased
       [fschulze]
 
     - Hide #portal-languageselector on printed page. This fixes 
-      https://dev.plone.org/plone/ticket/8299
+      http://dev.plone.org/plone/ticket/8299
       [naro]
 
     - Fixed folder_listing, folder_summary_view, and folder_tabular_view

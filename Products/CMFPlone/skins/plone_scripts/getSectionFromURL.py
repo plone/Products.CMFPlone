@@ -9,6 +9,6 @@
 ##
 contentPath = context.portal_url.getRelativeContentPath(context)
 if not contentPath:
-    return None
+    return ''
 else:
     return "section-" + contentPath[0]
