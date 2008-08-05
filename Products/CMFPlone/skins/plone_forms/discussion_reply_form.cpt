@@ -24,7 +24,8 @@
 
         <div class="comment" 
              tal:condition="showDiscussable"
-             tal:define="here python:discussable">
+             tal:define="here python:discussable;
+                         context python:discussable">
             <div metal:use-macro="main_macro"/>
         </div>
     </tal:discussable>

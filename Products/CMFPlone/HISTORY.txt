@@ -4,6 +4,15 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - In discusssion_reply_form.cpt not only redefine the 'here'
+      variable but also 'context', which is needed for rendering the
+      main macro of the item under discussion.  A reply to a reply
+      would give an error when the template for the item under
+      discussion was using 'context' instead of 'here'.
+      See http://comments.gmane.org/gmane.comp.web.zope.plone.devel/19657
+      (merged from trunk r22018)
+      [maurits]
+
     - Modified getSectionFromURL to return an empty string instead of None
       which prevents main_template assigning the nonsense CSS class of "None".
       This closes http://dev.plone.org/plone/ticket/8283.
