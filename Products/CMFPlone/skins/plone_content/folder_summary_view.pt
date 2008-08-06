@@ -113,7 +113,9 @@
                                i18n:translate="label_event_byline">
                              (<span tal:content="string:${item/location}"
                                     class="location"
-                                    i18n:name="location">Oslo</span>, from
+                                    i18n:name="location">Oslo</span><tal:comma
+                                    tal:replace="string:, "
+                                    tal:condition="item/location" />from
                               <abbr class="dtstart"
                                     tal:attributes="title python:item_start"
                                     tal:content="python:toLocalizedTime(item_start,long_format=1)"

@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Updated folder_listing and folder_summary_view to not assume that events
+      will have a location defined. This closes
+      http://dev.plone.org/plone/ticket/8358
+      [dunlapm]
+
     - In discusssion_reply_form.cpt not only redefine the 'here'
       variable but also 'context', which is needed for rendering the
       main macro of the item under discussion.  A reply to a reply
