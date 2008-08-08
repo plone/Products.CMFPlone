@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - When changing the ownership of an object the new owner may now
+      also be in the top level acl_users folder in the Zope root.
+      This fixes http://dev.plone.org/plone/ticket/5730
+      [maurits]
+
     - Now displaying a error status message instead of a traceback
       when trying to cut a locked item.  This closes
       http://dev.plone.org/plone/ticket/7711

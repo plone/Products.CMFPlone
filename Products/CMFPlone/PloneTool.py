@@ -435,7 +435,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         acl_users = getattr(self, 'acl_users')
         user = acl_users.getUserById(userid)
         if user is None:
-            raise KeyError, 'Only retrievable users in this site can be made owners.'
+            # The user could be in the top level acl_users folder in
+            # the Zope root, in which case this should find him:
+            user = membership.getMemberById(userid)
+            if user is None:
+                raise KeyError, 'Only retrievable users in this site can be made owners.'
         object.changeOwnership(user, recursive)
 
         def fixOwnerRole(object, user_id):

@@ -201,6 +201,17 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         # Initial creator no longer has Owner role.
         self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
 
+    def testChangeOwnershipOfWithTopAclUsers(self):
+        # Should be able to give ownership to a user in the top level
+        # acl_users folder (even if this is not offered TTW).
+        self.utils.changeOwnershipOf(self.folder1, 'portal_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[1], 'portal_owner')
+        self.assertList(self.folder1.get_local_roles_for_userid('portal_owner'),
+                        ['Owner'])
+
+        # Initial creator no longer has Owner role.
+        self.assertList(self.folder1.get_local_roles_for_userid(default_user), [])
+
     def testChangeOwnershipOfKeepsOtherRoles(self):
         # Should preserve roles other than Owner
         self.folder1.manage_addLocalRoles('new_owner', ('Reviewer',))
