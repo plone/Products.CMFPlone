@@ -40,10 +40,8 @@ jq(function() {
         jq('dl.toc').show();
         oltoc = jq(stack[0]);
         numdigits = oltoc.children().length.toString().length;
-        //estimating that we'll need left margin equal to the number of items
-        //in the TOC list is pretty safe. You'll have to get into the 10's of
-        //thousands of items before it's noticably misaligned
-        oltoc.css("margin-left",numdigits+"em");
+        //Use a clever class name to add margin that's MUCH easier to customize
+        oltoc.addClass("TOC"+numdigits+"Digit");
         dest.append(oltoc);
     }
 });

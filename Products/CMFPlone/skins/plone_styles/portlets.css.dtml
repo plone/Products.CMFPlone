@@ -205,6 +205,18 @@ div.managedPortlet {
     margin: 0 0 0.5em 0.5em;
 }
 
+.toc .TOC1Digit {
+    margin-left: 1em;
+}
+
+.toc .TOC2Digit {
+    margin-left: 2em;
+}
+
+.toc .TOC3Digit {
+    margin-left: 3em;
+}
+
 /* Static text portlet */
 .portletStaticText ul {
     list-style-image: url(&dtml-portal_url;/bullet.gif);
