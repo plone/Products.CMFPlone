@@ -38,6 +38,6 @@ if REQUEST.has_key('paths'):
 
     context.plone_utils.addPortalMessage(message)
     return state
-                                 
+
 context.plone_utils.addPortalMessage(_(u'Please select one or more items to cut.'), 'error')
 return state.set(status='failure')
