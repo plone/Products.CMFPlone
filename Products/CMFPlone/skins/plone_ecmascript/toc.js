@@ -18,10 +18,10 @@ jq(function() {
         while (stack.length < level) {
             var ol = jq('<ol>');
             if (stack.length) {
-                var li = jq(stack[stack.length - 1]).children('li:last')
+                var li = jq(stack[stack.length - 1]).children('li:last');
                 if (!li.length)
                     // create a blank li for cases where, e.g., we have a subheading before any headings
-                    li = jq('<li>').appendTo(jq(stack[stack.length - 1])) 
+                    li = jq('<li>').appendTo(jq(stack[stack.length - 1]));
                 li.append(ol);
             }
             stack.push(ol);
@@ -38,6 +38,12 @@ jq(function() {
 
     if (stack.length) {
         jq('dl.toc').show();
-        dest.append(stack[0]);
+        oltoc = jq(stack[0]);
+        numdigits = oltoc.children().length.toString().length;
+        //estimating that we'll need left margin equal to the number of items
+        //in the TOC list is pretty safe. You'll have to get into the 10's of
+        //thousands of items before it's noticably misaligned
+        oltoc.css("margin-left",numdigits+"em");
+        dest.append(oltoc);
     }
 });

@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Updated table of contents javascript to calculate how much left margin
+      will be needed for lists larger than 9 to show properly. This closes
+      http://dev.plone.org/plone/ticket/8366
+      [dunlapm]
+
     - Updated folder_listing and folder_summary_view to not assume that events
       will have a location defined. This closes
       http://dev.plone.org/plone/ticket/8358
