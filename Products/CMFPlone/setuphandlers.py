@@ -355,9 +355,9 @@ class PloneGenerator:
                 topic.setLanguage(language)
             topic.setAcquireCriteria(True)
             topic.unmarkCreationFlag()
-            sort_crit = topic.addCriterion('start','ATSortCriterion')
+            sort_crit = topic.addCriterion('end','ATSortCriterion')
             sort_crit.setReversed(True)
-            date_crit = topic.addCriterion('start','ATFriendlyDateCriteria')
+            date_crit = topic.addCriterion('end','ATFriendlyDateCriteria')
             # Set date reference to now
             date_crit.setValue(0)
             # Only take events in the past

@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Avoid events to be shown in the previous and upcoming events collections
+      at the same time. This closes http://dev.plone.org/plone/ticket/7790.
+      [hannosch]
+
     - Updated table of contents javascript to calculate how much left margin
       will be needed for lists larger than 9 to show properly. This closes
       http://dev.plone.org/plone/ticket/8366
