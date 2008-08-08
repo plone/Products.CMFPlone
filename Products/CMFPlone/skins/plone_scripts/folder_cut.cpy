@@ -10,6 +10,7 @@
 ##
 
 from OFS.CopySupport import CopyError
+from Products.CMFCore.exceptions import ResourceLockedError
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -25,6 +26,10 @@ if REQUEST.has_key('paths'):
         return state.set(status = 'failure')
     except AttributeError:
         message = _(u'One or more selected items is no longer available.')
+	context.plone_utils.addPortalMessage(message, 'error')
+        return state.set(status = 'failure')
+    except ResourceLockedError:
+        message = _(u'One or more selected items is locked.')
 	context.plone_utils.addPortalMessage(message, 'error')
         return state.set(status = 'failure')
 
