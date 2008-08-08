@@ -4,6 +4,9 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Removed dependencies checking code, we have setuptools for this.
+      [hannosch]
+
     - Avoid events to be shown in the previous and upcoming events collections
       at the same time. This closes http://dev.plone.org/plone/ticket/7790.
       [hannosch]
