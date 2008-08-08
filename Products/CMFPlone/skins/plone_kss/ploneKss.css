@@ -45,6 +45,12 @@ body.kssActive .formlibInlineForm a:hover {
     display: none;
 }
 
+/* In inline selection widgets the label *must* be displayed, as
+   otherwise you only see identical radio buttons without text. */
+.inlineForm .ArchetypesSelectionWidget label {
+    display: inline;
+}
+
 .inlineForm #archetypes-fieldname-title input,
 .inlineForm #archetypes-fieldname-title {
     font-size: 100%;

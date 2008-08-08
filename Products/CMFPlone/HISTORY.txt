@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - In inline selection widgets (with KSS) display the label, as
+      otherwise you only see identical radio buttons without text,
+      giving you no clue of what you are selecting.  Fixes #7243
+      [maurits]
+
     - When changing the ownership of an object the new owner may now
       also be in the top level acl_users folder in the Zope root.
       This fixes http://dev.plone.org/plone/ticket/5730
