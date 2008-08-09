@@ -1,4 +1,3 @@
-from zope.app.form.browser import MultiCheckBoxWidget
 from zope.app.form.browser import MultiSelectWidget
 from zope.app.form.browser import DropdownWidget
 from zope.app.form.browser.widget import renderElement
@@ -10,6 +9,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from plone.app.form.widgets import MultiCheckBoxWidget
 
 WEEKDAYS = (('Monday', 0),
             ('Tuesday', 1),
