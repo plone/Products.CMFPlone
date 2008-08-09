@@ -630,7 +630,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         if request is None:
             request = self.REQUEST
-        return utils.isDefaultPage(obj, request, context=self)
+        return utils.isDefaultPage(obj, request)
 
     security.declarePublic('getDefaultPage')
     def getDefaultPage(self, obj, request=None):
@@ -652,7 +652,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         if request is None:
             request = self.REQUEST
-        return utils.getDefaultPage(obj, request, context=self)
+        return utils.getDefaultPage(obj, request)
 
     security.declarePublic('addPortalMessage')
     def addPortalMessage(self, message, type='info', request=None):

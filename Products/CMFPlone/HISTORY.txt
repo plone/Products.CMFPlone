@@ -4,6 +4,13 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Avoid triggering a DeprecationWarning when passing a context
+      parameter from our utils.py versions of getDefaultPage or
+      isDefaultPage to their counterparts in plone.app.layout.
+      Instead we show a warning ourselves when passed a context; the
+      context is ignored.
+      [maurits]
+
     - Avoid acquiring getText from parent objects in all folder views. This
       closes http://dev.plone.org/plone/ticket/8190.
       [hannosch]
