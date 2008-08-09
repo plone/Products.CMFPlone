@@ -36,7 +36,7 @@
           <li class="selected">
             <a href=""
                tal:attributes="href string:${portal_url}/dashboard"
-               i18n:translate="label_view">Dashboard</a>
+               i18n:translate="label_dashboard">Dashboard</a>
           </li>
           <li>
             <a href=""
