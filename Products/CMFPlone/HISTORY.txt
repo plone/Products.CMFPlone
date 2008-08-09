@@ -4,6 +4,10 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Avoid acquiring getText from parent objects in all folder views. This
+      closes http://dev.plone.org/plone/ticket/8190.
+      [hannosch]
+
     - Fixed UnicodeError in CMF actions with non-ascii in title or description
       after migration from Plone pre-3.0. This closes
       http://dev.plone.org/plone/ticket/7133.

@@ -32,7 +32,7 @@
              id="parent-fieldname-text" class="stx"
              tal:define="kss_class python:getKssClasses('text',
                          templateId=templateId, macro='text-field-view');
-                         text here/getText|nothing"
+                         text here/aq_explicit/getText|nothing"
              tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
                                                    'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
