@@ -47,7 +47,7 @@ class PortalState(BrowserView):
 
     @memoize
     def language(self):
-        return self.request.get('language', None) or \
+        return self.request.get('LANGUAGE', None) or \
                 aq_inner(self.context).Language() or self.default_language()
 
     @memoize_contextless
