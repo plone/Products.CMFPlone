@@ -1260,7 +1260,7 @@ class TestMigrations_v3_0_Actions(MigrationTest):
     def testUpdateActionsI18NDomain(self):
         migrateOldActions(self.portal, [])
         reply = self.actions.reply_actions.reply
-        self.assertEquals(reply.i18n_domain, '')        
+        self.assertEquals(reply.i18n_domain, '')
 
         updateActionsI18NDomain(self.portal, [])
         
@@ -1269,12 +1269,23 @@ class TestMigrations_v3_0_Actions(MigrationTest):
     def testUpdateActionsI18NDomainTwice(self):
         migrateOldActions(self.portal, [])
         reply = self.actions.reply_actions.reply
-        self.assertEquals(reply.i18n_domain, '')        
+        self.assertEquals(reply.i18n_domain, '')
 
         updateActionsI18NDomain(self.portal, [])
         updateActionsI18NDomain(self.portal, [])
 
         self.assertEquals(reply.i18n_domain, 'plone')
+
+    def testUpdateActionsI18NDomainNonAscii(self):
+        migrateOldActions(self.portal, [])
+        reply = self.actions.reply_actions.reply
+        reply.title = 'Foo\xc3'
+        self.assertEquals(reply.i18n_domain, '')
+        self.assertEquals(reply.title, 'Foo\xc3')
+
+        updateActionsI18NDomain(self.portal, [])
+        
+        self.assertEquals(reply.i18n_domain, '')
 
     def testHistoryActionID(self):
         migrateHistoryTab(self.portal, [])
@@ -1587,6 +1598,15 @@ class TestMigrations_v3_0(MigrationTest):
         updateFTII18NDomain(self.portal, [])
         # domain should have been updated
         self.assertEquals(doc.i18n_domain, 'plone')
+
+    def testUpdateFTII18NDomainNonAscii(self):
+        doc = self.types.Document
+        doc.i18n_domain = ''
+        doc.title = 'Foo\xc3'
+        # Update FTI's
+        updateFTII18NDomain(self.portal, [])
+        # domain should have been updated
+        self.assertEquals(doc.i18n_domain, '')
 
     def testLegacyPortletsConverted(self):
         self.setRoles(('Manager',))

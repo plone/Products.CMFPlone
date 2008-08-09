@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Fixed UnicodeError in CMF actions with non-ascii in title or description
+      after migration from Plone pre-3.0. This closes
+      http://dev.plone.org/plone/ticket/7133.
+      [hannosch]
+
     - In inline selection widgets (with KSS) display the label, as
       otherwise you only see identical radio buttons without text,
       giving you no clue of what you are selecting.  Fixes #7243

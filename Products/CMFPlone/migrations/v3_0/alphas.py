@@ -564,11 +564,20 @@ def addIconForTypesConfiglet(portal, out):
         out.append("Added types configlet icon to actionicons tool.")            
 
 
+def _check_ascii(text):
+    try:
+        unicode(text, 'ascii')
+    except UnicodeDecodeError:
+        return False
+    return True
+
+
 def updateActionsI18NDomain(portal, out):
     actions = portal.portal_actions.listActions()
     domainless_actions = [a for a in actions if not a.i18n_domain]
     for action in domainless_actions:
-        action.i18n_domain = 'plone'
+        if _check_ascii(action.title) and _check_ascii(action.description):
+            action.i18n_domain = 'plone'
     out.append('Updated actions i18n domain attribute.')
 
 
@@ -576,7 +585,8 @@ def updateFTII18NDomain(portal, out):
     types = portal.portal_types.listTypeInfo()
     domainless_types = [fti for fti in types if not fti.i18n_domain]
     for fti in domainless_types:
-        fti.i18n_domain = 'plone'
+        if _check_ascii(fti.title) and _check_ascii(fti.description):
+            fti.i18n_domain = 'plone'
     out.append('Updated type informations i18n domain attribute.')
 
 
