@@ -331,8 +331,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         query = topic.buildQuery()
         self.assertEqual(query['Type'], ('Event',))
         self.assertEqual(query['review_state'], 'published')
-        self.assertEqual(query['start']['query'].Date(), DateTime().Date())
-        self.assertEqual(query['start']['range'], 'max')
+        self.assertEqual(query['end']['query'].Date(), DateTime().Date())
+        self.assertEqual(query['end']['range'], 'max')
         self.assertEqual(topic.checkCreationFlag(), False)
 
     def testObjectButtonActions(self):
