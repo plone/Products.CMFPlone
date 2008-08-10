@@ -47,7 +47,11 @@ class PortalState(BrowserView):
 
     @memoize
     def language(self):
-        return self.request.get('LANGUAGE', None) or \
+        # TODO Looking for lower-case language is wrong, the negotiator
+        # machinery uses uppercase LANGUAGE. We cannot change this as long
+        # as we don't ship with a newer PloneLanguageTool which respects
+        # the content language, though.
+        return self.request.get('language', None) or \
                 aq_inner(self.context).Language() or self.default_language()
 
     @memoize_contextless
