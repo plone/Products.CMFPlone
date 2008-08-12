@@ -4,6 +4,11 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Removed duplicate settings in setuphandlers.py that are managed by GS
+      profiles. This closes http://dev.plone.org/plone/ticket/8351 and
+      http://dev.plone.org/plone/ticket/8352
+      [dunlapm]
+
     - Avoid triggering a DeprecationWarning when passing a context
       parameter from our utils.py versions of getDefaultPage or
       isDefaultPage to their counterparts in plone.app.layout.

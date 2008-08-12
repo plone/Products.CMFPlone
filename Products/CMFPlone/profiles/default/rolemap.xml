@@ -192,5 +192,10 @@
         <role name="Editor" />
         <role name="Owner" />
     </permission>
+    <permission name="Add portal member"
+                acquire="False">
+        <role name="Manager" />
+        <role name="Owner" />
+    </permission>
   </permissions>
 </rolemap>

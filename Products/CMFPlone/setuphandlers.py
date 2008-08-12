@@ -518,8 +518,6 @@ def importFinalSteps(context):
     gen.performMigrationActions(site)
     gen.enableSyndication(site, out)
     gen.assignTitles(site, out)
-    site.manage_permission('Add portal member', roles=['Manager','Owner'], acquire=0)
-    pprop.site_properties.allowAnonymousViewAbout = False
     pmembership.memberareaCreationFlag = False
     gen.installDependencies(site)
 
