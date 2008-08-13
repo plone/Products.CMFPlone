@@ -871,6 +871,36 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testNonFolderishTabsProperty(self):
         self.assertEquals(False, self.properties.site_properties.disable_nonfolderish_sections)
 
+    def testPortalContentLanguage(self):
+        from zope.app.testing.ztapi import provideUtility
+        from zope.i18n.interfaces import ITranslationDomain
+        from zope.i18n.simpletranslationdomain import SimpleTranslationDomain
+
+        # Let's fake the news title translations
+        messages = {
+            ('de', u'news-title'): u'Foo',
+            ('pt_BR', u'news-title'): u'Bar',
+        }
+        pfp = SimpleTranslationDomain('plonefrontpage', messages)
+        provideUtility(ITranslationDomain, pfp, 'plonefrontpage')
+
+        # Setup the generator and the new placeholder folders
+        gen = setuphandlers.PloneGenerator()
+        self.folder.invokeFactory('Folder', 'brazilian')
+        self.folder.invokeFactory('Folder', 'german')
+
+        # Check if the content is being created in German
+        self.app.REQUEST['HTTP_ACCEPT_LANGUAGE'] = 'de'
+        gen.setupPortalContent(self.folder.german)
+        self.failUnlessEqual(self.folder.german.news.Title(), 'Foo')
+
+        # Check if the content is being created in a composite
+        # language code, in this case Brazilian Portuguese
+        self.app.REQUEST['HTTP_ACCEPT_LANGUAGE'] = 'pt-br'
+        gen.setupPortalContent(self.folder.brazilian)
+        self.failUnlessEqual(self.folder.brazilian.news.Title(), 'Bar')
+
+
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):

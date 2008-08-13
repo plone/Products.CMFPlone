@@ -4,9 +4,14 @@ Changelog for Plone
     
 Plone 3.1.5 - Unreleased
 
+    - Fixed incorrect translation handling of content created within
+      PloneGenerator.setupPortalContent. Thanks to Erico Andrei for the
+      hard work! This closes http://dev.plone.org/plone/ticket/8379.
+      [deo]
+
     - Removed duplicate settings in setuphandlers.py that are managed by GS
       profiles. This closes http://dev.plone.org/plone/ticket/8351 and
-      http://dev.plone.org/plone/ticket/8352
+      http://dev.plone.org/plone/ticket/8352.
       [dunlapm]
 
     - Avoid triggering a DeprecationWarning when passing a context

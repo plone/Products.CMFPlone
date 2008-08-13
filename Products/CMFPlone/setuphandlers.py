@@ -148,12 +148,13 @@ class PloneGenerator:
         Import default plone content
         """
         existing = p.objectIds()
-        
+
         wftool = getToolByName(p, "portal_workflow")
 
         # Figure out the current user preferred language
         language = None
         locale = None
+        target_language = None
         request = getattr(p, 'REQUEST', None)
         if request is not None:
             pl = IUserPreferredLanguages(request)
@@ -170,10 +171,14 @@ class PloneGenerator:
                 if len(languages) > 0:
                     language = languages[0]
 
+        # Language to be used to translate the content
+        target_language = language
+
         # Set the default language of the portal
         if language is not None and locale is not None:
             localeid = locale.getLocaleID()
             base_language = locale.id.language
+            target_language = localeid
 
             # If we get a territory, we enable the combined language codes
             use_combined = False
@@ -184,7 +189,7 @@ class PloneGenerator:
             # start neutral functionality
             tool = getToolByName(p, "portal_languages")
             pprop = getToolByName(p, "portal_properties")
-            sheet = pprop.site_properties 
+            sheet = pprop.site_properties
 
             tool.manage_setLanguageSettings(language,
                 [language],
@@ -219,35 +224,35 @@ class PloneGenerator:
             # Mark as fully created
             fp.unmarkCreationFlag()
 
-            if language is not None:
+            if target_language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
                     front_title = util.translate(u'front-title',
-                                       target_language=language,
+                                       target_language=target_language,
                                        default="Welcome to Plone")
                     front_desc = util.translate(u'front-description',
-                                       target_language=language,
+                                       target_language=target_language,
                                        default="Congratulations! You have successfully installed Plone.")
                     front_text = util.translate(u'front-text',
-                                       target_language=language)
+                                       target_language=target_language)
                     fp.setLanguage(language)
                     fp.setTitle(front_title)
                     fp.setDescription(front_desc)
-                    if front_text <> u'front-text':
+                    if front_text != u'front-text':
                         fp.setText(front_text)
 
         # News topic
         if 'news' not in existing:
             news_title = 'News'
             news_desc = 'Site News'
-            if language is not None:
+            if target_language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
                     news_title = util.translate(u'news-title',
-                                           target_language=language,
+                                           target_language=target_language,
                                            default='News')
                     news_desc = util.translate(u'news-description',
-                                          target_language=language,
+                                          target_language=target_language,
                                           default='Site News')
 
             _createObjectByType('Large Plone Folder', p, id='news',
@@ -286,14 +291,14 @@ class PloneGenerator:
         if 'events' not in existing:
             events_title = 'Events'
             events_desc = 'Site Events'
-            if language is not None:
+            if target_language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
                     events_title = util.translate(u'events-title',
-                                           target_language=language,
+                                           target_language=target_language,
                                            default='Events')
                     events_desc = util.translate(u'events-description',
-                                          target_language=language,
+                                          target_language=target_language,
                                           default='Site Events')
 
             _createObjectByType('Large Plone Folder', p, id='events',
@@ -308,10 +313,10 @@ class PloneGenerator:
             folder.unmarkCreationFlag()
             if language is not None:
                 folder.setLanguage(language)
-            
+
             if wftool.getInfoFor(folder, 'review_state') != 'published':
                 wftool.doActionFor(folder, 'publish')
-            
+
             topic = folder.aggregator
             topic.unmarkCreationFlag()
             if language is not None:
@@ -329,7 +334,7 @@ class PloneGenerator:
             date_crit.setOperation('more')
         else:
             topic = p.events
-            
+
         if wftool.getInfoFor(topic, 'review_state') != 'published':
             wftool.doActionFor(topic, 'publish')
 
@@ -337,16 +342,16 @@ class PloneGenerator:
         if 'previous' not in topic.objectIds():
             prev_events_title = 'Past Events'
             prev_events_desc = 'Events which have already happened.'
-            if language is not None:
+            if target_language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
                     prev_events_title = util.translate(u'prev-events-title',
-                                           target_language=language,
+                                           target_language=target_language,
                                            default='Past Events')
                     prev_events_desc = util.translate(u'prev-events-description',
-                                          target_language=language,
+                                          target_language=target_language,
                                           default='Events which have already happened.')
-            
+
             _createObjectByType('Topic', topic, id='previous',
                                 title=prev_events_title,
                                 description=prev_events_desc)
@@ -363,7 +368,7 @@ class PloneGenerator:
             # Only take events in the past
             date_crit.setDateRange('-') # This is irrelevant when the date is now
             date_crit.setOperation('less')
-            
+
             if wftool.getInfoFor(topic, 'review_state') != 'published':
                 wftool.doActionFor(topic, 'publish')
 
@@ -371,14 +376,14 @@ class PloneGenerator:
             # configure Members folder (already added by the content import)
             members_title = 'Users'
             members_desc = "Container for users' home directories"
-            if language is not None:
+            if target_language is not None:
                 util = queryUtility(ITranslationDomain, 'plonefrontpage')
                 if util is not None:
                     members_title = util.translate(u'members-title',
-                                           target_language=language,
+                                           target_language=target_language,
                                            default='Users')
                     members_desc = util.translate(u'members-description',
-                                          target_language=language,
+                                          target_language=target_language,
                                           default="Container for users' home directories")
 
             members = getattr(p , 'Members')
@@ -388,10 +393,10 @@ class PloneGenerator:
             if language is not None:
                 members.setLanguage(language)
             members.reindexObject()
-            
+
             if wftool.getInfoFor(members, 'review_state') != 'published':
                 wftool.doActionFor(members, 'publish')
-            
+
             # add index_html to Members area
             if 'index_html' not in members.objectIds():
                 addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
