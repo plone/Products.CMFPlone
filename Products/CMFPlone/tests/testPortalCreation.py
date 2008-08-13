@@ -57,7 +57,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.skins = self.portal.portal_skins
         self.transforms = self.portal.portal_transforms
         self.javascripts = self.portal.portal_javascripts
-        self.setup = self.portal.portal_setup 
+        self.setup = self.portal.portal_setup
 
     def beforeTearDown(self):
         self._free_warning_output()
@@ -573,12 +573,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
             self.failUnless('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
-        
+
         delete_action = [(a['id'],a['url']) for a in buttons
                 if a['id'] == 'delete'][0]
         self.failUnless('delete_confirmation' in delete_action[1],
                          "object_delete does not use the confirmation form")
-                         
+
     def testObjectButtonActionsInExpectedOrder(self):
         # The object buttons need to be in a standardized order
         self.setRoles(['Manager', 'Member'])
@@ -761,11 +761,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # Clean up again and unregister the utilites
         gsm.unregisterUtility(provided=dummy.IDummyUtility)
         sm.unregisterUtility(provided=dummy.IDummyUtility)
-        
+
         # Make sure unregistration was successful
         util = queryUtility(dummy.IDummyUtility)
         self.failUnless(util is None)
-        
+
     def testPortletManagersInstalled(self):
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredUtilities()
@@ -776,19 +776,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testPortletAssignmentsAtRoot(self):
         leftColumn = getUtility(IPortletManager, name=u'plone.leftcolumn')
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
-        
+
         left = getMultiAdapter((self.portal, leftColumn,), IPortletAssignmentMapping)
         right = getMultiAdapter((self.portal, rightColumn,), IPortletAssignmentMapping)
-        
+
         self.assertEquals(len(left), 2)
         self.assertEquals(len(right), 4)
-        
+
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
         portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
-    
+
     def testAddablePortletsInColumns(self):
         for name in (u'plone.leftcolumn', u'plone.rightcolumn'):
             column = getUtility(IPortletManager, name=name)
@@ -797,19 +797,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
               ]
             addable_types.sort()
             self.assertEqual([
-                'plone.portlet.collection.Collection', 
-                'plone.portlet.static.Static', 
-                'portlets.Calendar', 
-                'portlets.Classic', 
-                'portlets.Events', 
-                'portlets.Login', 
-                'portlets.Navigation', 
+                'plone.portlet.collection.Collection',
+                'plone.portlet.static.Static',
+                'portlets.Calendar',
+                'portlets.Classic',
+                'portlets.Events',
+                'portlets.Login',
+                'portlets.Navigation',
                 'portlets.News',
-                'portlets.Recent', 
-                'portlets.Review', 
-                'portlets.Search', 
+                'portlets.Recent',
+                'portlets.Review',
+                'portlets.Search',
                 'portlets.rss'], addable_types)
-    
+
     def testAddablePortletsInDashboard(self):
         for name in ('plone.dashboard1', 'plone.dashboard2',
           'plone.dashboard3', 'plone.dashboard4'):
@@ -819,8 +819,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
               ]
             addable_types.sort()
             self.assertEqual([
-              'plone.portlet.collection.Collection', 
-              'plone.portlet.static.Static', 
+              'plone.portlet.collection.Collection',
+              'plone.portlet.static.Static',
               'portlets.Calendar',
               'portlets.Classic',
               'portlets.Events',
@@ -849,10 +849,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.failUnless('Contributor' in self.portal.acl_users.portal_role_manager.listRoleIds())
         for p in ['Add portal content', 'Add portal folders', 'ATContentTypes: Add Document',
                     'ATContentTypes: Add Event', 'ATContentTypes: Add Favorite',
-                    'ATContentTypes: Add File', 'ATContentTypes: Add Folder', 
+                    'ATContentTypes: Add File', 'ATContentTypes: Add Folder',
                     'ATContentTypes: Add Image', 'ATContentTypes: Add Large Plone Folder',
                     'ATContentTypes: Add Link', 'ATContentTypes: Add News Item', ]:
-            self.failUnless(p in [r['name'] for r in 
+            self.failUnless(p in [r['name'] for r in
                                 self.portal.permissionsOfRole('Contributor') if r['selected']])
 
     def testSharingAction(self):
@@ -862,12 +862,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # Should not be in any of the default FTIs
         for fti in self.types.objectValues():
             self.failIf('local_roles' in [a.id for a in fti.listActions()])
-    
+
     def testSecondaryEditorPermissionsGivenToEditorRole(self):
         for p in ['Manage properties', 'Modify view template', 'Request review']:
-            self.failUnless(p in [r['name'] for r in 
+            self.failUnless(p in [r['name'] for r in
                                 self.portal.permissionsOfRole('Editor') if r['selected']])
-                                
+
     def testNonFolderishTabsProperty(self):
         self.assertEquals(False, self.properties.site_properties.disable_nonfolderish_sections)
 

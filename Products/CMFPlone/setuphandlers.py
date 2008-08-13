@@ -464,7 +464,7 @@ class PloneGenerator:
          'mimetypes_registry': 'MIME types recognized by Plone',
          'portal_transforms': 'Handles data conversion between MIME types',
          }
-    
+
         for oid in portal.objectIds():
             title=titles.get(oid, None)
             if title:
