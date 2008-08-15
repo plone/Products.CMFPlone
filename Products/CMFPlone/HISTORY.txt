@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1.5 - Unreleased
 
+    - Made the have_portlets method from the plone view available to anonymous
+      users as done on Plone trunk.
+      [hannosch]
+
     - Fixed incorrect translation handling of content created within
       PloneGenerator.setupPortalContent. Thanks to Erico Andrei for the
       hard work! This closes http://dev.plone.org/plone/ticket/8379.

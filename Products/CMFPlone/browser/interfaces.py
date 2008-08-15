@@ -410,3 +410,6 @@ class IPlone(Interface):
 
     def cropText(text, length, ellipsis):
         """ Crop text on a word boundary """
+
+    def have_portlets(manager_name, view=None):
+        """Determine whether a column should be shown."""
