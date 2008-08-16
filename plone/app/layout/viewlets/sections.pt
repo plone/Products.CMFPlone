@@ -1,5 +1,9 @@
-<tal:tabs tal:condition="view/portal_tabs"
-          i18n:domain="plone">
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     tal:omit-tag=""
+     tal:condition="view/portal_tabs"
+     i18n:domain="plone">
     <h5 class="hiddenStructure" i18n:translate="heading_sections">Sections</h5>
 
     <ul id="portal-globalnav">
@@ -12,4 +16,4 @@
             Tab Name
             </a></li></tal:tabs>
     </ul>
-</tal:tabs>
+</div>

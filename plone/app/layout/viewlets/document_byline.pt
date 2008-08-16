@@ -1,4 +1,7 @@
-<div class="documentByLine"
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     class="documentByLine"
      id="plone-document-byline"
      i18n:domain="plone"
      tal:condition="view/show">
@@ -28,7 +31,7 @@
     <span i18n:translate="box_last_modified">
       last modified
     </span>
-    <span tal:replace="python:view.toLocalizedTime(here.ModificationDate(),long_format=1)">
+    <span tal:replace="python:view.toLocalizedTime(context.ModificationDate(),long_format=1)">
       August 16, 2001 at 23:35:59
     </span>
   </span>
@@ -40,18 +43,18 @@
   </tal:expired>
 
   <div class="documentContributors"
-       tal:condition="here/Contributors"
+       tal:condition="context/Contributors"
        i18n:translate="text_contributors">
     Contributors:
     <span i18n:name="name"
           tal:omit-tag=""
-          tal:content="python: ', '.join(here.Contributors())">
+          tal:content="python: ', '.join(context.Contributors())">
       Mary
     </span>
   </div>
 
-  <tal:rights condition="here/Rights">
-    <div tal:replace="here/Rights">
+  <tal:rights condition="context/Rights">
+    <div tal:replace="context/Rights">
       Copyleft NiceCorp Inc.
     </div>
   </tal:rights>

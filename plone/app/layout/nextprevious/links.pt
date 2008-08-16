@@ -1,6 +1,10 @@
-<tal:nextPrevious define="enabled view/enabled | nothing;
-                          isViewTemplate view/isViewTemplate | nothing"
-                  condition="python:enabled and isViewTemplate">
+<tal:nextPrevious
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    define="enabled view/enabled|nothing;
+            isViewTemplate view/isViewTemplate|nothing"
+    condition="python:enabled and isViewTemplate">
 
     <link rel="previous"
           href=""

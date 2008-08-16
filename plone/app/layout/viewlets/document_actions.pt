@@ -1,24 +1,30 @@
-<div class="visualClear"><!-- --></div>
-<div i18n:domain="plone"
-     class="documentActions">
-    <tal:docactions tal:condition="view/actions">
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     i18n:domain="plone">
 
-    <h5 class="hiddenStructure" i18n:translate="heading_document_actions">Document Actions</h5>
+    <div class="visualClear"><!-- --></div>
 
-    <ul tal:define="normalizeString nocall: context/@@plone/normalizeString">
-    <tal:actions repeat="daction view/actions">
-        <li tal:attributes="id python:'document-action-' + normalizeString(daction['id'])">
-            <a href=""
-               tal:attributes="href daction/url;
-                               title daction/description"
-               tal:content="daction/title">
-            </a>
-        </li>
-    </tal:actions>
+    <div class="documentActions">
+        <tal:docactions tal:condition="view/actions">
 
-    </ul>
-    </tal:docactions>
+            <h5 class="hiddenStructure" i18n:translate="heading_document_actions">
+              Document Actions
+            </h5>
 
-    <div tal:replace="structure provider:plone.documentactions" />
+            <ul tal:define="normalizeString nocall: context/@@plone/normalizeString"
+                tal:repeat="daction view/actions">
+                <li tal:attributes="id python:'document-action-' + normalizeString(daction['id'])">
+                    <a href=""
+                       tal:attributes="href daction/url;
+                                       title daction/description"
+                       tal:content="daction/title">
+                    </a>
+                </li>
+            </ul>
+        </tal:docactions>
 
+        <div tal:replace="structure provider:plone.documentactions" />
+
+    </div>
 </div>

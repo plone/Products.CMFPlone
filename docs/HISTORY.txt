@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Added a couple of missing XML namespace declarations to viewlet templates.
+  [hannosch]
+
 - Fixed the portal state view to look for uppercase language in the request,
   since that is set by PloneLanguageTool. This closes
   http://dev.plone.org/plone/ticket/8342.

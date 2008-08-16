@@ -1,4 +1,7 @@
-<div id="portal-breadcrumbs"
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     id="portal-breadcrumbs"
      i18n:domain="plone"
      tal:define="is_rtl view/is_rtl">
 

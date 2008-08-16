@@ -25,8 +25,10 @@
 
 <metal:main fill-slot="content">
     <tal:main-macro metal:define-macro="main"
-                    tal:define="memberinfo mtool/getMemberInfo;
-                                name python:memberinfo['fullname'] or member.getId() or member.getId()">
+                    tal:define="memberinfo context/portal_membership/getMemberInfo;
+                                member context/@@plone_portal_state/member;
+                                name python:memberinfo['fullname'] or member.getId() or member.getId();
+                                portal_url context/portal_url">
 
     <div class="documentEditable">
 
@@ -60,7 +62,7 @@
             <div id="dashboard-actions"
                  tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                              groups python:controlPanel.getGroups('member');
-                             getIconFor nocall:putils/getIconFor" >
+                             getIconFor nocall:context/plone_utils/getIconFor" >
                 <ul>
                     <li class="portalUser">
                         <a href="personalize_form" 
