@@ -1,11 +1,11 @@
-<tal:nextPrevious
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    xmlns:tal="http://xml.zope.org/namespaces/tal"
-    define="enabled view/enabled|nothing;
-            isViewTemplate view/isViewTemplate|nothing"
-    condition="python:enabled and isViewTemplate"
-    i18n:domain="plone">
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     tal:define="enabled view/enabled|nothing;
+                 isViewTemplate view/isViewTemplate|nothing"
+     tal:condition="python:enabled and isViewTemplate"
+     tal:omit-tag=""
+     i18n:domain="plone">
 
     <tal:block define="portal_url view/portal_url;">
 
@@ -54,4 +54,4 @@
 
    </tal:block>
 
-</tal:nextPrevious>
+</div>

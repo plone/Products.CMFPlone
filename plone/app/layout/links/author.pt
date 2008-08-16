@@ -1,11 +1,12 @@
-<tal:author xmlns="http://www.w3.org/1999/xhtml"
-            xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-            xmlns:tal="http://xml.zope.org/namespaces/tal"
-            tal:define="portal_url view/site_url"
-            i18n:domain="plone">
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     tal:define="portal_url view/site_url"
+     tal:omit-tag=""
+     i18n:domain="plone">
     <link rel="author"
           href=""
           title="Author information"
           i18n:attributes="title title_author_info"
           tal:attributes="href string:${portal_url}/author/${context/Creator|nothing}" />
-</tal:author>
+</div>
