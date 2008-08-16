@@ -1,6 +1,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
      xmlns:tal="http://xml.zope.org/namespaces/tal"
+     tal:omit-tag=""
      i18n:domain="plone">
 
     <div class="visualClear"><!-- --></div>
@@ -12,15 +13,15 @@
               Document Actions
             </h5>
 
-            <ul tal:define="normalizeString nocall: context/@@plone/normalizeString"
-                tal:repeat="daction view/actions">
-                <li tal:attributes="id python:'document-action-' + normalizeString(daction['id'])">
-                    <a href=""
-                       tal:attributes="href daction/url;
-                                       title daction/description"
-                       tal:content="daction/title">
-                    </a>
-                </li>
+            <ul tal:define="normalizeString nocall: context/@@plone/normalizeString">
+                  <li tal:repeat="daction view/actions"
+                      tal:attributes="id python:'document-action-' + normalizeString(daction['id'])">
+                      <a href=""
+                         tal:attributes="href daction/url;
+                                         title daction/description"
+                         tal:content="daction/title">
+                      </a>
+                  </li>
             </ul>
         </tal:docactions>
 
