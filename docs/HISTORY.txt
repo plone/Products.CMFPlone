@@ -2,7 +2,7 @@ Changelog for plone.app.portlets
 
     (name of developer listed in brackets)
 
-plone.app.portlets 1.1.4
+plone.app.portlets 1.1.5 (2008-08-18)
 
     - Refactored the review portlet a bit and added the review state dependent
       color coding to it. This closes http://dev.plone.org/plone/ticket/6957.
