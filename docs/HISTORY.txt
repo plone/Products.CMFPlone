@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.4
------
+1.1.5 Released August 18th, 2008
+--------------------------------
 
 - Fixed an invalid message id for the dashboard. This closes
   http://dev.plone.org/plone/ticket/7758.
