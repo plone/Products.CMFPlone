@@ -30,11 +30,10 @@
             <strong tal:content="group/title"
                     i18n:translate="">Plone Configlet Group Title</strong>
             <ul class="configlets">
-
-                <li tal:repeat="configlet configlets">
+                <tal:configlets tal:repeat="configlet configlets">
+                <li tal:condition="configlet/visible">
                     <a href=""
-                       tal:attributes="href configlet/url"
-                       tal:condition="configlet/visible">
+                       tal:attributes="href configlet/url">
                         <img src="" alt="" tal:attributes="src python:'%s/%s' % (portal_url, getIconFor('controlpanel',configlet['id']));
                                              alt configlet/description"
                              i18n:attributes="alt"
@@ -43,6 +42,7 @@
                                        i18n:translate=""></tal:configletname>
                     </a>
                 </li>
+                </tal:configlets>
             </ul>
         </tal:block>
         <span class="portletBottomLeft"></span>
