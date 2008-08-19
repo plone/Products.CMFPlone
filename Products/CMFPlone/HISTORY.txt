@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1.5 - Unreleased
+Plone 3.1.5 - August 19, 2008
 
     - Made the have_portlets method from the plone view available to anonymous
       users as done on Plone trunk.
