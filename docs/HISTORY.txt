@@ -2,6 +2,12 @@ Changelog for plone.app.portlets
 
     (name of developer listed in brackets)
 
+plone.app.portlets 1.1.6 (Unreleased)
+
+    - Fixed Review List template that was making a bad call to 
+      pretty_title_or_id. This closes http://dev.plone.org/plone/ticket/8401.
+      [dunlapm]
+
 plone.app.portlets 1.1.5 (2008-08-18)
 
     - Refactored the review portlet a bit and added the review state dependent

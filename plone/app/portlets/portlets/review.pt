@@ -21,7 +21,7 @@
                                title o/description;
                                class string:${o/review_state_class}visualIconPadding tile">
                 <img tal:replace="structure o/icon" />
-                <span tal:replace="o/pretty_title_or_id">
+                <span tal:replace="o/title">
                     Title
                 </span>
                 <span class="portletItemDetails">
