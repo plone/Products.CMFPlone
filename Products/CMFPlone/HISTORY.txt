@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Fixed links-plain issue on the front-page. This closes 
+      https://dev.plone.org/plone/ticket/6479.
+      [cwainwright]
+
     - Avoid 'TypeError: getTypeInfo' on the default error page when
       the parent of the item that cannot be found is a resource
       directory.

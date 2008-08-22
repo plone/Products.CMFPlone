@@ -38,14 +38,14 @@ Before you start exploring your newly created Plone site, please do the followin
 <p>After that, we suggest you do one or more of the following:</p>
 
 <ul>
-    <li>Find out <a class="link-plain" href="http://plone.org/products/plone/features/3.0">What's new in Plone 3.0</a>.</li>
-    <li>Read the <a class="link-plain" href="http://plone.org/documentation">documentation</a>, especially the 
-        <a class="link-plain" href="http://plone.org/documentation/how-to/read-documentation">What documentation should I read</a> 
+    <li>Find out <a class="link-external" href="http://plone.org/products/plone/features/3.0">What's new in Plone 3.0</a>.</li>
+    <li>Read the <a class="link-external" href="http://plone.org/documentation">documentation</a>, especially the 
+        <a class="link-external" href="http://plone.org/documentation/how-to/read-documentation">What documentation should I read</a> 
         and 
-        <a class="link-plain" href="http://plone.org/documentation/faq/server-recommendations">Server setup recommendations</a>.
+        <a class="link-external" href="http://plone.org/documentation/faq/server-recommendations">Server setup recommendations</a>.
     </li>
-    <li>Explore the <a class="link-plain" href="http://plone.org/products">available add-on products</a> for Plone.</li>
-    <li>Read and/or subscribe to the <a class="link-plain" href="http://plone.org/support">support forums</a>.</li>
+    <li>Explore the <a class="link-external" href="http://plone.org/products">available add-on products</a> for Plone.</li>
+    <li>Read and/or subscribe to the <a class="link-external" href="http://plone.org/support">support forums</a>.</li>
 </ul>
 
 
@@ -57,7 +57,7 @@ Before you start exploring your newly created Plone site, please do the followin
     <li>
     Try out a different theme, either pick from 
     <a href="@@skins-controlpanel">the included ones</a>, or one of the 
-    <a class="link-plain" 
+    <a class="link-external" 
        href="http://plone.org/products/by-category/themes">available themes 
        from plone.org</a>. <span class="discreet">(Make sure the theme is 
        compatible with the version of Plone you are currently using)</span>
@@ -93,13 +93,13 @@ solutions?
 </p>
 
 <ul>
-    <li>Add your sites to the <a class="link-plain" 
+    <li>Add your sites to the <a class="link-external" 
         href="http://plone.net/sites">Plone site listing</a>.
         <span class="discreet">(Or see what sites are already out there!)</span>
     </li>
-    <li>Add your company as a <a class="link-plain" 
+    <li>Add your company as a <a class="link-external" 
         href="http://plone.net/providers">Plone provider</a>.</li>
-    <li>Add a <a class="link-plain" 
+    <li>Add a <a class="link-external" 
         href="http://plone.net/case-studies">case study</a> describing your 
         deployed project and customer.</li>
 </ul>
@@ -112,11 +112,11 @@ language. More about these technologies:
 </p>
 
 <ul>
-<li>The <a class="link-plain" href="http://plone.org">Plone open source 
+<li>The <a class="link-external" href="http://plone.org">Plone open source 
     Content Management System</a> web site.</li>
-<li>The <a class="link-plain" href="http://www.zope.org">Zope 
+<li>The <a class="link-external" href="http://www.zope.org">Zope 
     application server</a> web site.</li>
-<li>The <a class="link-plain" href="http://www.python.org">Python 
+<li>The <a class="link-external" href="http://www.python.org">Python 
     programming language</a> web site.</li>
 </ul>
 
@@ -137,5 +137,5 @@ individuals and hundreds of companies. The Plone Foundation:
 
 <p>
 &mdash;
-<a class="link-plain" href="http://plone.org/about/team">The Plone Team</a>
+<a class="link-external" href="http://plone.org/about/team">The Plone Team</a>
 </p>
