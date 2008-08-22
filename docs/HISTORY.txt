@@ -1,6 +1,10 @@
 Changelog
 =========
 
+- Add some tests on private contents for sitemap.xml.gz generation
+  https://dev.plone.org/plone/ticket/8402
+  [encolpe]
+
 1.1.5 Released August 18th, 2008
 --------------------------------
 
