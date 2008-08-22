@@ -70,7 +70,7 @@
                     tal:condition="python:manage_portal and is_folder_or_default_page and not is_default_page and not is_portal_or_portal_default_page">
                     <a href="#"
                        tal:attributes="href string:$here_url/placeful_workflow_configuration"
-                       i18n:translate="workflow_policy">Policy</a>
+                       i18n:translate="workflow_policy">Local Policy</a>
                 </li>
             </ul>
           </dd>
