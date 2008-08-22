@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Avoid 'TypeError: getTypeInfo' on the default error page when
+      the parent of the item that cannot be found is a resource
+      directory.
+      [maurits]
 
 
 Plone 3.1.5 - August 19, 2008
