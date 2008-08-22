@@ -4,6 +4,10 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Add some tests on private contents for sitemap.xml.gz generation
+  https://dev.plone.org/plone/ticket/8402
+  [encolpe]
+
 - Added a couple of missing XML namespace declarations to viewlet templates.
   [hannosch]
 

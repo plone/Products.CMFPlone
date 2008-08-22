@@ -31,6 +31,39 @@ To test the sitemap we first need to enable it:
 
     >>> self.portal.portal_properties.site_properties.manage_changeProperties(enable_sitemap=True)
 
+Then modify worklfow to have some private content with the folder_workflow:
+
+    >>> self.portal.portal_workflow.setChainForPortalTypes(['Large Plone Folder'], ('folder_workflow',))
+    >>> self.portal.portal_workflow.updateRoleMappings()
+    3
+
+'Events' folder will be published and in the archive:
+
+    >>> self.portal.portal_workflow.getChainFor(self.portal.events)
+    ('folder_workflow',)
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.events, 'review_state')
+    'visible'
+    >>> self.portal.portal_workflow.doActionFor(self.portal.events, 'publish')
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.events, 'review_state')
+    'published'
+
+'News' folder will be visible and in the archive:
+
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.news, 'review_state')
+    'visible'
+
+'Members' folder will be private and should not be in the archive
+
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.Members, 'review_state')
+    'visible'
+    >>> self.portal.portal_workflow.doActionFor(self.portal.Members, 'hide')
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.Members, 'review_state')
+    'private'
+
+Finally log out because search bots are not authenticated:
+
+    >>> self.logout()
+
 we can now open the sitemap:
 
     >>> self.browser.open('http://nohost/plone/sitemap.xml.gz')
@@ -51,5 +84,9 @@ we will just search for some URLs and tags.
 
     >>> xml.find('<loc>http://nohost/plone/front-page</loc>')!=-1
     True
+    >>> xml.find('<loc>http://nohost/plone/events</loc>')!=-1
+    True
     >>> xml.find('<loc>http://nohost/plone/news</loc>')!=-1
     True
+    >>> xml.find('<loc>http://nohost/plone/Members</loc>')!=-1
+    False
