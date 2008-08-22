@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Fix non XML syntax compliant ids in contentmenus. This closes
+      https://dev.plone.org/plone/ticket/8195
+      [garbas,calvinhp]
+
     - Fixed links-plain issue on the front-page. This closes 
       https://dev.plone.org/plone/ticket/6479.
       [cwainwright]

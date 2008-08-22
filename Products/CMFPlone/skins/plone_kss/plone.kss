@@ -97,11 +97,11 @@ Content Menu Sections: Change View
 
 /* This rule is needed for keeping the default behavior for menu elements that */
 /* are supposed to send user to another page */
-#_contextSetDefaultPage:click {
+#contextSetDefaultPage:click {
     evt-click-preventdefault: False;
     action-cancel: changeViewTemplate;
 }
-#_folderChangeDefaultPage:click {
+#folderChangeDefaultPage:click {
     evt-click-preventdefault: False;
     action-cancel: changeViewTemplate;
 }
