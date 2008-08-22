@@ -173,4 +173,20 @@ table.ploneCalendar caption {
     margin-right: 0;
 }
 
+/* Buttons in IE are rediculously wide. We need to fix it */
+/* Fir somw unknown reasons the following works :) */
+.context, 
+.formControls .actionButtons .button, 
+.documentEditable * .context,
+.standalone, 
+.documentEditable * .standalone,
+.destructive,
+.documentEditable * .destructive {
+    overflow: visible;
+    background-position:6px 1px;
+}
+input.searchButton {
+    overflow: visible;
+}
+
 /* </dtml-with> */

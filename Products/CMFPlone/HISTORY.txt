@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Fixed the width for rediculously wide buttons in IE.
+      Closes http://dev.plone.org/plone/ticket/8411
+      [spliter]
+
     - Fix non XML syntax compliant ids in contentmenus. This closes
       http://dev.plone.org/plone/ticket/8195
       [garbas,calvinhp]
