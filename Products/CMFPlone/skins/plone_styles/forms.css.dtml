@@ -32,6 +32,7 @@ input {
     color: &dtml-inputFontColor;;
     vertical-align: middle;
     background: White url(&dtml-portal_url;/input_background.gif) repeat-x;
+    font-size: 1em;
 }
 
 /* Code to work around IE's lacking support of sub-elements of the input element */

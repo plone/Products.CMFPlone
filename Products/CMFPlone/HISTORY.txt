@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Fixed font-size of the text in input text fields in IE.
+      Closes https://dev.plone.org/plone/ticket/8412
+      [spliter]
+
     - Fixed the width for rediculously wide buttons in IE.
       Closes http://dev.plone.org/plone/ticket/8411
       [spliter]
