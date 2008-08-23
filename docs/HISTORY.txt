@@ -4,7 +4,7 @@ Changelog
 1.1.6 Unreleased
 ----------------
 
-- Fixed site_icon so that we would have flipped icon in cae of RTL.
+- Fixed site_icon so that we would have flipped icon in case of RTL.
   This closes https://dev.plone.org/plone/ticket/4576
   [spliter]
 
