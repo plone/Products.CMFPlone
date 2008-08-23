@@ -1,5 +1,6 @@
 from Acquisition import aq_inner
 from zope.interface import implements
+from zope.component import getMultiAdapter
 
 from plone.memoize.instance import memoize
 
@@ -124,7 +125,12 @@ class PloneSiteContentIcon(BaseIcon):
     @property
     def url(self):
         portal_url = getToolByName(self.context, 'portal_url')()
-        return "%s/site_icon.gif" % portal_url
+        portal_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_portal_state')
+        if portal_state.is_rtl():
+            return "%s/rtl-site_icon.gif" % portal_url        
+        else:
+            return "%s/site_icon.gif" % portal_url
 
     @property
     def description(self):

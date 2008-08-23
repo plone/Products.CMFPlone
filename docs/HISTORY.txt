@@ -33,6 +33,10 @@ Changelog
 
 ----------------
 
+- Fixed site_icon so that we would have flipped icon in case of RTL.
+  This closes https://dev.plone.org/plone/ticket/4576
+  [spliter]
+
 - Fixed generation of links to author.cpt for user IDs that are a URL
   (OpenID users, e.g.).  This closes http://dev.plone.org/plone/ticket/8040
   [davisagli]
