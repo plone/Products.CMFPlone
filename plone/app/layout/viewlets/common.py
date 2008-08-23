@@ -182,7 +182,10 @@ class PersonalBarViewlet(ViewletBase):
             if sm.checkPermission('Portlets: Manage own portlets', self.context):
                 self.homelink_url = self.site_url + '/dashboard'
             else:
-                self.homelink_url = self.site_url + '/author/' + quote_plus(userid)
+                if userid.startswith('http:') or userid.startswith('https:'):
+                    self.homelink_url = self.site_url + '/author/?author=' + userid
+                else:
+                    self.homelink_url = self.site_url + '/author/' + quote_plus(userid)
             
             member_info = tools.membership().getMemberInfo(member.getId())
             # member_info is None if there's no Plone user object, as when
