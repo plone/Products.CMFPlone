@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Fixed link to author.cpt from personalize_form so it works for
+      users with URLs for a user id (e.g. OpenID users).  This closes
+      http://dev.plone.org/plone/ticket/8040
+      [davisagli]
+
+    - Fixed link to dashboard from personalize_form so it only shows
+      if the user has permission to view the dashboard.
+      [davisagli]
+
     - Fixed font-size of the text in input text fields in IE.
       Closes https://dev.plone.org/plone/ticket/8412
       [spliter]

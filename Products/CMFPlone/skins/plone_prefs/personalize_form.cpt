@@ -26,7 +26,9 @@
             <ul class="contentViews">
               <li>
                 <a href=""
-                   tal:attributes="href string:${portal_url}/author/${member}"
+                   tal:define="member_id python:member.getId();
+                               member_url python:(member_id.startswith('http:') or member_id.startswith('https:')) and ('?author=%s' % member_id) or member_id"
+                   tal:attributes="href string:${portal_url}/author/${member_url}"
                    i18n:translate="label_view">View</a>
               </li>
               <li class="selected">
@@ -54,6 +56,7 @@
                 <a href=""
                    class="link-parent"
                    tal:attributes="href string:${portal_url}/dashboard"
+                   tal:condition="python:context.portal_membership.checkPermission('Portlets: Manage own portlets', context)"
                    i18n:translate="label_to_dashboard">
                     Up to my dashboard
                 </a>
