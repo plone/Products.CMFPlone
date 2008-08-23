@@ -65,8 +65,10 @@
                              getIconFor nocall:context/plone_utils/getIconFor" >
                 <ul>
                     <li class="portalUser">
-                        <a href="personalize_form" 
-                           tal:attributes="href string:${portal_url}/author/${member/getId}"
+                        <a href="personalize_form"
+                           tal:define="member_id member/getId;
+                                       member_url python:(member_id.startswith('http:') or member.startswith('https:')) and ('?author=%s' % member_id) or member_id;"
+                           tal:attributes="href string:${portal_url}/author/${member_url}"
                            i18n:translate="">Profile</a>
                     </li>
                     <tal:groups condition="groups">

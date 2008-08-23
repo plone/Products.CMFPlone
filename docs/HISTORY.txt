@@ -4,9 +4,6 @@ Changelog
 1.2 - Unreleased
 ----------------
 
-- Add some tests on private contents for sitemap.xml.gz generation
-  https://dev.plone.org/plone/ticket/8402
-  [encolpe]
 
 - Added a couple of missing XML namespace declarations to viewlet templates.
   [hannosch]
@@ -33,8 +30,20 @@ Changelog
   and content versions. Render this instead of the workflow history viewlet.
   [wichert]
 
-1.1.4 - Unreleased
-------------------
+
+----------------
+
+- Fixed generation of links to author.cpt for user IDs that are a URL
+  (OpenID users, e.g.).  This closes http://dev.plone.org/plone/ticket/8040
+  [davisagli]
+
+- Add some tests on private contents for sitemap.xml.gz generation.  This
+  closes http://dev.plone.org/plone/ticket/8402
+  [encolpe]
+
+
+1.1.5 Released August 18th, 2008
+--------------------------------
 
 - Fixed an invalid message id for the dashboard. This closes
   http://dev.plone.org/plone/ticket/7758.
@@ -63,8 +72,12 @@ Changelog
   portal_type. This closes http://dev.plone.org/plone/ticket/8246.
   [hannosch]
 
-1.1.1 - Unreleased
-------------------
+- Adjusted deprecation warnings to point to Plone 4.0 instead of Plone 3.5
+  since we changed the version numbering again.
+  [hannosch]
+
+1.1.3 Released July 7th, 2008
+------------------------------
 
 - Made PersonalBarViewlet tolerate users who don't have a Plone user object, as
   when using OpenID or apachepas. This fixes
