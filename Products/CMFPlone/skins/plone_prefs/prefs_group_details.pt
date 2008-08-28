@@ -199,9 +199,9 @@
                                 rows="6"
                                 cols="35"
                                 tal:condition="python: type in ('lines', 'ulines')"
-                                tal:attributes="name string:$id:${request/management_page_charset_tag}$type;;
+                                tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                                 disabled disabled;"
-                                tal:content="python: propertyvalue and '\n'.join(propertyvalue)">
+                                tal:content="python: propertyvalue and '\n'.join(propertyvalue) or ''">
                         </textarea>
 
 

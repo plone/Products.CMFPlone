@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Fixed syntax error in prefs_group_details.pt that prevented the saving
+      of lines fields as well as an error that caused groups to sometimes display
+      "()" as the contents of a previously undefined lines field. This closes
+      http://dev.plone.org/plone/ticket/8427. Thanks to michaellaunay for the
+      updated bugreport and included fix.
+      [dunlapm]
+
     - Fixed link to author.cpt from personalize_form so it works for
       users with URLs for a user id (e.g. OpenID users).  This closes
       http://dev.plone.org/plone/ticket/8040
@@ -14,7 +21,7 @@ Plone 3.1.6 - Unreleased
       [davisagli]
 
     - Fixed font-size of the text in input text fields in IE.
-      Closes https://dev.plone.org/plone/ticket/8412
+      Closes http://dev.plone.org/plone/ticket/8412
       [spliter]
 
     - Fixed the width for rediculously wide buttons in IE.
