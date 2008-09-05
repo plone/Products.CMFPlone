@@ -48,7 +48,7 @@
 .portletFooter a:visited {
     color: &dtml-linkColor;;
 }
-.portletHeader {
+.portletHeader, .managedPortlet .portletHeader {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0em 1em;
@@ -56,7 +56,7 @@
     font-weight: normal;
     line-height: 1.6em;
 }
-.portletHeader a {
+.portletHeader a, .managedPortlet .portletHeader a {
     color: &dtml-fontColor;;
 }
 .portletItem {
@@ -169,6 +169,7 @@ div.portlets-manager div.section {
 div.managedPortlet {
     padding-top:0.5em;
     padding-bottom:0.5em;
+    background-color: transparent;
 }
 
 .managedPortlet .portletHeader {

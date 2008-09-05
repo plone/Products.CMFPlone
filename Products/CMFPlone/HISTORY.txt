@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - By default, keep the styling when managing portlets separate from the
+      styling when viewing the portlets, to improve usability with custom
+      themes.  This closes http://dev.plone.org/plone/ticket/8391
+      [davisagli]
+
     - Fixed syntax error in prefs_group_details.pt that prevented the saving
       of lines fields as well as an error that caused groups to sometimes display
       "()" as the contents of a previously undefined lines field. This closes
