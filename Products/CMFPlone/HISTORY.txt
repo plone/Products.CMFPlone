@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Changed prefs_group_members.pt search table to behave coherently with
+      prefs_users_overview.pt, including the results header only when 
+      there are results to show.
+      [igbun]
+
     - By default, keep the styling when managing portlets separate from the
       styling when viewing the portlets, to improve usability with custom
       themes.  This closes http://dev.plone.org/plone/ticket/8391

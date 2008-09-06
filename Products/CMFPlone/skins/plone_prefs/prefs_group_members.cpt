@@ -218,7 +218,7 @@
                            tal:condition="not:site_properties/many_users" />
                 </th>
               </tr>
-              <tr>
+              <tr tal:condition="batch">
                 <th>
                     <input class="noborder"
                            type="checkbox"
@@ -265,20 +265,31 @@
                   </td>
                 </tr>
               </tal:block>
-            </table>
+              
+              <tr tal:condition="not:batch">
 
-            <tal:block condition="not:batch">
-              <p tal:condition="searchstring"
-                        i18n:translate="text_nomatches">No matches</p>
-              <tal:block condition="not:searchstring">
-                <p tal:condition="site_properties/many_users"
-                     class="discreet"
-                     i18n:translate="text_no_searchstring_large">Enter a group or user name to search for.</p>
-                <p tal:condition="not:site_properties/many_users"
-                     class="discreet"
-                     i18n:translate="text_no_searchstring">Enter a group or user name to search for or click 'Show All'.</p>
-              </tal:block>
-            </tal:block>
+                <td tal:condition="searchstring"
+                  i18n:translate="text_nomatches"
+                  style="text-align:center;">No matches</td>
+
+                <tal:block tal:condition="not:searchstring">
+                  <td tal:condition="site_properties/many_users"
+                    class="discreet"
+                    i18n:translate="text_no_searchstring_large"
+                    style="text-align:center; font-size: 100%;">
+                    Enter a group or user name to search for.
+                  </td>
+                  <td tal:condition="not:site_properties/many_users"
+                    class="discreet"
+                    i18n:translate="text_no_searchstring"
+                    style="text-align:center; font-size: 100%;">
+                    Enter a group or user name to search for or click 'Show All'.
+                  </td>
+                </tal:block>
+
+              </tr>
+
+            </table>
 
             <input type="hidden" value="b_start" name="b_start"
                      tal:attributes="value b_start"/>
