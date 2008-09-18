@@ -234,7 +234,7 @@ def render_path_bar_cachekey(fun, self):
     print >> key, get_language(context, self.request)
     print >> key, self.navigation_root_url
     print >> key, self.request.getURL()
-    print >> key, title
+    print >> key, title.encode("utf-8")
     print >> key, isDefaultPage(context, self.request)
     return key.getvalue()
 
