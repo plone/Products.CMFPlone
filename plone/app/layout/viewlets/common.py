@@ -230,11 +230,12 @@ def render_path_bar_cachekey(fun, self):
     title = getattr(context, 'Title', None)
     if callable(title):
         title = title()
-    print >> key, self.__name__
-    print >> key, get_language(context, self.request)
+    print >> key, str(self.__name__)
+    print >> key, str(get_language(context, self.request))
     print >> key, self.navigation_root_url
     print >> key, self.request.getURL()
-    print >> key, title.encode("utf-8")
+    print >> key, title
+
     print >> key, isDefaultPage(context, self.request)
     return key.getvalue()
 

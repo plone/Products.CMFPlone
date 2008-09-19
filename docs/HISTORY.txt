@@ -3,6 +3,8 @@ Changelog
 
 1.2 - Unreleased
 ----------------
+- With the help of nouri we made previous fix actually work. Thanks Daniel.
+  [ender, nouri]
 
 - Handle titles with non-ascii content correctly when generating cache keys.
   [wichert]
