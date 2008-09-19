@@ -32,8 +32,12 @@ Changelog
   and content versions. Render this instead of the workflow history viewlet.
   [wichert]
 
-
+1.1.6 Unreleased
 ----------------
+
+- Fixed keywords.pt to properly encode ampersands in its links. This closes
+  http://dev.plone.org/plone/ticket/8509
+  [younga3, dunlapm]
 
 - Fixed site_icon so that we would have flipped icon in case of RTL.
   This closes https://dev.plone.org/plone/ticket/4576

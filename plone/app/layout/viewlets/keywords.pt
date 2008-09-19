@@ -1,7 +1,8 @@
 <div i18n:domain="plone"
      id="category"
      class="documentByLine"
-     tal:define="categories context/Subject|nothing"
+     tal:define="categories context/Subject|nothing;
+                 url_quote  nocall:modules/Products.PythonScripts.standard/url_quote;"
      tal:condition="categories">
   &mdash;
   <tal:filedunder i18n:translate="label_filed_under">filed under:</tal:filedunder>
@@ -10,7 +11,8 @@
        class="link-category"
        rel="tag"
        tal:content="category"
-       tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${category}">
+       tal:define="quotedCat python:url_quote(category)"
+       tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${quotedCat}">
       Category
       </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
   </span>
