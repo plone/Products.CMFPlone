@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - Fixed the silent fail of the group membership from a user via the
+      prefs_user_memberships form. This closes 
+      http://dev.plone.org/plone/ticket/8468
+      [garbas, calvinhp]
+
     - Fixed the migration from 3.0.1 to 3.0.2 to now put back the actionicons
       for the languages control panel. 
       This closes http://dev.plone.org/plone/ticket/7901

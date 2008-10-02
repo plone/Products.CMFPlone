@@ -86,47 +86,48 @@
           <metal:block metal:fill-slot="removables">
 
             <form method="post"
-                  tal:attributes="action template_id">
+                  tal:attributes="action here/absolute_url">
 
-        <h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
-         <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
+              <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
+              
+              <h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
+                <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
 
-          <tr>
-              <th i18n:translate="listingheader_group_name">Group name</th>
-              <th i18n:translate="listingheader_group_remove">Remove Group</th>
-          </tr>
+                  <tr>
+                    <th i18n:translate="listingheader_group_name">Group name</th>
+                    <th i18n:translate="listingheader_group_remove">Remove Group</th>
+                  </tr>
 
-          <tr tal:repeat="groupid groups" class="odd">
-              <tal:block tal:define="group python:gtool.getGroupById(groupid);
-                                     groupname group/getGroupName">
-                <td>
-                    <a href="prefs_group_details"
-                       tal:attributes="href string:prefs_group_details?groupname=$groupname">
-                    <tal:block replace="structure portal/group.gif"/>&nbsp;<span
-                                 tal:replace="groupname">group name</span>
-                    </a>
-                </td>
+                  <tr tal:repeat="groupid groups" class="odd">
+                    <tal:block tal:define="group python:gtool.getGroupById(groupid);
+                                           groupname group/getGroupName">
+                      <td>
+                        <a href="prefs_group_details"
+                           tal:attributes="href string:prefs_group_details?groupname=$groupname">
+                          <tal:block replace="structure portal/group.gif"/>&nbsp;<span
+                            tal:replace="groupname">group name</span>
+                        </a>
+                      </td>
 
+                      <td class="listingCheckbox">
+                        <input type="checkbox"
+                               class="noborder notify"
+                               name="delete:list"
+                               tal:attributes="value groupname;
+                                               disabled python:member.canRemoveFromGroup(groupname) and default or 'disabled'" />
+                      </td>
+                    </tal:block>
+                  </tr>
 
-                <td class="listingCheckbox">
-                    <input type="checkbox"
-                           class="noborder notify"
-                           name="delete:list"
-                           tal:attributes="value groupname;
-                                           disabled python:member.canRemoveFromGroup(groupname) and default or 'disabled'" />
-                </td>
-                </tal:block>
-            </tr>
-
-            </table>
-            <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
-              <input class="destructive"
-                     type="submit"
-                     name="prefs_user_membership_edit:method"
-                     value="Remove selected groups"
-                     i18n:attributes="value label_remove_selected_groups;"
-                     tal:condition="groups" />
-              <input tal:replace="structure context/@@authenticator/authenticator" />
+                </table>
+                <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
+                <input class="destructive"
+                       type="submit"
+                       name="prefs_user_membership_edit:method"
+                       value="Remove selected groups"
+                       i18n:attributes="value label_remove_selected_groups;"
+                       tal:condition="groups" />
+                <input tal:replace="structure context/@@authenticator/authenticator" />
             </form>
           </metal:block>
         </div>
