@@ -1151,8 +1151,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         cataloged_objs = cat(path = {'query':'/'.join(parent.getPhysicalPath()),
                                      'depth': 1})
         for brain in cataloged_objs:
-            obj = brain.getObject()
-            # Don't crash when the catalog has contains a stale entry
+            # Don't crash when the catalog contains a stale entry
+            try:
+                obj = brain.getObject()
+            except KeyError: # getObject raises since Zope 2.8
+                obj = None
+
             if obj is not None:
                 cat.reindexObject(obj,['getObjPositionInParent'],
                                                     update_metadata=0)

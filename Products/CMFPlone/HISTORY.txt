@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 3.1.6 - Unreleased
 
+    - PloneTool.reindexOnReorder: Don't fail if the catalog contains stale
+      entries.
+      [stefan]
+
     - Fixed the silent fail of the group membership from a user via the
       prefs_user_memberships form. This closes 
       http://dev.plone.org/plone/ticket/8468
