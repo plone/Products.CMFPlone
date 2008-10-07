@@ -2,7 +2,7 @@ Changelog for Plone
 
     (name of developer listed in brackets)
 
-Plone 3.1.6 - Unreleased
+Plone 3.1.6 - October 7, 2008
 
     - PloneTool.reindexOnReorder: Don't fail if the catalog contains stale
       entries.
