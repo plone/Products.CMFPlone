@@ -137,7 +137,9 @@ class WorkflowHistoryViewlet(ViewletBase):
                     r['actorid'] = actorid
                     if actorid is None:
                         # action performed by an anonymous user
-                        r['actor'] = {'username': _(u'label_anonymous_user', default=u'Anonymous User')}
+                        anon = _(u'label_anonymous_user',
+                                 default=u'Anonymous User')
+                        r['actor'] = {'username': anon, 'fullname': anon}
                         r['actor_home'] = ''
                     else:
                         r['actor'] = membership.getMemberInfo(actorid)
