@@ -55,6 +55,15 @@ class ISiteSchema(Interface):
                           default=True,
                           required=False)
 
+    ext_editor = Bool(title=_(u'Enable External Editor feature'),
+                          description=_(u"Determines if the external editor "
+                              "feature is enabled. This feature requires a "
+                              "special client-side application installed. The "
+                              "users also have to enable this in their "
+                              "preferences."),
+                          default=False,
+                          required=False)
+
     enable_sitemap = Bool(title=_(u"Expose sitemap.xml.gz in the portal root"),
                           description=_(u"Exposes your content as a file "
                               "according to the sitemaps.org standard. You "
@@ -121,6 +130,7 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     visible_ids = ProxyFieldProperty(ISiteSchema['visible_ids'])
     enable_inline_editing = ProxyFieldProperty(ISiteSchema['enable_inline_editing'])
     enable_link_integrity_checks = ProxyFieldProperty(ISiteSchema['enable_link_integrity_checks'])
+    ext_editor = ProxyFieldProperty(ISiteSchema['ext_editor'])
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
 
 
