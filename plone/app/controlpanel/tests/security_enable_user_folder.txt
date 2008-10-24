@@ -1,0 +1,79 @@
+Security controlpanel: 
+Enable/disable user folder
+==========================
+
+First some initial setup code:
+
+    >>> browser = self.browser
+    >>> self.loginAsManager()
+
+There shouldn't be a user folder in a default Plone :
+
+    >>> browser.open('http://nohost/plone/Members/root')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 404: Not Found
+
+Enable the user folder creation:
+
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl(name='form.enable_user_folders').value = True
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('security-controlpanel')
+    True
+
+Create a new member and log in as member. (It's done since the root user 
+already is created and haven't user folder.):
+
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+    
+    >>> self.createUser()
+    >>> self.loginAsManager(user='member', pwd='secret')
+
+There should be a user folder now and the 'My folder' link should be visible
+in the personal bar:
+
+    >>> browser.open('http://nohost/plone/Members/member')
+    >>> browser.open('http://nohost/plone')
+    >>> 'My Folder' in browser.contents
+    True
+
+Log out as member:  
+
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+
+Log in as manager and disable user folder creation:
+
+    >>> self.loginAsManager()
+
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl(name='form.enable_user_folders').value = False
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('security-controlpanel')
+    True
+
+Log out as manager:  
+
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+
+Create a new member and login as new member:
+
+    >>> self.createUser(user='newmember', pwd='secret', )
+    >>> self.loginAsManager(user='newmember', pwd='secret')
+
+There shouldn't be a new member folder and no 'My Folder' link:
+
+    >>> browser.open('http://nohost/plone/Members/newmember')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 404: Not Found    
+    
+    >>> browser.open('http://nohost/plone')
+    >>> 'My Folder' in browser.contents
+    False

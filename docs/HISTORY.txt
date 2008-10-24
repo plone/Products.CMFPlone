@@ -4,6 +4,9 @@ Changelog
 1.1.3
 -----
 
+- Added failing browser test to catch the missing 'My Folder' link
+when member creation is enabled http://dev.plone.org/plone/ticket/8417
+    [pelle_]
 
 1.1.2 - August 18, 2008
 -----------------------

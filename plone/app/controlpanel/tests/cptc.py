@@ -30,3 +30,9 @@ class ControlPanelTestCase(FunctionalTestCase):
         self.browser.getControl('Login Name').value = user
         self.browser.getControl('Password').value = pwd
         self.browser.getControl('Log in').click()
+
+
+    def createUser(self, user='member', pwd='secret', permissions=['Member'], groups=[]):
+        self.uf = self.portal.acl_users
+        self.uf.userFolderAddUser(user, pwd, permissions, groups)
+        
