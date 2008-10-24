@@ -5,6 +5,7 @@ from zope.interface import implements
 from zope.schema import Bool
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.ActionInformation import Action
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -105,6 +106,32 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
 
     def set_enable_user_folders(self, value):
         self.pmembership.memberareaCreationFlag = value
+        # support the 'my folder' user action
+        portal_actions = getToolByName(self.portal, 'portal_actions', None)
+        if portal_actions is not None:
+            object_category = getattr(portal_actions, 'user', None)
+            if value:
+                # add action
+                if 'myfolder' not in object_category.objectIds():
+                    # todo: should other strings than the title be declared as unicode ?
+                    new_action = Action('myfolder',
+                                        title=_(u'My Folder'),
+                                        description='',
+                                        url_expr='string:${portal/portal_membership/getHomeUrl}',
+                                        available_expr='python:(member is not None) and \
+                                        (portal.portal_membership.getHomeFolder() is not None) ',
+                                        permissions='View',
+                                        visible=True)
+                    object_category._setObject('myfolder', new_action)
+                    # move action to top a least before the logout action
+                    # todo: find solution for the that
+                    #object_category.manage_move_objects_to_top(self.request, ids=['myfolder'])
+                    # raises no request error
+            else:
+                # delete action
+                if 'myfolder' in object_category.objectIds():
+                    object_category.manage_delObjects(ids=['myfolder'])
+
 
     enable_user_folders = property(get_enable_user_folders,
                                    set_enable_user_folders)
