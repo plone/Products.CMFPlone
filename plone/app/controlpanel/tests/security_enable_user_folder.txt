@@ -32,10 +32,12 @@ already is created and haven't user folder.):
     >>> self.createUser()
     >>> self.loginAsManager(user='member', pwd='secret')
 
-There should be a user folder now and the 'My folder' link should be visible
+There should be a user folder now and the 'My Folder' link should be visible
 in the personal bar:
 
     >>> browser.open('http://nohost/plone/Members/member')
+    >>> open('/tmp/test-output.html', 'w').write(browser.contents)
+
     >>> browser.open('http://nohost/plone')
     >>> 'My Folder' in browser.contents
     True

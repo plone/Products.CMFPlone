@@ -112,9 +112,9 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
             object_category = getattr(portal_actions, 'user', None)
             if value:
                 # add action
-                if 'myfolder' not in object_category.objectIds():
+                if 'mystuff' not in object_category.objectIds():
                     # todo: should other strings than the title be declared as unicode ?
-                    new_action = Action('myfolder',
+                    new_action = Action('mystuff',
                                         title=_(u'My Folder'),
                                         description='',
                                         url_expr='string:${portal/portal_membership/getHomeUrl}',
@@ -122,15 +122,15 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
                                         (portal.portal_membership.getHomeFolder() is not None) ',
                                         permissions='View',
                                         visible=True)
-                    object_category._setObject('myfolder', new_action)
+                    object_category._setObject('mystuff', new_action)
                     # move action to top a least before the logout action
                     # todo: find solution for the that
-                    #object_category.manage_move_objects_to_top(self.request, ids=['myfolder'])
+                    #object_category.manage_move_objects_to_top(self.request, ids=['mystuff'])
                     # raises no request error
             else:
                 # delete action
-                if 'myfolder' in object_category.objectIds():
-                    object_category.manage_delObjects(ids=['myfolder'])
+                if 'mystuff' in object_category.objectIds():
+                    object_category.manage_delObjects(ids=['mystuff'])
 
 
     enable_user_folders = property(get_enable_user_folders,
