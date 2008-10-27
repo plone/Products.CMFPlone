@@ -121,7 +121,8 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
                                         available_expr='python:(member is not None) and \
                                         (portal.portal_membership.getHomeFolder() is not None) ',
                                         permissions='View',
-                                        visible=True)
+                                        visible=True,
+                                        i18n_domain='plone',)
                     object_category._setObject('mystuff', new_action)
                     # move action to top a least before the logout action
                     # todo: find solution for the that
