@@ -106,14 +106,13 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
 
     def set_enable_user_folders(self, value):
         self.pmembership.memberareaCreationFlag = value
-        # support the 'my folder' user action
+        # support the 'my folder' user action #8417
         portal_actions = getToolByName(self.portal, 'portal_actions', None)
         if portal_actions is not None:
             object_category = getattr(portal_actions, 'user', None)
             if value:
                 # add action
                 if 'mystuff' not in object_category.objectIds():
-                    # todo: should other strings than the title be declared as unicode ?
                     new_action = Action('mystuff',
                                         title=_(u'My Folder'),
                                         description='',
@@ -125,10 +124,7 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
                                         i18n_domain='plone')
                     object_category._setObject('mystuff', new_action)
                     # move action to top a least before the logout action
-                    # todo: find solution for the that
-                    # moveObjectsToTop
-                    #object_category.manage_move_objects_to_top(self.request, ids=['mystuff'])
-                    # raises no request error
+                    object_category.moveObjectsToTop(('mystuff'))
             else:
                 # delete action
                 if 'mystuff' in object_category.objectIds():
