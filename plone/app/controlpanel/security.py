@@ -120,12 +120,13 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
                                         url_expr='string:${portal/portal_membership/getHomeUrl}',
                                         available_expr='python:(member is not None) and \
                                         (portal.portal_membership.getHomeFolder() is not None) ',
-                                        permissions='View',
+                                        permissions=('View',),
                                         visible=True,
-                                        i18n_domain='plone',)
+                                        i18n_domain='plone')
                     object_category._setObject('mystuff', new_action)
                     # move action to top a least before the logout action
                     # todo: find solution for the that
+                    # moveObjectsToTop
                     #object_category.manage_move_objects_to_top(self.request, ids=['mystuff'])
                     # raises no request error
             else:
