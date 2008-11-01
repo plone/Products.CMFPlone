@@ -4,6 +4,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.6 (Unreleased)
 
+    - Fixed SyntaxErrors in test_cache and test_configuration.
+      [hannosch]
+
     - Fixed Review List template that was making a bad call to 
       pretty_title_or_id. This closes http://dev.plone.org/plone/ticket/8401.
       [dunlapm]
