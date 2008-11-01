@@ -10,6 +10,7 @@
             i18n:translate="heading_views">Views</h5>
 
         <ul class="contentViews"
+            id="content-views"
             i18n:domain="plone">
 
             <tal:views repeat="action view_actions">
