@@ -3,6 +3,10 @@ We need a fake request.
     >>> from zope.publisher.browser import TestRequest
     >>> request = TestRequest(HTTP_ACCEPT_LANGUAGE='cs')
 
+    >>> from zope.annotation.interfaces import IAttributeAnnotatable
+    >>> from zope.interface import directlyProvides
+    >>> directlyProvides(request, IAttributeAnnotatable)
+
 Now we need a view on the content.
 
     >>> from zope.publisher.interfaces.browser import IBrowserView
@@ -19,25 +23,20 @@ Now we can instantiate the manager.
 
     >>> manager = Footer(self.portal, request, view)
 
-Initially there is portal-colophon etc.
-
-    >>> manager.update()
-    >>> '<div id="portal-colophon">' in manager.render()
-    True
-    
 Set analytics (webstats_js) code through the controlpanel
 
     >>> from plone.app.controlpanel.site import ISiteSchema
     >>> props = ISiteSchema(self.portal)
     >>> props.webstats_js = u"<script>window.title='Hello'</script>"
     >>> manager.update()
-    >>> manager.render()
-    u'<script>window.title=\'Hello\'</script>\n  <div id="portal-colophon">...
-    
+    >>> text = manager.render()
+    >>> props.webstats_js in text
+    True
+
 Now enter some non-ascii text
 
     >>> props.webstats_js = u"<script>window.title='C\xedsa\u0159'</script>"
     >>> manager.update()
-    >>> manager.render()
-    u'<script>window.title=\'C\xedsa\u0159\'</script>\n  <div id="portal-colophon">...
-
+    >>> text = manager.render()
+    >>> props.webstats_js in text
+    True
