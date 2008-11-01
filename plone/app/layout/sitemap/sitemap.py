@@ -1,7 +1,7 @@
 from Products.Five import BrowserView
-from zope.publisher.interfaces import NotFound
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from ZPublisher import NotFound
 
 from gzip import GzipFile
 from cStringIO import StringIO
@@ -50,10 +50,10 @@ class SiteMapView(BrowserView):
         return data
 
     def __call__(self):
-        """Checks if the sitemap feature is enable and returns it."""
+        """Checks if the sitemap feature is enabled and returns it."""
         sp = getToolByName(self.context, 'portal_properties').site_properties
         if not sp.enable_sitemap:
-            raise NotFound(self.context, self.filename, self.request)
+            raise NotFound()
 
         self.request.response.setHeader('Content-Type',
                                         'application/octet-stream')
