@@ -31,11 +31,11 @@ class TestPortalStateView(GlobalsTestCase):
     def test_default_language(self):
         self.portal.portal_properties.site_properties.default_language = 'no'
         self.assertEquals(self.view.default_language(), 'no')
-        
+
     def test_language(self):
-        self.app.REQUEST.set('LANGUAGE', 'no')
+        self.app.REQUEST.set('language', 'no')
         self.assertEquals(self.view.language(), 'no')
-        
+
     def test_locale(self):
         self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'no')
         no = locales.getLocale('no', None, None)
