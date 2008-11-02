@@ -4,7 +4,7 @@ Changelog
 1.2 - Unreleased
 ----------------
 
-- Fixed test setup code for the analytics tests.
+- Fixed test setup code for the analytics tests and simplified tests.
   [hannosch]
 
 - Use a normal ZPublisher NotFound exception in the sitemap code, instead of

@@ -24,4 +24,3 @@ class AnalyticsViewlet(BrowserView):
         ptool = getToolByName(self.context, "portal_properties")
         snippet = safe_unicode(ptool.site_properties.webstats_js)
         return snippet
-
