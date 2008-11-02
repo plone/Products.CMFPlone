@@ -33,7 +33,7 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEquals(self.view.default_language(), 'no')
 
     def test_language(self):
-        self.app.REQUEST.set('language', 'no')
+        self.app.REQUEST.set('LANGUAGE', 'no')
         self.assertEquals(self.view.language(), 'no')
 
     def test_locale(self):
