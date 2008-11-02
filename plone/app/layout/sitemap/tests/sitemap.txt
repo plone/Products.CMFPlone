@@ -34,8 +34,7 @@ To test the sitemap we first need to enable it:
 Then modify worklfow to have some private content with the folder_workflow:
 
     >>> self.portal.portal_workflow.setChainForPortalTypes(['Large Plone Folder'], ('folder_workflow',))
-    >>> self.portal.portal_workflow.updateRoleMappings()
-    3
+    >>> updated = self.portal.portal_workflow.updateRoleMappings()
 
 'Events' folder will be published and in the archive:
 
