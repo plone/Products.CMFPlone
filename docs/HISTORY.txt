@@ -46,6 +46,9 @@ Changelog
 1.1.6 Unreleased
 ----------------
 
+- Fixed tests for the language method of the portal state view.
+  [hannosch]
+
 - Fixed keywords.pt to properly encode ampersands in its links. This closes
   http://dev.plone.org/plone/ticket/8509
   [younga3, dunlapm]
