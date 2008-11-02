@@ -4,6 +4,9 @@ Changelog
 1.1.6 Unreleased
 ----------------
 
+- Avoid a test failure caused by test interdependencies.
+  [hannosch]
+
 - Fixed tests for the language method of the portal state view.
   [hannosch]
 
