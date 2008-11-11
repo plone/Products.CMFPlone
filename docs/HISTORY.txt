@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.6 (Unreleased)
 
+    - Modified a macro call in portlets-pageform.pt for forwards
+      compatibility with Zope 2.12.
+      [davisagli]
+
     - Fixed SyntaxErrors in test_cache and test_configuration.
       [hannosch]
 
