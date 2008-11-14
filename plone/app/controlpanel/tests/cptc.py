@@ -11,10 +11,10 @@ from Products.CMFCore.utils import getToolByName
 
 class ControlPanelTestCase(FunctionalTestCase):
     """base test case with convenience methods for all control panel tests"""
-
+    
     def afterSetUp(self):
         super(ControlPanelTestCase, self).afterSetUp()
-                
+        
         self.browser = Browser()
         
         self.uf = self.portal.acl_users
@@ -22,7 +22,7 @@ class ControlPanelTestCase(FunctionalTestCase):
         
         self.ptool = getToolByName(self.portal, 'portal_properties')
         self.site_props = self.ptool.site_properties
-
+    
     def loginAsManager(self, user='root', pwd='secret'):
         """points the browser to the login screen and logs in as user root with Manager role."""
         self.browser.open('http://nohost/plone/')
@@ -31,8 +31,3 @@ class ControlPanelTestCase(FunctionalTestCase):
         self.browser.getControl('Password').value = pwd
         self.browser.getControl('Log in').click()
 
-
-    def createUser(self, user='member', pwd='secret', permissions=['Member'], groups=[]):
-        self.uf = self.portal.acl_users
-        self.uf.userFolderAddUser(user, pwd, permissions, groups)
-        

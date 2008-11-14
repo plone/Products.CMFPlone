@@ -2,12 +2,21 @@ Security controlpanel:
 Enable/disable user folder
 ==========================
 
-First some initial setup code:
+First some initial setup code. We are logging as the 'root' user with 'Manager' permission:
 
     >>> browser = self.browser
     >>> self.loginAsManager()
 
-There shouldn't be a user folder in a default Plone :
+Lets ensure that we currently are the 'root' user:
+
+    >>> 'root' in browser.contents
+    True
+
+    >>> browser.getLink('root').click()
+    >>> browser.url
+    'http://nohost/plone/dashboard'
+
+There shouldn't be a user folder in a default Plone:
 
     >>> browser.open('http://nohost/plone/Members/root')
     Traceback (most recent call last):
@@ -52,19 +61,31 @@ Lets ensure 'My Folder' is click able and contains the member url link:
     >>> browser.url
     'http://nohost/plone/Members/root'
 
-
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
 
 Test with a member with the 'Member' permission
 -----------------------------------------------
 
 Create a new member and log in as member:
 
-    >>> browser.getLink('Log out').click()
-    >>> 'You are now logged out' in browser.contents
+    >>> self.uf = self.portal.acl_users
+    >>> self.uf.userFolderAddUser('member', 'secret', ['Member'], [])
+    >>> browser.open('http://nohost/plone/')
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl('Login Name').value = 'member'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+Lets ensure that we currently are the 'member' user:
+
+    >>> 'member' in browser.contents
     True
-    
-    >>> self.createUser()
-    >>> self.loginAsManager(user='member', pwd='secret')
+
+    >>> browser.getLink('member').click()
+    >>> browser.url
+    'http://nohost/plone/dashboard'
  
 There should be a user folder now and the 'My Folder' link should be visible
 in the personal bar:
@@ -73,6 +94,10 @@ in the personal bar:
     >>> browser.open('http://nohost/plone')
     >>> 'My Folder' in browser.contents
     True
+    
+    >>> browser.getLink('My Folder').click()    
+    >>> browser.url
+    'http://nohost/plone/Members/member'
 
 Log out as member:  
 
@@ -98,8 +123,22 @@ Log out as manager:
 
 Create a new member and login as new member:
 
-    >>> self.createUser(user='newmember', pwd='secret', )
-    >>> self.loginAsManager(user='newmember', pwd='secret')
+    >>> self.uf = self.portal.acl_users
+    >>> self.uf.userFolderAddUser('newmember', 'secret', ['Member'], [])
+    >>> browser.open('http://nohost/plone/')
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl('Login Name').value = 'newmember'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+Lets ensure that we currently are the 'newmember' user:
+
+    >>> 'newmember' in browser.contents
+    True
+
+    >>> browser.getLink('newmember').click()
+    >>> browser.url
+    'http://nohost/plone/dashboard'
 
 There shouldn't be a new member folder and no 'My Folder' link:
 
