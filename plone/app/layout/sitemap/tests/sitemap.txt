@@ -31,32 +31,21 @@ To test the sitemap we first need to enable it:
 
     >>> self.portal.portal_properties.site_properties.manage_changeProperties(enable_sitemap=True)
 
-Then modify worklfow to have some private content with the folder_workflow:
+'F1' folder will be published and in the archive:
 
-    >>> self.portal.portal_workflow.setChainForPortalTypes(['Large Plone Folder'], ('folder_workflow',))
-    >>> updated = self.portal.portal_workflow.updateRoleMappings()
-
-'Events' folder will be published and in the archive:
-
-    >>> self.portal.portal_workflow.getChainFor(self.portal.events)
-    ('folder_workflow',)
-    >>> self.portal.portal_workflow.getInfoFor(self.portal.events, 'review_state')
-    'visible'
-    >>> self.portal.portal_workflow.doActionFor(self.portal.events, 'publish')
-    >>> self.portal.portal_workflow.getInfoFor(self.portal.events, 'review_state')
+    >>> self.portal.portal_workflow.getChainFor(self.portal.f1)
+    ('simple_publication_workflow',)
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.f1, 'review_state')
     'published'
 
-'News' folder will be visible and in the archive:
+'F2' folder will be visible and in the archive:
 
-    >>> self.portal.portal_workflow.getInfoFor(self.portal.news, 'review_state')
-    'visible'
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.f2, 'review_state')
+    'pending'
 
-'Members' folder will be private and should not be in the archive
+'F3' folder will be private and should not be in the archive
 
-    >>> self.portal.portal_workflow.getInfoFor(self.portal.Members, 'review_state')
-    'visible'
-    >>> self.portal.portal_workflow.doActionFor(self.portal.Members, 'hide')
-    >>> self.portal.portal_workflow.getInfoFor(self.portal.Members, 'review_state')
+    >>> self.portal.portal_workflow.getInfoFor(self.portal.f3, 'review_state')
     'private'
 
 Finally log out because search bots are not authenticated:
@@ -81,11 +70,9 @@ Get the contents and decode them
 Not sure how to test the XML now as it also contains dates but for now
 we will just search for some URLs and tags.
 
-    >>> xml.find('<loc>http://nohost/plone/front-page</loc>')!=-1
+    >>> xml.find('<loc>http://nohost/plone/f1</loc>')!=-1
     True
-    >>> xml.find('<loc>http://nohost/plone/events</loc>')!=-1
-    True
-    >>> xml.find('<loc>http://nohost/plone/news</loc>')!=-1
-    True
-    >>> xml.find('<loc>http://nohost/plone/Members</loc>')!=-1
+    >>> xml.find('<loc>http://nohost/plone/f2</loc>')!=-1
+    False
+    >>> xml.find('<loc>http://nohost/plone/f3</loc>')!=-1
     False

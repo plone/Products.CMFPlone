@@ -29,6 +29,14 @@ class SiteMapTestCase(FunctionalTestCase):
         self.ptool = self.getToolByName('portal_properties')
         self.site_props = self.ptool.site_properties
 
+        self.loginAsPortalOwner()
+        self.portal.invokeFactory('Folder', 'f1')
+        self.portal.portal_workflow.doActionFor(self.portal.f1, 'submit')
+        self.portal.portal_workflow.doActionFor(self.portal.f1, 'publish')
+        self.portal.invokeFactory('Folder', 'f2')
+        self.portal.portal_workflow.doActionFor(self.portal.f2, 'submit')
+        self.portal.invokeFactory('Folder', 'f3')
+
     def getToolByName(self, name):
         """docstring for getToolByName"""
         return getToolByName(self.portal, name)

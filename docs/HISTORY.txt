@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Fixed sitemap tests to be independent of default content.
+  [hannosch]
+
 - Fixed test setup code for the analytics tests and simplified tests.
   [hannosch]
 
