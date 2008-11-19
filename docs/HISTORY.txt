@@ -4,6 +4,10 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Removed micro-level viewlet output caching. The overhead of caching simple
+  almost static HTML snippets is bigger than the advantage.
+  [hannosch]
+
 - Fixed sitemap tests to be independent of default content.
   [hannosch]
 

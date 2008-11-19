@@ -1,32 +1,19 @@
-from plone.memoize import ram
-from plone.memoize.compress import xhtml_compress
-
 from zope.component import getMultiAdapter
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.viewlets import ViewletBase
-from plone.app.layout.viewlets.common import get_language
-from plone.app.layout.viewlets.common import render_cachekey
 
 from Products.CMFCore.utils import getToolByName
 
 
 class FaviconViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('favicon.pt')
-
-    @ram.cache(render_cachekey)
-    def render(self):
-        return xhtml_compress(self._template())
+    render = ViewPageTemplateFile('favicon.pt')
 
 
 class SearchViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('search.pt')
-
-    @ram.cache(render_cachekey)
-    def render(self):
-        return xhtml_compress(self._template())
+    render = ViewPageTemplateFile('search.pt')
 
 
 class AuthorViewlet(ViewletBase):
@@ -36,11 +23,8 @@ class AuthorViewlet(ViewletBase):
 
 class NavigationViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('navigation.pt')
+    render = ViewPageTemplateFile('navigation.pt')
 
-    @ram.cache(render_cachekey)
-    def render(self):
-        return xhtml_compress(self._template())
 
 class RSSViewlet(ViewletBase):
     def update(self):

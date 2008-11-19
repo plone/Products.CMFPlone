@@ -1,20 +1,14 @@
 from cgi import escape
 from urllib import quote_plus
-from StringIO import StringIO
 
 from zope.interface import implements, alsoProvides
 from zope.component import getMultiAdapter
 from zope.viewlet.interfaces import IViewlet
 from zope.deprecation.deprecation import deprecate
 
-from plone.memoize import ram
-from plone.memoize.compress import xhtml_compress
-
 from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner
-from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import isDefaultPage
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -26,17 +20,6 @@ def get_language(context, request):
     portal_state = getMultiAdapter((context, request),
                                    name=u'plone_portal_state')
     return portal_state.locale().getLocaleID()
-
-
-def render_cachekey(fun, self):
-    key = StringIO()
-    # Include the name of the viewlet as the underlying cache key only
-    # takes the module and function name into account, but not the class
-    print >> key, self.__name__
-    print >> key, self.site_url
-    print >> key, get_language(aq_inner(self.context), self.request)
-
-    return key.getvalue()
 
 
 class ViewletBase(BrowserView):
@@ -224,29 +207,9 @@ class PersonalBarViewlet(ViewletBase):
                 self.user_name = userid
 
 
-def render_path_bar_cachekey(fun, self):
-    key = StringIO()
-    context = aq_inner(self.context)
-    title = getattr(context, 'Title', None)
-    if callable(title):
-        title = title()
-    print >> key, str(self.__name__)
-    print >> key, str(get_language(context, self.request))
-    print >> key, self.navigation_root_url
-    print >> key, self.request.getURL()
-    print >> key, title
-
-    print >> key, isDefaultPage(context, self.request)
-    return key.getvalue()
-
-
 class PathBarViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('path_bar.pt')
-
-    @ram.cache(render_path_bar_cachekey)
-    def render(self):
-        return xhtml_compress(self._template())
+    render = ViewPageTemplateFile('path_bar.pt')
 
     @property
     def navigation_root_url(self):
@@ -293,28 +256,11 @@ class ContentActionsViewlet(ViewletBase):
         return icon
 
 
-def render_footer_cachekey(fun, self):
-    key = StringIO()
-    print >> key, self.__name__
-    print >> key, self.site_url
-    print >> key, get_language(aq_inner(self.context), self.request)
-    print >> key, DateTime().year()
-    return key.getvalue()
-
-
 class FooterViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('footer.pt')
-
-    @ram.cache(render_footer_cachekey)
-    def render(self):
-        return xhtml_compress(self._template())
+    render = ViewPageTemplateFile('footer.pt')
 
 
 class ColophonViewlet(ViewletBase):
 
-    _template = ViewPageTemplateFile('colophon.pt')
-
-    @ram.cache(render_cachekey)
-    def render(self):
-        return xhtml_compress(self._template())
+    render = ViewPageTemplateFile('colophon.pt')
