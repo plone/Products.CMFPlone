@@ -106,7 +106,7 @@ class SiteActionsViewlet(ViewletBase):
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
-        self.site_actions = context_state.actions().get('site_actions', None)
+        self.site_actions = context_state.actions('site_actions')
 
 
 class SearchBoxViewlet(ViewletBase):
@@ -148,16 +148,14 @@ class GlobalSectionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('sections.pt')
 
     def update(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        actions = context_state.actions()
-        portal_tabs_view = getMultiAdapter((self.context, self.request),
+        context = aq_inner(self.context)
+        portal_tabs_view = getMultiAdapter((context, self.request),
                                            name='portal_tabs_view')
-        self.portal_tabs = portal_tabs_view.topLevelTabs(actions=actions)
+        self.portal_tabs = portal_tabs_view.topLevelTabs()
 
-        selectedTabs = self.context.restrictedTraverse('selectedTabs')
+        selectedTabs = context.restrictedTraverse('selectedTabs')
         self.selected_tabs = selectedTabs('index_html',
-                                          self.context,
+                                          context,
                                           self.portal_tabs)
         self.selected_portal_tab = self.selected_tabs['portal']
 
@@ -174,7 +172,7 @@ class PersonalBarViewlet(ViewletBase):
         
         sm = getSecurityManager()
 
-        self.user_actions = context_state.actions().get('user', None)
+        self.user_actions = context_state.actions('user')
 
         plone_utils = getToolByName(self.context, 'plone_utils')
         self.getIconFor = plone_utils.getIconFor
@@ -235,7 +233,7 @@ class ContentActionsViewlet(ViewletBase):
         context_state = getMultiAdapter((context, self.request),
                                         name=u'plone_context_state')
 
-        self.object_actions = context_state.actions().get('object_actions', [])
+        self.object_actions = context_state.actions('object_actions')
 
         plone_utils = getToolByName(context, 'plone_utils')
         self.getIconFor = plone_utils.getIconFor

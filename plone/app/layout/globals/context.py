@@ -6,6 +6,7 @@ from plone.memoize.view import memoize
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
+from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -18,7 +19,13 @@ from interfaces import IContextState
 from plone.portlets.interfaces import ILocalPortletAssignable
 
 BLACKLISTED_PROVIDERS = ('portal_workflow', )
-BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons')
+BLACKLISTED_CATEGORIES = (
+    'folder_buttons',
+    'object_buttons',
+    'controlpanel',
+    'controlpanel_addons',
+    'controlpanel_advanced',
+    )
 
 
 class ContextState(BrowserView):
@@ -185,24 +192,40 @@ class ContextState(BrowserView):
             return lockable and context.wl_isLocked()
 
     @memoize
-    def actions(self):
-        tool = getToolByName(self.context, "portal_actions")
-        return tool.listFilteredActionsFor(aq_inner(self.context),
-                                           ignore_providers=BLACKLISTED_PROVIDERS,
-                                           ignore_categories=BLACKLISTED_CATEGORIES)
+    def actions(self, category=None, max=-1):
+        context = aq_inner(self.context)
+        tool = getToolByName(context, "portal_actions")
+        if category is None:
+            actions = tool.listFilteredActionsFor(
+                context,
+               ignore_providers=BLACKLISTED_PROVIDERS,
+               ignore_categories=BLACKLISTED_CATEGORIES)
+        else:
+            actions = []
+            providers = [name for name in tool.listActionProviders()
+                              if name not in BLACKLISTED_PROVIDERS]
 
-    @memoize
-    def keyed_actions(self):
-        actions = self.actions()
-        keyed_actions = {}
-        for category in actions.keys():
-            keyed_actions[category] = {}
-            for action in actions[category]:
-                id = action.get('id', None)
-                if id is not None:
-                    keyed_actions[category][id] = action.copy()
-        return keyed_actions
-       
+            # Include actions from specific tools.
+            for provider_name in providers:
+                provider = getattr(tool, provider_name, None)
+                # Skip missing action providers.
+                if provider is None:
+                    continue
+                if IActionProvider.providedBy(provider):
+                    if provider_name in ('portal_actions', 'portal_types'):
+                        actions.extend(
+                            provider.listActionInfos(
+                                object=context,
+                                categories=(category, ),
+                                max=max,
+                                )
+                            )
+                    else:
+                        actions.extend(
+                            provider.listActionInfos(object=context))
+
+        return actions
+
     @memoize
     def portlet_assignable(self):
         return ILocalPortletAssignable.providedBy(self.context)

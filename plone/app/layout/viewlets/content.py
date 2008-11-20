@@ -26,7 +26,7 @@ class DocumentActionsViewlet(ViewletBase):
                                              name=u'plone_context_state')
         plone_utils = getToolByName(self.context, 'plone_utils')
         self.getIconFor = plone_utils.getIconFor
-        self.actions = self.context_state.actions().get('document_actions', None)
+        self.actions = self.context_state.actions('document_actions')
 
     index = ViewPageTemplateFile("document_actions.pt")
 
