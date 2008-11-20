@@ -50,38 +50,17 @@ class PortalState(BrowserView):
         return self.request.get('LANGUAGE', None) or \
                 aq_inner(self.context).Language() or self.default_language()
 
-    @memoize_contextless
     def locale(self):
-        # This code was adopted from zope.publisher.http.setupLocale
-        envadapter = IUserPreferredLanguages(self.request, None)
-        if envadapter is None:
-            return None
-
-        _locale = None
-        langs = envadapter.getPreferredLanguages()
-        for httplang in langs:
-            parts = (httplang.split('-') + [None, None])[:3]
-            try:
-                _locale = locales.getLocale(*parts)
-                break
-            except LoadLocaleError:
-                # Just try the next combination
-                pass
-        else:
-            # No combination gave us an existing locale, so use the default,
-            # which is guaranteed to exist
-            _locale = locales.getLocale(None, None, None)
-
-        return _locale
+        return self.request.locale
 
     @memoize_contextless
     def is_rtl(self):
-        _locale = self.locale()
-        if _locale is None:
+        locale = self.request.locale
+        if locale is None:
             # We cannot determine the orientation
             return False
 
-        char_orient = _locale.orientation.characters
+        char_orient = locale.orientation.characters
         if char_orient == u'right-to-left':
             return True
 

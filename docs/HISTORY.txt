@@ -4,6 +4,10 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Since Zope 2.11 the locale is available on the request. Removed our special
+  code from the portal state view and rely directly on the request.
+  [hannosch]
+
 - Removed micro-level viewlet output caching. The overhead of caching simple
   almost static HTML snippets is bigger than the advantage.
   [hannosch]
