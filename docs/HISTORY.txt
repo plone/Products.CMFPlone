@@ -4,6 +4,12 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Disabled the content history viewlet in the default installation. It is too
+  slow to be rendered on every page load and only rarely needed. Either the
+  history tab should provide the information or the history needs to be an
+  asynchronous request.
+  [hannosch]
+
 - Since Zope 2.11 the locale is available on the request. Removed our special
   code from the portal state view and rely directly on the request.
   [hannosch]

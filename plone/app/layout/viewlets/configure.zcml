@@ -208,12 +208,12 @@
         />
 
     <!-- Render the content history -->
-    <browser:viewlet
+    <!-- <browser:viewlet
         name="plone.belowcontentbody.contenthistory"
         manager=".interfaces.IBelowContentBody"
         class=".content.ContentHistoryViewlet"
         permission="zope2.View" 
-        />
+        /> -->
 
     <!-- Render the document actions -->
     <browser:viewlet
