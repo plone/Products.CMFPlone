@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.6 Unreleased
-----------------
+1.1.6 Released November 21st, 2008
+----------------------------------
 
 - Avoid a test failure caused by test interdependencies.
   [hannosch]
