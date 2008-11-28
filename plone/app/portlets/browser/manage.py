@@ -40,6 +40,10 @@ class ManageContextualPortlets(BrowserView):
         self.request.set('disable_border', True)
         
     # IManagePortletsView implementation
+
+    @property
+    def macros(self):
+        return self.index.macros
     
     @property
     def category(self):
@@ -101,6 +105,10 @@ class ManageDashboardPortlets(BrowserView):
     # IManagePortletsView implementation
     
     @property
+    def macros(self):
+        return self.index.macros
+
+    @property
     def category(self):
         return USER_CATEGORY
         
@@ -143,6 +151,10 @@ class ManageGroupPortlets(BrowserView):
     # IManagePortletsView implementation
     
     @property
+    def macros(self):
+        return self.index.macros
+
+    @property
     def category(self):
         return GROUP_CATEGORY
         
@@ -184,6 +196,10 @@ class ManageContentTypePortlets(BrowserView):
         
     # IManagePortletsView implementation
     
+    @property
+    def macros(self):
+        return self.index.macros
+
     @property
     def category(self):
         return CONTENT_TYPE_CATEGORY
@@ -243,6 +259,10 @@ class ManagePortletsViewlet(BrowserView):
         self.view = view
         self.manager = manager
     
+    @property
+    def macros(self):
+        return self.index.macros
+
     @property
     def category(self):
         return self.ultimate_parent().category
