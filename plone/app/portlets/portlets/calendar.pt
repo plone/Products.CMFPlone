@@ -20,10 +20,10 @@
            i18n:attributes="title title_previous_month;">&laquo;</a>
 
         <span i18n:translate="" tal:omit-tag="">
-            <span i18n:name="monthname"
+            <span i18n:name="monthname" i18n:translate=""
                   tal:content="view/monthName"
                   tal:omit-tag="">monthname</span>
-            <span i18n:name="year"
+            <span i18n:name="year" i18n:translate=""
                   tal:content="year"
                   tal:omit-tag="">year</span>
         </span>
@@ -51,6 +51,7 @@
                 <tr class="weekdays"
                     ><tal:data tal:repeat="weekday view/getWeekdays"
                         ><th scope="col"
+                             i18n:translate=""
                              tal:content="weekday">Su</th
                     ></tal:data>
                 </tr>
