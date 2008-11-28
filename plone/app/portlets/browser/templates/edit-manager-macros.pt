@@ -47,12 +47,12 @@
                     <span class="managedPortletActions">
                     <a href="#" class="up"
                        tal:condition="not:repeat/portlet/start"
-                       tal:attributes="href string:${portlet/up_url}&referer=${view/url_quote_referer}">&uarr;</a>
+                       tal:attributes="href string:${portlet/up_url}&amp;referer=${view/url_quote_referer}">&uarr;</a>
                     <a href="#" class="down"
                        tal:condition="not:repeat/portlet/end"
-                       tal:attributes="href string:${portlet/down_url}&referer=${view/url_quote_referer}">&darr;</a>
+                       tal:attributes="href string:${portlet/down_url}&amp;referer=${view/url_quote_referer}">&darr;</a>
                     <a href="#" class="delete"
-                       tal:attributes="href string:${portlet/delete_url}&referer=${view/url_quote_referer}">&times;</a>
+                       tal:attributes="href string:${portlet/delete_url}&amp;referer=${view/url_quote_referer}">&times;</a>
                     </span>
                     <a tal:omit-tag="not:portlet/editview"
                        tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
