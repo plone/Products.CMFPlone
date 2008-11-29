@@ -149,14 +149,10 @@ class GlobalSectionsViewlet(ViewletBase):
 
     def update(self):
         context = aq_inner(self.context)
-        portal_tabs_view = getMultiAdapter((context, self.request),
+        tabs_view = getMultiAdapter((context, self.request),
                                            name='portal_tabs_view')
-        self.portal_tabs = portal_tabs_view.topLevelTabs()
-
-        selectedTabs = context.restrictedTraverse('selectedTabs')
-        self.selected_tabs = selectedTabs('index_html',
-                                          context,
-                                          self.portal_tabs)
+        self.portal_tabs = tabs_view.topLevelTabs()
+        self.selected_tabs = tabs_view.selectedTabs(tabs=self.portal_tabs)
         self.selected_portal_tab = self.selected_tabs['portal']
 
 

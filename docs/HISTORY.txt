@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Updated the GlobalSectionsViewlet to use the extended tabs_view.
+  [hannosch]
+
 - Removed memoizing for things which are only used once in a page.
   [hannosch]
 
