@@ -74,7 +74,7 @@ class DocumentBylineViewlet(ViewletBase):
 
     @memoize
     def author(self):
-        membership = self.tools.membership()
+        membership = getToolByName(self.context, 'portal_membership')
         return membership.getMemberInfo(self.creator())
 
     @memoize
@@ -99,18 +99,15 @@ class DocumentBylineViewlet(ViewletBase):
 
 
 class WorkflowHistoryViewlet(ViewletBase):
-    def update(self):
-        super(WorkflowHistoryViewlet, self).update()
-        self.tools = getMultiAdapter((self.context, self.request),
-                                     name='plone_tools')
+
     @memoize
     def workflowHistory(self, complete=False):
         """Return workflow history of this context.
 
         Taken from plone_scripts/getWorkflowHistory.py
         """
-        workflow = self.tools.workflow()
-        membership = self.tools.membership()
+        workflow = getToolByName(self.context, 'portal_workflow')
+        membership = getToolByName(self.context, 'portal_membership')
 
         review_history = []
 
@@ -163,7 +160,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
     @memoize
     def getUserInfo(self, userid):
-        mt=self.tools.membership()
+        mt = getToolByName(self.context, 'portal_membership')
         info=mt.getMemberInfo(userid)
         if info is None:
             return dict(actor_home="",
