@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Adjusted dashboard to new controlpanel actions approach.
+  [hannosch]
+
 - Moved isExpired script into a method on the context view.
   [hannosch]
 
