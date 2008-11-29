@@ -81,11 +81,18 @@ def getDefaultPage(context):
         return lookupTranslationId(context, 'index_html')
 
     # 2. Test for IBrowserDefault
-    browserDefault = queryAdapter(context, IBrowserDefault)
+    if IBrowserDefault.providedBy(context):
+        browserDefault = context
+    else:
+        browserDefault = queryAdapter(context, IBrowserDefault)
+
     if browserDefault is not None:
         fti = context.getTypeInfo()
         if fti is not None:
-            dynamicFTI = queryAdapter(fti, IDynamicViewTypeInformation)
+            if IDynamicViewTypeInformation.providedBy(fti):
+                dynamicFTI = fti
+            else:
+                dynamicFTI = queryAdapter(fti, IDynamicViewTypeInformation)
             if dynamicFTI is not None:
                 page = dynamicFTI.getDefaultPage(context, check_exists=True)
                 if page is not None:

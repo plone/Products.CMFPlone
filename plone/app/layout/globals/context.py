@@ -83,8 +83,12 @@ class ContextState(BrowserView):
     @memoize
     def view_template_id(self):
         context = aq_inner(self.context)
-        browserDefault = queryAdapter(context, IBrowserDefault)
-        
+
+        if IBrowserDefault.providedBy(context):
+            browserDefault = context
+        else:
+            browserDefault = queryAdapter(context, IBrowserDefault)
+
         if browserDefault is not None:
             try:
                 return browserDefault.getLayout()
