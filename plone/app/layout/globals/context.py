@@ -154,8 +154,9 @@ class ContextState(BrowserView):
             return aq_parent(context)
 
     @memoize
-    def is_expired(self):
-        content = self.context
+    def is_expired(self, content=None):
+        if content is None:
+            content = self.context
         expiry = None
 
         # ExpirationDate should have an ISO date string, which we need to
