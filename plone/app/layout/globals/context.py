@@ -50,14 +50,15 @@ class ContextState(BrowserView):
                  self.request.get('VIRTUAL_URL',
                    self.request.get('URL', 
                      self.context.absolute_url())))
-                             
+
     @memoize
     def canonical_object(self):
+        context = aq_inner(self.context)
         if self.is_default_page():
-            return self.parent()
+            return aq_parent(context)
         else:
-            return self.context
-            
+            return context
+
     @memoize
     def canonical_object_url(self):
         return self.canonical_object().absolute_url()
@@ -127,27 +128,27 @@ class ContextState(BrowserView):
     @memoize
     def object_url(self):
         return aq_inner(self.context).absolute_url()
-        
+
     @memoize
     def object_title(self):
         context = aq_inner(self.context)
         return utils.pretty_title_or_id(context, context)
-        
+
     @memoize
     def workflow_state(self):
         tool = getToolByName(self.context, "portal_workflow")
         return tool.getInfoFor(aq_inner(self.context), 'review_state', None)
-    
-    @memoize
+
     def parent(self):
         return aq_parent(aq_inner(self.context))
 
     @memoize
     def folder(self):
+        context = aq_inner(self.context)
         if self.is_structural_folder() and not self.is_default_page():
-            return aq_inner(self.context)
+            return context
         else:
-            return self.parent()
+            return aq_parent(context)
     
     @memoize
     def is_folderish(self):
@@ -178,7 +179,8 @@ class ContextState(BrowserView):
         context = aq_inner(self.context)
         portal = getUtility(ISiteRoot)
         return aq_base(context) is aq_base(portal) or \
-                (self.is_default_page() and aq_base(self.parent()) is aq_base(portal))
+            (self.is_default_page() and
+             aq_base(aq_parent(context)) is aq_base(portal))
     
     @memoize
     def is_editable(self):
@@ -232,7 +234,6 @@ class ContextState(BrowserView):
 
         return actions
 
-    @memoize
     def portlet_assignable(self):
         return ILocalPortletAssignable.providedBy(self.context)
         

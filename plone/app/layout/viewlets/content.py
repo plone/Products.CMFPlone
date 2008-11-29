@@ -36,12 +36,10 @@ class DocumentBylineViewlet(ViewletBase):
         super(DocumentBylineViewlet, self).update()
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
-        self.tools = getMultiAdapter((self.context, self.request),
-                                     name='plone_tools')
 
     @memoize
     def show(self):
-        properties = self.tools.properties()
+        properties = getToolByName(self.context, 'portal_properties')
         site_properties = getattr(properties, 'site_properties')
         anonymous = self.portal_state.anonymous()
         allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)

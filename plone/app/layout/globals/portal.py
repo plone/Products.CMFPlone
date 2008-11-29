@@ -45,7 +45,6 @@ class PortalState(BrowserView):
         site_properties = getToolByName(context, "portal_properties").site_properties
         return site_properties.getProperty('default_language', None)
 
-    @memoize
     def language(self):
         return self.request.get('LANGUAGE', None) or \
                 aq_inner(self.context).Language() or self.default_language()

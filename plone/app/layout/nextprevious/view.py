@@ -13,34 +13,29 @@ class NextPreviousView(BrowserView):
     """Information about next/previous navigation
     """
 
-    @view.memoize
     def next(self):
         provider = self._provider()
         if provider is None:
             return None
         return provider.getNextItem(aq_inner(self.context))
     
-    @view.memoize
     def previous(self):
         provider = self._provider()
         if provider is None:
             return None
         return provider.getPreviousItem(aq_inner(self.context))
 
-    @view.memoize
     def enabled(self):
         provider = self._provider()
         if provider is None:
             return False
         return provider.enabled
 
-    @instance.memoize
     def _provider(self):
         # Note - the next/previous provider is the container of this object!
         # This may not support next/previous navigation, so code defensively
         return INextPreviousProvider(aq_parent(aq_inner(self.context)), None)
 
-    @view.memoize
     def isViewTemplate(self):
         plone = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
         return plone.is_view_template()

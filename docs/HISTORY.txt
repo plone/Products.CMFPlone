@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Removed memoizing for things which are only used once in a page.
+  [hannosch]
+
 - Replaced direct invocations of interfaces with queryAdapter calls. The
   former does a suboptimal getattr call internally.
   [hannosch]
