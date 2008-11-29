@@ -1,4 +1,5 @@
 import warnings
+from zope.component import queryAdapter
 from zope.component import queryUtility
 from zope.interface import implements
 
@@ -80,11 +81,11 @@ def getDefaultPage(context):
         return lookupTranslationId(context, 'index_html')
 
     # 2. Test for IBrowserDefault
-    browserDefault = IBrowserDefault(context, None)
+    browserDefault = queryAdapter(context, IBrowserDefault)
     if browserDefault is not None:
         fti = context.getTypeInfo()
         if fti is not None:
-            dynamicFTI = IDynamicViewTypeInformation(fti, None)
+            dynamicFTI = queryAdapter(fti, IDynamicViewTypeInformation)
             if dynamicFTI is not None:
                 page = dynamicFTI.getDefaultPage(context, check_exists=True)
                 if page is not None:

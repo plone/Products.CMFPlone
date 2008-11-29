@@ -4,6 +4,10 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Replaced direct invocations of interfaces with queryAdapter calls. The
+  former does a suboptimal getattr call internally.
+  [hannosch]
+
 - Sanitized the actions handling on the context state view. You can pass in
   an action category into the action method now, which is the preferred way.
   This allows us to avoid evaluating all actions in the current context if

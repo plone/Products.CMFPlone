@@ -1,5 +1,7 @@
 from zope.interface import implements
-from zope.component import getMultiAdapter, queryMultiAdapter
+from zope.component import getMultiAdapter
+from zope.component import queryAdapter
+from zope.component import queryMultiAdapter
 from zope.component import getUtility
 from plone.memoize.view import memoize
 
@@ -81,7 +83,7 @@ class ContextState(BrowserView):
     @memoize
     def view_template_id(self):
         context = aq_inner(self.context)
-        browserDefault = IBrowserDefault(context, None)
+        browserDefault = queryAdapter(context, IBrowserDefault)
         
         if browserDefault is not None:
             try:
