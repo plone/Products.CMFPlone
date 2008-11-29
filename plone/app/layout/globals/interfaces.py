@@ -166,7 +166,11 @@ class IContextState(Interface):
     def folder():
         """The current canonical folder
         """
-                            
+
+    def is_expired():
+        """True if this object is expired
+        """
+
     def is_folderish():
         """True if this is a folderish object, structural or not
         """

@@ -6,12 +6,15 @@ from zope.component import getUtility
 from plone.memoize.view import memoize
 
 from Acquisition import aq_base, aq_inner, aq_parent
+from DateTime import DateTime
 from Products.Five.browser import BrowserView
 
 from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_callable
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
@@ -149,7 +152,35 @@ class ContextState(BrowserView):
             return context
         else:
             return aq_parent(context)
-    
+
+    @memoize
+    def is_expired(self):
+        content = self.context
+        expiry = None
+
+        # ExpirationDate should have an ISO date string, which we need to
+        # convert to a DateTime
+
+        # Try DC accessor first
+        if base_hasattr(content, 'ExpirationDate'):
+            expiry = content.ExpirationDate
+
+        # Try the direct way
+        if not expiry and base_hasattr(content, 'expires'):
+            expiry = content.expires
+
+        # See if we have a callable
+        if safe_callable(expiry):
+            expiry = expiry()
+
+        # Convert to DateTime if necessary, ExpirationDate may return 'None'
+        if expiry and expiry != 'None' and isinstance(expiry, basestring):
+            expiry = DateTime(expiry)
+
+        if isinstance(expiry, DateTime) and expiry.isPast():
+            return True
+        return False
+
     @memoize
     def is_folderish(self):
         return bool(getattr(aq_base(aq_inner(self.context)), 'isPrincipiaFolderish', False))

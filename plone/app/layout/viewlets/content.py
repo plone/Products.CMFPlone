@@ -84,8 +84,7 @@ class DocumentBylineViewlet(ViewletBase):
 
     @memoize
     def isExpired(self):
-        portal = self.portal_state.portal()
-        return portal.restrictedTraverse('isExpired')(self.context)
+        return self.context_state.is_expired()
 
     @memoize
     def toLocalizedTime(self, time, long_format=None):
