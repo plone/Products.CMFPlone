@@ -40,14 +40,15 @@ class TestPortalStateView(GlobalsTestCase):
         self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'no')
         no = locales.getLocale('no', None, None)
         self.assertEquals(self.view.locale(), no)
-        
-    def test_is_rtl(self):
+
+    def test_is_not_rtl(self):
         self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'no')
         self.assertEquals(self.view.is_rtl(), False)
-        del self.app.REQUEST.__annotations__
+
+    def test_is_rtl(self):
         self.app.REQUEST.set('HTTP_ACCEPT_LANGUAGE', 'he')
         self.assertEquals(self.view.is_rtl(), True)
-        
+
     def test_member(self):
         self.assertEquals(self.view.member(), self.portal.portal_membership.getAuthenticatedMember())
         

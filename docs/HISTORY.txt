@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Fixed is_rtl test to work with new locale based approach.
+  [hannosch]
+
 - Adjusted dashboard to new controlpanel actions approach.
   [hannosch]
 
