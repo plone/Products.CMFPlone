@@ -99,9 +99,13 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals(2, len(r.published_events()))
 
     def test_all_events_link(self):
+        # if there is an 'events' object in the portal root, we expect
+        # the events portlet to link to it
         r = self.renderer(assignment=events.Assignment(count=5))
-        self.failUnless(r.all_events_link().endswith('/events'))
-        self.portal._delObject('events')
+        if r.have_events_folder:
+            self.failUnless(r.all_events_link().endswith('/events'))
+            self.portal._delObject('events')
+            
         r = self.renderer(assignment=events.Assignment(count=5))
         self.failUnless(r.all_events_link().endswith('/events_listing'))
         
