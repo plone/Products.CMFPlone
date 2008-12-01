@@ -6,6 +6,7 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.utils import hashPortletInfo
 
 from zope.interface import implements, Interface
@@ -14,16 +15,17 @@ from zope.contentprovider.interfaces import UpdateNotCalled
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from Acquisition import Explicit, aq_parent, aq_inner
-
+from Acquisition.interfaces import IAcquirer
+ 
 from Products.Five.browser import BrowserView 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.app.portlets.browser.interfaces import IManageColumnPortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from plone.app.portlets.interfaces import IDashboard, IPortletPermissionChecker
-
 
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
@@ -66,36 +68,72 @@ class EditPortletManagerRenderer(Explicit):
     def baseUrl(self):
         return self.__parent__.getAssignmentMappingUrl(self.manager)
 
+
     def portlets(self):
-        baseUrl = self.baseUrl()
         assignments = self._lazyLoadAssignments(self.manager)
-        data = []
+        return self.portlets_for_assignments(
+            assignments, self.manager, self.baseUrl())
+
+    def inherited_portlets(self):
+        context = aq_inner(self.context)
         
-        manager_name = self.manager.__name__
+        assignable = getMultiAdapter(
+            (context, self.manager), ILocalPortletAssignmentManager)
+        if assignable.getBlacklistStatus(CONTEXT_CATEGORY):
+            return ()
+
+        data = []
+        while not IPloneSiteRoot.providedBy(context):
+            if IAcquirer.providedBy(context):
+                context = aq_parent(context)
+            else:
+                context = context.__parent__
+                
+            # we get the contextual portlets view to access its
+            # utility methods
+            view = getMultiAdapter(
+                (context, self.request), name=self.__parent__.__name__)
+
+            assignments = view.getAssignmentsForManager(self.manager)
+            base_url = view.getAssignmentMappingUrl(self.manager)
+            
+            data.extend(
+                self.portlets_for_assignments(
+                assignments, self.manager, base_url))
+                        
+        return data
+        
+    def portlets_for_assignments(self, assignments, manager, base_url):
         category = self.__parent__.category
         key = self.__parent__.key
         
+        data = []
         for idx in range(len(assignments)):
             name = assignments[idx].__name__
             
-            editview = queryMultiAdapter((assignments[idx], self.request), name='edit', default=None)
+            editview = queryMultiAdapter(
+                (assignments[idx], self.request), name='edit', default=None)
+            
             if editview is None:
                 editviewName = ''
             else:
-                editviewName = '%s/%s/edit' % (baseUrl, name)
+                editviewName = '%s/%s/edit' % (base_url, name)
             
-            portlet_hash = hashPortletInfo(dict(manager=manager_name, category=category, 
-                                                key=key, name=name,))
+            portlet_hash = hashPortletInfo(
+                dict(manager=manager.__name__, category=category, 
+                     key=key, name=name,))
             
-            data.append( {'title'      : assignments[idx].title,
-                          'editview'   : editviewName,
-                          'hash'       : portlet_hash,
-                          'up_url'     : '%s/@@move-portlet-up?name=%s' % (baseUrl, name),
-                          'down_url'   : '%s/@@move-portlet-down?name=%s' % (baseUrl, name),
-                          'delete_url' : '%s/@@delete-portlet?name=%s' % (baseUrl, name),
-                          })
+            data.append({
+                'title'      : assignments[idx].title,
+                'editview'   : editviewName,
+                'hash'       : portlet_hash,
+                'up_url'     : '%s/@@move-portlet-up?name=%s' % (base_url, name),
+                'down_url'   : '%s/@@move-portlet-down?name=%s' % (base_url, name),
+                'delete_url' : '%s/@@delete-portlet?name=%s' % (base_url, name),
+                })
         if len(data) > 0:
             data[0]['up_url'] = data[-1]['down_url'] = None
+            
         return data
         
     def addable_portlets(self):

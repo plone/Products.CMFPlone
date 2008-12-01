@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.6 (Unreleased)
 
+    - Added inherited portlets to manage view. This implements
+      http://dev.plone.org/plone/ticket/8426.
+      [malthe]
+    
     - Modified a macro call in portlets-pageform.pt for forwards
       compatibility with Zope 2.12.
       [davisagli]
