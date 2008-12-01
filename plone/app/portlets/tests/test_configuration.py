@@ -339,13 +339,20 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(0, len(mapping))
 
     def testBlacklisting(self):
-        news = self.portal.news
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
         
-        assignable = getMultiAdapter((news, manager), ILocalPortletAssignmentManager)
-        self.assertEquals(True, assignable.getBlacklistStatus(CONTEXT_CATEGORY))
-        self.assertEquals(False, assignable.getBlacklistStatus(GROUP_CATEGORY))
-        self.assertEquals(None, assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY))
+        if 'news' in self.portal.objectIds():
+            news = self.portal['news']
+        
+            assignable = getMultiAdapter(
+                (news, manager), ILocalPortletAssignmentManager)
+            
+            self.assertEquals(
+                True, assignable.getBlacklistStatus(CONTEXT_CATEGORY))
+            self.assertEquals(
+                False, assignable.getBlacklistStatus(GROUP_CATEGORY))
+            self.assertEquals(
+                None, assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY))
 
     def testPurgeMethod(self):
         sm = getSiteManager()
