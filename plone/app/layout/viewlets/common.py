@@ -129,8 +129,6 @@ class LogoViewlet(ViewletBase):
     def update(self):
         super(LogoViewlet, self).update()
 
-        self.navigation_root_url = self.portal_state.navigation_root_url()
-
         portal = self.portal_state.portal()
         logoName = portal.restrictedTraverse('base_properties').logoName
         self.logo_tag = portal.restrictedTraverse(logoName).tag()
@@ -206,8 +204,6 @@ class PathBarViewlet(ViewletBase):
 
     def update(self):
         super(PathBarViewlet, self).update()
-
-        self.navigation_root_url = self.portal_state.navigation_root_url()
 
         self.is_rtl = self.portal_state.is_rtl()
 
