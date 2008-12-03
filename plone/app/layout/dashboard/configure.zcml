@@ -5,7 +5,7 @@
     <include package="plone.app.portlets" />
 
     <browser:page
-        for="Products.CMFCore.interfaces.ISiteRoot"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
         name="dashboard"
         permission="plone.app.portlets.ManageOwnPortlets"
         class=".dashboard.DashboardView"

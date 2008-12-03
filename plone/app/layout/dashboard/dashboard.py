@@ -10,7 +10,7 @@ from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
 
 class DashboardView(BrowserView):
-    """Power the dasbhard
+    """Power the dashboard
     """
     
     @memoize
