@@ -7,6 +7,7 @@ from zope.schema import Bool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.ActionInformation import Action
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
+from Products.CMFPlone.utils import safe_hasattr
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
@@ -110,29 +111,35 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
         portal_actions = getToolByName(self.portal, 'portal_actions', None)
         if portal_actions is not None:
             object_category = getattr(portal_actions, 'user', None)
-            if value:
+            if value and not safe_hasattr(object_category, 'mystuff'):
                 # add action
-                if 'mystuff' not in object_category.objectIds():
-                    new_action = Action('mystuff',
-                                        title=_(u'My Folder'),
-                                        description='',
-                                        url_expr='string:${portal/portal_membership/getHomeUrl}',
-                                        available_expr='python:(member is not None) and \
-                                        (portal.portal_membership.getHomeFolder() is not None) ',
-                                        permissions=('View',),
-                                        visible=True,
-                                        i18n_domain='plone')
-                    object_category._setObject('mystuff', new_action)
-                    # move action to top a least before the logout action
-                    object_category.moveObjectsToTop(('mystuff'))
-            else:
-                # delete action
-                if 'mystuff' in object_category.objectIds():
-                    object_category.manage_delObjects(ids=['mystuff'])
-
+                self.add_mystuff_action(object_category)
+            elif safe_hasattr(object_category, 'mystuff'):
+                a = getattr(object_category, 'mystuff')
+                # show action
+                if value:
+                    a.visible = 1
+                # hide action
+                if not value:
+                    a.visible = 0
 
     enable_user_folders = property(get_enable_user_folders,
                                    set_enable_user_folders)
+
+
+    def add_mystuff_action(self, object_category):
+        new_action = Action('mystuff',
+                            title=_(u'My Folder'),
+                            description='',
+                            url_expr='string:${portal/portal_membership/getHomeUrl}',
+                            available_expr='python:(member is not None) and \
+                            (portal.portal_membership.getHomeFolder() is not None) ',
+                            permissions=('View',),
+                            visible=True,
+                            i18n_domain='plone')
+        object_category._setObject('mystuff', new_action)
+        # move action to top, at least before the logout action
+        object_category.moveObjectsToTop(('mystuff'))
 
 
     def get_allow_anon_views_about(self):
