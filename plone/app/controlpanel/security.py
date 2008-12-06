@@ -116,12 +116,7 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
                 self.add_mystuff_action(object_category)
             elif safe_hasattr(object_category, 'mystuff'):
                 a = getattr(object_category, 'mystuff')
-                # show action
-                if value:
-                    a.visible = 1
-                # hide action
-                if not value:
-                    a.visible = 0
+                a.visible = bool(value)    # show/hide action
 
     enable_user_folders = property(get_enable_user_folders,
                                    set_enable_user_folders)
