@@ -103,10 +103,8 @@ class SkipLinksViewlet(ViewletBase):
 class SiteActionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('site_actions.pt')
 
-    def update(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        self.site_actions = context_state.actions('site_actions')
+    def controlpanel(self):
+        return getSecurityManager().checkPermission('Manage portal', self.context)
 
 
 class SearchBoxViewlet(ViewletBase):
@@ -248,11 +246,6 @@ class ContentActionsViewlet(ViewletBase):
         if icon is None:
             icon = self.getIconFor('content_actions', action['id'])
         return icon
-
-
-class FooterViewlet(ViewletBase):
-
-    render = ViewPageTemplateFile('footer.pt')
 
 
 class ColophonViewlet(ViewletBase):

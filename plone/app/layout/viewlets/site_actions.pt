@@ -1,22 +1,30 @@
-<ul xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+<ul xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     xmlns:tal="http://xml.zope.org/namespaces/tal"
-    id="portal-siteactions"
-    tal:define="accesskeys python: {'sitemap' : '3', 'accessibility' : '0', 'contact' : '9'};"
-    tal:condition="view/site_actions"
-    i18n:domain="plone">
+    i18n:domain="plone"
+    id="portal-siteactions">
 
-    <li tal:repeat="saction view/site_actions"
-        tal:attributes="id string:siteaction-${saction/id}"><a
-           href=""
-           tal:define="title saction/title;
-                       id saction/id;
-                       accesskey python: accesskeys.get(id, '');"
-           i18n:attributes="title"
-           i18n:translate=""
-           tal:content="title"
-           tal:attributes="href saction/url;
-                           title title;
-                           accesskey accesskey;"
-           >Site action</a></li>
+    <li id="siteaction-sitemap">
+      <a href="#"
+         tal:attributes="href string:${view/site_url}/sitemap;"
+         title="Site Map"
+         i18n:attributes="title;"
+         i18n:translate="">Site Map</a>
+    </li>
+
+    <li id="siteaction-contact">
+      <a href="#"
+         tal:attributes="href string:${view/site_url}/contact-info;"
+         title="Contact"
+         i18n:attributes="title;"
+         i18n:translate="">Contact</a>
+    </li>
+
+    <li id="siteaction-plone_setup"
+        tal:condition="view/controlpanel">
+      <a href="#"
+         tal:attributes="href string:${view/site_url}/@@overview-controlpanel;"
+         title="Site Setup"
+         i18n:attributes="title;"
+         i18n:translate="">Site Setup</a>
+    </li>
 </ul>

@@ -4,6 +4,13 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Removed footer viewlet and simplified colophon, so they might actually be
+  used for public sites. The site actions viewlet uses simple static HTML now.
+  Add your own viewlet if you want to customize the output. Also removed the
+  link to the accessibility into page, we cannot make any claims about this
+  for the sites being developed with Plone.
+  [hannosch]
+
 - Fixed is_rtl test to work with new locale based approach.
   [hannosch]
 

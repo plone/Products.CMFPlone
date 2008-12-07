@@ -207,14 +207,6 @@
         permission="zope2.View" 
         />
 
-    <!-- Render the content history -->
-    <!-- <browser:viewlet
-        name="plone.belowcontentbody.contenthistory"
-        manager=".interfaces.IBelowContentBody"
-        class=".content.ContentHistoryViewlet"
-        permission="zope2.View" 
-        /> -->
-
     <!-- Render the document actions -->
     <browser:viewlet
         name="plone.abovecontenttitle.documentactions"
@@ -266,16 +258,7 @@
         class=".common.TableOfContentsViewlet"
         permission="zope2.View" 
         />
-        
-    <!-- Footer -->
-    <browser:viewlet
-        name="plone.footer"
-        for="*"
-        manager=".interfaces.IPortalFooter"
-        class=".common.FooterViewlet"
-        permission="zope.Public"
-        />
-        
+
     <!-- Colophon -->
     <browser:viewlet
         name="plone.colophon"
