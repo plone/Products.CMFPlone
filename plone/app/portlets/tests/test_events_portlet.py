@@ -101,14 +101,16 @@ class TestRenderer(PortletsTestCase):
     def test_all_events_link(self):
         # if there is an 'events' object in the portal root, we expect
         # the events portlet to link to it
-        r = self.renderer(assignment=events.Assignment(count=5))
-        if r.have_events_folder:
-            self.failUnless(r.all_events_link().endswith('/events'))
+        if 'events' in self.portal:
             self.portal._delObject('events')
-            
         r = self.renderer(assignment=events.Assignment(count=5))
         self.failUnless(r.all_events_link().endswith('/events_listing'))
-        
+
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', 'events')
+        r = self.renderer(assignment=events.Assignment(count=5))
+        self.failUnless(r.all_events_link().endswith('/events'))
+
     def test_prev_events_link(self):
         r = self.renderer(assignment=events.Assignment(count=5))
         if r.have_events_folder:

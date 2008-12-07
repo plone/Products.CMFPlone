@@ -75,20 +75,25 @@ class TestRenderer(PortletsTestCase):
         setSite(self.portal)
 
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
-        context = context or self.folder
-        request = request or self.folder.REQUEST
-        view = view or self.folder.restrictedTraverse('@@plone')
+        context = context or self.portal
+        request = request or self.app.REQUEST
+        view = view or self.portal.restrictedTraverse('@@plone')
         manager = manager or getUtility(IPortletManager, name='plone.rightcolumn', context=self.portal)
         assignment = assignment or recent.Assignment()
-
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def test_recent_items(self):
-        r = self.renderer(assignment=recent.Assignment(count=5))
-        self.assertEquals(5, len(r.recent_items()))
+        self.setRoles(['Manager'])
+        if 'Members' in self.portal:
+            self.portal._delObject('Members')
+            self.folder = None
+        self.portal.invokeFactory('Document', 'doc1')
+        self.portal.invokeFactory('Document', 'doc2')
+        r = self.renderer(assignment=recent.Assignment())
+        self.assertEquals(2, len(r.recent_items()))
 
     def test_recently_modified_link(self):
-        r = self.renderer(assignment=recent.Assignment(count=5))
+        r = self.renderer(assignment=recent.Assignment())
         self.failUnless(r.recently_modified_link().endswith('/recently_modified'))
 
 def test_suite():

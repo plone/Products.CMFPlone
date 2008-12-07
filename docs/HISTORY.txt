@@ -4,6 +4,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.1.6 (Unreleased)
 
+    - Made the test independent of default content created in a site. This
+      allows them to pass in both Plone 3.x and 4.x.
+      [hannosch]
+
     - Added inherited portlets to manage view. This implements
       http://dev.plone.org/plone/ticket/8426.
       [malthe]

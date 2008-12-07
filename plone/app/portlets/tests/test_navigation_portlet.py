@@ -72,9 +72,9 @@ class TestRenderer(PortletsTestCase):
         self.populateSite()
         
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
-        context = context or self.folder
-        request = request or self.folder.REQUEST
-        view = view or self.folder.restrictedTraverse('@@plone')
+        context = context or self.portal
+        request = request or self.app.REQUEST
+        view = view or self.portal.restrictedTraverse('@@plone')
         manager = manager or getUtility(IPortletManager, name='plone.leftcolumn', context=self.portal)
         assignment = assignment or navigation.Assignment(topLevel=0)
 
@@ -82,6 +82,15 @@ class TestRenderer(PortletsTestCase):
 
     def populateSite(self):
         self.setRoles(['Manager'])
+        if 'Members' in self.portal:
+            self.portal._delObject('Members')
+            self.folder = None
+        if 'news' in self.portal:
+            self.portal._delObject('news')
+        if 'events' in self.portal:
+            self.portal._delObject('events')
+        if 'front-page' in self.portal:
+            self.portal._delObject('front-page')
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
         self.portal.invokeFactory('Document', 'doc3')
@@ -206,14 +215,14 @@ class TestRenderer(PortletsTestCase):
         # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
         # is set.
         f = dummy.NonStructuralFolder('ns_folder')
-        self.folder._setObject('ns_folder', f)
-        self.portal.portal_catalog.reindexObject(self.folder.ns_folder)
-        self.portal.portal_catalog.reindexObject(self.folder)
-        view = self.renderer(self.folder.ns_folder)
+        self.portal.folder1._setObject('ns_folder', f)
+        self.portal.portal_catalog.reindexObject(self.portal.folder1.ns_folder)
+        self.portal.portal_catalog.reindexObject(self.portal.folder1)
+        view = self.renderer(self.portal.folder1.ns_folder)
         tree = view.getNavTree()
-        self.assertEqual(tree['children'][0]['children'][0]['children'][0]['item'].getPath(),
-                                '/plone/Members/test_user_1_/ns_folder')
-        self.assertEqual(len(tree['children'][0]['children'][0]['children'][0]['children']), 0)
+        self.assertEqual(tree['children'][3]['children'][3]['item'].getPath(),
+                                '/plone/folder1/ns_folder')
+        self.assertEqual(len(tree['children'][3]['children'][3]['children']), 0)
 
     def testTopLevel(self):
         view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(topLevel=1))
@@ -337,14 +346,14 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.failUnless(tree.has_key('children'))
         #Should only contain current object
-        self.assertEqual(len(tree['children']), 4)
+        self.assertEqual(len(tree['children']), 1)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.renderer(self.portal.folder2)
         tree = view.getNavTree()
         #Should only contain current object and published folder
-        self.assertEqual(len(tree['children']), 5)
+        self.assertEqual(len(tree['children']), 2)
 
     def testStateFiltering(self):
         # Test Navtree workflow state filtering
@@ -358,14 +367,14 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.failUnless(tree.has_key('children'))
         #Should only contain current object
-        self.assertEqual(len(tree['children']), 4)
+        self.assertEqual(len(tree['children']), 1)
         #change workflow for folder1
         workflow.doActionFor(self.portal.folder1, 'publish')
         self.portal.folder1.reindexObject()
         view = self.renderer(self.portal.folder2)
         tree = view.getNavTree()
         #Should only contain current object and published folder
-        self.assertEqual(len(tree['children']), 5)
+        self.assertEqual(len(tree['children']), 2)
     
     def testPrunedRootNode(self):
         ntp=self.portal.portal_properties.navtree_properties

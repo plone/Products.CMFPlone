@@ -99,10 +99,13 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals(2, len(r.published_news_items()))
 
     def test_all_news_link(self):
+        if 'news' in self.portal:
+            self.portal._delObject('news')
         r = self.renderer(assignment=news.Assignment(count=5))
-        self.failUnless(r.all_news_link().endswith('/news'))
-        self.portal._delObject('news')
         self.assertEqual(r.all_news_link(), None)
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', 'news')
+        self.failUnless(r.all_news_link().endswith('/news'))
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -28,10 +28,10 @@ class TestAssignmentFromKey(PortletsTestCase):
                                                        name=user_name)
 
     def testGetPortletFromContext(self):
-        mapping = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)
+        mapping = getMultiAdapter((self.portal, self.manager,), IPortletAssignmentMapping)
         c = classic.Assignment()
         mapping['foo'] = c
-        path = '/'.join(self.folder.getPhysicalPath())
+        path = '/'.join(self.portal.getPhysicalPath())
         a = assignment_from_key(self.portal, u'plone.leftcolumn', CONTEXT_CATEGORY, path, 'foo')
         self.assertEquals(c, a)
 

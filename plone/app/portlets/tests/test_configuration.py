@@ -98,7 +98,8 @@ zcml_string = """\
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:plone="http://namespaces.plone.org/plone"
            xmlns:gs="http://namespaces.zope.org/genericsetup"
-           package="plone.app.portlets">
+           package="plone.app.portlets"
+           i18n_domain="test">
 
     <plone:portlet
         name="portlets.test.Test"
