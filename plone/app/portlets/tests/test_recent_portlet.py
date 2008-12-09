@@ -84,6 +84,12 @@ class TestRenderer(PortletsTestCase):
 
     def test_recent_items(self):
         self.setRoles(['Manager'])
+        if 'news' in self.portal:
+            self.portal._delObject('news')
+        if 'events' in self.portal:
+            self.portal._delObject('event')
+        if 'front-page' in self.portal:
+            self.portal._delObject('front-page')
         if 'Members' in self.portal:
             self.portal._delObject('Members')
             self.folder = None
