@@ -29,6 +29,9 @@ class SiteMapTestCase(FunctionalTestCase):
         self.ptool = self.getToolByName('portal_properties')
         self.site_props = self.ptool.site_properties
 
+        self.wf = self.portal.portal_workflow
+        self.wf.setChainForPortalTypes(['Folder'], ['simple_publication_workflow'])
+
         self.loginAsPortalOwner()
         self.portal.invokeFactory('Folder', 'f1')
         self.portal.portal_workflow.doActionFor(self.portal.f1, 'submit')
