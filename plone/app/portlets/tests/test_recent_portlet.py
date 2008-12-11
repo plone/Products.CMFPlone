@@ -87,7 +87,7 @@ class TestRenderer(PortletsTestCase):
         if 'news' in self.portal:
             self.portal._delObject('news')
         if 'events' in self.portal:
-            self.portal._delObject('event')
+            self.portal._delObject('events')
         if 'front-page' in self.portal:
             self.portal._delObject('front-page')
         if 'Members' in self.portal:
