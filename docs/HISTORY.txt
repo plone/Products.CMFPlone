@@ -4,6 +4,10 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Replaced portal_actionicons and getIconFor handling by relying on the icon
+  attribute of each action directly.
+  [hannosch]
+
 - Removed footer viewlet and simplified colophon, so they might actually be
   used for public sites. The site actions viewlet uses simple static HTML now.
   Add your own viewlet if you want to customize the output. Also removed the

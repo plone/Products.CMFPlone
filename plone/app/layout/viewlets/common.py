@@ -228,11 +228,6 @@ class ContentActionsViewlet(ViewletBase):
                                         name=u'plone_context_state')
 
         self.object_actions = context_state.actions('object_actions')
-
-        plone_utils = getToolByName(context, 'plone_utils')
-        self.getIconFor = plone_utils.getIconFor
-
-        self.portal_actionicons = getToolByName(context, 'portal_actionicons')
         
         # The drop-down menus are pulled in via a simple content provider
         # from plone.app.contentmenu. This behaves differently depending on
@@ -240,12 +235,6 @@ class ContentActionsViewlet(ViewletBase):
         # provides that marker, we should do it here as well.
         if IViewView.providedBy(self.__parent__):
             alsoProvides(self, IViewView)
-        
-    def icon(self, action):
-        icon = action.get('icon', None)
-        if icon is None:
-            icon = self.getIconFor('content_actions', action['id'])
-        return icon
 
 
 class ColophonViewlet(ViewletBase):

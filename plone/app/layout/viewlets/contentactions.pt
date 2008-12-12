@@ -14,7 +14,7 @@
                 tal:attributes="id string:contentaction-${action/id};">
 
                 <a class="" href=""
-                   tal:define="icon python:view.icon(action)"
+                   tal:define="icon action/icon"
                    tal:attributes="href action/url;">
 
                     <img alt="" src=""
