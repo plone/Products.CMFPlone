@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Micro-optimize the personal_bar viewlet.
+  [hannosch]
+
 - Reduced the GlobalSectionsViewlet implementation to a simple static template
   showing a link to the root. The more common use-case is to have a static
   list of sections that do not necessarily match the content of a particular

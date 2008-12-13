@@ -156,19 +156,15 @@ class PersonalBarViewlet(ViewletBase):
         context_state = getMultiAdapter((context, self.request),
                                         name=u'plone_context_state')
 
-        sm = getSecurityManager()
-
         self.user_actions = context_state.actions('user')
-
-        plone_utils = getToolByName(context, 'plone_utils')
-        self.getIconFor = plone_utils.getIconFor
-
         self.anonymous = self.portal_state.anonymous()
+        self.available = self.user_actions or not self.anonymous
 
         if not self.anonymous:
             member = self.portal_state.member()
             userid = member.getId()
-            
+
+            sm = getSecurityManager()
             if sm.checkPermission('Portlets: Manage own portlets', context):
                 self.homelink_url = self.site_url + '/dashboard'
             else:

@@ -7,7 +7,7 @@
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
 <ul id="portal-personaltools"
-    tal:condition="python:view.user_actions or not view.anonymous"
+    tal:condition="python:view.available"
     class="visualInline">
    <tal:block condition="not: view/anonymous">
        <li><a 
