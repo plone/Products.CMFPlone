@@ -145,14 +145,6 @@ class LogoViewlet(ViewletBase):
 class GlobalSectionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('sections.pt')
 
-    def update(self):
-        context = aq_inner(self.context)
-        tabs_view = getMultiAdapter((context, self.request),
-                                           name='portal_tabs_view')
-        self.portal_tabs = tabs_view.topLevelTabs()
-        self.selected_tabs = tabs_view.selectedTabs(tabs=self.portal_tabs)
-        self.selected_portal_tab = self.selected_tabs['portal']
-
 
 class PersonalBarViewlet(ViewletBase):
     index = ViewPageTemplateFile('personal_bar.pt')
