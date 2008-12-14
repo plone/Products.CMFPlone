@@ -4,6 +4,11 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Modified user profile item on the dashboard to use an image tag
+  instead of a background image. This makes it more consistent with
+  the other list items and easier to style for RTL scripts.
+  [emanlove]
+
 - Micro-optimize the personal_bar viewlet.
   [hannosch]
 
