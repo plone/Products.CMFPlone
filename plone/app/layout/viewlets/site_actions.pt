@@ -5,7 +5,7 @@
 
     <li id="siteaction-sitemap">
       <a href="#"
-         tal:attributes="href string:${view/site_url}/sitemap;"
+         tal:attributes="href string:${view/site_url}/sitemap"
          title="Site Map"
          i18n:attributes="title;"
          i18n:translate="">Site Map</a>
@@ -13,7 +13,7 @@
 
     <li id="siteaction-contact">
       <a href="#"
-         tal:attributes="href string:${view/site_url}/contact-info;"
+         tal:attributes="href string:${view/site_url}/contact-info"
          title="Contact"
          i18n:attributes="title;"
          i18n:translate="">Contact</a>
@@ -22,7 +22,7 @@
     <li id="siteaction-plone_setup"
         tal:condition="view/controlpanel">
       <a href="#"
-         tal:attributes="href string:${view/site_url}/@@overview-controlpanel;"
+         tal:attributes="href string:${view/site_url}/@@overview-controlpanel"
          title="Site Setup"
          i18n:attributes="title;"
          i18n:translate="">Site Setup</a>
