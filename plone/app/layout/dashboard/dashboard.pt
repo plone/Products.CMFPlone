@@ -32,7 +32,8 @@
 
         <h5 class="hiddenStructure">Views</h5>
         
-        <ul class="contentViews">
+        <ul id="content-views"
+            class="contentViews">
           <li class="selected">
             <a href=""
                tal:attributes="href string:${portal_url}/dashboard"
@@ -49,7 +50,7 @@
           &nbsp;
         </div>
 
-        <div class="documentContent" id="content">
+        <div class="documentContent" id="region-content">
 
             <a name="documentContent"></a>
                     
