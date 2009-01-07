@@ -8,7 +8,7 @@
             ><a href="" 
                tal:content="tab/name"
                tal:attributes="href tab/url;
-                               title tab/description|nothing">
+                               title tab/description|nothing;">
             Tab Name
             </a></li></tal:tabs>
     </ul>
