@@ -43,7 +43,9 @@
         <span class="portletBottomRight"></span>
     </dd>
     <tal:block condition="not:view/all_news_link">
+    <dd class="portletFooter">
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
+    </dd>
     </tal:block>
 </dl>
