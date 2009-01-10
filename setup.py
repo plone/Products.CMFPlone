@@ -23,13 +23,34 @@ setup(name='plone.app.layout',
       namespace_packages=['plone', 'plone.app'],
       include_package_data=True,
       zip_safe=False,
+      extras_require=dict(
+        test=[
+            'plone.locking',
+            'plone.app.controlpanel',
+            'zope.annotation',
+            'zope.publisher',
+            'zope.testing',
+            'Products.PloneTestCase',
+        ]
+      ),
       install_requires=[
         'setuptools',
-        'plone.app.viewletmanager>=1.2dev',
+        'plone.app.viewletmanager>=1.2',
         'plone.memoize',
         'plone.portlets',
+        'zope.component',
+        'zope.deprecation',
+        'zope.dottedname',
+        'zope.i18n',
+        'zope.interface',
+        'zope.schema',
+        'zope.viewlet',
+        'zope.app.pagetemplate',
+        'Plone',
+        'Products.CMFCore',
+        'Products.CMFDefault',
+        # 'Acquisition',
+        # 'DateTime',
+        # 'Zope2',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )
