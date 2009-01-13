@@ -4,8 +4,10 @@ Changelog
 1.1.8 - Unreleased
 -------------------------
 
-- ....
-
+- Added time_only for use with toLocalizedTime so that event_view now localizes
+  the start/end times if the start/end dates are the same. Closes
+  http://dev.plone.org/plone/ticket/8607
+  [jnelson, calvinhp]
 
 
 1.1.7 - December 15, 2008

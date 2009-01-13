@@ -88,11 +88,11 @@ class DocumentBylineViewlet(ViewletBase):
         return portal.restrictedTraverse('isExpired')(self.context)
 
     @memoize
-    def toLocalizedTime(self, time, long_format=None):
+    def toLocalizedTime(self, time, long_format=None, time_only = None):
         """Convert time to localized time
         """
         util = getToolByName(self.context, 'translation_service')
-        return util.ulocalized_time(time, long_format, self.context,
+        return util.ulocalized_time(time, long_format, time_only, self.context,
                                     domain='plonelocales')
 
     index = ViewPageTemplateFile("document_byline.pt")
