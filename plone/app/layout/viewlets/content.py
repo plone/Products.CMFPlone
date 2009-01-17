@@ -202,9 +202,9 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                       )
             if can_diff:
                 if vdata.version_id>0:
-                    info["diff_previous_url"]=("%s/version_diff?version_id1=%s&version_id2=%s" %
+                    info["diff_previous_url"]=("%s/@@history?one=%s&two=%s" %
                             (context_url, vdata.version_id, vdata.version_id-1))
-                info["diff_current_url"]=("%s/version_diff?version_id1=current&version_id2=%s" %
+                info["diff_current_url"]=("%s/@@history?one=current&version_id2=%s" %
                             (context_url, vdata.version_id))
             info.update(self.getUserInfo(userid))
             return info

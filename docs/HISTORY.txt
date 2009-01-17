@@ -1,8 +1,19 @@
 Changelog
 =========
 
-1.1.8 - Unreleased
--------------------------
+1.2 - Unreleased
+----------------
+
+- Default to using the content history viewlet instead of the workflow history
+  viewlet.
+  [wichert]
+
+- Add options to show differences between consecutive versions, and revert to
+  and preview older revisions to the content history viewlet.
+  [wichert]
+
+- Use the new history view from CMFEditions instead of the crufty old form.
+  [wichert]
 
 - Added time_only for use with toLocalizedTime so that event_view now localizes
   the start/end times if the start/end dates are the same. Closes

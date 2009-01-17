@@ -28,6 +28,7 @@ setup(name='plone.app.layout',
         'plone.app.viewletmanager>=1.2dev',
         'plone.memoize',
         'plone.portlets',
+        'Products.CMFEditions >=1.2dev-r79221'
       ],
       entry_points="""
       # -*- Entry points: -*-
