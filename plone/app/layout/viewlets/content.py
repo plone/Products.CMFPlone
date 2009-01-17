@@ -7,7 +7,9 @@ from plone.memoize.instance import memoize
 from plone.app.layout.viewlets import ViewletBase
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
+from Products.CMFEditions.Permissions import AccessPreviousVersions
 
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -99,20 +101,17 @@ class DocumentBylineViewlet(ViewletBase):
 
 
 class WorkflowHistoryViewlet(ViewletBase):
-    def update(self):
-        super(WorkflowHistoryViewlet, self).update()
-        self.tools = getMultiAdapter((self.context, self.request),
-                                     name='plone_tools')
+
     @memoize
-    def workflowHistory(self):
+    def workflowHistory(self, complete=False):
         """Return workflow history of this context.
 
         Taken from plone_scripts/getWorkflowHistory.py
         """
-        workflow = self.tools.workflow()
-        membership = self.tools.membership()
+        workflow = getToolByName(self.context, 'portal_workflow')
+        membership = getToolByName(self.context, 'portal_membership')
 
-        history = []
+        review_history = []
 
         # check if the current user has the proper permissions
         if (membership.checkPermission('Request review', self.context) or
@@ -121,16 +120,23 @@ class WorkflowHistoryViewlet(ViewletBase):
                 # get total history
                 review_history = workflow.getInfoFor(self.context, 'review_history')
 
-                # filter out the irrelevant stuff
-                review_history = [r for r in review_history if r['action']]
+                if not complete:
+                    # filter out automatic transitions.
+                    review_history = [r for r in review_history if r['action']]
+                else:
+                    review_history = list(review_history)
+
                 for r in review_history:
+                    r['type'] = 'workflow'
                     r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
                                                                                  self.context.portal_type)
                     actorid = r['actor']
                     r['actorid'] = actorid
                     if actorid is None:
                         # action performed by an anonymous user
-                        r['actor'] = {'username': _(u'label_anonymous_user', default=u'Anonymous User')}
+                        anon = _(u'label_anonymous_user',
+                                 default=u'Anonymous User')
+                        r['actor'] = {'username': anon, 'fullname': anon}
                         r['actor_home'] = ''
                     else:
                         r['actor'] = membership.getMemberInfo(actorid)
@@ -140,13 +146,79 @@ class WorkflowHistoryViewlet(ViewletBase):
                             # member info is not available
                             # the user was probably deleted
                             r['actor_home'] = ''
-                history = review_history
-                history.reverse()
+                review_history.reverse()
 
             except WorkflowException:
                 log( 'plone.app.layout.viewlets.content: '
                      '%s has no associated workflow' % self.context.absolute_url(), severity=logging.DEBUG)
 
-        return history
+        return review_history
 
     index = ViewPageTemplateFile("review_history.pt")
+
+
+class ContentHistoryViewlet(WorkflowHistoryViewlet):
+    index = ViewPageTemplateFile("content_history.pt")
+
+    @memoize
+    def getUserInfo(self, userid):
+        mt = getToolByName(self.context, 'portal_membership')
+        info=mt.getMemberInfo(userid)
+        if info is None:
+            return dict(actor_home="",
+                        actor=dict(fullname=userid))
+
+        if not info.get("fullname", None):
+            info["fullname"]=userid
+
+        return dict(actor=info,
+                    actor_home="%s/author/%s" % (self.site_url, userid))
+
+    @memoize
+    def revisionHistory(self):
+        context = aq_inner(self.context)
+        rt = getToolByName(context, "portal_repository")
+        allowed = _checkPermission(AccessPreviousVersions, context)
+        if not allowed:
+            return []
+        context_url = context.absolute_url()
+        version_history=rt.getHistory(context, countPurged=False);
+        can_diff = getToolByName(context, "portal_diff", None) is not None
+
+        def morphVersionDataToHistoryFormat(vdata):
+            userid=vdata.sys_metadata["principal"]
+            info=dict(type='versioning',
+                      action=_(u"edit"),
+                      transition_title=_(u"Edit"),
+                      actorid=userid,
+                      time=vdata.sys_metadata["timestamp"],
+                      comments=vdata.comment,
+                      version_id=vdata.version_id,
+                      review_state=vdata.sys_metadata["review_state"],
+                      preview_url="%s/versions_history_form?version_id=%s#version_preview" %
+                                  (context_url, vdata.version_id),
+                      revert_url="%s/revertversion?version_id=%s#" %
+                                  (context_url, vdata.version_id),
+                      )
+            if can_diff:
+                if vdata.version_id>0:
+                    info["diff_previous_url"]=("%s/version_diff?version_id1=%s&version_id2=%s" %
+                            (context_url, vdata.version_id, vdata.version_id-1))
+                info["diff_current_url"]=("%s/version_diff?version_id1=current&version_id2=%s" %
+                            (context_url, vdata.version_id))
+            info.update(self.getUserInfo(userid))
+            return info
+
+        version_history=[morphVersionDataToHistoryFormat(h)
+                            for h in version_history]
+
+        return version_history
+
+
+    @memoize
+    def fullHistory(self):
+        history=self.workflowHistory(complete=True) + self.revisionHistory()
+        history.sort(key=lambda x: x["time"], reverse=True)
+        return history
+
+
