@@ -28,7 +28,7 @@
                     tal:define="memberinfo mtool/getMemberInfo;
                                 name python:memberinfo['fullname'] or member.getId() or member.getId()">
 
-    <div class="documentEditable">
+    <div id="region-content" class="documentEditable">
 
         <h5 class="hiddenStructure">Views</h5>
         
