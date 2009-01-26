@@ -92,8 +92,12 @@ class DocumentBylineViewlet(ViewletBase):
         """Convert time to localized time
         """
         util = getToolByName(self.context, 'translation_service')
-        return util.ulocalized_time(time, long_format, time_only, self.context,
-                                    domain='plonelocales')
+        try:
+            return util.ulocalized_time(time, long_format, time_only, self.context,
+                                        domain='plonelocales')
+        except TypeError: # Plone 3.1 has no time_only argument
+            return util.ulocalized_time(time, long_format, self.context,
+                                        domain='plonelocales')
 
     index = ViewPageTemplateFile("document_byline.pt")
 
