@@ -9,7 +9,7 @@ Changelog
   http://dev.plone.org/plone/ticket/8607
   [jnelson, calvinhp]
 
-- Fixed Plone 3.1 backward compatiblity of above.
+- Fixed Plone 3.1 backward compatibility of above.
   [stefan]
 
 
