@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-accountsettings.py
+profilesettings.py
 """
 
 #import warnings

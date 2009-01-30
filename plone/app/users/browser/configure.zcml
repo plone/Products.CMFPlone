@@ -4,6 +4,8 @@
     xmlns:five="http://namespaces.zope.org/five"
     i18n_domain="plone.app.users">
 
+  <adapter factory=".userdata.UserDataPanelAdapter" />
+
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal_preferences"
@@ -16,9 +18,8 @@
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="user_data"
-      class=".userdata.UserDataPane"
+      class=".userdata.UserDataPanel"
       permission="zope.Public"
-      allowed_interface=".interfaces.IUserDataPane"
       template="userdata.pt"
       />
 
@@ -28,7 +29,6 @@
       class=".profilesettings.ProfileSettingsPane"
       permission="zope.Public"
       allowed_interface=".interfaces.IProfileSettingsPane"
-      template="profilesettings.pt"
       />
 
 
