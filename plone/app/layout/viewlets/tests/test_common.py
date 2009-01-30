@@ -17,7 +17,7 @@ class TestViewletBase(ViewletsTestCase):
         viewlet = ViewletBase(context, request, None, None)
         viewlet.update()
         self.assertEqual(viewlet.site_url, "http://nohost/plone")
-        self.assertEqual(viewlet.navigation_url, "http://nohost/plone/f1")
+        self.assertEqual(viewlet.navigation_root_url, "http://nohost/plone/f1")
 
 def test_suite():
     suite = unittest.TestSuite()

@@ -38,7 +38,7 @@ class ViewletBase(BrowserView):
         self.portal_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_portal_state')
         self.site_url = self.portal_state.portal_url()
-        self.navigation_url = self.portal_state.navigation_root_url()
+        self.navigation_root_url = self.portal_state.navigation_root_url()
 
     def render(self):
         # defer to index method, because that's what gets overridden by the template ZCML attribute
