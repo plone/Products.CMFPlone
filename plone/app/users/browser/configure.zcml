@@ -11,24 +11,22 @@
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal_preferences"
       class=".personalpreferences.PersonalPreferencesPanel"
-      permission="zope.Public"
+      permission="cmf.SetOwnProperties"
       />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="user_data"
       class=".userdata.UserDataPanel"
-      permission="zope.Public"
+      permission="cmf.SetOwnProperties"
       />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="profile_settings"
       class=".profilesettings.ProfileSettingsPanel"
-      permission="zope.Public"
-      allowed_interface=".interfaces.IProfileSettingsPanel"
+      permission="cmf.SetOwnProperties"
       template="profilesettings.pt"
       />
-
 
 </configure>

@@ -44,9 +44,9 @@
         Portal status message
     </div>
 
-    <div id="dashboard-actions">
-        Muhaha
-    </div>
+    <h1>
+        This will typically be a dynamic page built with tiles...
+    </h1>
   </div>
 </div>
 

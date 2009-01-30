@@ -35,15 +35,16 @@ class AccountPanelForm(FieldsetsEditForm):
 
     @memoize
     def prepareFormTabs(self):
-        """Prepare the form tabs
+        """Prepare the form tabs ('personal prefs', 'user data', etc..)
         """
         context = aq_inner(self.context)
-        request_url = self.request['ACTUAL_URL']
 
         context_state = getMultiAdapter((context, self.request), name=u'plone_context_state')
         action_list = context_state.actions('accountpanel')
 
         tabs = []
+
+        request_url = self.request['ACTUAL_URL']
 
         for action in action_list:
             item = {'title'    : action['title'],
@@ -62,11 +63,13 @@ class AccountPanelForm(FieldsetsEditForm):
         CheckAuthenticator(self.request)
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
-            self.status = _("Changes saved.")
+            IStatusMessage(self.request).addStatusMessage(_("Changes saved."),
+                                                          type="info")
             notify(ConfigurationChangedEvent(self, data))
             self._on_save(data)
         else:
-            self.status = _("No changes made.")
+            IStatusMessage(self.request).addStatusMessage(_("No changes made."),
+                                                          type="info")
 
     @form.action(_(u'label_cancel', default=u'Cancel'),
                  validator=null_validator,
@@ -74,9 +77,6 @@ class AccountPanelForm(FieldsetsEditForm):
     def handle_cancel_action(self, action, data):
         IStatusMessage(self.request).addStatusMessage(_("Changes canceled."),
                                                       type="info")
-#        url = getMultiAdapter((self.context, self.request),
-#                              name='absolute_url')()
-#        self.request.response.redirect(url + '/@@overview-controlpanel')
         self.request.response.redirect(self.request['ACTUAL_URL'])
         return ''
         

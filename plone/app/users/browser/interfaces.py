@@ -8,14 +8,14 @@ Copyright (c) 2009 davconvent. All rights reserved.
 """
 
 from zope.interface import Interface
-from plone.app.controlpanel.interfaces import IPloneControlPanelView
+from plone.app.controlpanel.interfaces import IPloneControlPanelView, IPloneControlPanelForm
 
 class IAccountPanelView(IPloneControlPanelView):
     """A marker interface for views showing an account panel.
     """
 
 
-class IAccountPanelForm(IPloneControlPanelView):
+class IAccountPanelForm(IPloneControlPanelForm):
     """Forms using plone.app.users
     """
     
@@ -27,17 +27,3 @@ class IAccountPanelForm(IPloneControlPanelView):
         
         By default, does nothing.
         """
-
-
-class IPersonalPreferencesPanel(Interface):
-    """An interface for the account settings page.
-    """
-    
-class IUserDataPanel(Interface):
-    """An interface for the account settings page.
-    """
-    
-class IProfileSettingsPanel(Interface):
-    """An interface for the account settings page.
-    """
-    

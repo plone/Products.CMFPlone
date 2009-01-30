@@ -12,10 +12,6 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.formlib import form
 from zope.app.form.browser import SelectWidget
 
-#from Acquisition import aq_inner, aq_base
-#from Products.CMFPlone import utils
-from Products.Five.browser import BrowserView
-
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 
@@ -32,13 +28,8 @@ class IPersonalPreferences(Interface):
 
     """ Provide schema for pesonalize form """
 
-    fullname = schema.TextLine(title=u'Fullname',
-                               description=u'Full name')
 
-    email = schema.TextLine(title=u'Email',
-                               description=u'Email')
-    
-    home_page = schema.TextLine(title=u'Home page',
+    start_page = schema.TextLine(title=u'Start page',
                                description=u'Start page.')
 
     #wysiwyg_editor = schema.TextLine(title=u'Wysiwyg editor',
@@ -63,31 +54,13 @@ class PersonalPreferencesPanelAdapter(SchemaAdapterBase):
             self.context = mt.getAuthenticatedMember()
 
 
-    def get_email(self):
-        return self.context.getProperty('email', '')
+    def get_start_page(self):
+        return self.context.getProperty('start_page', '')
 
-    def set_email(self, value):
-        return self.context.setMemberProperties({'email': value})
+    def set_start_page(self, value):
+        return self.context.setMemberProperties({'start_page': value})
 
-    email = property(get_email, set_email)
-
-
-    def get_fullname(self):
-        return self.context.getProperty('fullname', '')
-
-    def set_fullname(self, value):
-        return self.context.setMemberProperties({'fullname': value})
-
-    fullname = property(get_fullname, set_fullname)
-
-
-    def get_home_page(self):
-        return self.context.getProperty('home_page', '')
-
-    def set_home_page(self, value):
-        return self.context.setMemberProperties({'home_page': value})
-
-    home_page = property(get_home_page, set_home_page)
+    start_page = property(get_start_page, set_start_page)
 
 
     def get_wysiwyg_editor(self):
@@ -107,9 +80,6 @@ class PersonalPreferencesPanelAdapter(SchemaAdapterBase):
 
     language = property(get_language, set_language)
 
-
-
-    
 
 def LanguageWidget(field, request):
 
