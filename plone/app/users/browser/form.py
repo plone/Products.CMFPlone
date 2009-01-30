@@ -8,7 +8,9 @@ from zope.formlib import form
 from plone.memoize.view import memoize
 from plone.fieldsets.form import FieldsetsEditForm
 from plone.app.form.validators import null_validator
+
 from plone.app.controlpanel import PloneMessageFactory as _
+from plone.app.controlpanel.events import ConfigurationChangedEvent
 
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -17,7 +19,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from plone.app.users.browser.interfaces import IAccountPanelView
 from plone.app.users.browser.interfaces import IAccountPanelForm
 
-#from plone.protect import CheckAuthenticator
+from plone.protect import CheckAuthenticator
 
 
 class AccountPanelView(BrowserView):
