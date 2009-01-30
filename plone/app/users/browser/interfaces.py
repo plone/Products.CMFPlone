@@ -13,3 +13,11 @@ class IPersonalPreferencesPane(Interface):
     """An interface for the account settings page.
     """
     
+class IUserDataPane(Interface):
+    """An interface for the account settings page.
+    """
+    
+class IProfileSettingsPane(Interface):
+    """An interface for the account settings page.
+    """
+    

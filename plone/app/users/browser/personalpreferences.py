@@ -15,7 +15,7 @@ from Products.Five.browser import BrowserView
 
 from plone.app.users.browser.interfaces import IPersonalPreferencesPane
 
-class personalPreferences(BrowserView):
+class PersonalPreferencesPane(BrowserView):
     implements(IPersonalPreferencesPane)
 
     

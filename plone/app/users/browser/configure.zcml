@@ -7,11 +7,29 @@
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal_preferences"
-      class=".personalpreferences.personalPreferences"
+      class=".personalpreferences.PersonalPreferencesPane"
       permission="zope.Public"
       allowed_interface=".interfaces.IPersonalPreferencesPane"
       template="personalpreferences.pt"
-      />    
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="user_data"
+      class=".userdata.UserDataPane"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IUserDataPane"
+      template="userdata.pt"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="profile_settings"
+      class=".profilesettings.ProfileSettingsPane"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IProfileSettingsPane"
+      template="profilesettings.pt"
+      />
 
 
 </configure>
