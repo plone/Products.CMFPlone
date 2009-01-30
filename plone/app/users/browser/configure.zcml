@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="plone.app.users">
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="personal_preferences"
+      class=".personalpreferences.personalPreferences"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IPersonalPreferencesPane"
+      template="personalpreferences.pt"
+      />    
+
+
+</configure>
