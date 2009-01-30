@@ -1,0 +1,81 @@
+Personal Preferences Account Panel
+==================================
+
+Viewing the account panel
+-------------------------
+
+Viewing the account panel should not be possible for anonymous users:
+
+    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
+    >>> 'Please log in' in self.browser.contents
+    True
+
+So let's register as member and login:
+
+    >>> self.loginAsMember()
+
+Now we should be able to access the account panel:
+
+    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
+    >>> 'Please log in' in self.browser.contents
+    False
+    >>> self.browser.url.endswith('@@personal_preferences')
+    True
+
+We have two controls, one for the start page and one for the language:
+
+    >>> self.browser.getControl(name='form.start_page').value
+    ''
+    >>> self.browser.getControl(name='form.language').value
+    ['en']
+
+Click the save button without making any changes:
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Please log in' in self.browser.contents
+    False
+    >>> self.browser.url.endswith('@@personal_preferences')
+    True
+
+We should get a status message:
+
+    >>> 'No changes made.' in self.browser.contents
+    True
+
+Now click the cancel button:
+
+    >>> self.browser.getControl(name="form.actions.cancel").click()
+    >>> self.browser.url.endswith('@@personal_preferences')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
+Modifying values
+----------------
+
+    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
+    >>> self.browser.getControl(name='form.start_page').value = '/Members/user'
+    >>> self.browser.getControl(name='form.language').value = ['en']
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Verify, that the settings have actually been changed:
+
+    >>> if self.mt.isAnonymousUser():
+    ...     raise "We are still anonymous user!"
+    ... else:
+    ...     user = self.mt.getAuthenticatedMember()
+    ...     user.getProperty('start_page', '')
+    '/Members/user'
+
+And that the form still has the according values:
+
+    >>> self.browser.getControl(name='form.start_page').value
+    '/Members/user'
+    >>> self.browser.getControl(name='form.language').value
+    ['en']
+
