@@ -4,15 +4,14 @@
     xmlns:five="http://namespaces.zope.org/five"
     i18n_domain="plone.app.users">
 
-  <adapter factory=".userdata.UserDataPanelAdapter" />
+    <adapter factory=".personalpreferences.PersonalPreferencesPanelAdapter" />
+    <adapter factory=".userdata.UserDataPanelAdapter" />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal_preferences"
-      class=".personalpreferences.PersonalPreferencesPane"
+      class=".personalpreferences.PersonalPreferencesPanel"
       permission="zope.Public"
-      allowed_interface=".interfaces.IPersonalPreferencesPane"
-      template="personalpreferences.pt"
       />
 
     <browser:page
@@ -20,15 +19,15 @@
       name="user_data"
       class=".userdata.UserDataPanel"
       permission="zope.Public"
-      template="userdata.pt"
       />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="profile_settings"
-      class=".profilesettings.ProfileSettingsPane"
+      class=".profilesettings.ProfileSettingsPanel"
       permission="zope.Public"
-      allowed_interface=".interfaces.IProfileSettingsPane"
+      allowed_interface=".interfaces.IProfileSettingsPanel"
+      template="profilesettings.pt"
       />
 
 

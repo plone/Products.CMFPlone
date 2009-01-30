@@ -13,7 +13,7 @@ userdata.py
 #from Products.CMFPlone import utils
 #from Products.Five.browser import BrowserView
 
-#from plone.app.users.browser.interfaces import IPersonalPreferencesPane
+#from plone.app.users.browser.interfaces import IPersonalPreferencesPanel
 
 from zope.formlib import form
 
@@ -40,10 +40,7 @@ class UserDataPanelAdapter(SchemaAdapterBase):
     implements(IUserDataSchema)
 
     def __init__(self, context):
-#        super(IUserDataPanelAdapter, self).__init__(context)
         self.context = getToolByName(context, 'portal_memberdata')
-
-    # Text markup settings
 
     def get_fullname(self):
         return 'Muhaha'
@@ -55,12 +52,8 @@ class UserDataPanelAdapter(SchemaAdapterBase):
 
 class UserDataPanel(AccountPanelForm):
 
-#    template = ZopeTwoPageTemplateFile('maintenance.pt')
     form_fields = form.FormFields(IUserDataSchema)
     label = _(u'User Data')
     description = _(u"From from which user can change its data.")
     form_name = _(u'User Data Form')
 
-#########################
-#class UserDataPane(BrowserView):
-#    implements(IPersonalPreferencesPane)

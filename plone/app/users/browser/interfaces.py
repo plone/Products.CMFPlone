@@ -29,15 +29,15 @@ class IAccountPanelForm(IPloneControlPanelView):
         """
 
 
-class IPersonalPreferencesPane(Interface):
+class IPersonalPreferencesPanel(Interface):
     """An interface for the account settings page.
     """
     
-class IUserDataPane(Interface):
+class IUserDataPanel(Interface):
     """An interface for the account settings page.
     """
     
-class IProfileSettingsPane(Interface):
+class IProfileSettingsPanel(Interface):
     """An interface for the account settings page.
     """
     

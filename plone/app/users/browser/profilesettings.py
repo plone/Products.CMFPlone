@@ -13,9 +13,9 @@ from zope.interface import implements
 #from Products.CMFPlone import utils
 from Products.Five.browser import BrowserView
 
-from plone.app.users.browser.interfaces import IPersonalPreferencesPane
+from plone.app.users.browser.interfaces import IProfileSettingsPanel
 
-class ProfileSettingsPane(BrowserView):
-    implements(IPersonalPreferencesPane)
+class ProfileSettingsPanel(BrowserView):
+    implements(IProfileSettingsPanel)
 
     
