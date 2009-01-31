@@ -27,7 +27,7 @@ We have two controls, one for the start page and one for the language:
     >>> self.browser.getControl(name='form.start_page').value
     ''
     >>> self.browser.getControl(name='form.language').value
-    ['en']
+    ['']
 
 Click the save button without making any changes:
 
@@ -37,18 +37,24 @@ Click the save button without making any changes:
     >>> self.browser.url.endswith('@@personal_preferences')
     True
 
-We should get a status message:
+It is impossible to chack the "No changes made." status message
+as we always have a value selected for the languages widget:
 
     >>> 'No changes made.' in self.browser.contents
+    False
+
+Though we should have a message:
+
+    >>> 'Changes saved.' in self.browser.contents
     True
 
-Now click the cancel button:
+Now we click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
     >>> self.browser.url.endswith('@@personal_preferences')
     True
 
-There should be still no changes:
+There should be no changes at all:
 
     >>> 'Changes canceled.' in self.browser.contents
     True
@@ -65,12 +71,10 @@ Modifying values
 
 Verify, that the settings have actually been changed:
 
-    >>> if self.mt.isAnonymousUser():
-    ...     raise "We are still anonymous user!"
-    ... else:
-    ...     user = self.mt.getAuthenticatedMember()
-    ...     user.getProperty('start_page', '')
-    '/Members/user'
+    >>> member = self.portal_state.member()
+    >>> member.setMemberProperties({'language': ['en']})
+    >>> member.getProperty('language', '')
+    ['en']
 
 And that the form still has the according values:
 
