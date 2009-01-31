@@ -10,7 +10,7 @@ from zope.component import adapts
 from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.formlib import form
-from zope.app.form.browser import SelectWidget
+from zope.app.form.browser import DropdownWidget
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -30,13 +30,16 @@ class IPersonalPreferences(Interface):
 
 
     start_page = schema.TextLine(title=u'Start page',
-                               description=u'Start page.')
+                                 description=u'Start page.',
+                                 required=False)
 
     #wysiwyg_editor = schema.TextLine(title=u'Wysiwyg editor',
     #                                 description=u'Wysiwyg editor to use.')
 
-    language = schema.TextLine(title=u'Language',
-                                     description=u'Your preferred language.')
+    language = schema.Choice(title=u'Language',
+                               description=u'Your preferred language.',
+                               vocabulary="plone.app.vocabularies.AvailableContentLanguages",
+                               required=False)
 
 
 class PersonalPreferencesPanelAdapter(SchemaAdapterBase):
@@ -85,13 +88,10 @@ def LanguageWidget(field, request):
 
     """ Create selector with languages vocab """
     
-    language_tool = getUtility(ISiteRoot).portal_languages
-
-    languages = language_tool.listSupportedLanguages()
-    
-    vocabulary = SimpleVocabulary.fromItems(languages)
-    
-    return SelectWidget(field, vocabulary, request)
+    widget = DropdownWidget(field, field.vocabulary, request)
+    widget._messageNoValue = _("vocabulary-missing-single-value-for-edit",
+                        "Language neutral (site default)")
+    return widget
 
 
 def WysiwygEditorWidget(field, request):
