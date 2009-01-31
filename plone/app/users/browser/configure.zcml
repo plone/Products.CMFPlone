@@ -29,4 +29,12 @@
       template="profilesettings.pt"
       />
 
+    <!-- Join form definition -->
+    <browser:page
+      name="join_form"
+      for="Products.CMFPlone.Portal.PloneSite"
+      class=".joinform.JoinForm"
+      permission="zope.Public"
+      />
+
 </configure>
