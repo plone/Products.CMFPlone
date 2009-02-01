@@ -86,8 +86,8 @@ If we do set an e-mail address, we should be able to save the form.
 We should be able to check that value for email address now is the same as what
 we put in.
 
-    >>> member = self.portal.portal_membership.getMemberById('test_user_1_')
-    >>> read_value = member.getProperty('email','Should not see this') 
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> read_value = member.getProperty('email','') 
     >>> read_value == email_address
     True
 

@@ -17,9 +17,7 @@ class AccountPanelTestCase(FunctionalTestCase):
         super(AccountPanelTestCase, self).afterSetUp()
                 
         self.browser = Browser()
-        
-        self.uf = self.portal.acl_users
-        self.portal_state = self.portal.restrictedTraverse('@@plone_portal_state')
+        self.membership = self.portal.portal_membership
 
     def loginAsMember(self, user='test_user_1_', pwd='secret'):
         """points the browser to the login screen and logs in as user 'user'."""

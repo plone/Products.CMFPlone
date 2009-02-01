@@ -69,32 +69,10 @@ Modifying values
     >>> 'Changes saved.' in self.browser.contents
     True
 
-Store current member id;
-
-    >>> first_id = self.portal_state.member().getId()
-
-Logout.
-    
-    >>> self.browser.open('http://nohost/plone/logout')
-    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
-    >>> 'Please log in' in self.browser.contents
-    True
-
-Log in again, make sure we're the same member.
-
-    >>> self.loginAsMember()
-    >>> member = self.portal.portal_membership.getMemberById('test_user_1_')
-    >>> second_id = member.getId()
-    >>> second_id == first_id
-    True
-    >>> member.getId()
-    'test_user_1_'
-
-Got to personal preferences and verify, that the settings have actually been
+Verify that the settings have actually been
 changed:
 
-    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
-    >>> member = self.portal.portal_membership.getMemberById('test_user_1_')
+    >>> member = self.membership.getMemberById('test_user_1_')
     >>> member.getProperty('language', '')
     'en'
     >>> member.getProperty('start_page', '')
