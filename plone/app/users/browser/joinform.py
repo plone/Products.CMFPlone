@@ -4,13 +4,13 @@
 joinform.py
 """
 
-from zope.formlib import form
-from zope.app.form.browser import PasswordWidget
 
 from zope.interface import Interface, Invalid
-from zope import schema
 from zope.component import getUtility
-from zope.app.form.browser import TextWidget
+
+from zope import schema
+from zope.formlib import form
+from zope.app.form.browser import TextWidget, CheckBoxWidget
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -47,14 +47,8 @@ class IJoinSchema(Interface):
                                Re-enter the password.
                                Make sure the passwords are identical."""))
 
-"""
-Full Name - Enter full name, eg. John Smith.
-User Name - Enter a user name, usually something like 'jsmith'. No spaces or special characters. Usernames and passwords are case sensitive, make sure the caps lock key is not enabled. This is the name used to log in.
-E-mail - Enter an email address. This is necessary in case the password is lost. We respect your privacy, and will not give the address away to any third parties or expose it anywhere.
-Password - Minimum 5 characters.
-Confirm password - Re-enter the password. Make sure the passwords are identical.
-Send a mail with the password
-"""
+    mail_me = schema.Bool(title=_(u"Send a mail with the password"),
+                          default=False)
 
 def FullNameWidget(field, request):
 
@@ -76,6 +70,34 @@ def EmailWidget(field, request):
     widget = TextWidget(field, request)
     return widget
 
+#from zope.app.form.browser.widget import DisplayWidget
+class NoDisplayWidget(CheckBoxWidget):
+    """A 'no display' widget used for info messages.
+    """    
+    type = 'nodisplay'
+    default = 0
+    extra = ''
+
+    def __init__(self, context, request):
+        super(NoDisplayWidget, self).__init__(context, request)
+        self.required = False
+
+    def __call__(self):
+        """Render the widget to HTML."""
+        return ""
+
+def CantChoosePasswordWidget(field, request):
+
+    """ Change the widget """
+    
+    field.title = u''
+    field.readonly = True
+    field.description = _(u"""
+                    A URL will be generated and e-mailed to you;
+                    follow the link to reach a page where you can change your
+                    password and complete the registration process.""")
+    widget = NoDisplayWidget(field, request)
+    return widget
 
 class JoinForm(PageForm):
 
@@ -123,6 +145,13 @@ class JoinForm(PageForm):
                 join_fields.insert(join_fields.index('password') + 1,
                                    'password_ctl')
 
+            # Add email_me after password_ctl
+            #
+            if not 'mail_me' in join_fields:
+                
+                join_fields.insert(join_fields.index('password_ctl') + 1,
+                                   'mail_me')
+
         # Can the user actually set his/her own password? If not, skip
         # password fields in final list.
         #
@@ -137,8 +166,9 @@ class JoinForm(PageForm):
         all_fields = form.Fields(IUserDataSchema) + form.Fields(IJoinSchema)
         all_fields['fullname'].custom_widget = FullNameWidget
         all_fields['email'].custom_widget = EmailWidget
+        if portal.validate_email:
+            all_fields['mail_me'].custom_widget = CantChoosePasswordWidget
 
-        
 
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.

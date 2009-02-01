@@ -31,8 +31,9 @@ class IPersonalPreferences(Interface):
                                  description=u'Start page.',
                                  required=False)
 
-    #wysiwyg_editor = schema.TextLine(title=u'Wysiwyg editor',
-    #                                 description=u'Wysiwyg editor to use.')
+    #wysiwyg_editor = schema.Choice(title=u'Wysiwyg editor',
+    #                            vocabulary=""
+    #                            description=u'Wysiwyg editor to use.')
 
     language = schema.Choice(title=u'Language',
                                description=u'Your preferred language.',
