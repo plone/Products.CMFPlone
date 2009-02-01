@@ -14,6 +14,7 @@ OPTIONFLAGS = (doctest.ELLIPSIS |
 
 def test_suite():
     tests = ['personalpreferences.txt',
+             'userdata.txt',
              ]
     suite = TestSuite()
     for test in tests:

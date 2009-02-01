@@ -10,7 +10,7 @@ Viewing the account panel should not be possible for anonymous users:
     >>> 'Please log in' in self.browser.contents
     True
 
-So let's register as member and login:
+So let's register as member and login as 'test_user_1_', as defined in aptc.py:
 
     >>> self.loginAsMember()
 
@@ -69,16 +69,39 @@ Modifying values
     >>> 'Changes saved.' in self.browser.contents
     True
 
-Verify, that the settings have actually been changed:
+Store current member id;
 
-    >>> self.member.getProperty('start_page', '')
+    >>> first_id = self.portal_state.member().getId()
+
+Logout.
+    
+    >>> self.browser.open('http://nohost/plone/logout')
+    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
+    >>> 'Please log in' in self.browser.contents
+    True
+
+Log in again, make sure we're the same member.
+
+    >>> self.loginAsMember()
+    >>> member = self.portal.portal_membership.getMemberById('test_user_1_')
+    >>> second_id = member.getId()
+    >>> second_id == first_id
+    True
+    >>> member.getId()
+    'test_user_1_'
+
+Got to personal preferences and verify, that the settings have actually been
+changed:
+
+    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
+    >>> member = self.portal.portal_membership.getMemberById('test_user_1_')
+    >>> member.getProperty('language', '')
+    'en'
+    >>> member.getProperty('start_page', '')
     '/Members/user'
-    >>> self.member.getProperty('language', '')
-    ['en']
 
 And that the form still has the according values:
 
-    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
     >>> self.browser.getControl(name='form.start_page').value
     '/Members/user'
     >>> self.browser.getControl(name='form.language').value

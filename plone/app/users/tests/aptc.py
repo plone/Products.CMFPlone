@@ -19,18 +19,13 @@ class AccountPanelTestCase(FunctionalTestCase):
         self.browser = Browser()
         
         self.uf = self.portal.acl_users
-        self.uf.userFolderAddUser('user1', 'secret', [], [])
-        
-        mt = getToolByName(self.portal, 'portal_membership')
-        self.member = mt.getMemberById('user1')
-
-        self.uf = self.portal.acl_users
         self.portal_state = self.portal.restrictedTraverse('@@plone_portal_state')
 
-    def loginAsMember(self, user='user1', pwd='secret'):
-        """points the browser to the login screen and logs in as user."""
+    def loginAsMember(self, user='test_user_1_', pwd='secret'):
+        """points the browser to the login screen and logs in as user 'user'."""
         self.browser.open('http://nohost/plone/')
         self.browser.getLink('Log in').click()
         self.browser.getControl('Login Name').value = user
         self.browser.getControl('Password').value = pwd
         self.browser.getControl('Log in').click()
+

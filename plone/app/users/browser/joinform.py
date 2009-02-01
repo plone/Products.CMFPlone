@@ -5,12 +5,14 @@ joinform.py
 """
 
 
-from zope.interface import Interface, Invalid
+from zope.interface import Interface
 from zope.component import getUtility
 
 from zope import schema
 from zope.formlib import form
 from zope.app.form.browser import TextWidget, CheckBoxWidget
+
+from plone.app.controlpanel import PloneMessageFactory as _
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -18,8 +20,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.Five.formlib.formbase import PageForm
 from ZODB.POSException import ConflictError
 
-from plone.app.controlpanel import PloneMessageFactory as _
-
+from Products.statusmessages.interfaces import IStatusMessage
 
 from userdata import IUserDataSchema
 
@@ -188,18 +189,26 @@ class JoinForm(PageForm):
 
         try:
             registration.addMember(username, password, properties=data, REQUEST=self.request)
-        except AttributeError:
-            raise Invalid(_(u'The login name you selected is already in use or is not valid. Please choose another.'))
+        except AttributeError, ValueError:
 
-        if portal.validate_email or self.request.get('mail_me', 0):
+            failMessage = _(u'The login name you selected is already in use or is not valid. Please choose another.')
+
+            IStatusMessage(self.request).addStatusMessage(_(failMessage),
+                                                          type="error")
+            return
+
+        if portal.validate_email or data.get('mail_me', 0):
             try:
                 registration.registeredNotify(username)
             except ConflictError:
-                raise Invalid(_(u'Argh'))
+                IStatusMessage(self.request).addStatusMessage(_("Conflict error"),
+                                                          type="error")
+                return
             except Exception:
-                raise Invalid(_(u'Argh 2'))
+                IStatusMessage(self.request).addStatusMessage(_("Couldn't send mail"),
+                                                          type="error")
+                return
 
-        if portal.validate_email:
             self.context.acl_users.userFolderDelUsers([username,], REQUEST=self.request)
             self.status = (_(u'status_fatal_password_mail',
                     default=u'Failed to create your account: we were unable to send your password to your email address: ${address}',
