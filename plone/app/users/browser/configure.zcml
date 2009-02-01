@@ -6,6 +6,7 @@
 
     <adapter factory=".personalpreferences.PersonalPreferencesPanelAdapter" />
     <adapter factory=".userdata.UserDataPanelAdapter" />
+    <adapter factory=".password.PasswordPanelAdapter" />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
@@ -27,6 +28,13 @@
       class=".profilesettings.ProfileSettingsPanel"
       permission="cmf.SetOwnProperties"
       template="profilesettings.pt"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="change_password"
+      class=".password.PasswordAccountPanel"
+      permission="cmf.SetOwnPassword"
       />
 
     <!-- Join form definition -->

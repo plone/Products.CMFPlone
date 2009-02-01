@@ -26,7 +26,7 @@ from userdata import IUserDataSchema
 
 # Define constants from the Join schema that should be added to the
 # vocab of the join fields setting in usergroupssettings controlpanel.
-JOIN_CONST = ['username', 'password']
+JOIN_CONST = ['username', 'password', 'mail_me']
 
 class IJoinSchema(Interface):
 
