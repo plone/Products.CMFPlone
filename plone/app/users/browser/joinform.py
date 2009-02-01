@@ -8,10 +8,9 @@ from zope.formlib import form
 from zope.app.form.browser import PasswordWidget
 
 from zope.interface import Interface, Invalid
-from zope.component import adapts
-from zope.interface import implements
 from zope import schema
 from zope.component import getUtility
+from zope.app.form.browser import TextWidget
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -25,16 +24,57 @@ from plone.app.controlpanel import PloneMessageFactory as _
 from userdata import IUserDataSchema
 
 
+# Define constants from the Join schema that should be added to the
+# vocab of the join fields setting in usergroupssettings controlpanel.
+JOIN_CONST = ['username', 'password']
+
 class IJoinSchema(Interface):
 
-    username = schema.ASCIILine(title=u'Username',
-                               description=u'Unique user name')
+    username = schema.ASCIILine(title=_(u'User Name'),
+                               description=_(u"""
+                               Enter a user name, usually something like
+                               'jsmith'.
+                               No spaces or special characters.
+                               Usernames and passwords are case sensitive,
+                               make sure the caps lock key is not enabled.
+                               This is the name used to log in."""))
 
-    password = schema.TextLine(title=u'Password',
-                               description=u'Password')
+    password = schema.Password(title=_(u'Password'),
+                               description=_(u'Minimum 5 characters.'))
 
-    password_ctl = schema.TextLine(title=u'Confirm password',
-                               description=u'Password')        
+    password_ctl = schema.Password(title=_(u'Confirm password'),
+                               description=_(u"""
+                               Re-enter the password.
+                               Make sure the passwords are identical."""))
+
+"""
+Full Name - Enter full name, eg. John Smith.
+User Name - Enter a user name, usually something like 'jsmith'. No spaces or special characters. Usernames and passwords are case sensitive, make sure the caps lock key is not enabled. This is the name used to log in.
+E-mail - Enter an email address. This is necessary in case the password is lost. We respect your privacy, and will not give the address away to any third parties or expose it anywhere.
+Password - Minimum 5 characters.
+Confirm password - Re-enter the password. Make sure the passwords are identical.
+Send a mail with the password
+"""
+
+def FullNameWidget(field, request):
+
+    """ Change the description of the widget """
+    
+    field.description = _(u"Enter full name, eg. John Smith.")
+    widget = TextWidget(field, request)
+    return widget
+
+def EmailWidget(field, request):
+
+    """ Change the description of the widget """
+    
+    field.description = _(u"""
+                    Enter an email address.
+                    This is necessary in case the password is lost.
+                    We respect your privacy, and will not give the address
+                    away to any third parties or expose it anywhere.""")
+    widget = TextWidget(field, request)
+    return widget
 
 
 class JoinForm(PageForm):
@@ -51,30 +91,59 @@ class JoinForm(PageForm):
     @property
     def form_fields(self):
 
+        """ form_fields is dynamic in this form, to be able to handle
+        different join styles.
+        """
+
         portal = getUtility(ISiteRoot)
         props = getToolByName(self.context, 'portal_properties').site_properties
-        join_fields = props.getProperty('joinfields')
+        join_fields = list(props.getProperty('join_form_fields'))
 
-        all_fields = form.Fields(IUserDataSchema)
-        joinpolicy_fields = form.Fields(IJoinSchema)
+        canSetOwnPassword = not portal.getProperty('validate_email', True)
+        
 
-        fields = form.Fields(*[all_fields[id] for id in join_fields])
+        # Check on required join fields
+        #
+        if not 'username' in join_fields:
 
-        if not portal.getProperty('validate_email', True):
+            join_fields.insert(0, 'username')
 
-            fields = fields + form.Fields(joinpolicy_fields['username'],
-                                          joinpolicy_fields['password'],
-                                          joinpolicy_fields['password_ctl'])
+        if canSetOwnPassword:
+            # Add password if needed
+            #
+            if not 'password' in join_fields:
+                
+                join_fields.insert(join_fields.index('username') + 1,
+                                   'password')
 
-            # Can we do this static?
-            fields['password'].custom_widget = PasswordWidget
-            fields['password_ctl'].custom_widget = PasswordWidget
+            # Add password_ctl after password
+            #
+            if not 'password_ctl' in join_fields:
+                
+                join_fields.insert(join_fields.index('password') + 1,
+                                   'password_ctl')
 
-        else:
-            fields = fields + form.Fields(joinpolicy_fields['username'])
+        # Can the user actually set his/her own password? If not, skip
+        # password fields in final list.
+        #
+        if not canSetOwnPassword:
+            if 'password' in join_fields:
+                del join_fields[join_fields.index('password')]
+            if 'password_ctl' in join_fields:
+                del join_fields[join_fields.index('password_ctl')]
 
+        # We need fields from both schemata here.
+        #
+        all_fields = form.Fields(IUserDataSchema) + form.Fields(IJoinSchema)
+        all_fields['fullname'].custom_widget = FullNameWidget
+        all_fields['email'].custom_widget = EmailWidget
 
-        return fields
+        
+
+        # Pass the list of join form fields as a reference to the
+        # Fields constructor, and return.
+        #
+        return form.Fields(*[all_fields[id] for id in join_fields])
 
 
     @form.action("join")
@@ -101,7 +170,7 @@ class JoinForm(PageForm):
                 raise Invalid(_(u'Argh 2'))
 
         if portal.validate_email:
-            context.acl_users.userFolderDelUsers([username,], REQUEST=self.request)
+            self.context.acl_users.userFolderDelUsers([username,], REQUEST=self.request)
             self.status = (_(u'status_fatal_password_mail',
                     default=u'Failed to create your account: we were unable to send your password to your email address: ${address}',
                     mapping={u'address' : data.get('email', '')}))

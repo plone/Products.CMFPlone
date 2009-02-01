@@ -26,7 +26,7 @@ from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 
 from plone.app.controlpanel import PloneMessageFactory as _
-from plone.app.controlpanel.utils import SchemaAdapterBase
+from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 from plone.app.users.browser.form import AccountPanelForm
 
 
@@ -49,20 +49,9 @@ class IUserDataSchema(Interface):
                                required=False)
 
 
-class UserDataPanelAdapter(SchemaAdapterBase):
+class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
-    adapts(ISiteRoot)
     implements(IUserDataSchema)
-
-    def __init__(self, context):
-
-        mt = getToolByName(context, 'portal_membership')
-        
-        if mt.isAnonymousUser():
-            raise "Can't modify properties of anonymous user"
-        else:
-            self.context = mt.getAuthenticatedMember()
-
 
     def get_fullname(self):
         return self.context.getProperty('fullname', '')

@@ -17,11 +17,9 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.PloneLanguageTool.interfaces import ILanguageTool
 
-from plone.app.users.browser.form import AccountPanelForm
-
-from plone.app.controlpanel.utils import SchemaAdapterBase
 from plone.app.controlpanel import PloneMessageFactory as _
-
+from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
+from plone.app.users.browser.form import AccountPanelForm
 
 
 class IPersonalPreferences(Interface):
@@ -42,19 +40,9 @@ class IPersonalPreferences(Interface):
                                required=False)
 
 
-class PersonalPreferencesPanelAdapter(SchemaAdapterBase):
+class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
 
-    adapts(ISiteRoot)
     implements(IPersonalPreferences)
-
-    def __init__(self, context):
-
-        mt = getToolByName(context, 'portal_membership')
-        
-        if mt.isAnonymousUser():
-            raise "Can't modify properties of anonymous user"
-        else:
-            self.context = mt.getAuthenticatedMember()
 
 
     def get_start_page(self):

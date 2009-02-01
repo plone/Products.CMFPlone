@@ -71,13 +71,14 @@ Modifying values
 
 Verify, that the settings have actually been changed:
 
-    >>> member = self.portal_state.member()
-    >>> member.setMemberProperties({'language': ['en']})
-    >>> member.getProperty('language', '')
+    >>> self.member.getProperty('start_page', '')
+    '/Members/user'
+    >>> self.member.getProperty('language', '')
     ['en']
 
 And that the form still has the according values:
 
+    >>> self.browser.open('http://nohost/plone/@@personal_preferences')
     >>> self.browser.getControl(name='form.start_page').value
     '/Members/user'
     >>> self.browser.getControl(name='form.language').value
