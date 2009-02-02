@@ -32,20 +32,25 @@ from plone.app.users.browser.form import AccountPanelForm
 
 class IUserDataSchema(Interface):
 
-    fullname = schema.TextLine(title=_(u'Full Name'),
+    fullname = schema.TextLine(title=_(u'label_full_name', default=u'Full Name'),
                                description=u'',
                                required=False)
 
-    email = schema.TextLine(title=u'Email',
+    email = schema.TextLine(title=_(u'label_email', default=u'E-mail'),
                                description=u'',
                                required=True)
 
-    home_page = schema.TextLine(title=u'Home page',
-                               description=u'The URL for your external home page, if you have one.',
+    home_page = schema.TextLine(title=_(u'label_homepage', default=u'Home page'),
+                               description=_(u'help_homepage',
+                                  default=u"The URL for your external home page, "
+                                  "if you have one."),
                                required=False)
 
-    location = schema.TextLine(title=u'Location',
-                               description=u'Your location - either city and country - or in a company setting, where your office is located.',
+    location = schema.TextLine(title=_(u'label_location', default=u'Location'),
+                               description=_(u'help_location', 
+                                  default=u"Your location - either city and "
+                                  "country - or in a company setting, where "
+                                  "your office is located."),
                                required=False)
 
 

@@ -47,17 +47,23 @@ class IPasswordSchema(Interface):
 
     """ Provide schema for password form """
 
-    current_password = schema.Password(title=_(u'Current password'),
-                                 description=_(u'Enter your current password.'),
+    current_password = schema.Password(title=_(u'label_current_password',
+                                                    default=u'Current password'),
+                                 description=_(u'help_current_password',
+                                                    default=u'Enter your current password.'),
                                  constraint=checkCurrentPassword,
                                        )
 
-    new_password = schema.Password(title=_(u'New password'),
-                                   description=_(u'Enter your new password. Minimum 5 characters.'),
+    new_password = schema.Password(title=_(u'label_new_password', default=u'New password'),
+                                   description=_(u'help_new_password',
+                                                    default=u"Enter your new password. "
+                                                             "Minimum 5 characters."),
                                    )
 
-    new_password_ctl = schema.Password(title=_(u'Confirm password'),
-                                 description=_(u'Re-enter the password. Make sure the passwords are identical.'),
+    new_password_ctl = schema.Password(title=_(u'label_confirm_password', default=u'Confirm password'),
+                                 description=_(u'help_confirm_password',
+                                                    default=u"Re-enter the password. "
+                                                            "Make sure the passwords are identical."),
                                        )
 
 
@@ -94,11 +100,11 @@ class PasswordAccountPanel(AccountPanelForm):
     form_fields = form.FormFields(IPasswordSchema)
     
     label = _(u"Reset Password")
-    description = _(u"Cange your current password.")
-    form_name = _(u'Password Form')
+    description = _(u"Change password.")
+    form_name = _(u'legend_password_details', default=u'Password Details')
     
 
-    @form.action("reset_passwd")
+    @form.action(_(u'label_change_password', default=u'Change Password'), name=u'reset_passwd')
     def action_reset_passwd(self, action, data):
 
         portal = getUtility(ISiteRoot)

@@ -35,8 +35,8 @@ class IPersonalPreferences(Interface):
     #                            vocabulary=""
     #                            description=u'Wysiwyg editor to use.')
 
-    language = schema.Choice(title=u'Language',
-                               description=u'Your preferred language.',
+    language = schema.Choice(title=_(u'label_language', default=u'Language'),
+                               description=_(u'help_preferred_language', u'Your preferred language.'),
                                vocabulary="plone.app.vocabularies.AvailableContentLanguages",
                                required=False)
 
@@ -78,8 +78,8 @@ def LanguageWidget(field, request):
     """ Create selector with languages vocab """
     
     widget = DropdownWidget(field, field.vocabulary, request)
-    widget._messageNoValue = _("vocabulary-missing-single-value-for-edit",
-                        "Language neutral (site default)")
+    widget._messageNoValue = _(u"vocabulary-missing-single-value-for-edit",
+                        u"Language neutral (site default)")
     return widget
 
 
@@ -99,12 +99,11 @@ def WysiwygEditorWidget(field, request):
 class PersonalPreferencesPanel(AccountPanelForm):
     """ Implementation of personalize form that uses formlib """
 
-    form_fields = form.FormFields(IPersonalPreferences)
-    
-    label = _(u"Personal preferences")
-    description = _(u"Set your prefs here dude!.")
+    label = _(u"heading_my_preferences", default=u"Personal preferences")
+    description = _(u"description_my_preferences", default=u"Your personal settings.")
+    form_name = _(u'legend_personal_details', u'Personal Details')
 
+    form_fields = form.FormFields(IPersonalPreferences)
     form_fields['language'].custom_widget = LanguageWidget
     #form_fields['wysiwyg_editor'].custom_widget = WysiwygEditorWidget
 
-    form_name = _(u'Personal Preferences Form')

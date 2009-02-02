@@ -31,31 +31,35 @@ JOIN_CONST = ['username', 'password', 'mail_me']
 
 class IJoinSchema(Interface):
 
-    username = schema.ASCIILine(title=_(u'User Name'),
-                               description=_(u"""
-                               Enter a user name, usually something like
-                               'jsmith'.
-                               No spaces or special characters.
-                               Usernames and passwords are case sensitive,
-                               make sure the caps lock key is not enabled.
-                               This is the name used to log in."""))
+    username = schema.ASCIILine(title=_(u'label_user_name', default=u'User Name'),
+                               description=_(u'help_user_name_creation_casesensitive',
+                               default=u"Enter a user name, usually something "
+                               "like 'jsmith'. "
+                               "No spaces or special characters. "
+                               "Usernames and passwords are case sensitive, "
+                               "make sure the caps lock key is not enabled. "
+                               "This is the name used to log in."))
 
-    password = schema.Password(title=_(u'Password'),
-                               description=_(u'Minimum 5 characters.'))
+    password = schema.Password(title=_(u'label_password', default=u'Password'),
+                               description=_(u'help_password_creation',
+                                             default=u'Minimum 5 characters.'))
 
-    password_ctl = schema.Password(title=_(u'Confirm password'),
-                               description=_(u"""
-                               Re-enter the password.
-                               Make sure the passwords are identical."""))
+    password_ctl = schema.Password(title=_(u'label_confirm_password',
+                                    default=u'Confirm password'),
+                               description=_(u'help_confirm_password',
+                                    default=u"Re-enter the password. "
+                                    "Make sure the passwords are identical."))
 
-    mail_me = schema.Bool(title=_(u"Send a mail with the password"),
+    mail_me = schema.Bool(title=_(u'label_mail_password',
+                                    default=u"Send a mail with the password"),
                           default=False)
 
 def FullNameWidget(field, request):
 
     """ Change the description of the widget """
     
-    field.description = _(u"Enter full name, eg. John Smith.")
+    field.description = _(u'help_full_name_creation',
+                            default=u"Enter full name, eg. John Smith.")
     widget = TextWidget(field, request)
     return widget
 
@@ -63,25 +67,17 @@ def EmailWidget(field, request):
 
     """ Change the description of the widget """
     
-    field.description = _(u"""
-                    Enter an email address.
-                    This is necessary in case the password is lost.
-                    We respect your privacy, and will not give the address
-                    away to any third parties or expose it anywhere.""")
+    field.description = _(u'help_email_creation',
+                    default = u"Enter an email address. "
+                    "This is necessary in case the password is lost. "
+                    "We respect your privacy, and will not give the address "
+                    "away to any third parties or expose it anywhere.")
     widget = TextWidget(field, request)
     return widget
 
-#from zope.app.form.browser.widget import DisplayWidget
-class NoDisplayWidget(CheckBoxWidget):
-    """A 'no display' widget used for info messages.
-    """    
-    type = 'nodisplay'
-    default = 0
-    extra = ''
-
-    def __init__(self, context, request):
-        super(NoDisplayWidget, self).__init__(context, request)
-        self.required = False
+class NoCheckBoxWidget(CheckBoxWidget):
+    """ A widget used for _not_ displaying the checkbox.
+    """
 
     def __call__(self):
         """Render the widget to HTML."""
@@ -89,15 +85,15 @@ class NoDisplayWidget(CheckBoxWidget):
 
 def CantChoosePasswordWidget(field, request):
 
-    """ Change the widget """
-    
+    """ Change the mail_me field widget so it doesn't display the checkbox """
+
     field.title = u''
     field.readonly = True
-    field.description = _(u"""
-                    A URL will be generated and e-mailed to you;
-                    follow the link to reach a page where you can change your
-                    password and complete the registration process.""")
-    widget = NoDisplayWidget(field, request)
+    field.description = _(u'label_password_change_mail',
+                    default=u"A URL will be generated and e-mailed to you; "
+                    "follow the link to reach a page where you can change your "
+                    "password and complete the registration process.")
+    widget = NoCheckBoxWidget(field, request)
     return widget
 
 class JoinForm(PageForm):
@@ -106,10 +102,9 @@ class JoinForm(PageForm):
         config settings.
     """
     
-    label = _(u'Join')
-    description = _(u"Join the portal.")
-    form_name = _(u'Join Form')
-
+    label = _(u'heading_registration_form', default=u'Registration Form')
+    description = _(u"")
+    form_name = _(u'legend_personal_details', default=u'Personal Details')
 
     @property
     def form_fields(self):
@@ -177,7 +172,7 @@ class JoinForm(PageForm):
         return form.Fields(*[all_fields[id] for id in join_fields])
 
 
-    @form.action("join")
+    @form.action(_(u'label_register', default=u'Register'), name=u'register')
     def action_join(self, action, data):
         
         portal = getUtility(ISiteRoot)
