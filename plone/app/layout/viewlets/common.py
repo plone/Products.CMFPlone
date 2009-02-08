@@ -179,7 +179,7 @@ class PersonalBarViewlet(ViewletBase):
             userid = member.getId()
             
             if sm.checkPermission('Portlets: Manage own portlets', self.context):
-                self.homelink_url = self.site_url + '/dashboard'
+                self.homelink_url = self.navigation_root_url + '/dashboard'
             else:
                 if userid.startswith('http:') or userid.startswith('https:'):
                     self.homelink_url = self.site_url + '/author/?author=' + userid
