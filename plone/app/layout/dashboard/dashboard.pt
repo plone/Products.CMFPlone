@@ -67,7 +67,7 @@
                         <a href="personalize_form"
                            tal:define="member_id member/getId;
                                        member_url python:(member_id.startswith('http:') or member_id.startswith('https:')) and ('?author=%s' % member_id) or member_id;"
-                           tal:attributes="href string:${portal_url}/author/${member_url}">
+                           tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${member_url}">
                                <img src="" tal:attributes="src string:${portal_url}/user.gif" />
                                    <tal:profilestr
                                        i18n:translate="">Profile</tal:profilestr>
