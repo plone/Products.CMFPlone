@@ -10,8 +10,15 @@ from plone.memoize import ram
 
 def _render_cachekey(fun, self):
     # Cache by filename
+    mtool = getToolByName(self.context, 'portal_membership')
+    if not mtool.isAnonymousUser():
+        raise ram.DontCache
+
     url_tool = getToolByName(self.context, 'portal_url')
-    return '%s/%s' % (url_tool(), self.filename)
+    catalog = getToolByName(self.context, 'portal_catalog')
+    counter = catalog.getCounter()
+    return '%s/%s/%s' % (url_tool(), self.filename, counter)
+
 
 class SiteMapView(BrowserView):
     """Creates the sitemap as explained in the specifications.

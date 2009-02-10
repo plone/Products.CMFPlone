@@ -32,7 +32,18 @@ class SiteMapTestCase(FunctionalTestCase):
     def getToolByName(self, name):
         """docstring for getToolByName"""
         return getToolByName(self.portal, name)
+    
+    def loginAsManager(self, user='root', pwd='secret'):
+        """points the browser to the login screen and logs in as user root with Manager role."""
+        self.browser.open('http://nohost/plone/')
+        self.browser.getLink('Log in').click()
+        self.browser.getControl('Login Name').value = user
+        self.browser.getControl('Password').value = pwd
+        self.browser.getControl('Log in').click()
 
+    def browser_logout(self):
+        self.browser.open('http://nohost/plone/')
+        self.browser.getLink('Log out').click()
 
 def test_suite():
     tests = ['sitemap.txt']
