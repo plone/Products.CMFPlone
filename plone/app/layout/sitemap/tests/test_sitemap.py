@@ -24,8 +24,17 @@ class SiteMapTestCase(PloneTestCase):
                                        name='sitemap.xml.gz')
         self.wftool = getToolByName(self.portal, 'portal_workflow')
 
-        ptool = getToolByName(self.portal, 'portal_properties')
-        self.site_properties = ptool.site_properties
+        # we need to explizitly set a workflow cause we can't rely on the
+        # test environment.
+        # `instance test -m plone.app.layout`:
+        # wftool._default_chain == 'simple_publication_workflow'
+        # `instance test -m plone.app`:
+        # wftool._default_chain == 'plone_workflow'
+        self.wftool.setChainForPortalTypes(['Document'],
+                                           'simple_publication_workflow')
+
+        self.site_properties = getToolByName(
+            self.portal, 'portal_properties').site_properties
         self.site_properties.manage_changeProperties(enable_sitemap=True)
 
         #setup private content that isn't accessible for anonymous
@@ -62,7 +71,6 @@ class SiteMapTestCase(PloneTestCase):
         If the sitemap is disabled throws a 404 error.
         '''
         self.site_properties.manage_changeProperties(enable_sitemap=False)
-
         self.assertRaises(NotFound, self.sitemap)
                           
     def test_authenticated_before_anonymous(self):
