@@ -3,7 +3,7 @@ from StringIO import StringIO
 import unittest
 
 from zope.component import getMultiAdapter
-from zope.publisher.interfaces import NotFound
+from zope.publisher.interfaces import INotFound
 
 from Products.CMFCore.utils import getToolByName
 
@@ -71,8 +71,15 @@ class SiteMapTestCase(PloneTestCase):
         If the sitemap is disabled throws a 404 error.
         '''
         self.site_properties.manage_changeProperties(enable_sitemap=False)
-        self.assertRaises(NotFound, self.sitemap)
-                          
+        try:
+            self.sitemap()
+        except Exception, e:
+            # zope2 and repoze.zope2 use different publishers and raise
+            # different exceptions. but both implement INotFound.
+            self.assertFalse(INotFound.providedBy(e))
+        else:
+            self.fail('The disabled sitemap view has to raise NotFound!')
+            
     def test_authenticated_before_anonymous(self):
         '''
         Requests for the sitemap by authenticated users are not cached.
