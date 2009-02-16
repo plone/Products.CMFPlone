@@ -76,7 +76,7 @@ class SiteMapTestCase(PloneTestCase):
         except Exception, e:
             # zope2 and repoze.zope2 use different publishers and raise
             # different exceptions. but both implement INotFound.
-            self.assertFalse(INotFound.providedBy(e))
+            self.assertTrue(INotFound.providedBy(e))
         else:
             self.fail('The disabled sitemap view has to raise NotFound!')
             
