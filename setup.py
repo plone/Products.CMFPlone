@@ -8,7 +8,6 @@ setup(name='plone.app.users',
       description="A package for all things users and groups related (specific to plone)",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
@@ -23,11 +22,28 @@ setup(name='plone.app.users',
       namespace_packages=['plone', 'plone.app'],
       include_package_data=True,
       zip_safe=False,
+      extras_require=dict(
+        test=[
+            'zope.testing',
+            'Products.PloneTestCase',
+        ],
+      ),
       install_requires=[
           'setuptools',
-          # -*- Extra requirements: -*-
+          'plone.fieldsets',
+          'plone.memoize',
+          'plone.protect',
+          'plone.app.controlpanel',
+          'plone.app.form',
+          'zope.component',
+          'zope.formlib',
+          'zope.interface',
+          'zope.schema',
+          'zope.app.form',
+          'Products.CMFCore',
+          'Products.PloneLanguageTool',
+          'Products.statusmessages',
+          'Zope2',
+          'ZODB3',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )
