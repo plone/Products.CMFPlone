@@ -78,15 +78,30 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
 
     theme = property(get_theme, set_theme)
 
+    def _update_jsreg_mark_special(self):
+        self.jstool.getResource('mark_special_links.js').setEnabled(
+            self.mark_special_links or self.ext_links_open_new_window
+            )
+        self.jstool.cookResources()
+
     def get_mark_special_links(self):
-        return self.jstool.getResource('mark_special_links.js').getEnabled()
+        msl = getattr(self.props, 'mark_special_links', False)
+        if msl == 'true':
+            return True
+        return False
+        
+        # return self.jstool.getResource('mark_special_links.js').getEnabled()
 
     def set_mark_special_links(self, value):
         if value:
-            self.jstool.getResource('mark_special_links.js').setEnabled(True)
+            mark_special_links='true'
         else:
-            self.jstool.getResource('mark_special_links.js').setEnabled(False)
-        self.jstool.cookResources()
+            mark_special_links='false'
+        if self.props.hasProperty('mark_special_links'):
+            self.props.manage_changeProperties(mark_special_links=mark_special_links)
+        else:
+            self.props.manage_addProperty('mark_special_links', mark_special_links, 'string')
+        self._update_jsreg_mark_special()
 
     mark_special_links = property(get_mark_special_links,
                                   set_mark_special_links)
@@ -102,7 +117,7 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
             self.props.manage_changeProperties(external_links_open_new_window='true')
         else:
             self.props.manage_changeProperties(external_links_open_new_window='false')
-        self.jstool.cookResources()
+        self._update_jsreg_mark_special()
 
     ext_links_open_new_window = property(get_ext_links_open_new_window,
                                          set_ext_links_open_new_window)

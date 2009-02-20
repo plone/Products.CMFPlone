@@ -4,6 +4,15 @@ Changelog
 1.1.3
 -----
 
+- "Mark external links" and "External links open in new window" were not working
+  independently ('mark' had to be set for 'new window' to work) and marking could
+  not be turned off at all (#7383). Fixed by having either one enable the js
+  support and adding a new site property to control marking. Implemented so
+  that new site property will be assumed false if missing and created on change
+  if missing -- so no migration required. There is a matching change in Plone
+  app in a couple of javascripts.
+  [smcmahon]
+
 - 'Enable User Folders' in the security control panel supports 
 create/delete a 'My Folder' link user action know from Plone 2.*
 http://dev.plone.org/plone/ticket/8417
