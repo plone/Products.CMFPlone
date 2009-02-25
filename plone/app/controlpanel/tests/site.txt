@@ -101,3 +101,21 @@ Check the sitemap actually, should raise a 404:
     ...     if e.code == 404:
     ...         print "ok"
     ok
+
+
+Configure the locking for the site
+----------------------------------
+
+Standard behavior for locking is to have it enabled.  Let's change that:
+
+    >>> self.browser.open('http://nohost/plone/@@site-controlpanel')
+    >>> self.browser.getControl(name='form.lock_on_ttw_edit').value
+    True
+    >>> self.browser.getControl(name='form.lock_on_ttw_edit').value = False
+    >>> self.browser.getControl(name="form.actions.save").click()
+
+Confirm that our change updated the property:
+
+    >>> ptool.site_properties.lock_on_ttw_edit
+    False
+

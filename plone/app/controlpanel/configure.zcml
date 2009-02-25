@@ -20,7 +20,13 @@
   
   <adapter factory=".security.SecurityControlPanelAdapter" />
 
-  <adapter factory=".site.SiteControlPanelAdapter" />
+  <adapter for="*"
+           provides=".site.ISiteSchema"
+           factory=".site.SiteControlPanelAdapter" />
+
+  <adapter for="*"
+           provides="plone.locking.interfaces.ILockSettings"
+           factory=".site.SiteControlPanelAdapter" />
 
   <adapter factory=".skins.SkinsControlPanelAdapter" />
 

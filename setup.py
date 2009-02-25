@@ -29,6 +29,7 @@ setup(name='plone.app.controlpanel',
         'plone.fieldsets',
         'plone.memoize',
         'plone.protect',
+        'plone.locking',
       ],
       )
 
