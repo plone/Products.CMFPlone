@@ -101,7 +101,21 @@
                     <label for="searchable" i18n:translate="types_controlpanel_searchable">
                         Visible in searches
                     </label>
-
+                    <br />
+                    
+                    
+                    <tal:block tal:condition="python:type_id=='Link'">
+                    
+                      <input id="redirect_links"
+                             type="checkbox"
+                             class="noborder"
+                             name="redirect_links:boolean"
+                             tal:attributes="checked python: view.is_redirect_links_enabled() and 'checked' or None">
+                      <label for="redirect_links" i18n:translate="types_controlpanel_redirect_links">
+                          Redirect immediately to link target
+                      </label>
+                    
+                    </tal:block>
                 </div>
 
                 <div class="field">

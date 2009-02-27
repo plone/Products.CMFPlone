@@ -120,7 +120,11 @@ class TypesControlPanel(ControlPanelView):
                     blacklisted.append(type_id)
                 site_properties.manage_changeProperties(types_not_searched = \
                                                         blacklisted)
-
+                
+                redirect_links = form.get('redirect_links', False)
+                site_properties.manage_changeProperties(redirect_links = \
+                                                        redirect_links)
+                
             # Update workflow
             if self.have_new_workflow() and \
                form.get('form.workflow.submitted', False) and \
@@ -203,6 +207,7 @@ type_id=%s' % (context.absolute_url() , type_id))
     def is_addable(self):
         return self.fti.getProperty('global_allow', False)
 
+
     def is_discussion_allowed(self):
         return self.fti.getProperty('allow_discussion', False)
 
@@ -221,6 +226,12 @@ type_id=%s' % (context.absolute_url() , type_id))
         portal_properties = getToolByName(context, 'portal_properties')
         blacklisted = portal_properties.site_properties.types_not_searched
         return (self.type_id not in blacklisted)
+
+    def is_redirect_links_enabled(self):
+        context = aq_inner(self.context)
+        portal_properties = getToolByName(context, 'portal_properties')
+        site_props = portal_properties.site_properties
+        return self.type_id == 'Link' and site_props.getProperty('redirect_links') or False
 
     @memoize
     def current_workflow(self):
