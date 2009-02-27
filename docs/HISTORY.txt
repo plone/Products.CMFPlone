@@ -4,6 +4,9 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.2 (Unreleased)
 
+    - Added title option to the RSS portlet.
+      [davisagli]
+
     - Clean-up unnecessary variable declarations within navigation_recurse.pt.
       Let the default view on the Link type decide what's best
       [andrewb]

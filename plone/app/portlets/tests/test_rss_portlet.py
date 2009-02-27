@@ -78,6 +78,12 @@ class TestRenderer(PortletsTestCase):
     def test_rss_items(self):
         r = self.renderer(assignment=rss.Assignment())
         self.assertEquals(False, r.enabled)
+    
+    def testTitle(self):
+        r = self.renderer(assignment=rss.Assignment())
+        self.assertEquals(r.title, u'')
+        r.data.portlet_title = u'Overridden title'
+        self.assertEquals(r.title, u'Overridden title')
 
 def test_suite():
     from unittest import TestSuite, makeSuite

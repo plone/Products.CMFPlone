@@ -1,23 +1,15 @@
 from zope import schema
-from zope.component import getMultiAdapter, getUtility
 from zope.formlib import form
 from zope.interface import implements, Interface
 
 from plone.app.portlets.portlets import base
-from plone.memoize.instance import memoize
-from plone.app.portlets.utils import assignment_from_key
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.portlets.utils import unhashPortletInfo
-from plone.portlets.interfaces import IPortletManager, IPortletRenderer
 
-from Acquisition import aq_inner
-from DateTime.DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 import feedparser
-import time, socket
+import time
 
 from DateTime import DateTime
 
@@ -190,6 +182,13 @@ class RSSFeed(object):
 
 class IRSSPortlet(IPortletDataProvider):
 
+    portlet_title = schema.TextLine(
+        title=_(u'Title'),
+        description=_(u'Title of the portlet.  If omitted, the title of the feed will be used.'),
+        required=False,
+        default=u''
+        )
+
     count = schema.Int(title=_(u'Number of items to display'),
                        description=_(u'How many items to list.'),
                        required=True,
@@ -202,7 +201,7 @@ class IRSSPortlet(IPortletDataProvider):
     timeout = schema.Int(title=_(u'Feed reload timeout'),
                         description=_(u'Time in minutes after which the feed should be reloaded.'),
                         required=True,
-                        default=100)                        
+                        default=100)
 
 class Assignment(base.Assignment):
     implements(IRSSPortlet)
@@ -216,7 +215,8 @@ class Assignment(base.Assignment):
         else:
             return u'RSS: '+feed.title[:20]
 
-    def __init__(self, count=5, url=u"", timeout=100):
+    def __init__(self, portlet_title=u'', count=5, url=u"", timeout=100):
+        self.portlet_title = portlet_title
         self.count = count
         self.url = url
         self.timeout = timeout
@@ -272,7 +272,7 @@ class Renderer(base.DeferredRenderer):
     @property    
     def title(self):
         """return title of feed for portlet"""
-        return self._getFeed().title
+        return getattr(self.data, 'portlet_title', '') or self._getFeed().title
     
     @property
     def feedAvailable(self):
@@ -294,7 +294,8 @@ class AddForm(base.AddForm):
     
 
     def create(self, data):
-        return Assignment(count=data.get('count', 5),
+        return Assignment(portlet_title=u'',
+                          count=data.get('count', 5),
                           url = data.get('url',''),
                           timeout = data.get('timeout',100))
 
@@ -302,3 +303,10 @@ class EditForm(base.EditForm):
     form_fields = form.Fields(IRSSPortlet)
     label = _(u"Edit RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
+    
+    def __init__(self, context, request):
+        # for BBB with portlet assignments that were created before the
+        # portlet_title attribute existed
+        if not hasattr(context, 'portlet_title'):
+            context.portlet_title = u''
+        super(EditForm, self).__init__(context, request)
