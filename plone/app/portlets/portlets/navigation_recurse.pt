@@ -9,8 +9,6 @@
                 children        node/children;
                 item_url        node/getURL;
                 item_icon       node/item_icon;
-                remote_url      node/getRemoteUrl;
-                link_remote     node/link_remote;
                 is_current      node/currentItem;
                 is_in_path      node/currentParent;
                 li_class        python:is_current and ' navTreeCurrentNode' or '';
@@ -23,7 +21,7 @@
 
       <div tal:define="item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class">
 
-        <a tal:attributes="href python:link_remote and remote_url or item_url;
+        <a tal:attributes="href python:item_url;
                            title node/Description;
                            class string:$item_class${li_class}${li_extr_class}${li_folder_class}">
             <img tal:replace="structure item_icon/html_tag" />
