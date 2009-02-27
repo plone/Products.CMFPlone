@@ -294,7 +294,7 @@ class AddForm(base.AddForm):
     
 
     def create(self, data):
-        return Assignment(portlet_title=u'',
+        return Assignment(portlet_title=data.get('portlet_title', u''),
                           count=data.get('count', 5),
                           url = data.get('url',''),
                           timeout = data.get('timeout',100))
