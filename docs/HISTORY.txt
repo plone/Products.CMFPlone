@@ -4,6 +4,10 @@ Changelog
 1.2.0
 -----
 
+- Add 'Redirect immediately to link target' option for Link type in Site 
+  Settings Types
+  [andrewb]
+
 - Add 'Enable locking for through-the-web edits' option in Site Settings
   [davisagli]
 
