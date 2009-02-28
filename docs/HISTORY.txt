@@ -4,6 +4,11 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.2 (Unreleased)
 
+    - Removed portlets/feedparser.py.  Added FeedParser as external
+      requirement in setup.py instead of shipping with it.
+      (This is Plip 197: http://plone.org/products/plone/roadmap/197)
+      [maurits]
+
     - Added title option to the RSS portlet.
       [davisagli]
 

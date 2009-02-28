@@ -27,6 +27,7 @@ plone.portlets, as well as a standard set of portlets that ship with Plone.
       install_requires=[
         'setuptools',
         'plone.portlets >=1.1dev',
+        'FeedParser',
       ],
       entry_points="""
       # -*- Entry points: -*-
