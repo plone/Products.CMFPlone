@@ -206,6 +206,8 @@ class IRSSPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(IRSSPortlet)
     
+    portlet_title = u''
+    
     @property
     def title(self):
         """return the title with RSS feed title or from URL"""
@@ -303,10 +305,3 @@ class EditForm(base.EditForm):
     form_fields = form.Fields(IRSSPortlet)
     label = _(u"Edit RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
-    
-    def __init__(self, context, request):
-        # for BBB with portlet assignments that were created before the
-        # portlet_title attribute existed
-        if not hasattr(context, 'portlet_title'):
-            context.portlet_title = u''
-        super(EditForm, self).__init__(context, request)
