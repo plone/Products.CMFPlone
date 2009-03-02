@@ -39,9 +39,9 @@
   <div id="region-content" class="documentContent">
 
     <a name="documentContent"></a>
-                    
-    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-        Portal status message
+
+    <div id="viewlet-status" tal:content="structure provider:plone.status" />
+
     </div>
 
     <h1>

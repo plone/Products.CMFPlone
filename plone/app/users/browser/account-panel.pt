@@ -56,10 +56,7 @@
 
     <a name="documentContent"></a>
 
-
-    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-        Portal status message
-    </div>
+        <div id="viewlet-status" tal:content="structure provider:plone.status" />
 
             <h1 class="documentFirstHeading"
                 i18n:translate=""
