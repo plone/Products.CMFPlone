@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
+import os.path
 
 version = '1.1.6'
 
 setup(name='plone.app.portlets',
       version=version,
       description="Plone integration for the basic plone.portlets package",
-      long_description="""\
-plone.app.portlets provides a Plone-specific user interface for 
-plone.portlets, as well as a standard set of portlets that ship with Plone.
-""",
+      long_description=open("README.txt") + "\n" +
+        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
         "Framework :: Plone",
         "Framework :: Zope2",
@@ -28,6 +27,7 @@ plone.portlets, as well as a standard set of portlets that ship with Plone.
         'setuptools',
         'plone.portlets >=1.1dev',
         'FeedParser',
+        'plone.app.layout >= 1.2dev',
       ],
       entry_points="""
       # -*- Entry points: -*-
