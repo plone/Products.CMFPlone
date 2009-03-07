@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.1.8'
+version = '1.2'
 
 setup(name='plone.app.layout',
       version=version,
@@ -28,6 +28,8 @@ setup(name='plone.app.layout',
         'plone.app.viewletmanager>=1.2dev',
         'plone.memoize',
         'plone.portlets',
+        'Products.CMFEditions >=1.2dev-r79221',
+        'Plone >=3.2.1dev-r24257',
       ],
       entry_points="""
       # -*- Entry points: -*-

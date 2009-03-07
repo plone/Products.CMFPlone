@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.8 - Unreleased
--------------------------
+1.2 - Unreleased
+----------------
 
 - Added navigation_root_url to the common viewlets base class. Adjusted the
   various viewlets templates to use the new attribute. Changed the dashboard
@@ -10,12 +10,27 @@ Changelog
   This implements http://plone.org/products/plone/roadmap/234
   [calvinhp]
 
+- Default to using the content history viewlet instead of the workflow history
+  viewlet.
+  [wichert]
+
+- Add options to show differences between consecutive versions, and revert to
+  and preview older revisions to the content history viewlet.
+  [wichert]
+
+- Use the new history view from CMFEditions instead of the crufty old form.
+  [wichert]
+
+
+1.1.8 - 2009-03-07
+------------------
+
 - Adjust the caching of sitemap.xml.gz. We only cache for anonymous users. That
-  fixes a bug where a cached sitemap.xml.gz is delivered with information that 
-  only an user with more privilegs is allowed to see. We also make sure that the cached 
-  file was build with a current catalog by adding the catalog counter to the 
-  cache key. Based on a patch by stxnext.
-  Fixes http://dev.plone.org/plone/ticket/8402
+  fixes a bug where a cached sitemap.xml.gz is delivered with information that
+  only an user with more privilegs is allowed to see. We also make sure that
+  the cached file was build with a current catalog by adding the catalog
+  counter to the cache key. Based on a patch by stxnext.  Fixes
+  http://dev.plone.org/plone/ticket/8402
   [stxnext, csenger]
 
 - Added time_only for use with toLocalizedTime so that event_view now localizes
