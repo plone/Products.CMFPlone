@@ -23,7 +23,7 @@
                             <img width="14"
                                  height="11"
                                  alt=""
-                                 tal:attributes="src string:${view/portal_url}${flag};
+                                 tal:attributes="src string:${view/navigation_root_url}${flag};
                                                  title python: name;
                                                  class python: selected and 'currentItem' or '';" />
                         </tal:flag>

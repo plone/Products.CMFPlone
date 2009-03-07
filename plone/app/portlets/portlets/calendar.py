@@ -7,6 +7,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
+from zope.component import getMultiAdapter
 
 from Acquisition import aq_inner
 from DateTime import DateTime
@@ -41,8 +42,9 @@ def _render_cachekey(fun, self):
     if self.calendar.getUseSession():
         raise ram.DontCache()
     else:
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
         key = StringIO()
-        print >> key, getToolByName(context, 'portal_url')()
+        print >> key, portal_state.navigation_root_url()
         print >> key, cache.get_language(context, self.request)
         print >> key, self.calendar.getFirstWeekDay()
 
@@ -50,6 +52,7 @@ def _render_cachekey(fun, self):
         print >> key, year
         print >> key, month
 
+        navigation_root_path = portal_state.navigation_root_path()
         start = DateTime('%s/%s/1' % (year, month))
         end = DateTime('%s/%s/1' % self.getNextMonth(year, month)) - 1
 
@@ -60,11 +63,13 @@ def _render_cachekey(fun, self):
             key.write('\n\n')
 
         catalog = getToolByName(context, 'portal_catalog')
+        path = navigation_root_path
         brains = catalog(
             portal_type=self.calendar.getCalendarTypes(),
             review_state=self.calendar.getCalendarStates(),
             start={'query': end, 'range': 'max'},
-            end={'query': start, 'range': 'min'})
+            end={'query': start, 'range': 'min'},
+            path=path)
 
         for brain in brains:
             add(brain)
@@ -113,7 +118,9 @@ class Renderer(base.Renderer):
         context = aq_inner(self.context)
         year = self.year
         month = self.month
-        weeks = self.calendar.getEventsForCalendar(month, year)
+        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        navigation_root_path = portal_state.navigation_root_path()
+        weeks = self.calendar.getEventsForCalendar(month, year, path=navigation_root_path)
         for week in weeks:
             for day in week:
                 daynumber = day['day']

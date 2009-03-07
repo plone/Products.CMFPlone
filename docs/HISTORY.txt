@@ -4,6 +4,12 @@ Changelog for plone.app.portlets
 
 plone.app.portlets 1.2 (Unreleased)
 
+    - Fixed the various portlets to no longer use portal_url, but use the 
+      navigation_root_url from the plone_portal_state view. Changed the
+      manage-dashboard view to be available on an INavigationRoot.
+      This implements http://plone.org/products/plone/roadmap/234
+      [calvinhp]
+
     - Removed portlets/feedparser.py.  Added FeedParser as external
       requirement in setup.py instead of shipping with it.
       (This is Plip 197: http://plone.org/products/plone/roadmap/197)

@@ -9,6 +9,7 @@ from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.cache import render_cachekey
+from plone.app.layout.navigation.root import getNavigationRootObject
 
 from Acquisition import aq_inner
 from DateTime.DateTime import DateTime
@@ -50,10 +51,13 @@ class Renderer(base.Renderer):
         base.Renderer.__init__(self, *args)
 
         portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
-        self.portal_url = portal_state.portal_url()
+        self.navigation_root_url = portal_state.navigation_root_url()
         self.portal = portal_state.portal()
+        self.navigation_root_path = portal_state.navigation_root_path()
 
-        self.have_events_folder = 'events' in self.portal.objectIds()
+        self.have_events_folder = 'events' in getNavigationRootObject(self.context,         
+                                                                      self.portal).objectIds()
+
 
     @ram.cache(render_cachekey)
     def render(self):
@@ -68,19 +72,19 @@ class Renderer(base.Renderer):
 
     def all_events_link(self):
         if self.have_events_folder:
-            return '%s/events' % self.portal_url
+            return '%s/events' % self.navigation_root_url
         else:
-            return '%s/events_listing' % self.portal_url
+            return '%s/events_listing' % self.navigation_root_url
 
     def prev_events_link(self):
         if (self.have_events_folder and
             'aggregator' in self.portal['events'].objectIds() and
             'previous' in self.portal['events']['aggregator'].objectIds()):
-            return '%s/events/aggregator/previous' % self.portal_url
+            return '%s/events/aggregator/previous' % self.navigation_root_url
             
         elif (self.have_events_folder and
             'previous' in self.portal['events'].objectIds()):
-            return '%s/events/previous' % self.portal_url
+            return '%s/events/previous' % self.navigation_root_url
         else:
             return None
 
@@ -90,10 +94,12 @@ class Renderer(base.Renderer):
         catalog = getToolByName(context, 'portal_catalog')
         limit = self.data.count
         state = self.data.state
+        path = self.navigation_root_path
         return catalog(portal_type='Event',
                        review_state=state,
                        end={'query': DateTime(),
                             'range': 'min'},
+                       path=path,
                        sort_on='start',
                        sort_limit=limit)[:limit]
 

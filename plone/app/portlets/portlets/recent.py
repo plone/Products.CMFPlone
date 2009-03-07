@@ -45,8 +45,9 @@ class Renderer(base.Renderer):
         context = aq_inner(self.context)
         portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
         self.anonymous = portal_state.anonymous()
-        self.portal_url = portal_state.portal_url()
+        self.navigation_root_url = portal_state.navigation_root_url()
         self.typesToShow = portal_state.friendly_types()
+        self.navigation_root_path = portal_state.navigation_root_path()
 
         plone_tools = getMultiAdapter((context, self.request), name=u'plone_tools')
         self.catalog = plone_tools.catalog()
@@ -63,12 +64,15 @@ class Renderer(base.Renderer):
         return self._data()
 
     def recently_modified_link(self):
-        return '%s/recently_modified' % self.portal_url
+        return '%s/recently_modified' % self.navigation_root_url
 
     @memoize
     def _data(self):
+        context = aq_inner(self.context)
         limit = self.data.count
+        path = self.navigation_root_path
         return self.catalog(portal_type=self.typesToShow,
+                            path=path,
                             sort_on='modified',
                             sort_order='reverse',
                             sort_limit=limit)[:limit]

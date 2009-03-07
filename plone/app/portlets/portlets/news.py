@@ -9,6 +9,7 @@ from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.cache import render_cachekey
+from plone.app.layout.navigation.root import getNavigationRootObject
 
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -45,6 +46,15 @@ class Renderer(base.Renderer):
 
     _template = ViewPageTemplateFile('news.pt')
 
+    def __init__(self, *args):
+        base.Renderer.__init__(self, *args)
+
+        context = aq_inner(self.context)
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
+        self.portal = portal_state.portal()
+        self.navigation_root_url = portal_state.navigation_root_url()
+        self.navigation_root_path = portal_state.navigation_root_path()
+
     @ram.cache(render_cachekey)
     def render(self):
         return xhtml_compress(self._template())
@@ -57,12 +67,8 @@ class Renderer(base.Renderer):
         return self._data()
 
     def all_news_link(self):
-        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
-        portal_url = portal_state.portal_url()
-        portal = portal_state.portal()
-        
-        if 'news' in portal.objectIds():
-            return '%s/news' % portal_url
+        if 'news' in getNavigationRootObject(self.context, self.portal).objectIds():
+            return '%s/news' % self.navigation_root_url
         else:
             return None
 
@@ -70,10 +76,12 @@ class Renderer(base.Renderer):
     def _data(self):
         context = aq_inner(self.context)
         catalog = getToolByName(context, 'portal_catalog')
+        path = self.navigation_root_path
         limit = self.data.count
         state = self.data.state
         return catalog(portal_type='News Item',
                        review_state=state,
+                       path=path,
                        sort_on='Date',
                        sort_order='reverse',
                        sort_limit=limit)[:limit]

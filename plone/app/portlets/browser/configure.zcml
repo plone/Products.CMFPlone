@@ -81,7 +81,7 @@
     </browser:pages>
   
     <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".manage.ManageDashboardPortlets"
       name="manage-dashboard"
       template="templates/manage-dashboard.pt"
