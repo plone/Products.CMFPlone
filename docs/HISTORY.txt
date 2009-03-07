@@ -4,6 +4,11 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+
+
+1.2b1 - March 7, 2009
+---------------------
+
 - Added navigation_root_url to the common viewlets base class. Adjusted the
   various viewlets templates to use the new attribute. Changed the dashboard
   view to be available on an INavigationRoot.

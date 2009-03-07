@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-import os
+import os.path
 
 version = '1.2'
 
