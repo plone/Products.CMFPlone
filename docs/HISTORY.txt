@@ -1,20 +1,20 @@
 Changelog
 =========
 
-1.1.8 - Unreleased
--------------------------
+1.1.8 - 2009-03-07
+------------------
 
 - Adjust the caching of sitemap.xml.gz. We only cache for anonymous users. That
-  fixes a bug where a cached sitemap.xml.gz is delivered with information that 
-  only an user with more privilegs is allowed to see. We also make sure that the cached 
-  file was build with a current catalog by adding the catalog counter to the 
-  cache key. Based on a patch by stxnext.
-  Fixes http://dev.plone.org/plone/ticket/8402
+  fixes a bug where a cached sitemap.xml.gz is delivered with information that
+  only an user with more privilegs is allowed to see. We also make sure that
+  the cached file was build with a current catalog by adding the catalog
+  counter to the cache key. Based on a patch by stxnext. Fixes
+  http://dev.plone.org/plone/ticket/8402.
   [stxnext, csenger]
 
 - Added time_only for use with toLocalizedTime so that event_view now localizes
   the start/end times if the start/end dates are the same. Closes
-  http://dev.plone.org/plone/ticket/8607
+  http://dev.plone.org/plone/ticket/8607.
   [jnelson, calvinhp]
 
 - Fixed Plone 3.1 backward compatibility of above.
