@@ -6,8 +6,8 @@ version = '1.2'
 setup(name='plone.app.portlets',
       version=version,
       description="Plone integration for the basic plone.portlets package",
-      long_description=open("README.txt") + "\n" +
-        open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
         "Framework :: Plone",
         "Framework :: Zope2",
