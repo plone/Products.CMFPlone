@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2 (Unreleased)
-----------------
+1.2b1 - March 7, 2009
+---------------------
 
 - Fixed the various portlets to no longer use portal_url, but use the 
   navigation_root_url from the plone_portal_state view. Changed the
