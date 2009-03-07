@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2.0
------
+1.2b1 - March 9, 2009
+---------------------
 
 - Add 'Redirect immediately to link target' option for Link type in Site 
   Settings Types
@@ -14,6 +14,7 @@ Changelog
 - Let the site settings adapter also adapt ILockSettings so it
   can be used from plone.locking
   [davisagli]
+
 
 1.1.3
 -----
