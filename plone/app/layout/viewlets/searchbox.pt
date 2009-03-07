@@ -2,7 +2,7 @@
      i18n:domain="plone">
     <form name="searchform"
           action="search"
-          tal:attributes="action string:${view/site_url}/search">
+          tal:attributes="action string:${view/navigation_root_url}/search">
 
         <label for="searchGadget" class="hiddenStructure"
                     i18n:translate="text_search">Search Site</label>
@@ -45,7 +45,7 @@
     <div id="portal-advanced-search"
          class="hiddenStructure">
         <a href="#"
-           tal:attributes="href string:${view/site_url}/search_form"
+           tal:attributes="href string:${view/navigation_root_url}/search_form"
            i18n:translate="label_advanced_search"
            accesskey="5">
             Advanced Search&hellip;

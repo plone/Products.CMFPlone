@@ -4,6 +4,12 @@ Changelog
 1.1.8 - Unreleased
 -------------------------
 
+- Added navigation_root_url to the common viewlets base class. Adjusted the
+  various viewlets templates to use the new attribute. Changed the dashboard
+  view to be available on an INavigationRoot.
+  This implements http://plone.org/products/plone/roadmap/234
+  [calvinhp]
+
 - Adjust the caching of sitemap.xml.gz. We only cache for anonymous users. That
   fixes a bug where a cached sitemap.xml.gz is delivered with information that 
   only an user with more privilegs is allowed to see. We also make sure that the cached 

@@ -53,7 +53,7 @@ class CommentsViewlet(ViewletBase):
         return self.portal_state.anonymous()
 
     def login_action(self):
-        return '%s/login_form?came_from=%s' % (self.site_url, url_quote(self.request.get('URL', '')),)
+        return '%s/login_form?came_from=%s' % (self.navigation_root_url, url_quote(self.request.get('URL', '')),)
 
     def can_manage(self):
         return getSecurityManager().checkPermission('Manage portal', aq_inner(self.context))

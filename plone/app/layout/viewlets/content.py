@@ -139,7 +139,7 @@ class WorkflowHistoryViewlet(ViewletBase):
                     else:
                         r['actor'] = membership.getMemberInfo(actorid)
                         if r['actor'] is not None:
-                            r['actor_home'] = self.site_url + '/author/' + actorid
+                            r['actor_home'] = self.navigation_root_url + '/author/' + actorid
                         else:
                             # member info is not available
                             # the user was probably deleted
