@@ -6,16 +6,14 @@ personalpreferences.py
 
 from zope.component import getUtility
 from zope.interface import implements, Interface
-from zope.component import adapts
 from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.formlib import form
 from zope.app.form.browser import DropdownWidget
+from zope.app.form.browser import SelectWidget
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-
-from Products.PloneLanguageTool.interfaces import ILanguageTool
 
 from plone.app.controlpanel import PloneMessageFactory as _
 from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
@@ -86,8 +84,9 @@ def LanguageWidget(field, request):
 def WysiwygEditorWidget(field, request):
 
     """ Create selector with available editors """
-    
-    site_props = getUtility(ISiteRoot).portal_properties.site_properties
+
+    portal = getUtility(ISiteRoot)
+    site_props = getToolByName(portal, 'portal_properties').site_properties
 
     editors = site_props.available_editors
     
