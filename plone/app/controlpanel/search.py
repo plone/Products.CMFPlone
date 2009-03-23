@@ -69,13 +69,15 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
     enable_livesearch = property(get_enable_livesearch, set_enable_livesearch)
 
     def get_types_not_searched(self):
+        # Note: we do not show BAD_TYPES.
         return [t for t in self.ttool.listContentTypes()
                         if t not in self.context.types_not_searched and
                            t not in BAD_TYPES]
 
     def set_types_not_searched(self, value):
+        # Note: we add BAD_TYPES to the value list.
         value = [t for t in self.ttool.listContentTypes() if t not in value
-                   and t not in BAD_TYPES]
+                   or t in BAD_TYPES]
         self.context._updateProperty('types_not_searched', value)
 
     # This also defines the user friendly types

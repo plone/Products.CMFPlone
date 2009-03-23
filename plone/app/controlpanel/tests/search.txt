@@ -75,3 +75,12 @@ Make sure the changes have been applied correctly to the tool:
 
     >>> 'File' in self.site_props.types_not_searched
     True
+
+So called 'bad types' are not listed in the search panel, but they
+should still be listed in the site_properties as not searchable:
+
+    >>> from plone.app.vocabularies.types import BAD_TYPES
+    >>> [bad for bad in BAD_TYPES if bad not in self.site_props.types_not_searched]
+    []
+
+
