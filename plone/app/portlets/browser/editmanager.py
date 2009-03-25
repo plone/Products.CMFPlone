@@ -141,11 +141,26 @@ class EditPortletManagerRenderer(Explicit):
         addviewbase = baseUrl.replace(self.context_url(), '')
         def sort_key(v):
             return v.get('title')
+        def check_permission(p):
+            addview = p.addview
+            if not addview:
+                return False
+            
+            addview = "%s/+/%s" % (addviewbase, addview,)
+            if addview.startswith('/'):
+                addview = addview[1:]
+            try:
+                self.context.restrictedTraverse(addview)
+            except (AttributeError, Unauthorized,):
+                return False
+            return True
+        
         portlets =  [{
             'title' : p.title,
             'description' : p.description,
             'addview' : '%s/+/%s' % (addviewbase, p.addview)
-            } for p in self.manager.getAddablePortletTypes()]
+            } for p in self.manager.getAddablePortletTypes() if check_permission(p)]
+        
         portlets.sort(key=sort_key)
         return portlets
 
