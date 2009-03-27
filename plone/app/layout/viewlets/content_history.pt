@@ -58,7 +58,6 @@
                             (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
                             <span tal:replace="effectiveDate"/>)
                         </tal:effective>
-                </span>
 
                     </div>
                     <div class="historyComment" tal:condition="python:rhComments">
