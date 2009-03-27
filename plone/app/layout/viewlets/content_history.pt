@@ -41,7 +41,7 @@
                     </div>
                     <div class="historyByLine">
                         <tal:action i18n:translate="history_action">
-                            <span class="historyAction" tal:content="action" i18n:name="action"/>  
+                            <span class="historyAction" tal:content="action" i18n:translate="" i18n:name="action"/>  
                             by 
                             <tal:actor i18n:name="actor">
                                 <a href=""
