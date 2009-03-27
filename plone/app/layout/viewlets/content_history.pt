@@ -54,10 +54,12 @@
                             on
                             <span tal:replace="python:context.toLocalizedTime(item['time'],long_format=True)" i18n:name="time"/>
                         </tal:action>
-                        <tal:effective tal:condition="effective|nothing"
-                                       i18n:translate="label_publishing_effective">
-                            (effective: <span i18n:name="date" tal:replace="effectiveDate"/>)
+                        <tal:effective tal:condition="effective|nothing">
+                            (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
+                            <span tal:replace="effectiveDate"/>)
                         </tal:effective>
+                </span>
+
                     </div>
                     <div class="historyComment" tal:condition="python:rhComments">
                         <p tal:content="rhComments" />
