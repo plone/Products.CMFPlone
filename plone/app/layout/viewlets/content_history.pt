@@ -65,7 +65,10 @@
                     </div>
                     <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
                            tal:attributes="href item/diff_previous_url">
-                           <img class="pngIllustration" title="Compare with previous revision" src="history_compare_with_previous_inline.png" />
+                           <img class="pngIllustration"
+                                title="Compare with previous revision"
+                                i18n:attributes="title title_compare_previous_revision"
+                                src="history_compare_with_previous_inline.png" />
                     </a>
                 </div>
             </tal:block>
