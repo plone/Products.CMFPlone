@@ -26,7 +26,7 @@ setup(name='plone.app.portlets',
       install_requires=[
         'setuptools',
         'plone.portlets >=1.1dev',
-        'FeedParser',
+        'feedparser',
         'plone.app.layout >= 1.2dev',
       ],
       entry_points="""
