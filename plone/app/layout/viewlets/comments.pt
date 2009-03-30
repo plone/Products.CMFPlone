@@ -44,12 +44,12 @@
                                  anonymous_creator python:creator in ('Anonymous User', '');
                                  mi python:not anonymous_creator and view.member_info(creator);
                                  fullname python: mi and mi['fullname'] or creator;" >
-                    <span i18n:translate="label_comment_by">Posted by</span>
-                    <span tal:content="fullname"
-                          tal:condition="not:anonymous_creator">Poster Name</span>
-                    <span i18n:translate="label_anonymous_user"
-                          tal:condition="anonymous_creator">Anonymous User</span>
-                    <span i18n:translate="label_commented_at">at</span> 
+                        <tal:posted i18n:translate="label_comment_by">Posted by</tal:posted>
+                        <tal:name content="fullname"
+                                  condition="not:anonymous_creator">Poster Name</tal:name>
+                        <tal:name i18n:translate="label_anonymous_user"
+                                  condition="anonymous_creator">Anonymous User</tal:name>
+                        <tal:at i18n:translate="label_commented_at">at</tal:at>
                     <span tal:replace="python:view.format_time(reply.ModificationDate())">8/23/2001 12:40:44 PM</span>
                 </div>
                 <div class="commentBody"

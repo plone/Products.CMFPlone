@@ -8,6 +8,9 @@ Changelog
   There were two nested msgids and dynamic content.
   [vincentfretin]
 
+- Removed stray span tags in the comment byline.
+  [limi]
+
 1.2b1 - March 7, 2009
 ---------------------
 
