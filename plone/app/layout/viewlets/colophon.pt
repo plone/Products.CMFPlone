@@ -32,7 +32,7 @@
             Valid XHTML</a>
         </li>
         <li>
-          <a href="http://jigsaw.w3.org/css-validator/check/referer&amp;warning=no&amp;profile=css3&amp;usermedium=all"
+          <a href="http://jigsaw.w3.org/css-validator/check/referer?warning=no&amp;profile=css3&amp;usermedium=all"
              title="This site was built with valid CSS."
              i18n:attributes="title title_built_with_css;"
              i18n:translate="label_css">
