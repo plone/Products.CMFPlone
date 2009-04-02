@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.2 - unreleased
+----------------
+
+- Fixed "region-content" id twice in dashboard.pt, replaced one by "content".
+  Fixes http://dev.plone.org/plone/ticket/8932
+  [vincentfretin]
+
+
 1.2rc1 - March 20, 2009
 -----------------------
 
