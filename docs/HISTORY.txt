@@ -6,7 +6,7 @@ Changelog
 
 - Fixed querystring in CSS validation link in viewlets/colophon.pt 
   There was an ampersand where the leading "?" should have been.
-  https://dev.plone.org/plone/ticket/9054
+  http://dev.plone.org/plone/ticket/9054
   [siebo]
 
 - Fixed "region-content" id twice in dashboard.pt, replaced one by "content".
