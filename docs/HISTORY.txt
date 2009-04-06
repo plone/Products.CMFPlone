@@ -13,6 +13,9 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/8932
   [vincentfretin]
 
+- Author link tag should follow same rules as byline viewlet.
+  [elro]
+
 1.2rc1 - March 20, 2009
 -----------------------
 
