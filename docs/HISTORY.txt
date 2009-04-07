@@ -4,6 +4,10 @@ Changelog
 1.2 - unreleased
 ----------------
 
+- Filter not-interesting history entries in content history viewlet. THis
+  prevents an empty history viewlet from being shown.
+  [wichert]
+
 - Fixed querystring in CSS validation link in viewlets/colophon.pt 
   There was an ampersand where the leading "?" should have been.
   http://dev.plone.org/plone/ticket/9054
@@ -16,6 +20,7 @@ Changelog
 - Author link tag should follow same rules as byline viewlet.
   [elro]
 
+
 1.2rc1 - March 20, 2009
 -----------------------
 
@@ -25,6 +30,7 @@ Changelog
 
 - Removed stray span tags in the comment byline.
   [limi]
+
 
 1.2b1 - March 7, 2009
 ---------------------

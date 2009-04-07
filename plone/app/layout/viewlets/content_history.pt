@@ -21,8 +21,7 @@
                                         moment python:context.toLocalizedTime(item['time'],long_format=True);
                                         effective item/effective_date|nothing;
                                         effectiveDate python:effective and context.toLocalizedTime(item['effective_date'],long_format=True);
-                                        isVersion python:item['type']=='versioning'"
-                        tal:condition="action">
+                                        isVersion python:item['type']=='versioning'">
                     <div class="historyTools" tal:condition="isVersion">
                         <ul>
                             <li><a href="" tal:attributes="href item/diff_current_url"
