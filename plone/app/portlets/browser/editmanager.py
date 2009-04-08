@@ -6,7 +6,6 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
-from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.utils import hashPortletInfo
 
 from zope.interface import implements, Interface
@@ -16,6 +15,8 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from Acquisition import Explicit, aq_parent, aq_inner
 from Acquisition.interfaces import IAcquirer
+
+from AccessControl import Unauthorized
  
 from Products.Five.browser import BrowserView 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile

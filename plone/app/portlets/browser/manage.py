@@ -1,6 +1,5 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from AccessControl import Unauthorized
 from Acquisition import aq_inner

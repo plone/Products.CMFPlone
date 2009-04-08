@@ -1,8 +1,11 @@
 Changelog
 =========
 
-1.2 - UNRELEASED
-----------------
+1.2rc3 - April 8, 2009
+----------------------
+
+- Correct import error in editmanager.py.
+  [optilude]
 
 - Correct case in the feedparser dependency.
   [wichert]
