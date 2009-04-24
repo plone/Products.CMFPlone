@@ -46,7 +46,7 @@ Changelog
 - Fixed exportimport to support xml CDATA, thanks to lucie
   [calvinhp]
 
-1.1.6
+1.1.6 - 2009-03-07
 ------------------
 
 - Fixed new portlet template footer so it will validate, fixes 
