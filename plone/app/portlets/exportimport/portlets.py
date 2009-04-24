@@ -149,7 +149,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
         node.normalize()
         text = u""
         for child in node.childNodes:
-            if child.nodeType == node.TEXT_NODE:
+            if child.nodeType == node.TEXT_NODE or child.nodeType == node.CDATA_SECTION_NODE:
                 text += child.nodeValue
         return text
         

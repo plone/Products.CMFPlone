@@ -40,7 +40,13 @@ Changelog
   Let the default view on the Link type decide what's best
   [andrewb]
 
-1.1.6 (Unreleased)
+1.1.7 (Unreleased)
+------------------
+
+- Fixed exportimport to support xml CDATA, thanks to lucie
+  [calvinhp]
+
+1.1.6
 ------------------
 
 - Fixed new portlet template footer so it will validate, fixes 
