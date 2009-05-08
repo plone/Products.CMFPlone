@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
-"""
-profilesettings.py
-"""
-
 from zope.interface import Interface
 from zope.interface import implements
 from Products.Five.browser import BrowserView

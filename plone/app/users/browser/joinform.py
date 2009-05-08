@@ -1,10 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
-"""
-joinform.py
-"""
-
-
 from zope.interface import Interface
 from zope.component import getUtility
 

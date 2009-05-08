@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
-"""
-password.py
-"""
-
 from zope.component import getUtility
 from zope.interface import implements, Interface
 from zope.component import adapts

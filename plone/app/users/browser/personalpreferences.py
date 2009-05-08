@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
-"""
-personalpreferences.py
-"""
-
 from zope.component import getUtility
 from zope.interface import implements, Interface
 from zope import schema

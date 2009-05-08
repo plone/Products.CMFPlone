@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
-"""
-schema_adapter.py
-"""
-
 from zope.component import adapts
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName

@@ -1,29 +1,8 @@
-#!/usr/bin/env python
-# encoding: utf-8
-"""
-userdata.py
-"""
-
-#import warnings
-#from zope.component import queryAdapter
-#from zope.component import queryUtility
-#from zope.interface import implements
-
-#from Acquisition import aq_inner, aq_base
-#from Products.CMFPlone import utils
-#from Products.Five.browser import BrowserView
-
-#from plone.app.users.browser.interfaces import IPersonalPreferencesPanel
-
 from zope.formlib import form
 
 from zope.interface import Interface
-from zope.component import adapts
 from zope.interface import implements
 from zope import schema
-
-from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFCore.utils import getToolByName
 
 from plone.app.controlpanel import PloneMessageFactory as _
 from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
