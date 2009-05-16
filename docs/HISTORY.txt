@@ -1,8 +1,12 @@
 Changelog
 =========
 
-1.2 - unreleased
-----------------
+1.2.1 - unreleased
+------------------
+
+
+1.2 - May 16, 2009
+------------------
 
 - Filter not-interesting history entries in content history viewlet. THis
   prevents an empty history viewlet from being shown.
