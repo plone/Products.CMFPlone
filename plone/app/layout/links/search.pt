@@ -1,7 +1,7 @@
-<tal:search define="portal_url view/site_url">
+<tal:search define="navigation_root_url view/navigation_root_url">
     <link rel="search"
           href=""
           title="Search this site"
           i18n:attributes="title title_search_this_site"
-          tal:attributes="href string:$portal_url/search_form" />
+          tal:attributes="href string:${navigation_root_url}/search_form" />
 </tal:search>

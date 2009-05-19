@@ -4,6 +4,8 @@ Changelog
 1.2.1 - unreleased
 ------------------
 
+- Changed the search and author header links to respect the navigation root.
+  [hannosch]
 
 1.2 - May 16, 2009
 ------------------

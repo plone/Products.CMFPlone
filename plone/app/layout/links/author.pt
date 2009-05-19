@@ -1,8 +1,8 @@
-<tal:author define="portal_url view/site_url"
+<tal:author define="navigation_root_url view/navigation_root_url"
             i18n:domain="plone">
     <link rel="author"
           href=""
           title="Author information"
           i18n:attributes="title title_author_info"
-          tal:attributes="href string:${portal_url}/author/${context/Creator|nothing}" />
+          tal:attributes="href string:${navigation_root_url}/author/${context/Creator|nothing}" />
 </tal:author>
