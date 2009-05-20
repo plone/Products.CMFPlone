@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.1 - unreleased
+1.2.1 - 2009-05-20
 ------------------
 
 - Changed the search and author header links to respect the navigation root.

@@ -25,13 +25,10 @@ setup(name='plone.app.layout',
       zip_safe=False,
       install_requires=[
         'setuptools',
-        'plone.app.viewletmanager>=1.2dev',
+        'plone.app.viewletmanager>=1.2',
         'plone.memoize',
         'plone.portlets',
-        'Products.CMFEditions >=1.2dev-r79221',
-        'Plone >=3.2.1dev-r24257',
+        'Products.CMFEditions>=1.2',
+        'Plone>=3.2.1',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )
