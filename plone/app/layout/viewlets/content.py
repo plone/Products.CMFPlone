@@ -182,7 +182,8 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
     def revisionHistory(self):
         context = aq_inner(self.context)
         rt = getToolByName(context, "portal_repository")
-        allowed = _checkPermission(AccessPreviousVersions, context)
+        allowed = rt.isVersionable(context) and \
+            _checkPermission(AccessPreviousVersions, context)
         if not allowed:
             return []
         context_url = context.absolute_url()

@@ -4,6 +4,8 @@ Changelog
 1.2.2 - Unreleased
 ------------------
 
+- Make ContentHistoryViewlet check if context isVersionable.
+  [elro]
 
 1.2.1 - 2009-05-20
 ------------------
