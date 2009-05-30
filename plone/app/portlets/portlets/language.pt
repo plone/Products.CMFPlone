@@ -1,4 +1,8 @@
-<tal:block i18n:domain="plone">
+<tal:block i18n:domain="plone"
+            xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:tal="http://xml.zope.org/namespaces/tal"
+            xmlns:metal="http://xml.zope.org/namespaces/metal"
+            xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
 <dl class="portlet portletLanguage">
     <dt class="portletHeader">

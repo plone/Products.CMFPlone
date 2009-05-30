@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2 - UNRELEASED
+----------------
+
+- Template cleanup: add missing xmlns declarations and fix invalid markup.
+  [wichert]
+
+
 1.2rc3 - April 8, 2009
 ----------------------
 

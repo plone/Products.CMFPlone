@@ -1,3 +1,7 @@
+<tal:root xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:tal="http://xml.zope.org/namespaces/tal"
+          xmlns:metal="http://xml.zope.org/namespaces/metal"
+          xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 <tal:block repeat="portlet options/portlets">
 <div tal:attributes="id string:portletwrapper-${portlet/hash};
                      class string:portletWrapper kssattr-portlethash-${portlet/hash};"
@@ -12,3 +16,4 @@
      tal:attributes="href string:${view/base_url}/@@manage-portlets"
      >Manage portlets</a>
 </div>
+</tal:root>

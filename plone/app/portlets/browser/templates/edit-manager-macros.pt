@@ -1,3 +1,8 @@
+<tal:root 
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 <div metal:define-macro="portlet-add-form" class="section" i18n:domain="plone">
     
     <form method="post" action="#"
@@ -77,3 +82,4 @@
     </tal:block>
       
 </div>
+</tal:root>
