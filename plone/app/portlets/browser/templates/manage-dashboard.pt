@@ -1,8 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      xml:lang="en" lang="en"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
@@ -79,7 +76,6 @@
             <div class="visualClear"><!-- --></div>
 
     </div> <!-- end simulated tabs -->
-  </div>
 
     </tal:main-macro>
 

@@ -1,8 +1,4 @@
-<metal:block use-macro="here/global_defines/macros/defines"
-            xmlns="http://www.w3.org/1999/xhtml"
-            xmlns:tal="http://xml.zope.org/namespaces/tal"
-            xmlns:metal="http://xml.zope.org/namespaces/metal"
-            xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+<metal:block use-macro="here/global_defines/macros/defines" />
 <tal:block tal:define="tabindex python:Iterator(pos=0);
                        use_macro view/use_macro;
                        path_expression view/path_expression">
