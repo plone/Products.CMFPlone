@@ -1,4 +1,7 @@
-<dl class="portlet portletSearch"
+<dl xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    class="portlet portletSearch"
     i18n:domain="plone">
 
   <dt class="portletHeader">
