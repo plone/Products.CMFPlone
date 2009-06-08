@@ -4,6 +4,10 @@ Changelog
 1.2.2 - Unreleased
 ------------------
 
+- Make ContentHistoryViewlet use new metadata only history method to
+  speed up listing.
+  [alecm]
+
 - Make ContentHistoryViewlet check if context isVersionable.
   [elro]
 

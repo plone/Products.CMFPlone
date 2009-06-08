@@ -187,35 +187,42 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         if not allowed:
             return []
         context_url = context.absolute_url()
-        version_history=rt.getHistory(context, countPurged=False);
+        history=rt.getHistoryMetadata(context);
         can_diff = getToolByName(context, "portal_diff", None) is not None
 
-        def morphVersionDataToHistoryFormat(vdata):
-            userid=vdata.sys_metadata["principal"]
+        def morphVersionDataToHistoryFormat(vdata, version_id):
+            meta = vdata["metadata"]["sys_metadata"]
+            userid = meta["principal"]
             info=dict(type='versioning',
                       action=_(u"edit"),
                       transition_title=_(u"Edit"),
                       actorid=userid,
-                      time=vdata.sys_metadata["timestamp"],
-                      comments=vdata.comment,
-                      version_id=vdata.version_id,
-                      review_state=vdata.sys_metadata["review_state"],
+                      time=meta["timestamp"],
+                      comments=meta['comment'],
+                      version_id=version_id,
+                      review_state=meta["review_state"],
                       preview_url="%s/versions_history_form?version_id=%s#version_preview" %
-                                  (context_url, vdata.version_id),
+                                  (context_url, version_id),
                       revert_url="%s/revertversion?version_id=%s#" %
-                                  (context_url, vdata.version_id),
+                                  (context_url, version_id),
                       )
             if can_diff:
-                if vdata.version_id>0:
+                if version_id>0:
                     info["diff_previous_url"]=("%s/@@history?one=%s&two=%s" %
-                            (context_url, vdata.version_id, vdata.version_id-1))
+                            (context_url, version_id, version_id-1))
                 info["diff_current_url"]=("%s/@@history?one=current&two=%s" %
-                            (context_url, vdata.version_id))
+                            (context_url, version_id))
             info.update(self.getUserInfo(userid))
             return info
 
-        version_history=[morphVersionDataToHistoryFormat(h)
-                            for h in version_history]
+        version_history = []
+        retrieve = history.retrieve
+        getId = history.getVersionId
+        # Count backwards from most recent to least recent
+        for i in xrange(history.getLength(countPurged=False)-1, -1, -1):
+            version_history.append(
+                morphVersionDataToHistoryFormat(retrieve(i, countPurged=False),
+                                                getId(i, countPurged=False)))
 
         return version_history
 
