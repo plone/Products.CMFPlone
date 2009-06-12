@@ -214,7 +214,9 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                             (context_url, version_id))
             info.update(self.getUserInfo(userid))
             return info
-
+        # History may be an empty list
+        if not history:
+            return history
         version_history = []
         retrieve = history.retrieve
         getId = history.getVersionId

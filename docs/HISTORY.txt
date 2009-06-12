@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2.3 - Unreleased
+------------------
+
+- Fix issue when dealing with empty version histories in history viewlet.
+   [alecm]
+
 1.2.2 - 2009-06-11
 ------------------
 
