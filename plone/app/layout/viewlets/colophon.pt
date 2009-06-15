@@ -1,4 +1,10 @@
-  <div id="portal-colophon" metal:define-macro="colophon" i18n:domain="plone">
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     id="portal-colophon"
+     metal:define-macro="colophon"
+     i18n:domain="plone">
       <tal:comment replace="nothing">
 
         Please keep the Plone Powered link (or the plone_powered.gif image) if you use

@@ -26,7 +26,7 @@ class DocumentActionsViewlet(ViewletBase):
                                              name=u'plone_context_state')
         plone_utils = getToolByName(self.context, 'plone_utils')
         self.getIconFor = plone_utils.getIconFor
-        self.actions = self.context_state.actions().get('document_actions', None)
+        self.actions = self.context_state.actions('document_actions')
 
     index = ViewPageTemplateFile("document_actions.pt")
 
@@ -36,12 +36,10 @@ class DocumentBylineViewlet(ViewletBase):
         super(DocumentBylineViewlet, self).update()
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
-        self.tools = getMultiAdapter((self.context, self.request),
-                                     name='plone_tools')
 
     @memoize
     def show(self):
-        properties = self.tools.properties()
+        properties = getToolByName(self.context, 'portal_properties')
         site_properties = getattr(properties, 'site_properties')
         anonymous = self.portal_state.anonymous()
         allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)
@@ -76,7 +74,7 @@ class DocumentBylineViewlet(ViewletBase):
 
     @memoize
     def author(self):
-        membership = self.tools.membership()
+        membership = getToolByName(self.context, 'portal_membership')
         return membership.getMemberInfo(self.creator())
 
     @memoize

@@ -190,16 +190,12 @@ class IContextState(Interface):
     def is_locked():
         """Whether or not the current object is locked
         """
-                            
-    def actions():
-        """The filtered actions in the context
+
+    def actions(category):
+        """The filtered actions in the context. You can restrict the actions
+        to just one category.
         """
-    
-    def keyed_actions():
-        """A mapping of action categories to action ids to
-        action information: mapping[cat][id] == actioninfo
-        """
-        
+
     def portlet_assignable():
         """Whether or not the context is capable of having locally assigned
         portlets.

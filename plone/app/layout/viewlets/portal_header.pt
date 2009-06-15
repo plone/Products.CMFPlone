@@ -1,3 +1,5 @@
-<div id="portal-header">
-<div tal:replace="structure provider:plone.portalheader" />
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     id="portal-header">
+    <div tal:replace="structure provider:plone.portalheader" />
 </div>

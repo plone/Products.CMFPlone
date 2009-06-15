@@ -1,11 +1,42 @@
 Changelog
 =========
 
+2.0 - unreleased
+----------------
+
+- Removed memoizing for things which are only used once in a page.
+  [hannosch]
+
+- Replaced direct invocations of interfaces with queryAdapter calls. The
+  former does a suboptimal getattr call internally.
+  [hannosch]
+
+- Sanitized the actions handling on the context state view. You can pass in
+  an action category into the action method now, which is the preferred way.
+  This allows us to avoid evaluating all actions in the current context if
+  we are only interested in some of the categories.
+  [hannosch]
+
+- Since Zope 2.11 the locale is available on the request. Removed our special
+  code from the portal state view and rely directly on the request.
+  [hannosch]
+
+- Added a couple of missing XML namespace declarations to viewlet templates.
+  [hannosch]
+
+- Changed ViewletBase so viewlets can be registered as zope.contentproviders.
+  This closes https://dev.plone.org/plone/ticket/7868.
+  [hannosch]
+
+- Purge old zope2 Interface interfaces for Zope 2.12 compatibility.
+  [elro]
+
+
 1.2.3 - 2009-06-12
 ------------------
 
 - Fix issue when dealing with empty version histories in history viewlet.
-   [alecm]
+  [alecm]
 
 1.2.2 - 2009-06-11
 ------------------
@@ -28,6 +59,9 @@ Changelog
 
 - Filter not-interesting history entries in content history viewlet. THis
   prevents an empty history viewlet from being shown.
+
+- Add a new content history viewlet which combines workflow history and
+  content versions. Render this instead of the workflow history viewlet.
   [wichert]
 
 - Fixed querystring in CSS validation link in viewlets/colophon.pt 

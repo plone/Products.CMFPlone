@@ -1,16 +1,17 @@
 from zope.interface import implements
-from zope.component import getMultiAdapter, queryMultiAdapter
+from zope.component import getMultiAdapter
+from zope.component import queryAdapter
+from zope.component import queryMultiAdapter
 from zope.component import getUtility
 from plone.memoize.view import memoize
 
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
+from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFPlone.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces.NonStructuralFolder import INonStructuralFolder \
-     as z2INonStructuralFolder
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
@@ -20,7 +21,13 @@ from interfaces import IContextState
 from plone.portlets.interfaces import ILocalPortletAssignable
 
 BLACKLISTED_PROVIDERS = ('portal_workflow', )
-BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons')
+BLACKLISTED_CATEGORIES = (
+    'folder_buttons',
+    'object_buttons',
+    'controlpanel',
+    'controlpanel_addons',
+    'controlpanel_advanced',
+    )
 
 
 class ContextState(BrowserView):
@@ -43,14 +50,15 @@ class ContextState(BrowserView):
                  self.request.get('VIRTUAL_URL',
                    self.request.get('URL', 
                      self.context.absolute_url())))
-                             
+
     @memoize
     def canonical_object(self):
+        context = aq_inner(self.context)
         if self.is_default_page():
-            return self.parent()
+            return aq_parent(context)
         else:
-            return self.context
-            
+            return context
+
     @memoize
     def canonical_object_url(self):
         return self.canonical_object().absolute_url()
@@ -76,8 +84,12 @@ class ContextState(BrowserView):
     @memoize
     def view_template_id(self):
         context = aq_inner(self.context)
-        browserDefault = IBrowserDefault(context, None)
-        
+
+        if IBrowserDefault.providedBy(context):
+            browserDefault = context
+        else:
+            browserDefault = queryAdapter(context, IBrowserDefault)
+
         if browserDefault is not None:
             try:
                 return browserDefault.getLayout()
@@ -116,27 +128,27 @@ class ContextState(BrowserView):
     @memoize
     def object_url(self):
         return aq_inner(self.context).absolute_url()
-        
+
     @memoize
     def object_title(self):
         context = aq_inner(self.context)
         return utils.pretty_title_or_id(context, context)
-        
+
     @memoize
     def workflow_state(self):
         tool = getToolByName(self.context, "portal_workflow")
         return tool.getInfoFor(aq_inner(self.context), 'review_state', None)
-    
-    @memoize
+
     def parent(self):
         return aq_parent(aq_inner(self.context))
 
     @memoize
     def folder(self):
+        context = aq_inner(self.context)
         if self.is_structural_folder() and not self.is_default_page():
-            return aq_inner(self.context)
+            return context
         else:
-            return self.parent()
+            return aq_parent(context)
     
     @memoize
     def is_folderish(self):
@@ -149,9 +161,6 @@ class ContextState(BrowserView):
         if not folderish:
             return False
         elif INonStructuralFolder.providedBy(context):
-            return False
-        elif z2INonStructuralFolder.isImplementedBy(context):
-            # BBB: for z2 interface compat
             return False
         else:
             return folderish
@@ -170,7 +179,8 @@ class ContextState(BrowserView):
         context = aq_inner(self.context)
         portal = getUtility(ISiteRoot)
         return aq_base(context) is aq_base(portal) or \
-                (self.is_default_page() and aq_base(self.parent()) is aq_base(portal))
+            (self.is_default_page() and
+             aq_base(aq_parent(context)) is aq_base(portal))
     
     @memoize
     def is_editable(self):
@@ -190,25 +200,40 @@ class ContextState(BrowserView):
             return lockable and context.wl_isLocked()
 
     @memoize
-    def actions(self):
-        tool = getToolByName(self.context, "portal_actions")
-        return tool.listFilteredActionsFor(aq_inner(self.context),
-                                           ignore_providers=BLACKLISTED_PROVIDERS,
-                                           ignore_categories=BLACKLISTED_CATEGORIES)
+    def actions(self, category=None, max=-1):
+        context = aq_inner(self.context)
+        tool = getToolByName(context, "portal_actions")
+        if category is None:
+            actions = tool.listFilteredActionsFor(
+                context,
+               ignore_providers=BLACKLISTED_PROVIDERS,
+               ignore_categories=BLACKLISTED_CATEGORIES)
+        else:
+            actions = []
+            providers = [name for name in tool.listActionProviders()
+                              if name not in BLACKLISTED_PROVIDERS]
 
-    @memoize
-    def keyed_actions(self):
-        actions = self.actions()
-        keyed_actions = {}
-        for category in actions.keys():
-            keyed_actions[category] = {}
-            for action in actions[category]:
-                id = action.get('id', None)
-                if id is not None:
-                    keyed_actions[category][id] = action.copy()
-        return keyed_actions
-       
-    @memoize
+            # Include actions from specific tools.
+            for provider_name in providers:
+                provider = getattr(tool, provider_name, None)
+                # Skip missing action providers.
+                if provider is None:
+                    continue
+                if IActionProvider.providedBy(provider):
+                    if provider_name in ('portal_actions', 'portal_types'):
+                        actions.extend(
+                            provider.listActionInfos(
+                                object=context,
+                                categories=(category, ),
+                                max=max,
+                                )
+                            )
+                    else:
+                        actions.extend(
+                            provider.listActionInfos(object=context))
+
+        return actions
+
     def portlet_assignable(self):
         return ILocalPortletAssignable.providedBy(self.context)
         

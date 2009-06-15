@@ -146,9 +146,9 @@ class TestContextStateView(GlobalsTestCase):
         self.logout() # The object is not "locked" if it was locked by the current user
         del self.app.REQUEST.__annotations__
         self.assertEquals(self.dview.is_locked(), True)
-                            
+
     def test_actions(self):
-        actions = self.fview.actions()
+        actions = self.fview.actions('workflow')
         self.failUnless('workflow' in actions)
     
 def test_suite():
