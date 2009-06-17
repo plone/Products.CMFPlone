@@ -10,7 +10,6 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 
-from plone.app.form import named_template_adapter
 from plone.app.form.validators import null_validator
 
 from plone.app.controlpanel.events import ConfigurationChangedEvent
@@ -30,6 +29,7 @@ class ControlPanelForm(FieldsetsEditForm):
     """A simple form to be used as a basis for control panel screens."""
 
     implements(IPloneControlPanelForm)
+    template = ViewPageTemplateFile('control-panel.pt')
 
     @form.action(_(u'label_save', default=u'Save'), name=u'save')
     def handle_edit_action(self, action, data):
@@ -55,6 +55,3 @@ class ControlPanelForm(FieldsetsEditForm):
         
     def _on_save(self, data=None):
         pass
-
-_template = ViewPageTemplateFile('control-panel.pt')
-controlpanel_named_template_adapter = named_template_adapter(_template)

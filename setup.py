@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.2.1'
+version = '2.0'
 
 setup(name='plone.app.controlpanel',
       version=version,
@@ -30,6 +30,7 @@ setup(name='plone.app.controlpanel',
         'plone.memoize',
         'plone.protect',
         'plone.locking',
+        'zope.app.cache',
       ],
       )
 

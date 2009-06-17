@@ -18,7 +18,6 @@ from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 
 from plone.app.controlpanel.form import ControlPanelForm
-from plone.app.controlpanel.form import _template
 
 from plone.protect import CheckAuthenticator
 
@@ -70,7 +69,7 @@ class RAMCacheControlPanelAdapter(SchemaAdapterBase):
 
 class RAMCacheControlPanel(ControlPanelForm):
 
-    base_template = _template
+    base_template = ControlPanelForm.template
     template = ZopeTwoPageTemplateFile('ram.pt')
 
     form_fields = form.FormFields(IRAMCacheSchema)

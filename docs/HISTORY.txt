@@ -1,9 +1,18 @@
 Changelog
 =========
 
+2.0 - unreleased
+----------------
+
+- Added dependency declaration on zope.app.cache.
+  [hannosch]
+
+- Removed the dependency on plone.app.form's named_template_adapter, as it
+  does not work with Zope 2.12.
+  [hannosch]
+
 1.2.1 - unreleased
 ------------------
-
 
 
 1.2 - 2009-05-09
