@@ -65,7 +65,7 @@
                     <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
                            tal:attributes="href item/diff_previous_url"
                            title="Compare with previous revision">
-                           <span style="position: relative; left: 45%; top: -1em; background-color: white">&uarr; Compare &darr;</span>
+                           <span i18n:translate="label_compare_arrows">&uarr; Compare &darr;</span>
                     </a>
                 </div>
             </tal:block>
