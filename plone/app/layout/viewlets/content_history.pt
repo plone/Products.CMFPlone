@@ -24,18 +24,9 @@
                                         isVersion python:item['type']=='versioning'">
                     <div class="historyTools" tal:condition="isVersion">
                         <ul>
-                            <li><a href="" tal:attributes="href item/diff_current_url"
-                              ><img i18n:attributes="title title_compare_revision"
-                                    tal:attributes="src string:${view/site_url}/history_compare_with_current.png"
-                                    title="Compare with current revision" src="history_compare_with_current.png" /></a></li>                        
-                            <li><a href="" tal:attributes="href item/preview_url"
-                              ><img i18n:attributes="title title_view_revision"
-                                    tal:attributes="src string:${view/site_url}/history_preview.png"
-                                    title="View this revision" src="history_preview.png" /></a></li>
-                            <li><a href="" tal:attributes="href item/revert_url"
-                              ><img i18n:attributes="title title_revert_revision"
-                                    tal:attributes="src string:${view/site_url}/history_revert.png"
-                                    title="Revert to this revision" src="history_revert.png" /></a></li>
+                            <li><form action="" method="post" tal:attributes="action item/revert_url"
+                              ><input class="standalone" type="submit" i18n:attributes="value title_revert_revision"
+                                      value="Revert to this revision" /></form></li>
                         </ul>
                     </div>
                     <div class="historyByLine">
@@ -59,8 +50,14 @@
                         </tal:effective>
 
                     </div>
-                    <div class="historyComment" tal:condition="python:rhComments">
-                        <p tal:content="rhComments" />
+                    <div tal:content="rhComments" tal:condition="python:rhComments" class="historyComment" />
+                    <div tal:condition="isVersion" class="historyComment">
+                        <a href="" 
+                           tal:attributes="href item/preview_url"
+                           i18n:translate="title_view_revision">View this revision</a> &middot;
+                        <a href="" tal:attributes="href item/diff_current_url" 
+                           i18n:translate="title_compare_revision">Compare with current revision</a>
+
                     </div>
                     <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
                            tal:attributes="href item/diff_previous_url"
