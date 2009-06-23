@@ -50,7 +50,7 @@
                         </tal:effective>
 
                     </div>
-                    <div tal:content="rhComments" tal:condition="python:rhComments" class="historyComment" />
+                    <div tal:content="rhComments" tal:condition="rhComments" class="historyComment" />
                     <div tal:condition="isVersion" class="historyComment">
                         <a href="" 
                            tal:attributes="href item/preview_url"
@@ -61,8 +61,9 @@
                     </div>
                     <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
                            tal:attributes="href item/diff_previous_url"
-                           title="Compare with previous revision">
-                           <span i18n:translate="label_compare_arrows">&uarr; Compare &darr;</span>
+                           title="Compare with previous revision"
+                           i18n:attributes="title title_compare_previous_revision">
+                           &uarr; <span i18n:translate="label_compare">Compare</span> &darr;
                     </a>
                 </div>
             </tal:block>
