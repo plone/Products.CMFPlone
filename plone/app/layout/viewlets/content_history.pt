@@ -63,11 +63,9 @@
                         <p tal:content="rhComments" />
                     </div>
                     <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
-                           tal:attributes="href item/diff_previous_url">
-                           <img class="pngIllustration"
-                                title="Compare with previous revision"
-                                i18n:attributes="title title_compare_previous_revision"
-                                src="history_compare_with_previous_inline.png" />
+                           tal:attributes="href item/diff_previous_url"
+                           title="Compare with previous revision">
+                           <span style="position: relative; left: 45%; top: -1em; background-color: white">&uarr; Compare &darr;</span>
                     </a>
                 </div>
             </tal:block>
