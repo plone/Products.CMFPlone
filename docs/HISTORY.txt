@@ -1,11 +1,20 @@
 Changelog
 =========
 
+1.2.4 - unreleased
+------------------
+
+- In the history viewlet, internationalized the Compare link and replaced
+  icons by plain text. The revert link is now a POST button. This closes
+  http://dev.plone.org/plone/ticket/9064
+  [limi, vincentfretin]
+
+
 1.2.3 - 2009-06-12
 ------------------
 
 - Fix issue when dealing with empty version histories in history viewlet.
-   [alecm]
+  [alecm]
 
 1.2.2 - 2009-06-11
 ------------------
