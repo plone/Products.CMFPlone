@@ -201,8 +201,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                       review_state=meta["review_state"],
                       preview_url="%s/versions_history_form?version_id=%s#version_preview" %
                                   (context_url, version_id),
-                      revert_url="%s/revertversion?version_id=%s#" %
-                                  (context_url, version_id),
+                      revert_url="%s/revertversion" % context_url,
                       )
             if can_diff:
                 if version_id>0:
