@@ -64,7 +64,7 @@
                            tal:attributes="href item/diff_previous_url"
                            title="Compare with previous revision"
                            i18n:attributes="title title_compare_previous_revision">
-                           &uarr; <span i18n:translate="label_compare">Compare</span> &darr;
+                           <span>&uarr; <span i18n:translate="label_compare" tal:omit-tag="">Compare</span> &darr;</span>
                     </a>
                 </div>
             </tal:block>
