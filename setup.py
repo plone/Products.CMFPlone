@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '1.2.3'
+version = '2.0dev'
 
 setup(name='plone.app.layout',
       version=version,
@@ -29,6 +29,6 @@ setup(name='plone.app.layout',
         'plone.memoize',
         'plone.portlets',
         'Products.CMFEditions>=1.2.2',
-        'Plone>=3.2.1',
+        'Plone>=4.0dev',
       ],
       )
