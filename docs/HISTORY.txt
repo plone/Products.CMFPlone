@@ -15,7 +15,6 @@ Changelog
   http://dev.plone.org/plone/ticket/9064
   [limi, vincentfretin]
 
-
 1.2.3 - 2009-06-12
 ------------------
 
@@ -41,8 +40,12 @@ Changelog
 1.2 - May 16, 2009
 ------------------
 
-- Filter not-interesting history entries in content history viewlet. THis
+- Filter not-interesting history entries in content history viewlet. This
   prevents an empty history viewlet from being shown.
+  [wichert]
+
+- Add a new content history viewlet which combines the full workflow history
+  and content versions. Render this instead of the workflow history viewlet.
   [wichert]
 
 - Fixed querystring in CSS validation link in viewlets/colophon.pt 
@@ -57,7 +60,6 @@ Changelog
 - Author link tag should follow same rules as byline viewlet.
   [elro]
 
-
 1.2rc1 - March 20, 2009
 -----------------------
 
@@ -68,9 +70,8 @@ Changelog
 - Removed stray span tags in the comment byline.
   [limi]
 
-
-1.2b1 - March 7, 2009
----------------------
+1.2b1 - 2009-03-07
+------------------
 
 - Added navigation_root_url to the common viewlets base class. Adjusted the
   various viewlets templates to use the new attribute. Changed the dashboard
@@ -186,8 +187,8 @@ Changelog
   http://dev.plone.org/plone/ticket/7296.
   [erikrose]
 
-- Use 'index' attribute rather than 'render' for setting viewlet templates, so that
-  they can be overridden using the 'template' ZCML attribute.
+- Use 'index' attribute rather than 'render' for setting viewlet templates, so
+  that they can be overridden using the 'template' ZCML attribute.
   [davisagli]
 
 1.1.0 Released April 20th, 2008
