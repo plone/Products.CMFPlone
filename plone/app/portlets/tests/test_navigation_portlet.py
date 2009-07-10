@@ -1,4 +1,5 @@
 from zope.component import getUtility, getMultiAdapter
+from zope.interface import directlyProvides
 
 from Products.GenericSetup.utils import _getDottedName
 
@@ -13,7 +14,10 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+from plone.app.layout.navigation.interfaces import INavigationRoot
+
 from Products.CMFPlone.tests import dummy
+
 
 class TestPortlet(PortletsTestCase):
 
@@ -413,6 +417,17 @@ class TestRenderer(PortletsTestCase):
         
         folder2_node = [n for n in tree['children'] if n['path'] == '/plone/folder2'][0]
         self.failIf(folder2_node['currentParent'])
+    
+    def testINavigationRootAvailability(self):
+        self.failIf(INavigationRoot.providedBy(self.portal.folder1))
+        self.portal.folder1.invokeFactory('Folder', 'folder1_1')
+        directlyProvides(self.portal.folder1, INavigationRoot)
+        self.failUnless(INavigationRoot.providedBy(self.portal.folder1))
+        view = self.renderer(self.portal.folder1, assignment=navigation.Assignment(bottomLevel=0, topLevel=1, root=None))
+        tree = view.getNavTree()
+        root = view.getNavRoot()
+        self.failIf(root is not None and len(tree['children']) > 0)
+    
     
 def test_suite():
     from unittest import TestSuite, makeSuite

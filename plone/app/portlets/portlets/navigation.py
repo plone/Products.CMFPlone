@@ -179,6 +179,9 @@ class Renderer(base.Renderer):
         
         rootPath = getRootPath(self.context, currentFolderOnly, topLevel, str(self.data.root))
         
+        if rootPath is None:
+            return rootPath
+        
         if rootPath == self.urltool.getPortalPath():
             return portal
         else:
