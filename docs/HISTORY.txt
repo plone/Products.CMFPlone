@@ -1,8 +1,13 @@
 Changelog
 =========
 
-1.2 - UNRELEASED
-----------------
+1.2 - July 13, 2009
+-------------------
+
+- Fix ComponentLookupError on portlet management screen for special use cases
+  such as collective.portletpage, where not all content have the same 
+  managers.
+  [optilude]
 
 - Template cleanup: add missing xmlns declarations and fix invalid markup.
   [wichert]

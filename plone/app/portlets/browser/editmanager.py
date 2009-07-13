@@ -86,22 +86,17 @@ class EditPortletManagerRenderer(Explicit):
         data = []
         while not IPloneSiteRoot.providedBy(context):
             if IAcquirer.providedBy(context):
-                context = aq_parent(context)
+                context = aq_parent(aq_inner(context))
             else:
                 context = context.__parent__
                 
-            # we get the contextual portlets view to access its
-            # utility methods
-            view = getMultiAdapter(
-                (context, self.request), name=self.__parent__.__name__)
-
-            assignments = view.getAssignmentsForManager(self.manager)
-            base_url = view.getAssignmentMappingUrl(self.manager)
-            
-            data.extend(
-                self.portlets_for_assignments(
-                assignments, self.manager, base_url))
-                        
+            # we get the contextual portlets view to access its utility methods
+            view = queryMultiAdapter((context, self.request), name=self.__parent__.__name__)
+            if view is not None:
+                assignments = view.getAssignmentsForManager(self.manager)
+                base_url = view.getAssignmentMappingUrl(self.manager)
+                data.extend(self.portlets_for_assignments(assignments, self.manager, base_url))
+                
         return data
         
     def portlets_for_assignments(self, assignments, manager, base_url):
