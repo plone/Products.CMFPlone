@@ -45,4 +45,11 @@
       permission="zope.Public"
       />
 
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="account"
+      class=".form.AccountPanelForm"
+      permission="cmf.SetOwnProperties"
+      />
+
 </configure>

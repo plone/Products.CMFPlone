@@ -31,7 +31,9 @@ class AccountPanelForm(FieldsetsEditForm):
     """A simple form to be used as a basis for account panel screens."""
 
     implements(IAccountPanelForm)
+    form_fields = form.FormFields(IAccountPanelForm)
     template = ViewPageTemplateFile('account-panel.pt')
+
 
     @memoize
     def prepareFormTabs(self):
