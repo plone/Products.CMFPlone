@@ -5,7 +5,7 @@ from zope import schema
 from zope.formlib import form
 from zope.app.form.browser import TextWidget, CheckBoxWidget
 
-from plone.app.controlpanel import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as _
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName

@@ -4,7 +4,7 @@ from zope.interface import Interface
 from zope.interface import implements
 from zope import schema
 
-from plone.app.controlpanel import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as _
 from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 from plone.app.users.browser.form import AccountPanelForm
 
