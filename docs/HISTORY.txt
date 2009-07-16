@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Fixed is_rtl test to work with new locale based approach.
+  [hannosch]
+
 - Removed memoizing for things which are only used once in a page.
   [hannosch]
 

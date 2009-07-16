@@ -7,7 +7,7 @@
     <browser:page
         name="plone_interface_info"
         for="*"
-        permission="zope2.View"
+        permission="zope.Public"
         class=".interface.InterfaceInformation"
         allowed_interface=".interfaces.IInterfaceInformation"
         />
@@ -15,7 +15,7 @@
     <browser:page
         name="plone_tools"
         for="*"
-        permission="zope2.View"
+        permission="zope.Public"
         class=".tools.Tools"
         allowed_interface=".interfaces.ITools"
         />
@@ -23,7 +23,7 @@
     <browser:page
         name="plone_context_state"
         for="*"
-        permission="zope2.View"
+        permission="zope.Public"
         class=".context.ContextState"
         allowed_interface=".interfaces.IContextState"
         />
@@ -31,7 +31,7 @@
     <browser:page
         name="plone_portal_state"
         for="*"
-        permission="zope2.View"
+        permission="zope.Public"
         class=".portal.PortalState"
         allowed_interface=".interfaces.IPortalState"
         />
