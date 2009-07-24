@@ -10,8 +10,8 @@ from Products.CMFCore.utils import getToolByName
 
 from plone.app.users.browser.form import AccountPanelForm
 
-from Products.CMFDefault.formlib.schema import SchemaAdapterBase
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.app.controlpanel.utils import SchemaAdapterBase
+from plone.app.controlpanel import PloneMessageFactory as _
 from Products.statusmessages.interfaces import IStatusMessage
 
 

@@ -29,7 +29,6 @@
             tal:condition="view_actions"
             i18n:translate="heading_views">Views</h5>
 
-
         <ul class="contentViews"
             id="content-views"
             i18n:domain="plone">
@@ -57,8 +56,7 @@
 
     <a name="documentContent"></a>
 
-        <!-- TODO: find out what the replacement is for plone.status -->
-        <!--div id="viewlet-status" tal:content="structure provider:plone.status" /-->
+        <div id="viewlet-status" tal:content="structure provider:plone.status" />
 
             <h1 class="documentFirstHeading"
                 i18n:translate=""
@@ -68,12 +66,11 @@
                 Do something
             </h1>
 
-            <!-- TODO: do we need a description -->
-            <!--p i18n:translate=""
+            <p i18n:translate=""
                tal:condition="view/description"
                tal:content="view/description">
                 Description
-            </p-->
+            </p>
 
             <form action="."
                   metal:define-macro="master"

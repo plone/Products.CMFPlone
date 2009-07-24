@@ -9,7 +9,7 @@ from plone.memoize.view import memoize
 from plone.fieldsets.form import FieldsetsEditForm
 from plone.app.form.validators import null_validator
 
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.app.controlpanel import PloneMessageFactory as _
 from plone.app.controlpanel.events import ConfigurationChangedEvent
 
 from Products.Five.browser import BrowserView
@@ -31,9 +31,7 @@ class AccountPanelForm(FieldsetsEditForm):
     """A simple form to be used as a basis for account panel screens."""
 
     implements(IAccountPanelForm)
-    form_fields = form.FormFields(IAccountPanelForm)
     template = ViewPageTemplateFile('account-panel.pt')
-
 
     @memoize
     def prepareFormTabs(self):

@@ -1,7 +1,7 @@
 from zope.component import adapts
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import SchemaAdapterBase
+from plone.app.controlpanel.utils import SchemaAdapterBase
 
 
 class AccountPanelSchemaAdapter(SchemaAdapterBase):

@@ -9,7 +9,7 @@ from zope.app.form.browser import SelectWidget
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.app.controlpanel import PloneMessageFactory as _
 from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 from plone.app.users.browser.form import AccountPanelForm
 
