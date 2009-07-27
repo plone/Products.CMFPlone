@@ -1,7 +1,7 @@
 from Acquisition import aq_parent
 from Testing.ZopeTestCase import user_name
 
-from zope.app.component.hooks import setSite, setHooks
+from zope.site.hooks import setSite, setHooks
 from zope.component import getMultiAdapter, getUtility
 
 from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping

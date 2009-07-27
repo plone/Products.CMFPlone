@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '1.2.1'
+version = '2.0'
 
 setup(name='plone.app.portlets',
       version=version,
@@ -23,13 +23,44 @@ setup(name='plone.app.portlets',
       namespace_packages = ['plone', 'plone.app'],
       include_package_data=True,
       zip_safe=False,
+      extras_require=dict(
+        test=[
+            'zope.site',
+            'Products.PloneTestCase',
+        ]
+      ),
       install_requires=[
         'setuptools',
-        'plone.portlets >=1.1dev',
-        'feedparser',
+        'plone.i18n',
+        'plone.memoize',
+        'plone.portlets>=1.1',
+        'plone.app.form',
+        'plone.app.i18n',
+        'plone.app.kss',
         'plone.app.layout >= 1.2dev',
+        'plone.app.vocabularies',
+        'zope.annotation',
+        'zope.component',
+        'zope.configuration',
+        'zope.container',
+        'zope.contentprovider',
+        'zope.event',
+        'zope.formlib',
+        'zope.i18nmessageid',
+        'zope.interface',
+        'zope.lifecycleevent',
+        'zope.publisher',
+        'zope.schema',
+        'zope.traversing',
+        'Plone',
+        'Products.CMFCore',
+        'Products.CMFDynamicViewFTI',
+        'Products.GenericSetup',
+        'Products.PluggableAuthService',
+        'ZODB3',
+        'Acquisition',
+        'DateTime',
+        'Zope2',
+        'feedparser',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )

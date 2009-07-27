@@ -1,5 +1,5 @@
 from zope.component import getUtility, getMultiAdapter
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping

@@ -1,5 +1,5 @@
 from zope.interface import Interface, Attribute
-from zope.app.container.interfaces import IAdding
+from zope.browser.interfaces import IAdding
 from plone.app.form.interfaces import IPlonePageForm
 
 class IPortletAdding(IAdding):

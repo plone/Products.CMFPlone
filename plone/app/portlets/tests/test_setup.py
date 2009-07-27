@@ -1,4 +1,4 @@
-from zope.app.component.hooks import setSite, setHooks
+from zope.site.hooks import setSite, setHooks
 from zope.component import getSiteManager, getUtilitiesFor, getUtility
 
 from plone.portlets.interfaces import IPortletManager

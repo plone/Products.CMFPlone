@@ -1,7 +1,7 @@
 from zope.interface import implements
 from zope.component import adapts, queryUtility
 
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 
 from Products.PluggableAuthService.interfaces.authservice import IPropertiedUser
 

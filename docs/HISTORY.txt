@@ -1,6 +1,16 @@
 Changelog
 =========
 
+2.0 - unreleased
+----------------
+
+- Removed last zope.app dependencies.
+  [hannosch]
+
+- Specified package dependencies.
+  [hannosch]
+
+
 1.2 - July 13, 2009
 -------------------
 

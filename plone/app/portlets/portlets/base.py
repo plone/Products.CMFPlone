@@ -18,7 +18,7 @@ from plone.portlets.interfaces import IPortletManager
 
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 
-from zope.app.container.contained import Contained
+from zope.container.contained import Contained
 
 # Convenience imports
 from plone.app.portlets.browser.formhelper import AddForm

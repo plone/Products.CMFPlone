@@ -5,10 +5,9 @@ from zope.component import getUtility
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
-from zope.app.container.interfaces import INameChooser
-from zope.app.container.contained import NameChooser
-
-from zope.app.container.traversal import ItemTraverser
+from zope.container.interfaces import INameChooser
+from zope.container.contained import NameChooser
+from zope.container.traversal import ItemTraverser
 
 from Acquisition import aq_base
 from OFS.SimpleItem import SimpleItem
@@ -82,7 +81,7 @@ class PortletsNameChooser(NameChooser):
         >>> from plone.app.portlets.storage import PortletAssignmentMapping
         >>> mapping = PortletAssignmentMapping()
         
-        >>> from zope.app.container.interfaces import INameChooser
+        >>> from zope.container.interfaces import INameChooser
         >>> chooser = INameChooser(mapping)
         
         >>> from plone.app.portlets.portlets import base

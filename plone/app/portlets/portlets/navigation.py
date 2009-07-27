@@ -14,7 +14,9 @@ from Acquisition import aq_inner, aq_base, aq_parent
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
-from Products.CMFPlone.interfaces import INonStructuralFolder, IBrowserDefault
+from Products.CMFDynamicViewFTI.interface import IBrowserDefault
+
+from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone import utils
 from Products.CMFPlone import PloneMessageFactory as _
 

@@ -3,7 +3,7 @@ from warnings import warn
 from zope.interface import implements
 from zope.component import getMultiAdapter
 
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 
 from Acquisition import aq_inner, aq_base, aq_parent
 from OFS.SimpleItem import SimpleItem

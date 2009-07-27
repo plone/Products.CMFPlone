@@ -17,7 +17,7 @@ from zope.schema.interfaces import IField
 from zope.schema.interfaces import ICollection
 from zope.schema.interfaces import IFromUnicode
 
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.interfaces import ISetupEnviron

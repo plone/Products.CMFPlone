@@ -1,5 +1,5 @@
 from zope.component import getUtility, getMultiAdapter
-from zope.app.component.hooks import setHooks, setSite
+from zope.site.hooks import setHooks, setSite
 
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.utils import _getDottedName
@@ -11,7 +11,6 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletRenderer
 
 from plone.app.portlets.portlets import review
-from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 

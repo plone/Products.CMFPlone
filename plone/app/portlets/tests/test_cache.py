@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from zope.app.component.hooks import setSite, setHooks
+from zope.site.hooks import setSite, setHooks
 
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.cache import render_cachekey

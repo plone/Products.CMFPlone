@@ -1,6 +1,6 @@
 from StringIO import StringIO
 
-from zope.app.component.hooks import setSite, setHooks
+from zope.site.hooks import setSite, setHooks
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility

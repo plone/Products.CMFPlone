@@ -45,25 +45,23 @@
     <class class=".storage.PortletAssignmentMapping">
       <require 
         permission="zope2.View"
-        interface="zope.app.container.interfaces.IReadContainer"
+        interface="zope.container.interfaces.IReadContainer"
         />
       <require
         permission="plone.app.portlets.ManagePortlets"
-        interface="zope.app.container.interfaces.IWriteContainer"
+        interface="zope.container.interfaces.IWriteContainer"
         />
       <require
         permission="plone.app.portlets.ManagePortlets"
         attributes="updateOrder"
         />
     </class>
-    
-    <!-- Register a name chooser
-     -->
-     
-     <adapter
-        provides="zope.app.container.interfaces.INameChooser"
-        for="plone.portlets.interfaces.IPortletAssignmentMapping"
-        factory=".storage.PortletsNameChooser"
-        />
-    
+
+    <!-- Register a name chooser -->
+    <adapter
+      provides="zope.container.interfaces.INameChooser"
+      for="plone.portlets.interfaces.IPortletAssignmentMapping"
+      factory=".storage.PortletsNameChooser"
+      />
+
 </configure>

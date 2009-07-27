@@ -1,17 +1,14 @@
 from Acquisition import aq_base
-from Testing.ZopeTestCase import user_name
 
 from zope.component import getUtility, getMultiAdapter
-from zope.app.component.hooks import setSite, setHooks
+from zope.site.hooks import setSite, setHooks
 
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces import NotFound
-from zope.app.container.interfaces import INameChooser
+from zope.container.interfaces import INameChooser
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
-
-from plone.portlets.constants import USER_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.portlets import classic

@@ -1,5 +1,5 @@
 from zope.component import getUtility, getMultiAdapter, queryMultiAdapter
-from zope.app.component.hooks import setHooks, setSite
+from zope.site.hooks import setHooks, setSite
 
 from Products.GenericSetup.utils import _getDottedName
 
