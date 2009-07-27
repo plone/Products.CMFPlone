@@ -30,7 +30,7 @@ setup(name='plone.app.controlpanel',
         'plone.memoize',
         'plone.protect',
         'plone.locking',
-        'zope.app.cache',
+        'zope.ramcache',
       ],
       )
 

@@ -1,5 +1,4 @@
 from plone.app.form.validators import null_validator
-from zope.app.cache.interfaces.ram import IRAMCache
 
 from zope.interface import Interface
 from zope.component import adapts
@@ -7,6 +6,7 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.formlib import form
 from zope.interface import implements
+from zope.ramcache.interfaces.ram import IRAMCache
 from zope.schema import Int
 
 from Acquisition import aq_inner

@@ -4,7 +4,7 @@ Changelog
 2.0 - unreleased
 ----------------
 
-- Added dependency declaration on zope.app.cache.
+- Use `zope.ramcache` in favor of `zope.app.cache`.
   [hannosch]
 
 - Removed the dependency on plone.app.form's named_template_adapter, as it

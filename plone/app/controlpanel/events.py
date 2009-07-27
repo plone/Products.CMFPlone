@@ -1,7 +1,7 @@
-from zope.app.cache.interfaces.ram import IRAMCache
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.interface import implements
+from zope.ramcache.interfaces.ram import IRAMCache
 
 from plone.app.controlpanel.interfaces import IConfigurationChangedEvent
 
