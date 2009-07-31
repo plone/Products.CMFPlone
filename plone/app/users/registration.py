@@ -32,7 +32,7 @@ class RegistrationControlPanelAdapter(SchemaAdapterBase):
 
     def get_joinformfields(self):
 
-        return self.context.getProperty(JOIN_FORM_FIELDS)
+        return self.context.getProperty(JOIN_FORM_FIELDS,[])
 
     join_form_fields = property(get_joinformfields, set_joinformfields)
 
