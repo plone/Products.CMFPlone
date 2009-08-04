@@ -5,8 +5,8 @@ from zope.interface import implements
 
 from Acquisition import aq_inner, aq_base
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFPlone.interfaces import IBrowserDefault
-from Products.CMFPlone.interfaces import IDynamicViewTypeInformation
+from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
+from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation
 from Products.CMFPlone import utils
 from Products.Five.browser import BrowserView
 

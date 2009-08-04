@@ -10,7 +10,7 @@ from Products.Five.browser import BrowserView
 
 from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFPlone.interfaces import IBrowserDefault
+from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
 from Products.CMFCore.utils import getToolByName
