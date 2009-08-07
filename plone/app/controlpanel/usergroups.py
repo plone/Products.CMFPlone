@@ -1,16 +1,21 @@
+from Acquisition import aq_inner
+from itertools import chain
+
 from zope.interface import Interface
 from zope.component import adapts
+from zope.component import getMultiAdapter
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 
+from plone.memoize.instance import memoize, clearafter
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
-from form import ControlPanelForm
+from form import ControlPanelForm, ControlPanelView
 
 class IUserGroupsSettingsSchema(Interface):
 
@@ -34,6 +39,82 @@ class IUserGroupsSettingsSchema(Interface):
                           "listing all of them."),
                       default=False)
 
+class UsersOverviewControlPanel(ControlPanelView):
+    def __call__(self):
+        form = self.request.form
+        submitted = form.get('form.submitted', False)
+        searchTerm = form.get('searchstring', '')
+
+        self.searchResults = []
+        if submitted:
+            if form.get('form.button.Modify', None) is not None:
+                self.manageUser(form.get('users', None),
+                                form.get('resetpassword', []),
+                                form.get('delete', []))
+            self.searchResults = self.doSearch(searchTerm)
+                
+        return self.index()   
+    
+    def doSearch(self, searchTerm):
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+        return searchView.merge(chain(*[searchView.searchUsers(**{field: searchTerm}) for field in ['login', 'fullname']]), 'userid')
+        
+    def many_users(self):
+        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
+        return pprop.site_properties.many_users
+
+    def manageUser(self, users=[], resetpassword=[], delete=[]):
+        context = aq_inner(self.context)
+        acl_users = getToolByName(context, 'acl_users')
+        mtool = getToolByName(context, 'portal_membership')
+        regtool = getToolByName(context, 'portal_registration')
+        mailPassword = regtool.mailPassword
+        utils = getToolByName(context, 'plone_utils')
+
+        for user in users:
+            # Don't bother if the user will be deleted anyway
+            if user.id in delete:
+                continue
+
+            member = mtool.getMemberById(user.id)
+            # If email address was changed, set the new one
+            if hasattr(user, 'email'):
+                # If the email field was disabled (ie: non-writeable), the
+                # property might not exist.
+                if user.email != member.getProperty('email'):
+                    utils.setMemberProperties(member, REQUEST=context.REQUEST, email=user.email)
+                    utils.addPortalMessage(_(u'Changes applied.'))
+                    
+            # If reset password has been checked email user a new password
+            pw = None
+            if hasattr(user, 'resetpassword'):
+                if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
+                    pw = regtool.generatePassword()
+                else:
+                    utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
+
+            acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
+            if pw:
+                context.REQUEST.form['new_password'] = pw
+                mailPassword(user.id, context.REQUEST)
+
+        if delete:
+            # TODO We should eventually have a global switch to determine member area
+            # deletion
+            mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
+        utils.addPortalMessage(_(u'Changes applied.'))
+        
+    @memoize
+    def portal_roles(self):
+        pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
+        return [r for r in pmemb.getPortalRoles() if r != 'Owner']
+        
+
+class GroupsOverviewControlPanel(ControlPanelView):
+    def __call__(self):
+        self.many_groups = getToolByName(self, 'portal_properties').site_properties.many_groups
+        return self.index()
+    
 
 class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
 
