@@ -57,7 +57,7 @@ class UsersOverviewControlPanel(ControlPanelView):
     
     def doSearch(self, searchString):
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname']]), 'userid')
+        return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
         
     def many_users(self):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
