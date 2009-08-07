@@ -43,21 +43,21 @@ class UsersOverviewControlPanel(ControlPanelView):
     def __call__(self):
         form = self.request.form
         submitted = form.get('form.submitted', False)
-        searchTerm = form.get('searchstring', '')
-
+        findAll = form.get('form.button.FindAll', None) is not None
+        self.searchString = not findAll and form.get('searchstring', '') or ''
         self.searchResults = []
         if submitted:
             if form.get('form.button.Modify', None) is not None:
                 self.manageUser(form.get('users', None),
                                 form.get('resetpassword', []),
                                 form.get('delete', []))
-            self.searchResults = self.doSearch(searchTerm)
+            self.searchResults = self.doSearch(self.searchString)
                 
-        return self.index()   
+        return self.index()
     
-    def doSearch(self, searchTerm):
+    def doSearch(self, searchString):
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        return searchView.merge(chain(*[searchView.searchUsers(**{field: searchTerm}) for field in ['login', 'fullname']]), 'userid')
+        return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname']]), 'userid')
         
     def many_users(self):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
@@ -104,7 +104,6 @@ class UsersOverviewControlPanel(ControlPanelView):
             mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
         utils.addPortalMessage(_(u'Changes applied.'))
         
-    @memoize
     def portal_roles(self):
         pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
         return [r for r in pmemb.getPortalRoles() if r != 'Owner']

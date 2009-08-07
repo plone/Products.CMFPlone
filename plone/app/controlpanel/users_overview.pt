@@ -12,26 +12,24 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_content"
-    tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+    tal:define="template_id string:@@prefs_users_overview;
+                Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size request/b_size | python:20;
-                portal_roles context/getGlobalPortalRoles;
-                searchstring request/searchstring | nothing;
-                portal_url context/portal_url;
-                checkPermission nocall: context/portal_membership/checkPermission;">
+                portal_roles view/portal_roles;
+                portal_url context/portal_url;">
 
-      <div id="region-content" class="documentEditable"
-           tal:condition="python:checkPermission('Manage users', context)">
+      <div id="region-content" class="documentEditable">
 
             <ul class="contentViews">
               <li class="selected">
                 <a href=""
-                   tal:attributes="href string:$portal_url/${template/getId}"
+                   tal:attributes="href string:$portal_url/@@prefs_users_overview"
                    i18n:translate="label_users">Users</a>
               </li>
               <li>
                 <a href=""
-                   tal:attributes="href string:$portal_url/prefs_groups_overview"
+                   tal:attributes="href string:$portal_url/@@prefs_groups_overview"
                    i18n:translate="label_groups">Groups</a>
               </li>
               <li>
@@ -75,7 +73,7 @@
           to group memberships.
         </p>
         <p i18n:translate="description_pas_users_listing"
-           tal:condition="nothing | python:not searchstring and not context.acl_users.canListAllUsers()">
+           tal:condition="nothing | python:not view/searchString and not context.acl_users.canListAllUsers()">
           Note: Some or all of your PAS user source
           plugins do not allow listing of users, so you may not see
           the users defined by those plugins unless doing a specific
@@ -85,7 +83,7 @@
         <form action=""
               name="users_add"
               method="post"
-              tal:attributes="action string:$portal_url/${template/getId}">
+              tal:attributes="action string:$portal_url/$template_id">
 
           <input class="standalone add"
                      type="submit"
@@ -100,12 +98,12 @@
               class="enableAutoFocus"
               name="users_search"
               method="post"
-              tal:attributes="action template/getId"
+              tal:attributes="action string:$portal_url/$template_id"
               tal:define="findAll python:'form.button.FindAll' in request.keys();
                           search_view context/@@pas_search;
-                          portal_users python:(searchstring or findAll) and search_view.searchUsers(**(findAll and dict(sort_by='userid') or dict(sort_by='userid', fullname=searchstring))) or [];
+                          portal_users view/searchResults;
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1);
-                          many_users context/portal_properties/site_properties/many_users">
+                          many_users view/many_users">
           <input type="hidden" name="form.submitted" value="1" />
 
           <table class="listing" summary="User Listing">
@@ -116,7 +114,7 @@
                        type="text"
                        name="searchstring"
                        value=""
-                       tal:attributes="value searchstring;"
+                       tal:attributes="value view/searchString;"
                        />
 
             <input type="submit"
@@ -156,7 +154,7 @@
                           userquery python:mq(userid=userid);
                           user python:context.portal_membership.getMemberById(userid)"
               tal:condition="python:user is not None"
-              tal:attributes="class python:test(oddrow,'odd','even')">
+              tal:attributes="class python:oddrow and 'odd' or 'even'">
 
                     <td>
               <a href="prefs_user_details"
@@ -191,7 +189,7 @@
                  name="users.roles:list:records"
                  value="Manager"
                              tal:attributes="value portal_role;
-                                 checked python:test(portal_role in user_roles, 'checked', nothing);
+                                 checked python:portal_role in user_roles and 'checked' or None;
                                  disabled python:user.canAssignRole(portal_role) and default or 'disabled'" />
             </td>
 
@@ -215,10 +213,10 @@
           </tr>
         </tal:block>
                 <tr tal:condition="not:batch">
-                    <td tal:condition="searchstring"
+                    <td tal:condition="view/searchString"
                         i18n:translate="text_nomatches"
                         style="text-align:center;">No matches</td>
-                    <tal:block tal:condition="not:searchstring">
+                    <tal:block tal:condition="not:view/searchString">
                       <td tal:condition="many_users"
                           class="discreet"
                           i18n:translate="text_no_user_searchstring"
