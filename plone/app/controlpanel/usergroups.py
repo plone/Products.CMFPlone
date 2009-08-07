@@ -14,8 +14,10 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from form import ControlPanelForm, ControlPanelView
+
 
 class IUserGroupsSettingsSchema(Interface):
 
@@ -38,8 +40,36 @@ class IUserGroupsSettingsSchema(Interface):
                           "allowing you to search for users instead of "
                           "listing all of them."),
                       default=False)
+    
+
+class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
+
+    adapts(IPloneSiteRoot)
+    implements(IUserGroupsSettingsSchema)
+
+    def __init__(self, context):
+        super(UserGroupsSettingsControlPanelAdapter, self).__init__(context)
+        pprop = getToolByName(context, 'portal_properties')
+        self.context = pprop.site_properties
+
+    many_groups = ProxyFieldProperty(IUserGroupsSettingsSchema['many_groups'])
+    many_users = ProxyFieldProperty(IUserGroupsSettingsSchema['many_users'])
+
+
+class UserGroupsSettingsControlPanel(ControlPanelForm):
+
+    base_template = ControlPanelForm.template
+    template = ZopeTwoPageTemplateFile('usergroupssettings.pt')
+
+    form_fields = FormFields(IUserGroupsSettingsSchema)
+
+    label = _("User/Groups settings")
+    description = _("User and groups settings for this site.")
+    form_name = _("User/Groups settings")
+
 
 class UsersOverviewControlPanel(ControlPanelView):
+    
     def __call__(self):
         form = self.request.form
         submitted = form.get('form.submitted', False)
@@ -51,14 +81,18 @@ class UsersOverviewControlPanel(ControlPanelView):
                 self.manageUser(form.get('users', None),
                                 form.get('resetpassword', []),
                                 form.get('delete', []))
-            self.searchResults = self.doSearch(self.searchString)
-                
+                                
+            # Only search for all ('') if the many_users flag is not set.
+            if not(self.many_users) or bool(self.searchString):
+                self.searchResults = self.doSearch(self.searchString)
+
         return self.index()
-    
+
     def doSearch(self, searchString):
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
         return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
-        
+
+    @property
     def many_users(self):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
         return pprop.site_properties.many_users
@@ -84,7 +118,7 @@ class UsersOverviewControlPanel(ControlPanelView):
                 if user.email != member.getProperty('email'):
                     utils.setMemberProperties(member, REQUEST=context.REQUEST, email=user.email)
                     utils.addPortalMessage(_(u'Changes applied.'))
-                    
+
             # If reset password has been checked email user a new password
             pw = None
             if hasattr(user, 'resetpassword'):
@@ -103,36 +137,15 @@ class UsersOverviewControlPanel(ControlPanelView):
             # deletion
             mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
         utils.addPortalMessage(_(u'Changes applied.'))
-        
+
+    @property
     def portal_roles(self):
         pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
         return [r for r in pmemb.getPortalRoles() if r != 'Owner']
-        
+
 
 class GroupsOverviewControlPanel(ControlPanelView):
+    
     def __call__(self):
         self.many_groups = getToolByName(self, 'portal_properties').site_properties.many_groups
         return self.index()
-    
-
-class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
-
-    adapts(IPloneSiteRoot)
-    implements(IUserGroupsSettingsSchema)
-
-    def __init__(self, context):
-        super(UserGroupsSettingsControlPanelAdapter, self).__init__(context)
-        pprop = getToolByName(context, 'portal_properties')
-        self.context = pprop.site_properties
-
-    many_groups = ProxyFieldProperty(IUserGroupsSettingsSchema['many_groups'])
-    many_users = ProxyFieldProperty(IUserGroupsSettingsSchema['many_users'])
-
-
-class UserGroupsSettingsControlPanel(ControlPanelForm):
-
-    form_fields = FormFields(IUserGroupsSettingsSchema)
-
-    label = _("User/Groups settings")
-    description = _("User and groups settings for this site.")
-    form_name = _("User/Groups settings")

@@ -20,7 +20,7 @@
                 portal_url context/portal_url;">
 
       <div id="region-content" class="documentEditable">
-
+          
             <ul class="contentViews">
               <li class="selected">
                 <a href=""
@@ -251,10 +251,6 @@
     </div>
       </div>
 
-      <div id="region-content" class="documentEditable"
-           tal:condition="python:not checkPermission('Manage users', context)">
-        <tal:block replace="context/raiseUnauthorized" />
-      </div>
     </div>
 
   </body>
