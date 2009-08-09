@@ -4,6 +4,7 @@ from zope.component import adapts
 from plone.portlets.interfaces import IPortletAssignmentMapping
 
 from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
+from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMapping
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
 from AccessControl import getSecurityManager, Unauthorized
@@ -45,3 +46,17 @@ class UserPortletPermissionChecker(object):
         
         if context.__name__ != user_id:
             raise Unauthorized("You are only allowed to manage your own portlets")
+
+class GroupDashboardPortletPermissionChecker(object):
+    implements(IPortletPermissionChecker)
+    adapts(IGroupDashboardPortletAssignmentMapping)
+    
+    def __init__(self, context):
+        self.context = context
+    
+    def __call__(self):
+        sm = getSecurityManager()
+        context = aq_inner(self.context)
+
+        if not sm.checkPermission("Portlets: Manage group portlets", context):
+            raise Unauthorized("You are not allowed to manage group portlets")

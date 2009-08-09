@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Added support for group dashboards.
+  [optilude]
+
 - Removed last zope.app dependencies.
   [hannosch]
 

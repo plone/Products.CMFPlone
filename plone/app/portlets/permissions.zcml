@@ -27,7 +27,18 @@
     title="Portlets: Manage own portlets"
     />
 
+  <permission
+    id="plone.app.portlets.ManageGroupPortlets"
+    title="Portlets: Manage group portlets"
+    />
+
+  <permission
+     id="plone.app.portlets.ViewDashboard"
+     title="Portlets: View dashboard"
+     />
+ 
   <adapter factory=".checker.DefaultPortletPermissionChecker" />
   <adapter factory=".checker.UserPortletPermissionChecker" />
+  <adapter factory=".checker.GroupDashboardPortletPermissionChecker" />
 
 </configure>

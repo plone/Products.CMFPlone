@@ -19,6 +19,7 @@ from plone.portlets import constants
 from plone.portlets.storage import PortletAssignmentMapping as BaseMapping
 
 from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
+from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMapping
 
 ATTEMPTS = 10000
 
@@ -55,7 +56,20 @@ class UserPortletAssignmentMapping(PortletAssignmentMapping):
     """
 
     implements(IUserPortletAssignmentMapping)
-        
+
+class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
+    """An assignment mapping for group dashboard portlets
+    """
+
+    implements(IGroupDashboardPortletAssignmentMapping)
+    
+    @property
+    def id(self):
+        manager = self.__manager__
+        key = self.__name__
+
+        return "++groupdashboard++%s+%s" % (manager, key,)
+
 class PortletAssignmentMappingTraverser(ItemTraverser):
     """A traverser for portlet assignment mappings, that is acqusition-aware
     """

@@ -60,6 +60,12 @@
               Manage Group Portlets for
               <span i18n:name="group_name" tal:content="view/group">group</span>
           </h1>
+          
+          <a class="link-parent"
+               i18n:translate="return_to_group_portlets"
+               tal:attributes="href string:${portal_url}/@@manage-group-dashboard?key=${request/key}" >
+               Edit group dashboard portlets
+          </a>
     
           <p i18n:translate="description_manage_group_portlets">
             The left and right portlet slots will now display only those portlets
