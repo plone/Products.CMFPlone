@@ -12,55 +12,49 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_content"
-     tal:define="errors python:request.get('errors', {});
-                search_view context/@@pas_search;
-                Batch python:modules['Products.CMFPlone'].Batch;
-                b_start request/b_start | python:0;
-                b_size python:20;
-                portal_roles context/getGlobalPortalRoles;
-                searchstring request/searchstring | nothing;
-                gtool context/portal_groups;
-                site_properties context/portal_properties/site_properties;
-                findAll python:'form.button.FindAll' in request.keys();
-                showAll python:not site_properties.many_groups and (findAll or not searchstring);
-                search_results python:test(showAll, search_view.searchGroups(), searchstring and search_view.searchGroups(id=searchstring) or None);
-                batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;
-                portal_url context/portal_url;
-                ztu modules/ZTUtils;
-                checkPermission nocall: context/portal_membership/checkPermission;">
+     tal:define="template_id string:@@prefs_groups_overview;
+                 errors python:request.get('errors', {});
+                 Batch python:modules['Products.CMFPlone'].Batch;
+                 b_start request/b_start | python:0;
+                 b_size python:20;
+                 portal_roles view/portal_roles;
+                 gtool context/portal_groups;
+                 search_results view/searchResults;
+                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;
+                 portal_url context/portal_url;
+                 ztu modules/ZTUtils;">
 
 
-    <div id="region-content" class="documentEditable"
-         tal:condition="python:checkPermission('Manage Groups', context)">
+    <div id="region-content" class="documentEditable">
 
-        <ul class="contentViews">
-            <li>
-                <a href=""
-                   tal:attributes="href string:$portal_url/prefs_users_overview"
-                   i18n:translate="label_users">Users</a>
-            </li>
-            <li class="selected">
-                <a href=""
-                   tal:attributes="href string:$portal_url/${template/getId}"
-                   i18n:translate="label_groups">Groups</a>
-            </li>
-            <li>
-                <a href=""
-                   tal:attributes="href string:$portal_url/@@usergroup-controlpanel"
-                   i18n:translate="label_usergroup_settings">Settings</a>
-            </li>
-        </ul>
+           <ul class="contentViews">
+             <li>
+               <a href=""
+                  tal:attributes="href string:$portal_url/@@prefs_users_overview"
+                  i18n:translate="label_users">Users</a>
+             </li>
+             <li class="selected">
+               <a href=""
+                  tal:attributes="href string:$portal_url/@@prefs_groups_overview"
+                  i18n:translate="label_groups">Groups</a>
+             </li>
+             <li>
+               <a href=""
+                  tal:attributes="href string:$portal_url/@@usergroup-controlpanel"
+                  i18n:translate="label_usergroup_settings">Settings</a>
+             </li>
+           </ul>
 
-        <div class="contentActions">
-          &nbsp;
-        </div>
+           <div class="contentActions">
+             &nbsp;
+           </div>
 
-        <div class="documentContent">
-            <a name="documentContent"></a>
+           <div class="documentContent" id="content">
+               <a name="documentContent"></a>
 
-            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-                Portal status message
-            </div>
+             <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+               Portal status message
+             </div>
 
             <div id="content">
                 <h1 class="documentFirstHeading"
@@ -83,7 +77,7 @@
                 </p>
 
                 <p i18n:translate="description_pas_group_listing"
-                   tal:condition="python:not (site_properties.many_groups or searchstring) and not context.acl_users.canListAllGroups()">
+                   tal:condition="python:not (site_properties.many_groups or view.searchString) and not context.acl_users.canListAllGroups()">
                     Note: Some or all of your PAS groups
                     source plugins do not allow listing of groups, so you
                     may not see the groups defined by those plugins unless
@@ -93,7 +87,7 @@
                 <form action=""
                       name="groups_add"
                       method="post"
-                      tal:attributes="action template/getId">
+                      tal:attributes="action string:$template_id">
 
                     <input type="hidden" name="form.submitted" value="1" />
 
@@ -108,7 +102,7 @@
                 <form action=""
                       name="groups_search"
                       method="post"
-                      tal:attributes="action template/getId">
+                      tal:attributes="action string:$template_id">
 
                     <input type="hidden" name="form.submitted" value="1" />
                     
@@ -131,7 +125,7 @@
                                        type="text"
                                        name="searchstring"
                                        value=""
-                                       tal:attributes="value searchstring;"
+                                       tal:attributes="value view/searchString;"
                                        />
 
                                 <input type="submit"
@@ -189,7 +183,7 @@
                         <tr tal:define="oddrow repeat/group_info/odd;
                                         roles python:['this'];
                                         group python:context.acl_users.getGroupById(group_info['groupid']);"
-                            tal:attributes="class python:test(oddrow,'odd','even')">
+                            tal:attributes="class python:oddrow and 'odd' or 'even'">
 
                             <td>
                                 <input type="hidden"
@@ -217,7 +211,7 @@
                                        value="Manager"
                                        tal:attributes="name string:group_${group_info/groupid}:list;
                                                        value portal_role;
-                                                       checked python:test(portal_role in group_roles, 'checked', nothing);
+                                                       checked python:portal_role in group_roles and 'checked' or nothing;
                                                        disabled python:group.canAssignRole(portal_role) and default or 'disabled'"
                                        />
                             </td>
@@ -235,7 +229,7 @@
                         </tal:block>
                         </tal:block>
 
-                        <tal:block tal:condition="python:(searchstring and not search_results)">
+                        <tal:block tal:condition="python:(view.searchString and not search_results)">
                         <tr>
                             <td i18n:translate="text_nomatches"
                                 style="text-align:center;">
@@ -256,14 +250,12 @@
                                i18n:attributes="value label_apply_changes;"
                                />
                     </tal:block>
+                    
+                    <input tal:replace="structure context/@@authenticator/authenticator" />
+
                 </form>
             </div>
         </div>
-    </div>
-
-    <div id="region-content" class="documentEditable"
-         tal:condition="python:not checkPermission('Manage Groups', context)">
-        <tal:block replace="context/raiseUnauthorized" />
     </div>
 
 </div>
