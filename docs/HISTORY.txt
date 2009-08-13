@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Added use_email_as_login property to security control panel.
+  [maurits]
+
 - Use `zope.ramcache` in favor of `zope.app.cache`.
   [hannosch]
 

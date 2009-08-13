@@ -47,6 +47,13 @@ own passwords'),
                         default=False,
                         required=False)
 
+    use_email_as_login = Bool(title=_(u'Use email address as login name'),
+                        description=_(u"Allows users to login with their email "
+                                      "address instead of having to specify a "
+                                      "separate login name."),
+                        default=False,
+                        required=False)
+
 
 class SecurityControlPanelAdapter(SchemaAdapterBase):
 
@@ -146,6 +153,17 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
     allow_anon_views_about = property(get_allow_anon_views_about,
                                       set_allow_anon_views_about)
 
+    def get_use_email_as_login(self):
+        return self.context.use_email_as_login
+
+    def set_use_email_as_login(self, value):
+        if value:
+            self.context.manage_changeProperties(use_email_as_login=True)
+        else:
+            self.context.manage_changeProperties(use_email_as_login=False)
+
+    use_email_as_login = property(get_use_email_as_login,
+                                  set_use_email_as_login)
 
 class SecurityControlPanel(ControlPanelForm):
 
