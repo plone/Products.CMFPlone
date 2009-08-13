@@ -15,12 +15,12 @@
             <ul class="contentViews">
               <li>
                 <a href=""
-                   tal:attributes="href string:$portal_url/@@prefs_users_overview"
+                   tal:attributes="href string:$portal_url/@@usergroup-userprefs"
                    i18n:translate="label_users">Users</a>
               </li>
               <li>
                 <a href=""
-                   tal:attributes="href string:$portal_url/@@prefs_groups_overview"
+                   tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
                    i18n:translate="label_groups">Groups</a>
               </li>
               <li class="selected">

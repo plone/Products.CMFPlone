@@ -12,7 +12,7 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_content"
-     tal:define="template_id string:@@prefs_groups_overview;
+     tal:define="template_id string:@@usergroup-groupprefs;
                  errors python:request.get('errors', {});
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start request/b_start | python:0;
@@ -30,12 +30,12 @@
            <ul class="contentViews">
              <li>
                <a href=""
-                  tal:attributes="href string:$portal_url/@@prefs_users_overview"
+                  tal:attributes="href string:$portal_url/@@usergroup-userprefs"
                   i18n:translate="label_users">Users</a>
              </li>
              <li class="selected">
                <a href=""
-                  tal:attributes="href string:$portal_url/@@prefs_groups_overview"
+                  tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
                   i18n:translate="label_groups">Groups</a>
              </li>
              <li>
@@ -98,7 +98,7 @@
                            i18n:attributes="value label_add_new_group;"
                            />
                 </form>
-                
+                !!!
                 <form action=""
                       name="groups_search"
                       method="post"
