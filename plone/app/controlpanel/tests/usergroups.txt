@@ -1,0 +1,58 @@
+Site control panel
+==================
+
+First some initial setup code:
+
+    >>> from zope.component import getUtility
+    >>> from Products.CMFCore.interfaces import IPropertiesTool
+    >>> ptool = getUtility(IPropertiesTool)
+    >>> self.loginAsManager()
+    >>> config_url = 'http://nohost/plone/plone_control_panel'
+
+
+    >>> self.browser.open(config_url)
+    >>> self.browser.getLink('Users and Groups').click()
+    >>> '@@usergroup-userprefs' in self.browser.url
+    True
+    
+With the 'many users' flag disabled, should allow us to see the 'show all' button.
+    >>> 'Show all' in self.browser.contents
+    True
+        
+Turning on the 'many users' flag should remove the 'Search All' button.
+    >>> self.browser.getLink('Settings').click()
+    >>> self.browser.getControl(name='form.many_users').value = True
+    >>> self.browser.getControl('Save').click()
+
+Go directly to the userprefs panel, getting link "Users" results in a trip to the Members folder.
+    >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> 'Show All' in self.browser.contents
+    False
+
+An empty search string while 'many users' is enabled should not perform a search.
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Enter a username to search for' in self.browser.contents
+    True
+
+
+Go directly to the groupprefs panel, getting link "Groups" results in a trip to the "users and groups" link.
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    
+With the 'many groups' flag disabled, should allow us to see the 'show all' button.
+    >>> 'Show all' in self.browser.contents
+    True
+
+Turning on the 'many groups' flag should remove the 'Search All' button.
+    >>> self.browser.getLink('Settings').click()
+    >>> self.browser.getControl(name='form.many_groups').value = True
+    >>> self.browser.getControl('Save').click()
+    >>> self.browser.getLink('Groups').click()
+    >>> 'Search All' in self.browser.contents
+    False
+
+An empty search string while 'many groups' is enabled should not perform a search.
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Group name' in self.browser.contents
+    False
+
+

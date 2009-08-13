@@ -23,6 +23,7 @@ def test_suite():
              'skins.txt',
              'markup.txt',
              'types.txt',
+             'usergroups.txt'
              ]
     suite = TestSuite()
     for test in tests:
