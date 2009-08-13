@@ -98,7 +98,7 @@
                            i18n:attributes="value label_add_new_group;"
                            />
                 </form>
-                !!!
+
                 <form action=""
                       name="groups_search"
                       method="post"
