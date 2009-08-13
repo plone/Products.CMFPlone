@@ -7,6 +7,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
 
 from plone.app.layout.viewlets.common import ViewletBase
+from zope.component import getMultiAdapter
 
 
 class CommentsViewlet(ViewletBase):
@@ -52,8 +53,14 @@ class CommentsViewlet(ViewletBase):
     def is_anonymous(self):
         return self.portal_state.anonymous()
 
-    def login_action(self):
-        return '%s/login_form?came_from=%s' % (self.navigation_root_url, url_quote(self.request.get('URL', '')),)
+    def login_url(self):
+        """Return the URL of the 'login' portal_action if there is one. Otherwise, return None."""
+        context = aq_inner(self.context)
+        context_state = getMultiAdapter((context, self.request),
+                                        name=u'plone_context_state')
+        for action in context_state.actions('user'):
+            if action.get('id') == 'login':
+                return action.get('url')
 
     def can_manage(self):
         return getSecurityManager().checkPermission('Manage portal', aq_inner(self.context))
