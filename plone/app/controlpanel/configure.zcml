@@ -128,7 +128,7 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UsersOverviewControlPanel"
       permission="zope2.ManageUsers"
-      template="users_overview.pt"
+      template="usergroups_usersoverview.pt"
       />
 
   <browser:page
@@ -136,7 +136,7 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.GroupsOverviewControlPanel"
       permission="zope2.ManageUsers"
-      template="groups_overview.pt"
+      template="usergroups_groupsoverview.pt"
       />
 
   <browser:page
