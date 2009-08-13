@@ -4,11 +4,13 @@ from zope.component import getUtility
 from zope import schema
 from zope.formlib import form
 from zope.app.form.browser import TextWidget, CheckBoxWidget
+from zope.app.form.interfaces import WidgetInputError
 
 from plone.app.controlpanel import PloneMessageFactory as _
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 
 from Products.Five.formlib.formbase import PageForm
 from ZODB.POSException import ConflictError
@@ -16,6 +18,7 @@ from ZODB.POSException import ConflictError
 from Products.statusmessages.interfaces import IStatusMessage
 
 from userdata import IUserDataSchema
+
 
 
 # Define constants from the Join schema that should be added to the
@@ -165,9 +168,89 @@ class JoinForm(PageForm):
         return form.Fields(*[all_fields[id] for id in join_fields])
 
 
-    @form.action(_(u'label_register', default=u'Register'), name=u'register')
-    def action_join(self, action, data):
+    #Actions validators
+    def validate_registration(self, action, data):
+        """
+        specific business logic for this join form
+        note: all this logic was taken directly from the old
+        validate_registration.py script
+        """
+
+        registration = getToolByName(self.context, 'portal_registration')
+
+        errors = super(JoinForm, self).validate(action, data)
+        error_keys = [error.field_name for error in errors]
+
+        form_field_names = [f.field.getName() for f in self.form_fields]
+
+        portal = getUtility(ISiteRoot)
+        registration = portal.portal_registration
+
+        # passwords should match
+        if 'password' in form_field_names:
+            assert('password_ctl' in form_field_names)
+            # Skip this check if password fields already have an error
+            if not ('password' in error_keys or \
+                    'password_ctl' in error_keys):
+                password = self.widgets['password'].getInputValue()
+                password_ctl = self.widgets['password_ctl'].getInputValue()
+                if password != password_ctl:
+                    err_str = _(u'Passwords do not match.')
+                    errors.append(WidgetInputError('password',
+                                  u'label_password', err_str))
+                    errors.append(WidgetInputError('password_ctl',
+                                  u'label_password', err_str))
+                    self.widgets['password'].error = err_str
+                    self.widgets['password_ctl'].error = err_str
+
+
+        # Password field should have a minimum length of 5
+        if 'password' in form_field_names:
+            # Skip this check if password fields already have an error
+            if not 'password' in error_keys:
+                password = self.widgets['password'].getInputValue()
+                if len(password) < 5:
+                    err_str = _(u'Passwords must contain at least 5 letters.')
+                    errors.append(WidgetInputError('password', u'label_password', err_str))
+                    self.widgets['password'].error = err_str
+
+
+        # check if username is allowed
+        username = self.widgets['username'].getInputValue()
+
+        # Skip this check if username was already in error list
+        if not 'username' in error_keys:
+            portal = getUtility(ISiteRoot)
+            if username == portal.getId():
+                err_str = _(u'This username is reserved. Please choose a different name.')
+                errors.append(WidgetInputError('username', u'label_username', err_str))
+                self.widgets['username'].error = err_str
+
+
+        # Skip this check if username was already in error list
+        if not 'username' in error_keys:
+            if not registration.isMemberIdAllowed(username):
+                err_str = _(u'The login name you selected is already in use or is not valid. Please choose another.')
+                errors.append(WidgetInputError('username', u'label_username', err_str))
+                self.widgets['username'].error = err_str
+
         
+        # Skip this check if email was already in error list
+        if not 'email' in error_keys:
+            if 'email' in form_field_names:
+                email = self.widgets['email'].getInputValue()
+                if not registration.isValidEmail(email):
+                    err_str = _(u'You must enter a valid email address.')
+                    errors.append(WidgetInputError('email', u'label_email', err_str))
+                    self.widgets['email'].error = err_str
+
+        return errors
+        
+
+    @form.action(_(u'label_register', default=u'Register'), validator='validate_registration', name=u'register')
+    def action_join(self, action, data):
+
+
         portal = getUtility(ISiteRoot)
         registration = portal.portal_registration
 
@@ -177,11 +260,9 @@ class JoinForm(PageForm):
 
         try:
             registration.addMember(username, password, properties=data, REQUEST=self.request)
-        except AttributeError, ValueError:
+        except (AttributeError, ValueError), err:
 
-            failMessage = _(u'The login name you selected is already in use or is not valid. Please choose another.')
-
-            IStatusMessage(self.request).addStatusMessage(_(failMessage),
+            IStatusMessage(self.request).addStatusMessage(_(err),
                                                           type="error")
             return
 
@@ -193,17 +274,18 @@ class JoinForm(PageForm):
                                                           type="error")
                 return
             except Exception:
-                IStatusMessage(self.request).addStatusMessage(_("Couldn't send mail"),
-                                                          type="error")
-                return
+                if portal.validate_email:
+                    IStatusMessage(self.request).addStatusMessage(_("Couldn't send mail"),
+                                                              type="error")
 
-            self.context.acl_users.userFolderDelUsers([username,], REQUEST=self.request)
-            self.status = (_(u'status_fatal_password_mail',
-                    default=u'Failed to create your account: we were unable to send your password to your email address: ${address}',
-                    mapping={u'address' : data.get('email', '')}))
-        else:
-            self.status = (_(u'status_nonfatal_password_mail',
-                    default=u'You account has been created, but we were unable to send your password to your email address: ${address}',
-                    mapping={u'address' : data.get('email', '')}))
+                    self.context.acl_users.userFolderDelUsers([username,], REQUEST=self.request)
+                    self.status = (_(u'status_fatal_password_mail',
+                            default=u'Failed to create your account: we were unable to send your password to your email address: ${address}',
+                            mapping={u'address' : data.get('email', '')}))
+                    return
+                else:
+                    self.status = (_(u'status_nonfatal_password_mail',
+                            default=u'You account has been created, but we were unable to send your password to your email address: ${address}',
+                            mapping={u'address' : data.get('email', '')}))
 
-        self.request.response.redirect('registered')
+        return self.context.unrestrictedTraverse('registered')()
