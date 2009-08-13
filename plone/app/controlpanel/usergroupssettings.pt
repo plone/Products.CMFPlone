@@ -45,7 +45,7 @@
 
       <div class="configlet">
         <h1 class="documentFirstHeading"
-            i18n:translate="heading_users_overview">Users Overview</h1>
+            i18n:translate="heading_usergroup_settings">User/Groups Settings</h1>
 
         <a href=""
            class="link-parent"
