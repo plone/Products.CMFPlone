@@ -87,7 +87,7 @@
                 <form action=""
                       name="groups_add"
                       method="post"
-                      tal:attributes="action string:$template_id">
+                      tal:attributes="action string:$portal_url/prefs_group_details">
 
                     <input type="hidden" name="form.submitted" value="1" />
 
