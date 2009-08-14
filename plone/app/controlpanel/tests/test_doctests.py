@@ -6,7 +6,7 @@ from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
 from plone.app.controlpanel.tests.cptc import ControlPanelTestCase
-
+from plone.app.controlpanel.tests.cptc import UserGroupsControlPanelTestCase
 setupPloneSite()
 
 OPTIONFLAGS = (doctest.ELLIPSIS |
@@ -22,8 +22,7 @@ def test_suite():
              'site.txt',
              'skins.txt',
              'markup.txt',
-             'types.txt',
-             'usergroups.txt'
+             'types.txt'
              ]
     suite = TestSuite()
     for test in tests:
@@ -31,4 +30,9 @@ def test_suite():
             optionflags=OPTIONFLAGS,
             package="plone.app.controlpanel.tests",
             test_class=ControlPanelTestCase))
+    
+    suite.addTest(FunctionalDocFileSuite('usergroups.txt',
+                                         optionflags=OPTIONFLAGS,
+                                         package="plone.app.controlpanel.tests",
+                                         test_class=UserGroupsControlPanelTestCase))
     return suite
