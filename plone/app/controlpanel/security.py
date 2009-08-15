@@ -48,9 +48,12 @@ own passwords'),
                         required=False)
 
     use_email_as_login = Bool(title=_(u'Use email address as login name'),
-                        description=_(u"Allows users to login with their email "
-                                      "address instead of having to specify a "
-                                      "separate login name."),
+                        description=_(u"Allows new  users to login with their "
+                                      "email address instead of specifying a "
+                                      "separate login name. (Existing users "
+                                      "must go to the personalize_form once "
+                                      "and save it before this setting has "
+                                      "effect for them.)"),
                         default=False,
                         required=False)
 
