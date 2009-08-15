@@ -3,9 +3,6 @@ Site control panel
 
 First some initial setup code:
 
-    >>> from zope.component import getUtility
-    >>> from Products.CMFCore.interfaces import IPropertiesTool
-    >>> ptool = getUtility(IPropertiesTool)
     >>> self.loginAsManager()
     >>> config_url = 'http://nohost/plone/plone_control_panel'
 
@@ -33,11 +30,66 @@ And now on userid...
     True
     
 And now on email address..
-    >>> self.browser.getControl(name='searchstring').value = 'gracie@foo.com'
+    >>> self.browser.getControl(name='searchstring').value = 'gracie@'
     >>> self.browser.getControl(name='form.button.Search').click()
     >>> 'Gracie Adams' in self.browser.contents
     True
-        
+
+Make some modifications to Gracie's email address and roles...
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
+    False
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected = True
+    >>> self.browser.getControl(name='users.email:records').value
+    'gracie@foo.com'
+    >>> self.browser.getControl(name='users.email:records').value = 'gracie@bar.com'
+    >>> self.browser.getControl(name='form.button.Modify').click()
+
+The previous search should still be in effect...
+    >>> self.browser.getControl(name='searchstring').value 
+    'gracie@'
+
+But values should be changed
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
+    True
+    >>> self.browser.getControl(name='users.email:records').value
+    'gracie@bar.com'
+
+We'll reset her password.
+    >>> self.browser.getControl(name='users.resetpassword:records').value = True
+    >>> self.browser.getControl(name='form.button.Modify').click()
+
+Whoops, we haven't set up our mailhost...
+    >>> 'No mailhost defined. Unable to reset passwords.' in self.browser.contents
+    True
+
+# Mailhost is failing in this testcase, so commenting this bit out for now.
+# Let's do that and try again.
+#     >>> self.browser.open('http://nohost/plone/@@mail-controlpanel')
+#     >>> self.browser.getControl('SMTP server').value = 'nohost'
+#     >>> self.browser.getControl("Site 'From' address").value = 'bob@foo.com'
+#     >>> self.browser.getControl('Save').click()
+#     >>> self.browser.getLink('Users and Groups').click()
+#     >>> self.browser.getControl(name='searchstring').value = 'gracie@'
+#     >>> self.browser.getControl(name='form.button.Search').click()
+#     >>> 'Gracie Adams' in self.browser.contents
+#     True    
+#     >>> self.browser.getControl(name='users.resetpassword:records').value = True
+#     >>> self.browser.getControl(name='form.button.Modify').click()
+#     >>> 'No mailhost defined. Unable to reset passwords.' in self.browser.contents
+#     False
+    
+Let's try deleting Gracie.
+    >>> self.browser.getControl(name='delete:list').value = True
+    >>> self.browser.getControl(name='form.button.Modify').click()
+
+The previous search should still be in effect...
+    >>> self.browser.getControl(name='searchstring').value 
+    'gracie@'
+
+But the user Gracie Adams should now be gone.
+    >>> 'Gracie Adams' in self.browser.contents
+    False
+    
 Turning on the 'many users' flag should remove the 'Search All' button.
     >>> self.browser.getLink('Settings').click()
     >>> self.browser.getControl(name='form.many_users').value = True
@@ -60,6 +112,34 @@ Go directly to the groupprefs panel (getting link "Groups" results in a trip to 
 With the 'many groups' flag disabled, should allow us to see the 'show all' button.
     >>> 'Show all' in self.browser.contents
     True
+
+We'll attempt a search...
+    >>> self.browser.getControl(name='searchstring').value = 'foo'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Foo' in self.browser.contents
+    True
+    
+Add a new role
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    False
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected = True
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    True
+
+And remove it again...
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected = False
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    False
+
+Delete the group...
+    >>> self.browser.getControl(name='delete:list').getControl(value='Foo').selected = True
+    >>> self.browser.getControl(name='form.button.Modify').click()
+    >>> self.browser.getControl(name='searchstring').value
+    'foo'
+    >>> 'Foo' in self.browser.contents
+    False
 
 Turning on the 'many groups' flag should remove the 'Search All' button.
     >>> self.browser.getLink('Settings').click()

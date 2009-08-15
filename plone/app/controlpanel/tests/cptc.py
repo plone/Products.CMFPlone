@@ -31,15 +31,19 @@ class ControlPanelTestCase(FunctionalTestCase):
         self.browser.getControl('Password').value = pwd
         self.browser.getControl('Log in').click()
 
-
 class UserGroupsControlPanelTestCase(ControlPanelTestCase):
     """user/groups-specific test case"""
 
     def afterSetUp(self):
         super(UserGroupsControlPanelTestCase, self).afterSetUp()
-        self.generateSiteUsers()
+        self.generateUsers()
+        self.generateGroups()
 
-    def generateSiteUsers(self):
+    def generateGroups(self):
+        groupsTool = getToolByName(self.portal, 'portal_groups')
+        groupsTool.addGroup('Foo', [], [], {'title': 'Foo'})
+        
+    def generateUsers(self):
         members = [{'username': 'DIispfuF', 'fullname': 'Kevin Hughes', 'email': 'DIispfuF@foo.com'}, 
                    {'username': 'enTHXigm', 'fullname': 'Richard Ramirez', 'email': 'enTHXigm@foo.com'}, 
                    {'username': 'q7UsYcrT', 'fullname': 'Kyle Brown', 'email': 'q7UsYcrT@foo.com'}, 
@@ -93,7 +97,5 @@ class UserGroupsControlPanelTestCase(ControlPanelTestCase):
                    {'username': 'XYsmd7ux', 'fullname': 'Abigail Simmons', 'email': 'XYsmd7ux@foo.com'}]
         regtool = getToolByName(self.portal, 'portal_registration')
         for member in members:
-            try:
-                regtool.addMember(member['username'], 'somepassword', properties=member)
-            except ValueError:
-                import pdb; pdb.set_trace( )
+            regtool.addMember(member['username'], 'somepassword', properties=member)
+        

@@ -105,7 +105,7 @@ class UsersOverviewControlPanel(ControlPanelView):
         acl_users = getToolByName(context, 'acl_users')
         mtool = getToolByName(context, 'portal_membership')
         regtool = getToolByName(context, 'portal_registration')
-        mailPassword = regtool.mailPassword
+        
         utils = getToolByName(context, 'plone_utils')
         for user in users:
             # Don't bother if the user will be deleted anyway
@@ -132,7 +132,7 @@ class UsersOverviewControlPanel(ControlPanelView):
             acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
             if pw:
                 context.REQUEST.form['new_password'] = pw
-                mailPassword(user.id, context.REQUEST)
+                regtool.mailPassword(user.id, context.REQUEST)
 
         if delete:
             # TODO We should eventually have a global switch to determine member area
