@@ -154,4 +154,33 @@ An empty search string while 'many groups' is enabled should not perform a searc
     >>> 'Group name' in self.browser.contents
     False
 
+Now let's try to break things. 
+Add a (currently failing) test for http://dev.plone.org/plone/ticket/8940:
+Group roles show up on the user roles page for members of that group.
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Authenticated'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> self.browser.getControl(name='group_AuthenticatedUsers:list', index=1).getControl(value='Editor').selected = True
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Sean Foster'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    
+So according to the ticket, this should fail
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Editor').selected
+    False
 
+And then making some change to the user and saving it will assign that checked role directly to the user...
+    >>> self.browser.getControl(name='users.email:records').value='somenewemailaddress.com'
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Authenticated'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> self.browser.getControl(name='group_AuthenticatedUsers:list', index=1).getControl(value='Editor').selected = False
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Sean Foster'
+    >>> self.browser.getControl(name='form.button.Search').click()
+
+According to the ticket, the user will now have an assigned role of 'Editor', which should not be the case.
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Editor').selected
+    False

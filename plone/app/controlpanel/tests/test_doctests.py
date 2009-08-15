@@ -26,16 +26,15 @@ def test_suite():
              ]
     suite = TestSuite()
 
-    
-    suite.addTest(FunctionalDocFileSuite('usergroups.txt',
-                                         optionflags=OPTIONFLAGS,
-                                         package="plone.app.controlpanel.tests",
-                                         test_class=UserGroupsControlPanelTestCase))
-
     for test in tests:
         suite.addTest(FunctionalDocFileSuite(test,
             optionflags=OPTIONFLAGS,
             package="plone.app.controlpanel.tests",
             test_class=ControlPanelTestCase))
+
+    suite.addTest(FunctionalDocFileSuite('usergroups.txt',
+                                         optionflags=OPTIONFLAGS,
+                                         package="plone.app.controlpanel.tests",
+                                         test_class=UserGroupsControlPanelTestCase))
 
     return suite
