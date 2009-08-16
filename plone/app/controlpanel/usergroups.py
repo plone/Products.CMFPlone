@@ -84,9 +84,9 @@ class UsersOverviewControlPanel(ControlPanelView):
                                 form.get('resetpassword', []),
                                 form.get('delete', []))
                                 
-            # Only search for all ('') if the many_users flag is not set.
-            if not(self.many_users) or bool(self.searchString):
-                self.searchResults = self.doSearch(self.searchString)
+        # Only search for all ('') if the many_users flag is not set.
+        if not(self.many_users) or bool(self.searchString):
+            self.searchResults = self.doSearch(self.searchString)
 
         return self.index()
 
@@ -159,9 +159,9 @@ class GroupsOverviewControlPanel(ControlPanelView):
                 self.manageGroup([group[len('group_'):] for group in self.request.keys() if group.startswith('group_')],
                                  form.get('delete', []))
                 
-            # Only search for all ('') if the many_users flag is not set.
-            if not(self.many_groups) or bool(self.searchString):
-                self.searchResults = self.doSearch(self.searchString)
+        # Only search for all ('') if the many_users flag is not set.
+        if not(self.many_groups) or bool(self.searchString):
+            self.searchResults = self.doSearch(self.searchString)
 
         return self.index()
 
