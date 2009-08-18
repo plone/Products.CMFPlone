@@ -219,11 +219,10 @@ class JoinForm(PageForm):
                     self.widgets['password'].error = err_str
 
 
-        # check if username is allowed
-        username = self.widgets['username'].getInputValue()
-
+        # check if username is valid
         # Skip this check if username was already in error list
         if not 'username' in error_keys:
+            username = self.widgets['username'].getInputValue()
             portal = getUtility(ISiteRoot)
             if username == portal.getId():
                 err_str = _(u'This username is reserved. Please choose a different name.')
@@ -231,8 +230,9 @@ class JoinForm(PageForm):
                 self.widgets['username'].error = err_str
 
 
-        # Skip this check if username was already in error list
+        # check if username is allowed
         if not 'username' in error_keys:
+            username = self.widgets['username'].getInputValue()
             if not registration.isMemberIdAllowed(username):
                 err_str = _(u'The login name you selected is already in use or is not valid. Please choose another.')
                 errors.append(WidgetInputError('username', u'label_username', err_str))
