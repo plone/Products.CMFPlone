@@ -4,8 +4,11 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.formlib import form
 from zope.app.form.browser import OrderedMultiSelectWidget
 
-from plone.app.users.browser.userdata import IUserDataSchema
+from plone.app.users.userdataschema import IUserDataSchemaProvider
 from plone.app.users.browser.joinform import JOIN_CONST
+
+from zope.component import getUtility
+
 
 
 class IRegistrationSchema(Interface):
@@ -18,7 +21,10 @@ def UserDataWidget(field, request):
 
     """ Create selector with schema fields vocab """
 
-    values = [(f.__name__, f.__name__) for f in form.Fields(IUserDataSchema)]
+    util = getUtility(IUserDataSchemaProvider)
+    schema = util.getSchema()
+
+    values = [(f.__name__, f.__name__) for f in form.Fields(schema)]
     values = values + [(val, val) for val in JOIN_CONST]
 
     vocabulary = SimpleVocabulary.fromItems(values)

@@ -6,7 +6,7 @@ from zope.formlib import form
 from zope.app.form.browser import TextWidget, CheckBoxWidget
 from zope.app.form.interfaces import WidgetInputError
 
-from plone.app.controlpanel import PloneMessageFactory as _
+#from plone.app.controlpanel import PloneMessageFactory as _
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -17,7 +17,7 @@ from ZODB.POSException import ConflictError
 
 from Products.statusmessages.interfaces import IStatusMessage
 
-from userdata import IUserDataSchema
+from plone.app.users.userdataschema import IUserDataSchemaProvider
 
 
 
@@ -155,7 +155,11 @@ class JoinForm(PageForm):
 
         # We need fields from both schemata here.
         #
-        all_fields = form.Fields(IUserDataSchema) + form.Fields(IJoinSchema)
+
+        util = getUtility(IUserDataSchemaProvider)
+        schema = util.getSchema()
+
+        all_fields = form.Fields(schema) + form.Fields(IJoinSchema)
         all_fields['fullname'].custom_widget = FullNameWidget
         all_fields['email'].custom_widget = EmailWidget
         if portal.validate_email:
