@@ -61,10 +61,10 @@ Make sure the changes have been applied correctly to the mailhost:
     >>> mailhost.smtp_port
     2525
 
-    >>> mailhost.smtp_userid
+    >>> getattr(mailhost, 'smtp_userid', mailhost.smtp_uid)
     u'admin'
 
-    >>> mailhost.smtp_pass
+    >>> getattr(mailhost, 'smtp_pass', mailhost.smtp_pwd)
     u'secret'
 
     >>> self.site_props.email_from_name
