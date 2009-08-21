@@ -79,7 +79,9 @@ Whoops, we haven't set up our mailhost...
 #     False
     
 Let's try deleting Gracie.
-    >>> self.browser.getControl(name='delete:list').value = True
+    >>> self.browser.getControl(name='searchstring').value = 'gracie@'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> self.browser.getControl(name='delete:list').getControl(value='RwAO2YPa').selected = True
     >>> self.browser.getControl(name='form.button.Modify').click()
 
 The previous search should still be in effect...
