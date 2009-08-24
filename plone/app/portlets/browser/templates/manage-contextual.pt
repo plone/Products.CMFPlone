@@ -16,9 +16,8 @@
 
   <h1 class="documentFirstHeading"
       i18n:translate="title_manage_contextual_portlets">
-      <img i18n:name="context_icon" tal:replace="structure python:ploneview.getIcon(context).html_tag()" />
       Manage portlets for
-      "<span i18n:name="context_title" tal:content="context/Title" />"
+      <q><span i18n:name="context_title" tal:content="context/Title" /></q>
   </h1>
 
   <a href=""
