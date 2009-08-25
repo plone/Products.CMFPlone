@@ -91,6 +91,8 @@ class UsersOverviewControlPanel(ControlPanelView):
         return self.index()
 
     def doSearch(self, searchString):
+        # We push this in the request such IRoles plugins don't provide
+        # the roles from the groups the principal belongs.
         self.request.set('__ignore_group_roles__', True)
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
         return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
