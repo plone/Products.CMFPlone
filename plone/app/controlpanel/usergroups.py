@@ -41,7 +41,7 @@ class IUserGroupsSettingsSchema(Interface):
                           "allowing you to search for users instead of "
                           "listing all of them."),
                       default=False)
-    
+
 
 class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
 
@@ -70,9 +70,9 @@ class UserGroupsSettingsControlPanel(ControlPanelForm):
 
 
 class UsersOverviewControlPanel(ControlPanelView):
-    
+
     def __call__(self):
-        
+
         form = self.request.form
         submitted = form.get('form.submitted', False)
         findAll = form.get('form.button.FindAll', None) is not None
@@ -83,7 +83,7 @@ class UsersOverviewControlPanel(ControlPanelView):
                 self.manageUser(form.get('users', None),
                                 form.get('resetpassword', []),
                                 form.get('delete', []))
-                                
+
         # Only search for all ('') if the many_users flag is not set.
         if not(self.many_users) or bool(self.searchString):
             self.searchResults = self.doSearch(self.searchString)
@@ -91,6 +91,7 @@ class UsersOverviewControlPanel(ControlPanelView):
         return self.index()
 
     def doSearch(self, searchString):
+        self.request.set('__ignore_group_roles__', True)
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
         return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
 
@@ -105,7 +106,7 @@ class UsersOverviewControlPanel(ControlPanelView):
         acl_users = getToolByName(context, 'acl_users')
         mtool = getToolByName(context, 'portal_membership')
         regtool = getToolByName(context, 'portal_registration')
-        
+
         utils = getToolByName(context, 'plone_utils')
         for user in users:
             # Don't bother if the user will be deleted anyway
@@ -147,7 +148,7 @@ class UsersOverviewControlPanel(ControlPanelView):
 
 
 class GroupsOverviewControlPanel(ControlPanelView):
-    
+
     def __call__(self):
         form = self.request.form
         submitted = form.get('form.submitted', False)
@@ -158,7 +159,7 @@ class GroupsOverviewControlPanel(ControlPanelView):
             if form.get('form.button.Modify', None) is not None:
                 self.manageGroup([group[len('group_'):] for group in self.request.keys() if group.startswith('group_')],
                                  form.get('delete', []))
-                
+
         # Only search for all ('') if the many_users flag is not set.
         if not(self.many_groups) or bool(self.searchString):
             self.searchResults = self.doSearch(self.searchString)
@@ -172,11 +173,11 @@ class GroupsOverviewControlPanel(ControlPanelView):
     def manageGroup(self, groups=[], delete=[]):
         CheckAuthenticator(self.request)
         context = aq_inner(self.context)
-        
+
         groupstool=context.portal_groups
         utils = getToolByName(context, 'plone_utils')
         groupstool = getToolByName(context, 'portal_groups')
-        
+
         message = _(u'No changes done.')
 
         for group in groups:
@@ -199,4 +200,4 @@ class GroupsOverviewControlPanel(ControlPanelView):
     @property
     def many_groups(self):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_groups       
+        return pprop.site_properties.many_groups
