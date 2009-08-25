@@ -1,0 +1,188 @@
+Site control panel
+==================
+
+First some initial setup code:
+
+    >>> self.loginAsManager()
+    >>> config_url = 'http://nohost/plone/plone_control_panel'
+
+    >>> self.browser.open(config_url)
+    >>> self.browser.getLink('Users and Groups').click()
+    >>> '@@usergroup-userprefs' in self.browser.url
+    True
+    
+With the 'many users' flag disabled, should allow us to see the 'show all' button.
+    >>> 'Show all' in self.browser.contents
+    True
+    
+So let's try a search, first on name...
+    >>> self.browser.getControl(name='searchstring').value = 'Richard'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Richard Ramirez' in self.browser.contents
+    True
+    >>> 'Sara Richardson' in self.browser.contents
+    True
+
+And now on userid...
+    >>> self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Autumn Brooks' in self.browser.contents
+    True
+    
+And now on email address..
+    >>> self.browser.getControl(name='searchstring').value = 'gracie@'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Gracie Adams' in self.browser.contents
+    True
+
+Make some modifications to Gracie's email address and roles...
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
+    False
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected = True
+    >>> self.browser.getControl(name='users.email:records').value
+    'gracie@foo.com'
+    >>> self.browser.getControl(name='users.email:records').value = 'gracie@bar.com'
+    >>> self.browser.getControl(name='form.button.Modify').click()
+
+The previous search should still be in effect...
+    >>> self.browser.getControl(name='searchstring').value 
+    'gracie@'
+
+But values should be changed
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
+    True
+    >>> self.browser.getControl(name='users.email:records').value
+    'gracie@bar.com'
+
+We'll reset her password.
+    >>> self.browser.getControl(name='users.resetpassword:records').value = True
+    >>> self.browser.getControl(name='form.button.Modify').click()
+
+Whoops, we haven't set up our mailhost...
+    >>> 'No mailhost defined. Unable to reset passwords.' in self.browser.contents
+    True
+
+# Mailhost is failing in this testcase, so commenting this bit out for now.
+# Let's do that and try again.
+#     >>> self.browser.open('http://nohost/plone/@@mail-controlpanel')
+#     >>> self.browser.getControl('SMTP server').value = 'nohost'
+#     >>> self.browser.getControl("Site 'From' address").value = 'bob@foo.com'
+#     >>> self.browser.getControl('Save').click()
+#     >>> self.browser.getLink('Users and Groups').click()
+#     >>> self.browser.getControl(name='searchstring').value = 'gracie@'
+#     >>> self.browser.getControl(name='form.button.Search').click()
+#     >>> 'Gracie Adams' in self.browser.contents
+#     True    
+#     >>> self.browser.getControl(name='users.resetpassword:records').value = True
+#     >>> self.browser.getControl(name='form.button.Modify').click()
+#     >>> 'No mailhost defined. Unable to reset passwords.' in self.browser.contents
+#     False
+    
+Let's try deleting Gracie.
+    >>> self.browser.getControl(name='searchstring').value = 'gracie@'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> self.browser.getControl(name='delete:list').getControl(value='RwAO2YPa').selected = True
+    >>> self.browser.getControl(name='form.button.Modify').click()
+
+The previous search should still be in effect...
+    >>> self.browser.getControl(name='searchstring').value 
+    'gracie@'
+
+But the user Gracie Adams should now be gone.
+    >>> 'Gracie Adams' in self.browser.contents
+    False
+    
+Turning on the 'many users' flag should remove the 'Search All' button.
+    >>> self.browser.getLink('Settings').click()
+    >>> self.browser.getControl(name='form.many_users').value = True
+    >>> self.browser.getControl('Save').click()
+
+Go directly to the userprefs panel (getting link "Users" results in a trip to the Members folder).
+    >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> 'Show All' in self.browser.contents
+    False
+
+An empty search string while 'many users' is enabled should not perform a search.
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Enter a username to search for' in self.browser.contents
+    True
+
+
+Go directly to the groupprefs panel (getting link "Groups" results in a trip to the "users and groups" link).
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    
+With the 'many groups' flag disabled, should allow us to see the 'show all' button.
+    >>> 'Show all' in self.browser.contents
+    True
+
+We'll attempt a search...
+    >>> self.browser.getControl(name='searchstring').value = 'foo'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Foo' in self.browser.contents
+    True
+    
+Add a new role
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    False
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected = True
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    True
+
+And remove it again...
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected = False
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    False
+
+Delete the group...
+    >>> self.browser.getControl(name='delete:list').getControl(value='Foo').selected = True
+    >>> self.browser.getControl(name='form.button.Modify').click()
+    >>> self.browser.getControl(name='searchstring').value
+    'foo'
+    >>> 'Foo' in self.browser.contents
+    False
+
+Turning on the 'many groups' flag should remove the 'Search All' button.
+    >>> self.browser.getLink('Settings').click()
+    >>> self.browser.getControl(name='form.many_groups').value = True
+    >>> self.browser.getControl('Save').click()
+    >>> self.browser.getLink('Groups').click()
+    >>> 'Search All' in self.browser.contents
+    False
+
+An empty search string while 'many groups' is enabled should not perform a search.
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Group name' in self.browser.contents
+    False
+
+Now let's try to break things. 
+Add a (currently failing) test for http://dev.plone.org/plone/ticket/8940:
+Group roles show up on the user roles page for members of that group.
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Authenticated'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> self.browser.getControl(name='group_AuthenticatedUsers:list', index=1).getControl(value='Editor').selected = True
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Sean Foster'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    
+So according to the ticket, this should fail
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Editor').selected
+    False
+
+And then making some change to the user and saving it will assign that checked role directly to the user...
+    >>> self.browser.getControl(name='users.email:records').value='somenewemailaddress.com'
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Authenticated'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> self.browser.getControl(name='group_AuthenticatedUsers:list', index=1).getControl(value='Editor').selected = False
+    >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Sean Foster'
+    >>> self.browser.getControl(name='form.button.Search').click()
+
+According to the ticket, the user will now have an assigned role of 'Editor', which should not be the case.
+    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Editor').selected
+    False

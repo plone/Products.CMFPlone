@@ -124,6 +124,22 @@
       />
 
   <browser:page
+      name="usergroup-userprefs"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.UsersOverviewControlPanel"
+      permission="zope2.ManageUsers"
+      template="usergroups_usersoverview.pt"
+      />
+
+  <browser:page
+      name="usergroup-groupprefs"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.GroupsOverviewControlPanel"
+      permission="zope2.ManageUsers"
+      template="usergroups_groupsoverview.pt"
+      />
+
+  <browser:page
       name="usergroup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UserGroupsSettingsControlPanel"
