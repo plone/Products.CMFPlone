@@ -105,7 +105,7 @@
       class=".manage.ManageGroupPortlets"
       name="manage-group-portlets"
       template="templates/manage-group.pt"
-      permission="plone.app.portlets.ManageGroupPortlets"
+      permission="plone.app.portlets.ManagePortlets"
       />
     
     <browser:page
@@ -113,7 +113,7 @@
       class=".manage.ManageGroupDashboardPortlets"
       name="manage-group-dashboard"
       template="templates/manage-group-dashboard.pt"
-      permission="plone.app.portlets.ManageGroupPortlets"
+      permission="plone.app.portlets.ManagePortlets"
       />
     
     <!-- Renderer for the columns in edit mode -->

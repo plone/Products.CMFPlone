@@ -38,6 +38,11 @@
            tal:attributes="href string:${portal_url}/@@manage-group-portlets?key=${request/key}"
            i18n:translate="label_group_portlets">Group Portlets</a>
       </li>
+      <li>
+        <a href=""
+           tal:attributes="href string:${portal_url}/@@manage-group-dashboard?key=${request/key}"
+           i18n:translate="label_group_dashboard">Group Dashboard</a>
+      </li>
     </ul>
 
     <div class="contentActions">
@@ -61,10 +66,11 @@
               <span i18n:name="group_name" tal:content="view/group">group</span>
           </h1>
           
-          <a class="link-parent"
-               i18n:translate="return_to_group_portlets"
-               tal:attributes="href string:${portal_url}/@@manage-group-dashboard?key=${request/key}" >
-               Edit group dashboard portlets
+          <a href=""
+               class="link-parent"
+               tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
+               i18n:translate="label_up_to_groups_overview">
+            Up to Groups Overview
           </a>
     
           <p i18n:translate="description_manage_group_portlets">

@@ -28,11 +28,6 @@
     />
 
   <permission
-    id="plone.app.portlets.ManageGroupPortlets"
-    title="Portlets: Manage group portlets"
-    />
-
-  <permission
      id="plone.app.portlets.ViewDashboard"
      title="Portlets: View dashboard"
      />
