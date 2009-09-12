@@ -19,10 +19,11 @@
 
     <dd class="portletItem lastItem">
         <ul class="navTree navTreeLevel0">
-            <li class="navTreeItem"
-                tal:condition="view/include_top">
-                <div tal:define="selectedClass view/root_item_class;
-                                 rootIsPortal view/root_is_portal;">
+            <li tal:define="selectedClass view/root_item_class; 
+                            li_class python:selectedClass and ' navTreeCurrentNode' or '';" 
+                tal:condition="view/include_top" 
+                tal:attributes="class string:navTreeItem navTreeTopNode${li_class}"> 
+                <div tal:define="rootIsPortal view/root_is_portal;">
                    <a tal:attributes="href root/absolute_url;
                                       title root/Description;
                                       class selectedClass">
