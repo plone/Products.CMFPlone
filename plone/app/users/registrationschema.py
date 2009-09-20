@@ -13,9 +13,16 @@ from zope.component import getUtility
 
 class IRegistrationSchema(Interface):
 
-    join_form_fields = schema.Tuple(title=u'Join form fields',
-                                    description=u'Select the fields for the join form')
+    join_form_fields = schema.Tuple(
+        title=u'Join form fields',
+                                    
+        description=u"""Select the fields for the join form. Fields in the
+        right' box will be shown on the form, fields on the left are disabled.
+        Use the left/right buttons to move a field from right to left (to
+        disable it) and vice versa. Use the up/down buttons to change the order
+        in which the fields appear on the form.""",
 
+        )
 
 def UserDataWidget(field, request):
 

@@ -266,8 +266,7 @@ class JoinForm(PageForm):
             registration.addMember(username, password, properties=data, REQUEST=self.request)
         except (AttributeError, ValueError), err:
 
-            IStatusMessage(self.request).addStatusMessage(_(err),
-                                                          type="error")
+            IStatusMessage(self.request).addStatusMessage(_(err), type="error")
             return
 
         if portal.validate_email or data.get('mail_me', 0):
