@@ -188,7 +188,6 @@ class JoinForm(PageForm):
         form_field_names = [f.field.getName() for f in self.form_fields]
 
         portal = getUtility(ISiteRoot)
-        registration = portal.portal_registration
 
         # passwords should match
         if 'password' in form_field_names:
@@ -256,7 +255,7 @@ class JoinForm(PageForm):
 
 
         portal = getUtility(ISiteRoot)
-        registration = portal.portal_registration
+        registration = getToolByName(self.context, 'portal_registration')
 
         username = data['username']
 
