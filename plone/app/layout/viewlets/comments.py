@@ -1,5 +1,3 @@
-from urllib import quote as url_quote
-
 from Acquisition import aq_inner, aq_parent
 from AccessControl import getSecurityManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile

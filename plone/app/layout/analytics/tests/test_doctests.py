@@ -1,8 +1,5 @@
 import unittest
 import doctest
-from zope import component
-from zope.component import testing
-from zope.testing import doctestunit
 from Testing import ZopeTestCase as ztc
 
 from plone.app.layout.analytics.tests import base

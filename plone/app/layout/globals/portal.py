@@ -1,8 +1,6 @@
 from zope.interface import implements
-from zope.i18n.interfaces import IUserPreferredLanguages
-from zope.i18n.locales import locales, LoadLocaleError
 
-from plone.memoize.view import memoize, memoize_contextless
+from plone.memoize.view import memoize_contextless
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName

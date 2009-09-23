@@ -2,7 +2,6 @@ import unittest
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.content import WorkflowHistoryViewlet
 from plone.app.layout.viewlets.content import ContentHistoryViewlet
-from DateTime import DateTime
 
 class TestWorkflowHistoryViewlet(ViewletsTestCase):
     """
