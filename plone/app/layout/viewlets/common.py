@@ -43,14 +43,13 @@ class ViewletBase(BrowserView):
     def render(self):
         # defer to index method, because that's what gets overridden by the template ZCML attribute
         return self.index()
-        
+
     def index(self):
         raise NotImplementedError(
             '`index` method must be implemented by subclass.')
 
 
 class TitleViewlet(ViewletBase):
-
     def update(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_portal_state')
@@ -71,8 +70,6 @@ class TitleViewlet(ViewletBase):
 
 
 class TableOfContentsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('toc.pt')
-
     def update(self):
         obj = aq_base(self.context)
         getTableContents = getattr(obj, 'getTableContents', None)
@@ -84,28 +81,19 @@ class TableOfContentsViewlet(ViewletBase):
                 # schema not updated yet
                 self.enabled = False
 
-
 class SkipLinksViewlet(ViewletBase):
-    index = ViewPageTemplateFile('skip_links.pt')
-
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
         self.current_page_url = context_state.current_page_url
 
-
 class SiteActionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('site_actions.pt')
-
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
         self.site_actions = context_state.actions('site_actions')
 
-
 class SearchBoxViewlet(ViewletBase):
-    index = ViewPageTemplateFile('searchbox.pt')
-
     def update(self):
         super(SearchBoxViewlet, self).update()
 
@@ -123,9 +111,8 @@ class SearchBoxViewlet(ViewletBase):
         self.folder_path = '/'.join(folder.getPhysicalPath())
 
 
-class LogoViewlet(ViewletBase):
-    index = ViewPageTemplateFile('logo.pt')
 
+class LogoViewlet(ViewletBase):
     def update(self):
         super(LogoViewlet, self).update()
 
@@ -135,10 +122,7 @@ class LogoViewlet(ViewletBase):
 
         self.portal_title = self.portal_state.portal_title()
 
-
 class GlobalSectionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('sections.pt')
-
     def update(self):
         context = aq_inner(self.context)
         portal_tabs_view = getMultiAdapter((context, self.request),
@@ -153,8 +137,6 @@ class GlobalSectionsViewlet(ViewletBase):
 
 
 class PersonalBarViewlet(ViewletBase):
-    index = ViewPageTemplateFile('personal_bar.pt')
-
     def update(self):
         super(PersonalBarViewlet, self).update()
         context = aq_inner(self.context)
@@ -198,8 +180,6 @@ class PersonalBarViewlet(ViewletBase):
 
 
 class PathBarViewlet(ViewletBase):
-    index = ViewPageTemplateFile('path_bar.pt')
-
     def update(self):
         super(PathBarViewlet, self).update()
 
@@ -209,9 +189,10 @@ class PathBarViewlet(ViewletBase):
                                            name='breadcrumbs_view')
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
 
+    def index(self):
+        return self.template()
+
 class ContentActionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('contentactions.pt')
-    
     def update(self):
         context = aq_inner(self.context)
         context_state = getMultiAdapter((context, self.request),
@@ -230,7 +211,8 @@ class ContentActionsViewlet(ViewletBase):
         # provides that marker, we should do it here as well.
         if IViewView.providedBy(self.__parent__):
             alsoProvides(self, IViewView)
-        
+
+
     def icon(self, action):
         icon = action.get('icon', None)
         if icon is None:
