@@ -110,7 +110,6 @@
         name="plone.skip_links"
         manager=".interfaces.IPortalHeader"
         class=".common.SkipLinksViewlet"
-        template="skip_links.pt"
         permission="zope2.View" 
         />
 
@@ -119,7 +118,6 @@
         name="plone.site_actions"
         manager=".interfaces.IPortalHeader"
         class=".common.SiteActionsViewlet"
-        template="site_actions.pt"
         permission="zope2.View" 
         />
 
@@ -128,7 +126,6 @@
         name="plone.searchbox"
         manager=".interfaces.IPortalHeader"
         class=".common.SearchBoxViewlet"
-        template="searchbox.pt"
         permission="zope2.View" 
         />
 
@@ -137,7 +134,6 @@
         name="plone.logo"
         manager=".interfaces.IPortalHeader"
         class=".common.LogoViewlet"
-        template="logo.pt"
         permission="zope2.View" 
         />
 
@@ -146,7 +142,6 @@
         name="plone.global_sections"
         manager=".interfaces.IPortalHeader"
         class=".common.GlobalSectionsViewlet"
-        template="sections.pt"
         permission="zope2.View" 
         />
 
@@ -155,7 +150,6 @@
         name="plone.personal_bar"
         manager=".interfaces.IPortalTop"
         class=".common.PersonalBarViewlet"
-        template="personal_bar.pt"
         permission="zope2.View" 
         />
 
@@ -164,7 +158,6 @@
         name="plone.path_bar"
         manager=".interfaces.IPortalTop"
         class=".common.PathBarViewlet"
-        template="path_bar.pt"
         permission="zope2.View" 
         />
 
@@ -194,7 +187,6 @@
         view="plone.app.layout.globals.interfaces.IViewView"
         manager=".interfaces.IContentViews"
         class=".common.ContentActionsViewlet"
-        template="contentactions.pt"
         permission="zope2.View"
         />
         
@@ -204,7 +196,6 @@
         view="plone.app.content.browser.interfaces.IFolderContentsView"
         manager=".interfaces.IContentViews"
         class=".common.ContentActionsViewlet"
-        template="contentactions.pt"
         permission="zope2.View"
         />
 
@@ -273,7 +264,6 @@
         for="Products.ATContentTypes.interface.IATDocument"
         manager=".interfaces.IAboveContentBody"
         class=".common.TableOfContentsViewlet"
-        template="toc.pt"
         permission="zope2.View" 
         />
         
