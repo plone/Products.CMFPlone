@@ -71,15 +71,14 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
         self.ksstool = getToolByName(context, 'portal_kss')
         ptool = getToolByName(context, 'portal_properties')
         self.props = ptool.site_properties
+        self.themeChanged = False
 
     def get_theme(self):
         return self.context.getDefaultSkin()
 
     def set_theme(self, value):
+        self.themeChanged = True
         self.context.default_skin = value
-        self.jstool.cookResources()
-        self.csstool.cookResources()
-        self.ksstool.cookResources()
 
     theme = property(get_theme, set_theme)
 
@@ -148,5 +147,6 @@ class SkinsControlPanel(ControlPanelForm):
     def _on_save(self, data=None):
         # Force a refresh of the page so that a new theme choice fully takes
         # effect. 
-        self.request.RESPONSE.redirect(self.request.URL)
+        if not self.errors and self.adapters['ISkinsSchema'].themeChanged:
+            self.request.response.redirect(self.request.URL)
         

@@ -53,11 +53,6 @@ Click the save button:
     >>> self.browser.url.endswith('skins-controlpanel')
     True
 
-We should be informed that something has changed:
-
-    >>> 'Changes saved.' in self.browser.contents
-    True
-
 Make sure the changes have been applied correctly to the mailhost:
 
     >>> stool.default_skin
