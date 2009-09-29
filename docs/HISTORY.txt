@@ -3,6 +3,9 @@ Changelog
 
 2.0 - unreleased
 ----------------
+- Force a page refresh when saving changes to the skins control panel. This
+  forces newly-chosen themes to fully take effect.
+  [esteele]
 
 - Use `zope.ramcache` in favor of `zope.app.cache`.
   [hannosch]
