@@ -20,12 +20,10 @@
         </form>
         <tal:login condition="python:isAnon and not userHasReplyPermission and isDiscussionAllowed">
             <a tal:define="login_url view/login_url"
-               tal:omit-tag="python:not login_url"
-               tal:attributes="href login_url">
-                <span tal:omit-tag="login_url"
-                      i18n:translate="label_login_to_add_comments">
-                    Log in to add comments
-                </span>
+               tal:condition="login_url"
+               tal:attributes="href login_url"
+               i18n:translate="label_login_to_add_comments">
+                Log in to add comments
             </a>
         </tal:login>
 
