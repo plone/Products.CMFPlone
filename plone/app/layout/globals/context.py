@@ -21,13 +21,7 @@ from interfaces import IContextState
 from plone.portlets.interfaces import ILocalPortletAssignable
 
 BLACKLISTED_PROVIDERS = ('portal_workflow', )
-BLACKLISTED_CATEGORIES = (
-    'folder_buttons',
-    'object_buttons',
-    'controlpanel',
-    'controlpanel_addons',
-    'controlpanel_advanced',
-    )
+BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons', )
 
 
 class ContextState(BrowserView):
