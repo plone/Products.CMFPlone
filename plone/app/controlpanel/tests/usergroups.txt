@@ -1,5 +1,5 @@
-Site control panel
-==================
+User / Group control panel
+==========================
 
 First some initial setup code:
 
