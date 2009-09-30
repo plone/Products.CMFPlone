@@ -2,9 +2,11 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      metal:use-macro="context/@@standard_macros/page"
+      metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 <head>
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
 </head>
 
 <body>
@@ -14,7 +16,6 @@
 <div metal:define-macro="form">
 
 <form action="." metal:define-macro="master"
- tal:define="dummy python: context.plone_log('LAL')"
       tal:attributes="action request/URL;
                       class string:kssattr-formname-${view/__name__}"
       method="post"
