@@ -19,7 +19,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 
 from plone.app.users.userdataschema import IUserDataSchemaProvider
 
-
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 # Define constants from the Join schema that should be added to the
 # vocab of the join fields setting in usergroupssettings controlpanel.
@@ -101,6 +101,7 @@ class JoinForm(PageForm):
     label = _(u'heading_registration_form', default=u'Registration Form')
     description = _(u"")
     form_name = _(u'legend_personal_details', default=u'Personal Details')
+    template =  ViewPageTemplateFile('pageform_no_portlets.pt')
 
     @property
     def form_fields(self):
