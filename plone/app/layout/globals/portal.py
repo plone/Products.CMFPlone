@@ -10,6 +10,9 @@ from plone.app.layout.navigation.root import getNavigationRoot
 
 from interfaces import IPortalState
 
+RIGHT_TO_LEFT = ['ar', 'fa', 'he', 'ps']
+
+
 class PortalState(BrowserView):
     """Information about the state of the portal
     """
@@ -44,27 +47,18 @@ class PortalState(BrowserView):
         return site_properties.getProperty('default_language', None)
 
     def language(self):
-        # TODO Looking for lower-case language is wrong, the negotiator
-        # machinery uses uppercase LANGUAGE. We cannot change this as long
-        # as we don't ship with a newer PloneLanguageTool which respects
-        # the content language, though.
-        return self.request.get('language', None) or \
+        return self.request.get('LANGUAGE', None) or \
                 aq_inner(self.context).Language() or self.default_language()
 
     def locale(self):
         return self.request.locale
 
-    @memoize_contextless
     def is_rtl(self):
-        locale = self.request.locale
-        if locale is None:
-            # We cannot determine the orientation
+        language = self.language()
+        if not language:
             return False
-
-        char_orient = locale.orientation.characters
-        if char_orient == u'right-to-left':
+        if language[:2] in RIGHT_TO_LEFT:
             return True
-
         return False
 
     @memoize_contextless

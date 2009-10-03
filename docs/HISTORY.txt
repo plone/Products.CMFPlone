@@ -4,6 +4,16 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Changed the is_rtl method of the portal state view not to rely on the locale
+  but use a much simpler test based on the language code. This avoids setting
+  up the expensive request.locale.
+  [hannosch]
+
+- Fixed the portal state view to look for uppercase language in the request,
+  since that is set by PloneLanguageTool. This closes
+  http://dev.plone.org/plone/ticket/8342.
+  [hannosch]
+
 - "Log in to add comments" button is now a link and respects the login URL
   specified in portal_actions. Closes http://dev.plone.org/plone/ticket/9071.
   [erikrose]
