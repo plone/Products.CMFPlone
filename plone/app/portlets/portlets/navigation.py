@@ -149,7 +149,7 @@ class Renderer(base.Renderer):
         root = self.getNavRoot()
         if (aq_base(root) is aq_base(context) or
                 (aq_base(root) is aq_base(aq_parent(aq_inner(context))) and
-                utils.isDefaultPage(context, self.request, context))):
+                utils.isDefaultPage(context, self.request))):
             return 'navTreeCurrentItem'
         else:
             return ''
