@@ -100,7 +100,6 @@ class JoinForm(PageForm):
     
     label = _(u'heading_registration_form', default=u'Registration Form')
     description = _(u"")
-    form_name = _(u'legend_personal_details', default=u'Personal Details')
     template =  ViewPageTemplateFile('pageform_no_portlets.pt')
 
     @property
