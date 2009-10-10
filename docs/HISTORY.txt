@@ -4,6 +4,13 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Added default editor setting to the Site settings control panel.
+  [rob gietema]
+
+- Moved remaining html filter settings from Kupu library tool to safe_html
+  transform.
+  [robgietema]
+
 - Added @@migrate-to-emaillogin browser view so admins can update the
   login names of existing users.  It can check for duplicate emails
   and can update the login name of all users to their email addresses

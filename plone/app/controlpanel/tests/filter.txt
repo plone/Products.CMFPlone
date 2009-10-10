@@ -120,6 +120,18 @@ Add a new nasty tag
 
 Adding span to nasty tags should have automatically removed it from the valid tags.
 
+Changing a permitted style 
+
+    >>> browser.getControl(name="form.style_whitelist.2.").value = "color"
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> print_all_of('style_whitelist')
+    text-align
+    list-style-type
+    color
+    >>> print sorted(safe_html._config['style_whitelist'])
+    [u'color', u'list-style-type', u'text-align']
+
+
 Check that the filtering works
 ------------------------------
 

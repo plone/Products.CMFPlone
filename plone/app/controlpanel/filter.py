@@ -197,8 +197,10 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
     @apply
     def style_whitelist():
         def get(self):
-            return self.kupu_tool.getStyleWhitelist()
+            return self.transform.get_parameter_value('style_whitelist')
         def set(self, value):
+            self._settransform(style_whitelist = list(value))
+            # Set kupu attribute for backwards compatibility
             self.kupu_tool.style_whitelist = list(value)
         return property(get, set)
 
@@ -207,31 +209,43 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
         '''Ideally the form should allow setting a class whitelist,
         but that will have to be added later.'''
         def get(self):
-            return  self.kupu_tool.getClassBlacklist()
+            return self.transform.get_parameter_value('class_blacklist')
         def set(self, value):
+            self._settransform(class_blacklist = list(value))
+            # Set kupu attribute for backwards compatibility
             self.kupu_tool.class_blacklist = list(value)
         return property(get, set)
 
     @apply
     def stripped_attributes():
         def get(self):
-            return self.kupu_tool.get_stripped_attributes()
+            return self.transform.get_parameter_value('stripped_attributes')
         def set(self, value):
+            self._settransform(stripped_attributes = value)
+            # Set kupu attribute for backwards compatibility
             self.kupu_tool.set_stripped_attributes(value)
         return property(get, set)
 
     @apply
     def stripped_combinations():
         def get(self):
-            return  [TagAttrPair(' '.join(t),' '.join(a)) for (t,a) in \
-                     self.kupu_tool.get_stripped_combinations()]
+            stripped = []
+            sc = self.transform.get_parameter_value('stripped_combinations')
+            for k in sc.keys():
+                stripped.append(TagAttrPair(k, sc[k]))
+            return stripped
         def set(self, value):
             stripped = []
+            strippeddict = {}
             for ta in value:
+                strippeddict[ta.tags] = ta.attributes
+                # Set kupu attribute for backwards compatibility
                 tags = ta.tags.replace(',', ' ').split()
                 attributes = ta.attributes.replace(',', ' ').split()
                 stripped.append((tags,attributes))
 
+            self._settransform(stripped_combinations = strippeddict)
+            # Set kupu attribute for backwards compatibility
             self.kupu_tool.set_stripped_combinations(stripped)
         return property(get, set)
 

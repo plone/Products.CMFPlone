@@ -7,6 +7,7 @@ from zope.schema import Bool
 from zope.schema import Text
 from zope.schema import TextLine
 from zope.schema import SourceText
+from zope.schema import Choice
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -47,6 +48,15 @@ class ISiteSchema(Interface):
                                                 "inline editing on the site."),
                                  default=True,
                                  required=False)
+
+    default_editor = Choice(title=_(u'Default editor'),
+                            description=_(u"Select the default wysiwyg editor. "
+                                "Users will be able to choose their own or "
+                                "select to use the site default."),
+                            default=u'TinyMCE',
+                            missing_value=set(),
+                            vocabulary="plone.app.vocabularies.AvailableEditors",
+                            required=True)
 
     enable_link_integrity_checks = Bool(title=_(u"Enable link integrity "
                                                  "checks"),
@@ -140,6 +150,7 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     enable_inline_editing = ProxyFieldProperty(ISiteSchema['enable_inline_editing'])
     enable_link_integrity_checks = ProxyFieldProperty(ISiteSchema['enable_link_integrity_checks'])
     ext_editor = ProxyFieldProperty(ISiteSchema['ext_editor'])
+    default_editor = ProxyFieldProperty(ISiteSchema['default_editor'])
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
     lock_on_ttw_edit = ProxyFieldProperty(ISiteSchema['lock_on_ttw_edit'])
 
