@@ -29,7 +29,10 @@
             <input type="hidden" name="login_name" id="login_name" value="" />
             <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
 
-            <div class="field">
+            <div class="field"
+                 tal:define="use_email_as_login context/portal_properties/site_properties/use_email_as_login|nothing;">
+
+              <tal:loginname condition="not:use_email_as_login">
                 <label for=""
                        tal:attributes="for ac_name"
                        i18n:translate="label_login_name">Login Name</label>
@@ -40,6 +43,19 @@
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');"
                        i18n:attributes="alt label_login_name;"/>
+              </tal:loginname>
+              <tal:email condition="use_email_as_login">
+                <label for=""
+                       tal:attributes="for ac_name"
+                       i18n:translate="label_email">E-mail</label>
+                <br />
+                <input type="text"
+                       size="10"
+                       alt="E-mail"
+                       tal:attributes="name ac_name; id ac_name;
+                                       value python:request.get(ac_name, '');"
+                       i18n:attributes="alt label_email;"/>
+              </tal:email>
             </div>
             
             <div class="field">

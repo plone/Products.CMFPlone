@@ -4,6 +4,12 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Login portlet: when use_email_as_login is true, make the label
+  'E-mail' instead of 'Login Name', as per plip 9214 (Plone 4).
+  Should still work in earlier Plone versions as well.
+  Refs http://dev.plone.org/plone/ticket/9214
+  [maurits]
+
 - Removed last zope.app dependencies.
   [hannosch]
 
