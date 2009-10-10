@@ -4,6 +4,11 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Greatly simplify the default colophon, so it stands a chance of staying on
+  actual sites. We cannot claim any standards support for public sites, only
+  for Plone itself.
+  [hannosch]
+
 - Changed the is_rtl method of the portal state view not to rely on the locale
   but use a much simpler test based on the language code. This avoids setting
   up the expensive request.locale.
