@@ -43,6 +43,10 @@
         name="groupportlets"
         />
     <adapter
+        factory=".traversal.GroupDashboardNamespace"
+        name="groupdashboard"
+        />
+    <adapter
         factory=".traversal.ContentTypePortletNamespace"
         name="contenttypeportlets"
         />
@@ -101,6 +105,14 @@
       class=".manage.ManageGroupPortlets"
       name="manage-group-portlets"
       template="templates/manage-group.pt"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+    
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      class=".manage.ManageGroupDashboardPortlets"
+      name="manage-group-dashboard"
+      template="templates/manage-group-dashboard.pt"
       permission="plone.app.portlets.ManagePortlets"
       />
     

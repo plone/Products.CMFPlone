@@ -16,6 +16,7 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
+from plone.app.portlets.storage import GroupDashboardPortletAssignmentMapping
 
 class ContextPortletNamespace(object):
     """Used to traverse to a contextual portlet assignable
@@ -61,6 +62,29 @@ class DashboardNamespace(object):
         if not getattr(manager, '__name__', None):
             manager.__name__ = user
         
+        return manager
+
+class GroupDashboardNamespace(object):
+    """Used to traverse to a portlet assignable for a group for the dashboard
+    """
+    
+    implements(ITraversable)
+    adapts(ISiteRoot, IHTTPRequest)
+    
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
+        
+    def traverse(self, name, ignore):
+        col, group = name.split('+')
+        column = getUtility(IPortletManager, name=col)
+        category = column[GROUP_CATEGORY]
+        manager = category.get(group, None)
+        if manager is None:
+            manager = category[group] = \
+                GroupDashboardPortletAssignmentMapping(manager=col,
+                                                       category=GROUP_CATEGORY,
+                                                       name=group)                                                                            
         return manager
 
 class GroupPortletNamespace(object):

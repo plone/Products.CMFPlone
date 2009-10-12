@@ -19,6 +19,7 @@ from plone.portlets.constants import CONTEXT_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
+from plone.app.portlets.storage import GroupDashboardPortletAssignmentMapping
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
@@ -143,6 +144,42 @@ class ManageDashboardPortlets(BrowserView):
             raise KeyError, "Cannot find user id of current user" 
         
         return memberId
+
+class ManageGroupDashboardPortlets(BrowserView):
+    implements(IManageDashboardPortletsView)
+    
+    @property
+    def group(self):
+        return self.request.get('key', None)
+    
+    # IManagePortletsView implementation
+    
+    @property
+    def macros(self):
+        return self.index.macros
+    
+    @property
+    def category(self):
+        return GROUP_CATEGORY
+    
+    @property
+    def key(self):
+        return self.group
+    
+    def getAssignmentMappingUrl(self, manager):
+        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
+        return '%s/++groupdashboard++%s+%s' % (baseUrl, manager.__name__, self.group)
+
+    def getAssignmentsForManager(self, manager):
+        column = getUtility(IPortletManager, name=manager.__name__)
+        category = column[GROUP_CATEGORY]
+        mapping = category.get(self.group, None)
+        if mapping is None:
+            mapping = category[self.group] = \
+                GroupDashboardPortletAssignmentMapping(manager=manager.__name__,
+                                                       category=GROUP_CATEGORY,
+                                                       name=self.group)
+        return mapping.values()
 
 class ManageGroupPortlets(BrowserView):
     implements(IManageGroupPortletsView)

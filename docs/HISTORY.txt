@@ -10,6 +10,9 @@ Changelog
   Refs http://dev.plone.org/plone/ticket/9214
   [maurits]
 
+- Added support for group dashboards.
+  [optilude]
+
 - Removed last zope.app dependencies.
   [hannosch]
 

@@ -12,22 +12,3 @@ plone.app.portlets to-do
       ManagePortal)
       
         - may be sufficient to create when the management views are invoked
-
-    o ++dashboard++ probably only applicable to USER_CATEGORY
-        - may want to imply more restrictions on category for different portlet
-          manager types
-        
-  Portlets
-
-    o Make standard set of portlets
-        - Smart Folder renderer
-        - Document renderer
-          
-  GenericSetup import/export handlers
-
-    o Better test coverage for portlet manager GenericSetup import/export
-        - export
-        - re-import with purge
-        - re-import without purge
-      
-    o Extend import/export handler to cover portlet assignments?

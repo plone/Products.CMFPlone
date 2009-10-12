@@ -15,6 +15,10 @@ class IUserPortletAssignmentMapping(IPortletAssignmentMapping):
     """A portlet assignment mapping that's user-specific
     """
 
+class IGroupDashboardPortletAssignmentMapping(IPortletAssignmentMapping):
+    """Group portlets storage. Has its own security checker.
+    """
+
 class IPortletPermissionChecker(Interface):
     """An adapter for an assignment manager, which can check whether the
     current user is allowed to manipulate portlets in this mapping.
