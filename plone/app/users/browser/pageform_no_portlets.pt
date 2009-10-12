@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
+<body>
+
+<div metal:fill-slot="body">
+
+<div metal:define-macro="form">
+
+<form action="." metal:define-macro="master"
+      tal:attributes="action request/URL;
+                      class string:kssattr-formname-${view/__name__}"
+      method="post"
+      enctype="multipart/form-data"
+      id="zc.page.browser_form">
+
+<div id="viewspace" metal:define-slot="viewspace">
+
+    <tal:status define="status view/status" condition="status">
+        <dl class="portalMessage error"
+            tal:condition="view/errors">
+            <dt i18n:translate="">
+                Error
+            </dt>
+            <dd tal:content="status" />
+        </dl>
+ 
+        <dl class="portalMessage info"
+            tal:condition="not: view/errors">
+            <dt i18n:translate="">
+                Info
+            </dt>
+            <dd tal:content="status" />
+        </dl>
+    </tal:status>
+
+  <h1  class="documentFirstHeading"
+       i18n:translate=""
+       tal:condition="view/label"
+       tal:content="view/label"
+       metal:define-slot="heading"
+       >Do something</h1>
+
+  <p tal:content="view/description|nothing">Description</p>
+
+  <metal:block define-macro="header">
+
+    <tal:block replace="nothing">  
+      <div class="form-status"
+       tal:define="status view/status"
+       tal:condition="status">
+
+          <div class="summary"
+               i18n:translate=""
+               tal:content="view/status">
+            Form status summary
+          </div>
+
+          <ul id="formlib-errors" class="errors" tal:condition="view/errors">
+             <li tal:repeat="error view/error_views">
+                <span tal:replace="structure error">Error Type</span>
+             </li>
+          </ul>
+      </div>
+  </tal:block>
+
+  </metal:block>
+
+  <div metal:define-slot="extra_info" tal:replace="nothing">
+  </div>
+
+  <fieldset tal:define="form_name view/form_name|nothing"
+            tal:omit-tag="not:form_name">
+    <legend tal:condition="form_name"
+            tal:content="form_name"
+            i18n:translate="">Form name</legend>
+  <tal:block tal:repeat="widget view/widgets">
+    <div class="field"
+         tal:define="description widget/hint;
+                     error widget/error;
+                     normalized_name python:widget.name.replace('.', '-');
+                     fieldname_class string:kssattr-fieldname-${widget/name};
+                     error_class python:error and ' error' or ' '"
+         tal:attributes="id string:formfield-${normalized_name};
+                         class string:field ${fieldname_class}${error_class}">
+          <label tal:condition="widget/label"
+                 tal:attributes="for widget/name">
+            <span i18n:translate=""
+                  tal:content="widget/label">label</span>
+          </label>
+          <span class="fieldRequired" title="Required"
+                tal:condition="widget/required"
+                i18n:translate="label_required"
+                i18n:attributes="title title_required;">
+            (Required)
+          </span>
+          <div class="formHelp"
+               i18n:translate=""
+               tal:content="description"
+               tal:condition="description"
+               >field description</div>
+	  <tal:comment tal:condition="nothing">
+	    <!-- The structure keyword is necessary as Invariant strings have a
+	         span tag. It is often useful to set Invariant errors on the
+		 fields they refer to. -->
+	  </tal:comment>
+          <div class="fieldErrorBox" tal:content="structure error">
+            The Error
+          </div>
+          <div class="widget formlibInlineValidation" tal:content="structure widget">
+          <input type="text" /></div>
+          <tal:comment tal:condition="nothing">
+            <!-- TODO Put this back, the Zope3 way.
+            <img src="alert.gif" alt="Error"
+            tal:replace="structure context/alert.gif" />
+            -->
+          </tal:comment>
+    </div>
+</tal:block>
+
+  <metal:block define-slot="authenticator">
+    <input tal:replace="structure context/@@authenticator/authenticator" />
+  </metal:block>
+
+  <metal:block define-slot="above_buttons" />
+<div id="actionsView">
+  <span class="actionButtons"
+        tal:condition="view/availableActions"
+        metal:define-slot="bottom_buttons">
+    <input tal:repeat="action view/actions"
+           tal:replace="structure action/render"
+           />
+  </span>
+</div>
+  </fieldset>
+</div>
+</form>
+
+<script type="text/javascript"
+    tal:define="extra_script view/extra_script | nothing"
+    tal:condition="extra_script"
+    tal:content="structure extra_script" />
+
+
+</div>
+
+</div></body></html>
