@@ -32,34 +32,36 @@
 
     <div id="region-content" class="documentEditable">
 
-        <h5 class="hiddenStructure">Views</h5>
+        <tal:tabs condition="view/can_edit">
+            <h5 class="hiddenStructure">Views</h5>
         
-        <ul id="content-views"
-            class="contentViews">
-          <li class="selected">
-            <a href=""
-               tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
-               i18n:translate="label_dashboard">Dashboard</a>
-          </li>
-          <li>
-            <a href=""
-               tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
-               i18n:translate="label_edit">Edit</a>
-          </li>
-        </ul>
+            <ul id="content-views"
+                class="contentViews">
+              <li class="selected">
+                <a href=""
+                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
+                   i18n:translate="label_dashboard">Dashboard</a>
+              </li>
+              <li>
+                <a href=""
+                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
+                   i18n:translate="label_edit">Edit</a>
+              </li>
+            </ul>
 
-        <div class="contentActions">
-          &nbsp;
-        </div>
+            <div class="contentActions" tal:condition="view/can_edit">
+              &nbsp;
+            </div>
+        </tal:tabs>
 
-        <div class="documentContent" id="content">
+        <div id="content" tal:attributes="class python:view.can_edit() and 'documentContent' or nothing">
 
             <a name="documentContent"></a>
                     
             <div metal:use-macro="context/global_statusmessage/macros/portal_message">
                 Portal status message
             </div>
-
+            
             <div id="dashboard-actions"
                  tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                              groups python:controlPanel.getGroups('member');
@@ -99,7 +101,7 @@
                 <span tal:replace="name" i18n:name="user_name" />'s dashboard
             </h1>
             
-            <dl tal:condition="view/empty"
+            <dl  tal:condition="python:view.empty() and view.can_edit()"
                 class="portalMessage info visualClear" id="dashboard-info-message">
                 <dt i18n:translate="">Info</dt>
                 <dd i18n:translate="info_empty_dashboard">

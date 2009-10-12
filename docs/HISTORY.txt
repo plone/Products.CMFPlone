@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Added support for group dashboards to the dashboard view.
+  [optilude]
+
 - Greatly simplify the default colophon, so it stands a chance of staying on
   actual sites. We cannot claim any standards support for public sites, only
   for Plone itself.

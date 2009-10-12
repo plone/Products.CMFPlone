@@ -175,7 +175,7 @@ class PersonalBarViewlet(ViewletBase):
             member = self.portal_state.member()
             userid = member.getId()
             
-            if sm.checkPermission('Portlets: Manage own portlets', context):
+            if sm.checkPermission('Portlets: View dashboard', context):
                 self.homelink_url = self.navigation_root_url + '/dashboard'
             else:
                 if userid.startswith('http:') or userid.startswith('https:'):

@@ -7,7 +7,7 @@
     <browser:page
         for="plone.app.layout.navigation.interfaces.INavigationRoot"
         name="dashboard"
-        permission="plone.app.portlets.ManageOwnPortlets"
+        permission="plone.app.portlets.ViewDashboard"
         class=".dashboard.DashboardView"
         template="dashboard.pt"
         />
