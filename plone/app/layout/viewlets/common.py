@@ -69,7 +69,14 @@ class TitleViewlet(ViewletBase):
                 escape(safe_unicode(page_title)),
                 escape(safe_unicode(portal_title)))
 
-
+class DublinCoreViewlet(ViewletBase):
+    index = ViewPageTemplateFile('dublin_core.pt')
+    
+    def update(self):
+        plone_utils = getToolByName(self.context, 'plone_utils')
+        context = aq_inner(self.context)
+        self.metatags = plone_utils.listMetaTags(context).items()
+        
 class TableOfContentsViewlet(ViewletBase):
     index = ViewPageTemplateFile('toc.pt')
 

@@ -4,6 +4,10 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Add a viewlet to display the Dublin Core metadata added in
+  http://dev.plone.org/plone/ticket9272
+  [esteele]
+
 - Added support for group dashboards to the dashboard view.
   [optilude]
 

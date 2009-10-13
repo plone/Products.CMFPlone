@@ -207,6 +207,14 @@
         permission="zope2.View" 
         />
 
+    <!-- Render the Dublin Core metadata -->
+    <browser:viewlet
+        name="plone.htmlhead.dublincore"
+        manager=".interfaces.IHtmlHead"
+        class=".common.DublinCoreViewlet"
+        permission="zope2.View" 
+        />
+
     <!-- Render the workflow history -->
     <browser:viewlet
         name="plone.belowcontentbody.contenthistory"
