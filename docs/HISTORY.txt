@@ -50,9 +50,6 @@ Changelog
   code from the portal state view and rely directly on the request.
   [hannosch]
 
-- Added a couple of missing XML namespace declarations to viewlet templates.
-  [hannosch]
-
 - Changed ViewletBase so viewlets can be registered as zope.contentproviders.
   This closes http://dev.plone.org/plone/ticket/7868.
   [hannosch]
