@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Added test for DC meta data properties.
+  [robgietema]
+
 - Added default editor setting to the Site settings control panel.
   [rob gietema]
 

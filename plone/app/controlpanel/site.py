@@ -101,6 +101,11 @@ class ISiteSchema(Interface):
                                 "clients will still be subject to locking."),
                           default=True,
                           required=False)
+                          
+    exposeDCMetaTags = Bool(title=_(u"Expose Dublin Core metadata properties"),
+                        description=_(u"Exposes the Dublin Core properties as metatags."),
+                        default=False,
+                        required=False)
 
 
 
@@ -153,6 +158,7 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     default_editor = ProxyFieldProperty(ISiteSchema['default_editor'])
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
     lock_on_ttw_edit = ProxyFieldProperty(ISiteSchema['lock_on_ttw_edit'])
+    exposeDCMetaTags = ProxyFieldProperty(ISiteSchema['exposeDCMetaTags'])
 
 class SmallTextAreaWidget(TextAreaWidget):
 
