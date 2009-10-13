@@ -1,7 +1,4 @@
-<ul xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    xmlns:tal="http://xml.zope.org/namespaces/tal"
-    id="portal-siteactions"
+<ul id="portal-siteactions"
     tal:define="accesskeys python: {'sitemap' : '3', 'accessibility' : '0', 'contact' : '9'};"
     tal:condition="view/site_actions"
     i18n:domain="plone">

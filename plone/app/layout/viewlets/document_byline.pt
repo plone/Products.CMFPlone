@@ -1,7 +1,4 @@
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-     xmlns:tal="http://xml.zope.org/namespaces/tal"
-     class="documentByLine"
+<div class="documentByLine"
      id="plone-document-byline"
      i18n:domain="plone"
      tal:condition="view/show">

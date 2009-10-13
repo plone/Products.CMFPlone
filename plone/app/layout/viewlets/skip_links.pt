@@ -1,7 +1,4 @@
-<p xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-   xmlns:tal="http://xml.zope.org/namespaces/tal"
-   class="hiddenStructure"
+<p class="hiddenStructure"
    i18n:domain="plone">
   <a accesskey="2"
      tal:attributes="href string:${view/current_page_url}#documentContent"

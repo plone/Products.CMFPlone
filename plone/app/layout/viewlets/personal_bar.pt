@@ -1,7 +1,4 @@
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-     xmlns:tal="http://xml.zope.org/namespaces/tal"
-     id="portal-personaltools-wrapper"
+<div id="portal-personaltools-wrapper"
      i18n:domain="plone">
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>

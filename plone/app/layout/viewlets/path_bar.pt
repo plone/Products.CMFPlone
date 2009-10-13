@@ -1,7 +1,4 @@
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-     xmlns:tal="http://xml.zope.org/namespaces/tal"
-     id="portal-breadcrumbs"
+<div id="portal-breadcrumbs"
      i18n:domain="plone">
 
     <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You
