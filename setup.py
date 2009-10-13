@@ -45,4 +45,8 @@ setup(name='plone.app.users',
           'Zope2',
           'ZODB3',
       ],
+      entry_points="""
+      [z3c.autoinclude.plugin]
+      target = plone
+      """,
       )
