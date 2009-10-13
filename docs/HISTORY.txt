@@ -4,6 +4,10 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Add support for viewing blocked portlets in the management interface (PLIP
+  9285)
+  [igbun]
+
 - Login portlet: when use_email_as_login is true, make the label
   'E-mail' instead of 'Login Name', as per plip 9214 (Plone 4).
   Should still work in earlier Plone versions as well.

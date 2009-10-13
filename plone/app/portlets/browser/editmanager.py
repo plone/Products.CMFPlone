@@ -6,10 +6,11 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletContext
 from plone.portlets.utils import hashPortletInfo
 
 from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, queryMultiAdapter
+from zope.component import adapts, getMultiAdapter, queryMultiAdapter, queryAdapter
 from zope.contentprovider.interfaces import UpdateNotCalled
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
@@ -33,6 +34,7 @@ class EditPortletManagerRenderer(Explicit):
     
     This is the generic renderer, which delegates to the view to determine
     which assignments to display.
+    
     """
     implements(IPortletManagerRenderer)
     adapts(Interface, IDefaultBrowserLayer, IManageColumnPortletsView, IPortletManager)
@@ -45,7 +47,7 @@ class EditPortletManagerRenderer(Explicit):
         self.context = context
         self.request = request
         self.__updated = False
-        
+
     @property
     def visible(self):
         return True
@@ -75,29 +77,6 @@ class EditPortletManagerRenderer(Explicit):
         return self.portlets_for_assignments(
             assignments, self.manager, self.baseUrl())
 
-    def inherited_portlets(self):
-        context = aq_inner(self.context)
-        
-        assignable = getMultiAdapter(
-            (context, self.manager), ILocalPortletAssignmentManager)
-        if assignable.getBlacklistStatus(CONTEXT_CATEGORY):
-            return ()
-
-        data = []
-        while not IPloneSiteRoot.providedBy(context):
-            if IAcquirer.providedBy(context):
-                context = aq_parent(aq_inner(context))
-            else:
-                context = context.__parent__
-                
-            # we get the contextual portlets view to access its utility methods
-            view = queryMultiAdapter((context, self.request), name=self.__parent__.__name__)
-            if view is not None:
-                assignments = view.getAssignmentsForManager(self.manager)
-                base_url = view.getAssignmentMappingUrl(self.manager)
-                data.extend(self.portlets_for_assignments(assignments, self.manager, base_url))
-                
-        return data
         
     def portlets_for_assignments(self, assignments, manager, base_url):
         category = self.__parent__.category
@@ -189,8 +168,7 @@ class EditPortletManagerRenderer(Explicit):
         return str(getMultiAdapter((self.context, self.request), name='absolute_url'))
           
 class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
-    """Render a portlet manager in edit mode for contextual portlets
-    """
+    """Render a portlet manager in edit mode for contextual portlets"""
     adapts(Interface, IDefaultBrowserLayer, IManageContextualPortletsView, IPortletManager)
 
     template = ViewPageTemplateFile('templates/edit-manager-contextual.pt')
@@ -209,22 +187,111 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
 
-    def group_blacklist_status(self):
+    def group_blacklist_status(self, check_parent=False):
+        # If check_parent is True and the blacklist status is None, it returns the 
+        # parent status recursively.
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
-        return assignable.getBlacklistStatus(GROUP_CATEGORY)
+        status = assignable.getBlacklistStatus(GROUP_CATEGORY)
+        
+        if check_parent and status is None:
+            # get status from parent recursively
+            status = self.parent_blacklist_status(GROUP_CATEGORY)
+
+        return status 
     
-    def content_type_blacklist_status(self):
+    def content_type_blacklist_status(self, check_parent=False):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
-        return assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
-  
+        status = assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
+
+        if check_parent and status is None:
+            # get status from parent recursively
+            status = self.parent_blacklist_status(CONTENT_TYPE_CATEGORY)
+        
+        return status
+
+    def parent_blacklist_status(self, category):
+        if IPortletContext.providedBy(self.context):
+            pcontext = self.context
+        else:
+            pcontext = queryAdapter(self.context, IPortletContext)
+
+        status = None
+
+        current = pcontext.getParent()
+        currentpc = pcontext
+        while status is None and current is not None:
+            assignable = getMultiAdapter((current, self.manager,), ILocalPortletAssignmentManager)
+            status = assignable.getBlacklistStatus(category)
+                
+            current = currentpc.getParent()
+            if current is not None:
+                if IPortletContext.providedBy(current):
+                    currentpc = current
+                else:
+                    currentpc = queryAdapter(current, IPortletContext)
+        return status
+
+    def inherited_portlets(self):
+        """Return the list of portlets inherited by the current context."""
+        context = aq_inner(self.context)
+        
+        assignable = getMultiAdapter(
+            (context, self.manager), ILocalPortletAssignmentManager)
+
+        data = []
+        while not IPloneSiteRoot.providedBy(context):
+            if IAcquirer.providedBy(context):
+                context = aq_parent(aq_inner(context))
+            else:
+                context = context.__parent__
+                
+            # we get the contextual portlets view to access its utility methods
+            view = queryMultiAdapter((context, self.request), name=self.__parent__.__name__)
+            if view is not None:
+                assignments = view.getAssignmentsForManager(self.manager)
+                base_url = view.getAssignmentMappingUrl(self.manager)
+                data.extend(self.portlets_for_assignments(assignments, self.manager, base_url))
+                
+        return data
+
+    def global_portlets(self, category, prefix):
+        """Return the list of global portlets from a given category for the current context."""
+        context = aq_inner(self.context)
+
+        # get the portlet context
+        pcontext = IPortletContext(self.context)
+
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
+        base_url = portal_state.portal_url()
+
+        portlets = []
+        for cat, key in pcontext.globalPortletCategories(False):
+            if cat == category:
+                mapping = self.manager.get(category, None)
+                assignments = []
+                if mapping is not None:
+                    assignments.extend(mapping.get(key, {}).values())
+                if assignments:
+                    edit_url = '%s/++%s++%s+%s' % (base_url, prefix, self.manager.__name__, key)
+                    portlets.extend(self.portlets_for_assignments(assignments, self.manager, edit_url))
+
+        return portlets
+
+    def group_portlets(self):
+        """Return the list of global portlets from the group category for the current context."""
+        return self.global_portlets(GROUP_CATEGORY, 'groupportlets')
+
+    def content_type_portlets(self):
+        """Return the list of global portlets from the content type category for the current context."""
+        return self.global_portlets(CONTENT_TYPE_CATEGORY, 'contenttypeportlets')
+
+
 class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
-    """Render a portlet manager in edit mode for the dashboard
-    """
+    """Render a portlet manager in edit mode for the dashboard"""
     adapts(Interface, IDefaultBrowserLayer, IManageDashboardPortletsView, IDashboard)
         
 class ManagePortletAssignments(BrowserView):
-    """Utility views for managing portlets for a particular column
-    """
+    """Utility views for managing portlets for a particular column"""
     
     # view @@move-portlet-up
     def move_portlet_up(self, name):

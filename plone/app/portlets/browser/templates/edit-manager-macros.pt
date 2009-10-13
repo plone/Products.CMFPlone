@@ -61,19 +61,5 @@
             </div>
         </tal:block>
     </div>
-
-    <tal:block define="portlets view/inherited_portlets" condition="portlets">
-      <h4 i18n:translate="heading_inherited_portlets">
-        Inherited portlets
-      </h4>
-      
-      <div class="managedPortlet inheritedPortlet" tal:repeat="portlet portlets">
-        <div class="portletHeader">
-          <a tal:omit-tag="not:portlet/editview"
-             tal:attributes="href string:${portlet/editview}/?referer=${view/url_quote_referer}"
-             tal:content="portlet/title" />
-        </div>
-      </div>
-    </tal:block>
       
 </div>

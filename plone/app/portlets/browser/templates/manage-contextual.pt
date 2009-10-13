@@ -28,7 +28,7 @@
   </a>
 
   <p i18n:translate="description_manage_contextual_portlets">
-    The portlet columns will now display only those portlets
+    The portlet columns will first display portlets
     explicitly assigned in this context. Use the buttons on each portlet 
     to move them up or down, delete or edit them. To add a new portlet,
     use the drop-down list at the top of the column.
@@ -36,7 +36,8 @@
 
   <p i18n:translate="description_portlets_block_unblock">
       If you wish to block or unblock certain categories of portlets, you can 
-      do so using the drop-down boxes.
+      do so using the drop-down boxes. Portlets that are included by these categories 
+      are shown below the selection box.
   </p>
 
   <div tal:condition="view/has_legacy_portlets">
