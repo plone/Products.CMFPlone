@@ -39,6 +39,10 @@ Changelog
 1.2.1 - unreleased
 ------------------
 
+- Fixed some duplicated msgids with different defaults.
+  There is no new strings to translate.
+  See http://dev.plone.org/plone/ticket/9633
+  [vincentfretin]
 
 1.2 - 2009-05-09
 ----------------

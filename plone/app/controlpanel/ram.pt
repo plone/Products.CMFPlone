@@ -16,7 +16,7 @@
             </legend>
 
             <table tal:define="stats view/getStatistics"
-                   class="listing" summary="RAMCache statistics"
+                   class="listing" summary="RAM Cache statistics"
                    cellpadding="2" cellspacing="0"
                    i18n:attributes="summary heading_ramcache_stats;">
               <thead> 
