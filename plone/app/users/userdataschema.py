@@ -1,8 +1,7 @@
 from zope.interface import Interface, implements
 from zope import schema
 
-from plone.app.controlpanel import PloneMessageFactory as _
-
+from Products.CMFPlone import PloneMessageFactory as _
 
 class IUserDataSchemaProvider(Interface):
     """
