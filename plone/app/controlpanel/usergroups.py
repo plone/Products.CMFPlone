@@ -202,4 +202,4 @@ class GroupsOverviewControlPanel(ControlPanelView):
     @property
     def many_groups(self):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_groups
+        return pprop.site_properties.many_groups 
