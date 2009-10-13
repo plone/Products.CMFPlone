@@ -9,7 +9,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.app.controlpanel.form import ControlPanelForm
 from registrationschema import IRegistrationSchema, UserDataWidget
-
+from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 # Property as it is named in portal_properties
 JOIN_FORM_FIELDS='join_form_fields'
@@ -39,6 +39,9 @@ class RegistrationControlPanelAdapter(SchemaAdapterBase):
 
 
 class RegistrationControlPanel(ControlPanelForm):
+
+    base_template = ControlPanelForm.template
+    template = ZopeTwoPageTemplateFile('memberregistration.pt')
 
     form_fields = form.FormFields(IRegistrationSchema)
 
