@@ -27,6 +27,7 @@ from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletAssignmentSettings
 
 from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
@@ -237,6 +238,17 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(None, assignment.test_text)
         self.assertEquals(None, assignment.test_bool)
         self.assertEquals(None, assignment.test_tuple)
+
+    def testAssignmentSettings(self):
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        assignment = mapping['test.portlet1']
+        settings = IPortletAssignmentSettings(assignment)
+        self.failUnless(settings.get('visible', True))
+
+        assignment = mapping['test.portlet2']
+        settings = IPortletAssignmentSettings(assignment)
+        self.failIf(settings.get('visible', True))
         
     def testAssignmentRemoval(self):
         portal_setup = self.portal.portal_setup
@@ -442,37 +454,37 @@ class TestGenericSetup(PortletsTestCase):
  <portlet title="Test portlet" addview="portlets.test.Test"
     description="A test portlet"/>
  <assignment name="test.portlet6" category="group" key="Reviewers"
-    manager="test.testcolumn" type="portlets.test.Test">
+    manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
   <property name="test_tuple"/>
   <property name="test_text"/>
  </assignment>
  <assignment name="test.portlet4" category="content_type" key="Folder"
-    manager="test.testcolumn" type="portlets.test.Test">
+    manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
   <property name="test_tuple"/>
   <property name="test_text"/>
  </assignment>
  <assignment name="test.portlet5" category="content_type" key="Folder"
-    manager="test.testcolumn" type="portlets.test.Test">
+    manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
   <property name="test_tuple"/>
   <property name="test_text"/>
  </assignment>
  <assignment name="test.portlet3" category="context" key="/"
-    manager="test.testcolumn" type="portlets.test.Test">
+    manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
   <property name="test_tuple"/>
   <property name="test_text"/>
  </assignment>
  <assignment name="test.portlet2" category="context" key="/"
-    manager="test.testcolumn" type="portlets.test.Test">
+    manager="test.testcolumn" type="portlets.test.Test" visible="False">
   <property name="test_bool">True</property>
   <property name="test_tuple"/>
   <property name="test_text">Test prop 2</property>
  </assignment>
  <assignment name="test.portlet1" category="context" key="/"
-    manager="test.testcolumn" type="portlets.test.Test">
+    manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool">False</property>
   <property name="test_tuple"/>
   <property name="test_text">Test pröp 1</property>

@@ -31,6 +31,7 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletAssignmentSettings
 
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.utils import assignment_mapping_from_key
@@ -101,7 +102,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
         field = interface.get(property_name, None)
         if field is None:
             return
-        
+
         field = field.bind(self.assignment)
         value = None
         
@@ -432,6 +433,12 @@ class PortletsXMLAdapter(XMLAdapterBase):
         # aq-wrap it so that complex fields will work
         assignment = assignment.__of__(site)
 
+        # set visibility setting
+        visible = node.getAttribute('visible')
+        if visible:
+            settings = IPortletAssignmentSettings(assignment)
+            settings['visible'] = self._convertToBoolean(visible)
+
         # 3. Use an adapter to update the portlet settings
         
         portlet_interface = getUtility(IPortletTypeInterface, name=type_)
@@ -529,6 +536,11 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     child.setAttribute('name', name)
                 
                     assignment = assignment.__of__(mapping)
+                    
+                    settings = IPortletAssignmentSettings(assignment)
+                    visible = settings.get('visible', True)
+                    child.setAttribute('visible', repr(visible))
+
                     handler = IPortletAssignmentExportImportHandler(assignment)
                     handler.export_assignment(schema, self._doc, child)
                     fragment.appendChild(child)

@@ -29,6 +29,8 @@ from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from plone.app.portlets.interfaces import IDashboard, IPortletPermissionChecker
 
+from plone.portlets.interfaces import IPortletAssignmentSettings
+
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
     
@@ -98,6 +100,8 @@ class EditPortletManagerRenderer(Explicit):
                 dict(manager=manager.__name__, category=category, 
                      key=key, name=name,))
             
+            settings = IPortletAssignmentSettings(assignments[idx])
+            
             data.append({
                 'title'      : assignments[idx].title,
                 'editview'   : editviewName,
@@ -105,6 +109,9 @@ class EditPortletManagerRenderer(Explicit):
                 'up_url'     : '%s/@@move-portlet-up?name=%s' % (base_url, name),
                 'down_url'   : '%s/@@move-portlet-down?name=%s' % (base_url, name),
                 'delete_url' : '%s/@@delete-portlet?name=%s' % (base_url, name),
+                'hide_url'   : '%s/@@toggle-visibility?name=%s' % (base_url, name),
+                'show_url'   : '%s/@@toggle-visibility?name=%s' % (base_url, name),
+                'visible'    : settings.get('visible', True),
                 })
         if len(data) > 0:
             data[0]['up_url'] = data[-1]['down_url'] = None
@@ -338,3 +345,11 @@ class ManagePortletAssignments(BrowserView):
             url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))    
             referer = '%s/@@manage-portlets' % (url,)
         return referer
+
+    def toggle_visibility(self, name):
+        assignments = aq_inner(self.context)
+        settings = IPortletAssignmentSettings(assignments[name])
+        visible = settings.get('visible', True)
+        settings['visible'] = not visible
+        self.request.response.redirect(self._nextUrl())
+        return ''

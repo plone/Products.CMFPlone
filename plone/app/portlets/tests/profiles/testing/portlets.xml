@@ -38,6 +38,7 @@
         key="/"
         type="portlets.test.Test"
         name="test.portlet2"
+        visible="0"
         insert-before="test.portlet1">
             <property name="test_text">Test prop 2</property>
             <property name="test_bool">True</property>

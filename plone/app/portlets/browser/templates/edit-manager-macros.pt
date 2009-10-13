@@ -51,6 +51,14 @@
                     <a href="#" class="down"
                        tal:condition="not:repeat/portlet/end"
                        tal:attributes="href string:${portlet/down_url}&amp;referer=${view/url_quote_referer}">&darr;</a>
+                    <a href="#" class="toggle-visibility" title="Show"
+                       i18n:attributes="title"
+                       tal:condition="not: portlet/visible"
+                       tal:attributes="href string:${portlet/show_url}&amp;referer=${view/url_quote_referer}">Show</a>
+                    <a href="#" class="toggle-visibility" title="Hide"
+                       i18n:attributes="title"
+                       tal:condition="portlet/visible"
+                       tal:attributes="href string:${portlet/hide_url}&amp;referer=${view/url_quote_referer}">Hide</a>
                     <a href="#" class="delete"
                        tal:attributes="href string:${portlet/delete_url}&amp;referer=${view/url_quote_referer}">&times;</a>
                     </span>

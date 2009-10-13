@@ -14,6 +14,9 @@ from plone.app.portlets.utils import assignment_mapping_from_key
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
+from plone.portlets.interfaces import IPortletAssignmentSettings
+
+
 class PortletManagerKSS(base):
     """Opertions on portlets done using KSS
     """
@@ -61,6 +64,21 @@ class PortletManagerKSS(base):
         
         del assignments[info['name']]
         return self._render_column(info, viewname)
+
+    def toggle_visibility(self, portlethash, viewname):
+        info = unhashPortletInfo(portlethash)
+        assignments = assignment_mapping_from_key(self.context, 
+                        info['manager'], info['category'], info['key'])
+                        
+        IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
+        
+        assignment = assignments[info['name']]
+        settings = IPortletAssignmentSettings(assignment)
+        visible = settings.get('visible', True)
+        settings['visible'] = not visible
+        return self._render_column(info, viewname)
+
+
                 
     def _render_column(self, info, view_name):
         ksscore = self.getCommandSet('core')

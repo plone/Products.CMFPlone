@@ -18,3 +18,11 @@
     inlineDeletePortlet-portlethash: kssAttr('portlethash', true);
     inlineDeletePortlet-viewname: kssAttr('viewname', true);
 } 
+
+.portletAssignments .managedPortletActions .toggle-visibility:click {
+    evt-click-preventdefault: true;
+    action-server: togglePortletVisibility;
+    inlineShowPortlet-portlethash: kssAttr('portlethash', true);
+    inlineShowPortlet-viewname: kssAttr('viewname', true);
+} 
+

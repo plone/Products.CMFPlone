@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Added support for showing/hiding of all portlets (PLIP 9286).
+  [igbun]
+
 - Add support for viewing blocked portlets in the management interface (PLIP
   9285)
   [igbun]
