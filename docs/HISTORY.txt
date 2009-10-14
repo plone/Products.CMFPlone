@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Make sure the filter control panel doesn't fail if kupu is not installed.
+  [davisagli]
+
 - Added test for DC meta data properties.
   [robgietema]
 

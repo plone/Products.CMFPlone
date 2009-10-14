@@ -112,7 +112,7 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
         self.context = context
         self.transform = getattr(
             getToolByName(context, 'portal_transforms'), 'safe_html')
-        self.kupu_tool = getToolByName(context, 'kupu_library_tool')
+        self.kupu_tool = getToolByName(context, 'kupu_library_tool', None)
 
     def _settransform(self, **kwargs):
         # Cannot pass a dict to set transform parameters, it has
@@ -168,7 +168,9 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
                 if v in valid:
                     del valid[v]
             self._settransform(valid_tags=valid)
-            self.kupu_tool.set_stripped_tags(value)
+            # Set kupu attribute for backwards compatibility
+            if self.kupu_tool is not None:
+                self.kupu_tool.set_stripped_tags(value)
 
         return property(get, set_)
 
@@ -201,7 +203,8 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
         def set(self, value):
             self._settransform(style_whitelist = list(value))
             # Set kupu attribute for backwards compatibility
-            self.kupu_tool.style_whitelist = list(value)
+            if self.kupu_tool is not None:
+                self.kupu_tool.style_whitelist = list(value)
         return property(get, set)
 
     @apply
@@ -213,7 +216,8 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
         def set(self, value):
             self._settransform(class_blacklist = list(value))
             # Set kupu attribute for backwards compatibility
-            self.kupu_tool.class_blacklist = list(value)
+            if self.kupu_tool is not None:
+                self.kupu_tool.class_blacklist = list(value)
         return property(get, set)
 
     @apply
@@ -223,7 +227,8 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
         def set(self, value):
             self._settransform(stripped_attributes = value)
             # Set kupu attribute for backwards compatibility
-            self.kupu_tool.set_stripped_attributes(value)
+            if self.kupu_tool is not None:
+                self.kupu_tool.set_stripped_attributes(value)
         return property(get, set)
 
     @apply
@@ -239,14 +244,14 @@ class FilterControlPanelAdapter(SchemaAdapterBase):
             strippeddict = {}
             for ta in value:
                 strippeddict[ta.tags] = ta.attributes
-                # Set kupu attribute for backwards compatibility
                 tags = ta.tags.replace(',', ' ').split()
                 attributes = ta.attributes.replace(',', ' ').split()
                 stripped.append((tags,attributes))
 
             self._settransform(stripped_combinations = strippeddict)
             # Set kupu attribute for backwards compatibility
-            self.kupu_tool.set_stripped_combinations(stripped)
+            if self.kupu_tool is not None:
+                self.kupu_tool.set_stripped_combinations(stripped)
         return property(get, set)
 
 
