@@ -5,13 +5,15 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 <head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
     <metal:block fill-slot="column_one_slot" />
     <metal:block fill-slot="column_two_slot" />
 </head>
 
 <body>
 
-<div metal:fill-slot="body">
+<div metal:fill-slot="body" id="content">
 
 <div metal:define-macro="form">
 
