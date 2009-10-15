@@ -29,14 +29,17 @@
 
 <metal:main fill-slot="content"
     tal:define="errors options/state/getErrors | nothing">
-    <tal:main-macro metal:define-macro="main">
 
-    <div class="documentEditable">
+<tal:main-macro metal:define-macro="main">
+    <div id="portal-column-content" class="cell width-full position-0">
+    <div id="region-content" class="documentEditable">
 
+        <div id="edit-bar">
         <h5 class="hiddenStructure"
              i18n:translate="heading_content_views">Content views</h5>
 
-        <ul class="contentViews">
+        <ul id="content-views"
+            class="contentViews">
           <li>
             <a href=""
                tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
@@ -51,6 +54,8 @@
 
         <div class="contentActions">
           &nbsp;
+        </div>
+
         </div>
 
         <div class="documentContent" id="content">
@@ -78,10 +83,11 @@
 
             <div class="visualClear"><!-- --></div>
 
-    </div> <!-- end simulated tabs -->
-  </div>
+        </div>
 
-    </tal:main-macro>
+    </div>
+    </div> <!-- end simulated tabs -->
+</tal:main-macro>
 
 </metal:main>
 
