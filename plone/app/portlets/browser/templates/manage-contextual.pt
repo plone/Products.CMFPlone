@@ -49,7 +49,7 @@
       convert them to new-style portlets.
     </p>
 
-    <form method="POST"
+    <form method="post"
           tal:attributes="action string:${context/absolute_url}/@@convert-legacy-portlets">
 
         <input type="submit"
