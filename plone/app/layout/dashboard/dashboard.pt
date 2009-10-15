@@ -30,29 +30,32 @@
                                 name python:memberinfo['fullname'] or member.getId() or member.getId();
                                 portal_url context/portal_url">
 
+<div id="portal-column-content" class="cell width-full position-0">
     <div id="region-content" class="documentEditable">
 
-        <tal:tabs condition="view/can_edit">
-            <h5 class="hiddenStructure">Views</h5>
-        
-            <ul id="content-views"
-                class="contentViews">
-              <li class="selected">
-                <a href=""
-                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
-                   i18n:translate="label_dashboard">Dashboard</a>
-              </li>
-              <li>
-                <a href=""
-                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
-                   i18n:translate="label_edit">Edit</a>
-              </li>
-            </ul>
+        <div id="edit-bar">
+            <tal:tabs condition="view/can_edit">
+                <h5 class="hiddenStructure">Views</h5>
 
-            <div class="contentActions" tal:condition="view/can_edit">
-              &nbsp;
-            </div>
-        </tal:tabs>
+                <ul id="content-views"
+                    class="contentViews">
+                  <li class="selected">
+                    <a href=""
+                       tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
+                       i18n:translate="label_dashboard">Dashboard</a>
+                  </li>
+                  <li>
+                    <a href=""
+                       tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
+                       i18n:translate="label_edit">Edit</a>
+                  </li>
+                </ul>
+
+                <div class="contentActions" tal:condition="view/can_edit">
+                  &nbsp;
+                </div>
+            </tal:tabs>
+        </div>
 
         <div id="content" tal:attributes="class python:view.can_edit() and 'documentContent' or nothing">
 
@@ -126,8 +129,8 @@
             <div class="visualClear"><!-- --></div>
         </div>
 
-    </div> <!-- end simulated tabs -->
-
+    </div>
+</div> <!-- end simulated tabs -->
     </tal:main-macro>
 
 </metal:main>
