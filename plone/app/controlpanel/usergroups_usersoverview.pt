@@ -88,7 +88,7 @@
         <form action=""
               name="users_add"
               method="post"
-              tal:attributes="action string:$portal_url/join_form?came_from_prefs=1">
+              tal:attributes="action string:$portal_url/@@join_form?came_from_prefs=1">
 
           <input class="standalone add"
                      type="submit"
