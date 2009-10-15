@@ -46,20 +46,24 @@
                 <div class="portletHeader">
                     <span class="managedPortletActions">
                     <a href="#" class="up"
+                       title="Move up"
+                       i18n:attributes="title"
                        tal:condition="not:repeat/portlet/start"
                        tal:attributes="href string:${portlet/up_url}&amp;referer=${view/url_quote_referer}">&uarr;</a>
                     <a href="#" class="down"
+                       title="Move down"
+                       i18n:attributes="title"
                        tal:condition="not:repeat/portlet/end"
                        tal:attributes="href string:${portlet/down_url}&amp;referer=${view/url_quote_referer}">&darr;</a>
-                    <a href="#" class="toggle-visibility" title="Show"
-                       i18n:attributes="title"
+                    <a href="#" class="toggle-visibility" 
                        tal:condition="not: portlet/visible"
                        tal:attributes="href string:${portlet/show_url}&amp;referer=${view/url_quote_referer}">Show</a>
-                    <a href="#" class="toggle-visibility" title="Hide"
-                       i18n:attributes="title"
+                    <a href="#" class="toggle-visibility" 
                        tal:condition="portlet/visible"
                        tal:attributes="href string:${portlet/hide_url}&amp;referer=${view/url_quote_referer}">Hide</a>
                     <a href="#" class="delete"
+                       title="Remove"
+                       i18n:attributes="title"
                        tal:attributes="href string:${portlet/delete_url}&amp;referer=${view/url_quote_referer}">&times;</a>
                     </span>
                     <a tal:omit-tag="not:portlet/editview"

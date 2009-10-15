@@ -10,7 +10,7 @@
 
   <div metal:use-macro="context/@@manage-portlets-macros/macros/current-portlets-list" />
 
-  <div class="section">
+  <div class="portletAssignments">
 
     <h4 i18n:translate="heading_un_block_portlets">
         Block/unblock portlets
