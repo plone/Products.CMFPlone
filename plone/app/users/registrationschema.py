@@ -10,12 +10,11 @@ from plone.app.users.browser.joinform import JOIN_CONST
 from zope.component import getUtility
 
 
-
 class IRegistrationSchema(Interface):
 
     join_form_fields = schema.Tuple(
         title=u'Join form fields',
-                                    
+
         description=u"""Select the fields for the join form. Fields in the
         right' box will be shown on the form, fields on the left are disabled.
         Use the left/right buttons to move a field from right to left (to
@@ -23,6 +22,7 @@ class IRegistrationSchema(Interface):
         in which the fields appear on the form.""",
 
         )
+
 
 def UserDataWidget(field, request):
 
