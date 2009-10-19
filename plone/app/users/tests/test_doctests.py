@@ -5,7 +5,7 @@ from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
-from plone.app.users.tests.testcase import TestCase
+from plone.app.users.tests import TestCase
 
 setupPloneSite()
 
