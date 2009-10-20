@@ -31,7 +31,7 @@ class IUserDataSchema(Interface):
         description=u'',
         required=False)
 
-    email = schema.TextLine(
+    email = schema.ASCIILine(
         title=_(u'label_email', default=u'E-mail'),
         description=u'',
         required=True)

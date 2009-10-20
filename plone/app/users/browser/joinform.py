@@ -3,8 +3,8 @@ from zope.component import getUtility
 
 from zope import schema
 from zope.formlib import form
-from zope.app.form.browser import TextWidget, CheckBoxWidget
-from zope.app.form.interfaces import WidgetInputError
+from zope.app.form.browser import TextWidget, CheckBoxWidget, ASCIIWidget
+from zope.app.form.interfaces import WidgetInputError, InputErrors
 
 #from plone.app.controlpanel import PloneMessageFactory as _
 
@@ -23,7 +23,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 # Define constants from the Join schema that should be added to the
 # vocab of the join fields setting in usergroupssettings controlpanel.
-JOIN_CONST = ['username', 'password', 'mail_me']
+JOIN_CONST = ['username', 'password', 'email', 'mail_me']
 
 
 class IJoinSchema(Interface):
@@ -68,6 +68,9 @@ def FullNameWidget(field, request):
 
 def EmailWidget(field, request):
     """Widget for email field.
+
+    Note that the email regular expression that is used for validation
+    only allows ascii, so we also use the ASCIIWidget here.
     """
     field.description = _(
         u'help_email_creation',
@@ -75,7 +78,19 @@ def EmailWidget(field, request):
         "This is necessary in case the password is lost. "
         "We respect your privacy, and will not give the address "
         "away to any third parties or expose it anywhere.")
-    widget = TextWidget(field, request)
+    widget = ASCIIWidget(field, request)
+    return widget
+
+
+def EmailAsLoginWidget(field, request):
+    """Widget for email field when emails are used as login names.
+    """
+    field.description = _(
+        u'help_email_creation_for_login',
+        default = u"Enter an email address. This will be your login name. "
+        "We respect your privacy, and will not give the address away to any "
+        "third parties or expose it anywhere.")
+    widget = ASCIIWidget(field, request)
     return widget
 
 
@@ -122,6 +137,7 @@ class JoinForm(PageForm):
         portal = getUtility(ISiteRoot)
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
+        use_email_as_login = props.getProperty('use_email_as_login')
         join_fields = list(props.getProperty('join_form_fields'))
 
         canSetOwnPassword = not portal.getProperty('validate_email', True)
@@ -129,29 +145,37 @@ class JoinForm(PageForm):
 
         # Check on required join fields
         #
-        if not 'username' in join_fields:
-
+        if not 'username' in join_fields and not use_email_as_login:
             join_fields.insert(0, 'username')
+
+        if 'username' in join_fields and use_email_as_login:
+            join_fields.remove('username')
+
+        if not 'email' in join_fields:
+            # Perhaps only when use_email_as_login is true, but also
+            # for some other cases; the email field has always been
+            # required.
+            join_fields.append('email')
 
         if canSetOwnPassword:
             # Add password if needed
             #
             if not 'password' in join_fields:
-
-                join_fields.insert(join_fields.index('username') + 1,
-                                   'password')
+                if 'username' in join_fields:
+                    base = join_fields.index('username')
+                else:
+                    base = join_fields.index('email')
+                join_fields.insert(base + 1, 'password')
 
             # Add password_ctl after password
             #
             if not 'password_ctl' in join_fields:
-
                 join_fields.insert(join_fields.index('password') + 1,
                                    'password_ctl')
 
             # Add email_me after password_ctl
             #
             if not 'mail_me' in join_fields:
-
                 join_fields.insert(join_fields.index('password_ctl') + 1,
                                    'mail_me')
 
@@ -172,7 +196,11 @@ class JoinForm(PageForm):
 
         all_fields = form.Fields(schema) + form.Fields(IJoinSchema)
         all_fields['fullname'].custom_widget = FullNameWidget
-        all_fields['email'].custom_widget = EmailWidget
+        if use_email_as_login:
+            all_fields['email'].custom_widget = EmailAsLoginWidget
+        else:
+            all_fields['email'].custom_widget = EmailWidget
+
         if portal.validate_email:
             all_fields['mail_me'].custom_widget = CantChoosePasswordWidget
 
@@ -188,17 +216,23 @@ class JoinForm(PageForm):
         """
         specific business logic for this join form
         note: all this logic was taken directly from the old
-        validate_registration.py script
+        validate_registration.py script in
+        Products/CMFPlone/skins/plone_login/join_form_validate.vpy
         """
 
         registration = getToolByName(self.context, 'portal_registration')
 
         errors = super(JoinForm, self).validate(action, data)
-        error_keys = [error.field_name for error in errors]
+        # ConversionErrors have no field_name attribute... :-(
+        error_keys = [error.field_name for error in errors
+                      if hasattr(error, 'field_name')]
 
         form_field_names = [f.field.getName() for f in self.form_fields]
 
         portal = getUtility(ISiteRoot)
+        portal_props = getToolByName(self.context, 'portal_properties')
+        props = portal_props.site_properties
+        use_email_as_login = props.getProperty('use_email_as_login')
 
         # passwords should match
         if 'password' in form_field_names:
@@ -230,34 +264,48 @@ class JoinForm(PageForm):
                     self.widgets['password'].error = err_str
 
 
+        username = ''
+        email = ''
+        try:
+            email = self.widgets['email'].getInputValue()
+        except InputErrors, exc:
+            # WrongType?
+            errors.append(exc)
+        if use_email_as_login:
+            username_field = 'email'
+            username = email
+        else:
+            username_field = 'username'
+            try:
+                username = self.widgets['username'].getInputValue()
+            except InputErrors, exc:
+                errors.append(exc)
+
         # check if username is valid
         # Skip this check if username was already in error list
-        if not 'username' in error_keys:
-            username = self.widgets['username'].getInputValue()
+        if not username_field in error_keys:
             portal = getUtility(ISiteRoot)
             if username == portal.getId():
                 err_str = _(u"This username is reserved. Please choose a "
                             "different name.")
                 errors.append(WidgetInputError(
-                        'username', u'label_username', err_str))
-                self.widgets['username'].error = err_str
+                        username_field, u'label_username', err_str))
+                self.widgets[username_field].error = err_str
 
 
         # check if username is allowed
-        if not 'username' in error_keys:
-            username = self.widgets['username'].getInputValue()
+        if not username_field in error_keys:
             if not registration.isMemberIdAllowed(username):
                 err_str = _(u"The login name you selected is already in use "
                             "or is not valid. Please choose another.")
                 errors.append(WidgetInputError(
-                        'username', u'label_username', err_str))
-                self.widgets['username'].error = err_str
+                        username_field, u'label_username', err_str))
+                self.widgets[username_field].error = err_str
 
 
         # Skip this check if email was already in error list
         if not 'email' in error_keys:
             if 'email' in form_field_names:
-                email = self.widgets['email'].getInputValue()
                 if not registration.isValidEmail(email):
                     err_str = _(u'You must enter a valid email address.')
                     errors.append(WidgetInputError(
@@ -270,9 +318,20 @@ class JoinForm(PageForm):
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
 
-
         portal = getUtility(ISiteRoot)
         registration = getToolByName(self.context, 'portal_registration')
+        portal_props = getToolByName(self.context, 'portal_properties')
+        props = portal_props.site_properties
+        use_email_as_login = props.getProperty('use_email_as_login')
+
+        if use_email_as_login:
+            # The username field is not shown as the email is going to
+            # be the username, but the field *is* needed further down
+            # the line.
+            data['username'] = data['email']
+            # Set username in the form; at least needed for logging in
+            # immediately when password reset is bypassed.
+            self.request.form['form.username'] = data['email']
 
         username = data['username']
 
@@ -290,9 +349,8 @@ class JoinForm(PageForm):
             try:
                 registration.registeredNotify(username)
             except ConflictError:
-                IStatusMessage(self.request).addStatusMessage(
-                    _("Conflict error"), type="error")
-                return
+                # Let Zope handle this exception.
+                raise
             except Exception:
                 if portal.validate_email:
                     IStatusMessage(self.request).addStatusMessage(
