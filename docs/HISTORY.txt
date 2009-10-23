@@ -47,6 +47,12 @@ Changelog
   See http://dev.plone.org/plone/ticket/9633
   [vincentfretin]
 
+- Explicitely set the default workflow on types before re-mapping said
+  workflow to their new states. See http://dev.plone.org/plone/ticket/9031
+  Thanks to fmoret for the patch.
+  [mj]
+
+
 1.2 - 2009-05-09
 ----------------
 

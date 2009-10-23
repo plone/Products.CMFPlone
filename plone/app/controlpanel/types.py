@@ -149,6 +149,7 @@ class TypesControlPanel(ControlPanelView):
                         tt = getToolByName(self.context, 'portal_types')
                         nondefault = [info[0] for info in wt.listChainOverrides()]
                         type_ids = [type for type in tt.listContentTypes() if type not in nondefault]
+                        wt.setChainForPortalTypes(type_ids, wt.getDefaultChain())
                         wt.setDefaultChain(','.join(chain))
                         chain='(Default)'
 
