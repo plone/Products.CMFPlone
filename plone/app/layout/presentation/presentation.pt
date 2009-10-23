@@ -9,7 +9,8 @@
       metal:define-macro="master">
 
     <tal:cache tal:define="charset here/site_properties/default_charset|string:utf-8;
-                           lang language;">
+                           portal_state context/@@plone_portal_state;
+                           lang portal_state/language;">
         <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
             Get the global cache headers located in global_cache_settings.
         </metal:cache>
