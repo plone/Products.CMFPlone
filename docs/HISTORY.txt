@@ -4,6 +4,10 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Removed the special default page and translation handling. LinguaPlone uses
+  a content language negotiator per default instead.
+  [hannosch]
+
 - Add a viewlet to display the Dublin Core metadata added in
   http://dev.plone.org/plone/ticket9272
   [esteele]

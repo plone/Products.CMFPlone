@@ -7,7 +7,6 @@ from Acquisition import aq_inner, aq_base
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFDynamicViewFTI.interfaces import IDynamicViewTypeInformation
-from Products.CMFPlone import utils
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.interfaces import IDefaultPage
@@ -72,13 +71,9 @@ def getDefaultPage(context):
         for id in context.objectIds():
             ids[id] = 1
 
-    # Inline function with default argument.
-    def lookupTranslationId(obj, page):
-        return utils.lookupTranslationId(obj, page, ids)
-
     # 1. test for contentish index_html
     if ids.has_key('index_html'):
-        return lookupTranslationId(context, 'index_html')
+        return 'index_html'
 
     # 2. Test for IBrowserDefault
     if IBrowserDefault.providedBy(context):
@@ -96,7 +91,7 @@ def getDefaultPage(context):
             if dynamicFTI is not None:
                 page = dynamicFTI.getDefaultPage(context, check_exists=True)
                 if page is not None:
-                    return lookupTranslationId(context, page)
+                    return page
 
     # 3. Test for default_page property in folder, then skins
     pages = getattr(aq_base(context), 'default_page', [])
@@ -104,14 +99,14 @@ def getDefaultPage(context):
         pages = [pages]
     for page in pages:
         if page and ids.has_key(page):
-            return lookupTranslationId(context, page)
+            return page
 
     portal = queryUtility(ISiteRoot)
     # Might happen during portal creation
     if portal is not None:
         for page in pages:
             if portal.unrestrictedTraverse(page, None):
-                return lookupTranslationId(context, page)
+                return page
 
         # 4. Test for default sitewide default_page setting
         pp = getattr(portal, 'portal_properties', None)
@@ -120,6 +115,6 @@ def getDefaultPage(context):
             if site_properties is not None:
                 for page in site_properties.getProperty('default_page', []):
                     if ids.has_key(page):
-                        return lookupTranslationId(context, page)
+                        return page
 
     return None
