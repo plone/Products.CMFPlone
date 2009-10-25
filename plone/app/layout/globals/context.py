@@ -1,3 +1,5 @@
+import warnings
+
 from zope.interface import implements
 from zope.component import getMultiAdapter
 from zope.component import queryAdapter
@@ -8,7 +10,6 @@ from plone.memoize.view import memoize
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
-from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -196,36 +197,29 @@ class ContextState(BrowserView):
     @memoize
     def actions(self, category=None, max=-1):
         context = aq_inner(self.context)
-        tool = getToolByName(context, "portal_actions")
+        atool = getToolByName(context, "portal_actions")
+        ttool = getToolByName(context, "portal_types")
         if category is None:
-            actions = tool.listFilteredActionsFor(
+            warnings.warn("The actions method of the context state view was "
+                "called without a category argument. This is deprecated and "
+                "won't be supported anymore in Plone 5.",
+                DeprecationWarning, 3)
+            actions = atool.listFilteredActionsFor(
                 context,
-               ignore_providers=BLACKLISTED_PROVIDERS,
-               ignore_categories=BLACKLISTED_CATEGORIES)
+                ignore_providers=BLACKLISTED_PROVIDERS,
+                ignore_categories=BLACKLISTED_CATEGORIES)
         else:
             actions = []
-            providers = [name for name in tool.listActionProviders()
-                              if name not in BLACKLISTED_PROVIDERS]
-
-            # Include actions from specific tools.
-            for provider_name in providers:
-                provider = getattr(tool, provider_name, None)
-                # Skip missing action providers.
-                if provider is None:
-                    continue
-                if IActionProvider.providedBy(provider):
-                    if provider_name in ('portal_actions', 'portal_types'):
-                        actions.extend(
-                            provider.listActionInfos(
-                                object=context,
-                                categories=(category, ),
-                                max=max,
-                                )
-                            )
-                    else:
-                        actions.extend(
-                            provider.listActionInfos(object=context))
-
+            actions.extend(ttool.listActionInfos(
+                object=context,
+                category=category,
+                max=max,
+            ))
+            actions.extend(atool.listActionInfos(
+                object=context,
+                categories=(category, ),
+                max=max,
+            ))
         return actions
 
     def portlet_assignable(self):
