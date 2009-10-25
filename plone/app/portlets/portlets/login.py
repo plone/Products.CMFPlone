@@ -72,12 +72,12 @@ class Renderer(base.Renderer):
         return passwd
 
     def join_action(self):
-        userActions = self.context_state.actions()['user']
-        joinAction = [a['url'] for a in userActions if a['id'] == 'join']
-        if len(joinAction) > 0:
-            return joinAction.pop()
-        else:
-            return None
+        context = self.context
+        tool = getToolByName(context, 'portal_actions')
+        join = tool.listActionInfos(action_chain='user/join', object=context)
+        if len(join) > 0:
+            return join[0]
+        return None
 
     def can_register(self):
         if getToolByName(self.context, 'portal_registration', None) is None:

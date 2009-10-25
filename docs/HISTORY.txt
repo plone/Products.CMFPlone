@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Optimized join_action in the login portlet.
+  [hannosch]
+
 - Added support for showing/hiding of all portlets (PLIP 9286).
   [igbun]
 
