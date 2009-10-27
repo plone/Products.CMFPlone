@@ -130,9 +130,12 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
+        rootpath = self.getNavRootPath()
+        if rootpath is None:
+            return False
+
         tree = self.getNavTree()
-        root = self.getNavRoot()
-        return (root is not None and len(tree['children']) > 0)
+        return len(tree['children']) > 0
 
     def include_top(self):
         return getattr(self.data, 'includeTop', self.properties.includeTop)
@@ -173,17 +176,18 @@ class Renderer(base.Renderer):
     # Cached lookups
 
     @memoize
-    def getNavRoot(self, _marker=[]):
-        portal = self.urltool.getPortalObject()
-
+    def getNavRootPath(self):
         currentFolderOnly = self.data.currentFolderOnly or self.properties.getProperty('currentFolderOnlyInNavtree', False)
         topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
-        
-        rootPath = getRootPath(self.context, currentFolderOnly, topLevel, str(self.data.root))
-        
+        return getRootPath(self.context, currentFolderOnly, topLevel, str(self.data.root))
+
+    @memoize
+    def getNavRoot(self, _marker=[]):
+        portal = self.urltool.getPortalObject()
+        rootPath = self.getNavRootPath()
         if rootPath is None:
             return rootPath
-        
+
         if rootPath == self.urltool.getPortalPath():
             return portal
         else:
@@ -195,10 +199,6 @@ class Renderer(base.Renderer):
     @memoize
     def getNavTree(self, _marker=[]):
         context = aq_inner(self.context)
-        
-        # Special case - if the root is supposed to be pruned, we need to
-        # abort here
-
         queryBuilder = getMultiAdapter((context, self.data), INavigationQueryBuilder)
         strategy = getMultiAdapter((context, self.data), INavtreeStrategy)
 

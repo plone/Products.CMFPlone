@@ -55,10 +55,6 @@ class Renderer(base.Renderer):
         self.portal = portal_state.portal()
         self.navigation_root_path = portal_state.navigation_root_path()
 
-        self.have_events_folder = 'events' in getNavigationRootObject(self.context,         
-                                                                      self.portal).objectIds()
-
-
     @ram.cache(render_cachekey)
     def render(self):
         return xhtml_compress(self._template())
@@ -70,23 +66,29 @@ class Renderer(base.Renderer):
     def published_events(self):
         return self._data()
 
+    @memoize
+    def have_events_folder(self):
+        return 'events' in getNavigationRootObject(
+            self.context, self.portal).objectIds()
+
     def all_events_link(self):
-        if self.have_events_folder:
-            return '%s/events' % self.navigation_root_url
+        navigation_root_url = self.navigation_root_url
+        if self.have_events_folder():
+            return '%s/events' % navigation_root_url
         else:
-            return '%s/events_listing' % self.navigation_root_url
+            return '%s/events_listing' % navigation_root_url
 
     def prev_events_link(self):
-        if (self.have_events_folder and
-            'aggregator' in self.portal['events'].objectIds() and
-            'previous' in self.portal['events']['aggregator'].objectIds()):
-            return '%s/events/aggregator/previous' % self.navigation_root_url
-            
-        elif (self.have_events_folder and
-            'previous' in self.portal['events'].objectIds()):
-            return '%s/events/previous' % self.navigation_root_url
-        else:
-            return None
+        if self.have_events_folder():
+            events = self.portal['events']
+            events_ids = events.objectIds()
+            navigation_root_url = self.navigation_root_url
+            if ('aggregator' in events_ids and
+                'previous' in events['aggregator'].objectIds()):
+                return '%s/events/aggregator/previous' % navigation_root_url
+            elif 'previous' in events_ids:
+                return '%s/events/previous' % navigation_root_url
+        return None
 
     @memoize
     def _data(self):

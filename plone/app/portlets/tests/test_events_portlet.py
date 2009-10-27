@@ -113,14 +113,14 @@ class TestRenderer(PortletsTestCase):
 
     def test_prev_events_link(self):
         r = self.renderer(assignment=events.Assignment(count=5))
-        if r.have_events_folder:
+        if r.have_events_folder():
             self.failUnless(r.prev_events_link().endswith(
                 '/events/aggregator/previous'))
 
         # before we continue, we need administrator privileges
         self.loginAsPortalOwner()
 
-        if r.have_events_folder:
+        if r.have_events_folder():
             self.portal._delObject('events')
             
         self.portal.invokeFactory('Folder', 'events')

@@ -4,6 +4,10 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Optimize some portlets to avoid unnecessary instructions in their
+``__init__`` or available methods.
+  [hannosch]
+
 - Optimized join_action in the login portlet.
   [hannosch]
 
