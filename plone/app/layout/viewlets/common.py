@@ -71,12 +71,12 @@ class TitleViewlet(ViewletBase):
 
 class DublinCoreViewlet(ViewletBase):
     index = ViewPageTemplateFile('dublin_core.pt')
-    
+
     def update(self):
         plone_utils = getToolByName(self.context, 'plone_utils')
         context = aq_inner(self.context)
         self.metatags = plone_utils.listMetaTags(context).items()
-        
+
 class TableOfContentsViewlet(ViewletBase):
     index = ViewPageTemplateFile('toc.pt')
 
@@ -170,12 +170,7 @@ class PersonalBarViewlet(ViewletBase):
                                         name=u'plone_context_state')
 
         sm = getSecurityManager()
-
         self.user_actions = context_state.actions('user')
-
-        plone_utils = getToolByName(context, 'plone_utils')
-        self.getIconFor = plone_utils.getIconFor
-
         self.anonymous = self.portal_state.anonymous()
 
         if not self.anonymous:
@@ -218,7 +213,7 @@ class PathBarViewlet(ViewletBase):
 
 class ContentActionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('contentactions.pt')
-    
+
     def update(self):
         context = aq_inner(self.context)
         context_state = getMultiAdapter((context, self.request),
@@ -226,20 +221,12 @@ class ContentActionsViewlet(ViewletBase):
 
         self.object_actions = context_state.actions('object_actions')
 
-        plone_utils = getToolByName(context, 'plone_utils')
-        self.getIconFor = plone_utils.getIconFor
-
-        self.portal_actionicons = getToolByName(context, 'portal_actionicons')
-        
         # The drop-down menus are pulled in via a simple content provider
         # from plone.app.contentmenu. This behaves differently depending on
         # whether the view is marked with IViewView. If our parent view 
         # provides that marker, we should do it here as well.
         if IViewView.providedBy(self.__parent__):
             alsoProvides(self, IViewView)
-        
+
     def icon(self, action):
-        icon = action.get('icon', None)
-        if icon is None:
-            icon = self.getIconFor('content_actions', action['id'])
-        return icon
+        return action.get('icon', None)

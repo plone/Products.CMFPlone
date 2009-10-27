@@ -4,6 +4,10 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Take advantage of icons being found on the actions themselves now instead
+  and avoid the getIconFor indirection.
+  [hannosch]
+
 - Removed the special default page and translation handling. LinguaPlone uses
   a content language negotiator per default instead.
   [hannosch]

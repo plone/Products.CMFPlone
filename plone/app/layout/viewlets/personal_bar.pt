@@ -6,27 +6,20 @@
 <ul id="portal-personaltools"
     tal:condition="python:view.user_actions or not view.anonymous"
     class="visualInline">
-   <tal:block condition="not: view/anonymous">
-       <li><a 
-           id="user-name"
-           tal:attributes="href view/homelink_url"
-          ><img src="" tal:replace="structure context/user.gif" />
-            <span class="visualCaseSensitive"
-                 tal:content="view/user_name">
-                John
-           </span
-       ></a></li>
-   </tal:block>
+    <li condition="not: view/anonymous"><a 
+        id="user-name"
+        tal:attributes="href view/homelink_url"
+        ><img src="" tal:replace="structure context/user.gif" />
+        <span class="visualCaseSensitive"
+             tal:content="view/user_name">
+            John
+        </span
+    ></a></li>
 
     <tal:actions repeat="action view/user_actions">
-        <li tal:define="icon action/icon|nothing;
-                        icon python:icon is not None and icon or view.getIconFor(action['category'], action['id'], None);
-                        class_name string:visualIcon actionicon-${action/category}-${action/id};
-                        class_name python:icon is not None and class_name or nothing;"
-            tal:attributes="class class_name">
+        <li>
             <a href=""
-               tal:attributes="href action/url;
-                               class python:icon is not None and 'visualIconPadding' or nothing;"
+               tal:attributes="href action/url"
                tal:content="action/title"
                i18n:translate="">
                 action title
