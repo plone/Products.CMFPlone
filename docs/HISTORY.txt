@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Merged the ``selectedTabs`` Python script into the GlobalSectionsViewlet.
+  [hannosch]
+
 - Take advantage of icons being found on the actions themselves now instead
   and avoid the getIconFor indirection.
   [hannosch]
