@@ -22,7 +22,7 @@
 .portletAssignments .managedPortletActions .toggle-visibility:click {
     evt-click-preventdefault: true;
     action-server: togglePortletVisibility;
-    inlineShowPortlet-portlethash: kssAttr('portlethash', true);
-    inlineShowPortlet-viewname: kssAttr('viewname', true);
+    togglePortletVisibility-portlethash: kssAttr('portlethash', true);
+    togglePortletVisibility-viewname: kssAttr('viewname', true);
 } 
 
