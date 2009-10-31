@@ -239,7 +239,11 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         return status
 
     def inherited_portlets(self):
-        """Return the list of portlets inherited by the current context."""
+        """Return the list of portlets inherited by the current context.
+           
+        Invisible (hidden) portlets are excluded.
+          
+        """
         context = aq_inner(self.context)
         
         assignable = getMultiAdapter(
@@ -256,13 +260,19 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
             view = queryMultiAdapter((context, self.request), name=self.__parent__.__name__)
             if view is not None:
                 assignments = view.getAssignmentsForManager(self.manager)
+                is_visible = lambda a: IPortletAssignmentSettings(a).get('visible', True)
+                assignments_to_show = [a for a in assignments if is_visible(a)]
                 base_url = view.getAssignmentMappingUrl(self.manager)
-                data.extend(self.portlets_for_assignments(assignments, self.manager, base_url))
+                data.extend(self.portlets_for_assignments(assignments_to_show, self.manager, base_url))
                 
         return data
 
     def global_portlets(self, category, prefix):
-        """Return the list of global portlets from a given category for the current context."""
+        """ Return the list of global portlets from a given category for the current context.
+        
+        Invisible (hidden) portlets are excluded.
+        
+        """
         context = aq_inner(self.context)
 
         # get the portlet context
@@ -277,7 +287,8 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 mapping = self.manager.get(category, None)
                 assignments = []
                 if mapping is not None:
-                    assignments.extend(mapping.get(key, {}).values())
+                    is_visible = lambda a: IPortletAssignmentSettings(a).get('visible', True)
+                    assignments.extend([a for a in mapping.get(key, {}).values() if is_visible(a)])
                 if assignments:
                     edit_url = '%s/++%s++%s+%s' % (base_url, prefix, self.manager.__name__, key)
                     portlets.extend(self.portlets_for_assignments(assignments, self.manager, edit_url))
