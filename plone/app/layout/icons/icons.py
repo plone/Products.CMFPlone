@@ -1,10 +1,10 @@
-from Acquisition import aq_inner
-from zope.interface import implements
-from zope.component import getMultiAdapter
-
 from plone.memoize.instance import memoize
+from zope.component import getMultiAdapter
+from zope.interface import implements
 
+from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+
 from plone.app.layout.icons.interfaces import IContentIcon
 
 
@@ -39,10 +39,13 @@ class CatalogBrainContentIcon(BaseIcon):
 
     width = 16
     height = 16
+    title = None
 
     @property
     def url(self):
-        portal_url = getToolByName(self.context, 'portal_url')()
+        portal_state_view = getMultiAdapter(
+            (self.context, self.request), name=u'plone_portal_state')
+        portal_url = portal_state_view.portal_url()
         path = self.brain.getIcon
         return "%s/%s" % (portal_url, path)
 
@@ -51,10 +54,6 @@ class CatalogBrainContentIcon(BaseIcon):
         context = aq_inner(self.context)
         tt = getToolByName(context, 'portal_types')
         return tt.get(self.brain['portal_type']).Title()
-
-    @property
-    def title(self):
-        return None
 
 
 class CMFContentIcon(BaseIcon):
@@ -67,6 +66,7 @@ class CMFContentIcon(BaseIcon):
 
     width = 16
     height = 16
+    title = None
 
     @property
     def url(self):
@@ -80,10 +80,6 @@ class CMFContentIcon(BaseIcon):
         tt = getToolByName(context, 'portal_types')
         return tt.get(self.obj.portal_type).Title()
 
-    @property
-    def title(self):
-        return None
-
 
 class FTIContentIcon(BaseIcon):
     implements(IContentIcon)
@@ -95,6 +91,7 @@ class FTIContentIcon(BaseIcon):
 
     width = 16
     height = 16
+    title = None
 
     @property
     def url(self):
@@ -105,10 +102,6 @@ class FTIContentIcon(BaseIcon):
     @property
     def description(self):
         return self.obj.Title()
-
-    @property
-    def title(self):
-        return None
 
 
 class PloneSiteContentIcon(BaseIcon):
@@ -121,6 +114,7 @@ class PloneSiteContentIcon(BaseIcon):
 
     width = 16
     height = 16
+    title = None
 
     @property
     def url(self):
@@ -136,10 +130,6 @@ class PloneSiteContentIcon(BaseIcon):
     def description(self):
         return self.obj.Title()
 
-    @property
-    def title(self):
-        return None
-
 
 class DefaultContentIcon(BaseIcon):
     implements(IContentIcon)
@@ -151,6 +141,7 @@ class DefaultContentIcon(BaseIcon):
 
     width = 16
     height = 16
+    title = None
 
     @property
     def url(self):
@@ -164,7 +155,3 @@ class DefaultContentIcon(BaseIcon):
         if self.obj is None:
             return None
         return self.obj.Title()
-
-    @property
-    def title(self):
-        return None
