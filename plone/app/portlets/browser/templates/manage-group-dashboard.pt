@@ -64,7 +64,7 @@
                 Portal status message
             </div>
 
-            <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard">
+            <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard_group">
                 Edit Dashboard Portlets for <span i18n:name="group" tal:content="view/group" />
             </h1>
             

@@ -4,6 +4,11 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Introduced a new msgid title_edit_dashboard_group to translate
+  "Edit Dashboard Portlets for $group". title_edit_dashboard msgid
+  was used twice for different messages.
+  [vincentfretin]
+
 - Optimize some portlets to avoid unnecessary instructions in their
 ``__init__`` or available methods.
   [hannosch]
