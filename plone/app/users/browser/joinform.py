@@ -21,9 +21,14 @@ from plone.app.users.userdataschema import IUserDataSchemaProvider
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
+from plone.app.controlpanel.widgets import MultiCheckBoxVocabularyWidget
+
+from zope.schema.vocabulary import SimpleVocabulary
+from zope.app.component.hooks import getSite
+
 # Define constants from the Join schema that should be added to the
 # vocab of the join fields setting in usergroupssettings controlpanel.
-JOIN_CONST = ['username', 'password', 'email', 'mail_me']
+JOIN_CONST = ['username', 'password', 'email', 'mail_me', 'groups']
 
 
 class IJoinSchema(Interface):
@@ -55,6 +60,10 @@ class IJoinSchema(Interface):
                 default=u"Send a mail with the password"),
         default=False)
 
+    groups = schema.List(title=_(u'label_groups', default=u'Add to the following groups:'),
+                            description=u'',
+                            required=False,
+                            value_type=schema.Choice(vocabulary='Group Ids'))
 
 def FullNameWidget(field, request):
     """Widget for fullname field.
@@ -116,6 +125,12 @@ def CantChoosePasswordWidget(field, request):
     widget = NoCheckBoxWidget(field, request)
     return widget
 
+def getGroupIds(context):
+    site = getSite()
+    groups_tool = getToolByName(site, 'portal_groups')
+    groups = groups_tool.getGroupIds()
+    groups.remove('AuthenticatedUsers') # Omit virtual group
+    return SimpleVocabulary.fromValues(groups)
 
 class JoinForm(PageForm):
 
@@ -156,6 +171,11 @@ class JoinForm(PageForm):
             # for some other cases; the email field has always been
             # required.
             join_fields.append('email')
+
+        # Insert groups field last
+        if not 'groups' in join_fields:
+
+            join_fields.insert(-1, 'groups')
 
         if canSetOwnPassword:
             # Add password if needed
@@ -204,14 +224,16 @@ class JoinForm(PageForm):
         if portal.validate_email:
             all_fields['mail_me'].custom_widget = CantChoosePasswordWidget
 
+        # Customize the groups field widget
+        all_fields['groups'].custom_widget = MultiCheckBoxVocabularyWidget
 
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.
         #
+
         return form.Fields(*[all_fields[id] for id in join_fields])
 
     # Actions validators
-
     def validate_registration(self, action, data):
         """
         specific business logic for this join form
@@ -323,6 +345,7 @@ class JoinForm(PageForm):
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
+        portal_groups = getToolByName(self.context, 'portal_groups')
 
         if use_email_as_login:
             # The username field is not shown as the email is going to
@@ -340,6 +363,14 @@ class JoinForm(PageForm):
         try:
             registration.addMember(username, password, properties=data,
                                    REQUEST=self.request)
+
+            # Add user to the selected group(s)
+            if data.has_key('groups'):
+                add = data['groups']
+                for groupname in add:
+                    group = portal_groups.getGroupById(groupname)
+                    group.addMember(username, REQUEST=self.request)
+
         except (AttributeError, ValueError), err:
 
             IStatusMessage(self.request).addStatusMessage(_(err), type="error")
