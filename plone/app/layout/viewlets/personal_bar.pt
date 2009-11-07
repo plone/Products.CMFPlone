@@ -6,7 +6,7 @@
 <ul id="portal-personaltools"
     tal:condition="python:view.user_actions or not view.anonymous"
     class="visualInline">
-    <li condition="not: view/anonymous"><a 
+    <li tal:condition="not: view/anonymous"><a 
         id="user-name"
         tal:attributes="href view/homelink_url"
         ><img src="" tal:replace="structure context/user.gif" />
