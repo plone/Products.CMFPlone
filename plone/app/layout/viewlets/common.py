@@ -137,7 +137,11 @@ class LogoViewlet(ViewletBase):
         super(LogoViewlet, self).update()
 
         portal = self.portal_state.portal()
-        logoName = portal.restrictedTraverse('base_properties').logoName
+        bprops = portal.restrictedTraverse('base_properties', None) 
+        if bprops is not None:
+            logoName = bprops.logoName
+        else:
+            logoName = 'logo.jpg'
         self.logo_tag = portal.restrictedTraverse(logoName).tag()
 
         self.portal_title = self.portal_state.portal_title()
