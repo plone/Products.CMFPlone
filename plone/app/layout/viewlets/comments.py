@@ -72,4 +72,4 @@ class CommentsViewlet(ViewletBase):
     def format_time(self, time):
         context = aq_inner(self.context)
         util = getToolByName(context, 'translation_service')
-        return util.ulocalized_time(time, 1, context, domain='plonelocales')
+        return util.ulocalized_time(time, long_format=1, time_only=None, context=context, domain='plonelocales')
