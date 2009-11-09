@@ -4,5 +4,9 @@ Changelog
 0.1 - Unreleased
 ----------------
 
+* Restore the came_from_prefs check to make the join form redirect to the
+  Users and Groups configlet if that's where the user started from.
+  [davisagli]
+
 * Initial release
 

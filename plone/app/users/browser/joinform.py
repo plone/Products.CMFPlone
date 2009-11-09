@@ -404,4 +404,13 @@ class JoinForm(PageForm):
                           "address: ${address}",
                           mapping={u'address': data.get('email', '')}))
 
-        return self.context.unrestrictedTraverse('registered')()
+        if self.came_from_prefs:
+            IStatusMessage(self.request).addStatusMessage(
+                _("User added."), type='info')
+            self.request.response.redirect(self.context.absolute_url() + '/@@usergroup-userprefs')
+        else:
+            return self.context.unrestrictedTraverse('registered')()
+
+    @property
+    def came_from_prefs(self):
+        return self.request.form.get('came_from_prefs')

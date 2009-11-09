@@ -13,7 +13,12 @@
 
 <body>
     <div metal:fill-slot="body" id="content">
-        <div metal:use-macro="context/base-pageform.html/form" />
+        <div metal:use-macro="context/base-pageform.html/form">
+            <div metal:fill-slot="extra_info">
+                <input type="hidden" name="came_from_prefs" value="" tal:attributes="value 
+          view/came_from_prefs" />
+            </div>
+        </div>
     </div>
 </body>
 </html>
