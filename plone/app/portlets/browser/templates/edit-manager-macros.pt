@@ -42,7 +42,8 @@
 
     <div tal:attributes="class string:kssattr-viewname-${view/__parent__/__name__}">
         <tal:block repeat="portlet view/portlets">
-            <div tal:attributes="class string:managedPortlet portlet kssattr-portlethash-${portlet/hash}">
+            <div tal:define="hiddenPortletClass python:not portlet['visible'] and 'blockedPortlet' or ''" 
+                tal:attributes="class string:managedPortlet portlet kssattr-portlethash-${portlet/hash} ${hiddenPortletClass}">
                 <div class="portletHeader">
                     <span class="managedPortletActions">
                     <a href="#" class="up"
