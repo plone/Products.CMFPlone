@@ -76,7 +76,7 @@ class Renderer(base.Renderer):
         tool = getToolByName(context, 'portal_actions')
         join = tool.listActionInfos(action_chain='user/join', object=context)
         if len(join) > 0:
-            return join[0]
+            return join[0]['url']
         return None
 
     def can_register(self):
