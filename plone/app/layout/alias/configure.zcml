@@ -10,14 +10,4 @@
         permission="zope2.View"
         />
         
-    <!-- For BBB -->
-        
-    <browser:page
-        for="*"
-        name="folder_localrole_form"
-        class=".sharing.FolderLocalroleFormAlias"
-        attribute="redirect"
-        permission="zope2.View"
-        />
-    
 </configure>
