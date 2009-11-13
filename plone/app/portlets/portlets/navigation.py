@@ -265,7 +265,7 @@ class QueryBuilder(object):
         # nothing (since we explicitly start from the root always). Hence,
         # use a regular depth-1 query in this case.
 
-        if not currentPath.startswith(rootPath):
+        if currentPath!=rootPath and not currentPath.startswith(rootPath+'/'):
             query['path'] = {'query' : rootPath, 'depth' : 1}
         else:
             query['path'] = {'query' : currentPath, 'navtree' : 1}

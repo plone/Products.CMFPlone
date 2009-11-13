@@ -255,6 +255,27 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 1)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/folder21/doc211')
 
+    def testMultipleTopLevelWithNavigationRoot(self):
+        # See bug 9405
+        # http://dev.plone.org/plone/ticket/9405
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', 'abc')
+        self.portal.invokeFactory('Folder', 'abcde')
+        self.portal.abc.invokeFactory('Folder', 'down_abc')
+        self.portal.abcde.invokeFactory('Folder', 'down_abcde')
+        view1 = self.renderer(self.portal.abc, assignment=navigation.Assignment(topLevel=0, root='/abc'))
+        view2 = self.renderer(self.portal.abc, assignment=navigation.Assignment(topLevel=0, root='/abcde'))
+        tree1 = view1.getNavTree()
+        tree2 = view2.getNavTree()        
+        self.assertEqual(len(tree1['children']), 1)
+        self.assertEqual(len(tree2['children']), 1)
+        view1 = self.renderer(self.portal.abcde, assignment=navigation.Assignment(topLevel=0, root='/abc'))
+        view2 = self.renderer(self.portal.abcde, assignment=navigation.Assignment(topLevel=0, root='/abcde'))
+        tree1 = view1.getNavTree()
+        tree2 = view2.getNavTree()        
+        self.assertEqual(len(tree2['children']), 1)
+        self.assertEqual(len(tree1['children']), 1)
+
     def testTopLevelWithPortalFactory(self):
         id=self.portal.generateUniqueId('Document')
         typeName='Document'
