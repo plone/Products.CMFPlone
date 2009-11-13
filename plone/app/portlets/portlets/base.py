@@ -42,7 +42,7 @@ class Assignment(SimpleItem, Contained):
     
     @property
     def title(self):
-        return self.template
+        return self.id
 
     def available(self, context, request):
         """By default, this portlet is always available
