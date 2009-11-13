@@ -38,6 +38,30 @@ Changelog
 - Specified package dependencies.
   [hannosch]
 
+1.2.1 - unreleased
+-------------------
+
+- Added missing space to tooltip in the calendar portlet.
+  Fixes http://dev.plone.org/plone/ticket/9047
+  [lzdych]
+
+- Navigation(s) some time disappeared when dealing with multiple navigations 
+  pointing to roots with common starting ids like: "abc", "abcde", "abcdefg".
+  Thanks to keul for patch.
+  Fixes http://dev.plone.org/plone/ticket/9405
+  [pelle]
+
+- Fixed base.Assignment - typo
+  Fixes http://dev.plone.org/plone/ticket/9350
+  [naro]
+
+- Support for portal-relative paths in portlets.xml keys.
+  Fixes http://dev.plone.org/plone/ticket/9437
+  [naro]
+
+- Some XHTML fixes to be also XHTML Strict compliant.
+  See http://dev.plone.org/plone/ticket/4379
+  [keul]
 
 1.2 - July 13, 2009
 -------------------
