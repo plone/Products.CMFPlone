@@ -36,6 +36,7 @@ Make some changes
     >>> self.browser.url.endswith('site-controlpanel')
     True
 
+    >>> self.browser.getControl(name='form.site_title').value = "Site"
     >>> self.browser.getControl(name='form.enable_sitemap').value = True
 
 Click the save button:
