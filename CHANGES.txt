@@ -4,6 +4,9 @@ Changelog
 2.0a1 - unreleased
 ------------------
 
+- Fixed calendar and filter tests.
+  [hannosch]
+
 - Add option in themes configlet to enable/disable overlay popups.
   [smcmahon]
 

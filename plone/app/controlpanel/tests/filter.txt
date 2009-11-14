@@ -10,7 +10,6 @@ First some initial setup code:
 
     >>> browser = self.browser
     >>> safe_html = getUtility(IPortalTransformsTool).safe_html
-    >>> kupu_tool = getToolByName(self.portal, 'kupu_library_tool')
     >>> self.loginAsManager()
 
 Viewing the search control panel
@@ -156,62 +155,3 @@ Must use print here to take advantage of whitespace folding
     >>> print browser.contents
     <!DOCTYPE...
     <p>Testing that works.</p>...
-
-Kupu tag stripping
-==================
-
-Initially 'table' is not stripped by kupu and is valid in safe_html:
-
-    >>> print ', '.join(kupu_tool.get_stripped_tags())
-    button, fieldset, ..., style, textarea
-    >>> print sorted(safe_html._config['valid_tags'])
-    [..., 'sup', 'table', 'tbody', ...]
-
-Now add 'table' to the stripped tags using the control panel, and then check
-that table appears in kupu's list of stripped tags and is no longer in
-safe_html's list of valid tags.
-
-    >>> print ', '.join(sorted(kupu_tool.get_stripped_tags()))
-    button, ..., style, textarea
-
-    >>> def findControl(nameprefix, value):
-    ...    i = 0
-    ...    for i in range(100):
-    ...        c = browser.getControl(name=nameprefix+"%d."%i)
-    ...        if c.value==value:
-    ...            return c
-    ...    raise RuntimeError("That didn't work")
-    >>> browser.open('http://nohost/plone/@@filter-controlpanel')
-
-    >>> browser.getControl("Add Stripped tags").click()
-    >>> findControl("form.stripped_tags.", "").value = "table"
-    >>> browser.getControl(name="form.actions.save").click()
-    >>> print_all_of('stripped_tags')
-    button
-    ...
-    style
-    table
-    textarea
-    >>> print sorted(safe_html._config['valid_tags'])
-    [..., 'sup', 'tbody', ...]
-    >>> print ', '.join(sorted(kupu_tool.get_stripped_tags()))
-    button, ..., style, table, textarea
-
-Now remove 'table' from stripped tags and it will disappear from kupu
-and reappear in safe_html.
-
-    >>> idparts = findControl("form.stripped_tags.", "table").name.split('.')
-    >>> idparts[2] = 'remove_' + idparts[2]
-    >>> browser.getControl(name='.'.join(idparts[:-1])).value = True
-    >>> browser.getControl(name="form.stripped_tags.remove").click()
-    >>> browser.getControl(name="form.actions.save").click()
-    >>> print_all_of('stripped_tags')
-    button
-    ...
-    style
-    textarea
-    >>> browser.getControl(name="form.actions.save").click()
-    >>> print sorted(safe_html._config['valid_tags'])
-    [..., 'sup', 'table', 'tbody', ...]
-    >>> print ', '.join(sorted(kupu_tool.get_stripped_tags()))
-    button, ..., style, textarea

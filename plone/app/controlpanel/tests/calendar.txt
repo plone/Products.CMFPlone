@@ -43,7 +43,7 @@ Make some changes
     >>> self.browser.url.endswith('calendar-controlpanel')
     True
 
-    >>> self.browser.getControl(name='form.firstweekday').value = ['6']
+    >>> self.browser.getControl(name='form.firstweekday').value = ['3']
 
 Click the save button:
 
@@ -59,7 +59,7 @@ We should be informed that something has changed:
 Make sure the changes have been applied correctly to the tool:
 
     >>> ctool.firstweekday
-    6
+    3
 
 Different Locale
 ----------------
