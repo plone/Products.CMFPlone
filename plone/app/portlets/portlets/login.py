@@ -1,19 +1,14 @@
-from zope.interface import implements
-from zope.component import getMultiAdapter
-
-from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.portlets.portlets import base
-
-from zope import schema
-from zope.formlib import form
-
 from plone.memoize.instance import memoize
+from plone.portlets.interfaces import IPortletDataProvider
+from zope.component import getMultiAdapter
+from zope.interface import implements
 
-from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.portlets import base
+
 
 class ILoginPortlet(IPortletDataProvider):
     """A portlet which can render a login form.

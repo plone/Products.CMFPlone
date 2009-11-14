@@ -6,7 +6,8 @@ from zope.configuration import fields as configuration_fields
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer, IBrowserView
 from plone.portlets.interfaces import IPortletManager
 
-from Products.CMFPlone import PloneMessageFactory as _
+from plone.app.portlets import PloneMessageFactory as _
+
 
 class IPortletDirective(Interface):
     """Directive which registers a new portlet type.

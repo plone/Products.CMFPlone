@@ -9,13 +9,12 @@ from Acquisition import aq_parent, aq_inner
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.formlib import formbase
-from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.app.form import named_template_adapter
 from plone.app.form.validators import null_validator
 
+from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.interfaces import IPortletPermissionChecker
-
 from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
  

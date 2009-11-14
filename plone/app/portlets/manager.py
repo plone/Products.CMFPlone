@@ -1,24 +1,22 @@
+import logging
 import sys
-from ZODB.POSException import ConflictError
 
-from zope.interface import Interface
+from plone.portlets.interfaces import IPortletRenderer, ILocalPortletAssignable
+from plone.portlets.manager import PortletManagerRenderer as BasePortletManagerRenderer
+from plone.app.layout.navigation.defaultpage import isDefaultPage
 from zope.component import adapts, getMultiAdapter
-
+from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from Acquisition import Explicit, aq_inner, aq_parent, aq_acquire
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import isDefaultPage
-
-from plone.portlets.interfaces import IPortletRenderer, ILocalPortletAssignable
-from plone.portlets.manager import PortletManagerRenderer as BasePortletManagerRenderer
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from ZODB.POSException import ConflictError
 
 from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IDashboard
 
-import logging
 logger = logging.getLogger('portlets')
 
 class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
@@ -42,10 +40,10 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
 
     def _context(self):
         context = aq_inner(self.context)
-        if isDefaultPage(context, self.request):
-            return aq_parent(context)
-        else:
-            return context
+        container = aq_parent(context)
+        if isDefaultPage(container, context):
+            return container
+        return context
 
     def base_url(self):
         """If context is a default-page, return URL of folder, else

@@ -1,20 +1,21 @@
-from zope import schema
-from zope.component import getMultiAdapter
-from zope.formlib import form
-from zope.interface import implements
-
-from plone.app.portlets.portlets import base
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.portlets.cache import render_cachekey
 from plone.app.layout.navigation.root import getNavigationRootObject
+from zope.component import getMultiAdapter
+from zope.formlib import form
+from zope.interface import implements
+from zope import schema
 
 from Acquisition import aq_inner
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.cache import render_cachekey
+from plone.app.portlets.portlets import base
+
 
 class INewsPortlet(IPortletDataProvider):
 

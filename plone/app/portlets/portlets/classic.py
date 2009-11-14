@@ -1,12 +1,13 @@
-from zope.interface import implements
-
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.portlets.portlets import base
-
 from zope import schema
 from zope.formlib import form
+from zope.interface import implements
+
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFPlone import PloneMessageFactory as _
+
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.portlets import base
+
 
 class IClassicPortlet(IPortletDataProvider):
     """A portlet which can render a classic Plone portlet macro

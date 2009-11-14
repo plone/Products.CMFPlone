@@ -12,11 +12,11 @@ from zope.component import getMultiAdapter
 from Acquisition import aq_inner
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote_plus
 
+from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets import cache
 from plone.app.portlets.portlets import base
 

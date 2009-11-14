@@ -1,17 +1,17 @@
-from zope import schema
-from zope.formlib import form
-from zope.interface import implements, Interface
-
-from plone.app.portlets.portlets import base
-from plone.portlets.interfaces import IPortletDataProvider
-
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-
-import feedparser
 import time
 
+import feedparser
+from plone.portlets.interfaces import IPortletDataProvider
+from zope.formlib import form
+from zope.interface import implements, Interface
+from zope import schema
+
 from DateTime import DateTime
+from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.portlets import base
+
 
 # store the feeds here (which means in RAM)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})

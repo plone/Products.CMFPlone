@@ -1,13 +1,12 @@
 from setuptools import setup, find_packages
-import os.path
 
-version = '2.0'
+version = '2.0a1'
 
 setup(name='plone.app.portlets',
       version=version,
       description="Plone integration for the basic plone.portlets package",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open("CHANGES.txt").read(),
       classifiers=[
         "Framework :: Plone",
         "Framework :: Zope2",
@@ -16,8 +15,8 @@ setup(name='plone.app.portlets',
         ],
       keywords='portlets viewlets plone',
       author='Martin Aspeli',
-      author_email='optilude@gmx.net',
-      url='http://svn.plone.org/svn/plone/plone.app.portlets',
+      author_email='plone-developers@lists.sourceforge.net',
+      url='http://pypi.python.org/pypi/plone.app.portlets',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages = ['plone', 'plone.app'],
@@ -25,7 +24,6 @@ setup(name='plone.app.portlets',
       zip_safe=False,
       extras_require=dict(
         test=[
-            'zope.site',
             'Products.PloneTestCase',
         ]
       ),
@@ -51,6 +49,7 @@ setup(name='plone.app.portlets',
         'zope.lifecycleevent',
         'zope.publisher',
         'zope.schema',
+        'zope.site',
         'zope.traversing',
         'Plone',
         'Products.CMFCore',

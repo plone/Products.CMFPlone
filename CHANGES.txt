@@ -1,8 +1,12 @@
 Changelog
 =========
 
-2.0 - unreleased
-----------------
+2.0a1 - unreleased
+------------------
+
+- Various cleanups, use our own message factory to lighten the dependency on
+  the Plone distribution.
+  [hannosch]
 
 - Added translations for Show/Hide labels in @@manage-portlets view:
   label_show_item and label_hide_item. These msgids are shared with 
@@ -16,7 +20,7 @@ Changelog
   [vincentfretin]
 
 - Optimize some portlets to avoid unnecessary instructions in their
-``__init__`` or available methods.
+  ``__init__`` or available methods.
   [hannosch]
 
 - Optimized join_action in the login portlet.
@@ -29,10 +33,9 @@ Changelog
   9285)
   [igbun]
 
-- Login portlet: when use_email_as_login is true, make the label
-  'E-mail' instead of 'Login Name', as per plip 9214 (Plone 4).
-  Should still work in earlier Plone versions as well.
-  Refs http://dev.plone.org/plone/ticket/9214
+- Login portlet: when use_email_as_login is true, make the label 'E-mail'
+  instead of 'Login Name', as per plip 9214 (Plone 4). Should still work in
+  earlier Plone versions as well. Refs http://dev.plone.org/plone/ticket/9214.
   [maurits]
 
 - Added support for group dashboards.

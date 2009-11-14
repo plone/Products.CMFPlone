@@ -1,11 +1,12 @@
-import operator
-from zope.interface import implements
-from zope.component import getMultiAdapter
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.portlets.portlets import base
 from plone.app.i18n.locales.browser.selector import LanguageSelector
+from zope.component import getMultiAdapter
+from zope.interface import implements
+
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFPlone import PloneMessageFactory as _
+
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.portlets import base
 
 
 class ILanguagePortlet(IPortletDataProvider):

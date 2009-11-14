@@ -1,35 +1,29 @@
-from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, queryUtility
-
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.portlets.portlets import base
-
-from zope import schema
-from zope.formlib import form
-
 from plone.memoize.instance import memoize
-
-from Acquisition import aq_inner, aq_base, aq_parent
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
-
-from Products.CMFDynamicViewFTI.interface import IBrowserDefault
-
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone import utils
-from Products.CMFPlone import PloneMessageFactory as _
-
+from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
+from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
-
-from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.navtree import buildFolderTree
-
+from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.vocabularies.catalog import SearchableTextSourceBinder
-from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
+from zope.component import adapts, getMultiAdapter, queryUtility
+from zope.formlib import form
+from zope.interface import implements, Interface
+from zope import schema
 
+from Acquisition import aq_inner, aq_base, aq_parent
+from Products.CMFCore.utils import getToolByName
+from Products.CMFDynamicViewFTI.interface import IBrowserDefault
+from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.portlets import base
+
 
 class INavigationPortlet(IPortletDataProvider):
     """A portlet which can render the navigation tree
@@ -150,18 +144,18 @@ class Renderer(base.Renderer):
     def root_item_class(self):
         context = aq_inner(self.context)
         root = self.getNavRoot()
+        container = aq_parent(context)
         if (aq_base(root) is aq_base(context) or
-                (aq_base(root) is aq_base(aq_parent(aq_inner(context))) and
-                utils.isDefaultPage(context, self.request))):
+                (aq_base(root) is aq_base(container) and
+                isDefaultPage(container, context))):
             return 'navTreeCurrentItem'
-        else:
-            return ''
-            
+        return ''
+
     def root_icon(self):
         ploneview = getMultiAdapter((self.context, self.request), name=u'plone')
         icon = ploneview.getIcon(self.getNavRoot())
         return icon.url
-            
+
     def root_is_portal(self):
         root = self.getNavRoot()
         return aq_base(root) is aq_base(self.urltool.getPortalObject())
