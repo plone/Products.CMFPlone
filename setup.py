@@ -1,17 +1,15 @@
 from setuptools import setup, find_packages
-import os
 
-version = '2.0'
+version = '2.0a1'
 
 setup(name='plone.app.controlpanel',
       version=version,
       description="Formlib-based controlpanels for Plone.",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open("CHANGES.txt").read(),
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='plone controlpanel formlib',
       author='Plone Foundation',

@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0 - unreleased
-----------------
+2.0a1 - unreleased
+------------------
 
 - Add option in themes configlet to enable/disable overlay popups.
   [smcmahon]
