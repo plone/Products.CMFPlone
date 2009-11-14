@@ -6,7 +6,8 @@ Changelog
 
 - Added translations for Show/Hide labels in @@manage-portlets view:
   label_show_item and label_hide_item. These msgids are shared with 
-  @@manage-viewlets view to show/hide viewlets.
+  @@manage-viewlets view to show/hide viewlets. This closes
+  http://dev.plone.org/plone/ticket/9733
   [naro]
 
 - Introduced a new msgid title_edit_dashboard_group to translate
