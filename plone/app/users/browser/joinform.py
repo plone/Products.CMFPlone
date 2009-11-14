@@ -60,7 +60,7 @@ class IJoinSchema(Interface):
                 default=u"Send a mail with the password"),
         default=False)
 
-    groups = schema.List(title=_(u'label_groups', default=u'Add to the following groups:'),
+    groups = schema.List(title=_(u'label_add_to_groups', default=u'Add to the following groups:'),
                             description=u'',
                             required=False,
                             value_type=schema.Choice(vocabulary='Group Ids'))

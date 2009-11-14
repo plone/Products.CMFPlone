@@ -1,12 +1,14 @@
 Changelog
 =========
 
-0.1 - Unreleased
+1.0 - unreleased
 ----------------
 
-* Restore the came_from_prefs check to make the join form redirect to the
+- Renamed label_groups to label_add_to_groups in joinform.py
+  [vincentfretin]
+
+- Restore the came_from_prefs check to make the join form redirect to the
   Users and Groups configlet if that's where the user started from.
   [davisagli]
 
-* Initial release
-
+- Initial release
