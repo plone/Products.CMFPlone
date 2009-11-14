@@ -4,6 +4,9 @@ Changelog
 2.0a1 - unreleased
 ------------------
 
+- Don't include <q> tag in title_manage_contextual_portlets message.
+  [vincentfretin]
+
 - Various cleanups, use our own message factory to lighten the dependency on
   the Plone distribution.
   [hannosch]

@@ -17,7 +17,7 @@
   <h1 class="documentFirstHeading"
       i18n:translate="title_manage_contextual_portlets">
       Manage portlets for
-      <q><span i18n:name="context_title" tal:content="context/Title" /></q>
+      <q i18n:name="context_title" tal:content="context/Title" />
   </h1>
 
   <a href=""
