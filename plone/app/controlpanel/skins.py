@@ -58,8 +58,8 @@ class ISkinsSchema(Interface):
                              vocabulary=ICON_VISIBILITY_VOCABULARY)
 
     use_popups = Bool(title=_(u'Use popup overlays for simple forms'),
-                        description=_(u"If enabled, popup overlays will be "
-                                       "used for simple forms like login "
+                        description=_(u"If enabled popup overlays will be "
+                                       "used for simple forms like login, "
                                        "contact and delete confirmation."),
                         default=True)
 
