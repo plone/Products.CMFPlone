@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Add option in themes configlet to enable/disable overlay popups.
+  [smcmahon]
+
 - Make sure the filter control panel doesn't fail if kupu is not installed.
   [davisagli]
 

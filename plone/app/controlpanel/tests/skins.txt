@@ -129,3 +129,27 @@ Unchecking new_window should finally turn off the js support:
 
     >>> jstool.getResource('mark_special_links.js').getEnabled()
     False
+
+
+Overlayed popup forms are also controlled here
+-------------------------------------------------------------------
+
+We should be starting with popupforms.js enabled:
+
+    >>> jstool = getToolByName(self.portal, 'portal_javascripts')
+    >>> jstool.getResource('popupforms.js').getEnabled()
+    True
+
+Unchecking use_popups should turn off the js support:
+
+    >>> self.browser.getControl(name='form.use_popups').value = False
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> jstool.getResource('popupforms.js').getEnabled()
+    False
+
+Checking use_popups should turn re-enable:
+
+    >>> self.browser.getControl(name='form.use_popups').value = True
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> jstool.getResource('popupforms.js').getEnabled()
+    True
