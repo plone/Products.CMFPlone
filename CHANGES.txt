@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0a1 - unreleased
+2.0a1 - 2009-11-14
 ------------------
 
 - Fixed calendar and filter tests.
