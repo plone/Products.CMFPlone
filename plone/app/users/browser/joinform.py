@@ -70,7 +70,7 @@ def FullNameWidget(field, request):
     """
     field.description = _(
         u'help_full_name_creation',
-        default=u"Enter full name, eg. John Smith.")
+        default=u"Enter full name, e.g. John Smith.")
     widget = TextWidget(field, request)
     return widget
 
