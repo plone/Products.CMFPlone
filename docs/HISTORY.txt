@@ -4,6 +4,11 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Added translations for Show/Hide labels in @@manage-portlets view:
+  label_show_item and label_hide_item. These msgids are shared with 
+  @@manage-viewlets view to show/hide viewlets.
+  [naro]
+
 - Introduced a new msgid title_edit_dashboard_group to translate
   "Edit Dashboard Portlets for $group". title_edit_dashboard msgid
   was used twice for different messages.
