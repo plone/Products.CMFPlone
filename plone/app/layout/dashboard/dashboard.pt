@@ -65,43 +65,8 @@
                 Portal status message
             </div>
             
-            <div id="dashboard-actions"
-                 tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
-                             groups python:controlPanel.getGroups('member');
-                             getIconFor nocall:context/plone_utils/getIconFor" >
-                <ul>
-                    <li class="portalUser">
-                        <a href="personalize_form"
-                           tal:define="member_id member/getId;
-                                       member_url python:(member_id.startswith('http:') or member_id.startswith('https:')) and ('?author=%s' % member_id) or member_id;"
-                           tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${member_url}">
-                               <img src="" tal:attributes="src string:${portal_url}/user.gif" />
-                                   <tal:profilestr
-                                       i18n:translate="">Profile</tal:profilestr>
-                         </a>
-                    </li>
-                    <tal:groups condition="groups">
-                        <tal:group repeat="group groups">
-                            <tal:configlets repeat="configlet python:controlPanel.enumConfiglets(group=group['id'])">
-                                <li tal:condition="configlet/visible">
-                                    <a href=""          
-                                       tal:attributes="href configlet/url">
-                                        <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
-                                                                           alt configlet/title;"
-                                             i18n:attributes="alt"
-                                             tal:on-error="string:" />
-                                    <tal:configletname tal:content="configlet/title"
-                                                       i18n:translate=""></tal:configletname>
-                                    </a>
-                                </li>
-                            </tal:configlets>
-                        </tal:group>
-                    </tal:groups>
-                </ul>
-            </div>
-            
             <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
-                <span tal:replace="name" i18n:name="user_name" />'s dashboard
+                <span tal:replace="name" i18n:name="user_name" />&#8217;s dashboard
             </h1>
             
             <dl  tal:condition="python:view.empty() and view.can_edit()"

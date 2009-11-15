@@ -4,6 +4,12 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- It's no longer the dashboard's responsibility to supply prefs/profile links
+  now that they are located in the user menu.
+  The code uses the "group" terminology here though, so I'm wondering if this is
+  related to group dashboards. If I broke anything, let me know.
+  [limi]
+
 - Micro-optimize the icons views.
   [hannosch]
 
