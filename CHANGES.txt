@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Rephrased debug-mode info. 
+  This closes http://dev.plone.org/plone/ticket/9788
+  [naro]
+
 - Fixed bad i18n markup in emaillogin.pt. This closes
   http://dev.plone.org/plone/ticket/9767
   [vincentfretin]
