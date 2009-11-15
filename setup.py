@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os.path
 
 version = '2.0a2'
 
@@ -7,7 +6,7 @@ setup(name='plone.app.layout',
       version=version,
       description="Layout mechanisms for Plone",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open("CHANGES.txt").read(),
       classifiers=[
         "Framework :: Plone",
         "Framework :: Zope2",
@@ -16,8 +15,8 @@ setup(name='plone.app.layout',
         ],
       keywords='plone layout viewlet',
       author='Martin Aspeli',
-      author_email='optilude@gmx.net',
-      url='http://svn.plone.org/svn/plone/plone.app.layout',
+      author_email='plone-developers@lists.sourceforge.net',
+      url='http://pypi.python.org/pypi/plone.app.layout',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['plone', 'plone.app'],

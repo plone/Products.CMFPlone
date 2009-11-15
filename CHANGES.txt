@@ -4,6 +4,9 @@ Changelog
 2.0a2 - Unreleased
 ------------------
 
+- Package metadata cleanup.
+  [hannosch]
+
 - Avoid calling lots of Python scripts from inside the content history viewlet
   and use methods on the view instead.
   [hannosch]
