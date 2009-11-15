@@ -9,6 +9,7 @@ from zope.component import getUtility, queryUtility, getMultiAdapter
 from zope.component.interfaces import IFactory
 
 from zope.component import getSiteManager
+from zope.site.hooks import setSite, setHooks
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
@@ -142,9 +143,14 @@ class TestPortletGSLayer(TestPortletZCMLLayer):
         app = ZopeTestCase.app()
         portal = app.plone
         
+        # needed to avoid deep and magic five.localsitemanager wrapping problems
+        setSite(portal)
+        setHooks()
+        
         portal_setup = portal.portal_setup
         # wait a bit or we get duplicate ids on import
         time.sleep(1)
+        
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
         
         transaction.commit()

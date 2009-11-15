@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0a1 - unreleased
+2.0a1 - 2009-11-15
 ------------------
 
 - Don't include <q> tag in title_manage_contextual_portlets message.
