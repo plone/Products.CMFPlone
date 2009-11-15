@@ -47,6 +47,6 @@ class RegistrationControlPanel(ControlPanelForm):
 
     form_fields['join_form_fields'].custom_widget = UserDataWidget
     
-    label = _("Registration settings")
-    description = _("Registration settings for this site.")
-    form_name = _("Registration settings")
+    label = _(u"Registration settings")
+    description = _(u"Registration settings for this site.")
+    form_name = _(u"Registration settings")
