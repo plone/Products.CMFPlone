@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Moved plone.path_bar to the plone.abovecontenttitle viewlet
+  manager, breadcrumbs should be close to the title of the current document.
+
 - It's no longer the dashboard's responsibility to supply prefs/profile links
   now that they are located in the user menu.
   The code uses the "group" terminology here though, so I'm wondering if this is

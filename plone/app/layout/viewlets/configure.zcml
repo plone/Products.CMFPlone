@@ -153,14 +153,6 @@
         permission="zope2.View" 
         />
 
-    <!-- The breadcrumbs -->
-    <browser:viewlet
-        name="plone.path_bar"
-        manager=".interfaces.IPortalTop"
-        class=".common.PathBarViewlet"
-        permission="zope2.View" 
-        />
-
     <!-- Content views (tabs) -->
     <browser:viewlet
         name="plone.contentviews"
@@ -228,6 +220,14 @@
         name="plone.abovecontenttitle.documentactions"
         manager=".interfaces.IBelowContentBody"
         class=".content.DocumentActionsViewlet"
+        permission="zope2.View" 
+        />
+
+    <!-- The breadcrumbs -->
+    <browser:viewlet
+        name="plone.path_bar"
+        manager=".interfaces.IAboveContentTitle"
+        class=".common.PathBarViewlet"
         permission="zope2.View" 
         />
 
