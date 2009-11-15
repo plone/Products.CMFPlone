@@ -1,4 +1,5 @@
 from zope import schema
+from zope.schema import getFieldNames
 from zope.interface import Interface
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.formlib import form
@@ -30,9 +31,11 @@ def UserDataWidget(field, request):
 
     util = getUtility(IUserDataSchemaProvider)
     schema = util.getSchema()
-
+    
+    schemaFieldNames = getFieldNames(schema)
+    
     values = [(f.__name__, f.__name__) for f in form.Fields(schema)]
-    values = values + [(val, val) for val in JOIN_CONST]
+    values = values + [(val, val) for val in JOIN_CONST if val not in schemaFieldNames]
 
     vocabulary = SimpleVocabulary.fromItems(values)
 
