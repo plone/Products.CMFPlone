@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0a2 - Unreleased
+------------------
+
+- Avoid calling lots of Python scripts from inside the content history viewlet
+  and use methods on the view instead.
+  [hannosch]
+
 2.0a1 - 2009-11-15
 ------------------
 

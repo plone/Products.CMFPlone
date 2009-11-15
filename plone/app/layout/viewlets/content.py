@@ -1,21 +1,20 @@
+import logging
+
+from plone.memoize.instance import memoize
+from zope.component import getMultiAdapter, queryMultiAdapter
+
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
-
-from zope.component import getMultiAdapter, queryMultiAdapter
-from plone.memoize.instance import memoize
-
-from plone.app.layout.viewlets import ViewletBase
-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from Products.CMFEditions.Permissions import AccessPreviousVersions
-
-from Products.CMFPlone import PloneMessageFactory as _
-
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFEditions.Permissions import AccessPreviousVersions
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
-import logging
+
+from plone.app.layout.viewlets import ViewletBase
 
 
 class DocumentActionsViewlet(ViewletBase):
@@ -82,8 +81,9 @@ class DocumentBylineViewlet(ViewletBase):
 
     @memoize
     def isExpired(self):
-        portal = self.portal_state.portal()
-        return portal.restrictedTraverse('isExpired')(self.context)
+        if base_hasattr(self.context, 'expires'):
+            return self.context.expires().isPast()
+        return False
 
     @memoize
     def toLocalizedTime(self, time, long_format=None, time_only = None):
@@ -223,7 +223,6 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
         return version_history
 
-
     @memoize
     def fullHistory(self):
         history=self.workflowHistory(complete=True) + self.revisionHistory()
@@ -231,4 +230,10 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         history.sort(key=lambda x: x["time"], reverse=True)
         return history
 
-
+    @memoize
+    def toLocalizedTime(self, time, long_format=None, time_only=None):
+        """Convert time to localized time
+        """
+        util = getToolByName(self.context, 'translation_service')
+        return util.ulocalized_time(time, long_format, time_only, self.context,
+                                        domain='plonelocales')

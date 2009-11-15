@@ -15,9 +15,8 @@
                                         actor_home item/actor_home;
                                         action item/transition_title;
                                         action python:action and action.replace('Edit', 'Edited') or action;
-                                        moment python:context.toLocalizedTime(item['time'],long_format=True);
                                         effective item/effective_date|nothing;
-                                        effectiveDate python:effective and context.toLocalizedTime(item['effective_date'],long_format=True);
+                                        effectiveDate python:effective and view.toLocalizedTime(item['effective_date'],long_format=True);
                                         isVersion python:item['type']=='versioning'">
                     <div class="historyTools" tal:condition="isVersion">
                         <ul>
@@ -40,7 +39,7 @@
                                       tal:replace="actor_name"/>
                             </tal:actor>
                             on
-                            <span tal:replace="python:context.toLocalizedTime(item['time'],long_format=True)" i18n:name="time"/>
+                            <span tal:replace="python:view.toLocalizedTime(item['time'],long_format=True)" i18n:name="time"/>
                         </tal:action>
                         <tal:effective tal:condition="effective|nothing">
                             (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
