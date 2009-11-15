@@ -4,6 +4,10 @@ Changelog
 1.0 - unreleased
 ----------------
 
+- Fixed bad use of i18n markup in joinform.py. This closes
+  http://dev.plone.org/plone/ticket/9773
+  [vincentfretin]
+
 - Renamed label_groups to label_add_to_groups in joinform.py
   [vincentfretin]
 

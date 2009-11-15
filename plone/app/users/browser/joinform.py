@@ -139,7 +139,7 @@ class JoinForm(PageForm):
     """
 
     label = _(u'heading_registration_form', default=u'Registration Form')
-    description = _(u"")
+    description = u""
     template = ViewPageTemplateFile('pageform_no_portlets.pt')
 
     @property
@@ -373,7 +373,7 @@ class JoinForm(PageForm):
 
         except (AttributeError, ValueError), err:
 
-            IStatusMessage(self.request).addStatusMessage(_(err), type="error")
+            IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
 
         if portal.validate_email or data.get('mail_me', 0):
@@ -385,7 +385,7 @@ class JoinForm(PageForm):
             except Exception:
                 if portal.validate_email:
                     IStatusMessage(self.request).addStatusMessage(
-                        _("Couldn't send mail"), type="error")
+                        _(u"Couldn't send mail"), type="error")
 
                     self.context.acl_users.userFolderDelUsers(
                         [username], REQUEST=self.request)
@@ -406,7 +406,7 @@ class JoinForm(PageForm):
 
         if self.came_from_prefs:
             IStatusMessage(self.request).addStatusMessage(
-                _("User added."), type='info')
+                _(u"User added."), type='info')
             self.request.response.redirect(self.context.absolute_url() + '/@@usergroup-userprefs')
         else:
             return self.context.unrestrictedTraverse('registered')()
