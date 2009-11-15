@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Fixed bad i18n markup in emaillogin.pt. This closes
+  http://dev.plone.org/plone/ticket/9767
+  [vincentfretin]
 
 2.0a1 - 2009-11-14
 ------------------

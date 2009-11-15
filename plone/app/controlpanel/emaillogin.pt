@@ -12,7 +12,7 @@
 <body>
 
   <div metal:fill-slot="prefs_configlet_content">
-    <h1 i18n="heading_migrate_email_login">
+    <h1 i18n:translate="heading_migrate_email_login">
       Migrate to or from email login
     </h1>
     <p i18n:translate="help_migrate_email_login">
@@ -27,7 +27,7 @@
 
     <div tal:condition="request/form/check|nothing">
       <div tal:condition="view/duplicates">
-        <p i18n="msg_email_duplicates_found">
+        <p i18n:translate="msg_email_duplicates_found">
           The following email addresses are used by more than one account:
         </p>
         <ul>
@@ -38,7 +38,7 @@
         </ul>
       </div>
       <div tal:condition="not:view/duplicates">
-        <p i18n="msg_no_email_duplicates_found">
+        <p i18n:translate="msg_no_email_duplicates_found">
           No email addresses found that are used by more than one account.
         </p>
       </div>
