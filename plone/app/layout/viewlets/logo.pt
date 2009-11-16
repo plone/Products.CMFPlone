@@ -1,7 +1,9 @@
 <a metal:define-macro="portal_logo"
    id="portal-logo"
+   title="Home"
    accesskey="1"
    tal:attributes="href view/navigation_root_url"
-   i18n:domain="plone">
+   i18n:domain="plone"
+   i18n:translate="title">
     <img src="logo.jpg" alt=""
          tal:replace="structure view/logo_tag" /></a>
