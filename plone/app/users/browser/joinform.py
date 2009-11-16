@@ -25,6 +25,7 @@ from plone.app.controlpanel.widgets import MultiCheckBoxVocabularyWidget
 
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.app.component.hooks import getSite
+from plone.protect import CheckAuthenticator
 
 # Define constants from the Join schema that should be added to the
 # vocab of the join fields setting in usergroupssettings controlpanel.
@@ -241,6 +242,9 @@ class JoinForm(PageForm):
         validate_registration.py script in
         Products/CMFPlone/skins/plone_login/join_form_validate.vpy
         """
+
+        # CSRF protection
+        CheckAuthenticator(self.request)
 
         registration = getToolByName(self.context, 'portal_registration')
 
