@@ -79,9 +79,6 @@ class TestImportPortlets(PortletsExportImportTestCase):
         node = parseString(_XML_SWITCH_COLUMNS).documentElement
         self.assertEqual([IColumn],
           self.importer._modifyForList(node, [IDashboard]))
-        node = parseString(_XML_BBB_INTERFACE).documentElement
-        self.assertEqual([IColumn],
-          self.importer._modifyForList(node, []))
     
     def test_initPortletNode_duplicateInterfaces(self): 
         node = parseString(_XML_DUPLICATE_INTERFACES).documentElement 
@@ -133,10 +130,7 @@ class TestImportPortlets(PortletsExportImportTestCase):
     
     def test_initPortletNode_BBBInterface(self):
         node = parseString(_XML_BBB_INTERFACE).documentElement
-        self.importer._initPortletNode(node)
-        portlet = queryUtility(IPortletType, name="portlets.BBB")
-        self.failUnless(portlet is not None)
-        self.assertEqual([IColumn], portlet.for_)
+        self.assertRaises(Exception, self.importer._initPortletNode, node)
     
     def test_initPortletNode_extend(self):
         node = parseString(_XML_EXTENDME_SETUP).documentElement
@@ -191,14 +185,6 @@ class TestExportPortlets(PortletsExportImportTestCase):
         node.writexml(file)
         file.seek(0)
         self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"/>""", file.read())
-
-class TestHelperMethods(PortletsExportImportTestCase):
-
-    def test_BBB_for(self):
-        self.assertEqual([Interface], self.importer._BBB_for(None))
-        self.assertEqual([], self.importer._BBB_for([]))
-        self.assertEqual([Interface], self.importer._BBB_for(Interface))
-        self.assertEqual([Interface], self.importer._BBB_for([Interface]))
 
 class TestImportPortletManagers(PortletsExportImportTestCase):
         
@@ -258,7 +244,6 @@ def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestImportPortlets))
     suite.addTest(makeSuite(TestExportPortlets))
-    suite.addTest(makeSuite(TestHelperMethods))
     suite.addTest(makeSuite(TestImportPortletManagers))
     suite.addTest(makeSuite(TestExportPortletManagers))
     return suite
