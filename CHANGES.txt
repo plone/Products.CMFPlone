@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Pass the creator id to /author/ as a parameter if it contains a '/', such
+  as openid users.
+  [matthewwilkes]
 
 2.0a2 - 2009-11-15
 ------------------

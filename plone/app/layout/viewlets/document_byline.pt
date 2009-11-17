@@ -8,12 +8,16 @@
       <img tal:replace="structure lock_icon" />
   </span>
 
-  <tal:name tal:condition="view/creator">
+  <tal:name tal:condition="view/creator"
+            tal:define="creator_short_form view/creator;
+                        creator_long_form string:?author=${view/creator};
+                        creator_is_openid python:'/' in creator_short_form;
+                        creator_id python:(creator_short_form, creator_long_form)[creator_is_openid];">
     <span class="documentAuthor"
           i18n:translate="label_by_author">
       by
       <a href="#"
-         tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${view/creator}"
+         tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
          tal:content="view/authorname"
          tal:omit-tag="not:view/author"
          i18n:name="author">
