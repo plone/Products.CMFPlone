@@ -363,9 +363,6 @@ class PortletsXMLAdapter(XMLAdapterBase):
              portlet.addview = addview
              for_ = []
 
-        #BBB - to cover old-style for_ attributes that equal None or a
-        #single interface
-        for_ = self._BBB_for(for_)
 
         #Process the node's child "for" nodes to add or remove portlet
         #manager interface names to the for_ list
@@ -603,7 +600,6 @@ class PortletsXMLAdapter(XMLAdapterBase):
         
         for_ = portletType.for_
         #BBB
-        for_ = self._BBB_for(for_)
         
         if for_ and for_ != [Interface]:
             for i in for_:
@@ -673,30 +669,15 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     self._logger.warning('Portlet type %s is ' % addview + \
                       'already registered as addable to portlet managers ' \
                       'with interface %s.' % interface_name)
-        
-        #BBB
-        interface_name = str(node.getAttribute('for'))
-        if interface_name:
-            self._logger.warning('Deprecation Warning The "for" ' + \
-              'attribute of the portlet node in portlets.xml is ' + \
-              'deprecated and will be removed in Plone 4.0. Use children ' \
-              'nodes of the form <for interface="foo.BarInterface" /> ' + \
-              'instead.')
-            modified_for.append(interface_name)
-        
+         
+        if node.hasAttribute("for"):
+            raise InvalidPortletForDefinition(node)
+            
         modified_for = [_resolveDottedName(name) for name in modified_for \
           if _resolveDottedName(name) is not None] 
         
         return modified_for
     
-    #BBB
-    def _BBB_for(self, for_):
-        if for_ is None:
-            return [Interface]
-        if type(for_) not in (tuple, list):
-            return [for_]
-        return for_
-
 def importPortlets(context):
     """Import portlet managers and portlets
     """
@@ -737,3 +718,15 @@ def exportPortlets(context):
         body = exporter.body
         if body is not None:
             context.writeDataFile(filename, body, exporter.mime_type)
+
+class InvalidPortletForDefinition(Exception):
+
+    message = """The following portlet definition is invalid:
+
+%s
+
+The 'for' attribute is not supported, use 'for' sub-elements instead. See http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/portlets-generic-setup-syntax-changes for more information."""
+            
+    def __init__(self, node):
+        node = node.toxml()
+        self.args = [self.message % node, ]
