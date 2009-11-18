@@ -1,17 +1,15 @@
 from setuptools import setup, find_packages
-import os
 
-version = '0.1'
+version = '1.0a1'
 
 setup(name='plone.app.users',
       version=version,
       description="A package for all things users and groups related (specific to plone)",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open("CHANGES.txt").read(),
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='Zope CMF Plone Users Groups',
       author='Plone Foundation',
