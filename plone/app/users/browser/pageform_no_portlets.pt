@@ -6,9 +6,9 @@
       i18n:domain="plone">
 <head>
     <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1)" />
-    <metal:block fill-slot="column_one_slot" />
-    <metal:block fill-slot="column_two_slot" />
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('plone.leftcolumn',1);
+                             disable_column_two python:request.set('plone.rightcolumn',1);" />
 </head>
 
 <body>
