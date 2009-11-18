@@ -4,6 +4,10 @@ Changelog
 1.0a2 - Unreleased
 ------------------
 
+- Internationalized title_join_form_fields and description_join_form_fields.
+  This closes http://dev.plone.org/plone/attachment/ticket/9810
+  [vincentfretin]
+
 
 1.0a1 - 2009-11-18
 ------------------

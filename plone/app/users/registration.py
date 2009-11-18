@@ -1,10 +1,10 @@
 from zope.component import adapts
 from zope.formlib import form
+from zope.i18nmessageid import MessageFactory
 from zope.interface import implements
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.app.controlpanel.form import ControlPanelForm
@@ -12,8 +12,9 @@ from registrationschema import IRegistrationSchema, UserDataWidget
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 # Property as it is named in portal_properties
-JOIN_FORM_FIELDS='join_form_fields'
+JOIN_FORM_FIELDS = 'join_form_fields'
 
+_ = MessageFactory('plone')
 
 class RegistrationControlPanelAdapter(SchemaAdapterBase):
 
