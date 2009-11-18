@@ -8,6 +8,7 @@ from zope.app.form.interfaces import WidgetInputError, InputErrors
 
 #from plone.app.controlpanel import PloneMessageFactory as _
 
+from AccessControl import getSecurityManager
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -158,6 +159,8 @@ class JoinForm(PageForm):
 
         canSetOwnPassword = not portal.getProperty('validate_email', True)
 
+        securityManager = getSecurityManager()
+        canManageUsers = securityManager.checkPermission('Manage users', self.context)
 
         # Check on required join fields
         #
@@ -173,9 +176,10 @@ class JoinForm(PageForm):
             # required.
             join_fields.append('email')
 
-        # Insert groups field last
+        # Insert groups field last. Note - it may be removed again later if
+        # the user doesn't have permissions for it, but we don't want to 
+        # complicate things here where we're worrying about ordering
         if not 'groups' in join_fields:
-
             join_fields.insert(-1, 'groups')
 
         if canSetOwnPassword:
@@ -216,6 +220,9 @@ class JoinForm(PageForm):
         schema = util.getSchema()
 
         all_fields = form.Fields(schema) + form.Fields(IJoinSchema)
+ 
+        all_fields['groups'].custom_widget = MultiCheckBoxVocabularyWidget
+        
         all_fields['fullname'].custom_widget = FullNameWidget
         if use_email_as_login:
             all_fields['email'].custom_widget = EmailAsLoginWidget
@@ -224,9 +231,11 @@ class JoinForm(PageForm):
 
         if portal.validate_email:
             all_fields['mail_me'].custom_widget = CantChoosePasswordWidget
-
-        # Customize the groups field widget
-        all_fields['groups'].custom_widget = MultiCheckBoxVocabularyWidget
+        
+        # Last sanity check: get rid of fields that e.g. anonymous users
+        # shouldn't be able to see
+        if not canManageUsers:
+            join_fields.remove('groups')
 
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.
@@ -351,6 +360,9 @@ class JoinForm(PageForm):
         use_email_as_login = props.getProperty('use_email_as_login')
         portal_groups = getToolByName(self.context, 'portal_groups')
 
+        securityManager = getSecurityManager()
+        canManageUsers = securityManager.checkPermission('Manage users', self.context)
+
         if use_email_as_login:
             # The username field is not shown as the email is going to
             # be the username, but the field *is* needed further down
@@ -369,7 +381,7 @@ class JoinForm(PageForm):
                                    REQUEST=self.request)
 
             # Add user to the selected group(s)
-            if data.has_key('groups'):
+            if data.has_key('groups') and canManageUsers:
                 add = data['groups']
                 for groupname in add:
                     group = portal_groups.getGroupById(groupname)
