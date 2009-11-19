@@ -21,7 +21,7 @@ class IRegistrationSchema(Interface):
 
         description=_(u"description_join_form_fields"),
         default=(u"Select the fields for the join form. Fields in the "
-        u"right' box will be shown on the form, fields on the left are disabled. "
+        u"right box will be shown on the form, fields on the left are disabled. "
         u"Use the left/right buttons to move a field from right to left (to "
         u"disable it) and vice versa. Use the up/down buttons to change the order "
         u"in which the fields appear on the form."),
