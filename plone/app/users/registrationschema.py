@@ -25,7 +25,6 @@ class IRegistrationSchema(Interface):
         u"Use the left/right buttons to move a field from right to left (to "
         u"disable it) and vice versa. Use the up/down buttons to change the order "
         u"in which the fields appear on the form."),
-
         )
 
 
