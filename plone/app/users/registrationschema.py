@@ -19,7 +19,7 @@ class IRegistrationSchema(Interface):
     join_form_fields = schema.Tuple(
         title=_(u'title_join_form_fields', default=u'Join form fields'),
 
-        description=_(u"description_join_form_fields",
+        description=_(u"description_join_form_fields"),
         default=(u"Select the fields for the join form. Fields in the "
         u"right' box will be shown on the form, fields on the left are disabled. "
         u"Use the left/right buttons to move a field from right to left (to "
