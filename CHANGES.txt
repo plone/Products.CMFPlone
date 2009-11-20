@@ -4,6 +4,16 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Only show diff and revert buttons for most recent version if it
+  differs from the working copy.
+  http://dev.plone.org/plone/ticket/9803
+  [alecm]
+
+- Remove review_state from version history info, it's not always there
+  and we weren't using it.
+  http://dev.plone.org/plone/ticket/9816
+  [alecm]
+
 - Pass the creator id to /author/ as a parameter if it contains a '/', such
   as openid users.
   [matthewwilkes]

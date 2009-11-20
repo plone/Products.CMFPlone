@@ -9,7 +9,6 @@
             <tal:block repeat="item history">
                 <div class="historyRecord" 
                        tal:define="rhComments item/comments|nothing;
-                                        state item/review_state|nothing;
                                         actor item/actor;
                                         actor_name python:actor and actor.get('fullname','username') or item['actorid'];
                                         actor_home item/actor_home;
@@ -23,6 +22,7 @@
                             <li><form action="" method="post" tal:attributes="action item/revert_url">
                                <input type="hidden" name="version_id" value="" tal:attributes="value item/version_id" />
                                <input class="standalone" type="submit" i18n:attributes="value title_revert_revision"
+                                      tal:condition="exists:item/diff_current_url"
                                       value="Revert to this revision" /></form></li>
                         </ul>
                     </div>
@@ -52,7 +52,8 @@
                         <a href="" 
                            tal:attributes="href item/preview_url"
                            i18n:translate="title_view_revision">View this revision</a> &middot;
-                        <a href="" tal:attributes="href item/diff_current_url" 
+                        <a href="" tal:attributes="href item/diff_current_url"
+                           tal:condition="exists:item/diff_current_url"
                            i18n:translate="title_compare_revision">Compare with current revision</a>
 
                     </div>

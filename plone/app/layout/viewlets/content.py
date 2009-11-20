@@ -196,7 +196,6 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                       time=meta["timestamp"],
                       comments=meta['comment'],
                       version_id=version_id,
-                      review_state=meta["review_state"],
                       preview_url="%s/versions_history_form?version_id=%s#version_preview" %
                                   (context_url, version_id),
                       revert_url="%s/revertversion" % context_url,
@@ -205,8 +204,9 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                 if version_id>0:
                     info["diff_previous_url"]=("%s/@@history?one=%s&two=%s" %
                             (context_url, version_id, version_id-1))
-                info["diff_current_url"]=("%s/@@history?one=current&two=%s" %
-                            (context_url, version_id))
+                if not rt.isUpToDate(context, version_id):
+                    info["diff_current_url"]=("%s/@@history?one=current&two=%s" %
+                                              (context_url, version_id))
             info.update(self.getUserInfo(userid))
             return info
         # History may be an empty list
