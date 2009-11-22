@@ -95,6 +95,10 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals('context/portlet_recent/macros/portlet', r.path_expression())
         r = self.renderer(assignment=classic.Assignment(template='portlet_recent', macro=None))
         self.assertEquals('context/portlet_recent', r.path_expression())
+    
+    def testRenderClassicPortlet(self):
+        r = self.renderer(assignment=classic.Assignment(template='base_view', macro='main'))
+        r.render()
 
 def test_suite():
     from unittest import TestSuite, makeSuite

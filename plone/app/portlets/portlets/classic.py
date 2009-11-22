@@ -37,6 +37,7 @@ class Renderer(base.Renderer):
 
     def __init__(self, context, request, view, manager, data):
         self.context = context
+        self.request = request
         self.data = data
 
     render = ViewPageTemplateFile('classic.pt')
