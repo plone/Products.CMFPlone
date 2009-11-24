@@ -36,7 +36,7 @@ class Renderer(base.Renderer):
         if not self.pas_info.hasLoginPasswordExtractor():
             return False
         page = self.request.get('URL', '').split('/')[-1]
-        return page not in ('login_form', 'join_form')
+        return page not in ('login_form', '@@register')
 
     @property
     def available(self):

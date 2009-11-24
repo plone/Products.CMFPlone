@@ -113,7 +113,7 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals(False, self.renderer(request=request).show())
 
         del request.__annotations__
-        request['URL'] = self.portal.absolute_url() + '/join_form'
+        request['URL'] = self.portal.absolute_url() + '/@@register'
         self.assertEquals(False, self.renderer(request=request).show())
 
     # TODO: Add more detailed tests here
