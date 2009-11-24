@@ -6,14 +6,22 @@
 
     <!-- Join form definition -->
     <browser:page
-      name="join_form"
+      name="register"
       for="Products.CMFPlone.Portal.PloneSite"
-      class=".joinform.JoinForm"
+      class=".register.RegistrationForm"
       permission="zope.Public"
       />
 
+    <browser:page
+      name="new-user"
+      for="Products.CMFPlone.Portal.PloneSite"
+      class=".register.AddUserForm"
+      permission="zope2.ManageUsers"
+      />
+
+
     <utility provides="zope.schema.interfaces.IVocabularyFactory"
-             component=".joinform.getGroupIds"
+             component=".register.getGroupIds"
              name="Group Ids"/>
 
 </configure>

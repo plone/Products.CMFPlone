@@ -4,6 +4,12 @@ Changelog
 1.0a2 - Unreleased
 ------------------
 
+- Change registration form name @@join_form to @@register. Change class names
+  accordingly. Added an "@@new-user" form to be used from the control panel.
+  "Add to group" functionality now lives there. We can now get rid of the 
+  horrid came_from flags that we've been passing around.
+  [esteele]
+
 - Internationalized title_join_form_fields and description_join_form_fields.
   This closes http://dev.plone.org/plone/attachment/ticket/9810
   [vincentfretin]

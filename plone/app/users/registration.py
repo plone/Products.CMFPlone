@@ -12,7 +12,7 @@ from registrationschema import IRegistrationSchema, UserDataWidget
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 # Property as it is named in portal_properties
-JOIN_FORM_FIELDS = 'join_form_fields'
+USER_REGISTRATION_FIELDS = 'user_registration_fields'
 
 _ = MessageFactory('plone')
 
@@ -26,16 +26,16 @@ class RegistrationControlPanelAdapter(SchemaAdapterBase):
         pprop = getToolByName(context, 'portal_properties')
         self.context = pprop.site_properties
 
-    def set_joinformfields(self, value):
+    def set_userRegistrationfields(self, value):
 
-        self.context._updateProperty(JOIN_FORM_FIELDS, value)
+        self.context._updateProperty(USER_REGISTRATION_FIELDS, value)
 
 
-    def get_joinformfields(self):
+    def get_userRegistrationfields(self):
 
-        return self.context.getProperty(JOIN_FORM_FIELDS,[])
+        return self.context.getProperty(USER_REGISTRATION_FIELDS,[])
 
-    join_form_fields = property(get_joinformfields, set_joinformfields)
+    user_registration_fields = property(get_userRegistrationfields, set_userRegistrationfields)
 
 
 
@@ -46,7 +46,7 @@ class RegistrationControlPanel(ControlPanelForm):
 
     form_fields = form.FormFields(IRegistrationSchema)
 
-    form_fields['join_form_fields'].custom_widget = UserDataWidget
+    form_fields['user_registration_fields'].custom_widget = UserDataWidget
     
     label = _(u"Registration settings")
     description = _(u"Registration settings for this site.")

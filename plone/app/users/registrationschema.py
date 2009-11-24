@@ -7,7 +7,7 @@ from zope.formlib import form
 from zope.app.form.browser import OrderedMultiSelectWidget
 
 from plone.app.users.userdataschema import IUserDataSchemaProvider
-from plone.app.users.browser.joinform import JOIN_CONST
+from plone.app.users.browser.register import JOIN_CONST
 
 from zope.component import getUtility
 
@@ -16,10 +16,10 @@ _ = MessageFactory('plone')
 
 class IRegistrationSchema(Interface):
 
-    join_form_fields = schema.Tuple(
-        title=_(u'title_join_form_fields', default=u'Join form fields'),
+    user_registration_fields = schema.Tuple(
+        title=_(u'title_user_registration_fields', default=u'User registration fields'),
 
-        description=_(u"description_join_form_fields",
+        description=_(u"description_user_registration_fields",
             default=(u"Select the fields for the join form. Fields in the "
             u"right box will be shown on the form, fields on the left are disabled. "
             u"Use the left/right buttons to move a field from right to left (to "
