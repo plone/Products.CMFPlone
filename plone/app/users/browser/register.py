@@ -161,9 +161,6 @@ class RegistrationForm(PageForm):
 
         canSetOwnPassword = not portal.getProperty('validate_email', True)
 
-        securityManager = getSecurityManager()
-        canManageUsers = securityManager.checkPermission('Manage users', self.context)
-
         # Check on required join fields
         #
         if not 'username' in registration_fields and not use_email_as_login:
@@ -341,7 +338,9 @@ class RegistrationForm(PageForm):
     @form.action(_(u'label_register', default=u'Register'),
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
-
+        self.handle_join_success(data)
+    
+    def handle_join_success(self, data):
         portal = getUtility(ISiteRoot)
         registration = getToolByName(self.context, 'portal_registration')
         portal_props = getToolByName(self.context, 'portal_properties')
@@ -411,10 +410,14 @@ class AddUserForm(RegistrationForm):
     @form.action(_(u'label_register', default=u'Register'),
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
-        errors = super(AddUserForm, self).action_join(action, data)
+        errors = super(AddUserForm, self).handle_join_success(data)
         portal_groups = getToolByName(self.context, 'portal_groups')
+        registration = getToolByName(self.context, 'portal_registration')
+
         securityManager = getSecurityManager()
         canManageUsers = securityManager.checkPermission('Manage users', self.context)
+        username = data['username']
+        password = data.get('password', None) or registration.generatePassword()
 
         try:
             registration.addMember(username, password, properties=data,
