@@ -30,10 +30,10 @@ from plone.protect import CheckAuthenticator
 
 # Define constants from the Join schema that should be added to the
 # vocab of the join fields setting in usergroupssettings controlpanel.
-JOIN_CONST = ['username', 'password', 'email', 'mail_me', 'groups']
+JOIN_CONST = ['username', 'password', 'email', 'mail_me']
 
 
-class IJoinSchema(Interface):
+class IRegisterSchema(Interface):
 
     username = schema.ASCIILine(
         title=_(u'label_user_name', default=u'User Name'),
@@ -61,6 +61,8 @@ class IJoinSchema(Interface):
         title=_(u'label_mail_password',
                 default=u"Send a mail with the password"),
         default=False)
+
+class IAddUserSchema(Interface):
 
     groups = schema.List(title=_(u'label_add_to_groups', default=u'Add to the following groups:'),
                             description=u'',
@@ -134,7 +136,7 @@ def getGroupIds(context):
     groups.remove('AuthenticatedUsers') # Omit virtual group
     return SimpleVocabulary.fromValues(groups)
 
-class JoinForm(PageForm):
+class RegistrationForm(PageForm):
 
     """ Dynamically get fields from user data, through admin
         config settings.
@@ -155,7 +157,7 @@ class JoinForm(PageForm):
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
-        join_fields = list(props.getProperty('join_form_fields'))
+        registration_fields = list(props.getProperty('user_registration_fields'))
 
         canSetOwnPassword = not portal.getProperty('validate_email', True)
 
@@ -164,54 +166,48 @@ class JoinForm(PageForm):
 
         # Check on required join fields
         #
-        if not 'username' in join_fields and not use_email_as_login:
-            join_fields.insert(0, 'username')
+        if not 'username' in registration_fields and not use_email_as_login:
+            registration_fields.insert(0, 'username')
 
-        if 'username' in join_fields and use_email_as_login:
-            join_fields.remove('username')
+        if 'username' in registration_fields and use_email_as_login:
+            registration_fields.remove('username')
 
-        if not 'email' in join_fields:
+        if not 'email' in registration_fields:
             # Perhaps only when use_email_as_login is true, but also
             # for some other cases; the email field has always been
             # required.
-            join_fields.append('email')
-
-        # Insert groups field last. Note - it may be removed again later if
-        # the user doesn't have permissions for it, but we don't want to 
-        # complicate things here where we're worrying about ordering
-        if not 'groups' in join_fields:
-            join_fields.insert(-1, 'groups')
+            registration_fields.append('email')
 
         if canSetOwnPassword:
             # Add password if needed
             #
-            if not 'password' in join_fields:
-                if 'username' in join_fields:
-                    base = join_fields.index('username')
+            if not 'password' in registration_fields:
+                if 'username' in registration_fields:
+                    base = registration_fields.index('username')
                 else:
-                    base = join_fields.index('email')
-                join_fields.insert(base + 1, 'password')
+                    base = registration_fields.index('email')
+                registration_fields.insert(base + 1, 'password')
 
             # Add password_ctl after password
             #
-            if not 'password_ctl' in join_fields:
-                join_fields.insert(join_fields.index('password') + 1,
+            if not 'password_ctl' in registration_fields:
+                registration_fields.insert(registration_fields.index('password') + 1,
                                    'password_ctl')
 
             # Add email_me after password_ctl
             #
-            if not 'mail_me' in join_fields:
-                join_fields.insert(join_fields.index('password_ctl') + 1,
+            if not 'mail_me' in registration_fields:
+                registration_fields.insert(registration_fields.index('password_ctl') + 1,
                                    'mail_me')
 
         # Can the user actually set his/her own password? If not, skip
         # password fields in final list.
         #
         if not canSetOwnPassword:
-            if 'password' in join_fields:
-                del join_fields[join_fields.index('password')]
-            if 'password_ctl' in join_fields:
-                del join_fields[join_fields.index('password_ctl')]
+            if 'password' in registration_fields:
+                del registration_fields[registration_fields.index('password')]
+            if 'password_ctl' in registration_fields:
+                del registration_fields[registration_fields.index('password_ctl')]
 
         # We need fields from both schemata here.
         #
@@ -219,10 +215,8 @@ class JoinForm(PageForm):
         util = getUtility(IUserDataSchemaProvider)
         schema = util.getSchema()
 
-        all_fields = form.Fields(schema) + form.Fields(IJoinSchema)
- 
-        all_fields['groups'].custom_widget = MultiCheckBoxVocabularyWidget
-        
+        all_fields = form.Fields(schema) + form.Fields(IRegisterSchema)
+         
         all_fields['fullname'].custom_widget = FullNameWidget
         if use_email_as_login:
             all_fields['email'].custom_widget = EmailAsLoginWidget
@@ -232,16 +226,11 @@ class JoinForm(PageForm):
         if portal.validate_email:
             all_fields['mail_me'].custom_widget = CantChoosePasswordWidget
         
-        # Last sanity check: get rid of fields that e.g. anonymous users
-        # shouldn't be able to see
-        if not canManageUsers:
-            join_fields.remove('groups')
-
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.
         #
 
-        return form.Fields(*[all_fields[id] for id in join_fields])
+        return form.Fields(*[all_fields[id] for id in registration_fields])
 
     # Actions validators
     def validate_registration(self, action, data):
@@ -257,7 +246,7 @@ class JoinForm(PageForm):
 
         registration = getToolByName(self.context, 'portal_registration')
 
-        errors = super(JoinForm, self).validate(action, data)
+        errors = super(RegistrationForm, self).validate(action, data)
         # ConversionErrors have no field_name attribute... :-(
         error_keys = [error.field_name for error in errors
                       if hasattr(error, 'field_name')]
@@ -358,10 +347,6 @@ class JoinForm(PageForm):
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
-        portal_groups = getToolByName(self.context, 'portal_groups')
-
-        securityManager = getSecurityManager()
-        canManageUsers = securityManager.checkPermission('Manage users', self.context)
 
         if use_email_as_login:
             # The username field is not shown as the email is going to
@@ -375,22 +360,6 @@ class JoinForm(PageForm):
         username = data['username']
 
         password = data.get('password') or registration.generatePassword()
-
-        try:
-            registration.addMember(username, password, properties=data,
-                                   REQUEST=self.request)
-
-            # Add user to the selected group(s)
-            if data.has_key('groups') and canManageUsers:
-                add = data['groups']
-                for groupname in add:
-                    group = portal_groups.getGroupById(groupname)
-                    group.addMember(username, REQUEST=self.request)
-
-        except (AttributeError, ValueError), err:
-
-            IStatusMessage(self.request).addStatusMessage(err, type="error")
-            return
 
         if portal.validate_email or data.get('mail_me', 0):
             try:
@@ -420,13 +389,49 @@ class JoinForm(PageForm):
                           "address: ${address}",
                           mapping={u'address': data.get('email', '')}))
 
-        if self.came_from_prefs:
-            IStatusMessage(self.request).addStatusMessage(
-                _(u"User added."), type='info')
-            self.request.response.redirect(self.context.absolute_url() + '/@@usergroup-userprefs')
         else:
             return self.context.unrestrictedTraverse('registered')()
 
+class AddUserForm(RegistrationForm):
+
+    label = _(u'heading_add_user_form', default=u'Add New User')
+    description = u""
+
     @property
-    def came_from_prefs(self):
-        return self.request.form.get('came_from_prefs')
+    def form_fields(self):
+        defaultFields = super(AddUserForm, self).form_fields
+
+        # Append the manager-focused fields
+        allFields = defaultFields + form.Fields(IAddUserSchema)
+
+        allFields['groups'].custom_widget = MultiCheckBoxVocabularyWidget
+
+        return allFields
+
+    @form.action(_(u'label_register', default=u'Register'),
+                 validator='validate_registration', name=u'register')
+    def action_join(self, action, data):
+        errors = super(AddUserForm, self).action_join(action, data)
+        portal_groups = getToolByName(self.context, 'portal_groups')
+        securityManager = getSecurityManager()
+        canManageUsers = securityManager.checkPermission('Manage users', self.context)
+
+        try:
+            registration.addMember(username, password, properties=data,
+                                   REQUEST=self.request)
+
+            # Add user to the selected group(s)
+            if data.has_key('groups') and canManageUsers:
+                add = data['groups']
+                for groupname in add:
+                    group = portal_groups.getGroupById(groupname)
+                    group.addMember(username, REQUEST=self.request)
+
+        except (AttributeError, ValueError), err:
+
+            IStatusMessage(self.request).addStatusMessage(err, type="error")
+            return
+
+        IStatusMessage(self.request).addStatusMessage(
+            _(u"User added."), type='info')
+        self.request.response.redirect(self.context.absolute_url() + '/@@usergroup-userprefs')
