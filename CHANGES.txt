@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Point the users overview 'add user' button to the new @@new-user form.
+  [esteele]
+
 - Rephrased debug-mode info. 
   This closes http://dev.plone.org/plone/ticket/9788
   [naro]
