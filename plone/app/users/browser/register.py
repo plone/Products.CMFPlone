@@ -432,4 +432,4 @@ class AddUserForm(BaseRegistrationForm):
 
         IStatusMessage(self.request).addStatusMessage(
             _(u"User added."), type='info')
-        self.request.response.redirect(self.context.absolute_url() + '/@@usergroup-userprefs')
+        self.request.response.redirect(self.context.absolute_url() + '/@@usergroup-userprefs?searchstring=' + username)
