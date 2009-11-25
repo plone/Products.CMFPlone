@@ -4,6 +4,10 @@ Changelog
 1.0a2 - Unreleased
 ------------------
 
+- @@new-user form will now always show the password fields, regardless of the
+  site settings. 
+  [esteele]
+
 - Change registration form name @@join_form to @@register. Change class names
   accordingly. Added an "@@new-user" form to be used from the control panel.
   "Add to group" functionality now lives there. We can now get rid of the 

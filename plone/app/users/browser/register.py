@@ -65,9 +65,9 @@ class IRegisterSchema(Interface):
 class IAddUserSchema(Interface):
 
     groups = schema.List(title=_(u'label_add_to_groups', default=u'Add to the following groups:'),
-                            description=u'',
-                            required=False,
-                            value_type=schema.Choice(vocabulary='Group Ids'))
+                         description=u'',
+                         required=False,
+                         value_type=schema.Choice(vocabulary='Group Ids'))
 
 def FullNameWidget(field, request):
     """Widget for fullname field.
@@ -136,48 +136,37 @@ def getGroupIds(context):
     groups.remove('AuthenticatedUsers') # Omit virtual group
     return SimpleVocabulary.fromValues(groups)
 
-class RegistrationForm(PageForm):
+class BaseRegistrationForm(PageForm):
+        label = u""
+        description = u""
+        template = ViewPageTemplateFile('pageform_no_portlets.pt')
 
-    """ Dynamically get fields from user data, through admin
-        config settings.
-    """
+        @property
+        def form_fields(self):
 
-    label = _(u'heading_registration_form', default=u'Registration Form')
-    description = u""
-    template = ViewPageTemplateFile('pageform_no_portlets.pt')
+            """ form_fields is dynamic in this form, to be able to handle
+            different join styles.
+            """
 
-    @property
-    def form_fields(self):
+            portal = getUtility(ISiteRoot)
+            portal_props = getToolByName(self.context, 'portal_properties')
+            props = portal_props.site_properties
+            use_email_as_login = props.getProperty('use_email_as_login')
+            registration_fields = list(props.getProperty('user_registration_fields'))
 
-        """ form_fields is dynamic in this form, to be able to handle
-        different join styles.
-        """
+            # Check on required join fields
+            if not 'username' in registration_fields and not use_email_as_login:
+                registration_fields.insert(0, 'username')
 
-        portal = getUtility(ISiteRoot)
-        portal_props = getToolByName(self.context, 'portal_properties')
-        props = portal_props.site_properties
-        use_email_as_login = props.getProperty('use_email_as_login')
-        registration_fields = list(props.getProperty('user_registration_fields'))
+            if 'username' in registration_fields and use_email_as_login:
+                registration_fields.remove('username')
 
-        canSetOwnPassword = not portal.getProperty('validate_email', True)
+            if not 'email' in registration_fields:
+                # Perhaps only when use_email_as_login is true, but also
+                # for some other cases; the email field has always been
+                # required.
+                registration_fields.append('email')
 
-        # Check on required join fields
-        #
-        if not 'username' in registration_fields and not use_email_as_login:
-            registration_fields.insert(0, 'username')
-
-        if 'username' in registration_fields and use_email_as_login:
-            registration_fields.remove('username')
-
-        if not 'email' in registration_fields:
-            # Perhaps only when use_email_as_login is true, but also
-            # for some other cases; the email field has always been
-            # required.
-            registration_fields.append('email')
-
-        if canSetOwnPassword:
-            # Add password if needed
-            #
             if not 'password' in registration_fields:
                 if 'username' in registration_fields:
                     base = registration_fields.index('username')
@@ -186,212 +175,218 @@ class RegistrationForm(PageForm):
                 registration_fields.insert(base + 1, 'password')
 
             # Add password_ctl after password
-            #
             if not 'password_ctl' in registration_fields:
                 registration_fields.insert(registration_fields.index('password') + 1,
                                    'password_ctl')
 
             # Add email_me after password_ctl
-            #
             if not 'mail_me' in registration_fields:
                 registration_fields.insert(registration_fields.index('password_ctl') + 1,
                                    'mail_me')
 
-        # Can the user actually set his/her own password? If not, skip
-        # password fields in final list.
-        #
-        if not canSetOwnPassword:
-            if 'password' in registration_fields:
-                del registration_fields[registration_fields.index('password')]
-            if 'password_ctl' in registration_fields:
-                del registration_fields[registration_fields.index('password_ctl')]
+            # We need fields from both schemata here.
+            util = getUtility(IUserDataSchemaProvider)
+            schema = util.getSchema()
 
-        # We need fields from both schemata here.
-        #
+            all_fields = form.Fields(schema) + form.Fields(IRegisterSchema)
 
-        util = getUtility(IUserDataSchemaProvider)
-        schema = util.getSchema()
+            all_fields['fullname'].custom_widget = FullNameWidget
+            if use_email_as_login:
+                all_fields['email'].custom_widget = EmailAsLoginWidget
+            else:
+                all_fields['email'].custom_widget = EmailWidget
 
-        all_fields = form.Fields(schema) + form.Fields(IRegisterSchema)
-         
-        all_fields['fullname'].custom_widget = FullNameWidget
-        if use_email_as_login:
-            all_fields['email'].custom_widget = EmailAsLoginWidget
-        else:
-            all_fields['email'].custom_widget = EmailWidget
+            # Pass the list of join form fields as a reference to the
+            # Fields constructor, and return.
+            return form.Fields(*[all_fields[id] for id in registration_fields])
 
-        if portal.validate_email:
-            all_fields['mail_me'].custom_widget = CantChoosePasswordWidget
-        
-        # Pass the list of join form fields as a reference to the
-        # Fields constructor, and return.
-        #
+        # Actions validators
+        def validate_registration(self, action, data):
+            """
+            specific business logic for this join form
+            note: all this logic was taken directly from the old
+            validate_registration.py script in
+            Products/CMFPlone/skins/plone_login/join_form_validate.vpy
+            """
 
-        return form.Fields(*[all_fields[id] for id in registration_fields])
+            # CSRF protection
+            CheckAuthenticator(self.request)
 
-    # Actions validators
-    def validate_registration(self, action, data):
-        """
-        specific business logic for this join form
-        note: all this logic was taken directly from the old
-        validate_registration.py script in
-        Products/CMFPlone/skins/plone_login/join_form_validate.vpy
-        """
+            registration = getToolByName(self.context, 'portal_registration')
 
-        # CSRF protection
-        CheckAuthenticator(self.request)
+            errors = super(RegistrationForm, self).validate(action, data)
+            # ConversionErrors have no field_name attribute... :-(
+            error_keys = [error.field_name for error in errors
+                          if hasattr(error, 'field_name')]
 
-        registration = getToolByName(self.context, 'portal_registration')
+            form_field_names = [f.field.getName() for f in self.form_fields]
 
-        errors = super(RegistrationForm, self).validate(action, data)
-        # ConversionErrors have no field_name attribute... :-(
-        error_keys = [error.field_name for error in errors
-                      if hasattr(error, 'field_name')]
-
-        form_field_names = [f.field.getName() for f in self.form_fields]
-
-        portal = getUtility(ISiteRoot)
-        portal_props = getToolByName(self.context, 'portal_properties')
-        props = portal_props.site_properties
-        use_email_as_login = props.getProperty('use_email_as_login')
-
-        # passwords should match
-        if 'password' in form_field_names:
-            assert('password_ctl' in form_field_names)
-            # Skip this check if password fields already have an error
-            if not ('password' in error_keys or \
-                    'password_ctl' in error_keys):
-                password = self.widgets['password'].getInputValue()
-                password_ctl = self.widgets['password_ctl'].getInputValue()
-                if password != password_ctl:
-                    err_str = _(u'Passwords do not match.')
-                    errors.append(WidgetInputError('password',
-                                  u'label_password', err_str))
-                    errors.append(WidgetInputError('password_ctl',
-                                  u'label_password', err_str))
-                    self.widgets['password'].error = err_str
-                    self.widgets['password_ctl'].error = err_str
-
-
-        # Password field should have a minimum length of 5
-        if 'password' in form_field_names:
-            # Skip this check if password fields already have an error
-            if not 'password' in error_keys:
-                password = self.widgets['password'].getInputValue()
-                if len(password) < 5:
-                    err_str = _(u'Passwords must contain at least 5 letters.')
-                    errors.append(WidgetInputError(
-                            'password', u'label_password', err_str))
-                    self.widgets['password'].error = err_str
-
-
-        username = ''
-        email = ''
-        try:
-            email = self.widgets['email'].getInputValue()
-        except InputErrors, exc:
-            # WrongType?
-            errors.append(exc)
-        if use_email_as_login:
-            username_field = 'email'
-            username = email
-        else:
-            username_field = 'username'
-            try:
-                username = self.widgets['username'].getInputValue()
-            except InputErrors, exc:
-                errors.append(exc)
-
-        # check if username is valid
-        # Skip this check if username was already in error list
-        if not username_field in error_keys:
             portal = getUtility(ISiteRoot)
-            if username == portal.getId():
-                err_str = _(u"This username is reserved. Please choose a "
-                            "different name.")
-                errors.append(WidgetInputError(
-                        username_field, u'label_username', err_str))
-                self.widgets[username_field].error = err_str
+            portal_props = getToolByName(self.context, 'portal_properties')
+            props = portal_props.site_properties
+            use_email_as_login = props.getProperty('use_email_as_login')
+
+            # passwords should match
+            if 'password' in form_field_names:
+                assert('password_ctl' in form_field_names)
+                # Skip this check if password fields already have an error
+                if not ('password' in error_keys or \
+                        'password_ctl' in error_keys):
+                    password = self.widgets['password'].getInputValue()
+                    password_ctl = self.widgets['password_ctl'].getInputValue()
+                    if password != password_ctl:
+                        err_str = _(u'Passwords do not match.')
+                        errors.append(WidgetInputError('password',
+                                      u'label_password', err_str))
+                        errors.append(WidgetInputError('password_ctl',
+                                      u'label_password', err_str))
+                        self.widgets['password'].error = err_str
+                        self.widgets['password_ctl'].error = err_str
 
 
-        # check if username is allowed
-        if not username_field in error_keys:
-            if not registration.isMemberIdAllowed(username):
-                err_str = _(u"The login name you selected is already in use "
-                            "or is not valid. Please choose another.")
-                errors.append(WidgetInputError(
-                        username_field, u'label_username', err_str))
-                self.widgets[username_field].error = err_str
+            # Password field should have a minimum length of 5
+            if 'password' in form_field_names:
+                # Skip this check if password fields already have an error
+                if not 'password' in error_keys:
+                    password = self.widgets['password'].getInputValue()
+                    if len(password) < 5:
+                        err_str = _(u'Passwords must contain at least 5 letters.')
+                        errors.append(WidgetInputError(
+                                'password', u'label_password', err_str))
+                        self.widgets['password'].error = err_str
 
 
-        # Skip this check if email was already in error list
-        if not 'email' in error_keys:
-            if 'email' in form_field_names:
-                if not registration.isValidEmail(email):
-                    err_str = _(u'You must enter a valid email address.')
-                    errors.append(WidgetInputError(
-                            'email', u'label_email', err_str))
-                    self.widgets['email'].error = err_str
-
-        return errors
-
-    @form.action(_(u'label_register', default=u'Register'),
-                 validator='validate_registration', name=u'register')
-    def action_join(self, action, data):
-        self.handle_join_success(data)
-    
-    def handle_join_success(self, data):
-        portal = getUtility(ISiteRoot)
-        registration = getToolByName(self.context, 'portal_registration')
-        portal_props = getToolByName(self.context, 'portal_properties')
-        props = portal_props.site_properties
-        use_email_as_login = props.getProperty('use_email_as_login')
-
-        if use_email_as_login:
-            # The username field is not shown as the email is going to
-            # be the username, but the field *is* needed further down
-            # the line.
-            data['username'] = data['email']
-            # Set username in the form; at least needed for logging in
-            # immediately when password reset is bypassed.
-            self.request.form['form.username'] = data['email']
-
-        username = data['username']
-
-        password = data.get('password') or registration.generatePassword()
-
-        if portal.validate_email or data.get('mail_me', 0):
+            username = ''
+            email = ''
             try:
-                registration.registeredNotify(username)
-            except ConflictError:
-                # Let Zope handle this exception.
-                raise
-            except Exception:
-                if portal.validate_email:
-                    IStatusMessage(self.request).addStatusMessage(
-                        _(u"Couldn't send mail"), type="error")
+                email = self.widgets['email'].getInputValue()
+            except InputErrors, exc:
+                # WrongType?
+                errors.append(exc)
+            if use_email_as_login:
+                username_field = 'email'
+                username = email
+            else:
+                username_field = 'username'
+                try:
+                    username = self.widgets['username'].getInputValue()
+                except InputErrors, exc:
+                    errors.append(exc)
 
-                    self.context.acl_users.userFolderDelUsers(
-                        [username], REQUEST=self.request)
-                    self.status = (
-                        _(u'status_fatal_password_mail',
-                          default=u"Failed to create your account: we were "
-                          "unable to send your password to your email "
-                          "address: ${address}",
-                          mapping={u'address': data.get('email', '')}))
-                    return
-                else:
-                    self.status = (
-                        _(u'status_nonfatal_password_mail',
-                          default=u"You account has been created, but we were "
-                          "unable to send your password to your email "
-                          "address: ${address}",
-                          mapping={u'address': data.get('email', '')}))
+            # check if username is valid
+            # Skip this check if username was already in error list
+            if not username_field in error_keys:
+                portal = getUtility(ISiteRoot)
+                if username == portal.getId():
+                    err_str = _(u"This username is reserved. Please choose a "
+                                "different name.")
+                    errors.append(WidgetInputError(
+                            username_field, u'label_username', err_str))
+                    self.widgets[username_field].error = err_str
 
-        else:
+
+            # check if username is allowed
+            if not username_field in error_keys:
+                if not registration.isMemberIdAllowed(username):
+                    err_str = _(u"The login name you selected is already in use "
+                                "or is not valid. Please choose another.")
+                    errors.append(WidgetInputError(
+                            username_field, u'label_username', err_str))
+                    self.widgets[username_field].error = err_str
+
+
+            # Skip this check if email was already in error list
+            if not 'email' in error_keys:
+                if 'email' in form_field_names:
+                    if not registration.isValidEmail(email):
+                        err_str = _(u'You must enter a valid email address.')
+                        errors.append(WidgetInputError(
+                                'email', u'label_email', err_str))
+                        self.widgets['email'].error = err_str
+
+            return errors
+
+        @form.action(_(u'label_register', default=u'Register'),
+                     validator='validate_registration', name=u'register')
+        def action_join(self, action, data):
+            return self.handle_join_success(data)
+
+        def handle_join_success(self, data):
+            portal = getUtility(ISiteRoot)
+            registration = getToolByName(self.context, 'portal_registration')
+            portal_props = getToolByName(self.context, 'portal_properties')
+            props = portal_props.site_properties
+            use_email_as_login = props.getProperty('use_email_as_login')
+
+            if use_email_as_login:
+                # The username field is not shown as the email is going to
+                # be the username, but the field *is* needed further down
+                # the line.
+                data['username'] = data['email']
+                # Set username in the form; at least needed for logging in
+                # immediately when password reset is bypassed.
+                self.request.form['form.username'] = data['email']
+
+            username = data['username']
+
+            password = data.get('password') or registration.generatePassword()
+            if portal.validate_email or data.get('mail_me', 0):
+                try:
+                    registration.registeredNotify(username)
+                except ConflictError:
+                    # Let Zope handle this exception.
+                    raise
+                except Exception:
+                    if portal.validate_email:
+                        IStatusMessage(self.request).addStatusMessage(
+                            _(u"Couldn't send mail"), type="error")
+
+                        self.context.acl_users.userFolderDelUsers(
+                            [username], REQUEST=self.request)
+                        self.status = (
+                            _(u'status_fatal_password_mail',
+                              default=u"Failed to create your account: we were "
+                              "unable to send your password to your email "
+                              "address: ${address}",
+                              mapping={u'address': data.get('email', '')}))
+                        return
+                    else:
+                        self.status = (
+                            _(u'status_nonfatal_password_mail',
+                              default=u"You account has been created, but we were "
+                              "unable to send your password to your email "
+                              "address: ${address}",
+                              mapping={u'address': data.get('email', '')}))
+
+            
             return self.context.unrestrictedTraverse('registered')()
 
-class AddUserForm(RegistrationForm):
+class RegistrationForm(BaseRegistrationForm):
+    """ Dynamically get fields from user data, through admin
+        config settings.
+    """
+    label = _(u'heading_registration_form', default=u'Registration Form')
+    description = u""
+
+    @property
+    def form_fields(self):
+        portal = getUtility(ISiteRoot)
+        portal_props = getToolByName(self.context, 'portal_properties')
+        props = portal_props.site_properties
+        use_email_as_login = props.getProperty('use_email_as_login')
+        registration_fields = list(props.getProperty('user_registration_fields'))
+
+        defaultFields = super(RegistrationForm, self).form_fields
+        # Can the user actually set his/her own password? 
+        if portal.getProperty('validate_email', True):
+            # No? Remove the password fields.
+            defaultFields = defaultFields.omit('password', 'password_ctl')
+            # Show a message indicating that the password will be mailed to the user.
+            defaultFields['mail_me'].custom_widget = CantChoosePasswordWidget
+
+        return defaultFields
+        
+class AddUserForm(BaseRegistrationForm):
 
     label = _(u'heading_add_user_form', default=u'Add New User')
     description = u""
