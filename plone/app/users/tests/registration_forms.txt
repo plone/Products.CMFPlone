@@ -1,0 +1,145 @@
+Testing the flexible user registration
+======================================
+
+    >>> browser = self.browser
+    >>> browser.open('http://nohost/plone')
+
+    Self-registration is disabled, user does not see 'Register' link.
+    >>> 'Register' in browser.contents
+    False
+    
+    Enable self-registration
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl('Enable self-registration').selected = True
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+    
+    >>> browser.getLink(url='http://nohost/plone/logout').click()
+    >>> 'Log in' in browser.contents
+    True
+    
+    Logged out user should now see the register link.
+    >>> 'Register' in browser.contents
+    True
+    
+    >>> browser.getLink('Register').click()
+    >>> '@@register' in browser.url
+    True
+    
+    Check that password is not displayed by default
+    >>> 'User Name' in browser.contents
+    True
+    >>> 'Password' in browser.contents
+    False
+    >>> 'Confirm password' in browser.contents
+    False
+
+    Ensure that fields are being validated
+    >>> browser.getControl('Register').click()
+    >>> browser.contents
+    '...There were errors...User Name...Required input is missing...E-mail...Required input is missing...'
+    
+    Fill out the form. 
+    >>> browser.getControl('User Name').value = 'user1'
+    >>> browser.getControl('E-mail').value = 'user1@foo.com'
+    >>> browser.getControl('Register').click()
+    
+    Oops, the mailhost isn't set...
+    >>> "we were unable to send your password to your email address" in browser.contents
+    True
+    
+    Enable user ability to set their own password.
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl('Let users select their own passwords').selected = True
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+    
+    >>> browser.getLink(url='http://nohost/plone/logout').click()
+    >>> 'Log in' in browser.contents
+    True
+    
+    >>> browser.getLink('Register').click()
+    >>> '@@register' in browser.url
+    True
+    
+    Check that password is now displayed
+    >>> 'Password' in browser.contents
+    True
+    >>> 'Confirm password' in browser.contents
+    True
+    
+    Fill out the form.
+    >>> browser.getControl('User Name').value = 'user1'
+    >>> browser.getControl('E-mail').value = 'user1@foo.com'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Confirm password').value = 'secret'
+    >>> browser.getControl('Register').click()
+    >>> browser.contents
+    '...Welcome!...You have been registered...'
+    
+    Great! The user-facing form works. Let's try the manager's version...
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> browser.getControl('Add New User').click()
+    >>> '@@new-user' in browser.url
+    True
+    
+    Check that password, mail prompt, and groups are displayed.
+    >>> 'Password' in browser.contents
+    True
+    >>> 'Confirm password' in browser.contents
+    True
+    >>> 'Send a mail with the password' in browser.contents
+    True
+    >>> 'Add to the following groups' in browser.contents
+    True
+    
+    Turn off the ability for users to set their own passwords.
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl('Let users select their own passwords').selected = False
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+    
+    Check that password, mail prompt, and groups are still displayed.
+    >>> browser.open('http://nohost/plone/@@new-user')
+    >>> 'Password' in browser.contents
+    True
+    >>> 'Confirm password' in browser.contents
+    True
+    >>> 'Send a mail with the password' in browser.contents
+    True
+    >>> 'Add to the following groups' in browser.contents
+    True
+    
+    Fill out the form.
+    >>> browser.getControl('User Name').value = 'user2'
+    >>> browser.getControl('E-mail').value = 'user2@foo.com'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Confirm password').value = 'secret'
+    >>> browser.getControl('Reviewers').selected = True
+    >>> browser.getControl('Register').click()
+    >>> '@@usergroup-userprefs' in browser.url
+    True
+    >>> browser.contents
+    '...User added...user2...'
+    
+    Check that the selected group has been applied.
+    >>> browser.getLink('user2').click()
+    >>> browser.getLink('Group Memberships').click()
+    >>> browser.contents
+    '...Current Group Memberships...Reviewers...'
+    

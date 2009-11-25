@@ -214,7 +214,7 @@ class BaseRegistrationForm(PageForm):
 
             registration = getToolByName(self.context, 'portal_registration')
 
-            errors = super(RegistrationForm, self).validate(action, data)
+            errors = super(BaseRegistrationForm, self).validate(action, data)
             # ConversionErrors have no field_name attribute... :-(
             error_keys = [error.field_name for error in errors
                           if hasattr(error, 'field_name')]

@@ -14,6 +14,7 @@ OPTIONFLAGS = (doctest.ELLIPSIS |
 
 def test_suite():
     tests = ['flexible_user_registration.txt',
+             'registration_forms.txt'
              ]
     suite = TestSuite()
     for test in tests:
