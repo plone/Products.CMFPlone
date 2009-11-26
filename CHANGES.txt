@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- plone.manage_portlets_fallback viewlet's implementation
+  http://dev.plone.org/plone/ticket/9808
+  [spliter]
+
 - Only show diff and revert buttons for most recent version if it
   differs from the working copy.
   http://dev.plone.org/plone/ticket/9803
