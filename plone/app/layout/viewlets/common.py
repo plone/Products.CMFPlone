@@ -230,6 +230,29 @@ class PersonalBarViewlet(ViewletBase):
                 self.user_name = userid
 
 
+class ManagePortletsFallbackViewlet(ViewletBase):
+    """Manage portlets fallback link that sits below content"""
+
+    index = ViewPageTemplateFile('manage_portlets_fallback.pt')
+    
+    def update(self):
+        ploneview = getMultiAdapter((self.context, self.request), name=u'plone')
+        context_state = getMultiAdapter((self.context, self.request),
+                                         name=u'plone_context_state')
+                                         
+        self.portlet_assignable = context_state.portlet_assignable()
+        self.sl = ploneview.have_portlets('plone.leftcolumn', self.context)
+        self.sr = ploneview.have_portlets('plone.rightcolumn', self.context)        
+        self.canonical_object_url = context_state.canonical_object_url()
+        
+    def available(self):
+        secman = getSecurityManager()        
+        if not secman.checkPermission('Portlets: Manage portlets', self.context):
+            return False
+        elif not self.sl and not self.sr and self.portlet_assignable:
+            return True
+    
+
 class PathBarViewlet(ViewletBase):
     index = ViewPageTemplateFile('path_bar.pt')
 
