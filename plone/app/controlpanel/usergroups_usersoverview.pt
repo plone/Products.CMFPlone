@@ -45,9 +45,13 @@
               </li>
             </ul>
         </div>
+        
+        <div class="contentActions">
+          &nbsp;
+        </div>
 
-            <div class="documentContent" id="content">
-                <a name="documentContent"></a>
+        <div class="documentContent" id="content">
+            <a name="documentContent"></a>
 
       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
