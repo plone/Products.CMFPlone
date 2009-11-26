@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- properly placed path bar above the content.
+  http://dev.plone.org/plone/ticket/9860
+  [spliter]
+
 - plone.manage_portlets_fallback viewlet's implementation
   http://dev.plone.org/plone/ticket/9808
   [spliter]

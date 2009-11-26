@@ -247,7 +247,7 @@
     <!-- The breadcrumbs -->
     <browser:viewlet
         name="plone.path_bar"
-        manager=".interfaces.IAboveContentTitle"
+        manager=".interfaces.IPortalTop"
         class=".common.PathBarViewlet"
         permission="zope2.View" 
         />
