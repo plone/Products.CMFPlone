@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- "Users", "Groups" and "Settings" configlets' views are polished visually 
+  to follow rest of configlets. Fixes #9825
+  [spliter]
+
 - Point the users overview 'add user' button to the new @@new-user form.
   [esteele]
 
