@@ -4,6 +4,10 @@ Changelog
 1.0a2 - Unreleased
 ------------------
 
+- "User/Groups Settings" configlet view is polished visually to follow rest of 
+  configlets in "Users and Groups" control panel. Ref. #9825
+  [spliter]
+
 - For "User/Groups Settings" configlet highlighted "Member registration" tab 
   instead of the wrong "Settings"
   [spliter]
