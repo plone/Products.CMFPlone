@@ -86,6 +86,19 @@ Testing the flexible user registration
     >>> browser.getControl('Register').click()
     >>> browser.contents
     '...Welcome!...You have been registered...'
+
+    See if this user can actually log in and log out again:
+    >>> browser.getLink('Log in').click()
+    >>> browser.url.startswith('http://nohost/plone/login_form')
+    True
+    >>> browser.getControl('Login Name').value = 'user1'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> "You are now logged in" in browser.contents
+    True
+    >>> browser.getLink('Log out').click()
+    >>> "You are now logged out" in browser.contents
+    True
     
     Great! The user-facing form works. Let's try the manager's version...
     >>> browser.open('http://nohost/plone/login_form')
