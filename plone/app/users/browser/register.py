@@ -358,7 +358,7 @@ class BaseRegistrationForm(PageForm):
                               "address: ${address}",
                               mapping={u'address': data.get('email', '')}))
 
-            
+
             return self.context.unrestrictedTraverse('registered')()
 
 class RegistrationForm(BaseRegistrationForm):
@@ -377,7 +377,7 @@ class RegistrationForm(BaseRegistrationForm):
         registration_fields = list(props.getProperty('user_registration_fields'))
 
         defaultFields = super(RegistrationForm, self).form_fields
-        # Can the user actually set his/her own password? 
+        # Can the user actually set his/her own password?
         if portal.getProperty('validate_email', True):
             # No? Remove the password fields.
             defaultFields = defaultFields.omit('password', 'password_ctl')
@@ -385,7 +385,7 @@ class RegistrationForm(BaseRegistrationForm):
             defaultFields['mail_me'].custom_widget = CantChoosePasswordWidget
 
         return defaultFields
-        
+
 class AddUserForm(BaseRegistrationForm):
 
     label = _(u'heading_add_user_form', default=u'Add New User')

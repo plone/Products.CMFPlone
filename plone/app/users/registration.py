@@ -47,7 +47,7 @@ class RegistrationControlPanel(ControlPanelForm):
     form_fields = form.FormFields(IRegistrationSchema)
 
     form_fields['user_registration_fields'].custom_widget = UserDataWidget
-    
+
     label = _(u"Registration settings")
     description = _(u"Registration settings for this site.")
     form_name = _(u"Registration settings")

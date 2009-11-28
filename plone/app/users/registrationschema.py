@@ -35,9 +35,9 @@ def UserDataWidget(field, request):
 
     util = getUtility(IUserDataSchemaProvider)
     schema = util.getSchema()
-    
+
     schemaFieldNames = getFieldNames(schema)
-    
+
     values = [(f.__name__, f.__name__) for f in form.Fields(schema)]
     values = values + [(val, val) for val in JOIN_CONST if val not in schemaFieldNames]
 

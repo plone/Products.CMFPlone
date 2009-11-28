@@ -9,7 +9,7 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_content">
-    
+
     <div id="region-content" class="documentEditable">
 
       <div id="edit-bar">
@@ -36,19 +36,19 @@
             </li>
           </ul>
       </div>
-      
+
       <div class="contentActions">
         &nbsp;
       </div>
-      
+
       <div class="documentContent" id="content">
           <a name="documentContent"></a>
-      
+
       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
       </div>
       <metal:block use-macro="view/base_template/macros/header" />
-      
+
 
       <div class="configlet">
         <h1 class="documentFirstHeading"
@@ -60,9 +60,9 @@
            i18n:translate="label_up_to_plone_setup">
           Up to Site Setup
         </a>
-    
+
         <metal:block use-macro="view/base_template/macros/master" />
-    
+
       </div>
     </div>
     </div>
