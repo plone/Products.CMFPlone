@@ -432,7 +432,7 @@ class AddUserForm(BaseRegistrationForm):
                                    REQUEST=self.request)
 
             # Add user to the selected group(s)
-            if data.has_key('groups') and canManageUsers:
+            if 'groups' in data.keys() and canManageUsers:
                 add = data['groups']
                 for groupname in add:
                     group = portal_groups.getGroupById(groupname)
