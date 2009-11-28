@@ -3,12 +3,18 @@ Testing the flexible user registration
 
     >>> browser = self.browser
 
-Check that the site admin has a link to the configlet in the control panel.
-    
+First things first... turn on self-registration so that we can see the @@register form.
     >>> browser.open('http://nohost/plone/login_form')
     >>> browser.getControl('Login Name').value = 'admin'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl('Let users select their own passwords').selected = True
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Check that the site admin has a link to the configlet in the control panel.
     >>> browser.open('http://nohost/plone/plone_control_panel')
     >>> browser.getLink('Users and Groups').click()
     >>> 'Member Registration' in browser.contents
@@ -52,7 +58,7 @@ Log out. Assert that we now have the home_page in the join form.
     >>> 'Log in' in browser.contents
     True
     >>> browser.open('http://nohost/plone/@@register')
-    >>> 'Registration Form' in browser.contents
+    >>> 'Registration form' in browser.contents
     True
     >>> 'Home page' in browser.contents
     True
