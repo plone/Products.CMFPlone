@@ -4,6 +4,10 @@ Changelog
 1.0a2 - Unreleased
 ------------------
 
+- Display a message and prevent the user from registering if there is no
+  defined mailhost and users are not allowed to select their own passwords.
+  [esteele]
+
 - "User/Groups Settings" configlet view is polished visually to follow rest of 
   configlets in "Users and Groups" control panel. Ref. #9825
   [spliter]

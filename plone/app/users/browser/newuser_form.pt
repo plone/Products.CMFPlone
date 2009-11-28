@@ -13,8 +13,7 @@
 
 <body>
     <div metal:fill-slot="body" id="content">
-        <div metal:use-macro="context/base-pageform.html/form">
-        </div>
+        <div metal:use-macro="context/base-pageform.html/form" />
     </div>
 </body>
 </html>

@@ -18,7 +18,7 @@ Testing the flexible user registration
     >>> browser.getControl('Save').click()
     >>> 'Changes saved' in browser.contents
     True
-    
+
     >>> browser.getLink(url='http://nohost/plone/logout').click()
     >>> 'Log in' in browser.contents
     True
@@ -30,8 +30,28 @@ Testing the flexible user registration
     >>> browser.getLink('Register').click()
     >>> '@@register' in browser.url
     True
+
+    No mailhost has been set up yet. User should not be able to see the form.
+    >>> browser.contents
+    '...This site...valid email setup...cannot register at this time...'
+    >>> 'User Name' in browser.contents
+    False
     
-    Check that password is not displayed by default
+    Check that the form is not displayed when no mailhost is defined and users
+    cannot choose their own passwords. 
+    >>> 'User Name' in browser.contents
+    False
+    >>> 'Password' in browser.contents
+    False
+    >>> 'Confirm password' in browser.contents
+    False
+
+    Set up a mailhost...
+    >>> self.setMailHost()
+    >>> browser.open('http://nohost/plone/@@register')
+
+    The form should now be visible, sans password, since the user still cannot
+    set it.
     >>> 'User Name' in browser.contents
     True
     >>> 'Password' in browser.contents
@@ -49,11 +69,8 @@ Testing the flexible user registration
     >>> browser.getControl('E-mail').value = 'user1@foo.com'
     >>> browser.getControl('Register').click()
     
-    Oops, the mailhost isn't set...
-    >>> "we were unable to send your password to your email address" in browser.contents
-    True
-    
-    Enable user ability to set their own password.
+    Disable the mailhost and enable user ability to set their own password.
+    >>> self.unsetMailHost()
     >>> browser.open('http://nohost/plone/login_form')
     >>> browser.getControl('Login Name').value = 'admin'
     >>> browser.getControl('Password').value = 'secret'
@@ -63,6 +80,8 @@ Testing the flexible user registration
     >>> browser.getControl('Save').click()
     >>> 'Changes saved' in browser.contents
     True
+    
+    
     
     >>> browser.getLink(url='http://nohost/plone/logout').click()
     >>> 'Log in' in browser.contents
@@ -87,29 +106,21 @@ Testing the flexible user registration
     >>> browser.contents
     '...Welcome!...You have been registered...'
 
-    See if this user can actually log in and log out again:
-    >>> browser.getLink('Log in').click()
-    >>> browser.url.startswith('http://nohost/plone/login_form')
-    True
-    >>> browser.getControl('Login Name').value = 'user1'
-    >>> browser.getControl('Password').value = 'secret'
-    >>> browser.getControl('Log in').click()
-    >>> "You are now logged in" in browser.contents
-    True
-    >>> browser.getLink('Log out').click()
-    >>> "You are now logged out" in browser.contents
-    True
-    
-    Great! The user-facing form works. Let's try the manager's version...
+    Ensure that the user has, in fact, been added.
     >>> browser.open('http://nohost/plone/login_form')
     >>> browser.getControl('Login Name').value = 'admin'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
-    >>> browser.getControl('Add New User').click()
-    >>> '@@new-user' in browser.url
+    >>> 'user1' in browser.contents
     True
     
+    Great! The user-facing form works. Let's try the manager's version...
+    >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> browser.getControl('Add New User').click()
+    >>> '@@new-user' in browser.url
+    True    
+
     Check that password, mail prompt, and groups are displayed.
     >>> 'Password' in browser.contents
     True
@@ -150,9 +161,10 @@ Testing the flexible user registration
     >>> browser.contents
     '...User added...user2...'
     
-    Check that the selected group has been applied.
+    Check that the selected group has been applied to the new user.
     >>> browser.getLink('user2').click()
     >>> browser.getLink('Group Memberships').click()
     >>> browser.contents
     '...Current Group Memberships...Reviewers...'
+    
     

@@ -5,6 +5,7 @@ from zope import schema
 from zope.formlib import form
 from zope.app.form.browser import TextWidget, CheckBoxWidget, ASCIIWidget
 from zope.app.form.interfaces import WidgetInputError, InputErrors
+from zope.component import getMultiAdapter
 
 #from plone.app.controlpanel import PloneMessageFactory as _
 
@@ -145,7 +146,6 @@ def getGroupIds(context):
 class BaseRegistrationForm(PageForm):
     label = u""
     description = u""
-    template = ViewPageTemplateFile('pageform_no_portlets.pt')
 
     @property
     def form_fields(self):
@@ -158,8 +158,7 @@ class BaseRegistrationForm(PageForm):
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
-        registration_fields = list(props.getProperty(
-                'user_registration_fields'))
+        registration_fields = list(props.getProperty('user_registration_fields'))
 
         # Check on required join fields
         if not 'username' in registration_fields and not use_email_as_login:
@@ -256,7 +255,7 @@ class BaseRegistrationForm(PageForm):
             # Skip this check if password fields already have an error
             if not 'password' in error_keys:
                 password = self.widgets['password'].getInputValue()
-                if len(password) < 5:
+                if password and len(password) < 5:
                     err_str = _(u'Passwords must contain at least 5 letters.')
                     errors.append(WidgetInputError(
                             'password', u'label_password', err_str))
@@ -335,9 +334,17 @@ class BaseRegistrationForm(PageForm):
             self.request.form['form.username'] = data['email']
 
         username = data['username']
-
         password = data.get('password') or registration.generatePassword()
-        if portal.validate_email or data.get('mail_me', 0):
+
+        try:
+            registration.addMember(username, password, properties=data,
+                                   REQUEST=self.request)
+        except (AttributeError, ValueError), err:
+            IStatusMessage(self.request).addStatusMessage(err, type="error")
+            return
+            
+        mailRequested = 'mail_me' in data.keys() 
+        if (mailRequested and data.get('mail_me')) or (portal.validate_email and not mailRequested):
             try:
                 registration.registeredNotify(username)
             except ConflictError:
@@ -364,17 +371,17 @@ class BaseRegistrationForm(PageForm):
                           "unable to send your password to your email "
                           "address: ${address}",
                           mapping={u'address': data.get('email', '')}))
-
-
+        
         return self.context.unrestrictedTraverse('registered')()
-
-
+                
 class RegistrationForm(BaseRegistrationForm):
     """ Dynamically get fields from user data, through admin
         config settings.
     """
-    label = _(u'heading_registration_form', default=u'Registration Form')
+    label = _(u'heading_registration_form', default=u'Registration form')
     description = u""
+    template = ViewPageTemplateFile('register_form.pt')
+    
 
     @property
     def form_fields(self):
@@ -396,11 +403,27 @@ class RegistrationForm(BaseRegistrationForm):
 
         return defaultFields
 
+    @property
+    def showForm(self):
+        """The form should not be displayed to the user if the system is 
+           incapable of sending emails and users are not allowed to select 
+           their own passwords.
+        """
+        ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
+        portal = getUtility(ISiteRoot)
+        portal_props = getToolByName(self.context, 'portal_properties')
+        props = portal_props.site_properties
+        
+        # hide form iff mailhost_warning == True and validate_email == True
+        return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
+            
 
+        
 class AddUserForm(BaseRegistrationForm):
 
     label = _(u'heading_add_user_form', default=u'Add New User')
     description = u""
+    template = ViewPageTemplateFile('newuser_form.pt')
 
     @property
     def form_fields(self):
@@ -418,28 +441,19 @@ class AddUserForm(BaseRegistrationForm):
     def action_join(self, action, data):
         errors = super(AddUserForm, self).handle_join_success(data)
         portal_groups = getToolByName(self.context, 'portal_groups')
-        registration = getToolByName(self.context, 'portal_registration')
 
         securityManager = getSecurityManager()
         canManageUsers = securityManager.checkPermission('Manage users',
                                                          self.context)
         username = data['username']
-        password = data.get('password', None) or \
-            registration.generatePassword()
 
         try:
-            registration.addMember(username, password, properties=data,
-                                   REQUEST=self.request)
-
             # Add user to the selected group(s)
             if 'groups' in data.keys() and canManageUsers:
-                add = data['groups']
-                for groupname in add:
+                for groupname in data['groups']:
                     group = portal_groups.getGroupById(groupname)
                     group.addMember(username, REQUEST=self.request)
-
         except (AttributeError, ValueError), err:
-
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
 
