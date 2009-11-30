@@ -22,6 +22,7 @@ def test_suite():
              'site.txt',
              'skins.txt',
              'markup.txt',
+             'navigation.txt',
              'types.txt'
              ]
     suite = TestSuite()

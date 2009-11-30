@@ -8,6 +8,8 @@
 
   <adapter factory=".language.LanguageControlPanelAdapter" />
 
+  <adapter factory=".navigation.NavigationControlPanelAdapter" />
+
   <adapter factory=".mail.MailControlPanelAdapter" />
 
   <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
@@ -71,6 +73,13 @@
       name="maintenance-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".maintenance.MaintenanceControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="navigation-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".navigation.NavigationControlPanel"
       permission="cmf.ManagePortal"
       />
 

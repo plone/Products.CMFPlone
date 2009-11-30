@@ -1,0 +1,81 @@
+Mail control panel
+==================
+
+First some initial setup code:
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> pprop = getToolByName(self, 'portal_properties')
+    >>> siteProps = pprop['site_properties']
+    >>> navProps = pprop['navtree_properties']
+    >>> self.loginAsManager()
+
+Viewing the mail control panel
+--------------------------------
+
+    >>> self.browser.open('http://nohost/plone/@@navigation-controlpanel')
+    >>> self.browser.url.endswith('navigation-controlpanel')
+    True
+
+Click the cancel button:
+
+    >>> self.browser.getControl(name="form.actions.cancel").click()
+    >>> self.browser.url.endswith('plone_control_panel')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
+Make some changes
+-----------------
+
+    >>> self.browser.getLink('Navigation').click()
+    >>> self.browser.url.endswith('navigation-controlpanel')
+    True
+
+    >>> self.browser.getControl('Automatically generate tabs').selected = False
+    >>> self.browser.getControl('Generate tabs for items other than folders').selected = False
+    >>> self.browser.getControl('Show items normally excluded from navigation if viewing their children.').selected = False
+    >>> self.browser.getControl('Collection').selected = False
+    >>> self.browser.getControl('Page').selected = False
+    >>> self.browser.getControl('News Item').selected = False
+    >>> self.browser.getControl('Filter on workflow state').selected = True
+    >>> self.browser.getControl('Private [private]').selected = True
+
+Click the save button:
+
+    >>> self.browser.getControl("Save").click()
+    >>> self.browser.url.endswith('navigation-controlpanel')
+    True
+
+We should be informed that something has changed:
+
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Make sure the changes have been applied correctly:
+
+    >>> siteProps.disable_folder_sections
+    True
+
+    >>> siteProps.disable_nonfolderish_sections
+    True
+    
+    >>> navProps.showAllParents
+    False
+    
+    >>> 'Topic' in navProps.metaTypesNotToList
+    True
+
+    >>> 'Document' in navProps.metaTypesNotToList
+    True
+
+    >>> 'News Item' in navProps.metaTypesNotToList
+    True
+
+    >>> navProps.enable_wf_state_filtering
+    True
+    
+    >>> 'private' in navProps.wf_states_to_show
+    True

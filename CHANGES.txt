@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Move prefs_navigation_form to plone.app.controlpanel as 
+  @@navigation-controlpanel.
+  [esteele]
+
 - "Users", "Groups" and "Settings" configlets' views are polished visually 
   to follow rest of configlets. Fixes #9825
   [spliter]
