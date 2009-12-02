@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Adjusted filter controlpanel tests to new defaults in PortalTransforms.
+  [hannosch]
+
 - Move prefs_navigation_form to plone.app.controlpanel as 
   @@navigation-controlpanel.
   [esteele]

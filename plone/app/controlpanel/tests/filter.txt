@@ -57,8 +57,10 @@ Look at the defaults
     >>> print_all_of('nasty_tags')
     applet
     embed
+    meta
     object
     script
+    style
 
     >>> print_all_of('stripped_tags')
     button
@@ -79,7 +81,10 @@ Look at the defaults
     textarea
 
     >>> print_all_of('custom_tags')
-    u
+    article
+    aside
+    audio
+    ...
 
     >>> print_all_of('stripped_attributes')
     lang
@@ -106,20 +111,23 @@ Changing some values
 Add a new nasty tag
 
     >>> browser.getControl("Add Nasty tags").click()
-    >>> browser.getControl(name="form.nasty_tags.4.").value = "span"
+    >>> browser.getControl(name="form.nasty_tags.6.").value = "span"
     >>> browser.getControl(name="form.actions.save").click()
     >>> print_all_of('nasty_tags')
     applet
     embed
+    meta
     object
     script
     span
+    style
+
     >>> print sorted(safe_html._config['nasty_tags'])
-    [u'applet', u'embed', u'object', u'script', u'span']
+    [u'applet', u'embed', u'meta', u'object', u'script', u'span', u'style']
 
 Adding span to nasty tags should have automatically removed it from the valid tags.
 
-Changing a permitted style 
+Changing a permitted style:
 
     >>> browser.getControl(name="form.style_whitelist.2.").value = "color"
     >>> browser.getControl(name="form.actions.save").click()
@@ -127,9 +135,6 @@ Changing a permitted style
     text-align
     list-style-type
     color
-    >>> print sorted(safe_html._config['style_whitelist'])
-    [u'color', u'list-style-type', u'text-align']
-
 
 Check that the filtering works
 ------------------------------
