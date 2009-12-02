@@ -1,10 +1,10 @@
 Changelog
 =========
 
-2.0b1 - Unreleased
+2.0a2 - 2009-12-02
 ------------------
 
-- properly placed path bar above the content.
+- Properly placed path bar above the content.
   http://dev.plone.org/plone/ticket/9860
   [spliter]
 
@@ -25,6 +25,9 @@ Changelog
 - Pass the creator id to /author/ as a parameter if it contains a '/', such
   as openid users.
   [matthewwilkes]
+
+- Portal logo has to have 'title' attribute for better accessibility.
+  [spliter]
 
 2.0a2 - 2009-11-15
 ------------------
