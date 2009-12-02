@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a2 - Unreleased
+1.0a2 - 2009-12-01
 ------------------
 
 - Display a message and prevent the user from registering if there is no
