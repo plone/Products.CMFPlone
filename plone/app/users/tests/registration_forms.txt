@@ -66,8 +66,17 @@ Testing the flexible user registration
     
     Fill out the form. 
     >>> browser.getControl('User Name').value = 'user1'
-    >>> browser.getControl('E-mail').value = 'user1@foo.com'
+    >>> browser.getControl('E-mail').value = 'user1@example.com'
     >>> browser.getControl('Register').click()
+
+    Ensure that the user has, in fact, been added.
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> 'user1' in browser.contents
+    True
     
     Disable the mailhost and enable user ability to set their own password.
     >>> self.unsetMailHost()
@@ -98,11 +107,12 @@ Testing the flexible user registration
     True
     
     Fill out the form.
-    >>> browser.getControl('User Name').value = 'user1'
-    >>> browser.getControl('E-mail').value = 'user1@foo.com'
+    >>> browser.getControl('User Name').value = 'user2'
+    >>> browser.getControl('E-mail').value = 'user2@example.com'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Confirm password').value = 'secret'
     >>> browser.getControl('Register').click()
+    >>> open('/tmp/test.html', 'w').write(browser.contents)
     >>> browser.contents
     '...Welcome!...You have been registered...'
 
@@ -112,7 +122,7 @@ Testing the flexible user registration
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
-    >>> 'user1' in browser.contents
+    >>> 'user2' in browser.contents
     True
     
     Great! The user-facing form works. Let's try the manager's version...
@@ -150,8 +160,8 @@ Testing the flexible user registration
     True
     
     Fill out the form.
-    >>> browser.getControl('User Name').value = 'user2'
-    >>> browser.getControl('E-mail').value = 'user2@foo.com'
+    >>> browser.getControl('User Name').value = 'user3'
+    >>> browser.getControl('E-mail').value = 'user3@example.com'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Confirm password').value = 'secret'
     >>> browser.getControl('Reviewers').selected = True
@@ -159,10 +169,10 @@ Testing the flexible user registration
     >>> '@@usergroup-userprefs' in browser.url
     True
     >>> browser.contents
-    '...User added...user2...'
+    '...User added...user3...'
     
     Check that the selected group has been applied to the new user.
-    >>> browser.getLink('user2').click()
+    >>> browser.getLink('user3').click()
     >>> browser.getLink('Group Memberships').click()
     >>> browser.contents
     '...Current Group Memberships...Reviewers...'
