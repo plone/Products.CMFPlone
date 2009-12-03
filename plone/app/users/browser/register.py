@@ -60,7 +60,7 @@ class IRegisterSchema(Interface):
 
     mail_me = schema.Bool(
         title=_(u'label_mail_password',
-                default=u"Send a mail with the password"),
+                default=u"Send a confirmation mail with a link to set the password"),
         default=False)
 
 
@@ -420,8 +420,8 @@ class RegistrationForm(BaseRegistrationForm):
         if portal.getProperty('validate_email', True):
             # No? Remove the password fields.
             defaultFields = defaultFields.omit('password', 'password_ctl')
-            # Show a message indicating that the password will be
-            # mailed to the user.
+            # Show a message indicating that a password reset link
+            # will be mailed to the user.
             defaultFields['mail_me'].custom_widget = CantChoosePasswordWidget
 
         return defaultFields

@@ -140,7 +140,7 @@ Testing the flexible user registration
 
     Check that the mail prompt is not displayed, as the mailhost is
     not setup correctly.
-    >>> 'Send a mail with the password' in browser.contents
+    >>> 'Send a confirmation mail with a link to set the password' in browser.contents
     False
     
     Turn off the ability for users to set their own passwords.
@@ -170,8 +170,11 @@ Testing the flexible user registration
     >>> 'Add to the following groups' in browser.contents
     True
 
-    Check that the mail prompt is displayed correctly now.
+    Check that the mail prompt is displayed correctly now.  Note that
+    we never send passwords in the email, only a password reset link.
     >>> 'Send a mail with the password' in browser.contents
+    False
+    >>> 'Send a confirmation mail with a link to set the password' in browser.contents
     True
 
     Fill out the form.
