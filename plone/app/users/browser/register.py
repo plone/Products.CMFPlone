@@ -7,8 +7,6 @@ from zope.app.form.browser import TextWidget, CheckBoxWidget, ASCIIWidget
 from zope.app.form.interfaces import WidgetInputError, InputErrors
 from zope.component import getMultiAdapter
 
-#from plone.app.controlpanel import PloneMessageFactory as _
-
 from AccessControl import getSecurityManager
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -149,7 +147,7 @@ class BaseRegistrationForm(PageForm):
 
     @property
     def showForm(self):
-        """The form should not be displayed to the user if the system is 
+        """The form should not be displayed to the user if the system is
            incapable of sending emails and email validation is switched on
            (users are not allowed to select their own passwords).
         """
@@ -157,10 +155,10 @@ class BaseRegistrationForm(PageForm):
         portal = getUtility(ISiteRoot)
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
-        
+
         # hide form iff mailhost_warning == True and validate_email == True
         return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
-            
+
     @property
     def form_fields(self):
         """ form_fields is dynamic in this form, to be able to handle
@@ -361,7 +359,7 @@ class BaseRegistrationForm(PageForm):
         except (AttributeError, ValueError), err:
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
-            
+
         if data.get('mail_me') or portal.validate_email:
             try:
                 registration.registeredNotify(username)
@@ -389,9 +387,9 @@ class BaseRegistrationForm(PageForm):
                           "unable to send your password to your email "
                           "address: ${address}",
                           mapping={u'address': data.get('email', '')}))
-        
+
         return self.context.unrestrictedTraverse('registered')()
-                
+
 
 class RegistrationForm(BaseRegistrationForm):
     """ Dynamically get fields from user data, through admin
@@ -400,7 +398,6 @@ class RegistrationForm(BaseRegistrationForm):
     label = _(u'heading_registration_form', default=u'Registration form')
     description = u""
     template = ViewPageTemplateFile('register_form.pt')
-    
 
     @property
     def form_fields(self):
@@ -426,7 +423,7 @@ class RegistrationForm(BaseRegistrationForm):
 
         return defaultFields
 
-        
+
 class AddUserForm(BaseRegistrationForm):
 
     label = _(u'heading_add_user_form', default=u'Add New User')
