@@ -148,12 +148,24 @@ class BaseRegistrationForm(PageForm):
     description = u""
 
     @property
+    def showForm(self):
+        """The form should not be displayed to the user if the system is 
+           incapable of sending emails and email validation is switched on
+           (users are not allowed to select their own passwords).
+        """
+        ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
+        portal = getUtility(ISiteRoot)
+        portal_props = getToolByName(self.context, 'portal_properties')
+        props = portal_props.site_properties
+        
+        # hide form iff mailhost_warning == True and validate_email == True
+        return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
+            
+    @property
     def form_fields(self):
-
         """ form_fields is dynamic in this form, to be able to handle
         different join styles.
         """
-
         portal = getUtility(ISiteRoot)
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
@@ -185,8 +197,15 @@ class BaseRegistrationForm(PageForm):
             registration_fields.insert(
                 registration_fields.index('password') + 1, 'password_ctl')
 
-        # Add email_me after password_ctl
-        if not 'mail_me' in registration_fields:
+        # Add email_me after password_ctl.  But only offer this option
+        # when the mail settings are correct; else we even remove this
+        # from the fields.
+        ctrlOverview = getMultiAdapter((self.context, self.request),
+                                       name='overview-controlpanel')
+        mail_settings_correct = not ctrlOverview.mailhost_warning()
+        if 'mail_me' in registration_fields and not mail_settings_correct:
+            registration_fields.remove('mail_me')
+        if not 'mail_me' in registration_fields and mail_settings_correct:
             registration_fields.insert(
                 registration_fields.index('password_ctl') + 1, 'mail_me')
 
@@ -343,8 +362,7 @@ class BaseRegistrationForm(PageForm):
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
             
-        mailRequested = 'mail_me' in data.keys() 
-        if (mailRequested and data.get('mail_me')) or (portal.validate_email and not mailRequested):
+        if data.get('mail_me') or portal.validate_email:
             try:
                 registration.registeredNotify(username)
             except ConflictError:
@@ -374,6 +392,7 @@ class BaseRegistrationForm(PageForm):
         
         return self.context.unrestrictedTraverse('registered')()
                 
+
 class RegistrationForm(BaseRegistrationForm):
     """ Dynamically get fields from user data, through admin
         config settings.
@@ -385,6 +404,10 @@ class RegistrationForm(BaseRegistrationForm):
 
     @property
     def form_fields(self):
+        if not self.showForm:
+            # We do not want to spend time calculating fields that
+            # will never get displayed.
+            return []
         portal = getUtility(ISiteRoot)
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
@@ -403,21 +426,6 @@ class RegistrationForm(BaseRegistrationForm):
 
         return defaultFields
 
-    @property
-    def showForm(self):
-        """The form should not be displayed to the user if the system is 
-           incapable of sending emails and users are not allowed to select 
-           their own passwords.
-        """
-        ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
-        portal = getUtility(ISiteRoot)
-        portal_props = getToolByName(self.context, 'portal_properties')
-        props = portal_props.site_properties
-        
-        # hide form iff mailhost_warning == True and validate_email == True
-        return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
-            
-
         
 class AddUserForm(BaseRegistrationForm):
 
@@ -427,6 +435,11 @@ class AddUserForm(BaseRegistrationForm):
 
     @property
     def form_fields(self):
+        if not self.showForm:
+            # We do not want to spend time calculating fields that
+            # will never get displayed.
+            return []
+
         defaultFields = super(AddUserForm, self).form_fields
 
         # Append the manager-focused fields

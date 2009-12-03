@@ -130,15 +130,18 @@ Testing the flexible user registration
     >>> '@@new-user' in browser.url
     True    
 
-    Check that password, mail prompt, and groups are displayed.
+    Check that password and groups are displayed.
     >>> 'Password' in browser.contents
     True
     >>> 'Confirm password' in browser.contents
     True
-    >>> 'Send a mail with the password' in browser.contents
-    True
     >>> 'Add to the following groups' in browser.contents
     True
+
+    Check that the mail prompt is not displayed, as the mailhost is
+    not setup correctly.
+    >>> 'Send a mail with the password' in browser.contents
+    False
     
     Turn off the ability for users to set their own passwords.
     >>> browser.open('http://nohost/plone/@@security-controlpanel')
@@ -147,17 +150,30 @@ Testing the flexible user registration
     >>> 'Changes saved' in browser.contents
     True
     
-    Check that password, mail prompt, and groups are still displayed.
+    Check that no form is displayed anymore as no users can be
+    registered: letting users select their own passwords is the same
+    as saying: we will send a verification email with a password reset
+    link.
+    >>> browser.open('http://nohost/plone/@@new-user')
+    >>> 'Password' in browser.contents
+    False
+    >>> 'Register' in browser.contents
+    False
+
+    Set up the mailhost and try again.
+    >>> self.setMailHost()
     >>> browser.open('http://nohost/plone/@@new-user')
     >>> 'Password' in browser.contents
     True
     >>> 'Confirm password' in browser.contents
     True
-    >>> 'Send a mail with the password' in browser.contents
-    True
     >>> 'Add to the following groups' in browser.contents
     True
-    
+
+    Check that the mail prompt is displayed correctly now.
+    >>> 'Send a mail with the password' in browser.contents
+    True
+
     Fill out the form.
     >>> browser.getControl('User Name').value = 'user3'
     >>> browser.getControl('E-mail').value = 'user3@example.com'
@@ -169,6 +185,10 @@ Testing the flexible user registration
     True
     >>> browser.contents
     '...User added...user3...'
+
+    Check that at least this one error does not show up:
+    >>> "Couldn't send mail" in browser.contents
+    False
     
     Check that the selected group has been applied to the new user.
     >>> browser.getLink('user3').click()
