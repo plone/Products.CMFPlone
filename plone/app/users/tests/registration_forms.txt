@@ -112,7 +112,6 @@ Testing the flexible user registration
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Confirm password').value = 'secret'
     >>> browser.getControl('Register').click()
-    >>> open('/tmp/test.html', 'w').write(browser.contents)
     >>> browser.contents
     '...Welcome!...You have been registered...'
 
