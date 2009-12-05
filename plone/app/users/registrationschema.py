@@ -2,6 +2,7 @@ from zope import schema
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
 from zope.schema import getFieldNames
+from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.formlib import form
 from zope.app.form.browser import OrderedMultiSelectWidget
@@ -30,7 +31,6 @@ class IRegistrationSchema(Interface):
 
 
 def UserDataWidget(field, request):
-
     """ Create selector with schema fields vocab """
 
     util = getUtility(IUserDataSchemaProvider)
@@ -38,9 +38,9 @@ def UserDataWidget(field, request):
 
     schemaFieldNames = getFieldNames(schema)
 
-    values = [(f.__name__, f.__name__) for f in form.Fields(schema)]
-    values = values + [(val, val) for val in JOIN_CONST if val not in schemaFieldNames]
-
-    vocabulary = SimpleVocabulary.fromItems(values)
+    values = [f.__name__ for f in form.Fields(schema)]
+    values.extend([val for val in JOIN_CONST if val not in schemaFieldNames])
+    terms = [SimpleTerm(v, v, v) for v in values]
+    vocabulary = SimpleVocabulary(terms)
 
     return OrderedMultiSelectWidget(field, vocabulary, request)

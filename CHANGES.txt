@@ -4,12 +4,16 @@ Changelog
 1.0a3 - Unreleased
 ------------------
 
+- Use the proper SimpleVocabulary/SimpleTerm API instead of encouraging bad
+  practice. This refs http://dev.plone.org/plone/ticket/6480.
+  [hannosch]
+
 - Display a message and prevent the manager from registering a user if
   there is no defined mailhost and email validation is switched on;
   and if this email validation is switched on, do not show the
   'mail_me' field as we know sending the email is going to fail.
   [maurits]
- 
+
 
 1.0a2 - 2009-12-01
 ------------------
