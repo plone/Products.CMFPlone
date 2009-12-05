@@ -14,11 +14,8 @@
 <body>
     <div metal:fill-slot="body" id="content">
 
-        <tal:mailhost tal:condition="view/showForm">
-            <div metal:use-macro="context/base-pageform.html/form" />
-        </tal:mailhost>
-
-        <tal:nomailhost tal:condition="not:view/showForm">
+      <div metal:use-macro="context/base-pageform.html/form" />
+        <!--tal:nomailhost tal:condition="not:view/showForm">
             <div metal:use-macro="context/base-pageform.html/form" >
                 <div metal:fill-slot="viewspace">
                     <h1 class="documentFirstHeading"
@@ -41,7 +38,7 @@
                     </p>
                 </div>
             </div>
-        </tal:nomailhost>
+        </tal:nomailhost-->
 
 
     </div>

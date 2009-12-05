@@ -143,22 +143,46 @@ Testing the flexible user registration
     >>> 'Send a confirmation mail with a link to set the password' in browser.contents
     False
     
-    Turn off the ability for users to set their own passwords.
+    Turn off the ability for users to set their own passwords.  We are
+    now back to the default settings.
     >>> browser.open('http://nohost/plone/@@security-controlpanel')
     >>> browser.getControl('Let users select their own passwords').selected = False
     >>> browser.getControl('Save').click()
     >>> 'Changes saved' in browser.contents
     True
     
-    Check that no form is displayed anymore as no users can be
-    registered: letting users select their own passwords is the same
-    as saying: we will send a verification email with a password reset
-    link.
+    Most fields are displayed again:
     >>> browser.open('http://nohost/plone/@@new-user')
     >>> 'Password' in browser.contents
+    True
+    >>> 'Confirm password' in browser.contents
+    True
+    >>> 'Add to the following groups' in browser.contents
+    True
+
+    We do not offer the opportunity to send an email though, as the
+    mailhost is not setup.
+    >>> 'Send a confirmation mail with a link to set the password' in browser.contents
     False
-    >>> 'Register' in browser.contents
-    False
+
+    Fill out the form.
+    >>> browser.getControl('User Name').value = 'user3'
+    >>> browser.getControl('E-mail').value = 'user3@example.com'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Confirm password').value = 'secret'
+    >>> browser.getControl('Register').click()
+    >>> '@@usergroup-userprefs' in browser.url
+    True
+
+    We get a warning because no mail could be sent, but the user is
+    created anyway.
+    >>> browser.contents
+    '...This account has been created, but we were unable to send...'
+    >>> browser.contents
+    '...User added...user3...'
+
+    We can really get the new user.
+    >>> browser.getLink('user3').click()
 
     Set up the mailhost and try again.
     >>> self.setMailHost()
@@ -178,23 +202,27 @@ Testing the flexible user registration
     True
 
     Fill out the form.
-    >>> browser.getControl('User Name').value = 'user3'
-    >>> browser.getControl('E-mail').value = 'user3@example.com'
+    >>> browser.getControl('User Name').value = 'user4'
+    >>> browser.getControl('E-mail').value = 'user4@example.com'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Confirm password').value = 'secret'
     >>> browser.getControl('Reviewers').selected = True
+
+    As we want to validate emails, by default mail_me is checked.
+    >>> browser.getControl(name='form.mail_me').value
+    True
     >>> browser.getControl('Register').click()
     >>> '@@usergroup-userprefs' in browser.url
     True
     >>> browser.contents
-    '...User added...user3...'
+    '...User added...user4...'
 
     Check that at least this one error does not show up:
-    >>> "Couldn't send mail" in browser.contents
+    >>> "Failed to create your account" in browser.contents
     False
     
     Check that the selected group has been applied to the new user.
-    >>> browser.getLink('user3').click()
+    >>> browser.getLink('user4').click()
     >>> browser.getLink('Group Memberships').click()
     >>> browser.contents
     '...Current Group Memberships...Reviewers...'

@@ -133,6 +133,26 @@ def CantChoosePasswordWidget(field, request):
     return widget
 
 
+def CantSendMailWidget(field, request):
+    """ Change the mail_me field widget so it displays a warning.
+
+    This is meant for use in the 'add new user' form for admins to
+    tell them that a confirmation email with a password reset link
+    cannot be sent because the mailhost has not been setup.
+    """
+
+    field.title = u''
+    field.readonly = True
+    field.description = _(
+        u'label_cant_mail_password_reset',
+        default=u"Normally we would offer to send the user an email with "
+        "instructions to set a password on completion of this form. But this "
+        "site does not have a valid email setup. You can fix this in the "
+        "Mail settings.")
+    widget = NoCheckBoxWidget(field, request)
+    return widget
+
+
 def getGroupIds(context):
     site = getSite()
     groups_tool = getToolByName(site, 'portal_groups')
@@ -144,20 +164,6 @@ def getGroupIds(context):
 class BaseRegistrationForm(PageForm):
     label = u""
     description = u""
-
-    @property
-    def showForm(self):
-        """The form should not be displayed to the user if the system is
-           incapable of sending emails and email validation is switched on
-           (users are not allowed to select their own passwords).
-        """
-        ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
-        portal = getUtility(ISiteRoot)
-        portal_props = getToolByName(self.context, 'portal_properties')
-        props = portal_props.site_properties
-
-        # hide form iff mailhost_warning == True and validate_email == True
-        return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
 
     @property
     def form_fields(self):
@@ -195,15 +201,8 @@ class BaseRegistrationForm(PageForm):
             registration_fields.insert(
                 registration_fields.index('password') + 1, 'password_ctl')
 
-        # Add email_me after password_ctl.  But only offer this option
-        # when the mail settings are correct; else we even remove this
-        # from the fields.
-        ctrlOverview = getMultiAdapter((self.context, self.request),
-                                       name='overview-controlpanel')
-        mail_settings_correct = not ctrlOverview.mailhost_warning()
-        if 'mail_me' in registration_fields and not mail_settings_correct:
-            registration_fields.remove('mail_me')
-        if not 'mail_me' in registration_fields and mail_settings_correct:
+        # Add email_me after password_ctl
+        if not 'mail_me' in registration_fields:
             registration_fields.insert(
                 registration_fields.index('password_ctl') + 1, 'mail_me')
 
@@ -332,7 +331,10 @@ class BaseRegistrationForm(PageForm):
     @form.action(_(u'label_register', default=u'Register'),
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
-        return self.handle_join_success(data)
+        result = self.handle_join_success(data)
+        # XXX Return somewhere else, depending on what
+        # handle_join_success returns?
+        return self.context.unrestrictedTraverse('registered')()
 
     def handle_join_success(self, data):
         portal = getUtility(ISiteRoot)
@@ -360,35 +362,55 @@ class BaseRegistrationForm(PageForm):
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
 
-        if data.get('mail_me') or portal.validate_email:
+        if portal.validate_email or data.get('mail_me'):
+            # We want to validate the email address (users cannot
+            # select their own passwords on the register form) or the
+            # admin has explicitly requested to send an email on the
+            # 'add new user' form.
             try:
-                registration.registeredNotify(username)
+                # When all goes well, this call actually returns the
+                # rendered mail_password_response template.  As a side
+                # effect, this removes any status messages added to
+                # the request so far, as they are already shown in
+                # this template.
+                response = registration.registeredNotify(username)
+                return response
             except ConflictError:
                 # Let Zope handle this exception.
                 raise
             except Exception:
-                if portal.validate_email:
-                    IStatusMessage(self.request).addStatusMessage(
-                        _(u"Couldn't send mail"), type="error")
-
+                ctrlOverview = getMultiAdapter((self.context, self.request),
+                                               name='overview-controlpanel')
+                mail_settings_correct = not ctrlOverview.mailhost_warning()
+                if mail_settings_correct:
+                    # The email settings are correct, so the most
+                    # likely cause of an error is a wrong email
+                    # address.  We remove the account:
+                    # Remove the account:
                     self.context.acl_users.userFolderDelUsers(
                         [username], REQUEST=self.request)
-                    self.status = (
+                    IStatusMessage(self.request).addStatusMessage(
                         _(u'status_fatal_password_mail',
                           default=u"Failed to create your account: we were "
-                          "unable to send your password to your email "
-                          "address: ${address}",
-                          mapping={u'address': data.get('email', '')}))
+                          "unable to send instructions for setting a password "
+                          "to your email address: ${address}",
+                          mapping={u'address': data.get('email', '')}),
+                        type='error')
                     return
                 else:
-                    self.status = (
+                    # This should only happen when an admin registers
+                    # a user.  The admin should have seen a warning
+                    # already, but we warn again for clarity.
+                    IStatusMessage(self.request).addStatusMessage(
                         _(u'status_nonfatal_password_mail',
-                          default=u"You account has been created, but we were "
-                          "unable to send your password to your email "
-                          "address: ${address}",
-                          mapping={u'address': data.get('email', '')}))
+                          default=u"This account has been created, but we "
+                          "were unable to send instructions for setting a "
+                          "password to this email address: ${address}",
+                          mapping={u'address': data.get('email', '')}),
+                        type='warning')
+                    return
 
-        return self.context.unrestrictedTraverse('registered')()
+        return
 
 
 class RegistrationForm(BaseRegistrationForm):
@@ -398,6 +420,20 @@ class RegistrationForm(BaseRegistrationForm):
     label = _(u'heading_registration_form', default=u'Registration form')
     description = u""
     template = ViewPageTemplateFile('register_form.pt')
+
+    @property
+    def showForm(self):
+        """The form should not be displayed to the user if the system is
+           incapable of sending emails and email validation is switched on
+           (users are not allowed to select their own passwords).
+        """
+        ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
+        portal = getUtility(ISiteRoot)
+        portal_props = getToolByName(self.context, 'portal_properties')
+        props = portal_props.site_properties
+
+        # hide form iff mailhost_warning == True and validate_email == True
+        return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
 
     @property
     def form_fields(self):
@@ -420,6 +456,12 @@ class RegistrationForm(BaseRegistrationForm):
             # Show a message indicating that a password reset link
             # will be mailed to the user.
             defaultFields['mail_me'].custom_widget = CantChoosePasswordWidget
+        else:
+            # The portal is not interested in validating emails, and
+            # the user is not interested in getting an email with a
+            # link to set his password if he can set this password in
+            # the current form already.
+            defaultFields = defaultFields.omit('mail_me')
 
         return defaultFields
 
@@ -432,12 +474,23 @@ class AddUserForm(BaseRegistrationForm):
 
     @property
     def form_fields(self):
-        if not self.showForm:
-            # We do not want to spend time calculating fields that
-            # will never get displayed.
-            return []
-
         defaultFields = super(AddUserForm, self).form_fields
+
+        # The mail_me field needs special handling depending on the
+        # validate_email property and on the correctness of the mail
+        # settings.
+        ctrlOverview = getMultiAdapter((self.context, self.request),
+                                       name='overview-controlpanel')
+        mail_settings_correct = not ctrlOverview.mailhost_warning()
+        if not mail_settings_correct:
+            defaultFields['mail_me'].custom_widget = CantSendMailWidget
+        else:
+            # XXX Perhaps we could make the password fields optional?
+            portal = getUtility(ISiteRoot)
+            if portal.getProperty('validate_email', True):
+                defaultFields['mail_me'].field.default = True
+            else:
+                defaultFields['mail_me'].field.default = False
 
         # Append the manager-focused fields
         allFields = defaultFields + form.Fields(IAddUserSchema)

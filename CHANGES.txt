@@ -4,15 +4,21 @@ Changelog
 1.0a3 - Unreleased
 ------------------
 
+- On the anonymous registration form, do not offer to send an email
+  with a link to reset your password if the password fields are right
+  there on the form already; we were never actually sending emails
+  with the plain password itself anyway.
+  [maurits]
+
+- Allow admins to register a user at all times, also without valid
+  mailhost settings.  This means that in a fresh Plone site you can
+  create user accounts immediately without having to edit any
+  settings.
+  [maurits]
+
 - Use the proper SimpleVocabulary/SimpleTerm API instead of encouraging bad
   practice. This refs http://dev.plone.org/plone/ticket/6480.
   [hannosch]
-
-- Display a message and prevent the manager from registering a user if
-  there is no defined mailhost and email validation is switched on;
-  and if this email validation is switched on, do not show the
-  'mail_me' field as we know sending the email is going to fail.
-  [maurits]
 
 
 1.0a2 - 2009-12-01
