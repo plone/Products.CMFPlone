@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- ``plone.htmlhead.title`` was not editable TTW. This closes
+  http://dev.plone.org/plone/ticket/9488.
+  [hannosch]
 
 2.0a3 - 2009-12-02
 ------------------
