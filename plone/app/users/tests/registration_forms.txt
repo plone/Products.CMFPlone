@@ -204,11 +204,10 @@ Testing the flexible user registration
     Fill out the form.
     >>> browser.getControl('User Name').value = 'user4'
     >>> browser.getControl('E-mail').value = 'user4@example.com'
-    >>> browser.getControl('Password').value = 'secret'
-    >>> browser.getControl('Confirm password').value = 'secret'
     >>> browser.getControl('Reviewers').selected = True
 
-    As we want to validate emails, by default mail_me is checked.
+    As we want to validate emails, by default mail_me is checked.  The
+    password fields have become optional.
     >>> browser.getControl(name='form.mail_me').value
     True
     >>> browser.getControl('Register').click()

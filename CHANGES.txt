@@ -4,6 +4,10 @@ Changelog
 1.0a3 - Unreleased
 ------------------
 
+- Make the password field optional for the admin when instead an email
+  can be sent.
+  [maurits]
+
 - On the anonymous registration form, do not offer to send an email
   with a link to reset your password if the password fields are right
   there on the form already; we were never actually sending emails

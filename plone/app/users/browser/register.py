@@ -218,6 +218,11 @@ class BaseRegistrationForm(PageForm):
         else:
             all_fields['email'].custom_widget = EmailWidget
 
+        # Make sure some fields are really required; a previous call
+        # might have changed the default.
+        for name in ('password', 'password_ctl'):
+            all_fields[name].field.required = True
+
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.
         return form.Fields(*[all_fields[id] for id in registration_fields])
@@ -265,7 +270,6 @@ class BaseRegistrationForm(PageForm):
                     self.widgets['password'].error = err_str
                     self.widgets['password_ctl'].error = err_str
 
-
         # Password field should have a minimum length of 5
         if 'password' in form_field_names:
             # Skip this check if password fields already have an error
@@ -276,7 +280,6 @@ class BaseRegistrationForm(PageForm):
                     errors.append(WidgetInputError(
                             'password', u'label_password', err_str))
                     self.widgets['password'].error = err_str
-
 
         username = ''
         email = ''
@@ -326,6 +329,19 @@ class BaseRegistrationForm(PageForm):
                             'email', u'label_email', err_str))
                     self.widgets['email'].error = err_str
 
+        if 'password' in form_field_names and not 'password' in error_keys:
+            # Admin can either set a password or mail the user (or both).
+            if not (self.widgets['password'].getInputValue() or
+                    self.widgets['mail_me'].getInputValue()):
+                err_str = _('msg_no_password_no_mail_me',
+                            default=u"You must set a password or choose to "
+                            "send an email.")
+                errors.append(WidgetInputError(
+                        'password', u'label_password', err_str))
+                self.widgets['password'].error = err_str
+                errors.append(WidgetInputError(
+                        'mail_me', u'label_mail_me', err_str))
+                self.widgets['mail_me'].error = err_str
         return errors
 
     @form.action(_(u'label_register', default=u'Register'),
@@ -485,7 +501,11 @@ class AddUserForm(BaseRegistrationForm):
         if not mail_settings_correct:
             defaultFields['mail_me'].custom_widget = CantSendMailWidget
         else:
-            # XXX Perhaps we could make the password fields optional?
+            # Make the password fields optional: either specify a
+            # password or mail the user (or both).  The validation
+            # will check that at least one of the options is chosen.
+            defaultFields['password'].field.required = False
+            defaultFields['password_ctl'].field.required = False
             portal = getUtility(ISiteRoot)
             if portal.getProperty('validate_email', True):
                 defaultFields['mail_me'].field.default = True
