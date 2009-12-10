@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Don't mark site.py's "default_editor" field as required as it's a select 
+  field. 
+  [esteele]
+
 
 2.0a2 - 2009-12-03
 ------------------

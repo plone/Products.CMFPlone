@@ -56,7 +56,7 @@ class ISiteSchema(Interface):
                             default=u'TinyMCE',
                             missing_value=set(),
                             vocabulary="plone.app.vocabularies.AvailableEditors",
-                            required=True)
+                            required=False)
 
     enable_link_integrity_checks = Bool(title=_(u"Enable link integrity "
                                                  "checks"),
