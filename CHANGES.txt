@@ -4,6 +4,11 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Do not let the homelink in the personal bar viewlet point to the
+  author page but to the personalize_form (or dashboard).
+  Fixes http://dev.plone.org/plone/ticket/8707
+  [maurits]
+
 - ``plone.htmlhead.title`` was not editable TTW. This closes
   http://dev.plone.org/plone/ticket/9488.
   [hannosch]
