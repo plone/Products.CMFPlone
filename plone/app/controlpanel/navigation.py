@@ -31,7 +31,7 @@ class INavigationSchema(Interface):
                        required=False)
     
     nonfolderish_tabs = Bool(title=_(u"Generate tabs for items other than folders."),
-                         description=_(u'By default, any content item in the root of the portal will be shown as a global section. If you turn this option off, only folders will be shown. This only has an effect if "Automatically generate tabs" is enabled.'),
+                         description=_(u'By default, any content item in the root of the portal will be shown as a global section. If you turn this option off, only folders will be shown. This only has an effect if \"Automatically generate tabs\" is enabled.'),
                          default=True,
                          required=False)
                        
@@ -136,7 +136,7 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
 class NavigationControlPanel(ControlPanelForm):
 
     label = _("Navigation settings")
-    description = _("""Lets you control how navigation is constructed in your site. Note that to control how the navigation tree is displayed, you should go to "Manage portlets" at the root of the site (or wherever a navigation tree portlet has been added) and change its settings directly.""")
+    description = _("""Lets you control how navigation is constructed in your site. Note that to control how the navigation tree is displayed, you should go to \"Manage portlets\" at the root of the site (or wherever a navigation tree portlet has been added) and change its settings directly.""")
     form_name = _("Navigation details")
     form_fields = form.FormFields(INavigationSchema)
     form_fields['displayed_types'].custom_widget = MultiCheckBoxThreeColumnWidget
