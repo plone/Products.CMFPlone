@@ -136,7 +136,7 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
 class NavigationControlPanel(ControlPanelForm):
 
     label = _("Navigation settings")
-    description = _("""Lets you control how navigation is constructed in your site.Note that to control how the navigation tree is displayed, you should go to "Manage portlets" at the root of the site (or wherever a navigation tree portlet has been added) and change its settings directly.""")
+    description = _("""Lets you control how navigation is constructed in your site. Note that to control how the navigation tree is displayed, you should go to "Manage portlets" at the root of the site (or wherever a navigation tree portlet has been added) and change its settings directly.""")
     form_name = _("Navigation details")
     form_fields = form.FormFields(INavigationSchema)
     form_fields['displayed_types'].custom_widget = MultiCheckBoxThreeColumnWidget
