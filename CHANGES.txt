@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b1 - Unreleased
+2.0a4 - 2009-12-16
 ------------------
 
 - Do not let the homelink in the personal bar viewlet point to the
