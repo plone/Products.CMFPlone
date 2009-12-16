@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a3 - Unreleased
+1.0a3 - 2009-12-16
 ------------------
 
 - Make the password field optional for the admin when instead an email
@@ -23,7 +23,6 @@ Changelog
 - Use the proper SimpleVocabulary/SimpleTerm API instead of encouraging bad
   practice. This refs http://dev.plone.org/plone/ticket/6480.
   [hannosch]
-
 
 1.0a2 - 2009-12-01
 ------------------
@@ -53,7 +52,6 @@ Changelog
 - Internationalized title_join_form_fields and description_join_form_fields.
   This closes http://dev.plone.org/plone/attachment/ticket/9810
   [vincentfretin]
-
 
 1.0a1 - 2009-11-18
 ------------------
