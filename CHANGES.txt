@@ -4,6 +4,9 @@ Changelog
 2.0a3 - Unreleased
 ------------------
 
+- Fix XML validation for RSS portlets
+  [matthewwilkes]
+
 - Support local navigation root (INavigationRoot) for the previous 
   events link in events portlet.
   Fixes http://dev.plone.org/plone/ticket/9246 
