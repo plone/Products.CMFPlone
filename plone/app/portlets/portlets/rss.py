@@ -13,6 +13,10 @@ from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 
 
+# Accept these bozo_exceptions encountered by feedparser when parsing
+# the feed:
+ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride, )
+
 # store the feeds here (which means in RAM)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
@@ -130,7 +134,8 @@ class RSSFeed(object):
             self._last_update_time_in_minutes = time.time()/60
             self._last_update_time = DateTime()
             d = feedparser.parse(url)
-            if d.bozo==1:
+            if d.bozo == 1 and not isinstance(d.get('bozo_exception'),
+                                              ACCEPTED_FEEDPARSER_EXCEPTIONS):
                 self._loaded = True # we tried at least but have a failed load
                 self._failed = True
                 return False

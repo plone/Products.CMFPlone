@@ -78,6 +78,11 @@ Changelog
 1.2.1 - unreleased
 -------------------
 
+- RSS portlet: accept the feedparser.CharacterEncodingOverride
+  exception when parsing the feed as it is just a warning: the parsed
+  entries will be there.
+  [maurits]
+
 - Added missing space to tooltip in the calendar portlet.
   Fixes http://dev.plone.org/plone/ticket/9047
   [lzdych]
