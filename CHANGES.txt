@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0a3 - Unreleased
+2.0a3 - 2009-12-21
 ------------------
 
 - Fix XML validation for RSS portlets
