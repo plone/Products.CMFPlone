@@ -4,6 +4,10 @@ Changelog
 2.0a5 - Unreleased
 ------------------
 
+- Use the getIconExprObject method of the FTI instead of the deprecated
+  getIcon method.
+  [hannosch]
+
 - Specified package dependencies.
   [hannosch]
 

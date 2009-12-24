@@ -3,6 +3,8 @@ from zope.component import getMultiAdapter
 from zope.interface import implements
 
 from Acquisition import aq_inner
+from Acquisition import aq_parent
+from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
 
 from plone.app.layout.icons.interfaces import IContentIcon
@@ -95,9 +97,16 @@ class FTIContentIcon(BaseIcon):
 
     @property
     def url(self):
-        portal_url = getToolByName(self.context, 'portal_url')()
-        path = self.obj.getIcon()
-        return "%s/%s" % (portal_url, path)
+        context = self.context
+        portal_url = getToolByName(context, 'portal_url')
+        portal = portal_url.getPortalObject()
+
+        ec = createExprContext(aq_parent(context), portal, context)
+        icon = self.obj.getIconExprObject()
+        path = ''
+        if icon:
+            path = icon(ec)
+        return path
 
     @property
     def description(self):
