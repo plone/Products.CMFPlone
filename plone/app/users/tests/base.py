@@ -5,10 +5,9 @@ packages which register accountpanels. They should be able to import it
 without the PloneTestCase.setupPloneSite() side effects.
 """
 
-from zope.component import getMultiAdapter
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.Five.testbrowser import Browser
-from Products.CMFCore.utils import getToolByName
+
 
 class TestCase(FunctionalTestCase):
     """base test case which adds amin user"""

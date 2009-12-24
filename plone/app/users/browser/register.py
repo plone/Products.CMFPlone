@@ -24,7 +24,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.controlpanel.widgets import MultiCheckBoxVocabularyWidget
 
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.app.component.hooks import getSite
+from zope.site.hooks import getSite
 from plone.protect import CheckAuthenticator
 
 # Define constants from the Join schema that should be added to the
