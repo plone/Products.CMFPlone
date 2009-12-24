@@ -117,7 +117,7 @@ class PortletsNameChooser(NameChooser):
         
         >>> dummy.title = 'RSS: http://plone.org'
         >>> chooser.chooseName(None, dummy)
-        'RSS-http-plone.org'
+        'rss-http-plone-org'
         
         >>> dummy.title = None
         >>> chooser.chooseName(None, dummy)
@@ -127,8 +127,6 @@ class PortletsNameChooser(NameChooser):
         >>> delattr(dummy, 'title')
         >>> chooser.chooseName(None, dummy)
         'dummyassignment-1'
-        
-        
         """
         container = self.context
 
@@ -137,7 +135,7 @@ class PortletsNameChooser(NameChooser):
 
         if not name:
             name = object.__class__.__name__
-            
+
         name = getUtility(IIDNormalizer).normalize(name)
 
         i = 0

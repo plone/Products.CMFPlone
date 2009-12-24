@@ -4,6 +4,9 @@ Changelog
 2.0a4 - Unreleased
 ------------------
 
+- Adjusted tests to fixed IIDNormalizer semantics.
+  [hannosch]
+
 - Added missing package dependencies.
   [hannosch]
 
