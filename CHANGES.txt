@@ -4,6 +4,8 @@ Changelog
 2.0a4 - Unreleased
 ------------------
 
+- Added missing package dependencies.
+  [hannosch]
 
 2.0a3 - 2009-12-21
 ------------------
