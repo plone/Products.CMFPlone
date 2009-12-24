@@ -4,6 +4,8 @@ Changelog
 2.0a5 - Unreleased
 ------------------
 
+- Use the correct ViewPageTemplateFile from Five for the links viewlets.
+  [hannosch]
 
 2.0a4 - 2009-12-16
 ------------------

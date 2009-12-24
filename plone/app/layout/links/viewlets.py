@@ -2,15 +2,13 @@ from StringIO import StringIO
 
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
-
 from zope.component import getMultiAdapter
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from Acquisition import aq_inner
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.viewlets import ViewletBase
-
-from Products.CMFCore.utils import getToolByName
 
 
 def get_language(context, request):
