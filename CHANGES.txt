@@ -4,6 +4,8 @@ Changelog
 2.0a4 - Unreleased
 ------------------
 
+- Specify all package dependencies and use zope.site for the getSite function.
+  [hannosch]
 
 2.0a3 - 2009-12-16
 ------------------

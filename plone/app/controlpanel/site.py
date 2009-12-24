@@ -1,4 +1,3 @@
-from zope.app.component.hooks import getSite
 from zope.app.form.browser import TextAreaWidget
 from zope.interface import Interface
 from zope.formlib.form import FormFields
@@ -8,6 +7,7 @@ from zope.schema import Text
 from zope.schema import TextLine
 from zope.schema import SourceText
 from zope.schema import Choice
+from zope.site.hooks import getSite
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
