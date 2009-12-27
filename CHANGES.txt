@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0a4 - Unreleased
+2.0a4 - 2009-12-27
 ------------------
 
 - Specify all package dependencies and use zope.site for the getSite function.
