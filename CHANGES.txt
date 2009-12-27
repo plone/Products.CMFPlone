@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a4 - Unreleased
+1.0b1 - 2009-12-27
 ------------------
 
 - Fixed package dependency declarations and use getSite from zope.site.
