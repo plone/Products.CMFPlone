@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0a5 - Unreleased
+2.0a5 - 2009-12-27
 ------------------
 
 - Use the getIconExprObject method of the FTI instead of the deprecated
