@@ -99,6 +99,20 @@ class DocumentBylineViewlet(ViewletBase):
 
     index = ViewPageTemplateFile("document_byline.pt")
 
+class ContentRelatedItems(ViewletBase):
+    
+    index = ViewPageTemplateFile("document_relateditems.pt")
+    
+    def update(self):
+        super(ContentRelatedItems, self).update()
+        self.ploneview = getMultiAdapter((self.context, self.request), name=u'plone')
+        self.context_state = getMultiAdapter((self.context, self.request),
+                                             name=u'plone_context_state')
+        self.wf_tool = getToolByName(self.context, 'portal_workflow')
+        self.site_properties = getToolByName(self.context, "portal_properties").site_properties
+        
+    def related_items(self):
+        return self.context.computeRelatedItems()
 
 class WorkflowHistoryViewlet(ViewletBase):
 

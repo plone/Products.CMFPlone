@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Registered new viewlet for related items instead of using a macro. 
+  References #9985
+  [spliter]
 
 2.0a5 - 2009-12-27
 ------------------

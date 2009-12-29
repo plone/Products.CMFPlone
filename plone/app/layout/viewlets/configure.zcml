@@ -207,6 +207,15 @@
         permission="zope2.View" 
         />
 
+    <!-- The related items -->
+    <browser:viewlet
+        name="plone.belowcontentbody.relateditems"
+        manager=".interfaces.IBelowContentBody"
+        class=".content.ContentRelatedItems"
+        view="plone.app.layout.globals.interfaces.IViewView"        
+        permission="zope2.View" 
+        />
+
     <!-- Render the workflow history -->
     <browser:viewlet
         name="plone.belowcontentbody.contenthistory"
