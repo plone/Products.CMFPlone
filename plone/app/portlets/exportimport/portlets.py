@@ -258,15 +258,6 @@ class PortletsXMLAdapter(XMLAdapterBase):
     def _initPortlets(self, node):
         """Actually import portlet data
         """
-
-        site = self.environ.getSite()
-
-        registeredPortletTypes = [r.name for r in self.context.registeredUtilities()
-                                    if r.provided == IPortletType]
-
-        registeredPortletManagers = [r.name for r in self.context.registeredUtilities()
-                                        if r.provided.isOrExtends(IPortletManager)]
-
         for child in node.childNodes:
             # Portlet managers
             if child.nodeName.lower() == 'portletmanager':
