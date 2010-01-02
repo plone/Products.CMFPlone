@@ -136,7 +136,7 @@ class TestImportPortlets(PortletsExportImportTestCase):
         node = parseString(_XML_EXTENDME_SETUP).documentElement
         self.importer._initPortletNode(node)
         node = parseString(_XML_EXTENDME_EXTENSION).documentElement
-        self.importer._initPortletNode(node) 
+        self.importer._initPortletNode(node)
         portlet = queryUtility(IPortletType, name="portlets.ExtendMe")
         self.failUnless(portlet is not None)
         self.assertEqual([IDashboard], portlet.for_)

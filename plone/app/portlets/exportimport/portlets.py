@@ -346,6 +346,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
             if str(node.getAttribute('description')):
                  portlet.description = str(node.getAttribute('description'))
             for_ = portlet.for_
+            if for_ is None:
+                for_ = []
         else:
              #Otherwise, create a new portlet type with the correct attributes.
              portlet = PortletType()

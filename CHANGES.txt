@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Fixed edge-case in portlet import handler when using the extend attribute.
+  [hannosch]
+
 - Removed unhelpful log messages which cluttered the log during upgrades.
   [hannosch]
 
