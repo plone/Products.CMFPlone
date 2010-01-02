@@ -656,19 +656,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 if subNode.hasAttribute('remove'):
                     if interface_name in modified_for:
                         modified_for.remove(interface_name)
-                    else:
-                        addview = str(node.getAttribute('addview'))
-                        self._logger.warning('Portlet type %s ' % addview + \
-                          'is already not registered as addable to ' + \
-                          'portlet managers with interface ' + \
-                          '%s.' % interface_name)
                 elif interface_name not in modified_for:
                     modified_for.append(interface_name)
-                else:
-                    addview = str(node.getAttribute('addview'))
-                    self._logger.warning('Portlet type %s is ' % addview + \
-                      'already registered as addable to portlet managers ' \
-                      'with interface %s.' % interface_name)
 
         if node.hasAttribute("for"):
             raise InvalidPortletForDefinition(node)
