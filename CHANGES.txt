@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b1 - unreleased
+2.0b1 - 2010-01-03
 ------------------
 
 - Fixed edge-case in portlet import handler when using the extend attribute.
