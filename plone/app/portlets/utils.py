@@ -35,8 +35,17 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
         path = key
         portal = getToolByName(context, 'portal_url').getPortalObject()
         portal_path = '/'.join(portal.getPhysicalPath())
-        path = path[len(portal_path)+1:]
-        obj = portal.restrictedTraverse(path, None)
+        if path == portal_path:
+            # there may be problem if PloneSite id is 'plone'.
+            # restrictedTraverse traverses to @@plone BrowserView which
+            # is wrong
+            obj = portal
+        else:
+            if path.startswith(portal_path + '/'):
+                path = path[len(portal_path)+1:]
+            while path.startswith('/'): 
+                path = path[1:]
+            obj = portal.restrictedTraverse(path, None)
         if obj is None:
             raise KeyError, "Cannot find object at path %s" % path
         return getMultiAdapter((obj, manager), IPortletAssignmentMapping)

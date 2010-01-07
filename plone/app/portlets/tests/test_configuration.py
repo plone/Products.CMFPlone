@@ -256,6 +256,40 @@ class TestGenericSetup(PortletsTestCase):
         settings = IPortletAssignmentSettings(assignment)
         self.failIf(settings.get('visible', True))
         
+    def testAssignmentRoot(self):
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(3, len(mapping))
+
+        # No assignment in /news subfolder
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/news")
+        self.assertEquals(0, len(mapping))        
+        
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <assignment
+                    manager="test.testcolumn" 
+                    category="context"
+                    key="/news"
+                    type="portlets.test.Test"
+                    name="test.portlet4"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        # Still 3 portlets in the root
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(3, len(mapping))        
+
+        # but 1 extra in the /news subfolder
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/news")
+        self.assertEquals(1, len(mapping))        
+
     def testAssignmentRemoval(self):
         portal_setup = self.portal.portal_setup
         
