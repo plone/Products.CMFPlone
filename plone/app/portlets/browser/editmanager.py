@@ -18,8 +18,8 @@ from Acquisition import Explicit, aq_parent, aq_inner
 from Acquisition.interfaces import IAcquirer
 
 from AccessControl import Unauthorized
- 
-from Products.Five.browser import BrowserView 
+
+from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -33,10 +33,10 @@ from plone.portlets.interfaces import IPortletAssignmentSettings
 
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
-    
+
     This is the generic renderer, which delegates to the view to determine
     which assignments to display.
-    
+
     """
     implements(IPortletManagerRenderer)
     adapts(Interface, IDefaultBrowserLayer, IManageColumnPortletsView, IPortletManager)
@@ -64,7 +64,7 @@ class EditPortletManagerRenderer(Explicit):
         if not self.__updated:
             raise UpdateNotCalled
         return self.template()
-    
+
     # Used by the view template
 
     def normalized_manager_name(self):
@@ -79,29 +79,29 @@ class EditPortletManagerRenderer(Explicit):
         return self.portlets_for_assignments(
             assignments, self.manager, self.baseUrl())
 
-        
+
     def portlets_for_assignments(self, assignments, manager, base_url):
         category = self.__parent__.category
         key = self.__parent__.key
-        
+
         data = []
         for idx in range(len(assignments)):
             name = assignments[idx].__name__
-            
+
             editview = queryMultiAdapter(
                 (assignments[idx], self.request), name='edit', default=None)
-            
+
             if editview is None:
                 editviewName = ''
             else:
                 editviewName = '%s/%s/edit' % (base_url, name)
-            
+
             portlet_hash = hashPortletInfo(
-                dict(manager=manager.__name__, category=category, 
+                dict(manager=manager.__name__, category=category,
                      key=key, name=name,))
-            
+
             settings = IPortletAssignmentSettings(assignments[idx])
-            
+
             data.append({
                 'title'      : assignments[idx].title,
                 'editview'   : editviewName,
@@ -115,9 +115,9 @@ class EditPortletManagerRenderer(Explicit):
                 })
         if len(data) > 0:
             data[0]['up_url'] = data[-1]['down_url'] = None
-            
+
         return data
-        
+
     def addable_portlets(self):
         baseUrl = self.baseUrl()
         addviewbase = baseUrl.replace(self.context_url(), '')
@@ -127,7 +127,7 @@ class EditPortletManagerRenderer(Explicit):
             addview = p.addview
             if not addview:
                 return False
-            
+
             addview = "%s/+/%s" % (addviewbase, addview,)
             if addview.startswith('/'):
                 addview = addview[1:]
@@ -136,13 +136,13 @@ class EditPortletManagerRenderer(Explicit):
             except (AttributeError, Unauthorized,):
                 return False
             return True
-        
+
         portlets =  [{
             'title' : p.title,
             'description' : p.description,
             'addview' : '%s/+/%s' % (addviewbase, p.addview)
             } for p in self.manager.getAddablePortletTypes() if check_permission(p)]
-        
+
         portlets.sort(key=sort_key)
         return portlets
 
@@ -151,29 +151,29 @@ class EditPortletManagerRenderer(Explicit):
         view_name = self.request.get('viewname', None)
         key = self.request.get('key', None)
         base_url = self.request['ACTUAL_URL']
-        
+
         if view_name:
             base_url = self.context_url() + '/' + view_name
-        
+
         if key:
             base_url += '?key=%s' % key
-        
+
         return base_url
 
     @memoize
     def url_quote_referer(self):
         return url_quote(self.referer())
-    
+
     # See note in plone.portlets.manager
-    
-    @memoize    
+
+    @memoize
     def _lazyLoadAssignments(self, manager):
         return self.__parent__.getAssignmentsForManager(manager)
-    
+
     @memoize
     def context_url(self):
         return str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-          
+
 class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for contextual portlets"""
     adapts(Interface, IDefaultBrowserLayer, IManageContextualPortletsView, IPortletManager)
@@ -182,30 +182,30 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 
     def __init__(self, context, request, view, manager):
         EditPortletManagerRenderer.__init__(self, context, request, view, manager)
-        
+
     def blacklist_status_action(self):
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
         return baseUrl + '/@@set-portlet-blacklist-status'
-    
+
     def manager_name(self):
         return self.manager.__name__
-    
+
     def context_blacklist_status(self):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
 
     def group_blacklist_status(self, check_parent=False):
-        # If check_parent is True and the blacklist status is None, it returns the 
+        # If check_parent is True and the blacklist status is None, it returns the
         # parent status recursively.
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         status = assignable.getBlacklistStatus(GROUP_CATEGORY)
-        
+
         if check_parent and status is None:
             # get status from parent recursively
             status = self.parent_blacklist_status(GROUP_CATEGORY)
 
-        return status 
-    
+        return status
+
     def content_type_blacklist_status(self, check_parent=False):
         assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
         status = assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
@@ -213,7 +213,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         if check_parent and status is None:
             # get status from parent recursively
             status = self.parent_blacklist_status(CONTENT_TYPE_CATEGORY)
-        
+
         return status
 
     def parent_blacklist_status(self, category):
@@ -229,7 +229,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         while status is None and current is not None:
             assignable = getMultiAdapter((current, self.manager,), ILocalPortletAssignmentManager)
             status = assignable.getBlacklistStatus(category)
-                
+
             current = currentpc.getParent()
             if current is not None:
                 if IPortletContext.providedBy(current):
@@ -240,12 +240,12 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 
     def inherited_portlets(self):
         """Return the list of portlets inherited by the current context.
-           
+
         Invisible (hidden) portlets are excluded.
-          
+
         """
         context = aq_inner(self.context)
-        
+
         assignable = getMultiAdapter(
             (context, self.manager), ILocalPortletAssignmentManager)
 
@@ -255,7 +255,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 context = aq_parent(aq_inner(context))
             else:
                 context = context.__parent__
-                
+
             # we get the contextual portlets view to access its utility methods
             view = queryMultiAdapter((context, self.request), name=self.__parent__.__name__)
             if view is not None:
@@ -264,14 +264,14 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 assignments_to_show = [a for a in assignments if is_visible(a)]
                 base_url = view.getAssignmentMappingUrl(self.manager)
                 data.extend(self.portlets_for_assignments(assignments_to_show, self.manager, base_url))
-                
+
         return data
 
     def global_portlets(self, category, prefix):
         """ Return the list of global portlets from a given category for the current context.
-        
+
         Invisible (hidden) portlets are excluded.
-        
+
         """
         context = aq_inner(self.context)
 
@@ -307,40 +307,40 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for the dashboard"""
     adapts(Interface, IDefaultBrowserLayer, IManageDashboardPortletsView, IDashboard)
-        
+
 class ManagePortletAssignments(BrowserView):
     """Utility views for managing portlets for a particular column"""
-    
+
     # view @@move-portlet-up
     def move_portlet_up(self, name):
         assignments = aq_inner(self.context)
         IPortletPermissionChecker(assignments)()
-        
+
         keys = list(assignments.keys())
-        
+
         idx = keys.index(name)
         keys.remove(name)
         keys.insert(idx-1, name)
         assignments.updateOrder(keys)
-        
+
         self.request.response.redirect(self._nextUrl())
         return ''
-    
+
     # view @@move-portlet-down
     def move_portlet_down(self, name):
         assignments = aq_inner(self.context)
         IPortletPermissionChecker(assignments)()
-        
+
         keys = list(assignments.keys())
-        
+
         idx = keys.index(name)
         keys.remove(name)
         keys.insert(idx+1, name)
         assignments.updateOrder(keys)
-        
+
         self.request.response.redirect(self._nextUrl())
         return ''
-    
+
     # view @@delete-portlet
     def delete_portlet(self, name):
         assignments = aq_inner(self.context)
@@ -348,12 +348,12 @@ class ManagePortletAssignments(BrowserView):
         del assignments[name]
         self.request.response.redirect(self._nextUrl())
         return ''
-        
+
     def _nextUrl(self):
         referer = self.request.get('referer')
         if not referer:
             context = aq_parent(aq_inner(self.context))
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))    
+            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
             referer = '%s/@@manage-portlets' % (url,)
         return referer
 

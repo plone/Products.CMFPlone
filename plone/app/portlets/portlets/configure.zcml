@@ -36,7 +36,7 @@
         addview=".events.AddForm"
         editview=".events.EditForm"
         />
-    
+
     <plone:portlet
         name="portlets.Login"
         interface=".login.ILoginPortlet"
@@ -44,7 +44,7 @@
         renderer=".login.Renderer"
         addview=".login.AddForm"
         />
-        
+
     <plone:portlet
         name="portlets.Navigation"
         interface=".navigation.INavigationPortlet"
@@ -73,7 +73,7 @@
         renderer=".review.Renderer"
         addview=".review.AddForm"
         />
-        
+
     <plone:portlet
         name="portlets.rss"
         interface=".rss.IRSSPortlet"

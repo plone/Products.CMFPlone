@@ -6,7 +6,7 @@
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <a href="#" 
+        <a href="#"
             tal:attributes="href view/recently_modified_link"
             i18n:translate="box_recent_changes">Recent Changes</a>
         <span class="portletTopRight"></span>

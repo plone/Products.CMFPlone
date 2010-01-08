@@ -25,12 +25,12 @@ from Products.CMFCore.utils import getToolByName
 
 def assignment_mapping_from_key(context, manager_name, category, key, create=False):
     """Given the name of a portlet manager, the name of a category, and a
-    key in that category, return the IPortletAssignmentMapping. 
+    key in that category, return the IPortletAssignmentMapping.
     Raise a KeyError if it cannot be found.
     """
-    
+
     manager = getUtility(IPortletManager, manager_name)
-    
+
     if category == CONTEXT_CATEGORY:
         path = key
         portal = getToolByName(context, 'portal_url').getPortalObject()
@@ -43,7 +43,7 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
         else:
             if path.startswith(portal_path + '/'):
                 path = path[len(portal_path)+1:]
-            while path.startswith('/'): 
+            while path.startswith('/'):
                 path = path[1:]
             obj = portal.restrictedTraverse(path, None)
         if obj is None:
@@ -77,29 +77,29 @@ portletsMapping = { 'portlet_login'      : login.Assignment(),
                     'portlet_related'    : DONT_MIGRATE,
                     'portlet_languages'  : DONT_MIGRATE,
                   }
-                  
+
 def convert_legacy_portlets(context):
     """Convert legacy portlets (left_slots, right_slots) in the given
     context to new-style portlets.
     """
-        
+
     # Convert left_slots and right_slots to portlets
-    
+
     left = getUtility(IPortletManager, name='plone.leftcolumn')
     right = getUtility(IPortletManager, name='plone.rightcolumn')
-    
+
     leftAssignable = getMultiAdapter((context, left), IPortletAssignmentMapping).__of__(context)
     rightAssignable = getMultiAdapter((context, right), IPortletAssignmentMapping).__of__(context)
-    
+
     IPortletPermissionChecker(leftAssignable)()
     IPortletPermissionChecker(rightAssignable)()
-    
+
     leftChooser = INameChooser(leftAssignable)
     rightChooser = INameChooser(rightAssignable)
-    
+
     left_slots = getattr(aq_base(context), 'left_slots', [])
     right_slots = getattr(aq_base(context), 'right_slots', [])
-            
+
     for item in left_slots:
         path = item.split('/')
         if len(path) == 4:
@@ -108,7 +108,7 @@ def convert_legacy_portlets(context):
                 newPortlet = classic.Assignment(path[1], path[3])
             if newPortlet is not None and newPortlet is not DONT_MIGRATE:
                 leftAssignable[leftChooser.chooseName(None, newPortlet)] = newPortlet
-                
+
     for item in right_slots:
         path = item.split('/')
         if len(path) == 4:

@@ -6,7 +6,7 @@
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <a href="#" 
+        <a href="#"
            class="tile"
            tal:attributes="href view/full_review_link"
            i18n:translate="box_review_list">Review List</a>
@@ -37,7 +37,7 @@
     </tal:items>
 
     <dd class="portletFooter">
-        <a href="#" 
+        <a href="#"
            class="tile"
            tal:attributes="href view/full_review_link"
            i18n:translate="box_full_review_list">Full review list&hellip;</a>

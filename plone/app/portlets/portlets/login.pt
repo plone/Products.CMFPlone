@@ -6,7 +6,7 @@
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <a href="#" 
+        <a href="#"
            class="tile"
            tal:attributes="href view/login_form"
            i18n:translate="box_sign_in">Log in</a>
@@ -23,7 +23,7 @@
 
             <div>
                 <input type="hidden" name="form.submitted" value="1" />
-                <input type="hidden" name="came_from" value="" 
+                <input type="hidden" name="came_from" value=""
                        tal:attributes="value context/@@plone_context_state/current_page_url" />
                 <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
                 <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
@@ -59,7 +59,7 @@
                        i18n:attributes="alt label_email;"/>
               </tal:email>
             </div>
-            
+
             <div class="field">
                 <label for=""
                        tal:attributes="for ac_password"
@@ -78,9 +78,9 @@
                 Cookies are not enabled. You must enable cookies before you
                 can log in.
             </div>
-            
+
             <div class="formControls">
-            
+
                 <input class="context"
                        type="submit"
                        name="submit"
@@ -90,7 +90,7 @@
             </div>
         </form>
     </dd>
-    
+
     <dd class="portletItem even" tal:condition="view/can_request_password">
         <a href="mail_password_form"
            class="tile"
@@ -99,9 +99,9 @@
            <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
         </a>
     </dd>
-    
+
     <dd class="portletItem lastItem" tal:condition="view/can_register">
-        <a href="" 
+        <a href=""
            class="tile"
            tal:attributes="href view/join_action">
             <tal:block replace="structure context/user.gif"/>
@@ -116,14 +116,14 @@
     tal:condition="not:view/available">
 
     <dt class="portletHeader">
-        <a href="#" 
+        <a href="#"
            class="tile"
            i18n:translate="box_sign_in">Log in</a>
     </dt>
 
     <dd class="portletItem"
         i18n:translate="login_portlet_disabled">
-        Cookie authentication is disabled. 
+        Cookie authentication is disabled.
         Login portlet not available.
     </dd>
 

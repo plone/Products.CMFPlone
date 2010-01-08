@@ -6,19 +6,19 @@
 
 <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1)" />
-                 
+
 <div metal:fill-slot="portlets_one_slot">&nbsp;</div>
 <div metal:fill-slot="portlets_two_slot">&nbsp;</div>
 
 <body>
 <div metal:fill-slot="main">
-  
+
   <div metal:use-macro="context/@@base-pageform.html/form">
     <metal:block fill-slot="extra_info">
      <input type="hidden" name="referer" value="" tal:attributes="value view/referer" />
     </metal:block>
   </div>
-  
+
 </div>
 </body>
 </html>

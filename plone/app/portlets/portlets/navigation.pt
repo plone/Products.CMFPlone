@@ -1,15 +1,15 @@
 <tal:block i18n:domain="plone">
-<dl class="portlet portletNavigationTree"  
+<dl class="portlet portletNavigationTree"
     tal:define="root view/navigation_root">
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <a href="#" 
+        <a href="#"
            class="tile"
            tal:condition="not:view/title"
-           tal:attributes="href string:${root/absolute_url}/sitemap" 
+           tal:attributes="href string:${root/absolute_url}/sitemap"
            i18n:translate="box_navigation">Navigation</a>
-       <a href="#" 
+       <a href="#"
            class="tile"
            tal:condition="view/title"
            tal:attributes="href string:${root/absolute_url}/sitemap"
@@ -19,10 +19,10 @@
 
     <dd class="portletItem lastItem">
         <ul class="navTree navTreeLevel0">
-            <li tal:define="selectedClass view/root_item_class; 
-                            li_class python:selectedClass and ' navTreeCurrentNode' or '';" 
-                tal:condition="view/include_top" 
-                tal:attributes="class string:navTreeItem navTreeTopNode${li_class}"> 
+            <li tal:define="selectedClass view/root_item_class;
+                            li_class python:selectedClass and ' navTreeCurrentNode' or '';"
+                tal:condition="view/include_top"
+                tal:attributes="class string:navTreeItem navTreeTopNode${li_class}">
                 <div tal:define="rootIsPortal view/root_is_portal;">
                    <a tal:attributes="href root/absolute_url;
                                       title root/Description;

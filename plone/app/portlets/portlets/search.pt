@@ -30,7 +30,7 @@
               type="submit"
               value="Search"
               i18n:attributes="value label_search;"/>
-  
+
           <div class="LSResult" style="" tal:condition="livesearch">
             <div class="LSShadow"></div>
           </div>
@@ -38,7 +38,7 @@
       </form>
       <div class="visualClear"><!-- --></div>
     </dd>
-    
+
     <dd class="portletFooter">
         <a href="#"
          class="tile"

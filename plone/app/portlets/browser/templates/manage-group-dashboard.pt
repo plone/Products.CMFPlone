@@ -59,7 +59,7 @@
         <div class="documentContent" id="region-content">
 
             <a name="documentContent"></a>
-                    
+
             <div metal:use-macro="context/global_statusmessage/macros/portal_message">
                 Portal status message
             </div>
@@ -67,7 +67,7 @@
             <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard_group">
                 Edit Dashboard Portlets for <span i18n:name="group" tal:content="view/group" />
             </h1>
-            
+
             <a href=""
                class="link-parent"
                tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
@@ -76,13 +76,13 @@
             </a>
 
             <div id="dashboard">
-                <div id="dashboard-portlets1" 
+                <div id="dashboard-portlets1"
                   tal:content="structure provider:plone.dashboard1" />
-                <div id="dashboard-portlets2" 
+                <div id="dashboard-portlets2"
                   tal:content="structure provider:plone.dashboard2" />
-                <div id="dashboard-portlets3" 
+                <div id="dashboard-portlets3"
                   tal:content="structure provider:plone.dashboard3" />
-                <div id="dashboard-portlets4" 
+                <div id="dashboard-portlets4"
                   tal:content="structure provider:plone.dashboard4" />
             </div>
 

@@ -17,7 +17,7 @@
            tal:define="prevMonthMonth view/prevMonthMonth;
                        prevMonthYear view/prevMonthYear"
            tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
-                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string)); 
+                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string));
                            class string:kssCalendarChange kssattr-year-${prevMonthYear} kssattr-month-${prevMonthMonth} calendarPrevious;"
            tal:condition="showPrevMonth"
            i18n:attributes="title title_previous_month;">&laquo;</a>
@@ -78,7 +78,7 @@
                                     ></strong></td
                                     ><tal:notdayevent tal:condition="not: day_event"
                                         ><td tal:condition="python:is_today"
-                                             class="todaynoevent"><strong 
+                                             class="todaynoevent"><strong
                                              tal:content="daynumber">31</strong></td
                                         ><td tal:condition="python:not is_today"
                                              tal:content="daynumber">31</td

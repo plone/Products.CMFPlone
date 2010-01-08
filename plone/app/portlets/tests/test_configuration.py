@@ -66,11 +66,11 @@ class ITestPortlet(IPortletDataProvider):
 
 class TestAssignment(base.Assignment):
     implements(ITestPortlet)
-    
+
     test_text = None
     test_bool = None
     test_tuple = None
-    
+
     title = "Sample portlet"
 
 class TestRenderer(base.Renderer):
@@ -111,21 +111,21 @@ zcml_string = """\
         addview="plone.app.portlets.tests.test_configuration.TestAddForm"
         editview="plone.app.portlets.tests.test_configuration.TestEditForm"
         />
-        
+
     <gs:registerProfile
         name="testing"
         title="plone.app.portlets testing"
-        description="Used for testing only" 
+        description="Used for testing only"
         directory="tests/profiles/testing"
         for="Products.CMFCore.interfaces.ISiteRoot"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
-        
+
 </configure>
 """
 
 class TestPortletZCMLLayer(PloneSite):
-    
+
     @classmethod
     def setUp(cls):
         fiveconfigure.debug_mode = True
@@ -135,24 +135,24 @@ class TestPortletZCMLLayer(PloneSite):
     @classmethod
     def tearDown(cls):
         pass
-        
+
 class TestPortletGSLayer(TestPortletZCMLLayer):
-    
+
     @classmethod
     def setUp(cls):
         app = ZopeTestCase.app()
         portal = app.plone
-        
+
         # needed to avoid deep and magic five.localsitemanager wrapping problems
         setSite(portal)
         setHooks()
-        
+
         portal_setup = portal.portal_setup
         # wait a bit or we get duplicate ids on import
         time.sleep(1)
-        
+
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
-        
+
         transaction.commit()
         ZopeTestCase.close(app)
 
@@ -163,47 +163,47 @@ class TestPortletGSLayer(TestPortletZCMLLayer):
 class TestZCML(PortletsTestCase):
 
     layer = TestPortletZCMLLayer
-    
+
     def testPortletTypeInterfaceRegistered(self):
         iface = getUtility(IPortletTypeInterface, name=u"portlets.test.Test")
         self.assertEquals(ITestPortlet, iface)
-        
+
     def testFactoryRegistered(self):
         factory = getUtility(IFactory, name=u"portlets.test.Test")
         self.assertEquals(TestAssignment, factory._callable)
-    
+
     def testRendererRegistered(self):
         context = self.portal
         request = self.portal.REQUEST
         view = DummyView(context, request)
         manager = PortletManager()
         assignment = TestAssignment()
-        
+
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, TestRenderer))
-        
+
     def testAddViewRegistered(self):
         request = self.portal.REQUEST
         adding = PortletAdding(self.portal, request)
-        
+
         addview = getMultiAdapter((adding, request), name=u"portlets.test.Test")
         self.failUnless(isinstance(addview, TestAddForm))
-        
+
     def testEditViewRegistered(self):
         assignment = TestAssignment()
         request = self.portal.REQUEST
-        
+
         editview = getMultiAdapter((assignment, request), name=u"edit")
         self.failUnless(isinstance(editview, TestEditForm))
 
 class TestGenericSetup(PortletsTestCase):
-    
+
     layer = TestPortletGSLayer
-    
+
     def testPortletManagerInstalled(self):
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
         self.failUnless(ITestColumn.providedBy(manager))
-    
+
     def disabled_testPortletTypeRegistered(self):
         portlet_type = getUtility(IPortletType, name=u"portlets.test.Test")
         self.assertEquals('portlets.test.Test', portlet_type.addview)
@@ -225,21 +225,21 @@ class TestGenericSetup(PortletsTestCase):
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
         self.assertEquals(3, len(mapping))
         self.assertEquals(['test.portlet3', 'test.portlet2', 'test.portlet1'], list(mapping.keys()))
-        
+
     def testAssignmentPropertiesSet(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        
+
         assignment = mapping['test.portlet1']
         self.assertEquals(u'Test pr\xf6p 1', assignment.test_text)
         self.assertEquals(False, assignment.test_bool)
         self.assertEquals((u'published', u'private'), assignment.test_tuple)
-        
+
         assignment = mapping['test.portlet2']
         self.assertEquals('Test prop 2', assignment.test_text)
         self.assertEquals(True, assignment.test_bool)
         self.assertEquals((), assignment.test_tuple)
-        
+
         assignment = mapping['test.portlet3']
         self.assertEquals(None, assignment.test_text)
         self.assertEquals(None, assignment.test_bool)
@@ -255,7 +255,7 @@ class TestGenericSetup(PortletsTestCase):
         assignment = mapping['test.portlet2']
         settings = IPortletAssignmentSettings(assignment)
         self.failIf(settings.get('visible', True))
-        
+
     def testAssignmentRoot(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
@@ -264,13 +264,13 @@ class TestGenericSetup(PortletsTestCase):
         # No assignment in /news subfolder
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/news")
-        self.assertEquals(0, len(mapping))        
-        
+        self.assertEquals(0, len(mapping))
+
         context = DummyImportContext(self.portal, purge=False)
         context._files['portlets.xml'] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
-                    manager="test.testcolumn" 
+                    manager="test.testcolumn"
                     category="context"
                     key="/news"
                     type="portlets.test.Test"
@@ -283,16 +283,16 @@ class TestGenericSetup(PortletsTestCase):
         # Still 3 portlets in the root
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(3, len(mapping))        
+        self.assertEquals(3, len(mapping))
 
         # but 1 extra in the /news subfolder
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/news")
-        self.assertEquals(1, len(mapping))        
+        self.assertEquals(1, len(mapping))
 
     def testAssignmentRemoval(self):
         portal_setup = self.portal.portal_setup
-        
+
         # wait a bit or we get duplicate ids on import
         time.sleep(1)
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
@@ -329,7 +329,7 @@ class TestGenericSetup(PortletsTestCase):
         context._files['portlets.xml'] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
-                    manager="test.testcolumn" 
+                    manager="test.testcolumn"
                     category="context"
                     key="/"
                     purge="True"
@@ -353,7 +353,7 @@ class TestGenericSetup(PortletsTestCase):
         context._files['portlets.xml'] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
-                    manager="test.testcolumn" 
+                    manager="test.testcolumn"
                     category="group"
                     key="Reviewers"
                     purge="True"
@@ -377,7 +377,7 @@ class TestGenericSetup(PortletsTestCase):
         context._files['portlets.xml'] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
-                    manager="test.testcolumn" 
+                    manager="test.testcolumn"
                     category="content_type"
                     key="Folder"
                     purge="True"
@@ -393,13 +393,13 @@ class TestGenericSetup(PortletsTestCase):
 
     def testBlacklisting(self):
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
-        
+
         if 'news' in self.portal.objectIds():
             news = self.portal['news']
-        
+
             assignable = getMultiAdapter(
                 (news, manager), ILocalPortletAssignmentManager)
-            
+
             self.assertEquals(
                 True, assignable.getBlacklistStatus(CONTEXT_CATEGORY))
             self.assertEquals(
@@ -412,7 +412,7 @@ class TestGenericSetup(PortletsTestCase):
         context = TarballExportContext(self.portal.portal_setup)
         handler = getMultiAdapter((sm, context), IBody, name=u'plone.portlets')
         handler._purgePortlets()
-        
+
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
         self.assertEquals(None, manager)
 
@@ -437,8 +437,8 @@ class TestGenericSetup(PortletsTestCase):
         context = DummyImportContext(self.portal, purge=False)
         context._files['portlets.xml'] = """<?xml version="1.0"?>
             <portlets>
-                <portletmanager 
-                    name="test.testcolumn" 
+                <portletmanager
+                    name="test.testcolumn"
                     remove="True"
                     />
             </portlets>
@@ -452,8 +452,8 @@ class TestGenericSetup(PortletsTestCase):
         context = DummyImportContext(self.portal, purge=False)
         context._files['portlets.xml'] = """<?xml version="1.0"?>
             <portlets>
-                <portletmanager 
-                    name="test.testcolumn" 
+                <portletmanager
+                    name="test.testcolumn"
                     purge="True"
                     />
             </portlets>
@@ -480,9 +480,9 @@ class TestGenericSetup(PortletsTestCase):
         context = TarballExportContext(self.portal.portal_setup)
         handler = getMultiAdapter((sm, context), IBody, name=u'plone.portlets')
         handler._purgePortlets()
-        
+
         time.sleep(1)
-        
+
         portal_setup = self.portal.portal_setup
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
@@ -542,7 +542,7 @@ class TestGenericSetup(PortletsTestCase):
 
         body = handler.body
         self.assertEquals(expected.strip(), body.strip(), body)
-        
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

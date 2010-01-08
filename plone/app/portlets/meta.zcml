@@ -3,19 +3,19 @@
     xmlns:meta="http://namespaces.zope.org/meta">
 
     <meta:directives namespace="http://namespaces.plone.org/plone">
-        
+
         <meta:directive
             name="portlet"
             schema=".metadirectives.IPortletDirective"
             handler=".metaconfigure.portletDirective"
             />
-            
+
         <meta:directive
             name="portletRenderer"
             schema=".metadirectives.IPortletRendererDirective"
             handler=".metaconfigure.portletRendererDirective"
             />
-        
+
     </meta:directives>
-           
+
 </configure>

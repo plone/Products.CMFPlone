@@ -6,7 +6,7 @@
 
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-        <a href="#" 
+        <a href="#"
            class="tile"
            i18n:translate="box_error">Error</a>
         <span class="portletTopRight"></span>

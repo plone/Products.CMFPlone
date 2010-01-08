@@ -17,10 +17,10 @@ def render_cachekey(fun, self):
     * Portlet manager
     * Assignment
     * Fingerprint of the data used by the portlet
-    
+
     """
     context = aq_inner(self.context)
-    
+
     def add(brain):
         path = brain.getPath().decode('ascii', 'replace')
         return "%s\n%s\n\n" % (path, brain.modified)

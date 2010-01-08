@@ -23,7 +23,7 @@ class IPortletPermissionChecker(Interface):
     """An adapter for an assignment manager, which can check whether the
     current user is allowed to manipulate portlets in this mapping.
     """
-    
+
     def __call__():
         """Check the adapted assignment manager. Will raise Unathorized if
         something fishy is going on.
@@ -31,30 +31,30 @@ class IPortletPermissionChecker(Interface):
 
 class IColumn(IPortletManager):
     """Common base class for left and right columns.
-    
+
     Register a portlet for IColumn if it is applicable to regular columns
     but not to the dashboard.
     """
 
 class ILeftColumn(IColumn):
     """The left column.
-    
+
     Normally, you will register portlets for IColumn instead.
     """
 
 class IRightColumn(IColumn):
     """The right column
-    
+
     Normally, you will register portlets for IColumn instead.
     """
-    
+
 class IDashboard(IPlacelessPortletManager):
     """Common base class for dashboard columns
-    
+
     Register a portlet for IDashboard if it is applicable to the dashboard
     only.
     """
-    
+
 class IDeferredPortletRenderer(IPortletRenderer):
     """Provide refresh and dynamic loading functionality"""
 
@@ -92,10 +92,10 @@ class IDefaultDashboard(Interface):
     settings. When a new user is created, this adapter will be invoked to
     build a default dashboard.
     """
-    
+
     def __call__(self):
-        """Create and return dashboard portlet assignments. Should be a 
-        mapping of dashboard column names ('plone.dashboard1', 
+        """Create and return dashboard portlet assignments. Should be a
+        mapping of dashboard column names ('plone.dashboard1',
         'plone.dashboard2', 'plone.dashboard3' and/or 'plone.dashboard4')
         and a list of portlet assignmen instances.
         """

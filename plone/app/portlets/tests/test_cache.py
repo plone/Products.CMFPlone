@@ -9,7 +9,7 @@ class MockBrain(object):
     def __init__(self, path=u"some/path", modified=u"2002-01-01"):
         self.path = path
         self.modified = modified
-    
+
     def getPath(self):
         return self.path
 
@@ -25,7 +25,7 @@ class MockRenderer(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        
+
     def _data(self):
         return self.data_brains
 
@@ -39,7 +39,7 @@ class TestCacheKey(PortletsTestCase):
         context = self.folder
         renderer = MockRenderer(context, context.REQUEST)
 
-        key1 = render_cachekey(None, renderer) 
+        key1 = render_cachekey(None, renderer)
         renderer.manager.__name__ += '__changed__'
         key2 = render_cachekey(None, renderer)
 

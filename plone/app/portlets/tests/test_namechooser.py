@@ -6,9 +6,9 @@ from plone.app.portlets.tests.base import PortletsTestCase
 from Testing import ZopeTestCase as ztc
 
 def test_suite():
-    
+
     import plone.app.portlets.storage
-    
+
     return unittest.TestSuite([
 
         ztc.ZopeDocTestSuite(

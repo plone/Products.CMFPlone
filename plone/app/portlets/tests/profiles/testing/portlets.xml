@@ -3,21 +3,21 @@
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     i18n:domain="plone">
 
-    <portletmanager 
-        name="test.testcolumn" 
+    <portletmanager
+        name="test.testcolumn"
         type="plone.app.portlets.tests.test_configuration.ITestColumn"
         />
 
-    <portlet 
+    <portlet
         addview="portlets.test.Test"
         title="Test portlet"
         description="A test portlet"
         i18n:attributes="title title_test_portlet;
                          description description_test_portlet"
         />
-        
+
     <!-- 'name' and 'insert-before' are optional -->
-    
+
     <assignment
         manager="test.testcolumn"
         category="context"
@@ -31,7 +31,7 @@
                 <element>private</element>
             </property>
     </assignment>
-    
+
     <assignment
         manager="test.testcolumn"
         category="context"
@@ -44,7 +44,7 @@
             <property name="test_bool">True</property>
             <property name="test_tuple" />
     </assignment>
-    
+
     <assignment
         manager="test.testcolumn"
         category="context"
@@ -52,7 +52,7 @@
         type="portlets.test.Test"
         name="test.portlet3"
         insert-before="*" />
-        
+
     <assignment
         manager="test.testcolumn"
         category="content_type"
@@ -61,7 +61,7 @@
         name="test.portlet4"
         insert-before="test.portlet1"
         />
-        
+
     <assignment
         manager="test.testcolumn"
         category="content_type"
@@ -70,7 +70,7 @@
         name="test.portlet5"
         insert-before="test.portlet1"
         />
-        
+
     <assignment
         manager="test.testcolumn"
         category="group"
@@ -79,7 +79,7 @@
         name="test.portlet6"
         insert-before="test.portlet1"
         />
-        
+
     <assignment
         manager="test.testcolumn"
         category="context"
@@ -87,7 +87,7 @@
         type="portlets.test.Test"
         name="test.portlet7"
         remove="" />
-        
+
     <blacklist
         manager="test.testcolumn"
         category="context"
@@ -106,21 +106,21 @@
         location="/news"
         status="acquire"
         />
-        
+
     <blacklist
         manager="test.testcolumn"
         category="content_type"
         location="/"
         status="block"
         />
-    
+
     <blacklist
         manager="test.testcolumn"
         category="group"
         location="/"
         status="show"
         />
-        
+
     <blacklist
         manager="test.testcolumn"
         category="context"

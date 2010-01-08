@@ -27,19 +27,19 @@ from plone.app.portlets.browser.formhelper import EditForm
 
 class Assignment(SimpleItem, Contained):
     """Base class for assignments.
-    
+
     Your type may override the 'title', 'available' and 'data' properties, and
-    may 
+    may
     """
-    
+
     implements(IPortletAssignment)
-    
+
     __name__ = ''
-    
+
     @property
     def id(self):
         return getattr(self, '__name__', '')
-    
+
     @property
     def title(self):
         return self.id
@@ -57,18 +57,18 @@ class Assignment(SimpleItem, Contained):
 
 class Renderer(Explicit):
     """Base class for portlet renderers.
-    
-    You must override render() to return a string to render. One way of 
+
+    You must override render() to return a string to render. One way of
     doing this is to write:
-    
+
         from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
         ...
         render = ViewPageTemplateFile('mytemplate.pt')
-        
+
     This will render the template mytemplate.pt, found in the same directory
     as your source code file.
     """
-    
+
     implements(IPortletRenderer)
 
     def __init__(self, context, request, view, manager, data):
@@ -91,18 +91,18 @@ class Renderer(Explicit):
         """By default, portlets are available
         """
         return True
-        
+
 class DeferredRenderer(Renderer):
     """provide defer functionality via KSS
-    
+
     in here don't override render() but instead override render_full
-    
+
     """
 
     implements(IDeferredPortletRenderer)
 
     render_preload = ViewPageTemplateFile('deferred_portlet.pt')
-    
+
     def render_full(self):
         raise NotImplemented, "You must implement 'render_full' as a method or page template file attribute"
 

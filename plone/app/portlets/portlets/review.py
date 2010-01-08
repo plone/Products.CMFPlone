@@ -15,7 +15,7 @@ from plone.app.portlets.portlets import base
 
 
 class IReviewPortlet(IPortletDataProvider):
-    
+
     pass
 
 class Assignment(base.Assignment):

@@ -28,8 +28,8 @@ class TestPortlet(PortletsTestCase):
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
-        registered_interfaces = [_getDottedName(i) for i in portlet.for_] 
-        registered_interfaces.sort() 
+        registered_interfaces = [_getDottedName(i) for i in portlet.for_]
+        registered_interfaces.sort()
         self.assertEquals(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
@@ -95,7 +95,7 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals('context/portlet_recent/macros/portlet', r.path_expression())
         r = self.renderer(assignment=classic.Assignment(template='portlet_recent', macro=None))
         self.assertEquals('context/portlet_recent', r.path_expression())
-    
+
     def testRenderClassicPortlet(self):
         r = self.renderer(assignment=classic.Assignment(template='base_view', macro='main'))
         r.render()

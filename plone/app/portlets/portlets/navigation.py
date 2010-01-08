@@ -28,7 +28,7 @@ from plone.app.portlets.portlets import base
 class INavigationPortlet(IPortletDataProvider):
     """A portlet which can render the navigation tree
     """
-    
+
     name = schema.TextLine(
             title=_(u"label_navigation_title", default=u"Title"),
             description=_(u"help_navigation_title",
@@ -36,7 +36,7 @@ class INavigationPortlet(IPortletDataProvider):
                                    "blank for the default, translated title."),
             default=u"",
             required=False)
-    
+
     root = schema.Choice(
             title=_(u"label_navigation_root_path", default=u"Root node"),
             description=_(u'help_navigation_root',
@@ -46,16 +46,16 @@ class INavigationPortlet(IPortletDataProvider):
             required=False,
             source=SearchableTextSourceBinder({'is_folderish' : True},
                                               default_query='path:'))
-                            
+
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
             description=_(u"help_include_top_node",
                           default=u"Whether or not to show the top, or 'root', "
-                                   "node in the navigation tree. This is affected " 
+                                   "node in the navigation tree. This is affected "
                                    "by the 'Start level' setting."),
             default=False,
             required=False)
-            
+
     currentFolderOnly = schema.Bool(
             title=_(u"label_current_folder_only",
                     default=u"Only show the contents of the current folder."),
@@ -65,7 +65,7 @@ class INavigationPortlet(IPortletDataProvider):
                                    "children at all times."),
             default=False,
             required=False)
-    
+
     topLevel = schema.Int(
             title=_(u"label_navigation_startlevel", default=u"Start level"),
             description=_(u"help_navigation_start_level",
@@ -79,7 +79,7 @@ class INavigationPortlet(IPortletDataProvider):
                          "at the top level."),
             default=1,
             required=False)
-    
+
     bottomLevel = schema.Int(
             title=_(u"label_navigation_tree_depth",
                     default=u"Navigation tree depth"),
@@ -95,14 +95,14 @@ class Assignment(base.Assignment):
     implements(INavigationPortlet)
 
     title = _(u'Navigation')
-    
+
     name = u""
     root = None
     currentFolderOnly = False
     includeTop = False
     topLevel = 1
     bottomLevel = 0
-    
+
     def __init__(self, name=u"", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
         self.root = root
@@ -115,7 +115,7 @@ class Renderer(base.Renderer):
 
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
-        
+
         self.properties = getToolByName(context, 'portal_properties').navtree_properties
         self.urltool = getToolByName(context, 'portal_url')
 
@@ -162,7 +162,7 @@ class Renderer(base.Renderer):
 
     def createNavTree(self):
         data = self.getNavTree()
-        
+
         bottomLevel = self.data.bottomLevel or self.properties.getProperty('bottomLevel', 0)
 
         return self.recurse(children=data.get('children', []), level=1, bottomLevel=bottomLevel)
@@ -226,7 +226,7 @@ class EditForm(base.EditForm):
     form_fields['root'].custom_widget = UberSelectionWidget
     label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet display a navigation tree.")
-    
+
 class QueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties
     and those set on the portlet.
@@ -237,12 +237,12 @@ class QueryBuilder(object):
     def __init__(self, context, portlet):
         self.context = context
         self.portlet = portlet
-        
+
         portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
-        
+
         portal_url = getToolByName(context, 'portal_url')
-        
+
         # Acquire a custom nav query if available
         customQuery = getattr(context, 'getCustomNavQuery', None)
         if customQuery is not None and utils.safe_callable(customQuery):
@@ -290,7 +290,7 @@ class QueryBuilder(object):
 
     def __call__(self):
         return self.query
-        
+
 class NavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet
     """
@@ -301,7 +301,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
         SitemapNavtreeStrategy.__init__(self, context, portlet)
         portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
-        
+
         # XXX: We can't do this with a 'depth' query to EPI...
         self.bottomLevel = portlet.bottomLevel or navtree_properties.getProperty('bottomLevel', 0)
 
@@ -318,7 +318,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
             return False
         else:
             return True
-            
+
 def getRootPath(context, currentFolderOnly, topLevel, root):
     """Helper function to calculate the real root path
     """
@@ -326,12 +326,12 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
     if currentFolderOnly:
         folderish = getattr(aq_base(context), 'isPrincipiaFolderish', False) and not INonStructuralFolder.providedBy(context)
         parent = aq_parent(context)
-        
+
         is_default_page = False
         browser_default = IBrowserDefault(parent, None)
         if browser_default is not None:
             is_default_page = (browser_default.getDefaultPage() == context.getId())
-        
+
         if not folderish or is_default_page:
             return '/'.join(parent.getPhysicalPath())
         else:
@@ -352,5 +352,5 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
             rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLevel])
         else:
             return None
-    
+
     return rootPath

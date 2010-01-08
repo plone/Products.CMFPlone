@@ -41,7 +41,7 @@ class TestTraversal(PortletsTestCase):
         mapping['foo'] = assignment
         self.failUnless(manager[USER_CATEGORY][user_name]['foo'] is assignment)
         self.assertEquals('++dashboard++plone.dashboard1+' + user_name, mapping.id)
-    
+
     def testGroupDashboardNamespace(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.dashboard1')
@@ -50,20 +50,20 @@ class TestTraversal(PortletsTestCase):
         mapping['foo'] = assignment
         self.failUnless(manager[GROUP_CATEGORY]['Reviewers']['foo'] is assignment)
         self.assertEquals('++groupdashboard++plone.dashboard1+Reviewers', mapping.id)
-    
+
     def testGroupDashboardNamespaceChecker(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.dashboard1')
         mapping = self.portal.restrictedTraverse('++groupdashboard++plone.dashboard1+Reviewers')
-        
+
         checker = IPortletPermissionChecker(mapping)
-        
+
         self.setRoles(('Manager',))
         checker() # no exception
-        
+
         self.setRoles(('Member',))
         self.assertRaises(Unauthorized, checker)
-    
+
     def testGroupNamespace(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')

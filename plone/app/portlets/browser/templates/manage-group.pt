@@ -65,17 +65,17 @@
               Manage Group Portlets for
               <span i18n:name="group_name" tal:content="view/group">group</span>
           </h1>
-          
+
           <a href=""
                class="link-parent"
                tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
                i18n:translate="label_up_to_groups_overview">
             Up to Groups Overview
           </a>
-    
+
           <p i18n:translate="description_manage_group_portlets">
             The left and right portlet slots will now display only those portlets
-            assigned to this group. Use the up, down, delete and edit links 
+            assigned to this group. Use the up, down, delete and edit links
             to manage user portlets. Use the drop-down list to add new portlets.
           </p>
 

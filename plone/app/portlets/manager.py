@@ -71,6 +71,6 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
 class DashboardPortletManagerRenderer(ColumnPortletManagerRenderer):
     """Render a column of the dashboard
     """
-    
+
     adapts(Interface, IDefaultBrowserLayer, IBrowserView, IDashboard)
     template = ViewPageTemplateFile('browser/templates/dashboard-column.pt')

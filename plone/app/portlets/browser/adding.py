@@ -18,7 +18,7 @@ class PortletAdding(SimpleItem, BrowserView):
     context = None
     request = None
 
-    # This is necessary so that context.absolute_url() works properly on the 
+    # This is necessary so that context.absolute_url() works properly on the
     # add form, which in turn fixes the <base /> URL
     id = '+'
 
@@ -27,12 +27,12 @@ class PortletAdding(SimpleItem, BrowserView):
         """
         context = aq_inner(self.context)
         manager = aq_base(context)
-        
+
         IPortletPermissionChecker(context)()
-        
+
         chooser = INameChooser(manager)
         manager[chooser.chooseName(None, content)] = content
-        
+
     def nextURL(self):
         referer = self.request.get('referer')
         if not referer:

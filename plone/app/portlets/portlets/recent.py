@@ -52,7 +52,7 @@ class Renderer(base.Renderer):
 
         plone_tools = getMultiAdapter((context, self.request), name=u'plone_tools')
         self.catalog = plone_tools.catalog()
-        
+
     @ram.cache(_render_cachekey)
     def render(self):
         return xhtml_compress(self._template())

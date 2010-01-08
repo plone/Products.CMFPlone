@@ -18,7 +18,7 @@
     <tal:rss tal:condition="view/feedAvailable"
                 tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
                 tal:repeat="item view/items">
-        <dd class="portletItem oddrow" 
+        <dd class="portletItem oddrow"
             tal:define="oddrow repeat/item/odd"
             tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
@@ -28,7 +28,7 @@
                 <span tal:replace="item/title">
                     Title
                 </span>
-                <span class="portletItemDetails" 
+                <span class="portletItemDetails"
                       tal:condition="exists:item/updated">
                       <span tal:omit-tag="" tal:content="python:toLocalizedTime(item['updated'])">19.02.2007</span>
                 </span>

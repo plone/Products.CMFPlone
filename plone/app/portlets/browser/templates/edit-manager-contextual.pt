@@ -1,4 +1,4 @@
-<div class="portlets-manager" 
+<div class="portlets-manager"
      xmlns="http://www.w3.org/1999/xhtml"
      xmlns:tal="http://xml.zope.org/namespaces/tal"
      xmlns:metal="http://xml.zope.org/namespaces/metal"
@@ -25,7 +25,7 @@
         <span tal:omit-tag=""
               i18n:translate="label_portlets_parent_folders">
             Parent portlets:
-        </span> 
+        </span>
 
         <select name="context_status:int" size="1">
 
@@ -45,7 +45,7 @@
 
         <tal:block define="portlets view/inherited_portlets;"
                    condition="portlets">
-      
+
           <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet'" tal:repeat="portlet portlets">
             <div class="portletHeader">
 
@@ -64,7 +64,7 @@
             </div>
           </div>
         </tal:block>
-      
+
       </div>
 
       <div tal:define="status view/group_blacklist_status">
@@ -93,7 +93,7 @@
             </option>
 
         </select>
-      
+
         <tal:block define="portlets view/group_portlets;
                            status python:view.group_blacklist_status(check_parent=True)">
 
@@ -110,7 +110,7 @@
                 i18n:translate="label_portlet_blocked"
                 i18n:attributes="title title_portlet_blocked;">
                 (Blocked)
-              </span>            
+              </span>
 
             </div>
           </div>
@@ -118,7 +118,7 @@
         </tal:block>
 
       </div>
-      
+
 
       <div tal:define="status view/content_type_blacklist_status">
 

@@ -27,8 +27,8 @@ class TestPortlet(PortletsTestCase):
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.News')
-        registered_interfaces = [_getDottedName(i) for i in portlet.for_] 
-        registered_interfaces.sort() 
+        registered_interfaces = [_getDottedName(i) for i in portlet.for_]
+        registered_interfaces.sort()
         self.assertEquals(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
@@ -90,7 +90,7 @@ class TestRenderer(PortletsTestCase):
         self.portal.invokeFactory('News Item', 'n1')
         self.portal.invokeFactory('News Item', 'n2')
         self.portal.portal_workflow.doActionFor(self.portal.n1, 'publish')
-        
+
         r = self.renderer(assignment=news.Assignment(count=5, state=('draft',)))
         self.assertEquals(0, len(r.published_news_items()))
         r = self.renderer(assignment=news.Assignment(count=5, state=('published', )))

@@ -61,7 +61,7 @@
         <div class="documentContent" id="content">
 
             <a name="documentContent"></a>
-                    
+
             <div metal:use-macro="context/global_statusmessage/macros/portal_message">
                 Portal status message
             </div>
@@ -71,13 +71,13 @@
             </h1>
 
             <div id="dashboard">
-                <div id="dashboard-portlets1" 
+                <div id="dashboard-portlets1"
                   tal:content="structure provider:plone.dashboard1" />
-                <div id="dashboard-portlets2" 
+                <div id="dashboard-portlets2"
                   tal:content="structure provider:plone.dashboard2" />
-                <div id="dashboard-portlets3" 
+                <div id="dashboard-portlets3"
                   tal:content="structure provider:plone.dashboard3" />
-                <div id="dashboard-portlets4" 
+                <div id="dashboard-portlets4"
                   tal:content="structure provider:plone.dashboard4" />
             </div>
 

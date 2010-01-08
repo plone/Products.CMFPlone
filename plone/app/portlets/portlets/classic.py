@@ -41,7 +41,7 @@ class Renderer(base.Renderer):
         self.data = data
 
     render = ViewPageTemplateFile('classic.pt')
-    
+
     def use_macro(self):
         return bool(self.data.macro)
 

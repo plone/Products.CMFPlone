@@ -12,7 +12,7 @@
     <adapter
         factory=".portlets.PropertyPortletAssignmentExportImportHandler"
         />
-  
+
     <!-- Register import and export steps -->
     <genericsetup:importStep
         name="portlets"

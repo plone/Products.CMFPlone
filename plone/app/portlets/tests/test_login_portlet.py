@@ -28,7 +28,7 @@ class TestPortlet(PortletsTestCase):
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.Login')
-        registered_interfaces = [_getDottedName(i) for i in portlet.for_] 
+        registered_interfaces = [_getDottedName(i) for i in portlet.for_]
         self.assertEquals(['plone.app.portlets.interfaces.IColumn'],
           registered_interfaces)
 
@@ -95,19 +95,19 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer()
         del request.__annotations__
         self.assertEquals(False, r.available)
-        
+
 
     def testShow(self):
         request = self.folder.REQUEST
-        
+
         r = self.renderer()
         self.assertEquals(False, r.show())
-        
+
         self.logout()
-        
+
         del request.__annotations__
         self.assertEquals(True, r.show())
-        
+
         del request.__annotations__
         request['URL'] = self.portal.absolute_url() + '/login_form'
         self.assertEquals(False, self.renderer(request=request).show())

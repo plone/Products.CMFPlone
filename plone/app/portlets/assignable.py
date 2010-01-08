@@ -32,5 +32,5 @@ def localPortletAssignmentMappingAdapter(context, manager):
         portlets.__manager__ = manager.__name__
     if not getattr(portlets, '__category__', ''):
         portlets.__category__ = CONTEXT_CATEGORY
-    
+
     return portlets

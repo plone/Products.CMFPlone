@@ -28,8 +28,8 @@ class PortletsExportImportTestCase(PortletsTestCase):
         self.sm = getSiteManager(self.portal)
         self.importer = self.exporter = PortletsXMLAdapter(self.sm,
           DummySetupEnviron())
-   
-    def _searchPortletManagerRegistrations(self, name = None):  
+
+    def _searchPortletManagerRegistrations(self, name = None):
         results = [r for r in self.sm.registeredUtilities()
           if r.provided.isOrExtends(IPortletManager)]
         if name:
@@ -52,13 +52,13 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.failUnless(queryUtility(IPortletType,
           name='portlets.Calendar') is None)
         self.assertEqual(False, self.importer._removePortlet('foo'))
-    
+
     def test_checkBasicPortletNodeErrors(self):
         node = parseString(_XML_INVALID_EXTEND_AND_PURGE).documentElement
         self.assertEqual(
           True, self.importer._checkBasicPortletNodeErrors(node,
           ['portlets.Exists'])
-          ) 
+          )
         node = parseString(_XML_INVALID_EXTEND_NONEXISTS).documentElement
         self.assertEqual(
           True, self.importer._checkBasicPortletNodeErrors(node,
@@ -73,20 +73,20 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.assertEqual(
           False, self.importer._checkBasicPortletNodeErrors(node,
           ['portlets.Exists'])
-          )        
-    
+          )
+
     def test_modifyForList(self):
         node = parseString(_XML_SWITCH_COLUMNS).documentElement
         self.assertEqual([IColumn],
           self.importer._modifyForList(node, [IDashboard]))
-    
-    def test_initPortletNode_duplicateInterfaces(self): 
-        node = parseString(_XML_DUPLICATE_INTERFACES).documentElement 
-        self.importer._initPortletNode(node) 
-        portlet = queryUtility(IPortletType, name="portlets.New") 
-        self.failUnless(portlet is not None) 
-        self.assertEqual([IColumn], portlet.for_) 
-    
+
+    def test_initPortletNode_duplicateInterfaces(self):
+        node = parseString(_XML_DUPLICATE_INTERFACES).documentElement
+        self.importer._initPortletNode(node)
+        portlet = queryUtility(IPortletType, name="portlets.New")
+        self.failUnless(portlet is not None)
+        self.assertEqual([IColumn], portlet.for_)
+
     def test_initPortletNode_basic(self):
         node = parseString(_XML_BASIC).documentElement
         self.importer._initPortletNode(node)
@@ -120,18 +120,18 @@ class TestImportPortlets(PortletsExportImportTestCase):
         portlet = queryUtility(IPortletType, name="portlets.New")
         self.failUnless(portlet is not None)
         self.assertEqual([IColumn, IDashboard], portlet.for_)
-    
+
     def test_initPortletNode_defaultManagerInterface(self):
         node = parseString(_XML_DEFAULT_INTERFACE).documentElement
         self.importer._initPortletNode(node)
         portlet = queryUtility(IPortletType, name="portlets.New")
         self.failUnless(portlet is not None)
         self.assertEqual([Interface], portlet.for_)
-    
+
     def test_initPortletNode_BBBInterface(self):
         node = parseString(_XML_BBB_INTERFACE).documentElement
         self.assertRaises(Exception, self.importer._initPortletNode, node)
-    
+
     def test_initPortletNode_extend(self):
         node = parseString(_XML_EXTENDME_SETUP).documentElement
         self.importer._initPortletNode(node)
@@ -142,7 +142,7 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.assertEqual([IDashboard], portlet.for_)
         self.assertEqual('Bar', portlet.title)
         self.assertEqual('Bar', portlet.description)
-    
+
     def test_initPortletNode_purge(self):
         node = parseString(_XML_PURGEME_SETUP).documentElement
         self.importer._initPortletNode(node)
@@ -153,7 +153,7 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.assertEqual([IColumn], portlet.for_)
         self.assertEqual('Bar', portlet.title)
         self.assertEqual('Bar', portlet.description)
-    
+
     def test_initPortletNode_remove(self):
         node = parseString(_XML_REMOVEME_SETUP).documentElement
         self.importer._initPortletNode(node)
@@ -175,7 +175,7 @@ class TestExportPortlets(PortletsExportImportTestCase):
         node.writexml(file)
         file.seek(0)
         self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"><for interface="plone.app.portlets.interfaces.IColumn"/><for interface="plone.app.portlets.interfaces.IDashboard"/></portlet>""", file.read())
-    
+
     def test_extractPortletNode_defaultManagerInterface(self):
         node = parseString(_XML_EXPLICIT_DEFAULT_INTERFACE).documentElement
         self.importer._initPortletNode(node)
@@ -187,15 +187,15 @@ class TestExportPortlets(PortletsExportImportTestCase):
         self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"/>""", file.read())
 
 class TestImportPortletManagers(PortletsExportImportTestCase):
-        
+
     def test_initPortletManagerNode_basic(self):
         node = parseString(_XML_PORTLET_MANAGER_BASIC).documentElement
-        self.importer._initPortletManagerNode(node)      
-        
+        self.importer._initPortletManagerNode(node)
+
         manager = queryUtility(IPortletManager, name='plone.foo_column')
         self.failUnless(manager is not None)
         self.assertEqual(PortletManager, manager.__class__)
-        
+
     def test_initPortletManagerNode_customType(self):
         node = parseString(_XML_PORTLET_MANAGER_CUSTOM_TYPE).documentElement
         self.importer._initPortletManagerNode(node)
@@ -203,7 +203,7 @@ class TestImportPortletManagers(PortletsExportImportTestCase):
         manager = queryUtility(IPortletManager, name='plone.foo_column')
         self.failUnless(manager is not None)
         self.failUnless(IColumn.providedBy(manager))
-   
+
     def test_initPortletManagerNode_customClass(self):
         node = parseString(_XML_PORTLET_MANAGER_CUSTOM_CLASS).documentElement
         self.importer._initPortletManagerNode(node)
@@ -294,11 +294,11 @@ _XML_MULTIPLE_INTERFACES = """<?xml version="1.0"?>
 </portlet>
 """
 
-_XML_DUPLICATE_INTERFACES = """<?xml version="1.0"?> 
-<portlet addview="portlets.New" title="Foo" description="Foo"> 
-  <for interface="plone.app.portlets.interfaces.IColumn" /> 
-  <for interface="plone.app.portlets.interfaces.IColumn" /> 
-</portlet> 
+_XML_DUPLICATE_INTERFACES = """<?xml version="1.0"?>
+<portlet addview="portlets.New" title="Foo" description="Foo">
+  <for interface="plone.app.portlets.interfaces.IColumn" />
+  <for interface="plone.app.portlets.interfaces.IColumn" />
+</portlet>
 """
 
 _XML_DEFAULT_INTERFACE = """<?xml version="1.0"?>

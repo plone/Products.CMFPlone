@@ -4,12 +4,12 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
-      
+
 <div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
     <link type="text/css" rel="kinetic-stylesheet"
         tal:attributes="href string:${context/absolute_url}/++resource++manage-portlets.kss"/>
 </div>
-    
+
 <body>
 <div metal:fill-slot="main">
 
@@ -29,7 +29,7 @@
 
   <p i18n:translate="description_manage_contenttype_portlets">
     The left and right portlet slots will now display only those portlets
-    assigned to this content type. Use the up, down, delete and edit links 
+    assigned to this content type. Use the up, down, delete and edit links
     to manage user portlets. Use the drop-down list to add new portlets.
   </p>
 

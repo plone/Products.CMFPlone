@@ -19,10 +19,10 @@ def new_user(principal, event):
     defaults = IDefaultDashboard(principal, None)
     if defaults is None:
         return
-    
+
     userid = principal.getId()
     portlets = defaults()
-    
+
     for name in ('plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4'):
         assignments = portlets.get(name)
         if assignments:
@@ -38,17 +38,17 @@ def new_user(principal, event):
                     chooser = INameChooser(manager)
                     for assignment in assignments:
                         manager[chooser.chooseName(None, assignment)] = assignment
-    
+
 class DefaultDashboard(object):
     """The default default dashboard.
     """
-    
+
     implements(IDefaultDashboard)
     adapts(IPropertiedUser)
-    
+
     def __init__(self, principal):
         self.principal = principal
-    
+
     def __call__(self):
         return {
             'plone.dashboard1' : (portlets.news.Assignment(), portlets.events.Assignment(),),

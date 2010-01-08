@@ -23,9 +23,9 @@ class Renderer(base.Renderer):
 
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
-        
+
         self.membership = getToolByName(self.context, 'portal_membership')
-        
+
         self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
         self.portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
         self.pas_info = getMultiAdapter((context, request), name=u'pas_info')

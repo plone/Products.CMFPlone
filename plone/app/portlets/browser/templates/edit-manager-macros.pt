@@ -1,5 +1,5 @@
 <div metal:define-macro="portlet-add-form" class="section" i18n:domain="plone">
-    
+
     <form method="post" action="#"
           tal:attributes="action view/context_url">
         <input type="hidden" name="referer" tal:attributes="value view/referer" />
@@ -35,14 +35,14 @@
 
 <div metal:define-macro="current-portlets-list" class="portletAssignments"
     i18n:domain="plone">
-  
+
     <h4 i18n:translate="heading_portlets_assigned_here">
         Portlets assigned here
     </h4>
 
     <div tal:attributes="class string:kssattr-viewname-${view/__parent__/__name__}">
         <tal:block repeat="portlet view/portlets">
-            <div tal:define="hiddenPortletClass python:not portlet['visible'] and 'blockedPortlet' or ''" 
+            <div tal:define="hiddenPortletClass python:not portlet['visible'] and 'blockedPortlet' or ''"
                 tal:attributes="class string:managedPortlet portlet kssattr-portlethash-${portlet/hash} ${hiddenPortletClass}">
                 <div class="portletHeader">
                     <span class="managedPortletActions">
@@ -56,11 +56,11 @@
                        i18n:attributes="title"
                        tal:condition="not:repeat/portlet/end"
                        tal:attributes="href string:${portlet/down_url}&amp;referer=${view/url_quote_referer}">&darr;</a>
-                    <a href="#" class="toggle-visibility" 
+                    <a href="#" class="toggle-visibility"
                        tal:condition="not: portlet/visible"
                        i18n:translate="label_show_item"
                        tal:attributes="href string:${portlet/show_url}&amp;referer=${view/url_quote_referer}">Show</a>
-                    <a href="#" class="toggle-visibility" 
+                    <a href="#" class="toggle-visibility"
                        tal:condition="portlet/visible"
                        i18n:translate="label_hide_item"
                        tal:attributes="href string:${portlet/hide_url}&amp;referer=${view/url_quote_referer}">Hide</a>
@@ -76,5 +76,5 @@
             </div>
         </tal:block>
     </div>
-      
+
 </div>
