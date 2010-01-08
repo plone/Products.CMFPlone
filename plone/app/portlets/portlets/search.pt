@@ -13,7 +13,7 @@
   </dt>
 
     <dd class="portletItem">
-      <form name="searchform" action="search"
+      <form id="searchform" action="search"
             tal:define="livesearch view/enable_livesearch;"
             tal:attributes="action view/search_action">
         <div class="LSBox">
