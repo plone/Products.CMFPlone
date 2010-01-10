@@ -68,6 +68,8 @@ Testing the flexible user registration
     >>> browser.getControl('User Name').value = 'user1'
     >>> browser.getControl('E-mail').value = 'user1@example.com'
     >>> browser.getControl('Register').click()
+    >>> 'Failed to create your account' not in browser.contents
+    True
 
     Ensure that the user has, in fact, been added.
     >>> browser.open('http://nohost/plone/login_form')
@@ -161,7 +163,7 @@ Testing the flexible user registration
     True
 
     We do not offer the opportunity to send an email though, as the
-    mailhost is not setup.
+    mailhost is not set up.
     >>> 'Send a confirmation mail with a link to set the password' in browser.contents
     False
 
@@ -174,10 +176,15 @@ Testing the flexible user registration
     >>> '@@usergroup-userprefs' in browser.url
     True
 
-    We get a warning because no mail could be sent, but the user is
+    TODO Since the MockMailHost doesn't flip out over missing mail settings, we
+    won't see our error message here Figure out a way to do so.
+    
+    We should get a warning because no mail could be sent, but the user is
     created anyway.
-    >>> browser.contents
-    '...This account has been created, but we were unable to send...'
+    Original test was "
+    browser.contents
+    '...This account has been created, but we were unable to send...'"
+
     >>> browser.contents
     '...User added...user3...'
 
