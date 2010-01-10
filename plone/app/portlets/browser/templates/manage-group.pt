@@ -19,38 +19,39 @@
 <body>
 <div metal:fill-slot="content">
 
-  <div class="documentEditable">
+    <div id="region-content" class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
-    <ul class="contentViews">
-      <li>
-        <a href=""
-           tal:attributes="href string:${context/absolute_url}/prefs_group_members?groupname=${request/key}"
-           i18n:translate="label_group_members">Group Members</a>
-      </li>
-      <li>
-        <a href=""
-           tal:attributes="href string:${context/absolute_url}/prefs_group_details?groupname=${request/key}"
-           i18n:translate="label_group_properties">Group Properties</a>
-      </li>
-      <li class="selected">
-        <a href=""
-           tal:attributes="href string:${portal_url}/@@manage-group-portlets?key=${request/key}"
-           i18n:translate="label_group_portlets">Group Portlets</a>
-      </li>
-      <li>
-        <a href=""
-           tal:attributes="href string:${portal_url}/@@manage-group-dashboard?key=${request/key}"
-           i18n:translate="label_group_dashboard">Group Dashboard</a>
-      </li>
-    </ul>
+    <div id="edit-bar">
+        <ul class="contentViews" id="content-views">
+          <li>
+            <a href=""
+               tal:attributes="href string:${context/absolute_url}/prefs_group_members?groupname=${request/key}"
+               i18n:translate="label_group_members">Group Members</a>
+          </li>
+          <li>
+            <a href=""
+               tal:attributes="href string:${context/absolute_url}/prefs_group_details?groupname=${request/key}"
+               i18n:translate="label_group_properties">Group Properties</a>
+          </li>
+          <li class="selected">
+            <a href=""
+               tal:attributes="href string:${portal_url}/@@manage-group-portlets?key=${request/key}"
+               i18n:translate="label_group_portlets">Group Portlets</a>
+          </li>
+          <li>
+            <a href=""
+               tal:attributes="href string:${portal_url}/@@manage-group-dashboard?key=${request/key}"
+               i18n:translate="label_group_dashboard">Group Dashboard</a>
+          </li>
+        </ul>
 
-    <div class="contentActions">
-      &nbsp;
+        <div class="contentActions">
+          &nbsp;
+        </div>
     </div>
-
-    <div id="region-content" class="documentContent">
-      <a name="documentContent"></a>
+    <div class="documentContent" id="content">
+        <a name="documentContent"></a>
 
       <div metal:use-macro="here/global_statusmessage/macros/portal_message">
         Portal status message
