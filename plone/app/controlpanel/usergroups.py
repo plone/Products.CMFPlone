@@ -8,7 +8,6 @@ from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 
-from plone.memoize.instance import memoize, clearafter
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -104,44 +103,47 @@ class UsersOverviewControlPanel(ControlPanelView):
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
         CheckAuthenticator(self.request)
-        context = aq_inner(self.context)
-        acl_users = getToolByName(context, 'acl_users')
-        mtool = getToolByName(context, 'portal_membership')
-        regtool = getToolByName(context, 'portal_registration')
+        
+        if users:
+            context = aq_inner(self.context)
+            acl_users = getToolByName(context, 'acl_users')
+            mtool = getToolByName(context, 'portal_membership')
+            regtool = getToolByName(context, 'portal_registration')
 
-        utils = getToolByName(context, 'plone_utils')
-        for user in users:
-            # Don't bother if the user will be deleted anyway
-            if user.id in delete:
-                continue
+            utils = getToolByName(context, 'plone_utils')
 
-            member = mtool.getMemberById(user.id)
-            # If email address was changed, set the new one
-            if hasattr(user, 'email'):
-                # If the email field was disabled (ie: non-writeable), the
-                # property might not exist.
-                if user.email != member.getProperty('email'):
-                    utils.setMemberProperties(member, REQUEST=context.REQUEST, email=user.email)
-                    utils.addPortalMessage(_(u'Changes applied.'))
+            for user in users:
+                # Don't bother if the user will be deleted anyway
+                if user.id in delete:
+                    continue
 
-            # If reset password has been checked email user a new password
-            pw = None
-            if hasattr(user, 'resetpassword'):
-                if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
-                    pw = regtool.generatePassword()
-                else:
-                    utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
+                member = mtool.getMemberById(user.id)
+                # If email address was changed, set the new one
+                if hasattr(user, 'email'):
+                    # If the email field was disabled (ie: non-writeable), the
+                    # property might not exist.
+                    if user.email != member.getProperty('email'):
+                        utils.setMemberProperties(member, REQUEST=context.REQUEST, email=user.email)
+                        utils.addPortalMessage(_(u'Changes applied.'))
 
-            acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
-            if pw:
-                context.REQUEST.form['new_password'] = pw
-                regtool.mailPassword(user.id, context.REQUEST)
+                # If reset password has been checked email user a new password
+                pw = None
+                if hasattr(user, 'resetpassword'):
+                    if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
+                        pw = regtool.generatePassword()
+                    else:
+                        utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
 
-        if delete:
-            # TODO We should eventually have a global switch to determine member area
-            # deletion
-            mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
-        utils.addPortalMessage(_(u'Changes applied.'))
+                acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
+                if pw:
+                    context.REQUEST.form['new_password'] = pw
+                    regtool.mailPassword(user.id, context.REQUEST)
+
+            if delete:
+                # TODO We should eventually have a global switch to determine member area
+                # deletion
+                mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
+            utils.addPortalMessage(_(u'Changes applied.'))
 
     @property
     def portal_roles(self):
