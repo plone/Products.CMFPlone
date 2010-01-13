@@ -27,7 +27,7 @@ from widgets import MultiCheckBoxVocabularyWidget
 anon_auth_items = (('anon', _(u'anonymous users')),
                    ('auth', _(u'logged in users'),))
 
-anon_auth_terms = [SimpleTerm(item[0], title=item[1]) for item in 
+anon_auth_terms = [SimpleTerm(item[0], title=item[1]) for item in
                    anon_auth_items]
 
 AnonAuthVocabulary = SimpleVocabulary(anon_auth_terms)
@@ -55,7 +55,9 @@ class IBaseSearchSchema(Interface):
             vocabulary="plone.app.vocabularies.ReallyUserFriendlyTypes")
         )
 
-   
+
+class IAdvancedSearchSchema(Interface):
+
     search_review_state_for_anon = Bool(
         title=_(u'Show review states to visitors that are not logged in'),
         description=_(u"Visitors to your site mostly don't know what review"
@@ -66,9 +68,6 @@ class IBaseSearchSchema(Interface):
         required=True,
         default=False
         )
-    
-
-class IAdvancedSearchSchema(Interface):
 
     search_enable_sort_on = List(
         title=_(u"Sort order of search results"),
@@ -78,7 +77,7 @@ class IAdvancedSearchSchema(Interface):
         value_type=Choice(vocabulary=AnonAuthVocabulary),
         required=False,
         )
-    
+
     search_enable_batch_size = List(
         title=_(u"Search results per page"),
         description=_(u"If enabled, the user can choose if he "
@@ -87,7 +86,7 @@ class IAdvancedSearchSchema(Interface):
         value_type=Choice(vocabulary=AnonAuthVocabulary),
         required=False,
         )
-    
+
     search_enable_title_search = List(
         title=_(u"Search in the title only"),
         description=_(u"If enabled, the form contains a field to search in "
@@ -96,7 +95,7 @@ class IAdvancedSearchSchema(Interface):
         value_type=Choice(vocabulary=AnonAuthVocabulary),
         required=False,
         )
-    
+
     search_enable_description_search = List(
         title=_(u"Search in the description only"),
         description=_(u"If enabled, the form contains a field to search "
@@ -105,7 +104,7 @@ class IAdvancedSearchSchema(Interface):
         value_type=Choice(vocabulary=AnonAuthVocabulary),
         required=False,
         )
-    
+
     search_collapse_options = Bool(
         title=_(u"Collapse rarely used options"),
         description=_(u"If enabled, the rarely used search options, e.g. for "
@@ -150,7 +149,7 @@ class SearchFormOptions(BrowserView):
         self.context = context
         self.request = request
         portal = getToolByName(context, 'portal_url').getPortalObject()
-        self.is_anonymous = getToolByName(context, 
+        self.is_anonymous = getToolByName(context,
                                           'portal_membership').isAnonymousUser()
         self.properties = ISearchSchema(portal)
 
@@ -232,7 +231,7 @@ class SearchControlPanelAdapter(SchemaAdapterBase):
 
     search_collapse_options = property(get_search_collapse_options,
                                        set_search_collapse_options)
-                  
+
     def get_search_enable_description_search(self):
         return self.context.search_enable_description_search
 
@@ -287,7 +286,7 @@ searchset.label = _("Search settings")
 advancedset = FormFieldsets(IAdvancedSearchSchema)
 advancedset.id = 'advanced'
 advancedset.label = _("Advanced search form settings")
-advancedset.description = _("Configure when and how to show search options in the advanced search form.") 
+advancedset.description = _("Configure when and how to show search options in the advanced search form.")
 
 class SearchControlPanel(ControlPanelForm):
 
@@ -305,4 +304,3 @@ class SearchControlPanel(ControlPanelForm):
     label = _("Search settings")
     description = _("Search settings for this site.")
     form_name = _("Search settings")
-
