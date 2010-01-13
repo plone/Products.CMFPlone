@@ -205,7 +205,7 @@
                                                        title group_info/title|group_info/groupid">
 
                                        <tal:block replace="structure context/portal_url/group.png" />&nbsp;
-                                       <tal:group tal:replace="group_info/title|group_info/groupid" />
+                                       <tal:group tal:replace="group_info/title" /> (<tal:id tal:replace="group_info/groupid" />)
                                    </a>
                                 </td>
 

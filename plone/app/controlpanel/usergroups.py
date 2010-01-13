@@ -172,8 +172,10 @@ class GroupsOverviewControlPanel(ControlPanelView):
 
     def doSearch(self, searchString):
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        return searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
-
+        results = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+        sortedResults = searchView.sort(results, 'title')
+        return results
+        
     def manageGroup(self, groups=[], delete=[]):
         CheckAuthenticator(self.request)
         context = aq_inner(self.context)
