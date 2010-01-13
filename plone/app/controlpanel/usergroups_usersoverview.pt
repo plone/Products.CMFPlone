@@ -107,7 +107,6 @@
               method="post"
               tal:attributes="action string:$portal_url/$template_id"
               tal:define="findAll python:'form.button.FindAll' in request.keys();
-                          search_view context/@@pas_search;
                           portal_users view/searchResults;
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1);
                           many_users view/many_users">
