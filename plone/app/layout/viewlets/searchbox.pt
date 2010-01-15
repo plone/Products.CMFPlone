@@ -4,8 +4,9 @@
           action="search"
           tal:attributes="action string:${view/navigation_root_url}/search">
 
-        <label for="searchGadget" class="hiddenStructure"
-                    i18n:translate="text_search">Search Site</label>
+        <label class="hiddenStructure" 
+               tal:attributes="for view/search_input_id"  
+               i18n:translate="text_search">Search Site</label>
 
         <div class="LSBox">
         <input name="SearchableText"

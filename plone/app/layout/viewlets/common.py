@@ -120,7 +120,7 @@ class SearchBoxViewlet(ViewletBase):
         if livesearch:
             self.search_input_id = "searchGadget"
         else:
-            self.search_input_id = ""
+            self.search_input_id = "nonlivesearchGadget"
 
         folder = context_state.folder()
         self.folder_path = '/'.join(folder.getPhysicalPath())
