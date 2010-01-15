@@ -84,7 +84,7 @@
                 </p>
 
                 <p i18n:translate="description_pas_group_listing"
-                   tal:condition="python:not (site_properties.many_groups or view.searchString) and not context.acl_users.canListAllGroups()">
+                   tal:condition="python:not (view.many_groups or view.searchString) and not context.acl_users.canListAllGroups()">
                     Note: Some or all of your PAS groups
                     source plugins do not allow listing of groups, so you
                     may not see the groups defined by those plugins unless
@@ -201,7 +201,7 @@
                                            />
 
                                     <a href="#"
-                                       tal:attributes="href python:portal_url+'/prefs_group_members?'+ztu.make_query(groupname=group_info['groupid']);
+                                       tal:attributes="href python:portal_url+'/@@usergroup-groupmembership?'+ztu.make_query(groupname=group_info['groupid']);
                                                        title group_info/title|group_info/groupid">
 
                                        <tal:block replace="structure context/portal_url/group.png" />&nbsp;

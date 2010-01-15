@@ -7,6 +7,7 @@ from zope.component import getMultiAdapter
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
+from ZTUtils import make_query
 
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
@@ -17,8 +18,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from form import ControlPanelForm, ControlPanelView
-
-
+    
 class IUserGroupsSettingsSchema(Interface):
 
     many_groups = Bool(title=_(u'Many groups?'),
@@ -68,7 +68,24 @@ class UserGroupsSettingsControlPanel(ControlPanelForm):
     form_name = _("User/Groups settings")
 
 
-class UsersOverviewControlPanel(ControlPanelView):
+class UsersGroupsControlPanelView(ControlPanelView):
+
+    @property
+    def portal_roles(self):
+        pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
+        return [r for r in pmemb.getPortalRoles() if r != 'Owner']
+
+    @property
+    def many_users(self):
+        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
+        return pprop.site_properties.many_users
+
+    @property
+    def many_groups(self):
+        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
+        return pprop.site_properties.many_groups 
+
+class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
 
@@ -95,11 +112,6 @@ class UsersOverviewControlPanel(ControlPanelView):
         self.request.set('__ignore_group_roles__', True)
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
         return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
-
-    @property
-    def many_users(self):
-        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_users
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
         CheckAuthenticator(self.request)
@@ -145,13 +157,7 @@ class UsersOverviewControlPanel(ControlPanelView):
                 mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
             utils.addPortalMessage(_(u'Changes applied.'))
 
-    @property
-    def portal_roles(self):
-        pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
-        return [r for r in pmemb.getPortalRoles() if r != 'Owner']
-
-
-class GroupsOverviewControlPanel(ControlPanelView):
+class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
         form = self.request.form
@@ -198,12 +204,55 @@ class GroupsOverviewControlPanel(ControlPanelView):
         utils.addPortalMessage(message)
         #return state
 
-    @property
-    def portal_roles(self):
-        pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
-        return [r for r in pmemb.getPortalRoles() if r != 'Owner']
+class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
-    @property
-    def many_groups(self):
-        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_groups 
+    def __call__(self):
+        
+        self.groupname = getattr(self.request, 'groupname')
+        self.gtool = getToolByName(self, 'portal_groups')
+        self.mtool = getToolByName(self, 'portal_membership')
+        self.group = self.gtool.getGroupById(self.groupname)
+        self.grouptitle = self.group.getGroupTitleOrName() or self.groupname
+
+        self.request.set('grouproles', self.group.getRoles() if self.group else [])
+        
+        self.groupquery = self.makeGroupQuery(groupname=self.groupname)
+        self.groupkeyquery = self.makeGroupQuery(key=self.groupname)
+        
+        
+        form = self.request.form
+        submitted = form.get('form.submitted', False)
+        if submitted:
+            findAll = form.get('form.button.FindAll', None) is not None
+            self.searchString = not findAll and form.get('searchstring', '') or ''
+            self.searchResults = []
+        
+            for u in form.get('add', []):
+                self.gtool.addPrincipalToGroup(u, self.groupname, self.request)
+
+            context.plone_utils.addPortalMessage(_(u'Changes made.'))
+
+        self.groupMembers = [self.mtool.getMemberById(m) or self.gtool.getGroupById(m) for m in self.gtool.getGroupMembers(self.groupname)]
+
+
+        # TODO sort groups first
+        # TODO show groups in show all
+        # TODO remove users/groups
+
+
+        # if submitted:
+        #     if form.get('form.button.Modify', None) is not None:
+        #         self.manageGroup([group[len('group_'):] for group in self.request.keys() if group.startswith('group_')],
+        #                          form.get('delete', []))
+        # 
+        # # Only search for all ('') if the many_users flag is not set.
+        # if not(self.many_groups) or bool(self.searchString):
+        #     self.searchResults = self.doSearch(self.searchString)
+
+        return self.index()
+
+    def isGroup(self, itemName):
+        return self.gtool.isGroup(itemName)
+        
+    def makeGroupQuery(self, **kw):
+        return make_query(**kw)
