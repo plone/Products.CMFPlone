@@ -46,7 +46,7 @@ class INavigationSchema(Interface):
         required=False,
         missing_value=tuple(),
         value_type=Choice(
-            vocabulary="plone.app.vocabularies.UserFriendlyTypes")
+            vocabulary="plone.app.vocabularies.ReallyUserFriendlyTypes")
         )
 
     filter_on_workflow = Bool(
