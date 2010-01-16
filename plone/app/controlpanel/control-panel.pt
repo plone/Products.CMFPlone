@@ -82,7 +82,7 @@
                              tal:define="description widget/hint;
                                          error widget/error"
                              tal:attributes="class python:'field'+(error and ' error' or '')">
-			  
+
                             <label i18n:translate=""
                                    tal:attributes="for widget/name"
                                    tal:content="widget/label">
@@ -140,9 +140,9 @@
                              tal:attributes="class python:'field'+(error and ' error' or '')">
 
                             <label i18n:translate=""
-				   tal:define="name widget/name"
+                                   tal:define="name widget/name"
                                    tal:attributes="for widget/associateLabelWithInputControl|name"
-				   tal:content="widget/label">
+                                   tal:content="widget/label">
                                 label
                             </label>
 
