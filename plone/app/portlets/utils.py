@@ -67,21 +67,21 @@ def assignment_from_key(context, manager_name, category, key, name):
 
 DONT_MIGRATE = object()
 
-portletsMapping = { 'portlet_login'      : login.Assignment(),
-                    'portlet_news'       : news.Assignment(count=5),
-                    'portlet_events'     : events.Assignment(count=5),
-                    'portlet_navigation' : navigation.Assignment(),
-                    'portlet_calendar'   : calendar.Assignment(),
-                    'portlet_review'     : review.Assignment(),
-                    'portlet_recent'     : recent.Assignment(count=5),
-                    'portlet_related'    : DONT_MIGRATE,
-                    'portlet_languages'  : DONT_MIGRATE,
-                  }
-
 def convert_legacy_portlets(context):
     """Convert legacy portlets (left_slots, right_slots) in the given
     context to new-style portlets.
     """
+
+    portletsMapping = { 'portlet_login'      : login.Assignment(),
+                        'portlet_news'       : news.Assignment(count=5),
+                        'portlet_events'     : events.Assignment(count=5),
+                        'portlet_navigation' : navigation.Assignment(),
+                        'portlet_calendar'   : calendar.Assignment(),
+                        'portlet_review'     : review.Assignment(),
+                        'portlet_recent'     : recent.Assignment(count=5),
+                        'portlet_related'    : DONT_MIGRATE,
+                        'portlet_languages'  : DONT_MIGRATE,
+                      }
 
     # Convert left_slots and right_slots to portlets
 
