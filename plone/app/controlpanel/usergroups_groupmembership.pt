@@ -102,7 +102,7 @@
                     tal:define="searchstring request/searchstring | nothing;
                                 findAll python:'form.button.FindAll' in request.keys();
                                 ignoreUsersGroups python: view.group.getAllGroupMembers() + [view.group,];
-                                results python:(searchstring or findAll) and context.prefs_user_group_search(searchstring, 'all', ignore=ignoreUsersGroups) or [];
+                                results python:(searchstring or findAll) and view.context.prefs_user_group_search(searchstring, 'all', ignore=ignoreUsersGroups) or [];
                                 batch python:Batch(results, b_size, int(b_start), orphan=1);
                                 many_users context/portal_properties/site_properties/many_users">
             <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
@@ -142,7 +142,7 @@
                         <tal:block tal:condition="python: view.isGroup(this_user)">
                           <td>
                             <img src="group.png" alt="" />
-                            <a href="" tal:attributes="href python:'prefs_group_details?' + view.makeGroupQuery(groupname=this_user.getGroupName())" >
+                            <a href="" tal:attributes="href python:'prefs_group_details?' + view.makeQuery(groupname=this_user.getGroupName())" >
                               <span tal:replace="this_user/getGroupTitleOrName | default" />
                               (<span tal:replace="this_user/id" />)
                             </a>
@@ -152,7 +152,7 @@
                         <tal:block tal:condition="python: not view.isGroup(this_user)">
                           <td>
                             <img src="user.png" alt="" />
-                            <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeGroupQuery(userid=this_user.getId())"
+                            <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeQuery(userid=this_user.getId())"
                                 tal:content="this_user/getId | default">
                                 <span i18n:translate="link_username_not_available">
                                     username not available
@@ -244,17 +244,16 @@
                   <td>
                       <tal:block tal:condition="python:not view.isGroup(this_user)">
                           <img src="user.png" alt="" />
-                          <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeGroupQuery(userid=this_user.getId())"
+                          <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeQuery(userid=this_user.getId())"
                                    tal:content="this_user/getId | default">
                                    <span i18n:translate="link_username_not_available">username not available</span>
                           </a>
                       </tal:block>
                       <tal:block tal:condition="python: view.isGroup(this_user)">
                           <img src="group.png" alt="" />
-                          <a href="" tal:attributes="href python:'prefs_group_details?' + view.makeGroupQuery(groupname=this_user.getGroupName())"
-                                     tal:content="this_user/getGroupTitleOrName | default">
-                                     <span i18n:translate="link_groupname_not_available">
-                                     groupname not available</span>
+                          <a href="" tal:attributes="href python:'prefs_group_details?' + view.makeQuery(groupname=this_user.getGroupName())">
+                              <span tal:replace="this_user/getGroupTitleOrName | default" />
+                              (<span tal:replace="this_user/id | default" />)
                           </a>
                       </tal:block>
                   </td>

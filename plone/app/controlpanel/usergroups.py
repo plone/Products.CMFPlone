@@ -85,6 +85,9 @@ class UsersGroupsControlPanelView(ControlPanelView):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
         return pprop.site_properties.many_groups 
 
+    def makeQuery(self, **kw):
+        return make_query(**kw)
+
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
@@ -216,43 +219,32 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
         
-        self.groupquery = self.makeGroupQuery(groupname=self.groupname)
-        self.groupkeyquery = self.makeGroupQuery(key=self.groupname)
-        
+        self.groupquery = self.makeQuery(groupname=self.groupname)
+        self.groupkeyquery = self.makeQuery(key=self.groupname)
         
         form = self.request.form
         submitted = form.get('form.submitted', False)
         if submitted:
-            findAll = form.get('form.button.FindAll', None) is not None
+            findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
             self.searchString = not findAll and form.get('searchstring', '') or ''
             self.searchResults = []
         
-            for u in form.get('add', []):
-                self.gtool.addPrincipalToGroup(u, self.groupname, self.request)
+            toAdd = form.get('add', [])
+            if toAdd:
+                for u in toAdd:
+                    self.gtool.addPrincipalToGroup(u, self.groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
-            context.plone_utils.addPortalMessage(_(u'Changes made.'))
+            toDelete = form.get('delete', [])
+            if toDelete:
+                for u in toDelete:
+                    self.gtool.removePrincipalFromGroup(u, self.groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
         self.groupMembers = [self.mtool.getMemberById(m) or self.gtool.getGroupById(m) for m in self.gtool.getGroupMembers(self.groupname)]
-
-
-        # TODO sort groups first
-        # TODO show groups in show all
-        # TODO remove users/groups
-
-
-        # if submitted:
-        #     if form.get('form.button.Modify', None) is not None:
-        #         self.manageGroup([group[len('group_'):] for group in self.request.keys() if group.startswith('group_')],
-        #                          form.get('delete', []))
-        # 
-        # # Only search for all ('') if the many_users flag is not set.
-        # if not(self.many_groups) or bool(self.searchString):
-        #     self.searchResults = self.doSearch(self.searchString)
 
         return self.index()
 
     def isGroup(self, itemName):
         return self.gtool.isGroup(itemName)
         
-    def makeGroupQuery(self, **kw):
-        return make_query(**kw)

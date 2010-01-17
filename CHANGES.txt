@@ -3,6 +3,12 @@ Changelog
 
 2.0b1 - unreleased
 ------------------
+- Factor up commonly used methods in user/groups controlpanel views.
+  [esteele]
+
+- Add @@usergroup-groupmembership to handle adding, removing, modifying group
+  members.
+  [esteele, cah190]
 
 - Display group title in @@usergroup-groupprefs form.
   [esteele]
