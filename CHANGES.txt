@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Optimized the content history viewlet.
+  [hannosch]
+
 - Optimize TAL code of the byline viewlet.
   [hannosch]
 

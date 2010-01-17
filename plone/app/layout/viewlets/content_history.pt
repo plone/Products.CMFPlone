@@ -13,7 +13,6 @@
                                         actor_name python:actor and actor.get('fullname','username') or item['actorid'];
                                         actor_home item/actor_home;
                                         action item/transition_title;
-                                        action python:action and action.replace('Edit', 'Edited') or action;
                                         effective item/effective_date|nothing;
                                         effectiveDate python:effective and view.toLocalizedTime(item['effective_date'],long_format=True);
                                         isVersion python:item['type']=='versioning'">

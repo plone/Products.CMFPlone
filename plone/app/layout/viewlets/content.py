@@ -116,62 +116,67 @@ class ContentRelatedItems(ViewletBase):
 
 class WorkflowHistoryViewlet(ViewletBase):
 
-    @memoize
+    index = ViewPageTemplateFile("review_history.pt")
+
     def workflowHistory(self, complete=False):
         """Return workflow history of this context.
 
         Taken from plone_scripts/getWorkflowHistory.py
         """
-        workflow = getToolByName(self.context, 'portal_workflow')
-        membership = getToolByName(self.context, 'portal_membership')
+        context = aq_inner(self.context)
+        # check if the current user has the proper permissions
+        if not (_checkPermission('Request review', context) or
+            _checkPermission('Review portal content', context)):
+            return []
+
+        workflow = getToolByName(context, 'portal_workflow')
+        membership = getToolByName(context, 'portal_membership')
 
         review_history = []
 
-        # check if the current user has the proper permissions
-        if (membership.checkPermission('Request review', self.context) or
-            membership.checkPermission('Review portal content', self.context)):
-            try:
-                # get total history
-                review_history = workflow.getInfoFor(self.context, 'review_history')
+        try:
+            # get total history
+            review_history = workflow.getInfoFor(context, 'review_history')
 
-                if not complete:
-                    # filter out automatic transitions.
-                    review_history = [r for r in review_history if r['action']]
+            if not complete:
+                # filter out automatic transitions.
+                review_history = [r for r in review_history if r['action']]
+            else:
+                review_history = list(review_history)
+
+            portal_type = context.portal_type
+            anon = _(u'label_anonymous_user', default=u'Anonymous User')
+
+            for r in review_history:
+                r['type'] = 'workflow'
+                r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
+                                                                             portal_type)
+                actorid = r['actor']
+                r['actorid'] = actorid
+                if actorid is None:
+                    # action performed by an anonymous user
+                    r['actor'] = {'username': anon, 'fullname': anon}
+                    r['actor_home'] = ''
                 else:
-                    review_history = list(review_history)
-
-                for r in review_history:
-                    r['type'] = 'workflow'
-                    r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
-                                                                                 self.context.portal_type)
-                    actorid = r['actor']
-                    r['actorid'] = actorid
-                    if actorid is None:
-                        # action performed by an anonymous user
-                        anon = _(u'label_anonymous_user',
-                                 default=u'Anonymous User')
-                        r['actor'] = {'username': anon, 'fullname': anon}
-                        r['actor_home'] = ''
+                    r['actor'] = membership.getMemberInfo(actorid)
+                    if r['actor'] is not None:
+                        r['actor_home'] = self.navigation_root_url + '/author/' + actorid
                     else:
-                        r['actor'] = membership.getMemberInfo(actorid)
-                        if r['actor'] is not None:
-                            r['actor_home'] = self.navigation_root_url + '/author/' + actorid
-                        else:
-                            # member info is not available
-                            # the user was probably deleted
-                            r['actor_home'] = ''
-                review_history.reverse()
+                        # member info is not available
+                        # the user was probably deleted
+                        r['actor_home'] = ''
+            review_history.reverse()
 
-            except WorkflowException:
-                log( 'plone.app.layout.viewlets.content: '
-                     '%s has no associated workflow' % self.context.absolute_url(), severity=logging.DEBUG)
+        except WorkflowException:
+            log('plone.app.layout.viewlets.content: '
+                '%s has no associated workflow' % context.absolute_url(),
+                severity=logging.DEBUG)
 
         return review_history
 
-    index = ViewPageTemplateFile("review_history.pt")
-
 
 class ContentHistoryViewlet(WorkflowHistoryViewlet):
+
     index = ViewPageTemplateFile("content_history.pt")
 
     @memoize
@@ -188,14 +193,15 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         return dict(actor=info,
                     actor_home="%s/author/%s" % (self.site_url, userid))
 
-    @memoize
     def revisionHistory(self):
         context = aq_inner(self.context)
-        rt = getToolByName(context, "portal_repository")
-        allowed = rt.isVersionable(context) and \
-            _checkPermission(AccessPreviousVersions, context)
-        if not allowed:
+        if not _checkPermission(AccessPreviousVersions, context):
             return []
+
+        rt = getToolByName(context, "portal_repository", None)
+        if rt is None or not rt.isVersionable(context):
+            return []
+
         context_url = context.absolute_url()
         history=rt.getHistoryMetadata(context);
         can_diff = getToolByName(context, "portal_diff", None) is not None
@@ -204,8 +210,8 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
             meta = vdata["metadata"]["sys_metadata"]
             userid = meta["principal"]
             info=dict(type='versioning',
-                      action=_(u"edit"),
-                      transition_title=_(u"Edit"),
+                      action=_(u"Edited"),
+                      transition_title=_(u"Edited"),
                       actorid=userid,
                       time=meta["timestamp"],
                       comments=meta['comment'],
@@ -223,9 +229,11 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                                               (context_url, version_id))
             info.update(self.getUserInfo(userid))
             return info
+
         # History may be an empty list
         if not history:
             return history
+
         version_history = []
         retrieve = history.retrieve
         getId = history.getVersionId
@@ -237,14 +245,13 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
         return version_history
 
-    @memoize
     def fullHistory(self):
-        history=self.workflowHistory(complete=True) + self.revisionHistory()
-        history=[entry for entry in history if entry.get("action", False)]
+        history = self.workflowHistory() + self.revisionHistory()
+        if len(history) == 0:
+            return None
         history.sort(key=lambda x: x["time"], reverse=True)
         return history
 
-    @memoize
     def toLocalizedTime(self, time, long_format=None, time_only=None):
         """Convert time to localized time
         """
