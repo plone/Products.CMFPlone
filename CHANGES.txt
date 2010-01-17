@@ -4,13 +4,16 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
-- Registered new viewlet for related items instead of using a macro. 
-  References #9985
+- Optimize TAL code of the byline viewlet.
+  [hannosch]
+
+- Registered new viewlet for related items instead of using a macro.
+  References http://dev.plone.org/plone/ticket/9985.
   [spliter]
-  
-- Always return an id to ensure searchbox viewlet produces valid html 
+
+- Always return an id to ensure searchbox viewlet produces valid HTML
   when livesearch is disabled.
-  Fixes http://dev.plone.org/plone/ticket/9405 - thx saily
+  Fixes http://dev.plone.org/plone/ticket/9405 - thanks saily.
   [pelle]
 
 2.0a5 - 2009-12-27
