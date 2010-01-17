@@ -4,6 +4,11 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Avoid looking a "request/SearchableText|nothing" expression. Looking things
+  up in the entire request which aren't there most of the time is actually
+  somewhat slow.
+  [hannosch]
+
 - Optimized the content history viewlet.
   [hannosch]
 
