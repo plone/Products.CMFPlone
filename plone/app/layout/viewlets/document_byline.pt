@@ -45,13 +45,13 @@
   </tal:expired>
 
   <div class="documentContributors"
-       tal:define="contributers context/Contributors"
+       tal:define="contributors context/Contributors"
        tal:condition="contributors"
        i18n:translate="text_contributors">
     Contributors:
     <span i18n:name="name"
           tal:omit-tag=""
-          tal:content="python: ', '.join(contributers)">
+          tal:content="python: ', '.join(contributors)">
       Mary
     </span>
   </div>
