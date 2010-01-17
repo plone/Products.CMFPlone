@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Micro-optimization for skip_links viewlet.
+  [hannosch]
+
 - Update presentation fullscreen view to match current main_template's.
   [hannosch]
 
