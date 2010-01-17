@@ -1,15 +1,15 @@
 <div class="relatedItems"
      i18n:domain="plone"
-     tal:define="wf_tool view/wf_tool;
-                 ploneview view/ploneview;
-                 getInfoFor python:wf_tool.getInfoFor;
-                 related view/related_items"
+     tal:define="related view/related_items"
      tal:condition="related">
     <div class="visualClear" id="clear-space-before-relatedItemBox"><!-- --></div>
     <fieldset id="relatedItemBox"
-              tal:define="site_properties view/site_properties;
-                          use_view_action site_properties/typesUseViewActionInListings|python:();
-                          normalizeString nocall:context/@@plone/normalizeString;">
+              tal:define="ploneview nocall:context/@@plone;
+                          normalizeString nocall:ploneview/normalizeString;
+                          wf_tool nocall:view/portal_workflow;
+                          getInfoFor python:wf_tool.getInfoFor;
+                          site_properties context/portal_properties/site_properties;
+                          use_view_action site_properties/typesUseViewActionInListings|python:();">
         <legend i18n:translate="label_related_items">Related content</legend>
         <ul class="visualNoMarker">
         <tal:related repeat="item related">

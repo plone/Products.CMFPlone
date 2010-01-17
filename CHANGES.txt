@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Optimized the related items viewlet.
+  [hannosch]
+
 - Avoid looking a "request/SearchableText|nothing" expression. Looking things
   up in the entire request which aren't there most of the time is actually
   somewhat slow.

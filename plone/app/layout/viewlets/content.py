@@ -4,6 +4,8 @@ from plone.memoize.instance import memoize
 from zope.component import getMultiAdapter, queryMultiAdapter
 
 from AccessControl import getSecurityManager
+from AccessControl import Unauthorized
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
@@ -18,6 +20,9 @@ from plone.app.layout.viewlets import ViewletBase
 
 
 class DocumentActionsViewlet(ViewletBase):
+
+    index = ViewPageTemplateFile("document_actions.pt")
+
     def update(self):
         super(DocumentActionsViewlet, self).update()
 
@@ -25,10 +30,11 @@ class DocumentActionsViewlet(ViewletBase):
                                              name=u'plone_context_state')
         self.actions = self.context_state.actions('document_actions')
 
-    index = ViewPageTemplateFile("document_actions.pt")
-
 
 class DocumentBylineViewlet(ViewletBase):
+
+    index = ViewPageTemplateFile("document_byline.pt")
+
     def update(self):
         super(DocumentBylineViewlet, self).update()
         self.context_state = getMultiAdapter((self.context, self.request),
@@ -97,22 +103,31 @@ class DocumentBylineViewlet(ViewletBase):
             return util.ulocalized_time(time, long_format, self.context,
                                         domain='plonelocales')
 
-    index = ViewPageTemplateFile("document_byline.pt")
 
 class ContentRelatedItems(ViewletBase):
-    
+
     index = ViewPageTemplateFile("document_relateditems.pt")
-    
-    def update(self):
-        super(ContentRelatedItems, self).update()
-        self.ploneview = getMultiAdapter((self.context, self.request), name=u'plone')
-        self.context_state = getMultiAdapter((self.context, self.request),
-                                             name=u'plone_context_state')
-        self.wf_tool = getToolByName(self.context, 'portal_workflow')
-        self.site_properties = getToolByName(self.context, "portal_properties").site_properties
-        
+
     def related_items(self):
-        return self.context.computeRelatedItems()
+        context = aq_inner(self.context)
+        if getattr(aq_base(context), 'getRelatedItems', None) is None:
+            return None
+
+        res = []
+        related = context.getRelatedItems()
+
+        for d in range(len(related)):
+            try:
+                obj = related[d]
+            except Unauthorized:
+                continue
+            if obj not in res:
+                if _checkPermission('View', obj):
+                    res.append(obj)
+        if len(res) == 0:
+            return None
+        return res
+
 
 class WorkflowHistoryViewlet(ViewletBase):
 
