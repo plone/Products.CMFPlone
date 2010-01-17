@@ -22,24 +22,24 @@ class PortalState(BrowserView):
     def portal(self):
         context = aq_inner(self.context)
         return getToolByName(context, 'portal_url').getPortalObject()
-    
+
     @memoize_contextless
     def portal_title(self):
         return self.portal().Title()
-        
+
     @memoize_contextless
     def portal_url(self):
         return self.portal().absolute_url()
-        
+
     @memoize_contextless
     def navigation_root_path(self):
         return getNavigationRoot(aq_inner(self.context))
-    
+
     @memoize_contextless
     def navigation_root_url(self):
         rootPath = self.navigation_root_path()
         return self.request.physicalPathToURL(rootPath)
-    
+
     @memoize_contextless
     def default_language(self):
         context = aq_inner(self.context)
