@@ -74,6 +74,7 @@ class DublinCoreViewlet(ViewletBase):
         context = aq_inner(self.context)
         self.metatags = plone_utils.listMetaTags(context).items()
 
+
 class TableOfContentsViewlet(ViewletBase):
     index = ViewPageTemplateFile('toc.pt')
 

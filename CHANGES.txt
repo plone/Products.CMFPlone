@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Simplify the TAL of the dublin core viewlet.
+  [hannosch]
+
 - Avoid the overhead of a DateTime class in the footer.
   [hannosch]
 
