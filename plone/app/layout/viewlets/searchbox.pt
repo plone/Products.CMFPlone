@@ -1,11 +1,13 @@
 <div id="portal-searchbox"
-     i18n:domain="plone">
+     i18n:domain="plone"
+     tal:define="navigation_root_url view/navigation_root_url;
+                 search_input_id view/search_input_id;">
     <form name="searchform"
           action="search"
-          tal:attributes="action string:${view/navigation_root_url}/search">
+          tal:attributes="action string:${navigation_root_url}/search">
 
-        <label class="hiddenStructure" 
-               tal:attributes="for view/search_input_id"  
+        <label class="hiddenStructure"
+               tal:attributes="for search_input_id"
                i18n:translate="text_search">Search Site</label>
 
         <div class="LSBox">
@@ -17,22 +19,22 @@
                accesskey="4"
                i18n:attributes="title title_search_site;"
                tal:attributes="value request/form/SearchableText|nothing;
-                               id view/search_input_id"
+                               id search_input_id"
                class="inputLabel" />
 
         <input class="searchButton"
                type="submit"
                value="Search"
                i18n:attributes="value label_search;" />
-    
+
         <div class="searchSection">
-            <input id="searchbox_currentfolder_only" 
+            <input id="searchbox_currentfolder_only"
                    class="noborder"
-                   type="checkbox" 
-                   name="path" 
+                   type="checkbox"
+                   name="path"
                    tal:attributes="value view/folder_path"
                    />
-            <label for="searchbox_currentfolder_only" 
+            <label for="searchbox_currentfolder_only"
                    i18n:translate="label_searchbox_currentfolder_only"
                    style="cursor: pointer">
                 only in current section
@@ -46,7 +48,7 @@
     <div id="portal-advanced-search"
          class="hiddenStructure">
         <a href="#"
-           tal:attributes="href string:${view/navigation_root_url}/search_form"
+           tal:attributes="href string:${navigation_root_url}/search_form"
            i18n:translate="label_advanced_search"
            accesskey="5">
             Advanced Search&hellip;
