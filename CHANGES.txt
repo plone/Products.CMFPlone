@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Avoid the overhead of a DateTime class in the footer.
+  [hannosch]
+
 - Optimized the related items viewlet.
   [hannosch]
 

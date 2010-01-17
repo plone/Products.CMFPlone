@@ -1,4 +1,5 @@
 from cgi import escape
+from datetime import date
 
 from zope.component import getMultiAdapter
 from zope.deprecation.deprecation import deprecate
@@ -245,7 +246,7 @@ class ManagePortletsFallbackViewlet(ViewletBase):
             return False
         elif not self.sl and not self.sr and self.portlet_assignable:
             return True
-    
+
 
 class PathBarViewlet(ViewletBase):
     index = ViewPageTemplateFile('path_bar.pt')
@@ -258,6 +259,7 @@ class PathBarViewlet(ViewletBase):
         breadcrumbs_view = getMultiAdapter((self.context, self.request),
                                            name='breadcrumbs_view')
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
+
 
 class ContentActionsViewlet(ViewletBase):
     index = ViewPageTemplateFile('contentactions.pt')
@@ -278,3 +280,10 @@ class ContentActionsViewlet(ViewletBase):
 
     def icon(self, action):
         return action.get('icon', None)
+
+
+class FooterViewlet(ViewletBase):
+    index = ViewPageTemplateFile('footer.pt')
+
+    def update(self):
+        self.year = date.today().year

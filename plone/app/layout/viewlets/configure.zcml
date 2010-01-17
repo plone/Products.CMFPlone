@@ -304,16 +304,16 @@
         class=".common.TableOfContentsViewlet"
         permission="zope2.View" 
         />
-        
+
     <!-- Footer -->
     <browser:viewlet
         name="plone.footer"
         for="*"
         manager=".interfaces.IPortalFooter"
-        template="footer.pt"
+        class=".common.FooterViewlet"
         permission="zope.Public"
         />
-        
+
     <!-- Colophon -->
     <browser:viewlet
         name="plone.colophon"

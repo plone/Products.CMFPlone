@@ -10,10 +10,7 @@
     </span>
     is
     <acronym title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</acronym>
-    2000-<span i18n:name="current_year"
-               tal:omit-tag=""
-               tal:define="now modules/DateTime/DateTime"
-               tal:content="now/year" />
+    2000-<tal:year i18n:name="current_year" tal:content="view/year" />
     by the
     <span i18n:name="plonefoundation" tal:omit-tag="">
         <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a></span>
