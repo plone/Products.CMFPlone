@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Update presentation fullscreen view to match current main_template's.
+  [hannosch]
+
 - Simplify the TAL of the dublin core viewlet.
   [hannosch]
 

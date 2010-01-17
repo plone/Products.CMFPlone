@@ -8,18 +8,12 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:define-macro="master">
 
-    <tal:cache tal:define="charset here/site_properties/default_charset|string:utf-8;
-                           portal_state context/@@plone_portal_state;
-                           lang portal_state/language;">
-        <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
-            Get the global cache headers located in global_cache_settings.
-        </metal:cache>
-    </tal:cache>
+    <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+        Get the global cache headers located in global_cache_settings.
+    </metal:cache>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"
-              tal:define="charset here/site_properties/default_charset|string:utf-8"
-              tal:attributes="content string:text/html;;charset=${charset}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <title tal:content="context/Title"></title>
 
@@ -41,7 +35,7 @@
           tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>      
 
     <metal:baseslot define-slot="base">
-      <base tal:attributes="href here/renderBase" /><!--[if lt IE 7]></base><![endif]-->
+      <base tal:attributes="href context/@@plone/renderBase" /><!--[if lt IE 7]></base><![endif]-->
     </metal:baseslot>
     
 </head>
