@@ -94,17 +94,16 @@
             doesn't actually delete the group or user, it is only removed from this group.
           </p>
 
-
           <form action=""
                     name="groups"
                     method="post"
-                    tal:attributes="action string:$portal_url/$template_id"
+                    tal:attributes="action string:$portal_url/$template_id?groupname=${view/groupname}"
                     tal:define="searchstring request/searchstring | nothing;
                                 findAll python:'form.button.FindAll' in request.keys();
                                 ignoreUsersGroups python: view.group.getAllGroupMembers() + [view.group,];
                                 results python:(searchstring or findAll) and view.context.prefs_user_group_search(searchstring, 'all', ignore=ignoreUsersGroups) or [];
                                 batch python:Batch(results, b_size, int(b_start), orphan=1);
-                                many_users context/portal_properties/site_properties/many_users">
+                                many_users view/many_users">
             <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
               <table class="listing" summary="Group Members Listing"
                  tal:condition="view/groupMembers">
@@ -186,7 +185,6 @@
 
             <h2 i18n:translate="heading_search_newmembers">Search for new group members</h2>
 
-            <input type="hidden" name="groupname" value="view/groupname" tal:attributes="value view/groupname" />
             <input type="hidden" name="form.submitted" value="1" />
 
             <table class="listing" summary="Groups">

@@ -210,7 +210,6 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
-        
         self.groupname = getattr(self.request, 'groupname')
         self.gtool = getToolByName(self, 'portal_groups')
         self.mtool = getToolByName(self, 'portal_membership')
