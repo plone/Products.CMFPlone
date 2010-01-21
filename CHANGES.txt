@@ -4,6 +4,10 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Added explicit i18n:translate for the fieldset legends, so Chameleon
+  translates the labels.
+  [limi]
+
 - Display group title in @@usergroup-groupprefs form.
   [esteele]
 

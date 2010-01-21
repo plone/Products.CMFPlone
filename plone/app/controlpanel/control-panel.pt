@@ -75,7 +75,8 @@
                 <fieldset tal:condition="not: is_fieldsets">
                     <legend tal:define="form_name view/form_name|nothing"
                             tal:condition="form_name"
-                            tal:content="form_name">Form name</legend>
+                            tal:content="form_name"
+                            i18n:translate="">Form name</legend>
                     <tal:block tal:repeat="widget view/widgets">
 
                         <div class="field"
@@ -124,7 +125,8 @@
                     <legend tal:define="form_name fieldset/label"
                             tal:condition="form_name"
                             tal:attributes="id python:'fieldsetlegend-%s' % fieldset.id"
-                            tal:content="form_name">Form name</legend>
+                            tal:content="form_name"
+                            i18n:translate="">Form name</legend>
 
                     <p i18n:translate=""
                        tal:condition="fieldset/description"
