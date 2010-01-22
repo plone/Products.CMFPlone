@@ -99,9 +99,7 @@
                     method="post"
                     tal:attributes="action string:$portal_url/$template_id?groupname=${view/groupname}"
                     tal:define="searchstring request/searchstring | nothing;
-                                findAll python:'form.button.FindAll' in request.keys();
-                                ignoreUsersGroups python: view.group.getAllGroupMembers() + [view.group,];
-                                results python:(searchstring or findAll) and view.context.prefs_user_group_search(searchstring, 'all', ignore=ignoreUsersGroups) or [];
+                                results python:view.doSearch(searchstring);
                                 batch python:Batch(results, b_size, int(b_start), orphan=1);
                                 many_users view/many_users">
             <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
@@ -151,11 +149,11 @@
                         <tal:block tal:condition="python: not view.isGroup(this_user)">
                           <td>
                             <img src="user.png" alt="" />
-                            <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeQuery(userid=this_user.getId())"
-                                tal:content="this_user/getId | default">
-                                <span i18n:translate="link_username_not_available">
-                                    username not available
-                                </span>
+                            <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeQuery(userid=this_user.getId())">
+                                <span tal:replace="python:this_user.getProperty('fullname')">Full Name</span>
+                                <tal:userid tal:condition="not:view/email_as_username">
+                                    (<span tal:replace="this_user/getId | default" />)
+                                </tal:userid>
                             </a>
                           </td>
                         </tal:block>
@@ -189,7 +187,7 @@
 
             <table class="listing" summary="Groups">
               <tr>
-                <th colspan="2">
+                <th colspan="3">
                   <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
                     <input class="quickSearch"
                            type="text"
@@ -225,6 +223,7 @@
                 </th>
 
                 <th i18n:translate="listingheader_group_user_name">Group/User name</th>
+                <th i18n:translate="listingheader_email_address">E-mail Address</th>
               </tr>
 
               <tal:block repeat="this_user batch">
@@ -242,9 +241,11 @@
                   <td>
                       <tal:block tal:condition="python:not view.isGroup(this_user)">
                           <img src="user.png" alt="" />
-                          <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeQuery(userid=this_user.getId())"
-                                   tal:content="this_user/getId | default">
-                                   <span i18n:translate="link_username_not_available">username not available</span>
+                          <a href="" tal:attributes="href python:'prefs_user_details?' + view.makeQuery(userid=this_user.getId())">
+                            <span tal:replace="python:this_user.getProperty('fullname')">Full Name</span>
+                            <tal:userid tal:condition="not:view/email_as_username">
+                                (<span tal:replace="this_user/getId | default" />)
+                            </tal:userid>
                           </a>
                       </tal:block>
                       <tal:block tal:condition="python: view.isGroup(this_user)">
@@ -255,6 +256,15 @@
                           </a>
                       </tal:block>
                   </td>
+                  <td tal:define="email python: this_user.getProperty('email')">
+                      <a  href="#"
+                          tal:attributes="href string:mailto:${email}"
+                          title="Send a mail to this user"
+                          i18n:attributes="title title_send_mail_to_user;"
+                          tal:condition="email">
+                          <span tal:replace="email" />
+                      </a>
+                  </td>                  
                 </tr>
               </tal:block>
 

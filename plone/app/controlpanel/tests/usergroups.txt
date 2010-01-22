@@ -107,7 +107,6 @@ An empty search string while 'many users' is enabled should not perform a search
     >>> 'Enter a username to search for' in self.browser.contents
     True
 
-
 Go directly to the groupprefs panel (getting link "Groups" results in a trip to the "users and groups" link).
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
     
@@ -120,7 +119,13 @@ We'll attempt a search...
     >>> self.browser.getControl(name='form.button.Search').click()
     >>> 'Foo' in self.browser.contents
     True
-    
+
+And again with the group's title
+    >>> self.browser.getControl(name='searchstring').value = 'Management'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Foo' in self.browser.contents
+    True
+
 Add a new role
     >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
     False
@@ -139,7 +144,7 @@ Delete the group...
     >>> self.browser.getControl(name='delete:list').getControl(value='Foo').selected = True
     >>> self.browser.getControl(name='form.button.Modify').click()
     >>> self.browser.getControl(name='searchstring').value
-    'foo'
+    'Management'
     >>> 'Foo' in self.browser.contents
     False
 
@@ -157,7 +162,7 @@ An empty search string while 'many groups' is enabled should not perform a searc
     False
 
 Now let's try to break things. 
-Add a (currently failing) test for http://dev.plone.org/plone/ticket/8940:
+Add a test for http://dev.plone.org/plone/ticket/8940:
 Group roles show up on the user roles page for members of that group.
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
     >>> self.browser.getControl(name='searchstring').value = 'Authenticated'
@@ -186,3 +191,62 @@ And then making some change to the user and saving it will assign that checked r
 According to the ticket, the user will now have an assigned role of 'Editor', which should not be the case.
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Editor').selected
     False
+
+Turn off the many groups/users flags again
+    >>> self.browser.getLink('Settings').click()
+    >>> self.browser.getControl(name='form.many_groups').value = False
+    >>> self.browser.getControl(name='form.many_users').value = False
+    >>> self.browser.getControl('Save').click()
+    
+Now let's try modifying some group memberships...
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getLink('Accounting (Baz)').click()
+    >>> 'There is no group or user attached to this group.' in self.browser.contents
+    True
+    
+Check to make sure search results are ordered properly and display the title/fullname and id
+    >>> self.browser.getControl(name='form.button.FindAll').click()
+    >>> self.browser.contents
+    '...Search for new group members...
+    ...Administrators...(Administrators)...
+    ...Marketing...(Bar)...
+    ...Reviewers...(Reviewers)...
+    ...Abigail Simmons...(XYsmd7ux)...
+    ...Alexandra Nelson...(FElYwiIr)...
+    ...Blake Jenkins...(BlXLQh7r)...'
+
+Add some group members
+    >>> self.browser.getControl(name='add:list').getControl(value='Bar').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='Reviewers').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='XYsmd7ux').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='BlXLQh7r').selected = True
+    >>> self.browser.getControl(name='form.button.Add').click()
+
+These should be displayed in the Current group members section now.
+    >>> self.browser.contents
+    '...Current group members...
+    ...Marketing...(Bar)...
+    ...Reviewers...(Reviewers)...
+    ...Abigail Simmons...(XYsmd7ux)...
+    ...Blake Jenkins...(BlXLQh7r)...
+    ...Search for new group members...'
+
+Groups nested within groups assigned to this one should not be displayed
+    >>> self.browser.getLink('Marketing').click()
+    >>> self.browser.getLink('Group Members').click()
+    >>> self.browser.getControl(name='searchstring').value = 'management'
+    >>> self.browser.getControl(name='form.button.FindAll').click()
+    >>> self.browser.getControl(name='add:list').getControl(value='Foo').selected = True
+    >>> self.browser.getControl(name='form.button.Add').click()
+    >>> 'Changes made' in self.browser.contents
+    True
+    >>> 'Management' in self.browser.contents
+    True
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getLink('Accounting (Baz)').click()
+    >>> 'Marketing' in self.browser.contents
+    True
+    >>> 'Management' in self.browser.contents
+    False
+    
+

@@ -2,8 +2,7 @@ from Acquisition import aq_inner
 from itertools import chain
 
 from zope.interface import Interface
-from zope.component import adapts
-from zope.component import getMultiAdapter
+from zope.component import adapts, getAdapter, getMultiAdapter
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
@@ -18,7 +17,8 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from form import ControlPanelForm, ControlPanelView
-    
+from security import ISecuritySchema
+
 class IUserGroupsSettingsSchema(Interface):
 
     many_groups = Bool(title=_(u'Many groups?'),
@@ -84,6 +84,10 @@ class UsersGroupsControlPanelView(ControlPanelView):
     def many_groups(self):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
         return pprop.site_properties.many_groups 
+
+    @property
+    def email_as_username(self):
+        return getAdapter(aq_inner(self.context), ISecuritySchema).get_use_email_as_login()
 
     def makeQuery(self, **kw):
         return make_query(**kw)
@@ -193,7 +197,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         utils = getToolByName(context, 'plone_utils')
         groupstool = getToolByName(context, 'portal_groups')
 
-        message = _(u'No changes done.')
+        message = _(u'No changes made.')
 
         for group in groups:
             roles=[r for r in self.request.form['group_' + group] if r]
@@ -205,7 +209,6 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             message=_(u'Group(s) deleted.')
 
         utils.addPortalMessage(message)
-        #return state
 
 class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
@@ -240,10 +243,29 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
                     self.gtool.removePrincipalFromGroup(u, self.groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
-        self.groupMembers = [self.mtool.getMemberById(m) or self.gtool.getGroupById(m) for m in self.gtool.getGroupMembers(self.groupname)]
-
+        self.groupMembers = self.getMembers
+        
         return self.index()
 
     def isGroup(self, itemName):
         return self.gtool.isGroup(itemName)
+
+    def getMembers(self):
+        searchResults = self.gtool.getGroupMembers(self.groupname)
+
+        groupResults = [self.gtool.getGroupById(m) for m in searchResults]
+        groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+
+        userResults = [self.mtool.getMemberById(m) for m in searchResults]
+        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname').lower())
+        
+        mergedResults = groupResults + userResults
+        filter(None, mergedResults)
+        return mergedResults
+
+    def doSearch(self, searchString):
+        findAll = 'form.button.FindAll' in self.request.keys()
+        ignoredUsersGroups = self.getMembers() + [self.group,]
+        
+        return (searchString or findAll) and self.context.prefs_user_group_search(searchString, 'all', ignore=ignoredUsersGroups) or []
         
