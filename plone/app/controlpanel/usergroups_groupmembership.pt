@@ -98,9 +98,7 @@
                     name="groups"
                     method="post"
                     tal:attributes="action string:$portal_url/$template_id?groupname=${view/groupname}"
-                    tal:define="searchstring request/searchstring | nothing;
-                                results python:view.doSearch(searchstring);
-                                batch python:Batch(results, b_size, int(b_start), orphan=1);
+                    tal:define="batch python:Batch(view.searchResults, b_size, int(b_start), orphan=1);
                                 many_users view/many_users">
             <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
               <table class="listing" summary="Group Members Listing"
@@ -193,7 +191,7 @@
                            type="text"
                            name="searchstring"
                            value=""
-                           tal:attributes="value searchstring;"
+                           tal:attributes="value view/searchString;"
                            />
 
                     <input type="submit"
@@ -270,11 +268,11 @@
 
               <tr tal:condition="not:batch">
 
-                <td tal:condition="searchstring"
+                <td tal:condition="view/searchString"
                   i18n:translate="text_nomatches"
                   style="text-align:center;">No matches</td>
 
-                <tal:block tal:condition="not:searchstring">
+                <tal:block tal:condition="not:view/searchString">
                   <td tal:condition="site_properties/many_users"
                     class="discreet"
                     i18n:translate="text_no_searchstring_large"

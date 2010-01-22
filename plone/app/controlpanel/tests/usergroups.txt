@@ -203,7 +203,27 @@ Now let's try modifying some group memberships...
     >>> self.browser.getLink('Accounting (Baz)').click()
     >>> 'There is no group or user attached to this group.' in self.browser.contents
     True
-    
+
+Make sure that providing a search string while hitting 'show all' does not search for just that term.
+    >>> self.browser.getControl(name='searchstring').value = 'management'
+    >>> self.browser.getControl(name='form.button.FindAll').click()
+    >>> 'No matches' in self.browser.contents
+    False
+    >>> 'Brian Simmons' in self.browser.contents
+    True
+    >>> self.browser.getControl(name='searchstring').value is ''
+    True
+
+# Now provide a term and do a search.
+#     >>> self.browser.getControl(name='searchstring').value = 'management'
+#     >>> self.browser.getControl(name='form.button.Search').click()
+#     >>> 'No matches' in self.browser.contents
+#     False
+#     >>> 'Management' in self.browser.contents
+#     True
+#     >>> 'Brian Simmons' in self.browser.contents
+#     False
+
 Check to make sure search results are ordered properly and display the title/fullname and id
     >>> self.browser.getControl(name='form.button.FindAll').click()
     >>> self.browser.contents
@@ -231,22 +251,39 @@ These should be displayed in the Current group members section now.
     ...Blake Jenkins...(BlXLQh7r)...
     ...Search for new group members...'
 
+Users/Groups they can be removed from this list as well.
+    >>> self.browser.getControl(name='delete:list').getControl(value='XYsmd7ux').selected = True
+    >>> self.browser.getControl(name='form.button.Edit').click()
+    >>> 'Changes made' in self.browser.contents
+    True
+    >>> 'Abigail Simmons' in self.browser.contents
+    False
+
+# Go into Marketing (Bar), add a group and user.
+
 Groups nested within groups assigned to this one should not be displayed
     >>> self.browser.getLink('Marketing').click()
     >>> self.browser.getLink('Group Members').click()
-    >>> self.browser.getControl(name='searchstring').value = 'management'
-    >>> self.browser.getControl(name='form.button.FindAll').click()
-    >>> self.browser.getControl(name='add:list').getControl(value='Foo').selected = True
-    >>> self.browser.getControl(name='form.button.Add').click()
-    >>> 'Changes made' in self.browser.contents
-    True
-    >>> 'Management' in self.browser.contents
-    True
+
+Open the groups overview, make sure Accounting and Marketing don't have globally-assigned roles
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
-    >>> self.browser.getLink('Accounting (Baz)').click()
-    >>> 'Marketing' in self.browser.contents
+    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected
+    False
+    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor').selected
+    False
+
+Give the Accounting group the contributor role
+    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected = True
+    >>> self.browser.getControl('Apply Changes').click()
+
+Now Accounting should show the global contributor role
+    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected
     True
-    >>> 'Management' in self.browser.contents
+
+But the nested group (Marketing) should not show it as a global role
+    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor').selected
     False
     
 
+# Make sure marketing gets that role
+# Make sure role shows as checked in groups overview for accounting, not marketing

@@ -188,8 +188,7 @@
 
                             <tal:block repeat="group_info batch">
                             <tr tal:define="oddrow repeat/group_info/odd;
-                                            roles python:['this'];
-                                            group python:context.acl_users.getGroupById(group_info['groupid']);"
+                                            group python:context.portal_membership.acl_users.getGroupById(group_info['groupid']);"
                                 tal:attributes="class python:oddrow and 'odd' or 'even'">
 
                                 <td>
@@ -211,7 +210,7 @@
                                 <td class="listingCheckbox"
                                     tal:define="group_roles python:group.getRoles();"
                                     tal:repeat="portal_role portal_roles">
-
+                                    <span tal:content="inherited_roles" />
                                     <input type="checkbox"
                                            class="noborder"
                                            name="name"

@@ -118,6 +118,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         # the roles from the groups the principal belongs.
         self.request.set('__ignore_group_roles__', True)
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+        self.request.set('__ignore_group_roles__', False)
         return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
@@ -184,9 +185,14 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         return self.index()
 
     def doSearch(self, searchString):
+        # We push this in the request such IRoles plugins don't provide
+        # the roles from the groups the principal belongs.
+        self.request.set('__ignore_group_roles__', True)
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
         results = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
         sortedResults = searchView.sort(results, 'title')
+        self.request.set('__ignore_group_roles__', False)
+        
         return results
         
     def manageGroup(self, groups=[], delete=[]):
@@ -226,10 +232,14 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         
         form = self.request.form
         submitted = form.get('form.submitted', False)
+        
+        self.searchResults = []
+        self.searchString = ''
+        
         if submitted:
             findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
             self.searchString = not findAll and form.get('searchstring', '') or ''
-            self.searchResults = []
+            self.searchResults = self.doSearch(self.searchString)
         
             toAdd = form.get('add', [])
             if toAdd:
@@ -266,6 +276,5 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
     def doSearch(self, searchString):
         findAll = 'form.button.FindAll' in self.request.keys()
         ignoredUsersGroups = self.getMembers() + [self.group,]
-        
         return (searchString or findAll) and self.context.prefs_user_group_search(searchString, 'all', ignore=ignoredUsersGroups) or []
         
