@@ -186,7 +186,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
     def doSearch(self, searchString):
         """ Search for a group by id or title"""
         acl = getToolByName(self, 'acl_users')
-
+        roleManager = acl.portal_role_manager
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
 
         # First, search for all roles assigned to each group (both inherited and
@@ -198,7 +198,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         for group_info in inheritance_enabled_groups:
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
-            allAssignedRoles = group.getRoles()
+            allAssignedRoles = roleManager.getRolesForPrincipal(group)
             allInheritedRoles[groupId] = allAssignedRoles
             
         # Now, search for all roles explicitly assigned to each group.
@@ -206,7 +206,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', True)
         explicit_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
-        
+
         # Tack on some extra data, including whether each role is explicitly
         # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
         results = []
@@ -214,8 +214,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
 
-            explicitlyAssignedRoles = group.getRoles()
-
+            explicitlyAssignedRoles = roleManager.getRolesForPrincipal(group)
             roleList = {}
             for role in self.portal_roles:
                 
@@ -238,7 +237,6 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
-
         return sortedResults
         
     def manageGroup(self, groups=[], delete=[]):
