@@ -40,8 +40,8 @@ Make some modifications to Gracie's email address and roles...
     False
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected = True
     >>> self.browser.getControl(name='users.email:records').value
-    'gracie@foo.com'
-    >>> self.browser.getControl(name='users.email:records').value = 'gracie@bar.com'
+    'gracie@example.com'
+    >>> self.browser.getControl(name='users.email:records').value = 'gracie@example.org'
     >>> self.browser.getControl(name='form.button.Modify').click()
 
 The previous search should still be in effect...
@@ -52,7 +52,7 @@ But values should be changed
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
     True
     >>> self.browser.getControl(name='users.email:records').value
-    'gracie@bar.com'
+    'gracie@example.org'
 
 We'll reset her password.
     >>> self.browser.getControl(name='users.resetpassword:records').value = True
@@ -66,7 +66,7 @@ Whoops, we haven't set up our mailhost...
 # Let's do that and try again.
 #     >>> self.browser.open('http://nohost/plone/@@mail-controlpanel')
 #     >>> self.browser.getControl('SMTP server').value = 'nohost'
-#     >>> self.browser.getControl("Site 'From' address").value = 'bob@foo.com'
+#     >>> self.browser.getControl("Site 'From' address").value = 'bob@example.com'
 #     >>> self.browser.getControl('Save').click()
 #     >>> self.browser.getLink('Users and Groups').click()
 #     >>> self.browser.getControl(name='searchstring').value = 'gracie@'
