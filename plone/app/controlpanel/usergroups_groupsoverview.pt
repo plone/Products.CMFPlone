@@ -79,7 +79,10 @@
                     departments and business units. Groups are not directly
                     related to permissions on a global level, you normally
                     use Roles for that - and let certain Groups have a
-                    particular role.
+                    particular role. The symbol 
+                     <img i18n:name="image_link_icon"
+                          tal:replace="structure context/site_icon.gif" /> 
+                    indicates a role inherited from membership in another group.
                 </p>
 
                 <p i18n:translate="description_pas_group_listing"
@@ -187,8 +190,7 @@
                             </tr>
 
                             <tal:block repeat="group_info batch">
-                            <tr tal:define="oddrow repeat/group_info/odd;
-                                            group python:context.portal_membership.acl_users.getGroupById(group_info['groupid']);"
+                            <tr tal:define="oddrow repeat/group_info/odd;"
                                 tal:attributes="class python:oddrow and 'odd' or 'even'">
 
                                 <td>
@@ -208,18 +210,19 @@
                                 </td>
 
                                 <td class="listingCheckbox"
-                                    tal:define="group_roles python:group.getRoles();"
                                     tal:repeat="portal_role portal_roles">
-                                    <span tal:content="inherited_roles" />
                                     <input type="checkbox"
                                            class="noborder"
                                            name="name"
                                            value="Manager"
+                                           tal:condition="python:group_info['roles'][portal_role]['assigned'] != 'inherited'" 
                                            tal:attributes="name string:group_${group_info/groupid}:list;
                                                            value portal_role;
-                                                           checked python:portal_role in group_roles and 'checked' or nothing;
-                                                           disabled python:group.canAssignRole(portal_role) and default or 'disabled'"
+                                                           checked python:group_info['roles'][portal_role]['assigned'] == 'explicit' and 'checked' or nothing;
+                                                           disabled python:group_info['roles'][portal_role]['canAssign'] and default or 'disabled'"
                                            />
+                                           
+                                   <img tal:condition="python:group_info['roles'][portal_role]['assigned'] == 'inherited'" tal:replace="structure context/site_icon.gif" />
                                 </td>
 
                                 <td class="listingCheckbox">
@@ -228,11 +231,12 @@
                                            name="delete:list"
                                            value="value"
                                            tal:attributes="value group_info/groupid;
-                                                           disabled python:group.canDelete() and default or 'disabled'"
+                                                           disabled python:group_info['can_delete'] and default or 'disabled'"
                                            />
                                 </td>
                             </tr>
                             </tal:block>
+
                             </tal:block>
 
                             <tal:block tal:condition="python:(view.searchString and not search_results)">

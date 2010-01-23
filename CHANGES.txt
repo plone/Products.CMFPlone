@@ -3,6 +3,15 @@ Changelog
 
 2.0b1 - unreleased
 ------------------
+- Properly handle nesting of groups. UI now allows addition and display of
+  groups within other groups. 
+  Closes http://dev.plone.org/plone/ticket/8556
+  [esteele, cah190]
+  
+- @@usergroup-groupprefs now shows an icon to designate that the group has
+  inherited that global role from another group.
+  [esteele, cah190]
+
 - Factor up commonly used methods in user/groups controlpanel views.
   [esteele]
 

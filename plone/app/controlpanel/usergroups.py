@@ -118,7 +118,6 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         # the roles from the groups the principal belongs.
         self.request.set('__ignore_group_roles__', True)
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        self.request.set('__ignore_group_roles__', False)
         return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
@@ -185,15 +184,62 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         return self.index()
 
     def doSearch(self, searchString):
-        # We push this in the request such IRoles plugins don't provide
-        # the roles from the groups the principal belongs.
-        self.request.set('__ignore_group_roles__', True)
+        """ Search for a group by id or title"""
+        acl = getToolByName(self, 'acl_users')
+
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        results = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
-        sortedResults = searchView.sort(results, 'title')
+
+        # First, search for all roles assigned to each group (both inherited and
+        # explicit). We push this in the request so that IRoles plugins are told provide
+        # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', False)
+        inheritance_enabled_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+        allInheritedRoles = {}
+        for group_info in inheritance_enabled_groups:
+            groupId = group_info['id']
+            group = acl.getGroupById(groupId)
+            allAssignedRoles = group.getRoles()
+            allInheritedRoles[groupId] = allAssignedRoles
+            
+        # Now, search for all roles explicitly assigned to each group.
+        # We push this in the request so that IRoles plugins don't provide
+        # the roles inherited from the groups to which the principal belongs.
+        self.request.set('__ignore_group_roles__', True)
+        explicit_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
         
-        return results
+        # Tack on some extra data, including whether each role is explicitly
+        # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
+        results = []
+        for group_info in explicit_groups:
+            groupId = group_info['id']
+            group = acl.getGroupById(groupId)
+
+            explicitlyAssignedRoles = group.getRoles()
+
+            roleList = {}
+            for role in self.portal_roles:
+                
+                if role in explicitlyAssignedRoles:
+                    value = 'explicit'
+                elif role in allInheritedRoles[groupId]:
+                    value = 'inherited'
+                else:
+                    value = None
+
+                roleList[role]={'canAssign': group.canAssignRole(role),
+                                'assigned': value}
+
+            group_info['roles'] = roleList
+            group_info['can_delete'] = group.canDelete()
+            results.append(group_info)
+
+        # Sort the groups by title
+        sortedResults = searchView.sort(results, 'title')
+        
+        # Reset the request variable, just in case.
+        self.request.set('__ignore_group_roles__', False)
+
+        return sortedResults
         
     def manageGroup(self, groups=[], delete=[]):
         CheckAuthenticator(self.request)
