@@ -231,7 +231,6 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             group_info['roles'] = roleList
             group_info['can_delete'] = group.canDelete()
             results.append(group_info)
-
         # Sort the groups by title
         sortedResults = searchView.sort(results, 'title')
         
@@ -297,7 +296,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
                     self.gtool.removePrincipalFromGroup(u, self.groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
-        self.groupMembers = self.getMembers
+        self.groupMembers = self.getMembers()
         
         return self.index()
 
@@ -311,7 +310,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
 
         userResults = [self.mtool.getMemberById(m) for m in searchResults]
-        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname').lower())
+        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') or x.getProperty('id').lower())
         
         mergedResults = groupResults + userResults
         filter(None, mergedResults)
