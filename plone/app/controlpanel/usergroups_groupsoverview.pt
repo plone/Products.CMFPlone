@@ -18,7 +18,6 @@
                  b_start request/b_start | python:0;
                  b_size python:20;
                  portal_roles view/portal_roles;
-                 gtool context/portal_groups;
                  search_results view/searchResults;
                  batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;
                  portal_url context/portal_url;">
