@@ -1,4 +1,3 @@
-from Products.Five import BrowserView
 from Acquisition import aq_inner
 from itertools import chain
 
@@ -15,7 +14,9 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
 
 from form import ControlPanelForm, ControlPanelView
 from security import ISecuritySchema
@@ -134,6 +135,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         if not(self.many_users) or bool(self.searchString):
             self.searchResults = self.doSearch(self.searchString)
 
+            
         return self.index()
 
     def doSearch(self, searchString):
@@ -209,7 +211,8 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
     def doSearch(self, searchString):
         """ Search for a group by id or title"""
         acl = getToolByName(self, 'acl_users')
-        roleManager = acl.portal_role_manager
+        rolemakers = acl.plugins.listPlugins(IRolesPlugin)
+
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
 
         # First, search for all roles assigned to each group (both inherited and
@@ -221,7 +224,9 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         for group_info in inheritance_enabled_groups:
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
-            allAssignedRoles = roleManager.getRolesForPrincipal(group)
+            allAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                allAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
             allInheritedRoles[groupId] = allAssignedRoles
             
         # Now, search for all roles explicitly assigned to each group.
@@ -237,7 +242,10 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
 
-            explicitlyAssignedRoles = roleManager.getRolesForPrincipal(group)
+            explicitlyAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
+
             roleList = {}
             for role in self.portal_roles:
                 
