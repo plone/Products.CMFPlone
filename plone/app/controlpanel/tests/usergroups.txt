@@ -289,3 +289,12 @@ But the nested group (Marketing) should show it as an inherited global role
     Traceback (most recent call last):
     ...
     LookupError: value 'Contributor'
+
+Even when explicitly giving the nested group (Marketing) the contributor role, 
+it should still show it as an inherited global role.
+    >>> self.portal.portal_groups.editGroup('Bar', roles=['Contributor'], groups=())
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor')
+    Traceback (most recent call last):
+    ...
+    LookupError: value 'Contributor'

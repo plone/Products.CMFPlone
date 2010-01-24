@@ -1,3 +1,4 @@
+from Products.Five import BrowserView
 from Acquisition import aq_inner
 from itertools import chain
 
@@ -91,6 +92,28 @@ class UsersGroupsControlPanelView(ControlPanelView):
 
     def makeQuery(self, **kw):
         return make_query(**kw)
+
+    def membershipSearch(self, searchString='', searchUsers=True, searchGroups=True, ignore=[]):
+        """Search for users and/or groups, returning actual member and group items
+           Replaces the now-deprecated prefs_user_groups_search.py script"""
+        groupResults = userResults = []
+
+        gtool = getToolByName(self, 'portal_groups')
+        mtool = getToolByName(self, 'portal_membership')
+        
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+        
+        if searchGroups:
+            groupResults = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'groupid')
+            groupResults = [gtool.getGroupById(g['id']) for g in groupResults if g['id'] not in ignore]
+            groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+
+        if searchUsers:
+            userResults = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+            userResults = [mtool.getMemberById(u['id']) for u in userResults if u['id'] not in ignore]
+            userResults.sort(key=lambda x: x is not None and x.getProperty('fullname','').lower())
+
+        return groupResults + userResults
 
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
@@ -282,7 +305,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         if submitted:
             findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
             self.searchString = not findAll and form.get('searchstring', '') or ''
-            self.searchResults = self.doSearch(self.searchString)
+            self.searchResults = self.getPotentialMembers(self.searchString)
         
             toAdd = form.get('add', [])
             if toAdd:
@@ -310,14 +333,13 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
 
         userResults = [self.mtool.getMemberById(m) for m in searchResults]
-        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') or x.getProperty('id').lower())
+        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname','').lower())
         
         mergedResults = groupResults + userResults
         filter(None, mergedResults)
         return mergedResults
 
-    def doSearch(self, searchString):
-        findAll = 'form.button.FindAll' in self.request.keys()
-        ignoredUsersGroups = self.getMembers() + [self.group,]
-        return (searchString or findAll) and self.context.prefs_user_group_search(searchString, 'all', ignore=ignoredUsersGroups) or []
-        
+    def getPotentialMembers(self, searchString):
+        ignoredUsersGroups = [x.id for x in self.getMembers() + [self.group,] if x is not None]
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+        return searchView.membershipSearch(searchString, ignore=ignoredUsersGroups)

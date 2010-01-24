@@ -152,11 +152,6 @@
                                            tal:condition="not:site_properties/many_groups"
                                            />                                       
 
-                                    <input type="hidden"
-                                           name="searchonly"
-                                           value="groups"
-                                           />
-
                                 </th>
                             </tr>
 
