@@ -341,5 +341,4 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
     def getPotentialMembers(self, searchString):
         ignoredUsersGroups = [x.id for x in self.getMembers() + [self.group,] if x is not None]
-        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        return searchView.membershipSearch(searchString, ignore=ignoredUsersGroups)
+        return self.membershipSearch(searchString, ignore=ignoredUsersGroups)
