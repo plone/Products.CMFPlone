@@ -75,9 +75,9 @@
           add/remove users.
         </p>
         <p i18n:translate="user_role_note">
-          Note that roles listed here apply directly to a user.
-          They do not reflect additional roles users may have due
-          to group memberships.
+          Note that roles set here apply directly to a user.
+          The symbol <img i18n:name="image_link_icon" tal:replace="structure context/site_icon.gif" /> 
+          indicates a role inherited from membership in a group.
         </p>
         <p i18n:translate="description_pas_users_listing"
            tal:condition="nothing | python:not view/searchString and not context.acl_users.canListAllUsers()">
@@ -153,24 +153,22 @@
                       <th tal:repeat="portal_role portal_roles" tal:content="portal_role" i18n:translate="">Role</th>
                   </tr>
                   </tal:block>
-                  <tal:block repeat="this_user batch">
-                    <tr tal:define="oddrow repeat/this_user/odd;
-                                    userid this_user/userid;
-                                    userquery python:view.makeQuery(userid=userid);
-                                    user python:context.portal_membership.getMemberById(userid)"
-                        tal:condition="python:user is not None"
+                  <tal:block repeat="user batch">
+                    <tr tal:define="oddrow repeat/user/odd;
+                                    userid user/userid;
+                                    userquery python:view.makeQuery(userid=userid);"
                         tal:attributes="class python:oddrow and 'odd' or 'even'">
 
                         <td>
                             <a href="prefs_user_details"
                                tal:attributes="href string:$portal_url/prefs_user_details?${userquery}">
-                          <tal:block replace="structure context/portal_url/user.png"/>&nbsp;<span tal:replace="userid">username</span>
-                          (<span tal:replace="python:user.getProperty('fullname')">Full Name</span>)
+                                <tal:block replace="structure context/portal_url/user.png"/>&nbsp;<span tal:replace="user/fullname">Full Name</span>
+                                (<span tal:replace="userid">username</span>)
                             </a>
                             <input type="hidden" name="users.id:records" tal:attributes="value userid" />
                         </td>
 
-                        <td tal:define="email python:user.getProperty('email')">
+                        <td tal:define="email user/email">
                           <a href="#"
                                      class="link-plain"
                                      tal:attributes="href string:mailto:${email}"
@@ -183,19 +181,22 @@
                              name="users.email:records"
                              value=""
                              tal:attributes="value email;
-                                             disabled python:user.canWriteProperty('email') and default or 'disabled'" />
+                                             disabled python:user['can_set_email'] and default or 'disabled'" />
                         </td>
 
                         <td class="listingCheckbox"
-                            tal:define="user_roles user/getRoles"
                             tal:repeat="portal_role portal_roles">
                           <input type="checkbox"
                              class="noborder"
                              name="users.roles:list:records"
                              value="Manager"
-                                         tal:attributes="value portal_role;
-                                             checked python:portal_role in user_roles and 'checked' or None;
-                                             disabled python:user.canAssignRole(portal_role) and default or 'disabled'" />
+                             tal:condition="python:user['roles'][portal_role]['assigned'] != 'inherited'" 
+                             tal:attributes="value portal_role;
+                                 checked python:user['roles'][portal_role]['assigned'] == 'explicit' and 'checked' or nothing;
+                                 disabled python:user['roles'][portal_role]['canAssign'] and default or 'disabled'" />
+
+                          <img tal:condition="python:user['roles'][portal_role]['assigned'] == 'inherited'" tal:replace="structure context/site_icon.gif" />
+
                         </td>
 
                         <td class="listingCheckbox">
@@ -204,7 +205,7 @@
                              name="users.resetpassword:records"
                                          value=""
                                          tal:attributes="value userid;
-                                                         disabled python:user.canPasswordSet() and default or 'disabled'" />
+                                                         disabled python:user['can_set_password'] and default or 'disabled'" />
                         </td>
 
                         <td class="listingCheckbox">
@@ -213,7 +214,7 @@
                                          name="delete:list"
                                          value=""
                                          tal:attributes="value userid;
-                                                         disabled python:user.canDelete() and default or 'disabled'" />
+                                                         disabled python:user['can_delete'] and default or 'disabled'" />
                         </td>
                     </tr>
                   </tal:block>
@@ -237,6 +238,23 @@
                       </tal:block>
                   </tr>
               </tbody>
+              <tfooter >
+                <tr >
+                  <th colspan="6" class="nosort">
+                    <a 
+                       i18n:translate="label_show_all"
+                       id="foldercontents-show-all" class="update-selection">Show all items</a>
+                  </th>
+                </tr>
+                <tr >
+                  <th colspan="6" class="nosort">
+                    <a
+                       i18n:translate="label_show_batched"
+                       id="foldercontents-show-batched" class="update-selection">Show batched</a>
+                  </th>
+                </tr>
+              </tfooter>
+              
           </table>
 
           <div metal:use-macro="context/batch_macros/macros/navigation" />

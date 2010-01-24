@@ -3,6 +3,13 @@ Changelog
 
 2.0b1 - unreleased
 ------------------
+- @@usergroup-userprefs now shows an icon to designate that the user has
+  inherited that global role through group membership.
+  [esteele]
+  
+- Display users in @@usergroup-userprefs by Fullname (user id).
+  [esteele] 
+
 - Add membershipSearch method to UsersGroupsControlPanelView. Will replace the
   soon-to-be-deprecated prefs_user_groups_search.py from Plone's plone_prefs.
   [esteele]

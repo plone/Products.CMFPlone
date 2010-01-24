@@ -179,9 +179,11 @@ Add a test for http://dev.plone.org/plone/ticket/8940:
     >>> self.browser.getControl(name='searchstring').value = 'Sean Foster'
     >>> self.browser.getControl(name='form.button.Search').click()
     
-So according to the ticket, this should fail
+So according to the ticket, this should fail, finding a checked checkbox instead of an "inherited" icon
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Reader').selected
-    False
+    Traceback (most recent call last):
+    ...
+    LookupError: value 'Reader'
 
 And then making some change to the user and saving it will assign that checked role directly to the user...
     >>> self.browser.getControl(name='users.email:records').value='somenewemailaddress.com'
@@ -291,7 +293,7 @@ But the nested group (Marketing) should show it as an inherited global role
     LookupError: value 'Contributor'
 
 Even when explicitly giving the nested group (Marketing) the contributor role, 
-it should still show it as an inherited global role.
+it should still show it as an inherited global role. Currently fails.
     >>> self.portal.portal_groups.editGroup('Bar', roles=['Contributor'], groups=())
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
     >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor')

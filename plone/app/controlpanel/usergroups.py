@@ -139,11 +139,68 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         return self.index()
 
     def doSearch(self, searchString):
+        acl = getToolByName(self, 'acl_users')
+        rolemakers = acl.plugins.listPlugins(IRolesPlugin)
+  
+        mtool = getToolByName(self, 'portal_membership')
+  
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+
+        # First, search for all roles assigned to each group (both inherited and
+        # explicit). We push this in the request so that IRoles plugins are told provide
+        # the roles inherited from the groups to which the principal belongs.
+        self.request.set('__ignore_group_roles__', False)
+        inheritance_enabled_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+        allInheritedRoles = {}
+        for user_info in inheritance_enabled_users:
+            userId = user_info['id']
+            user = acl.getUserById(userId)
+            allAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                allAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
+            allInheritedRoles[userId] = allAssignedRoles
+  
         # We push this in the request such IRoles plugins don't provide
         # the roles from the groups the principal belongs.
         self.request.set('__ignore_group_roles__', True)
-        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+        explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+        
+        # Tack on some extra data, including whether each role is explicitly
+        # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
+        results = []
+        for user_info in explicit_users:
+            userId = user_info['id']
+            user = mtool.getMemberById(userId)
+            
+            explicitlyAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
+
+            roleList = {}
+            for role in self.portal_roles:
+                
+                if role in explicitlyAssignedRoles:
+                    value = 'explicit'
+                elif role in allInheritedRoles[userId]:
+                    value = 'inherited'
+                else:
+                    value = None
+
+                roleList[role]={'canAssign': user.canAssignRole(role),
+                                'assigned': value}
+            user_info['roles'] = roleList
+            user_info['fullname'] = user.getProperty('fullname')
+            user_info['email'] = user.getProperty('email')
+            user_info['can_delete'] = user.canDelete()
+            user_info['can_set_email'] = user.canWriteProperty('email')
+            user_info['can_set_password'] = user.canPasswordSet()
+            results.append(user_info)
+        
+        # Sort the users by fullname
+        sortedResults = searchView.sort(results, 'fullname')
+        # Reset the request variable, just in case.
+        self.request.set('__ignore_group_roles__', False)
+        return sortedResults
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
         CheckAuthenticator(self.request)
