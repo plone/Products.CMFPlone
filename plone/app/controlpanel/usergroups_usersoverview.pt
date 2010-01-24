@@ -238,23 +238,6 @@
                       </tal:block>
                   </tr>
               </tbody>
-              <tfooter >
-                <tr >
-                  <th colspan="6" class="nosort">
-                    <a 
-                       i18n:translate="label_show_all"
-                       id="foldercontents-show-all" class="update-selection">Show all items</a>
-                  </th>
-                </tr>
-                <tr >
-                  <th colspan="6" class="nosort">
-                    <a
-                       i18n:translate="label_show_batched"
-                       id="foldercontents-show-batched" class="update-selection">Show batched</a>
-                  </th>
-                </tr>
-              </tfooter>
-              
           </table>
 
           <div metal:use-macro="context/batch_macros/macros/navigation" />
