@@ -135,7 +135,6 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         if not(self.many_users) or bool(self.searchString):
             self.searchResults = self.doSearch(self.searchString)
 
-            
         return self.index()
 
     def doSearch(self, searchString):
@@ -408,3 +407,45 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
     def getPotentialMembers(self, searchString):
         ignoredUsersGroups = [x.id for x in self.getMembers() + [self.group,] if x is not None]
         return self.membershipSearch(searchString, ignore=ignoredUsersGroups)
+
+class UserMembershipControlPanel(UsersGroupsControlPanelView):
+
+    def __call__(self):
+        self.userid = getattr(self.request, 'userid')
+        self.gtool = getToolByName(self, 'portal_groups')
+        self.mtool = getToolByName(self, 'portal_membership')
+        self.member = self.mtool.getMemberById(self.userid)
+
+        form = self.request.form
+        
+        self.searchResults = []
+        self.searchString = ''
+        
+        if form.get('form.submitted', False):
+            delete = form.get('delete', [])
+            for groupname in delete:
+                self.gtool.removePrincipalFromGroup(self.userid, groupname, self.request)
+            self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+
+            add = form.get('add', [])
+            for groupname in add:
+                self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
+            self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+            
+        findAll = form.get('form.button.FindAll', None) is not None and not self.many_groups
+        self.searchString = not findAll and form.get('searchstring', '') or ''
+        self.searchResults = self.getPotentialGroups(self.searchString)
+
+        self.groups = self.getGroups()
+        return self.index()
+
+
+    def getGroups(self):
+        groupResults = [self.gtool.getGroupById(m) for m in self.gtool.getGroupsForPrincipal(self.member)]
+        groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+        filter(None, groupResults)
+        return groupResults
+
+    def getPotentialGroups(self, searchString):
+        ignoredGroups = [x.id for x in self.getGroups() if x is not None]
+        return self.membershipSearch(searchString, searchUsers=False, ignore=ignoredGroups)
