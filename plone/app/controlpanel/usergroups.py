@@ -414,14 +414,16 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
         
         if form.get('form.submitted', False):
             delete = form.get('delete', [])
-            for groupname in delete:
-                self.gtool.removePrincipalFromGroup(self.userid, groupname, self.request)
-            self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+            if delete:
+                for groupname in delete:
+                    self.gtool.removePrincipalFromGroup(self.userid, groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
             add = form.get('add', [])
-            for groupname in add:
-                self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
-            self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+            if add:
+                for groupname in add:
+                    self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
             
         findAll = form.get('form.button.FindAll', None) is not None and not self.many_groups
         self.searchString = not findAll and form.get('searchstring', '') or ''

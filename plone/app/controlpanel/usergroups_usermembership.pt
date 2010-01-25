@@ -42,7 +42,7 @@
 
           <li class="selected">
                 <a href=""
-               tal:attributes="href string:$portal_url/${template/getId}?${userquery}"
+               tal:attributes="href string:$portal_url/${template_id}?${userquery}"
                i18n:translate="label_group_memberships">Group Memberships</a>
           </li>
         </ul>
