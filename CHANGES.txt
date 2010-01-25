@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b2 - unreleased
+2.0b2 - 2010-01-25
 ------------------
 
 - Don't create persistent objects during module import -- it breaks test cases
