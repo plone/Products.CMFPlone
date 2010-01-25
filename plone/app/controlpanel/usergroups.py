@@ -309,6 +309,9 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
             group_info['roles'] = roleList
             group_info['can_delete'] = group.canDelete()
+            # Override the value of title with whatever's coming from
+            # getGroupTitleOrName. This allows plugins like autogroups to use
+            # titles set in the group's preferences
             group_info['title'] = group.getGroupTitleOrName()
             results.append(group_info)
         # Sort the groups by title
