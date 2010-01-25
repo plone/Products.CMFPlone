@@ -4,6 +4,24 @@ Changelog
 2.0b2 - unreleased
 ------------------
 
+- Don't create persistent objects during module import -- it breaks test cases
+  that are sandboxed into different ZODBs and import this module (leads to
+  ConnectionStateErrors).
+  [davisagli]
+
+- Rework page templates for group prefs pages so that they match the rest of our
+  prefs pages. Add the group dashboard link to other group prefs pages. Closes
+  http://dev.plone.org/plone/ticket/9732.
+  [esteele]
+
+- Merged r30179 from branches/1.2 (this is the only fix since 1.2 that was
+  missing in trunk): Some XHTML fixes to be also XHTML Strict compliant. See
+  http://dev.plone.org/plone/ticket/4379 (fix by keul).
+  [maurits]
+
+- Merge r30771 from branches/1.2: Support for portal-relative paths in
+  portlets.xml keys. Fixes http://dev.plone.org/plone/ticket/9764.
+  [maurits]
 
 2.0b1 - 2010-01-03
 ------------------
