@@ -3,6 +3,10 @@ Changelog
 
 2.0b1 - unreleased
 ------------------
+- @@usergroup-userprefs now requires the zope2.ManageUsers permission instead
+  of cmf.ManagePortal.
+  [esteele]
+
 - @@usergroup-userprefs now shows an icon to designate that the user has
   inherited that global role through group membership.
   [esteele]

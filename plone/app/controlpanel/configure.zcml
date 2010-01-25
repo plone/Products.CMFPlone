@@ -152,7 +152,7 @@
       name="usergroup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UserGroupsSettingsControlPanel"
-      permission="cmf.ManagePortal"
+      permission="zope2.ManageUsers"
       />
 
   <browser:page
