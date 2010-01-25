@@ -309,6 +309,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
             group_info['roles'] = roleList
             group_info['can_delete'] = group.canDelete()
+            group_info['title'] = group.getGroupTitleOrName()
             results.append(group_info)
         # Sort the groups by title
         sortedResults = searchView.sort(results, 'title')
