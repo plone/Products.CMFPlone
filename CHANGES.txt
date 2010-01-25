@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b1 - unreleased
+2.0b1 - 2010-01-25
 ------------------
 
 - Micro-optimization for skip_links viewlet.
