@@ -209,14 +209,13 @@
                                            class="noborder"
                                            name="name"
                                            value="Manager"
-                                           tal:condition="python:group_info['roles'][portal_role]['assigned'] != 'inherited'" 
                                            tal:attributes="name string:group_${group_info/groupid}:list;
                                                            value portal_role;
-                                                           checked python:group_info['roles'][portal_role]['assigned'] == 'explicit' and 'checked' or nothing;
+                                                           checked python:group_info['roles'][portal_role]['explicit'] and 'checked' or nothing;
                                                            disabled python:group_info['roles'][portal_role]['canAssign'] and default or 'disabled'"
                                            />
                                            
-                                   <img tal:condition="python:group_info['roles'][portal_role]['assigned'] == 'inherited'" tal:replace="structure context/site_icon.gif" />
+                                   <img tal:condition="python:group_info['roles'][portal_role]['inherited']" tal:replace="structure context/site_icon.gif" />
                                 </td>
 
                                 <td class="listingCheckbox">

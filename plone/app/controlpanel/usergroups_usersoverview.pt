@@ -190,12 +190,11 @@
                              class="noborder"
                              name="users.roles:list:records"
                              value="Manager"
-                             tal:condition="python:user['roles'][portal_role]['assigned'] != 'inherited'" 
                              tal:attributes="value portal_role;
-                                 checked python:user['roles'][portal_role]['assigned'] == 'explicit' and 'checked' or nothing;
+                                 checked python:user['roles'][portal_role]['explicit'] and 'checked' or nothing;
                                  disabled python:user['roles'][portal_role]['canAssign'] and default or 'disabled'" />
 
-                          <img tal:condition="python:user['roles'][portal_role]['assigned'] == 'inherited'" tal:replace="structure context/site_icon.gif" />
+                          <img tal:condition="python:user['roles'][portal_role]['inherited']" tal:replace="structure context/site_icon.gif" />
 
                         </td>
 

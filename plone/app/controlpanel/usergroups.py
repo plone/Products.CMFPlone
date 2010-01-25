@@ -145,10 +145,11 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
   
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
 
-        # First, search for all roles assigned to each group (both inherited and
-        # explicit). We push this in the request so that IRoles plugins are told provide
+        # First, search for all inherited roles assigned to each group.
+        # We push this in the request so that IRoles plugins are told provide
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', False)
+        self.request.set('__ignore_direct_roles__', True)
         inheritance_enabled_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
         allInheritedRoles = {}
         for user_info in inheritance_enabled_users:
@@ -162,6 +163,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         # We push this in the request such IRoles plugins don't provide
         # the roles from the groups the principal belongs.
         self.request.set('__ignore_group_roles__', True)
+        self.request.set('__ignore_direct_roles__', False)
         explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
         
         # Tack on some extra data, including whether each role is explicitly
@@ -177,16 +179,10 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
             roleList = {}
             for role in self.portal_roles:
-                
-                if role in explicitlyAssignedRoles:
-                    value = 'explicit'
-                elif role in allInheritedRoles[userId]:
-                    value = 'inherited'
-                else:
-                    value = None
-
                 roleList[role]={'canAssign': user.canAssignRole(role),
-                                'assigned': value}
+                                'explicit': role in explicitlyAssignedRoles,
+                                'inherited': role in explicitlyAssignedRoles}
+            
             user_info['roles'] = roleList
             user_info['fullname'] = user.getProperty('fullname', '')
             user_info['email'] = user.getProperty('email', '')
@@ -272,10 +268,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
 
-        # First, search for all roles assigned to each group (both inherited and
-        # explicit). We push this in the request so that IRoles plugins are told provide
+        # First, search for inherited roles assigned to each group.
+        # We push this in the request so that IRoles plugins are told provide
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', False)
+        self.request.set('__ignore_direct_roles__', True)
         inheritance_enabled_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
         allInheritedRoles = {}
         for group_info in inheritance_enabled_groups:
@@ -290,6 +287,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         # We push this in the request so that IRoles plugins don't provide
         # the roles inherited from the groups to which the principal belongs.
         self.request.set('__ignore_group_roles__', True)
+        self.request.set('__ignore_direct_roles__', False)
         explicit_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
 
         # Tack on some extra data, including whether each role is explicitly
@@ -305,16 +303,9 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
             roleList = {}
             for role in self.portal_roles:
-                
-                if role in explicitlyAssignedRoles:
-                    value = 'explicit'
-                elif role in allInheritedRoles[groupId]:
-                    value = 'inherited'
-                else:
-                    value = None
-
                 roleList[role]={'canAssign': group.canAssignRole(role),
-                                'assigned': value}
+                                'explicit': role in explicitlyAssignedRoles,
+                                'inherited': role in allInheritedRoles[groupId] }
 
             group_info['roles'] = roleList
             group_info['can_delete'] = group.canDelete()
