@@ -112,7 +112,7 @@ class UsersGroupsControlPanelView(ControlPanelView):
         if searchUsers:
             userResults = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
             userResults = [mtool.getMemberById(u['id']) for u in userResults if u['id'] not in ignore]
-            userResults.sort(key=lambda x: x is not None and x.getProperty('fullname','').lower())
+            userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
 
         return groupResults + userResults
 
@@ -189,18 +189,19 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 roleList[role]={'canAssign': user.canAssignRole(role),
                                 'assigned': value}
             user_info['roles'] = roleList
-            user_info['fullname'] = user.getProperty('fullname')
-            user_info['email'] = user.getProperty('email')
+            user_info['fullname'] = user.getProperty('fullname', '')
+            user_info['email'] = user.getProperty('email', '')
             user_info['can_delete'] = user.canDelete()
             user_info['can_set_email'] = user.canWriteProperty('email')
             user_info['can_set_password'] = user.canPasswordSet()
             results.append(user_info)
         
         # Sort the users by fullname
-        sortedResults = searchView.sort(results, 'fullname')
+        results.sort(key=lambda x: x is not None and x['fullname'] is not None and x['fullname'].lower() or '')
+
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
-        return sortedResults
+        return results
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
         CheckAuthenticator(self.request)
@@ -398,7 +399,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
 
         userResults = [self.mtool.getMemberById(m) for m in searchResults]
-        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname','').lower())
+        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
         
         mergedResults = groupResults + userResults
         filter(None, mergedResults)

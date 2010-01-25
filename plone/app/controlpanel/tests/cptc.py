@@ -82,7 +82,6 @@ class UserGroupsControlPanelTestCase(ControlPanelTestCase):
                    {'username': 'RwAO2YPa', 'fullname': 'Gracie Adams', 'email': 'gracie@example.com'}, 
                    {'username': 'nlBMw26i', 'fullname': 'Sydney Evans', 'email': 'nlBMw26i@example.com'}, 
                    {'username': 'Ahr3EiRC', 'fullname': 'Emma Brown', 'email': 'Ahr3EiRC@example.com'}, 
-                   {'username': 'NP4FMIb5', 'fullname': 'Jesus Hayes', 'email': 'NP4FMIb5@example.com'}, 
                    {'username': 'NhuU0Y5x', 'fullname': 'Lauren Martin', 'email': 'NhuU0Y5x@example.com'}, 
                    {'username': 'j2R3mKQg', 'fullname': 'Isabelle Russell', 'email': 'j2R3mKQg@example.com'}, 
                    {'username': 'qOmK0iCN', 'fullname': 'Anna Baker', 'email': 'qOmK0iCN@example.com'}, 
@@ -96,7 +95,9 @@ class UserGroupsControlPanelTestCase(ControlPanelTestCase):
                    {'username': 'lPCYBvoi', 'fullname': 'Brian Gray', 'email': 'lPCYBvoi@example.com'}, 
                    {'username': 'AByCsRQ3', 'fullname': 'Victoria Perez', 'email': 'AByCsRQ3@example.com'}, 
                    {'username': 'CH7uVlNy', 'fullname': 'Charles Rodriguez', 'email': '5H7uVlNy@example.com'}, 
-                   {'username': 'XYsmd7ux', 'fullname': 'Abigail Simmons', 'email': 'XYsmd7ux@example.com'}]
+                   {'username': 'XYsmd7ux', 'fullname': 'Abigail Simmons', 'email': 'XYsmd7ux@example.com'},
+                   {'username': 'NP4FMIb5', 'email': 'NP4FMIb5@example.com'}] 
+
         regtool = getToolByName(self.portal, 'portal_registration')
         for member in members:
             regtool.addMember(member['username'], 'somepassword', properties=member)
