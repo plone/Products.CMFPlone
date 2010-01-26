@@ -181,7 +181,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             for role in self.portal_roles:
                 roleList[role]={'canAssign': user.canAssignRole(role),
                                 'explicit': role in explicitlyAssignedRoles,
-                                'inherited': role in explicitlyAssignedRoles}
+                                'inherited': role in allInheritedRoles[userId]}
             
             user_info['roles'] = roleList
             user_info['fullname'] = user.getProperty('fullname', '')
@@ -282,7 +282,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             for rolemaker_id, rolemaker in rolemakers:
                 allAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
             allInheritedRoles[groupId] = allAssignedRoles
-            
+
         # Now, search for all roles explicitly assigned to each group.
         # We push this in the request so that IRoles plugins don't provide
         # the roles inherited from the groups to which the principal belongs.
