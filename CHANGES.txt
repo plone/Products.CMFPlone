@@ -4,6 +4,11 @@ Changelog
 2.0b2 - unreleased
 ------------------
 
+- Use the same designation for "Plone" in the portal footer and the
+  colophon.
+  Fixes http://dev.plone.org/plone/ticket/9741.
+  [dukebody]
+
 
 2.0b1 - 2010-01-25
 ------------------
