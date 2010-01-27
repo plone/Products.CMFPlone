@@ -209,10 +209,11 @@
                                            class="noborder"
                                            name="name"
                                            value="Manager"
+                                           tal:condition="python:not group_info['roles'][portal_role]['inherited']"
                                            tal:attributes="name string:group_${group_info/groupid}:list;
                                                            value portal_role;
-                                                           checked python:group_info['roles'][portal_role]['explicit'] and 'checked' or nothing;
-                                                           disabled python:group_info['roles'][portal_role]['canAssign'] and default or 'disabled'"
+                                                           checked python:'checked' if group_info['roles'][portal_role]['explicit'] else nothing;
+                                                           disabled python:default if group_info['roles'][portal_role]['canAssign'] else 'disabled'"
                                            />
                                            
                                    <img tal:condition="python:group_info['roles'][portal_role]['inherited']" tal:replace="structure context/site_icon.gif" />
@@ -224,7 +225,7 @@
                                            name="delete:list"
                                            value="value"
                                            tal:attributes="value group_info/groupid;
-                                                           disabled python:group_info['can_delete'] and default or 'disabled'"
+                                                           disabled python:default if group_info['can_delete'] else 'disabled'"
                                            />
                                 </td>
                             </tr>
