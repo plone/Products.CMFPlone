@@ -115,37 +115,37 @@ With the 'many groups' flag disabled, should allow us to see the 'show all' butt
     True
 
 We'll attempt a search...
-    >>> self.browser.getControl(name='searchstring').value = 'foo'
+    >>> self.browser.getControl(name='searchstring').value = 'group3'
     >>> self.browser.getControl(name='form.button.Search').click()
-    >>> 'Foo' in self.browser.contents
+    >>> 'Group 3' in self.browser.contents
     True
 
 And again with the group's title
-    >>> self.browser.getControl(name='searchstring').value = 'Management'
+    >>> self.browser.getControl(name='searchstring').value = 'Group 3'
     >>> self.browser.getControl(name='form.button.Search').click()
-    >>> 'Foo' in self.browser.contents
+    >>> 'group3' in self.browser.contents
     True
 
 Add a new role
-    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    >>> self.browser.getControl(name='group_group3:list', index=1).getControl(value='Contributor').selected
     False
-    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected = True
+    >>> self.browser.getControl(name='group_group3:list', index=1).getControl(value='Contributor').selected = True
     >>> self.browser.getControl('Apply Changes').click()
-    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    >>> self.browser.getControl(name='group_group3:list', index=1).getControl(value='Contributor').selected
     True
 
 And remove it again...
-    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected = False
+    >>> self.browser.getControl(name='group_group3:list', index=1).getControl(value='Contributor').selected = False
     >>> self.browser.getControl('Apply Changes').click()
-    >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
+    >>> self.browser.getControl(name='group_group3:list', index=1).getControl(value='Contributor').selected
     False
 
-Delete the group...
-    >>> self.browser.getControl(name='delete:list').getControl(value='Foo').selected = True
+Delete a group...
+    >>> self.browser.getControl(name='delete:list').getControl(value='group3').selected = True
     >>> self.browser.getControl(name='form.button.Modify').click()
     >>> self.browser.getControl(name='searchstring').value
-    'Management'
-    >>> 'Foo' in self.browser.contents
+    'Group 3'
+    >>> 'group3' in self.browser.contents
     False
 
 Turning on the 'many groups' flag should remove the 'Search All' button.
@@ -208,7 +208,7 @@ Turn off the many groups/users flags again
     
 Now let's try modifying some group memberships...
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
-    >>> self.browser.getLink('Accounting (Baz)').click()
+    >>> self.browser.getLink('Group 1 (group1)').click()
     >>> 'There is no group or user attached to this group.' in self.browser.contents
     True
 
@@ -237,14 +237,14 @@ Check to make sure search results are ordered properly and display the title/ful
     >>> self.browser.contents
     '...Search for new group members...
     ...Administrators...(Administrators)...
-    ...Marketing...(Bar)...
+    ...Group 2...(group2)...
     ...Reviewers...(Reviewers)...
     ...Abigail Simmons...(XYsmd7ux)...
     ...Alexandra Nelson...(FElYwiIr)...
     ...Blake Jenkins...(BlXLQh7r)...'
 
 Add some group members
-    >>> self.browser.getControl(name='add:list').getControl(value='Bar').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='group2').selected = True
     >>> self.browser.getControl(name='add:list').getControl(value='Reviewers').selected = True
     >>> self.browser.getControl(name='add:list').getControl(value='XYsmd7ux').selected = True
     >>> self.browser.getControl(name='add:list').getControl(value='BlXLQh7r').selected = True
@@ -253,7 +253,7 @@ Add some group members
 These should be displayed in the Current group members section now.
     >>> self.browser.contents
     '...Current group members...
-    ...Marketing...(Bar)...
+    ...Group 2...(group2)...
     ...Reviewers...(Reviewers)...
     ...Abigail Simmons...(XYsmd7ux)...
     ...Blake Jenkins...(BlXLQh7r)...
@@ -268,35 +268,35 @@ Users/Groups they can be removed from this list as well.
     False
 
 Groups nested within groups assigned to this one should not be displayed
-    >>> self.browser.getLink('Marketing').click()
+    >>> self.browser.getLink('Group 2').click()
     >>> self.browser.getLink('Group Members').click()
 
-Open the groups overview, make sure Accounting and Marketing don't have globally-assigned roles
+Open the groups overview, make sure Group 1 and Group 2 don't have globally-assigned roles
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
-    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected
+    >>> self.browser.getControl(name='group_group1:list', index=1).getControl(value='Contributor').selected
     False
-    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor').selected
+    >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor').selected
     False
 
-Give the Accounting group the contributor role
-    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected = True
+Give the Group 1 group the contributor role
+    >>> self.browser.getControl(name='group_group1:list', index=1).getControl(value='Contributor').selected = True
     >>> self.browser.getControl('Apply Changes').click()
 
-Now Accounting should show the global contributor role
-    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected
+Now Group 1 should show the global contributor role
+    >>> self.browser.getControl(name='group_group1:list', index=1).getControl(value='Contributor').selected
     True
 
-#But the nested group (Marketing) should show it as an inherited global role
-#    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor')
+#But the nested group (Group 2) should show it as an inherited global role
+#    >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor')
 #    Traceback (most recent call last):
 #    ...
 #    LookupError: value 'Contributor'
 
-#Even when explicitly giving the nested group (Marketing) the contributor role, 
+#Even when explicitly giving the nested group (Group 2) the contributor role, 
 #it should still show it as an inherited global role. Currently fails.
-#    >>> self.portal.portal_groups.editGroup('Bar', roles=['Contributor'], groups=())
+#    >>> self.portal.portal_groups.editGroup('group2', roles=['Contributor'], groups=())
 #    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
-#    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor')
+#    >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor')
 #    Traceback (most recent call last):
 #    ...
 #    LookupError: value 'Contributor'
@@ -315,25 +315,25 @@ Go directly to the Users Overview screen.
     >>> self.browser.contents
     '...Group memberships for...Sofia Williams...(tyOxRnml)...
     ...Current group memberships...
-    ...AuthenticatedUsers...
+    ...Authenticated Users...
     ...Assign to groups...
-    ...Accounting...
     ...Administrators...
-    ...Marketing...
+    ...Group 1...
+    ...Group 2...
     ...Reviewers...'
-    >>> self.browser.getControl(name='add:list').getControl(value='Bar').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='group2').selected = True
     >>> self.browser.getControl(name='form.button.Add').click()
     >>> '@@usergroup-usermembership?userid=tyOxRnml' in self.browser.url
     True
     >>> self.browser.contents
     '...Group memberships for...Sofia Williams...(tyOxRnml)...
     ...Current group memberships...
-    ...AuthenticatedUsers...
-    ...Marketing...
+    ...Authenticated Users...
+    ...Group 2...
     ...Assign to groups...
-    ...Accounting...
     ...Administrators...
+    ...Group 1...
     ...Reviewers...'
     
-And members of Marketing should have a checkbox in the Users Overview since
-they inherit the Contributor role from Accouting.
+And members of Group 2 should have a checkbox in the Users Overview since
+they inherit the Contributor role from Group 1.

@@ -41,9 +41,9 @@ class UserGroupsControlPanelTestCase(ControlPanelTestCase):
 
     def generateGroups(self):
         groupsTool = getToolByName(self.portal, 'portal_groups')
-        groupsTool.addGroup('Foo', [], [], title='Management')
-        groupsTool.addGroup('Bar', [], [], title='Marketing')
-        groupsTool.addGroup('Baz', [], [], title='Accounting')
+        groupsTool.addGroup('group1', [], [], title='Group 1')
+        groupsTool.addGroup('group2', [], [], title='Group 2')
+        groupsTool.addGroup('group3', [], [], title='Group 3')
         
     def generateUsers(self):
         members = [{'username': 'DIispfuF', 'fullname': 'Kevin Hughes', 'email': 'DIispfuF@example.com'}, 
