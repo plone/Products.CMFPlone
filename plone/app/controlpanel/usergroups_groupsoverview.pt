@@ -49,7 +49,7 @@
               </li>
            </ul>
         </div>
-        
+
         <div class="contentActions">
           &nbsp;
         </div>
@@ -78,9 +78,9 @@
                     departments and business units. Groups are not directly
                     related to permissions on a global level, you normally
                     use Roles for that - and let certain Groups have a
-                    particular role. The symbol 
+                    particular role. The symbol
                      <img i18n:name="image_link_icon"
-                          tal:replace="structure context/site_icon.gif" /> 
+                          tal:replace="structure context/site_icon.gif" />
                     indicates a role inherited from membership in another group.
                 </p>
 
@@ -113,7 +113,7 @@
                       tal:attributes="action string:$template_id">
 
                     <input type="hidden" name="form.submitted" value="1" />
-                
+
                     <input type="hidden" value="b_start" name="b_start"
                            tal:attributes="value b_start"/>
 
@@ -143,14 +143,14 @@
                                            value="Search"
                                            i18n:attributes="value label_search;"
                                            />
-                                   
+
                                     <input type="submit"
                                            class="searchButton"
                                            name="form.button.FindAll"
                                            value="Show all"
                                            i18n:attributes="value label_showall;"
                                            tal:condition="not:site_properties/many_groups"
-                                           />                                       
+                                           />
 
                                 </th>
                             </tr>
@@ -195,8 +195,7 @@
                                            />
 
                                     <a href="#"
-                                       tal:attributes="href python:portal_url+'/@@usergroup-groupmembership?'+view.makeQuery(groupname=group_info['groupid']);
-                                                       title group_info/title|group_info/groupid">
+                                       tal:attributes="href python:portal_url+'/@@usergroup-groupmembership?'+view.makeQuery(groupname=group_info['groupid'])">
 
                                        <tal:block replace="structure context/portal_url/group.png" />&nbsp;
                                        <tal:group tal:replace="group_info/title" /> (<tal:id tal:replace="group_info/groupid" />)
@@ -215,7 +214,7 @@
                                                            checked python:'checked' if group_info['roles'][portal_role]['explicit'] else nothing;
                                                            disabled python:default if group_info['roles'][portal_role]['canAssign'] else 'disabled'"
                                            />
-                                           
+
                                    <img tal:condition="python:group_info['roles'][portal_role]['inherited']" tal:replace="structure context/site_icon.gif" />
                                 </td>
 
@@ -255,7 +254,7 @@
                                i18n:attributes="value label_apply_changes;"
                                />
                     </tal:block>
-                
+
                     <input tal:replace="structure context/@@authenticator/authenticator" />
 
                 </form>
