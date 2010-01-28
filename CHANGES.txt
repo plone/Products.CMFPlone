@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b3 - unreleased
+2.0b3 - 2010-01-28
 ------------------
 - Change group portlets and group dashboard links to point to the new
   @@usergroup-groupmembership view.
