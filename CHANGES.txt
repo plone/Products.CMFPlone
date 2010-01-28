@@ -15,7 +15,7 @@ Changelog
   [esteele] 
 
 - Add membershipSearch method to UsersGroupsControlPanelView. Will replace the
-  soon-to-be-deprecated prefs_user_groups_search.py from Plone's plone_prefs.
+  soon-to-be-deprecated prefs_user_group_search.py from Plone's plone_prefs.
   [esteele]
 
 - Properly handle nesting of groups. UI now allows addition and display of
