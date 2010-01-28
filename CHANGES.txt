@@ -3,7 +3,8 @@ Changelog
 
 1.0b2 - unreleased
 ------------------
-
+- Fixed tests to account for new layout of users overview pages. 
+  [esteele]
 
 1.0b1 - 2009-12-27
 ------------------

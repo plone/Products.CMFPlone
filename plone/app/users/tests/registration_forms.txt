@@ -231,6 +231,7 @@ Testing the flexible user registration
     >>> browser.getLink('user4').click()
     >>> browser.getLink('Group Memberships').click()
     >>> browser.contents
-    '...Current Group Memberships...Reviewers...'
+    '...Current group memberships...
+    ...Reviewers...'
     
     
