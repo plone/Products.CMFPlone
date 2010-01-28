@@ -27,7 +27,7 @@
             <ul id="content-views" class="contentViews">
               <li>
                 <a href=""
-                   tal:attributes="href string:${context/absolute_url}/prefs_group_members?groupname=${view/group}"
+                   tal:attributes="href string:${context/absolute_url}/@@usergroup-groupmembership?groupname=${view/group}"
                    i18n:translate="label_group_members">Group Members</a>
               </li>
               <li>

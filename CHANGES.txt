@@ -3,7 +3,9 @@ Changelog
 
 2.0b3 - unreleased
 ------------------
-
+- Change group portlets and group dashboard links to point to the new
+  @@usergroup-groupmembership view.
+  [esteele]
 
 2.0b2 - 2010-01-25
 ------------------
