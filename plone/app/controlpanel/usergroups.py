@@ -1,3 +1,5 @@
+import logging
+
 from Acquisition import aq_inner
 from itertools import chain
 
@@ -20,6 +22,8 @@ from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
 
 from form import ControlPanelForm, ControlPanelView
 from security import ISecuritySchema
+
+logger = logging.getLogger('plone.app.controlpanel')
 
 class IUserGroupsSettingsSchema(Interface):
 
@@ -85,7 +89,7 @@ class UsersGroupsControlPanelView(ControlPanelView):
     @property
     def many_groups(self):
         pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_groups 
+        return pprop.site_properties.many_groups
 
     @property
     def email_as_username(self):
@@ -101,9 +105,9 @@ class UsersGroupsControlPanelView(ControlPanelView):
 
         gtool = getToolByName(self, 'portal_groups')
         mtool = getToolByName(self, 'portal_membership')
-        
+
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        
+
         if searchGroups:
             groupResults = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'groupid')
             groupResults = [gtool.getGroupById(g['id']) for g in groupResults if g['id'] not in ignore]
@@ -140,9 +144,9 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
     def doSearch(self, searchString):
         acl = getToolByName(self, 'acl_users')
         rolemakers = acl.plugins.listPlugins(IRolesPlugin)
-  
+
         mtool = getToolByName(self, 'portal_membership')
-  
+
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
 
         # First, search for all inherited roles assigned to each group.
@@ -155,24 +159,31 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         for user_info in inheritance_enabled_users:
             userId = user_info['id']
             user = acl.getUserById(userId)
+            # play safe, though this should never happen
+            if user is None:
+                logger.warn('Skipped user without principal object: %s' % userId)
+                continue
             allAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
                 allAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
             allInheritedRoles[userId] = allAssignedRoles
-  
+
         # We push this in the request such IRoles plugins don't provide
         # the roles from the groups the principal belongs.
         self.request.set('__ignore_group_roles__', True)
         self.request.set('__ignore_direct_roles__', False)
         explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
-        
+
         # Tack on some extra data, including whether each role is explicitly
         # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
         results = []
         for user_info in explicit_users:
             userId = user_info['id']
             user = mtool.getMemberById(userId)
-            
+            # play safe, though this should never happen
+            if user is None:
+                logger.warn('Skipped user without principal object: %s' % userId)
+                continue
             explicitlyAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
                 explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
@@ -182,7 +193,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 roleList[role]={'canAssign': user.canAssignRole(role),
                                 'explicit': role in explicitlyAssignedRoles,
                                 'inherited': role in allInheritedRoles[userId]}
-            
+
             user_info['roles'] = roleList
             user_info['fullname'] = user.getProperty('fullname', '')
             user_info['email'] = user.getProperty('email', '')
@@ -190,7 +201,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             user_info['can_set_email'] = user.canWriteProperty('email')
             user_info['can_set_password'] = user.canPasswordSet()
             results.append(user_info)
-        
+
         # Sort the users by fullname
         results.sort(key=lambda x: x is not None and x['fullname'] is not None and x['fullname'].lower() or '')
 
@@ -200,7 +211,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
         CheckAuthenticator(self.request)
-        
+
         if users:
             context = aq_inner(self.context)
             acl_users = getToolByName(context, 'acl_users')
@@ -312,11 +323,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             results.append(group_info)
         # Sort the groups by title
         sortedResults = searchView.sort(results, 'title')
-        
+
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
         return sortedResults
-        
+
     def manageGroup(self, groups=[], delete=[]):
         CheckAuthenticator(self.request)
         context = aq_inner(self.context)
@@ -348,21 +359,21 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         self.grouptitle = self.group.getGroupTitleOrName() or self.groupname
 
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
-        
+
         self.groupquery = self.makeQuery(groupname=self.groupname)
         self.groupkeyquery = self.makeQuery(key=self.groupname)
-        
+
         form = self.request.form
         submitted = form.get('form.submitted', False)
-        
+
         self.searchResults = []
         self.searchString = ''
-        
+
         if submitted:
             findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
             self.searchString = not findAll and form.get('searchstring', '') or ''
             self.searchResults = self.getPotentialMembers(self.searchString)
-        
+
             toAdd = form.get('add', [])
             if toAdd:
                 for u in toAdd:
@@ -376,7 +387,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
         self.groupMembers = self.getMembers()
-        
+
         return self.index()
 
     def isGroup(self, itemName):
@@ -390,7 +401,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
         userResults = [self.mtool.getMemberById(m) for m in searchResults]
         userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
-        
+
         mergedResults = groupResults + userResults
         filter(None, mergedResults)
         return mergedResults
@@ -408,10 +419,10 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
         self.member = self.mtool.getMemberById(self.userid)
 
         form = self.request.form
-        
+
         self.searchResults = []
         self.searchString = ''
-        
+
         if form.get('form.submitted', False):
             delete = form.get('delete', [])
             if delete:
@@ -424,7 +435,7 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
                 for groupname in add:
                     self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
-            
+
         findAll = form.get('form.button.FindAll', None) is not None and not self.many_groups
         self.searchString = not findAll and form.get('searchstring', '') or ''
         self.searchResults = self.getPotentialGroups(self.searchString)
