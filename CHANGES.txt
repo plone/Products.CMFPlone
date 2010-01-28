@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.0b3 - Unreleased
+------------------
+
 1.0b2 - 2010-01-28
 ------------------
 - Fixed tests to account for new layout of users overview pages. 
