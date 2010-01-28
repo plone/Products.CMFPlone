@@ -2,11 +2,11 @@ from Acquisition import aq_inner
 from itertools import chain
 
 from zope.interface import Interface
-from zope.component import adapts
-from zope.component import getMultiAdapter
+from zope.component import adapts, getAdapter, getMultiAdapter
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
+from ZTUtils import make_query
 
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
@@ -14,10 +14,12 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
 
 from form import ControlPanelForm, ControlPanelView
-
+from security import ISecuritySchema
 
 class IUserGroupsSettingsSchema(Interface):
 
@@ -68,7 +70,53 @@ class UserGroupsSettingsControlPanel(ControlPanelForm):
     form_name = _("User/Groups settings")
 
 
-class UsersOverviewControlPanel(ControlPanelView):
+class UsersGroupsControlPanelView(ControlPanelView):
+
+    @property
+    def portal_roles(self):
+        pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
+        return [r for r in pmemb.getPortalRoles() if r != 'Owner']
+
+    @property
+    def many_users(self):
+        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
+        return pprop.site_properties.many_users
+
+    @property
+    def many_groups(self):
+        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
+        return pprop.site_properties.many_groups 
+
+    @property
+    def email_as_username(self):
+        return getAdapter(aq_inner(self.context), ISecuritySchema).get_use_email_as_login()
+
+    def makeQuery(self, **kw):
+        return make_query(**kw)
+
+    def membershipSearch(self, searchString='', searchUsers=True, searchGroups=True, ignore=[]):
+        """Search for users and/or groups, returning actual member and group items
+           Replaces the now-deprecated prefs_user_groups_search.py script"""
+        groupResults = userResults = []
+
+        gtool = getToolByName(self, 'portal_groups')
+        mtool = getToolByName(self, 'portal_membership')
+        
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+        
+        if searchGroups:
+            groupResults = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'groupid')
+            groupResults = [gtool.getGroupById(g['id']) for g in groupResults if g['id'] not in ignore]
+            groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+
+        if searchUsers:
+            userResults = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+            userResults = [mtool.getMemberById(u['id']) for u in userResults if u['id'] not in ignore]
+            userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
+
+        return groupResults + userResults
+
+class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
 
@@ -90,16 +138,65 @@ class UsersOverviewControlPanel(ControlPanelView):
         return self.index()
 
     def doSearch(self, searchString):
+        acl = getToolByName(self, 'acl_users')
+        rolemakers = acl.plugins.listPlugins(IRolesPlugin)
+  
+        mtool = getToolByName(self, 'portal_membership')
+  
+        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
+
+        # First, search for all inherited roles assigned to each group.
+        # We push this in the request so that IRoles plugins are told provide
+        # the roles inherited from the groups to which the principal belongs.
+        self.request.set('__ignore_group_roles__', False)
+        self.request.set('__ignore_direct_roles__', True)
+        inheritance_enabled_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+        allInheritedRoles = {}
+        for user_info in inheritance_enabled_users:
+            userId = user_info['id']
+            user = acl.getUserById(userId)
+            allAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                allAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
+            allInheritedRoles[userId] = allAssignedRoles
+  
         # We push this in the request such IRoles plugins don't provide
         # the roles from the groups the principal belongs.
         self.request.set('__ignore_group_roles__', True)
-        searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        return searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+        self.request.set('__ignore_direct_roles__', False)
+        explicit_users = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
+        
+        # Tack on some extra data, including whether each role is explicitly
+        # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
+        results = []
+        for user_info in explicit_users:
+            userId = user_info['id']
+            user = mtool.getMemberById(userId)
+            
+            explicitlyAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(user))
 
-    @property
-    def many_users(self):
-        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_users
+            roleList = {}
+            for role in self.portal_roles:
+                roleList[role]={'canAssign': user.canAssignRole(role),
+                                'explicit': role in explicitlyAssignedRoles,
+                                'inherited': role in allInheritedRoles[userId]}
+            
+            user_info['roles'] = roleList
+            user_info['fullname'] = user.getProperty('fullname', '')
+            user_info['email'] = user.getProperty('email', '')
+            user_info['can_delete'] = user.canDelete()
+            user_info['can_set_email'] = user.canWriteProperty('email')
+            user_info['can_set_password'] = user.canPasswordSet()
+            results.append(user_info)
+        
+        # Sort the users by fullname
+        results.sort(key=lambda x: x is not None and x['fullname'] is not None and x['fullname'].lower() or '')
+
+        # Reset the request variable, just in case.
+        self.request.set('__ignore_group_roles__', False)
+        return results
 
     def manageUser(self, users=[], resetpassword=[], delete=[]):
         CheckAuthenticator(self.request)
@@ -145,13 +242,7 @@ class UsersOverviewControlPanel(ControlPanelView):
                 mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
             utils.addPortalMessage(_(u'Changes applied.'))
 
-    @property
-    def portal_roles(self):
-        pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
-        return [r for r in pmemb.getPortalRoles() if r != 'Owner']
-
-
-class GroupsOverviewControlPanel(ControlPanelView):
+class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
         form = self.request.form
@@ -171,10 +262,60 @@ class GroupsOverviewControlPanel(ControlPanelView):
         return self.index()
 
     def doSearch(self, searchString):
+        """ Search for a group by id or title"""
+        acl = getToolByName(self, 'acl_users')
+        rolemakers = acl.plugins.listPlugins(IRolesPlugin)
+
         searchView = getMultiAdapter((aq_inner(self.context), self.request), name='pas_search')
-        results = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+
+        # First, search for inherited roles assigned to each group.
+        # We push this in the request so that IRoles plugins are told provide
+        # the roles inherited from the groups to which the principal belongs.
+        self.request.set('__ignore_group_roles__', False)
+        self.request.set('__ignore_direct_roles__', True)
+        inheritance_enabled_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+        allInheritedRoles = {}
+        for group_info in inheritance_enabled_groups:
+            groupId = group_info['id']
+            group = acl.getGroupById(groupId)
+            allAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                allAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
+            allInheritedRoles[groupId] = allAssignedRoles
+
+        # Now, search for all roles explicitly assigned to each group.
+        # We push this in the request so that IRoles plugins don't provide
+        # the roles inherited from the groups to which the principal belongs.
+        self.request.set('__ignore_group_roles__', True)
+        self.request.set('__ignore_direct_roles__', False)
+        explicit_groups = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'id')
+
+        # Tack on some extra data, including whether each role is explicitly
+        # assigned ('explicit'), inherited ('inherited'), or not assigned at all (None).
+        results = []
+        for group_info in explicit_groups:
+            groupId = group_info['id']
+            group = acl.getGroupById(groupId)
+
+            explicitlyAssignedRoles = []
+            for rolemaker_id, rolemaker in rolemakers:
+                explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
+
+            roleList = {}
+            for role in self.portal_roles:
+                roleList[role]={'canAssign': group.canAssignRole(role),
+                                'explicit': role in explicitlyAssignedRoles,
+                                'inherited': role in allInheritedRoles[groupId] }
+
+            group_info['roles'] = roleList
+            group_info['can_delete'] = group.canDelete()
+            results.append(group_info)
+        # Sort the groups by title
         sortedResults = searchView.sort(results, 'title')
-        return results
+        
+        # Reset the request variable, just in case.
+        self.request.set('__ignore_group_roles__', False)
+        return sortedResults
         
     def manageGroup(self, groups=[], delete=[]):
         CheckAuthenticator(self.request)
@@ -184,7 +325,7 @@ class GroupsOverviewControlPanel(ControlPanelView):
         utils = getToolByName(context, 'plone_utils')
         groupstool = getToolByName(context, 'portal_groups')
 
-        message = _(u'No changes done.')
+        message = _(u'No changes made.')
 
         for group in groups:
             roles=[r for r in self.request.form['group_' + group] if r]
@@ -196,14 +337,108 @@ class GroupsOverviewControlPanel(ControlPanelView):
             message=_(u'Group(s) deleted.')
 
         utils.addPortalMessage(message)
-        #return state
 
-    @property
-    def portal_roles(self):
-        pmemb = getToolByName(aq_inner(self.context), 'portal_membership')
-        return [r for r in pmemb.getPortalRoles() if r != 'Owner']
+class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
-    @property
-    def many_groups(self):
-        pprop = getToolByName(aq_inner(self.context), 'portal_properties')
-        return pprop.site_properties.many_groups 
+    def __call__(self):
+        self.groupname = getattr(self.request, 'groupname')
+        self.gtool = getToolByName(self, 'portal_groups')
+        self.mtool = getToolByName(self, 'portal_membership')
+        self.group = self.gtool.getGroupById(self.groupname)
+        self.grouptitle = self.group.getGroupTitleOrName() or self.groupname
+
+        self.request.set('grouproles', self.group.getRoles() if self.group else [])
+        
+        self.groupquery = self.makeQuery(groupname=self.groupname)
+        self.groupkeyquery = self.makeQuery(key=self.groupname)
+        
+        form = self.request.form
+        submitted = form.get('form.submitted', False)
+        
+        self.searchResults = []
+        self.searchString = ''
+        
+        if submitted:
+            findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
+            self.searchString = not findAll and form.get('searchstring', '') or ''
+            self.searchResults = self.getPotentialMembers(self.searchString)
+        
+            toAdd = form.get('add', [])
+            if toAdd:
+                for u in toAdd:
+                    self.gtool.addPrincipalToGroup(u, self.groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+
+            toDelete = form.get('delete', [])
+            if toDelete:
+                for u in toDelete:
+                    self.gtool.removePrincipalFromGroup(u, self.groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+
+        self.groupMembers = self.getMembers()
+        
+        return self.index()
+
+    def isGroup(self, itemName):
+        return self.gtool.isGroup(itemName)
+
+    def getMembers(self):
+        searchResults = self.gtool.getGroupMembers(self.groupname)
+
+        groupResults = [self.gtool.getGroupById(m) for m in searchResults]
+        groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+
+        userResults = [self.mtool.getMemberById(m) for m in searchResults]
+        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
+        
+        mergedResults = groupResults + userResults
+        filter(None, mergedResults)
+        return mergedResults
+
+    def getPotentialMembers(self, searchString):
+        ignoredUsersGroups = [x.id for x in self.getMembers() + [self.group,] if x is not None]
+        return self.membershipSearch(searchString, ignore=ignoredUsersGroups)
+
+class UserMembershipControlPanel(UsersGroupsControlPanelView):
+
+    def __call__(self):
+        self.userid = getattr(self.request, 'userid')
+        self.gtool = getToolByName(self, 'portal_groups')
+        self.mtool = getToolByName(self, 'portal_membership')
+        self.member = self.mtool.getMemberById(self.userid)
+
+        form = self.request.form
+        
+        self.searchResults = []
+        self.searchString = ''
+        
+        if form.get('form.submitted', False):
+            delete = form.get('delete', [])
+            if delete:
+                for groupname in delete:
+                    self.gtool.removePrincipalFromGroup(self.userid, groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+
+            add = form.get('add', [])
+            if add:
+                for groupname in add:
+                    self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
+                self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+            
+        findAll = form.get('form.button.FindAll', None) is not None and not self.many_groups
+        self.searchString = not findAll and form.get('searchstring', '') or ''
+        self.searchResults = self.getPotentialGroups(self.searchString)
+
+        self.groups = self.getGroups()
+        return self.index()
+
+
+    def getGroups(self):
+        groupResults = [self.gtool.getGroupById(m) for m in self.gtool.getGroupsForPrincipal(self.member)]
+        groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+        filter(None, groupResults)
+        return groupResults
+
+    def getPotentialGroups(self, searchString):
+        ignoredGroups = [x.id for x in self.getGroups() if x is not None]
+        return self.membershipSearch(searchString, searchUsers=False, ignore=ignoredGroups)

@@ -152,8 +152,25 @@
       name="usergroup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UserGroupsSettingsControlPanel"
-      permission="cmf.ManagePortal"
+      permission="zope2.ManageUsers"
       />
+
+  <browser:page
+      name="usergroup-groupmembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.GroupMembershipControlPanel"
+      permission="zope2.ManageUsers"
+      template="usergroups_groupmembership.pt"
+      />
+
+  <browser:page
+      name="usergroup-usermembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.UserMembershipControlPanel"
+      permission="zope2.ManageUsers"
+      template="usergroups_usermembership.pt"
+      />
+
 
   <browser:page
       name="searchform-options"

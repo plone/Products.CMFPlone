@@ -3,6 +3,36 @@ Changelog
 
 2.0b1 - unreleased
 ------------------
+- @@usergroup-userprefs now requires the zope2.ManageUsers permission instead
+  of cmf.ManagePortal.
+  [esteele]
+
+- @@usergroup-userprefs now shows an icon to designate that the user has
+  inherited that global role through group membership.
+  [esteele]
+  
+- Display users in @@usergroup-userprefs by Fullname (user id).
+  [esteele] 
+
+- Add membershipSearch method to UsersGroupsControlPanelView. Will replace the
+  soon-to-be-deprecated prefs_user_groups_search.py from Plone's plone_prefs.
+  [esteele]
+
+- Properly handle nesting of groups. UI now allows addition and display of
+  groups within other groups. 
+  Closes http://dev.plone.org/plone/ticket/8556
+  [esteele, cah190]
+  
+- @@usergroup-groupprefs now shows an icon to designate that the group has
+  inherited that global role from another group.
+  [esteele, cah190]
+
+- Factor up commonly used methods in user/groups controlpanel views.
+  [esteele]
+
+- Add @@usergroup-groupmembership to handle adding, removing, modifying group
+  members.
+  [esteele, cah190]
 
 - Added explicit i18n:translate for the fieldset legends, so Chameleon
   translates the labels.

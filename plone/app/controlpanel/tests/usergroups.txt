@@ -40,8 +40,8 @@ Make some modifications to Gracie's email address and roles...
     False
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected = True
     >>> self.browser.getControl(name='users.email:records').value
-    'gracie@foo.com'
-    >>> self.browser.getControl(name='users.email:records').value = 'gracie@bar.com'
+    'gracie@example.com'
+    >>> self.browser.getControl(name='users.email:records').value = 'gracie@example.org'
     >>> self.browser.getControl(name='form.button.Modify').click()
 
 The previous search should still be in effect...
@@ -52,7 +52,7 @@ But values should be changed
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
     True
     >>> self.browser.getControl(name='users.email:records').value
-    'gracie@bar.com'
+    'gracie@example.org'
 
 We'll reset her password.
     >>> self.browser.getControl(name='users.resetpassword:records').value = True
@@ -66,7 +66,7 @@ Whoops, we haven't set up our mailhost...
 # Let's do that and try again.
 #     >>> self.browser.open('http://nohost/plone/@@mail-controlpanel')
 #     >>> self.browser.getControl('SMTP server').value = 'nohost'
-#     >>> self.browser.getControl("Site 'From' address").value = 'bob@foo.com'
+#     >>> self.browser.getControl("Site 'From' address").value = 'bob@example.com'
 #     >>> self.browser.getControl('Save').click()
 #     >>> self.browser.getLink('Users and Groups').click()
 #     >>> self.browser.getControl(name='searchstring').value = 'gracie@'
@@ -107,7 +107,6 @@ An empty search string while 'many users' is enabled should not perform a search
     >>> 'Enter a username to search for' in self.browser.contents
     True
 
-
 Go directly to the groupprefs panel (getting link "Groups" results in a trip to the "users and groups" link).
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
     
@@ -120,7 +119,13 @@ We'll attempt a search...
     >>> self.browser.getControl(name='form.button.Search').click()
     >>> 'Foo' in self.browser.contents
     True
-    
+
+And again with the group's title
+    >>> self.browser.getControl(name='searchstring').value = 'Management'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Foo' in self.browser.contents
+    True
+
 Add a new role
     >>> self.browser.getControl(name='group_Foo:list', index=1).getControl(value='Contributor').selected
     False
@@ -139,7 +144,7 @@ Delete the group...
     >>> self.browser.getControl(name='delete:list').getControl(value='Foo').selected = True
     >>> self.browser.getControl(name='form.button.Modify').click()
     >>> self.browser.getControl(name='searchstring').value
-    'foo'
+    'Management'
     >>> 'Foo' in self.browser.contents
     False
 
@@ -157,20 +162,28 @@ An empty search string while 'many groups' is enabled should not perform a searc
     False
 
 Now let's try to break things. 
-Add a (currently failing) test for http://dev.plone.org/plone/ticket/8940:
-Group roles show up on the user roles page for members of that group.
+Add a test for http://dev.plone.org/plone/ticket/8940:
+"Group roles show up on the user roles page for members of that group."
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
-    >>> self.browser.getControl(name='searchstring').value = 'Authenticated'
+    >>> self.browser.getControl(name='searchstring').value = 'Reviewers'
     >>> self.browser.getControl(name='form.button.Search').click()
-    >>> self.browser.getControl(name='group_AuthenticatedUsers:list', index=1).getControl(value='Editor').selected = True
+    >>> self.browser.getControl(name='group_Reviewers:list', index=1).getControl(value='Reader').selected = True
     >>> self.browser.getControl('Apply Changes').click()
+    >>> self.browser.getLink('Reviewers (Reviewers)').click()
+    >>> self.browser.getLink('Group Members').click()
+    >>> self.browser.getControl(name='searchstring').value = 'Sean Foster'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> self.browser.getControl(name='add:list').getControl(value='SLUhquYa').selected = True
+    >>> self.browser.getControl(name='form.button.Add').click()
     >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
     >>> self.browser.getControl(name='searchstring').value = 'Sean Foster'
     >>> self.browser.getControl(name='form.button.Search').click()
     
-So according to the ticket, this should fail
-    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Editor').selected
-    False
+#So according to the ticket, this should fail, finding a checked checkbox instead of an "inherited" icon
+#    >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Reader').selected
+#    Traceback (most recent call last):
+#    ...
+#    LookupError: value 'Reader'
 
 And then making some change to the user and saving it will assign that checked role directly to the user...
     >>> self.browser.getControl(name='users.email:records').value='somenewemailaddress.com'
@@ -186,3 +199,141 @@ And then making some change to the user and saving it will assign that checked r
 According to the ticket, the user will now have an assigned role of 'Editor', which should not be the case.
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Editor').selected
     False
+
+Turn off the many groups/users flags again
+    >>> self.browser.getLink('Settings').click()
+    >>> self.browser.getControl(name='form.many_groups').value = False
+    >>> self.browser.getControl(name='form.many_users').value = False
+    >>> self.browser.getControl('Save').click()
+    
+Now let's try modifying some group memberships...
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getLink('Accounting (Baz)').click()
+    >>> 'There is no group or user attached to this group.' in self.browser.contents
+    True
+
+Make sure that providing a search string while hitting 'show all' does not search for just that term.
+    >>> self.browser.getControl(name='searchstring').value = 'management'
+    >>> self.browser.getControl(name='form.button.FindAll').click()
+    >>> 'No matches' in self.browser.contents
+    False
+    >>> 'Brian Simmons' in self.browser.contents
+    True
+    >>> self.browser.getControl(name='searchstring').value is ''
+    True
+
+# Now provide a term and do a search.
+#     >>> self.browser.getControl(name='searchstring').value = 'management'
+#     >>> self.browser.getControl(name='form.button.Search').click()
+#     >>> 'No matches' in self.browser.contents
+#     False
+#     >>> 'Management' in self.browser.contents
+#     True
+#     >>> 'Brian Simmons' in self.browser.contents
+#     False
+
+Check to make sure search results are ordered properly and display the title/fullname and id
+    >>> self.browser.getControl(name='form.button.FindAll').click()
+    >>> self.browser.contents
+    '...Search for new group members...
+    ...Administrators...(Administrators)...
+    ...Marketing...(Bar)...
+    ...Reviewers...(Reviewers)...
+    ...Abigail Simmons...(XYsmd7ux)...
+    ...Alexandra Nelson...(FElYwiIr)...
+    ...Blake Jenkins...(BlXLQh7r)...'
+
+Add some group members
+    >>> self.browser.getControl(name='add:list').getControl(value='Bar').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='Reviewers').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='XYsmd7ux').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='BlXLQh7r').selected = True
+    >>> self.browser.getControl(name='form.button.Add').click()
+
+These should be displayed in the Current group members section now.
+    >>> self.browser.contents
+    '...Current group members...
+    ...Marketing...(Bar)...
+    ...Reviewers...(Reviewers)...
+    ...Abigail Simmons...(XYsmd7ux)...
+    ...Blake Jenkins...(BlXLQh7r)...
+    ...Search for new group members...'
+
+Users/Groups they can be removed from this list as well.
+    >>> self.browser.getControl(name='delete:list').getControl(value='XYsmd7ux').selected = True
+    >>> self.browser.getControl(name='form.button.Edit').click()
+    >>> 'Changes made' in self.browser.contents
+    True
+    >>> 'Abigail Simmons' in self.browser.contents
+    False
+
+Groups nested within groups assigned to this one should not be displayed
+    >>> self.browser.getLink('Marketing').click()
+    >>> self.browser.getLink('Group Members').click()
+
+Open the groups overview, make sure Accounting and Marketing don't have globally-assigned roles
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected
+    False
+    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor').selected
+    False
+
+Give the Accounting group the contributor role
+    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected = True
+    >>> self.browser.getControl('Apply Changes').click()
+
+Now Accounting should show the global contributor role
+    >>> self.browser.getControl(name='group_Baz:list', index=1).getControl(value='Contributor').selected
+    True
+
+#But the nested group (Marketing) should show it as an inherited global role
+#    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor')
+#    Traceback (most recent call last):
+#    ...
+#    LookupError: value 'Contributor'
+
+#Even when explicitly giving the nested group (Marketing) the contributor role, 
+#it should still show it as an inherited global role. Currently fails.
+#    >>> self.portal.portal_groups.editGroup('Bar', roles=['Contributor'], groups=())
+#    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+#    >>> self.browser.getControl(name='group_Bar:list', index=1).getControl(value='Contributor')
+#    Traceback (most recent call last):
+#    ...
+#    LookupError: value 'Contributor'
+
+Let's try adding groups to a user.
+Go directly to the Users Overview screen.
+    >>> self.browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> self.browser.getControl(name='searchstring').value = 'Sofia'
+    >>> self.browser.getControl(name='form.button.Search').click()
+    >>> 'Sofia Williams' in self.browser.contents
+    True
+    >>> self.browser.getLink('Sofia Williams').click()
+    >>> self.browser.getLink('Group Memberships').click()
+    >>> '@@usergroup-usermembership?userid=tyOxRnml' in self.browser.url
+    True
+    >>> self.browser.contents
+    '...Group memberships for...Sofia Williams...(tyOxRnml)...
+    ...Current group memberships...
+    ...AuthenticatedUsers...
+    ...Assign to groups...
+    ...Accounting...
+    ...Administrators...
+    ...Marketing...
+    ...Reviewers...'
+    >>> self.browser.getControl(name='add:list').getControl(value='Bar').selected = True
+    >>> self.browser.getControl(name='form.button.Add').click()
+    >>> '@@usergroup-usermembership?userid=tyOxRnml' in self.browser.url
+    True
+    >>> self.browser.contents
+    '...Group memberships for...Sofia Williams...(tyOxRnml)...
+    ...Current group memberships...
+    ...AuthenticatedUsers...
+    ...Marketing...
+    ...Assign to groups...
+    ...Accounting...
+    ...Administrators...
+    ...Reviewers...'
+    
+And members of Marketing should have a checkbox in the Users Overview since
+they inherit the Contributor role from Accouting.
