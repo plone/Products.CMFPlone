@@ -16,6 +16,9 @@ class BaseIcon(object):
 
     __allow_access_to_unprotected_subobjects__ = True
 
+    def __call__(self):
+        return self.html_tag()
+
     @memoize
     def html_tag(self):
         
