@@ -5,7 +5,7 @@ from itertools import chain
 
 from zope.interface import Interface
 from zope.component import adapts, getAdapter, getMultiAdapter
-from zope.formlib.form import FormFields
+from zope.formlib.form import FormFields, action
 from zope.interface import implements
 from zope.schema import Bool
 from ZTUtils import make_query
@@ -18,7 +18,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin, IGroupsPlugin
 
 from form import ControlPanelForm, ControlPanelView
 from security import ISecuritySchema
@@ -47,6 +47,12 @@ class IUserGroupsSettingsSchema(Interface):
                           "listing all of them."),
                       default=False)
 
+    enable_nested_groups = Bool(title=_(u'Enable nested groups?'),
+                                description=_(u"When enabled, groups may be "
+                                "nested (contained) inside other groups. Roles "
+                                "directly assigned to a group will propagate to "
+                                "any nested groups."),
+                                default=False)
 
 class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
 
@@ -60,7 +66,29 @@ class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
 
     many_groups = ProxyFieldProperty(IUserGroupsSettingsSchema['many_groups'])
     many_users = ProxyFieldProperty(IUserGroupsSettingsSchema['many_users'])
+    
+    def get_enable_nested_groups(self):
+        acl = getToolByName(self.context, 'acl_users')
+        return 'recursive_groups' in acl.plugins.getAllPlugins('IGroupsPlugin')['active']
 
+    def set_enable_nested_groups(self, value):
+        acl = getToolByName(self.context, 'acl_users')
+        plugins = acl.plugins
+        if value:
+            plugins.activatePlugin(IGroupsPlugin, 'recursive_groups')
+            if 'recursive_groups' not in plugins.getAllPlugins('IGroupsPlugin')['active']:
+                utils = getToolByName(context, 'plone_utils')
+                utils.addPortalMessage(_(u'Unable to activate PAS plugin "recursive_groups".'))
+                
+            # move it to the top of the list
+            while plugins.getAllPlugins('IGroupsPlugin')['active'].index('recursive_groups') > 0:
+                plugins.movePluginsUp(IGroupsPlugin,['recursive_groups'])
+        else:
+            plugins.deactivatePlugin(IGroupsPlugin, 'recursive_groups')
+    
+    enable_nested_groups = property(get_enable_nested_groups, set_enable_nested_groups)
+    
+    
 
 class UserGroupsSettingsControlPanel(ControlPanelForm):
 
@@ -72,7 +100,6 @@ class UserGroupsSettingsControlPanel(ControlPanelForm):
     label = _("User/Groups settings")
     description = _("User and groups settings for this site.")
     form_name = _("User/Groups settings")
-
 
 class UsersGroupsControlPanelView(ControlPanelView):
 
@@ -94,6 +121,10 @@ class UsersGroupsControlPanelView(ControlPanelView):
     @property
     def email_as_username(self):
         return getAdapter(aq_inner(self.context), ISecuritySchema).get_use_email_as_login()
+
+    @property
+    def nested_groups(self):
+        return getAdapter(aq_inner(self.context), IUserGroupsSettingsSchema).get_enable_nested_groups()
 
     def makeQuery(self, **kw):
         return make_query(**kw)
@@ -408,7 +439,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
     def getPotentialMembers(self, searchString):
         ignoredUsersGroups = [x.id for x in self.getMembers() + [self.group,] if x is not None]
-        return self.membershipSearch(searchString, ignore=ignoredUsersGroups)
+        return self.membershipSearch(searchString, ignore=ignoredUsersGroups, searchGroups=self.nested_groups)
 
 class UserMembershipControlPanel(UsersGroupsControlPanelView):
 

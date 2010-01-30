@@ -236,16 +236,15 @@ Check to make sure search results are ordered properly and display the title/ful
     >>> self.browser.getControl(name='form.button.FindAll').click()
     >>> self.browser.contents
     '...Search for new group members...
-    ...Administrators...(Administrators)...
-    ...Group 2...(group2)...
-    ...Reviewers...(Reviewers)...
     ...Abigail Simmons...(XYsmd7ux)...
     ...Alexandra Nelson...(FElYwiIr)...
     ...Blake Jenkins...(BlXLQh7r)...'
-
+    
+We shouldn't see any groups, as nesting is disabled.
+    >>> 'Administrators' in self.browser.contents
+    False
+    
 Add some group members
-    >>> self.browser.getControl(name='add:list').getControl(value='group2').selected = True
-    >>> self.browser.getControl(name='add:list').getControl(value='Reviewers').selected = True
     >>> self.browser.getControl(name='add:list').getControl(value='XYsmd7ux').selected = True
     >>> self.browser.getControl(name='add:list').getControl(value='BlXLQh7r').selected = True
     >>> self.browser.getControl(name='form.button.Add').click()
@@ -253,13 +252,11 @@ Add some group members
 These should be displayed in the Current group members section now.
     >>> self.browser.contents
     '...Current group members...
-    ...Group 2...(group2)...
-    ...Reviewers...(Reviewers)...
     ...Abigail Simmons...(XYsmd7ux)...
     ...Blake Jenkins...(BlXLQh7r)...
     ...Search for new group members...'
 
-Users/Groups they can be removed from this list as well.
+Users/Groups can be removed from this list as well.
     >>> self.browser.getControl(name='delete:list').getControl(value='XYsmd7ux').selected = True
     >>> self.browser.getControl(name='form.button.Edit').click()
     >>> 'Changes made' in self.browser.contents
@@ -267,11 +264,8 @@ Users/Groups they can be removed from this list as well.
     >>> 'Abigail Simmons' in self.browser.contents
     False
 
-Groups nested within groups assigned to this one should not be displayed
-    >>> self.browser.getLink('Group 2').click()
-    >>> self.browser.getLink('Group Members').click()
-
 Open the groups overview, make sure Group 1 and Group 2 don't have globally-assigned roles
+    >>> self.browser.getLink('Group Members').click()
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
     >>> self.browser.getControl(name='group_group1:list', index=1).getControl(value='Contributor').selected
     False
@@ -285,21 +279,6 @@ Give the Group 1 group the contributor role
 Now Group 1 should show the global contributor role
     >>> self.browser.getControl(name='group_group1:list', index=1).getControl(value='Contributor').selected
     True
-
-#But the nested group (Group 2) should show it as an inherited global role
-#    >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor')
-#    Traceback (most recent call last):
-#    ...
-#    LookupError: value 'Contributor'
-
-#Even when explicitly giving the nested group (Group 2) the contributor role, 
-#it should still show it as an inherited global role. Currently fails.
-#    >>> self.portal.portal_groups.editGroup('group2', roles=['Contributor'], groups=())
-#    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
-#    >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor')
-#    Traceback (most recent call last):
-#    ...
-#    LookupError: value 'Contributor'
 
 Let's try adding groups to a user.
 Go directly to the Users Overview screen.
@@ -335,5 +314,72 @@ Go directly to the Users Overview screen.
     ...Group 1...
     ...Reviewers...'
     
-And members of Group 2 should have a checkbox in the Users Overview since
-they inherit the Contributor role from Group 1.
+Turn on group nesting. 
+    >>> self.browser.open('http://nohost/plone/@@usergroup-controlpanel')
+    >>> self.browser.getControl(name='form.enable_nested_groups').value = True
+    >>> self.browser.getControl('Save').click()
+
+Check to make sure search results are ordered properly and display the title/fullname and id
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getLink('Group 1 (group1)').click()
+    >>> self.browser.getControl(name='form.button.FindAll').click()
+    >>> self.browser.contents
+    '...Current group members...
+    ...Blake Jenkins...(BlXLQh7r)...
+    ...Search for new group members...
+    ...Administrators...(Administrators)...
+    ...Group 2...(group2)...
+    ...Reviewers...(Reviewers)...
+    ...Abigail Simmons...(XYsmd7ux)...
+    ...Alexandra Nelson...(FElYwiIr)...'
+
+Add some group members
+    >>> self.browser.getControl(name='add:list').getControl(value='group2').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='Reviewers').selected = True
+    >>> self.browser.getControl(name='add:list').getControl(value='XYsmd7ux').selected = True
+    >>> self.browser.getControl(name='form.button.Add').click()
+
+These should be displayed in the Current group members section now.
+    >>> self.browser.contents
+    '...Current group members...
+    ...Group 2...(group2)...
+    ...Reviewers...(Reviewers)...
+    ...Abigail Simmons...(XYsmd7ux)...
+    ...Blake Jenkins...(BlXLQh7r)...
+    ...Search for new group members...'
+
+Users/Groups they can be removed from this list as well.
+    >>> self.browser.getControl(name='delete:list').getControl(value='XYsmd7ux').selected = True
+    >>> self.browser.getControl(name='form.button.Edit').click()
+    >>> 'Changes made' in self.browser.contents
+    True
+    >>> 'Abigail Simmons' in self.browser.contents
+    False
+
+Groups nested within groups assigned to this one should not be displayed
+    >>> self.browser.getLink('Group 2').click()
+    >>> self.browser.getLink('Group Members').click()
+
+Open the groups overview, make sure Group 2 doesn't have a globally-assigned contributor role
+    >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+    >>> self.browser.getControl(name='group_group1:list', index=1).getControl(value='Contributor').selected
+    True
+    >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor').selected
+    Traceback (most recent call last):
+    ...
+    LookupError: value 'Contributor'
+
+But the nested group (Group 2) should show it as an inherited global role
+   >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor')
+   Traceback (most recent call last):
+   ...
+   LookupError: value 'Contributor'
+
+Even when explicitly giving the nested group (Group 2) the contributor role, 
+it should still show it as an inherited global role.
+   >>> self.portal.portal_groups.editGroup('group2', roles=['Contributor'], groups=())
+   >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
+   >>> self.browser.getControl(name='group_group2:list', index=1).getControl(value='Contributor')
+   Traceback (most recent call last):
+   ...
+   LookupError: value 'Contributor'

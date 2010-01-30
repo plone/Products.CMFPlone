@@ -3,6 +3,9 @@ Changelog
 
 2.0b1 - unreleased
 ------------------
+- Add an enable/disable nested groups option to the users/groups settings prefs.
+  [esteele]
+
 - @@usergroup-userprefs now requires the zope2.ManageUsers permission instead
   of cmf.ManagePortal.
   [esteele]
