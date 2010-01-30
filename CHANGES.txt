@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2.0b2 - Unreleased
+------------------
+
 2.0b1 - 2010-01-29
 ------------------
 - Add an enable/disable nested groups option to the users/groups settings prefs.
