@@ -7,6 +7,9 @@ Changelog
 - Change language portlet to call update() on LanguageSelector.
   [elro]
 
+- Navtree item_icon must be accessed nocall: for later item_icon/html_tag.
+  [elro]
+
 2.0b3 - 2010-01-28
 ------------------
 - Change group portlets and group dashboard links to point to the new
