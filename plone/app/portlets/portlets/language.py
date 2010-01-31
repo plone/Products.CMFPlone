@@ -25,6 +25,7 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
         self.selector=LanguageSelector(context, request, None, None)
+        self.selector.update()
         self.languages=self.selector.languages()
 
         def key(info):

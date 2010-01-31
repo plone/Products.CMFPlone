@@ -4,6 +4,9 @@ Changelog
 2.0b4 - Unreleased
 ------------------
 
+- Change language portlet to call update() on LanguageSelector.
+  [elro]
+
 2.0b3 - 2010-01-28
 ------------------
 - Change group portlets and group dashboard links to point to the new
