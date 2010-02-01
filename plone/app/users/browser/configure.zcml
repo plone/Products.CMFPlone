@@ -7,14 +7,14 @@
     <!-- Join form definition -->
     <browser:page
       name="register"
-      for="Products.CMFPlone.Portal.PloneSite"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".register.RegistrationForm"
       permission="zope.Public"
       />
 
     <browser:page
       name="new-user"
-      for="Products.CMFPlone.Portal.PloneSite"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".register.AddUserForm"
       permission="zope2.ManageUsers"
       />
