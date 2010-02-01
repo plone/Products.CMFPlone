@@ -4,6 +4,10 @@ Changelog
 2.0b2 - Unreleased
 ------------------
 
+- Fixed a string which contained double quote.
+  [vincentfretin]
+
+
 2.0b1 - 2010-01-29
 ------------------
 - Add an enable/disable nested groups option to the users/groups settings prefs.
