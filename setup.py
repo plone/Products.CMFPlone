@@ -29,7 +29,7 @@ setup(name='plone.app.users',
       install_requires=[
           'setuptools',
           'plone.protect',
-          'plone.app.controlpanel',
+          'plone.app.controlpanel >=2.0b1',
           'plone.app.layout',
           'zope.app.form',
           'zope.component',
