@@ -34,7 +34,7 @@
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
                         <a href=""
-                           tal:attributes="href string:${context/portal_url}/@@personal_information"
+                           tal:attributes="href string:${context/portal_url}/@@personal-information"
                            i18n:translate="title_personal_information_form">
                             Personal information
                         </a>
@@ -44,7 +44,7 @@
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
                         <a href=""
-                           tal:attributes="href string:${context/portal_url}/@@personal_preferences"
+                           tal:attributes="href string:${context/portal_url}/@@personal-preferences"
                            i18n:translate="">
                             Personal preferences
                         </a>
@@ -55,7 +55,7 @@
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
                         <a href=""
-                           tal:attributes="href string:${context/portal_url}/@@change_password"
+                           tal:attributes="href string:${context/portal_url}/@@change-password"
                            i18n:translate="">
                             Password
                         </a>

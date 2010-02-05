@@ -29,32 +29,24 @@
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      name="personal_preferences"
+      name="personal-preferences"
       class=".personalpreferences.PersonalPreferencesPanel"
       permission="cmf.SetOwnProperties"
       />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      name="personal_information"
+      name="personal-information"
       class=".userdata.UserDataPanel"
       permission="cmf.SetOwnProperties"
       />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      name="change_password"
+      name="change-password"
       class=".password.PasswordAccountPanel"
       permission="cmf.SetOwnPassword"
       />
-
-    <browser:page
-      name="change-member-details"
-      for="Products.CMFPlone.Portal.PloneSite"
-      class=".memberdetails.DetailsForm"
-      permission="cmf.SetOwnProperties"
-      />
-
 
     <utility provides="zope.schema.interfaces.IVocabularyFactory"
              component=".register.getGroupIds"
