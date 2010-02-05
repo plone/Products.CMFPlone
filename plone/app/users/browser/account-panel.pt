@@ -15,6 +15,7 @@
          class="cell width-full position-0"
          metal:fill-slot="content">
 
+        
         <tal:main-macro metal:define-macro="main"
                         tal:define="memberinfo context/portal_membership/getMemberInfo;
                         member context/@@plone_portal_state/member;
@@ -71,7 +72,9 @@
                 <div id="content" class="documentContent">
                     <a name="documentContent"></a>
 
-                    <!--  <div id="viewlet-status" tal:content="structure provider:plone.status" />-->
+                    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+                        Portal status message
+                    </div>
 
                     <h1 class="documentFirstHeading"
                         i18n:translate=""

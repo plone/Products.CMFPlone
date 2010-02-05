@@ -1,9 +1,7 @@
 Testing the personal information form
 =====================================
 
-TODO: Three things aren't working. when submitting the form a None value is returned.
-      Is this okay? Second thingy, the portal status message isn't shown. Also uploading
-      a images as portrait needs testing.
+TODO: Testing the portait imnage upload
 
 Viewing the  personal information
 ---------------------------------

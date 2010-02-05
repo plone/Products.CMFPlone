@@ -40,17 +40,6 @@ We have two controls, one for the start page and one for the language:
     >>> self.browser.getControl(name='form.language').value
     ['']
 
-It is impossible to check the "No changes made." status message
-as we always have a value selected for the languages widget:
-
-    >>> 'No changes made.' in self.browser.contents
-    False
-
-Though we should have a message:
-
-    >>> 'Changes saved.' in self.browser.contents
-    True
-
 Now we click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
@@ -71,7 +60,7 @@ Modifying values
     >>> self.browser.getControl(name='form.listed').value = True
     >>> self.browser.getControl(name='form.language').value = ['en']
     >>> self.browser.getControl(name="form.actions.save").click()
-    >>> 'Changes saved.' in self.browser.contents
+    >>> 'Changes saved' in self.browser.contents
     True
 
 Verify that the settings have actually been

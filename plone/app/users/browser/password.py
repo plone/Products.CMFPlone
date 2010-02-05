@@ -152,5 +152,4 @@ class PasswordAccountPanel(AccountPanelForm):
             return
 
         IStatusMessage(self.request).addStatusMessage(_("Password changed"),
-            type='info')
-
+                                                          type="info")
