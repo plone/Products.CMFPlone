@@ -46,7 +46,7 @@
                         <a href=""
                            tal:attributes="href string:${context/portal_url}/@@personal-preferences"
                            i18n:translate="">
-                            Personal preferences
+                            Personal Preferences
                         </a>
                     </li>
 
@@ -56,7 +56,7 @@
                         class python:selected and 'selected' or 'plain'">
                         <a href=""
                            tal:attributes="href string:${context/portal_url}/@@change-password"
-                           i18n:translate="">
+                           i18n:translate="label_password">
                             Password
                         </a>
                     </li>

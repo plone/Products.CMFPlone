@@ -96,8 +96,8 @@ class PasswordAccountPanel(AccountPanelForm):
 
     form_fields = form.FormFields(IPasswordSchema)
     
-    label = _(u"Reset Password")
-    description = _(u"Change password.")
+    label = _(u'listingheader_reset_password', default=u'Reset Password')
+    description = _(u"Change Password")
     form_name = _(u'legend_password_details', default=u'Password Details')
 
     def validate_password(self, action, data):
@@ -152,4 +152,5 @@ class PasswordAccountPanel(AccountPanelForm):
             return
 
         IStatusMessage(self.request).addStatusMessage(_("Password changed"),
-                                                          type="info")
+            type='info')
+

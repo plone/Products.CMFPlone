@@ -2,7 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
-    i18n_domain="plone.app.users">
+    i18n_domain="plone">
 
     <!-- Join form definition -->
     <browser:page
