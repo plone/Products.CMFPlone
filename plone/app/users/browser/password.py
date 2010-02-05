@@ -132,8 +132,7 @@ class PasswordAccountPanel(AccountPanelForm):
                 errors.append(WidgetInputError('new_password_ctl',
                                   u'new_password_ctl', failMessage))
                 self.widgets['new_password'].error = failMessage
-                self.widgets['new_password_ctl'].error = failMessage
-
+                self.widgets['new_password_ctl'].error = failMessag
         
         return errors
     
@@ -154,6 +153,3 @@ class PasswordAccountPanel(AccountPanelForm):
 
         IStatusMessage(self.request).addStatusMessage(_("Password changed"),
                                                           type="info")
-
-        #return self.request.RESPONSE.redirect('%s/@@change_password' % self.context.absolute_url())
-        #return self.context.unrestrictedTraverse('change_password')()
