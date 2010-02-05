@@ -10,24 +10,13 @@ from plone.memoize.view import memoize
 from plone.protect import CheckAuthenticator
 
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 
-from plone.app.users.browser.interfaces import IAccountPanelView
 from plone.app.users.browser.interfaces import IAccountPanelForm
 
 
 
-class AccountPanelView(BrowserView):
-    """A simple view to be used as a basis for account panel screens."""
-
-    implements(IAccountPanelView)
-
-    def getAccountTab(self):
-        """ Check if the tab exists and return it
-        """
-    
 class AccountPanelForm(FieldsetsEditForm):
     """A simple form to be used as a basis for account panel screens."""
 
@@ -35,35 +24,6 @@ class AccountPanelForm(FieldsetsEditForm):
     form_fields = form.FormFields(IAccountPanelForm)
     template = ViewPageTemplateFile('account-panel.pt')
     hidden_widgets = []
-
-    @memoize
-    def prepareFormTabs(self):
-        """Prepare the form tabs ('personal prefs', 'user data', etc..)
-        """
-        context = aq_inner(self.context)
-
-        context_state = getMultiAdapter((context, self.request), name=u'plone_context_state')
-        action_list = context_state.actions('accountpanel')
-
-        tabs = []
-
-        request_url = self.request['ACTUAL_URL']
-        selected = context.restrictedTraverse('get_account_tab')()
-        
-        for action in action_list:
-            item = {'title'    : action['title'],
-                    'id'       : action['id'],
-                    'url'      : action['url'],
-                    'selected' : False}
-
-            if action['url'] == request_url:
-                item['selected'] = True
-            elif action['url'].endswith(selected):
-                item['selected'] = True
-                
-            tabs.append(item)
-
-        return tabs
 
     @form.action(_(u'label_save', default=u'Save'), name=u'save')
     def handle_edit_action(self, action, data):
@@ -97,13 +57,3 @@ class AccountPanelForm(FieldsetsEditForm):
         widgetName = widget.name.strip('form.')
         if not widgetName in self.hidden_widgets:
             return True
-            
-    def form_action(self):
-        context = aq_inner(self.context)
-        url = self.request['URL']
-        selected = context.restrictedTraverse('get_account_tab')()
-
-        if not url.endswith(selected):
-            url = "%s/%s" % (url, selected)
-            
-        return url

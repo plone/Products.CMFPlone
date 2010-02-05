@@ -21,14 +21,6 @@
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      name="get_account_tab"
-      class=".account.AccountPanelView"
-      attribute="getAccountTab"
-      permission="zope.Public"
-      />
-
-    <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal-preferences"
       class=".personalpreferences.PersonalPreferencesPanel"
       permission="cmf.SetOwnProperties"

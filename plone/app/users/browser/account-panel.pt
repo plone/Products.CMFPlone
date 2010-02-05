@@ -31,7 +31,7 @@
                     tal:define="view_name view/__name__"
                     i18n:domain="plone">
 
-                    <li 
+                    <li tal:condition="python: checkPermission('Set own properties', context)"
                         tal:define="selected python:view_name=='personal-information';"
                         tal:attributes="
                           id string:contentview-user_data;
@@ -43,9 +43,8 @@
                         </a>
                     </li>
 
-                    <li 
+                    <li tal:condition="python: checkPermission('Set own properties', context)"
                         tal:define="selected python:view_name=='personal-preferences';"
-                        
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
                         <a href=""
@@ -55,10 +54,7 @@
                         </a>
                     </li>
 
-                    <!-- FIXME: only works for Plone users (NOT for Zope users).
-                        
-                    -->
-                    <li 
+                    <li tal:condition="member/canPasswordSet"
                         tal:define="selected python:view_name=='change-password';"
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
