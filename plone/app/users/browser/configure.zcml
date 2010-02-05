@@ -29,14 +29,14 @@
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal-information"
-      class=".userdata.UserDataPanel"
+      class=".personalpreferences.UserDataPanel"
       permission="cmf.SetOwnProperties"
       />
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="change-password"
-      class=".password.PasswordAccountPanel"
+      class=".personalpreferences.PasswordAccountPanel"
       permission="cmf.SetOwnPassword"
       />
 
@@ -45,8 +45,8 @@
              name="Group Ids"/>
 
     <adapter factory=".personalpreferences.PersonalPreferencesPanelAdapter" />
-    <adapter factory=".userdata.UserDataPanelAdapter" />
-    <adapter factory=".password.PasswordPanelAdapter" />
+    <adapter factory=".personalpreferences.UserDataPanelAdapter" />
+    <adapter factory=".personalpreferences.PasswordPanelAdapter" />
 
 
 </configure>

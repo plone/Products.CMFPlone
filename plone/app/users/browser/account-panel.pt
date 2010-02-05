@@ -126,7 +126,9 @@
                                         label
                                     </label>
 
-                                    <br />
+                                    <br tal:condition="
+                                        python: widget.name=='form.portrait'"
+                                      />
                                     <img tal:condition="
                                            python: widget.name=='form.portrait'"
                                          tal:replace="structure widget/_getCurrentValue"

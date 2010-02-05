@@ -1,17 +1,28 @@
 from Acquisition import aq_inner
 
+from zope.component import getUtility
+from zope.component import adapts
 from zope.interface import implements, Interface
+from zope import schema
+from zope.app.form.interfaces import WidgetInputError
+from zope.app.form.browser import DropdownWidget
+from zope.schema import ValidationError
 from zope.schema import Choice
 from zope.schema import Bool
 from zope.formlib import form
-from zope.app.form.browser import DropdownWidget
 
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 
-from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 from plone.app.users.browser.account import AccountPanelForm
+from plone.app.users.userdataschema import IUserDataSchema
+from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 
+from Products.CMFDefault.formlib.schema import SchemaAdapterBase
+from Products.CMFDefault.formlib.widgets import FileUploadWidget
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.statusmessages.interfaces import IStatusMessage
 
 class IPersonalPreferences(Interface):
 
@@ -58,7 +69,6 @@ class IPersonalPreferences(Interface):
         vocabulary="plone.app.vocabularies.AvailableContentLanguages",
         required=False
         )
-
 
 class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
 
@@ -128,9 +138,6 @@ def WysiwygEditorWidget(field, request):
                         u"None")
     return widget
 
-
-
-
 class PersonalPreferencesPanel(AccountPanelForm):
     """ Implementation of personalize form that uses formlib """
 
@@ -153,8 +160,227 @@ class PersonalPreferencesPanel(AccountPanelForm):
         if not siteProperties.visible_ids:
             self.hidden_widgets.append('visible_ids')
         
-        super(PersonalPreferencesPanel, self).setUpWidgets(ignore_request)  
-        
-        
+        super(PersonalPreferencesPanel, self).setUpWidgets(ignore_request)
 
-          
+
+class UserDataPanelAdapter(AccountPanelSchemaAdapter):
+
+    implements(IUserDataSchema)
+
+    def get_fullname(self):
+        return self.context.getProperty('fullname', '')
+
+    def set_fullname(self, value):
+        return self.context.setMemberProperties({'fullname': value})
+
+    fullname = property(get_fullname, set_fullname)
+
+
+    def get_email(self):
+        return self.context.getProperty('email', '')
+
+    def set_email(self, value):
+        return self.context.setMemberProperties({'email': value})
+
+    email = property(get_email, set_email)
+
+
+    def get_home_page(self):
+        return self.context.getProperty('home_page', '')
+
+    def set_home_page(self, value):
+        return self.context.setMemberProperties({'home_page': value})
+
+    home_page = property(get_home_page, set_home_page)
+
+
+    def get_description(self):
+        return self.context.getProperty('description', '')
+
+    def set_description(self, value):
+        return self.context.setMemberProperties({'description': value})
+        
+    description = property(get_description, set_description)
+    
+    
+    def get_location(self):
+        return self.context.getProperty('location', '')
+
+    def set_location(self, value):
+        return self.context.setMemberProperties({'location': value})
+
+    location = property(get_location, set_location)
+
+    def get_portrait(self):
+        mtool = getToolByName(self.context, 'portal_membership')
+        member = mtool.getAuthenticatedMember()
+        portrait = mtool.getPersonalPortrait(member.id)
+        print "XXX portrait: %s" % portrait
+        return portrait
+
+    def set_portrait(self, value):
+        if value:
+            context = aq_inner(self.context)
+            context.portal_membership.changeMemberPortrait(value)
+
+    portrait = property(get_portrait, set_portrait)
+
+    def get_pdelete(self):
+        pass
+
+    def set_pdelete(self, value):
+        if value:
+            context = aq_inner(self.context)
+            context.portal_membership.deletePersonalPortrait()
+
+    pdelete = property(get_pdelete, set_pdelete)
+    
+class UserDataPanel(AccountPanelForm):
+
+    form_fields = form.FormFields(IUserDataSchema)
+    form_fields['portrait'].custom_widget = FileUploadWidget
+    
+    label = _(u'title_personal_information_form', default=u'Personal Information')
+    description = _(u'description_personal_information_form', default='Change your personal information')
+    form_name = _(u'User Data Form')
+
+    def getPortrait(self):
+        context = aq_inner(self.context)
+        return context.portal_membership.getPersonalPortrait()
+
+
+class CurrentPasswordError(ValidationError):
+    __doc__ = _(u"Incorrect password",
+                default=u"Incorrect value for current password")
+
+
+# Define validator(s)
+#
+def checkCurrentPassword(value):
+
+    """ Test current password against given. """
+
+    portal = getUtility(ISiteRoot)
+    membertool = getToolByName(portal, 'portal_membership')
+
+    current_password = value.encode('ascii', 'ignore')
+
+    if not membertool.testCurrentPassword(current_password):
+        raise  ()
+
+    return True
+
+
+class IPasswordSchema(Interface):
+
+    """ Provide schema for password form """
+
+    current_password = schema.Password(title=_(u'label_current_password',
+                                                    default=u'Current password'),
+                                 description=_(u'help_current_password',
+                                                    default=u'Enter your current password.'),
+                                 #constraint=checkCurrentPassword,
+                                       )
+
+    new_password = schema.Password(title=_(u'label_new_password', default=u'New password'),
+                                   description=_(u'help_new_password',
+                                                    default=u"Enter your new password. "
+                                                             "Minimum 5 characters."),
+                                   )
+
+    new_password_ctl = schema.Password(title=_(u'label_confirm_password', default=u'Confirm password'),
+                                 description=_(u'help_confirm_password',
+                                                    default=u"Re-enter the password. "
+                                                            "Make sure the passwords are identical."),
+                                       )
+
+
+
+class PasswordPanelAdapter(SchemaAdapterBase):
+
+    adapts(ISiteRoot)
+    implements(IPasswordSchema)
+
+
+    def __init__(self, context):
+
+        self.context = getToolByName(context, 'portal_membership')
+
+        
+    def get_dummy(self):
+
+        """ We don't actually need to 'get' anything ..."""
+        
+        return ''
+
+
+    current_password = property(get_dummy)
+
+    new_password = property(get_dummy)
+
+    new_password_ctl = property(get_dummy)
+
+
+class PasswordAccountPanel(AccountPanelForm):
+    
+    """ Implementation of password reset form that uses formlib"""
+
+    form_fields = form.FormFields(IPasswordSchema)
+    
+    label = _(u'listingheader_reset_password', default=u'Reset Password')
+    description = _(u"Change Password")
+    form_name = _(u'legend_password_details', default=u'Password Details')
+
+    def validate_password(self, action, data):
+        context = aq_inner(self.context)
+        registration = getToolByName(context, 'portal_registration')
+        membertool = getToolByName(context, 'portal_membership')
+
+        errors = super(PasswordAccountPanel, self).validate(action, data)
+
+        # check if password is correct
+        current_password = data.get('current_password')
+        if current_password:
+            current_password = current_password.encode('ascii', 'ignore')
+            
+            if not membertool.testCurrentPassword(current_password):
+                err_str = _(u"Incorrect value for current password")
+                errors.append(WidgetInputError('current_password',
+                                  u'label_current_password', err_str))
+                self.widgets['current_password'].error = err_str
+
+
+        # check if passwords are same and minimum length of 5 chars
+        new_password = data.get('new_password')
+        new_password_ctl = data.get('new_password_ctl')
+        if new_password and new_password_ctl:
+            failMessage = registration.testPasswordValidity(new_password,
+                                                            new_password_ctl)
+            print failMessage
+            if failMessage:
+                errors.append(WidgetInputError('new_password',
+                                  u'label_new_password', failMessage))
+                errors.append(WidgetInputError('new_password_ctl',
+                                  u'new_password_ctl', failMessage))
+                self.widgets['new_password'].error = failMessage
+                self.widgets['new_password_ctl'].error = failMessag
+        
+        return errors
+    
+    @form.action(_(u'label_change_password', default=u'Change Password') ,validator='validate_password', name=u'reset_passwd')
+    def action_reset_passwd(self, action, data):
+        membertool = getToolByName(self.context, 'portal_membership')
+
+        password = data['new_password']
+
+        try:
+            membertool.setPassword(password, None, REQUEST=self.request)
+        except AttributeError:
+            failMessage=_(u'While changing your password an AttributeError occurred. This is usually caused by your user being defined outside the portal.')
+
+            IStatusMessage(self.request).addStatusMessage(_(failMessage),
+                                                          type="error")
+            return
+
+        IStatusMessage(self.request).addStatusMessage(_("Password changed"),
+                                                          type="info")
