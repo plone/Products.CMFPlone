@@ -28,11 +28,14 @@
 
                 <ul class="contentViews"
                     id="content-views"
+                    tal:define="view_name view/__name__"
                     i18n:domain="plone">
 
-                    <li tal:define="selected action/selected|nothing;"
-                        tal:attributes="id string:contentview-user_data;
-                        class python:selected and 'selected' or 'plain'">
+                    <li 
+                        tal:define="selected python:view_name=='personal-information';"
+                        tal:attributes="
+                          id string:contentview-user_data;
+                          class python:selected and 'selected' or 'plain'">
                         <a href=""
                            tal:attributes="href string:${context/portal_url}/@@personal-information"
                            i18n:translate="title_personal_information_form">
@@ -40,7 +43,9 @@
                         </a>
                     </li>
 
-                    <li tal:define="selected action/selected|nothing;"
+                    <li 
+                        tal:define="selected python:view_name=='personal-preferences';"
+                        
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
                         <a href=""
@@ -53,7 +58,8 @@
                     <!-- FIXME: only works for Plone users (NOT for Zope users).
                         
                     -->
-                    <li tal:define="selected action/selected|nothing;"
+                    <li 
+                        tal:define="selected python:view_name=='change-password';"
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
                         <a href=""
