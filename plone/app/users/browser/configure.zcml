@@ -24,4 +24,11 @@
              component=".register.getGroupIds"
              name="Group Ids"/>
 
+    <browser:page
+      name="change-member-details"
+      for="Products.CMFPlone.Portal.PloneSite"
+      class=".memberdetails.DetailsForm"
+      permission="cmf.SetOwnProperties"
+      />
+
 </configure>
