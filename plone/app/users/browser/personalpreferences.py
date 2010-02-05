@@ -15,34 +15,49 @@ from plone.app.users.browser.account import AccountPanelForm
 
 class IPersonalPreferences(Interface):
 
-    """ Provide schema for pesonalize form """
+    """ Provide schema for personalize form """
 
-    wysiwyg_editor = Choice(title=u'Wysiwyg editor',
-                            description=u'Wysiwyg editor to use.',
-                            vocabulary="plone.app.vocabularies.AvailableEditors",
-                            required=False)
-    ext_editor = Bool(title=_(u'label_ext_editor', default=u'Enable external editing'),
-                           description=u'When checked, an option will be '
-                               'made visible on each page which allows you '
-                               'to edit content with your favorite editor '
-                               'instead of using browser-based editors. This '
-                               'requires an additional application, most often '
-                               'ExternalEditor or ZopeEditManager, installed '
-                               'client-side. Ask your administrator for more '
-                               'information if needed.')
-    listed = Bool(title=_(u'label_listed_status', default=u'Listed in searches'),
-                           description=u'Determines if your user name is listed in user '
-                                        'searches done on this site.',
-                           required=False)
-    visible_ids = Bool(title=_(u'label_edit_short_names', default=u'Allow editing of Short Names'),
-                           description=u'Determines if Short Names (also known '
-                               'as IDs) are changable when editing items. If Short '
-                               'Names are not displayed, they will be generated automatically.',
-                           required=False)
-    language = Choice(title=_(u'label_language', default=u'Language'),
-                           description=_(u'help_preferred_language', u'Your preferred language.'),
-                           vocabulary="plone.app.vocabularies.AvailableContentLanguages",
-                           required=False)
+    wysiwyg_editor = Choice(
+        title=u'Wysiwyg editor',
+        description=u'Wysiwyg editor to use.',
+        vocabulary="plone.app.vocabularies.AvailableEditors",
+        required=False,
+        )
+
+    ext_editor = Bool(
+        title=_(u'label_ext_editor', default=u'Enable external editing'),
+        description=u'When checked, an option will be '
+           'made visible on each page which allows you '
+           'to edit content with your favorite editor '
+           'instead of using browser-based editors. This '
+           'requires an additional application, most often '
+           'ExternalEditor or ZopeEditManager, installed '
+           'client-side. Ask your administrator for more '
+           'information if needed.',
+        )
+    
+    listed = Bool(
+        title=_(u'label_listed_status', default=u'Listed in searches'),
+        description=u'Determines if your user name is listed in user '
+                    'searches done on this site.',
+        required=False
+        )
+
+    visible_ids = Bool(
+        title=_(u'label_edit_short_names', 
+            default=u'Allow editing of Short Names'),
+        description=u'Determines if Short Names (also known '
+               'as IDs) are changable when editing items. If Short '
+               'Names are not displayed, they will be generated automatically.',
+        required=False
+           )
+        
+    language = Choice(
+        title=_(u'label_language', default=u'Language'),
+        description=_(u'help_preferred_language', u'Your preferred language.'),
+        vocabulary="plone.app.vocabularies.AvailableContentLanguages",
+        required=False
+        )
 
 
 class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
