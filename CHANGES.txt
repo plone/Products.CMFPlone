@@ -4,6 +4,9 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
+- Fixed broken reference to portal_workflow in document_relateditems-viewlet
+  [tom_gross]
+
 2.0b2 - 2010-01-31
 ------------------
 
