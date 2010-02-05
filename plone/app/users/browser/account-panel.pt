@@ -7,232 +7,227 @@
       i18n:domain="plone">
 
 <head>
-  <!--
-    <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1)" />
-  -->
+
 </head>
 
 <body>
-<metal:main fill-slot="content">
-    <tal:main-macro metal:define-macro="main"
-                    tal:define="memberinfo context/portal_membership/getMemberInfo;
-                                member context/@@plone_portal_state/member;
-                                name python:memberinfo['fullname'] or member.getId() or member.getId();
-                                portal_url context/portal_url;">
+    <div id="portal-column-content"
+         class="cell width-full position-0"
+         metal:fill-slot="content">
 
-<div class="documentEditable">
+        <tal:main-macro metal:define-macro="main"
+                        tal:define="memberinfo context/portal_membership/getMemberInfo;
+                        member context/@@plone_portal_state/member;
+                        name python:memberinfo['fullname'] or member.getId() or member.getId();
+                        portal_url context/portal_url;">
+            <div id="edit-bar">
 
-    <!--tal:block define="view_actions view/prepareFormTabs;"-->
+                <h5 class="hiddenStructure"
+                    i18n:translate="heading_views">Views</h5>
 
-        <h5 class="hiddenStructure"
-            i18n:translate="heading_views">Views</h5>
-
-        <ul class="contentViews"
-            id="content-views"
-            i18n:domain="plone">
-
-
-              <li tal:define="selected action/selected|nothing;"
-                  tal:attributes="id string:contentview-user_data;
-                                  class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/@@user_data"
-                   i18n:translate="">
-                User data
-                </a>
-              </li>
-      
-              <li tal:define="selected action/selected|nothing;"
-                  tal:attributes="id string:contentview-user_data;
-                                  class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/@@personal_preferences"
-                   i18n:translate="">
-                Personal preferences
-                </a>
-              </li>
-
-              <!-- FIXME: only works for Plone users (NOT for Zope users -->
-              <li tal:define="selected action/selected|nothing;"
-                  tal:attributes="id string:contentview-user_data;
-                                  class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/@@change_password"
-                   i18n:translate="">
-                Password
-                </a>
-              </li>
+                <ul class="contentViews"
+                    id="content-views"
+                    i18n:domain="plone">
 
 
-        </ul>
-        
-    <!--/tal:block-->
+                    <li tal:define="selected action/selected|nothing;"
+                        tal:attributes="id string:contentview-user_data;
+                        class python:selected and 'selected' or 'plain'">
+                        <a href=""
+                           tal:attributes="href string:${context/portal_url}/@@personal_information"
+                           i18n:translate="title_personal_information_form">
+                            Personal information
+                        </a>
+                    </li>
 
-  <div class="contentActions">&nbsp;</div>
+                    <li tal:define="selected action/selected|nothing;"
+                        tal:attributes="id string:contentview-user_data;
+                        class python:selected and 'selected' or 'plain'">
+                        <a href=""
+                           tal:attributes="href string:${context/portal_url}/@@personal_preferences"
+                           i18n:translate="">
+                            Personal preferences
+                        </a>
+                    </li>
 
-  <div id="region-content" class="documentContent">
+                    <!-- FIXME: only works for Plone users (NOT for Zope users -->
+                    <li tal:define="selected action/selected|nothing;"
+                        tal:attributes="id string:contentview-user_data;
+                        class python:selected and 'selected' or 'plain'">
+                        <a href=""
+                           tal:attributes="href string:${context/portal_url}/@@change_password"
+                           i18n:translate="">
+                            Password
+                        </a>
+                    </li>
 
-    <a name="documentContent"></a>
 
-      <!--  <div id="viewlet-status" tal:content="structure provider:plone.status" />-->
+                </ul>
+            </div>
 
-            <h1 class="documentFirstHeading"
-                i18n:translate=""
-                tal:condition="view/label"
-                tal:content="view/label"
-                metal:define-slot="heading">
-                Do something
-            </h1>
+            <div class="contentActions">&nbsp;</div>
 
-            <p i18n:translate=""
-               tal:condition="view/description"
-               tal:content="view/description">
-                Description
-            </p>
+            <div id="region-content" class="documentContent">
+                <div id="content" class="documentContent">
+                    <a name="documentContent"></a>
 
-            <form action="."
-                  metal:define-macro="master"
-                  tal:define="is_fieldsets view/is_fieldsets"
-                  tal:attributes="action request/URL;
-                                  class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default"
-                  method="post"
-                  class="edit-form enableUnloadProtection"
-                  enctype="multipart/form-data"
-                  id="zc.page.browser_form">
+                    <!--  <div id="viewlet-status" tal:content="structure provider:plone.status" />-->
 
-                <input type="hidden"
-                       name="fieldset.current"
-                       value=""
-                       tal:attributes="value request/fieldset.current | string:" />
-
-                <div metal:define-slot="extra_info" tal:replace="nothing">
-                </div>
-
-                <fieldset tal:condition="not: is_fieldsets">
-                    <legend tal:define="form_name view/form_name|nothing"
-                            tal:condition="form_name"
-                            tal:content="form_name">Form name</legend>
-                    <tal:block tal:repeat="widget view/widgets">
-
-                        <div class="field"
-                             tal:define="description widget/hint;
-                                         error widget/error"
-                             tal:attributes="class python:'field'+(error and ' error' or '')">
-
-                            <label i18n:translate=""
-                                   tal:attributes="for widget/name"
-                                   tal:content="widget/label">
-                                label
-                            </label>
-
-                            <span class="fieldRequired"
-                                  title="Required"
-                                  i18n:attributes="title title_required;"
-                                  i18n:translate="label_required"
-                                  tal:condition="widget/required">
-                                (Required)
-                            </span>
-
-                            <div class="formHelp"
-                                 i18n:translate=""
-                                 tal:content="description"
-                                 tal:condition="description">
-                                field description
-                            </div>
-
-                            <div tal:condition="error"
-                                 tal:content="structure error">
-                                The Error
-                            </div>
-
-                            <div class="widget" tal:content="structure widget">
-                                <input type="text" />
-                            </div>
-                        </div>
-
-                    </tal:block>
-
-                </fieldset>
-
-                <fieldset tal:attributes="id python:'fieldset-%s' % fieldset.id"
-                          tal:condition="is_fieldsets"
-                          tal:repeat="fieldset view/form_fields/fieldsets">
-                    <legend tal:define="form_name fieldset/label"
-                            tal:condition="form_name"
-                            tal:attributes="id python:'fieldsetlegend-%s' % fieldset.id"
-                            tal:content="form_name">Form name</legend>
+                    <h1 class="documentFirstHeading"
+                        i18n:translate=""
+                        tal:condition="view/label"
+                        tal:content="view/label"
+                        metal:define-slot="heading">
+                        Do something
+                    </h1>
 
                     <p i18n:translate=""
-                       tal:condition="fieldset/description"
-                       tal:content="fieldset/description">
+                       class="documentDescription"
+                       tal:condition="view/description"
+                       tal:content="view/description">
                         Description
                     </p>
 
-                    <tal:block tal:repeat="widget fieldset/widgets">
+                    <form action="."
+                          metal:define-macro="master"
+                          tal:define="is_fieldsets view/is_fieldsets"
+                          tal:attributes="action request/URL;
+                          class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default"
+                          method="post"
+                          class="edit-form enableUnloadProtection"
+                          enctype="multipart/form-data"
+                          id="zc.page.browser_form">
 
-                        <div class="field"
-                             tal:define="description widget/hint;
-                                         error widget/error"
-                             tal:attributes="class python:'field'+(error and ' error' or '')">
+                        <input type="hidden"
+                               name="fieldset.current"
+                               value=""
+                               tal:attributes="value request/fieldset.current | string:" />
 
-                            <label i18n:translate=""
-				   tal:define="name widget/name"
-                                   tal:attributes="for widget/associateLabelWithInputControl|name"
-				   tal:content="widget/label">
-                                label
-                            </label>
-
-                            <span class="fieldRequired"
-                                  title="Required"
-                                  i18n:attributes="title title_required;"
-                                  i18n:translate="label_required"
-                                  tal:condition="widget/required">
-                                (Required)
-                            </span>
-
-                            <div class="formHelp"
-                                 i18n:translate=""
-                                 tal:content="description"
-                                 tal:condition="description">
-                                field description
-                            </div>
-
-                            <div tal:condition="error"
-                                 tal:content="structure error">
-                                The Error
-                            </div>
-
-                            <div class="widget" tal:content="structure widget">
-                                <input type="text" />
-                            </div>
+                        <div metal:define-slot="extra_info" tal:replace="nothing">
                         </div>
 
-                    </tal:block>
+                        <fieldset tal:condition="not: is_fieldsets">
+                            <tal:block tal:repeat="widget view/widgets">
 
-                </fieldset>
+                                <div class="field"
+                                     tal:define="description widget/hint;
+                                     error widget/error"
+                                     tal:attributes="class python:'field'+(error and ' error' or '')">
 
-                <metal:block define-slot="above_buttons" />
+                                    <label i18n:translate=""
+                                           tal:attributes="for widget/name"
+                                           tal:content="widget/label">
+                                        label
+                                    </label>
 
-                <div class="visualClear"><!-- --></div>
+                                    <span class="fieldRequired"
+                                          title="Required"
+                                          i18n:attributes="title title_required;"
+                                          i18n:translate="label_required"
+                                          tal:condition="widget/required">
+                                        (Required)
+                                    </span>
 
-                <div id="actionsView" class="formControls">
-                    <span class="actionButtons"
-                          tal:condition="view/availableActions"
-                          metal:define-slot="bottom_buttons">
-                        <input tal:repeat="action view/actions"
-                               tal:replace="structure action/render" />
-                    </span>
+                                    <div class="formHelp"
+                                         i18n:translate=""
+                                         tal:content="description"
+                                         tal:condition="description">
+                                        field description
+                                    </div>
+
+                                    <div tal:condition="error"
+                                         tal:content="structure error">
+                                        The Error
+                                    </div>
+
+                                    <div class="widget" tal:content="structure widget">
+                                        <input type="text" />
+                                    </div>
+                                </div>
+
+                            </tal:block>
+
+                        </fieldset>
+
+                        <fieldset tal:attributes="id python:'fieldset-%s' % fieldset.id"
+                                  tal:condition="is_fieldsets"
+                                  tal:repeat="fieldset view/form_fields/fieldsets">
+
+                            <p i18n:translate=""
+                               class="documentDescription"
+                               tal:condition="fieldset/description"
+                               tal:content="fieldset/description">
+                                Description
+                            </p>
+
+                            <tal:block tal:repeat="widget fieldset/widgets">
+
+                                <div class="field"
+                                     tal:define="description widget/hint;
+                                     error widget/error"
+                                     tal:attributes="class python:'field'+(error and ' error' or '')">
+
+                                    <label i18n:translate=""
+                                           tal:define="name widget/name"
+                                           tal:attributes="for widget/associateLabelWithInputControl|name"
+                                           tal:content="widget/label">
+                                        label
+                                    </label>
+
+                                    <span class="fieldRequired"
+                                          title="Required"
+                                          i18n:attributes="title title_required;"
+                                          i18n:translate="label_required"
+                                          tal:condition="widget/required">
+                                        (Required)
+                                    </span>
+
+                                    <div class="formHelp"
+                                         i18n:translate=""
+                                         tal:content="description"
+                                         tal:condition="description">
+                                        field description
+                                    </div>
+
+                                    <div tal:condition="error"
+                                         tal:content="structure error">
+                                        The Error
+                                    </div>
+
+                                    <div class="widget" tal:content="structure widget">
+                                        <input type="text" />
+                                    </div>
+                                </div>
+
+                            </tal:block>
+
+                        </fieldset>
+
+                        <metal:block define-slot="above_buttons" />
+
+                        <div class="visualClear"><!-- --></div>
+
+                        <div id="actionsView" class="formControls">
+                            <span class="actionButtons"
+                                  tal:condition="view/availableActions"
+                                  metal:define-slot="bottom_buttons">
+                                <input tal:repeat="action view/actions"
+                                       tal:replace="structure action/render" />
+                            </span>
+                        </div>
+
+                        <input tal:replace="structure context/@@authenticator/authenticator" />
+
+                    </form>
                 </div>
+            </div>
 
-                <input tal:replace="structure context/@@authenticator/authenticator" />
-
-            </form>
-        </div>
-
-        <script type="text/javascript"
-            tal:define="extra_script view/extra_script | nothing"
-            tal:condition="extra_script"
-            tal:content="structure extra_script">
-        </script>
-</div></tal:main-macro></metal:main></body></html>
+            <script type="text/javascript"
+                    tal:define="extra_script view/extra_script | nothing"
+                    tal:condition="extra_script"
+                    tal:content="structure extra_script">
+            </script>
+        </tal:main-macro>
+    </div>
+</body>
+</html>

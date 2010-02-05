@@ -19,7 +19,6 @@
       permission="zope2.ManageUsers"
       />
 
-
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
       name="get_account_tab"
@@ -37,7 +36,7 @@
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      name="user_data"
+      name="personal_information"
       class=".userdata.UserDataPanel"
       permission="cmf.SetOwnProperties"
       />

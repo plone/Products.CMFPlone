@@ -2,35 +2,11 @@ from zope.formlib import form
 
 from zope.interface import Interface
 from zope.interface import implements
-from zope import schema
 
 from Products.CMFPlone import PloneMessageFactory as _
 from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 from plone.app.users.browser.account import AccountPanelForm
-
-
-class IUserDataSchema(Interface):
-
-    fullname = schema.TextLine(title=_(u'label_full_name', default=u'Full Name'),
-                               description=u'',
-                               required=False)
-
-    email = schema.TextLine(title=_(u'label_email', default=u'E-mail'),
-                               description=u'',
-                               required=True)
-
-    home_page = schema.TextLine(title=_(u'label_homepage', default=u'Home page'),
-                               description=_(u'help_homepage',
-                                  default=u"The URL for your external home page, "
-                                  "if you have one."),
-                               required=False)
-
-    location = schema.TextLine(title=_(u'label_location', default=u'Location'),
-                               description=_(u'help_location', 
-                                  default=u"Your location - either city and "
-                                  "country - or in a company setting, where "
-                                  "your office is located."),
-                               required=False)
+from plone.app.users.userdataschema import IUserDataSchema
 
 
 class UserDataPanelAdapter(AccountPanelSchemaAdapter):
@@ -75,7 +51,7 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 class UserDataPanel(AccountPanelForm):
 
     form_fields = form.FormFields(IUserDataSchema)
-    label = _(u'User Data')
-    description = _(u"From from which user can change its data.")
+    label = _(u'title_personal_information_form', default=u'Personal information')
+    description = _(u'description_personal_information_form', default='Change your personal information')
     form_name = _(u'User Data Form')
 
