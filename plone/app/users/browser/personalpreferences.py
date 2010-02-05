@@ -215,7 +215,6 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
         mtool = getToolByName(self.context, 'portal_membership')
         member = mtool.getAuthenticatedMember()
         portrait = mtool.getPersonalPortrait(member.id)
-        print "XXX portrait: %s" % portrait
         return portrait
 
     def set_portrait(self, value):
