@@ -1,3 +1,7 @@
+# Currently unused.
+# This file can be removed when this branch is merged.
+# May serve as an example for subclassing the registration form.
+
 from register import RegistrationForm 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone import PloneMessageFactory as _
