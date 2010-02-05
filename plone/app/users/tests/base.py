@@ -44,3 +44,4 @@ class TestCase(FunctionalTestCase):
     def unsetMailHost(self):
         self.portal.MailHost.smtp_host = ''
         setattr(self.portal, 'email_from_address', '')
+
