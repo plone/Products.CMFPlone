@@ -8,7 +8,6 @@ from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 from plone.app.users.browser.account import AccountPanelForm
 from plone.app.users.userdataschema import IUserDataSchema
 
-from Products.statusmessages.interfaces import IStatusMessage
 from Products.CMFDefault.formlib.widgets import FileUploadWidget
 
 

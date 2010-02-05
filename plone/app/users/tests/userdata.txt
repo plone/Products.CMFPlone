@@ -1,7 +1,7 @@
 Testing the personal information form
 =====================================
 
-TODO: Testing the portait imnage upload
+TODO: Testing the portait image upload
 
 Viewing the  personal information
 ---------------------------------

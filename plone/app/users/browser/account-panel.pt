@@ -30,7 +30,6 @@
                     id="content-views"
                     i18n:domain="plone">
 
-
                     <li tal:define="selected action/selected|nothing;"
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">
@@ -51,7 +50,9 @@
                         </a>
                     </li>
 
-                    <!-- FIXME: only works for Plone users (NOT for Zope users -->
+                    <!-- FIXME: only works for Plone users (NOT for Zope users).
+                        
+                    -->
                     <li tal:define="selected action/selected|nothing;"
                         tal:attributes="id string:contentview-user_data;
                         class python:selected and 'selected' or 'plain'">

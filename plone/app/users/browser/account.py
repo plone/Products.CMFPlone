@@ -1,4 +1,3 @@
-from Acquisition import aq_parent, aq_inner
 from zope.interface import implements
 from zope.component import getMultiAdapter
 from zope.event import notify
@@ -14,7 +13,6 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from Products.PythonScripts.standard import url_unquote_plus
 
 from plone.app.users.browser.interfaces import IAccountPanelView
 from plone.app.users.browser.interfaces import IAccountPanelForm
@@ -29,33 +27,6 @@ class AccountPanelView(BrowserView):
     def getAccountTab(self):
         """ Check if the tab exists and return it
         """
-        return ""
-        context = aq_inner(self.context)
-        request = self.request
-
-        account_tab = (len(request.traverse_subpath) > 0 and \
-            url_unquote_plus(request.traverse_subpath[0])) or \
-            request.get('account_tab', None);
-
-        context_state = getMultiAdapter((context, self.request), name=u'plone_context_state')
-        action_list = context_state.actions('accountpanel')
-        actions = [action['id'] for action in action_list ]
-
-        defaultTab = None
-        if len(actions) > 1:
-            defaulTab = actions[0]
-
-        if account_tab in actions:
-            return account_tab
-        elif not account_tab:
-            return defaulTab
-        else:
-            err_msg =  _(u"The requested account tab was not found.")
-            IStatusMessage(self.request).addStatusMessage(err_msg,
-                                                          type="error")
-            return defaulTab
-
-
     
 class AccountPanelForm(FieldsetsEditForm):
     """A simple form to be used as a basis for account panel screens."""
