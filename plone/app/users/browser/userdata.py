@@ -9,7 +9,7 @@ from plone.app.users.browser.account import AccountPanelForm
 from plone.app.users.userdataschema import IUserDataSchema
 
 from Products.CMFDefault.formlib.widgets import FileUploadWidget
-
+from Products.CMFCore.utils import getToolByName
 
 class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
@@ -60,7 +60,11 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
     location = property(get_location, set_location)
 
     def get_portrait(self):
-        pass
+        mtool = getToolByName(self.context, 'portal_membership')
+        member = mtool.getAuthenticatedMember()
+        portrait = mtool.getPersonalPortrait(member.id)
+        print "XXX portrait: %s" % portrait
+        return portrait
 
     def set_portrait(self, value):
         if value:

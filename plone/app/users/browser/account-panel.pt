@@ -126,6 +126,12 @@
                                         label
                                     </label>
 
+                                    <br />
+                                    <img tal:condition="
+                                           python: widget.name=='form.portrait'"
+                                         tal:replace="structure widget/_getCurrentValue"
+                                    />
+
                                     <span class="fieldRequired"
                                           title="Required"
                                           i18n:attributes="title title_required;"
