@@ -58,7 +58,7 @@ class IUserDataSchema(Interface):
         required=False)
 
     portrait = FileUpload(title=_(u'label_portrait', default=u'Portrait'),
-        description=_(u'help_portait',
+        description=_(u'help_portrait',
                       default=u'To add or change the portrait: click the '
                       '"Browse" button; select a picture of yourself. '
                       'Recommended image size is 75 pixels wide by 100 '
