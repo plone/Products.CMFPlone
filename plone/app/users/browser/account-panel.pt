@@ -39,7 +39,7 @@
                         <a href=""
                            tal:attributes="href string:${context/portal_url}/@@personal-information"
                            i18n:translate="title_personal_information_form">
-                            Personal information
+                            Personal Information
                         </a>
                     </li>
 

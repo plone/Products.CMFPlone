@@ -84,7 +84,7 @@ class UserDataPanel(AccountPanelForm):
     form_fields = form.FormFields(IUserDataSchema)
     form_fields['portrait'].custom_widget = FileUploadWidget
     
-    label = _(u'title_personal_information_form', default=u'Personal information')
+    label = _(u'title_personal_information_form', default=u'Personal Information')
     description = _(u'description_personal_information_form', default='Change your personal information')
     form_name = _(u'User Data Form')
 

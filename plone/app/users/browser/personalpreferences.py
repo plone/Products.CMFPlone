@@ -119,7 +119,7 @@ def WysiwygEditorWidget(field, request):
 class PersonalPreferencesPanel(AccountPanelForm):
     """ Implementation of personalize form that uses formlib """
 
-    label = _(u"heading_my_preferences", default=u"Personal preferences")
+    label = _(u"heading_my_preferences", default=u"Personal Preferences")
     description = _(u"description_my_preferences", default=u"Your personal settings.")
     form_name = _(u'legend_personal_details', u'Personal Details')
 
