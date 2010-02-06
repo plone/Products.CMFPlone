@@ -4,6 +4,10 @@ Changelog
 1.0b4 - Unreleased
 ------------------
 
+- Updated user registration templates to disable the columns with 
+  'disable_MANAGER_NAME' pattern
+  [spliter]
+
 1.0b3 - 2010-02-01
 ------------------
 
