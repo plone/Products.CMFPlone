@@ -14,9 +14,8 @@ from zope.formlib import form
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 
-from plone.app.users.browser.account import AccountPanelForm
+from plone.app.users.browser.account import AccountPanelForm, AccountPanelSchemaAdapter
 from plone.app.users.userdataschema import IUserDataSchema
-from plone.app.users.browser.schema_adapter import AccountPanelSchemaAdapter
 
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import FileUploadWidget

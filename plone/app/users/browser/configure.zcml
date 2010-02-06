@@ -28,6 +28,14 @@
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
+      name="account-macro"
+      class=".account.AccountPanelView"
+      attribute="getMacro"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal-information"
       class=".personalpreferences.UserDataPanel"
       permission="cmf.SetOwnProperties"
