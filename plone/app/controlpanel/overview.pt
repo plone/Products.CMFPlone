@@ -8,7 +8,7 @@
 
 <head>      
 <metal:block fill-slot="top_slot"
-           tal:define="disable_column_one python:request.set('plone.leftcolumn',1)" />      
+           tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1)" />      
 
 </head>
 
