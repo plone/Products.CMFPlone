@@ -1,3 +1,5 @@
+from plone.fieldsets.fieldsets import FormFieldsets
+
 from zope.app.form.browser import TextAreaWidget
 from zope.interface import Interface
 from zope.formlib.form import FormFields
@@ -108,7 +110,6 @@ class ISiteSchema(Interface):
                         required=False)
 
 
-
 class SiteControlPanelAdapter(SchemaAdapterBase):
 
     implements(ISiteSchema, ILockSettings)
@@ -160,14 +161,33 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     lock_on_ttw_edit = ProxyFieldProperty(ISiteSchema['lock_on_ttw_edit'])
     exposeDCMetaTags = ProxyFieldProperty(ISiteSchema['exposeDCMetaTags'])
 
+
 class SmallTextAreaWidget(TextAreaWidget):
 
     height = 5
 
+generalfields = FormFields(ISiteSchema).select('site_title',
+                                               'site_description',
+                                               'enable_sitemap',
+                                               'webstats_js',
+                                               'exposeDCMetaTags')
+generalset = FormFieldsets(generalfields)
+generalset.id = 'general'
+generalset.label = _(u'label_general_settings', default=u'General')
+
+editingfields = FormFields(ISiteSchema).omit('site_title',
+                                             'site_description',
+                                             'enable_sitemap',
+                                             'webstats_js',
+                                             'exposeDCMetaTags')
+editingset = FormFieldsets(editingfields)
+editingset.id = 'editing'
+editingset.label = _(u'label_editing_settings', default=u'Editing')
+
 
 class SiteControlPanel(ControlPanelForm):
 
-    form_fields = FormFields(ISiteSchema)
+    form_fields = FormFieldsets(generalset, editingset)
     form_fields['site_description'].custom_widget = SmallTextAreaWidget
 
     label = _("Site settings")
