@@ -34,6 +34,10 @@ class AccountPanelSchemaAdapter(SchemaAdapterBase):
             self.context = mt.getAuthenticatedMember()
 
 class AccountPanelView(BrowserView):
+    """ The bare view for the account panel is used in the prefs_user_details
+    template. This is good enough for now, but it would be better to use a browser
+    view for prefs_user_details with a more sophicated solution (no bare views, macro's etc.)
+    """
     implements(IAccountPanelView)
     template = ViewPageTemplateFile('account-panel-bare.pt')
     
@@ -65,6 +69,7 @@ class AccountPanelForm(FieldsetsEditForm):
     @form.action(_(u'label_save', default=u'Save'), name=u'save')
     def handle_edit_action(self, action, data):
         CheckAuthenticator(self.request)
+
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
             IStatusMessage(self.request).addStatusMessage(_("Changes saved."),
@@ -75,13 +80,22 @@ class AccountPanelForm(FieldsetsEditForm):
             IStatusMessage(self.request).addStatusMessage(_("No changes made."),
                                                           type="info")
 
+        if self.request.get(self.prefs_user_details):
+            self.request.response.redirect('@@usergroup-userprefs')
+
+
+
     @form.action(_(u'label_cancel', default=u'Cancel'),
                  validator=null_validator,
                  name=u'cancel')
     def handle_cancel_action(self, action, data):
         IStatusMessage(self.request).addStatusMessage(_("Changes canceled."),
                                                       type="info")
-        self.request.response.redirect(self.request['ACTUAL_URL'])
+
+        if self.request.get(self.prefs_user_details):
+            self.request.response.redirect('@@usergroup-userprefs')
+        else:
+            self.request.response.redirect(self.request['ACTUAL_URL'])
         return ''
         
     def _on_save(self, data=None):
@@ -99,6 +113,20 @@ class AccountPanelForm(FieldsetsEditForm):
         mt = getToolByName(context, 'portal_membership')
         return mt.checkPermission(permission, context)
 
+    def getActionUrl(self):
+        request = self.request
+
+        if request.get(self.prefs_user_details):
+            url = request.get('page', '@@personal-information')
+        else:
+            url = request.get('URL')
+
+        return url
+
+    def isPrefsUserDetails(self):
+        if self.request.get(self.prefs_user_details):
+            return True
+
     def getPersonalInfoLink(self):
         context = aq_inner(self.context)
         request = self.request
@@ -108,7 +136,7 @@ class AccountPanelForm(FieldsetsEditForm):
             if request.get(self.prefs_user_details):
                 userid = request.get('userid')
                 template = "%s?userid=%s&page=%s" % (self.prefs_user_details,
-                    userid, 'personal-information')
+                    userid, '@@personal-information')
             else:
                 template = '@@personal-information'
 
@@ -123,7 +151,7 @@ class AccountPanelForm(FieldsetsEditForm):
             if request.get(self.prefs_user_details):
                 userid = request.get('userid')
                 template = "%s?userid=%s&page=%s" % (self.prefs_user_details,
-                    userid, 'personal-preferences')
+                    userid, '@@personal-preferences')
             else:
                 template = '@@personal-preferences'
 

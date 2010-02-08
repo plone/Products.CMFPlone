@@ -1,0 +1,70 @@
+Admin modifies personal preferences thru 'Users and groups' (prefs_user_details)
+---------------------------------------------------------------------
+
+An admin can modify personal preferences thru the prefs_user_details in Users and Groups
+config page.
+
+
+So let's login as Plone admin:
+    >>> self.browser.open('http://nohost/plone/')
+    >>> self.browser.getLink('Log in').click()
+    >>> self.browser.getControl('Login Name').value = 'admin'
+    >>> self.browser.getControl('Password').value = 'secret'
+    >>> self.browser.getControl('Log in').click()
+
+This form is used when the admin clicks on a user name in Users and Groups:
+    >>> self.browser.open("http://nohost/plone/prefs_user_details?userid=test_user_1_")
+    >>> self.browser.getLink('Personal Preferences').click()
+
+
+We have these controls in the form:
+
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value
+    ['']
+    >>> self.browser.getControl(name='form.ext_editor').value
+    False
+    >>> self.browser.getControl(name='form.listed').value
+    True
+    >>> self.browser.getControl(name='form.language').value
+    ['']
+
+
+Modifying values
+----------------
+
+    >>> self.browser.open("http://nohost/plone/prefs_user_details?userid=test_user_1_")
+    >>> self.browser.getLink('Personal Preferences').click()
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value = ['TinyMCE']
+    >>> self.browser.getControl(name='form.ext_editor').value = True
+    >>> self.browser.getControl(name='form.listed').value = True
+    >>> self.browser.getControl(name='form.language').value = ['en']
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Changes saved' in self.browser.contents
+    True
+
+Verify that the settings have actually been
+changed:
+
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> member.getProperty('wysiwyg_editor', '')
+    'TinyMCE'
+    >>> member.getProperty('ext_editor', '')
+    True
+    >>> member.getProperty('listed', '')
+    True
+    >>> member.getProperty('language', '')
+    'en'
+
+And that the form still has the according values:
+
+    >>> self.browser.open("http://nohost/plone/prefs_user_details?userid=test_user_1_")
+    >>> self.browser.getLink('Personal Preferences').click()
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value
+    ['TinyMCE']
+    >>> self.browser.getControl(name='form.ext_editor').value
+    True
+    >>> self.browser.getControl(name='form.listed').value
+    True
+    >>> self.browser.getControl(name='form.language').value
+    ['en']
+

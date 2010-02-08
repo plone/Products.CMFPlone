@@ -3,6 +3,7 @@
                 member context/@@plone_portal_state/member;
                 name python:memberinfo['fullname'] or member.getId() or member.getId();
                 portal_url context/portal_url;">
+
     <div id="edit-bar">
 
         <h5 class="hiddenStructure"
@@ -48,41 +49,6 @@
                     Password
                 </a>
             </li>
-<!--
-            <li tal:condition="python: checkPermission('Set own properties', context)"
-                tal:define="selected python:view_name=='personal-information';"
-                tal:attributes="
-                  id string:contentview-user_data;
-                  class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/@@personal-information"
-                   i18n:translate="title_personal_information_form">
-                    Personal Information
-                </a>
-            </li>
-
-            <li tal:condition="python: checkPermission('Set own properties', context)"
-                tal:define="selected python:view_name=='personal-preferences';"
-                tal:attributes="id string:contentview-user_data;
-                class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/@@personal-preferences"
-                   i18n:translate="">
-                    Personal Preferences
-                </a>
-            </li>
-
-            <li tal:condition="member/canPasswordSet"
-                tal:define="selected python:view_name=='change-password';"
-                tal:attributes="id string:contentview-user_data;
-                class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/@@change-password"
-                   i18n:translate="label_password">
-                    Password
-                </a>
-            </li>
--->
 
         </ul>
     </div>
@@ -117,12 +83,20 @@
             <form action="."
                   metal:define-macro="master"
                   tal:define="is_fieldsets view/is_fieldsets"
-                  tal:attributes="action request/URL;
+                  tal:attributes="action view/getActionUrl;
                   class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default"
                   method="post"
                   class="edit-form enableUnloadProtection"
                   enctype="multipart/form-data"
                   id="zc.page.browser_form">
+
+                <input type="hidden"
+                       name="prefs_user_details"
+                       tal:attributes="value view/isPrefsUserDetails|string:"/>
+
+                <input type="hidden"
+                       name="userid"
+                       tal:attributes="value request/userid|string:"/>
 
                 <input type="hidden"
                        name="fieldset.current"
@@ -249,6 +223,8 @@
                                tal:replace="structure action/render" />
                     </span>
                 </div>
+
+
 
                 <input tal:replace="structure context/@@authenticator/authenticator" />
 

@@ -1,35 +1,19 @@
-Testing the personal information form
-=====================================
+Admin modifies user data thru 'Users and groups' (prefs_user_details)
+---------------------------------------------------------------------
 
-TODO: Testing the portait image upload
+An admin can modify user data thru the prefs_user_details in Users and Groups
+config page.
 
-Viewing the  personal information
----------------------------------
 
-This is about the 'personal-information' view.
-
-    >>> view_name = '@@personal-information'
-
-Viewing user data shouldn't be possible for anonymous users:
-
-    >>> self.browser.open("http://nohost/plone/" + view_name)
-    >>> 'Please log in' in self.browser.contents
-    True
-
-So let's login as Plone user:
+So let's login as Plone admin:
     >>> self.browser.open('http://nohost/plone/')
     >>> self.browser.getLink('Log in').click()
-    >>> self.browser.getControl('Login Name').value = 'test_user_1_'
+    >>> self.browser.getControl('Login Name').value = 'admin'
     >>> self.browser.getControl('Password').value = 'secret'
     >>> self.browser.getControl('Log in').click()
 
-Now we should be able to access the user data panel:
-
-    >>> self.browser.open("http://nohost/plone/" + view_name)
-    >>> 'Please log in' in self.browser.contents
-    False
-    >>> self.browser.url.endswith(view_name)
-    True
+This form is used when the admin clicks on a user name in Users and Groups:
+    >>> self.browser.open("http://nohost/plone/prefs_user_details?userid=test_user_1_")
 
 We have these controls in the form:
 
@@ -47,29 +31,8 @@ We have these controls in the form:
     False
 
 
-Trying to save without changes
-------------------------------
-
-Now can we save this form without changes?
-
-    >>> self.browser.getControl(name="form.actions.save").click()
-    >>> 'Please log in' in self.browser.contents
-    False
-    >>> self.browser.url.endswith(view_name)
-    True
-    >>> self.browser.getControl(name="form.actions.save").click()
-    >>> 'Required input is missing.' in self.browser.contents
-    True
-
-As we have a required field "email", which hasn't been pre-filled in this test,
-we will get an error message. (In the real world, users would have an e-mail
-address filled in.)
-
-
 Modifying user data
 -------------------
-
-If we do set an e-mail address, we should be able to save the form.
 
     >>> full_name = 'Plone user'
     >>> self.browser.getControl(name='form.fullname').value = full_name
@@ -103,8 +66,6 @@ If we do set an e-mail address, we should be able to save the form.
     False
     >>> 'Changes saved.' in self.browser.contents
     True
-
-
 
 We should be able to check that value for email address now is the same as what
 we put in.
