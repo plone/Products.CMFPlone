@@ -19,17 +19,15 @@
         </tal:mailhost>
 
         <tal:nomailhost tal:condition="not:view/showForm">
-            <div metal:use-macro="context/base-pageform.html/form" >
-                <div metal:fill-slot="viewspace">
-                    <h1 class="documentFirstHeading"
-                        i18n:translate=""
-                        tal:content="view/label" />
+            <div metal:fill-slot="main">
+                <h1 class="documentFirstHeading"
+                    i18n:translate=""
+                    tal:content="view/label" />
 
-                    <p class="documentDescription">
-                        This site doesn't have a valid email setup, so you
-                        cannot register at this time.
-                    </p>                
-                </div>
+                <p class="documentDescription">
+                    This site doesn't have a valid email setup, so you
+                    cannot register at this time.
+                </p>                
             </div>
         </tal:nomailhost>
 

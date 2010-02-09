@@ -4,6 +4,9 @@ Changelog
 1.0b4 - Unreleased
 ------------------
 
+- Updated register_form.pt to not use fill-slot="viewlet".
+  [spliter]
+
 - Updated user registration templates to disable the columns with 
   'disable_MANAGER_NAME' pattern
   [spliter]
