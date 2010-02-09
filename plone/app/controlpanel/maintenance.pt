@@ -11,46 +11,45 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main">
+<metal:main fill-slot="prefs_configlet_main">
 
-    <div metal:define-macro="form"
-         tal:condition="view/available">
+    <metal:form define-macro="form" tal:condition="view/available">
+         
+         <metal:block define-macro="header">
 
-        <div id="viewspace" metal:define-slot="viewspace">
+             <dl tal:define="status view/status"
+                  tal:condition="status"
+                  class="portalMessage info">
+                 <dt i18n:translate="">
+                     Info
+                 </dt>
+                 <dd tal:content="view/status" />
+             </dl>
 
-            <metal:block define-macro="header">
+         </metal:block>         
+         
+         <h1 class="documentFirstHeading"
+             i18n:translate=""
+             tal:condition="view/label"
+             tal:content="view/label"
+             metal:define-slot="heading">
+             Do something
+         </h1>
 
-                <dl tal:define="status view/status"
-                     tal:condition="status"
-                     class="portalMessage info">
-                    <dt i18n:translate="">
-                        Info
-                    </dt>
-                    <dd tal:content="view/status" />
-                </dl>
+         <div class="documentDescription" i18n:translate=""
+            tal:condition="view/description"
+            tal:content="view/description">
+             Description
+         </div>
 
-            </metal:block>
-
-            <h1 class="documentFirstHeading"
-                i18n:translate=""
-                tal:condition="view/label"
-                tal:content="view/label"
-                metal:define-slot="heading">
-                Do something
-            </h1>
-
+        <div id="content-core">
+            
             <a href=""
                class="link-parent"
                tal:attributes="href string:$portal_url/plone_control_panel"
                i18n:translate="label_up_to_plone_setup">
                 Up to Site Setup
             </a>
-
-            <p i18n:translate=""
-               tal:condition="view/description"
-               tal:content="view/description">
-                Description
-            </p>
 
             <form action="."
                   tal:attributes="action request/URL"
@@ -174,39 +173,39 @@
 
             </form>
 
+            <script type="text/javascript"
+                tal:define="extra_script view/extra_script | nothing"
+                tal:condition="extra_script"
+                tal:content="structure extra_script">
+            </script>
         </div>
 
-        <script type="text/javascript"
-            tal:define="extra_script view/extra_script | nothing"
-            tal:condition="extra_script"
-            tal:content="structure extra_script">
-        </script>
+    </metal:form>
 
-    </div>
-
-    <div tal:condition="not: view/available">
-
+    <metal:block tal:condition="not: view/available">
          <h1 class="documentFirstHeading"
              i18n:translate=""
              tal:condition="view/label"
              tal:content="view/label">
              Do something
          </h1>
-
-         <a href=""
-            class="link-parent"
-            tal:attributes="href string:$portal_url/plone_control_panel"
-            i18n:translate="label_up_to_plone_setup">
-             Up to Site Setup
-         </a>
-
-         <p i18n:translate="text_not_allowed_manage_server"
+         
+         <div class="documentDescription" i18n:translate="text_not_allowed_manage_server"
             tal:condition="view/description">
              You are not allowed to manage the Zope server.
-         </p>
+         </div>         
 
-    </div>
+         <div id="content-core">
+             <a href=""
+                class="link-parent"
+                tal:attributes="href string:$portal_url/plone_control_panel"
+                i18n:translate="label_up_to_plone_setup">
+                 Up to Site Setup
+             </a>
+         </div>
+    </metal:block>
+     
 
-</div>
+</metal:main>
 </body>
 </html>

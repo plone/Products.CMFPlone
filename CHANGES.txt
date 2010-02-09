@@ -4,6 +4,11 @@ Changelog
 2.0b2 - Unreleased
 ------------------
 
+- Updated control-panel.pt and maintenance.pt to recent markup conventions.
+  Got rid of 'viewspace' CSS ID and slot.
+  References http://dev.plone.org/plone/ticket/9981
+  [spliter]
+
 - Fixed a string which contained double quote.
   [vincentfretin]
 

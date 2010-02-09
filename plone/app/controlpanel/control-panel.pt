@@ -14,45 +14,45 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main">
+<metal:main fill-slot="prefs_configlet_main">
 
-    <div metal:define-macro="form">
+    <metal:form metal:define-macro="form">
 
-        <div id="viewspace" metal:define-slot="viewspace">
+        <metal:block define-macro="header">
 
-            <metal:block define-macro="header">
+            <dl tal:define="status view/status"
+                 tal:condition="status"
+                 class="portalMessage info">
+                <dt i18n:translate="">
+                    Info
+                </dt>
+                <dd tal:content="view/status" />
+            </dl>
 
-                <dl tal:define="status view/status"
-                     tal:condition="status"
-                     class="portalMessage info">
-                    <dt i18n:translate="">
-                        Info
-                    </dt>
-                    <dd tal:content="view/status" />
-                </dl>
+        </metal:block>
+        
+        <h1 class="documentFirstHeading"
+            i18n:translate=""
+            tal:condition="view/label"
+            tal:content="view/label"
+            metal:define-slot="heading">
+            Do something
+        </h1>
 
-            </metal:block>
+        <div class="documentDescription" i18n:translate=""
+           tal:condition="view/description"
+           tal:content="view/description">
+            Description
+        </div>
 
-            <h1 class="documentFirstHeading"
-                i18n:translate=""
-                tal:condition="view/label"
-                tal:content="view/label"
-                metal:define-slot="heading">
-                Do something
-            </h1>
-
+        <div id="content-core">
+            
             <a href=""
                class="link-parent"
                tal:attributes="href string:$portal_url/plone_control_panel"
                i18n:translate="label_up_to_plone_setup">
                 Up to Site Setup
             </a>
-
-            <p i18n:translate=""
-               tal:condition="view/description"
-               tal:content="view/description">
-                Description
-            </p>
 
             <form action="."
                   metal:define-macro="master"
@@ -193,17 +193,17 @@
                 <input tal:replace="structure context/@@authenticator/authenticator" />
 
             </form>
+
+            <script type="text/javascript"
+                tal:define="extra_script view/extra_script | nothing"
+                tal:condition="extra_script"
+                tal:content="structure extra_script">
+            </script>
         </div>
 
-        <script type="text/javascript"
-            tal:define="extra_script view/extra_script | nothing"
-            tal:condition="extra_script"
-            tal:content="structure extra_script">
-        </script>
+    </metal:form>
 
-    </div>
-
-</div>
+</metal:main>
 </body>
 
 </metal:block>
