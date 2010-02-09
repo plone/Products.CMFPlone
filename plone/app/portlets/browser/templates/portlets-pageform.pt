@@ -11,14 +11,14 @@
 <div metal:fill-slot="portlets_two_slot">&nbsp;</div>
 
 <body>
-<div metal:fill-slot="main">
+<metal:main fill-slot="main">
 
-  <div metal:use-macro="context/@@base-pageform.html/form">
+  <metal:form use-macro="context/@@base-pageform.html/form">
     <metal:block fill-slot="extra_info">
      <input type="hidden" name="referer" value="" tal:attributes="value view/referer" />
     </metal:block>
-  </div>
+  </metal:form>
 
-</div>
+</metal:main>
 </body>
 </html>

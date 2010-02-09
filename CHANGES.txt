@@ -4,6 +4,11 @@ Changelog
 2.0b4 - Unreleased
 ------------------
 
+- Changed "manage portlets"-related templates to use markup according 
+  to the recent conventions.
+  References http://dev.plone.org/plone/ticket/9981
+  [spliter]
+
 - Change language portlet to call update() on LanguageSelector.
   [elro]
 
