@@ -31,7 +31,7 @@
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
-        
+
     <browser:viewletManager
         name="plone.contentviews"
         provides=".interfaces.IContentViews"
@@ -102,7 +102,7 @@
         name="plone.header"
         manager=".interfaces.IPortalTop"
         template="portal_header.pt"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- The skip links for accessibility -->
@@ -110,7 +110,7 @@
         name="plone.skip_links"
         manager=".interfaces.IPortalHeader"
         class=".common.SkipLinksViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- The site actions -->
@@ -118,7 +118,7 @@
         name="plone.site_actions"
         manager=".interfaces.IPortalHeader"
         class=".common.SiteActionsViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- The search box -->
@@ -126,7 +126,7 @@
         name="plone.searchbox"
         manager=".interfaces.IPortalHeader"
         class=".common.SearchBoxViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- The logo -->
@@ -134,7 +134,7 @@
         name="plone.logo"
         manager=".interfaces.IPortalHeader"
         class=".common.LogoViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- The global sections -->
@@ -142,7 +142,7 @@
         name="plone.global_sections"
         manager=".interfaces.IPortalHeader"
         class=".common.GlobalSectionsViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- The personal bar -->
@@ -150,7 +150,7 @@
         name="plone.personal_bar"
         manager=".interfaces.IPortalTop"
         class=".common.PersonalBarViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- Content views (tabs) -->
@@ -160,8 +160,8 @@
         template="contentviews.pt"
         permission="zope2.View"
         />
-    
-    <!-- Content actions (menus) 
+
+    <!-- Content actions (menus)
             The default version is a blank bar; the one with real menus is
             registered for the main view + folder contents only.
       -->
@@ -172,7 +172,7 @@
         template="contentactions_blank.pt"
         permission="zope2.View"
         />
-        
+
     <browser:viewlet
         name="plone.contentactions"
         for="*"
@@ -181,7 +181,7 @@
         class=".common.ContentActionsViewlet"
         permission="zope2.View"
         />
-        
+
     <browser:viewlet
         name="plone.contentactions"
         for="*"
@@ -196,7 +196,7 @@
         name="plone.htmlhead.title"
         manager=".interfaces.IHtmlHead"
         class=".common.TitleViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- Render the Dublin Core metadata -->
@@ -204,7 +204,7 @@
         name="plone.htmlhead.dublincore"
         manager=".interfaces.IHtmlHead"
         class=".common.DublinCoreViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- The related items -->
@@ -213,15 +213,50 @@
         manager=".interfaces.IBelowContentBody"
         class=".content.ContentRelatedItems"
         view="plone.app.layout.globals.interfaces.IViewView"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
-    <!-- Render the workflow history -->
+    <!-- Render the workflow history link viewlet -->
     <browser:viewlet
         name="plone.belowcontentbody.contenthistory"
         manager=".interfaces.IBelowContentBody"
+        template="content_history_link.pt"
+        permission="zope2.View"
+        />
+
+    <!-- Render the workflow history viewlet;
+         BBB: this is the Plone < 4 viewlet
+    <browser:viewlet
+        name="plone.belowcontentbody.inlinecontenthistory"
+        manager=".interfaces.IBelowContentBody"
         class=".content.ContentHistoryViewlet"
-        permission="zope2.View" 
+        template="inline_content_history.pt"
+        permission="zope2.View"
+        />
+     -->
+
+    <!-- Render the workflow history as a view -->
+    <browser:view
+        for="*"
+        name="contenthistory"
+        class=".content.ContentHistoryView"
+        permission="zope2.View"
+        />
+
+    <!-- Render the workflow history for popup -->
+    <browser:page
+        for="*"
+        name="contenthistorypopup"
+        template="popup_content_history.pt"
+        permission="zope2.View"
+        />
+
+    <!-- Render the workflow history contents as a page-->
+    <browser:page
+        for="*"
+        name="historyview"
+        template="history_view.pt"
+        permission="zope2.View"
         />
 
     <!-- Render the document actions -->
@@ -229,11 +264,11 @@
         name="plone.abovecontenttitle.documentactions"
         manager=".interfaces.IBelowContentBody"
         class=".content.DocumentActionsViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- Manage portlets Fallback link -->
-    
+
     <!-- First for all ATContentTypes -->
     <browser:viewlet
         name="plone.manage_portlets_fallback"
@@ -258,7 +293,7 @@
         name="plone.path_bar"
         manager=".interfaces.IPortalTop"
         class=".common.PathBarViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- Render the document byline -->
@@ -266,7 +301,7 @@
         name="plone.belowcontenttitle.documentbyline"
         manager=".interfaces.IBelowContentTitle"
         class=".content.DocumentBylineViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- Render the keywords -->
@@ -274,7 +309,7 @@
         name="plone.belowcontenttitle.keywords"
         manager=".interfaces.IBelowContentTitle"
         template="keywords.pt"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- Render comments -->
@@ -302,7 +337,7 @@
         for="Products.ATContentTypes.interface.IATDocument"
         manager=".interfaces.IAboveContentBody"
         class=".common.TableOfContentsViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <!-- Footer -->

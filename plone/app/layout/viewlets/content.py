@@ -7,6 +7,7 @@ from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Acquisition import aq_inner
+from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
@@ -273,3 +274,12 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         util = getToolByName(self.context, 'translation_service')
         return util.ulocalized_time(time, long_format, time_only, self.context,
                                         domain='plonelocales')
+
+
+class ContentHistoryView(ContentHistoryViewlet):
+
+    index = ViewPageTemplateFile("content_history.pt")
+
+    def __init__(self, context, request):
+        super(ContentHistoryView, self).__init__(context, request, None, None)
+        self.update()

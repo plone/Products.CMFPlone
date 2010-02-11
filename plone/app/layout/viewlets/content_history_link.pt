@@ -1,0 +1,7 @@
+<div class="contentHistory"
+     id="content-history"
+     i18n:domain="plone">
+    <a href="#" 
+       tal:attributes="href string:${here/absolute_url}/@@historyview" 
+       i18n:translate="label_history">History</a>
+</div>
