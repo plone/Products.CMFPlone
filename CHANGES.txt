@@ -4,6 +4,9 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
+- Add html id to personal bar actions.
+  [paul_r]
+
 - Created several modifications of the content history viewlet to act as
   standalone history page and simple popup. Old collapsible history viewlet
   is still in place, ready to be wired in with zcml for anyone who needs the
