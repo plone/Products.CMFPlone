@@ -14,6 +14,7 @@ OPTIONFLAGS = (doctest.ELLIPSIS |
 
 def test_suite():
     tests = ['calendar.txt',
+             'editing.txt',
              'filter.txt',
              'mail.txt',
              'maintenance.txt',

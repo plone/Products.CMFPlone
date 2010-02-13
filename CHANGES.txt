@@ -4,6 +4,10 @@ Changelog
 2.0b2 - Unreleased
 ------------------
 
+- Create a new dedicated @@editing-controlpanel instead of splitting up the
+  site control panel.
+  [hannosch]
+
 - Updated control-panel.pt and maintenance.pt to recent markup conventions.
   Got rid of 'viewspace' CSS ID and slot.
   References http://dev.plone.org/plone/ticket/9981

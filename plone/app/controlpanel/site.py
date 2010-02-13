@@ -1,32 +1,29 @@
-from plone.fieldsets.fieldsets import FormFieldsets
-
+from plone.locking.interfaces import ILockSettings
 from zope.app.form.browser import TextAreaWidget
-from zope.interface import Interface
-from zope.formlib.form import FormFields
+from zope.component import adapts
+from zope.formlib import form
 from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Text
 from zope.schema import TextLine
 from zope.schema import SourceText
-from zope.schema import Choice
 from zope.site.hooks import getSite
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_unicode
 
 from form import ControlPanelForm
 
-from plone.locking.interfaces import ILockSettings
 
-class ISiteSchema(Interface):
+class ISiteSchema(ILockSettings):
 
     site_title = TextLine(title=_(u'Site title'),
                           description=_(u"This shows up in the title bar of "
-                                        "browsers, in syndication feeds, "
-                                        "etc."),
+                                        "browsers and in syndication feeds."),
                           default=u'')
 
     site_description = Text(title=_(u'Site description'),
@@ -36,48 +33,12 @@ class ISiteSchema(Interface):
                            default=u'',
                            required=False)
 
-    visible_ids = Bool(title=_(u"Show 'Short Name' on content?"),
-                       description=_(u"Display and allow users to edit the "
-                           "'Short name' content identifiers, which form the "
-                           "URL part of a content item's address. Once "
-                           "enabled, users will then be able to enable this "
-                           "option in their preferences."),
-                       default=False,
-                       required=False)
+    exposeDCMetaTags = Bool(title=_(u"Expose Dublin Core metadata"),
+                        description=_(u"Exposes the Dublin Core properties as metatags."),
+                        default=False,
+                        required=False)
 
-    enable_inline_editing = Bool(title=_(u"Enable inline editing"),
-                                 description=_(u"Check this to enable "
-                                                "inline editing on the site."),
-                                 default=True,
-                                 required=False)
-
-    default_editor = Choice(title=_(u'Default editor'),
-                            description=_(u"Select the default wysiwyg editor. "
-                                "Users will be able to choose their own or "
-                                "select to use the site default."),
-                            default=u'TinyMCE',
-                            missing_value=set(),
-                            vocabulary="plone.app.vocabularies.AvailableEditors",
-                            required=False)
-
-    enable_link_integrity_checks = Bool(title=_(u"Enable link integrity "
-                                                 "checks"),
-                          description=_(u"Determines if the users should get "
-                              "warnings when they delete or move content that "
-                              "is linked from inside the site."),
-                          default=True,
-                          required=False)
-
-    ext_editor = Bool(title=_(u'Enable External Editor feature'),
-                          description=_(u"Determines if the external editor "
-                              "feature is enabled. This feature requires a "
-                              "special client-side application installed. The "
-                              "users also have to enable this in their "
-                              "preferences."),
-                          default=False,
-                          required=False)
-
-    enable_sitemap = Bool(title=_(u"Expose sitemap.xml.gz in the portal root"),
+    enable_sitemap = Bool(title=_(u"Expose sitemap.xml.gz"),
                           description=_(u"Exposes your content as a file "
                               "according to the sitemaps.org standard. You "
                               "can submit this to compliant search engines "
@@ -96,23 +57,11 @@ class ISiteSchema(Interface):
                         default=u'',
                         required=False)
 
-    lock_on_ttw_edit = Bool(title=_(u"Enable locking for through-the-web edits"),
-                          description=_(u"Disabling locking here will only "
-                                "affect users editing content through the "
-                                "Plone web UI.  Content edited via WebDAV "
-                                "clients will still be subject to locking."),
-                          default=True,
-                          required=False)
-                          
-    exposeDCMetaTags = Bool(title=_(u"Expose Dublin Core metadata properties"),
-                        description=_(u"Exposes the Dublin Core properties as metatags."),
-                        default=False,
-                        required=False)
-
 
 class SiteControlPanelAdapter(SchemaAdapterBase):
 
-    implements(ISiteSchema, ILockSettings)
+    adapts(IPloneSiteRoot)
+    implements(ISiteSchema)
 
     def __init__(self, context):
         super(SiteControlPanelAdapter, self).__init__(context)
@@ -152,43 +101,25 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     site_description = property(get_site_description, set_site_description)
     webstats_js = property(get_webstats_js, set_webstats_js)
 
-    visible_ids = ProxyFieldProperty(ISiteSchema['visible_ids'])
-    enable_inline_editing = ProxyFieldProperty(ISiteSchema['enable_inline_editing'])
-    enable_link_integrity_checks = ProxyFieldProperty(ISiteSchema['enable_link_integrity_checks'])
-    ext_editor = ProxyFieldProperty(ISiteSchema['ext_editor'])
-    default_editor = ProxyFieldProperty(ISiteSchema['default_editor'])
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
-    lock_on_ttw_edit = ProxyFieldProperty(ISiteSchema['lock_on_ttw_edit'])
     exposeDCMetaTags = ProxyFieldProperty(ISiteSchema['exposeDCMetaTags'])
+
+
+class MiniTextAreaWidget(TextAreaWidget):
+
+    height = 3
 
 
 class SmallTextAreaWidget(TextAreaWidget):
 
     height = 5
 
-generalfields = FormFields(ISiteSchema).select('site_title',
-                                               'site_description',
-                                               'enable_sitemap',
-                                               'webstats_js',
-                                               'exposeDCMetaTags')
-generalset = FormFieldsets(generalfields)
-generalset.id = 'general'
-generalset.label = _(u'label_general_settings', default=u'General')
-
-editingfields = FormFields(ISiteSchema).omit('site_title',
-                                             'site_description',
-                                             'enable_sitemap',
-                                             'webstats_js',
-                                             'exposeDCMetaTags')
-editingset = FormFieldsets(editingfields)
-editingset.id = 'editing'
-editingset.label = _(u'label_editing_settings', default=u'Editing')
-
 
 class SiteControlPanel(ControlPanelForm):
 
-    form_fields = FormFieldsets(generalset, editingset)
-    form_fields['site_description'].custom_widget = SmallTextAreaWidget
+    form_fields = form.FormFields(ISiteSchema)
+    form_fields['site_description'].custom_widget = MiniTextAreaWidget
+    form_fields['webstats_js'].custom_widget = SmallTextAreaWidget
 
     label = _("Site settings")
     description = _("Site-wide settings.")

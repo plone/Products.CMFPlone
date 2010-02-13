@@ -4,6 +4,8 @@
 
   <adapter factory=".calendar.CalendarControlPanelAdapter" />
 
+  <adapter factory=".editing.EditingControlPanelAdapter" />
+
   <adapter factory=".filter.FilterControlPanelAdapter" />
 
   <adapter factory=".language.LanguageControlPanelAdapter" />
@@ -22,13 +24,7 @@
   
   <adapter factory=".security.SecurityControlPanelAdapter" />
 
-  <adapter for="*"
-           provides=".site.ISiteSchema"
-           factory=".site.SiteControlPanelAdapter" />
-
-  <adapter for="*"
-           provides="plone.locking.interfaces.ILockSettings"
-           factory=".site.SiteControlPanelAdapter" />
+  <adapter factory=".site.SiteControlPanelAdapter" />
 
   <adapter factory=".skins.SkinsControlPanelAdapter" />
 
@@ -38,6 +34,13 @@
       name="calendar-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".calendar.CalendarControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="editing-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".editing.EditingControlPanel"
       permission="cmf.ManagePortal"
       />
 
@@ -170,7 +173,6 @@
       permission="zope2.ManageUsers"
       template="usergroups_usermembership.pt"
       />
-
 
   <browser:page
       name="searchform-options"

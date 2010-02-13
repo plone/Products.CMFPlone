@@ -1,0 +1,44 @@
+Editing control panel
+=====================
+
+First some initial setup code:
+
+    >>> from zope.component import getUtility
+    >>> from Products.CMFCore.interfaces import IPropertiesTool
+    >>> ptool = getUtility(IPropertiesTool)
+    >>> self.loginAsManager()
+
+Viewing the site control panel
+-----------------------------
+
+    >>> self.browser.open('http://nohost/plone/@@editing-controlpanel')
+    >>> self.browser.url
+    'http://nohost/plone/@@editing-controlpanel'
+
+Click the cancel button:
+
+    >>> self.browser.getControl(name="form.actions.cancel").click()
+    >>> self.browser.url.endswith('plone_control_panel')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
+
+Configure the locking for the site
+----------------------------------
+
+Standard behavior for locking is to have it enabled. Let's change that:
+
+    >>> self.browser.open('http://nohost/plone/@@editing-controlpanel')
+    >>> self.browser.getControl(name='form.lock_on_ttw_edit').value
+    True
+    >>> self.browser.getControl(name='form.lock_on_ttw_edit').value = False
+    >>> self.browser.getControl(name="form.actions.save").click()
+
+Confirm that our change updated the property:
+
+    >>> ptool.site_properties.lock_on_ttw_edit
+    False
