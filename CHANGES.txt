@@ -4,6 +4,10 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
+- Moved the history link back into the byline. This refs
+  http://dev.plone.org/plone/ticket/10102.
+  [hannosch]
+
 - Add html id to personal bar actions.
   [paul_r]
 

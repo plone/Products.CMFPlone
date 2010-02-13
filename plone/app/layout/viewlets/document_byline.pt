@@ -44,6 +44,13 @@
           i18n:translate="time_expired">expired</span>
   </tal:expired>
 
+  <span class="contentHistory" id="content-history">
+    &mdash;
+    <a href="#" 
+       tal:attributes="href string:${here/absolute_url}/@@historyview"
+       i18n:translate="label_history">History</a>
+  </span>
+
   <div class="documentContributors"
        tal:define="contributors context/Contributors"
        tal:condition="contributors"
