@@ -12,8 +12,8 @@ Changelog
 - Fixed a string which contained double quote.
   [vincentfretin]
 
-- split @@site-controlpanel form in two fieldsets 
-  "general" and "editing" [csenger]
+- Split @@site-controlpanel form in two fieldsets "general" and "editing".
+  [csenger]
 
 2.0b1 - 2010-01-29
 ------------------
