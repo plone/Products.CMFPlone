@@ -1,5 +1,6 @@
 from zope.interface import Interface
 
+
 class IInterfaceInformation(Interface):
     """A view that gives information about interfaces provided by its context
     """
@@ -14,8 +15,45 @@ class IInterfaceInformation(Interface):
         provides this interface.
         """
 
-# Note: We'd like these to be properties, but acquisition gets in our face
-# and wraps them in unexplainable ways :-(
+
+class ILayoutPolicy(Interface):
+    """A view that gives access to various layout related functions.
+    """
+
+    def mark_view(view):
+        """Adds a marker interface to the view if it is "the" view for the
+        context May only be called from a template.
+        """
+
+    def hide_columns(column_left, column_right):
+        """Returns a CSS class matching the current column status.
+        """
+
+    def have_portlets(manager_name, view=None):
+        """Determine whether a column should be shown. The left column is called
+        plone.leftcolumn; the right column is called plone.rightcolumn.
+        """
+
+    def icons_visible():
+        """Returns True if icons should be shown or False otherwise.
+        """
+
+    def getIcon(item):
+        """Returns an object which implements the IContentIcon interface and
+        provides the informations necessary to render an icon. The item
+        parameter needs to be adaptable to IContentIcon. Icons can be disabled
+        globally or just for anonymous users with the icon_visibility property
+        in site_properties.
+        """
+
+    def renderBase():
+        """Returns the current URL to be used in the base tag.
+        """
+
+    def bodyClass(template, view):
+        """Returns the CSS class to be used on the body tag.
+        """
+
 
 class ITools(Interface):
     """A view that gives access to common tools
@@ -103,6 +141,7 @@ class IPortalState(Interface):
     def friendly_types():
         """Get a list of portal types considered "end user" types
         """
+
 
 class IContextState(Interface):
     """A view that gives access to the state of the current context
@@ -200,6 +239,7 @@ class IContextState(Interface):
         """Whether or not the context is capable of having locally assigned
         portlets.
         """
+
 
 class IViewView(Interface):
     """Marker interface which specifies that the current view is, in fact,

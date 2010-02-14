@@ -13,6 +13,14 @@
         />
 
     <browser:page
+        name="plone_layout"
+        for="*"
+        permission="zope.Public"
+        class=".layout.LayoutPolicy"
+        allowed_interface=".interfaces.ILayoutPolicy"
+        />
+
+    <browser:page
         name="plone_tools"
         for="*"
         permission="zope.Public"

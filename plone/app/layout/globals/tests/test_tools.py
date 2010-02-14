@@ -4,7 +4,7 @@ from plone.app.layout.globals.tests.base import GlobalsTestCase
 from Products.CMFPlone.utils import getToolByName
 
 class TestToolsView(GlobalsTestCase):
-    """Ensure that the basic redirector setup is successful.
+    """Tests the global tools view.
     """
     
     def afterSetUp(self):
