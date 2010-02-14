@@ -16,7 +16,7 @@ def resolveInterface(dotted_name):
 
 class InterfaceInformation(BrowserView):
     implements(IInterfaceInformation)
-    
+
     @memoize
     def provides(self, dotted_name):
         iface = resolveInterface(dotted_name)

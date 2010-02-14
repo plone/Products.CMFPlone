@@ -19,7 +19,7 @@
         class=".tools.Tools"
         allowed_interface=".interfaces.ITools"
         />
-        
+
     <browser:page
         name="plone_context_state"
         for="*"
@@ -27,7 +27,7 @@
         class=".context.ContextState"
         allowed_interface=".interfaces.IContextState"
         />
-        
+
     <browser:page
         name="plone_portal_state"
         for="*"
@@ -35,11 +35,11 @@
         class=".portal.PortalState"
         allowed_interface=".interfaces.IPortalState"
         />
-    
+
     <!-- We need to make the request annotatable for this to work -->
-    
+
     <class class="ZPublisher.BaseRequest.BaseRequest">
         <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    </class>    
-    
+    </class>
+
 </configure>

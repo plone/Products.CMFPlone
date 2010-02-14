@@ -28,9 +28,9 @@ BLACKLISTED_CATEGORIES = ('folder_buttons', 'object_buttons', )
 class ContextState(BrowserView):
     """Information about the state of the current context
     """
-    
+
     implements(IContextState)
-    
+
     @memoize
     def current_page_url(self):
         url = self.current_base_url()
@@ -38,12 +38,12 @@ class ContextState(BrowserView):
         if query:
             url += '?' + query
         return url
-        
+
     @memoize
     def current_base_url(self):
         return self.request.get('ACTUAL_URL',
                  self.request.get('VIRTUAL_URL',
-                   self.request.get('URL', 
+                   self.request.get('URL',
                      self.context.absolute_url())))
 
     @memoize
@@ -57,7 +57,7 @@ class ContextState(BrowserView):
     @memoize
     def canonical_object_url(self):
         return self.canonical_object().absolute_url()
-            
+
     @memoize
     def view_url(self):
         """URL to use for viewing
@@ -103,21 +103,21 @@ class ContextState(BrowserView):
         current_url = self.current_base_url()
         canonical_url = self.canonical_object_url()
         object_url = self.object_url()
-        
+
         if current_url.endswith('/'):
             current_url = current_url[:-1]
-        
+
         if current_url == canonical_url or current_url == object_url:
             return True
         elif current_url == object_url + '/view':
             return True
-        
+
         template_id = self.view_template_id()
         if current_url == "%s/%s" % (object_url, template_id):
             return True
         elif current_url == "%s/@@%s" % (object_url, template_id):
             return True
-        
+
         return False
 
     @memoize
@@ -144,11 +144,11 @@ class ContextState(BrowserView):
             return context
         else:
             return aq_parent(context)
-    
+
     @memoize
     def is_folderish(self):
         return bool(getattr(aq_base(aq_inner(self.context)), 'isPrincipiaFolderish', False))
-            
+
     @memoize
     def is_structural_folder(self):
         folderish = self.is_folderish()
@@ -159,7 +159,7 @@ class ContextState(BrowserView):
             return False
         else:
             return folderish
-        
+
     @memoize
     def is_default_page(self):
         context = aq_inner(self.context)
@@ -168,7 +168,7 @@ class ContextState(BrowserView):
             return False
         view = getMultiAdapter((container, self.request), name='default_page')
         return view.isDefaultPage(context)
-    
+
     @memoize
     def is_portal_root(self):
         context = aq_inner(self.context)
@@ -176,12 +176,12 @@ class ContextState(BrowserView):
         return aq_base(context) is aq_base(portal) or \
             (self.is_default_page() and
              aq_base(aq_parent(context)) is aq_base(portal))
-    
+
     @memoize
     def is_editable(self):
         tool = getToolByName(self.context, "portal_membership")
         return bool(tool.checkPermission('Modify portal content', aq_inner(self.context)))
-    
+
     @memoize
     def is_locked(self):
         # plone_lock_info is registered on marker interface ITTWLockable, since
@@ -224,7 +224,7 @@ class ContextState(BrowserView):
 
     def portlet_assignable(self):
         return ILocalPortletAssignable.providedBy(self.context)
-        
+
     # Helper methods
     def _lookupTypeActionTemplate(self, actionId):
         context = aq_inner(self.context)
