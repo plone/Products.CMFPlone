@@ -157,7 +157,7 @@
     <browser:viewlet
         name="plone.contentviews"
         manager=".interfaces.IContentViews"
-        template="contentviews.pt"
+        class=".common.ContentViewsViewlet"
         permission="zope2.View"
         />
 

@@ -1,9 +1,9 @@
-<div i18n:domain="plone" 
+<div i18n:domain="plone"
      tal:omit-tag=""
      tal:define="ploneview context/@@plone;"
      tal:condition="ploneview/showEditableBorder">
 
-    <tal:block define="view_actions ploneview/prepareObjectTabs;">
+    <tal:block define="view_actions view/prepareObjectTabs;">
 
         <h5 class="hiddenStructure"
             tal:condition="view_actions"
@@ -27,7 +27,6 @@
             </tal:views>
 
         </ul>
-        
-    </tal:block>
 
+    </tal:block>
 </div>

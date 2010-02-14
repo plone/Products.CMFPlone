@@ -4,6 +4,10 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
+- Moved the prepareObjectTabs method from the @@plone view to the contentviews
+  viewlet and introduced a class for the viewlet.
+  [hannosch]
+
 - Introduce a new @@plone_layout globals view, which contains methods from the
   @@plone view and which were commonly overridden to change layout policies.
   [hannosch]
