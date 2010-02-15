@@ -134,7 +134,7 @@ def WysiwygEditorWidget(field, request):
 
     widget = DropdownWidget(field, field.vocabulary, request)
     widget._messageNoValue = _(u"vocabulary-available-editor-novalue",
-                        u"None")
+                        u"Use site default")
     return widget
 
 class PersonalPreferencesPanel(AccountPanelForm):
