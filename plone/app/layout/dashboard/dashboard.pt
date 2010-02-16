@@ -29,8 +29,7 @@
                                 name python:memberinfo['fullname'] or member.getId() or member.getId();
                                 portal_url context/portal_url">
 
-<div id="portal-column-content" class="cell width-full position-0">
-    <div id="region-content" class="documentEditable">
+
 
         <div id="edit-bar" tal:condition="view/can_edit">
             <h5 class="hiddenStructure">Views</h5>
@@ -53,46 +52,43 @@
               &nbsp;
             </div>
         </div>
+        
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+            Portal status message
+        </div>
+        <dl tal:condition="python:view.empty() and view.can_edit()"
+            class="portalMessage info visualClear" id="dashboard-info-message">
+            <dt i18n:translate="">Info</dt>
+            <dd i18n:translate="info_empty_dashboard">
+                Your dashboard is currently empty. Click the 
+                <em>edit</em> tab to assign some personal 
+                portlets.
+            </dd>
+        </dl>
 
         <div id="content">
-
-            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-                Portal status message
-            </div>
             
             <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
                 <span tal:replace="name" i18n:name="user_name" />&#8217;s dashboard
             </h1>
             
-            <dl  tal:condition="python:view.empty() and view.can_edit()"
-                class="portalMessage info visualClear" id="dashboard-info-message">
-                <dt i18n:translate="">Info</dt>
-                <dd i18n:translate="info_empty_dashboard">
-                    Your dashboard is currently empty. Click the 
-                    <em>edit</em> tab to assign some personal 
-                    portlets.
-                </dd>
-            </dl>
-                
-            <div id="dashboard">
-                
+            <div id="content-core">                
+                <div id="dashboard">                
+                    <div class="visualClear"><!-- --></div>
+                    <div id="dashboard-portlets1" 
+                      tal:content="structure provider:plone.dashboard1" />
+                    <div id="dashboard-portlets2" 
+                      tal:content="structure provider:plone.dashboard2" />
+                    <div id="dashboard-portlets3" 
+                      tal:content="structure provider:plone.dashboard3" />
+                    <div id="dashboard-portlets4" 
+                      tal:content="structure provider:plone.dashboard4" />
+                </div>
                 <div class="visualClear"><!-- --></div>
-                <div id="dashboard-portlets1" 
-                  tal:content="structure provider:plone.dashboard1" />
-                <div id="dashboard-portlets2" 
-                  tal:content="structure provider:plone.dashboard2" />
-                <div id="dashboard-portlets3" 
-                  tal:content="structure provider:plone.dashboard3" />
-                <div id="dashboard-portlets4" 
-                  tal:content="structure provider:plone.dashboard4" />
             </div>
-            <div class="visualClear"><!-- --></div>
         </div>
 
-    </div>
-</div> <!-- end simulated tabs -->
     </tal:main-macro>
-
 </metal:main>
 
 </body>

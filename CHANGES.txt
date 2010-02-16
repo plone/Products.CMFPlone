@@ -4,6 +4,10 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
+- Updated dashboard.pt to follow recent markup conventions.
+  References http://dev.plone.org/old/plone/ticket/9981
+  [spliter]
+
 - Moved condition for .contentViews and .contentActions to div#edit-bar to not
   include #edit-bar in tabs should not be rendered.
   [spliter]
