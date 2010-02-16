@@ -32,28 +32,26 @@
 <div id="portal-column-content" class="cell width-full position-0">
     <div id="region-content" class="documentEditable">
 
-        <div id="edit-bar">
-            <tal:tabs condition="view/can_edit">
-                <h5 class="hiddenStructure">Views</h5>
+        <div id="edit-bar" tal:condition="view/can_edit">
+            <h5 class="hiddenStructure">Views</h5>
 
-                <ul id="content-views"
-                    class="contentViews">
-                  <li class="selected">
-                    <a href=""
-                       tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
-                       i18n:translate="label_dashboard">Dashboard</a>
-                  </li>
-                  <li>
-                    <a href=""
-                       tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
-                       i18n:translate="label_edit">Edit</a>
-                  </li>
-                </ul>
+            <ul id="content-views"
+                class="contentViews">
+              <li class="selected">
+                <a href=""
+                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
+                   i18n:translate="label_dashboard">Dashboard</a>
+              </li>
+              <li>
+                <a href=""
+                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
+                   i18n:translate="label_edit">Edit</a>
+              </li>
+            </ul>
 
-                <div class="contentActions" tal:condition="view/can_edit">
-                  &nbsp;
-                </div>
-            </tal:tabs>
+            <div class="contentActions" tal:condition="view/can_edit">
+              &nbsp;
+            </div>
         </div>
 
         <div id="content">
