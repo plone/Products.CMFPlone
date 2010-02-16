@@ -2,7 +2,7 @@
    i18n:domain="plone"
    tal:define="url view/current_page_url">
   <a accesskey="2"
-     tal:attributes="href string:${url}#documentContent"
+     tal:attributes="href string:${url}#content"
      i18n:translate="label_skiptocontent">Skip to content.</a> |
 
   <a accesskey="6"

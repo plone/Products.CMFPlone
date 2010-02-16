@@ -57,10 +57,8 @@
             </tal:tabs>
         </div>
 
-        <div id="content" tal:attributes="class python:view.can_edit() and 'documentContent' or nothing">
+        <div id="content">
 
-            <a name="documentContent"></a>
-                    
             <div metal:use-macro="context/global_statusmessage/macros/portal_message">
                 Portal status message
             </div>
