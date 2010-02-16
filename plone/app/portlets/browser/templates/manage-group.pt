@@ -17,9 +17,8 @@
 </head>
 
 <body>
-<div metal:fill-slot="content">
+<metal:main fill-slot="content">
 
-    <div id="region-content" class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <div id="edit-bar">
@@ -50,14 +49,13 @@
           &nbsp;
         </div>
     </div>
+    
+    <div metal:use-macro="here/global_statusmessage/macros/portal_message">
+      Portal status message
+    </div>
+    
     <div id="content">
-
-      <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-        Portal status message
-      </div>
-
-      <div id="content">
-
+        
         <metal:block metal:define-macro="props" tal:omit-tag="">
 
           <h1 class="documentFirstHeading"
@@ -65,30 +63,30 @@
               Manage Group Portlets for
               <span i18n:name="group_name" tal:content="view/group">group</span>
           </h1>
+          
+          <div id="content-core">
+              <a href=""
+                   class="link-parent"
+                   tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
+                   i18n:translate="label_up_to_groups_overview">
+                Up to Groups Overview
+              </a>
 
-          <a href=""
-               class="link-parent"
-               tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
-               i18n:translate="label_up_to_groups_overview">
-            Up to Groups Overview
-          </a>
+              <p i18n:translate="description_manage_group_portlets">
+                The left and right portlet slots will now display only those portlets
+                assigned to this group. Use the up, down, delete and edit links
+                to manage user portlets. Use the drop-down list to add new portlets.
+              </p>
 
-          <p i18n:translate="description_manage_group_portlets">
-            The left and right portlet slots will now display only those portlets
-            assigned to this group. Use the up, down, delete and edit links
-            to manage user portlets. Use the drop-down list to add new portlets.
-          </p>
-
-          <p i18n:translate="description_group_portlets_below">
-            Note that group portlets are normally rendered below context portlets.
-          </p>
+              <p i18n:translate="description_group_portlets_below">
+                Note that group portlets are normally rendered below context portlets.
+              </p>
+          </div>
 
         </metal:block>
 
-      </div>
     </div>
-  </div>
 
-</div>
+</metal:main>
 </body>
 </html>
