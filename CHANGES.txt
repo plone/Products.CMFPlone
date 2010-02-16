@@ -4,6 +4,10 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
+- Disabled columns in dashboard.pt with REQUEST variables according to the
+  recent conventions.
+  [spliter]
+
 - Removing redundant .documentContent markup. 
   This refs http://dev.plone.org/plone/ticket/10231.
   [limi]

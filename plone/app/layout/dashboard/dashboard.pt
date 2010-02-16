@@ -8,7 +8,9 @@
 
 <head>
     <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1)" />
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 </head>
 
 <body>
@@ -19,9 +21,6 @@
     tabs. This also means that we have to supply things that are normally
     present from main_template.
 </tal:comment>
-
-<metal:left fill-slot="column_one_slot" />
-<metal:right fill-slot="column_two_slot" />
 
 <metal:main fill-slot="content">
     <tal:main-macro metal:define-macro="main"
