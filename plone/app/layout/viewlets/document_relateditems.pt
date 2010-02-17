@@ -16,13 +16,12 @@
         <tal:related repeat="item related">
             <li tal:define="
                     desc                item/Description;
-                    item_type           item/portal_type;
                     item_icon           python:ploneview.getIcon(item);
                     item_type           item/portal_type;
                     item_type_class     python:'contenttype-' + normalizeString(item_type);
                     item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
                     item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
-                    item_url            item/absolute_url;
+                    item_url            item/getURL|item/absolute_url;
                     item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url">
                 <span tal:attributes="class item_type_class">
                     <img tal:replace="structure item_icon/html_tag" />

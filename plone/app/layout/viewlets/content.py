@@ -111,22 +111,14 @@ class ContentRelatedItems(ViewletBase):
 
     def related_items(self):
         context = aq_inner(self.context)
-        if getattr(aq_base(context), 'getRelatedItems', None) is None:
-            return None
-
+        catalog = getToolByName(context, 'portal_catalog')
         res = []
-        related = context.getRelatedItems()
-
-        for d in range(len(related)):
-            try:
-                obj = related[d]
-            except Unauthorized:
-                continue
-            if obj not in res:
-                if _checkPermission('View', obj):
-                    res.append(obj)
-        if len(res) == 0:
-            return None
+        if base_hasattr(context, 'getRawRelatedItems'):
+            # Get the brains one-by-one to keep the ordering in tact
+            for uid in context.getRawRelatedItems():
+                brains = catalog(UID=uid)
+                if brains:
+                    res.append(brains[0])
         return res
 
 

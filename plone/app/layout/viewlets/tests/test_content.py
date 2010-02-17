@@ -1,6 +1,7 @@
 import unittest
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.content import DocumentBylineViewlet
+from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.locking.tests import addMember
 from plone.locking.interfaces import ILockable
 
@@ -42,7 +43,25 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
 title="Locked" height="16" width="16" />'
         self.assertEqual(viewlet.locked_icon(), lockIconUrl)
 
+
+class TestRelatedItemsViewlet(ViewletsTestCase):
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
+        self.folder.invokeFactory('Document', 'doc2', title='Document 2')
+        self.folder.invokeFactory('Document', 'doc3', title='Document 3')
+        self.folder.doc1.setRelatedItems([self.folder.doc2, self.folder.doc3])
+
+    def testRelatedItems(self):
+        request = self.app.REQUEST
+        viewlet = ContentRelatedItems(self.folder.doc1, request, None, None)
+        viewlet.update()
+        related = viewlet.related_items()
+        self.assertEqual([x.Title for x in related], ['Document 2', 'Document 3'])
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestDocumentBylineViewletView))
+    suite.addTest(unittest.makeSuite(TestRelatedItemsViewlet))
     return suite

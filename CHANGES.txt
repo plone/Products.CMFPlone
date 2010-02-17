@@ -4,6 +4,10 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
+- Speed up related items viewlet by returning catalog brains instead of
+  full objects.
+  [stefan]
+
 - Updated dashboard.pt to follow recent markup conventions.
   References http://dev.plone.org/old/plone/ticket/9981
   [spliter]
