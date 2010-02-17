@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b3 - Unreleased
+2.0b3 - 2010-02-17
 ------------------
 
 - Speed up related items viewlet by returning catalog brains instead of
