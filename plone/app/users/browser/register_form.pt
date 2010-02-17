@@ -12,26 +12,27 @@
 </head>
 
 <body>
-    <div metal:fill-slot="body" id="content">
-    
-        <tal:mailhost tal:condition="view/showForm">
-            <div metal:use-macro="context/base-pageform.html/form" />
-        </tal:mailhost>
+    <metal:body fill-slot="body">
+        
+        <div id="content">    
+            <tal:mailhost tal:condition="view/showForm">
+                <div metal:use-macro="context/base-pageform.html/form" />
+            </tal:mailhost>
 
-        <tal:nomailhost tal:condition="not:view/showForm">
-            <div metal:fill-slot="main">
+            <tal:nomailhost tal:condition="not:view/showForm">
+            
                 <h1 class="documentFirstHeading"
                     i18n:translate=""
                     tal:content="view/label" />
 
-                <p class="documentDescription">
+                <div class="documentDescription">
                     This site doesn't have a valid email setup, so you
                     cannot register at this time.
-                </p>                
-            </div>
-        </tal:nomailhost>
+                </div>
+                            
+            </tal:nomailhost>
+        </div>
 
-
-    </div>
+    </metal:body>
 </body>
 </html>
