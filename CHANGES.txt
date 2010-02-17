@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 - Updated @@manage-group-dashboard to the recent markup conventions.
-  References http://dev.plone.org/plone/ticket/9981 and 
+  References http://dev.plone.org/plone/ticket/9981 and
   http://dev.plone.org/plone/ticket/10231
   [spliter]
 
@@ -14,11 +14,11 @@ Changelog
   References http://dev.plone.org/old/plone/ticket/9981
   [spliter]
 
-- Removing redundant .documentContent markup. 
+- Removing redundant .documentContent markup.
   This refs http://dev.plone.org/plone/ticket/10231.
   [limi]
 
-- Changed "manage portlets"-related templates to use markup according 
+- Changed "manage portlets"-related templates to use markup according
   to the recent conventions.
   References http://dev.plone.org/plone/ticket/9981
   [spliter]
@@ -81,9 +81,9 @@ Changelog
 - Fix XML validation for RSS portlets
   [matthewwilkes]
 
-- Support local navigation root (INavigationRoot) for the previous 
+- Support local navigation root (INavigationRoot) for the previous
   events link in events portlet.
-  Fixes http://dev.plone.org/plone/ticket/9246 
+  Fixes http://dev.plone.org/plone/ticket/9246
   http://dev.plone.org/plone/ticket/9668
   [pelle]
 
@@ -111,7 +111,7 @@ Changelog
   [hannosch]
 
 - Added translations for Show/Hide labels in @@manage-portlets view:
-  label_show_item and label_hide_item. These msgids are shared with 
+  label_show_item and label_hide_item. These msgids are shared with
   @@manage-viewlets view to show/hide viewlets. This closes
   http://dev.plone.org/plone/ticket/9733
   [naro]
@@ -161,7 +161,7 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/9047
   [lzdych]
 
-- Navigation(s) some time disappeared when dealing with multiple navigations 
+- Navigation(s) some time disappeared when dealing with multiple navigations
   pointing to roots with common starting ids like: "abc", "abcde", "abcdefg".
   Thanks to keul for patch.
   Fixes http://dev.plone.org/plone/ticket/9405
@@ -183,7 +183,7 @@ Changelog
 -------------------
 
 - Fix ComponentLookupError on portlet management screen for special use cases
-  such as collective.portletpage, where not all content have the same 
+  such as collective.portletpage, where not all content have the same
   managers.
   [optilude]
 
@@ -212,7 +212,7 @@ Changelog
 1.2b1 - March 7, 2009
 ---------------------
 
-- Fixed the various portlets to no longer use portal_url, but use the 
+- Fixed the various portlets to no longer use portal_url, but use the
   navigation_root_url from the plone_portal_state view. Changed the
   manage-dashboard view to be available on an INavigationRoot.
   This implements http://plone.org/products/plone/roadmap/234
@@ -239,7 +239,7 @@ Changelog
 1.1.6 - 2009-03-07
 ------------------
 
-- Fixed new portlet template footer so it will validate, fixes 
+- Fixed new portlet template footer so it will validate, fixes
   http://dev.plone.org/plone/ticket/8769 thanks to bandigarf
   [calvinhp]
 
@@ -258,7 +258,7 @@ Changelog
 - Fixed SyntaxErrors in test_cache and test_configuration.
   [hannosch]
 
-- Fixed Review List template that was making a bad call to 
+- Fixed Review List template that was making a bad call to
   pretty_title_or_id. This closes http://dev.plone.org/plone/ticket/8401.
   [dunlapm]
 
@@ -290,9 +290,9 @@ Changelog
 1.1.2 (2008-06-01)
 ------------------
 
-- Fixed i18n markup. 
+- Fixed i18n markup.
   Fixes http://dev.plone.org/plone/ticket/7068#comment:4
-  [naro] 
+  [naro]
 
 - The portletNavigationTree class was used for both the dl and the top
   ul. This makes things inconsistent since other levels in the tree
@@ -317,7 +317,7 @@ Changelog
   errors in Philipp and Hanno's aq refactor branch of Zope2.
   [wichert]
 
-- Add a test to demonstrate #6100 and #7860. This is fixed in 
+- Add a test to demonstrate #6100 and #7860. This is fixed in
   plone.portlets already.
   [optilude]
 
@@ -466,7 +466,7 @@ Changelog
   This fixes http://dev.plone.org/plone/ticket/7515
   [wichert]
 
-- Provide proper 'id' implementations for assignment mappings and 
+- Provide proper 'id' implementations for assignment mappings and
   assignments. This makes absolute_url() work properly.
   [optilude]
 
@@ -478,7 +478,7 @@ Changelog
   situation where most users are anonymous and the the feeds would expire
   (or never be loaded) and never (re)loaded.
   [wichert]
-  
+
 - Add a language selection portlet.
   [wichert]
 
@@ -507,7 +507,7 @@ Changelog
 1.0
 ---
 
-- Add footer CSS classes to the search portlet. This fixes 
+- Add footer CSS classes to the search portlet. This fixes
   http://dev.plone.org/plone/ticket/6908.
   [wichert]
 
