@@ -4,20 +4,20 @@ Changelog
 2.0b2 - Unreleased
 ------------------
 
-- Updated 
+- Updated
     - usergroups_groupmembership.pt
     - usergroups_groupsoverview.pt
     - usergroups_usermembership.pt
     - usergroups_usersoverview.pt
     - usergroupssettings.pt
-  to the recent markup conventions. And got rid of redundant 
+  to the recent markup conventions. And got rid of redundant
   .documentContent/#region-content markup.
-  References 
+  References
   http://dev.plone.org/plone/ticket/9981
   http://dev.plone.org/plone/ticket/10231
   [spliter]
 
-- Removing redundant .documentContent markup. 
+- Removing redundant .documentContent markup.
   This refs http://dev.plone.org/plone/ticket/10231
   [limi]
 
@@ -49,19 +49,19 @@ Changelog
 - @@usergroup-userprefs now shows an icon to designate that the user has
   inherited that global role through group membership.
   [esteele]
-  
+
 - Display users in @@usergroup-userprefs by Fullname (user id).
-  [esteele] 
+  [esteele]
 
 - Add membershipSearch method to UsersGroupsControlPanelView. Will replace the
   soon-to-be-deprecated prefs_user_group_search.py from Plone's plone_prefs.
   [esteele]
 
 - Properly handle nesting of groups. UI now allows addition and display of
-  groups within other groups. 
+  groups within other groups.
   Closes http://dev.plone.org/plone/ticket/8556
   [esteele, cah190]
-  
+
 - @@usergroup-groupprefs now shows an icon to designate that the group has
   inherited that global role from another group.
   [esteele, cah190]
@@ -90,7 +90,7 @@ Changelog
 ------------------
 
 - Don't mark site.py's "default_editor" field as required as it's a select
-  field. 
+  field.
   [esteele]
 
 2.0a2 - 2009-12-03
@@ -99,18 +99,18 @@ Changelog
 - Adjusted filter controlpanel tests to new defaults in PortalTransforms.
   [hannosch]
 
-- Move prefs_navigation_form to plone.app.controlpanel as 
+- Move prefs_navigation_form to plone.app.controlpanel as
   @@navigation-controlpanel.
   [esteele]
 
-- "Users", "Groups" and "Settings" configlets' views are polished visually 
+- "Users", "Groups" and "Settings" configlets' views are polished visually
   to follow rest of configlets. Fixes #9825
   [spliter]
 
 - Point the users overview 'add user' button to the new @@new-user form.
   [esteele]
 
-- Rephrased debug-mode info. 
+- Rephrased debug-mode info.
   This closes http://dev.plone.org/plone/ticket/9788
   [naro]
 
@@ -187,7 +187,7 @@ Changelog
 1.2b1 - 2009-03-09
 ------------------
 
-- Add 'Redirect immediately to link target' option for Link type in Site 
+- Add 'Redirect immediately to link target' option for Link type in Site
   Settings Types
   [andrewb]
 
@@ -211,7 +211,7 @@ Changelog
   app in a couple of javascripts.
   [smcmahon]
 
-- 'Enable User Folders' in the security control panel supports 
+- 'Enable User Folders' in the security control panel supports
   create/delete a 'My Folder' link user action know from Plone 2.*
   http://dev.plone.org/plone/ticket/8417
   [pelle]
