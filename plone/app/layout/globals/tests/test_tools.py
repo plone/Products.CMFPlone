@@ -1,7 +1,6 @@
-import unittest
 from plone.app.layout.globals.tests.base import GlobalsTestCase
-
 from Products.CMFPlone.utils import getToolByName
+
 
 class TestToolsView(GlobalsTestCase):
     """Tests the global tools view.
@@ -34,7 +33,7 @@ class TestToolsView(GlobalsTestCase):
     def test_workflow(self):
         self.assertEquals(self.view.workflow(), getToolByName(self.folder, 'portal_workflow'))
 
+
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestToolsView))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

@@ -1,5 +1,3 @@
-import unittest
-
 from plone.portlets.interfaces import IPortletType
 from zope.component import getUtility
 
@@ -46,6 +44,5 @@ class TestLayoutView(GlobalsTestCase):
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestLayoutView))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

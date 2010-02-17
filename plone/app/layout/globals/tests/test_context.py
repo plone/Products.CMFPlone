@@ -1,10 +1,10 @@
-import unittest
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 
 from zope.interface import directlyProvides
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
 from plone.locking.interfaces import ILockable
+
 
 class TestContextStateView(GlobalsTestCase):
     """Ensure that the basic redirector setup is successful.
@@ -150,8 +150,8 @@ class TestContextStateView(GlobalsTestCase):
     def test_actions(self):
         actions = self.fview.actions('user')
         self.failUnless(actions[0]['category'] == 'user')
-    
+
+
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestContextStateView))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

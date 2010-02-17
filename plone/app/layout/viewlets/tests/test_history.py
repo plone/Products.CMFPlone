@@ -1,7 +1,7 @@
-import unittest
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.content import WorkflowHistoryViewlet
 from plone.app.layout.viewlets.content import ContentHistoryViewlet
+
 
 class TestWorkflowHistoryViewlet(ViewletsTestCase):
     """
@@ -92,7 +92,5 @@ class TestContentHistoryViewlet(ViewletsTestCase):
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestWorkflowHistoryViewlet))
-    suite.addTest(unittest.makeSuite(TestContentHistoryViewlet))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

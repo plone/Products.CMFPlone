@@ -1,6 +1,5 @@
 from gzip import GzipFile
 from StringIO import StringIO
-import unittest
 
 from zope.component import getMultiAdapter
 from zope.publisher.interfaces import INotFound
@@ -10,7 +9,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
-from plone.app.layout.sitemap.sitemap import SiteMapView
 
 setupPloneSite()
 
@@ -146,8 +144,8 @@ class SiteMapTestCase(PloneTestCase):
 
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)        
-        
+
+
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(SiteMapTestCase))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

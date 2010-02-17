@@ -1,5 +1,3 @@
-import unittest
-
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 from zope.interface import noLongerProvides
@@ -82,7 +80,5 @@ class TestContentViewsViewlet(ViewletsTestCase):
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestViewletBase))
-    suite.addTest(unittest.makeSuite(TestContentViewsViewlet))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

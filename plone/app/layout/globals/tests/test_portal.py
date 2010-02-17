@@ -1,8 +1,8 @@
-import unittest
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 
 from plone.app.layout.navigation.root import getNavigationRoot
 from zope.i18n.locales import locales
+
 
 class TestPortalStateView(GlobalsTestCase):
     """Ensure that the basic redirector setup is successful.
@@ -64,7 +64,7 @@ class TestPortalStateView(GlobalsTestCase):
         self.portal.portal_properties.site_properties.types_not_searched = ('Document',)
         self.failIf('Document' in self.view.friendly_types())
 
+
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestPortalStateView))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

@@ -1,8 +1,8 @@
-import unittest
 from DateTime import DateTime
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.comments import CommentsViewlet
 from Products.CMFCore.utils import getToolByName
+
 
 class TestCommentsViewletView(ViewletsTestCase):
     """Test the comments viewlet"""
@@ -40,7 +40,7 @@ class TestCommentsViewletView(ViewletsTestCase):
         time = DateTime('2009/10/20 15:00')
         self.assertEqual(viewlet.format_time(time), 'Oct 20, 2009 03:00 PM')
 
+
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestCommentsViewletView))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

@@ -1,9 +1,9 @@
-import unittest
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.locking.tests import addMember
 from plone.locking.interfaces import ILockable
+
 
 class TestDocumentBylineViewletView(ViewletsTestCase):
     """
@@ -61,7 +61,5 @@ class TestRelatedItemsViewlet(ViewletsTestCase):
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestDocumentBylineViewletView))
-    suite.addTest(unittest.makeSuite(TestRelatedItemsViewlet))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)

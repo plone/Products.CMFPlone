@@ -1,8 +1,8 @@
-import unittest
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.links.viewlets import RSSViewlet
 
 from Products.CMFCore.utils import getToolByName
+
 
 class TestRSSViewletView(ViewletsTestCase):
     """
@@ -35,6 +35,5 @@ class TestRSSViewletView(ViewletsTestCase):
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestRSSViewletView))
-    return suite
+    from unittest import defaultTestLoader
+    return defaultTestLoader.loadTestsFromName(__name__)
