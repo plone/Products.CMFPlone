@@ -13,9 +13,10 @@
             Generic KSS Title. Is rendered with class="documentFirstHeading".                    
         </h1>                                                                                    
 
-        <h2 i18n:translate="label_history">History</h2>
-
-        <div tal:content="structure here/@@contenthistory">Content History</div>
+        <div id="content-core">
+            <h2 i18n:translate="label_history">History</h2>
+            <div tal:content="structure here/@@contenthistory">Content History</div>
+        </div>
     </metal:main>
 
 </body>

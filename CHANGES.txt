@@ -4,6 +4,10 @@ Changelog
 2.0b4 - unreleased
 ------------------
 
+- Updated history_view.pt to the recent markup conventions.
+  References http://dev.plone.org/old/plone/ticket/9981
+  [spliter]
+
 
 2.0b3 - 2010-02-17
 ------------------
