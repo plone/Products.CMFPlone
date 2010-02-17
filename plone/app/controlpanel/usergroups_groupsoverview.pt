@@ -11,7 +11,7 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_content"
+<metal:main fill-slot="prefs_configlet_content"
      tal:define="template_id string:@@usergroup-groupprefs;
                  errors python:request.get('errors', {});
                  Batch python:modules['Products.CMFPlone'].Batch;
@@ -23,7 +23,6 @@
                  portal_url context/portal_url;">
 
 
-    <div id="region-content" class="documentEditable">
 
         <div id="edit-bar">
            <ul class="contentViews" id="content-views">
@@ -48,30 +47,21 @@
                    i18n:translate="label_member_registration">Member Registration</a>
               </li>
            </ul>
+           <div class="contentActions">
+             &nbsp;
+           </div>
         </div>
 
-        <div class="contentActions">
-          &nbsp;
-        </div>
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+            Portal status message
+        </div>        
 
         <div id="content">
 
-            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-                Portal status message
-            </div>
-
-            <div class="configlet">
                 <h1 class="documentFirstHeading"
                     i18n:translate="heading_groups_overview">Groups Overview</h1>
-
-                <a href=""
-                   class="link-parent"
-                   tal:attributes="href string:$portal_url/plone_control_panel"
-                   i18n:translate="label_up_to_plone_setup">
-                  Up to Site Setup
-                </a>
-
-                <p i18n:translate="description_groups_management"
+                
+                <div class="documentDescription" i18n:translate="description_groups_management"
                    class="discreet">
                     Groups are logical collections of users, such as
                     departments and business units. Groups are not directly
@@ -81,187 +71,195 @@
                      <img i18n:name="image_link_icon"
                           tal:replace="structure context/site_icon.gif" />
                     indicates a role inherited from membership in another group.
-                </p>
-
-                <p i18n:translate="description_pas_group_listing"
+                </div>
+                
+                <div class="documentDescription" i18n:translate="description_pas_group_listing"
                    tal:condition="python:not (view.many_groups or view.searchString) and not context.acl_users.canListAllGroups()">
                     Note: Some or all of your PAS groups
                     source plugins do not allow listing of groups, so you
                     may not see the groups defined by those plugins unless
                     doing a specific search.
-                </p>
+                </div>
 
-                <form action=""
-                      name="groups_add"
-                      method="post"
-                      tal:attributes="action string:$portal_url/prefs_group_details">
+                <div id="content-core">
+                    <a href=""
+                       class="link-parent"
+                       tal:attributes="href string:$portal_url/plone_control_panel"
+                       i18n:translate="label_up_to_plone_setup">
+                      Up to Site Setup
+                    </a>
 
-                    <input type="hidden" name="form.submitted" value="1" />
+                    <form action=""
+                          name="groups_add"
+                          method="post"
+                          tal:attributes="action string:$portal_url/prefs_group_details">
 
-                    <input class="standalone add"
-                           type="submit"
-                           name="form.button.AddGroup"
-                           value="Add New Group"
-                           i18n:attributes="value label_add_new_group;"
-                           />
-                </form>
+                        <input type="hidden" name="form.submitted" value="1" />
 
-                <form action=""
-                      name="groups_search"
-                      method="post"
-                      tal:attributes="action string:$template_id">
-
-                    <input type="hidden" name="form.submitted" value="1" />
-
-                    <input type="hidden" value="b_start" name="b_start"
-                           tal:attributes="value b_start"/>
-
-                    <table class="listing"
-                           summary="Select roles for each group"
-                           i18n:attributes="summary summary_roles_for_groups;">
-                        <tbody>
-                            <tr class="odd">
-                                <th colspan="6"
-                                    tal:attributes="colspan python:len(portal_roles)+2">
-
-                                    <span tal:omit-tag=""
-                                          i18n:translate="label_group_search">
-                                        Group Search
-                                    </span>
-
-                                    <input class="quickSearch"
-                                           type="text"
-                                           name="searchstring"
-                                           value=""
-                                           tal:attributes="value view/searchString;"
-                                           />
-
-                                    <input type="submit"
-                                           class="searchButton"
-                                           name="form.button.Search"
-                                           value="Search"
-                                           i18n:attributes="value label_search;"
-                                           />
-
-                                    <input type="submit"
-                                           class="searchButton"
-                                           name="form.button.FindAll"
-                                           value="Show all"
-                                           i18n:attributes="value label_showall;"
-                                           tal:condition="not:site_properties/many_groups"
-                                           />
-
-                                </th>
-                            </tr>
-
-                            <tal:block tal:condition="search_results">
-                            <tr class="odd">
-                                <th rowspan="2"
-                                    i18n:translate="listingheader_group_name">
-                                    Group name
-                                </th>
-
-                                <th colspan="3"
-                                    tal:attributes="colspan python:len(portal_roles)"
-                                    i18n:translate="listingheader_roles">
-                                    Roles
-                                </th>
-
-                                <th rowspan="2"
-                                    i18n:translate="listingheader_remove_group">
-                                    Remove Group
-                                </th>
-                            </tr>
-
-                            <tr class="odd">
-                                <tal:header repeat="portal_role portal_roles">
-                                    <th tal:content="portal_role"
-                                        i18n:translate="">
-                                        Role
-                                    </th>
-                                </tal:header>
-                            </tr>
-
-                            <tal:block repeat="group_info batch">
-                            <tr tal:define="oddrow repeat/group_info/odd;"
-                                tal:attributes="class python:oddrow and 'odd' or 'even'">
-
-                                <td>
-                                    <input type="hidden"
-                                           name=""
-                                           tal:attributes="name string:group_${group_info/groupid}:list"
-                                           value=""
-                                           />
-
-                                    <a href="#"
-                                       tal:attributes="href python:portal_url+'/@@usergroup-groupmembership?'+view.makeQuery(groupname=group_info['groupid']);
-                                                       title group_info/description|string:''">
-                                       <tal:block replace="structure context/portal_url/group.png" />&nbsp;
-                                       <tal:group tal:replace="group_info/title" /> (<tal:id tal:replace="group_info/groupid" />)
-                                   </a>
-                                </td>
-
-                                <td class="listingCheckbox"
-                                    tal:repeat="portal_role portal_roles">
-                                    <input type="checkbox"
-                                           class="noborder"
-                                           name="name"
-                                           value="Manager"
-                                           tal:condition="python:not group_info['roles'][portal_role]['inherited']"
-                                           tal:attributes="name string:group_${group_info/groupid}:list;
-                                                           value portal_role;
-                                                           checked python:'checked' if group_info['roles'][portal_role]['explicit'] else nothing;
-                                                           disabled python:default if group_info['roles'][portal_role]['canAssign'] else 'disabled'"
-                                           />
-
-                                   <img tal:condition="python:group_info['roles'][portal_role]['inherited']" tal:replace="structure context/site_icon.gif" />
-                                </td>
-
-                                <td class="listingCheckbox">
-                                    <input type="checkbox"
-                                           class="noborder notify"
-                                           name="delete:list"
-                                           value="value"
-                                           tal:attributes="value group_info/groupid;
-                                                           disabled python:default if group_info['can_delete'] else 'disabled'"
-                                           />
-                                </td>
-                            </tr>
-                            </tal:block>
-
-                            </tal:block>
-
-                            <tal:block tal:condition="python:(view.searchString and not search_results)">
-                            <tr>
-                                <td i18n:translate="text_nomatches"
-                                    style="text-align:center;">
-                                    No matches
-                                </td>
-                            </tr>
-                            </tal:block>
-                        </tbody>
-                    </table>
-
-                    <tal:block tal:condition="python:(search_results)">
-
-                        <div metal:use-macro="context/batch_macros/macros/navigation" />
-
-                        <input class="context"
+                        <input class="standalone add"
                                type="submit"
-                               name="form.button.Modify"
-                               value="Apply Changes"
-                               i18n:attributes="value label_apply_changes;"
+                               name="form.button.AddGroup"
+                               value="Add New Group"
+                               i18n:attributes="value label_add_new_group;"
                                />
-                    </tal:block>
+                    </form>
 
-                    <input tal:replace="structure context/@@authenticator/authenticator" />
+                    <form action=""
+                          name="groups_search"
+                          method="post"
+                          tal:attributes="action string:$template_id">
 
-                </form>
-            </div>
+                        <input type="hidden" name="form.submitted" value="1" />
+
+                        <input type="hidden" value="b_start" name="b_start"
+                               tal:attributes="value b_start"/>
+
+                        <table class="listing"
+                               summary="Select roles for each group"
+                               i18n:attributes="summary summary_roles_for_groups;">
+                            <tbody>
+                                <tr class="odd">
+                                    <th colspan="6"
+                                        tal:attributes="colspan python:len(portal_roles)+2">
+
+                                        <span tal:omit-tag=""
+                                              i18n:translate="label_group_search">
+                                            Group Search
+                                        </span>
+
+                                        <input class="quickSearch"
+                                               type="text"
+                                               name="searchstring"
+                                               value=""
+                                               tal:attributes="value view/searchString;"
+                                               />
+
+                                        <input type="submit"
+                                               class="searchButton"
+                                               name="form.button.Search"
+                                               value="Search"
+                                               i18n:attributes="value label_search;"
+                                               />
+
+                                        <input type="submit"
+                                               class="searchButton"
+                                               name="form.button.FindAll"
+                                               value="Show all"
+                                               i18n:attributes="value label_showall;"
+                                               tal:condition="not:site_properties/many_groups"
+                                               />
+
+                                    </th>
+                                </tr>
+
+                                <tal:block tal:condition="search_results">
+                                <tr class="odd">
+                                    <th rowspan="2"
+                                        i18n:translate="listingheader_group_name">
+                                        Group name
+                                    </th>
+
+                                    <th colspan="3"
+                                        tal:attributes="colspan python:len(portal_roles)"
+                                        i18n:translate="listingheader_roles">
+                                        Roles
+                                    </th>
+
+                                    <th rowspan="2"
+                                        i18n:translate="listingheader_remove_group">
+                                        Remove Group
+                                    </th>
+                                </tr>
+
+                                <tr class="odd">
+                                    <tal:header repeat="portal_role portal_roles">
+                                        <th tal:content="portal_role"
+                                            i18n:translate="">
+                                            Role
+                                        </th>
+                                    </tal:header>
+                                </tr>
+
+                                <tal:block repeat="group_info batch">
+                                <tr tal:define="oddrow repeat/group_info/odd;"
+                                    tal:attributes="class python:oddrow and 'odd' or 'even'">
+
+                                    <td>
+                                        <input type="hidden"
+                                               name=""
+                                               tal:attributes="name string:group_${group_info/groupid}:list"
+                                               value=""
+                                               />
+
+                                        <a href="#"
+                                           tal:attributes="href python:portal_url+'/@@usergroup-groupmembership?'+view.makeQuery(groupname=group_info['groupid']);
+                                                           title group_info/description|string:''">
+                                           <tal:block replace="structure context/portal_url/group.png" />&nbsp;
+                                           <tal:group tal:replace="group_info/title" /> (<tal:id tal:replace="group_info/groupid" />)
+                                       </a>
+                                    </td>
+
+                                    <td class="listingCheckbox"
+                                        tal:repeat="portal_role portal_roles">
+                                        <input type="checkbox"
+                                               class="noborder"
+                                               name="name"
+                                               value="Manager"
+                                               tal:condition="python:not group_info['roles'][portal_role]['inherited']"
+                                               tal:attributes="name string:group_${group_info/groupid}:list;
+                                                               value portal_role;
+                                                               checked python:'checked' if group_info['roles'][portal_role]['explicit'] else nothing;
+                                                               disabled python:default if group_info['roles'][portal_role]['canAssign'] else 'disabled'"
+                                               />
+
+                                       <img tal:condition="python:group_info['roles'][portal_role]['inherited']" tal:replace="structure context/site_icon.gif" />
+                                    </td>
+
+                                    <td class="listingCheckbox">
+                                        <input type="checkbox"
+                                               class="noborder notify"
+                                               name="delete:list"
+                                               value="value"
+                                               tal:attributes="value group_info/groupid;
+                                                               disabled python:default if group_info['can_delete'] else 'disabled'"
+                                               />
+                                    </td>
+                                </tr>
+                                </tal:block>
+
+                                </tal:block>
+
+                                <tal:block tal:condition="python:(view.searchString and not search_results)">
+                                <tr>
+                                    <td i18n:translate="text_nomatches"
+                                        style="text-align:center;">
+                                        No matches
+                                    </td>
+                                </tr>
+                                </tal:block>
+                            </tbody>
+                        </table>
+
+                        <tal:block tal:condition="python:(search_results)">
+
+                            <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+                            <input class="context"
+                                   type="submit"
+                                   name="form.button.Modify"
+                                   value="Apply Changes"
+                                   i18n:attributes="value label_apply_changes;"
+                                   />
+                        </tal:block>
+
+                        <input tal:replace="structure context/@@authenticator/authenticator" />
+
+                    </form>
+                </div>
         </div>
-    </div>
 
-</div>
+
+</metal:main>
 
 </body>
 </html>
