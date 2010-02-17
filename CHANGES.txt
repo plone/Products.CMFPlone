@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b2 - Unreleased
+2.0b2 - 2010-02-17
 ------------------
 
 - Updated
