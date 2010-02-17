@@ -4,6 +4,11 @@ Changelog
 2.0b4 - Unreleased
 ------------------
 
+- Updated @@manage-group-dashboard to the recent markup conventions.
+  References http://dev.plone.org/plone/ticket/9981 and 
+  http://dev.plone.org/plone/ticket/10231
+  [spliter]
+
 - Updated manage-dashboard.pt and manage-group.pt to use the recent markup
   conventions.
   References http://dev.plone.org/old/plone/ticket/9981

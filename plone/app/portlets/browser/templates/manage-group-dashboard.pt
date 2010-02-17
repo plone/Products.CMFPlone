@@ -19,9 +19,7 @@
 <body>
 <metal:main fill-slot="prefs_configlet_content"
     tal:define="errors options/state/getErrors | nothing">
-<tal:main-macro metal:define-macro="main">
-
-    <div id="region-content" class="documentEditable">
+    <tal:main-macro metal:define-macro="main">
 
         <div id="edit-bar">
             <ul id="content-views" class="contentViews">
@@ -52,37 +50,39 @@
             </div>
         </div>
 
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+            Portal status message
+        </div>
+        
         <div id="content">
-
-            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-                Portal status message
-            </div>
 
             <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard_group">
                 Edit Dashboard Portlets for <span i18n:name="group" tal:content="view/group" />
             </h1>
 
-            <a href=""
-               class="link-parent"
-               tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
-               i18n:translate="label_up_to_groups_overview">
-                Up to Groups Overview
-            </a>
+            <div id="content-core">
+                <a href=""
+                   class="link-parent"
+                   tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
+                   i18n:translate="label_up_to_groups_overview">
+                    Up to Groups Overview
+                </a>
 
-            <div id="dashboard">
-                <div id="dashboard-portlets1"
-                  tal:content="structure provider:plone.dashboard1" />
-                <div id="dashboard-portlets2"
-                  tal:content="structure provider:plone.dashboard2" />
-                <div id="dashboard-portlets3"
-                  tal:content="structure provider:plone.dashboard3" />
-                <div id="dashboard-portlets4"
-                  tal:content="structure provider:plone.dashboard4" />
+                <div id="dashboard">
+                    <div id="dashboard-portlets1"
+                      tal:content="structure provider:plone.dashboard1" />
+                    <div id="dashboard-portlets2"
+                      tal:content="structure provider:plone.dashboard2" />
+                    <div id="dashboard-portlets3"
+                      tal:content="structure provider:plone.dashboard3" />
+                    <div id="dashboard-portlets4"
+                      tal:content="structure provider:plone.dashboard4" />
+                </div>
+
+                <div class="visualClear"><!-- --></div>
             </div>
-
-            <div class="visualClear"><!-- --></div>
-
-    </div> <!-- end simulated tabs -->
+            
+        </div>
 
     </tal:main-macro>
 
