@@ -1,17 +1,17 @@
 Changelog
 =========
 
-2.0b4 - Unreleased
+2.0b4 - 2010-02-17
 ------------------
 
 - Updated @@manage-group-dashboard to the recent markup conventions.
   References http://dev.plone.org/plone/ticket/9981 and
-  http://dev.plone.org/plone/ticket/10231
+  http://dev.plone.org/plone/ticket/10231.
   [spliter]
 
 - Updated manage-dashboard.pt and manage-group.pt to use the recent markup
   conventions.
-  References http://dev.plone.org/old/plone/ticket/9981
+  References http://dev.plone.org/old/plone/ticket/9981.
   [spliter]
 
 - Removing redundant .documentContent markup.
@@ -20,7 +20,7 @@ Changelog
 
 - Changed "manage portlets"-related templates to use markup according
   to the recent conventions.
-  References http://dev.plone.org/plone/ticket/9981
+  References http://dev.plone.org/plone/ticket/9981.
   [spliter]
 
 - Change language portlet to call update() on LanguageSelector.
