@@ -5,10 +5,9 @@
       metal:use-macro="context/main_template/macros/master">
 
 <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1)" />
-
-<div metal:fill-slot="portlets_one_slot">&nbsp;</div>
-<div metal:fill-slot="portlets_two_slot">&nbsp;</div>
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 
 <body>
 <metal:main fill-slot="main">
