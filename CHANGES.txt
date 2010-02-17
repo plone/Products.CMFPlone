@@ -4,6 +4,10 @@ Changelog
 1.0b4 - Unreleased
 ------------------
 
+- Updated memberregistration.pt to recent markup conventions.
+  References http://dev.plone.org/old/plone/ticket/9981
+  [spliter]
+
 - Fixed @@register by removing unnecessary fill-slot outside of a fill-macro.
   [spliter]
 
