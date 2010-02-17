@@ -27,7 +27,7 @@
                     <img tal:replace="structure item_icon/html_tag" />
                     <a href="" class=""
                        tal:attributes="href  item_url;
-                                       title item/Description;
+                                       title desc;
                                        class string:$item_wf_state_class"
                        tal:content="item/pretty_title_or_id">
                         Related Item

@@ -111,14 +111,19 @@ class ContentRelatedItems(ViewletBase):
 
     def related_items(self):
         context = aq_inner(self.context)
-        catalog = getToolByName(context, 'portal_catalog')
-        res = []
+        res = ()
         if base_hasattr(context, 'getRawRelatedItems'):
-            # Get the brains one-by-one to keep the ordering in tact
-            for uid in context.getRawRelatedItems():
-                brains = catalog(UID=uid)
-                if brains:
-                    res.append(brains[0])
+            catalog = getToolByName(context, 'portal_catalog')
+            related = context.getRawRelatedItems()
+            if not related:
+                return ()
+            brains = catalog(UID=related)
+            if brains:
+               res = list(brains)
+               # We need to keep the ordering intact
+               def _key(brain):
+                   return related.index(brain.UID)
+               res.sort(key=_key)
         return res
 
 
