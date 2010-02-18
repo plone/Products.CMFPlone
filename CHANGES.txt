@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b3 - unreleased
+2.0b3 - 2010-02-18
 ------------------
 
 - Updated usergroups* templates to the recent markup conventions.
