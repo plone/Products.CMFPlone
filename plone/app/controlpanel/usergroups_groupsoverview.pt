@@ -11,7 +11,7 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_content"
+<metal:main fill-slot="prefs_configlet_content"
      tal:define="template_id string:@@usergroup-groupprefs;
                  errors python:request.get('errors', {});
                  Batch python:modules['Products.CMFPlone'].Batch;
@@ -48,22 +48,18 @@
                    i18n:translate="label_member_registration">Member Registration</a>
               </li>
            </ul>
+          <div class="contentActions">&nbsp;</div>
         </div>
 
-        <div class="contentActions">
-          &nbsp;
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+            Portal status message
         </div>
 
         <div id="content">
+            <h1 class="documentFirstHeading"
+                i18n:translate="heading_groups_overview">Groups Overview</h1>
 
-            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-                Portal status message
-            </div>
-
-            <div class="configlet">
-                <h1 class="documentFirstHeading"
-                    i18n:translate="heading_groups_overview">Groups Overview</h1>
-
+            <div id="content-core">
                 <a href=""
                    class="link-parent"
                    tal:attributes="href string:$portal_url/plone_control_panel"
@@ -261,8 +257,7 @@
         </div>
     </div>
 
-</div>
-
+</metal:main>
 </body>
 </html>
 

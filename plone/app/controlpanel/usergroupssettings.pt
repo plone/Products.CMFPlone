@@ -8,9 +8,9 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_content">
+<metal:main fill-slot="prefs_configlet_content">
     
-    <div class="documentEditable">
+  <div class="documentEditable">
     
       <div id="edit-bar">
           <ul class="contentViews" id="content-views">
@@ -35,37 +35,29 @@
                  i18n:translate="label_member_registration">Member Registration</a>
             </li>
           </ul>
+          <div class="contentActions">&nbsp;</div>          
       </div>
-      
-      <div class="contentActions">
-        &nbsp;
-      </div>
-      
-      <div id="content">
-      
+
       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
       </div>
       
-      <metal:block use-macro="view/base_template/macros/header" />
-      
-
-      <div class="configlet">
+      <div id="content">      
+        <metal:block use-macro="view/base_template/macros/header" />
         <h1 class="documentFirstHeading"
             i18n:translate="heading_usergroup_settings">User/Groups Settings</h1>
 
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string:$portal_url/plone_control_panel"
-           i18n:translate="label_up_to_plone_setup">
-          Up to Site Setup
-        </a>
-    
-        <metal:block use-macro="view/base_template/macros/master" />
-    
+        <div id="content-core">
+            <a href=""
+               class="link-parent"
+               tal:attributes="href string:$portal_url/plone_control_panel"
+               i18n:translate="label_up_to_plone_setup">
+              Up to Site Setup
+            </a>    
+            <metal:block use-macro="view/base_template/macros/master" />
+        </div>
       </div>
-    </div>
-    </div>
-</div>
+  </div>
+</metal:main>
 </body>
 </html>
