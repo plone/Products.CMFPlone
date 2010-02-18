@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b4 - Unreleased
+1.0b4 - 2010-02-18
 ------------------
 
 - Updated memberregistration.pt to recent markup conventions.
