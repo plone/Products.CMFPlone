@@ -2,7 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
-    i18n_domain="plone.app.users">
+    i18n_domain="plone">
 
     <!-- Join form definition -->
     <browser:page
@@ -19,9 +19,42 @@
       permission="zope2.ManageUsers"
       />
 
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="personal-preferences"
+      class=".personalpreferences.PersonalPreferencesPanel"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="account-macro"
+      class=".account.AccountPanelView"
+      attribute="getMacro"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="personal-information"
+      class=".personalpreferences.UserDataPanel"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="change-password"
+      class=".personalpreferences.PasswordAccountPanel"
+      permission="cmf.SetOwnPassword"
+      />
 
     <utility provides="zope.schema.interfaces.IVocabularyFactory"
              component=".register.getGroupIds"
              name="Group Ids"/>
+
+    <adapter factory=".personalpreferences.PersonalPreferencesPanelAdapter" />
+    <adapter factory=".personalpreferences.UserDataPanelAdapter" />
+    <adapter factory=".personalpreferences.PasswordPanelAdapter" />
+
 
 </configure>

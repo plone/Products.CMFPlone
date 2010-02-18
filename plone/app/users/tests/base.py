@@ -26,6 +26,7 @@ class TestCase(FunctionalTestCase):
 
         self.portal._original_MailHost = self.portal.MailHost
         self.portal.MailHost = mailhost = MockMailHost('MailHost')
+        self.membership = self.portal.portal_membership
         sm = getSiteManager(context=self.portal)
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(mailhost, provided=IMailHost)
@@ -44,3 +45,4 @@ class TestCase(FunctionalTestCase):
     def unsetMailHost(self):
         self.portal.MailHost.smtp_host = ''
         setattr(self.portal, 'email_from_address', '')
+

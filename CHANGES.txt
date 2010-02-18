@@ -22,6 +22,10 @@ Changelog
   'disable_MANAGER_NAME' pattern
   [spliter]
 
+- add views to replace personalize_form, split up into @@personal-preferences,
+  @@personal-information and @@change-password.
+  [khink, kcleong]
+  
 1.0b3 - 2010-02-01
 ------------------
 

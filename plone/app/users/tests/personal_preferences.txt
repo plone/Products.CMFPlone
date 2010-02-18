@@ -1,0 +1,89 @@
+Testing the personal preferences form
+=====================================
+
+Viewing the personal preferences
+--------------------------------
+
+This is about the 'personal-preferences' view.
+
+    >>> view_name = '@@personal-preferences'
+
+Viewing user data shouldn't be possible for anonymous users:
+
+    >>> self.browser.open("http://nohost/plone/" + view_name)
+    >>> 'Login Name' in self.browser.contents
+    True
+
+So let's login as Plone user:
+    >>> self.browser.open('http://nohost/plone/')
+    >>> self.browser.getLink('Log in').click()
+    >>> self.browser.getControl('Login Name').value = 'test_user_1_'
+    >>> self.browser.getControl('Password').value = 'secret'
+    >>> self.browser.getControl('Log in').click()
+
+Now we should be able to access the user data panel:
+
+    >>> self.browser.open("http://nohost/plone/" + view_name)
+    >>> 'Login Name' in self.browser.contents
+    False
+    >>> self.browser.url.endswith(view_name)
+    True
+
+We have two controls, one for the start page and one for the language:
+
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value
+    ['']
+    >>> self.browser.getControl(name='form.ext_editor').value
+    False
+    >>> self.browser.getControl(name='form.listed').value
+    True
+    >>> self.browser.getControl(name='form.language').value
+    ['']
+
+Now we click the cancel button:
+
+    >>> self.browser.getControl(name="form.actions.cancel").click()
+    >>> self.browser.url.endswith(view_name)
+    True
+
+There should be no changes at all:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
+Modifying values
+----------------
+
+    >>> self.browser.open('http://nohost/plone/' + view_name)
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value = ['TinyMCE']
+    >>> self.browser.getControl(name='form.ext_editor').value = True
+    >>> self.browser.getControl(name='form.listed').value = True
+    >>> self.browser.getControl(name='form.language').value = ['en']
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Changes saved' in self.browser.contents
+    True
+
+Verify that the settings have actually been
+changed:
+
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> member.getProperty('wysiwyg_editor', '')
+    'TinyMCE'
+    >>> member.getProperty('ext_editor', '')
+    True
+    >>> member.getProperty('listed', '')
+    True
+    >>> member.getProperty('language', '')
+    'en'
+
+And that the form still has the according values:
+
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value
+    ['TinyMCE']
+    >>> self.browser.getControl(name='form.ext_editor').value
+    True
+    >>> self.browser.getControl(name='form.listed').value
+    True
+    >>> self.browser.getControl(name='form.language').value
+    ['en']
+

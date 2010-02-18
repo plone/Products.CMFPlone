@@ -1,0 +1,97 @@
+Admin modifies user data thru 'Users and groups' (prefs_user_details)
+---------------------------------------------------------------------
+
+An admin can modify user data thru the prefs_user_details in Users and Groups
+config page.
+
+
+So let's login as Plone admin:
+    >>> self.browser.open('http://nohost/plone/')
+    >>> self.browser.getLink('Log in').click()
+    >>> self.browser.getControl('Login Name').value = 'admin'
+    >>> self.browser.getControl('Password').value = 'secret'
+    >>> self.browser.getControl('Log in').click()
+
+This form is used when the admin clicks on a user name in Users and Groups:
+    >>> self.browser.open("http://nohost/plone/prefs_user_details?userid=test_user_1_")
+
+We have these controls in the form:
+
+    >>> self.browser.getControl(name='form.fullname').value
+    ''
+    >>> self.browser.getControl(name='form.email').value
+    ''
+    >>> self.browser.getControl(name='form.home_page').value
+    ''
+    >>> self.browser.getControl(name='form.description').value
+    ''
+    >>> self.browser.getControl(name='form.portrait').value
+
+    >>> self.browser.getControl(name='form.pdelete').value
+    False
+
+
+Modifying user data
+-------------------
+
+    >>> full_name = 'Plone user'
+    >>> self.browser.getControl(name='form.fullname').value = full_name
+
+    >>> home_page = 'http://www.plone.org/'
+    >>> self.browser.getControl(name='form.home_page').value = home_page
+
+    >>> description = 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.'
+    >>> self.browser.getControl(name='form.description').value = description
+
+    >>> email_address = 'person@example.com'
+    >>> self.browser.getControl(name='form.email').value = email_address
+
+    >>> location = 'Somewhere'
+    >>> self.browser.getControl(name='form.location').value = location
+
+    >>> ## find out how we can a image in portait variable
+    >>> #from StringIO import StringIO
+    >>> #portrait = StringIO('GIF89aFooBar')
+    >>> #control = self.browser.getControl(name='form.portrait')
+    >>> #fileControl = control.mech_control
+    >>> #fileControl.add_file(portrait, filename='plone_good.png')
+
+    >>> #portrait = 'person@example.com'
+    >>> #self.browser.getControl(name='form.portrait').value = portrait
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Required input is missing.' in self.browser.contents
+    False
+    >>> 'No changes made.' in self.browser.contents
+    False
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+We should be able to check that value for email address now is the same as what
+we put in.
+
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> fullname_value = member.getProperty('fullname','')
+    >>> fullname_value == full_name
+    True
+
+    >>> home_page_value = member.getProperty('home_page','')
+    >>> home_page_value == home_page
+    True
+
+    >>> description_value = member.getProperty('description','')
+    >>> description_value == description
+    True
+
+    >>> email_value = member.getProperty('email','')
+    >>> email_value == email_address
+    True
+
+    >>> location_value = member.getProperty('location','')
+    >>> location_value == location
+    True
+
+    # >>> portrait_value = self.membership.getPersonalPortrait()
+    # >>> portrait_value == portrait
+    # True
+

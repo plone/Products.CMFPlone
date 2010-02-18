@@ -1,0 +1,136 @@
+Testing the personal information form
+=====================================
+
+TODO: Testing the portait image upload
+
+Viewing the  personal information
+---------------------------------
+
+This is about the 'personal-information' view.
+
+    >>> view_name = '@@personal-information'
+
+Viewing user data shouldn't be possible for anonymous users:
+
+    >>> self.browser.open("http://nohost/plone/" + view_name)
+    >>> 'Login Name' in self.browser.contents
+    True
+
+So let's login as Plone user:
+    >>> self.browser.open('http://nohost/plone/')
+    >>> self.browser.getLink('Log in').click()
+    >>> self.browser.getControl('Login Name').value = 'test_user_1_'
+    >>> self.browser.getControl('Password').value = 'secret'
+    >>> self.browser.getControl('Log in').click()
+
+Now we should be able to access the user data panel:
+
+    >>> self.browser.open("http://nohost/plone/" + view_name)
+    >>> 'Login Name' in self.browser.contents
+    False
+    >>> self.browser.url.endswith(view_name)
+    True
+
+We have these controls in the form:
+
+    >>> self.browser.getControl(name='form.fullname').value
+    ''
+    >>> self.browser.getControl(name='form.email').value
+    ''
+    >>> self.browser.getControl(name='form.home_page').value
+    ''
+    >>> self.browser.getControl(name='form.description').value
+    ''
+    >>> self.browser.getControl(name='form.portrait').value
+
+    >>> self.browser.getControl(name='form.pdelete').value
+    False
+
+
+Trying to save without changes
+------------------------------
+
+Now can we save this form without changes?
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Login Name' in self.browser.contents
+    False
+    >>> self.browser.url.endswith(view_name)
+    True
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Required input is missing.' in self.browser.contents
+    True
+
+As we have a required field "email", which hasn't been pre-filled in this test,
+we will get an error message. (In the real world, users would have an e-mail
+address filled in.)
+
+
+Modifying user data
+-------------------
+
+If we do set an e-mail address, we should be able to save the form.
+
+    >>> full_name = 'Plone user'
+    >>> self.browser.getControl(name='form.fullname').value = full_name
+
+    >>> home_page = 'http://www.plone.org/'
+    >>> self.browser.getControl(name='form.home_page').value = home_page
+
+    >>> description = 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.'
+    >>> self.browser.getControl(name='form.description').value = description
+
+    >>> email_address = 'person@example.com'
+    >>> self.browser.getControl(name='form.email').value = email_address
+
+    >>> location = 'Somewhere'
+    >>> self.browser.getControl(name='form.location').value = location
+
+    >>> ## find out how we can a image in portait variable
+    >>> #from StringIO import StringIO
+    >>> #portrait = StringIO('GIF89aFooBar')
+    >>> #control = self.browser.getControl(name='form.portrait')
+    >>> #fileControl = control.mech_control
+    >>> #fileControl.add_file(portrait, filename='plone_good.png')
+
+    >>> #portrait = 'person@example.com'
+    >>> #self.browser.getControl(name='form.portrait').value = portrait
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Required input is missing.' in self.browser.contents
+    False
+    >>> 'No changes made.' in self.browser.contents
+    False
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+
+
+We should be able to check that value for email address now is the same as what
+we put in.
+
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> fullname_value = member.getProperty('fullname','')
+    >>> fullname_value == full_name
+    True
+
+    >>> home_page_value = member.getProperty('home_page','')
+    >>> home_page_value == home_page
+    True
+
+    >>> description_value = member.getProperty('description','')
+    >>> description_value == description
+    True
+
+    >>> email_value = member.getProperty('email','')
+    >>> email_value == email_address
+    True
+
+    >>> location_value = member.getProperty('location','')
+    >>> location_value == location
+    True
+
+    # >>> portrait_value = self.membership.getPersonalPortrait()
+    # >>> portrait_value == portrait
+    # True
+
