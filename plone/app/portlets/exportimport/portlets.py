@@ -124,8 +124,12 @@ class PropertyPortletAssignmentExportImportHandler(object):
             value = self.extract_text(child)
             value = self.from_unicode(field, value)
 
-        field.validate(value)
-        field.set(self.assignment, value)
+        if field.getName() == 'root' and value in [ '', '/']:
+            #these valid values don't pass validation of SearchableTextSourceBinder
+            field.set(self.assignment, value)
+        else:
+            field.validate(value)
+            field.set(self.assignment, value)
 
     def export_field(self, doc, field):
         """Turn a zope.schema field into a node and return it

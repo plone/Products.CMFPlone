@@ -4,11 +4,16 @@ Changelog
 2.0b6 - Unreleased
 ------------------
 
+- Avoid ConstraintNotSatisfied-Error when GS-importing the default
+navigation-portlet. Fixes https://dev.plone.org/plone/ticket/10232 [WouterVH]
+
+
 2.0b5 - 2010-02-18
 ------------------
 
 - Updated portlets-pageform.pt to disable columns via REQUEST variable.
   [spliter]
+
 
 2.0b4 - 2010-02-17
 ------------------
