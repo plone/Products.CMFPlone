@@ -4,6 +4,8 @@ Changelog
 2.0b3 - unreleased
 ------------------
 
+- Removed #region-content from all templates. 
+  This refs http://dev.plone.org/plone/ticket/10231
 
 2.0b2 - 2010-02-17
 ------------------
