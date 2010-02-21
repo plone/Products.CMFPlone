@@ -122,10 +122,11 @@ class PropertyPortletAssignmentExportImportHandler(object):
         # Otherwise, just get the value of the <property /> node
         else:
             value = self.extract_text(child)
-            value = self.from_unicode(field, value)
+            if not (field.getName() == 'root' and value in ['', '/']):
+                value = self.from_unicode(field, value)
 
-        if field.getName() == 'root' and value in [ '', '/']:
-            #these valid values don't pass validation of SearchableTextSourceBinder
+        if field.getName() == 'root' and value in ['', '/']:
+            # these valid values don't pass validation of SearchableTextSourceBinder
             field.set(self.assignment, value)
         else:
             field.validate(value)
