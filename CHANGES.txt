@@ -4,6 +4,10 @@ Changelog
 2.0b5 - Unreleased
 ------------------
 
+- Further optimize the related_items view by avoiding an algorithm with
+  quadratic complexity.
+  [hannosch]
+
 2.0b4 - 2010-02-18
 ------------------
 

@@ -119,11 +119,13 @@ class ContentRelatedItems(ViewletBase):
                 return ()
             brains = catalog(UID=related)
             if brains:
-               res = list(brains)
-               # We need to keep the ordering intact
-               def _key(brain):
-                   return related.index(brain.UID)
-               res.sort(key=_key)
+                # build a position dict by iterating over the items once
+                positions = dict([(v, i) for (i, v) in enumerate(related)])
+                # We need to keep the ordering intact
+                res = list(brains)
+                def _key(brain):
+                    return positions.get(brain.UID, -1)
+                res.sort(key=_key)
         return res
 
 
