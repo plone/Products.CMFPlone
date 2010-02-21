@@ -1,8 +1,9 @@
-<div class="portlets-manager"
-     xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<div class="portlets-manager"
      tal:attributes="id string:portletmanager-${view/normalized_manager_name};">
 
   <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />
@@ -10,3 +11,4 @@
   <div metal:use-macro="context/@@manage-portlets-macros/macros/current-portlets-list" />
 
 </div>
+</html>
