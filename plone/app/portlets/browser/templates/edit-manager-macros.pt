@@ -4,8 +4,7 @@
           tal:attributes="action view/context_url">
         <input type="hidden" name="referer" tal:attributes="value view/referer" />
 
-        <label for="dest"
-               class="hiddenStructure"
+        <label class="hiddenStructure"
                i18n:translate="label_add_portlet">
             Add portlet
         </label>
