@@ -93,7 +93,7 @@
         name="test.portlet7"
         remove="" />
 
-    <!-- <assignment name="navigation"
+    <assignment name="navigation"
         category="context"
         key="/"
         manager="test.testcolumn2"
@@ -104,8 +104,8 @@
         <property name="name"></property>
         <property name="includeTop">False</property>
         <property name="bottomLevel">0</property>
-        <property name="root"/>
-    </assignment> -->
+        <!-- <property name="root"/> -->
+    </assignment>
 
     <blacklist
         manager="test.testcolumn"
