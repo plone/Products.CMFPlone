@@ -489,6 +489,8 @@ class TestGenericSetup(PortletsTestCase):
         expected = """\
 <?xml version="1.0"?>
 <portlets>
+ <portletmanager name="test.testcolumn2"
+    type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
  <portletmanager name="test.testcolumn"
     type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
  <portlet title="Test portlet" addview="portlets.test.Test"
@@ -536,6 +538,14 @@ class TestGenericSetup(PortletsTestCase):
  <blacklist category="content_type" location="/" manager="test.testcolumn"
     status="block"/>
  <blacklist category="context" location="/" manager="test.testcolumn"
+    status="acquire"/>
+ <blacklist category="user" location="/" manager="test.testcolumn2"
+    status="acquire"/>
+ <blacklist category="group" location="/" manager="test.testcolumn2"
+    status="acquire"/>
+ <blacklist category="content_type" location="/" manager="test.testcolumn2"
+    status="acquire"/>
+ <blacklist category="context" location="/" manager="test.testcolumn2"
     status="acquire"/>
 </portlets>
 """

@@ -8,6 +8,11 @@
         type="plone.app.portlets.tests.test_configuration.ITestColumn"
         />
 
+    <portletmanager
+        name="test.testcolumn2"
+        type="plone.app.portlets.tests.test_configuration.ITestColumn"
+        />
+
     <portlet
         addview="portlets.test.Test"
         title="Test portlet"
@@ -88,10 +93,10 @@
         name="test.portlet7"
         remove="" />
 
-    <assignment name="navigation"
+    <!-- <assignment name="navigation"
         category="context"
         key="/"
-        manager="plone.leftcolumn"
+        manager="test.testcolumn2"
         type="portlets.Navigation"
         visible="True">
         <property name="topLevel">1</property>
@@ -100,7 +105,7 @@
         <property name="includeTop">False</property>
         <property name="bottomLevel">0</property>
         <property name="root"/>
-    </assignment>
+    </assignment> -->
 
     <blacklist
         manager="test.testcolumn"
