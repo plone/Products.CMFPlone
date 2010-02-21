@@ -14,11 +14,11 @@
             tal:define="view_name view/__name__"
             i18n:domain="plone">
 
-            <li tal:condition="link|nothing"
+            <li id="contentview-user_data-personal-information"
+                tal:condition="link|nothing"
                 tal:define="link view/getPersonalInfoLink;
                             selected python:view_name=='personal-information'"
-                tal:attributes="id string:contentview-user_data;
-                                class python:selected and 'selected' or 'plain'">
+                tal:attributes="class python:selected and 'selected' or 'plain'">
                 <a href=""
                    tal:attributes="href string:${context/portal_url}/${link}"
                    i18n:translate="title_personal_information_form">
@@ -26,11 +26,11 @@
                 </a>
             </li>
 
-            <li tal:condition="link|nothing"
+            <li id="contentview-user_data-personal-preferences"
+                tal:condition="link|nothing"
                 tal:define="link view/getPersonalPrefsLink;
                             selected python:view_name=='personal-preferences';"
-                tal:attributes="id string:contentview-user_data;
-                                class python:selected and 'selected' or 'plain'">
+                tal:attributes="class python:selected and 'selected' or 'plain'">
                 <a href=""
                    tal:attributes="href string:${context/portal_url}/${link}"
                    i18n:translate="">
@@ -38,11 +38,11 @@
                 </a>
             </li>
             
-            <li tal:condition="link|nothing"
+            <li id="contentview-user_data-change-password"
+                tal:condition="link|nothing"
                 tal:define="link view/getPasswordLink;
                             selected python:view_name=='change-password';"
-                tal:attributes="id string:contentview-user_data;
-                                class python:selected and 'selected' or 'plain'">
+                tal:attributes="class python:selected and 'selected' or 'plain'">
                 <a href=""
                    tal:attributes="href string:${context/portal_url}/${link}"
                    i18n:translate="label_password">

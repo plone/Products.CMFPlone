@@ -11,8 +11,7 @@
 </head>
 
 <body>
-    <div id="portal-column-content"
-         class="cell width-full position-0"
+    <div class="cell width-full position-0"
          tal:define="getmacro nocall: context/account-macro;
                      full_view python:True"
          metal:fill-slot="content">
