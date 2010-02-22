@@ -4,6 +4,9 @@ Changelog
 2.0b4 - Unreleased
 ------------------
 
+- Add the recursive_groups plugin to the bottom of the IGroupsPlugin list, not the top.
+  [esteele]
+
 2.0b3 - 2010-02-18
 ------------------
 

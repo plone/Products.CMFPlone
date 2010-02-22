@@ -77,18 +77,12 @@ class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
         if value:
             plugins.activatePlugin(IGroupsPlugin, 'recursive_groups')
             if 'recursive_groups' not in plugins.getAllPlugins('IGroupsPlugin')['active']:
-                utils = getToolByName(context, 'plone_utils')
+                utils = getToolByName(self.context, 'plone_utils')
                 utils.addPortalMessage(_(u"Unable to activate PAS plugin 'recursive_groups'."))
-                
-            # move it to the top of the list
-            while plugins.getAllPlugins('IGroupsPlugin')['active'].index('recursive_groups') > 0:
-                plugins.movePluginsUp(IGroupsPlugin,['recursive_groups'])
         else:
             plugins.deactivatePlugin(IGroupsPlugin, 'recursive_groups')
     
     enable_nested_groups = property(get_enable_nested_groups, set_enable_nested_groups)
-    
-    
 
 class UserGroupsSettingsControlPanel(ControlPanelForm):
 
