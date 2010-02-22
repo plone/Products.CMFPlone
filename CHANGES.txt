@@ -4,6 +4,11 @@ Changelog
 1.0b5 - Unreleased
 ------------------
 
+- Display groups by title (id) in @@new-user.
+  [esteele]
+
+- Remove some unused variable definitions from browser/register.py
+
 1.0b4 - 2010-02-18
 ------------------
 

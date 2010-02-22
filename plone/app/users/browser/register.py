@@ -156,9 +156,13 @@ def CantSendMailWidget(field, request):
 def getGroupIds(context):
     site = getSite()
     groups_tool = getToolByName(site, 'portal_groups')
-    groups = groups_tool.getGroupIds()
-    groups.remove('AuthenticatedUsers') # Omit virtual group
-    return SimpleVocabulary.fromValues(groups)
+    groups = groups_tool.listGroups()
+    # Get group id, title tuples for each, omitting virtual group 'AuthenticatedUsers'
+    groupData = []
+    for g in groups:
+        if g.id != 'AuthenticatedUsers':
+            groupData.append(('%s (%s)' % (g.getGroupTitleOrName(), g.id), g.id))
+    return SimpleVocabulary.fromItems(groupData)
 
 
 class BaseRegistrationForm(PageForm):
@@ -170,7 +174,6 @@ class BaseRegistrationForm(PageForm):
         """ form_fields is dynamic in this form, to be able to handle
         different join styles.
         """
-        portal = getUtility(ISiteRoot)
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
@@ -446,7 +449,6 @@ class RegistrationForm(BaseRegistrationForm):
         ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
         portal = getUtility(ISiteRoot)
         portal_props = getToolByName(self.context, 'portal_properties')
-        props = portal_props.site_properties
 
         # hide form iff mailhost_warning == True and validate_email == True
         return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
