@@ -4,6 +4,9 @@ Changelog
 2.0b4 - Unreleased
 ------------------
 
+- Remove unused imports in usergroups.py
+  [esteele]
+
 - Add the recursive_groups plugin to the bottom of the IGroupsPlugin list, not the top.
   [esteele]
 

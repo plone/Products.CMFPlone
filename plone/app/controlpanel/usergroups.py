@@ -5,7 +5,7 @@ from itertools import chain
 
 from zope.interface import Interface
 from zope.component import adapts, getAdapter, getMultiAdapter
-from zope.formlib.form import FormFields, action
+from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 from ZTUtils import make_query
@@ -16,7 +16,6 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin, IGroupsPlugin
 
