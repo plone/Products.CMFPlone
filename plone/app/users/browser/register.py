@@ -162,6 +162,8 @@ def getGroupIds(context):
     for g in groups:
         if g.id != 'AuthenticatedUsers':
             groupData.append(('%s (%s)' % (g.getGroupTitleOrName(), g.id), g.id))
+    # Sort by title
+    groupData.sort(key=lambda x: x[0].lower())
     return SimpleVocabulary.fromItems(groupData)
 
 
