@@ -51,35 +51,33 @@
             </li>
 
         </ul>
+
+        <div class="contentActions">&nbsp;</div>
+    </div>
+    
+    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        Portal status message
     </div>
 
-    <div class="contentActions">&nbsp;</div>
+    <div id="content">
 
-    <div id="region-content" class="documentContent">
-        <div id="content" class="documentContent">
-            <a name="documentContent"></a>
+        <metal:fullview tal:condition="full_view|nothing">
+            <h1 class="documentFirstHeading"
+                i18n:translate=""
+                tal:condition="view/label"
+                tal:content="view/label"
+                metal:define-slot="heading">
+                Do something
+            </h1>
 
-            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-                Portal status message
+            <div class="documentDescription" i18n:translate=""
+               tal:condition="view/description"
+               tal:content="view/description">
+                Description
             </div>
+        </metal:fullview>
 
-            <metal:fullview tal:condition="full_view|nothing">
-                <h1 class="documentFirstHeading"
-                    i18n:translate=""
-                    tal:condition="view/label"
-                    tal:content="view/label"
-                    metal:define-slot="heading">
-                    Do something
-                </h1>
-
-                <p i18n:translate=""
-                   class="documentDescription"
-                   tal:condition="view/description"
-                   tal:content="view/description">
-                    Description
-                </p>
-            </metal:fullview>
-
+        <div id="content-core">
             <form action="."
                   metal:define-macro="master"
                   tal:define="is_fieldsets view/is_fieldsets"
@@ -231,6 +229,7 @@
             </form>
         </div>
     </div>
+
 
     <script type="text/javascript"
             tal:define="extra_script view/extra_script | nothing"

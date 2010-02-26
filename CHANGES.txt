@@ -4,6 +4,10 @@ Changelog
 1.0b5 - Unreleased
 ------------------
 
+- Updated account-panel-bare.pt to recent markup conventions.
+  References http://dev.plone.org/plone/ticket/9981
+  [spliter]
+
 - Display groups by title (id) in @@new-user.
   [esteele]
 
