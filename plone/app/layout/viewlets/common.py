@@ -55,8 +55,7 @@ class ViewletBase(BrowserView):
 class TitleView(BrowserView):
     """Default view for title tag in html head tag"""
 
-    def __init__(self, context, request):
-        super(TitleView, self).__init__(context, request)
+    def __call__(self):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
         context_state = getMultiAdapter((self.context, self.request),
@@ -67,6 +66,7 @@ class TitleView(BrowserView):
             self.site_title = portal_title
         else:
             self.site_title = u"%s &mdash; %s" % (page_title, portal_title)
+        return self.index()
 
 
 class DublinCoreViewlet(ViewletBase):
