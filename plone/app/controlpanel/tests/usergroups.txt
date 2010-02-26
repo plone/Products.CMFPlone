@@ -240,10 +240,6 @@ Check to make sure search results are ordered properly and display the title/ful
     ...Alexandra Nelson...(FElYwiIr)...
     ...Blake Jenkins...(BlXLQh7r)...'
     
-We shouldn't see any groups, as nesting is disabled.
-    >>> 'Administrators' in self.browser.contents
-    False
-    
 Add some group members
     >>> self.browser.getControl(name='add:list').getControl(value='XYsmd7ux').selected = True
     >>> self.browser.getControl(name='add:list').getControl(value='BlXLQh7r').selected = True
@@ -314,11 +310,6 @@ Go directly to the Users Overview screen.
     ...Group 1...
     ...Reviewers...'
     
-Turn on group nesting. 
-    >>> self.browser.open('http://nohost/plone/@@usergroup-controlpanel')
-    >>> self.browser.getControl(name='form.enable_nested_groups').value = True
-    >>> self.browser.getControl('Save').click()
-
 Check to make sure search results are ordered properly and display the title/fullname and id
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
     >>> self.browser.getLink('Group 1 (group1)').click()

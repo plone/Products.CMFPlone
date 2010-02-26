@@ -4,6 +4,9 @@ Changelog
 2.0b4 - Unreleased
 ------------------
 
+- Remove the option to turn off nesting.
+  [esteele]
+
 - Updated emaillogin.pt to recent markup conventions. 
   References http://dev.plone.org/plone/ticket/9981
   [spliter]
