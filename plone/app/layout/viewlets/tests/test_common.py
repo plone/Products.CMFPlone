@@ -78,6 +78,16 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
         self.assertEquals(['edit'], [t['id'] for t in tabs if t['selected']])
 
+class TestContentTitleView(ViewletsTestCase):
+    """Test the title view.
+    """
+
+    def test_Htmlheadtitle_view(self):
+        title_tag = self.folder.restrictedTraverse('plone_htmlhead_title')()
+        folder_title_or_id = self.folder.pretty_title_or_id()
+        self.failUnless(folder_title_or_id in title_tag)
+        self.failUnless(self.portal.Title() in title_tag)
+
 
 def test_suite():
     from unittest import defaultTestLoader

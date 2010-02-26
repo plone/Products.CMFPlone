@@ -192,10 +192,11 @@
         />
 
     <!-- Render the browser title -->
-    <browser:viewlet
-        name="plone.htmlhead.title"
-        manager=".interfaces.IHtmlHead"
-        class=".common.TitleViewlet"
+    <browser:page
+        name="plone_htmlhead_title"
+        for="*"
+        class=".common.TitleView"
+        template = 'title.pt'
         permission="zope2.View"
         />
 
