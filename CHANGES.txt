@@ -4,6 +4,10 @@ Changelog
 2.0b4 - Unreleased
 ------------------
 
+- Updated emaillogin.pt to recent markup conventions. 
+  References http://dev.plone.org/plone/ticket/9981
+  [spliter]
+
 - Remove unused imports in usergroups.py
   [esteele]
 

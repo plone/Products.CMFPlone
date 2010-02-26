@@ -11,10 +11,11 @@
   </head>
 <body>
 
-  <div metal:fill-slot="prefs_configlet_content">
-    <h1 i18n:translate="heading_migrate_email_login">
+  <metal:main metal:fill-slot="prefs_configlet_content">
+    <h1 class="documentFirstHeading" i18n:translate="heading_migrate_email_login">
       Migrate to or from email login
     </h1>
+    
     <p i18n:translate="help_migrate_email_login">
       The email login setting in the
       <a i18n:name="link"
@@ -89,6 +90,6 @@
       </div>
     </form>
 
-  </div>
+  </metal:main>
 </body>
 </html>
