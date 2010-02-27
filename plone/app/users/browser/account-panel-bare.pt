@@ -15,9 +15,9 @@
             i18n:domain="plone">
 
             <li id="contentview-user_data-personal-information"
-                tal:condition="link|nothing"
                 tal:define="link view/getPersonalInfoLink;
                             selected python:view_name=='personal-information'"
+                tal:condition="link|nothing"
                 tal:attributes="class python:selected and 'selected' or 'plain'">
                 <a href=""
                    tal:attributes="href string:${context/portal_url}/${link}"
@@ -27,9 +27,9 @@
             </li>
 
             <li id="contentview-user_data-personal-preferences"
-                tal:condition="link|nothing"
                 tal:define="link view/getPersonalPrefsLink;
                             selected python:view_name=='personal-preferences';"
+                tal:condition="link|nothing"
                 tal:attributes="class python:selected and 'selected' or 'plain'">
                 <a href=""
                    tal:attributes="href string:${context/portal_url}/${link}"
@@ -39,9 +39,9 @@
             </li>
             
             <li id="contentview-user_data-change-password"
-                tal:condition="link|nothing"
                 tal:define="link view/getPasswordLink;
                             selected python:view_name=='change-password';"
+                tal:condition="link|nothing"
                 tal:attributes="class python:selected and 'selected' or 'plain'">
                 <a href=""
                    tal:attributes="href string:${context/portal_url}/${link}"
