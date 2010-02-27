@@ -1,4 +1,4 @@
-from Acquisition import aq_parent, aq_inner
+from Acquisition import aq_inner
 from zope.component import adapts
 from zope.interface import implements
 from zope.event import notify
@@ -114,12 +114,10 @@ class AccountPanelForm(FieldsetsEditForm):
         return mt.checkPermission(permission, context)
 
     def getActionUrl(self):
-        request = self.request
-
-        if request.get(self.prefs_user_details):
-            url = request.get('page', '@@personal-information')
+        if self.request.get(self.prefs_user_details):
+            url = self.request.get('page', '@@personal-information')
         else:
-            url = request.get('URL')
+            url = self.request.get('URL')
 
         return url
 
@@ -129,12 +127,11 @@ class AccountPanelForm(FieldsetsEditForm):
 
     def getPersonalInfoLink(self):
         context = aq_inner(self.context)
-        request = self.request
 
         template = None
         if self._checkPermission('Set own properties', context):
-            if request.get(self.prefs_user_details):
-                userid = request.get('userid')
+            if self.request.get(self.prefs_user_details):
+                userid = self.request.get('userid')
                 template = "%s?userid=%s&page=%s" % (self.prefs_user_details,
                     userid, '@@personal-information')
             else:
@@ -144,12 +141,11 @@ class AccountPanelForm(FieldsetsEditForm):
 
     def getPersonalPrefsLink(self):
         context = aq_inner(self.context)
-        request = self.request
 
         template = None
         if self._checkPermission('Set own properties', context):
-            if request.get(self.prefs_user_details):
-                userid = request.get('userid')
+            if self.request.get(self.prefs_user_details):
+                userid = self.request.get('userid')
                 template = "%s?userid=%s&page=%s" % (self.prefs_user_details,
                     userid, '@@personal-preferences')
             else:
@@ -159,13 +155,12 @@ class AccountPanelForm(FieldsetsEditForm):
 
     def getPasswordLink(self):
         context = aq_inner(self.context)
-        request = self.request
         
         mt = getToolByName(context, 'portal_membership')
         member = mt.getAuthenticatedMember()
 
         template = None
-        if not request.get(self.prefs_user_details) and member.canPasswordSet():
+        if not self.request.get(self.prefs_user_details) and member.canPasswordSet():
             template = '@@change-password'
 
         return template
