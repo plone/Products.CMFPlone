@@ -450,7 +450,6 @@ class RegistrationForm(BaseRegistrationForm):
         """
         ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
         portal = getUtility(ISiteRoot)
-        portal_props = getToolByName(self.context, 'portal_properties')
 
         # hide form iff mailhost_warning == True and validate_email == True
         return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
@@ -462,12 +461,6 @@ class RegistrationForm(BaseRegistrationForm):
             # will never get displayed.
             return []
         portal = getUtility(ISiteRoot)
-        portal_props = getToolByName(self.context, 'portal_properties')
-        props = portal_props.site_properties
-        use_email_as_login = props.getProperty('use_email_as_login')
-        registration_fields = list(props.getProperty(
-                'user_registration_fields'))
-
         defaultFields = super(RegistrationForm, self).form_fields
         # Can the user actually set his/her own password?
         if portal.getProperty('validate_email', True):
