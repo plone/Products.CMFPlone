@@ -52,10 +52,10 @@ class ViewletBase(BrowserView):
             '`index` method must be implemented by subclass.')
 
 
-class TitleView(BrowserView):
-    """Default view for title tag in html head tag"""
+class TitleViewlet(ViewletBase):
+    index = ViewPageTemplateFile('title.pt')
 
-    def __call__(self):
+    def update(self):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
         context_state = getMultiAdapter((self.context, self.request),
@@ -66,7 +66,6 @@ class TitleView(BrowserView):
             self.site_title = portal_title
         else:
             self.site_title = u"%s &mdash; %s" % (page_title, portal_title)
-        return self.index()
 
 
 class DublinCoreViewlet(ViewletBase):
