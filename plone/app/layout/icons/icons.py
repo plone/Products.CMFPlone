@@ -87,11 +87,11 @@ class CMFContentIcon(BaseIcon):
     def description(self):
         context = aq_inner(self.context)
         tt = getToolByName(context, 'portal_types')
-        fti = tt.get(self.brain['portal_type'])
+        fti = tt.get(self.obj.portal_type)
         if fti is not None:
             return fti.Title()
         else:
-            return self.brain['portal_type']
+            return self.obj.portal_type
 
 
 class FTIContentIcon(BaseIcon):
