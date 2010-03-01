@@ -4,6 +4,10 @@ Changelog
 2.0b5 - Unreleased
 ------------------
 
+- Make icon descriptions' lookup of portal_type title less brittle for missing
+  portal_types (fall back to the portal_type id).
+  [davisagli]
+
 - Further optimize the related_items view by avoiding an algorithm with
   quadratic complexity.
   [hannosch]

@@ -58,7 +58,11 @@ class CatalogBrainContentIcon(BaseIcon):
     def description(self):
         context = aq_inner(self.context)
         tt = getToolByName(context, 'portal_types')
-        return tt.get(self.brain['portal_type']).Title()
+        fti = tt.get(self.brain['portal_type'])
+        if fti is not None:
+            return fti.Title()
+        else:
+            return self.brain['portal_type']
 
 
 class CMFContentIcon(BaseIcon):
@@ -83,7 +87,11 @@ class CMFContentIcon(BaseIcon):
     def description(self):
         context = aq_inner(self.context)
         tt = getToolByName(context, 'portal_types')
-        return tt.get(self.obj.portal_type).Title()
+        fti = tt.get(self.brain['portal_type'])
+        if fti is not None:
+            return fti.Title()
+        else:
+            return self.brain['portal_type']
 
 
 class FTIContentIcon(BaseIcon):
