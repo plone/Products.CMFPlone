@@ -22,13 +22,18 @@
                  errors python:request.get('errors', {});
                  userquery python:view.makeQuery(userid=userid);
                  portal_url context/portal_url;
+                 showAll python:request.get('showAll', '') and not view.newSearch and 'y';
                  Batch python:modules['Products.CMFPlone'].Batch;
-                 b_start request/b_start | python:0;
-                 b_size python:20;
+                 b_size python:showAll and len(view.searchResults) or 20;
                  many_groups view/many_groups;
                  mq python:modules['ZTUtils'].make_query;
                  results view/searchResults;
-                 batch python:results and Batch(results, b_size, int(b_start), orphan=1) or None;">
+                 resultcount python:len(results);
+                 b_start python:0 if showAll or view.newSearch else view.atoi(request.get('b_start',0));
+                 b_start python:b_start if (b_start <= resultcount) else (resultcount - resultcount % b_size);
+                 b_start python:b_start if (b_start < resultcount) else max(b_start - b_size, 0);
+                 batch python:Batch(view.searchResults, b_size, int(b_start));
+                 batchformkeys python:['searchstring','_authenticator', 'userid'];">
 
     <div class="documentEditable">
         <!-- simulating views on the groups/user pages until we have real objects. -->
@@ -181,6 +186,26 @@
                         </tal:block>
                     </tal:block>
                   </table>
+
+                  <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+                  <div class="showAllSearchResults"
+                       tal:condition="python:batch.next or batch.previous"
+                       tal:define="mq python:modules['ZTUtils'].make_query;
+                                   keys batchformkeys|nothing;
+                                   linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
+                                   url batch_base_url | string:${context/absolute_url}/${template_id}">
+                      <a tal:attributes="href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ))"
+                         i18n:translate="description_pas_show_all_search_results">
+                          Show all search results
+                      </a>
+                  </div>
+
+                  <input type="hidden" value="b_start" name="b_start"
+                         tal:attributes="value b_start"/>
+
+                  <input type="hidden" value="" name="showAll"
+                         tal:attributes="value showAll"/>
 
                   <input type="hidden" name="form.submitted" value="1" />
 

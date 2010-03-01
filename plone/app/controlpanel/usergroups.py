@@ -116,15 +116,27 @@ class UsersGroupsControlPanelView(ControlPanelView):
 
         return groupResults + userResults
 
+    def atoi(self, s):
+        try:
+            return int(s)  
+        except ValueError:
+            return 0
+
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
     def __call__(self):
 
         form = self.request.form
         submitted = form.get('form.submitted', False)
+        search = form.get('form.button.Search', None) is not None
         findAll = form.get('form.button.FindAll', None) is not None
         self.searchString = not findAll and form.get('searchstring', '') or ''
         self.searchResults = []
+        self.newSearch = False
+
+        if search or findAll:
+            self.newSearch = True
+
         if submitted:
             if form.get('form.button.Modify', None) is not None:
                 self.manageUser(form.get('users', None),
@@ -254,9 +266,15 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
     def __call__(self):
         form = self.request.form
         submitted = form.get('form.submitted', False)
+        search = form.get('form.button.Search', None) is not None
         findAll = form.get('form.button.FindAll', None) is not None
         self.searchString = not findAll and form.get('searchstring', '') or ''
         self.searchResults = []
+        self.newSearch = False
+
+        if search or findAll:
+            self.newSearch = True
+
         if submitted:
             if form.get('form.button.Modify', None) is not None:
                 self.manageGroup([group[len('group_'):] for group in self.request.keys() if group.startswith('group_')],
@@ -364,12 +382,10 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
         self.searchResults = []
         self.searchString = ''
+        self.newSearch = False
 
         if submitted:
-            findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
-            self.searchString = not findAll and form.get('searchstring', '') or ''
-            self.searchResults = self.getPotentialMembers(self.searchString)
-
+            # add/delete before we search so we don't show stale results
             toAdd = form.get('add', [])
             if toAdd:
                 for u in toAdd:
@@ -381,6 +397,15 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
                 for u in toDelete:
                     self.gtool.removePrincipalFromGroup(u, self.groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
+
+            search = form.get('form.button.Search', None) is not None
+            findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
+            self.searchString = not findAll and form.get('searchstring', '') or ''
+            if findAll or self.searchString != '':
+                self.searchResults = self.getPotentialMembers(self.searchString)
+
+            if search or findAll:
+                self.newSearch = True
 
         self.groupMembers = self.getMembers()
 
@@ -399,8 +424,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
 
         mergedResults = groupResults + userResults
-        filter(None, mergedResults)
-        return mergedResults
+        return filter(None, mergedResults)
 
     def getPotentialMembers(self, searchString):
         ignoredUsersGroups = [x.id for x in self.getMembers() + [self.group,] if x is not None]
@@ -418,6 +442,7 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
 
         self.searchResults = []
         self.searchString = ''
+        self.newSearch = False
 
         if form.get('form.submitted', False):
             delete = form.get('delete', [])
@@ -432,9 +457,15 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
                     self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
+        search = form.get('form.button.Search', None) is not None
         findAll = form.get('form.button.FindAll', None) is not None and not self.many_groups
         self.searchString = not findAll and form.get('searchstring', '') or ''
-        self.searchResults = self.getPotentialGroups(self.searchString)
+
+        if findAll or not self.many_groups or self.searchString != '':
+            self.searchResults = self.getPotentialGroups(self.searchString)
+
+        if search or findAll:
+            self.newSearch = True
 
         self.groups = self.getGroups()
         return self.index()
@@ -442,9 +473,9 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
     def getGroups(self):
         groupResults = [self.gtool.getGroupById(m) for m in self.gtool.getGroupsForPrincipal(self.member)]
         groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
-        filter(None, groupResults)
-        return groupResults
+        return filter(None, groupResults)
 
     def getPotentialGroups(self, searchString):
         ignoredGroups = [x.id for x in self.getGroups() if x is not None]
         return self.membershipSearch(searchString, searchUsers=False, ignore=ignoredGroups)
+

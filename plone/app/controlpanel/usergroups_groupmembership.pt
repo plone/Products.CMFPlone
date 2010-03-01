@@ -15,13 +15,16 @@
      tal:define="template_id string:@@usergroup-groupmembership;
                  errors python:request.get('errors', {});
                  portal_roles view/portal_roles;
+                 showAll python:request.get('showAll', '') and not view.newSearch and 'y';
                  Batch python:modules['Products.CMFPlone'].Batch;
-                 b_start python:request.get('b_start',0);
-                 b_size python:20;
+                 resultcount python:len(view.searchResults);
+                 b_size python:resultcount if showAll else 20;
+                 b_start python:0 if showAll or view.newSearch else view.atoi(request.get('b_start',0));
+                 b_start python:b_start if b_start <= resultcount else resultcount - resultcount % b_size;
+                 b_start python:b_start if b_start < resultcount else max(b_start - b_size, 0);
                  portal_url context/portal_url;">
  
     <div class="documentEditable">
-
         <!-- simulating views on the groups/user pages until we have real objects. -->
         <div id="edit-bar">
             <ul class="contentViews" id="content-views">
@@ -101,7 +104,8 @@
                             name="groups"
                             method="post"
                             tal:attributes="action string:$portal_url/$template_id?groupname=${view/groupname}"
-                            tal:define="batch python:Batch(view.searchResults, b_size, int(b_start), orphan=1);
+                            tal:define="batch python:Batch(view.searchResults, b_size, int(b_start));
+                                        batchformkeys python:['searchstring','_authenticator','groupname','form.submitted'];
                                         many_users view/many_users">
                     <h2 i18n:translate="heading_groupmembers_current">Current group members</h2>
                       <table class="listing" summary="Group Members Listing"
@@ -295,9 +299,24 @@
                     </table>
 
                     <input type="hidden" value="b_start" name="b_start"
-                             tal:attributes="value b_start"/>
+                           tal:attributes="value b_start"/>
+
+                    <input type="hidden" value="" name="showAll"
+                           tal:attributes="value showAll"/>
 
                     <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+                    <div class="showAllSearchResults"
+                         tal:condition="python:batch.next or batch.previous"
+                         tal:define="mq python:modules['ZTUtils'].make_query;
+                                     keys batchformkeys|nothing;
+                                     linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
+                                     url batch_base_url | string:${context/absolute_url}/${template_id}">
+                        <a tal:attributes="href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ))"
+                           i18n:translate="description_pas_show_all_search_results">
+                            Show all search results
+                        </a>
+                    </div>
 
                     <input class="context"
                             type="submit"

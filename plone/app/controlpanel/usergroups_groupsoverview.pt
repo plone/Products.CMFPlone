@@ -14,14 +14,15 @@
 <metal:main fill-slot="prefs_configlet_content"
      tal:define="template_id string:@@usergroup-groupprefs;
                  errors python:request.get('errors', {});
+                 showAll python:request.get('showAll', '') and not view.newSearch and 'y';
                  Batch python:modules['Products.CMFPlone'].Batch;
-                 b_start request/b_start | python:0;
-                 b_size python:20;
+                 b_start python:0 if showAll or view.newSearch else request.get('b_start',0);
                  portal_roles view/portal_roles;
                  search_results view/searchResults;
+                 b_size python:showAll and len(search_results) or 20;
                  batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;
+                 batchformkeys python:['searchstring','_authenticator'];
                  portal_url context/portal_url;">
-
 
     <div class="documentEditable">
 
@@ -111,6 +112,9 @@
 
                     <input type="hidden" value="b_start" name="b_start"
                            tal:attributes="value b_start"/>
+
+                    <input type="hidden" value="" name="showAll"
+                           tal:attributes="value showAll"/>
 
                     <table class="listing"
                            summary="Select roles for each group"
@@ -241,6 +245,18 @@
                     <tal:block tal:condition="python:(search_results)">
 
                         <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+                        <div class="showAllSearchResults"
+                             tal:condition="python:batch.next or batch.previous"
+                             tal:define="mq python:modules['ZTUtils'].make_query;
+                                         keys batchformkeys|nothing;
+                                         linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
+                                         url batch_base_url | string:${context/absolute_url}/${template_id}">
+                            <a tal:attributes="href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ))"
+                               i18n:translate="description_pas_show_all_search_results">
+                                Show all search results
+                            </a>
+                        </div>
 
                         <input class="context"
                                type="submit"

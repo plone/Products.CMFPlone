@@ -13,9 +13,10 @@
 
 <metal:main fill-slot="prefs_configlet_content"
     tal:define="template_id string:@@usergroup-userprefs;
+                showAll python:request.get('showAll', '') and not view.newSearch and 'y';
                 Batch python:modules['Products.CMFPlone'].Batch;
-                b_start request/b_start | python:0;
-                b_size request/b_size | python:20;
+                b_start python:0 if showAll or view.newSearch else request.get('b_start',0);
+                b_size python:showAll and len(view.searchResults) or 20;
                 portal_roles view/portal_roles;
                 portal_url context/portal_url;">
 
@@ -102,6 +103,7 @@
                       tal:define="findAll python:'form.button.FindAll' in request.keys();
                                   portal_users view/searchResults;
                                   batch python:Batch(portal_users, b_size, int(b_start), orphan=1);
+                                  batchformkeys python:['searchstring','_authenticator'];
                                   many_users view/many_users">
                   <input type="hidden" name="form.submitted" value="1" />
 
@@ -234,6 +236,24 @@
                   </table>
 
                   <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+                  <div class="showAllSearchResults"
+                       tal:condition="python:batch.next or batch.previous"
+                       tal:define="mq python:modules['ZTUtils'].make_query;
+                                   keys batchformkeys|nothing;
+                                   linkparams python:keys and dict([(key, request.form[key]) for key in keys if key in request]) or request.form;
+                                   url batch_base_url | string:${context/absolute_url}/${template_id}">
+                      <a tal:attributes="href python: '%s?%s' % (url, mq( linkparams, {'showAll':'y'} ))"
+                         i18n:translate="description_pas_show_all_search_results">
+                          Show all search results
+                      </a>
+                  </div>
+
+                  <input type="hidden" value="b_start" name="b_start"
+                         tal:attributes="value b_start"/>
+
+                  <input type="hidden" value="" name="showAll"
+                         tal:attributes="value showAll"/>
 
                   <input class="context"
                      type="submit"
