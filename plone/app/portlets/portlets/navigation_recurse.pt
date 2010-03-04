@@ -14,7 +14,7 @@
                 li_class        python:is_current and ' navTreeCurrentNode' or '';
                 li_extr_class   python:is_in_path and ' navTreeItemInPath' or '';
                 li_folder_class python:show_children and ' navTreeFolderish' or '';"
-    tal:attributes="class string:navTreeItem visualNoMarker${li_class}${li_extr_class}${li_folder_class}"
+    tal:attributes="class string:navTreeItem visualNoMarker${li_class}${li_extr_class}${li_folder_class} section-${node/normalized_id}"
     tal:condition="python:bottomLevel &lt;= 0 or level &lt;= bottomLevel">
 
     <tal:level define="item_class string:state-${node/normalized_review_state}">
