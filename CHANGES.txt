@@ -1,12 +1,23 @@
 Changelog
 =========
 
-2.0b6 - Unreleased
+2.0b6 - 2010-03-05
 ------------------
+
+- Added navtree-section-class to li. This closes
+  http://dev.plone.org/plone/ticket/10247.
+  [hpeteragitator]
+
+- Remove a label for attribute that points to nothing, invalid HTML.
+  [rossp]
+
+- Fix invalid HTML by moving the xmlns declarations into a tag that will
+  be omitted by TAL.
+  [rossp]
 
 - Avoid ConstraintNotSatisfied error when GS-importing the default
   navigation portlet. Fixes http://dev.plone.org/plone/ticket/10232.
-  [WouterVH]
+  [WouterVH, hannosch]
 
 2.0b5 - 2010-02-18
 ------------------
