@@ -4,10 +4,7 @@ from plone.memoize.instance import memoize
 from zope.component import getMultiAdapter, queryMultiAdapter
 
 from AccessControl import getSecurityManager
-from AccessControl import Unauthorized
-from Acquisition import aq_base
 from Acquisition import aq_inner
-from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
@@ -97,12 +94,8 @@ class DocumentBylineViewlet(ViewletBase):
         """Convert time to localized time
         """
         util = getToolByName(self.context, 'translation_service')
-        try:
-            return util.ulocalized_time(time, long_format, time_only, self.context,
-                                        domain='plonelocales')
-        except TypeError: # Plone 3.1 has no time_only argument
-            return util.ulocalized_time(time, long_format, self.context,
-                                        domain='plonelocales')
+        return util.ulocalized_time(time, long_format, time_only, self.context,
+                                    domain='plonelocales')
 
 
 class ContentRelatedItems(ViewletBase):
