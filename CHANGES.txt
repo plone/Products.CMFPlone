@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b5 - Unreleased
+2.0b5 - 2010-03-05
 ------------------
 
 - Make icon descriptions' lookup of portal_type title less brittle for missing
