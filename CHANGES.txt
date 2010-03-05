@@ -1,17 +1,25 @@
 Changelog
 =========
 
-1.0b5 - Unreleased
+1.0b5 - 2010-03-05
 ------------------
+
+- Remove some unused variable definitions from browser/register.py.
+  [esteele]
 
 - Updated account-panel-bare.pt to recent markup conventions.
   References http://dev.plone.org/plone/ticket/9981
   [spliter]
 
+- Sort groups listing alphabetically by title.
+  [esteele]
+
 - Display groups by title (id) in @@new-user.
   [esteele]
 
-- Remove some unused variable definitions from browser/register.py
+- Fix some more duplicate id's, including some done through TAL that had nothing
+  dynamic and so nee not be tal:attributes.
+  [rossp]
 
 1.0b4 - 2010-02-18
 ------------------
