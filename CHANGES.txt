@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b4 - Unreleased
+2.0b4 - 2010-03-05
 ------------------
 
 - Reworked user and group listings to prevent excessively long batching URLs and
