@@ -5,33 +5,34 @@ Changelog
 ------------------
 
 - Reworked user and group listings to prevent excessively long batching URLs and
-  resubmission of role changes via the batching links; requires changes to batching
-  templates in Plone 4.0b1.
+  resubmission of role changes via the batching links; requires changes to
+  batching templates in Plone 4.0b1.
   [cah190]
 
-- Added a link to show all search results (thus temporarily disabling batching) for
-  user and group listings.
+- Added a link to show all search results (thus temporarily disabling batching)
+  for user and group listings.
   [cah190]
 
-- Performing a search on the users and groups overviews now resets the batching state
-  such that page 1 is always shown after the search is submitted.
+- Performing a search on the users and groups overviews now resets the batching
+  state such that page 1 is always shown after the search is submitted.
   [cah190]
 
-- The users overview will now return to the same page of results after role changes
-  are submitted.
+- The users overview will now return to the same page of results after role
+  changes are submitted.
   [cah190]
 
 - Remove the option to turn off nesting.
   [esteele]
 
-- Updated emaillogin.pt to recent markup conventions. 
+- Updated emaillogin.pt to recent markup conventions.
   References http://dev.plone.org/plone/ticket/9981
   [spliter]
 
-- Remove unused imports in usergroups.py
+- Remove unused imports in usergroups.py.
   [esteele]
 
-- Add the recursive_groups plugin to the bottom of the IGroupsPlugin list, not the top.
+- Add the recursive_groups plugin to the bottom of the IGroupsPlugin list, not
+  the top.
   [esteele]
 
 2.0b3 - 2010-02-18
@@ -54,6 +55,7 @@ Changelog
     - usergroups_usermembership.pt
     - usergroups_usersoverview.pt
     - usergroupssettings.pt
+
   to the recent markup conventions. And got rid of redundant
   .documentContent/#region-content markup.
   References
