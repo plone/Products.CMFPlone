@@ -4,6 +4,8 @@ Changelog
 2.0b5 - unreleased
 ------------------
 
+- Fixed various i18n issues.
+  [vincentfretin]
 
 2.0b4 - 2010-03-05
 ------------------

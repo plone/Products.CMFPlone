@@ -68,16 +68,22 @@
                   Up to Site Setup
                 </a>
 
-                <p i18n:translate="description_groups_management"
-                   class="discreet">
+                <p class="discreet">
+                  <span tal:omit-tag=""
+                        i18n:translate="description_groups_management">
                     Groups are logical collections of users, such as
                     departments and business units. Groups are not directly
                     related to permissions on a global level, you normally
                     use Roles for that - and let certain Groups have a
-                    particular role. The symbol
-                     <img i18n:name="image_link_icon"
-                          tal:replace="structure context/site_icon.gif" />
+                    particular role.
+                  </span>
+                  <span tal:omit-tag=""
+                        i18n:translate="description_groups_management2">
+                    The symbol
+                    <img i18n:name="image_link_icon"
+                         tal:replace="structure context/site_icon.gif" />
                     indicates a role inherited from membership in another group.
+                  </span>
                 </p>
 
                 <p i18n:translate="description_pas_group_listing"

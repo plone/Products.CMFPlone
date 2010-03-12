@@ -68,7 +68,7 @@
                   the user. You can also edit the e-mail addresses, and
                   add/remove users.
                 </p>
-                <p i18n:translate="user_role_note">
+                <p i18n:translate="user_roles_note">
                   Note that roles set here apply directly to a user.
                   The symbol <img i18n:name="image_link_icon" tal:replace="structure context/site_icon.gif" /> 
                   indicates a role inherited from membership in a group.
