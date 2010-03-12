@@ -87,8 +87,9 @@ class IUserDataSchema(Interface):
 
     description = schema.Text(title=_(u'label_biography', default=u'Biography'),
         description=_(u'help_biography',
-                      default=u'A short overview of who you are and '
-                      'author page, linked from the items you create.'),
+                      default=u"A short overview of who you are and what you "
+                      "do. Will be displayed on your author page, linked "
+                      "from the items you create."),
         required=False)
 
     location = schema.TextLine(
