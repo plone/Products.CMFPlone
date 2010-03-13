@@ -81,7 +81,7 @@
                 <form method="post"
                       tal:attributes="action string:$portal_url/$template_id?userid=${userid}">
 
-                  <h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
+                  <h2 i18n:translate="heading_memberships_current">Current group memberships</h2>
                   <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
                     <tr>
                       <th i18n:translate="listingheader_group_name">Group name</th>
