@@ -255,8 +255,7 @@ class UserDataPanel(AccountPanelForm):
 
 
 class CurrentPasswordError(ValidationError):
-    __doc__ = _(u"Incorrect password",
-                default=u"Incorrect value for current password")
+    __doc__ = _(u"Incorrect value for current password")
 
 
 # Define validator(s)
