@@ -3,12 +3,15 @@ Testing the flexible user registration
 
     >>> browser = self.browser
 
-First things first... turn on self-registration so that we can see the @@register form.
+First things first... turn on self-registration so that we can see the
+@@register form. Also, let users select their own password so we don't
+depend on a mail server properly set-up:
     >>> browser.open('http://nohost/plone/login_form')
     >>> browser.getControl('Login Name').value = 'admin'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl('Enable self-registration').selected = True
     >>> browser.getControl('Let users select their own passwords').selected = True
     >>> browser.getControl('Save').click()
     >>> 'Changes saved' in browser.contents

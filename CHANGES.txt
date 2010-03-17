@@ -4,6 +4,12 @@ Changelog
 1.0b6 - unreleased
 ------------------
 
+- Update permission for the @@register view so only users with the Add
+  Portal Member permission can use it to add new members.
+  Update tests accordingly.
+  Fixes http://dev.plone.org/plone/ticket/3739
+  [dukebody]
+
 - Fixed help_biography message.
   [vincentfretin]
 

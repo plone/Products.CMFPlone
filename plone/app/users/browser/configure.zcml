@@ -9,7 +9,7 @@
       name="register"
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".register.RegistrationForm"
-      permission="zope.Public"
+      permission="cmf.AddPortalMember"
       />
 
     <browser:page
