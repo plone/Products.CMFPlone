@@ -300,6 +300,7 @@
     <browser:viewlet
         name="plone.belowcontenttitle.keywords"
         manager=".interfaces.IBelowContent"
+        view="plone.app.layout.globals.interfaces.IViewView"
         template="keywords.pt"
         permission="zope2.View"
         />
