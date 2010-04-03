@@ -4,6 +4,10 @@ Changelog
 2.0b6 - unreleased
 ------------------
 
+- Update viewlets so that this package now defines the viewlet configuration
+  required by the Sunburst theme, and plonetheme.classic overrides that to
+  achieve the old viewlet positions.
+  [davisagli]
 
 2.0b5 - 2010-03-05
 ------------------

@@ -116,7 +116,7 @@
     <!-- The site actions -->
     <browser:viewlet
         name="plone.site_actions"
-        manager=".interfaces.IPortalHeader"
+        manager=".interfaces.IPortalFooter"
         class=".common.SiteActionsViewlet"
         permission="zope2.View"
         />
@@ -148,7 +148,7 @@
     <!-- The personal bar -->
     <browser:viewlet
         name="plone.personal_bar"
-        manager=".interfaces.IPortalTop"
+        manager=".interfaces.IPortalHeader"
         class=".common.PersonalBarViewlet"
         permission="zope2.View"
         />
@@ -283,7 +283,7 @@
     <!-- The breadcrumbs -->
     <browser:viewlet
         name="plone.path_bar"
-        manager=".interfaces.IPortalTop"
+        manager=".interfaces.IAboveContent"
         class=".common.PathBarViewlet"
         permission="zope2.View"
         />
@@ -299,7 +299,7 @@
     <!-- Render the keywords -->
     <browser:viewlet
         name="plone.belowcontenttitle.keywords"
-        manager=".interfaces.IBelowContentTitle"
+        manager=".interfaces.IBelowContent"
         template="keywords.pt"
         permission="zope2.View"
         />

@@ -3,20 +3,19 @@
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
-<ul id="portal-personaltools"
-    tal:condition="python:view.user_actions or not view.anonymous"
-    class="visualInline">
-    <li tal:condition="not: view/anonymous"><a 
-        id="user-name"
-        tal:attributes="href view/homelink_url"
-        ><img src="" tal:replace="structure context/user.gif" />
-        <span class="visualCaseSensitive"
-             tal:content="view/user_name">
-            John
-        </span
-    ></a></li>
-
-    <tal:actions repeat="action view/user_actions">
+<dl class="actionMenu" id="portal-personaltools"
+    tal:condition="python:view.user_actions and not view.anonymous">
+  <tal:block condition="not: view/anonymous"> <!-- TODO: Can we nest these in a better way? -->
+  <dt class="actionMenuHeader">
+    <!-- The following a-tag needs to be clicked to dropdown the menu -->
+    <a id="user-name"
+       tal:attributes="href view/homelink_url"
+       tal:content="view/user_name">
+        John
+    </a>
+  </dt>
+  <dd class="actionMenuContent">
+    <ul tal:repeat="action view/user_actions">
         <li tal:attributes="id string:personaltools-${action/id}">
             <a href=""
                tal:attributes="href action/url"
@@ -25,7 +24,23 @@
                 action title
             </a>
         </li>
-    </tal:actions>
+    </ul>
+  </dd>
+  </tal:block>
+</dl>
 
-</ul>
+<dl class="actionMenu" id="portal-personaltools"
+    tal:condition="view/anonymous">
+  <dt id="anon-personalbar">
+    <tal:actions repeat="action view/user_actions">
+        <a href=""
+           tal:attributes="href action/url"
+           tal:content="action/title"
+           i18n:translate="">
+            action title
+        </a>
+    </tal:actions>
+  </dt>
+</dl>
+
 </div>
