@@ -4,6 +4,10 @@ Changelog
 2.0b6 - unreleased
 ------------------
 
+- Simplified Related Items to use a definition list instead of a fieldset —
+  it's really not a form.
+  [limi]
+
 - Change keyword/tag viewlet to be independent of the surrounding language,
   and to have a class on the separator, so it can be removed when the styling
   requires it.
