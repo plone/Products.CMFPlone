@@ -4,8 +4,7 @@
      tal:define="categories context/Subject|nothing;
                  url_quote  nocall:modules/Products.PythonScripts.standard/url_quote;"
      tal:condition="categories">
-  &mdash;
-  <tal:filedunder i18n:translate="label_filed_under">filed under:</tal:filedunder>
+  <tal:filedunder i18n:translate="label_filed_under">Filed under:</tal:filedunder>
   <span tal:repeat="category categories">
     <a href=""
        class="link-category"
@@ -14,6 +13,6 @@
        tal:define="quotedCat python:url_quote(category)"
        tal:attributes="href string:${context/portal_url}/search?Subject%3Alist=${quotedCat}">
       Category
-      </a><tal:separator condition="not: repeat/category/end">,</tal:separator>
+      </a><span class="separator" tal:condition="not: repeat/category/end">,</span>
   </span>
 </div>
