@@ -13,6 +13,7 @@
                             effectiveDate python:effective and view.toLocalizedTime(item['effective_date'],long_format=True);
                             isVersion python:item['type']=='versioning'">
              <div class="historyTools" tal:condition="isVersion">
+
                  <ul>
                      <li><form action="" method="post" tal:attributes="action item/revert_url">
                         <input type="hidden" name="version_id" value="" tal:attributes="value item/version_id" />
@@ -24,7 +25,7 @@
              <div class="historyByLine">
                  <tal:action i18n:translate="history_action">
                      <span class="historyAction" tal:content="action" i18n:translate="" i18n:name="action"/>  
-                     by 
+                     &mdash; 
                      <tal:actor i18n:name="actor">
                          <a href=""
                             tal:condition="actor_home"
@@ -42,16 +43,17 @@
                  </tal:effective>
 
              </div>
-             <div tal:content="rhComments" tal:condition="rhComments" class="historyComment" />
-             <div tal:condition="isVersion" class="historyComment">
+             <div class="historyLinks" tal:condition="isVersion">
                  <a href="" 
                     tal:attributes="href item/preview_url"
-                    i18n:translate="title_view_revision">View this revision</a> &middot;
+                    i18n:translate="title_view_revision">View</a>
                  <a href="" tal:attributes="href item/diff_current_url"
                     tal:condition="exists:item/diff_current_url"
-                    i18n:translate="title_compare_revision">Compare with current revision</a>
-
+                    i18n:translate="title_compare_revision">&middot; Compare to current</a>
              </div>
+
+             <div tal:content="rhComments" tal:condition="rhComments" class="historyComment" />
+
              <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
                     tal:attributes="href item/diff_previous_url"
                     title="Compare with previous revision"
