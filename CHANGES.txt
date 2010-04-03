@@ -3,6 +3,9 @@ Changelog
 
 2.0b5 - unreleased
 ------------------
+- Made formlib-based forms consistent with the updated breadcrumb style in 
+  Plone 4.
+  [limi]
 
 - Fixed various i18n issues.
   [vincentfretin]

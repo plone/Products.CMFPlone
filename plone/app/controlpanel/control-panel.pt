@@ -31,6 +31,13 @@
 
         </metal:block>
         
+            <a href=""
+               id="setup-link"
+               tal:attributes="href string:$portal_url/plone_control_panel"
+               i18n:translate="label_up_to_plone_setup">
+                Site Setup
+            </a> &rsaquo;
+
         <h1 class="documentFirstHeading"
             i18n:translate=""
             tal:condition="view/label"
@@ -46,13 +53,6 @@
         </div>
 
         <div id="content-core">
-            
-            <a href=""
-               class="link-parent"
-               tal:attributes="href string:$portal_url/plone_control_panel"
-               i18n:translate="label_up_to_plone_setup">
-                Up to Site Setup
-            </a>
 
             <form action="."
                   metal:define-macro="master"
