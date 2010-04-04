@@ -242,15 +242,8 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
     
 class UserDataPanel(AccountPanelForm):
 
-    @property
-    def form_fields(self):
-        fields = form.FormFields(IUserDataSchema)
-        fields['portrait'].custom_widget = FileUploadWidget
-        props = getToolByName(self, 'portal_properties').site_properties
-        if props.getProperty('use_email_as_login'):
-            return fields.omit('email')
-        else:
-            return fields
+    form_fields = form.FormFields(IUserDataSchema)
+    form_fields['portrait'].custom_widget = FileUploadWidget
     
     label = _(u'title_personal_information_form', default=u'Personal Information')
     description = _(u'description_personal_information_form', default='Change your personal information')
