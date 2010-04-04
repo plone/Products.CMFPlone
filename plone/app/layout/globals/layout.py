@@ -53,8 +53,9 @@ class LayoutPolicy(BrowserView):
         """Determine whether a column should be shown. The left column is called
         plone.leftcolumn; the right column is called plone.rightcolumn.
         """
-        if self.request.get('disable_' + manager_name, None):
-            return False
+        force_disable = self.request.get('disable_' + manager_name, None)
+        if force_disable is not None:
+            return not bool(force_disable)
 
         context = self.context
         if view is None:

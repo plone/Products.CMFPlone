@@ -18,7 +18,11 @@ class TestLayoutView(GlobalsTestCase):
     def testDisableColumns(self):
         self.setRoles(('Manager',))
 
-        # first - add some portlets to be sure we have columns
+        # Make sure we can force a column to appear even if there are no portlets
+        self.app.REQUEST.set('disable_plone.leftcolumn', 0)
+        self.assertEqual(True, self.view.have_portlets('plone.leftcolumn'))
+
+        # Now add some portlets to be sure we have columns
         portlet = getUtility(IPortletType, name='portlets.Calendar')
         mapping_left = self.portal.restrictedTraverse('++contextportlets++plone.leftcolumn')
         mapping_right = self.portal.restrictedTraverse('++contextportlets++plone.rightcolumn')
