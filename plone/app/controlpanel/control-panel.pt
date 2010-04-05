@@ -34,7 +34,7 @@
             <a href=""
                id="setup-link"
                tal:attributes="href string:$portal_url/plone_control_panel"
-               i18n:translate="label_up_to_plone_setup">
+               i18n:translate="">
                 Site Setup
             </a> &rsaquo;
 
