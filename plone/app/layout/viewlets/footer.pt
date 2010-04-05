@@ -16,7 +16,7 @@
                 by the
                 <span i18n:name="plonefoundation" tal:omit-tag="">
                     <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a></span>
-                et al.
+                and friends.
                 </span>
             </p>
 
