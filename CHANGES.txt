@@ -3,6 +3,10 @@ Changelog
 
 2.0b5 - unreleased
 ------------------
+
+- Removed msgid for "Site Setup" message in plone/app/controlpanel/overview.pt
+  [vincentfretin]
+
 - Made formlib-based forms consistent with the updated breadcrumb style in 
   Plone 4.
   [limi]
