@@ -6,9 +6,6 @@
     metal:use-macro="context/prefs_main_template/macros/master"
     i18n:domain="plone">
 
-<metal:block metal:fill-slot="top_slot"
-             tal:define="dummy python:request.set('disable_border',1)" />
-
 <body>
 
 <metal:main fill-slot="prefs_configlet_content"

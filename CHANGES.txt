@@ -4,6 +4,10 @@ Changelog
 2.0b5 - unreleased
 ------------------
 
+- Remove setting of display_border from all templates; this is now done in
+  prefs_main_template.
+  [davisagli]
+
 - Removed msgid for "Site Setup" message in plone/app/controlpanel/overview.pt
   [vincentfretin]
 
