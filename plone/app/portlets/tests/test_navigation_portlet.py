@@ -449,6 +449,17 @@ class TestRenderer(PortletsTestCase):
         root = view.getNavRoot()
         self.failIf(root is not None and len(tree['children']) > 0)
 
+    def testImgConditionalOnTypeIcon(self):
+        """The <img> element should not render if the content type has
+        no icon expression"""
+        folder_fti = self.portal.portal_types['Folder']
+        folder_fti.manage_changeProperties(icon_expr='')
+        self.portal.folder1.reindexObject()
+
+        view = self.renderer(self.portal)
+        tree = view.getNavTree()
+        self.failIf(tree['children'][3]['item_icon'].html_tag())
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
