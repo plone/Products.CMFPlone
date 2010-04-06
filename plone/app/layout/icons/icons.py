@@ -48,10 +48,13 @@ class CatalogBrainContentIcon(BaseIcon):
 
     @property
     def url(self):
+        path = self.brain.getIcon
+        if not path:
+            return path
+
         portal_state_view = getMultiAdapter(
             (self.context, self.request), name=u'plone_portal_state')
         portal_url = portal_state_view.portal_url()
-        path = self.brain.getIcon
         return "%s/%s" % (portal_url, path)
 
     @property
