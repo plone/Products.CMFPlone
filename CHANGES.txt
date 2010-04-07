@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b6 - unreleased
+1.0b6 - 2010-04-07
 ------------------
 
 - Update permission for the @@register view so only users with the Add
