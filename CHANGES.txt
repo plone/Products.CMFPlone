@@ -12,7 +12,7 @@ Changelog
   to be enabled even if there are no portlets.
   [davisagli]
 
-- Simplified Related Items to use a definition list instead of a fieldset —
+- Simplified Related Items to use a definition list instead of a fieldset -
   it's really not a form.
   [limi]
 
