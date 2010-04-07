@@ -26,10 +26,7 @@
                 <div tal:define="rootIsPortal view/root_is_portal;">
                    <a tal:attributes="href root/absolute_url;
                                       title root/Description;
-                                      class selectedClass">
-                   <img src="" height="16" width="16" alt=""
-                        tal:condition="view/root_icon"
-                        tal:attributes="src view/root_icon" />
+                                      class string:contenttype-plone-site $selectedClass;">
                    <span tal:omit-tag=""
                          tal:condition="rootIsPortal"
                          i18n:translate="tabs_home">Home</span>
