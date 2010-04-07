@@ -1,9 +1,18 @@
 Changelog
 =========
 
-2.0b7 - unreleased
+2.0b7 - 2010-04-07
 ------------------
 
+- Convert the root (site) node to use CSS sprites in the navigation portlet.
+  [limi]
+  
+- Use CSS sprites instead of individual images for core content types in the 
+  navigation portlet.
+  [limi]
+  
+- Add test coverage for empty type icons in the navigation portlet.
+  [rossp]
 
 2.0b6 - 2010-03-05
 ------------------
