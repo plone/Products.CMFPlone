@@ -9,26 +9,27 @@
                 children        node/children;
                 item_url        node/getURL;
                 item_icon       nocall:node/item_icon;
+                item_type       node/portal_type;
                 is_current      node/currentItem;
                 is_in_path      node/currentParent;
                 li_class        python:is_current and ' navTreeCurrentNode' or '';
                 li_extr_class   python:is_in_path and ' navTreeItemInPath' or '';
-                li_folder_class python:show_children and ' navTreeFolderish' or '';"
+                li_folder_class python:show_children and ' navTreeFolderish' or '';
+                normalizeString nocall: context/plone_utils/normalizeString;"
     tal:attributes="class string:navTreeItem visualNoMarker${li_class}${li_extr_class}${li_folder_class} section-${node/normalized_id}"
     tal:condition="python:bottomLevel &lt;= 0 or level &lt;= bottomLevel">
 
-    <tal:level define="item_class string:state-${node/normalized_review_state}">
+    <tal:level define="item_class string:state-${node/normalized_review_state};
+                       item_type_class python:'contenttype-' + normalizeString(item_type);
+                       item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class;">
 
-      <div tal:define="item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class">
 
         <a tal:attributes="href python:item_url;
                            title node/Description;
-                           class string:$item_class${li_class}${li_extr_class}${li_folder_class}">
+                           class string:$item_class${li_class}${li_extr_class}${li_folder_class} $item_type_class">
             <img tal:replace="structure item_icon/html_tag" />
             <span tal:content="node/Title">Selected Item Title</span>
         </a>
-
-    </div>
 
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
         tal:condition="python: len(children) > 0 and show_children">
