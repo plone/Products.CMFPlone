@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b5 - unreleased
+2.0b5 - 2010-04-08
 ------------------
 
 - Remove setting of display_border from all templates; this is now done in
