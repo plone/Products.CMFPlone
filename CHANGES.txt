@@ -4,6 +4,10 @@ Changelog
 2.0b8 - Unreleased
 ------------------
 
+- Catch KeyError in EditPortletManagerRenderer. Now the manage-portlets
+  doesn't break on invalid portlets any longer.
+  [tom_gross]
+
 2.0b7 - 2010-04-07
 ------------------
 

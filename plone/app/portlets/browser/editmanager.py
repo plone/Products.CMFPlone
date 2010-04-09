@@ -133,7 +133,7 @@ class EditPortletManagerRenderer(Explicit):
                 addview = addview[1:]
             try:
                 self.context.restrictedTraverse(addview)
-            except (AttributeError, Unauthorized,):
+            except (AttributeError, KeyError, Unauthorized,):
                 return False
             return True
 
