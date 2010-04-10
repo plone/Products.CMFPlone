@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b8 - Unreleased
+2.0b8 - 2010-04-10
 ------------------
 
 - Fix the edit manager template to include the manager id again, so that
