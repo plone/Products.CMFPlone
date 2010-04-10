@@ -4,6 +4,11 @@ Changelog
 2.0b8 - Unreleased
 ------------------
 
+- Fix the edit manager template to include the manager id again, so that
+  KSS can update the manager when actions take place. Closes
+  http://dev.plone.org/plone/ticket/10404.
+  [davisagli]
+
 - Catch KeyError in EditPortletManagerRenderer. Now the manage-portlets
   doesn't break on invalid portlets any longer.
   [tom_gross]
