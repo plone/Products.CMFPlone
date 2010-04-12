@@ -4,6 +4,9 @@ Changelog
 1.0b7 - Unreleased
 ------------------
 
+- Use utility-provided UserDataSchema on @@personal-information form.
+  Fixes https://dev.plone.org/plone/ticket/10258
+  [khink, huub_bouma]
 
 1.0b6 - 2010-04-07
 ------------------
