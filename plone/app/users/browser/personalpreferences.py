@@ -16,6 +16,7 @@ from Products.CMFCore.utils import getToolByName
 
 from plone.app.users.browser.account import AccountPanelForm, AccountPanelSchemaAdapter
 from plone.app.users.userdataschema import IUserDataSchema
+from plone.app.users.userdataschema import IUserDataSchemaProvider
 
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import FileUploadWidget
@@ -70,8 +71,6 @@ class IPersonalPreferences(Interface):
         )
 
 class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
-
-    implements(IPersonalPreferences)
 
     def get_wysiwyg_editor(self):
         return self.context.getProperty('wysiwyg_editor', '')
@@ -168,8 +167,6 @@ class PersonalPreferencesPanel(AccountPanelForm):
 
 class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
-    implements(IUserDataSchema)
-
     def get_fullname(self):
         return self.context.getProperty('fullname', '')
 
@@ -242,12 +239,22 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
     
 class UserDataPanel(AccountPanelForm):
 
-    form_fields = form.FormFields(IUserDataSchema)
-    form_fields['portrait'].custom_widget = FileUploadWidget
-    
     label = _(u'title_personal_information_form', default=u'Personal Information')
     description = _(u'description_personal_information_form', default='Change your personal information')
     form_name = _(u'User Data Form')
+
+    def __init__(self, context, request):
+        """ Load the UserDataSchema at view time. 
+        
+        (Because doing getUtility for IUserDataSchemaProvider fails at startup
+        time.)
+   
+        """
+        super(UserDataPanel, self).__init__(context, request)
+        util = getUtility(IUserDataSchemaProvider)
+        schema = util.getSchema()
+        self.form_fields = form.FormFields(schema)
+        self.form_fields['portrait'].custom_widget = FileUploadWidget
 
     def getPortrait(self):
         context = aq_inner(self.context)
@@ -303,7 +310,6 @@ class PasswordPanelAdapter(SchemaAdapterBase):
 
     adapts(ISiteRoot)
     implements(IPasswordSchema)
-
 
     def __init__(self, context):
 

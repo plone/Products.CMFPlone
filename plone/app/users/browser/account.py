@@ -20,7 +20,6 @@ from Products.statusmessages.interfaces import IStatusMessage
 from plone.app.users.browser.interfaces import IAccountPanelForm, IAccountPanelView
 
 class AccountPanelSchemaAdapter(SchemaAdapterBase):
-    adapts(ISiteRoot)
 
     def __init__(self, context):
         mt = getToolByName(context, 'portal_membership')

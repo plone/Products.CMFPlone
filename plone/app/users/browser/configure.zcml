@@ -52,8 +52,16 @@
              component=".register.getGroupIds"
              name="Group Ids"/>
 
-    <adapter factory=".personalpreferences.PersonalPreferencesPanelAdapter" />
-    <adapter factory=".personalpreferences.UserDataPanelAdapter" />
+    <adapter 
+      provides=".personalpreferences.IPersonalPreferences"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      factory=".personalpreferences.PersonalPreferencesPanelAdapter"
+      />
+    <adapter 
+      provides="..userdataschema.IUserDataSchema"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      factory=".personalpreferences.UserDataPanelAdapter"
+      />
     <adapter factory=".personalpreferences.PasswordPanelAdapter" />
 
 
