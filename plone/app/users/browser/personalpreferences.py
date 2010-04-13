@@ -258,7 +258,7 @@ class UserDataPanel(AccountPanelForm):
         context = aq_inner(self.context)
         return context.portal_membership.getPersonalPortrait()
 
-class USerDataConfiglet(UserDataPanel):
+class UserDataConfiglet(UserDataPanel):
     """ """
     template = ViewPageTemplateFile('account-configlet.pt')
 

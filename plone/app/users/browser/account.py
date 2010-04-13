@@ -42,18 +42,8 @@ class AccountPanelView(BrowserView):
     implements(IAccountPanelView)
     template = ViewPageTemplateFile('account-panel-bare.pt')
 
-    def __init__(self, context):
-        self.context = context
-        self.userid = self.request.get('userid')
-
     def getMacro(self, key):
         return self.template.macros[key]
-
-    def makeQuery(self, **kw):
-            return make_query(**kw)
-
-    
-
 
 
 class AccountPanelForm(FieldsetsEditForm):
@@ -64,8 +54,11 @@ class AccountPanelForm(FieldsetsEditForm):
     template = ViewPageTemplateFile('account-panel.pt')
 
     hidden_widgets = []
-    prefs_user_details = 'prefs_user_details'
-    
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.userid = self.request.get('userid')
 
     @form.action(_(u'label_save', default=u'Save'), name=u'save')
     def handle_edit_action(self, action, data):
@@ -95,6 +88,8 @@ class AccountPanelForm(FieldsetsEditForm):
     def _on_save(self, data=None):
         pass
 
+    def makeQuery(self, **kw):
+        return make_query(**kw)
 
     def showWidget(self, widget):
         """ Hide widgets in the formbase template. 
@@ -106,14 +101,6 @@ class AccountPanelForm(FieldsetsEditForm):
     def _checkPermission(self, permission, context):
         mt = getToolByName(context, 'portal_membership')
         return mt.checkPermission(permission, context)
-
-    def getActionUrl(self):
-        if self.request.get(self.prefs_user_details):
-            url = self.request.get('page', '@@personal-information')
-        else:
-            url = self.request.get('URL')
-
-        return url
 
     def getPersonalInfoLink(self):
         context = aq_inner(self.context)
@@ -140,7 +127,7 @@ class AccountPanelForm(FieldsetsEditForm):
         member = mt.getAuthenticatedMember()
 
         template = None
-        if not self.request.get(self.prefs_user_details) and member.canPasswordSet():
+        if member.canPasswordSet():
             template = '@@change-password'
 
         return template

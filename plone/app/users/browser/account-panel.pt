@@ -12,8 +12,7 @@
 
 <body>
     <div class="cell width-full position-0"
-         tal:define="getmacro nocall: context/account-macro;
-                     full_view python:True"
+         tal:define="getmacro nocall: context/account-macro;"
          metal:fill-slot="content">
 
 

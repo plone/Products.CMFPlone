@@ -11,28 +11,35 @@
 
     <div id="content">
 
-        <metal:fullview tal:condition="full_view|nothing">
-            <h1 class="documentFirstHeading"
-                i18n:translate=""
-                tal:condition="view/label"
-                tal:content="view/label"
-                metal:define-slot="heading">
-                Do something
-            </h1>
 
-            <div class="documentDescription" i18n:translate=""
-               tal:condition="view/description"
-               tal:content="view/description">
-                Description
-            </div>
-        </metal:fullview>
+        <h1 class="documentFirstHeading"
+            i18n:translate=""
+            tal:condition="view/label"
+            tal:content="view/label"
+            metal:define-slot="heading">
+            Do something
+        </h1>
+
+        <div class="documentDescription" i18n:translate=""
+           tal:condition="view/description"
+           tal:content="view/description">
+            Description
+        </div>
+
+        <a tal:condition="configlet_view|nothing"
+           href=""
+           class="link-parent"
+           tal:attributes="href string:$portal_url/@@usergroup-userprefs"
+           i18n:translate="label_up_to_usersoverview">
+          Up to Users Overview
+        </a>
 
         <div id="content-core">
-            <form action="."
+            <form action=""
                   metal:define-macro="master"
                   tal:define="is_fieldsets view/is_fieldsets"
-                  tal:attributes="action view/getActionUrl;
-                  class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default"
+                  tal:attributes="class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default;
+                                  action request/URL;"
                   method="post"
                   class="edit-form enableUnloadProtection"
                   enctype="multipart/form-data"

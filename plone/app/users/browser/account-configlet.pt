@@ -13,26 +13,29 @@
 <body>
 <metal:main fill-slot="prefs_configlet_content"
             tal:define="getmacro nocall: context/account-macro;
-                        full_view python:True">
+                        configlet_view python:True">
 
         <div id="edit-bar"
-             tal:define="userid view/userid;
+             tal:define="view_name view/__name__;
+                         userid view/userid|nothing;
                          userquery python:view.makeQuery(userid=userid)">
             <ul class="contentViews" id="content-views">
-              <li>
-                    <a href=""
-                   tal:attributes="href string:$portal_url/prefs_user_details?${userquery}"
-                   i18n:translate="label_user_properties">Personal Information</a>
+              <li tal:define="selected python:view_name=='user-information'"
+                  tal:attributes="class python:selected and 'selected' or 'plain'">
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@user-information?${userquery}"
+                   i18n:translate="title_personal_information_form">Personal Information</a>
               </li>
-              <li>
-                    <a href=""
-                   tal:attributes="href string:$portal_url/prefs_user_details?${userquery}"
-                   i18n:translate="label_user_properties">Personal Preferences</a>
+              <li tal:define="selected python:view_name=='user-preferences'"
+                  tal:attributes="class python:selected and 'selected' or 'plain'">
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@user-preferences?${userquery}"
+                   i18n:translate="">Personal Preferences</a>
               </li>
 
               <li>
-                    <a href=""
-                   tal:attributes="href string:$portal_url/${template_id}?${userquery}"
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@usergroup-usermembership?${userquery}"
                    i18n:translate="label_group_memberships">Group Memberships</a>
               </li>
             </ul>
