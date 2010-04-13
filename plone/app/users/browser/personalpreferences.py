@@ -21,6 +21,7 @@ from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import FileUploadWidget
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import set_own_login_name
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 
 class IPersonalPreferences(Interface):
@@ -165,6 +166,10 @@ class PersonalPreferencesPanel(AccountPanelForm):
         
         super(PersonalPreferencesPanel, self).setUpWidgets(ignore_request)
 
+class PersonalPreferencesConfiglet(PersonalPreferencesPanel):
+    """ """
+    template = ViewPageTemplateFile('account-configlet.pt')
+
 
 class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
@@ -252,6 +257,10 @@ class UserDataPanel(AccountPanelForm):
     def getPortrait(self):
         context = aq_inner(self.context)
         return context.portal_membership.getPersonalPortrait()
+
+class USerDataConfiglet(UserDataPanel):
+    """ """
+    template = ViewPageTemplateFile('account-configlet.pt')
 
 
 class CurrentPasswordError(ValidationError):

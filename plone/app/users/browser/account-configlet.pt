@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+
+</head>
+
+<body>
+<metal:main fill-slot="prefs_configlet_content"
+            tal:define="getmacro nocall: context/account-macro;
+                        full_view python:True">
+
+        <div id="edit-bar"
+             tal:define="userid view/userid;
+                         userquery python:view.makeQuery(userid=userid)">
+            <ul class="contentViews" id="content-views">
+              <li>
+                    <a href=""
+                   tal:attributes="href string:$portal_url/prefs_user_details?${userquery}"
+                   i18n:translate="label_user_properties">Personal Information</a>
+              </li>
+              <li>
+                    <a href=""
+                   tal:attributes="href string:$portal_url/prefs_user_details?${userquery}"
+                   i18n:translate="label_user_properties">Personal Preferences</a>
+              </li>
+
+              <li>
+                    <a href=""
+                   tal:attributes="href string:$portal_url/${template_id}?${userquery}"
+                   i18n:translate="label_group_memberships">Group Memberships</a>
+              </li>
+            </ul>
+            <div class="contentActions">&nbsp;</div>
+        </div>
+
+        <metal:use_form use-macro="python: getmacro('main')"/>
+
+    </metal:main>
+</body>
+</html>

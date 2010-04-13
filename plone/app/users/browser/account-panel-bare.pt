@@ -4,57 +4,7 @@
                 name python:memberinfo['fullname'] or member.getId() or member.getId();
                 portal_url context/portal_url;">
 
-    <div id="edit-bar">
 
-        <h5 class="hiddenStructure"
-            i18n:translate="heading_views">Views</h5>
-
-        <ul class="contentViews"
-            id="content-views"
-            tal:define="view_name view/__name__"
-            i18n:domain="plone">
-
-            <li id="contentview-user_data-personal-information"
-                tal:define="link view/getPersonalInfoLink;
-                            selected python:view_name=='personal-information'"
-                tal:condition="link|nothing"
-                tal:attributes="class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/${link}"
-                   i18n:translate="title_personal_information_form">
-                    Personal Information
-                </a>
-            </li>
-
-            <li id="contentview-user_data-personal-preferences"
-                tal:define="link view/getPersonalPrefsLink;
-                            selected python:view_name=='personal-preferences';"
-                tal:condition="link|nothing"
-                tal:attributes="class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/${link}"
-                   i18n:translate="">
-                    Personal Preferences
-                </a>
-            </li>
-            
-            <li id="contentview-user_data-change-password"
-                tal:define="link view/getPasswordLink;
-                            selected python:view_name=='change-password';"
-                tal:condition="link|nothing"
-                tal:attributes="class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/${link}"
-                   i18n:translate="label_password">
-                    Password
-                </a>
-            </li>
-
-        </ul>
-
-        <div class="contentActions">&nbsp;</div>
-    </div>
-    
     <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
     </div>

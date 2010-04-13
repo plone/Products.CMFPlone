@@ -21,9 +21,9 @@
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      name="personal-preferences"
-      class=".personalpreferences.PersonalPreferencesPanel"
-      permission="cmf.SetOwnProperties"
+      name="change-password"
+      class=".personalpreferences.PasswordAccountPanel"
+      permission="cmf.SetOwnPassword"
       />
 
     <browser:page
@@ -36,6 +36,20 @@
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
+      name="personal-preferences"
+      class=".personalpreferences.PersonalPreferencesPanel"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      name="user-preferences"
+      class=".personalpreferences.PersonalPreferencesConfiglet"
+      permission="zope2.ManageUsers"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
       name="personal-information"
       class=".personalpreferences.UserDataPanel"
       permission="cmf.SetOwnProperties"
@@ -43,9 +57,9 @@
 
     <browser:page
       for="Products.CMFCore.interfaces.ISiteRoot"
-      name="change-password"
-      class=".personalpreferences.PasswordAccountPanel"
-      permission="cmf.SetOwnPassword"
+      name="user-information"
+      class=".personalpreferences.UserDataConfiglet"
+      permission="zope2.ManageUsers"
       />
 
     <utility provides="zope.schema.interfaces.IVocabularyFactory"
