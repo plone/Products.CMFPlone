@@ -4,6 +4,10 @@ Changelog
 2.0b9 - Unreleased
 ------------------
 
+- Fix the calendar portlet to generate links that work on non-default views
+  when logged out. Closes http://dev.plone.org/plone/ticket/10045.
+  [davisagli]
+
 2.0b8 - 2010-04-10
 ------------------
 
