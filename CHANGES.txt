@@ -4,6 +4,10 @@ Changelog
 2.0b9 - Unreleased
 ------------------
 
+- Make the navigation portlet hide the portal header if title is left blank.
+  Refs http://dev.plone.org/plone/ticket/10432
+  [esteele]
+
 - Fix the calendar portlet to generate links that work on non-default views
   when logged out. Closes http://dev.plone.org/plone/ticket/10045.
   [davisagli]
