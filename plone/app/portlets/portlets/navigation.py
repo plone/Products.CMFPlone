@@ -32,8 +32,7 @@ class INavigationPortlet(IPortletDataProvider):
     name = schema.TextLine(
             title=_(u"label_navigation_title", default=u"Title"),
             description=_(u"help_navigation_title",
-                          default=u"The title of the navigation tree. Leave "
-                                   "blank for the default, translated title."),
+                          default=u"The title of the navigation tree."),
             default=u"",
             required=False)
 
