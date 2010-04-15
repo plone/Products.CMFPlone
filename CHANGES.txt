@@ -4,6 +4,9 @@ Changelog
 2.0b9 - Unreleased
 ------------------
 
+- Use unicode up/down arrows in the @@manage-portlet view.
+  [esteele]
+
 - Make the navigation portlet hide the portal header if title is left blank.
   Refs http://dev.plone.org/plone/ticket/10432
   [esteele]
