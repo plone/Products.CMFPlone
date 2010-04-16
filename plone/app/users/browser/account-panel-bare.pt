@@ -46,10 +46,6 @@
                   id="zc.page.browser_form">
 
                 <input type="hidden"
-                       name="prefs_user_details"
-                       tal:attributes="value view/isPrefsUserDetails|string:"/>
-
-                <input type="hidden"
                        name="userid"
                        tal:attributes="value request/userid|string:"/>
 

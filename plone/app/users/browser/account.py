@@ -35,9 +35,7 @@ class AccountPanelSchemaAdapter(SchemaAdapterBase):
             self.context = mt.getAuthenticatedMember()
 
 class AccountPanelView(BrowserView):
-    """ The bare view for the account panel is used in the prefs_user_details
-    template. This is good enough for now, but it would be better to use a browser
-    view for prefs_user_details with a more sophicated solution (no bare views, macro's etc.)
+    """ The bare view for the account panel with macro function.
     """
     implements(IAccountPanelView)
     template = ViewPageTemplateFile('account-panel-bare.pt')

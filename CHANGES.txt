@@ -3,7 +3,10 @@ Changelog
 
 1.0b7 - Unreleased
 ------------------
-
+- Added configlet forms that inherit from personal preferences and 
+  personal information. These forms are used when editing user prefs
+  from 'User and groups' in site setup.
+  [kcleong]
 
 1.0b6 - 2010-04-07
 ------------------
