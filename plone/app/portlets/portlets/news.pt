@@ -30,9 +30,10 @@
             <span tal:replace="obj/pretty_title_or_id">
             Plone 2.1 announced!
             </span>
+         </a>
             <span class="portletItemDetails"
                   tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
-        </a>
+        
     </dd>
     </tal:newsitems>
 

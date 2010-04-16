@@ -32,6 +32,7 @@
             <span tal:replace="obj/pretty_title_or_id">
              Some Event
             </span>
+        </a>    
             <span class="portletItemDetails">
                 <tal:condition condition="obj/location">
                     <tal:location content="obj/location">Location</tal:location>, <br />
@@ -40,7 +41,6 @@
                 May 5
                 </tal:date>
             </span>
-        </a>
     </dd>
     </tal:events>
 
