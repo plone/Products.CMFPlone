@@ -1,9 +1,8 @@
-Admin modifies user data thru 'Users and groups' (prefs_user_details)
+Admin modifies user information thru 'Users and groups' 
 ---------------------------------------------------------------------
 
-An admin can modify user data thru the prefs_user_details in Users and Groups
+An admin can modify user information thru the @@user-information form in Users and Groups
 config page.
-
 
 So let's login as Plone admin:
     >>> self.browser.open('http://nohost/plone/')
@@ -12,8 +11,13 @@ So let's login as Plone admin:
     >>> self.browser.getControl('Password').value = 'secret'
     >>> self.browser.getControl('Log in').click()
 
-This form is used when the admin clicks on a user name in Users and Groups:
-    >>> self.browser.open("http://nohost/plone/prefs_user_details?userid=test_user_1_")
+Let's see if we can navigate to the user information form in Users and groups
+    >>> self.browser.getLink('Site Setup').click()
+    >>> self.browser.getLink('Users and Groups').click()
+    >>> self.browser.getLink('(test_user_1_)').click()
+    >>> self.browser.getLink('Personal Information').click()
+    >>> self.browser.url
+    'http://nohost/plone/@@user-information?userid=test_user_1_'
 
 We have these controls in the form:
 

@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+
+</head>
+
+<body>
+<metal:main fill-slot="prefs_configlet_content"
+            tal:define="getmacro nocall: context/account-macro;
+                        configlet_view python:True">
+
+        <div id="edit-bar"
+             tal:define="view_name view/__name__;
+                         userid view/userid|nothing;
+                         userquery python:view.makeQuery(userid=userid)">
+            <ul class="contentViews" id="content-views">
+              <li tal:define="selected python:view_name=='user-information'"
+                  tal:attributes="class python:selected and 'selected' or 'plain'">
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@user-information?${userquery}"
+                   i18n:translate="title_personal_information_form">Personal Information</a>
+              </li>
+              <li tal:define="selected python:view_name=='user-preferences'"
+                  tal:attributes="class python:selected and 'selected' or 'plain'">
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@user-preferences?${userquery}"
+                   i18n:translate="">Personal Preferences</a>
+              </li>
+
+              <li>
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@usergroup-usermembership?${userquery}"
+                   i18n:translate="label_group_memberships">Group Memberships</a>
+              </li>
+            </ul>
+            <div class="contentActions">&nbsp;</div>
+        </div>
+
+        <metal:use_form use-macro="python: getmacro('main')"/>
+
+    </metal:main>
+</body>
+</html>

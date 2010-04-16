@@ -4,93 +4,46 @@
                 name python:memberinfo['fullname'] or member.getId() or member.getId();
                 portal_url context/portal_url;">
 
-    <div id="edit-bar">
 
-        <h5 class="hiddenStructure"
-            i18n:translate="heading_views">Views</h5>
-
-        <ul class="contentViews"
-            id="content-views"
-            tal:define="view_name view/__name__"
-            i18n:domain="plone">
-
-            <li id="contentview-user_data-personal-information"
-                tal:define="link view/getPersonalInfoLink;
-                            selected python:view_name=='personal-information'"
-                tal:condition="link|nothing"
-                tal:attributes="class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/${link}"
-                   i18n:translate="title_personal_information_form">
-                    Personal Information
-                </a>
-            </li>
-
-            <li id="contentview-user_data-personal-preferences"
-                tal:define="link view/getPersonalPrefsLink;
-                            selected python:view_name=='personal-preferences';"
-                tal:condition="link|nothing"
-                tal:attributes="class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/${link}"
-                   i18n:translate="">
-                    Personal Preferences
-                </a>
-            </li>
-            
-            <li id="contentview-user_data-change-password"
-                tal:define="link view/getPasswordLink;
-                            selected python:view_name=='change-password';"
-                tal:condition="link|nothing"
-                tal:attributes="class python:selected and 'selected' or 'plain'">
-                <a href=""
-                   tal:attributes="href string:${context/portal_url}/${link}"
-                   i18n:translate="label_password">
-                    Password
-                </a>
-            </li>
-
-        </ul>
-
-        <div class="contentActions">&nbsp;</div>
-    </div>
-    
     <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
     </div>
 
     <div id="content">
 
-        <metal:fullview tal:condition="full_view|nothing">
-            <h1 class="documentFirstHeading"
-                i18n:translate=""
-                tal:condition="view/label"
-                tal:content="view/label"
-                metal:define-slot="heading">
-                Do something
-            </h1>
 
-            <div class="documentDescription" i18n:translate=""
-               tal:condition="view/description"
-               tal:content="view/description">
-                Description
-            </div>
-        </metal:fullview>
+        <h1 class="documentFirstHeading"
+            i18n:translate=""
+            tal:condition="view/label"
+            tal:content="view/label"
+            metal:define-slot="heading">
+            Do something
+        </h1>
+
+        <div class="documentDescription" i18n:translate=""
+           tal:condition="view/description"
+           tal:content="view/description">
+            Description
+        </div>
+
+        <a tal:condition="configlet_view|nothing"
+           href=""
+           class="link-parent"
+           tal:attributes="href string:$portal_url/@@usergroup-userprefs"
+           i18n:translate="label_up_to_usersoverview">
+          Up to Users Overview
+        </a>
 
         <div id="content-core">
-            <form action="."
+            <form action=""
                   metal:define-macro="master"
                   tal:define="is_fieldsets view/is_fieldsets"
-                  tal:attributes="action view/getActionUrl;
-                  class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default"
+                  tal:attributes="class python: is_fieldsets and 'edit-form enableFormTabbing enableUnloadProtection' or default;
+                                  action request/URL;"
                   method="post"
                   class="edit-form enableUnloadProtection"
                   enctype="multipart/form-data"
                   id="zc.page.browser_form">
-
-                <input type="hidden"
-                       name="prefs_user_details"
-                       tal:attributes="value view/isPrefsUserDetails|string:"/>
 
                 <input type="hidden"
                        name="userid"
