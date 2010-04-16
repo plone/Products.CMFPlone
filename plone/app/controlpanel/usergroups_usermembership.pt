@@ -37,13 +37,17 @@
         <div id="edit-bar">
             <ul class="contentViews" id="content-views">
               <li>
-                    <a href=""
-                   tal:attributes="href string:$portal_url/prefs_user_details?${userquery}"
-                   i18n:translate="label_user_properties">User Properties</a>
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@user-information?${userquery}"
+                   i18n:translate="label_user_properties">Personal information</a>
               </li>
-        
+              <li>
+                <a href=""
+                   tal:attributes="href string:$portal_url/@@user-preferences?${userquery}"
+                   i18n:translate="label_user_properties">Personal preferences</a>
+              </li>
               <li class="selected">
-                    <a href=""
+                <a href=""
                    tal:attributes="href string:$portal_url/${template_id}?${userquery}"
                    i18n:translate="label_group_memberships">Group Memberships</a>
               </li>

@@ -152,8 +152,8 @@
                                 tal:attributes="class python:oddrow and 'odd' or 'even'">
 
                                 <td>
-                                    <a href="prefs_user_details"
-                                       tal:attributes="href string:$portal_url/prefs_user_details?${userquery}">
+                                    <a href="@@user-information"
+                                       tal:attributes="href string:$portal_url/@@user-information?${userquery}">
                                         <tal:block replace="structure context/portal_url/user.png"/>&nbsp;<span tal:replace="user/fullname">Full Name</span>
                                         (<span tal:replace="userid">username</span>)
                                     </a>

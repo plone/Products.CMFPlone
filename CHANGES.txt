@@ -3,6 +3,11 @@ Changelog
 
 2.0b6 - Unreleased
 ------------------
+- Replaced prefs_user_details form with personal information and personal
+  preferences forms (plone.app.users). Added two tabs for these forms.
+  http://dev.plone.org/plone/ticket/10327
+  [kcleong]
+
 
 2.0b5 - 2010-04-08
 ------------------
