@@ -135,7 +135,6 @@
                           <tal:block tal:condition="portal_users" >
                           <tr class="odd">
                               <th rowspan="2" i18n:translate="listingheader_user_name">User name</th>
-                              <th rowspan="2" i18n:translate="listingheader_email_address">E-mail Address</th>
                               <th colspan="3" tal:attributes="colspan python:len(portal_roles)"
                                   i18n:translate="listingheader_roles">Roles</th>
                               <th rowspan="2" i18n:translate="listingheader_reset_password">Reset Password</th>
@@ -158,22 +157,6 @@
                                         (<span tal:replace="userid">username</span>)
                                     </a>
                                     <input type="hidden" name="users.id:records" tal:attributes="value userid" />
-                                </td>
-
-                                <td tal:define="email user/email">
-                                  <a href="#"
-                                             class="link-plain"
-                                             tal:attributes="href string:mailto:${email}"
-                                             title="Send a mail to this user"
-                                             i18n:attributes="title title_send_mail_to_user;"
-                                             ><tal:block replace="structure context/mail_icon.png"/></a>
-                                  <input style="margin:2px;"
-                                                 type="text"
-                                     size="15"
-                                     name="users.email:records"
-                                     value=""
-                                     tal:attributes="value email;
-                                                     disabled python:user['can_set_email'] and default or 'disabled'" />
                                 </td>
 
                                 <td class="listingCheckbox"

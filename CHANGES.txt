@@ -3,6 +3,13 @@ Changelog
 
 2.0b6 - Unreleased
 ------------------
+
+- Fix capitalization of "Group Name" in groups overview.
+  [esteele]
+
+- Remove the email column from the Users Overview page. 
+  [esteele]
+
 - Replaced prefs_user_details form with personal information and personal
   preferences forms (plone.app.users). Added two tabs for these forms.
   http://dev.plone.org/plone/ticket/10327
