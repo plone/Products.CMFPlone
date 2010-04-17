@@ -3,6 +3,8 @@ Changelog
 
 2.0b9 - Unreleased
 ------------------
+- Improve styling of date + location in news + event portlets
+  [jonstahl]
 
 - Use unicode up/down arrows in the @@manage-portlet view.
   [esteele]

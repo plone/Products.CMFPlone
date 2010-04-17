@@ -35,7 +35,7 @@
         </a>    
             <span class="portletItemDetails">
                 <tal:condition condition="obj/location">
-                    <tal:location content="obj/location">Location</tal:location>,
+                    <tal:location content="obj/location">Location</tal:location> &mdash;
                 </tal:condition>
                 <tal:date content="python:toLocalizedTime(obj.start)">
                 May 5
