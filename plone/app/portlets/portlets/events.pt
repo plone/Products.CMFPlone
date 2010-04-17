@@ -16,13 +16,22 @@
         <span class="portletTopRight"></span>
     </dt>
 
-    <tal:events tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+    <tal:events tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                            DateTime python:modules['DateTime'].DateTime"
                 tal:repeat="obj view/published_events">
     <dd class="portletItem"
         tal:define="oddrow repeat/obj/odd;
                     plone_view context/@@plone;
                     getIcon nocall:plone_view/getIcon;
-                    item_icon python:getIcon(obj);"
+                    item_icon python:getIcon(obj);
+                    item_start python:toLocalizedTime(obj.start,long_format=1);
+                    item_startdate python:toLocalizedTime(DateTime.Date(DateTime(item_start)));
+                    item_starttime python:toLocalizedTime(item_start,time_only=1);
+                    item_end python:toLocalizedTime(obj.end,long_format=1);
+                    item_enddate python:toLocalizedTime(DateTime.Date(DateTime(item_end)));
+                    item_endtime python:toLocalizedTime(item_end,time_only=1);
+                    item_sametime python: item_start == item_end;
+                    item_samedate python: item_startdate == item_enddate"
         tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
         <a href="#"
            class="tile"
@@ -34,12 +43,24 @@
             </span>
         </a>    
             <span class="portletItemDetails">
-                <tal:condition condition="obj/location">
+                <span tal:condition="obj/location">
                     <tal:location content="obj/location">Location</tal:location> &mdash;
-                </tal:condition>
-                <tal:date content="python:toLocalizedTime(obj.start)">
+                </span>
+                <span
+                 tal:condition="python: item_sametime"
+                 tal:content="item_start">
                 May 5
-                </tal:date>
+                </span>
+                <span
+                 tal:condition="python: item_samedate and not item_sametime"
+                 tal:content="string:${item_startdate} ${item_starttime} - ${item_endtime}">
+                May 5
+                </span>
+                <span
+                 tal:condition="python: not item_sametime and not item_samedate"
+                 tal:content="string:${item_startdate} - ${item_enddate}">
+                May 5
+                </span>
             </span>
     </dd>
     </tal:events>
