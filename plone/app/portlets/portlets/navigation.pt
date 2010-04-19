@@ -2,11 +2,11 @@
 <dl class="portlet portletNavigationTree"
     tal:define="root view/navigation_root">
 
-    <dt class="portletHeader"
-        tal:condition="view/title">
+    <dt class="portletHeader">
         <span class="portletTopLeft"></span>
-       <a href="#"
+        <a href="#"
            class="tile"
+           tal:condition="view/title"
            tal:attributes="href string:${root/absolute_url}/sitemap"
            tal:content="view/title">Navigation</a>
         <span class="portletTopRight"></span>
