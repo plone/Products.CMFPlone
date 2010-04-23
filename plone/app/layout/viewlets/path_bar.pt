@@ -3,9 +3,9 @@
      tal:define="breadcrumbs view/breadcrumbs;
                  is_rtl view/is_rtl">
 
-    <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You
+    <span id="breadcrumbs-you-are-here" class="hiddenStructure" i18n:translate="you_are_here" tal:condition="breadcrumbs">You
 are here:</span>
-    <span id="breadcrumbs-home">
+    <span id="breadcrumbs-home" tal:condition="breadcrumbs">
         <a i18n:translate="tabs_home"
            tal:attributes="href view/navigation_root_url">Home</a>
         <span tal:condition="breadcrumbs" class="breadcrumbSeparator">
