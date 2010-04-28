@@ -265,6 +265,11 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 base_url = view.getAssignmentMappingUrl(self.manager)
                 data.extend(self.portlets_for_assignments(assignments_to_show, self.manager, base_url))
 
+            assignable = getMultiAdapter((context, self.manager), ILocalPortletAssignmentManager)
+            if assignable.getBlacklistStatus(CONTEXT_CATEGORY):
+                # Current context has blocked inherited portlets, stop.
+                break
+
         return data
 
     def global_portlets(self, category, prefix):

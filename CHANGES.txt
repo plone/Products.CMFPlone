@@ -3,6 +3,10 @@ Changelog
 
 2.0b9 - Unreleased
 ------------------
+- Not showing inherited portlets that are blocked at an upper level.
+  Fixes https://dev.plone.org/plone/ticket/10426
+  [igbun]
+
 - Improve styling of date + location in news + event portlets
   [jonstahl]
 
