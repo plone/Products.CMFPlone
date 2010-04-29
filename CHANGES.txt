@@ -3,6 +3,10 @@ Changelog
 
 2.0b7 - Unreleased
 ------------------
+- Added apple-touch-icon (iPhone/iPad home screen icon) definition to 
+  favicon.pt
+  [limi]
+
 
 2.0b6 - 2010-04-07
 ------------------
