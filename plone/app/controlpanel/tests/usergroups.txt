@@ -35,13 +35,10 @@ And now on email address..
     >>> 'Gracie Adams' in self.browser.contents
     True
 
-Make some modifications to Gracie's email address and roles...
+Make some modifications to Gracie's roles...
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
     False
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected = True
-    >>> self.browser.getControl(name='users.email:records').value
-    'gracie@example.com'
-    >>> self.browser.getControl(name='users.email:records').value = 'gracie@example.org'
     >>> self.browser.getControl(name='form.button.Modify').click()
 
 The previous search should still be in effect...
@@ -51,8 +48,6 @@ The previous search should still be in effect...
 But values should be changed
     >>> self.browser.getControl(name='users.roles:list:records').getControl(value='Contributor').selected
     True
-    >>> self.browser.getControl(name='users.email:records').value
-    'gracie@example.org'
 
 We'll reset her password.
     >>> self.browser.getControl(name='users.resetpassword:records').value = True
@@ -186,7 +181,6 @@ Add a test for http://dev.plone.org/plone/ticket/8940:
 #    LookupError: value 'Reader'
 
 And then making some change to the user and saving it will assign that checked role directly to the user...
-    >>> self.browser.getControl(name='users.email:records').value='somenewemailaddress.com'
     >>> self.browser.open('http://nohost/plone/@@usergroup-groupprefs')
     >>> self.browser.getControl(name='searchstring').value = 'Authenticated'
     >>> self.browser.getControl(name='form.button.Search').click()
