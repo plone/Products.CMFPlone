@@ -172,17 +172,24 @@ class PersonalPreferencesConfiglet(PersonalPreferencesPanel):
 
 class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
+    def _getProperty(self, name):
+        """ PlonePAS encodes all unicode coming from PropertySheets. 
+            Decode before sending to formlib. """
+        value = self.context.getProperty(name, '')
+        if value:
+            return value.decode('utf-8')
+        return value
+        
     def get_fullname(self):
-        return self.context.getProperty('fullname', '')
+        return self._getProperty('fullname')
 
     def set_fullname(self, value):
         return self.context.setMemberProperties({'fullname': value})
 
     fullname = property(get_fullname, set_fullname)
 
-
     def get_email(self):
-        return self.context.getProperty('email', '')
+        return self._getProperty('email')
 
     def set_email(self, value):
         props = getToolByName(self, 'portal_properties').site_properties
@@ -194,7 +201,7 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
 
     def get_home_page(self):
-        return self.context.getProperty('home_page', '')
+        return self._getProperty('home_page')
 
     def set_home_page(self, value):
         return self.context.setMemberProperties({'home_page': value})
@@ -203,7 +210,7 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
 
     def get_description(self):
-        return self.context.getProperty('description', '')
+        return self._getProperty('description')
 
     def set_description(self, value):
         return self.context.setMemberProperties({'description': value})
@@ -212,7 +219,7 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
     
     
     def get_location(self):
-        return self.context.getProperty('location', '')
+        return self._getProperty('location')
 
     def set_location(self, value):
         return self.context.setMemberProperties({'location': value})
