@@ -20,14 +20,14 @@
       />
 
     <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="change-password"
       class=".personalpreferences.PasswordAccountPanel"
       permission="cmf.SetOwnPassword"
       />
 
     <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="account-macro"
       class=".account.AccountPanelView"
       attribute="getMacro"
@@ -35,28 +35,28 @@
       />
 
     <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="personal-preferences"
       class=".personalpreferences.PersonalPreferencesPanel"
       permission="cmf.SetOwnProperties"
       />
 
     <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="user-preferences"
       class=".personalpreferences.PersonalPreferencesConfiglet"
       permission="zope2.ManageUsers"
       />
 
     <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="personal-information"
       class=".personalpreferences.UserDataPanel"
       permission="cmf.SetOwnProperties"
       />
 
     <browser:page
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="user-information"
       class=".personalpreferences.UserDataConfiglet"
       permission="zope2.ManageUsers"
@@ -68,12 +68,12 @@
 
     <adapter 
       provides=".personalpreferences.IPersonalPreferences"
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       factory=".personalpreferences.PersonalPreferencesPanelAdapter"
       />
     <adapter 
       provides="..userdataschema.IUserDataSchema"
-      for="Products.CMFCore.interfaces.ISiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       factory=".personalpreferences.UserDataPanelAdapter"
       />
     <adapter factory=".personalpreferences.PasswordPanelAdapter" />

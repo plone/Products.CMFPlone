@@ -3,13 +3,17 @@ Changelog
 
 1.0b7 - Unreleased
 ------------------
+- Pin user preferences forms to INavigationRoot instead of ISiteRoot.
+  Fixes http://dev.plone.org/plone/ticket/10439
+  [esteele]
+
 - Added configlet forms that inherit from personal preferences and 
   personal information. These forms are used when editing user prefs
   from 'User and groups' in site setup.
   [kcleong]
 
 - Use utility-provided UserDataSchema on @@personal-information form.
-  Fixes https://dev.plone.org/plone/ticket/10258
+  Fixes http://dev.plone.org/plone/ticket/10258
   [khink, huub_bouma]
 
 1.0b6 - 2010-04-07
