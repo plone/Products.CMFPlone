@@ -3,6 +3,15 @@ Changelog
 
 2.0b7 - Unreleased
 ------------------
+- Fixed CMFContentIcon to not return a url if the getIcon lookup fails
+  in the same way that brain-based icons do. This fixes
+  http://dev.plone.org/plone/ticket/10466
+  [dunlapm]
+
+- Cleaned up content history viewlets and overlays by eliminating
+  superfluous div tags from the output.
+  [dunlapm]
+
 - Added apple-touch-icon (iPhone/iPad home screen icon) definition to 
   favicon.pt
   [limi]

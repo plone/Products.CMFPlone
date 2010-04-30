@@ -82,8 +82,11 @@ class CMFContentIcon(BaseIcon):
 
     @property
     def url(self):
-        portal_url = getToolByName(self.context, 'portal_url')()
         path = self.obj.getIcon(1)
+        if not path:
+            return path
+        
+        portal_url = getToolByName(self.context, 'portal_url')()
         return "%s/%s" % (portal_url, path)
 
     @property
