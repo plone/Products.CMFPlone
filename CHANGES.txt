@@ -3,6 +3,10 @@ Changelog
 
 2.0b7 - Unreleased
 ------------------
+- Fixed personal_bar.pt to not repeat the UL tag for each user action.
+  This fixes http://dev.plone.org/plone/ticket/10481
+  [xMartin, dunlapm]
+
 - Fixed CMFContentIcon to not return a url if the getIcon lookup fails
   in the same way that brain-based icons do. This fixes
   http://dev.plone.org/plone/ticket/10466
