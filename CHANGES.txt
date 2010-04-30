@@ -3,6 +3,10 @@ Changelog
 
 2.0b9 - Unreleased
 ------------------
+- Add notice (and link to container) when managing the portlets of the default
+  item in a container. This fixes http://dev.plone.org/plone/ticket/10456
+  [dunlapm]
+
 - Fix portlets not showing for "normal" users.
   Fixes http://dev.plone.org/plone/ticket/10461
   [zupo, dunlapm]

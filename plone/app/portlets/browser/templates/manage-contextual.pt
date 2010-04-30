@@ -28,6 +28,21 @@
         Return
       </a>
 
+      <dl class="portalMessage info"
+          tal:condition="ploneview/isDefaultPageInFolder|nothing">
+        <dt i18n:translate="">
+            Info
+        </dt>
+        <dd i18n:translate="label_manage_portlets_default_view_container">
+            You are managing the portlets of the default view of a container. If
+            you wanted to manage the portlets of the container itself,
+            <a href=""
+                i18n:name="go_here"
+                i18n:translate="label_manage_portlets_default_view_container_go_here"
+                tal:attributes="href string:${context/aq_inner/aq_parent/absolute_url}/@@manage-portlets">go here</a>.
+        </dd>
+      </dl>
+
       <p i18n:translate="description_manage_contextual_portlets">
         The portlet columns will first display portlets
         explicitly assigned in this context. Use the buttons on each portlet
