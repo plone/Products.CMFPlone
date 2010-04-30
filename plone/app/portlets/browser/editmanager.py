@@ -132,7 +132,7 @@ class EditPortletManagerRenderer(Explicit):
             if addview.startswith('/'):
                 addview = addview[1:]
             try:
-                self.context.restrictedTraverse(addview)
+                self.context.restrictedTraverse(str(addview))
             except (AttributeError, KeyError, Unauthorized,):
                 return False
             return True

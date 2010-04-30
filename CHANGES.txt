@@ -3,6 +3,10 @@ Changelog
 
 2.0b9 - Unreleased
 ------------------
+- Fix portlets not showing for "normal" users.
+  Fixes http://dev.plone.org/plone/ticket/10461
+  [zupo, dunlapm]
+
 - Not showing inherited portlets that are blocked at an upper level.
   Fixes https://dev.plone.org/plone/ticket/10426
   [igbun]
