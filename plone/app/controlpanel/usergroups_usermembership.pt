@@ -39,12 +39,12 @@
               <li>
                 <a href=""
                    tal:attributes="href string:$portal_url/@@user-information?${userquery}"
-                   i18n:translate="label_user_properties">Personal information</a>
+                   i18n:translate="label_personal_information">Personal Information</a>
               </li>
               <li>
                 <a href=""
                    tal:attributes="href string:$portal_url/@@user-preferences?${userquery}"
-                   i18n:translate="label_user_properties">Personal preferences</a>
+                   i18n:translate="label_personal_preferences">Personal Preferences</a>
               </li>
               <li class="selected">
                 <a href=""
