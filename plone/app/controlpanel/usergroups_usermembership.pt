@@ -85,7 +85,7 @@
                   <h2 i18n:translate="heading_memberships_current">Current group memberships</h2>
                   <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
                     <tr>
-                      <th i18n:translate="listingheader_group_name">Group name</th>
+                      <th i18n:translate="listingheader_group_name">Group Name</th>
                       <th i18n:translate="listingheader_group_remove">Remove</th>
                     </tr>
                     <tal:block repeat="group groups">
