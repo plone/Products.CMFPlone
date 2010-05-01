@@ -1,8 +1,9 @@
 Changelog
 =========
 
-2.0b9 - Unreleased
+2.0b9 - 2010-05-01
 ------------------
+
 - Add notice (and link to container) when managing the portlets of the default
   item in a container. This fixes http://dev.plone.org/plone/ticket/10456
   [dunlapm]
@@ -12,7 +13,7 @@ Changelog
   [zupo, dunlapm]
 
 - Not showing inherited portlets that are blocked at an upper level.
-  Fixes https://dev.plone.org/plone/ticket/10426
+  Fixes http://dev.plone.org/plone/ticket/10426
   [igbun]
 
 - Improve styling of date + location in news + event portlets
@@ -420,7 +421,7 @@ Changelog
   [maurits]
 
 - Removed last remains of caching for the navigation portlet.
-  This closes https://dev.plone.org/plone/ticket/7726.
+  This closes http://dev.plone.org/plone/ticket/7726.
   [hannosch]
 
 - Added first day of week to calendar portlet cache key.
@@ -610,7 +611,7 @@ Changelog
   [hannosch]
 
 - Fixed erroneous wording in add screen for classicportlet.
-  Fixes https://dev.plone.org/plone/ticket/6703
+  Fixes http://dev.plone.org/plone/ticket/6703
   [elvix]
 
 - Extended the portlet migration machinery to exclude the deprecated
