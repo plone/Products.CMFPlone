@@ -1,8 +1,9 @@
 Changelog
 =========
 
-1.0b7 - Unreleased
+1.0b7 - 2010-05-01
 ------------------
+
 - Handle encoded strings returned by PlonePAS. 
   Fixes http://dev.plone.org/plone/ticket/10447
   [esteele]
