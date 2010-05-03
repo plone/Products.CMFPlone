@@ -1,8 +1,12 @@
 Changelog
 =========
 
+2.0b8 - Unreleased
+------------------
+
 2.0b7 - 2010-05-03
 ------------------
+
 - Fixed personal_bar.pt to not repeat the UL tag for each user action.
   This fixes http://dev.plone.org/plone/ticket/10481
   [xMartin, dunlapm]
