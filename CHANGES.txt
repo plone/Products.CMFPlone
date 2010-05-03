@@ -20,7 +20,6 @@ Changelog
   favicon.pt
   [limi]
 
-
 2.0b6 - 2010-04-07
 ------------------
 
