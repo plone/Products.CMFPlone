@@ -4,6 +4,9 @@ Changelog
 2.0b8 - Unreleased
 ------------------
 
+- Document byline should not show history link to anonymous users.
+  [elro]
+
 2.0b7 - 2010-05-03
 ------------------
 
