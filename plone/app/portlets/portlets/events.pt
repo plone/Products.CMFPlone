@@ -24,14 +24,12 @@
                     plone_view context/@@plone;
                     getIcon nocall:plone_view/getIcon;
                     item_icon python:getIcon(obj);
-                    item_start python:toLocalizedTime(obj.start,long_format=1);
-                    item_startdate python:toLocalizedTime(DateTime.Date(DateTime(item_start)));
-                    item_starttime python:toLocalizedTime(item_start,time_only=1);
-                    item_end python:toLocalizedTime(obj.end,long_format=1);
-                    item_enddate python:toLocalizedTime(DateTime.Date(DateTime(item_end)));
-                    item_endtime python:toLocalizedTime(item_end,time_only=1);
-                    item_sametime python: item_start == item_end;
-                    item_samedate python: item_startdate == item_enddate"
+                    item_startdate python:toLocalizedTime(obj.start);
+                    item_starttime python:toLocalizedTime(obj.start,time_only=1);
+                    item_enddate python:toLocalizedTime(obj.end);
+                    item_endtime python:toLocalizedTime(obj.end,time_only=1);
+                    item_sametime python: obj.start == obj.end;
+                    item_samedate python: obj.end - obj.start &lt; 1"
         tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
         <a href="#"
            class="tile"
@@ -45,7 +43,7 @@
             <span class="portletItemDetails">
                 <span
                  tal:condition="python: item_sametime"
-                 tal:content="item_start">
+                 tal:content="string:${item_startdate} ${item_starttime}">
                 May 5
                 </span>
                 <span

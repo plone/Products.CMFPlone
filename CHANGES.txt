@@ -4,6 +4,10 @@ Changelog
 2.0b10 - Unreleased
 ------------------
 
+- Fix regressions in date handling in events portlet.
+  Fixes http://dev.plone.org/plone/ticket/10506.
+  [davisagli]
+
 2.0b9 - 2010-05-01
 ------------------
 
