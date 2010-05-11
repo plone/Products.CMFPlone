@@ -4,6 +4,9 @@ Changelog
 1.0b8 - Unreleased
 ------------------
 
+- Fix issue where an e-mail was sent on registration even when told not to.
+  Fixes http://dev.plone.org/plone/ticket/10330.
+
 1.0b7 - 2010-05-01
 ------------------
 

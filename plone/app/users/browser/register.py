@@ -352,7 +352,7 @@ class BaseRegistrationForm(PageForm):
     @form.action(_(u'label_register', default=u'Register'),
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
-        result = self.handle_join_success(data)
+        self.handle_join_success(data)
         # XXX Return somewhere else, depending on what
         # handle_join_success returns?
         return self.context.unrestrictedTraverse('registered')()
@@ -383,7 +383,7 @@ class BaseRegistrationForm(PageForm):
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
 
-        if portal.validate_email or data.get('mail_me'):
+        if data.get('mail_me') or (portal.validate_email and not data.get('password')):
             # We want to validate the email address (users cannot
             # select their own passwords on the register form) or the
             # admin has explicitly requested to send an email on the
