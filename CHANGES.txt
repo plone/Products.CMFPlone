@@ -4,6 +4,9 @@ Changelog
 2.0b7 - Unreleased
 ------------------
 
+- Updated help text for users overview control panel.
+  [davisagli]
+
 2.0b6 - 2010-05-01
 ------------------
 
