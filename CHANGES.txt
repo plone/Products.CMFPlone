@@ -4,6 +4,9 @@ Changelog
 2.0b8 - Unreleased
 ------------------
 
+- The condition on the author link in the by-line was reversed.
+  [rossp]
+
 - Document byline should not show history link to anonymous users.
   [elro]
 
