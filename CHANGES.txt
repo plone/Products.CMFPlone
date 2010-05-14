@@ -4,6 +4,9 @@ Changelog
 2.0b10 - Unreleased
 ------------------
 
+- Remove deprecated use of tabindex.
+  [edegoute]
+
 - Fix regressions in date handling in events portlet.
   Fixes http://dev.plone.org/plone/ticket/10506.
   [davisagli]
@@ -54,11 +57,11 @@ Changelog
 
 - Convert the root (site) node to use CSS sprites in the navigation portlet.
   [limi]
-  
-- Use CSS sprites instead of individual images for core content types in the 
+
+- Use CSS sprites instead of individual images for core content types in the
   navigation portlet.
   [limi]
-  
+
 - Add test coverage for empty type icons in the navigation portlet.
   [rossp]
 
