@@ -146,6 +146,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
                 for e in value:
                     list_element = doc.createElement('element')
                     list_element.appendChild(doc.createTextNode(str(e)))
+                    child.appendChild(list_element)
             else:
                 child.appendChild(doc.createTextNode(unicode(value)))
 

@@ -528,7 +528,10 @@ class TestGenericSetup(PortletsTestCase):
  <assignment name="test.portlet1" category="context" key="/"
     manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool">False</property>
-  <property name="test_tuple"/>
+  <property name="test_tuple">
+   <element>published</element>
+   <element>private</element>
+  </property>
   <property name="test_text">Test pröp 1</property>
  </assignment>
  <assignment name="navigation" category="context" key="/"
