@@ -4,6 +4,11 @@ Changelog
 2.0b10 - Unreleased
 ------------------
 
+- Fix GS export of portlets assignments
+  when property is a tuple or a list
+  https://dev.plone.org/plone/ticket/10530
+  [macadames] 
+
 - Remove deprecated use of tabindex.
   [edegoute]
 
