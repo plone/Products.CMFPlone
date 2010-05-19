@@ -48,7 +48,7 @@
       </p>
     </div>
 
-    <div tal:condition="request/form/switch_to_user|nothing">
+    <div tal:condition="request/form/switch_to_userid|nothing">
       <p i18n:translate="msg_number_switched_to_userid">
         <span i18n:name="count" tal:content="view/switched_to_userid" />
         accounts were switched back to using their user id as login name.

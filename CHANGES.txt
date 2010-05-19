@@ -4,6 +4,10 @@ Changelog
 2.0b7 - Unreleased
 ------------------
 
+- Fixed typo that prevented a message from showing up when switching
+  back from emaillogin to logging in with userid.
+  [maurits]
+
 - Updated help text for users overview control panel.
   [davisagli]
 
