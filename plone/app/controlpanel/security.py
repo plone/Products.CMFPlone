@@ -260,8 +260,6 @@ class EmailLogin(BrowserView):
         return duplicates
 
     def switch_to_email(self):
-        context = aq_inner(self.context)
-        pas = getToolByName(context, 'acl_users')
         if not self._plugins:
             return 0
         success = 0
