@@ -17,8 +17,8 @@
                  resultcount python:len(view.searchResults);
                  b_size python:resultcount if showAll else 20;
                  b_start python:0 if showAll or view.newSearch else view.atoi(request.get('b_start',0));
-                 b_start python:b_start if b_start <= resultcount else resultcount - resultcount % b_size;
-                 b_start python:b_start if b_start < resultcount else max(b_start - b_size, 0);
+                 b_start python:b_start if b_start &lt;= resultcount else resultcount - resultcount % b_size;
+                 b_start python:b_start if b_start &lt; resultcount else max(b_start - b_size, 0);
                  portal_url context/portal_url;">
  
     <div class="documentEditable">
