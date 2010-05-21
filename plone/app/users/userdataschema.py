@@ -55,16 +55,20 @@ def checkEmailAddress(value):
     # constraints.
     props = getToolByName(portal, 'portal_properties').site_properties
     if props.getProperty('use_email_as_login'):
-        # Keeping your email the same (which happens when you change
-        # something else on the personalize form) or changing it back to
-        # your login name, is fine.
-        # if value not in (self.context.getId(), self.context.getProperty('email')):
         try:
             id_allowed = reg_tool.isMemberIdAllowed(value)
         except Unauthorized:
             raise CantChangeEmailError
         else:
             if not id_allowed:
+                # Keeping your email the same (which happens when you
+                # change something else on the personalize form) or
+                # changing it back to your login name, is fine.
+                membership = getToolByName(portal, 'portal_membership')
+                if not membership.isAnonymousUser():
+                    member = membership.getAuthenticatedMember()
+                    if value in (member.getId(), member.getUserName()):
+                        return True
                 raise EmailInUseError
     return True
 
