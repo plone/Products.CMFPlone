@@ -4,6 +4,9 @@ Changelog
 2.0b7 - Unreleased
 ------------------
 
+- Fixed types.pt to render in cmf.pt 
+  [pilz]
+
 - Fixed typo that prevented a message from showing up when switching
   back from emaillogin to logging in with userid.
   [maurits]
