@@ -11,6 +11,7 @@ from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFDefault.formlib.schema import FileUpload
 from Products.CMFPlone import PloneMessageFactory as _
 
+
 class IUserDataSchemaProvider(Interface):
     """
     """
@@ -28,9 +29,11 @@ class UserDataSchemaProvider(object):
         """
         return IUserDataSchema
 
+
 class CantChangeEmailError(ValidationError):
     __doc__ = _('message_email_cannot_change',
                 u"Sorry, you are not allowed to change your email address.")
+
 
 class EmailInUseError(ValidationError):
     __doc__ = _('message_email_in_use',
@@ -38,16 +41,18 @@ class EmailInUseError(ValidationError):
                   "or is not valid as login name. Please choose "
                   "another.")
 
+
 def checkEmailAddress(value):
     portal = getUtility(ISiteRoot)
-    
-    reg_tool= getToolByName(portal, 'portal_registration')
+
+    reg_tool = getToolByName(portal, 'portal_registration')
     if value and reg_tool.isValidEmail(value):
         pass
     else:
         raise EmailAddressInvalid
-    
-    # If emails are used as logins, ensure that the address fits all constraints
+
+    # If emails are used as logins, ensure that the address fits all
+    # constraints.
     props = getToolByName(portal, 'portal_properties').site_properties
     if props.getProperty('use_email_as_login'):
         # Keeping your email the same (which happens when you change
@@ -62,7 +67,8 @@ def checkEmailAddress(value):
             if not id_allowed:
                 raise EmailInUseError
     return True
-    
+
+
 class IUserDataSchema(Interface):
     """
     """
@@ -85,7 +91,8 @@ class IUserDataSchema(Interface):
                       "if you have one."),
         required=False)
 
-    description = schema.Text(title=_(u'label_biography', default=u'Biography'),
+    description = schema.Text(
+        title=_(u'label_biography', default=u'Biography'),
         description=_(u'help_biography',
                       default=u"A short overview of who you are and what you "
                       "do. Will be displayed on your author page, linked "
@@ -108,6 +115,7 @@ class IUserDataSchema(Interface):
                       'pixels tall.'),
         required=False)
 
-    pdelete = schema.Bool(title=_(u'label_delete_portrait', default=u'Delete Portrait'),
-                         description=u'',
-                         required=False)
+    pdelete = schema.Bool(
+        title=_(u'label_delete_portrait', default=u'Delete Portrait'),
+        description=u'',
+        required=False)
