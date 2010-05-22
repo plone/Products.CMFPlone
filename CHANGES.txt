@@ -4,6 +4,10 @@ Changelog
 2.0b10 - Unreleased
 ------------------
 
+- Moved condition for navigation portlet's title to DT element. We 
+  don't need empty DT in case title is not provided for the portlet.
+  [spliter]
+
 - Fix GS export of portlets assignments
   when property is a tuple or a list
   https://dev.plone.org/plone/ticket/10530
