@@ -38,7 +38,6 @@ class DocumentBylineViewlet(ViewletBase):
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
 
-    @memoize
     def show(self):
         properties = getToolByName(self.context, 'portal_properties')
         site_properties = getattr(properties, 'site_properties')
@@ -46,7 +45,6 @@ class DocumentBylineViewlet(ViewletBase):
         allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)
         return not anonymous or allowAnonymousViewAbout
 
-    @memoize
     def locked_icon(self):
         if not getSecurityManager().checkPermission('Modify portal content',
                                                     self.context):
@@ -69,27 +67,22 @@ class DocumentBylineViewlet(ViewletBase):
         icon = portal.restrictedTraverse('lock_icon.gif')
         return icon.tag(title='Locked')
 
-    @memoize
     def creator(self):
         return self.context.Creator()
 
-    @memoize
     def author(self):
         membership = getToolByName(self.context, 'portal_membership')
         return membership.getMemberInfo(self.creator())
 
-    @memoize
     def authorname(self):
         author = self.author()
         return author and author['fullname'] or self.creator()
 
-    @memoize
     def isExpired(self):
         if base_hasattr(self.context, 'expires'):
             return self.context.expires().isPast()
         return False
 
-    @memoize
     def toLocalizedTime(self, time, long_format=None, time_only = None):
         """Convert time to localized time
         """
