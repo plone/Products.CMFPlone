@@ -4,7 +4,11 @@ Changelog
 2.0b8 - Unreleased
 ------------------
 
-- The condition on the author link in the by-line was reversed.
+- Only show the history link in the byline on the default view. This avoids
+  having the links in folder listing views.
+  [hannosch]
+
+- The condition on the author link in the byline was reversed.
   [rossp]
 
 - Document byline should not show history link to anonymous users.

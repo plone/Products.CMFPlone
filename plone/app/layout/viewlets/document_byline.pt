@@ -44,7 +44,8 @@
           i18n:translate="time_expired">expired</span>
   </tal:expired>
 
-  <span class="contentHistory" id="content-history" tal:condition="not:view/portal_state/anonymous">
+  <span class="contentHistory" id="content-history"
+        tal:condition="view/show_history">
     &mdash;
     <a href="#" 
        tal:attributes="href string:${here/absolute_url}/@@historyview"

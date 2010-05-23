@@ -14,6 +14,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import log
 
+from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.viewlets import ViewletBase
 
 
@@ -37,13 +38,21 @@ class DocumentBylineViewlet(ViewletBase):
         super(DocumentBylineViewlet, self).update()
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
+        self.anonymous = self.portal_state.anonymous()
 
     def show(self):
         properties = getToolByName(self.context, 'portal_properties')
         site_properties = getattr(properties, 'site_properties')
-        anonymous = self.portal_state.anonymous()
-        allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)
-        return not anonymous or allowAnonymousViewAbout
+        allowAnonymousViewAbout = site_properties.getProperty(
+            'allowAnonymousViewAbout', True)
+        return not self.anonymous or allowAnonymousViewAbout
+
+    def show_history(self):
+        if bool(self.anonymous):
+            return False
+        if IViewView.providedBy(self.__parent__):
+            return True
+        return False
 
     def locked_icon(self):
         if not getSecurityManager().checkPermission('Modify portal content',
