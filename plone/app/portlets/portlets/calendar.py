@@ -54,7 +54,7 @@ def _render_cachekey(fun, self):
 
         navigation_root_path = portal_state.navigation_root_path()
         start = DateTime('%s/%s/1' % (year, month))
-        end = DateTime('%s/%s/1' % self.getNextMonth(year, month)) - 1
+        end = DateTime('%s/%s/1 23:59:59' % self.getNextMonth(year, month)) - 1
 
         def add(brain):
             key.write(brain.getPath())

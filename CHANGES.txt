@@ -4,13 +4,17 @@ Changelog
 2.0b10 - Unreleased
 ------------------
 
+- Fixed an issue with the portlet calendar cache not being invalidated
+  when adding a new event in the last day of the month. This closes
+  http://dev.plone.org/plone/ticket/10598.
+  [deo]
+
 - Moved condition for navigation portlet's title to DT element. We 
   don't need empty DT in case title is not provided for the portlet.
   [spliter]
 
-- Fix GS export of portlets assignments
-  when property is a tuple or a list
-  https://dev.plone.org/plone/ticket/10530
+- Fix GS export of portlets assignments when property is a tuple or a list.
+  http://dev.plone.org/plone/ticket/10530
   [macadames] 
 
 - Remove deprecated use of tabindex.

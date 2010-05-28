@@ -9,6 +9,7 @@ from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletRenderer
 
+from DateTime import DateTime
 from plone.app.portlets.portlets import calendar
 from plone.app.portlets.tests.base import PortletsTestCase
 
@@ -60,6 +61,7 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, calendar.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
@@ -75,7 +77,29 @@ class TestRenderer(PortletsTestCase):
 
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
-    # XXX write tests
+    def test_event_created_last_day_of_month_invalidate_cache(self):
+        # First render the calendar portlet when there's no events
+        r = self.renderer(assignment=calendar.Assignment())
+        html = r.render()
+
+        # Now let's add a new event in the last day of the current month
+        year, month = r.getYearAndMonthToDisplay()
+        year, month = r.getNextMonth(year, month)
+        last_day_month = DateTime('%s/%s/1' % (year, month)) - 1
+        hour = 1 / 24.0
+        self.setRoles(('Manager',))
+        # Event starts at 23:00 and ends at 23:30
+        self.portal.invokeFactory('Event', 'e1',
+                                  startDate=last_day_month + 23*hour,
+                                  endDate=last_day_month + 23.5*hour)
+
+        # Make sure to publish this event
+        self.portal.portal_workflow.doActionFor(self.portal.e1, 'publish')
+
+        # Try to render the calendar portlet again, it must be different now
+        r = self.renderer(assignment=calendar.Assignment())
+        self.assertNotEqual(html, r.render(), "Cache key wasn't invalidated")
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
