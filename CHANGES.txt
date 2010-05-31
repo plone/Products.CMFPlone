@@ -1,14 +1,14 @@
 Changelog
 =========
 
-2.0b7 - Unreleased
+2.0b7 - 2010-05-31
 ------------------
 
-- Fixed types.pt to render in cmf.pt 
+- Fixed types.pt to render in cmf.pt.
   [pilz]
 
 - Fixed typo that prevented a message from showing up when switching
-  back from emaillogin to logging in with userid.
+  back from emaillogin to login in with userid.
   [maurits]
 
 - Updated help text for users overview control panel.
