@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b8 - Unreleased
+1.0b8 - 2010-06-03
 ------------------
 
 - Fixed error when editing your personal information when using the
