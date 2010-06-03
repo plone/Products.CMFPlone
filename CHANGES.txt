@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0b10 - Unreleased
-------------------
+2.0b10 - 2010-06-03
+-------------------
 
 - Fixed an issue with the portlet calendar cache not being invalidated
   when adding a new event in the last day of the month. This closes
