@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b8 - Unreleased
+2.0b8 - 2010-06-03
 ------------------
 
 - Only show the history link in the byline on the default view. This avoids
