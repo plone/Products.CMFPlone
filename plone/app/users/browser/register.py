@@ -179,7 +179,8 @@ class BaseRegistrationForm(PageForm):
         portal_props = getToolByName(self.context, 'portal_properties')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
-        registration_fields = list(props.getProperty('user_registration_fields'))
+        registration_fields = list(props.getProperty(
+                'user_registration_fields', []))
 
         # Check on required join fields
         if not 'username' in registration_fields and not use_email_as_login:

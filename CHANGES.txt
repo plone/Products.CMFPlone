@@ -4,6 +4,11 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
+- When the user_registration_fields property is not there, fall back
+  to an empty list; this avoids a TypeError on the registration form.
+  [maurits]
+
+
 1.0b8 - 2010-06-03
 ------------------
 
