@@ -16,7 +16,6 @@ Changelog
 1.0b8 - 2010-06-03
 ------------------
 
->>>>>>> .r37019
 - Fixed error when editing your personal information when using the
   email address as login.
   Fixes http://dev.plone.org/plone/ticket/10363
