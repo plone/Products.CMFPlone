@@ -4,6 +4,10 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
+- Retrieve properties as unicode even if they are already stored that way.
+  Fixes http://dev.plone.org/plone/ticket/10509
+  [davisagli]
+
 - When the user_registration_fields property is not there, fall back
   to an empty list; this avoids a TypeError on the registration form.
   [maurits]
@@ -12,6 +16,7 @@ Changelog
 1.0b8 - 2010-06-03
 ------------------
 
+>>>>>>> .r37019
 - Fixed error when editing your personal information when using the
   email address as login.
   Fixes http://dev.plone.org/plone/ticket/10363

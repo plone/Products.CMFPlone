@@ -15,13 +15,12 @@ from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 
 from plone.app.users.browser.account import AccountPanelForm, AccountPanelSchemaAdapter
-from plone.app.users.userdataschema import IUserDataSchema
 from plone.app.users.userdataschema import IUserDataSchemaProvider
 
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import FileUploadWidget
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.utils import set_own_login_name
+from Products.CMFPlone.utils import set_own_login_name, safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 
@@ -177,7 +176,7 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
             Decode before sending to formlib. """
         value = self.context.getProperty(name, '')
         if value:
-            return value.decode('utf-8')
+            return safe_unicode(value)
         return value
         
     def get_fullname(self):
