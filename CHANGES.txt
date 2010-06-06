@@ -4,6 +4,9 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
+- Use five.formlib.
+  [hannosch]
+
 - Retrieve properties as unicode even if they are already stored that way.
   Fixes http://dev.plone.org/plone/ticket/10509
   [davisagli]
