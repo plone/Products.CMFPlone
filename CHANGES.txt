@@ -4,6 +4,9 @@ Changelog
 2.0b11 - Unreleased
 -------------------
 
+- Updated to use five.formlib.
+  [hannosch]
+
 2.0b10 - 2010-06-03
 -------------------
 
