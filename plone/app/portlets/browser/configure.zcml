@@ -1,20 +1,15 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five">
+    xmlns:browser="http://namespaces.zope.org/browser">
 
-    <!-- Some things do not make sense in the breadcrumbs.
-    -->
-    <five:implements
-      class="..portlets.base.Assignment"
-      interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs"
-      />
+    <!-- Some things do not make sense in the breadcrumbs. -->
+    <class class="..portlets.base.Assignment">
+      <implements interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs" />
+    </class>
 
-    <five:implements
-      class="..storage.PortletAssignmentMapping"
-      interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs"
-      />
-
+    <class class="..storage.PortletAssignmentMapping">
+      <implements interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs" />
+    </class>
 
     <!-- Make a special renderer for the columns so we can control them
       with a template

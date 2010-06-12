@@ -4,6 +4,9 @@ Changelog
 2.0b11 - Unreleased
 -------------------
 
+- Avoid using the deprecated five:implements directive.
+  [hannosch]
+
 - Updated to use five.formlib.
   [hannosch]
 
