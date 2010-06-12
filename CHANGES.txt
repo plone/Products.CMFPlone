@@ -4,6 +4,9 @@ Changelog
 2.0b11 - Unreleased
 -------------------
 
+- Avoid deprecation warnings under Zope 2.13.
+  [hannosch]
+
 - Avoid using the deprecated five:implements directive.
   [hannosch]
 

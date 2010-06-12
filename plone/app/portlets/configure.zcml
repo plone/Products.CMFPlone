@@ -4,6 +4,7 @@
     xmlns:five="http://namespaces.zope.org/five">
 
     <include package="plone.portlets" />
+    <include package="plone.app.vocabularies" />
 
     <five:registerPackage package="." />
 

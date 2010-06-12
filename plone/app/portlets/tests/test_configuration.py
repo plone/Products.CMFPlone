@@ -13,8 +13,6 @@ from zope.site.hooks import setSite, setHooks
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
-from Products.Five import zcml
-from Products.Five import fiveconfigure
 from Products.Five.browser import BrowserView
 
 from Products.GenericSetup.interfaces import IBody
@@ -35,7 +33,6 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.portlets.manager import PortletManager
-from plone.portlets.utils import registerPortletType
 
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.interfaces import IColumn
@@ -44,6 +41,14 @@ from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.utils import assignment_mapping_from_key
 
 from plone.app.portlets.exportimport.portlets import importPortlets
+
+# BBB Zope 2.12
+try:
+    from Zope2.App import zcml
+    from OFS import metaconfigure
+except ImportError:
+    from Products.Five import zcml
+    from Products.Five import fiveconfigure as metaconfigure
 
 
 class DummyView(BrowserView):
@@ -128,9 +133,9 @@ class TestPortletZCMLLayer(PloneSite):
 
     @classmethod
     def setUp(cls):
-        fiveconfigure.debug_mode = True
+        metaconfigure.debug_mode = True
         zcml.load_string(zcml_string)
-        fiveconfigure.debug_mode = False
+        metaconfigure.debug_mode = False
 
     @classmethod
     def tearDown(cls):
