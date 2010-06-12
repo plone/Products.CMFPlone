@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import time
-import transaction
 
 from zope.i18nmessageid import Message
 from zope.interface import Interface
 from zope.component import getUtility, queryUtility, getMultiAdapter
-from zope.component.interfaces import IFactory
-
 from zope.component import getSiteManager
-from zope.site.hooks import setSite, setHooks
+from zope.component.interfaces import IFactory
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
@@ -20,7 +17,6 @@ from Products.GenericSetup.context import TarballExportContext
 from Products.GenericSetup.tests.common import DummyImportContext
 
 from Products.PloneTestCase.layer import PloneSite
-from Testing import ZopeTestCase
 
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletType
@@ -46,6 +42,8 @@ from plone.app.portlets.exportimport.portlets import importPortlets
 try:
     from Zope2.App import zcml
     from OFS import metaconfigure
+    zcml # pyflakes
+    metaconfigure
 except ImportError:
     from Products.Five import zcml
     from Products.Five import fiveconfigure as metaconfigure
@@ -141,29 +139,6 @@ class TestPortletZCMLLayer(PloneSite):
     def tearDown(cls):
         pass
 
-class TestPortletGSLayer(TestPortletZCMLLayer):
-
-    @classmethod
-    def setUp(cls):
-        app = ZopeTestCase.app()
-        portal = app.plone
-
-        # needed to avoid deep and magic five.localsitemanager wrapping problems
-        setSite(portal)
-        setHooks()
-
-        portal_setup = portal.portal_setup
-        # wait a bit or we get duplicate ids on import
-        time.sleep(1)
-
-        portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
-
-        transaction.commit()
-        ZopeTestCase.close(app)
-
-    @classmethod
-    def tearDown(cls):
-        pass
 
 class TestZCML(PortletsTestCase):
 
@@ -203,7 +178,13 @@ class TestZCML(PortletsTestCase):
 
 class TestGenericSetup(PortletsTestCase):
 
-    layer = TestPortletGSLayer
+    layer = TestPortletZCMLLayer
+
+    def afterSetUp(self):
+        portal_setup = self.portal.portal_setup
+        # wait a bit or we get duplicate ids on import
+        time.sleep(0.2)
+        portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
     def testPortletManagerInstalled(self):
         manager = getUtility(IPortletManager, name=u"test.testcolumn")

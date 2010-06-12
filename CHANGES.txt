@@ -4,6 +4,9 @@ Changelog
 2.0b11 - Unreleased
 -------------------
 
+- Stop abusing traditional layers to do database changes.
+  [hannosch]
+
 - Avoid deprecation warnings under Zope 2.13.
   [hannosch]
 
