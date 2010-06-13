@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b11 - Unreleased
+2.0b11 - 2010-06-13
 -------------------
 
 - Stop abusing traditional layers to do database changes.
