@@ -1,4 +1,4 @@
-from zope.testing import doctest
+import doctest
 from unittest import TestSuite
 
 from Testing.ZopeTestCase import FunctionalDocFileSuite
@@ -8,8 +8,7 @@ from plone.app.users.tests import TestCase
 
 setupPloneSite()
 
-OPTIONFLAGS = (doctest.ELLIPSIS |
-               doctest.NORMALIZE_WHITESPACE)
+OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 def test_suite():
     tests = ['flexible_user_registration.txt',

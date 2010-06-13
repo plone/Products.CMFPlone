@@ -6,13 +6,18 @@ without the PloneTestCase.setupPloneSite() side effects.
 """
 
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
-from Products.Five.testbrowser import Browser
 
 from Acquisition import aq_base
 from zope.component import getSiteManager
 from Products.CMFPlone.tests.utils import MockMailHost
 from Products.MailHost.interfaces import IMailHost
 from Products.CMFCore.utils import getToolByName
+
+# BBB Zope 2.12
+try:
+    from Testing.testbrowser import Browser
+except ImportError:
+    from Products.Five.testbrowser import Browser
 
 
 class TestCase(FunctionalTestCase):

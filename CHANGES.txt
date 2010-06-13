@@ -4,6 +4,12 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
+- Avoid deprecation warnings under Zope 2.13.
+  [hannosch]
+
+- Use the standard libraries doctest module.
+  [hannosch]
+
 - Use five.formlib.
   [hannosch]
 
