@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b9 - Unreleased
+1.0b9 - 2010-06-13
 ------------------
 
 - Avoid deprecation warnings under Zope 2.13.
