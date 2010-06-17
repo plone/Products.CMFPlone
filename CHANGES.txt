@@ -4,6 +4,10 @@ Changelog
 2.0b9 - Unreleased
 ------------------
 
+- Add an 'icons-on' class to the body when icons are enabled, so that icons
+  applied via CSS can also be controlled.
+  [davisagli]
+
 2.0b8 - 2010-06-03
 ------------------
 

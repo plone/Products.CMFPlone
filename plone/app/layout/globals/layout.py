@@ -141,4 +141,8 @@ class LayoutPolicy(BrowserView):
         if contentPath:
             body_class += " section-%s" % contentPath[0]
 
+        # class for hiding icons (optional)
+        if self.icons_visible():
+            body_class += ' icons-on'
+
         return body_class
