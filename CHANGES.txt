@@ -4,6 +4,12 @@ Changelog
 2.0b9 - Unreleased
 ------------------
 
+- Determine whether to show the history link in the byline viewlet based on
+  whether the user has the 'CMFEditions: Access previous versions'
+  permission, rather than based on whether the user is anonymous or not.
+  Fixes http://dev.plone.org/plone/ticket/10640.
+  [davisagli]
+
 - Add an 'icons-on' class to the body when icons are enabled, so that icons
   applied via CSS can also be controlled.
   [davisagli]

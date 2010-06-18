@@ -48,7 +48,7 @@ class DocumentBylineViewlet(ViewletBase):
         return not self.anonymous or allowAnonymousViewAbout
 
     def show_history(self):
-        if bool(self.anonymous):
+        if not _checkPermission('CMFEditions: Access previous versions', self.context):
             return False
         if IViewView.providedBy(self.__parent__):
             return True
