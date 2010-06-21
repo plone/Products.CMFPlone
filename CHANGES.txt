@@ -4,6 +4,9 @@ Changelog
 1.0b10 - unreleased
 -------------------
 
+- Internationalized personal preferences form
+  Fixes http://dev.plone.org/plone/ticket/10619
+  [thomasdesvenain]
 
 1.0b9 - 2010-06-13
 ------------------
@@ -41,7 +44,7 @@ Changelog
 1.0b7 - 2010-05-01
 ------------------
 
-- Handle encoded strings returned by PlonePAS. 
+- Handle encoded strings returned by PlonePAS.
   Fixes http://dev.plone.org/plone/ticket/10447
   [esteele]
 
@@ -52,7 +55,7 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/10439
   [esteele]
 
-- Added configlet forms that inherit from personal preferences and 
+- Added configlet forms that inherit from personal preferences and
   personal information. These forms are used when editing user prefs
   from 'User and groups' in site setup.
   [kcleong]
@@ -103,21 +106,21 @@ Changelog
 - Fixed @@register by removing unnecessary fill-slot outside of a fill-macro.
   [spliter]
 
-- Removing redundant .documentContent markup. 
+- Removing redundant .documentContent markup.
   This refs http://dev.plone.org/plone/ticket/10231.
   [limi]
 
 - Updated register_form.pt to not use fill-slot="viewlet".
   [spliter]
 
-- Updated user registration templates to disable the columns with 
+- Updated user registration templates to disable the columns with
   'disable_MANAGER_NAME' pattern
   [spliter]
 
 - add views to replace personalize_form, split up into @@personal-preferences,
   @@personal-information and @@change-password.
   [khink, kcleong]
-  
+
 1.0b3 - 2010-02-01
 ------------------
 
@@ -127,7 +130,7 @@ Changelog
 1.0b2 - 2010-01-28
 ------------------
 
-- Fixed tests to account for new layout of users overview pages. 
+- Fixed tests to account for new layout of users overview pages.
   [esteele]
 
 1.0b1 - 2009-12-27
@@ -166,21 +169,21 @@ Changelog
   defined mailhost and users are not allowed to select their own passwords.
   [esteele]
 
-- "User/Groups Settings" configlet view is polished visually to follow rest of 
+- "User/Groups Settings" configlet view is polished visually to follow rest of
   configlets in "Users and Groups" control panel. Ref. #9825
   [spliter]
 
-- For "User/Groups Settings" configlet highlighted "Member registration" tab 
+- For "User/Groups Settings" configlet highlighted "Member registration" tab
   instead of the wrong "Settings"
   [spliter]
 
 - @@new-user form will now always show the password fields, regardless of the
-  site settings. 
+  site settings.
   [esteele]
 
 - Change registration form name @@join_form to @@register. Change class names
   accordingly. Added an "@@new-user" form to be used from the control panel.
-  "Add to group" functionality now lives there. We can now get rid of the 
+  "Add to group" functionality now lives there. We can now get rid of the
   horrid came_from flags that we've been passing around.
   [esteele]
 

@@ -29,40 +29,42 @@ class IPersonalPreferences(Interface):
     """ Provide schema for personalize form """
 
     wysiwyg_editor = Choice(
-        title=u'Wysiwyg editor',
-        description=u'Wysiwyg editor to use.',
+        title=_(u'label_wysiwyg_editor', default=u'Wysiwyg editor'),
+        description=_(u'help_wysiwyg_editor', default=u'Wysiwyg editor to use.'),
         vocabulary="plone.app.vocabularies.AvailableEditors",
         required=False,
         )
 
     ext_editor = Bool(
         title=_(u'label_ext_editor', default=u'Enable external editing'),
-        description=u'When checked, an option will be '
+        description=_(u'help_content_ext_editor', default=u'When checked, an option will be '
            'made visible on each page which allows you '
            'to edit content with your favorite editor '
            'instead of using browser-based editors. This '
            'requires an additional application, most often '
            'ExternalEditor or ZopeEditManager, installed '
            'client-side. Ask your administrator for more '
-           'information if needed.',
+           'information if needed.'),
         )
-    
+
     listed = Bool(
         title=_(u'label_listed_status', default=u'Listed in searches'),
-        description=u'Determines if your user name is listed in user '
-                    'searches done on this site.',
+        description=_(u'help_listed_status',
+                      default=u'Determines if your user name is listed in user '
+                               'searches done on this site.'),
         required=False
         )
 
     visible_ids = Bool(
-        title=_(u'label_edit_short_names', 
+        title=_(u'label_edit_short_names',
             default=u'Allow editing of Short Names'),
-        description=u'Determines if Short Names (also known '
+        description=_(u'help_display_names',
+                      default=u'Determines if Short Names (also known '
                'as IDs) are changable when editing items. If Short '
-               'Names are not displayed, they will be generated automatically.',
+               'Names are not displayed, they will be generated automatically.'),
         required=False
            )
-        
+
     language = Choice(
         title=_(u'label_language', default=u'Language'),
         description=_(u'help_preferred_language', u'Your preferred language.'),
@@ -76,7 +78,7 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
         return self.context.getProperty('wysiwyg_editor', '')
 
     def set_wysiwyg_editor(self, value):
-        # No value means "use site default", portal_memberdata expects an empty string, not a None. 
+        # No value means "use site default", portal_memberdata expects an empty string, not a None.
         # (As opposed to "None" which means "no editor")
         if value is None:
             value = ''
@@ -92,8 +94,8 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
         return self.context.setMemberProperties({'ext_editor': value})
 
     ext_editor = property(get_ext_editor, set_ext_editor)
- 
- 
+
+
     def get_listed(self):
         return self.context.getProperty('listed', '')
 
@@ -101,8 +103,8 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
         return self.context.setMemberProperties({'listed': value})
 
     listed = property(get_listed, set_listed)
-    
-    
+
+
     def get_visible_ids(self):
         return self.context.getProperty('visible_ids', '')
 
@@ -124,7 +126,7 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
 def LanguageWidget(field, request):
 
     """ Create selector with languages vocab """
-    
+
     widget = DropdownWidget(field, field.vocabulary, request)
     widget._messageNoValue = _(u"vocabulary-missing-single-value-for-edit",
                         u"Language neutral (site default)")
@@ -149,8 +151,8 @@ class PersonalPreferencesPanel(AccountPanelForm):
 
     form_fields = form.FormFields(IPersonalPreferences)
     form_fields['language'].custom_widget = LanguageWidget
-    form_fields['wysiwyg_editor'].custom_widget = WysiwygEditorWidget 
-    
+    form_fields['wysiwyg_editor'].custom_widget = WysiwygEditorWidget
+
 
     def setUpWidgets(self, ignore_request=False):
         """ Hide the visible_ids field based on portal_properties.
@@ -158,10 +160,10 @@ class PersonalPreferencesPanel(AccountPanelForm):
         context = aq_inner(self.context)
         properties = getToolByName(context, 'portal_properties')
         siteProperties = properties.site_properties
-        
+
         if not siteProperties.visible_ids:
             self.hidden_widgets.append('visible_ids')
-        
+
         super(PersonalPreferencesPanel, self).setUpWidgets(ignore_request)
 
 class PersonalPreferencesConfiglet(PersonalPreferencesPanel):
@@ -172,13 +174,13 @@ class PersonalPreferencesConfiglet(PersonalPreferencesPanel):
 class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
     def _getProperty(self, name):
-        """ PlonePAS encodes all unicode coming from PropertySheets. 
+        """ PlonePAS encodes all unicode coming from PropertySheets.
             Decode before sending to formlib. """
         value = self.context.getProperty(name, '')
         if value:
             return safe_unicode(value)
         return value
-        
+
     def get_fullname(self):
         return self._getProperty('fullname')
 
@@ -213,10 +215,10 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
     def set_description(self, value):
         return self.context.setMemberProperties({'description': value})
-        
+
     description = property(get_description, set_description)
-    
-    
+
+
     def get_location(self):
         return self._getProperty('location')
 
@@ -247,7 +249,7 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
             context.portal_membership.deletePersonalPortrait()
 
     pdelete = property(get_pdelete, set_pdelete)
-    
+
 class UserDataPanel(AccountPanelForm):
 
     label = _(u'title_personal_information_form', default=u'Personal Information')
@@ -255,11 +257,11 @@ class UserDataPanel(AccountPanelForm):
     form_name = _(u'User Data Form')
 
     def __init__(self, context, request):
-        """ Load the UserDataSchema at view time. 
-        
+        """ Load the UserDataSchema at view time.
+
         (Because doing getUtility for IUserDataSchemaProvider fails at startup
         time.)
-   
+
         """
         super(UserDataPanel, self).__init__(context, request)
         util = getUtility(IUserDataSchemaProvider)
@@ -295,7 +297,7 @@ def checkCurrentPassword(value):
         raise  ()
 
     return True
-    
+
 class IPasswordSchema(Interface):
 
     """ Provide schema for password form """
@@ -330,11 +332,11 @@ class PasswordPanelAdapter(SchemaAdapterBase):
 
         self.context = getToolByName(context, 'portal_membership')
 
-        
+
     def get_dummy(self):
 
         """ We don't actually need to 'get' anything ..."""
-        
+
         return ''
 
 
@@ -346,11 +348,11 @@ class PasswordPanelAdapter(SchemaAdapterBase):
 
 
 class PasswordAccountPanel(AccountPanelForm):
-    
+
     """ Implementation of password reset form that uses formlib"""
 
     form_fields = form.FormFields(IPasswordSchema)
-    
+
     label = _(u'listingheader_reset_password', default=u'Reset Password')
     description = _(u"Change Password")
     form_name = _(u'legend_password_details', default=u'Password Details')
@@ -366,7 +368,7 @@ class PasswordAccountPanel(AccountPanelForm):
         current_password = data.get('current_password')
         if current_password:
             current_password = current_password.encode('ascii', 'ignore')
-            
+
             if not membertool.testCurrentPassword(current_password):
                 err_str = _(u"Incorrect value for current password")
                 errors.append(WidgetInputError('current_password',
@@ -387,9 +389,9 @@ class PasswordAccountPanel(AccountPanelForm):
                                   u'new_password_ctl', failMessage))
                 self.widgets['new_password'].error = failMessage
                 self.widgets['new_password_ctl'].error = failMessage
-        
+
         return errors
-    
+
     @form.action(_(u'label_change_password', default=u'Change Password') ,validator='validate_password', name=u'reset_passwd')
     def action_reset_passwd(self, action, data):
         membertool = getToolByName(self.context, 'portal_membership')
