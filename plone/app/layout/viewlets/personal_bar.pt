@@ -3,7 +3,7 @@
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
-<dl class="actionMenu" id="portal-personaltools"
+<dl class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="python:view.user_actions and not view.anonymous">
   <tal:block condition="not: view/anonymous"> <!-- TODO: Can we nest these in a better way? -->
   <dt class="actionMenuHeader">
@@ -30,7 +30,7 @@
   </tal:block>
 </dl>
 
-<dl class="actionMenu" id="portal-personaltools"
+<dl class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="view/anonymous">
   <dt id="anon-personalbar">
     <tal:actions repeat="action view/user_actions">

@@ -3,6 +3,9 @@ Changelog
 
 2.0b9 - Unreleased
 ------------------
+- Adding "deactivated" class to menus by default, so they won't flicker on load.
+  This fixes http://dev.plone.org/plone/ticket/10470.
+  [limi]
 
 - Determine whether to show the history link in the byline viewlet based on
   whether the user has the 'CMFEditions: Access previous versions'
