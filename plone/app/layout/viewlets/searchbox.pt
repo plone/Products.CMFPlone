@@ -20,7 +20,7 @@
                i18n:attributes="title title_search_site;"
                tal:attributes="value request/form/SearchableText|nothing;
                                id search_input_id"
-               class="inputLabel" />
+               class="searchField inputLabel" />
 
         <input class="searchButton"
                type="submit"
