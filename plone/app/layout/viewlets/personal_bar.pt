@@ -5,9 +5,8 @@
 
 <dl class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="python:view.user_actions and not view.anonymous">
-  <tal:block condition="not: view/anonymous"> <!-- TODO: Can we nest these in a better way? -->
+  <tal:block condition="not: view/anonymous"> 
   <dt class="actionMenuHeader">
-    <!-- The following a-tag needs to be clicked to dropdown the menu -->
     <a id="user-name"
        tal:attributes="href view/homelink_url"
        tal:content="view/user_name">
