@@ -18,14 +18,6 @@
                     <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a></span>
                 and friends.
                 </span>
-            </p>
-
-            <p>
-                <span i18n:translate="description_trademark" tal:omit-tag="">
-                Plone<sup>&reg;</sup> and the Plone logo are registered trademarks of the
-                    <span i18n:name="plonefoundation" tal:omit-tag="">
-                        <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a></span>.
-                </span>
 
                 <span i18n:translate="description_license" tal:omit-tag="">
                 Distributed under the

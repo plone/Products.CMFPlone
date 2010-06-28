@@ -3,6 +3,9 @@ Changelog
 
 2.0b9 - Unreleased
 ------------------
+- Removed notice about registered trademark from the footer, that's what (R) means
+  anyway.
+  [limi]
 
 - Make sure the presentation mode warning (if the document has no headings)
   displays properly. Fixes http://dev.plone.org/plone/ticket/10689
