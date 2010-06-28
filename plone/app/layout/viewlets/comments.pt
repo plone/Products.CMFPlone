@@ -5,6 +5,11 @@
            i18n:domain="plone">
     <div class="discussion"
          tal:condition="python:replies or (userHasReplyPermission and isDiscussionAllowed) or (isAnon and not userHasReplyPermission and isDiscussionAllowed)">
+
+        <h2 i18n:translate="comments_header">
+            Comments (<span tal:content="python:len(replies)" i18n:name="comments"></span>)
+        </h2>
+
         <form name="reply"
               action=""
               method="post"
@@ -28,7 +33,7 @@
                        i18n:translate="label_login_to_add_comments" />
             </form>
         </tal:login>
-
+        
         <tal:getreplies repeat="reply_dict replies">
             <div class="comment" style=""
                 tal:define="indent python:reply_dict['depth']*2;
