@@ -53,14 +53,13 @@
 <div class="presentation">
     <div class="slide"
          tal:condition="not:view/enabled">
-        <p i18n:translate="text_presentation_disabled">
+        <h4 i18n:translate="text_presentation_disabled">
            For Plone to show this page as a presentation to work, it must
-           find some header tags (H1, h1, H2, h2) in your document. The
-           document will be split into slides based upon those tags.
-           Structured text or Kupu will all generate suitable tags for you.
-           Further you must have the 'Enable Presentation' setting turned on
-           in the user interface for this piece of content.
-        </p>
+           find some headings in your document. The document will be split
+           into slides based upon those tags. Further you must have the
+           'Enable Presentation' setting turned on in the user interface
+           for this piece of content.
+        </h4>
     </div>
     <tal:presentation tal:condition="view/enabled">
         <div class="slide">
