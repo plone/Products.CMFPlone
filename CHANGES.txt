@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.0b10 - unreleased
--------------------
+1.0 - 2010-07-01
+----------------
 
 - Internationalized personal preferences form.
   Fixes http://dev.plone.org/plone/ticket/10619
