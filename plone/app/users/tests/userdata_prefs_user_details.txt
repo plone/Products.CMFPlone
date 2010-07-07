@@ -53,15 +53,9 @@ Modifying user data
     >>> location = 'Somewhere'
     >>> self.browser.getControl(name='form.location').value = location
 
-    >>> ## find out how we can a image in portait variable
-    >>> #from StringIO import StringIO
-    >>> #portrait = StringIO('GIF89aFooBar')
-    >>> #control = self.browser.getControl(name='form.portrait')
-    >>> #fileControl = control.mech_control
-    >>> #fileControl.add_file(portrait, filename='plone_good.png')
-
-    >>> #portrait = 'person@example.com'
-    >>> #self.browser.getControl(name='form.portrait').value = portrait
+    >>> from pkg_resources import resource_stream
+    >>> portrait_file = resource_stream("plone.app.users.tests", 'onepixel.jpg')
+    >>> self.browser.getControl(name='form.portrait').add_file(portrait_file, "image/jpg", "onepixel.jpg")
 
     >>> self.browser.getControl(name="form.actions.save").click()
     >>> 'Required input is missing.' in self.browser.contents
@@ -95,7 +89,30 @@ we put in.
     >>> location_value == location
     True
 
-    # >>> portrait_value = self.membership.getPersonalPortrait()
-    # >>> portrait_value == portrait
-    # True
+Is the users's portrait a newly created Image?
+
+    >>> portrait_value = self.membership.getPersonalPortrait('test_user_1_')
+    >>> portrait_value
+    <Image at /plone/portal_memberdata/portraits/test_user_1_>
+
+Is the data of the created Image the same as the (scaled) orignal image?
+
+    >>> portrait_file.seek(0)
+    >>> from Products.PlonePAS.utils import scale_image
+    >>> scaled_image_data = scale_image(portrait_file)[0].read()
+    >>> portrait_value.data == scaled_image_data
+    True
+
+Can we delete the Image using the checkbox?
+
+    >>> self.browser.getControl("Delete Portrait").selected = True
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Does the user have the default portrait now?
+
+    >>> portrait_value = self.membership.getPersonalPortrait('test_user_1_')
+    >>> portrait_value
+    <FSImage at /plone/defaultUser.gif>
 

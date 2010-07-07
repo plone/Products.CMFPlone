@@ -229,14 +229,13 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
     def get_portrait(self):
         mtool = getToolByName(self.context, 'portal_membership')
-        member = mtool.getAuthenticatedMember()
-        portrait = mtool.getPersonalPortrait(member.id)
+        portrait = mtool.getPersonalPortrait(self.context.id)
         return portrait
 
     def set_portrait(self, value):
         if value:
             context = aq_inner(self.context)
-            context.portal_membership.changeMemberPortrait(value)
+            context.portal_membership.changeMemberPortrait(value, context.id)
 
     portrait = property(get_portrait, set_portrait)
 
@@ -246,7 +245,7 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
     def set_pdelete(self, value):
         if value:
             context = aq_inner(self.context)
-            context.portal_membership.deletePersonalPortrait()
+            context.portal_membership.deletePersonalPortrait(context.id)
 
     pdelete = property(get_pdelete, set_pdelete)
 
