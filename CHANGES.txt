@@ -4,6 +4,10 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Removed text from @@skins-control panel, since 'Mark External Links'
+  does not have to be checked for 'open in new window' to work. #10772
+  [cwainwright]
+
 - Update license to GPL version 2 only.
   [hannosch]
 

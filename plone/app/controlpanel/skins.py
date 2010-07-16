@@ -38,9 +38,7 @@ class ISkinsSchema(Interface):
     mark_special_links = Bool(title=_(u'Mark external links'),
                               description=_(u"If enabled all external links "
                                              "will be marked with link type "
-                                             "specific icons. If disabled "
-                                             "the 'external links open in new "
-                                             "window' setting has no effect."),
+                                             "specific icons."),
                               default=True)
 
     ext_links_open_new_window = Bool(title=_(u"External links open in new "
