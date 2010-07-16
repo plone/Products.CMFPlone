@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.0b12'
+version = '2.0'
 
 setup(name='plone.app.portlets',
       version=version,
@@ -8,16 +8,18 @@ setup(name='plone.app.portlets',
       long_description=open("README.txt").read() + "\n" +
                        open("CHANGES.txt").read(),
       classifiers=[
-        "Framework :: Plone",
-        "Framework :: Zope2",
-        "License :: OSI Approved :: GNU General Public License (GPL)",
-        "Programming Language :: Python",
+          "Environment :: Web Environment",
+          "Framework :: Plone",
+          "Framework :: Zope2",
+          "License :: OSI Approved :: GNU General Public License (GPL)",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python",
         ],
       keywords='portlets viewlets plone',
-      author='Martin Aspeli',
+      author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
       url='http://pypi.python.org/pypi/plone.app.portlets',
-      license='GPL',
+      license='GPL version 2',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages = ['plone', 'plone.app'],
       include_package_data=True,
