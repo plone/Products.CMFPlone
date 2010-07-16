@@ -34,11 +34,6 @@ class INavigationSchema(Interface):
                          description=_(u"By default, any content item in the root of the portal will be shown as a global section. If you turn this option off, only folders will be shown. This only has an effect if 'Automatically generate tabs' is enabled."),
                          default=True,
                          required=False)
-                       
-    show_excluded_items = Bool(title=_(u"Show items normally excluded from navigation if viewing their children."),
-                               description=_(u"If an item has been excluded from navigation should it be shown in navigation when viewing content contained within it or within a subfolder."),
-                               default=True,
-                               required=False)
     
     displayed_types = Tuple(
         title=_(u"Displayed content types"),
@@ -61,7 +56,12 @@ class INavigationSchema(Interface):
         value_type=Choice(
             vocabulary="plone.app.vocabularies.WorkflowStates")
         )
-            
+
+    show_excluded_items = Bool(title=_(u"Show items normally excluded from navigation if viewing their children."),
+                               description=_(u"If an item has been excluded from navigation should it be shown in navigation when viewing content contained within it or within a subfolder."),
+                               default=True,
+                               required=False)
+
                             
 class NavigationControlPanelAdapter(SchemaAdapterBase):
 
