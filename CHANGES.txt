@@ -4,9 +4,11 @@ Changelog
 1.0.1 - unreleased
 ------------------
 
-- Fix @@user-information to correctly get/set and delete 
-  the portrait for the given userid.
-  Fixes http://dev.plone.org/plone/ticket/10731
+- Update license to GPL version 2 only.
+  [hannosch]
+
+- Fix @@user-information to correctly get/set and delete the portrait for the
+  given userid. Fixes http://dev.plone.org/plone/ticket/10731.
   [mr_savage]
 
 1.0 - 2010-07-01
