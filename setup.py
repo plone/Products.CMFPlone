@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.0b8'
+version = '2.0'
 
 setup(name='plone.app.controlpanel',
       version=version,
@@ -8,14 +8,18 @@ setup(name='plone.app.controlpanel',
       long_description=open("README.txt").read() + "\n" +
                        open("CHANGES.txt").read(),
       classifiers=[
-        "Framework :: Plone",
-        "Programming Language :: Python",
+          "Environment :: Web Environment",
+          "Framework :: Plone",
+          "Framework :: Zope2",
+          "License :: OSI Approved :: GNU General Public License (GPL)",
+          "Operating System :: OS Independent",
+          "Programming Language :: Python",
         ],
       keywords='plone controlpanel formlib',
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
       url='http://pypi.python.org/pypi/plone.app.controlpanel',
-      license='GPL',
+      license='GPL version 2',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages = ['plone', 'plone.app'],
       include_package_data=True,
@@ -55,4 +59,3 @@ setup(name='plone.app.controlpanel',
         'ZODB3',
       ],
       )
-

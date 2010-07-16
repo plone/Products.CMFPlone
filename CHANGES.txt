@@ -1,9 +1,11 @@
 Changelog
 =========
 
-2.0b8 - unreleased
-------------------
+2.0 - unreleased
+----------------
 
+- Update license to GPL version 2 only.
+  [hannosch]
 
 2.0b7 - 2010-05-31
 ------------------
