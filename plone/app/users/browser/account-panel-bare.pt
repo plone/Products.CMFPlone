@@ -1,4 +1,5 @@
 <tal:main-macro metal:define-macro="main"
+                i18n:domain="plone"
                 tal:define="memberinfo context/portal_membership/getMemberInfo;
                 member context/@@plone_portal_state/member;
                 name python:memberinfo['fullname'] or member.getId() or member.getId();

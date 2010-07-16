@@ -4,6 +4,11 @@ Changelog
 1.0.1 - unreleased
 ------------------
 
+- Added missing i18n:domain plone in user information template which prevented
+  some translations from showing up.
+  Fixes http://dev.plone.org/plone/ticket/10744
+  [maurits]
+
 - Update license to GPL version 2 only.
   [hannosch]
 
