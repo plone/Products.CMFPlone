@@ -4,6 +4,12 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Use correct listingheader_user_name or listingheader_group_name instead
+  of listingheader_group_user_name in @@usergroups-usermembership
+  and @@usergroups-groupmembership.
+  Fixes http://dev.plone.org/plone/ticket/10747
+  [vincentfretin]
+
 - Removed text from @@skins-control panel, since 'Mark External Links'
   does not have to be checked for 'open in new window' to work. #10772
   [cwainwright]

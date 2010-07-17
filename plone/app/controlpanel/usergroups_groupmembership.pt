@@ -121,7 +121,7 @@
                                          i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
                                          <!--Remove user from this group-->
                               </th>
-                              <th i18n:translate="listingheader_group_user_name">Group/User name</th>
+                              <th i18n:translate="listingheader_user_name">User name</th>
                               <th i18n:translate="listingheader_email_address">E-mail Address</th>
                           </tr>
 
