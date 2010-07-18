@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 - unreleased
+1.0.1 - 2010-07-18
 ------------------
 
 - Added missing i18n:domain plone in user information template which prevented
