@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Use the standard libraries doctest module.
+  [hannosch]
+
 - Adjusted tests to match new PortalTransforms and Plone defaults.
   [hannosch]
 

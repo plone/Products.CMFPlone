@@ -1,16 +1,16 @@
-from zope.testing import doctest
+import doctest
 from unittest import TestSuite
 
-from Testing.ZopeTestCase import FunctionalDocFileSuite
-from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
+from Testing.ZopeTestCase import FunctionalDocFileSuite
 
 from plone.app.controlpanel.tests.cptc import ControlPanelTestCase
 from plone.app.controlpanel.tests.cptc import UserGroupsControlPanelTestCase
+
 setupPloneSite()
 
-OPTIONFLAGS = (doctest.ELLIPSIS |
-               doctest.NORMALIZE_WHITESPACE)
+OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
+
 
 def test_suite():
     tests = ['calendar.txt',
@@ -24,7 +24,7 @@ def test_suite():
              'skins.txt',
              'markup.txt',
              'navigation.txt',
-             'types.txt'
+             'types.txt',
              ]
     suite = TestSuite()
 
@@ -34,9 +34,10 @@ def test_suite():
             package="plone.app.controlpanel.tests",
             test_class=ControlPanelTestCase))
 
-    suite.addTest(FunctionalDocFileSuite('usergroups.txt',
-                                         optionflags=OPTIONFLAGS,
-                                         package="plone.app.controlpanel.tests",
-                                         test_class=UserGroupsControlPanelTestCase))
+    suite.addTest(FunctionalDocFileSuite(
+        'usergroups.txt',
+        optionflags=OPTIONFLAGS,
+        package="plone.app.controlpanel.tests",
+        test_class=UserGroupsControlPanelTestCase))
 
     return suite
