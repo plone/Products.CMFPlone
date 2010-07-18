@@ -9,12 +9,13 @@ Viewing the markup control panel
     >>> self.browser.url
     'http://nohost/plone/@@markup-controlpanel'
 
-We have two controls, one for the default type and a multiselection for alternativate formats:
+We have two controls, one for the default type and a multi selection for
+alternative formats:
 
     >>> self.browser.getControl(name='form.default_type').value
     ['text/html']
     >>> self.browser.getControl(name='form.allowed_types').value
-    ['text/html']
+    ['text/html', 'text/x-web-textile']
 
 Click the save button without making any changes:
 

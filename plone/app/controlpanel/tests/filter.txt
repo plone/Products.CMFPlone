@@ -97,12 +97,12 @@ Look at the defaults
     cellpadding
     bgcolor
 
-    # XXX Hello Duncan!
     >>> print_all_of('stripped_combinations')
     >>> print_all_of('style_whitelist')
     text-align
     list-style-type
     float
+    padding-left
     >>> print_all_of('class_whitelist')
 
 Changing some values
@@ -135,6 +135,7 @@ Changing a permitted style:
     text-align
     list-style-type
     color
+    padding-left
 
 Check that the filtering works
 ------------------------------

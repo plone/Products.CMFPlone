@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ----------------
 
+- Adjusted tests to match new PortalTransforms and Plone defaults.
+  [hannosch]
+
 - Use correct listingheader_user_name or listingheader_group_name instead
   of listingheader_group_user_name in @@usergroups-usermembership
   and @@usergroups-groupmembership.
