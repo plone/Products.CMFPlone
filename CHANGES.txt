@@ -4,6 +4,9 @@ Changelog
 2.0.1 - unreleased
 ------------------
 
+- Check whether users can be added to the group. Don't show the add form on 
+  @@usergroup-groupmembership if not. 
+  [esteele]
 
 2.0 - 2010-07-18
 ----------------

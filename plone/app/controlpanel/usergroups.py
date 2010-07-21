@@ -372,6 +372,11 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         self.group = self.gtool.getGroupById(self.groupname)
         self.grouptitle = self.group.getGroupTitleOrName() or self.groupname
 
+        # Check that current user can be added to the group as a means of 
+        # determining whether users, in general, can be added to the group.
+        currentUser = self.mtool.getAuthenticatedMember()
+        self.canAddUsers = currentUser.canAddToGroup(self.groupname)
+
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
 
         self.groupquery = self.makeQuery(groupname=self.groupname)
