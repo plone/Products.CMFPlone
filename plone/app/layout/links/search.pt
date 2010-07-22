@@ -1,4 +1,5 @@
-<tal:search define="navigation_root_url view/navigation_root_url">
+<tal:search define="navigation_root_url view/navigation_root_url"
+            i18n:domain="plone">
     <link rel="search"
           href=""
           title="Search this site"
