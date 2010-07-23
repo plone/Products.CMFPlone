@@ -15,7 +15,7 @@
              tal:condition="python:previous is not None or next is not None">
 
           <tal:previous condition="previous">
-            <a class="listingPrevious" href="" 
+            <a class="previous" href="" 
                title="Go to previous item"
                i18n:attributes="title title_previous_item"
                tal:attributes="href previous/url">
@@ -32,7 +32,7 @@
           </tal:previous>
 
 
-            <a class="listingNext" href="" 
+            <a class="next" href="" 
                title="Go to next item"
                i18n:attributes="title title_next_item"
                tal:condition="next"

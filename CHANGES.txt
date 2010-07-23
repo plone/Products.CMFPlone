@@ -4,6 +4,8 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
+- Correct CSS class attribute for next/previous links.
+  [esteele]
 
 2.0.1 - 2010-07-18
 ------------------
