@@ -19,10 +19,7 @@
                title="Go to previous item"
                i18n:attributes="title title_previous_item"
                tal:attributes="href previous/url">
-               <img src="" alt="Left arrow" 
-                    i18n:attributes="alt label_previous_item_arrow"
-                    tal:attributes="src string:$portal_url/arrowLeft.gif" />
-
+                «
                 <span i18n:translate="label_previous_item"
                       tal:omit-tag="">
                     Previous:
@@ -42,10 +39,7 @@
                  Next:
                  <span i18n:name="itemtitle" tal:replace="next/title" />
                </span>
-
-               <img src="" alt="Right arrow" 
-                    i18n:attributes="alt label_next_item_arrow"
-                    tal:attributes="src string:$portal_url/arrowRight.gif" />
+                »
             </a>
 
           &nbsp;

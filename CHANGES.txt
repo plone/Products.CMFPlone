@@ -4,6 +4,10 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
+- Use unicode double arrows for next/previous links instead of right/left arrow
+  images.
+  [esteele]
+  
 - Correct CSS class attribute for next/previous links.
   [esteele]
 
