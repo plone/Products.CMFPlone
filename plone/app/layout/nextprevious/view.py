@@ -41,8 +41,8 @@ class NextPreviousView(BrowserView):
 
 
 class NextPreviousViewlet(ViewletBase, NextPreviousView):
-    render = ZopeTwoPageTemplateFile('nextprevious.pt')
+    index = ZopeTwoPageTemplateFile('nextprevious.pt')
 
 
 class NextPreviousLinksViewlet(ViewletBase, NextPreviousView):
-    render = ZopeTwoPageTemplateFile('links.pt')
+    index = ZopeTwoPageTemplateFile('links.pt')

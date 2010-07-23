@@ -4,6 +4,9 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
+- Use "index" instead of "render" to ease customization of next/prev and rss viewlets.
+  [esteele]
+
 - Use unicode double arrows for next/previous links instead of right/left arrow
   images.
   [esteele]

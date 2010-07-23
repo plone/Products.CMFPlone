@@ -88,4 +88,4 @@ class RSSViewlet(ViewletBase):
         else:
             self.allowed = False
 
-    render = ViewPageTemplateFile('rsslink.pt')
+    index = ViewPageTemplateFile('rsslink.pt')
