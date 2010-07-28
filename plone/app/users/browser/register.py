@@ -27,6 +27,8 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.site.hooks import getSite
 from plone.protect import CheckAuthenticator
 
+import logging
+
 # Define constants from the Join schema that should be added to the
 # vocab of the join fields setting in usergroupssettings controlpanel.
 JOIN_CONST = ['username', 'password', 'email', 'mail_me']
@@ -381,6 +383,7 @@ class BaseRegistrationForm(PageForm):
             registration.addMember(username, password, properties=data,
                                    REQUEST=self.request)
         except (AttributeError, ValueError), err:
+            logging.exception(err)
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
 
