@@ -28,6 +28,16 @@ class IPersonalPreferences(Interface):
 
     """ Provide schema for personalize form """
 
+    visible_ids = Bool(
+        title=_(u'label_edit_short_names',
+            default=u'Allow editing of Short Names'),
+        description=_(u'help_display_names',
+                      default=u'Determines if Short Names (also known '
+               'as IDs) are changable when editing items. If Short '
+               'Names are not displayed, they will be generated automatically.'),
+        required=False
+           )
+
     wysiwyg_editor = Choice(
         title=_(u'label_wysiwyg_editor', default=u'Wysiwyg editor'),
         description=_(u'help_wysiwyg_editor', default=u'Wysiwyg editor to use.'),
@@ -54,16 +64,6 @@ class IPersonalPreferences(Interface):
                                'searches done on this site.'),
         required=False
         )
-
-    visible_ids = Bool(
-        title=_(u'label_edit_short_names',
-            default=u'Allow editing of Short Names'),
-        description=_(u'help_display_names',
-                      default=u'Determines if Short Names (also known '
-               'as IDs) are changable when editing items. If Short '
-               'Names are not displayed, they will be generated automatically.'),
-        required=False
-           )
 
     language = Choice(
         title=_(u'label_language', default=u'Language'),
