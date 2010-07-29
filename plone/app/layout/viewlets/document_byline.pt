@@ -20,16 +20,13 @@
          tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
          tal:content="view/authorname"
          tal:omit-tag="python:view.author() is None"
-         i18n:name="author">
-        Bob Dobalina
-      </a>
-
+         i18n:name="author">Roland Barthes</a>
+         —
     </span>
   </tal:name>
   </tal:creator>
 
   <span class="documentModified">
-    &mdash;
     <span i18n:translate="box_last_modified">
       last modified
     </span>
@@ -39,15 +36,15 @@
   </span>
 
   <tal:expired tal:condition="view/isExpired">
-    &mdash;
+    —
     <span class="state-expired"
           i18n:translate="time_expired">expired</span>
   </tal:expired>
 
   <span class="contentHistory" id="content-history"
         tal:condition="view/show_history">
-    &mdash;
-    <a href="#" 
+    —
+    <a href="#"
        tal:attributes="href string:${here/absolute_url}/@@historyview"
        i18n:translate="label_history">History</a>
   </span>
