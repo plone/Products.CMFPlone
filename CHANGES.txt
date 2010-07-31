@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.1 - unreleased
+2.0.1 - 2010-07-31
 ------------------
 
 - Check whether users can be added to the group. Don't show the add form on 
