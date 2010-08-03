@@ -1,9 +1,9 @@
 <div i18n:domain="plone"
      tal:define="history view/fullHistory;"
-     tal:condition="history"
      tal:omit-tag="">
-     <tal:block repeat="item history">
-         <div class="historyRecord" 
+     <div tal:condition="not: history">–</div>
+     <tal:block condition="history" repeat="item history">
+         <div class="historyRecord"
                 tal:define="rhComments item/comments|nothing;
                             actor item/actor;
                             actor_name python:actor and actor.get('fullname','username') or item['actorid'];
@@ -25,14 +25,14 @@
              <div class="historyByLine">
                  <tal:action i18n:translate="history_action">
                      <span class="historyAction" tal:content="action" i18n:translate="" i18n:name="action"
-                           tal:attributes="class string:historyAction state-${action}"/>  
-                     &mdash; 
+                           tal:attributes="class string:historyAction state-${action}"/>
+                     –
                      <tal:actor i18n:name="actor">
                          <a href=""
                             tal:condition="actor_home"
                             tal:attributes="href actor_home"
                             tal:content="actor_name"> runyaga </a>
-                         <span tal:condition="not: actor_home" 
+                         <span tal:condition="not: actor_home"
                                tal:replace="actor_name"/>
                      </tal:actor>
                      on
@@ -45,7 +45,7 @@
 
              </div>
              <div class="historyLinks" tal:condition="isVersion">
-                 <a href="" 
+                 <a href=""
                     tal:attributes="href item/preview_url"
                     i18n:translate="title_view_revision">View</a>
                  <a href="" tal:attributes="href item/diff_current_url"
