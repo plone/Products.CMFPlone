@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.2 - unreleased
+2.0.2 - 2010-08-03
 ------------------
 
 - Use "index" instead of "render" to ease customization of next/prev and rss
