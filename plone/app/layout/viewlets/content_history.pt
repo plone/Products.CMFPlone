@@ -1,7 +1,7 @@
 <div i18n:domain="plone"
      tal:define="history view/fullHistory;"
      tal:omit-tag="">
-     <div tal:condition="not: history">–</div>
+     <div tal:condition="not: history">—</div>
      <tal:block condition="history" repeat="item history">
          <div class="historyRecord"
                 tal:define="rhComments item/comments|nothing;
@@ -26,7 +26,7 @@
                  <tal:action i18n:translate="history_action">
                      <span class="historyAction" tal:content="action" i18n:translate="" i18n:name="action"
                            tal:attributes="class string:historyAction state-${action}"/>
-                     –
+                     —
                      <tal:actor i18n:name="actor">
                          <a href=""
                             tal:condition="actor_home"
