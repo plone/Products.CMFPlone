@@ -4,6 +4,9 @@ Changelog
 2.0.2 - Unreleased
 ------------------
 
+- Changed some messages in @@ramcache-controlpanel view.
+  [vincentfretin]
+
 2.0.1 - 2010-07-31
 ------------------
 
