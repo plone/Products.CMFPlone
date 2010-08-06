@@ -4,6 +4,10 @@ Changelog
 2.0.3 - Unreleased
 ------------------
 
+- Added icons to related items viewlet for file types
+  Fixes http://dev.plone.org/plone/ticket/10866
+  [cwainwright]
+
 2.0.2 - 2010-08-03
 ------------------
 

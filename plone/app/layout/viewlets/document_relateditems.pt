@@ -23,6 +23,7 @@
                     item_url            item/getURL|item/absolute_url;
                     item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url">
                 <span tal:attributes="class item_type_class">
+                    <img tal:replace="structure item_icon/html_tag" />
                     <a href="" class=""
                        tal:attributes="href  item_url;
                                        title desc;
