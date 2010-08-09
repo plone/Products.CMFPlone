@@ -129,7 +129,7 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(tree['children'][-1]['currentItem'], True)
 
     def testNavTreeExcludesItemsWithExcludeProperty(self):
-        # Make sure that items with he exclude_from_nav property set get
+        # Make sure that items with the exclude_from_nav property set get
         # no_display set to True
         self.portal.folder2.setExcludeFromNav(True)
         self.portal.folder2.reindexObject()
