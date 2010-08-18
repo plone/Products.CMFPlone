@@ -8,6 +8,10 @@
 
 <body>
 
+<metal:override fill-slot="top_slot" 
+                tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                            disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
+
 <div metal:fill-slot="prefs_configlet_main">
 
     <h1 class="documentFirstHeading"
@@ -16,6 +20,25 @@
     <p class="documentDescription" i18n:translate="description_control_panel">
         Configuration area for Plone and add-on Products.
     </p>
+
+    <dl class="portalMessage warning"
+        tal:condition="view/upgrade_warning">
+        <dt i18n:translate="">
+            Warning
+        </dt>
+        <dd i18n:translate="">
+            The site configuration is outdated and needs to be
+            upgraded. Please
+            <a href="#"
+               tal:attributes="href string:${context/portal_url}/@@plone-upgrade"
+               title="Go to the upgrade page"
+               i18n:attributes="title;"
+               i18n:name="link_continue_with_the_upgrade"
+               i18n:translate="">
+              continue with the upgrade
+            </a>.
+        </dd>
+    </dl>
 
     <dl class="portalMessage warning"
         tal:condition="view/mailhost_warning">
