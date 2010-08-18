@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
   <include file="permissions.zcml"/>
@@ -36,42 +37,42 @@
       name="calendar-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".calendar.CalendarControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Calendar"
       />
 
   <browser:page
       name="editing-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".editing.EditingControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Editing"
       />
 
   <browser:page
       name="filter-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".filter.FilterControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Filtering"
       />
 
   <browser:page
       name="language-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".language.LanguageControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Language"
       />
 
   <browser:page
       name="mail-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".mail.MailControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Mail"
       />
 
   <browser:page
       name="markup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".markup.MarkupControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Markup"
       />
 
   <browser:page
@@ -85,7 +86,7 @@
       name="navigation-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".navigation.NavigationControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Navigation"
       />
 
   <browser:page
@@ -106,35 +107,35 @@
       name="search-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".search.SearchControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Search"
       />
       
   <browser:page
       name="security-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".security.SecurityControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Security"
       />
 
   <browser:page
       name="site-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".site.SiteControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Site"
       />
 
   <browser:page
       name="skins-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".skins.SkinsControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Themes"
       />
 
   <browser:page
       name="types-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".types.TypesControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.Types"
       />
 
   <browser:page
