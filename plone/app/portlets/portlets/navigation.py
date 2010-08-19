@@ -119,7 +119,10 @@ class Renderer(base.Renderer):
         self.urltool = getToolByName(context, 'portal_url')
 
     def title(self):
-        return self.data.name or self.properties.name
+        return self.data.name or self.data.title
+        
+    def hasName(self):
+        return self.data.name
 
     @property
     def available(self):

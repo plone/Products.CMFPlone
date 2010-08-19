@@ -4,6 +4,9 @@ Changelog
 2.0.1 - unreleased
 ------------------
 
+- Proper checkup for navigation portlet's title - we don't show it 
+  unless the title is explicitly specified.
+  [spliter]
 
 2.0 - 2010-07-18
 ----------------
@@ -38,8 +41,9 @@ Changelog
   don't need empty DT in case title is not provided for the portlet.
   [spliter]
 
-- Fix GS export of portlets assignments when property is a tuple or a list.
-  http://dev.plone.org/plone/ticket/10530
+- Fix GS export of portlets assignments
+  when property is a tuple or a list
+  https://dev.plone.org/plone/ticket/10530
   [macadames] 
 
 - Remove deprecated use of tabindex.

@@ -459,6 +459,18 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.failIf(tree['children'][3]['item_icon'].html_tag())
+        
+    def testPortletsTitle(self):
+        """If portlet's name is not explicitely specified we show 
+           default fallback 'Navigation', translate it and hide it
+           with CSS."""
+        view = self.renderer(self.portal)
+        tree = view.getNavTree()
+        self.assertEqual(view.title(), "Navigation")
+        self.failIf(view.hasName())
+        view.data.name = 'New navigation title'
+        self.assertEqual(view.title(), "New navigation title")
+        self.failUnless(view.hasName())
 
 
 def test_suite():
