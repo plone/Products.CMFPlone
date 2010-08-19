@@ -1,0 +1,8 @@
+Changelog
+=========
+
+4.0rc2 - Unreleased
+-------------------
+
+- Forward compatibility shim.
+  [elro]
