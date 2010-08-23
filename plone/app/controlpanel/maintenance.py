@@ -1,4 +1,5 @@
 import os
+import sys
 from cgi import escape
 
 from plone.app.form.validators import null_validator
@@ -22,6 +23,7 @@ from plone.app.controlpanel.interfaces import IPloneControlPanelForm
 
 from plone.protect import CheckAuthenticator
 
+IS_WIN = sys.platform.startswith('win')
 
 class IMaintenanceSchema(Interface):
 
@@ -117,7 +119,9 @@ class MaintenanceControlPanel(FieldsetsEditForm):
         return sm.checkPermission(view_management_screens, root)
 
     def isRestartable(self):
-        if os.environ.has_key('ZMANAGED'):
+        # "and not IS_WIN" works around http://dev.plone.org/plone/ticket/10906,
+        # the "Restart" button is still available in ZMI though
+        if os.environ.has_key('ZMANAGED') and not IS_WIN:
             return True
         return False
 
