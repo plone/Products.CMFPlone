@@ -108,9 +108,9 @@ class MaintenanceControlPanel(FieldsetsEditForm):
         url = self.request.get('URL')
         result = cpanel.manage_restart(url)
         return """<html>
-        <head><meta HTTP-EQUIV=REFRESH CONTENT="10; URL=%s">
+        <head><meta HTTP-EQUIV=REFRESH CONTENT="30; URL=%s">
         </head>
-        <body>Zope is restarting</body></html>
+        <body>Zope is restarting. This page will refresh in 30 seconds...</body></html>
         """ % escape(url, 1)
 
     def available(self):
@@ -119,9 +119,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
         return sm.checkPermission(view_management_screens, root)
 
     def isRestartable(self):
-        # "and not IS_WIN" works around http://dev.plone.org/plone/ticket/10906,
-        # the "Restart" button is still available in ZMI though
-        if os.environ.has_key('ZMANAGED') and not IS_WIN:
+        if os.environ.has_key('ZMANAGED'):
             return True
         return False
 
