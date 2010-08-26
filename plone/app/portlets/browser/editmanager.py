@@ -246,9 +246,6 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         """
         context = aq_inner(self.context)
 
-        assignable = getMultiAdapter(
-            (context, self.manager), ILocalPortletAssignmentManager)
-
         data = []
         while not IPloneSiteRoot.providedBy(context):
             if IAcquirer.providedBy(context):
