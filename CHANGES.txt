@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.3 - unreleased
+2.0.3 - 2010-09-09
 ------------------
 
 - Increased refresh time interval to 30 seconds for the restart action of the
