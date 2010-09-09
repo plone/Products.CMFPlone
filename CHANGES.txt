@@ -4,7 +4,7 @@ Changelog
 2.0.1 - unreleased
 ------------------
 
-- Proper checkup for navigation portlet's title - we don't show it 
+- Proper checkup for navigation portlet's title - we don't show it
   unless the title is explicitly specified.
   [spliter]
 
@@ -37,14 +37,14 @@ Changelog
   http://dev.plone.org/plone/ticket/10598.
   [deo]
 
-- Moved condition for navigation portlet's title to DT element. We 
+- Moved condition for navigation portlet's title to DT element. We
   don't need empty DT in case title is not provided for the portlet.
   [spliter]
 
 - Fix GS export of portlets assignments
   when property is a tuple or a list
   https://dev.plone.org/plone/ticket/10530
-  [macadames] 
+  [macadames]
 
 - Remove deprecated use of tabindex.
   [edegoute]
