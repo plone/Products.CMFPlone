@@ -1,5 +1,4 @@
 import os
-import sys
 from cgi import escape
 
 from plone.app.form.validators import null_validator
@@ -23,7 +22,6 @@ from plone.app.controlpanel.interfaces import IPloneControlPanelForm
 
 from plone.protect import CheckAuthenticator
 
-IS_WIN = sys.platform.startswith('win')
 
 class IMaintenanceSchema(Interface):
 
@@ -106,7 +104,7 @@ class MaintenanceControlPanel(FieldsetsEditForm):
         context = aq_inner(self.context)
         cpanel = context.unrestrictedTraverse('/Control_Panel')
         url = self.request.get('URL')
-        result = cpanel.manage_restart(url)
+        cpanel.manage_restart(url)
         return """<html>
         <head><meta HTTP-EQUIV=REFRESH CONTENT="30; URL=%s">
         </head>

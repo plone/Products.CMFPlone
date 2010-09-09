@@ -4,6 +4,9 @@ Changelog
 2.0.3 - unreleased
 ------------------
 
+- Increased refresh time interval to 30 seconds for the restart action of the
+  maintenance control panel.
+  [kleist, hannosch]
 
 2.0.2 - 2010-08-08
 ------------------
