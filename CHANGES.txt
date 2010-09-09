@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.1 - unreleased
+2.0.1 - 2010-09-09
 ------------------
 
 - Proper checkup for navigation portlet's title - we don't show it
