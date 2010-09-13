@@ -4,6 +4,9 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
+- Fix the IPortletDirective schema's default edit_permission to match
+  the default that is actually supplied by the directive's implementation.
+  [davisagli]
 
 2.0.1 - 2010-09-09
 ------------------

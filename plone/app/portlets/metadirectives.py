@@ -42,7 +42,7 @@ class IPortletDirective(Interface):
         title=_(u"Edit permission"),
         description=_(u"Permission used for editing the portlet assignment."),
         required=False,
-        default=u"cmf.ManagePortal"
+        default=u"plone.app.portlets.ManageOwnPortlets"
         )
 
     renderer = configuration_fields.GlobalObject(
