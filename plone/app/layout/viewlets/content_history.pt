@@ -53,7 +53,7 @@
                     i18n:translate="title_compare_revision">&middot; Compare to current</a>
              </div>
 
-             <div tal:content="rhComments" tal:condition="rhComments" class="historyComment" />
+             <div i18n:translate="" tal:content="rhComments" tal:condition="rhComments" class="historyComment" />
 
              <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
                     tal:attributes="href item/diff_previous_url"
