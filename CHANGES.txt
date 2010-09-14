@@ -4,6 +4,9 @@ Changelog
 2.0.3 - Unreleased
 ------------------
 
+- Translate comment messages on history
+  [tdesvenain]
+  
 - 'Compare' link is not available
   if content type is not registered in portal_diff.
   Fixes http://dev.plone.org/plone/ticket/11107.
