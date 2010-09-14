@@ -214,7 +214,9 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
 
         context_url = context.absolute_url()
         history=rt.getHistoryMetadata(context);
-        can_diff = getToolByName(context, "portal_diff", None) is not None
+        portal_diff = getToolByName(context, "portal_diff", None)
+        can_diff = portal_diff is not None \
+            and len(portal_diff.getDiffForPortalType(context.portal_type)) > 0
 
         def morphVersionDataToHistoryFormat(vdata, version_id):
             meta = vdata["metadata"]["sys_metadata"]

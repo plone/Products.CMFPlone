@@ -4,6 +4,11 @@ Changelog
 2.0.3 - Unreleased
 ------------------
 
+- 'Compare' link is not available
+  if content type is not registered in portal_diff.
+  Fixes http://dev.plone.org/plone/ticket/11107.
+  [tdesvenain]
+
 - Added icons to related items viewlet for file types
   Fixes http://dev.plone.org/plone/ticket/10866
   [cwainwright]
@@ -18,7 +23,7 @@ Changelog
 - Use unicode double arrows for next/previous links instead of right/left arrow
   images.
   [esteele]
-  
+
 - Correct CSS class attribute for next/previous links.
   [esteele]
 
@@ -82,7 +87,7 @@ Changelog
   superfluous div tags from the output.
   [dunlapm]
 
-- Added apple-touch-icon (iPhone/iPad home screen icon) definition to 
+- Added apple-touch-icon (iPhone/iPad home screen icon) definition to
   favicon.pt
   [limi]
 
@@ -148,7 +153,7 @@ Changelog
   recent conventions.
   [spliter]
 
-- Removing redundant .documentContent markup. 
+- Removing redundant .documentContent markup.
   This refs http://dev.plone.org/plone/ticket/10231.
   [limi]
 
@@ -414,7 +419,7 @@ Changelog
   and content versions. Render this instead of the workflow history viewlet.
   [wichert]
 
-- Fixed querystring in CSS validation link in viewlets/colophon.pt 
+- Fixed querystring in CSS validation link in viewlets/colophon.pt
   There was an ampersand where the leading "?" should have been.
   http://dev.plone.org/plone/ticket/9054
   [siebo]
@@ -519,12 +524,12 @@ Changelog
   [hannosch]
 
 - Fixed comments.pt to pass the title of the comment you are replying to into
-  the discussion_reply_form. This closes 
+  the discussion_reply_form. This closes
   http://dev.plone.org/plone/ticket/8323
   [calvinhp]
 
 - Refactor default_page: move all logic out of the view to separate methods
-  so they can be called without a request (which is not used at all). 
+  so they can be called without a request (which is not used at all).
   Deprecate parameters which were not in the interface and were never used.
   [wichert]
 
@@ -561,7 +566,7 @@ Changelog
 -------------------------------
 
 - Applied patch from http://dev.plone.org/plone/ticket/7942 to ensure that the
-  'currentParent' marker is not True for items that have a path that is a 
+  'currentParent' marker is not True for items that have a path that is a
   substring of the true path.
   [optilude]
 
@@ -599,7 +604,7 @@ Changelog
 - Make viewlet managers in head section order- and filterable.
   [fschulze]
 
-1.0.6 
+1.0.6
 -----
 
 - Added i18n markup to nextprevious.pt.
@@ -626,12 +631,12 @@ Changelog
 - Added i18n domain to comment.pt.
   [martior]
 
-- Allow non ascii characters in webstats_js code. 
+- Allow non ascii characters in webstats_js code.
   Fixes http://dev.plone.org/plone/ticket/7359
   [naro]
 
 - Fixed workflow history viewlet to handle entries with
-  usernames that don't exist any more (deleted users) and 
+  usernames that don't exist any more (deleted users) and
   also anonymous users.
   This fixes http://dev.plone.org/plone/ticket/7250.
   [rsantos]
