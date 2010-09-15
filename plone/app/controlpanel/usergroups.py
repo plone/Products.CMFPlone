@@ -480,6 +480,10 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
             add = form.get('add', [])
             if add:
                 for groupname in add:
+                    group = self.gtool.getGroupById(groupname)
+                    if 'Manager' in group.getRoles() and not self.is_zope_manager:
+                        raise Forbidden
+
                     self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 

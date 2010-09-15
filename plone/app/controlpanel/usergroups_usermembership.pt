@@ -170,9 +170,10 @@
                                                      groupname groupname | nothing;
                                                      member context/@@plone_portal_state/member;
                                                      m python:userid and member or context.portal_membership.getMemberById(calcId);
-                                                     g python:groupname and groupname or calcId;"
+                                                     g python:groupname and groupname or calcId;
+                                                     canAddToGroup python:m.canAddToGroup(g) and ('Manager' not in obj.getRoles() or view.is_zope_manager)"
                                          tal:attributes="value calcId;
-                                                         disabled python:m.canAddToGroup(g) and default or 'disabled'" />
+                                                         disabled python:canAddToGroup and default or 'disabled'" />
                             </td>
 
                             <td>
