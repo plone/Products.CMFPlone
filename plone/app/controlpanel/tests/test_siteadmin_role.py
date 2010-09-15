@@ -29,7 +29,13 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         res = self.publish('/plone/@@overview-controlpanel', 'siteadmin:secret')
         self.assertEqual(200, res.status)
 
-    def testManagerCanDelegateManagerRole(self):
+    def testUserManagerRoleCheckboxIsDisabledForNonManagers(self):
+        res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
+        self.assertTrue('<input type="checkbox" class="noborder" '
+                        'name="users.roles:list:records" value="Manager" '
+                        'disabled="disabled" />' in res.getOutput())
+
+    def testManagerCanDelegateManagerRoleForUsers(self):
         # a user with the Manager role can grant the Manager role
         form = {
             '_authenticator': self.manager_token,
@@ -46,13 +52,7 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         roles = self.portal.acl_users.getUserById('DIispfuF').getRoles()
         self.assertEqual(['Manager', 'Authenticated'], roles)
 
-    def testNonManagersDontSeeOptionToDelegateManagerRole(self):
-        res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
-        self.assertTrue('<input type="checkbox" class="noborder" '
-                        'name="users.roles:list:records" value="Manager" '
-                        'disabled="disabled" />' in res.getOutput())
-
-    def testNonManagersCannotDelegateManagerRole(self):
+    def testNonManagersCannotDelegateManagerRoleForUsers(self):
         # a user without the Manager role cannot delegate the Manager role
         form = {
             '_authenticator': self.siteadmin_token,
@@ -68,6 +68,46 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         self.assertEqual(403, res.status)
         roles = self.portal.acl_users.getUserById('DIispfuF').getRoles()
         self.assertEqual(['Member', 'Authenticated'], roles)
+
+    def testGroupManagerRoleCheckboxIsDisabledForNonManagers(self):
+        res = self.publish('/plone/@@usergroup-groupprefs', basic='siteadmin:secret')
+        self.assertTrue('<input type="checkbox" class="noborder" '
+                        'name="group_Reviewers:list" value="Manager" '
+                        'disabled="disabled" />' in res.getOutput())
+
+    def testManagerCanDelegateManagerRoleForGroups(self):
+        # a user with the Manager role can grant the Manager role
+        form = {
+            '_authenticator': self.manager_token,
+            'group_Reviewers:list': '',
+            'group_Reviewers:list': 'Manager',
+            'form.button.Modify': 'Apply Changes',
+            'form.submitted': 1,
+            }
+        post_data = StringIO(urlencode(form))
+        res = self.publish('/plone/@@usergroup-groupprefs',
+                           request_method='POST', stdin=post_data,
+                           basic='root:secret')
+        self.assertEqual(200, res.status)
+        roles = self.portal.acl_users.getGroupById('Reviewers').getRoles()
+        self.assertEqual(['Manager', 'Authenticated'], roles)
+
+    def testNonManagersCannotDelegateManagerRoleForGroups(self):
+        # a user without the Manager role cannot delegate the Manager role
+        form = {
+            '_authenticator': self.siteadmin_token,
+            'group_Reviewers:list': '',
+            'group_Reviewers:list': 'Manager',
+            'form.button.Modify': 'Apply Changes',
+            'form.submitted': 1,
+            }
+        post_data = StringIO(urlencode(form))
+        res = self.publish('/plone/@@usergroup-groupprefs',
+                           request_method='POST', stdin=post_data,
+                           basic='siteadmin:secret')
+        self.assertEqual(403, res.status)
+        roles = self.portal.acl_users.getGroupById('Reviewers').getRoles()
+        self.assertEqual(['Reviewer', 'Authenticated'], roles)
 
 
 def test_suite():

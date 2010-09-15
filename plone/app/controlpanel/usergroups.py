@@ -124,6 +124,11 @@ class UsersGroupsControlPanelView(ControlPanelView):
             return int(s)  
         except ValueError:
             return 0
+    
+    @property
+    def is_zope_manager(self):
+        return getSecurityManager().checkPermission(ManagePortal, self.context)
+
 
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
@@ -151,10 +156,6 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             self.searchResults = self.doSearch(self.searchString)
 
         return self.index()
-
-    @property
-    def is_zope_manager(self):
-        return getSecurityManager().checkPermission(ManagePortal, self.context)
 
     def doSearch(self, searchString):
         acl = getToolByName(self, 'acl_users')
@@ -342,7 +343,10 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
             roleList = {}
             for role in self.portal_roles:
-                roleList[role]={'canAssign': group.canAssignRole(role),
+                canAssign = group.canAssignRole(role)
+                if role == 'Manager' and not self.is_zope_manager:
+                    canAssign = False
+                roleList[role]={'canAssign': canAssign,
                                 'explicit': role in explicitlyAssignedRoles,
                                 'inherited': role in allInheritedRoles[groupId] }
 
@@ -368,6 +372,9 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
         for group in groups:
             roles=[r for r in self.request.form['group_' + group] if r]
+            if 'Manager' in roles and not self.is_zope_manager:
+                raise Forbidden
+            
             groupstool.editGroup(group, roles=roles, groups=())
             message = _(u'Changes saved.')
 
