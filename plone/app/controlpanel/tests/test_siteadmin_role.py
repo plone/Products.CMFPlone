@@ -46,6 +46,12 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         roles = self.portal.acl_users.getUserById('DIispfuF').getRoles()
         self.assertEqual(['Manager', 'Authenticated'], roles)
 
+    def testNonManagersDontSeeOptionToDelegateManagerRole(self):
+        res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
+        self.assertTrue('<input type="checkbox" class="noborder" '
+                        'name="users.roles:list:records" value="Manager" '
+                        'disabled="disabled" />' in res.getOutput())
+
     def testNonManagersCannotDelegateManagerRole(self):
         # a user without the Manager role cannot delegate the Manager role
         form = {

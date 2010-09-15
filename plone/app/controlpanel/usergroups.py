@@ -152,6 +152,10 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
         return self.index()
 
+    @property
+    def is_zope_manager(self):
+        return getSecurityManager().checkPermission(ManagePortal, self.context)
+
     def doSearch(self, searchString):
         acl = getToolByName(self, 'acl_users')
         rolemakers = acl.plugins.listPlugins(IRolesPlugin)
@@ -201,7 +205,10 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
             roleList = {}
             for role in self.portal_roles:
-                roleList[role]={'canAssign': user.canAssignRole(role),
+                canAssign = user.canAssignRole(role)
+                if role == 'Manager' and not self.is_zope_manager:
+                    canAssign = False
+                roleList[role]={'canAssign': canAssign,
                                 'explicit': role in explicitlyAssignedRoles,
                                 'inherited': role in allInheritedRoles[userId]}
 
@@ -254,8 +261,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                         utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
 
                 roles = user.get('roles', [])
-                is_zope_manager = getSecurityManager().checkPermission(ManagePortal, self.context)
-                if 'Manager' in roles and not is_zope_manager:
+                if 'Manager' in roles and not self.is_zope_manager:
                     raise Forbidden
 
                 acl_users.userFolderEditUser(user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
