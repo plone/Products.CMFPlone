@@ -1,6 +1,8 @@
 import logging
 
+from AccessControl import getSecurityManager
 from Acquisition import aq_inner
+from zExceptions import Forbidden
 from itertools import chain
 
 from zope.interface import Interface
@@ -11,13 +13,14 @@ from zope.schema import Bool
 from ZTUtils import make_query
 
 from plone.protect import CheckAuthenticator
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin, IGroupsPlugin
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
 
 from form import ControlPanelForm, ControlPanelView
 from security import ISecuritySchema
@@ -250,7 +253,12 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     else:
                         utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
 
-                acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
+                roles = user.get('roles', [])
+                is_zope_manager = getSecurityManager().checkPermission(ManagePortal, self.context)
+                if 'Manager' in roles and not is_zope_manager:
+                    raise Forbidden
+
+                acl_users.userFolderEditUser(user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
                 if pw:
                     context.REQUEST.form['new_password'] = pw
                     regtool.mailPassword(user.id, context.REQUEST)

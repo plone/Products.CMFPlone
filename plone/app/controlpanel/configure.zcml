@@ -142,7 +142,7 @@
       name="usergroup-userprefs"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UsersOverviewControlPanel"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_usersoverview.pt"
       />
 
@@ -150,7 +150,7 @@
       name="usergroup-groupprefs"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.GroupsOverviewControlPanel"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupsoverview.pt"
       />
 
@@ -158,14 +158,14 @@
       name="usergroup-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UserGroupsSettingsControlPanel"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
   <browser:page
       name="usergroup-groupmembership"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.GroupMembershipControlPanel"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_groupmembership.pt"
       />
 
@@ -173,7 +173,7 @@
       name="usergroup-usermembership"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".usergroups.UserMembershipControlPanel"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       template="usergroups_usermembership.pt"
       />
 
