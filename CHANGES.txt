@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.3 - Unreleased
+2.0.3 - 2010-09-15
 ------------------
 
 - Translate comment messages on history
