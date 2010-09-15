@@ -397,8 +397,10 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         # determining whether users, in general, can be added to the group.
         currentUser = self.mtool.getAuthenticatedMember()
         self.canAddUsers = currentUser.canAddToGroup(self.groupname)
-
+        
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
+        if 'Manager' in self.request.get('grouproles') and not self.is_zope_manager:
+            self.canAddUsers = False
 
         self.groupquery = self.makeQuery(groupname=self.groupname)
         self.groupkeyquery = self.makeQuery(key=self.groupname)
@@ -414,6 +416,9 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
             # add/delete before we search so we don't show stale results
             toAdd = form.get('add', [])
             if toAdd:
+                if not self.canAddUsers:
+                    raise Forbidden
+
                 for u in toAdd:
                     self.gtool.addPrincipalToGroup(u, self.groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))

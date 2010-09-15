@@ -132,6 +132,26 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         roles = self.portal.acl_users.getUserById(self.normal_user).getRoles()
         self.assertEqual(['Member', 'Authenticated'], roles)
 
+    def test_usergroup_groupmembership_blocks_escalation(self):
+        # should not show section to add users for groups granting the Manager role
+        res = self.publish('/plone/@@usergroup-groupmembership?groupname=Administrators',
+                           basic='siteadmin:secret')
+        self.assertFalse('Search for new group members' in res.getOutput())
+
+        # and should not be addable if we try to force it
+        form = {
+            '_authenticator': self.siteadmin_token,
+            'add:list': self.normal_user,
+            'form.submitted': 1,
+            }
+        post_data = StringIO(urlencode(form))
+        res = self.publish('/plone/@@usergroup-groupmembership?groupname=Administrators',
+                           request_method='POST', stdin=post_data,
+                           basic='siteadmin:secret')
+        self.assertEqual(403, res.status)
+        roles = self.portal.acl_users.getUserById(self.normal_user).getRoles()
+        self.assertEqual(['Member', 'Authenticated'], roles)
+
 
 def test_suite():
     from unittest import defaultTestLoader
