@@ -178,6 +178,14 @@
       />
 
   <browser:page
+      name="usergroup-groupdetails"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.GroupDetailsControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupdetails.pt"
+      />
+
+  <browser:page
       name="searchform-options"
       for="*"
       class=".search.SearchFormOptions"
