@@ -261,9 +261,12 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     else:
                         utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
 
+                current_roles = member.getRoles()
                 roles = user.get('roles', [])
-                if 'Manager' in roles and not self.is_zope_manager:
-                    raise Forbidden
+                if not self.is_zope_manager:
+                    # don't allow adding or removing the Manager role
+                    if ('Manager' in roles) != ('Manager' in current_roles):
+                        raise Forbidden
 
                 acl_users.userFolderEditUser(user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
                 if pw:
@@ -372,8 +375,12 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
         for group in groups:
             roles=[r for r in self.request.form['group_' + group] if r]
-            if 'Manager' in roles and not self.is_zope_manager:
-                raise Forbidden
+            group_obj = groupstool.getGroupById(group)
+            current_roles = group_obj.getRoles()
+            if not self.is_zope_manager:
+                # don't allow adding or removing the Manager role
+                if ('Manager' in roles) != ('Manager' in current_roles):
+                    raise Forbidden
             
             groupstool.editGroup(group, roles=roles, groups=())
             message = _(u'Changes saved.')

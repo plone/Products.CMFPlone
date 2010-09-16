@@ -71,6 +71,24 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         roles = self.portal.acl_users.getUserById(self.normal_user).getRoles()
         self.assertEqual(['Member', 'Authenticated'], roles)
 
+    def testNonManagersCanEditOtherRolesOfUsersWithManagerRole(self):
+        roles = self.portal.acl_users.getUserById('root').getRoles()
+        self.assertEqual(['Manager', 'Authenticated'], roles)
+        form = {
+            '_authenticator': self.siteadmin_token,
+            'users.id:records': 'root',
+            'users.roles:list:records': ('Member', 'Manager'),
+            'form.button.Modify': 'Apply Changes',
+            'form.submitted': 1,
+            }
+        post_data = StringIO(urlencode(form, doseq=True))
+        res = self.publish('/plone/@@usergroup-userprefs',
+                           request_method='POST', stdin=post_data,
+                           basic='siteadmin:secret')
+        self.assertEqual(200, res.status)
+        roles = self.portal.acl_users.getUserById('root').getRoles()
+        self.assertEqual(['Member', 'Manager', 'Authenticated'], roles)
+
     def testGroupManagerRoleCheckboxIsDisabledForNonManagers(self):
         res = self.publish('/plone/@@usergroup-groupprefs', basic='siteadmin:secret')
         self.assertTrue('<input type="checkbox" class="noborder" '
@@ -81,12 +99,11 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         # a user with the Manager role can grant the Manager role
         form = {
             '_authenticator': self.manager_token,
-            'group_Reviewers:list': '',
-            'group_Reviewers:list': 'Manager',
+            'group_Reviewers:list': ('', 'Manager'),
             'form.button.Modify': 'Apply Changes',
             'form.submitted': 1,
             }
-        post_data = StringIO(urlencode(form))
+        post_data = StringIO(urlencode(form, doseq=True))
         res = self.publish('/plone/@@usergroup-groupprefs',
                            request_method='POST', stdin=post_data,
                            basic='root:secret')
@@ -98,18 +115,34 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         # a user without the Manager role cannot delegate the Manager role
         form = {
             '_authenticator': self.siteadmin_token,
-            'group_Reviewers:list': '',
-            'group_Reviewers:list': 'Manager',
+            'group_Reviewers:list': ('', 'Manager'),
             'form.button.Modify': 'Apply Changes',
             'form.submitted': 1,
             }
-        post_data = StringIO(urlencode(form))
+        post_data = StringIO(urlencode(form, doseq=True))
         res = self.publish('/plone/@@usergroup-groupprefs',
                            request_method='POST', stdin=post_data,
                            basic='siteadmin:secret')
         self.assertEqual(403, res.status)
         roles = self.portal.acl_users.getGroupById('Reviewers').getRoles()
         self.assertEqual(['Reviewer', 'Authenticated'], roles)
+
+    def testNonManagersCanEditOtherRolesOfGroupsWithManagerRole(self):
+        roles = self.portal.acl_users.getUserById('root').getRoles()
+        self.assertEqual(['Manager', 'Authenticated'], roles)
+        form = {
+            '_authenticator': self.siteadmin_token,
+            'group_Administrators:list': ('', 'Member', 'Manager'),
+            'form.button.Modify': 'Apply Changes',
+            'form.submitted': 1,
+            }
+        post_data = StringIO(urlencode(form, doseq=True))
+        res = self.publish('/plone/@@usergroup-groupprefs',
+                           request_method='POST', stdin=post_data,
+                           basic='siteadmin:secret')
+        self.assertEqual(200, res.status)
+        roles = self.portal.acl_users.getGroupById('Administrators').getRoles()
+        self.assertEqual(['Member', 'Manager', 'Authenticated'], roles)
 
     def test_usergroup_usermembership_blocks_escalation(self):
         # groups granting the Manager role shouldn't show as a valid option to add
