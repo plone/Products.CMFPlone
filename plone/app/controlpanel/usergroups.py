@@ -6,13 +6,14 @@ from zExceptions import Forbidden
 from itertools import chain
 
 from zope.interface import Interface
-from zope.component import adapts, getAdapter, getMultiAdapter
+from zope.component import adapts, getAdapter, getMultiAdapter, getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 from ZTUtils import make_query
 
 from plone.protect import CheckAuthenticator
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -274,10 +275,39 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     regtool.mailPassword(user.id, context.REQUEST)
 
             if delete:
-                # TODO We should eventually have a global switch to determine member area
-                # deletion
-                mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
+                self.deleteMembers(delete)
             utils.addPortalMessage(_(u'Changes applied.'))
+        
+    def deleteMembers(self, member_ids):
+        # this method exists to bypass the 'Manage Users' permission check
+        # in the CMF member tool's version
+        context = aq_inner(self.context)
+        mtool = getToolByName(self.context, 'portal_membership')
+        
+        # Delete members in acl_users.
+        acl_users = context.acl_users
+        if isinstance(member_ids, basestring):
+            member_ids = (member_ids,)
+        member_ids = list(member_ids)
+        for member_id in member_ids[:]:
+            if not acl_users.getUserById(member_id, None):
+                member_ids.remove(member_id)
+        try:
+            acl_users.userFolderDelUsers(member_ids)
+        except (AttributeError, NotImplementedError):
+            raise NotImplementedError('The underlying User Folder '
+                                     'doesn\'t support deleting members.')
+
+        # Delete member data in portal_memberdata.
+        mdtool = getToolByName(context, 'portal_memberdata', None)
+        if mdtool is not None:
+            for member_id in member_ids:
+                mdtool.deleteMemberData(member_id)
+
+        # Delete members' local roles.
+        mtool.deleteLocalRoles( getUtility(ISiteRoot), member_ids,
+                               reindex=1, recursive=1 )
+
 
 class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
