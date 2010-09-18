@@ -211,6 +211,29 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         self.assertEqual(None, self.portal.acl_users.getUserById('newuser'))
         self.assertTrue('Invalid value' in res.getOutput())
 
+    def test_users_overview_blocks_deleting_managers(self):
+        # a user without the Manager role cannot delete a user with the
+        # Manager role
+        res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
+        self.assertTrue('<input type="checkbox" class="noborder notify" '
+                        'name="delete:list" value="root" disabled="disabled" />'
+                        in res.getOutput())
+
+        form = {
+            '_authenticator': self.siteadmin_token,
+            'users.id:records': 'root',
+            'delete:list': 'root',
+            'form.button.Modify': 'Apply Changes',
+            'form.submitted': 1,
+            }
+        post_data = StringIO(urlencode(form))
+        res = self.publish('/plone/@@usergroup-userprefs',
+                           request_method='POST', stdin=post_data,
+                           basic='siteadmin:secret')
+        self.assertEqual(403, res.status)
+        user = self.portal.acl_users.getUserById('root')
+        self.assertTrue(user is not None)
+
 
 def test_suite():
     from unittest import defaultTestLoader

@@ -115,8 +115,8 @@
                                <label for="groupname" i18n:translate="label_name">Name</label>
 
                                <div tal:content="view/groupname | string:" />
-                               <input type="hidden" name="addname" value="groupname"
-                                      id="addname"
+                               <input type="hidden" name="groupname" value="groupname"
+                                      id="groupname"
                                       tal:attributes="value view/groupname | string:"/>
                             </div>
 

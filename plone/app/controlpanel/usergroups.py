@@ -215,12 +215,19 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                                 'explicit': role in explicitlyAssignedRoles,
                                 'inherited': role in allInheritedRoles[userId]}
 
+            canDelete = user.canDelete()
+            canPasswordSet = user.canPasswordSet()
+            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+                if not self.is_zope_manager:
+                    canDelete = False
+                    canPasswordSet = False
+
             user_info['roles'] = roleList
             user_info['fullname'] = user.getProperty('fullname', '')
             user_info['email'] = user.getProperty('email', '')
-            user_info['can_delete'] = user.canDelete()
+            user_info['can_delete'] = canDelete
             user_info['can_set_email'] = user.canWriteProperty('email')
-            user_info['can_set_password'] = user.canPasswordSet()
+            user_info['can_set_password'] = canPasswordSet
             results.append(user_info)
 
         # Sort the users by fullname
@@ -247,6 +254,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     continue
 
                 member = mtool.getMemberById(user.id)
+                current_roles = member.getRoles()
                 # If email address was changed, set the new one
                 if hasattr(user, 'email'):
                     # If the email field was disabled (ie: non-writeable), the
@@ -258,12 +266,13 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 # If reset password has been checked email user a new password
                 pw = None
                 if hasattr(user, 'resetpassword'):
+                    if 'Manager' in current_roles and not self.is_zope_manager:
+                        raise Forbidden
                     if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
                         pw = regtool.generatePassword()
                     else:
                         utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
 
-                current_roles = member.getRoles()
                 roles = user.get('roles', [])
                 if not self.is_zope_manager:
                     # don't allow adding or removing the Manager role
@@ -291,8 +300,14 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             member_ids = (member_ids,)
         member_ids = list(member_ids)
         for member_id in member_ids[:]:
-            if not acl_users.getUserById(member_id, None):
+            member = mtool.getMemberById(member_id)
+            if member is None:
                 member_ids.remove(member_id)
+            else:
+                if not member.canDelete():
+                    raise Forbidden
+                if 'Manager' in member.getRoles() and not self.is_zope_manager:
+                    raise Forbidden
         try:
             acl_users.userFolderDelUsers(member_ids)
         except (AttributeError, NotImplementedError):
