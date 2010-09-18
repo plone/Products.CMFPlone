@@ -473,8 +473,13 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                                 'explicit': role in explicitlyAssignedRoles,
                                 'inherited': role in allInheritedRoles[groupId] }
 
+            canDelete = group.canDelete()
+            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+                if not self.is_zope_manager:
+                    canDelete = False
+
             group_info['roles'] = roleList
-            group_info['can_delete'] = group.canDelete()
+            group_info['can_delete'] = canDelete
             results.append(group_info)
         # Sort the groups by title
         sortedResults = searchView.sort(results, 'title')
@@ -506,6 +511,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             message = _(u'Changes saved.')
 
         if delete:
+            for group_id in delete:
+                group = groupstool.getGroupById(group_id)
+                if 'Manager' in group.getRoles() and not self.is_zope_manager:
+                    raise Forbidden
+            
             groupstool.removeGroups(delete)
             message=_(u'Group(s) deleted.')
 
