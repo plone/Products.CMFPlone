@@ -73,15 +73,22 @@ class TestContextStateView(GlobalsTestCase):
         # (non ATContentTypes) content. If the view action is protected by
         # a non-default permission, this should still work if the current
         # user has the right permission, locally.
+
+        # Set access to something the default user does not have, normally
         fti = self.portal.portal_types.TempFolder
-        fti.getActionObject('object/view').edit(
-            permissions=(u'Modify Portal Content'))
+        view_action = fti.getActionObject('object/view')
+        view_perms = view_action.getPermissions()
+        view_action.edit(permissions=(u'Modify Portal Content',))
+
         tf = _createObjectByType('TempFolder', self.folder, 'tf')
         tf.manage_addLocalRoles(PloneTestCase.default_user, ('Manager',))
         tfview = tf.restrictedTraverse('@@plone_context_state')
         # 'tf'?? smells like a bug in the way this is handled. The action
         # URL is indeed /tf/ e.g. no view name.
         self.assertEquals(tfview.view_template_id(), 'tf')
+
+        # Reset the FTI permissions
+        view_action.edit(permissions=view_perms)
 
     def test_is_view_template_default_page(self):
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
