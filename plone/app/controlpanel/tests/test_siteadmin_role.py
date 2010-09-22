@@ -256,7 +256,8 @@ class TestSiteAdminRoleFunctional(UserGroupsControlPanelTestCase):
         group = self.portal.acl_users.getGroupById('Administrators')
         self.assertTrue(group is not None)
 
-
 def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestSiteAdminRoleFunctional))
+    return suite
