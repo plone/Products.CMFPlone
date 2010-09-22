@@ -64,9 +64,26 @@ class TestContextStateView(GlobalsTestCase):
         # (non ATContentTypes) content
         tf = _createObjectByType('TempFolder', self.folder, 'tf')
         tfview = tf.restrictedTraverse('@@plone_context_state')
-        # 'tf'?? smells like a bug in the way this is handled. The action
-        # URL is indeed /tf/ e.g. no view name.
-        self.assertEquals(tfview.view_template_id(), 'tf')
+        self.assertEquals(tfview.view_template_id(), 'index_html')
+
+    def test_view_template_id_nonbrowserdefault_nonempty(self):
+        # The view template id is taken from the FTI for non-browserdefault
+        # (non ATContentTypes) content. In this case the default view action
+        # includes an actual template name
+        
+        # Set the expression to include a view name.
+        fti = self.portal.portal_types.TempFolder
+        view_action = fti.getActionObject('object/view')
+        view_expression = view_action.getActionExpression()
+        view_action.setActionExpression('foobar')
+
+        tf = _createObjectByType('TempFolder', self.folder, 'tf')
+        tf.manage_addLocalRoles(PloneTestCase.default_user, ('Manager',))
+        tfview = tf.restrictedTraverse('@@plone_context_state')
+        self.assertEquals(tfview.view_template_id(), 'foobar')
+
+        # Reset the FTI action expression
+        view_action.setActionExpression(view_expression)
 
     def test_view_template_id_nonbrowserdefault_restricted(self):
         # The view template id is taken from the FTI for non-browserdefault
@@ -83,9 +100,7 @@ class TestContextStateView(GlobalsTestCase):
         tf = _createObjectByType('TempFolder', self.folder, 'tf')
         tf.manage_addLocalRoles(PloneTestCase.default_user, ('Manager',))
         tfview = tf.restrictedTraverse('@@plone_context_state')
-        # 'tf'?? smells like a bug in the way this is handled. The action
-        # URL is indeed /tf/ e.g. no view name.
-        self.assertEquals(tfview.view_template_id(), 'tf')
+        self.assertEquals(tfview.view_template_id(), 'index_html')
 
         # Reset the FTI permissions
         view_action.edit(permissions=view_perms)

@@ -230,8 +230,13 @@ class ContextState(BrowserView):
         context = aq_inner(self.context)
         fti = context.getTypeInfo()
         try:
-            # XXX: This isn't quite right since it assumes the action starts with ${object_url}
-            action = fti.getActionInfo(actionId, object=context)['url'].split('/')[-1]
+            url = fti.getActionInfo(actionId, object=context)['url']
+            if url.rstrip('/') == self.object_url().rstrip('/'):
+                # (Default) action
+                action = '(Default)'
+            else:
+                # XXX: This isn't quite right since it assumes the action starts with ${object_url}
+                action = url.split('/')[-1]
         except ValueError:
             # If the action doesn't exist, stop
             return None
