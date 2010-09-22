@@ -2,6 +2,7 @@ from plone.app.layout.globals.tests.base import GlobalsTestCase
 
 from zope.interface import directlyProvides
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.utils import _createObjectByType
 
 from plone.locking.interfaces import ILockable
 
@@ -57,6 +58,15 @@ class TestContextStateView(GlobalsTestCase):
         self.folder.setLayout('foo_view')
         self.assertEquals(self.fview.view_template_id(), 'foo_view')
                             
+    def test_view_template_id_nonbrowserdefault(self):
+        # The view template id is taken from the FTI for non-browserdefault
+        # (non ATContentTypes) content
+        _createObjectByType('TempFolder', self.folder, 'tf')
+        self.tfview = self.folder.tf.restrictedTraverse('@@plone_context_state')
+        # 'tf'?? smells like a bug in the way this is handled. The action
+        # URL is indeed /tf/ e.g. no view name.
+        self.assertEquals(self.tfview.view_template_id(), 'tf')
+
     def test_is_view_template_default_page(self):
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
         # Whether you're viewing the folder or its default page ...
@@ -90,8 +100,8 @@ class TestContextStateView(GlobalsTestCase):
         self.folder.setLayout('foo_view')
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/bar_view'
         self.assertEquals(self.fview.is_view_template(), False)
-        self.assertEquals(self.dview.is_view_template(), False)                            
-                            
+        self.assertEquals(self.dview.is_view_template(), False)   
+
     def test_object_url(self):
         self.assertEquals(self.fview.object_url(), self.folder.absolute_url())
         self.assertEquals(self.dview.object_url(), self.folder.d1.absolute_url())
