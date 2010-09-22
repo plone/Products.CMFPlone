@@ -3,6 +3,7 @@ from plone.app.layout.globals.tests.base import GlobalsTestCase
 from zope.interface import directlyProvides
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import _createObjectByType
+from Products.PloneTestCase import PloneTestCase
 
 from plone.locking.interfaces import ILockable
 
@@ -61,11 +62,26 @@ class TestContextStateView(GlobalsTestCase):
     def test_view_template_id_nonbrowserdefault(self):
         # The view template id is taken from the FTI for non-browserdefault
         # (non ATContentTypes) content
-        _createObjectByType('TempFolder', self.folder, 'tf')
-        self.tfview = self.folder.tf.restrictedTraverse('@@plone_context_state')
+        tf = _createObjectByType('TempFolder', self.folder, 'tf')
+        tfview = tf.restrictedTraverse('@@plone_context_state')
         # 'tf'?? smells like a bug in the way this is handled. The action
         # URL is indeed /tf/ e.g. no view name.
-        self.assertEquals(self.tfview.view_template_id(), 'tf')
+        self.assertEquals(tfview.view_template_id(), 'tf')
+
+    def test_view_template_id_nonbrowserdefault_restricted(self):
+        # The view template id is taken from the FTI for non-browserdefault
+        # (non ATContentTypes) content. If the view action is protected by
+        # a non-default permission, this should still work if the current
+        # user has the right permission, locally.
+        fti = self.portal.portal_types.TempFolder
+        fti.getActionObject('object/view').edit(
+            permissions=(u'Modify Portal Content'))
+        tf = _createObjectByType('TempFolder', self.folder, 'tf')
+        tf.manage_addLocalRoles(PloneTestCase.default_user, ('Manager',))
+        tfview = tf.restrictedTraverse('@@plone_context_state')
+        # 'tf'?? smells like a bug in the way this is handled. The action
+        # URL is indeed /tf/ e.g. no view name.
+        self.assertEquals(tfview.view_template_id(), 'tf')
 
     def test_is_view_template_default_page(self):
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url()
