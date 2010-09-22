@@ -229,17 +229,17 @@ class ContextState(BrowserView):
     def _lookupTypeActionTemplate(self, actionId):
         context = aq_inner(self.context)
         fti = context.getTypeInfo()
-        try:
-            url = fti.getActionInfo(actionId, object=context)['url']
-            if url.rstrip('/') == self.object_url().rstrip('/'):
-                # (Default) action
-                action = '(Default)'
-            else:
-                # XXX: This isn't quite right since it assumes the action starts with ${object_url}
-                action = url.split('/')[-1]
-        except ValueError:
-            # If the action doesn't exist, stop
+        actions = fti.listActionInfos(actionId, context, False, False, False)
+        if not actions:
+            # Action doesn't exist
             return None
+        url = actions[0]['url']
+        if url.rstrip('/') == self.object_url().rstrip('/'):
+            # (Default) action
+            action = '(Default)'
+        else:
+            # XXX: This isn't quite right since it assumes the action starts with ${object_url}
+            action = url.split('/')[-1]
 
         # Try resolving method aliases because we need a real template_id here
         action = fti.queryMethodID(action, default = action, context = context)
