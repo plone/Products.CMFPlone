@@ -231,7 +231,7 @@ class ContextState(BrowserView):
         fti = context.getTypeInfo()
         try:
             # XXX: This isn't quite right since it assumes the action starts with ${object_url}
-            action = fti.getActionInfo(actionId)['url'].split('/')[-1]
+            action = fti.getActionInfo(actionId, object=context)['url'].split('/')[-1]
         except ValueError:
             # If the action doesn't exist, stop
             return None
