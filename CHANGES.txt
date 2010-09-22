@@ -4,6 +4,12 @@ Changelog
 2.0.4 - Unreleased
 ------------------
 
+- Fixed @@plone_context_state.view_template_id handling of content that does
+  not implement IBrowserDefault (Products.CMFDynamicViewFTI). It was possible
+  for this code to raise Unauthorized even when the user had permission to
+  access the default view of the current context.
+  [mj]
+
 2.0.3 - 2010-09-15
 ------------------
 
