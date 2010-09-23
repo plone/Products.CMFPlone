@@ -10,12 +10,17 @@ Changelog
   access the default view of the current context.
   [mj]
 
+- Avoid conflict in selected tabs when the id of an excluded item starts with the
+  same id of an existing tab.
+  Fixes http://dev.plone.org/plone/ticket/11140
+  [WouterVH]
+
 2.0.3 - 2010-09-15
 ------------------
 
 - Translate comment messages on history
   [tdesvenain]
-  
+
 - 'Compare' link is not available
   if content type is not registered in portal_diff.
   Fixes http://dev.plone.org/plone/ticket/11107.
