@@ -10,7 +10,7 @@ from plone.memoize.view import memoize
 from Acquisition import aq_base, aq_inner, aq_parent
 from Products.Five.browser import BrowserView
 
-from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.interfaces import ISiteRoot, IDynamicType
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
@@ -228,6 +228,10 @@ class ContextState(BrowserView):
     # Helper methods
     def _lookupTypeActionTemplate(self, actionId):
         context = aq_inner(self.context)
+        if not IDynamicType.providedBy(context):
+            # No type info available, so no actions to consult
+            return None
+
         fti = context.getTypeInfo()
         actions = fti.listActionInfos(actionId, context, False, False, False)
         if not actions:
