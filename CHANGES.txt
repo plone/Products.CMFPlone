@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.4 - Unreleased
+2.0.4 - 2010-09-28
 ------------------
 
 - Fixed @@plone_context_state.view_template_id handling of content that does
