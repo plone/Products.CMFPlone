@@ -86,6 +86,7 @@
                     tal:condition="sublist">
                     <li tal:repeat="action sublist">
                         <a href=""
+                           tal:condition="action/visible"
                            tal:attributes="href action/url">
                             <img src="" alt=""
                                  tal:attributes="src action/icon;
