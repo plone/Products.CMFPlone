@@ -7,7 +7,10 @@ from zope.schema import Int
 from zope.schema import Password
 from zope.schema import TextLine
 from zope.schema import ASCII
+from zope.app.form import CustomWidgetFactory
 from zope.app.form.browser.textwidgets import ASCIIWidget
+from zope.app.form.browser.textwidgets import PasswordWidget
+from zope.app.form.browser.textwidgets import TextWidget
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -142,6 +145,10 @@ class MailControlPanel(ControlPanelForm):
 
     form_fields = form.FormFields(IMailSchema)
     form_fields['email_from_address'].custom_widget = ASCIIWidget
+    userid_widget = CustomWidgetFactory(TextWidget, extra='autocomplete="off"')
+    form_fields['smtp_userid'].custom_widget = userid_widget
+    pass_widget = CustomWidgetFactory(PasswordWidget, extra='autocomplete="off"')
+    form_fields['smtp_pass'].custom_widget = pass_widget
     label = _("Mail settings")
     description = _("Mail settings for this site.")
     form_name = _("Mail settings")

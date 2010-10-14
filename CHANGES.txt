@@ -4,6 +4,10 @@ Changelog
 2.0.4 - unreleased
 ------------------
 
+- Disable autocomplete for the mail control panel's SMTP user id and password
+  fields. Otherwise some browsers complete them with the site user id and
+  password. This closes http://dev.plone.org/plone/ticket/9185
+  [davisagli]
 
 2.0.3 - 2010-09-09
 ------------------
