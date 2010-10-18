@@ -9,6 +9,9 @@ Changelog
   password. This closes http://dev.plone.org/plone/ticket/9185
   [davisagli]
 
+- Different descriptions for Stripped attributes and Stripped combinations fields
+  [thomasdesvenain]
+
 2.0.3 - 2010-09-09
 ------------------
 
@@ -25,8 +28,8 @@ Changelog
 2.0.1 - 2010-07-31
 ------------------
 
-- Check whether users can be added to the group. Don't show the add form on 
-  @@usergroup-groupmembership if not. 
+- Check whether users can be added to the group. Don't show the add form on
+  @@usergroup-groupmembership if not.
   [esteele]
 
 2.0 - 2010-07-18
@@ -67,14 +70,14 @@ Changelog
 2.0b6 - 2010-05-01
 ------------------
 
-- Use new i18n:translate identifiers in usergroups_usermembership.pt. 
+- Use new i18n:translate identifiers in usergroups_usermembership.pt.
   Correct capitalization of tab names.
   [esteele]
 
 - Fix capitalization of "Group Name" in groups overview.
   [esteele]
 
-- Remove the email column from the Users Overview page. 
+- Remove the email column from the Users Overview page.
   [esteele]
 
 - Replaced prefs_user_details form with personal information and personal
@@ -93,7 +96,7 @@ Changelog
 - Removed msgid for "Site Setup" message in plone/app/controlpanel/overview.pt
   [vincentfretin]
 
-- Made formlib-based forms consistent with the updated breadcrumb style in 
+- Made formlib-based forms consistent with the updated breadcrumb style in
   Plone 4.
   [limi]
 
@@ -141,7 +144,7 @@ Changelog
   References http://dev.plone.org/plone/ticket/9981
   [spliter]
 
-- Removed #region-content from all templates. 
+- Removed #region-content from all templates.
   This refs http://dev.plone.org/plone/ticket/10231
   [limi]
 

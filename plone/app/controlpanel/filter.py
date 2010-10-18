@@ -74,7 +74,7 @@ class IFilterAttributesSchema(Interface):
 
     stripped_combinations = schema.List(
         title=_(u'Stripped combinations'),
-        description=_(u"These attributes are stripped from any tag when "
+        description=_(u"These attributes are stripped from those tags when "
                       "saving."),
         default=[],
         #default=u'dir lang valign halign border frame rules cellspacing cellpadding bgcolor'.split()
