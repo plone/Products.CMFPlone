@@ -147,7 +147,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
 
     def associateLabelWithInputControl(self):
         return None
-    
+
     def __init__(self, field, request):
         """Initialize the widget."""
         super(LanguageTableWidget, self).__init__(field,
@@ -242,7 +242,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
                              id=id,
                              value=value)
         return self._joinButtonToMessageTemplate % (cssClass, elem, text, value)
-    
+
     def renderSelectedItem(self, index, text, value, name, cssClass):
         id = '%s.%s' % (name, index)
         elem = renderElement('input',

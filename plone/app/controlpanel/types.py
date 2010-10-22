@@ -26,7 +26,7 @@ VERSION_POLICIES = [
              policy=(),
              title=_(u"versioning_off",
                      default=u"No versioning")),
-                          
+
         dict(id="manual",
              policy=("version_on_revert",),
              title=_(u"versioning_manual",
@@ -120,11 +120,11 @@ class TypesControlPanel(ControlPanelView):
                     blacklisted.append(type_id)
                 site_properties.manage_changeProperties(types_not_searched = \
                                                         blacklisted)
-                
+
                 redirect_links = form.get('redirect_links', False)
                 site_properties.manage_changeProperties(redirect_links = \
                                                         redirect_links)
-                
+
             # Update workflow
             if self.have_new_workflow() and \
                form.get('form.workflow.submitted', False) and \
@@ -264,7 +264,7 @@ type_id=%s' % (context.absolute_url() , type_id))
         wf = getattr(portal_workflow, wf_id)
         title = translate(wf.title,
                           domain='plone',
-                          context=self.request)        
+                          context=self.request)
         return dict(id=wf.id, title=title, description=format_description(wf.description, self.request))
 
     def available_workflows(self):

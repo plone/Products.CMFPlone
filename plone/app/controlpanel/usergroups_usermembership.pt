@@ -54,7 +54,7 @@
             </ul>
             <div class="contentActions">&nbsp;</div>
         </div>
-        
+
         <div metal:use-macro="context/global_statusmessage/macros/portal_message">
           Portal status message
         </div>
@@ -219,7 +219,7 @@
                          i18n:attributes="value label_add_user_to_group;" />
                   <input tal:replace="structure context/@@authenticator/authenticator" />
 
-                </form>        
+                </form>
             </div>
         </div>
     </div>

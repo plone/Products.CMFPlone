@@ -52,6 +52,6 @@ class ControlPanelForm(FieldsetsEditForm):
                               name='absolute_url')()
         self.request.response.redirect(url + '/plone_control_panel')
         return ''
-        
+
     def _on_save(self, data=None):
         pass

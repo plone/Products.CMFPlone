@@ -19,7 +19,7 @@
                    class="listing" summary="RAM cache statistics"
                    cellpadding="2" cellspacing="0"
                    i18n:attributes="summary heading_ramcache_stats;">
-              <thead> 
+              <thead>
                 <th i18n:translate="label_cache_key">Key</th>
                 <th i18n:translate="label_cache_hits">Hits</th>
                 <th i18n:translate="label_cache_misses">Misses</th>

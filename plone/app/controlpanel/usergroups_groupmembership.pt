@@ -20,7 +20,7 @@
                  b_start python:b_start if b_start &lt;= resultcount else resultcount - resultcount % b_size;
                  b_start python:b_start if b_start &lt; resultcount else max(b_start - b_size, 0);
                  portal_url context/portal_url;">
- 
+
     <div class="documentEditable">
         <!-- simulating views on the groups/user pages until we have real objects. -->
         <div id="edit-bar">
@@ -44,24 +44,24 @@
                 <a href=""
                    tal:attributes="href string:${portal_url}/@@manage-group-dashboard?${view/groupkeyquery}"
                    i18n:translate="label_group_dashboard">Group Dashboard</a>
-              </li>          
+              </li>
             </ul>
 
             <div class="contentActions">
               &nbsp;
             </div>
         </div>
-    
+
         <div metal:use-macro="context/global_statusmessage/macros/portal_message">
           Portal status message
-        </div>    
-    
+        </div>
+
         <div id="content">
 
             <tal:ifnogroups tal:condition="not:view/group | nothing">
               <h1 class="documentFirstHeading"
                   i18n:translate="heading_group_members">Group Members</h1>
-              
+
               <div id="content-core">
                   <a href=""
                      class="link-parent"
@@ -182,7 +182,7 @@
                              value="Remove selected groups / users"
                              i18n:attributes="value label_remove_selected_users;"
                              tal:condition="view/groupMembers" />
-                    
+
                     <tal:addusers tal:condition="view/canAddUsers">
 
                         <h2 i18n:translate="heading_search_newmembers">Search for new group members</h2>
@@ -268,7 +268,7 @@
                                       tal:condition="email">
                                       <span tal:replace="email" />
                                   </a>
-                              </td>                  
+                              </td>
                             </tr>
                           </tal:block>
 
@@ -325,7 +325,7 @@
                                 i18n:attributes="value label_add_users_to_group;" />
 
                     </tal:addusers>
-                    
+
                     <input tal:replace="structure context/@@authenticator/authenticator" />
 
                   </form>

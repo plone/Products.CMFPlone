@@ -58,7 +58,7 @@ class UserGroupsSettingsControlPanelAdapter(SchemaAdapterBase):
 
     many_groups = ProxyFieldProperty(IUserGroupsSettingsSchema['many_groups'])
     many_users = ProxyFieldProperty(IUserGroupsSettingsSchema['many_users'])
-    
+
 class UserGroupsSettingsControlPanel(ControlPanelForm):
 
     base_template = ControlPanelForm.template
@@ -118,7 +118,7 @@ class UsersGroupsControlPanelView(ControlPanelView):
 
     def atoi(self, s):
         try:
-            return int(s)  
+            return int(s)
         except ValueError:
             return 0
 
@@ -372,7 +372,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         self.group = self.gtool.getGroupById(self.groupname)
         self.grouptitle = self.group.getGroupTitleOrName() or self.groupname
 
-        # Check that current user can be added to the group as a means of 
+        # Check that current user can be added to the group as a means of
         # determining whether users, in general, can be added to the group.
         currentUser = self.mtool.getAuthenticatedMember()
         self.canAddUsers = currentUser.canAddToGroup(self.groupname)

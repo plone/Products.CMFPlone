@@ -29,12 +29,12 @@ class INavigationSchema(Interface):
                        description=_(u"By default, all items created at the root level will add to the global section navigation. You can turn this off if you prefer manually constructing this part of the navigation."),
                        default=True,
                        required=False)
-    
+
     nonfolderish_tabs = Bool(title=_(u"Generate tabs for items other than folders."),
                          description=_(u"By default, any content item in the root of the portal will be shown as a global section. If you turn this option off, only folders will be shown. This only has an effect if 'Automatically generate tabs' is enabled."),
                          default=True,
                          required=False)
-    
+
     displayed_types = Tuple(
         title=_(u"Displayed content types"),
         description=_(u"The content types that should be shown in the navigation and site map."),
@@ -49,7 +49,7 @@ class INavigationSchema(Interface):
         description=_(u"The workflow states that should be shown in the navigation tree and the site map."),
         default=False,
         required=False)
-                            
+
     workflow_states_to_show = Tuple(
         required=False,
         missing_value=tuple(),
@@ -62,7 +62,7 @@ class INavigationSchema(Interface):
                                default=True,
                                required=False)
 
-                            
+
 class NavigationControlPanelAdapter(SchemaAdapterBase):
 
     adapts(IPloneSiteRoot)
@@ -74,7 +74,7 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
         self.siteProps = pprop.site_properties
         self.navProps = pprop.navtree_properties
         self.ttool = getToolByName(context, 'portal_types')
-        
+
     def get_generate_tabs(self):
         return not self.siteProps.getProperty('disable_folder_sections')
 
@@ -103,23 +103,23 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
         return [t for t in self.ttool.listContentTypes()
                         if t not in self.navProps.metaTypesNotToList and
                            t not in BAD_TYPES]
-        
+
     def set_displayed_types(self, value):
         # The menu pretends to be a whitelist, but we are storing a blacklist so that
         # new types are searchable by default. Inverse the list.
         allTypes = self.ttool.listContentTypes()
         putils = getToolByName(self.context, 'plone_utils')
         friendlyTypes = putils.getUserFriendlyTypes()
-        
+
         blacklistedTypes = [t for t in allTypes if t not in value
                                                 or t not in friendlyTypes]
         self.navProps._updateProperty('metaTypesNotToList', blacklistedTypes)
-    
+
     displayed_types = property(get_displayed_types, set_displayed_types)
 
     def get_filter_on_workflow(self):
         return self.navProps.getProperty('enable_wf_state_filtering')
-        
+
     def set_filter_on_workflow(self, value):
         self.navProps._updateProperty('enable_wf_state_filtering', value)
 
@@ -127,12 +127,12 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
 
     def get_workflow_states_to_show(self):
         return self.navProps.getProperty('wf_states_to_show')
-        
+
     def set_workflow_states_to_show(self, value):
         self.navProps._updateProperty('wf_states_to_show', value)
-        
+
     workflow_states_to_show = property(get_workflow_states_to_show, set_workflow_states_to_show)
-    
+
 class NavigationControlPanel(ControlPanelForm):
 
     label = _("Navigation settings")

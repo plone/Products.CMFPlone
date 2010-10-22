@@ -17,7 +17,7 @@
                 portal_roles view/portal_roles;
                 portal_url context/portal_url;">
 
-    <div class="documentEditable">          
+    <div class="documentEditable">
         <div id="edit-bar">
             <ul class="contentViews" id="content-views">
               <li class="selected">
@@ -41,7 +41,7 @@
                    i18n:translate="label_member_registration">Member Registration</a>
               </li>
             </ul>
-            <div class="contentActions">&nbsp;</div>            
+            <div class="contentActions">&nbsp;</div>
         </div>
 
         <div metal:use-macro="context/global_statusmessage/macros/portal_message">
@@ -51,7 +51,7 @@
         <div id="content">
             <h1 class="documentFirstHeading"
                 i18n:translate="heading_users_overview">Users Overview</h1>
-        
+
             <div id="content-core">
                 <a href=""
                    class="link-parent"
@@ -65,7 +65,7 @@
                 </p>
                 <p i18n:translate="user_roles_note">
                   Note that roles set here apply directly to a user.
-                  The symbol <img i18n:name="image_link_icon" tal:replace="structure context/site_icon.gif" /> 
+                  The symbol <img i18n:name="image_link_icon" tal:replace="structure context/site_icon.gif" />
                   indicates a role inherited from membership in a group.
                 </p>
                 <p i18n:translate="description_pas_users_listing"
@@ -103,7 +103,7 @@
                   <input type="hidden" name="form.submitted" value="1" />
 
                   <table class="listing" summary="User Listing">
-                      <tbody>     
+                      <tbody>
                           <tr class="odd">
                               <th colspan="6" tal:attributes="colspan python:len(portal_roles)+4">
                                   <span tal:omit-tag="" i18n:translate="label_user_search">User Search</span>:
@@ -113,14 +113,14 @@
                                          value=""
                                          tal:attributes="value view/searchString;"
                                          />
-                          
+
                                   <input type="submit"
                                          class="searchButton"
                                          name="form.button.Search"
                                          value="Search"
                                          i18n:attributes="value label_search;"
                                          />
-              
+
                                   <input type="submit"
                                          class="searchButton"
                                          name="form.button.FindAll"

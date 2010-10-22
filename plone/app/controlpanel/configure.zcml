@@ -21,7 +21,7 @@
   <adapter factory=".ram.RAMCacheControlPanelAdapter" />
 
   <adapter factory=".search.SearchControlPanelAdapter" />
-  
+
   <adapter factory=".security.SecurityControlPanelAdapter" />
 
   <adapter factory=".site.SiteControlPanelAdapter" />
@@ -106,7 +106,7 @@
       class=".search.SearchControlPanel"
       permission="cmf.ManagePortal"
       />
-      
+
   <browser:page
       name="security-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"

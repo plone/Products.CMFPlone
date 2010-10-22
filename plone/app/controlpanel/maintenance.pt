@@ -11,7 +11,7 @@
 <metal:main fill-slot="prefs_configlet_main">
 
     <metal:form define-macro="form" tal:condition="view/available">
-         
+
          <metal:block define-macro="header">
 
              <dl tal:define="status view/status"
@@ -23,8 +23,8 @@
                  <dd tal:content="view/status" />
              </dl>
 
-         </metal:block>         
-         
+         </metal:block>
+
          <h1 class="documentFirstHeading"
              i18n:translate=""
              tal:condition="view/label"
@@ -40,7 +40,7 @@
          </div>
 
         <div id="content-core">
-            
+
             <a href=""
                class="link-parent"
                tal:attributes="href string:$portal_url/plone_control_panel"
@@ -186,11 +186,11 @@
              tal:content="view/label">
              Do something
          </h1>
-         
+
          <div class="documentDescription" i18n:translate="text_not_allowed_manage_server"
             tal:condition="view/description">
              You are not allowed to manage the Zope server.
-         </div>         
+         </div>
 
          <div id="content-core">
              <a href=""
@@ -201,7 +201,7 @@
              </a>
          </div>
     </metal:block>
-     
+
 
 </metal:main>
 </body>

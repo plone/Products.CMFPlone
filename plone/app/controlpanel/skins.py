@@ -97,7 +97,7 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
         if msl == 'true':
             return True
         return False
-        
+
         # return self.jstool.getResource('mark_special_links.js').getEnabled()
 
     def set_mark_special_links(self, value):
@@ -159,7 +159,7 @@ class SkinsControlPanel(ControlPanelForm):
 
     def _on_save(self, data=None):
         # Force a refresh of the page so that a new theme choice fully takes
-        # effect. 
+        # effect.
         if not self.errors and self.adapters['ISkinsSchema'].themeChanged:
             self.request.response.redirect(self.request.URL)
-        
+

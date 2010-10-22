@@ -9,9 +9,9 @@
 <body>
 
 <metal:main fill-slot="prefs_configlet_content">
-    
+
   <div class="documentEditable">
-    
+
       <div id="edit-bar">
           <ul class="contentViews" id="content-views">
             <li>
@@ -35,14 +35,14 @@
                  i18n:translate="label_member_registration">Member Registration</a>
             </li>
           </ul>
-          <div class="contentActions">&nbsp;</div>          
+          <div class="contentActions">&nbsp;</div>
       </div>
 
       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
       </div>
-      
-      <div id="content">      
+
+      <div id="content">
         <metal:block use-macro="view/base_template/macros/header" />
         <h1 class="documentFirstHeading"
             i18n:translate="heading_usergroup_settings">User/Groups Settings</h1>
@@ -53,7 +53,7 @@
                tal:attributes="href string:$portal_url/plone_control_panel"
                i18n:translate="label_up_to_plone_setup">
               Up to Site Setup
-            </a>    
+            </a>
             <metal:block use-macro="view/base_template/macros/master" />
         </div>
       </div>

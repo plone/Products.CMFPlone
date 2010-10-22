@@ -44,26 +44,26 @@ class RAMCacheControlPanelAdapter(SchemaAdapterBase):
 
     def get_max_entries(self):
         return getUtility(IRAMCache).maxEntries
-    
+
     def set_max_entries(self, value):
         getUtility(IRAMCache).maxEntries = value
-    
+
     maxEntries = property(get_max_entries, set_max_entries)
-    
+
     def get_max_age(self):
         return getUtility(IRAMCache).maxAge
-    
+
     def set_max_age(self, value):
         getUtility(IRAMCache).maxAge = value
-    
+
     maxAge = property(get_max_age, set_max_age)
-    
+
     def get_cleanup_intervall(self):
         return getUtility(IRAMCache).cleanupInterval
-    
+
     def set_cleanup_intervall(self, value):
         getUtility(IRAMCache).cleanupInterval = value
-    
+
     cleanupInterval = property(get_cleanup_intervall, set_cleanup_intervall)
 
 
