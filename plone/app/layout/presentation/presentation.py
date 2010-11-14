@@ -1,11 +1,12 @@
 from zope.i18n import translate
 
+from Acquisition import aq_base
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
-from plone.memoize.view import memoize
+from plone.memoize.instance import memoize
 from plone.app.layout.viewlets.common import ViewletBase
 
 class PresentationView(BrowserView):
@@ -18,9 +19,8 @@ class PresentationView(BrowserView):
     def body(self):
         return self.context.CookedBody()
 
-    @memoize
     def enabled(self):
-        getPresentation = getattr(self.context.aq_base, "getPresentation", None)
+        getPresentation = getattr(aq_base(self.context), "getPresentation", None)
         if getPresentation is None or getPresentation() == False:
             return False
 
@@ -71,12 +71,10 @@ class PresentationView(BrowserView):
     def creator(self):
         return self.context.Creator()
 
-    @memoize
     def author(self):
         membership = getToolByName(self.context, "portal_membership")
         return membership.getMemberInfo(self.creator())
 
-    @memoize
     def authorname(self):
         author = self.author()
         return author and author['fullname'] or self.creator()

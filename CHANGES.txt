@@ -3,6 +3,11 @@ Changelog
 
 2.0.5 - Unreleased
 ------------------
+
+- Removed unnecessary memoization of the presentation view; turned its tests
+  into unit tests.
+  [davisagli]
+
 - XHTML 1.0 Strict searchbox.pt.
   This fixes https://dev.plone.org/plone/ticket/11007
   [kiorky]

@@ -50,9 +50,10 @@
     <div id="footer"></div>
 </div>
 
-<div class="presentation">
+<div class="presentation"
+     tal:define="enabled view/enabled">
     <div class="slide"
-         tal:condition="not:view/enabled">
+         tal:condition="not:enabled">
         <h4 i18n:translate="text_presentation_disabled">
            For Plone to show this page as a presentation to work, it must
            find some headings in your document. The document will be split
@@ -61,7 +62,7 @@
            for this piece of content.
         </h4>
     </div>
-    <tal:presentation tal:condition="view/enabled">
+    <tal:presentation tal:condition="enabled">
         <div class="slide">
             <h1 tal:content="context/Title" />
             <h2 tal:content="context/Description" />
