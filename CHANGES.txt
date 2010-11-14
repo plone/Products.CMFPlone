@@ -4,6 +4,11 @@ Changelog
 2.0.5 - Unreleased
 ------------------
 
+- Fix presentation view when headings have HTML attributes (such as headings
+  translated from reStructured Text). This fixes 
+  http://dev.plone.org/plone/ticket/10689
+  [davisagli]
+
 - Removed unnecessary memoization of the presentation view; turned its tests
   into unit tests.
   [davisagli]

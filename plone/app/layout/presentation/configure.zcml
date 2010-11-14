@@ -6,6 +6,7 @@
       name="presentation_view"
       for="Products.ATContentTypes.interface.IATDocument"
       class=".presentation.PresentationView"
+      template="presentation.pt"
       permission="zope2.View"
      />
 

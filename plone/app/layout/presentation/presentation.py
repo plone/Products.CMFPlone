@@ -1,17 +1,24 @@
+import re
 from zope.i18n import translate
 
 from Acquisition import aq_base
 from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.memoize.instance import memoize
 from plone.app.layout.viewlets.common import ViewletBase
 
-class PresentationView(BrowserView):
-    template = ViewPageTemplateFile('presentation.pt')
+HEADING_RE = re.compile('<(h[12])([^>]*)>', re.IGNORECASE)
 
+
+class PresentationView(BrowserView):
+
+    # BBB; can be removed in Plone 5
+    @property
+    def template(self):
+        return self.index
+    
     def __call__(self):
         return self.template()
 
@@ -25,46 +32,27 @@ class PresentationView(BrowserView):
             return False
 
         body = self.body()
-
-        # this should be a regex too, but hey this works
-        tags = ["h1", "H1", "h2", "H2"]
-        tag = None
-        for t in tags:
-            if body.find("<%s>" % t) > -1:
-                tag = t
-                break
-
-        if tag is None:
-            return False
-
-        return True
+        return bool(HEADING_RE.search(body))
 
     def content(self):
         # ugly, ugly, ugly code, that basically changes the way the slide is put
         # together this should be a HTML parser or XSLT or even JS
 
         body = self.body()
-
-        # this should be a regex too, but hey this works
-        tags = ["h1", "H1", "h2", "H2"]
-        tag = None
-        for t in tags:
-            if body.find("<%s>" % t) > -1:
-                tag = t
-                break
+        m = HEADING_RE.search(body)
+        tag = m.group(1)
 
         num = int(tag[1])
         if num > 1:
             new = "%s1" % (tag[0])
-            body = body.replace("<%s>" % tag, "<%s>" % new)
+            body = HEADING_RE.sub(r'<%s\2>' % new, body)
             body = body.replace("</%s>" % tag, "</%s>" % new)
             tag = new
 
-        body = body.split('<%s>' % tag)
-        body = ('</div>\n<div class="slide">\n<%s>' % tag).join(body)
-        body = body.split('</%s>' % tag)
-        body = ('</%s>\n' % tag).join(body)
-
+        body = re.sub(r'(<%s[^>]*>)' % tag, r'</div><div class="slide">\n\1', body)
+        if body.startswith('</div>'):
+            body = body[6:]
+        body += '</div>'
         return body
 
     @memoize
