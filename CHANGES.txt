@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.5 - Unreleased
+2.0.5 - 2010-11-15
 ------------------
 
 - Fix presentation view when headings have HTML attributes (such as headings
@@ -14,7 +14,7 @@ Changelog
   [davisagli]
 
 - XHTML 1.0 Strict searchbox.pt.
-  This fixes https://dev.plone.org/plone/ticket/11007
+  This fixes http://dev.plone.org/plone/ticket/11007
   [kiorky]
 
 2.0.4 - 2010-09-28
