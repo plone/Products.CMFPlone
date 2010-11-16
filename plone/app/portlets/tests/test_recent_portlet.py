@@ -98,6 +98,9 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(assignment=recent.Assignment())
         self.assertEquals(2, len(r.recent_items()))
 
+        r = self.renderer(assignment=recent.Assignment(count=1))
+        self.assertEquals(1, len(r.recent_items()))
+
     def test_recently_modified_link(self):
         r = self.renderer(assignment=recent.Assignment())
         self.failUnless(r.recently_modified_link().endswith('/recently_modified'))
