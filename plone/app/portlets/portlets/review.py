@@ -28,6 +28,8 @@ class Assignment(base.Assignment):
 class Renderer(base.Renderer):
 
     render = ViewPageTemplateFile('review.pt')
+           
+    title = _('box_review_list', default=u"Review List")
 
     @property
     def anonymous(self):

@@ -91,6 +91,11 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(assignment=review.Assignment())
         self.failUnless(r.full_review_link().endswith('/full_review_list'))
 
+    def test_title(self):
+        r = self.renderer(assignment=review.Assignment())
+        self.assertEquals(str(r.title), 'box_review_list')
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

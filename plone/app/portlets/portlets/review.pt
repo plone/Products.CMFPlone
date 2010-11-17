@@ -10,7 +10,8 @@
         <a href="#"
            class="tile"
            tal:attributes="href view/full_review_link"
-           i18n:translate="box_review_list">Review List</a>
+           i18n:translate=""
+           tal:content="view/title" />
         <span class="portletTopRight"></span>
     </dt>
 

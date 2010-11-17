@@ -4,7 +4,8 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
-- Recent item portlet title is got by a view property.
+- Recent items and Review list portlets title is got by a title attribute
+  on the renderer.
   [thomasdesvenain]
 
 - Fix the IPortletDirective schema's default edit_permission to match
