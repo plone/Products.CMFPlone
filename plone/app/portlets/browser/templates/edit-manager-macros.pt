@@ -1,6 +1,8 @@
 <div metal:define-macro="portlet-add-form" class="section" i18n:domain="plone">
 
     <form method="post" action="#"
+          tal:define="portlets view/addable_portlets"
+          tal:condition="portlets"
           tal:attributes="action view/context_url">
         <input type="hidden" name="referer" tal:attributes="value view/referer" />
 
@@ -14,14 +16,14 @@
                     i18n:translate="label_add_portlet_ellipsis">
                 Add portlet&hellip;
             </option>
-            <tal:options repeat="portlet view/addable_portlets">
+            <tal:options repeat="portlet portlets">
                 <option tal:attributes="value string:${portlet/addview}"
                         tal:content="portlet/title"
                         i18n:translate="" />
             </tal:options>
 
         </select>
-
+        
         <noscript>
             <input class="standalone"
                    type="submit"

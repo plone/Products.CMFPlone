@@ -4,6 +4,9 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
+- Do not display portlets add select list if it is empty.
+  [thomasdesvenain]
+
 - Recent items and Review list portlets title is got by a title attribute
   on the renderer.
   [thomasdesvenain]
