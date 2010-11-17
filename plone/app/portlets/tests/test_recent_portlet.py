@@ -105,6 +105,10 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(assignment=recent.Assignment())
         self.failUnless(r.recently_modified_link().endswith('/recently_modified'))
 
+    def test_title(self):
+        r = self.renderer(assignment=recent.Assignment())
+        self.assertEquals(str(r.title), 'box_recent_changes')
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

@@ -9,7 +9,8 @@
         <span class="portletTopLeft"></span>
         <a href="#"
             tal:attributes="href view/recently_modified_link"
-            i18n:translate="box_recent_changes">Recent Changes</a>
+            i18n:translate=""
+            tal:content="view/title" />
         <span class="portletTopRight"></span>
     </dt>
 
