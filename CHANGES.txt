@@ -4,6 +4,10 @@ Changelog
 2.0.6 - Unreleased
 ------------------
 
+- Don't cache navigation_root_path and navigation_root_url contextless
+  http://dev.plone.org/plone/ticket/11291
+  [tom_gross]
+
 2.0.5 - 2010-11-15
 ------------------
 

@@ -46,9 +46,10 @@ class TestPortalStateView(GlobalsTestCase):
         members = self.portal['Members']
         zope.interface.alsoProvides(members, INavigationRoot)
         view = members.restrictedTraverse('@@plone_portal_state')
-        self.assertEquals(view.navigation_root_path(),
+        self.assertEquals(view.navigation_root_url(),
                           'http://nohost/plone/Members')
-        self.assertEquals(view.navigation_root_path(), getNavigationRoot(self.folder))
+        url = self.app.REQUEST.physicalPathToURL(getNavigationRoot(members))
+        self.assertEquals(view.navigation_root_url(), url)
         
 
     def test_default_language(self):

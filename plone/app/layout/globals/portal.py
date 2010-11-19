@@ -1,6 +1,7 @@
 from zope.interface import implements
 
 from plone.memoize.view import memoize_contextless
+from plone.memoize.view import memoize
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -31,11 +32,11 @@ class PortalState(BrowserView):
     def portal_url(self):
         return self.portal().absolute_url()
 
-    @memoize_contextless
+    @memoize
     def navigation_root_path(self):
         return getNavigationRoot(aq_inner(self.context))
 
-    @memoize_contextless
+    @memoize
     def navigation_root_url(self):
         rootPath = self.navigation_root_path()
         return self.request.physicalPathToURL(rootPath)
