@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.2 - unreleased
+1.0.2 - 2010-11-24
 ------------------
 
 - Don't use a custom widget just to set the description of the fullname field,
