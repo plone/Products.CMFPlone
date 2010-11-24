@@ -4,7 +4,7 @@ from zope.component import getUtility
 from five.formlib.formbase import PageForm
 from zope import schema
 from zope.formlib import form
-from zope.app.form.browser import TextWidget, CheckBoxWidget, ASCIIWidget
+from zope.app.form.browser import CheckBoxWidget, ASCIIWidget
 from zope.app.form.interfaces import WidgetInputError, InputErrors
 from zope.component import getMultiAdapter
 
@@ -72,16 +72,6 @@ class IAddUserSchema(Interface):
         description=u'',
         required=False,
         value_type=schema.Choice(vocabulary='Group Ids'))
-
-
-def FullNameWidget(field, request):
-    """Widget for fullname field.
-    """
-    field.description = _(
-        u'help_full_name_creation',
-        default=u"Enter full name, e.g. John Smith.")
-    widget = TextWidget(field, request)
-    return widget
 
 
 def EmailWidget(field, request):
@@ -220,7 +210,6 @@ class BaseRegistrationForm(PageForm):
 
         all_fields = form.Fields(schema) + form.Fields(IRegisterSchema)
 
-        all_fields['fullname'].custom_widget = FullNameWidget
         if use_email_as_login:
             all_fields['email'].custom_widget = EmailAsLoginWidget
         else:

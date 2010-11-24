@@ -4,6 +4,9 @@ Changelog
 1.0.2 - unreleased
 ------------------
 
+- Don't use a custom widget just to set the description of the fullname field,
+  which should be set on the field itself.
+  [davisagli]
 
 1.0.1 - 2010-07-18
 ------------------

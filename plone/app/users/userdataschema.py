@@ -79,7 +79,8 @@ class IUserDataSchema(Interface):
 
     fullname = schema.TextLine(
         title=_(u'label_full_name', default=u'Full Name'),
-        description=u'',
+        description=_(u'help_full_name_creation',
+                      default=u"Enter full name, e.g. John Smith."),
         required=False)
 
     email = schema.ASCIILine(
