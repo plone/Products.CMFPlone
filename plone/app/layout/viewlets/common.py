@@ -137,7 +137,7 @@ class LogoViewlet(ViewletBase):
         super(LogoViewlet, self).update()
 
         portal = self.portal_state.portal()
-        bprops = portal.restrictedTraverse('base_properties', None) 
+        bprops = portal.restrictedTraverse('base_properties', None)
         if bprops is not None:
             logoName = bprops.logoName
         else:
@@ -207,15 +207,15 @@ class PersonalBarViewlet(ViewletBase):
         if not self.anonymous:
             member = self.portal_state.member()
             userid = member.getId()
-            
+
             if sm.checkPermission('Portlets: View dashboard', context):
-                self.homelink_url = self.navigation_root_url + '/dashboard'
+                self.homelink_url = "%s/dashboard" % self.navigation_root_url
             else:
-                self.homelink_url = self.navigation_root_url + \
-                    '/personalize_form'
+                self.homelink_url = "%s/personalize_form" % (
+                                        self.navigation_root_url)
 
             membership = getToolByName(context, 'portal_membership')
-            member_info = membership.getMemberInfo(member.getId())
+            member_info = membership.getMemberInfo(userid)
             # member_info is None if there's no Plone user object, as when
             # using OpenID.
             if member_info:
@@ -312,19 +312,19 @@ class ManagePortletsFallbackViewlet(ViewletBase):
     """Manage portlets fallback link that sits below content"""
 
     index = ViewPageTemplateFile('manage_portlets_fallback.pt')
-    
+
     def update(self):
         ploneview = getMultiAdapter((self.context, self.request), name=u'plone')
         context_state = getMultiAdapter((self.context, self.request),
                                          name=u'plone_context_state')
-                                         
+
         self.portlet_assignable = context_state.portlet_assignable()
         self.sl = ploneview.have_portlets('plone.leftcolumn', self.context)
-        self.sr = ploneview.have_portlets('plone.rightcolumn', self.context)        
+        self.sr = ploneview.have_portlets('plone.rightcolumn', self.context)
         self.canonical_object_url = context_state.canonical_object_url()
-        
+
     def available(self):
-        secman = getSecurityManager()        
+        secman = getSecurityManager()
         if not secman.checkPermission('Portlets: Manage portlets', self.context):
             return False
         elif not self.sl and not self.sr and self.portlet_assignable:
@@ -356,7 +356,7 @@ class ContentActionsViewlet(ViewletBase):
 
         # The drop-down menus are pulled in via a simple content provider
         # from plone.app.contentmenu. This behaves differently depending on
-        # whether the view is marked with IViewView. If our parent view 
+        # whether the view is marked with IViewView. If our parent view
         # provides that marker, we should do it here as well.
         if IViewView.providedBy(self.__parent__):
             alsoProvides(self, IViewView)
