@@ -16,7 +16,7 @@
       name="new-user"
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".register.AddUserForm"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
     <browser:page
@@ -45,7 +45,7 @@
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="user-preferences"
       class=".personalpreferences.PersonalPreferencesConfiglet"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
     <browser:page
@@ -59,7 +59,7 @@
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="user-information"
       class=".personalpreferences.UserDataConfiglet"
-      permission="zope2.ManageUsers"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
     <utility provides="zope.schema.interfaces.IVocabularyFactory"

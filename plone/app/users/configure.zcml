@@ -9,17 +9,13 @@
 
     <include package=".browser" />
 
-
     <browser:page
       name="member-registration"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".registration.RegistrationControlPanel"
-      permission="cmf.ManagePortal"
+      permission="plone.app.controlpanel.UsersAndGroups"
       />
 
-
-
     <adapter factory=".registration.RegistrationControlPanelAdapter"/>
-
 
 </configure>

@@ -10,6 +10,7 @@ from zope.component import getMultiAdapter
 
 from AccessControl import getSecurityManager
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -152,8 +153,13 @@ def getGroupIds(context):
     # Get group id, title tuples for each, omitting virtual group 'AuthenticatedUsers'
     groupData = []
     for g in groups:
-        if g.id != 'AuthenticatedUsers':
-            groupData.append(('%s (%s)' % (g.getGroupTitleOrName(), g.id), g.id))
+        if g.id == 'AuthenticatedUsers':
+            continue
+        is_zope_manager = getSecurityManager().checkPermission(ManagePortal, context)
+        if 'Manager' in g.getRoles() and not is_zope_manager:
+            continue
+        
+        groupData.append(('%s (%s)' % (g.getGroupTitleOrName(), g.id), g.id))
     # Sort by title
     groupData.sort(key=lambda x: x[0].lower())
     return SimpleVocabulary.fromItems(groupData)

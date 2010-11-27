@@ -1,6 +1,19 @@
 Changelog
 =========
 
+1.1b1 - unreleased
+------------------
+
+- Don't allow non-Managers to add new users to groups that grant the Manager
+  role.
+  [davisagli]
+
+- Protect the user management forms with the
+  "Plone Site Setup: Users and Groups" permission instead of the generic
+  "Manage portal" and "Manage users".  This requires
+  plone.app.controlpanel >= 2.1b1.
+  [davisagli]
+
 1.0.2 - 2010-11-24
 ------------------
 
