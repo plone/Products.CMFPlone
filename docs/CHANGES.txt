@@ -1,8 +1,8 @@
 Changelog
 =========
 
-4.0rc2 - Unreleased
--------------------
+4.0b1 - 2010-11-27
+------------------
 
 - Forward compatibility shim.
   [elro]
