@@ -32,7 +32,7 @@
               </li>
               <li>
                     <a href=""
-                   tal:attributes="href string:${portal_url}/prefs_group_details?${view/groupquery}"
+                   tal:attributes="href string:${portal_url}/@@usergroup-groupdetails?${view/groupquery}"
                        i18n:translate="label_group_properties">Group Properties</a>
               </li>
               <li>
@@ -141,7 +141,7 @@
                                 <tal:block tal:condition="python: view.isGroup(this_user)">
                                   <td>
                                     <img src="group.png" alt="" />
-                                    <a href="" tal:attributes="href python:'prefs_group_details?' + view.makeQuery(groupname=this_user.getGroupName())" >
+                                    <a href="" tal:attributes="href python:'@@usergroup-groupdetails?' + view.makeQuery(groupname=this_user.getGroupName())" >
                                       <span tal:replace="this_user/getGroupTitleOrName | default" />
                                       (<span tal:replace="this_user/id" />)
                                     </a>
@@ -254,7 +254,7 @@
                                   </tal:block>
                                   <tal:block tal:condition="python: view.isGroup(this_user)">
                                       <img src="group.png" alt="" />
-                                      <a href="" tal:attributes="href python:'prefs_group_details?' + view.makeQuery(groupname=this_user.getGroupName())">
+                                      <a href="" tal:attributes="href python:'@@usergroup-groupdetails?' + view.makeQuery(groupname=this_user.getGroupName())">
                                           <span tal:replace="this_user/getGroupTitleOrName | default" />
                                           (<span tal:replace="this_user/id | default" />)
                                       </a>

@@ -159,16 +159,24 @@
 
                                 <td class="listingCheckbox"
                                     tal:repeat="portal_role portal_roles">
-                                  <input type="checkbox"
-                                     class="noborder"
-                                     name="users.roles:list:records"
-                                     value="Manager"
-                                     tal:condition="python:not user['roles'][portal_role]['inherited']"
-                                     tal:attributes="value portal_role;
-                                         checked python:'checked' if user['roles'][portal_role]['explicit'] else nothing;
-                                         disabled python:default if user['roles'][portal_role]['canAssign'] else 'disabled'" />
-
-                                  <img tal:condition="python:user['roles'][portal_role]['inherited']" tal:replace="structure context/site_icon.gif" />
+                                  <tal:block tal:define="inherited python:user['roles'][portal_role]['inherited'];
+                                                         explicit python:user['roles'][portal_role]['explicit'];
+                                                         enabled python:user['roles'][portal_role]['canAssign']">
+                                    <input type="checkbox"
+                                       class="noborder"
+                                       name="users.roles:list:records"
+                                       value="Manager"
+                                       tal:condition="not:inherited"
+                                       tal:attributes="value portal_role;
+                                           checked python:'checked' if explicit else nothing;
+                                           disabled python:default if enabled else 'disabled'" />
+                                    <input type="hidden"
+                                        name="users.roles:list:records"
+                                        value="Manager"
+                                        tal:condition="python:explicit and not enabled and not inherited"
+                                        tal:attributes="value portal_role" />
+                                    <img tal:condition="inherited" tal:replace="structure context/site_icon.gif" />
+                                  </tal:block>
 
                                 </td>
 

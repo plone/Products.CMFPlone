@@ -1,23 +1,28 @@
 import logging
 
+from AccessControl import getSecurityManager
 from Acquisition import aq_inner
+from zExceptions import Forbidden
 from itertools import chain
 
 from zope.interface import Interface
-from zope.component import adapts, getAdapter, getMultiAdapter
+from zope.component import adapts, getAdapter, getMultiAdapter, getUtility
 from zope.formlib.form import FormFields
 from zope.interface import implements
 from zope.schema import Bool
 from ZTUtils import make_query
 
 from plone.protect import CheckAuthenticator
+from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.statusmessages.interfaces import IStatusMessage
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin, IGroupsPlugin
+from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
 
 from form import ControlPanelForm, ControlPanelView
 from security import ISecuritySchema
@@ -121,6 +126,11 @@ class UsersGroupsControlPanelView(ControlPanelView):
             return int(s)
         except ValueError:
             return 0
+    
+    @property
+    def is_zope_manager(self):
+        return getSecurityManager().checkPermission(ManagePortal, self.context)
+
 
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
@@ -198,16 +208,26 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
             roleList = {}
             for role in self.portal_roles:
-                roleList[role]={'canAssign': user.canAssignRole(role),
+                canAssign = user.canAssignRole(role)
+                if role == 'Manager' and not self.is_zope_manager:
+                    canAssign = False
+                roleList[role]={'canAssign': canAssign,
                                 'explicit': role in explicitlyAssignedRoles,
                                 'inherited': role in allInheritedRoles[userId]}
+
+            canDelete = user.canDelete()
+            canPasswordSet = user.canPasswordSet()
+            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+                if not self.is_zope_manager:
+                    canDelete = False
+                    canPasswordSet = False
 
             user_info['roles'] = roleList
             user_info['fullname'] = user.getProperty('fullname', '')
             user_info['email'] = user.getProperty('email', '')
-            user_info['can_delete'] = user.canDelete()
+            user_info['can_delete'] = canDelete
             user_info['can_set_email'] = user.canWriteProperty('email')
-            user_info['can_set_password'] = user.canPasswordSet()
+            user_info['can_set_password'] = canPasswordSet
             results.append(user_info)
 
         # Sort the users by fullname
@@ -234,6 +254,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     continue
 
                 member = mtool.getMemberById(user.id)
+                current_roles = member.getRoles()
                 # If email address was changed, set the new one
                 if hasattr(user, 'email'):
                     # If the email field was disabled (ie: non-writeable), the
@@ -245,21 +266,138 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                 # If reset password has been checked email user a new password
                 pw = None
                 if hasattr(user, 'resetpassword'):
+                    if 'Manager' in current_roles and not self.is_zope_manager:
+                        raise Forbidden
                     if not context.unrestrictedTraverse('@@overview-controlpanel').mailhost_warning():
                         pw = regtool.generatePassword()
                     else:
                         utils.addPortalMessage(_(u'No mailhost defined. Unable to reset passwords.'), type='error')
 
-                acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
+                roles = user.get('roles', [])
+                if not self.is_zope_manager:
+                    # don't allow adding or removing the Manager role
+                    if ('Manager' in roles) != ('Manager' in current_roles):
+                        raise Forbidden
+
+                acl_users.userFolderEditUser(user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
                 if pw:
                     context.REQUEST.form['new_password'] = pw
                     regtool.mailPassword(user.id, context.REQUEST)
 
             if delete:
-                # TODO We should eventually have a global switch to determine member area
-                # deletion
-                mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
+                self.deleteMembers(delete)
             utils.addPortalMessage(_(u'Changes applied.'))
+        
+    def deleteMembers(self, member_ids):
+        # this method exists to bypass the 'Manage Users' permission check
+        # in the CMF member tool's version
+        context = aq_inner(self.context)
+        mtool = getToolByName(self.context, 'portal_membership')
+        
+        # Delete members in acl_users.
+        acl_users = context.acl_users
+        if isinstance(member_ids, basestring):
+            member_ids = (member_ids,)
+        member_ids = list(member_ids)
+        for member_id in member_ids[:]:
+            member = mtool.getMemberById(member_id)
+            if member is None:
+                member_ids.remove(member_id)
+            else:
+                if not member.canDelete():
+                    raise Forbidden
+                if 'Manager' in member.getRoles() and not self.is_zope_manager:
+                    raise Forbidden
+        try:
+            acl_users.userFolderDelUsers(member_ids)
+        except (AttributeError, NotImplementedError):
+            raise NotImplementedError('The underlying User Folder '
+                                     'doesn\'t support deleting members.')
+
+        # Delete member data in portal_memberdata.
+        mdtool = getToolByName(context, 'portal_memberdata', None)
+        if mdtool is not None:
+            for member_id in member_ids:
+                mdtool.deleteMemberData(member_id)
+
+        # Delete members' local roles.
+        mtool.deleteLocalRoles( getUtility(ISiteRoot), member_ids,
+                               reindex=1, recursive=1 )
+
+
+class GroupDetailsControlPanel(UsersGroupsControlPanelView):
+    
+    def __call__(self):
+        context = aq_inner(self.context)
+        
+        self.gtool = getToolByName(context, 'portal_groups')
+        self.gdtool = getToolByName(context, 'portal_groupdata')
+        self.regtool = getToolByName(context, 'portal_registration')
+        self.groupname = getattr(self.request, 'groupname', None)
+        self.grouproles = self.request.set('grouproles', [])
+        self.group = self.gtool.getGroupById(self.groupname)
+        self.grouptitle = self.groupname
+        if self.group is not None:
+            self.grouptitle = self.group.getGroupTitleOrName()
+
+        self.request.set('grouproles', self.group.getRoles() if self.group else [])
+        
+        submitted = self.request.form.get('form.submitted', False)
+        if submitted:
+            CheckAuthenticator(self.request)
+
+            msg = _(u'No changes made.')
+            self.group = None
+
+            title = self.request.form.get('title', None)
+            description = self.request.form.get('description', None)
+            addname = self.request.form.get('addname', None)
+
+            if addname:
+                if not self.regtool.isMemberIdAllowed(addname):
+                    msg = _(u'The group name you entered is not valid.')
+                    IStatusMessage(self.request).add(msg, 'error')
+                    return self.index()
+                
+                success = self.gtool.addGroup(addname, (), (), title=title,
+                                              description=description,
+                                              REQUEST=self.request)
+                if not success:
+                    msg = _(u'Could not add group ${name}, perhaps a user or group with '
+                            u'this name already exists.', mapping={u'name' : addname})
+                    IStatusMessage(self.request).add(msg, 'error')
+                    return self.index()
+                
+                self.group = self.gtool.getGroupById(addname)
+                msg = _(u'Group ${name} has been added.',
+                        mapping={u'name' : addname})
+
+            elif self.groupname:
+                self.gtool.editGroup(self.groupname, roles=None, groups=None,
+                                     title=title, description=description,
+                                     REQUEST=context.REQUEST)
+                self.group = self.gtool.getGroupById(self.groupname)
+                msg = _(u'Changes saved.')
+
+            else:
+                msg = _(u'Group name required.')
+
+            processed = {}
+            for id, property in self.gdtool.propertyItems():
+                processed[id] = self.request.get(id, None)
+
+            if self.group:
+                # for what reason ever, the very first group created does not exist
+                self.group.setGroupProperties(processed)
+
+            IStatusMessage(self.request).add(msg, type=self.group and 'info' or 'error')
+            if self.group and not self.groupname:
+                target_url = '%s/%s' % (self.context.absolute_url(), '@@usergroup-groupprefs')
+                self.request.response.redirect(target_url)
+                return ''
+
+        return self.index()
+
 
 class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
@@ -328,12 +466,20 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
             roleList = {}
             for role in self.portal_roles:
-                roleList[role]={'canAssign': group.canAssignRole(role),
+                canAssign = group.canAssignRole(role)
+                if role == 'Manager' and not self.is_zope_manager:
+                    canAssign = False
+                roleList[role]={'canAssign': canAssign,
                                 'explicit': role in explicitlyAssignedRoles,
                                 'inherited': role in allInheritedRoles[groupId] }
 
+            canDelete = group.canDelete()
+            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+                if not self.is_zope_manager:
+                    canDelete = False
+
             group_info['roles'] = roleList
-            group_info['can_delete'] = group.canDelete()
+            group_info['can_delete'] = canDelete
             results.append(group_info)
         # Sort the groups by title
         sortedResults = searchView.sort(results, 'title')
@@ -354,10 +500,22 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
         for group in groups:
             roles=[r for r in self.request.form['group_' + group] if r]
+            group_obj = groupstool.getGroupById(group)
+            current_roles = group_obj.getRoles()
+            if not self.is_zope_manager:
+                # don't allow adding or removing the Manager role
+                if ('Manager' in roles) != ('Manager' in current_roles):
+                    raise Forbidden
+            
             groupstool.editGroup(group, roles=roles, groups=())
             message = _(u'Changes saved.')
 
         if delete:
+            for group_id in delete:
+                group = groupstool.getGroupById(group_id)
+                if 'Manager' in group.getRoles() and not self.is_zope_manager:
+                    raise Forbidden
+            
             groupstool.removeGroups(delete)
             message=_(u'Group(s) deleted.')
 
@@ -376,8 +534,10 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         # determining whether users, in general, can be added to the group.
         currentUser = self.mtool.getAuthenticatedMember()
         self.canAddUsers = currentUser.canAddToGroup(self.groupname)
-
+        
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
+        if 'Manager' in self.request.get('grouproles') and not self.is_zope_manager:
+            self.canAddUsers = False
 
         self.groupquery = self.makeQuery(groupname=self.groupname)
         self.groupkeyquery = self.makeQuery(key=self.groupname)
@@ -393,6 +553,9 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
             # add/delete before we search so we don't show stale results
             toAdd = form.get('add', [])
             if toAdd:
+                if not self.canAddUsers:
+                    raise Forbidden
+
                 for u in toAdd:
                     self.gtool.addPrincipalToGroup(u, self.groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
@@ -459,6 +622,10 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
             add = form.get('add', [])
             if add:
                 for groupname in add:
+                    group = self.gtool.getGroupById(groupname)
+                    if 'Manager' in group.getRoles() and not self.is_zope_manager:
+                        raise Forbidden
+
                     self.gtool.addPrincipalToGroup(self.userid, groupname, self.request)
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 

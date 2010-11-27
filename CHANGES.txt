@@ -1,9 +1,27 @@
 Changelog
 =========
 
-2.0.5 - unreleased
+2.1b1 - unreleased
 ------------------
 
+- Prevent privilege escalation when access to the Users and Groups control
+  panel is given to non-Manager users.  Only users with the "Manage portal"
+  permission can grant the Manager role, or assign users to groups that grant
+  the Manager role. Also, non-Managers cannot edit the roles of, reset the
+  password of, or delete users or groups with the Manager role.
+  [davisagli]
+
+- Declare dependency on Zope2 >= 2.13.0.
+  [davisagli]
+
+- Protect each control panel using its own specific permission, instead of the
+  generic "Manage portal". This way access to particular control panels can be
+  delegated.
+  [davisagli]
+
+- Update the @@overview-controlpanel view to match changes that had happened in
+  plone_control_panel.pt in CMFPlone.
+  [davisagli]
 
 2.0.4 - 2010-10-27
 ------------------

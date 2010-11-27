@@ -1,5 +1,4 @@
 from plone.memoize.instance import memoize
-from zope.i18n import translate
 
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -41,8 +40,8 @@ class OverviewControlPanel(ControlPanelView):
         return self.template()
 
     @memoize
-    def action(self):
-        return getToolByName(aq_inner(self.context), 'portal_actions')
+    def cptool(self):
+        return getToolByName(aq_inner(self.context), 'portal_controlpanel')
 
     @memoize
     def migration(self):
@@ -72,6 +71,10 @@ class OverviewControlPanel(ControlPanelView):
         qi = getToolByName(aq_inner(self.context), 'portal_quickinstaller')
         return qi.isDevelopmentMode()
 
+    def upgrade_warning(self):
+        mt = getToolByName(aq_inner(self.context), 'portal_migration')
+        return mt.needUpgrading()
+
     def mailhost_warning(self):
         mailhost = getToolByName(aq_inner(self.context), 'MailHost', None)
         if mailhost is None:
@@ -83,23 +86,8 @@ class OverviewControlPanel(ControlPanelView):
         return True
 
     def categories(self):
-        root = self.action().get(self.base_category, None)
-        if root is None:
-            return ()
-        category_ids = [i for i in root.objectIds()
-                          if i not in self.ignored_categories]
-        def _title(id):
-            title = root[c].getProperty('title')
-            domain = root[c].getProperty('i18n_domain', 'plone')
-            return translate(title, domain=domain, context=self.request)
-        return [dict(id=c, title=_title(c)) for c in category_ids]
+        return self.cptool().getGroups()
 
     def sublists(self, category):
-        categories = self.base_category + '/' + category
-        actions = self.action().listActionInfos(categories=categories)
-        def _title(v):
-            return translate(v.get('title'),
-                             domain='plone',
-                             context=self.request)
-        actions.sort(key=_title)
+        actions = self.cptool().enumConfiglets(group=category)
         return three_column_list(actions)

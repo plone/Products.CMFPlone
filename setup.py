@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.0.5'
+version = '2.1b1'
 
 setup(name='plone.app.controlpanel',
       version=version,
@@ -55,7 +55,7 @@ setup(name='plone.app.controlpanel',
         'Products.PlonePAS',
         'Products.PortalTransforms',
         'Products.statusmessages',
-        'Zope2',
+        'Zope2>=2.13.0',
         'ZODB3',
       ],
       )
