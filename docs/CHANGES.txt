@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Renamed package to `Products.CMFPlone`.
+  [elro]
+
 - Deprecated the following scripts that are only used by deprecated templates.
   These will be removed in Plone 5: prefs_group_edit.py,
   prefs_valid_search_restriction.py, prefs_user_group_search.py,
