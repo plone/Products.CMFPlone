@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="top_slot"
+               tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <metal:main fill-slot="main"
+         tal:define="useSelf python:context_state.is_structural_folder() and not context_state.is_default_page();
+                     folder_warning python:useSelf and context.portal_type != 'Topic';
+                     number_of_objects_to_delete python:folder_warning and len(context.portal_catalog.searchResults(dict(path='/'.join(context.getPhysicalPath()), portal_type=context.plone_utils.getUserFriendlyTypes())))">
+      <h1 class="documentFirstHeading"
+          tal:condition="folder_warning">
+          <span i18n:translate="alert_really_delete_folder">
+              Do you really want to delete this folder and all its contents?
+          </span>
+          <span i18n:translate="alert_deleting_x_number_of_items" tal:condition="python:number_of_objects_to_delete>1">
+              (This will delete a total of <span i18n:name="number_of_items_to_delete" tal:content="python:number_of_objects_to_delete">22</span> items.)
+          </span>
+      </h1>
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="alert_really_delete"
+          tal:condition="not:folder_warning">
+        Do you really want to delete this item?
+      </h1>
+
+      <div id="content-core">
+          <ul>
+              <li tal:content="context/@@plone_context_state/object_title">The item title (ID)</li>
+          </ul>
+
+          <form method="POST"
+                action="#"
+                tal:attributes="action context_state/current_page_url"
+                id="delete_confirmation">
+            <div class="formControls">
+
+              <input type="hidden"
+                     name="form.submitted"
+                     value="1"
+                     />
+
+              <input class="destructive"
+                     type="submit"
+                     value="Delete"
+                     i18n:attributes="value;"
+                     />
+              <input class="standalone"
+                     type="submit"
+                     value="Cancel"
+                     name="form.button.Cancel"
+                     i18n:attributes="value label_cancel;"
+                     />
+            </div>
+
+            <input tal:replace="structure context/@@authenticator/authenticator" />
+
+          </form>
+      </div>
+
+    </metal:main>
+
+  </body>
+</html>

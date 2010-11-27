@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_comment_preview">Comment Preview</h1>
+
+    <div class="documentDescription" i18n:translate="description_comment_preview">
+        This is how your comment will look when posted.
+    </div>
+
+    <div id="content-core">
+        <form method="post" action="talkback">
+
+            <div class="portlet">
+
+                <h6 i18n:translate="box_comment_preview">Comment Preview</h6>
+
+                <div class="portletBody">
+
+                    <div class="content">
+
+                        <h2 tal:content="python: request.form['title']"></h2>
+
+                        <div tal:define="pss modules/Products.PythonScripts.standard"
+                             tal:replace="structure python: pss.structured_text(request.form['text'])">Text Body</div>
+
+                        <input type="hidden" name="title" value=""
+                               tal:attributes="value python: request.form['title']" />
+                        <input type="hidden" name="text" value=""
+                               tal:attributes="value python: request.form['text']" />
+                        <input type="hidden" name="title_override" value=""
+                               tal:attributes="value python:  request.form['title']" />
+                        <input type="hidden" name="text_override" value=""
+                               tal:attributes="value python:  request.form['text']" />
+                        <input type="hidden" name="Creator" value=""
+                               tal:define="member context/@@plone_portal_state/member;"
+                               tal:attributes="value member/getId" />
+
+                        <input class="standalone"
+                               type="submit"
+                               value="Change Comment"
+                               name=""
+                               i18n:attributes="value label_change_comment;"
+                               tal:define="hId context/getId"
+                	           tal:attributes="name python: hId + '/discussion_reply_form:method';" />
+
+                        <input class="standalone"
+                               type="submit"
+                               value="Add Comment"
+                               name="discussion_reply:method"
+                               i18n:attributes="value label_add_comment;" />
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </form>
+    </div>
+</metal:main>
+
+</html>
+

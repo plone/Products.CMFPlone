@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+ <bindings>
+  <default>
+   <bound-workflow workflow_id="plone_workflow"/>
+  </default>
+  <type type_id="Folder">
+   <bound-workflow workflow_id="folder_workflow"/>
+  </type>
+  <type type_id="Topic">
+   <bound-workflow workflow_id="folder_workflow"/>
+  </type>
+ </bindings>
+</object>

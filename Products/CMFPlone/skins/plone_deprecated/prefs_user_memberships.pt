@@ -1,0 +1,140 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_content"
+     tal:define="member context/@@plone_portal_state/member;
+                 portal context/@@plone_portal_state/portal;
+                 userid python:request.get('userid', member.getId());
+                 member python:context.portal_membership.getMemberById(userid);
+                 groups member/getGroups;
+                 gtool context/portal_groups;
+                 mdata context/portal_memberdata;
+                 errors python:request.get('errors', {});
+                 searchonly string:groups;
+                 takeaction string:prefs_user_membership_edit;
+                 mq python:modules['ZTUtils'].make_query;
+                 userquery python:mq(userid=userid);
+                 portal_url context/portal_url;">
+
+    <div class="documentEditable">
+    <div id="edit-bar">
+        <ul class="contentViews" id="content-views">
+          <li>
+                <a href=""
+               tal:attributes="href string:$portal_url/prefs_user_details?${userquery}"
+               i18n:translate="label_user_properties">User Properties</a>
+          </li>
+
+          <li class="selected">
+                <a href=""
+               tal:attributes="href string:$portal_url/${template/getId}?${userquery}"
+               i18n:translate="label_group_memberships">Group Memberships</a>
+          </li>
+        </ul>
+        <div class="contentActions">&nbsp;</div>
+    </div>
+
+    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+      Portal status message
+    </div>
+
+    <div id="content" tal:define="many_groups context/portal_properties/site_properties/many_groups">
+
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_group_memberships_for">
+          Group Memberships for
+          <span tal:content="string:${member/getId}"
+                tal:omit-tag=""
+                i18n:name="userid">user id</span>
+        </h1>
+
+        <div id="content-core">
+            <a href=""
+               class="link-parent"
+               tal:attributes="href string:$portal_url/@@usergroup-userprefs"
+               i18n:translate="label_up_to_usersoverview">
+              Up to Users Overview
+            </a>
+
+            <h2 tal:condition="many_groups" i18n:translate="heading_search_groups">Search for groups</h2>
+            <h2 tal:condition="not:many_groups" i18n:translate="heading_assign_to_groups">Assign to groups</h2>
+
+            <div metal:use-macro="context/prefs_search_macros/macros/user_group_search">
+              <metal:block metal:fill-slot="hiddens">
+                <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
+              </metal:block>
+
+              <metal:block metal:fill-slot="actions" >
+                  <input class="context"
+                         type="submit"
+                         name="prefs_user_membership_edit:method"
+                         value="Add user to selected groups"
+                         tal:condition="batch"
+                         i18n:attributes="value label_add_user_to_group;" />
+                  <input tal:replace="structure context/@@authenticator/authenticator" />
+              </metal:block>
+
+              <metal:block metal:fill-slot="removables">
+
+                <form method="post"
+                    tal:attributes="action here/absolute_url">
+
+                  <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
+
+                  <h2 i18n:translate="heading_memberships_current">Current group memberships</h2>
+                  <table tal:condition="groups" class="listing" summary="Group Memberships Listing">
+
+                    <tr>
+                      <th i18n:translate="listingheader_group_name">Group Name</th>
+                      <th i18n:translate="listingheader_group_remove">Remove</th>
+                    </tr>
+
+                    <tr tal:repeat="groupid groups" class="odd">
+                      <tal:block tal:define="group python:gtool.getGroupById(groupid);
+                                             groupname group/getGroupName">
+                        <td>
+                            <a href="prefs_group_details"
+                               tal:attributes="href string:prefs_group_details?groupname=$groupname">
+                            <tal:block replace="structure portal/group.png"/>&nbsp;<span
+                                         tal:replace="groupname">group name</span>
+                            </a>
+                        </td>
+
+
+                        <td class="listingCheckbox">
+                            <input type="checkbox"
+                                   class="noborder notify"
+                                   name="delete:list"
+                                   tal:attributes="value groupname;
+                                                   disabled python:member.canRemoveFromGroup(groupname) and default or 'disabled'" />
+                        </td>
+                        </tal:block>
+                    </tr>
+
+                  </table>
+                  <p tal:condition="not:groups" i18n:translate="text_user_not_in_any_group">This user does not belong to any group.</p>
+                  <input class="destructive"
+                         type="submit"
+                         name="prefs_user_membership_edit:method"
+                         value="Remove from selected groups"
+                         i18n:attributes="value label_remove_selected_groups;"
+                         tal:condition="groups" />
+                  <input tal:replace="structure context/@@authenticator/authenticator" />
+                </form>
+              </metal:block>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+</metal:main>
+</body>
+</html>

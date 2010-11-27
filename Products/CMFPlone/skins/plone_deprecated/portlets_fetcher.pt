@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+
+<body>
+
+<metal:leftcolumn define-macro="left_column"
+   tal:condition="sl|nothing">
+
+    <metal:block tal:repeat="slot sl">
+        <tal:dontcrash tal:on-error="structure python:context.plone_log('Error %s on %s while rendering portlet %s'%(error.type, error.value, slot[0])) or
+                                            '&lt;div class=\'error\'&gt;Error %s on %s: %s&lt;/div&gt;' % (error.type, slot[0], error.value)"
+                       tal:define="pathexpr python:slot[0];
+                                   usemacro python:slot[1];">
+
+        <tal:block tal:condition="usemacro">
+            <metal:block metal:use-macro="python:path(pathexpr)" />
+        </tal:block>
+
+        <span tal:condition="not: usemacro"
+              tal:replace="structure python:path(pathexpr)" />
+
+        </tal:dontcrash>
+    </metal:block>
+</metal:leftcolumn>
+
+
+
+<metal:rightcolumn define-macro="right_column"
+   tal:condition="sr">
+
+    <metal:block tal:repeat="slot sr">
+        <tal:dontcrash tal:define="pathexpr python:slot[0];
+                                   usemacro python:slot[1];">
+
+        <tal:block tal:condition="usemacro">
+            <metal:block metal:use-macro="python:path(pathexpr)" />
+        </tal:block>
+
+        <span tal:condition="not: usemacro"
+              tal:replace="structure python:path(pathexpr)" />
+
+        </tal:dontcrash>
+    </metal:block>
+</metal:rightcolumn>
+
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+[default]
+title=Group Properties
+
+[security]
+View=0:Authenticated
+

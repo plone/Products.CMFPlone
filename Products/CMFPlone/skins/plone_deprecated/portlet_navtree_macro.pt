@@ -1,0 +1,52 @@
+<tal:master define="level options/level|python:0;
+                    children options/children | nothing;
+                    bottomLevel options/bottomLevel | nothing;
+                    normalizeString nocall:context/plone_utils/normalizeString;
+                    viewActions context/portal_properties/site_properties/typesUseViewActionInListings|python:();
+                    member context/@@plone_portal_state/member;
+                    member_id member/getId|nothing;
+                    plone_view context/@@plone">
+
+<metal:main define-macro="nav_main">
+<tal:navitem repeat="node children">
+<li class="navTreeItem visualNoMarker"
+    tal:define="children   node/children;
+                item       node/item;
+                useView    python:item.portal_type in viewActions;
+                item_icon  python:plone_view.getIcon(item);
+                itemUrl    python:test(useView, item.getURL() + '/view', item.getURL());
+                linkRemote python:item.getRemoteUrl and item.Creator != member_id;
+                isCurrent  node/currentItem;"
+    tal:condition="python: bottomLevel &lt;= 0 or level &lt; bottomLevel-1">
+
+    <tal:level define="item_wf_state_class python: 'state-' + normalizeString(item.review_state);">
+
+    <div tal:define="itemClass string:$item_wf_state_class;
+                     itemClass python:test(isCurrent, itemClass + ' navTreeCurrentItem', itemClass);">
+
+        <a tal:attributes="href python:test(linkRemote, item.getRemoteUrl, itemUrl);
+                           title item/Description;
+                           class string:$itemClass">
+            <img width="16" height="16"
+                 src="" alt=""
+                 tal:condition="item_icon/url"
+                 tal:attributes="src item_icon/url;
+                                 alt item_icon/description;
+                                 title item_icon/title;
+                                 width item_icon/width;
+                                 height item_icon/height;" />
+            <span tal:replace="item/Title">Selected Item Title</span>
+        </a>
+
+    </div>
+
+    <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
+        tal:define="level python:level+1;"
+        tal:condition="nocall:children">
+        <metal:recurse use-macro="context/portlet_navtree_macro/macros/nav_main"/>
+    </ul>
+    </tal:level>
+</li>
+</tal:navitem>
+</metal:main>
+</tal:master>

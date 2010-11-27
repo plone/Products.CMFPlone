@@ -1,0 +1,189 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_main">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_error_log">Error log</h1>
+
+    <div class="documentDescription" i18n:translate="description_error_log_setup">
+        This page lists the exceptions that have occurred in this site
+        recently. You can configure how many exceptions should be kept
+        and whether the exceptions should be copied to Zope's event log
+        file(s).
+    </div>
+
+    <div id="content-core">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string:${context/portal_url}/plone_control_panel"
+           i18n:translate="label_up_to_plone_setup">
+            Up to Site Setup
+        </a>
+
+        <p>
+            <a href="http://plone.org/documentation/error"
+               i18n:translate="description_error_rerference_link">
+                Refer to the plone.org error reference for more information about
+                these exceptions.
+            </a>
+        </p>
+
+        <form action="prefs_error_log_update" method="get">
+
+            <fieldset tal:define="entries context/error_log/getLogEntries">
+
+                <legend i18n:translate="legend_logexception">Exception Log (most recent first)</legend>
+
+                <div class="field">
+                    <label for="search_entry"
+                           i18n:translate="label_search_entry">Search for an error log entry (such as "1257962690.640.49636048561")</label>
+
+                    <input type="text"
+                           name="search_entry"
+                           id="search_entry"
+                           size="35" />
+                </div>
+
+                <div class="field" tal:condition="not:entries" i18n:translate="legend_lognoexceptions">
+                    No exceptions logged.
+                </div>
+
+                <div class="formControls">
+                    <input class="standalone"
+                           type="submit"
+                           name="form.button.search"
+                           value="Search"
+                           i18n:attributes="value label_search;" />
+                    <input class="standalone"
+                           type="submit"
+                           name="form.button.refresh"
+                           value="Refresh"
+                           i18n:attributes="value label_refresh;" />
+                    <input class="standalone"
+                           type="submit"
+                           name="form.button.clear"
+                           value="Clear Displayed Entries"
+                           i18n:attributes="value label_clear_displayed_entries;" />
+                    <input class="standalone"
+                           type="submit"
+                           name="form.button.showall"
+                           value="Show all entries"
+                           i18n:attributes="value label_show_all_entries;" />
+                </div>
+
+                <table class="listing"
+                       id="sortable"
+                       summary="Exception Log (most recent first)"
+                       i18n:attributes="summary summary_exception_log;"
+                       tal:condition="entries">
+                    <thead>
+                        <tr>
+                            <th i18n:translate="label_time">Time</th>
+                            <th i18n:translate="label_user_name">User Name</th>
+                            <th i18n:translate="label_exception">Exception</th>
+                        </tr>
+                    </thead>
+
+                    <tbody tal:define="member context/@@plone_portal_state/member;
+                                       updatetime python:member.getProperty('error_log_update', 0.0);
+                                       updatetime python:updatetime and updatetime or 0.0;
+                                       updatetime python:float(updatetime)">
+
+                        <tal:entry tal:repeat="entry entries">
+                        <tr tal:define="oddrow repeat/entry/odd;"
+                            tal:attributes="class python:test(oddrow, 'even', 'odd')"
+                            tal:condition="python: test(entry['time'] > updatetime,1,0)">
+
+                            <td
+                                tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
+                                tal:content="python:toLocalizedTime(DateTime(entry['time']), long_format=True)">13:04:41</td>
+                            <td tal:content="string:${entry/username} (${entry/userid})">joe</td>
+                            <td>
+                                <a href="showEntry"
+                                   tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
+                                    <span tal:replace="entry/type">AttributeError</span>:
+                                    <span tal:define="value entry/value"
+                                          tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
+                                    Application object has no attribute "gak"
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tal:entry>
+                    </tbody>
+                </table>
+
+            </fieldset>
+        </form>
+
+        <form action="prefs_error_log_setProperties"
+              method="post"
+              class="enableUnloadProtection">
+
+            <fieldset tal:define="props context/error_log/getProperties">
+
+                <legend i18n:translate="legend_logdetails">Log details</legend>
+
+                <div class="field">
+                    <label for="keep_entries"
+                           i18n:translate="label_number_exceptions">Number of exceptions to keep</label>
+
+                    <div></div>
+
+                    <input type="text"
+                           name="keep_entries"
+                           id="keep_entries"
+                           size="40"
+                           tal:attributes="value props/keep_entries" />
+                </div>
+
+                <div class="field">
+                    <input type="checkbox"
+                           class="noborder"
+                           id="cb_copy_to_zlog"
+                           name="copy_to_zlog"
+                           tal:attributes="checked props/copy_to_zlog;
+                                           disabled not:context/error_log/checkEventLogPermission|nothing" />
+
+                    <label for="cb_copy_to_zlog" i18n:translate="label_copy_exceptions">
+                        Copy exceptions to the event log
+                    </label>
+
+                </div>
+
+                <div class="field">
+                    <label for="ignored_exceptions"
+                           i18n:translate="label_ignored_exception">Ignored exception types</label>
+
+                    <textarea name="ignored_exceptions:lines"
+                              id="ignored_exceptions"
+                              cols="40"
+                              rows="3"
+                              tal:content="python: '\n'.join(props['ignored_exceptions'])"></textarea>
+                </div>
+
+                <div class="formControls">
+                    <input class="context"
+                           type="submit"
+                           name="submit"
+                           value="Save"
+                           i18n:attributes="value label_save;" />
+                </div>
+
+            </fieldset>
+
+        </form>
+    </div>
+
+</metal:main>
+
+</body>
+</html>

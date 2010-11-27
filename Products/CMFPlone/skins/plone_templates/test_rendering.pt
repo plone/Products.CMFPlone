@@ -1,0 +1,498 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:css fill-slot="css_slot">
+<style type="text/css">
+<!--
+
+/************** Peekaboo bug demo rules ******************/
+
+div#floatholder a:hover{
+background: #f99;     /* An a:hover mouseover change anywhere within #content
+                                                  will uncover missing content, but if 'color' and 'border' are toggled on hover
+                                                 rather than the background, the peekaboo bug is only partially corrected. */
+}
+
+#clear {
+clear: both;                           /* Bug trigger. This div must touch the float to trigger bug. */
+border: 3px solid #f0f;
+text-align: center;
+}
+
+#floatholder {
+background: #fed;          /* Bug trigger. I suspect the peekaboo content is hidden behind this BG. */
+border: 3px dotted #000;
+margin: 1em 15% 1em 13%;
+font-size: 1.1em;
+}
+
+     /************************************************************************
+     * If both #floatholder and #float are given 'position: relative', the bug is prevented *
+     *************************************************************************/
+
+#float {           /* Bug is triggered by either left or right float */
+float : left;
+border: 6px solid #844;
+padding : 5px;
+width : 200px;
+height: 200px;
+font-size: 2em;
+text-align: center;
+}
+
+#float span {
+background: #9c9;
+color: white;
+}
+
+
+-->
+</style>
+
+
+    </metal:css>
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+
+<h1 class="documentFirstHeading">Plone User Interface elements test page</h1>
+
+<div class="documentDescription">
+This page lists the common user interface elements that exist in Plone, and
+shows you how they are rendered. It also tests a couple of common Internet
+Explorer rendering bugs, so you can see if your changes have triggered any
+bad behaviour on this front.
+</div>
+
+<div id="content-core">
+<pre>
+Headlines
+</pre>
+
+<h1>Headline h1</h1>
+<p>And a paragraph</p>
+<h2>Headline h2</h2>
+<p>And a paragraph</p>
+<h3>Headline h3</h3>
+<p>And a paragraph</p>
+<h4>Headline h4</h4>
+<p>And a paragraph</p>
+<h5>Headline h5</h5>
+<p>And a paragraph</p>
+<h6>Headline h6</h6>
+
+<pre>Example document rendering</pre>
+
+<dl class="portalMessage info">
+    <dt>
+        Info
+    </dt>
+    <dd>
+        The portalMessage class, can also contain <a href="#">links</a> - used to
+        give the user temporary status messages.
+    </dd>
+</dl>
+
+<h1 class="documentFirstHeading">Document Headline</h1>
+
+<div id="plone-document-byline" class="documentByLine">
+    <span class="documentAuthor">
+      by
+      <a href="http://localhost:8080/Plone/author/admin">admin</a>
+    </span>
+
+   <span class="documentModified">
+     &mdash;
+     <span>
+       last modified
+     </span>
+     May 21, 2010 10:02 AM
+   </span>
+
+   <span id="content-history" class="contentHistory">
+     &mdash;
+     <a href="http://localhost:8080/Plone/front-page/@@historyview" rel="#pb_4" class="link-overlay" style="cursor: pointer;">History</a>
+   </span>
+</div>
+
+<div class="documentDescription">
+The document description
+</div>
+
+<p>
+Normal document body text,
+<strong>strong text</strong>,
+<em>emphasised text</em>,
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo. Vestibulum vitae urna et mi volutpat luctus. Nulla auctor, lacus ut consectetuer sagittis, erat odio vulputate sapien, eu placerat diam mauris id turpis. Aenean quis ipsum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque rutrum. Sed mattis turpis sit amet ipsum viverra pharetra. Nunc facilisis, augue non dapibus gravida, risus quam vulputate quam, non venenatis dui massa in leo. Maecenas scelerisque dapibus libero. Suspendisse potenti.
+example <a href="#">Normal internal site link</a> inside a paragraph,
+example <a href="http://plone.org">External link to plone.org</a>,
+example <a href="https://plone.org">Secure (HTTPS) link to plone.org</a>,
+example <a href="mailto:some@address">Mailto link</a>,
+example <a href="ftp://some.site">FTP link</a>,
+example <a href="news://some.site">NNTP (news) link</a>,
+example <a href="webcal://some.site">WebCal link</a>,
+example <a href="feed://some.site">RSS feed link</a>,
+example <a href="irc://some.network/#channel">IRC link</a>.
+</p>
+
+<ul>
+    <li>Unordered list element 1
+        <ul>
+            <li>Unordered list subelement 1</li>
+        </ul>
+    </li>
+    <li>Unordered list element 2</li>
+    <li>Unordered list element 3</li>
+</ul>
+
+<ol>
+    <li>Ordered list element 1
+        <ol><li>Ordered list subelement 1</li></ol>
+    </li>
+    <li>Ordered list element 2</li>
+    <li>Ordered list element 3</li>
+</ol>
+
+<dl>
+    <dt>Definition list term</dt>
+    <dd>Definition List description, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo.
+    </dd>
+    <dd>Another Definition List description, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo.
+    </dd>
+</dl>
+
+<h2>
+Table of class <code>listing</code>
+</h2>
+
+<table class="listing" id="someid" summary="Sortable table example">
+    <!-- By giving a table an ID, it gets the sortable option.
+         Use class="nosort" to override on a table or column basis. -->
+    <thead>
+        <tr>
+            <th>Table heading</th>
+            <th>Another heading (sortable, click to sort)</th>
+            <th class="nosort">Fixed column (not sortable)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="odd">
+            <td>Odd table item</td>
+            <td>Item 1</td>
+            <td>Another item</td>
+        </tr>
+        <tr class="even">
+            <td>Even table item</td>
+            <td>Item 2</td>
+            <td>Yet another item</td>
+        </tr>
+        <tr class="odd">
+            <td>Odd table item</td>
+            <td>Item 3</td>
+            <td>And one more item</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+Table of class <code>vertical listing</code>
+</h2>
+
+<table class="vertical listing" summary="Vertical listing example">
+    <tbody>
+        <tr>
+            <th>Table heading</th>
+            <td>Odd table item</td>
+        </tr>
+        <tr>
+            <th>Another heading</th>
+            <td>Even table item</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Forms</h2>
+
+<form>
+    <fieldset>
+        <legend>Fieldset legend</legend>
+
+        <div class="field">
+            <label for="onefield">Text field</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is the help for this form field. And <a href="#">links are also possible</a>.
+            </div>
+            <input type="text" id="onefield" value="Some content" />
+        </div>
+        <div class="field error">
+            <label for="anotherfield">Text field with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <input type="text" id="anotherfield" value="Some content" />
+        </div>
+        <div class="field">
+            <label for="onecheckbox">Checkbox</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is a checkbox field.
+            </div>
+            <input type="checkbox" id="onecheckbox" />
+        </div>
+        <div class="field error">
+            <label for="anothercheckbox">Checkbox with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This checkbox field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <input type="checkbox" id="anothercheckbox" />
+        </div>
+        <div class="field">
+            <label for="onestylishcheckbox">Checkbox without border</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is a checkbox field.
+            </div>
+            <input type="checkbox"
+                   class="noborder"
+                   id="onestylishcheckbox" />
+        </div>
+        <div class="field error">
+            <label for="anotherstylishcheckbox">
+            Checkbox without border with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This checkbox field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <input type="checkbox"
+                   class="noborder"
+                   id="anotherstylishcheckbox" />
+        </div>
+        <div class="field">
+            <label>Radio</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This is a checkbox field.
+            </div>
+            <label>First
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group1" />
+            </label>
+            <br />
+            <label>Second
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group1" />
+            </label>
+            <br />
+            <label>Third
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group1" />
+            </label>
+            <br />
+        </div>
+        <div class="field error">
+            <label>Radio with error</label>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title title_required;"
+                  i18n:translate="label_required">(Required)</span>
+            <div class="formHelp">
+                This checkbox field is just here to demonstrate an error message.
+            </div>
+            <div>This is the error message.</div>
+            <label>First
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group2" />
+            </label>
+            <br />
+            <label>Second
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group2" />
+            </label>
+            <br />
+            <label>Third
+            <input class="noborder"
+                   type="radio"
+                   name="radio_group2" />
+            </label>
+            <br />
+        </div>
+        <div class="formControls">
+            <input class="context"
+                   type="submit"
+                   value="Context submit" />
+            <input class="standalone"
+                   type="submit"
+                   value="Standalone submit" />
+            <input class="destructive"
+                   type="submit"
+                   value="Destructive submit" />
+            <input type="submit"
+                   value="Submit" />
+        </div>
+        <div class="formControls">
+            <input class="context"
+                   type="button"
+                   value="Context button" />
+            <input class="standalone"
+                   type="button"
+                   value="Standalone button" />
+            <input class="destructive"
+                   type="button"
+                   value="Destructive button" />
+            <input type="button"
+                   value="Button" />
+        </div>
+    </fieldset>
+</form>
+
+<h2>Table with form elements</h2>
+
+<form>
+    <table id="sortable"
+         class="listing"
+         summary="Content listing"
+         cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th class="nosort">
+                    <input class="noborder"
+                           type="checkbox"
+                           src="select_all_icon.png"
+                           name="selectButton"
+                           title="Select all items"
+                           onClick="toggleSelect(this,'paths:list');"
+                           tal:attributes="src string:${context/portal_url}/select_all_icon.png"
+                           alt="Select all items"
+                           i18n:attributes="title label_select_all_items; alt label_select_all_items;" />
+                </th>
+                <th>&nbsp;Title&nbsp;</th>
+                <th>&nbsp;Stuff&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                   <input type="checkbox"
+                          class="noborder"
+                          name="paths:list" id="#"
+                          value="#" />
+                </td>
+                <td><a href="#">Title</a></td>
+                <td>with class noborder</td>
+            </tr>
+            <tr class="even">
+                <td>
+                   <input type="checkbox"
+                          class="noborder"
+                              name="paths:list" id="#"
+                          value="#" />
+                </td>
+                <td><a href="#">Title</a></td>
+                <td>with class noborder</td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div>
+    <h2>Action menu</h2>
+    <dl class="actionMenu" id="actioMenuDemo">
+        <dt class="actionMenuHeader">
+            <a href="#">Action menu title</a>
+        </dt>
+        <dd class="actionMenuContent">
+            Menu content
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h2>Collapsible section</h2>
+    <dl class="collapsible">
+        <dt class="collapsibleHeader">
+            Collapsable section title
+        </dt>
+        <dd class="collapsibleContent">
+            Collapsible section content
+        </dd>
+    </dl>
+</div>
+
+<h2>The Internet Explorer "Peekaboo" bug</h2>
+
+<p>
+Also known as the "disappearing text" bug. Full explanation of this bug can be
+found on
+<a href="http://www.positioniseverything.net/explorer/peekaboo.html">
+the page dedicated to this at positioniseverything.net</a>.
+</p>
+
+<!--********** Start of peekaboo demo ***********-->
+
+<div id="floatholder">
+
+<div id="float">
+<br />
+<span>&nbsp;Float&nbsp;
+<br /><br />
+<a href="#">&nbsp;test link&nbsp;</a>
+</span>
+</div>
+
+This is bare text. <a href="#">Test link</a>
+<div style="border: 3px solid #f00; background: #dde;">This is text inside a div.
+<a href="#">Test link</a></div>
+This is bare text. <a href="#">Test link</a>
+<div style="border: 3px solid #0c0; background: #dde;">This is text inside a div.
+<a href="#">Test link</a></div>
+This is bare text. <a href="#">Test link</a>
+<div style="border: 3px solid #00f; background: #dde;">This is text inside a div.
+<a href="#">Test link</a></div>
+This is bare text. <a href="#">Test link</a>
+
+<div id="clear">Clearing div</div>  <!--******* Note: a cleared <br> will not prevent bug *******-->
+
+<div style="border: 3px solid #00f; background: #dde;">This div is after the cleared div. (purple box) If cleared div
+does not touch float, bug is not triggered. <a href="#">Test link</a></div>
+</div>
+
+<!--********** End of peekaboo demo ***********-->
+</div>
+
+</metal:main>
+
+</body>
+</html>
+

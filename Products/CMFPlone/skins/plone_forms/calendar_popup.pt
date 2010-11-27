@@ -1,0 +1,48 @@
+<metal:page define-macro="master">
+
+<metal:block use-macro="context/global_defines/macros/defines" />
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      tal:define="input_id request/input_id;
+                  default_language context/@@plone_portal_state/default_language"
+      tal:attributes="lang default_language | default;
+                      xml:lang default_language | default"
+      i18n:domain="plone">
+
+  <head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
+          tal:define="charset context/portal_properties/site_properties/default_charset|string:utf-8;
+                      dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)"
+          tal:attributes="content string:text/html;;charset=${charset}" />
+
+    <title i18n:translate="label_calendar">Calendar</title>
+
+    <script type="text/javascript" language="javascript"
+            tal:content="python:context.getPopupScript(input_id=input_id)"></script>
+
+    <metal:css metal:use-macro="context/renderAllTheStylesheets/macros/cssrenderer">
+        <!-- Fetch stylesheets from the CSS Registry -->
+    </metal:css>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
+          tal:define="charset context/portal_properties/site_properties/default_charset|string:utf-8"
+          tal:attributes="content string:text/html;;charset=${charset}" />
+
+  </head>
+  <body style="margin: 1em 2em 0em 2em;">
+
+    <div style="text-align: center;"
+         i18n:translate="help_choose_a_date">
+      Choose a date
+    </div>
+
+    <div metal:use-macro="context/calendar_macros/macros/calendarDatePickerBoxPopup">
+      Show calendar
+    </div>
+
+  </body>
+</html>
+</metal:page>

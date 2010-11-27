@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+    <metal:content-core fill-slot="content-core">
+        <metal:block define-macro="content-core"
+                     tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                 getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                 size context/size">
+            <a href=""
+               class="discreet"
+               tal:attributes="href string:${context/@@plone_context_state/object_url}/image_view_fullscreen">
+                <tal:block condition="size" replace="structure python:context.tag(scale='preview')" />
+                <br />
+                <span class="visualNoPrint">
+                    <img src="" alt="" tal:replace="structure context/search_icon.png" />
+                    <span i18n:translate="label_click_to_view_full_image">Click to view full-size image&hellip;</span>
+                </span>
+            </a>
+
+            <span class="discreet visualNoPrint">
+            &mdash;
+                <span i18n:translate="label_size">Size</span>:
+
+                <span tal:define="size python:context.getObjSize(here)"
+                      tal:content="size">
+                    File size
+                </span>
+
+                <span tal:condition="python:test(size, 0, 1)"
+                      i18n:translate="no_image_uploaded">
+                    (No image has been uploaded yet)
+                </span>
+            </span>
+        </metal:block>
+    </metal:content-core>
+</body>
+
+</html>
+

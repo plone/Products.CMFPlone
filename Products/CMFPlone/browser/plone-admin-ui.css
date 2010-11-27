@@ -1,0 +1,92 @@
+body {
+    font: 90% Arial, FreeSans, sans-serif;
+    line-height: 1.5em;
+    clear: both;
+    margin: 2em auto;
+    width: 35em;
+}
+#plone-upgrade-screen {
+    width: 50em;
+}
+h1, h2 {
+    font-family: "Helvetica Neue", Arial, FreeSans, sans-serif; 
+    margin-top: 1em;
+}
+img {
+    margin-top: 0.5em;
+    border: none;
+    vertical-align: text;
+}
+a {
+    border-bottom:1px solid #999;
+    color:#0072B5;
+    text-decoration:none;
+}
+ul {
+    margin-left: 0;
+    padding-left:0;
+    list-style:none;
+}
+ul li {
+    margin-bottom: 1em;
+}
+.upgrade-steps li, .version-list li {
+    margin-bottom: 0.5em;
+}
+dt {
+    font-weight: bold;
+}
+dd {
+    margin: 0 1em;
+}
+input {
+    width: inherit;
+}
+input[type="text"]:focus {
+    background-color: #ffffe0;
+}
+label {
+    font-weight: bold;
+}
+.field {
+    clear: both;
+    margin-top: 1em;
+}
+div.formControls {
+    margin-top: 1em;
+}
+.formHelp {
+	color: #444;
+}
+.prominent {
+}
+.backup-warning {
+    background-color:red;
+    color: white;
+    padding: 0.5em;
+    font-weight: bold;
+    display: block;
+}
+.upgrade-warning {
+    background: url(/misc_/PageTemplates/exclamation.gif) top left no-repeat;
+    padding: 0 0 0 1.2em;
+    font-weight: bold;
+    margin-top: 0.5em;
+}
+#add-plone-site {
+    margin: 1em 0;
+}
+#add-on-list {
+    margin: 1em 0em;
+}
+#multiple-sites {
+    font-size: 125%;
+    margin-top: 0.5em;
+    color: #444;
+}
+#text {
+    font: Arial, FreeSans, sans-serif;
+}
+#sitelist {
+    margin: 1em;
+}

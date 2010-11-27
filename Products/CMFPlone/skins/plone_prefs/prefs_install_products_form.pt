@@ -1,0 +1,264 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master">
+
+<body>
+
+
+<metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone"
+        tal:define="QI python:context.portal_url.getPortalObject().portal_quickinstaller;">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">Add-ons</h1>
+
+    <div class="documentDescription"
+       i18n:translate="">
+      This is the Add-on configuration section, you can activate and deactivate
+      add-ons in the lists below.
+    </div>
+
+    <div id="content-core">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string:${context/portal_url}/plone_control_panel"
+           i18n:translate="label_up_to_plone_setup">
+          Up to Site Setup
+        </a>
+
+        <p class="discreet" i18n:translate="">
+          To make new add-ons show up here, add them to your buildout
+          configuration, run buildout, and restart the server process.
+          For detailed instructions see
+          <span i18n:name="third_party_product">
+          <a i18n:translate="" href="http://plone.org/documentation/tutorial/buildout/installing-a-third-party-product">
+            Installing a third party add-on
+          </a>
+          </span>.
+        </p>
+
+        <form style="float: left;"
+              action="installProducts"
+              tal:attributes="action python:QI.absolute_url()+'/installProducts'"
+              method="post">
+
+            <fieldset style="margin-right: 1em;">
+                <legend i18n:translate="">Available add-ons</legend>
+
+                <ul class="configlets">
+                    <li tal:define="products QI/listInstallableProducts;"
+                        tal:repeat="product products">
+                    <tal:product define="pid product/id">
+
+                        <input class="noborder"
+                               type="checkbox"
+                               name="products:list"
+                               tal:attributes="value pid;
+                                               id pid;" />
+
+                        <label for="" tal:attributes="for pid">
+
+                            <tal:block replace="structure context/product_icon.png"/>
+
+                            <span tal:replace="product/title">
+                              Add-on Name
+                            </span>
+
+                            <span tal:replace="python:QI.getProductVersion(product['id'])">
+                              1.2
+                            </span>
+                        </label>
+
+                        <ul class="configletDetails"
+                            tal:define="product_file python:container.portal_quickinstaller.getProductFile(pid);
+                                        product_desc python:container.portal_quickinstaller.getProductDescription(pid);
+                                        has_error product/hasError"
+                            tal:condition="python: product_file or product_desc or has_error">
+                            <li class="configletDescription"
+                                tal:condition="product_desc"
+                                tal:content="product_desc">
+                                    add-on description
+                            </li>
+                            <li tal:condition="product_file">
+                                <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
+                                    <img src="" alt=""
+                                         tal:replace="structure context/book_icon.png" />
+                                    <span i18n:translate="text_product_description">
+                                        Add-on Description
+                                    </span>
+                                </a>
+                            </li>
+                            <li tal:condition="has_error">
+                                <a tal:attributes="href string:${QI/absolute_url}/${pid}/prefs_installed_product_overview">
+                                    <img src="" alt=""
+                                         tal:replace="structure context/error_icon.png" />
+                                    <span i18n:translate="text_broken_product">
+                                        This add-on is not properly installed.
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </tal:product>
+                    </li>
+                </ul>
+
+                <input class="context"
+                       type="submit"
+                       i18n:attributes="value label_activate;"
+                       value="Activate"
+                       />
+            </fieldset>
+        </form>
+
+        <form style="float: left;"
+              action="uninstallProducts"
+              tal:condition="python:len([p for p in QI.listInstalledProducts() if not p['isHidden'] and not p['isLocked']])"
+              tal:attributes="action python:QI.absolute_url()" method="post">
+
+            <fieldset>
+                <legend i18n:translate="">Activated add-ons</legend>
+
+                <ul class="configlets">
+                    <tal:products tal:define="products QI/listInstalledProducts;"
+                                  tal:repeat="product products">
+                    <tal:filter condition="python: not product['isHidden'] and not product['isLocked']">
+
+                    <li tal:define="pid product/id;
+                                    prodver python:QI.getProductVersion(pid);">
+
+                        <input class="noborder"
+                               type="checkbox"
+                               name="products:list"
+                               tal:attributes="value pid;
+                                               id pid;"
+                               tal:condition="not: product/isLocked"
+                               />
+
+                        <label for="" tal:attributes="for pid">
+                            <tal:block replace="structure context/product_icon.png"/>
+                            <span tal:replace="product/title" />
+
+                            <span tal:replace="prodver">
+                            1.3
+                            </span>
+                        </label>
+
+                        <ul class="configletDetails"
+                            tal:define="product_file python:container.portal_quickinstaller.getProductFile(pid);
+                                        product_desc python:container.portal_quickinstaller.getProductDescription(pid);">
+                            <li class="configletDescription"
+                                tal:condition="product_desc"
+                                tal:content="product_desc">
+                                    add-on description
+                            </li>
+                            <li tal:condition="product_file">
+                                <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" >
+                                    <img alt="" src=""
+                                         tal:replace="structure context/book_icon.png" />
+                                    <span i18n:translate="">Add-on Description</span>
+                                </a>
+                            </li>
+
+                            <li tal:define="upgrade_info python:QI.upgradeInfo(pid)"
+                                tal:condition="upgrade_info/required">
+                              <span>
+                                <img alt="" src=""
+                                     tal:replace="structure context/error_icon.png" />
+                                <span i18n:translate="">
+                                  This add-on has been upgraded.
+                                </span>
+                                <span tal:condition="not:upgrade_info/hasProfile"
+                                      i18n:translate="label_product_upgrade_old_version">
+                                  Old version was <b i18n:name="version" tal:content="upgrade_info/installedVersion">version</b>.
+                                </span>
+                                <span tal:condition="upgrade_info/hasProfile">
+                                  <tal:span i18n:translate="label_product_upgrade_old_profile_version">
+                                    Old profile version was <b i18n:name="version" tal:content="upgrade_info/installedVersion">version</b>.
+                                  </tal:span>
+                                  <tal:span i18n:translate="label_product_upgrade_new_profile_version">
+                                    New profile version is <b i18n:name="version" tal:content="upgrade_info/newVersion">version</b>.
+                                  </tal:span>
+                                </span>
+                                <span i18n:translate="label_product_upgrade_action"
+                                  tal:condition="upgrade_info/available">
+                                   Upgrade:
+                                  <span i18n:name="reinstall_button">
+                                    <input class="context"
+                                           type="submit"
+                                           value="product"
+                                           name="prefs_reinstallProducts:method"
+                                           tal:attributes="value pid;"
+                                           />
+                                  </span>
+                                </span>
+                                <span i18n:translate=""
+                                      tal:condition="not:upgrade_info/available">
+                                  There is no upgrade procedure defined for this
+                                  add-on. Please consult the add-on documentation
+                                  for upgrade information, or contact the add-on
+                                  author.
+                                </span>
+                              </span>
+                            </li>
+
+                            <li tal:condition="python:not QI.isProductAvailable(pid)">
+                                <img alt="" src=""
+                                     tal:replace="structure context/error_icon.png" />
+                                <span i18n:translate="">
+                                    This add-on has been removed from the file system.
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                    </tal:filter>
+                    </tal:products>
+                </ul>
+
+                <input class="context"
+                       type="submit"
+                       i18n:attributes="value label_deactivate;"
+                       value="Deactivate"
+                       name="uninstallProducts:method"
+                       />
+            </fieldset>
+        </form>
+
+        <form style="float: left;"
+            tal:define="broken QI/getBrokenInstalls"
+            tal:condition="broken">
+
+            <fieldset>
+                <legend i18n:translate="heading_broken_products">Broken products</legend>
+
+                <div class="field" i18n:translate="description_broken_products">
+                    Some products were found to have errors when compiling the install file.
+                </div>
+
+                <ul class="configlets">
+                    <li tal:repeat="product broken">
+
+                        <label for="" tal:attributes="for product">
+                            <tal:block replace="structure context/product_icon.png"/>
+                            <span tal:replace="product/productname">
+                                Product Name
+                            </span>
+                        </label>
+
+                        <dl>
+                            <dt i18n:translate="label_error_type">Error Type</dt>
+                            <dd tal:content="product/type" />
+                            <dt i18n:translate="label_error_value">Error Value</dt>
+                            <dd tal:content="product/value" />
+                        </dl>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+        <div class="visualClear" id="clear-space-after-broken"><!-- --></div>
+    </div>
+</metal:main>
+
+</body>
+</html>

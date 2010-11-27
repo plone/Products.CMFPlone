@@ -1,0 +1,3 @@
+[actions]
+action.success=traverse_to:string:login_next
+action.login_change_password=traverse_to:string:login_password

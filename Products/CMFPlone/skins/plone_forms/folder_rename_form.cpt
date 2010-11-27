@@ -1,0 +1,152 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="top_slot"
+               tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <metal:main fill-slot="main">
+
+      <tal:block tal:condition="not: request/paths | nothing"
+                 tal:replace="python:context.redirectToReferrer('Please select one or more items to rename.')"/>
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_rename_item">Rename item</h1>
+
+      <div class="documentDescription"
+           i18n:translate="description_rename_item">Each item has a Short Name and a Title, which you can change
+           by entering the new details below.</div>
+
+      <div id="content-core">
+          <tal:defines tal:define="paths request/paths|python:[];
+                                   items python:context.getObjectsFromPathList(paths);
+                                   errors options/state/getErrors;
+                                   checkPermission nocall: context/portal_membership/checkPermission;">
+
+              <tal:block tal:condition="python:paths and not items"
+                         tal:replace="python:context.redirectToReferrer('The item(s) you selected are no longer available.')"/>
+
+              <form name="folder_rename"
+                    class="enableAutoFocus"
+                    action="folder_rename"
+                    method="post"
+                    tal:attributes="action template/getId"
+                    tal:condition="items">
+
+                <input type="hidden" name="form.submitted" value="1" />
+                <input type="hidden" name="orig_template"
+                       tal:condition="request/orig_template|nothing"
+                       tal:attributes="value request/orig_template"/>
+
+                <fieldset tal:repeat="obj items">
+
+                  <tal:block define="item obj/getId;
+                                     item_path python:'/'.join(obj.getPhysicalPath());
+                                     error python:errors and errors.get(item, None);">
+
+                    <legend>
+                      <span tal:condition="obj/Title|nothing"
+                            tal:replace="obj/Title" />
+                      <span class="discreet" tal:content="string:(${item})" />
+                    </legend>
+
+                    <div class="field"
+                         tal:attributes="class python:test(error, 'field error', 'field')">
+
+                      <div tal:condition="error"
+                           tal:content="error">Validation error output</div>
+
+                      <div tal:define="canRenameItem python:checkPermission('Delete objects', obj) and checkPermission('Copy or Move', obj);"
+                           tal:attributes="class python:test(canRenameItem, nothing, 'error')">
+
+                        <label tal:attributes="for string:${item}_id;"
+                               i18n:translate="label_new_short_name">
+                          New Short Name
+                        </label><div></div>
+
+                        <div class="formHelp"
+                             i18n:translate="help_short_name_url">
+                        Short name is the part that shows up in the URL of the item.
+                        </div>
+                            <span tal:condition="not:canRenameItem"
+                                  i18n:translate="rename_item_not_allowed">
+                                You are not allowed to modify the id of this item.
+                            </span>
+
+                            <input type="hidden"
+                                   name="paths:list"
+                                   value="fav_999816073"
+                                   tal:condition="canRenameItem"
+                                   tal:attributes="value item_path" />
+
+                            <input type="text"
+                                   name="new_ids:list"
+                                   id=""
+                                   value=""
+                                   size="40"
+                                   tal:condition="canRenameItem"
+                                   tal:attributes="value item;
+                                                   id string:${item}_id;" />
+
+                      </div>
+
+                      <div tal:define="canModifyItem python:checkPermission('Modify portal content', obj);"
+                           tal:attributes="class python:test(canModifyItem, nothing, 'error')">
+
+                        <label tal:attributes="for string:${item}_title;"
+                               i18n:translate="label_new_title">
+                          New Title
+                        </label><div></div>
+
+                            <span tal:condition="not:canModifyItem"
+                                  i18n:translate="change_id_for_item_not_allowed">
+                                You are not allowed to modify the title of this item.
+                            </span>
+
+                            <input type="text"
+                                   name="new_titles:list"
+                                   value="title"
+                                   size="40"
+                                   tal:condition="canModifyItem"
+                                   tal:attributes="value obj/Title;
+                                                   id string:${item}_title;" />
+
+                      </div>
+
+                    </div>
+
+                  </tal:block>
+
+                </fieldset>
+
+                <div class="formControls">
+
+                  <input class="context"
+                         type="submit"
+                         value="Rename All"
+                         name="form.button.RenameAll"
+                         i18n:attributes="value label_rename_all;"
+                         />
+                  <input class="standalone"
+                         type="submit"
+                         value="Cancel"
+                         name="form.button.Cancel"
+                         i18n:attributes="value label_cancel;"
+                         />
+                </div>
+
+                <input tal:replace="structure context/@@authenticator/authenticator" />
+
+              </form>
+          </tal:defines>
+      </div>
+
+    </metal:main>
+
+  </body>
+</html>

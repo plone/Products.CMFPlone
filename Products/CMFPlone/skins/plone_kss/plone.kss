@@ -1,0 +1,348 @@
+/* <dtml-call expr="RESPONSE.setHeader('pragma','no-cache')"> */
+
+/*
+    The above trick to let this file not be cached does not work, unless this file is renamed to have
+    a kss.dtml extension.
+*/
+
+
+/* General stylesheet for Plone AJAX */
+
+/* Add class to body to allow conditional styling when kss is available */
+
+body:load {
+  action-client: addClass;
+  addClass-value: kssActive;
+}
+
+ul.contentViews li a:plone-formProtectionChecked {
+    action-server: replaceContentRegion;
+    replaceContentRegion-tabid: nodeAttr(id, true);
+    replaceContentRegion-url: nodeAttr(href);
+    replaceContentRegion-error: plone-followLink;
+    action-client: plone-removeLockProtection;
+}
+
+/* 
+Load the kupu editor.
+
+The editor is also loaded from the page, so
+we give the initial=false, otherwise that
+should be left out if we do that too.
+*/
+
+iframe.kupu-editor-iframe:load {
+    action-client: plone-initKupu;
+}
+
+#content:load {
+    evt-load-initial: false;
+    action-client: initializeCollapsible;
+}
+
+/*
+This loads the external links markers each time an element marked inlineEditable
+is reloaded (needed to make it work with inlineEditable). However, this isn't the best,
+client-performance wise.
+TODO: Find a better way to "bind just once" or just bind the effectively reloaded links,
+and not rebind everything
+*/
+#content .inlineEditable:load {
+    evt-load-initial: false;
+    action-client: bindExternalLinks;
+}
+
+/* 
+Portlet refreshing. The refreshing portlets
+must have the kssPortletRefresh class for selection.
+You can also select per portlet, however this shows
+how to handle them all in one rule.
+*/
+/*
+dl.kssPortletRefresh:timeout {
+    evt-timeout-delay: 60000;
+    action-server: refreshPortlet;
+    refreshPortlet-portlethash: kssAttr("portlethash", True);
+    refreshPortlet-name: nodeAttr(id);
+}
+*/
+
+/* Deferred portlets */
+div.portlet-deferred:load {
+    action-server: refreshPortlet;
+    refreshPortlet-portlethash: kssAttr(portlethash, True);
+}
+
+/*
+Content Menu Sections: General
+*/
+
+#contentActionMenus:load {
+    evt-load-initial: false;
+    action-client: bindActionMenus;
+}
+
+/*
+Content Menu Sections: Change View
+*/
+
+/*
+#plone-contentmenu-display dd.actionMenuContent a:click {
+    evt-click-preventdefault: True;
+    action-server: changeViewTemplate;
+    evt-click-allowbubbling: True; 
+    changeViewTemplate-url: nodeAttr(href);
+}
+*/
+
+/* This rule is needed for keeping the default behavior for menu elements that */
+/* are supposed to send user to another page */
+#contextSetDefaultPage:click {
+    evt-click-preventdefault: False;
+    action-cancel: changeViewTemplate;
+}
+#folderChangeDefaultPage:click {
+    evt-click-preventdefault: False;
+    action-cancel: changeViewTemplate;
+}
+
+/*
+Content Menu Sections: Cut and Paste
+*/
+ /* Needed allowbubbling, because the menu-item is inside a span an the event selector is on the enclosing a-tag */
+
+a.actionicon-object_buttons-cut:click {
+    evt-click-preventdefault: True;
+    evt-click-allowbubbling: True;
+    action-server: cutObject;
+}
+
+a.actionicon-object_buttons-copy:click {
+    evt-click-preventdefault: True;
+    evt-click-allowbubbling: True; 
+    action-server: copyObject;
+}
+
+/*
+Content Menu Sections: Workflow State
+*/
+#plone-contentmenu-workflow dd.actionMenuContent a:click {
+    evt-click-preventdefault: True;
+    evt-click-allowbubbling: True; 
+    action-server: changeWorkflowState;
+    changeWorkflowState-url: nodeAttr(href);
+}
+
+
+#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
+    evt-click-preventdefault: False;
+    action-cancel: changeWorkflowState;
+}
+
+/* 
+In-place calendar changing
+*/
+a.kssCalendarChange:click {
+    evt-click-preventdefault:      true;
+    action-server:                 refreshCalendar;
+    refreshCalendar-portlethash:   kssAttr(portlethash, True);
+    refreshCalendar-year:          kssAttr(year);
+    refreshCalendar-month:         kssAttr(month);
+}
+
+/* Spinner */
+
+
+/* effects do not seem to like animated gifs 
+#kss-spinner:spinneron {
+    evt-spinneron-laziness: 1000;
+    action-client: effect;
+    effect-type: appear;
+}
+
+#kss-spinner:spinneroff {
+    action-client: effect;
+    effect-type: fade;
+}
+*/
+
+#kss-spinner:spinneron {
+    action-client: setStyle;
+    setStyle-name: display;
+    setStyle-value: block;
+}
+
+#kss-spinner:spinneroff {
+    action-client: setStyle;
+    setStyle-name: display;
+    setStyle-value: none;
+}
+
+
+/*
+** Form tabs
+*/
+
+form.enableFormTabbing:load {
+    evt-load-initial: false;
+    action-client: plone-initFormTabs;
+}
+
+form.enableUnloadProtection:load {
+    evt-load-initial: false;
+    action-client: plone-initFormProtection;
+}
+
+form.enableUnlockProtection:load {
+    evt-load-initial: false;
+    action-client: plone-initLockingProtection;
+}
+
+/* disable lock refreshing when an inlineEditable field is reloaded
+   in view mode via AJAX (e.g. when Cancel is pressed) */
+div.inlineEditable:load {
+    evt-load-initial: false;
+    action-client: plone-removeLockProtection;
+}
+
+/*  Selector for the sharing page in plone.app.workflow.
+    the search_term parameters, puts the needed info into the request
+ */
+
+#sharing-save-button:click {
+  evt-click-preventdefault: true;
+  action-server: updateSharingInfo;
+  updateSharingInfo-kssSubmitForm: currentForm();
+  updateSharingInfo-error: plone-submitCurrentForm;
+}
+
+#sharing-user-group-search:keydown {
+    evt-keydown-preventdefault: true;
+    evt-keydown-keycodes: 13;
+    action-client: log;
+}
+
+#sharing-user-group-search:keypress {
+    evt-keypress-preventdefault: true;
+    evt-keypress-keycodes: 13;
+    action-client: log;
+}
+
+#sharing-user-group-search:keyup {
+  evt-keyup-preventdefault: true;
+  evt-keyup-keycodes: 13;
+  action-server: updateSharingInfo;
+  updateSharingInfo-kssSubmitForm: currentForm();
+}
+
+
+/* kupu stuff */
+#kupu-save-button:load {
+   action-client: setStyle;
+   setStyle-name: display;
+   setStyle-value: inline;
+}
+
+button.kupu-save:click {
+   action-server: savekupu;
+   savekupu-text: currentFormVarFromKssAttr("atfieldname", true);
+   savekupu-fieldname: kssAttr("atfieldname", true);
+}
+
+/* Folder contents stuff */
+
+body:load { 
+    action-client: plone-initShiftDetection;
+}
+
+#folderlisting-main-table input[type="checkbox"]:change {
+    action-client: plone-createCheckBoxSelection;
+    plone-createCheckBoxSelection-group: 'table.listing input[type="checkbox"]';
+}
+
+
+#folderlisting-main-table input[type="checkbox"]:change {
+    action-client: toggleClass;
+    toggleClass-kssSelector: parentnode("table.listing tbody tr");
+    toggleClass-classname: "selected";
+}
+
+/* Generic setup which (made more specific by other rules) */
+.update-selection:click, #listing-table .column:click {
+    action-server: update_table url(kssAttr("serveraction", true));
+    evt-click-preventdefault: True;
+    update_table-pagenumber: currentFormVar('pagenumber');
+    update_table-show_all: currentFormVar('show_all');
+    update_table-sort_on: currentFormVar('sort_on');
+}
+
+#foldercontents-show-batched:click {
+    update_table-show_all: "false";
+} 
+
+#foldercontents-show-all:click {
+    update_table-show_all: "true";
+        update_table-pagenumber: "1";
+} 
+
+#foldercontents-title-column:click {
+    update_table-sort_on: "sortable_title";
+} 
+
+#foldercontents-modified-column:click {
+    update_table-sort_on: "modified";
+} 
+
+#foldercontents-status-column:click {
+    update_table-sort_on: "review_state";
+} 
+
+#foldercontents-selectall:click {
+    update_table-select: 'screen';
+} 
+
+#foldercontents-selectall-completebatch:click {
+    update_table-select: 'all';
+} 
+
+#foldercontents-clearselection:click {
+    update_table-select: 'none';
+} 
+
+#folderlisting-main-table:load { 
+    action-client: plone-initDragAndDrop;
+    plone-initDragAndDrop-table: '#listing-table';
+}
+
+#folderlisting-main-table:load { 
+    action-client: plone-initCheckBoxSelection;
+}
+
+/* kupu stuff */
+#kupu-save-button:load {
+   action-client: setStyle;
+   setStyle-name: display;
+   setStyle-value: inline;
+}
+
+div.kupu-save-message:timeout {
+   evt-timeout-delay: 2000;
+   evt-timeout-repeat: '';
+   action-client: deleteNode;
+}
+
+#portal-message:timeout {
+   evt-timeout-delay: 2000;
+   evt-timeout-repeat: '';
+   action-client: deleteNode;
+}
+
+/* check if the object if really locked before showing the icon */
+/* an xmlhttprequest might have just been sent on the object to */
+/* unlock just a few moment ago. So we need to be really sure   */
+/* that the object wasn't locked, to be sure, we do one more    */
+/* xmlhttprequest */
+#lock-icon:load{
+    action-server: updateLockInfo;
+}
+

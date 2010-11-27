@@ -1,0 +1,140 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en"
+      lang="en"
+      i18n:domain="plone">
+    <head>
+        <title tal:condition="nothing">User/Group Search Macro(s)</title>
+    </head>
+    <body>
+
+    <div metal:define-macro="user_group_search">
+      <form action=""
+          name="groups"
+          method="post"
+          tal:attributes="action context/absolute_url"
+          tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+                      b_start request/b_start | python:0;
+                      b_size python:20;
+                      searchstring request/searchstring | nothing;
+                      searchonly searchonly | nothing;
+                      many_groups context/portal_properties/site_properties/many_groups;
+                      mq python:modules['ZTUtils'].make_query;
+                      results python:(not many_groups and context.portal_groups.listGroups()) or (searchstring and context.prefs_user_group_search(searchstring, searchonly)) or None;
+                      batch python:results and Batch(results, b_size, int(b_start), orphan=1) or None;">
+
+        <span metal:define-slot="hiddens" />
+
+        <table class="listing" summary="Groups">
+          <tr>
+            <th colspan="2" tal:condition="many_groups">
+              <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+                    <input class="quickSearch"
+                           type="text"
+                           name="searchstring"
+                           value=""
+                           tal:attributes="value searchstring;"
+                           />
+
+                    <input type="hidden" name="searchonly" value="groups" />
+                    <input type="submit"
+                           class="searchButton"
+                           name="prefs_user_group_search_form"
+                           value="Search"
+                           i18n:attributes="value label_search;"
+                           tal:attributes="name string:${template/id}:method;" />
+
+            </th>
+          </tr>
+          <tal:block condition="python:results">
+          <tr>
+            <th tal:condition="takeaction | nothing">
+            <input class="noborder"
+                   type="checkbox"
+                   src="select_all_icon.png"
+                   name="selectButton"
+                   title="Select all items"
+                   onClick="toggleSelect(this, 'add:list');"
+                   tal:attributes="src string:${context/portal_url}/select_all_icon.png"
+                   alt="Select all items"
+                   i18n:attributes="title label_select_all_items; alt label_select_all_items;"/>
+            </th>
+
+            <th i18n:translate="listingheader_group_user_name">Group/User name</th>
+          </tr>
+
+          <tal:block repeat="obj batch">
+
+            <tr tal:define="oddrow repeat/obj/odd"
+                tal:attributes="class python:test(oddrow,'odd','even')">
+
+              <td class="listingCheckbox">
+                <input type="checkbox"
+                       class="noborder"
+                       name="add:list"
+                       value="value"
+                           tal:define="calcId obj/getGroupId | obj/getId;
+                                       userid userid | nothing;
+                                       groupname groupname | nothing;
+                                       member context/@@plone_portal_state/member;
+                                       m python:userid and member or context.portal_membership.getMemberById(calcId);
+                                       g python:groupname and groupname or calcId;"
+                           tal:attributes="value calcId;
+                                           disabled python:m.canAddToGroup(g) and default or 'disabled'" />
+              </td>
+
+              <td>
+                <tal:block tal:condition="obj/getGroupName | nothing">
+                  <img src="group.png" alt="" />
+                  <a href="" tal:attributes="href python:'prefs_group_details?'+mq(groupname=obj.getGroupName())"
+                            tal:content="obj/getGroupName | default">
+                        <span i18n:translate="link_groupname_not_available">
+                            groupname not available
+                        </span>
+                  </a>
+                </tal:block>
+                <tal:block tal:condition="not:obj/getGroupName | nothing">
+                  <img src="user.png" alt="" />
+                  <a href="" tal:attributes="href python:'prefs_user_details?'+mq(userid=obj.getId())"
+                        tal:content="obj/getUserName | default">
+                        <span i18n:translate="link_username_not_available">
+                            username not available
+                        </span>
+                  </a>
+                </tal:block>
+              </td>
+            </tr>
+          </tal:block>
+          </tal:block>
+        </table>
+
+        <p tal:condition="python:searchstring and not results" i18n:translate="text_nomatches">No matches</p>
+
+        <tal:block condition="python:not many_groups or searchstring and results">
+
+        <input type="hidden" value="b_start" name="b_start"
+               tal:attributes="value b_start"/>
+
+        <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+        <metal:block metal:define-slot="actions" >
+        <input class="context"
+               type="submit"
+               name="addingaction"
+               value="Use Selected..."
+               tal:condition="batch"
+               i18n:attributes="value label_use_selected;" />
+        </metal:block>
+
+        </tal:block>
+
+      </form>
+
+      <metal:block metal:define-slot="removables" />
+
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+      <head>
+          <script type="text/javascript" metal:fill-slot="javascript_head_slot">
+          </script>
+          <metal:block fill-slot="top_slot"
+                       tal:define="dummy python:request.set('disable_border',1);
+                                   disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                                   disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+      </head>
+<body>
+
+  <metal:main fill-slot="main"
+       tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
+                   came_from request/came_from|request/HTTP_REFERER|nothing;
+                   came_from python:test(context.portal_url.isURLInPortal(came_from), came_from, None);
+                   errors options/state/getErrors;
+                   ac_name auth/name_cookie|string:__ac_name;
+                   ac_password auth/pw_cookie|string:__ac_password;
+                   ac_persist auth/persist_cookie|nothing;
+                   login_name python:request.get('login_name', request.get(ac_name, ''));
+                   isAnon context/@@plone_portal_state/anonymous;
+                   ztu modules/ZTUtils;">
+
+<tal:reallyloggedout condition="isAnon">
+  <h1 class="documentFirstHeading"
+      i18n:translate="heading_signed_out">You are now logged out</h1>
+
+  <div class="documentDescription"
+     i18n:translate="description_loginagain">You can log in again below.</div>
+
+  <div id="content-core">
+      <p i18n:translate="description_no_account"
+         tal:define="join python:context.portal_actions['user'].get('join').get('url', None);
+                     checkPermission nocall: context/portal_membership/checkPermission;"
+         tal:condition="python: join and checkPermission('Add portal member', here)">
+
+          If you do not have an account here, head over to the
+
+          <span i18n:name="registration_form">
+              <a href=""
+                 tal:define="join python:join.pop();
+                             join join;
+                             join python:join+test(join.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from);"
+                 tal:attributes="href join"
+                 i18n:translate="description_no_account_registration_linktext">
+                  registration form</a></span>.
+
+      </p>
+
+      <dl class="portalMessage error"
+            id="enable_cookies_message"
+            style="display:none">
+            <dt i18n:translate="">
+                Error
+            </dt>
+            <dd i18n:translate="enable_cookies_message_before_login">
+                Cookies are not enabled. You must enable cookies before you can log in.
+            </dd>
+        </dl>
+
+      <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
+          Since cookie authentication is disabled, cookie-based login is not available.
+      </div>
+
+      <metal:login use-macro="context/login_form/macros/login" />
+  </div>
+
+</tal:reallyloggedout>
+
+<tal:notloggedoutafterall tal:condition="not: isAnon">
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_quit_to_log_out">Still logged in as a Zope user</h1>
+
+    <div class="documentDescription" i18n:translate="description_quit_to_log_out">
+        You are logged in via HTTP authentication (i.e. the Zope Management
+        Interface). In order to log out, you must:
+    </div>
+
+    <div id="content-core">
+        <p i18n:translate="">
+            <a i18n:name="text_logged_out_link"
+               tal:attributes="href string:${portal_url}/@@plone-root-logout"
+               i18n:translate="">
+                Visit this link
+            </a>
+            and click 'Cancel' when prompted with an authentication prompt.
+        </p>
+    </div>
+</tal:notloggedoutafterall>
+
+</metal:main>
+</body>
+</html>

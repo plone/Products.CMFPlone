@@ -1,0 +1,189 @@
+Adding, Editing, Moving and Deleting a Document
+===============================================
+
+Does what the title says, really.  Plus some assertions.
+
+    # BBB Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> browser.open('http://nohost/plone/login_form')
+
+First, we need to log in.
+
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+We need to allow multiple languages to see the result of our changes:
+
+    >>> self.portal.portal_languages.supported_langs = ['de', 'en']
+
+Add Document
+------------
+
+What we do next is we 
+
+  - go to our home folder,
+  - add a new page,
+  - edit some values,
+  - save the page,
+  - and along the way we check that everything works as expected.
+
+Note that this is slightly different to how the testrecorder result
+looks like because we're navigating the page with a JavaScript- less
+browser.
+
+    >>> browser.open('http://nohost/plone/Members/test_user_1_')
+    >>> browser.getLink('Add new').click()
+    >>> 'Add new item' in browser.contents
+    True
+    >>> browser.getControl('Page').click()
+    >>> browser.getControl('Add').click()
+    >>> #'Edit Page' in browser.contents # ouch, Plone has <span> around 'Page'
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/portal_factory/Document/.../edit'
+
+Now that the document has been added, we can edit it, but we pretend
+we don't know better and forget to type in a Title:
+
+    >>> browser.getControl('Body Text').value = 'About test_user_1_'
+    >>> browser.getControl('Save').click()
+    >>> 'Title is required, please correct.' in browser.contents
+    True
+
+Oops, let's fill that in quickly:
+
+    >>> browser.getControl('Title').value = 'My Page'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved.' in browser.contents
+    True
+    >>> 'My Page' in browser.contents
+    True
+
+We edit the document a second time:
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl('Title').value = 'Ons Bier'
+    >>> browser.getControl('Save').click()
+    >>> 'Ons Bier' in browser.contents
+    True
+
+We go now to the document absolute url:
+
+    >>> browser.open('http://nohost/plone/Members/test_user_1_/my-page')
+
+Editing the document and clicking the Cancel button doesn't modify it:
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl('Title').value = 'Min sida'
+    >>> browser.getControl('Cancel').click()
+    >>> 'Min sida' not in browser.contents
+    True
+
+We are now at the document absolute url:
+
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/my-page'
+
+If we click the Edit link twice and then Cancel, we end at the
+canonical view of the document:
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.getLink('Edit').click()    
+    >>> browser.getControl('Cancel').click() 
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/my-page/view'
+
+
+Editing Properties
+------------------
+
+We edit the document properties:
+
+    >>> browser.getLink('Edit').click()
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/my-page/edit'
+
+We make sure the language is English at the beginning:
+
+    >>> browser.getControl(name='language').displayValue
+    ['English']
+
+And the content language is set to the default:
+
+    >>> browser.headers.dict['content-language']
+    'en'
+
+Now set the language to German:
+
+    >>> browser.getControl(name='language').value = ['de']
+    >>> browser.getControl(name='language').displayValue
+    ['German']
+
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved.' in browser.contents
+    True
+
+Make sure the content language was updated:
+
+    >>> browser.headers.dict['content-language']
+    'de'
+
+Cut and paste Document
+----------------------
+
+We'll first cut our Document. Then we'll create folder where we paste
+the Document into.
+
+    >>> browser.getLink('Actions').click()
+
+First off, we'll cut our document:
+
+    >>> browser.getControl('Ons Bier').click()
+    >>> browser.getControl('Cut').click()
+
+Before doing the actual paste, we create a folder to paste into.
+
+    >>> browser.getLink('Add new').click()
+    >>> 'Add new item' in browser.contents
+    True
+    >>> browser.getControl('Folder').click()
+    >>> browser.getControl('Add').click()
+    >>> #'Edit Folder' in browser.contents # empty <span> again
+    True
+    >>> browser.getControl('Title').value = 'My Folder'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved.' in browser.contents
+    True
+
+The Folder has been created, now we can paste the Document in our copy
+buffer here:
+
+    >>> browser.getLink('Actions').click()
+    >>> browser.getControl('Paste').click()
+    >>> 'Item(s) pasted.' in browser.contents
+    True
+    >>> 'Ons Bier' in browser.contents
+    True
+
+Delete Document
+---------------
+
+Again, also deleting a Document without JavaScript involves visiting
+the ``folder_contents`` page and clicking a checkbox.
+
+    >>> browser.open('http://nohost/plone/Members/test_user_1_/my-folder/')
+    >>> browser.getLink('Actions').click()
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/my-folder/folder_contents'
+
+This is how we click the checkbox.  There's a nicer way to do this,
+I'm sure:
+
+    >>> browser.getControl('Ons Bier').click()
+    >>> browser.getControl('Delete').click()
+    >>> 'Item(s) deleted.' in browser.contents
+    True

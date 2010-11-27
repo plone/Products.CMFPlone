@@ -1,0 +1,230 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="errors options/state/getErrors;
+                 ploneview context/@@plone;
+                 normalizeString nocall:ploneview/normalizeString;
+                 navtree_props context/portal_properties/navtree_properties;
+                 site_properties context/portal_properties/site_properties;">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_navigation_setup">Navigation Settings</h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string:${context/portal_url}/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+        Up to Site Setup
+    </a>
+
+    <p i18n:translate="description_navigation_setup">
+        Lets you control how navigation is constructed in your site.
+    </p>
+
+    <p i18n:translate="description_navigation_setup_navtree">
+        Note that to control how the navigation tree is displayed, you should
+        go to "Manage portlets" at the root of the site (or wherever a
+        navigation tree portlet has been added) and change its settings
+        directly.
+    </p>
+
+    <form action=""
+          name=""
+          method="post"
+          tal:attributes="action string:${context/portal_url}/${template/getId}">
+
+        <fieldset>
+            <legend i18n:translate="legend_navigation_details">Navigation details</legend>
+
+            <div class="field"
+                 tal:define="generated_tabs python: not site_properties.disable_folder_sections;
+                             generated_tabs request/generated_tabs | generated_tabs;
+                             error errors/generated_tabs | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_allow_any"
+                       name="generated_tabs"
+                       value="1"
+                       tal:attributes="checked python:test(generated_tabs, 'checked', None)" />
+
+                <label for="cb_allow_any"
+                       i18n:translate="label_generated_tabs_enable">
+                    Automatically generate tabs
+                </label>
+
+                <div class="formHelp" i18n:translate="help_generated_tabs">
+                    By default, all items created at the root level will add to
+                    the global section navigation. You can turn this off if you
+                    prefer manually constructing this part of the navigation.
+                </div>
+            </div>
+
+            <div class="field"
+                 tal:define="nonfolderish_tabs python: not site_properties.disable_nonfolderish_sections;
+                             nonfolderish_tabs request/nonfolderish_tabs | nonfolderish_tabs;
+                             error errors/nonfolderish_tabs | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_allow_nonfolderish"
+                       name="nonfolderish_tabs"
+                       value="1"
+                       tal:attributes="checked python:test(nonfolderish_tabs, 'checked', None)" />
+
+                <label for="cb_allow_nonfolderish"
+                       i18n:translate="label_nonfolderish_tabs_tabs_enable">
+                    Generate tabs for items other than folders.
+                </label>
+
+                <div class="formHelp" i18n:translate="help_nonfolderish_tabs">
+                    By default, any content item in the root of the portal will be shown
+                    as a global section. If you turn this option off, only folders
+                    will be shown.
+                    This only has an effect if "Automatically generate tabs" is enabled.
+                </div>
+            </div>
+
+            <div class="field"
+                 tal:define="allparents python: navtree_props.showAllParents;
+                             allparents request/allparents | allparents;
+                             error errors/allparents | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_allparents"
+                       name="allparents"
+                       tal:attributes="checked python:test(allparents, 'checked', None)" />
+
+                <label for="cb_allparents"
+                       i18n:translate="label_allparents_enable">
+                    Show items normally excluded from navigation if viewing their children.
+                </label>
+
+                <div class="formHelp" i18n:translate="help_allparents_enable">
+                    If an item has been excluded from navigation should it be shown in navigation
+                    when viewing content contained within it or within a subfolder.
+                </div>
+            </div>
+
+            <div class="field" id="navigationtypes-field"
+                 tal:define="
+                       portal_types     context/portal_types;
+                       plone_utils      context/plone_utils;
+                       userTypes        plone_utils/getUserFriendlyTypes;
+                       allTypes         python:[portal_types.getTypeInfo(t) for t in userTypes];
+                       typeLists        python:context.createMultiColumnList(allTypes, numCols=3, sort_on='title_or_id');
+                       blacklisted      navtree_props/metaTypesNotToList;
+                       searchTypes      python:[t.getId() for t in allTypes if t.getId() not in blacklisted];">
+
+                <label i18n:translate="label_navigation_types">
+                    Displayed content types
+                </label>
+
+                <div class="formHelp"
+                     id="navigationtypes_help"
+                     i18n:translate="help_navigationtypes">
+                    The content types that should be shown in the navigation
+                    and site map.
+                </div>
+
+                <div style="float:left; margin-right: 2em; width: 29%" tal:repeat="sublist typeLists">
+                   <ul class="configlets">
+                     <li tal:repeat="ptypeInfo sublist">
+                       <input class="noborder"
+                           type="checkbox"
+                           name="portaltypes:list"
+                           tal:attributes="value ptypeInfo/getId;
+                                           id python:normalizeString(ptypeInfo.getId());
+                                           checked python:test(ptypeInfo.getId() in searchTypes,'checked','');" />
+                       <label for=""
+                           i18n:translate=""
+                           tal:attributes="for python:normalizeString(ptypeInfo.getId())"
+                           tal:content="ptypeInfo/Title"
+                           />
+                    </li>
+                   </ul>
+                </div>
+            </div>
+
+            <div class="visualClear"><!-- --></div>
+
+            <div class="field" id="navigationstates-field"
+                 tal:define="
+                       states          python:context.portal_workflow.listWFStatesByTitle(filter_similar=1);
+                       state_lists     python:context.createMultiColumnList(states, numCols=1, sort_on='self');
+                       cur_list        navtree_props/wf_states_to_show;">
+
+                <fieldset id="navtree_wf_filter">
+                    <legend>
+                        <input class="noborder"
+                               type="checkbox"
+                               name="enable_wf_state_filtering"
+                               id="enable-wf-state-filtering"
+                               tal:attributes="checked navtree_props/enable_wf_state_filtering;" />
+                        <label for="enable-wf-state-filtering"
+                               style="font-size: 110%"
+                               i18n:translate="label_navtree_wf_enable">
+                            Filter on workflow state
+                        </label>
+                    </legend>
+
+                    <div class="formHelp"
+                         i18n:translate="help_wf_states">
+                        The workflow states that should be shown in the
+                        navigation tree and the site map.
+                    </div>
+
+                    <tal:states repeat="sublist state_lists">
+                    <ul class="configlets">
+                        <li tal:repeat="state sublist">
+                            <input class="noborder"
+                                   type="checkbox"
+                                   name="wf_states_to_show:list"
+                                   tal:attributes="value python:state[1];
+                                                   id python:normalizeString(state[1]);
+                                                   checked python:test(state[1] in cur_list,'checked','');" />
+                            <label for=""
+                                   i18n:translate=""
+                                   tal:attributes="for python:normalizeString(state[1])"
+                                   tal:content="python:state[0] or state[1]"
+                                   />
+                        </li>
+                    </ul>
+                    </tal:states>
+            </fieldset>
+
+            </div>
+
+            <div class="visualClear"><!-- --></div>
+
+            <div class="formControls">
+                <input class="context"
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       />
+            </div>
+
+        </fieldset>
+
+        <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<configure xmlns="http://namespaces.zope.org/zope" i18n_domain="plone">
+
+    <!-- Register the default indexable object wrapper -->
+    <adapter
+        for="Products.CMFCore.interfaces.ICatalogAware
+             Products.CMFPlone.interfaces.IPloneCatalogTool"
+        factory="plone.indexer.wrapper.IndexableObjectWrapper"
+        provides="plone.indexer.interfaces.IIndexableObject"
+        />
+
+    <!-- Register the default indexers -->
+    <adapter factory=".CatalogTool.allowedRolesAndUsers"   name="allowedRolesAndUsers" />
+    <adapter factory=".CatalogTool.object_provides"        name="object_provides" />
+    <adapter factory=".CatalogTool.sortable_title"         name="sortable_title" />
+    <adapter factory=".CatalogTool.getObjPositionInParent" name="getObjPositionInParent" />
+    <adapter factory=".CatalogTool.getObjSize"             name="getObjSize" />
+    <adapter factory=".CatalogTool.is_folderish"           name="is_folderish" />
+    <adapter factory=".CatalogTool.syndication_enabled"    name="syndication_enabled" />
+    <adapter factory=".CatalogTool.is_default_page"        name="is_default_page" />
+    <adapter factory=".CatalogTool.getIcon"                name="getIcon" />
+
+</configure>

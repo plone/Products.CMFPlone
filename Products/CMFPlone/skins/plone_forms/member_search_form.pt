@@ -1,0 +1,120 @@
+<html xmlns="http://www.w5.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+<metal:main fill-slot="main"
+     tal:define="checkPermission nocall: context/portal_membership/checkPermission;
+                 is_manager python: checkPermission('Manage portal', here)">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_member_search">Search for users</h1>
+
+    <div class="documentDescirption" i18n:translate="description_member_search">
+        This search form enables you to find users by specifying one or more
+        search criteria.
+    </div>
+
+    <div id="content-core">
+        <form action="member_search_results"
+              class="enableAutoFocus"
+              method="post"
+              name="search"
+              tal:define="DateTime python:modules['DateTime'].DateTime">
+
+            <fieldset>
+                <legend i18n:translate="legend_member_search_criteria">User Search Criteria</legend>
+
+                <div class="field">
+                    <label for="login"
+                           i18n:translate="label_name">Name</label>
+
+                    <div class="formHelp" i18n:translate="help_search_name">
+                        Find users whose login names contain
+                    </div>
+
+                    <input type="text"
+                           id="login"
+                           name="login"
+                           size="25"
+                           />
+                </div>
+
+                <div class="field">
+                    <label for="email"
+                           i18n:translate="label_email">E-mail</label>
+
+                    <div class="formHelp" i18n:translate="help_search_email">
+                        Find users whose email addresses contain
+                    </div>
+
+                    <input type="text"
+                           id="email"
+                           name="email"
+                           size="25"
+                           />
+                </div>
+
+               <div class="field">
+                    <label for="fullname"
+                           i18n:translate="label_fullname">Full Name</label>
+
+                    <div class="formHelp" i18n:translate="help_search_fullname">
+                    Return users with full names containing this value.
+                    </div>
+
+                    <input type="text"
+                           id="fullname"
+                           name="fullname"
+                           size="25"
+                           />
+                </div>
+
+                <div class="field"
+                     tal:condition="is_manager"
+                     tal:define="memberRoles request/roles|nothing;
+                                 portalRoles python:context.portal_membership.getPortalRoles()">
+
+                    <label
+                           i18n:translate="label_roles">Role(s)</label>
+
+                    <div class="formHelp" i18n:translate="help_search_roles">
+                        Find users with all of the selected roles.
+                    </div>
+
+                    <metal:role tal:repeat="role portalRoles">
+                        <input id="roles"
+                               name="roles:list"
+                               type="checkbox"
+                               class="noborder"
+                               tal:attributes="value role;
+                                               id string:roles_${repeat/role/number}"
+                               />
+                        <label for=""
+                               i18n:translate=""
+                               tal:attributes="for string:roles_${repeat/role/number}"
+                               tal:content="role"
+                               />
+                        <br />
+                    </metal:role>
+                </div>
+
+                <div class="formControls">
+                    <input class="context"
+                           type="submit"
+                           name="submit"
+                           value="Search"
+                           i18n:attributes="value label_search;"
+                           />
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</metal:main>
+
+</body>
+</html>

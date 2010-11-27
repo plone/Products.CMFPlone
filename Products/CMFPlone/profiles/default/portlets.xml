@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+
+ <!-- Columns (portlet managers) -->
+
+ <portletmanager
+   name="plone.leftcolumn"
+   type="plone.app.portlets.interfaces.ILeftColumn"
+   />
+
+ <portletmanager
+   name="plone.rightcolumn"
+   type="plone.app.portlets.interfaces.IRightColumn"
+   />
+
+ <portletmanager
+   name="plone.dashboard1"
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager
+   name="plone.dashboard2"
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager
+   name="plone.dashboard3"
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+ <portletmanager
+   name="plone.dashboard4"
+   type="plone.app.portlets.interfaces.IDashboard"
+   />
+
+ <!-- Portlet type registrations -->
+
+ <portlet
+   addview="portlets.Calendar"
+   title="Calendar portlet"
+   description="A portlet which can render a calendar."
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <portlet
+   addview="portlets.Classic"
+   title="Classic portlet"
+   description="A portlet which can render a classic template-based portlet"
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <portlet
+   addview="portlets.News"
+   title="News"
+   description="A portlet which can render a listing of recent news"
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <portlet
+   addview="portlets.Events"
+   title="Events"
+   description="A portlet which can render a listing of recent events"
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <portlet
+   addview="portlets.Login"
+   title="Login"
+   description="A portlet which can render a log-in box"
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+ </portlet>
+
+ <portlet
+   addview="portlets.Navigation"
+   title="Navigation"
+   description="A portlet which can render a navigation tree"
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+ </portlet>
+
+ <portlet
+   addview="portlets.Recent"
+   title="Recent items"
+   description="A portlet which can render a listing of recently changed items."
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <portlet
+   addview="portlets.Review"
+   title="Review list"
+   description="A portlet which can render a listing on the review queue."
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <portlet
+   addview="portlets.rss"
+   title="RSS Feed"
+   description="A portlet which can receive and render an RSS feed."
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <portlet
+   addview="portlets.Search"
+   title="Search"
+   description="A portlet which shows a search box."
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+</portlets>

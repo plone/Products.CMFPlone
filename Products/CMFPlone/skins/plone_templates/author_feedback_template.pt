@@ -1,0 +1,22 @@
+<div
+     xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     i18n:domain="plone"
+     tal:omit-tag=""
+     tal:define="portal context/@@plone_portal_state/portal;
+                 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % options['encoding']);"
+>
+
+<span tal:omit-tag="" tal:content="options/message | nothing" />
+
+--
+<span tal:replace="portal/email_from_name" />
+
+<div i18n:translate="author_feedback_mailtemplate_body" tal:omit-tag="">
+You are receiving this mail because <span i18n:name="from_address"
+tal:omit-tag="" tal:content="options/sender_id"/> is sending feedback about content you created at <span i18n:name="url" tal:replace="options/url" />.
+
+</div>
+</div>

@@ -1,0 +1,4 @@
+<tal:comment tal:condition="nothing">
+  Deprecated; see the overview-controlpanel view in plone.app.controlpanel.
+</tal:comment>
+<tal:block tal:replace="structure context/@@overview-controlpanel"/>

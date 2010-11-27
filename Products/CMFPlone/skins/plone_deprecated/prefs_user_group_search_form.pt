@@ -1,0 +1,144 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="context/prefs_main_template/macros/master"
+    i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+    tal:define="errors python:request.get('errors', {});
+                Batch python:modules['Products.CMFPlone'].Batch;
+                b_start python:request.get('b_start',0);
+                searchonly request/searchonly | nothing;
+                searchstring request/searchstring | nothing;
+                searchfor request/searchonly | request/searching | nothing;
+                mq python:modules['ZTUtils'].make_query;">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_search_usersandgroups">Search for Users and Groups</h1>
+
+    <p i18n:translate="description_search_usersandgroups">
+    Search for the users or groups you want to locate (blank search returns all),
+    and select the ones you want to add.
+    </p>
+
+    <form action=""
+          class="enableAutoFocus"
+          name="users"
+          method="post">
+
+        <span tal:omit-tag="" i18n:translate="label_show_me">Show me</span>
+
+        <select name="searching"
+                tal:condition="python: not context.prefs_valid_search_restriction(searchonly)">
+            <option value="both" i18n:translate="label_usersandgroups">Users and groups</option>
+            <option value="users" i18n:translate="label_users">Users</option>
+            <option value="groups" i18n:translate="label_groups">Groups</option>
+        </select>
+        <input type="hidden" name="searchonly"
+            tal:condition="python: context.prefs_valid_search_restriction(searchonly)"
+            tal:attributes="value request/searchonly" />
+        <span tal:condition="python: context.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="" i18n:translate="label_users">Users</span>
+        <input type="hidden" name="restrict" tal:condition="python: context.prefs_valid_search_restriction(searchonly,['users'])" value="users" />
+        <span tal:condition="python: context.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="" i18n:translate="label_groups">Groups</span>
+        <input type="hidden" name="restrict" tal:condition="python: context.prefs_valid_search_restriction(searchonly,['groups'])" value="groups" />
+        <input type="hidden" name="restrict" tal:condition="python: not context.prefs_valid_search_restriction(searchonly)" value="" />
+
+        <span i18n:translate="label_containing">containing</span>
+
+        <input type="text"
+               name="searchstring"
+               value=""
+            />
+
+        <input class="context"
+               type="submit"
+               name="prefs_user_group_search:method"
+               value="Search"
+               i18n:attributes="value label_search;"
+            />
+
+
+        <h2 i18n:translate="heading_returned_results">Returned results</h2>
+        <span tal:omit-tag="" i18n:translate="description_search_string"
+             >Search string:</span>
+        <span tal:content="request/searchstring | default" i18n:translate="">none specified</span>
+        <table class="listing"
+            id="sortable"
+            tal:define="searchresults python:Batch(context.prefs_user_group_search(searchstring, searchfor), 25, int(b_start), orphan=1)"
+            summary="Returned results" i18n:attributes="summary_returned_results;">
+
+            <tr>
+                <th tal:condition="request/takeaction | nothing">&nbsp;</th>
+                <th i18n:translate="listingheader_name">Name</th>
+                <th i18n:translate="listingheader_type">Type</th>
+            </tr>
+
+            <tr class="odd"
+            tal:repeat="usergroup searchresults"
+            tal:attributes="classex python:test(repeat['usergroup'].even, 'even', 'odd');
+                class repeat/usergroup/odd">
+                <td tal:condition="request/takeaction | nothing">
+                <input class="noborder"
+                    type="checkbox"
+                    selected="selected"
+                    name="id:list"
+                    tal:attributes="value usergroup/getGroupId | usergroup/getId" />
+                </td>
+
+                <td>
+                <img src="user.png" alt="" tal:condition="not:usergroup/getGroupName | nothing" />
+                <img src="group.png" alt="" tal:condition="usergroup/getGroupName | nothing" />
+
+                <a href="" tal:condition="not:usergroup/getGroupName | nothing"
+                    tal:attributes="href python:'prefs_user_details?'+mq(userid=usergroup.getId())"
+                    tal:content="usergroup/getUserName | default">
+                    username not available
+                </a>
+                <a href="" tal:condition="usergroup/getGroupName | nothing"
+                    tal:attributes="href python:'prefs_group_details?'+mq(groupname=usergroup.getGroupName())"
+                    tal:content="usergroup/getGroupName | default">
+                    groupname not available
+                </a>
+                </td>
+
+                <td tal:condition="not:usergroup/getGroupName | nothing"
+                    i18n:translate="text_user">User</td>
+                <td tal:condition="usergroup/getGroupName | nothing"
+                    i18n:translate="text_group">Group</td>
+            </tr>
+
+        </table>
+
+        <input type="hidden" name="userid" value=""
+            tal:condition="request/userid | nothing"
+            tal:attributes="value request/userid" />
+        <input type="hidden" name="groupname" value=""
+            tal:condition="request/groupname | nothing"
+            tal:attributes="value request/groupname" />
+        <input type="hidden" name="takeaction" value=""
+            tal:condition="request/takeaction | nothing"
+            tal:attributes="value request/takeaction" />
+
+        <input type="hidden" name="return_form" value=""
+               tal:attributes="value template/getId"/>
+
+        <input class="context"
+               type="submit"
+               name="prefs_user_manage:method"
+               value="Use Selected..."
+               tal:condition="request/takeaction | nothing"
+               tal:attributes="name string:${request/takeaction}:method"
+               i18n:attributes="value label_use_selected;"
+            />
+
+    </form>
+
+</div>
+
+</body>
+</html>
+

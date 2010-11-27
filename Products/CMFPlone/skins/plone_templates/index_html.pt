@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading" i18n:translate="heading_welcome_to">Welcome to
+        <span i18n:name="sitename" tal:omit-tag="" tal:content="context/Title">Portal title</span>
+    </h1>
+
+    <div class="documentDescription" tal:content="context/description">
+        Portal description
+    </div>
+
+</metal:main>
+
+</body>
+</html>

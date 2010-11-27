@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<metal:main fill-slot="main"
+     tal:define="transactions python:container.portal_undo.listUndoableTransactionsFor(here);
+                 Batch python:modules['Products.CMFPlone'].Batch;
+                 DateTime python:modules['DateTime'].DateTime;
+                 b_start python:request.get('b_start',0)">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_undo_actions">Undo actions</h1>
+
+    <div class="documentDescription" i18n:translate="description_undo_action">
+        This applications transactional feature allows you to easily undo changes
+        made to the applications settings or data. You can revert the application
+        to a &quot;snapshot&quot; of its state at a previous point in time.
+    </div>
+
+    <div id="content-core">
+        <form name="undo_form"
+              action="undo"
+              method="post"
+              tal:condition="transactions"
+              tal:define="batch python:Batch(transactions, 15, int(b_start), orphan=1)">
+
+            <input type="hidden" name="came_from" value="" tal:attributes="value request/HTTP_REFERER" />
+
+            <p i18n:translate="description_undo_action_select">
+            Select one or more transactions below and then click on the &quot;Undo&quot;
+            button to undo the transactions. Note that even though a transaction
+            is shown below, you will not be able to undo it if later transactions
+            modified objects that were modified by the transaction.
+            </p>
+
+            <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+            <table class="listing"
+                   summary="Undo history"
+                   cellpadding="0"
+                   cellspacing="0">
+
+                <thead>
+                    <tr>
+                        <th i18n:translate="label_undo">Undo</th>
+                        <th i18n:translate="listingheader_action_performed">Action performed</th>
+                        <th i18n:translate="listingheader_affected_item">Affected Item</th>
+                        <th i18n:translate="listingheader_performed_by">Performed by</th>
+                        <th i18n:translate="listingheader_date_and_time">Date and Time</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <metal:block tal:repeat="trx batch">
+                        <tr class="even"
+                            tal:define="oddrow repeat/trx/odd;
+                            descriptions python:trx.get('description').split('\n');"
+                            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+
+                            <td>
+                                <input type="checkbox"
+                                       class="noborder"
+                                       name="transaction_info:list" value=""
+                                       tal:attributes="value python:trx['id'];" />
+                            </td>
+
+                            <td tal:define="has_description python:len(descriptions)>1">
+
+                                <span tal:condition="has_description"
+                                      tal:replace="python:' '.join(descriptions[1:])">Title</span>
+                                <span tal:condition="not:has_description">&nbsp;</span>
+
+                            </td>
+
+                            <td tal:content="python:descriptions[0]">
+                            Action performed
+                            </td>
+
+                            <td tal:content="python:trx['user_name']">
+                            username
+                            </td>
+
+                            <td tal:content="python:trx['time']">
+                            date/time
+                            </td>
+                        </tr>
+                    </metal:block>
+                </tbody>
+            </table>
+
+            <input class="context"
+                   type="submit"
+                   name="undo:method"
+                   value="Undo"
+                   i18n:attributes="value label_undo;"
+                   />
+
+            <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+        </form>
+    </div>
+</metal:main>
+
+</body>
+</html>

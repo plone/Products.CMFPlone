@@ -1,0 +1,36 @@
+Browser tests
+=============
+Test the presence of the "title" tag in html page
+
+    # BBB Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> browser.open('http://nohost/plone/front-page')
+    >>> "<title>%s" % self.portal['front-page'].Title() in browser.contents
+    True
+
+
+Test for "template id" in <body> tag. See tickets #9111/#8777
+
+    >>> browser.open('http://nohost/plone/front-page')
+    >>> browser.contents
+    '...<body class="template-document_view portaltype-document section-front-page icons-on"...'
+    >>> browser.open('http://nohost/plone/news')
+    >>> browser.contents
+    '...<body class="template-folder_summary_view portaltype-topic section-news icons-on"...'
+
+Login 
+
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+Test explicit browser view 
+
+    >>> browser.open('http://nohost/plone/@@dashboard')
+    >>> browser.contents
+    '...<body class="template-dashboard portaltype-plone-site icons-on"...'

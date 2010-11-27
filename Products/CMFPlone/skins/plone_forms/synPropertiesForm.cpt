@@ -1,0 +1,201 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+  <body>
+
+    <metal:main fill-slot="main"
+         tal:define="errors options/state/getErrors;
+                     syntool python:context.portal_syndication;
+                     syndicateInfo python:syntool.isSyndicationAllowed(context);">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_syndication_properties">Syndication Properties</h1>
+
+      <div class="documentDescription" i18n:translate="description_syndication_properties">
+        Syndication enables you to syndicate this folder so it can
+        be synchronized from other web sites.
+      </div>
+
+      <div id="content-core">
+          <form action="disableSyndication"
+                tal:attributes="action template/getId"
+                name="disable"
+                method="post"
+                tal:condition="syndicateInfo">
+
+            <input type="hidden" name="isAllowed:int" value="0" />
+
+            <input class="standalone"
+                   type="submit"
+                   value="Disable Syndication"
+                   name="form.button.disableSyndication"
+                   i18n:attributes="value label_disable_syndication;"
+                   />
+
+            <input type="hidden" name="form.submitted" value="1" />
+
+          </form>
+
+          <form action="enableSyndication"
+                tal:attributes="action template/getId"
+                name="enable"
+                method="post"
+                tal:condition="python:not syndicateInfo">
+
+            <input type="hidden" name="isAllowed:int" value="1" />
+
+            <input class="standalone"
+                   type="submit"
+                   value="Enable Syndication"
+                   i18n:attributes="value label_enable_syndication;"
+                   name="form.button.enableSyndication"
+                   />
+
+            <input type="hidden" name="form.submitted" value="1" />
+
+          </form>
+
+
+          <tal:block condition="syndicateInfo">
+            <form id="edit_form"
+                  action="editSynProperties"
+                  tal:attributes="action string:${context/@@plone_context_state/object_url}/${template/getId}"
+                  name="syndication"
+                  method="post">
+
+              <dl>
+                <dt i18n:translate="label_syndication_channel_title">Channel Title</dt>
+                <dd tal:content="context/@@plone_context_state/object_title">title</dd>
+
+                <dt i18n:translate="label_syndication_channel_description">Channel Description</dt>
+                <dd tal:content="context/Description">description</dd>
+              </dl>
+
+              <fieldset>
+                <legend i18n:translate="legend_syndication_details">Syndication Details</legend>
+
+                <div class="field">
+                  <label for="updatePeriod"
+                         i18n:translate="label_syndication_updateperiod">Update Period</label>
+
+                  <div class="formHelp" i18n:translate="help_syndication_update_period">
+                    Controls how often the channel is updated.
+                  </div>
+
+                  <select name="updatePeriod"
+                          id="updatePeriod">
+                    <option value=""
+                            tal:repeat="period python:syntool.buildUpdatePeriods()"
+                            tal:attributes="value python:period[0];
+                                            selected python:test(period[0]==syntool.getUpdatePeriod(here), 'selected', None);"
+                            tal:content="python:period[1]">
+                      update interval
+                    </option>
+                  </select>
+                </div>
+
+                <div class="field"
+                     tal:define="updateFrequency python:request.get('updateFrequency', syntool.getUpdateFrequency(here));
+                                 error errors/updateFrequency|nothing"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                  <label for="updateFrequency"
+                         i18n:translate="label_syndication_update_frequency">Update Frequency</label>
+
+                  <div class="formHelp" i18n:translate="help_syndication_update_frequency">
+                    Controls the frequency of the updates. For example,
+                    if you want it to update twice a week,
+                    select "weekly" above, and "2" here.
+                  </div>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <input type="text"
+                         id="updateFrequency"
+                         name="updateFrequency"
+                         size="3"
+                         value="#"
+                         tal:attributes="value updateFrequency;" />
+                </div>
+
+                <div class="field"
+                     tal:define="updateBase python:request.get('updateBase', syntool.getUpdateBase(here));
+                                 error errors/updateBase|nothing;
+                                 inputname  string:updateBase;
+                                 formname   string:edit_form;
+                                 inputvalue updateBase"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                  <label i18n:translate="label_syndication_update_base">Update Base</label>
+
+                  <div class="formHelp" i18n:translate="help_syndication_update_base">
+                    This is the date the updater starts counting from.
+                    So if you want to update weekly every Tuesday,
+                    make sure this starts on a Tuesday.
+                  </div>
+
+                  <div tal:content="error">Validation error output</div>
+
+                  <div metal:use-macro="context/calendar_macros/macros/calendarDatePickerBox">
+                    calendar popup
+                  </div>
+                </div>
+
+                <div class="field"
+                     tal:define="max_items python:request.get('max_items', syntool.getMaxItems(here));
+                                 error errors/max_items|nothing"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                  <label for="max_items"
+                         i18n:translate="label_syndication_max_items">Maximum Items</label>
+
+                  <span class="fieldRequired" title="Required"
+                        i18n:attributes="title title_required;"
+                        i18n:translate="label_required">(Required)</span>
+
+                        <div class="formHelp" i18n:translate="help_syndication_max_items">
+                          Maximum number of items that will be syndicated.
+                        </div>
+
+                        <div tal:content="error">Validation error output</div>
+
+                        <input type="text"
+                               name="max_items:int"
+                               id="max_items"
+                               value="#"
+                               size="3"
+                               tal:attributes="value max_items;" />
+                </div>
+
+                <div class="formControls">
+                  <input class="context"
+                         type="submit"
+                         value="Save"
+                         i18n:attributes="value label_save;"
+                         name="form.button.Save"
+                         />
+                </div>
+
+                <input type="hidden" name="form.submitted" value="1" />
+
+              </fieldset>
+
+            </form>
+
+          </tal:block>
+
+          <div tal:condition="python:not syntool.isSiteSyndicationAllowed()"
+               i18n:translate="description_syndication_disabled">
+            Syndication has been disabled by site administrator.
+          </div>
+      </div>
+
+    </metal:main>
+
+  </body>
+</html>

@@ -1,0 +1,385 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="top_slot">
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0');
+                             dummy python:request.set('enable_border', 1);" />
+  </metal:block>
+
+  <metal:calendar fill-slot="javascript_head_slot">
+    <style type="text/css" media="all"
+            tal:content="string:@import url(${context/portal_url}/jscalendar/calendar-system.css);"></style>
+    <script type="text/javascript"
+            tal:attributes="src string:${context/portal_url}/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" charset="iso-8859-1"
+            tal:condition="exists: context/jscalendar/calendar-en.js"
+            tal:attributes="src string:${context/portal_url}/jscalendar/calendar-en.js"></script>
+  </metal:calendar>
+
+  <body>
+
+    <tal:comment tal:condition="nothing">
+      NOTE: This form is used in two different ways - from folder_contents,
+      allowing you to publish several things at once, and from the state
+      drop-down. In the first case, the 'paths' request parameter is set;
+      in the second case, giving the relative paths to the content object
+      to manipulate; in the second case, this parameter is omitted and the
+      path of the context is used.
+    </tal:comment>
+
+    <metal:main fill-slot="main"
+         tal:define="errors options/state/getErrors;
+                     review_state context/@@plone_context_state/workflow_state;
+                     paths python:request.get('paths', ['/'.join(context.getPhysicalPath())]);
+                     batch python:context.getObjectsFromPathList(paths,batch=True);
+                     folders_in_publishing python:[o.getId for o in batch if o.isPrincipiaFolderish];
+                     came_from python:request.get('HTTP_REFERER', context.absolute_url()).split('?')[0];
+                     dummy python:request.set('orig_template', came_from);
+                     ">
+
+      <metal:block tal:condition="python: paths and not batch"
+                   tal:replace="python:context.redirectToReferrer('The item(s) you selected are no longer available.')"/>
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_publishing_process">Publishing process</h1>
+
+      <div class="documentDescription" i18n:translate="description_publishing_process_short">
+        An item's status (also called its review state) determines who
+        can see it. Another way to control the visibility of an item is
+        with its <em class="discreet">Publishing Date</em>. An item is not publicly
+        searchable before its publishing date. This will prevent the item
+        from showing up in portlets and folder listings, although the item
+        will still be available if accessed directly via its URL.
+      </div>
+
+      <div id="content-core">
+
+          <form id="edit_form"
+                class="enableAutoFocus"
+                name="edit_form"
+                method="post"
+                action="content_status_modify"
+                tal:attributes="action string:${context/@@plone_context_state/object_url}/${template/getId}"
+                tal:condition="not:python:paths and not batch">
+
+              <div class="field" tal:condition="batch">
+                <label i18n:translate="label_affected_content">Affected content</label>
+                <div tal:define="dummy python:request.set('ids_checked', 1);
+                                 use_view_action site_properties/typesUseViewActionInListings|python:();">
+                  <table id="sortable"
+                         class="listing"
+                         summary="Affected content"
+                         i18n:attributes="summary summary_affected_content;">
+                    <thead>
+                      <metal:block tal:condition="batch|nothing">
+                        <tr>
+                          <th class="nosort">
+                              <input class="noborder"
+                                     type="checkbox"
+                                     src="select_all_icon.gif"
+                                     name="selectButton"
+                                     title="Select all items"
+                                     onClick="toggleSelect(this,'paths:list');"
+                                     tal:attributes="src string:$portal_url/select_all_icon.gif"
+                                     alt="Select all items"
+                                     i18n:attributes="title label_select_all_items; alt label_select_all_items;"
+                          />
+                          </th>
+                          <th class="nosort" i18n:translate="listingheader_title">
+                            Title
+                          </th>
+                          <th class="nosort" i18n:translate="listingheader_size">
+                              Size
+                          </th>
+                          <th class="nosort" i18n:translate="listingheader_modified">
+                              Modified
+                          </th>
+                          <th class="nosort" i18n:translate="listingheader_status">
+                              State
+                          </th>
+                        </tr>
+                      </metal:block>
+                    </thead>
+
+                    <metal:block tal:condition="batch|nothing">
+                    <tbody tal:define="portal context/@@plone_portal_state/portal;
+                                       getRelativeContentURL nocall:context/portal_url/getRelativeContentURL;
+                                       normalizeString nocall:context/@@plone/normalizeString;
+                                       wtool portal/portal_workflow;
+                                       ">
+                        <tal:items tal:repeat="item batch">
+                           <tr tal:define="oddrow               repeat/item/odd;
+                                           item_url             item/getURL|item/absolute_url;
+                                           item_id              item/getId;
+                                           item_path            item/getPath|python:'/'.join(item.getPhysicalPath());
+                                           item_title_or_id     item/pretty_title_or_id;
+                                           item_description     item/Description;
+                                           item_type            item/portal_type;
+                                           item_size            item/getObjSize;
+                                           item_modified        item/ModificationDate;
+                                           item_icon            python:plone_view.getIcon(item);
+                                           item_type_class      python:'contenttype-' + normalizeString(item_type);
+                                           item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
+                                           item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
+                                           item_wf_state_class  python:'state-' + normalizeString(item_wf_state);
+                                           item_use_view        python:item_type in use_view_action;
+                                           hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
+                                           item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
+                                           browserDefaultResult context/browserDefault;
+                                           isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == context.browserDefault()[1][0];
+                                           item_folderish       item/is_folderish|nothing"
+                               tal:attributes="class python:test(oddrow, 'draggable even', 'draggable odd');
+                                               id string:folder-contents-item-${item_id};" >
+
+                               <td class="notDraggable">
+                                   <input type="checkbox"
+                                          class="noborder"
+                                          name="paths:list" id="#"
+                                          value="#"
+                                          tal:attributes="value   item_path;
+                                                          id      string:cb_$item_id;
+                                                          checked python:test(request.get('ids_checked', False), 'checked', None);
+                                                          alt     string:Select $item_title_or_id;
+                                                          title   string:Select $item_title_or_id" />
+                              <input type="hidden" name="obj_paths:list" value="#"
+                                     tal:attributes="value item_rel_url" />
+
+                            </td>
+                            <td tal:define="url python:test(item_use_view, item_url+'/view',
+                                            test(item_folderish, item_url+'/folder_contents', item_url+'/'));">
+                                    <img tal:replace="structure item_icon/html_tag" />
+                                    <a href="#" tal:attributes="href  url;
+                                                              title string:$item_type: $item_description;
+                                                              class string:$item_wf_state_class $item_type_class;">
+                                        <strong tal:omit-tag="python:not isBrowserDefault">
+                                        <label tal:content="item_title_or_id"
+                                               tal:attributes="for string:cb_$item_id">
+                                          Item Title
+                                        </label>
+                                        </strong>
+                                    </a>
+
+                                <span class="state-expired"
+                                      tal:condition="python:context.isExpired(item)"
+                                      i18n:translate="time_expired">expired</span>
+                            </td>
+
+                            <td>
+                              <span tal:condition="not: item_size"> &nbsp; </span>
+                              <span tal:condition="python:item_size>0"
+                                    tal:content="item_size"
+                                    tal:attributes="class item_wf_state_class"> size </span>
+                            </td>
+                            <td tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
+                                tal:content="python:toLocalizedTime(item_modified, long_format=1)"
+                                tal:attributes="class item_wf_state_class">
+                                08/19/2001 03:01 AM
+                            </td>
+                            <td>
+                                <span i18n:translate=""
+                                      tal:condition="item_state_title"
+                                      tal:content="item_state_title"
+                                      tal:attributes="class item_wf_state_class" />
+                                <span tal:condition="not: item_state_title">&nbsp;</span>
+                            </td>
+                           </tr>
+                        </tal:items>
+                    </tbody>
+                    </metal:block>
+
+                  </table>
+                </div>
+              </div>
+
+              <div class="field formSingleCheckbox"
+                   tal:condition="folders_in_publishing|nothing">
+
+                <input type="checkbox"
+                       class="formElement"
+                       id="include_children"
+                       name="include_children"
+                       />
+                <label for="include_children" i18n:translate="label_include_contained_objects">
+                  Include contained items
+                </label>
+
+                <div class="formHelp"
+                     i18n:translate="help_include_contained_objects">
+                  If checked, this will attempt to modify the status of all content
+                  in any selected folders and their subfolders.
+                </div>
+
+              </div>
+
+              <div class="field" tal:define="error errors/effective_date | nothing;">
+                <label i18n:translate="label_effective_date">Publishing Date</label>
+                <div class="formHelp"
+                     i18n:translate="help_effective_date">
+                  The date when the item will be published. If no date is selected the
+                  item will be published immediately.
+                </div>
+
+                <div tal:content="error">Validation error output</div>
+
+                <div tal:define="inputname  string:effective_date;
+                                 formname   string:edit_form;
+                                 effective python:test(request.get('paths'), None, context.EffectiveDate()) ;
+                                 inputvalue python:test(effective and effective!='None', effective, request.get('effective_date', ''));"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                  <div metal:use-macro="context/calendar_macros/macros/calendarDatePickerBox">
+                    calendar pop-up
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="field"
+                   tal:define="error errors/expiration_date | nothing;">
+                <label i18n:translate="label_expiration_date">Expiration Date</label>
+                <div class="formHelp"
+                     i18n:translate="help_expiration_date">
+                  The date when the item expires. This will automatically
+                  make the item invisible for others at the given date.
+                  If no date is chosen, it will never expire.
+                </div>
+
+                <div tal:content="error">Validation error output</div>
+
+                <div class="field">
+                  <div tal:define="inputname  string:expiration_date;
+                                   formname   string:edit_form;
+                                   expiration context/ExpirationDate;
+                                   inputvalue python:test(expiration and expiration!='None', expiration, request.get('expiration_date', ''));"
+                       tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <div metal:use-macro="context/calendar_macros/macros/calendarDatePickerBox">
+                      calendar pop-up
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="comment"
+                       i18n:translate="label_comments">Comments</label>
+
+                <div class="formHelp"
+                     i18n:translate="help_publishing_comments">
+                  Will be added to the publishing history. If multiple
+                  items are selected, this comment will be attached to all
+                  of them.
+                </div>
+                <textarea id="comment"
+                          name="comment"
+                          cols="60"
+                          rows="5"
+                          tal:content="request/comment|nothing"
+                          ></textarea>
+              </div>
+
+              <div class="field">
+                <label i18n:translate="label_change_status">Change State</label>
+                <div class="formHelp"
+                     i18n:translate="help_change_status_action">
+                  Select the transition to be used for modifying the items state.
+                </div>
+
+                <div tal:define="error_workflow_action errors/workflow_action|nothing;
+                                 objs request/paths|nothing;
+                                 target python:test(objs, objs, context);"
+                     tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
+
+                  <div tal:condition="error_workflow_action">
+                    <tal:block content="error_workflow_action">Error</tal:block>
+                    <br />
+                  </div>
+
+                  <span tal:replace="nothing">
+                    For usability we will want to signify what state we are
+                    currently in. DCWorkflow only returns what transitions are
+                    available. But we want to visually represent what *state* we
+                    are currently in along with possible transitions.
+                  </span>
+
+                  <input class="noborder"
+                         id="workflow_action"
+                         type="radio"
+                         name="workflow_action"
+                         title=""
+                         value=""
+                         tal:attributes="value review_state;
+                                         title review_state;
+                                         checked python:test(request.get('workflow_action', review_state)==review_state,1,0);" />
+                  <label for="workflow_action"
+                         i18n:translate="label_no_change">No change</label>
+                  <br />
+
+                  <tal:block define="transitions python:context.portal_workflow.getTransitionsFor(target, context)"
+                             repeat="transition transitions">
+                      <input class="noborder"
+                             id=""
+                             type="radio"
+                             name="workflow_action"
+                             title=""
+                             value=""
+                             i18n:attributes="title"
+                             tal:attributes="value transition/id;
+                                             id    transition/id;
+                                             title transition/name;
+                                             checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', None)" />
+                      <label for=""
+                             i18n:translate=""
+                             tal:attributes="for transition/id;"
+                             tal:content="transition/name"
+                             >Transition Name</label>
+                             <br />
+                  </tal:block>
+
+                </div>
+
+              </div>
+
+              <div class="formControls">
+                <input class="context"
+                       type="submit"
+                       name="form.button.Publish"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       tal:condition="not:request/paths|folders_in_publishing|nothing"/>
+                <input class="context"
+                       type="submit"
+                       name="form.button.FolderPublish"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       tal:condition="request/paths|folders_in_publishing|nothing"/>
+                <input class="standalone"
+                       type="submit"
+                       name="form.button.Cancel"
+                       value="Cancel"
+                       i18n:attributes="value label_cancel;" />
+              </div>
+
+
+              <span tal:replace="nothing">
+                ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE
+                THESE INTO YOUR FORM ####
+              </span>
+              <input type="hidden" name="form.submitted" value="1" />
+              <input type="hidden" name="orig_template"
+                     tal:condition="request/orig_template|nothing"
+                     tal:attributes="value request/orig_template"/>
+
+              <input tal:replace="structure context/@@authenticator/authenticator" />
+
+          </form>
+      </div>
+    </metal:main>
+
+  </body>
+</html>

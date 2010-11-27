@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+
+ <javascript id="jquery.js" compression="none" />
+ <javascript id="jquery-integration.js" />
+ <javascript id="event-registration.js" enabled="False" />
+ <javascript id="register_function.js" />
+ <javascript id="plone_javascript_variables.js" />
+ <javascript id="nodeutilities.js" />
+ <javascript id="cookie_functions.js" />
+ <javascript id="livesearch.js" compression="full" />
+ <javascript id="fullscreenmode.js" enabled="False" />
+ <javascript id="select_all.js" />
+ <javascript id="dragdropreorder.js" />
+ <javascript id="mark_special_links.js" enabled="False" />
+ <javascript id="collapsiblesections.js" compression="full" />
+ <javascript id="form_tabbing.js" />
+ <javascript id="popupforms.js" />
+ <javascript id="input-label.js" />
+ <javascript id="jquery.highlightsearchterms.js" />
+ <javascript id="first_input_focus.js" />
+ <javascript id="accessibility.js" compression="full" />
+ <javascript id="styleswitcher.js" />
+ <javascript id="toc.js" />
+ <javascript id="collapsibleformfields.js" />
+
+ <!-- Sarissa is used by both Kupu and KSS -->
+ <javascript id="sarissa.js"
+    expression="python:not context.restrictedTraverse('@@plone_portal_state').anonymous() or (getattr(portal, 'kupu_library_tool', None) and portal.kupu_library_tool.isKupuEnabled(REQUEST=request))" />
+
+ <!-- Only for logged-in users -->
+ <javascript id="dropdown.js" authenticated="True" />
+ <javascript id="table_sorter.js" authenticated="True" />
+ <javascript id="calendar_formfield.js" authenticated="True" />
+ <javascript id="formUnload.js" authenticated="True" />
+ <javascript id="formsubmithelpers.js" authenticated="True" />
+ <javascript id="unlockOnFormUnload.js" authenticated="True" />
+
+ <!-- KSS -->
+ <javascript id="++resource++MochiKit.js" compression="none" enabled="False" />
+ <javascript id="++resource++prototype.js" enabled="False" />
+ <javascript id="++resource++effects.js" enabled="False" />
+ <javascript id="++resource++cssQuery-compat.js" enabled="False" />
+ <javascript id="++resource++base2-dom-fp.js" compression="none" authenticated="True" enabled="False" />
+ <javascript id="++resource++kukit.js" compression="none" authenticated="True" />
+ <javascript id="++resource++kukit-devel.js" compression="none" enabled="False" />
+</object>

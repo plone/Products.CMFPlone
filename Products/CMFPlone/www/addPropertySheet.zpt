@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8"
+      tal:define="charset context/management_page_charset | string:utf-8;"
+      tal:attributes="content string:text/html;;charset=$charset;"/>
+
+<title>Zope</title>
+<link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+
+</head>
+<body bgcolor="#ffffff" link="#000099" alink="#000099" vlink="#000099">
+
+  <div class="form-title">
+  Add Propertysheet
+  </div>
+
+<form action="manage_addPropertySheet" method="post">
+    <div class="form-help">
+    Enter an ID and title to add a new PropertySheet.
+    </div>
+    <div class="form-label">
+    Id
+    </div>
+    <input type="text" name="id" size="40" />
+
+    <div class="form-label">
+    Title
+    </div>
+    <input type="text" name="title" size="40" value="" />
+
+    <div class="form-element">
+    <input class="form-element" type="submit" name="submit"
+     value=" Add PropertySheet " />
+    </div>
+</form>
+
+  </body>
+</html>

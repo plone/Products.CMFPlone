@@ -1,0 +1,7 @@
+[default]
+title = Select default view
+
+[actions]
+action.success..Cancel=redirect_to_action:string:view
+action.success..Save=traverse_to:string:selectViewTemplate
+action.success=traverse_to:string:selectViewTemplate

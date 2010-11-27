@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<object name="Topic"
+   meta_type="Factory-based Type Information with dynamic views"
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Collection</property>
+ <property name="description"
+     i18n:translate="">An always-updated saved search that can be used to display items matching criteria you specify.</property>
+ <property name="icon_expr"></property>
+ <property name="content_meta_type">ATTopic</property>
+ <property name="product">ATContentTypes</property>
+ <property name="factory">addATTopic</property>
+ <property name="immediate_view">atct_topic_view</property>
+ <property name="global_allow">True</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types"></property>
+ <property name="allow_discussion">False</property>
+ <property name="default_view">atct_topic_view</property>
+ <property name="view_methods">
+  <element value="folder_listing"/>
+  <element value="folder_summary_view"/>
+  <element value="folder_full_view"/>
+  <element value="folder_tabular_view"/>
+  <element value="atct_album_view"/>
+  <element value="atct_topic_view"/>
+ </property>
+ <alias from="(Default)" to="(dynamic view)"/>
+ <alias from="edit" to="atct_edit"/>
+ <alias from="sharing" to="@@sharing"/>
+ <alias from="view" to="(selected layout)"/>
+ <action title="View" action_id="view" category="object" condition_expr=""
+    url_expr="string:${folder_url}/" visible="True"
+    i18n:attributes="title">
+  <permission value="View"/>
+ </action>
+ <action title="Edit" action_id="edit" category="object" condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+    url_expr="string:${object_url}/edit" visible="True"
+    i18n:attributes="title">
+  <permission value="Change portal topics"/>
+ </action>
+ <action title="Criteria" action_id="criteria" category="object"
+    condition_expr="" url_expr="string:${folder_url}/criterion_edit_form"
+    visible="True" i18n:attributes="title">
+  <permission value="Change portal topics"/>
+ </action>
+ <action title="Subfolders" action_id="subtopics" category="object"
+    condition_expr="" url_expr="string:${folder_url}/atct_topic_subtopics"
+    visible="False" i18n:attributes="title">
+  <permission value="Change portal topics"/>
+ </action>
+</object>

@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+  <body>
+  <metal:main fill-slot="main" tal:define="results request/historyComparisonResults|nothing;">
+
+    <div id="content-core">
+        <div tal:condition="results">
+          <span tal:replace="structure results" />
+        </div>
+
+        <div tal:condition="python:test(results, 0, 1)">
+          <p i18n:translate="description_no_comparison_support">
+          This object does not provide comparison support.
+          </p>
+        </div>
+    </div>
+
+  </metal:main>
+  </body>
+</html>
+

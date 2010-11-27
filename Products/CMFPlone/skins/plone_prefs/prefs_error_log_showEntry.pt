@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_main"
+     tal:define="member context/@@plone_portal_state/member;
+                 userid python:request.get('userid', member.getId());
+                 errors python:request.get('errors', {});
+                 portal_url context/portal_url;">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_exception_details">Exception Details</h1>
+
+    <div id="content-core">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string:$portal_url/prefs_error_log_form"
+           i18n:translate="label_back_to_errorlog">
+        Back to Error Log
+        </a>
+
+        <div tal:define="entry python:context.error_log.getLogEntryById(request.get('id'))">
+
+            <dl class="portalMessage error"
+                tal:condition="not:entry">
+                <dt i18n:translate="">
+                    Error
+                </dt>
+                <dd i18n:translate="text_errlog_notfound">
+                        The specified log entry was not found. It may have expired.
+                        If you are using a load-balanced ZEO (cluster) setup, try
+                        reloading until you get the right server in the cluster.
+                </dd>
+            </dl>
+
+            <div tal:condition="entry">
+
+                <dl>
+                    <dt i18n:translate="label_time">Time</dt>
+                    <dd
+                        tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
+                        tal:content="python:toLocalizedTime(DateTime(entry['time']), long_format=True)"></dd>
+
+                    <dt align="left" valign="top"
+                        i18n:translate="label_user_name">User Name</dt>
+                    <dd tal:content="string:${entry/username} (${entry/userid})">joe (joe)</dd>
+
+                    <dt align="left" valign="top"
+                        i18n:translate="label_request_url">Request URL</dt>
+                    <dd tal:content="entry/url">http://example.com</dd>
+
+                    <dt align="left" valign="top"
+                        i18n:translate="label_exception_type">Exception Type</dt>
+                    <dd tal:content="entry/type">AttributeError</dd>
+
+                    <dt align="left" valign="top"
+                        i18n:translate="label_exception_value">Exception Value</dt>
+                    <dd tal:content="entry/value">gak</dd>
+                </dl>
+
+                <div tal:condition="entry/tb_html" tal:content="structure entry/tb_html">
+                Traceback (HTML)
+                </div>
+                <pre tal:condition="not:entry/tb_html" tal:content="entry/tb_text">
+                    Traceback (text)
+                </pre>
+
+                <p tal:condition="entry/tb_text"><a href="" tal:attributes="href
+                    string:error_log/getLogEntryAsText?id=${entry/id}"
+                    i18n:translate="label_traceback_as_text">Display traceback as text</a></p>
+
+                <div tal:condition="entry/req_html">
+                    <h3 i18n:translate="heading_request">REQUEST</h3>
+                    <div tal:replace="structure entry/req_html"></div>
+                </div>
+            </div>
+
+            <a href=""
+               class="link-parent"
+               tal:attributes="href string:$portal_url/prefs_error_log_form"
+               i18n:translate="label_back_to_errorlog">
+            Back to Error Log
+            </a>
+
+        </div>
+    </div>
+
+</metal:main>
+</body>
+</html>

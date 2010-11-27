@@ -1,0 +1,9 @@
+[default]
+title=Reply to Comment
+
+[validators]
+validators = validate_talkback
+
+[actions]
+action.success = traverse_to:string:discussion_reply
+action.failure = traverse_to:string:discussion_reply_form

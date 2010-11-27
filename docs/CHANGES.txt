@@ -1,0 +1,37 @@
+.. This file should contain the changes for the last release only, which
+   will be included on the package's page on pypi. All older entries are
+   kept in HISTORY.txt
+
+Changelog
+=========
+
+4.1 - Unreleased
+----------------
+
+- Deprecated the following scripts that are only used by deprecated templates.
+  These will be removed in Plone 5: prefs_group_edit.py,
+  prefs_valid_search_restriction.py, prefs_user_group_search.py,
+  prefs_portrait_delete.py.
+  [davisagli]
+
+- Replaced the prefs_group_details.pt template with a browser view in
+  plone.app.controlpanel. Ss a side effect this means group creation is now 
+  protected by the Plone Users and Groups control panel permission, rather than
+  the CMF Manage Groups permission.
+  [davisagli]
+
+- Turn plone_control_panel.pt into a deprecated alias for the 
+  @@overview-controlpanel view from plone.app.controlpanel.
+  [davisagli]
+
+- Protect most control panels with specific permissions instead of the generic
+  "Manage portal".
+  [davisagli]
+
+- Configure the Site Administrator role in the default rolemap and workflows.
+  This role is intended for people who should have full content editing 
+  privileges but not Manager access (i.e. to the ZMI).
+  [davisagli]
+
+- Updated to use Zope 2.13.
+  [hannosch]

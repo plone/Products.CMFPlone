@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<object name="Document"
+   meta_type="Factory-based Type Information with dynamic views"
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate="">Page</property>
+ <property name="description"
+      i18n:translate=""></property>
+ <property name="icon_expr"></property>
+ <property name="content_meta_type">ATDocument</property>
+ <property name="product">ATContentTypes</property>
+ <property name="factory">addATDocument</property>
+ <property name="immediate_view">document_view</property>
+ <property name="global_allow">True</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types"/>
+ <property name="allow_discussion">False</property>
+ <property name="default_view">document_view</property>
+ <property name="view_methods">
+  <element value="document_view"/>
+ </property>
+ <alias from="(Default)" to="(dynamic view)"/>
+ <alias from="edit" to="atct_edit"/>
+ <alias from="sharing" to="@@sharing"/>
+ <alias from="view" to="(selected layout)"/>
+ <action title="View" action_id="view" category="object" condition_expr=""
+    url_expr="string:${object_url}" visible="True" i18n:attributes="title">
+  <permission value="View"/>
+ </action>
+ <action title="Edit" action_id="edit" category="object" condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+    url_expr="string:${object_url}/edit" visible="True" i18n:attributes="title">
+  <permission value="Modify portal content"/>
+ </action>
+ <action title="History" action_id="history" category="object"
+    condition_expr="" url_expr="string:${object_url}/atct_history"
+    visible="False" i18n:attributes="title">
+  <permission value="ATContentTypes: View history"/>
+ </action>
+ <action title="External Edit" action_id="external_edit" category="object"
+    condition_expr="object/externalEditorEnabled"
+    url_expr="string:${object_url}/external_edit" visible="False"
+    i18n:attributes="title">
+  <permission value="Modify portal content"/>
+ </action>
+</object>

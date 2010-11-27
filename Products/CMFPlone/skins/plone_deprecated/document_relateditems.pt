@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+
+<body>
+<div metal:define-macro="relatedItems"
+    class="relatedItems"
+    tal:define="tools context/@@plone_tools;
+                getInfoFor python:tools.workflow().getInfoFor;">
+    <tal:allowed condition="context/@@plone_context_state/is_view_template">
+        <tal:relatedItems tal:define="related python:context.computeRelatedItems();">
+            <tal:block tal:condition="python:related">
+                <div class="visualClear" id="clear-space-before-relatedItemBox"><!-- --></div>
+                <fieldset id="relatedItemBox"
+                          tal:define="site_properties context/portal_properties/site_properties;
+                                      use_view_action site_properties/typesUseViewActionInListings|python:();
+                                      normalizeString nocall:context/@@plone/normalizeString;">
+                    <legend i18n:translate="label_related_items">Related content</legend>
+                    <ul class="visualNoMarker">
+                    <tal:related tal:repeat="item related">
+                        <li tal:define="
+                                desc                item/Description;
+                                item_type           item/portal_type;
+                                item_icon           python:plone_view.getIcon(item);
+                                item_type           item/portal_type;
+                                item_type_class     python:'contenttype-' + normalizeString(item_type);
+                                item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
+                                item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
+                                item_url            item/absolute_url;
+                                item_url            python:test((item_type in use_view_action), item_url+'/view', item_url)">
+                            <span tal:attributes="class item_type_class">
+                                <img tal:replace="structure item_icon/html_tag" />
+                                <a href="" class=""
+                                   tal:attributes="href  item_url;
+                                                   title item/Description;
+                                                   class string:$item_wf_state_class"
+                                   tal:content="item/pretty_title_or_id">
+                                    Related Item
+                                </a>
+                            </span>
+                        </li>
+                    </tal:related>
+                    </ul>
+                </fieldset>
+            </tal:block>
+        </tal:relatedItems>
+    </tal:allowed>
+</div>
+</body>
+</html>

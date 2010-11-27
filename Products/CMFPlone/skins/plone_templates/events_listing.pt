@@ -1,0 +1,133 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+
+</head>
+
+<body>
+<metal:main fill-slot="main">
+<div id="content-core"
+     tal:define="path context/@@plone_portal_state/navigation_root_path;
+                 results python:context.portal_catalog.searchResults(dict(
+                            portal_type='Event',
+                            end={'query': context.ZopeTime(),
+                                 'range': 'min'},
+                            sort_on='start',
+                            review_state='published',
+                            path=path));
+                 results python:[r for r in results if r.getObject()];
+                 Batch python:modules['Products.CMFPlone'].Batch;
+                 b_start python:request.get('b_start',0);
+                 portal_discussion nocall:context/portal_discussion;
+                 isDiscussionAllowedFor nocall:portal_discussion/isDiscussionAllowedFor;
+                 getDiscussionFor nocall:portal_discussion/getDiscussionFor;
+                 home_url python:context.portal_membership.getHomeUrl;
+                 isAnon context/@@plone_portal_state/anonymous;
+                 portal context/@@plone_portal_state/portal;
+                 show_about python:not isAnon or context.portal_properties.site_properties.allowAnonymousViewAbout">
+
+
+    <form name="searchresults" action="" method="post" tal:condition="results"
+                      tal:define="batch python:Batch(results, 15, int(b_start), orphan=1);
+                                  toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
+
+        <metal:block tal:repeat="result batch">
+
+            <div class="newsItem"
+                 metal:define-macro="listitem"
+                 tal:define="resultObject result/getObject;
+                             creator result/Creator;
+                             resulturl resultObject/absolute_url;">
+
+                <h2>
+                    <a href="/view"
+                       tal:attributes="href resulturl"
+                       tal:content="result/pretty_title_or_id">
+                        Event headline
+                    </a>
+                </h2>
+
+                <div class="newsContent">
+
+                    <p tal:content="result/Description">
+                        Description
+                    </p>
+
+                    <ul class="newsAbout">
+                        <li tal:define="subject python:resultObject.Subject()"
+                            tal:condition="subject">
+                        <span tal:replace="python:modules['string'].join(subject, ' ')"> Conference </span>
+                        </li>
+                        <li>
+                        <span tal:replace="python:toLocalizedTime(resultObject.start(), long_format=1)">Start Date Time</span>
+                        <span i18n:translate="event_and">to</span>
+                        <span tal:replace="python:toLocalizedTime(resultObject.end(), long_format=1)">End Date Time</span>.
+                        </li>
+                        <tal:about-info condition="show_about">
+                        <li>
+                            <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span>
+
+                            <span class="link-user">
+                                <a href=""
+                                   tal:attributes="href python: home_url(creator)"
+                                   tal:content="creator">
+                                    Author
+                                </a>
+                            </span>.
+                        </li>
+                        <li>
+                            <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
+                            <span tal:replace="python:toLocalizedTime(result.Date)" />
+                        </li>
+                        </tal:about-info>
+                    </ul>
+
+                    <ul class="newsFooter" tal:define="is_discussable python: isDiscussionAllowedFor(resultObject);">
+                        <li>
+                            <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
+                                Read More&hellip;</a>
+                        </li>
+
+                        <tal:discussable condition="is_discussable">
+                        <li tal:attributes="class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
+                            tal:define="talkback python: getDiscussionFor(resultObject);
+                                        has_replies python: talkback.hasReplies(resultObject);">
+                            <a href=""
+                               tal:define="reply_count python:talkback.replyCount(resultObject)"
+                               tal:condition="reply_count"
+                               tal:attributes="href string:${resulturl}#comments;">
+                               (<span tal:replace="python: reply_count" />)</a>
+                        </li>
+                        </tal:discussable>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </metal:block>
+
+        <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+    </form>
+
+    <p tal:condition="not: results" i18n:translate="no_new_events">
+        No events have been posted.
+    </p>
+
+    <div tal:define="contentTypes context/getAllowedTypes" tal:omit-tag="python:1"
+         tal:condition="python:'events' in portal.contentIds() and context==portal.events">
+        <!--tal:add_button metal:use-macro="context/folder_contents/macros/add_button"/-->
+    </div>
+
+  </div>
+
+</metal:main>
+</body>
+</html>

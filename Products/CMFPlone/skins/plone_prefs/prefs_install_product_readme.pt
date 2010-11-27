@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_main"
+     i18n:domain="plone"
+     tal:define="errors python:request.get('errors', {})">
+
+    <h1 class="documentFirstHeading" tal:content="request/filereadme">
+        add-on name
+    </h1>
+
+    <div id="content-core">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string:${context/portal_url}/prefs_install_products_form"
+           i18n:translate="label_back_to_addremove_products">
+            Back to Add-ons
+        </a>
+
+        <tal:readme define="transform nocall:context/portal_transforms|nothing;
+                            readme python:context.portal_quickinstaller.getProductFile(request['filereadme']);
+                            converted python: transform is not None and transform.convertTo('text/html', readme, mimetype='text/x-rst')">
+            <div tal:condition="converted"
+                 tal:content="structure converted" />
+
+            <pre tal:condition="not:converted"
+                     tal:content="readme" />
+        </tal:readme>
+    </div>
+
+</metal:main>
+
+</body>
+</html>

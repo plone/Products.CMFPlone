@@ -1,0 +1,100 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:cmf="http://namespaces.zope.org/cmf"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:i18n="http://namespaces.zope.org/i18n"
+           i18n_domain="plone">
+
+  <include package="zope.app.locales" />
+  <include package="Products.CMFCore" />
+  <include package="Products.GenericSetup" />
+  <include package="plone.app.blob" />
+  <include package="plone.app.contentmenu" />
+  <include package="plone.app.content" />
+  <include package="plone.app.contentrules" />
+  <include package="plone.app.controlpanel" />
+  <include package="plone.app.customerize" />
+  <include package="plone.app.folder" />
+  <include package="plone.app.form" />
+  <include package="plone.app.i18n" />
+  <include package="plone.app.iterate" />
+  <include package="plone.app.jquerytools" />
+  <include package="plone.app.layout" />
+  <include package="plone.app.linkintegrity" />
+  <include package="plone.app.locales" />
+  <include package="plone.app.portlets" />
+  <include package="plone.app.redirector" />
+  <include package="plone.app.users" />
+  <include package="plone.app.viewletmanager" />
+  <include package="plone.app.vocabularies" />
+  <include package="plone.app.workflow" />
+  <include package="plone.memoize" />
+  <include package="plone.session" />
+  <include package="plone.protect" />
+  <include package="plone.indexer" />
+
+  <!-- viewlets zope 3 layers support for themes -->
+  <include package="plone.browserlayer" />
+  <include package="plone.theme" />
+
+  <!-- kss -->
+  <include package="kss.core" />
+  <include package="plone.app.kss" />
+  <include package="archetypes.kss" />
+
+  <!-- referencebrowser -->
+  <include package="archetypes.referencebrowserwidget" />
+
+  <!-- wicked -->
+  <include package="wicked.plone" file="selective-atct.zcml" />
+
+  <!-- extra portlets -->
+  <include package="plone.portlet.static" />
+  <include package="plone.portlet.collection" />
+
+  <!-- local role PAS plugin -->
+  <include package="borg.localrole" />
+  <include package="borg.localrole"
+           file="default.zcml" />
+
+  <include package=".browser" />
+  <include package=".exportimport" />
+
+  <include file="deprecated.zcml"/>
+  <include file="profiles.zcml"/>
+  <include file="catalog.zcml" />
+
+  <cmf:registerDirectory
+      name="skins"
+      directory="skins"
+      recursive="True"
+      />
+
+  <class class="Products.PluggableAuthService.PluggableAuthService.PluggableAuthService">
+    <implements interface=".interfaces.IHideFromBreadcrumbs" />
+  </class>
+
+  <class class="Products.PluggableAuthService.plugins.BasePlugin.BasePlugin">
+    <implements interface=".interfaces.IHideFromBreadcrumbs" />
+  </class>
+
+  <utility factory=".factory.HiddenProfiles"
+           name="Products.CMFPlone" />
+
+  <utility factory=".setuphandlers.HiddenProducts"
+           name="Products.CMFPlone" />
+
+  <!-- Adapter for default workflow lookup -->
+  <adapter
+      factory=".workflow.ToolWorkflowChain"
+      trusted="y"
+      />
+
+    <!-- include plone plugins with z3c.autoinclude -->
+    <includePlugins
+        zcml:condition="not-have disable-autoinclude"
+        package="plone"
+        file="configure.zcml"
+        />
+
+</configure>

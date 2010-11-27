@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts">
+ <javascript id="tiny_mce.js" authenticated="True" compression="none"
+   insert-after="unlockOnFormUnload.js" expression="" />
+ <javascript id="tiny_mce_init.js" authenticated="True" compression="none"
+   insert-after="++resource++kukit-devel.js" expression="" />
+</object>

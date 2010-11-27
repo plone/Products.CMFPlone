@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<object name="content_type_registry" meta_type="Content Type Registry">
+ <predicate name="ATNewsItem_ext" content_type_name="News Item"
+    predicate_type="extension">
+  <argument value="news"/>
+ </predicate>
+ <predicate name="ATLink_ext" content_type_name="Link"
+    predicate_type="extension">
+  <argument value="link,url"/>
+ </predicate>
+ <predicate name="ATEvent_ext" content_type_name="Event"
+    predicate_type="extension">
+  <argument value="event"/>
+ </predicate>
+ <predicate name="ATDocument_ext" content_type_name="Document"
+    predicate_type="extension">
+  <argument value="txt,stx,rst,rest,py"/>
+ </predicate>
+ <predicate name="ATImage_ext" content_type_name="Image"
+    predicate_type="extension">
+  <argument value="jpg,jpeg,png,gif"/>
+ </predicate>
+ <predicate name="image" content_type_name="Image"
+    predicate_type="major_minor">
+  <argument value="image"/>
+  <argument value=""/>
+ </predicate>
+ <predicate name="application_xhtml+xml" content_type_name="Document"
+    predicate_type="major_minor">
+  <argument value="application"/>
+  <argument value="xhtml+xml"/>
+ </predicate>
+ <predicate name="message_rfc822" content_type_name="Document"
+    predicate_type="major_minor">
+  <argument value="message"/>
+  <argument value="rfc822"/>
+ </predicate>
+ <predicate name="text" content_type_name="Document"
+    predicate_type="major_minor">
+  <argument value="text"/>
+  <argument value=""/>
+ </predicate>
+ <predicate name="application" content_type_name="File"
+    predicate_type="major_minor">
+  <argument value="application"/>
+  <argument value=""/>
+ </predicate>
+ <predicate name="audio" content_type_name="File"
+    predicate_type="major_minor">
+  <argument value="audio"/>
+  <argument value=""/>
+ </predicate>
+ <predicate name="video" content_type_name="File"
+    predicate_type="major_minor">
+  <argument value="video"/>
+  <argument value=""/>
+ </predicate>
+</object>

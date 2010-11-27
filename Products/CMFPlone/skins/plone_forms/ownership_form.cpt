@@ -1,0 +1,228 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:main fill-slot="main"
+     tal:define="owner python:context.plone_utils.getOwnerName(context);
+                 isFolderish context/@@plone_context_state/is_folderish;
+                 site_properties context/portal_properties/site_properties;
+                 here_url context/@@plone_context_state/object_url;">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_change_ownership">Change ownership</h1>
+
+    <div class="documentDescription" i18n:translate="description_change_ownership">
+        You can transfer the current item's ownership to somebody else using
+        this form.
+    </div>
+
+    <div id="content-core">
+        <p i18n:translate="description_current_owner">
+          The current owner is
+          <b tal:content="owner" i18n:name="name">admin</b>.
+        </p>
+
+        <tal:block tal:condition="not:site_properties/many_users">
+          <fieldset>
+              <legend i18n:translate="legend_change_ownership">
+                  Change Ownership
+              </legend>
+
+            <form action="change_ownership"
+                class="enableAutoFocus"
+                name="ownership_form"
+                method="post"
+                tal:attributes="action string:$here_url/${template/getId}">
+
+                  <div class="field">
+                      <label i18n:translate="label_new_owner">New owner</label>
+
+                      <span class="fieldRequired" title="Required"
+                            i18n:attributes="title title_required;"
+                            i18n:translate="label_required">(Required)</span>
+
+                      <div class="formHelp" i18n:translate="help_change_ownership">
+                          Changes the ownership of the current object.
+                      </div>
+
+                    <label for="new_owners" i18n:translate="heading_new_owner">New owner</label>
+                      <select id="new_owners" name="userid">
+                      <tal:block tal:repeat="userinfo context/acl_users/searchUsers">
+                           <option value=""
+                                   tal:attributes="value userinfo/userid;
+                                                   selected python:test(userinfo['userid']==owner, 'selected', None);"
+                                   tal:content="userinfo/title|userinfo/userid">userid</option>
+                         </tal:block>
+                      </select>
+                  </div>
+
+                  <div class="field" tal:condition="isFolderish">
+
+                      <label for="subobjects"
+                             i18n:translate="label_subobjects">
+                          Subobjects
+                      </label>
+
+                      <div class="formHelp" i18n:translate="help_subobjects">
+                          Changes all the contained objects if selected.
+                      </div>
+
+                      <div class="field">
+                          <input type="checkbox"
+                                 name="subobjects"
+                                 id="subobjects"
+                                 />
+                      </div>
+                  </div>
+
+                  <input type="hidden" name="form.submitted" value="1" />
+
+                  <div class="formControls">
+                          <input class="context"
+                                 type="submit"
+                                 name="form.button.Save"
+                                 value="Save"
+                                 i18n:attributes="value label_save;"
+                                 />
+                  </div>
+
+                  <input tal:replace="structure context/@@authenticator/authenticator" />
+
+            </form>
+          </fieldset>
+        </tal:block>
+
+        <tal:block tal:condition="site_properties/many_users"
+                   tal:define="search_submitted request/search_submit|nothing;
+                               search_results python:search_submitted and context.acl_users.searchUsers(
+                                             fullname=request.get('search_term', '')) or [];">
+            <fieldset tal:condition="search_results">
+              <legend i18n:translate="legend_change_ownership">
+                  Change Ownership
+              </legend>
+
+            <form action="change_ownership"
+                name="ownership_form"
+                method="post"
+                tal:attributes="action string:$here_url/${template/getId}">
+
+                  <div class="field">
+                      <label for="userid"
+                             i18n:translate="label_new_owner">New owner</label>
+
+                      <span class="fieldRequired" title="Required"
+                            i18n:attributes="title title_required;"
+                            i18n:translate="label_required">(Required)</span>
+
+                      <div class="formHelp" i18n:translate="help_change_ownership">
+                          Changes the ownership of the current object.
+                      </div>
+
+                    <b i18n:translate="heading_new_owner">New owner</b>
+                      <select name="userid" id="userid">
+                      <tal:block tal:repeat="user search_results">
+                           <option value=""
+                                   tal:attributes="value user/userid;
+                                                   selected python:test(user['userid']==owner, 'selected', None);"
+                                   tal:content="user/title">username</option>
+                         </tal:block>
+                      </select>
+                  </div>
+
+                  <div class="field" tal:condition="isFolderish">
+
+                      <label for="subobjects"
+                             i18n:translate="label_subobjects">
+                          Subobjects
+                      </label>
+
+                      <div class="formHelp" i18n:translate="help_subobjects">
+                          Changes all the contained objects if selected.
+                      </div>
+
+                      <div class="field">
+                          <input type="checkbox"
+                                 name="subobjects"
+                                 id="subobjects"
+                                 />
+                      </div>
+                  </div>
+
+                  <input type="hidden" name="form.submitted" value="1" />
+
+                  <div class="formControls">
+                          <input class="context"
+                                 type="submit"
+                                 name="form.button.Save"
+                                 value="Save"
+                                 i18n:attributes="value label_save;"
+                                 />
+                  </div>
+
+                  <input tal:replace="structure context/@@authenticator/authenticator" />
+
+            </form>
+          </fieldset>
+
+          <fieldset>
+              <legend i18n:translate="legend_search_owners">
+                  Search for possible new owner
+              </legend>
+
+              <tal:block tal:condition="python:test(search_submitted and not search_results, True, False)">
+                  <p i18n:translate="no_users_found">
+                      No users were found using your search criteria.
+                  </p>
+              </tal:block>
+
+              <form action="change_ownership"
+                    class="enableAutoFocus"
+                    name="ownership_form"
+                    method="post"
+                    tal:attributes="action string:$here_url/${template/getId}">
+
+                <input type="hidden" name="search_submit" value="chown_submit"/>
+
+                <div class="field">
+                  <label for="search_term"
+                         i18n:translate="label_new_owner_search">
+                  Search for new owner
+                  </label>
+
+                  <span class="fieldRequired" title="Required"
+                    i18n:attributes="title title_required;"
+                    i18n:translate="label_required">(Required)</span>
+
+                  <div class="formHelp" i18n:translate="help_search_new_owner">
+                    Search for users.
+                  </div>
+                  <input type="text"
+                         id="search_term"
+                         name="search_term"
+                         size="30"
+                         />
+               </div>
+
+              <input type="hidden" name="form.submitted" value="1" />
+
+              <div class="formControls">
+                <input class="searchButton"
+                        type="submit"
+                        name="form.button.Search"
+                        value="Perform Search"
+                        i18n:attributes="value label_perform_search;"
+                        />
+              </div>
+
+              <input tal:replace="structure context/@@authenticator/authenticator" />
+
+            </form>
+          </fieldset>
+        </tal:block>
+    </div>
+</metal:main>
+</html>

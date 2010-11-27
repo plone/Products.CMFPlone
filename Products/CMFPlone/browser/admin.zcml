@@ -1,0 +1,69 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:view
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="plone-frontpage-setup"
+      class=".admin.FrontPage"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="OFS.interfaces.IApplication"
+      name="plone-addsite"
+      class=".admin.AddPloneSite"
+      permission="zope2.ViewManagementScreens"
+      template="templates/plone-addsite.pt"
+      />
+
+  <browser:page
+      for="OFS.Folder.Folder"
+      name="plone-addsite"
+      class=".admin.AddPloneSite"
+      permission="zope2.ViewManagementScreens"
+      template="templates/plone-addsite.pt"
+      />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="plone-upgrade"
+      class=".admin.Upgrade"
+      permission="cmf.ManagePortal"
+      template="templates/plone-upgrade.pt"
+      />
+
+  <browser:page
+      for="OFS.interfaces.IApplication"
+      name="plone-overview"
+      class=".admin.Overview"
+      permission="zope.Public"
+      template="templates/plone-overview.pt"
+      />
+
+  <browser:page
+      for="OFS.interfaces.IApplication"
+      name="plone-root-login"
+      class=".admin.RootLoginRedirect"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="plone-root-logout"
+      class=".admin.RootLogout"
+      permission="zope.Public"
+      />
+
+  <adapter factory=".admin.AppTraverser" />
+
+  <browser:resource
+      file="plone-logo.png"
+      name="plone-logo.png"
+      />
+
+  <browser:resource
+      file="plone-admin-ui.css"
+      name="plone-admin-ui.css"
+      />
+
+</configure>

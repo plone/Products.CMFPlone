@@ -1,0 +1,57 @@
+Test for scripts
+================
+
+This test suite tests various python scripts. Ultimately these tests should be
+doctests provided directly in the implementation (as utilities for example).
+
+Tests for returnNone.py
+-----------------------
+
+This should be self-explanatory:
+
+  >>> self.portal.returnNone() is None
+  True
+
+Tests for reverseList.py
+------------------------
+
+Test with a list:
+
+  >>> self.portal.reverseList([1, 2, 3])
+  [3, 2, 1]
+
+Test with a dict:
+
+  >>> self.portal.reverseList((1, 2, 3))
+  [3, 2, 1]
+
+Tests for spamProtect.py
+------------------------
+
+Test with only one argument:
+
+  >>> self.portal.spamProtect('mailto:spam@plone.org')
+  '<a href="&#0109;ailto&#0058;mailto&#0058;spam&#0064;plone.org">mailto&#0058;spam&#0064;plone.org</a>'
+
+Also provide a second name argument:
+    
+  >>> self.portal.spamProtect('mailto:spam@plone.org', 'send your spam here')
+  '<a href="&#0109;ailto&#0058;mailto&#0058;spam&#0064;plone.org">send your spam here</a>'
+
+Tests for unique.py
+-------------------
+
+Test a list of numbers which contains duplicates:
+
+  >>> self.portal.unique([1,2,3,1,2,3])
+  [1, 2, 3]
+
+Test a string sequence:
+
+  >>> self.portal.unique('abcabc')
+  ['a', 'c', 'b']
+
+And finally a tuple of lists:
+
+  >>> self.portal.unique(([1, 2], [2, 3], [1, 2]))
+  [[1, 2], [2, 3]]

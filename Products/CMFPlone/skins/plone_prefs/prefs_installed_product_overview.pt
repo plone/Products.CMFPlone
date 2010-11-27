@@ -1,0 +1,126 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_main" i18n:domain="plone">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_install_log_for">
+        Install log for
+        <span tal:content="context/id" tal:omit-tag="" i18n:name="productname">
+            Add-on Name
+        </span>
+    </h1>
+
+    <div id="content-core">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string:${context/portal_url}/prefs_install_products_form"
+           i18n:translate="back_to_addremove_products">
+            Back to Add-ons
+        </a>
+
+        <dl>
+            <dt i18n:translate="label_status">Status</dt>
+            <dd tal:content="context/getStatus">Some status</dd>
+
+            <dt tal:condition="context/hasError"
+                i18n:translate="label_error">Error</dt>
+            <dd tal:condition="context/hasError">
+                <tal:block replace="structure context/error_icon.png"/>
+
+                <tal:errormsg i18n:translate="">
+                    There were errors during install, check transcript.
+                </tal:errormsg>
+            </dd>
+
+            <tal:exists condition="context/getTypes">
+            <dt i18n:translate="label_types">Types</dt>
+            <dd>
+                <ul>
+                    <li tal:repeat="type context/getTypes"
+                        tal:content="type">
+                    Type
+                    </li>
+                </ul>
+            </dd>
+            </tal:exists>
+
+            <tal:exists condition="context/getSkins">
+            <dt i18n:translate="label_skins">Skins</dt>
+            <dd>
+                <ul>
+                    <li tal:repeat="skin context/getSkins"
+                        tal:content="skin">
+                    Skin
+                    </li>
+                </ul>
+            </dd>
+            </tal:exists>
+
+            <tal:exists condition="context/getActions">
+            <dt i18n:translate="label_actions">Actions</dt>
+            <dd>
+                <ul>
+                    <li tal:repeat="action context/getActions"
+                        tal:content="action">
+                    Action
+                    </li>
+                </ul>
+            </dd>
+            </tal:exists>
+
+            <tal:exists condition="context/getPortalObjects">
+            <dt i18n:translate="label_portal_objects">Portal Objects</dt>
+            <dd>
+                <ul>
+                    <li tal:repeat="object context/getPortalObjects"
+                        tal:content="object">
+                    Object
+                    </li>
+                </ul>
+            </dd>
+            </tal:exists>
+
+            <tal:exists condition="context/getWorkflows">
+            <dt i18n:translate="label_workflows">Workflows</dt>
+            <dd>
+                <ul>
+                    <li tal:repeat="wf context/getWorkflows"
+                        tal:content="wf">
+                    Workflow
+                    </li>
+                </ul>
+            </dd>
+            </tal:exists>
+
+            <tal:exists condition="context/getSlots">
+            <dt i18n:translate="label_portlets">Portlets</dt>
+            <dd>
+                <ul>
+                    <li tal:repeat="portlet context/getSlots"
+                        tal:content="portlet">
+                    Portlet
+                    </li>
+                </ul>
+            </dd>
+            </tal:exists>
+
+        </dl>
+
+        <h2 i18n:translate="heading_installed_transcript">Transcript</h2>
+
+        <pre tal:content="structure python:context.getTranscriptAsText().replace('\n','&lt;br/&gt;')">
+            Issue transcript.
+        </pre>
+    </div>
+
+</metal:main>
+
+</body>
+</html>

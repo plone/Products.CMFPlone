@@ -1,0 +1,2 @@
+<div xmlns:metal="http://xml.zope.org/namespaces/metal"
+     metal:use-macro="python:path('%(template)s/macros/%(macro)s' % ({'template': options.get('template', 'context/header'), 'macro':options.get('macro', 'html_header')} ) )" />

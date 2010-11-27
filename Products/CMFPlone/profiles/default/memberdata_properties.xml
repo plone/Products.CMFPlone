@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<object name="portal_memberdata" meta_type="PlonePAS MemberData Tool">
+ <property name="email" type="string"></property>
+ <property name="portal_skin" type="string"></property>
+ <property name="listed" type="boolean">True</property>
+ <property name="login_time" type="date">2000/01/01</property>
+ <property name="last_login_time" type="date">2000/01/01</property>
+ <property name="fullname" type="string"></property>
+ <property name="error_log_update" type="float">0.0</property>
+ <property name="home_page" type="string"></property>
+ <property name="location" type="string"></property>
+ <property name="description" type="text"></property>
+ <property name="language" type="string"></property>
+ <property name="ext_editor" type="boolean">False</property>
+ <property name="wysiwyg_editor" type="string"></property>
+ <property name="visible_ids" type="boolean">False</property>
+</object>

@@ -1,0 +1,23 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           i18n_domain="plone">
+
+  <!-- The following declarations are deprecated and will be removed in
+       Plone 4.0. -->
+
+  <five:deprecatedManageAddDelete
+      class=".Portal.PloneSite" />
+
+  <five:deprecatedManageAddDelete
+      class=".PloneFolder.PloneFolder" />
+
+  <five:deprecatedManageAddDelete
+      class=".CatalogTool.CatalogTool" />
+
+  <five:deprecatedManageAddDelete
+      zcml:condition="installed Products.kupu"
+      class="Products.kupu.plone.plonelibrarytool.PloneKupuLibraryTool" />
+
+</configure>

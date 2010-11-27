@@ -1,0 +1,229 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:five="http://namespaces.zope.org/five"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+   i18n_domain="plone"
+   >
+
+  <genericsetup:importStep
+      name="content"
+      title="Content"
+      description="Import the site's structure and content."
+      handler="Products.CMFCore.exportimport.content.importSiteStructure">
+    <depends name="plone-final"/>
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="cssregistry"
+      title="Stylesheet registry"
+      description="Import stylesheet registry"
+      handler="Products.ResourceRegistries.exportimport.cssregistry.importCSSRegistry">
+    <depends name="toolset"/>
+    <depends name="componentregistry"/>
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="kssregistry"
+      title="KSS registry"
+      description="Import KSS registry"
+      handler="Products.ResourceRegistries.exportimport.kssregistry.importKSSRegistry">
+    <depends name="toolset"/>
+    <depends name="componentregistry"/>
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="jsregistry"
+      title="Javascript registry"
+      description="Import javascript registry"
+      handler="Products.ResourceRegistries.exportimport.jsregistry.importJSRegistry">
+    <depends name="toolset"/>
+    <depends name="componentregistry"/>
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="viewlets"
+      title="Viewlet Settings"
+      description="Import viewlet settings"
+      handler="plone.app.viewletmanager.exportimport.storage.importViewletSettingsStorage">
+    <depends name="componentregistry"/>
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="kss_mimetype"
+      title="KSS setup / mimetype"
+      description="KSS (Kinetic Style Sheet) setup. Register kss mimetype."
+      handler="plone.app.kss.exportimport.setup.setupMimetype">
+    <depends name="mimetypes-registry-various"/>
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="controlpanel"
+      handler="Products.CMFPlone.exportimport.controlpanel.importControlPanel"
+      title="Control Panel"
+      description="Import Plone control panel actions.">
+   <depends name="actions" />
+   <depends name="componentregistry" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="factorytool"
+      handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
+      title="Portal Factory Tool"
+      description="Import type registration for the portal factory tool.">
+   <depends name="componentregistry" />
+   <depends name="typeinfo" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="memberdata-properties"
+      handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
+      title="MemberData Properties"
+      description="Import MemberData properties.">
+   <depends name="componentregistry" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="plone-content"
+      handler="Products.CMFPlone.setuphandlers.importContent"
+      title="Plone Content Import"
+      description="Plone content import.">
+   <depends name="plone-final" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="plone-final"
+      handler="Products.CMFPlone.setuphandlers.importFinalSteps"
+      title="Final Plone Config"
+      description="Final Plone configuration.">
+   <depends name="kss_mimetype" />
+   <depends name="portlets" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="propertiestool"
+      handler="Products.CMFPlone.exportimport.propertiestool.importPloneProperties"
+      title="Plone Properties"
+      description="Import plone properties tool and subobjects.">
+   <depends name="componentregistry" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="update-workflow-rolemap"
+      title="Update workflow role mappings"
+      description="Update workflow role map after workflow changes in an extension profile.     This is only necessary if the 'structure' step has imported content."
+      handler="Products.CMFPlone.setuphandlers.updateWorkflowRoleMappings">
+    <depends name="workflow"/>
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="plone-difftool"
+      handler="Products.CMFDiffTool.exportimport.difftool.importDiffTool"
+      title="Diff Tool"
+      description="Import CMFDiffTool settings">
+  </genericsetup:importStep>
+
+  <genericsetup:exportStep
+      name="content"
+      title="Content"
+      description="Export the site's structure and content."
+      handler="Products.CMFCore.exportimport.content.exportSiteStructure"
+      />
+
+  <genericsetup:exportStep
+      name="controlpanel"
+      title="Control Panel"
+      description="Export Plone control panel actions."
+      handler="Products.CMFPlone.exportimport.controlpanel.exportControlPanel"
+      />
+
+  <genericsetup:exportStep
+      name="cssregistry"
+      title="Stylesheet registry"
+      description="Export stylesheet registry"
+      handler="Products.ResourceRegistries.exportimport.cssregistry.exportCSSRegistry"
+      />
+
+  <genericsetup:exportStep
+      name="kssregistry"
+      title="KSS registry"
+      description="Export stylesheet registry"
+      handler="Products.ResourceRegistries.exportimport.kssregistry.exportKSSRegistry"
+      />
+
+  <genericsetup:exportStep
+      name="factorytool"
+      title="Portal Factory Tool"
+      description="Export type registration for the portal factory tool."
+      handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
+      />
+
+  <genericsetup:exportStep
+      name="jsregistry"
+      title="Javascript registry"
+      description="Export javascript registry"
+      handler="Products.ResourceRegistries.exportimport.jsregistry.exportJSRegistry"
+      />
+
+  <genericsetup:exportStep
+      name="memberdata-properties"
+      title="MemberData properties"
+      description="Export MemberData properties"
+      handler="Products.CMFPlone.exportimport.memberdata_properties.exportMemberDataProperties"
+      />
+
+  <genericsetup:exportStep
+      name="propertiestool"
+      title="Plone Properties"
+      description="Export plone properties tool and subobjects."
+      handler="Products.CMFPlone.exportimport.propertiestool.exportPloneProperties"
+      />
+
+  <genericsetup:exportStep
+      name="viewlets"
+      title="Viewlet Settings"
+      description="Export viewlet settings"
+      handler="plone.app.viewletmanager.exportimport.storage.exportViewletSettingsStorage"
+      />
+
+  <adapter
+     factory=".factorytool.PortalFactoryXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IFactoryTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".propertiestool.PlonePropertiesToolXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IPropertiesTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.ISimpleItemWithProperties
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory="Products.CMFCore.exportimport.content.StructureFolderWalkingAdapter"
+     provides="Products.GenericSetup.interfaces.IFilesystemImporter"
+     for="Products.CMFCore.interfaces.ISiteRoot"
+     />
+
+  <adapter
+     factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFCore.interfaces.IMemberDataTool
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+  <adapter
+     factory=".controlpanel.ControlPanelXMLAdapter"
+     provides="Products.GenericSetup.interfaces.IBody"
+     for="Products.CMFPlone.interfaces.IControlPanel
+          Products.GenericSetup.interfaces.ISetupEnviron"
+     />
+
+</configure>

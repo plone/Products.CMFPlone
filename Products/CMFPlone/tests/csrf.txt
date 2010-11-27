@@ -1,0 +1,521 @@
+CSRF protection tests
+=====================
+
+Some background & an example attack
+-----------------------------------
+
+The following are integration tests trying to make sure the CSRF
+protection in Plone 3.1 actually works.  Plone 3.1 comes with the
+packages implemented for `PLIP 224: CSRF protection framework
+<http://plone.org/products/plone/roadmap/224>`_, so they already
+should have been set up.  This can be checked indirectly by making
+sure the authenticator view exists:
+
+  >>> portal.restrictedTraverse('@@authenticator')
+  <Products.Five.metaclass.AuthenticatorView object at ...>
+
+The same can be checked again from a testbrowser:
+
+  # BBB Zope 2.12
+  >>> try:
+  ...     from Testing.testbrowser import Browser
+  ... except ImportError:
+  ...     from Products.Five.testbrowser import Browser
+  >>> browser = Browser()
+  >>> browser.open('http://nohost/plone/@@authenticator')
+  >>> browser.contents
+  '<Products.Five.metaclass.AuthenticatorView object at ...>'
+
+So far, so good, but the important bit about this is that it should protect
+Plone from CSRF attacks, so we try to test that.  A CSRF attack works by
+having an already logged in portal member, preferably with administrator
+rights, browse a web page of another (or even the same) site and trick them
+into making a malicious request by clicking a link or submitting a form using
+their credentials.
+
+The typical attack would use an invisible `<iframe>` with a form and some
+javascript for auto-submitting it on load. Since the testbrowser doesn't
+support javascript, the submit button needs to be hit manually in this test,
+but that shouldn't make a difference in terms of testing if the protection
+framework actually works.
+
+So first we need a logged in user with manager rights:
+
+  >>> self.setRoles(('Manager',))
+  >>> from Products.PloneTestCase import PloneTestCase as ptc
+  >>> browser.open('http://nohost/plone/login_form')
+  >>> browser.getControl(name='__ac_name').value = ptc.default_user
+  >>> browser.getControl(name='__ac_password').value = ptc.default_password
+  >>> browser.getControl('Log in').click()
+  >>> browser.getLink('Site Setup')
+  <Link text='Site Setup' url='http://nohost/plone/@@overview-controlpanel'>
+
+Also, the form used for the attack needs to be created.  Normally this would
+happen on another domain, but for the purposes of this test it will happen on
+the same site, since it is the only one the testbrowser knows about:
+
+  >>> folder.invokeFactory('News Item', id='important', title='some important news!')
+  'important'
+  >>> folder.important.setText(' \
+  ... <form action="/plone/@@register" method="post"> \
+  ... <input type="hidden" name="fullname" value="John Doe" /> \
+  ... <input type="hidden" name="username" value="john" /> \
+  ... <input type="hidden" name="email" value="john@spam-factory.com" /> \
+  ... <input type="hidden" name="password" value="johnnyrulez" /> \
+  ... <input type="hidden" name="password_confirm" value="johnnyrulez" /> \
+  ... <input type="hidden" name="form.submitted" value="1" /> \
+  ... <input type="submit" name="form.actions.register" value="Click me!" /> \
+  ... </form> \
+  ... ', mimetype='text/html')
+  >>> folder.important.getField('text').default_output_type = 'text/html'
+  >>> portal.portal_workflow.doActionFor(folder.important, 'publish')
+
+Coincidentally the portal happens to be configured for users to get to pick
+their own passwords.  Again, this is only relevant for this test as otherwise
+outgoing mails would have to be handled making things unnecessarily
+complicated:
+
+  >>> self.portal.validate_email = False
+
+Now let's say with some social engineering the user who logged in above is
+lured to take a look at the "important" information and unsuspectingly even
+clicks the button presented:
+
+  >>> browser.getLink('Home').click()
+  >>> browser.getLink('some important news!').click()
+  >>> browser.getControl('Click me!').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+  >>> self.failIf(portal.acl_users.getUser('john'), 'user found?')
+
+So, he was protected from the attack — phew.  But of course, he should still
+be able to add new users himself if he wishes so:
+
+  >>> browser.open('http://nohost/plone/@@register')
+  >>> browser.getControl(name='_authenticator')
+  <Control name='_authenticator' type='hidden'>
+
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('User Name').value = 'john'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Password').value = 'y0d4Wg'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg'
+  >>> browser.getControl('Register').click()
+  >>> browser.contents
+  '...Welcome!...You have been registered...'
+  >>> self.failUnless(portal.acl_users.getUser('john'), 'user not found?')
+
+
+More tests: User Preferences
+----------------------------
+
+Now that the basics have been tested and demonstrated in detail, the remainder
+of this test will try to swiftly cover all forms that need protection, or
+rather all of them which are supposed to get it at the moment.  Let's start
+with the personal preferences:
+
+  >>> browser.open('http://nohost/plone/@@personal-information')
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Changes saved...'
+
+So this works, but we should also check if the form is actually using an
+authenticator token as well.  The easiest way is to render the already
+existing invalid, in which case submitting should yield an error:
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+Next up is the password form.  Well, technically an attacker would need to
+know the current passwort to exploit this, but we'll check nevertheless:
+
+  >>> browser.open('http://nohost/plone/password_form')
+  >>> browser.getControl('Current password').value = ptc.default_password
+  >>> browser.getControl('New password').value = 'y0d4Wg'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg'
+  >>> browser.getControl('Change Password').click()
+  >>> browser.contents
+  '...Info...Password changed...'
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Current password').value = 'y0d4Wg'
+  >>> browser.getControl('New password').value = 'y0d4Wg!'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
+  >>> browser.getControl('Change Password').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+On the admin side of things there's also the user preferences:
+
+  >>> self.setRoles(('Manager'),)
+  >>> browser.open('http://nohost/plone/@@user-information?userid=%s' % ptc.default_user)
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Changes saved...'
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Full Name').value = 'John Doe'
+  >>> browser.getControl('E-mail').value = 'john.doe@foo-security.net'
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+
+More tests: Managing Users & Groups
+-----------------------------------
+
+Make sure users and roles can be managed through the control panel.  First
+we need to alter the security settings so that no email roundtrip is required
+anymore (which at the same time tests the security control panel):
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Security').click()
+  >>> browser.getControl('Let users select their own passwords').selected = True
+  >>> browser.getControl('Save').click()
+
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getControl('Add New User').click()
+  >>> browser.getControl('User Name').value = 'johnny'
+  >>> browser.getControl('E-mail').value = 'john@foo-security.com'
+  >>> browser.getControl('Password').value = 'y0d4Wg!'
+  >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
+  >>> browser.getControl('Register').click()
+  >>> browser.contents
+  '...Info...User added...'
+
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getControl('Show all').click()
+  >>> browser.getControl(name='users.roles:list:records').value = ['Manager'] * 3
+  >>> browser.getControl('Apply Changes').click()
+  >>> browser.contents
+  '...Info...Changes applied...'
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='users.roles:list:records').value = ['Manager'] * 3
+  >>> browser.getControl('Apply Changes').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+Let's also try adding that user to a group:
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getControl('Show all').click()
+  >>> browser.getLink('johnny').click()
+  >>> browser.getLink('Group Memberships').click()
+  >>> browser.getControl(name='add:list').value = ['Administrators']
+  >>> browser.getControl('Add user to selected groups').click()
+  >>> browser.contents
+  '...Group memberships for...johnny...
+   ...Current group memberships...
+   ...Administrators...
+   ...Authenticated Users...'
+
+  >>> browser.getControl(name='add:list').value = ['Reviewers']
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
+  >>> browser.getControl('Add user to selected groups').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+There's an alternative way to adding a user to a group in which the group in
+question is selected first and the user can then be added via the "Group
+Members" tab:
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Users and Groups').click()
+  >>> browser.getLink(url='/@@usergroup-groupprefs').click()
+  >>> browser.getLink('Reviewers').click()
+  >>> browser.getControl('Show all').click()
+  >>> browser.getControl(name='add:list').getControl(value='johnny').selected = True
+  >>> browser.getControl('Add selected groups and users to this group').click()
+  >>> browser.contents
+  '...Info...Changes made...
+   ...Members of the Reviewers group...
+   ...Current group members...
+   ...johnny...john@foo-security.com...
+   ...Remove selected groups / users...'
+
+  >>> browser.getControl('Show all').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='add:list').getControl(value='john').selected = True
+  >>> browser.getControl('Add selected groups and users to this group').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+
+More tests: Object Actions
+--------------------------
+
+Plone's "object actions" should also be protected.  Let's check renaming
+first:
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink(url='createObject?type_name=Folder').click()
+  >>> browser.getControl('Title').value = 'a folder'
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/a-folder/'
+
+Reopen URL to clean up HTTP_REFERRER
+
+  >>> browser.open('http://nohost/plone/a-folder/')
+
+Now rename
+
+  >>> browser.getLink('Rename').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('New Short Name').value = 'folder'
+  >>> browser.getControl('Rename All').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl('New Short Name').value = 'folder'
+  >>> browser.getControl('Rename All').click()
+  >>> browser.url
+  'http://nohost/plone/folder/'
+  >>> browser.contents
+  '...Info...Renamed...a-folder...to...folder...'
+
+"Sharing" the item is next:
+
+  >>> browser.getLink('Sharing').click()
+  >>> browser.url
+  'http://nohost/plone/folder/@@sharing'
+  >>> browser.getControl(name='entries.role_Editor:records').value
+  []
+
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/folder/@@sharing'
+  >>> browser.contents
+  '...Info...Changes saved...'
+  >>> browser.getControl(name='entries.role_Editor:records').value
+  ['True']
+
+And finally removing the item again:
+
+  >>> browser.getLink('View').click()
+  >>> browser.getLink('Delete').click()
+  >>> browser.url
+  'http://nohost/plone/folder/delete_confirmation'
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Delete').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl('Delete').click()
+  >>> browser.url
+  'http://nohost/plone'
+  >>> browser.contents
+  '...Info...a folder has been deleted...'
+
+Changing ownership is also protected.  Using the `ownership_form` to do so
+seems to be deprecated as it's not linked anywhere.  Let's try it anyway:
+
+  >>> browser.open('http://nohost/plone/ownership_form')
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('New owner').displayValue = ['johnny']
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl('New owner').displayValue = ['johnny']
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone'
+  >>> browser.contents
+  '...Info...Ownership has been changed...'
+
+
+More tests: Folder contents
+---------------------------
+
+The "folder contents" view needs to contain the authenticator token in order
+to check the removal of its content.  To check if everything's in place, we
+simply create an object and then delete it again via the "folder contents":
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink(url='createObject?type_name=Document').click()
+  >>> browser.getControl('Title').value = 'a document'
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/a-document'
+
+  >>> browser.getLink('Home').click()
+  >>> browser.getLink('Contents').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('a document').selected = True
+  >>> browser.getControl('Delete').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.goBack()
+  >>> browser.getControl('a document').selected = True
+  >>> browser.getControl('Delete').click()
+  >>> browser.contents
+  '...Info...Item(s) deleted...'
+
+
+More tests: Managing Workflow State
+-----------------------------------
+
+Changing the workflow state of object, i.e. submitting and publishing them etc
+also needs to be protected.  Let's create a folder again to test this:
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink(url='createObject?type_name=Folder').click()
+  >>> browser.getControl('Title').value = 'another folder'
+  >>> browser.getControl('Save').click()
+  >>> browser.url
+  'http://nohost/plone/another-folder/'
+
+Reopen URL to clean up HTTP_REFERRER
+
+  >>> browser.open('http://nohost/plone/another-folder/')
+
+Now we submit the document for review.  Unfortunately, this cannot be easily
+protected, since it's not using a form and hence the link itself would have to
+contain the authenticator token.  However, this a bad idea because the token
+could easily get "lost".  Changing the workflow state using the "Advanced"
+publishing process can be protected, though, so let's try this instead:
+
+  >>> browser.getLink('Advanced...').click()
+  >>> browser.url
+  'http://nohost/plone/another-folder/content_status_history'
+  >>> browser.getControl('Publish').selected = True
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Item state changed...'
+
+  >>> browser.getLink('Advanced...').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Retract').selected = True
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+Again, there's an alternative way of accomplishing this, namely using the
+"Change State" button of the "folder contents" view:
+
+  >>> browser.open('http://nohost/plone/')
+  >>> browser.getLink('Contents').click()
+  >>> form = browser.getForm(name='folderContentsForm')
+  >>> form.getControl(name='paths:list').getControl(value='/plone/another-folder').selected = True
+  >>> url = browser.url                                     # remember url...
+  >>> browser.getControl('Change State').click()
+  >>> browser.getControl(name='orig_template').value = url  # gives 404 otherwise
+  >>> browser.getControl('Retract').selected = True
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Item state changed...'
+
+  >>> form = browser.getForm(name='folderContentsForm')
+  >>> form.getControl(name='paths:list').getControl(value='/plone/another-folder').selected = True
+  >>> url = browser.url                                     # remember url...
+  >>> browser.getControl('Change State').click()
+  >>> browser.getControl(name='orig_template').value = url  # gives 404 otherwise
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Publish').selected = True
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+
+More tests: Plone Control Panel
+-------------------------------
+
+Some parts of the control panel have already been tested, but the "configlets"
+haven't.  Luckily most of them are using the same form handlers and template,
+so testing one of them already makes sure the protection works in most cases:
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Security').click()
+  >>> browser.getControl('Enable self-registration').selected
+  False
+  >>> browser.getControl('Enable self-registration').selected = True
+  >>> browser.getControl('Save').click()
+  >>> browser.contents
+  '...Info...Changes saved...'
+
+  >>> browser.getLink('Security').click()
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Enable self-registration').selected = False
+  >>> browser.getControl('Save').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+Exceptions to the rule are the "RAM Cache Settings" and "Maintenance"
+configlets, which are tested separately.  The former isn't linked from the
+"Site Setup" overview, so we have to navigate there directly:
+
+  >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
+  >>> browser.getControl('Clear cache').click()
+  >>> browser.contents
+  '...Info...Cleared the cache...'
+
+  >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
+  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl('Clear cache').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+The "Maintenance" configlet has some special security limitations, which is
+why we need to log in as the portal owner first:
+
+  >>> credentials = ptc.portal_owner, ptc.default_password
+  >>> browser = Browser()
+  >>> browser.addHeader('Authorization', 'Basic %s:%s' % credentials)
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Maintenance').click()
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=1).value = 'invalid!'
+  >>> browser.getControl('Shut down').click()
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 403: Forbidden
+
+  >>> browser.open('http://nohost/plone/plone_control_panel')
+  >>> browser.getLink('Maintenance').click()
+  >>> browser.getControl('Shut down').click()
+  >>> browser.contents
+  '...Zope is shutting down...'
+

@@ -1,0 +1,3 @@
+[actions]
+action.success=redirect_to_action:string:view
+action.failure=traverse_to:string:folder_constraintypes_form

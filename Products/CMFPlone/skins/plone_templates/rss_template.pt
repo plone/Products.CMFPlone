@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:metal="http://xml.zope.org/namespaces/metal">
+
+<metal:block
+    define-macro="master"
+    tal:define="syn context/portal_syndication;
+                default_max syn/getMaxItems;
+                max max_items|python:syn.getMaxItems(here);
+                max python:same_type(max, 1) and max or default_max;
+                objects python: objectList[:max]">
+
+<metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=utf-8')" />
+
+<channel rdf:about="" tal:attributes="rdf:about request/URL">
+  <title tal:content="context/pretty_title_or_id">The title</title>
+  <link tal:content="context/portal_url">http://url.to.portal</link>
+
+  <description>
+    <metal:block define-slot="description">
+      <tal:block content="context/Description">
+        Default rss description goes here
+      </tal:block>
+    </metal:block>
+  </description>
+
+  <tal:comment replace="nothing">
+    The syndication tool is pretty brain dead and won't let you access the variables
+    you need for this from something like search_rss, unless you've enable site syndication
+    it really needs rewriting.
+  </tal:comment>
+
+  <metal:block define-slot="syndication" />
+
+  <image
+    rdf:resource=""
+    tal:attributes="rdf:resource string:${context/portal_url}/logo.png" />
+
+  <items>
+    <rdf:Seq>
+      <tal:block repeat="obj_item python: objects">
+        <rdf:li rdf:resource=""
+                tal:attributes="rdf:resource obj_item/getURL|obj_item/absolute_url" />
+      </tal:block>
+    </rdf:Seq>
+  </items>
+
+</channel>
+
+<tal:block define="getMemberInfo nocall:context/portal_membership/getMemberInfo;"
+           repeat="brain python: objects">
+  <item rdf:about="" tal:attributes="rdf:about obj_item/getURL|obj_item/absolute_url"
+        tal:define="obj_item brain/getObject|nocall:brain;
+                    has_text exists:obj_item/aq_explicit/getText;
+                    text python:has_text and obj_item.getText() or '';
+                    has_effective exists:obj_item/aq_explicit/effective_date;
+                    effective python:has_effective and obj_item.effective().HTML4() or '';
+                    modified python:obj_item.modified().HTML4();
+                    creator obj_item/Creator|nothing">
+    <title tal:content="obj_item/pretty_title_or_id">Title</title>
+    <link tal:content="obj_item/Identifier">Identifier</link>
+    <description tal:content="obj_item/Description">Description</description>
+    <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
+        tal:condition="has_text"
+        tal:content="structure python:'&lt;![CDATA[' + text + ']]&gt;'">Content</content:encoded>
+    <dc:publisher tal:content="obj_item/Publisher">Publisher</dc:publisher>
+    <dc:creator tal:condition="creator" tal:define="author python:getMemberInfo(creator)" tal:content="python:author and author['fullname'] or creator">Creator</dc:creator>
+    <dc:rights tal:content="obj_item/Rights">Rights</dc:rights>
+    <tal:block tal:repeat="item obj_item/Subject">
+      <dc:subject tal:content="item">Item</dc:subject>
+    </tal:block>
+    <dc:date tal:content="python: has_effective and effective or modified">Published or last modified date if no published date</dc:date>
+    <dc:type tal:content="obj_item/Type">Type</dc:type>
+  </item>
+</tal:block>
+
+</metal:block>
+</rdf:RDF>

@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_content"
+     tal:define="member context/@@plone_portal_state/member;
+                 userid python:request.get('userid', member.getId());
+                 account_page python:request.get('page', '@@personal-information');
+                 dummy python:request.set(template.id, 1);
+                 mq python:modules['ZTUtils'].make_query;
+                 userquery python:mq(userid=userid);
+                 member python:context.portal_membership.getMemberById(userid);
+                 errors options/state/getErrors;
+                 portal_url context/portal_url;">
+
+    <div class="documentEditable">
+        <div id="edit-bar">
+            <h5 class="hiddenStructure">Views</h5>
+            <ul class="contentViews" id="content-views">
+              <li class="selected">
+                    <a href=""
+                       tal:attributes="href string:$portal_url/${template/getId}?${userquery}"
+                       i18n:translate="label_user_properties">
+                      User Properties
+                    </a>
+              </li>
+
+              <li>
+                    <a href=""
+                       tal:attributes="href string:$portal_url/@@usergroup-usermembership?${userquery}"
+                       i18n:translate="label_group_memberships">
+                      Group Memberships
+                    </a>
+              </li>
+            </ul>
+            <div class="contentActions">&nbsp;</div>
+        </div>
+
+      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>
+
+      <div id="content">
+
+          <h1 class="documentFirstHeading"
+              i18n:translate="heading_prefs_user_details">
+            User properties for
+            <span i18n:name="fullname"
+                  tal:replace="python:member.getProperty('fullname')" />
+            (<span tal:content="member/getId | default"
+                  tal:omit-tag=""
+                  i18n:name="username">username</span>)
+          </h1>
+
+          <div class="documentDescription" i18n:translate="label_change_member_properties">
+            Change user properties.
+          </div>
+
+          <div id="content-core">
+              <a href=""
+                 class="link-parent"
+                 tal:attributes="href string:$portal_url/@@usergroup-userprefs"
+                 i18n:translate="label_up_to_usersoverview">
+                Up to Users Overview
+              </a>
+
+              <form action=""
+                        name="users"
+                        method="post"
+                        enctype="multipart/form-data"
+                        class="enableUnloadProtection enableAutoFocus"
+                        tal:condition="user | nothing"
+                    tal:attributes="action template/getId">
+
+                  <input type="hidden" name="userid" value="username"
+                         tal:attributes="value member/getId" />
+
+                  <metal:login use-macro="context/personalize_form/macros/user_form">
+                  Render the personalize_form core template
+                  </metal:login>
+
+              </form>
+          </div>
+
+      </div>
+    </div>
+</metal:main>
+</body>
+</html>

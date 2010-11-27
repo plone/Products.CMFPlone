@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_main"
+      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+                  groups python:controlPanel.getGroups('member')">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_user_panel">My Preferences</h1>
+
+    <div class="documentDescription" i18n:translate="description_user_panel">
+      This area allows you to set your preferences.
+    </div>
+
+    <div id="content-core">
+        <tal:block tal:repeat="group groups">
+            <h2 tal:content="group/title"
+                i18n:translate="">Plone Configlet Group Title</h2>
+            <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+
+                <ul class="configlets">
+                    <tal:configlet repeat="configlet configlets">
+                        <li tal:condition="configlet/visible">
+                            <a href=""
+                               tal:attributes="href configlet/url">
+                                <img src="" alt=""
+                                     tal:attributes="src configlet/icon;
+                                                     alt configlet/description"
+                                     i18n:attributes="alt"
+                                     tal:on-error="string:" />
+                                <tal:configletname tal:content="configlet/title"
+                                                   i18n:translate=""></tal:configletname>
+                            </a>
+                        </li>
+                    </tal:configlet>
+                </ul>
+
+                <p tal:condition="not:configlets"
+                   i18n:translate="label_no_prefs_panels_available">
+                  No preference panels available.
+                </p>
+            </tal:block>
+        </tal:block>
+    </div>
+
+</metal:main>
+
+</body>
+</html>

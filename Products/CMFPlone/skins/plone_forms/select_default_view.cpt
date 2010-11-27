@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <metal:main fill-slot="main">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_select_default_view">Select default view</h1>
+
+      <div class="documentDescription" i18n:translate="description_select_default_view">
+        Please select which template should be used as the default view of the
+        folder.
+      </div>
+
+      <div id="content-core">
+          <form name="default_view_form"
+                action="."
+                method="post"
+                tal:define="context_state context/@@plone_context_state;"
+                tal:attributes="action string:${context_state/object_url}/${template/getId}">
+
+            <input type="hidden" name="form.submitted" value="1"/>
+
+                <div tal:define="vocab context/getAvailableLayouts;
+                                actualLayout context/getLayout|nothing;
+                                selectedLayout python:not context_state.is_default_page() and actualLayout or '';">
+                    <tal:item repeat="layout vocab">
+                        <tal:vars define="value python:layout[0];
+                                          display python:layout[1];">
+                            <input type="radio" class="noborder" name="templateId" value=""
+                                   tal:attributes="value value;
+                                                   id value;
+                                                   disabled python:value==selectedLayout"/>
+                            <label for="" tal:content="display"
+                                   i18n:translate=""
+                                   tal:attributes="for value">
+                                Layout name
+                            </label>
+                            <span class="discreet"
+                                  tal:condition="python:value==selectedLayout"
+                                  i18n:translate="label_current">(current)</span><br />
+                        </tal:vars>
+                    </tal:item>
+                    <p tal:condition="context/canSelectDefaultPage">
+                        <tal:selected condition="python:selectedLayout != ''">
+                            <span i18n:translate="label_or">or</span>
+                            <a title="Select an item to be used as default view in this folder" href="#" class="selected"
+                               tal:attributes="href string:${context/absolute_url}/select_default_page;"
+                               i18n:attributes="title title_select_default_page;"
+                               i18n:translate="label_choose_content_item">
+                                 Choose a content item&hellip;
+                            </a>
+                        </tal:selected>
+                        <tal:selected condition="python:selectedLayout == ''">
+                            <span i18n:translate="label_or">or</span>
+                            <a title="Change the item used as default view in this folder" href="#" class="selected"
+                               tal:attributes="href string:${context/absolute_url}/select_default_page;"
+                               i18n:attributes="title title_change_default_view_item;"
+                               i18n:translate="label_select_content_item">
+                                 Select a content item&hellip;
+                            </a>
+                        </tal:selected>
+                    </p>
+                </div>
+
+              <div class="formControls">
+                <input class="context"
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       />
+                <input class="standalone"
+                       type="submit"
+                       name="form.button.Cancel"
+                       value="Cancel"
+                       i18n:attributes="value label_cancel;"
+                       />
+              </div>
+
+          </form>
+      </div>
+
+    </metal:main>
+
+  </body>
+</html>

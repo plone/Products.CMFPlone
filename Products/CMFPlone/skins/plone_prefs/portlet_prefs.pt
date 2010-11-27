@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+<body>
+<metal:portlet define-macro="portlet"
+   tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+               groups python:controlPanel.getGroups('site');
+               portal_url context/portal_url;">
+
+<dl class="portlet"
+    id="portlet-prefs">
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href=""
+           tal:attributes="href string:${portal_url}/plone_control_panel"
+           i18n:translate="">Site Setup</a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem"
+        tal:repeat="group groups">
+
+        <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
+                   tal:condition="configlets">
+            <strong tal:content="group/title"
+                    i18n:translate="">Plone Configlet Group Title</strong>
+            <ul class="configlets">
+                <tal:configlets tal:repeat="configlet configlets">
+                <li tal:condition="configlet/visible">
+                    <a href=""
+                       tal:attributes="href configlet/url">
+                        <img src="" alt="" tal:attributes="src configlet/icon;
+                                             alt configlet/description"
+                             i18n:attributes="alt"
+                             tal:on-error="string:" />
+                    <tal:configletname tal:content="configlet/title"
+                                       i18n:translate=""></tal:configletname>
+                    </a>
+                </li>
+                </tal:configlets>
+            </ul>
+        </tal:block>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>
+
+</metal:portlet>
+</body>
+</html>

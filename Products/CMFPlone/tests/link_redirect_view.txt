@@ -1,0 +1,63 @@
+Link redirect view
+------------------
+
+The default view of the Link content type is a script (link_redirect_view.py)
+which may redirect to the link target or show a view describing the link.  Let's
+make sure this behaves properly...
+
+First create a demo link::
+
+  >>> self.setRoles(['Manager'])
+  >>> _ = self.portal.invokeFactory('Link', 'link')
+  >>> link = self.portal.link
+  >>> link.setRemoteUrl('http://nohost/plone')
+
+Now let's visit the link in the test browser.  Nothing should happen, because
+the 'redirect_links' property is on by default::
+
+  # BBB Zope 2.12
+  >>> try:
+  ...     from Testing.testbrowser import Browser
+  ... except ImportError:
+  ...     from Products.Five.testbrowser import Browser
+  >>> browser = Browser()
+  >>> browser.open('http://nohost/plone/link')
+  >>> browser.url
+  'http://nohost/plone'
+  >>> 'This link will immediately redirect' in browser.contents
+  False
+  
+But if we turn off 'redirect_links', visiting the link should redirect us to
+plone.org::
+
+  >>> self.portal.portal_properties.site_properties.redirect_links = False
+  >>> browser.open('http://nohost/plone/link')
+  >>> browser.url
+  'http://nohost/plone/link'
+
+Now let's log in as someone who is allowed to edit the link.  They won't get
+redirected, even though 'redirect_links' is re-enabled::
+
+  >>> self.portal.portal_properties.site_properties.redirect_links = True
+  >>> browser.open('http://nohost/plone/login')
+  >>> browser.getControl('Login Name').value = 'test_user_1_'
+  >>> browser.getControl('Password').value = 'secret'
+  >>> browser.getControl('Log in').click()
+  >>> browser.open('http://nohost/plone/link')
+  >>> browser.url
+  'http://nohost/plone/link'
+
+The manager should get a message to help clarify that the link will redirect
+for anonymous users::
+
+  >>> "You see this page because you have permission to edit this link." in browser.contents
+  True
+
+If we turn redirect_links back off, that message should not be present::
+
+  >>> self.portal.portal_properties.site_properties.redirect_links = False
+  >>> browser.open('http://nohost/plone/link')
+  >>> browser.url
+  'http://nohost/plone/link'
+  >>> "You see this page because you have permission to edit this link." in browser.contents
+  False

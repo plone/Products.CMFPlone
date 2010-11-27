@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <title i18n:translate="">Upgrade this site</title>
+
+  <link rel="stylesheet" type="text/css"
+        href="/++resource++plone-admin-ui.css" />
+
+</head>
+<body id="plone-upgrade-screen"
+      tal:define="versions view/versions; report options/report|nothing;">
+
+  <img src="/++resource++plone-logo.png" width="215" height="56" />
+
+  <h1 i18n:translate="">
+    Upgrade this site
+  </h1>
+
+  <div class="prominent">
+      <a href="#"
+         target="_new"
+         tal:attributes="href context/absolute_url;
+                         title context/Title;"
+         tal:content="context/Title">
+          Site title
+      </a>
+      <span class="discreet"
+            tal:content="string:(${context/getId})"/>
+  </div>
+
+  <p i18n:translate="">
+    More information about the upgrade procedure can be found in the
+    documentation section of plone.org in the
+    <a href="http://plone.org/upgrade"
+       target="_new"
+       i18n:name="upgrade_guide"
+       i18n:translate="">Upgrade Guide</a>.
+  </p>
+
+  <tal:current tal:condition="versions/equal">
+
+    <p class="prominent">
+      <img src="confirm_icon.png" />
+      <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
+    </p>
+
+  </tal:current>
+
+  <tal:downgrade tal:condition="versions/instance_gt">
+
+    <p class="prominent">
+      <img src="error_icon.png" />
+      <span i18n:translate="" tal:omit-tag="">WARNING! Your database requires a newer version of Plone than you are currently using. This is a dangerous situation. Please upgrade your Plone version as soon as possible.</span>
+    </p>
+
+  </tal:downgrade>
+
+  <tal:upgrade tal:condition="versions/instance_lt">
+
+    <form action="#"
+          method="post"
+          tal:attributes="action string:${context/absolute_url}/@@plone-upgrade">
+
+      <fieldset id="upgrade-form">
+
+        <legend i18n:translate="">
+          Upgrade
+        </legend>
+
+        <div class="upgrade-warning" i18n:translate="">
+          The site configuration is outdated and needs to be upgraded.
+        </div>
+
+        <p>
+          <span class="backup-warning" i18n:translate="">
+            Please ensure you have a backup of your site before performing the
+            upgrade.
+          </span>
+        </p>
+
+        <dl>
+          <dt i18n:translate="">
+            Current active configuration
+          </dt>
+          <dd tal:content="versions/instance">
+            instance version
+          </dd>
+          <dt i18n:translate="">
+            Latest available configuration
+          </dt>
+          <dd tal:content="versions/fs">
+            file system version
+          </dd>
+        </dl>
+
+        <fieldset id="upgrade-steps">
+
+          <legend i18n:translate="">
+            Upgrade steps
+          </legend>
+
+          <div class="formHelp" i18n:translate="">
+            The following list shows which upgrade steps are going to be run.
+            Upgrading sometimes performs a catalog/security update, which may
+            take a long time on large sites. Be patient.
+          </div>
+
+          <dl class="upgrade-steps">
+            <tal:block tal:repeat="upgrade_info view/upgrades">
+
+                <tal:single condition="python:not isinstance(upgrade_info, list)"
+                            define="info upgrade_info">
+                  <dt tal:content="structure string:(${info/ssource} &amp;#8594; ${info/sdest})">
+                    path
+                  </dt>
+                  <dd>
+                    <ul>
+                      <li tal:content="info/title">
+                        title
+                      </li>
+                    </ul>
+                  </dd>
+                </tal:single>
+
+                <tal:multiple condition="python: isinstance(upgrade_info, list)">
+                  <dt tal:define="info python:upgrade_info[0]"
+                      tal:content="structure string:(${info/ssource} &amp;#8594; ${info/sdest})">
+                    path
+                  </dt>
+                  <dd>
+                    <ul>
+                      <li tal:repeat="info upgrade_info"
+                          tal:content="info/title">
+                          title
+                      </li>
+                    </ul>
+                  </dd>
+                </tal:multiple>
+            </tal:block>
+          </dl>
+        </fieldset>
+
+        <div class="field">
+          <label for="dry_run" i18n:translate="">Dry run mode</label>
+          <div class="formHelp" />
+
+          <input name="dry_run" type="checkbox" value="1:int" />
+          <span i18n:translate="">
+            Run the upgrade and show the result without actually writing
+            anything to the database.
+          </span>
+        </div>
+
+        <div class="formControls">
+          <input type="hidden" name="form.submitted:boolean" value="True" />
+          <input type="submit" name="submit" value="Upgrade"
+                 i18n:attributes="value;" />
+        </div>
+
+      </fieldset>
+    </form>
+
+  </tal:upgrade>
+
+  <tal:report tal:condition="report">
+
+    <h2 i18n:translate="">
+      Upgrade report
+    </h2>
+
+    <pre tal:content="report">
+      report details
+    </pre>
+
+  </tal:report>
+
+  <h2 i18n:translate="heading_version_overview">
+      Version Overview
+  </h2>
+
+  <ul class="version-list" tal:define="corelist versions/corelist">
+      <li>Plone <span tal:replace="corelist/Plone" /></li>
+      <li>Zope <span tal:replace="corelist/Zope" /></li>
+      <li>Python <span tal:replace="corelist/Python" /></li>
+  </ul>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<object name="TempFolder" meta_type="Factory-based Type Information"
+   i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title" i18n:translate=""></property>
+ <property name="description"
+     i18n:translate="">Specialized folder for temporary data.</property>
+ <property name="icon_expr"></property>
+ <property name="content_meta_type">TempFolder</property>
+ <property name="product">CMFCore</property>
+ <property name="factory">manage_addPortalFolder</property>
+ <property name="immediate_view">index_html</property>
+ <property name="global_allow">False</property>
+ <property name="filter_content_types">False</property>
+ <property name="allowed_content_types">
+  <element value="Discussion Item"/>
+  <element value="Document"/>
+  <element value="Event"/>
+  <element value="File"/>
+  <element value="Folder"/>
+  <element value="Image"/>
+  <element value="Link"/>
+  <element value="News Item"/>
+  <element value="TempFolder"/>
+  <element value="Topic"/>
+ </property>
+ <property name="allow_discussion">False</property>
+ <alias from="(Default)" to="index_html"/>
+ <alias from="view" to="index_html"/>
+ <action title="View" action_id="view" category="object" condition_expr=""
+    url_expr="string:${object_url}" visible="True"
+    i18n:attributes="title">
+  <permission value="View"/>
+ </action>
+</object>

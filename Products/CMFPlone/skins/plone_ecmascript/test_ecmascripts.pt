@@ -1,0 +1,111 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:css_slot fill-slot="css_slot">
+        <style type="text/css" rel="stylesheet">
+            .placeholder {
+                margin: 0 0 1em 0;
+                padding: 1px;
+                border: 1px solid black;
+            }
+            div.placeholder h3,
+            div.placeholder p {
+                margin: 0.5em 1em;
+            }
+        </style>
+    </metal:css_slot>
+    <metal:javascript_head_slot fill-slot="javascript_head_slot">
+        <script type="text/javascript" src="ecmaunit.js"> </script>
+        <script type="text/javascript" src="unittestUtilities.js"> </script>
+        <script type="text/javascript" src="testHighlightsearchterms.js"> </script>
+        <script type="text/javascript" src="testNodeutilities.js"> </script>
+        <script type="text/javascript" src="testBeforeUnload.js"> </script>
+        <!-- kupu tests -->
+        <script type="text/javascript" src="test_kupueditor.js"> </script>
+        <script type="text/javascript" src="test_kupuhelpers.js"> </script>
+        <script type="text/javascript" src="test_xhtml.js"> </script>
+        <script type="text/javascript" src="test_kupubasetools.js"> </script>
+        <script type="text/javascript" src="test_plone.js"> </script>
+        <script type="text/javascript" src="test_kupuinit.js"> </script>
+        <script type="text/javascript"><!--
+            testcase_registry.registerTestCase(KupuHelpersTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuEditorTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuSelectionTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuXhtmlTestCase, 'kupu');
+            testcase_registry.registerTestCase(InitKupuCheckersTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuUITestCase, 'kupu');
+            testcase_registry.registerTestCase(ImageToolTestCase, 'kupu');
+            testcase_registry.registerTestCase(KupuPloneTestCase, 'kupu');
+        // --></script>
+    </metal:javascript_head_slot>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading">
+      Plone ECMAScript Unit Tests
+    </h1>
+
+    <div class="documentDescription">
+      This page is the entry to the ECMAScript Unit Tests.
+    </div>
+
+    <div id="content-core">
+        <div>
+            <button onclick="runTestCases();">Run Testcases</button>
+            <button onclick="clearOutput();">Clear output</button>
+            <button onclick="showMarkup();">Show Markup</button>
+            <button onclick="showFilteredTests();">Show Test Suites</button>
+        </div>
+        <div>
+            Suite filter: <input id="suite-filter"
+                                 type="text"
+                                 value=""
+                                 tal:attributes="value request/suite_filter|nothing;" />
+            Test filter:  <input id="test-filter"
+                                 type="text"
+                                 value=""
+                                 tal:attributes="value request/test_filter|nothing;" />
+        </div>
+        <div id="testInfos"></div>
+        <ul id="testResultsToc"></ul>
+        <div id="testResultsPlaceHolder"></div>
+        <div id="testSandbox"></div>
+
+        <!-- the following parts are for the kupu tests. -->
+        <!-- some test data for the loadDictFromXML function -->
+        <div style="visibility: hidden">
+        <xml id="xmlisland">
+            <dict>
+                <foo>bar</foo>
+                <sna>fu</sna>
+                <some_int>1</some_int>
+                <nested>
+                    <foo>bar</foo>
+                </nested>
+                <list>0</list>
+                <list>1</list>
+            </dict>
+        </xml>
+        </div>
+        <select id="kupu-tb-styles" style="display:none">
+        <option value="p">Normal</option>
+        <option value="h2">Heading</option>
+        <option value="h3">Subheading</option>
+        <option value="pre">Formatted</option>
+        <option value="div|Caption">Caption</option>
+        </select>
+        <iframe style="display: none" id="iframe" ></iframe>
+        <div style="display:none" id="testdiv" ></div>
+    </div>
+</metal:main>
+
+</body>
+</html>

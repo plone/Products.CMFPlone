@@ -1,0 +1,126 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <metal:head fill-slot="head_slot">
+    <meta name="robots" content="noindex,follow" />
+  </metal:head>
+
+  <body>
+
+    <metal:main fill-slot="main"
+         tal:define="errors options/state/getErrors;">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_send_page_to">Send this page to someone</h1>
+
+      <div class="documentDescription"
+         i18n:translate="description_send_page_url_to">
+        Fill in the email address of your friend, and we will send an email
+        that contains a link to this page.
+      </div>
+
+      <div id="content-core">
+          <form name="sendto_form"
+                class="enableAutoFocus"
+                action="sendto_form"
+                method="post"
+                enctype="multipart/form-data"
+                tal:attributes="action string:${context/@@plone_context_state/object_url}/${template/getId}">
+
+            <fieldset>
+
+              <legend i18n:translate="legend_address_info">Address info</legend>
+
+              <div class="field"
+                   tal:define="error errors/send_to_address|nothing;"
+                   tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <label for="send_to_address" i18n:translate="label_send_to_mail">Send to</label>
+
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title title_required;"
+                      i18n:translate="label_required">(Required)</span>
+
+                      <div class="formHelp" i18n:translate="help_send_to_mail">
+                        The e-mail address to send this link to.
+                      </div>
+
+                      <div tal:content="error">Validation error output</div>
+
+                      <input type="text"
+                             id="send_to_address"
+                             name="send_to_address"
+                             size="25"
+                             tal:attributes="value request/send_to_address | nothing;"
+                             />
+              </div>
+
+              <div class="field"
+                   tal:define="error errors/send_from_address|nothing;"
+                   tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <label for="send_from_address" i18n:translate="label_send_from">From</label>
+
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title title_required;"
+                      i18n:translate="label_required">(Required)</span>
+
+                      <div class="formHelp" i18n:translate="help_send_from">
+                        Your email address.
+                      </div>
+
+                      <div tal:content="error">Validation error output</div>
+
+                      <input type="text"
+                             id="send_from_address"
+                             name="send_from_address"
+                             size="25"
+                             tal:define="member context/@@plone_portal_state/member;"
+                             tal:attributes="value python: request.get('send_from_address', member.getProperty('email',''));"
+                             />
+              </div>
+
+              <div class="field">
+                <label for="comment" i18n:translate="label_comment">Comment</label>
+
+                <div class="formHelp" i18n:translate="help_comment_to_link">
+                  A comment about this link.
+                </div>
+
+                <textarea cols="80"
+                          rows="5"
+                          id="comment"
+                          name="comment"
+                          tal:content="request/comment | nothing"
+                          >
+                  Comment
+                </textarea>
+              </div>
+
+              <div class="formControls">
+                <input class="context"
+                       type="submit"
+                       name="form.button.Send"
+                       value="Send"
+                       i18n:attributes="value label_send;"
+                       />
+              </div>
+
+              <input type="hidden" name="form.submitted" value="1" />
+
+            </fieldset>
+
+          </form>
+      </div>
+
+    </metal:main>
+
+  </body>
+</html>

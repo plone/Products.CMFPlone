@@ -1,0 +1,81 @@
+There used to be a problem when creating an object named 'index_html'
+in Plone using WebDAV.
+
+The problem occurred because Plone Folder's 'index_html' was a
+ComputedAttribute used to acquire index_html from skins when there was
+no index_html Document on the portal root.
+
+However, this ComputedAttribute didn't handle WebDAV 'PUT' request
+correctly. This test ensures that the fix doesn't regress.
+
+  >>> from Products.CMFPlone.tests.PloneTestCase import default_user
+  >>> from Products.CMFPlone.tests.PloneTestCase import default_password
+
+Get path of our home folder:
+
+  >>> folder_path = '/'.join(self.folder.getPhysicalPath())
+
+Make sure index_html doesn't exist yet:
+
+  >>> 'index_html' in self.folder
+  False
+
+PUT index_html into a Plone Folder. Should work just fine.
+
+  >>> body = 'I am the walrus'
+  >>> length = len(body)
+  >>> print http(r"""
+  ... PUT %s/index_html HTTP/1.1
+  ... Content-Length: %d
+  ... Authorization: Basic %s:%s
+  ... <BLANKLINE>
+  ... %s
+  ... """ % (folder_path, length,
+  ...        default_user, default_password, body),
+  ...        handle_errors=False)
+  HTTP/1.1 201 Created...
+
+  >>> 'index_html' in self.folder
+  True
+
+  >>> print self.folder._getOb('index_html').meta_type
+  ATDocument
+
+Now, let's try the same at the Portal level:
+
+  >>> portal_path = '/'.join(self.portal.getPhysicalPath())
+
+Make sure index_html doesn't exist yet:
+
+  >>> 'index_html' in self.portal
+  False
+
+But when we access it directly we should get a FSPageTemplate:
+
+  >>> print self.portal.index_html.meta_type
+  Filesystem Page Template
+
+Give Manager role to the test user:
+
+  >>> self.setRoles(['Manager'])
+
+PUT index_html into Plone root. Should work just fine.
+
+  >>> body = 'I am the walrus'
+  >>> length = len(body)
+  >>> print http(r"""
+  ... PUT %s/index_html HTTP/1.1
+  ... Content-Length: %d
+  ... Authorization: Basic %s:%s
+  ... <BLANKLINE>
+  ... %s
+  ... """ % (portal_path, length,
+  ...        default_user, default_password, body),
+  ...        handle_errors=False)
+  HTTP/1.1 201 Created...
+
+  >>> 'index_html' in self.portal
+  True
+
+  >>> print self.portal._getOb('index_html').meta_type
+  ATDocument

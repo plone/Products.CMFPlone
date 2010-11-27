@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+
+<metal:main fill-slot="main"
+     tal:define="auth nocall:context/acl_users/credentials_cookie_auth|nothing">
+
+    <div id="content-core" tal:condition="python: not auth" i18n:translate="registered_disabled">
+           Cookie authentication has been disabled.
+    </div>
+
+    <div tal:define="ve context/validate_email" tal:omit-tag=""
+         tal:condition="python: auth">
+
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_welcome">
+            Welcome!
+        </h1>
+
+        <div class="documentDescription" i18n:translate="description_you_are_registered">
+            You have been registered.
+        </div>
+
+        <div id="content-core">
+            <p tal:condition="ve"
+               tal:define="expire_length context/portal_password_reset/getExpirationTimeout;
+                           toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                           expire_date python:toLocalizedTime(DateTime() + expire_length / 24.0, long_format=1)"
+               i18n:translate="description_password_reset_or_registered">
+                You will receive an e-mail shortly containing a URL that will allow you to
+                set your password. When you receive this e-mail, please follow the link to
+                complete your registration process. NOTE: The password reset URL will expire
+                on <span tal:replace="expire_date" i18n:name="time"/>. If your
+                password reset request expires, you may use the "Forgot your password" link
+                to generate another password reset request.
+            </p>
+
+            <tal:block condition="python:not(ve)">
+                <p i18n:translate="description_you_can_log_on_now">
+                    Click the button to log in immediately.
+                </p>
+
+                <dl class="portalMessage error"
+                    id="enable_cookies_message"
+                    style="display:none">
+                    <dt i18n:translate="">
+                        Error
+                    </dt>
+                    <dd i18n:translate="enable_cookies_message_before_login">
+                        Cookies are not enabled. You must enable cookies before you can log in.
+                    </dd>
+                </dl>
+
+
+                <form action=""
+                      method="post"
+                      tal:define="form request/form;
+                                  username python: form.get('form.username');
+                                  password python: form.get('form.password');
+                                  ac_name auth/name_cookie|string:__ac_name;
+                                  ac_password auth/pw_cookie|string:__ac_password;
+                                  portal_url context/portal_url;"
+                      tal:attributes="action python:'%s/login_form' % portal_url">
+
+                     <input type="hidden" name="form.submitted" value="1" />
+                     <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
+                     <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="0" />
+                     <input type="hidden" name="login_name" id="login_name" value="" />
+                     <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
+
+                    <input type="hidden"
+                           name="came_from"
+                           value=""
+                           tal:attributes="value request/came_from|nothing;" />
+                    <input type="hidden"
+                           name="ac_name"
+                           value=""
+                           tal:attributes="id ac_name;
+                                           name ac_name;
+                                           value username;" />
+                    <input type="hidden"
+                           name="ac_password"
+                           value=""
+                           tal:attributes="name ac_password;
+                                           id ac_password;
+                                           value password;" />
+                    <input class="standalone"
+                           type="submit"
+                           value="Log in"
+                           i18n:attributes="value label_log_in;"
+                           />
+                </form>
+            </tal:block>
+        </div>
+
+    </div>
+
+</metal:main>
+</body>
+</html>

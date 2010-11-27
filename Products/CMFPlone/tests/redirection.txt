@@ -1,0 +1,39 @@
+Redirecting and resource directories
+====================================
+
+When you try to visit a page that does not exist, Plone helpfully
+shows a link to the parent directory.  Normally this is fine.  But
+Plone expects this parent directory to be a normal folder or something
+similar.  It makes some assumptions there that are not valid when the
+parent is a resource directory.  This gives problems while rendering
+the default error page.  In particular it results in a TypeError:
+getTypeInfo.
+
+We test this by starting up a test browser:
+
+    # BBB Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+
+Let's check what happens when we get a file from a resourceDirectory.
+This flag exists:
+
+  >>> flag_directory = 'http://nohost/plone/++resource++language-flags/'
+  >>> browser.open(flag_directory + 'eu.gif')
+
+And this flag does not, so it should raise a 404:
+
+  >>> browser.open(flag_directory + 'nonexisting.gif')
+  Traceback (most recent call last):
+  ...
+  HTTPError: HTTP Error 404: Not Found
+
+But it should not give an error while rendering the default error page:
+
+  >>> "the following error occurred while attempting to render the standard error message" in browser.contents
+  False
+  >>> "This page does not seem to exist" in browser.contents
+  True

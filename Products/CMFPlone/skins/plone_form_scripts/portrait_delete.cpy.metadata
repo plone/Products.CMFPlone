@@ -1,0 +1,5 @@
+[validators]
+
+[actions]
+action.failure=traverse_to:string:@@personal-information
+action.success=traverse_to:string:@@personal-information

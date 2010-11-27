@@ -1,0 +1,62 @@
+#kss-spinner {
+    display:none;
+    width: 20px;
+    height: 20px;
+    position: fixed;
+    background-position: center center;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
+}
+
+
+.formlibInlineEditable,
+.inlineEditable {
+    padding: 1px;
+    display: block;
+}
+
+body.kssActive .inlineEditable:hover,
+body.kssActive .formlibInlineEditable:hover {
+    padding: 0;
+    border: 1px solid #ddd;
+    border-color: #666 #ddd #ddd #666;
+    cursor: text;
+    background: White url(input_background.png) repeat-x;
+}
+
+body.kssActive .inlineEditable a:hover,
+body.kssActive .formlibInlineEditable a:hover {
+    cursor: pointer;
+}
+
+body.kssActive .formlibInlineForm:hover,
+body.kssActive .formlibInlineForm a:hover {
+    padding: 1px;
+    border: none;
+    cursor: default;
+    background: none;
+}
+
+.inlineForm .formHelp,
+.inlineForm .fieldRequired,
+.inlineForm label {
+    display: none;
+}
+
+/* In inline selection widgets the label *must* be displayed, as
+   otherwise you only see identical radio buttons without text. */
+.inlineForm .ArchetypesSelectionWidget label {
+    display: inline;
+}
+
+.inlineForm #archetypes-fieldname-title input,
+.inlineForm #archetypes-fieldname-title {
+    font-size: 100%;
+}
+
+/* Workaround for abnormally large buttons in the h1 tag */
+h1 div.formControls input {
+    font-size: 55% !important;
+}

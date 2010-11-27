@@ -1,0 +1,45 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:meta="http://namespaces.zope.org/meta">
+
+    <!-- Register a feature; once this is in place, you can do
+
+            zcml:condition="have plone-4"
+
+         to register Plone 4-specific configuration
+      -->
+
+    <meta:provides feature="plone-4" />
+
+    <!-- Exclude directives need to be executed before the ZCML file would
+         be loaded. Doing this during the meta.zcml phase ensures this.
+         The functionality in the following packages is not used and might
+         interfere with Plone's own. -->
+    <exclude package="Products.CMFDefault.browser" file="configure.zcml" />
+    <exclude package="Products.CMFDefault.formlib" file="configure.zcml" />
+
+    <include package="Products.CMFCore" file="meta.zcml" />
+    <include package="Products.GenericSetup" file="meta.zcml" />
+
+    <include package="plone.app.portlets" file="meta.zcml" />
+
+    <!-- kss -->
+    <include package="kss.core" file="meta.zcml" />
+
+    <!-- wicked -->
+    <include package="wicked.fieldevent" file="meta.zcml" />
+
+    <!-- z3c.autoinclude's `includePlugins` directive finds
+         and executes ZCML files from any installed packages
+         that provide an entry point to declare themselves a
+         plone plugin -->
+    <include package="z3c.autoinclude" file="meta.zcml" />
+
+    <includePlugins
+        zcml:condition="not-have disable-autoinclude"
+        package="plone"
+        file="meta.zcml"
+        />
+
+</configure>

@@ -1,0 +1,77 @@
+We want to test the member search form and the resulting page.
+
+Let's create a user to test upon
+see: testControlPanelScripts.txt:
+    >>> from DateTime import DateTime
+    >>> fullname = 'Test User Full Name'
+    >>> username = 'testuser'
+    >>> email = 'test@plone.org'
+    >>> last_login_time = DateTime()
+    >>> membership = self.portal.portal_membership
+    >>> membership.addMember(username, 'secret', [], [])
+    >>> member = membership.getMemberById(username)
+    >>> member.setMemberProperties({'fullname': fullname, 'email': email,
+    ...                             'last_login_time': last_login_time,})
+
+Check the member's properties
+    >>> props = membership.getMemberInfo(username)
+    >>> props.get('fullname') == fullname
+    True
+
+
+Now we test the members' search form
+
+    # BBB Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> portal_url = self.portal.absolute_url()
+    >>> self.portal.error_log._ignored_exceptions = ()
+
+Open the portal home and open the Members tab
+    >>> browser.open(portal_url)
+    >>> browser.getLink('Users').click()
+    >>> "Search for users" in browser.contents
+    True
+
+Now we perform a search as Anonymous User
+    >>> browser.getControl(name='login').value = username
+    >>> browser.getControl(name='submit').click()
+
+    >>> 'member_search_results' in browser.url
+    True
+
+We are not allowed to list members
+    >>> "You are not allowed to list portal members." in browser.contents
+    True
+
+    >>> 'No results were found.' in browser.contents
+    True
+
+Now we login in the portal and retry
+    >>> from Products.PloneTestCase.setup import portal_owner
+    >>> from Products.PloneTestCase.setup import default_password
+    >>> browser.addHeader('Authorization',
+    ...                   'Basic %s:%s' % (portal_owner, default_password))
+    >>> browser.open(portal_url + '/Members')
+
+and we perform another search
+    >>> browser.getControl(name='login').value = username
+    >>> browser.getControl(name='submit').click()
+
+    >>> 'member_search_results' in browser.url
+    True
+
+    >>> 'No results were found.' in browser.contents
+    False
+
+Now we test the presence of full name in results
+see: http://dev.plone.org/plone/ticket/10510
+    >>> fullname in  browser.contents
+    True
+
+and href attribute on <a> tag to member card
+    >>> '%s/author/%s' % (portal_url, username) in  browser.contents
+    True

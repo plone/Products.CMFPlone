@@ -1,0 +1,12 @@
+[default]
+title=Groups Management
+
+[security]
+View = 0:Authenticated
+
+[actions]
+action.success..AddGroup = redirect_to:string:prefs_group_details
+action.success..Search   = traverse_to:string:@@usergroup-groupprefs
+action.success..FindAll  = traverse_to:string:@@usergroup-groupprefs
+action.success..Modify   = traverse_to:string:prefs_group_modify
+action.success           = traverse_to:string:prefs_group_modify

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="plone">
+ <configlet title="Image Handling" action_id="ImagingSettings" appId="ImagingSettings"
+    category="Products" condition_expr=""
+    url_expr="string:${portal_url}/@@imaging-controlpanel" visible="False"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Imaging</permission>
+ </configlet>
+ <configlet title="Image Handling" action_id="ImagingSettings" appId="ImagingSettings"
+    category="Plone" condition_expr=""
+    icon_expr="string:$portal_url/image_icon.png"
+    url_expr="string:${portal_url}/@@imaging-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Imaging</permission>
+ </configlet>
+</object>

@@ -1,0 +1,142 @@
+Test for Messages
+=================
+
+  >>> from Products.CMFPlone import PloneMessageFactory as _
+
+Messages without translation service set up
+-------------------------------------------
+
+Very simple message:
+
+  >>> _(u'hello')
+  u'hello'
+
+The domain is predefinied through the factory:
+
+  >>> _(u'hello').domain
+  'plone'
+
+You can also define a default text:
+
+  >>> msg = _(u'id', default=u'This is the text.')
+  >>> msg
+  u'id'
+
+  >>> msg.default
+  u'This is the text.'
+
+And at last there is the possibility of variable substition:
+
+  >>> project = u'Plone'
+  >>> msg = _(u'id', default=u'Hello ${name}', mapping={u'name' : project})
+
+  >>> msg
+  u'id'
+
+  >>> msg.default
+  u'Hello ${name}'
+
+  >>> msg.mapping
+  {u'name': u'Plone'}
+  
+Messages with translation service set up
+----------------------------------------
+
+Now we fake a translation domain. Usually you will have translations stored in
+a po file and automatically translated by PTS or the Z3 translation service.
+
+  >>> from zope.i18n.simpletranslationdomain import SimpleTranslationDomain
+  >>> from zope.i18n.interfaces import ITranslationDomain
+
+  >>> messages = {
+  ...     ('de', u'This is a message.'): u'Dieses ist eine Nachricht.',
+  ...     ('de', u'mail-notification'): u'Sie haben ${number} neue E-Mails.'}
+  >>> mails = SimpleTranslationDomain('plone', messages)
+
+  >>> from zope.component import provideUtility
+  >>> provideUtility(mails, ITranslationDomain, name='plone')
+
+Define the simple message:
+
+  >>> msg = _(u'This is a message.')
+  >>> msg
+  u'This is a message.'
+
+We are still using the plone domain:
+
+  >>> msg.domain
+  'plone'
+
+Verify that the translation succeeds:
+
+  >>> from zope.i18n import translate
+  >>> translate(msg, target_language='de')
+  u'Dieses ist eine Nachricht.'
+
+Now try a message with variable substitution:
+
+  >>> num = 42
+  >>> note = _(u'mail-notification', default=u'You have ${number} new mails.',
+  ...          mapping={u'number': num})
+
+  >>> note
+  u'mail-notification'
+
+  >>> note.default
+  u'You have ${number} new mails.'
+
+Try simple interpolation:
+
+  >>> translate(note, target_language='en')
+  u'You have 42 new mails.'
+
+And now try the real translation:
+  
+  >>> translate(note, target_language='de')
+  u'Sie haben 42 neue E-Mails.'
+
+Messages inside page templates / tal
+------------------------------------
+
+We need a simple tal engine for the tests. The DummyEngine automatically
+upper-cases all text.
+
+  >>> from zope.tal.dummyengine import DummyEngine
+  >>> engine = DummyEngine()
+
+We use the Messages defined earlier.
+
+  >>> msg
+  u'This is a message.'
+  
+  >>> note
+  u'mail-notification'
+
+Inform the engine of our variables.
+
+  >>> engine.setLocal('msg', msg)
+  >>> engine.setLocal('note', note)
+
+We also need a HTMLParser and TALInterpreter and add a simple convience function
+to get the parsed and interpreted text.
+
+  >>> from zope.tal.htmltalparser import HTMLTALParser
+  >>> from zope.tal.talinterpreter import TALInterpreter
+  >>> from StringIO import StringIO
+
+  >>> def compile(source):
+  ...     parser = HTMLTALParser()
+  ...     parser.parseString(source)
+  ...     program, macros = parser.getCode()
+  ...     result = StringIO()
+  ...     interpreter = TALInterpreter(program, {}, engine, stream=result)
+  ...     interpreter()
+  ...     return result.getvalue()
+
+  >>> text = compile('<span i18n:translate="" tal:content="msg"/>')
+  >>> u'<span>THIS IS A MESSAGE.</span>' in text
+  True
+
+  >>> text = compile('<span i18n:translate="" tal:content="note"/>')
+  >>> u'<span>MAIL-NOTIFICATION</span>' in text
+  True

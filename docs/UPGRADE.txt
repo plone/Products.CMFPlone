@@ -1,0 +1,40 @@
+How to upgrade a Plone site to a newer version
+==============================================
+
+This is a short version, more information can be found at
+http://plone.org/upgrade.
+
+1. Stop Plone / Zope
+
+2. Always back up your Plone site. You should back up:
+
+    * Your Data.fs which contains your site data
+    * Any file system files you have modified
+    * Your blob storage if you are already using blobs
+
+3. Install the new version of Plone, this depends upon your installation.
+   The latest version of Plone is always available from
+   http://plone.org/download and your install will depend upon your particular
+   setup.
+
+4. Restart Plone / Zope
+
+5. Open up the Zope root folder in a browser. It will show you an overview of
+   all installed Plone sites and tell you which ones need to be upgraded.
+   Follow the onscreen instructions.
+
+Running the upgrade may:
+
+ * Change values you have set in the ZODB, for example actions and properties
+
+ * Re-catalog your portal_catalog, this may be time-consuming
+
+ * Reapply security to objects, this may be time-consuming
+
+If you have issues please search for an update of your Python, Zope, Plone and
+third-party add-ons and read http://plone.org/upgrade.
+If you still have issues please the use the bug tracker at
+http://dev.plone.org/plone and include: your Python version, the platform, the
+Plone versions you are upgrading to and from and most
+important: the full traceback and upgrade log. Try to provide as much
+information as possible.

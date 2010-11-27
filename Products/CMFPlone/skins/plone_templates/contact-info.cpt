@@ -1,0 +1,186 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:noborder fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+<metal:main fill-slot="main"
+     tal:define="portal context/@@plone_portal_state/portal;
+                 email_from_address portal/email_from_address;
+                 isAnon context/@@plone_portal_state/anonymous;">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_contact_form">Contact form</h1>
+
+    <div class="documentDescription"
+         tal:condition="portal/description"
+         tal:content="portal/description">Site Description</div>
+
+    <div tal:condition="not:email_from_address">
+
+        <div i18n:translate="text_no_email_setup">
+            This site doesn't have a valid email setup, so you cannot use
+            any contact forms.
+        </div>
+
+    </div>
+
+    <div tal:condition="email_from_address">
+
+        <div i18n:translate="description_contact_site_owner">
+            Fill in this form to contact the site owners.
+        </div>
+        <div id="content-core">
+            <form name="feedback_form"
+                class="enableAutoFocus"
+                action=""
+                method="post"
+                tal:define="errors options/state/getErrors"
+                tal:attributes="action string:$portal_url/${template/getId}">
+
+            <tal:defs define="member context/@@plone_portal_state/member;
+                                  fullname python:request.get('fullname', not isAnon and member.getProperty('fullname', '') or None);
+                                  email python:request.get('email', not isAnon and member.getProperty('email','') or None);">
+
+                <input type="hidden" name="sender_fullname" value="fullname"
+                       tal:attributes="value fullname"
+                       tal:condition="fullname" />
+
+                <div class="field"
+                     tal:condition="not:fullname"
+                     tal:define="error errors/sender_fullname|nothing"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+                    <label for="sender_fullname" i18n:translate="label_sender_fullname">
+                        Name
+                    </label>
+
+                    <div class="formHelp" i18n:translate="help_sender_fullname">
+                        Please enter your full name
+                    </div>
+                    <div tal:condition="error"
+                       tal:content="error">Validation error output</div>
+                    <input type="text"
+                           id="sender_fullname"
+                           name="sender_fullname"
+                           size="40"
+                           value=""
+                           tal:attributes="value request/sender_fullname|nothing"
+                           />
+                </div>
+
+                <input type="hidden" name="sender_from_address" value="email"
+                       tal:attributes="value email"
+                       tal:condition="email" />
+
+                <div class="field"
+                     tal:condition="not:email"
+                     tal:define="error errors/sender_from_address|nothing"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <label for="sender_from_address" i18n:translate="label_sender_from_address">
+                        E-Mail
+                    </label>
+
+                    <span class="fieldRequired" title="Required"
+                          i18n:attributes="title title_required;"
+                          i18n:translate="label_required">(Required)</span>
+
+                    <div class="formHelp" i18n:translate="help_sender_from_address">
+                        Please enter your e-mail address
+                    </div>
+
+                    <div tal:condition="error"
+                         tal:content="error">Validation error output</div>
+
+                    <input type="text"
+                           id="sender_from_address"
+                           name="sender_from_address"
+                           size="40"
+                           value=""
+                           tal:attributes="value request/sender_from_address|nothing"
+                           />
+                </div>
+
+                <div class="field"
+                     tal:define="error errors/subject|nothing"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <label for="subject" i18n:translate="label_subject">
+                        Subject
+                    </label>
+
+                    <span class="fieldRequired" title="Required"
+                          i18n:attributes="title title_required;"
+                          i18n:translate="label_required">(Required)</span>
+
+                    <div class="formHelp">
+                    </div>
+
+                    <div tal:condition="error"
+                         tal:content="error">Validation error output</div>
+
+                    <input type="text"
+                           id="subject"
+                           name="subject"
+                           size="40"
+                           value=""
+                           tal:attributes="value request/subject|nothing"
+                           />
+                </div>
+
+                <div class="field"
+                     tal:define="error errors/message|nothing"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+
+                    <label for="message" i18n:translate="label_message">
+                        Message
+                    </label>
+
+                    <span class="fieldRequired" title="Required"
+                            i18n:attributes="title title_required;"
+                            i18n:translate="label_required">(Required)</span>
+
+                    <div class="formHelp" i18n:translate="help_message">
+                        Please enter the message you want to send.
+                    </div>
+
+                    <div tal:condition="error"
+                         tal:content="error">Validation error output</div>
+
+                    <textarea name="message"
+                              id="message"
+                              rows="5"
+                              cols="25"
+                              tal:content="request/message|nothing"
+                              > </textarea>
+                </div>
+
+                <div class="formControls">
+
+                    <input class="context"
+                           type="submit"
+                           name="form.button.Send"
+                           value="Send"
+                           i18n:attributes="value label_send;"
+                           />
+
+                </div>
+
+            </tal:defs>
+
+            <input type="hidden" name="form.submitted" value="1" />
+
+            </form>
+        </div>
+    </div>
+</metal:main>
+</body>
+</html>

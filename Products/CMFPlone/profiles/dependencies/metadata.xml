@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<metadata>
+  <version>3.1</version>
+  <dependencies>
+    <dependency>profile-plone.protect:default</dependency>
+    <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
+    <dependency>profile-Products.PloneLanguageTool:PloneLanguageTool</dependency>
+    <dependency>profile-Products.Archetypes:Archetypes</dependency>
+    <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
+    <dependency>profile-archetypes.referencebrowserwidget:default</dependency>
+    <dependency>profile-plone.portlet.static:default</dependency>
+    <dependency>profile-plone.portlet.collection:default</dependency>
+    <dependency>profile-Products.TinyMCE:TinyMCE</dependency>
+    <dependency>profile-plone.app.jquerytools:default</dependency>
+    <dependency>profile-plone.app.imaging:default</dependency>
+  </dependencies>
+</metadata>

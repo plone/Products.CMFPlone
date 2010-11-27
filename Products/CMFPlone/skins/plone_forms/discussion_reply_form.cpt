@@ -1,0 +1,190 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:main fill-slot="main"
+     tal:define="portal context/@@plone_portal_state/portal;
+                 errors options/state/getErrors;
+                 thread python:context.plone_utils.getDiscussionThread(here);
+                 discussable python:thread[0];
+                 replies python:thread[1:];
+                 toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
+
+    <div id="content-core">
+        <tal:discussable define="object_title context/Title;
+                                 object_description context/Description;
+                                 view_template python:getattr(here, discussable.getLayout(), None);
+                                 view_macros view_template/macros | nothing;
+                                 view_macro view_macros/content-core | nothing;
+                                 showDiscussable python:object_title or object_description or view_macro;">
+             <!--
+             <div class="comment"
+                  tal:condition="showDiscussable"
+                  tal:define="here python:discussable;
+                              context python:discussable">
+                 <h1 class="documentDescription" tal:content="object_title">Title</h1>
+                 <div class="documentDescription" tal:content="object_description">
+                     Description
+                 </div>
+                 <tal:block tal:condition="view_macro">
+                     <div metal:use-macro="view_macro"/>
+                 </tal:block>
+             </div>
+             -->
+        </tal:discussable>
+
+        <tal:thread replace="nothing" tal:repeat="reply replies">
+            <!-- This should really only show the comment you are replying
+                 to, the form won't scale to an entire thread -->
+            <tal:block tal:define="level repeat/reply/index">
+               <div class="documentByLine"
+                    tal:define="anonymous_creator python:reply.Creator()=='Anonymous User'">
+                   <span i18n:translate="label_comment_by">Posted by</span>
+                   <span tal:content="reply/Creator"
+                         tal:condition="not:anonymous_creator">Poster Name</span>
+                   <span i18n:translate="label_anonymous_user"
+                         tal:condition="anonymous_creator">Anonymous User</span>
+                   <span i18n:translate="label_commented_at">at</span>
+                   <span tal:replace="python:toLocalizedTime(reply.ModificationDate(),
+                                      long_format=1)">8/23/2001 12:40:44 PM</span>
+               </div>
+
+                <div class="comment"
+                     tal:attributes="style python:'margin-left:'+str((int(level)+1)*2)+'em'">
+                   <h3>
+                       <tal:block replace="structure portal/discussionitem_icon.png"/>
+                       <span tal:replace="reply/pretty_title_or_id">Comment title</span>
+                   </h3>
+                   <div class="commentBody"
+                        tal:content="structure reply/CookedBody">
+                        This is the body text of the comment.
+                   </div>
+               </div>
+
+            </tal:block>
+        </tal:thread>
+
+        <form name="edit_form"
+              class="enableAutoFocus"
+              method="post"
+              action="talkback"
+              tal:attributes="action string:${context/@@plone_context_state/object_url}/${template/getId}"
+              tal:define="isAnon context/@@plone_portal_state/anonymous;">
+
+            <input type="hidden" name="Creator" value=""
+                   tal:define="member context/@@plone_portal_state/member;"
+                   tal:attributes="value member/getUserName" />
+
+            <div tal:condition="isAnon">
+                <dl class="portalMessage warning">
+                    <dt i18n:translate="">
+                        Info
+                    </dt>
+                    <dd i18n:translate="legend_note_reply_anonymous">
+                        You are not logged in. You may optionally enter your
+                        username and password below. If you don't enter anything,
+                        this comment will be posted as 'Anonymous User'.
+                    </dd>
+                </dl>
+
+                <div class="field">
+
+                    <label for="username" i18n:translate="label_name">Name</label>
+
+                    <input name="username"
+                           id="username"
+                           value="" alt="Username" title="Name"
+                           size="40"
+                           i18n:attributes="title label_name; alt label_username;" />
+
+                </div>
+
+                <div class="field">
+
+                    <label for="password" i18n:translate="label_password">Password</label>
+
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           value="" alt="Password" title="Password"
+                           size="40"
+                           i18n:attributes="title label_password; alt label_password;" />
+
+                </div>
+
+            </div>
+
+
+     <div class="field"
+        tal:define="error errors/subject|nothing;"
+        tal:attributes="class python:test(error, 'field error', 'field')">
+
+<!--
+             <label for="subject" i18n:translate="label_subject">Subject</label>
+
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title title_required;"
+              i18n:translate="label_required">(Required)</span>
+
+            <div tal:content="error">Validation error output</div>
+ -->
+                <input name="subject"
+                       id="subject"
+                       value=""
+                       size="40"
+                       type="hidden"
+                       tal:attributes="value context/Title|request/subject|request/title_override|nothing;" />
+
+        </div>
+
+        <div class="field"
+        tal:define="error errors/body_text|nothing;"
+        tal:attributes="class python:test(error, 'field error', 'field')">
+
+          <label for="body_text" i18n:translate="label_comment">Comment</label>
+
+        <span class="fieldRequired" title="Required"
+              i18n:attributes="title title_required;"
+              i18n:translate="label_required">(Required)</span>
+
+            <div class="formHelp" i18n:translate="description_add_comment">
+                Plain text formatting. URLs will be turned into links.
+            </div>
+
+            <div tal:content="error">Validation error output</div>
+
+                <textarea name="body_text"
+                          id="body_text"
+                          cols="40"
+                          rows="8"
+                          tal:content="request/body_text|request/text_override | nothing"
+                        ></textarea>
+
+            </div>
+
+            <div class="formControls">
+
+                <input class="context"
+                       type="submit"
+                       value="Save"
+                       name="form.button.Save"
+                       i18n:attributes="value label_save;"
+                       tal:attributes="name string:discussion_reply:method;" />
+
+            </div>
+          <input type="hidden" name="form.submitted" value="1" />
+
+        </form>
+    </div>
+
+</metal:main>
+
+</body>
+</html>

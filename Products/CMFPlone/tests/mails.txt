@@ -1,0 +1,68 @@
+Mail related functional tests
+=============================
+
+Some initial setup:
+
+  # BBB Zope 2.12
+  >>> try:
+  ...     from Testing.testbrowser import Browser
+  ... except ImportError:
+  ...     from Products.Five.testbrowser import Browser
+  >>> browser = Browser()
+
+We need to fake a valid mail setup:
+
+  >>> portal.email_from_address = "mail@plone.test"
+  >>> mailhost = self.portal.MailHost
+
+Contact form
+------------
+
+Let's go to the contact form:
+
+  >>> browser.open('http://nohost/plone/contact-info')
+
+Now fill in the form:
+
+  >>> form = browser.getForm(name='feedback_form')
+
+  >>> form.getControl(name='sender_fullname').value = 'T\xc3\xa4st user'
+  >>> form.getControl(name='sender_from_address').value = 'test@plone.test'
+  >>> form.getControl(name='subject').value = 'Some t\xc3\xa4st subject.'
+  >>> form.getControl(name='message').value = 'Another t\xc3\xa4st message.'
+
+And submit it:
+
+  >>> form.submit()
+  
+  >>> browser.url
+  'http://nohost/plone/contact-info'
+
+  >>> 'Mail sent' in browser.contents
+  True
+  
+As part of our test setup, we replaced the original MailHost with our
+own version.  Our version doesn't mail messages, it just collects them
+in a list called ``messages``:
+
+  >>> len(mailhost.messages)
+  1
+  >>> msg = mailhost.messages[0]
+
+Now that we have the message, we want to look at its contents:
+
+  >>> 'To: mail@plone.test' in msg
+  True
+
+  >>> 'From: mail@plone.test' in msg
+  True
+
+We expect the headers to be properly header encoded (7-bit):
+
+  >>> 'Subject: =?utf-8?q?Some_t=C3=A4st_subject=2E?=' in msg
+  True
+
+The output should be encoded in a reasonable manner (in this case quoted-printable):
+
+  >>> msg
+  '...Another t=C3=A4st message...You are receiving this mail because T=C3=A4st user\ntest@plone.test...is sending feedback about the site you administer at...

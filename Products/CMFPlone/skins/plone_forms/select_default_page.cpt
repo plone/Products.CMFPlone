@@ -1,0 +1,104 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <metal:main fill-slot="main">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_select_default_page">Select default page</h1>
+
+      <div class="documentDescription" i18n:translate="description_select_default_page">
+        Please select item which will be displayed as the default page of the
+        folder.
+      </div>
+      <div id="content-core">
+          <form name="default_page_form"
+                action="."
+                method="post"
+                tal:attributes="action string:${context/@@plone_context_state/object_url}/${template/getId}">
+
+            <input type="hidden" name="form.submitted" value="1"/>
+
+            <tal:items define="availableTypes site_properties/default_page_types | python:[];
+                               use_view_action site_properties/typesUseViewActionInListings|python:[];
+                               items python:[item for item in context.getFolderContents() if
+                                                (not item.is_folderish or item.portal_type in availableTypes) and
+                                                item.portal_type not in use_view_action];
+                               cur_page context/getDefaultPage|nothing;
+                               ploneview nocall:context/@@plone">
+            <tal:hasItems condition="items"
+                          define="n_items python:len(items);
+                          member context/@@plone_portal_state/member;
+                          portal_visible_ids context/portal_properties/site_properties/visible_ids|nothing;
+                          member_visible_ids python:member.getProperty('visible_ids', context.portal_memberdata.getProperty('visible_ids'))">
+                <dl>
+                    <tal:item repeat="item items">
+                        <dt tal:define="normalized_type python:ploneview.normalizeString(item.portal_type);
+                                        item_icon python:ploneview.getIcon(item);
+                                        item_id python:'(%s)' % item.getId if (portal_visible_ids and member_visible_ids) else ''">
+                            <input type="radio" name="objectId" value=""
+                                tal:attributes="value item/getId;
+                                                id item/getId;
+                                                checked python:test(n_items==1 or item.getId==cur_page, 'checked', None);"/>
+                            <img tal:condition="nocall:item_icon"
+                                 tal:replace="structure item_icon/html_tag" />
+                            <label tal:attributes="for item/getId;
+                                                   class string:contenttype-${normalized_type}"
+                                   tal:content="string:${item/pretty_title_or_id} $item_id">
+                                Item title
+                            </label>
+                        </dt>
+                        <dd tal:content="item/Description">
+                            Item Description
+                        </dd>
+                    </tal:item>
+
+                </dl>
+
+              <div class="formControls">
+                <input class="context"
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value label_save;"
+                       />
+                <input class="context"
+                       type="submit"
+                       name="form.button.Cancel"
+                       value="Cancel"
+                       i18n:attributes="value label_cancel;"
+                       />
+              </div>
+
+            </tal:hasItems>
+            <tal:noitems condition="not:nocall:items">
+              <div i18n:translate="help_no_selectable_default_pages">
+                 There are no items in this folder that can be selected as
+                 a default view page.
+              </div>
+              <div class="formControls">
+                    <input class="context"
+                       type="submit"
+                       name="form.button.Cancel"
+                       value="Ok"
+                       i18n:attributes="value label_ok;"
+                       />
+              </div>
+            </tal:noitems>
+            </tal:items>
+
+          </form>
+      </div>
+
+    </metal:main>
+
+  </body>
+</html>
