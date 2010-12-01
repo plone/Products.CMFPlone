@@ -4,6 +4,10 @@ Changelog
 2.1b1 - unreleased
 ------------------
 
+- Fixed : Group titles were not display on group prefs page
+  when title property was got from mutable properties plugin.
+  [thomasdesvenain]
+
 - Prevent privilege escalation when access to the Users and Groups control
   panel is given to non-Manager users.  Only users with the "Manage portal"
   permission can grant the Manager role, or assign users to groups that grant

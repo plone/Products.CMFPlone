@@ -441,6 +441,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         for group_info in inheritance_enabled_groups:
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
+            group_info['title'] = group.getProperty('title', group_info['title'])
             allAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
                 allAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
@@ -459,6 +460,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         for group_info in explicit_groups:
             groupId = group_info['id']
             group = acl.getGroupById(groupId)
+            group_info['title'] = group.getProperty('title', group_info['title'])
 
             explicitlyAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
