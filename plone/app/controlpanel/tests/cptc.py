@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Base class for control panel test cases.
 
 This is in a separate module because it's potentially useful to other
@@ -41,9 +42,9 @@ class UserGroupsControlPanelTestCase(ControlPanelTestCase):
 
     def generateGroups(self):
         groupsTool = getToolByName(self.portal, 'portal_groups')
-        groupsTool.addGroup('group1', [], [], title='Group 1')
-        groupsTool.addGroup('group2', [], [], title='Group 2')
-        groupsTool.addGroup('group3', [], [], title='Group 3')
+        groupsTool.addGroup('group1', [], [], title="Group 1")
+        groupsTool.addGroup('group2', [], [], title="Group 2")
+        groupsTool.addGroup('group3', [], [], title="Group 3 accentué")
 
     def generateUsers(self):
         members = [{'username': 'DIispfuF', 'fullname': 'Kevin Hughes', 'email': 'DIispfuF@example.com'},
@@ -96,6 +97,7 @@ class UserGroupsControlPanelTestCase(ControlPanelTestCase):
                    {'username': 'AByCsRQ3', 'fullname': 'Victoria Perez', 'email': 'AByCsRQ3@example.com'},
                    {'username': 'CH7uVlNy', 'fullname': 'Charles Rodriguez', 'email': '5H7uVlNy@example.com'},
                    {'username': 'XYsmd7ux', 'fullname': 'Abigail Simmons', 'email': 'XYsmd7ux@example.com'},
+                   {'username': 'DfaA1wqC3', 'fullname': 'Émilie Richard', 'email': 'DfaA1wqC3@example.com'},
                    {'username': 'NP4FMIb5', 'email': 'NP4FMIb5@example.com'}]
 
         regtool = getToolByName(self.portal, 'portal_registration')

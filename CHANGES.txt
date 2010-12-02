@@ -4,6 +4,12 @@ Changelog
 2.1b1 - unreleased
 ------------------
 
+- Fix critical error on user groupe page
+  when some groups have a non-ascii character in their title.
+  Sort groups on their title normalized.
+  Similar as http://dev.plone.org/plone/ticket/11301
+  [thomasdesvenain]
+
 - Fixed : Group titles were not display on group prefs page
   when title property was got from mutable properties plugin.
   [thomasdesvenain]

@@ -22,6 +22,9 @@ So let's try a search, first on name...
     True
     >>> 'Sara Richardson' in self.browser.contents
     True
+    >>> 'Émilie Richard' in self.browser.contents
+    True
+
 
 And now on userid...
     >>> self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
@@ -116,7 +119,7 @@ We'll attempt a search...
     True
 
 And again with the group's title
-    >>> self.browser.getControl(name='searchstring').value = 'Group 3'
+    >>> self.browser.getControl(name='searchstring').value = 'Group 3 accentu\xc3\xa9'
     >>> self.browser.getControl(name='form.button.Search').click()
     >>> 'group3' in self.browser.contents
     True
@@ -139,7 +142,7 @@ Delete a group...
     >>> self.browser.getControl(name='delete:list').getControl(value='group3').selected = True
     >>> self.browser.getControl(name='form.button.Modify').click()
     >>> self.browser.getControl(name='searchstring').value
-    'Group 3'
+    'Group 3 accentu\xc3\xa9'
     >>> 'group3' in self.browser.contents
     False
 
