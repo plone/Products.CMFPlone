@@ -126,7 +126,7 @@ class UsersGroupsControlPanelView(ControlPanelView):
             return int(s)
         except ValueError:
             return 0
-    
+
     @property
     def is_zope_manager(self):
         return getSecurityManager().checkPermission(ManagePortal, self.context)
@@ -287,13 +287,13 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             if delete:
                 self.deleteMembers(delete)
             utils.addPortalMessage(_(u'Changes applied.'))
-        
+
     def deleteMembers(self, member_ids):
         # this method exists to bypass the 'Manage Users' permission check
         # in the CMF member tool's version
         context = aq_inner(self.context)
         mtool = getToolByName(self.context, 'portal_membership')
-        
+
         # Delete members in acl_users.
         acl_users = context.acl_users
         if isinstance(member_ids, basestring):
@@ -326,10 +326,10 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
 
 class GroupDetailsControlPanel(UsersGroupsControlPanelView):
-    
+
     def __call__(self):
         context = aq_inner(self.context)
-        
+
         self.gtool = getToolByName(context, 'portal_groups')
         self.gdtool = getToolByName(context, 'portal_groupdata')
         self.regtool = getToolByName(context, 'portal_registration')
@@ -341,7 +341,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
             self.grouptitle = self.group.getGroupTitleOrName()
 
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
-        
+
         submitted = self.request.form.get('form.submitted', False)
         if submitted:
             CheckAuthenticator(self.request)
@@ -358,7 +358,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                     msg = _(u'The group name you entered is not valid.')
                     IStatusMessage(self.request).add(msg, 'error')
                     return self.index()
-                
+
                 success = self.gtool.addGroup(addname, (), (), title=title,
                                               description=description,
                                               REQUEST=self.request)
@@ -367,7 +367,7 @@ class GroupDetailsControlPanel(UsersGroupsControlPanelView):
                             u'this name already exists.', mapping={u'name' : addname})
                     IStatusMessage(self.request).add(msg, 'error')
                     return self.index()
-                
+
                 self.group = self.gtool.getGroupById(addname)
                 msg = _(u'Group ${name} has been added.',
                         mapping={u'name' : addname})
@@ -508,7 +508,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                 # don't allow adding or removing the Manager role
                 if ('Manager' in roles) != ('Manager' in current_roles):
                     raise Forbidden
-            
+
             groupstool.editGroup(group, roles=roles, groups=())
             message = _(u'Changes saved.')
 
@@ -517,7 +517,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                 group = groupstool.getGroupById(group_id)
                 if 'Manager' in group.getRoles() and not self.is_zope_manager:
                     raise Forbidden
-            
+
             groupstool.removeGroups(delete)
             message=_(u'Group(s) deleted.')
 
@@ -536,7 +536,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         # determining whether users, in general, can be added to the group.
         currentUser = self.mtool.getAuthenticatedMember()
         self.canAddUsers = currentUser.canAddToGroup(self.groupname)
-        
+
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
         if 'Manager' in self.request.get('grouproles') and not self.is_zope_manager:
             self.canAddUsers = False
