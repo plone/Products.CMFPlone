@@ -593,6 +593,11 @@ def set_own_login_name(member, loginname):
     PLIP9214 Does someone know a better spot to put this function?  It
     could be added to Products.CMFCore.MemberDataTool.MemberData.
     """
+    if member.getUserName() == loginname:
+        # Bail out early as there is nothing to do.  Also this avoids
+        # an Unauthorized error when this is a member that has just
+        # been registered.
+        return
     secman = getSecurityManager()
     if not secman.checkPermission(SetOwnProperties, member):
         raise Unauthorized('You are not allowed to update this login name')
