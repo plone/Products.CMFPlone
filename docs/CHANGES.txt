@@ -8,6 +8,10 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Removed IOrderedContainer-implementation from PloneFolder in favour
+  of implementation in OFS.OrderSupport
+  [tom_gross]
+
 - Renamed package to `Products.CMFPlone`.
   [elro]
 
