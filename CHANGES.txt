@@ -4,6 +4,9 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
+- Display full creator name in review portlet.
+  [thomasdesvenain]
+
 - Do not display portlets add select list if it is empty.
   [thomasdesvenain]
 

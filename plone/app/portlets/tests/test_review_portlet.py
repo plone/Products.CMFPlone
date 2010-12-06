@@ -69,6 +69,8 @@ class TestRenderer(PortletsTestCase):
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
+        self.portal.portal_membership.getMemberById('test_user_1_').setMemberProperties(
+                                    {'fullname': 'Test user'})
 
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
@@ -86,6 +88,7 @@ class TestRenderer(PortletsTestCase):
         wf.doActionFor(self.portal.doc1, 'submit')
         r = self.renderer(assignment=review.Assignment())
         self.assertEquals(1, len(r.review_items()))
+        self.assertEquals(r.review_items()[0]['creator'], "Test user")
 
     def test_full_news_link(self):
         r = self.renderer(assignment=review.Assignment())

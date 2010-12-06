@@ -28,7 +28,7 @@ class Assignment(base.Assignment):
 class Renderer(base.Renderer):
 
     render = ViewPageTemplateFile('review.pt')
-           
+
     title = _('box_review_list', default=u"Review List")
 
     @property
@@ -59,6 +59,7 @@ class Renderer(base.Renderer):
         workflow = getToolByName(context, 'portal_workflow')
 
         plone_view = getMultiAdapter((context, self.request), name=u'plone')
+        getMember = getToolByName(context, 'portal_membership').getMemberById
         getIcon = plone_view.getIcon
         toLocalizedTime = plone_view.toLocalizedTime
 
@@ -68,12 +69,19 @@ class Renderer(base.Renderer):
         items = []
         for obj in objects:
             review_state = workflow.getInfoFor(obj, 'review_state')
+            creator_id = obj.Creator()
+            creator = getMember(creator_id)
+            if creator:
+                creator_name = creator.getProperty('fullname', '') or creator_id
+            else:
+                creator_name = creator_id
+
             items.append(dict(
                 path = obj.absolute_url(),
                 title = obj.pretty_title_or_id(),
                 description = obj.Description(),
                 icon = getIcon(obj).html_tag(),
-                creator = obj.Creator(),
+                creator = creator_name,
                 review_state = review_state,
                 review_state_class = 'state-%s ' % norm(review_state),
                 mod_date = toLocalizedTime(obj.ModificationDate()),
