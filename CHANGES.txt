@@ -4,9 +4,9 @@ Changelog
 2.1b1 - unreleased
 ------------------
 
-- Fix critical error on user groupe page
-  when some groups have a non-ascii character in their title.
-  Sort groups on their title normalized.
+- Fix critical errors on user and group pages
+  when some groups or users have a non-ascii character in their title.
+  Sort groups and users on their fullname or title normalized.
   Similar as http://dev.plone.org/plone/ticket/11301
   [thomasdesvenain]
 

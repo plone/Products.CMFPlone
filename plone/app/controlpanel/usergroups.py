@@ -19,6 +19,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import normalizeString
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
@@ -112,12 +113,12 @@ class UsersGroupsControlPanelView(ControlPanelView):
         if searchGroups:
             groupResults = searchView.merge(chain(*[searchView.searchGroups(**{field: searchString}) for field in ['id', 'title']]), 'groupid')
             groupResults = [gtool.getGroupById(g['id']) for g in groupResults if g['id'] not in ignore]
-            groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+            groupResults.sort(key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName()))
 
         if searchUsers:
             userResults = searchView.merge(chain(*[searchView.searchUsers(**{field: searchString}) for field in ['login', 'fullname', 'email']]), 'userid')
             userResults = [mtool.getMemberById(u['id']) for u in userResults if u['id'] not in ignore]
-            userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
+            userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
 
         return groupResults + userResults
 
@@ -231,7 +232,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             results.append(user_info)
 
         # Sort the users by fullname
-        results.sort(key=lambda x: x is not None and x['fullname'] is not None and x['fullname'].lower() or '')
+        results.sort(key=lambda x: x is not None and x['fullname'] is not None and normalizeString(x['fullname']) or '')
 
         # Reset the request variable, just in case.
         self.request.set('__ignore_group_roles__', False)
@@ -588,10 +589,10 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
         searchResults = self.gtool.getGroupMembers(self.groupname)
 
         groupResults = [self.gtool.getGroupById(m) for m in searchResults]
-        groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+        groupResults.sort(key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName()))
 
         userResults = [self.mtool.getMemberById(m) for m in searchResults]
-        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and x.getProperty('fullname').lower() or '')
+        userResults.sort(key=lambda x: x is not None and x.getProperty('fullname') is not None and normalizeString(x.getProperty('fullname')) or '')
 
         mergedResults = groupResults + userResults
         return filter(None, mergedResults)
@@ -646,7 +647,7 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
 
     def getGroups(self):
         groupResults = [self.gtool.getGroupById(m) for m in self.gtool.getGroupsForPrincipal(self.member)]
-        groupResults.sort(key=lambda x: x is not None and x.getGroupTitleOrName().lower())
+        groupResults.sort(key=lambda x: x is not None and normalizeString(x.getGroupTitleOrName()))
         return filter(None, groupResults)
 
     def getPotentialGroups(self, searchString):
