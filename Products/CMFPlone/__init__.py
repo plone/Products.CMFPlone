@@ -7,7 +7,6 @@ this_module = sys.modules[ __name__ ]
 _marker = []
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
-
 misc_ = {'plone_icon': ImageFile(
                        os.path.join('skins', 'plone_images', 'logoIcon.png'),
                        cmfplone_globals)}

@@ -13,5 +13,6 @@
     <dependency>profile-Products.TinyMCE:TinyMCE</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>
     <dependency>profile-plone.app.imaging:default</dependency>
+    <dependency>profile-plone.app.registry:default</dependency>
   </dependencies>
 </metadata>
