@@ -427,6 +427,98 @@ Table of class <code>vertical listing</code>
 </form>
 
 <div>
+    <h2>Collapsible form</h2>
+    <form id="searchform" name="search" method="get" class="enableAutoFocus" action="search">
+
+        <div class="field collapsible">
+            <label class="collapser collapsed" for="created">New items since</label>
+
+            <div class="collapse" style="display: none;">
+                    <div class="formHelp">
+                    Return items added since you were last logged on, the last week, etc.
+                    </div>
+
+
+                    <select id="created" name="created:list:date">
+                        <option value="2010/09/06 17:50:45.971272 GMT-7">Last log-in</option>
+                        <option value="2010/09/05"> Yesterday </option>
+                        <option value="2010/08/30"> Last week </option>
+                        <option value="2010/08/06"> Last month </option>
+                        <option selected="selected" class="default_option" value="1970/02/01"> Ever </option>
+                    </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="field collapsible">
+            <label class="collapser collapsed" for="Creator">Author</label>
+
+            <div class="collapse" style="display: none;">
+                <div class="formHelp">
+                Return items created by a particular person.
+                </div>
+
+
+                <select id="Creator" name="Creator">
+                    <option class="default_option" value="">Any Author</option>
+
+                        <option value="admin">admin</option>
+
+                </select>
+            </div>
+        </div>
+
+        <div id="clear-space-before-submit" class="visualClear"><!-- --></div>
+
+    </form>
+</div>
+
+<div>
+    <h2>Select All/None</h2>
+    <form id="searchform" name="search" method="get" class="enableAutoFocus" action="search">
+
+                    <div>
+                        <label>Item type</label>
+
+        		<div>
+                        <div class="formHelp">
+                        Return items of a specific type.
+                        </div>
+
+                        <span class="optionsToggle">
+                            <input type="checkbox" checked="checked" class="noborder" id="pt_toggle" value="#" name="pt_toggle" onclick="javascript:toggleSelect(this, 'portal_type:list', true)" src="http://localhost:8080/Plone/select_all_icon.png">
+                            <label for="pt_toggle">Select All/None
+                            </label>
+                        </span>
+                        <br>
+                        <div style="float: left; margin-right: 2em;">
+
+                            <input type="checkbox" id="portal_type_1_1" checked="checked" class="noborder" value="Document" name="portal_type:list">
+                            <label for="portal_type_1_1">Page</label>
+                            <br>
+
+
+                            <input type="checkbox" id="portal_type_1_2" checked="checked" class="noborder" value="Folder" name="portal_type:list">
+                            <label for="portal_type_1_2">Folder</label>
+                            <br>
+
+                        </div>
+                        <div style="float: left; margin-right: 2em;">
+
+                            <input type="checkbox" id="portal_type_2_1" checked="checked" class="noborder" value="Topic" name="portal_type:list">
+                            <label for="portal_type_2_1">Collection</label>
+                            <br>
+
+                        </div>
+                    <div id="clear-after-item-type" class="visualClear">
+                </div>
+            </form>
+</div>
+
+
+<div>
     <h2>Action menu</h2>
     <dl class="actionMenu" id="actioMenuDemo">
         <dt class="actionMenuHeader">
@@ -449,6 +541,7 @@ Table of class <code>vertical listing</code>
         </dd>
     </dl>
 </div>
+
 
 <h2>The Internet Explorer "Peekaboo" bug</h2>
 

@@ -36,23 +36,26 @@
 function activateCollapsibles() {
 (function($) {
     $('dl.collapsible:not([class$=Collapsible])').find('dt.collapsibleHeader:first').click(function() {
-        var $container = $(this).parents('dl.collapsible:first');
-        if (!$container) return true;
+        var $container = $(this).parents('dl.collapsible:first'),
+            $type;
+        if (!$container) {
+            return true;
+        }
 
-        var $type = $container.hasClass('inline') ? 'Inline' :'Block';
+        $type = $container.hasClass('inline') ? 'Inline' :'Block';
         // toggle between collapsed and expanded classes
         $container.toggleClass('collapsed' + $type + 'Collapsible')
                   .toggleClass('expanded' + $type + 'Collapsible');
     }).end().each(function() {
         var $state = $(this).hasClass('collapsedOnLoad') ?
-                     'collapsed' : 'expanded';
-        var $type = $(this).hasClass('inline') ? 'Inline' :'Block';
+                     'collapsed' : 'expanded',
+            $type = $(this).hasClass('inline') ? 'Inline' :'Block';
         $(this).removeClass('collapsedOnLoad')
                .addClass($state + $type + 'Collapsible');
     });
-})(jQuery);
-};
+}(jQuery));
+}
 
-(function($) {
+jQuery(function($) {
 $(activateCollapsibles);
-})(jQuery);
+});

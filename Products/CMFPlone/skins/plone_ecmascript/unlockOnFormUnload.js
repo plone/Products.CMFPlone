@@ -1,6 +1,17 @@
+/*
+  Plone unlock handler; attaches an unlock handler to $('form.enableUnlockProtection')
+  
+  provides global plone
+*/
+
+
+/*global plone:true, setInterval:false, clearInterval:false */
+/*jslint nomen:false */
+
 /* Unlock the object on form unload, and refresh the lock every 5 minutes */
-if (typeof(plone)=='undefined')
+if (typeof(plone) === 'undefined') {
     var plone = {};
+}
 
 (function($){
 plone.UnlockHandler = {
@@ -22,19 +33,21 @@ plone.UnlockHandler = {
         // (formUnload.js) and signifies that we are in the
         // form submit process. This means: no unlock needed,
         // and it also would be harmful (ConflictError)
-        if (this.submitting) return;
+        if (this.submitting) {return;}
         $.get(plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/safe_unlock');
     },
     
     refresh: function() {
-        if (this.submitting) return;
+        if (this.submitting) {return;}
         $.get(plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/refresh_lock');
     },
     
     _baseUrl: function() {
-        var baseUrl = $('base').attr('href');
+        var baseUrl, pieces;
+
+        baseUrl = $('base').attr('href');
         if (!baseUrl) {
-            var pieces = window.location.href.split('/');
+            pieces = window.location.href.split('/');
             pieces.pop();
             baseUrl = pieces.join('/');
         }

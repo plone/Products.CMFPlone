@@ -1,15 +1,21 @@
-/*jslint browser: true, white: false */
-/*global jQuery */
-
 /******
-    Standard popups
+    Set up standard Plone popups
+    
+    Provides globals: common_content_filter
+    
+    Extends jQuery.tools.overlay.conf to set up common Plone effects and
+    visuals.
 ******/
 
+
 var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info';
-var common_jqt_config = {fixed:false,speed:'fast',mask:{color:'#fff',opacity: 0.4,loadSpeed:0,closeSpeed:0}};
 
-jQuery.extend(jQuery.tools.overlay.conf, common_jqt_config);
-
+jQuery.extend(jQuery.tools.overlay.conf, 
+    {
+        fixed:false,
+        speed:'fast',
+        mask:{color:'#fff',opacity: 0.4,loadSpeed:0,closeSpeed:0}
+    });
 
 jQuery(function($){
 

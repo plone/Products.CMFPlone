@@ -1,35 +1,45 @@
-
 /********* Table sorter script *************/
+
+/*
+  Sets up table sorting by clicking header cells
+  for $('table.listing:not(.nosort) thead th:not(.nosort)')
+*/
 
 (function($) {
 
 function sortable(a) {
     // convert a to something sortable
     // A number, but not a date?
-    if (a.charAt(4) != '-' && a.charAt(7) != '-' && !isNaN(parseFloat(a)))
+    if (a.charAt(4) !== '-' && a.charAt(7) !== '-' && !isNaN(parseFloat(a))) {
         return parseFloat(a);    
+    }
     return a.toLowerCase();
 }
 
 function sort() {
-	var th = $(this).closest('th');
-	var colnum = $('th', $(this).closest('thead')).index(th);
-    var table = $(this).parents('table:first');
-    var tbody = table.find('tbody:first');
-    var reverse = parseInt(table.attr('sorted')) === colnum;
+    var th, colnum, table, tbody, reverse, index, data, usenumbers, tsorted;
+
+    th = $(this).closest('th');
+    colnum = $('th', $(this).closest('thead')).index(th);
+    table = $(this).parents('table:first');
+    tbody = table.find('tbody:first');
+    tsorted = parseInt(table.attr('sorted') || '-1', 10);
+    reverse = tsorted === colnum;
 
     $(this).parent().find('th:not(.nosort) .sortdirection')
         .html('&#x2003;');
     $(this).children('.sortdirection').html(
         reverse ? '&#x25b2;' : '&#x25bc;');
     
-    var index = $(this).parent().children('th').index(this);
-    var data = [];
-    var usenumbers = true;
+    index = $(this).parent().children('th').index(this);
+    data = [];
+    usenumbers = true;
     tbody.find('tr').each(function() {
-        var cells = $(this).children('td');
-        var sortableitem = sortable(cells.slice(index,index+1).text());
-        if (isNaN(sortableitem)) usenumbers = false;
+        var cells, sortableitem;
+
+        cells = $(this).children('td');
+        sortableitem = sortable(cells.slice(index,index+1).text());
+        if (isNaN(sortableitem)) {usenumbers = false;}
         data.push([
             sortableitem,
             // crude way to sort by surname and name after first choice
@@ -38,11 +48,12 @@ function sort() {
     });
 
     if (data.length) {
-        if (usenumbers) 
+        if (usenumbers) {
             data.sort(function(a,b) {return a[0]-b[0];});
-        else
+        } else {
             data.sort();
-        if (reverse) data.reverse();
+        }
+        if (reverse) {data.reverse();}
         table.attr('sorted', reverse ? '' : colnum);
 
         // appending the tr nodes in sorted order will remove them from their old ordering

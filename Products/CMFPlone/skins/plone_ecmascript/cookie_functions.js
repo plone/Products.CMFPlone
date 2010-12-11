@@ -1,25 +1,37 @@
+/*
+  Provides createCookie and readCookie global functions 
+*/
+
+/*global escape:false, unescape:false */
+
 function createCookie(name,value,days) {
+    var date,
+        expires;
+
     if (days) {
-        var date = new Date();
+        date = new Date();        
         date.setTime(date.getTime()+(days*24*60*60*1000));
-        var expires = "; expires="+date.toGMTString();
+        expires = "; expires="+date.toGMTString();
     } else {
         expires = "";
     }
     document.cookie = name+"="+escape(value)+expires+"; path=/;";
-};
+}
 
 function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') {
+    var nameEQ = name + "=",
+        ca = document.cookie.split(';'),
+        i,
+        c;
+    
+    for(i=0;i < ca.length;i=i+1) {
+        c = ca[i];
+        while (c.charAt(0) === ' ') {
             c = c.substring(1,c.length);
         }
-        if (c.indexOf(nameEQ) == 0) {
+        if (c.indexOf(nameEQ) === 0) {
             return unescape(c.substring(nameEQ.length,c.length));
         }
     }
     return null;
-};
+}

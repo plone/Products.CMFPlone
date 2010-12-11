@@ -1,32 +1,40 @@
-(function($) { $(function() {
-    var dest = $('dl.toc dd.portletItem');
-    var content = getContentArea();
-    if (!content || !dest.length) return;
+/* Creates table of contents for pages for h[1234] */
+
+jQuery(function($) {
+    var dest, content, location, stack, oltoc, numdigits, wlh, target,
+        targetOffset;
+    
+    dest = $('dl.toc dd.portletItem');
+    content = $('#region-content,#content');
+    if (!content || !dest.length) {return;}
     
     dest.empty();
 
-    var location = window.location.href;
-    if (window.location.hash)
+    location = window.location.href;
+    if (window.location.hash) {
         location = location.substring(0, location.lastIndexOf(window.location.hash));
-
-    var stack = [];
+    }
+    stack = [];
     // Get headers in document order
-    $(content).find('*').not('.comment > h3').filter(function() { return /^h[1234]$/.test(this.tagName.toLowerCase()) })
+    $(content).find('*').not('.comment > h3').filter(function() { return (/^h[1234]$/).test(this.tagName.toLowerCase()); })
         .not('.documentFirstHeading').each(function(i) {
-        var level = this.nodeName.charAt(1);
+        var level, ol, li;
+
+        level = this.nodeName.charAt(1);
         // size the stack to the current level
         while (stack.length < level) {
-            var ol = $('<ol>');
+            ol = $('<ol>');
             if (stack.length) {
-                var li = $(stack[stack.length - 1]).children('li:last');
-                if (!li.length)
+                li = $(stack[stack.length - 1]).children('li:last');
+                if (!li.length) {
                     // create a blank li for cases where, e.g., we have a subheading before any headings
                     li = $('<li>').appendTo($(stack[stack.length - 1]));
+                }
                 li.append(ol);
             }
             stack.push(ol);
         }
-        while (stack.length > level) stack.pop();
+        while (stack.length > level) {stack.pop();}
         
         $(this).before($('<a name="section-' + i + '" />'));
         $('<li>').append(
@@ -50,14 +58,15 @@
         dest.append(oltoc);
 
         //scroll to element now.
-        var wlh = window.location.hash;
+        wlh = window.location.hash;
         if (wlh) {
-            var target = $(wlh);
+            target = $(wlh);
             target = target.length && target
                 || $('[name=' + wlh.slice(1) +']');
-            var targetOffset = target.offset();
-            if (targetOffset)
+            targetOffset = target.offset();
+            if (targetOffset) {
                 $('html,body').animate({scrollTop: targetOffset.top}, 0);
+            }
         }
     }
-}); })(jQuery);
+});

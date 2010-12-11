@@ -7,8 +7,20 @@
  * optional, is is the _ampm field. See calendar_macros.pt for a complete
  * example
  */
-if (typeof(plone)=='undefined')
+
+/*
+  Provides plone.jscalendar
+
+  Calendar comes from plone_3rdParty/jscalendar/calendar_stripped.js
+*/
+
+/*global plone:true, Calendar:false */
+/*jslint nomen:false */
+
+
+if (typeof(plone)==='undefined') {
     var plone = {};
+}
 
 (function($) { 
 
@@ -19,7 +31,9 @@ plone.jscalendar = {
     
     // All calendar fields
     _fields: function(selector) {
-        if (selector === undefined) selector = plone.jscalendar._current_input;
+        if (selector === undefined) {
+            selector = plone.jscalendar._current_input;
+        }
         var fields = {field: $(selector)};
         $.each(plone.jscalendar._field_names, function() {
             fields[this] = $(selector + '_' + this);
@@ -41,7 +55,10 @@ plone.jscalendar = {
     
     // show calendar popup
     show: function(input_id, yearStart, yearEnd) {
-        var cal = plone.jscalendar._cal;
+        var cal = plone.jscalendar._cal,
+        fields,
+        anchor;
+        
         if (!cal) {
             cal = plone.jscalendar._cal = new Calendar(
                     // firstdDay, datestr, onSelect, onClose
@@ -49,18 +66,19 @@ plone.jscalendar = {
                     plone.jscalendar.handle_close
             );
             cal.create();
-        } else
+        } else {
             cal.hide();
+        }
         
         plone.jscalendar._current_input = input_id;
-        var fields = plone.jscalendar._fields();
-        var anchor = fields.month;
+        fields = plone.jscalendar._fields();
+        anchor = fields.month;
         cal.setRange(yearStart, yearEnd);
         
         // Set calendar popup date to currently selected values
-        if (fields.year.val() > 0)  cal.date.setFullYear(fields.year.val());
-        if (fields.month.val() > 0) cal.date.setMonth(fields.month.val() - 1);
-        if (fields.day.val() > 0)   cal.date.setDate(fields.day.val());
+        if (fields.year.val() > 0)  {cal.date.setFullYear(fields.year.val());}
+        if (fields.month.val() > 0) {cal.date.setMonth(fields.month.val() - 1);}
+        if (fields.day.val() > 0)   {cal.date.setDate(fields.day.val());}
         cal.refresh();
         cal.showAtElement(anchor.get(0), null);
         return false;
@@ -68,18 +86,20 @@ plone.jscalendar = {
     
     // handle calendar popup date select
     handle_select: function(cal, date) {
-        var fields = plone.jscalendar._fields();
-        var yearValue = date.substring(0,4);
+        var fields = plone.jscalendar._fields(),
+            yearValue = date.substring(0,4),
+            options,
+            i;
         
         if ($.nodeName(fields.year.get(0), 'select') && 
             !fields.year.children('option[value=' + yearValue + ']').length) {
             // insert missing year into the options list
-            var options = fields.year.get(0).options;
-            for (var i=options.length; i--; i > 0) {
-                if (options[i].value > yearValue)
+            options = fields.year.get(0).options;
+            for (i=options.length; i > 0; i=i-1) {
+                if (options[i].value > yearValue) {
                     options[i + 1] = new Option(options[i].value, 
                                                 options[i].text);
-                else {
+                } else {
                     options[i + 1] = new Option(yearValue, yearValue);
                     break;
                 }
@@ -97,21 +117,24 @@ plone.jscalendar = {
     
     // updates a hidden date field with the current values of the widgets
     update_hidden: function(e) {
-        var val = '';
-        var f = plone.jscalendar._fields(e && e.data.selector);
+        var val = '',
+            f = plone.jscalendar._fields(e && e.data.selector),
+            type,
+            filter,
+            date;
         
         if (e && e.target.selectedIndex === 0) {
             // Reset widgets; only the time widgets if this is a time select box.
-            var type = e.target.id.substr(e.data.selector.length);
-            var filter = $.inArray(type, ['hour', 'minute', 'ampm']) > -1 ?
+            type = e.target.id.substr(e.data.selector.length);
+            filter = $.inArray(type, ['hour', 'minute', 'ampm']) > -1 ?
                 'select[id$=hour],select[id$=minute],select[id$=ampm]': 'select';
             $.each(f, function() { this.filter(filter).attr('selectedIndex', 0); });
         } else if (f.year.val() > 0 && f.month.val() > 0 && f.day.val() > 0) {
             // ISO date string
             val = [f.year.val(), f.month.val(), f.day.val()].join('-');
             
-            var date = new Date(val.replace(/-/g, '/'));
-            if (date.print('%Y-%m-%d') != val) {
+            date = new Date(val.replace(/-/g, '/'));
+            if (date.print('%Y-%m-%d') !== val) {
                 // Date turnes illegal dates into legal ones, update widgets
                 val = date.print('%Y-%m-%d');
                 f.year.val(val.substring(0, 4));
@@ -122,7 +145,9 @@ plone.jscalendar = {
             // optional time
             if (f.hour.length && f.minute.length) {
                 val += " " + [f.hour.val(), f.minute.val()].join(':');
-                if (f.ampm.length) val += " " + f.ampm.val();
+                if (f.ampm.length) {
+                    val += " " + f.ampm.val();
+                }
             }
         }
         
@@ -130,9 +155,9 @@ plone.jscalendar = {
     }
 };
 
-})(jQuery);
+}(jQuery));
 
 // initialize fields
-(function($) { 
+jQuery(function($) { 
     $(plone.jscalendar.init);
-})(jQuery);
+});

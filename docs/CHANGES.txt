@@ -8,6 +8,10 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Merge in PLIP #10901: Set and enforce base coding standards for our own 
+  JavaScript. Refs http://dev.plone.org/plone/ticket/10901
+  [esteele]
+  
 - Removed IOrderedContainer-implementation from PloneFolder in favour
   of implementation in OFS.OrderSupport
   [tom_gross]

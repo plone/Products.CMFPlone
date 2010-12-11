@@ -1,7 +1,21 @@
-/* BeforeUnload form processing */
-if (!window.beforeunload) (function($) {
-    var BeforeUnloadHandler = function() {
-        var self = this;
+/*
+    Provides "Your form has not been saved..." warning and query for forms matching
+    $('form.enableUnloadProtection').
+
+    Dependent on unlockOnFormUnload.js
+*/
+
+/*global window:false, plone:false */
+
+if (!window.beforeunload) {(function($) {
+    var BeforeUnloadHandler,
+        Class,
+        form,
+        c;
+    
+    BeforeUnloadHandler = function() {
+        var self = this,
+            message;
 
         this.message = window.form_modified_message ||
             "Discard changes? If you click OK, any changes you have made will be lost.";
@@ -23,32 +37,34 @@ if (!window.beforeunload) (function($) {
             });             
             
             // Now do the protection work
-            if (self.submitting) return;
+            if (self.submitting) {return;}
 
-            var message;
             $.each(self.handlers, function(i, fn) {
                 message = message || fn.apply(self);
             });
-            if (message===true) message = self.message;
-            if (message===false) message = undefined;
-            if (event && message) event.returnValue = message;
+            if (message===true) {message = self.message;}
+            if (message===false) {message = undefined;}
+            if (event && message) {event.returnValue = message;}
             return message;
-        }
+        };
         this.execute.tool = this;
-    }
-    var Class = BeforeUnloadHandler.prototype;
+    };
+    Class = BeforeUnloadHandler.prototype;
 
     // form checking code
     Class.isAnyFormChanged = function() {
-        for (var i = 0; form = this.forms[i++];) {
-            if (this.isElementChanged(form))
+        var i;
+        for (i=0; i < this.forms.length; i+=1) { 
+            form = this.forms[i];
+            if (this.isElementChanged(form)) {
                 return true;
+            }
         }
         return false;
-    }
+    };
     Class.addHandler = function(fn) {
         this.handlers.push(fn);
-    }
+    };
     Class.onsubmit = function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
         tool.submitting = true;
@@ -56,93 +72,108 @@ if (!window.beforeunload) (function($) {
         // This way the tool knows we are in submitting,
         // and can prevent unlocking.
         plone.UnlockHandler.submitting = true;
-    }
+    };
     Class.addForm = function(form) {
-        if ($.inArray(form, this.forms) > -1) return;
+        if ($.inArray(form, this.forms) > -1) {return;}
         this.forms.push(form);
         $(form).submit(this.onsubmit);
-        var elements = form.getElementsByTagName('input');
         // store hidden input's defaultValue to work around a moz bug
         $(form).find('input:hidden').each(function() {
             var value = this.defaultValue;
-            if (value!==undefined&&value!==null)
+            if (value!==undefined && value!==null) {
                 $(this).attr('originalValue', value.replace(/\r\n?/g,'\n'));
+            }
         });
-    }
+    };
     Class.addForms = function() {
         var self = this;
         $.each(arguments, function() {
-            if (this.tagName.toLowerCase() == 'form')
+            if (this.tagName.toLowerCase() === 'form') {
                 self.addForm(this);
-            else
+            } else {
                 self.addForms.apply(self, $(this).find('form').get());
+            }
         });
-    }
+    };
     Class.removeForms = function() {
         var self = this;
         $.each(arguments, function() {
-            if (this.tagName.toLowerCase() == 'form') {
+            if (this.tagName.toLowerCase() === 'form') {
                 var formElement = this;
                 self.forms = $.grep(self.forms, function(form) {
-                    return form != formElement;
+                    return form !== formElement;
                 });
                 $(formElement).unbind('submit', self.onsubmit);
-            } else
+            } else {
                 self.removeForms.apply(self, $(this).find('form').get());
+            }
         });
-    }
+    };
 
     Class.CheckType = function() {};
-    var c = Class.CheckType.prototype;
+    c = Class.CheckType.prototype;
     c.checkbox = c.radio = function(ele) {
-        return ele.checked != ele.defaultChecked;
-    }
+        return ele.checked !== ele.defaultChecked;
+    };
     c.file = c.password = c.textarea = c.text = function(ele) {
-        return ele.value != ele.defaultValue;
-    }
+        return ele.value !== ele.defaultValue;
+    };
     // hidden: cannot tell on Mozilla without special treatment
     c.hidden = function(ele) {
         var orig = $(ele).attr('originalValue');
-        if (orig===undefined||orig===null) return false;
-        return $(ele).val().replace(/\r\n?/g, '\n') != orig;
-    }
+        if (orig===undefined||orig===null) {return false;}
+        return $(ele).val().replace(/\r\n?/g, '\n') !== orig;
+    };
 
     c['select-one'] = function(ele) {
-        for (var i = 0; opt=ele[i++];) {
-            if (opt.selected != opt.defaultSelected) {
-                if (i===1 && opt.selected) continue; /* maybe no default */
+        var i, opt;
+
+        for (i = 0; i < ele.length; i+=1) {
+            opt = ele[i];
+            if (opt.selected !== opt.defaultSelected) {
+                if (i===1 && opt.selected) {
+                    continue; /* maybe no default */
+                }
                 return true;
             }
         }
         return false;
-    }
+    };
 
     c['select-multiple'] = function(ele) {
-        for (var i = 0; opt = ele[i++];) {
-            if ( opt.selected != opt.defaultSelected)
+        var i, opt;
+
+        for (i = 0; i < ele.length; i+=1) {
+            opt = ele[i];
+            if ( opt.selected !== opt.defaultSelected) {
                 return true;
+            }
         }
         return false;
-    }
+    };
 
     Class.chk_form = function(form) {
         // Find all form elements that are a) not marked as not-protected
         // or b) not a descendant of a non-protected element.
         var elems = $(form).find('> :input:not(.noUnloadProtection),' +
-            ':not(.noUnloadProtection) :input:not(.noUnloadProtection)');
-        for (var i = 0; element = elems.get(i++);) {
-            if (this.isElementChanged(element))
+            ':not(.noUnloadProtection) :input:not(.noUnloadProtection)'),
+            i;
+        for (i = 0; i < elems.length; i+=1) {
+            if (this.isElementChanged(elems.get(i))) {
                 return true;
+            }
         }
         return false;
-    }
+    };
 
     Class.isElementChanged = function(ele) {
         var method = ele.id && this.chkId[ele.id];
-        if (!method && ele.type && ele.name)
+        if (!method && ele.type && ele.name) {
             method = this.chkType[ele.type];
-        if (!method && ele.tagName)
+        }
+        if (!method && ele.tagName) {
             method = this['chk_'+ele.tagName.toLowerCase()];
+        }
 
         return method? method.call(this, ele) : false;
     };
@@ -152,8 +183,8 @@ if (!window.beforeunload) (function($) {
     
     $(function() {
         var tool = window.onbeforeunload && window.onbeforeunload.tool;
-        var content = getContentArea();
-        if (tool && content)
+        if (tool && $('#region-content,#content').length) {
             tool.addForms.apply(tool, $('form.enableUnloadProtection').get());
+        }
     });
-})(jQuery);
+}(jQuery));}
