@@ -8,6 +8,12 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Improve table sort of 'listing' class tables. We can use a sortabledata-xxxx
+  class in a cell (td) where xxxx is a sortable data value, then, sort uses xxxx
+  value to compare cell values, instead of td text content.
+  Refs http://dev.plone.org/plone/ticket10809 
+  [thomasdesvenain]
+
 - Merge in PLIP #10901: Set and enforce base coding standards for our own 
   JavaScript. Refs http://dev.plone.org/plone/ticket/10901
   [esteele]
