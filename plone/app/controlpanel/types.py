@@ -2,6 +2,9 @@ from plone.app.workflow.remap import remap_workflow
 from plone.memoize.instance import memoize
 
 from zope.component import getUtility
+
+from zope.event import notify 
+
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 
@@ -10,6 +13,8 @@ from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.app.controlpanel.events import ConfigurationChangedEvent 
 
 from plone.app.controlpanel.form import ControlPanelView
 
@@ -155,6 +160,10 @@ class TypesControlPanel(ControlPanelView):
 
                     remap_workflow(context, type_ids=type_ids, chain=chain,
                                    state_map=state_map)
+
+                    data = {'workflow': new_wf} 
+                    notify(ConfigurationChangedEvent(self, data)) 
+                
                 else:
                     portal_workflow = getToolByName(context, 'portal_workflow')
                     if self.new_workflow()=='(Default)':

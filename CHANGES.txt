@@ -4,6 +4,10 @@ Changelog
 2.1b1 - unreleased
 ------------------
 
+- Make sure the ConfigurationChangedEvent is fired when the types
+  control panel setting changed.
+  [timo]
+  
 - Fix critical errors on user and group pages
   when some groups or users have a non-ascii character in their title.
   Sort groups and users on their fullname or title normalized.
