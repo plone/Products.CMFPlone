@@ -7,8 +7,15 @@
       i18n:domain="plone">
 
 <head>
+    <metal:js fill-slot="javascript_head_slot">
+        <script type="text/javascript"
+              src=""
+              tal:attributes="src string:${context/portal_url}/login.js">
+      </script>
+    </metal:js>
     <metal:block fill-slot="top_slot"
-                 tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
                              disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 </head>
 
@@ -18,7 +25,9 @@
   <metal:login_failed define-macro="login_failed"
        tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
                    came_from request/came_from|request/HTTP_REFERER|nothing;
-                   came_from python:test(context.portal_url.isURLInPortal(came_from), came_from, None);
+                   came_from python:test(came_from is not None and context.portal_url.isURLInPortal(came_from), came_from, None);
+                   next request/next|nothing;
+                   next python:test(next is not None and context.portal_url.isURLInPortal(next), next, None);
                    errors options/state/getErrors;
                    ac_name auth/name_cookie|string:__ac_name;
                    ac_password auth/pw_cookie|string:__ac_password;

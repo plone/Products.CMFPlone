@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+
+<body>
+
+<metal:main fill-slot="main"
+     tal:define="isAnon context/@@plone_portal_state/anonymous;
+                 auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
+                 session nocall:context/acl_users/session|nothing;
+                 came_from request/came_from|nothing;
+                 next request/next|nothing;
+                 cookie_name auth/cookie_name|string:__ac;
+                 ticket python:request.response.cookies.get(cookie_name, {}).get('value') or request.cookies.get(cookie_name, '');
+                 valid python:not(isAnon) and next;">
+
+  <metal:valid tal:condition="valid">
+
+      <h1 class="documentFirstHeading"
+          i18n:translate="heading_please_wait_while_you_are_logged_in">Please wait while you are logged in</h1>
+
+      <div id="content-core">
+          <div tal:condition="python:auth is None" i18n:translate="login_form_disabled">
+              Since cookie authentication is disabled, cookie-based login is not available.
+          </div>
+
+          <form tal:attributes="action next"
+                method="post"
+                id="external_login_form"
+                name="external_login_form"
+                tal:condition="python:auth is not None">
+
+                <input tal:condition="came_from" type="hidden" name="came_from" value="" tal:attributes="value came_from" />
+                <input type="hidden" name="__ac" value="" tal:attributes="name cookie_name; value ticket;" />
+
+                <p i18n:translate="description_enable_cookies_to_stay_logged_in">
+                   Note: If you do not remain logged in after leaving this page,
+                   it is because you need to enable cookies in your browser.
+                </p>
+
+                <div class="formControls">
+
+                    <input class="context"
+                           type="submit"
+                           name="continue"
+                           value="Continue"
+                           i18n:attributes="value label_login_continue;"
+                           />
+
+                </div>
+
+          </form>
+          <script type="text/javascript">
+              external_login_form = document.external_login_form;
+              external_login_form.style.display = 'none';
+              external_login_form.submit();
+          </script>
+
+      </div>
+  </metal:valid>
+
+  <metal:invalid tal:condition="not:valid">
+      <div metal:use-macro="context/login_failed/macros/login_failed" />
+  </metal:invalid>
+ 
+</metal:main>
+
+</body>
+</html>

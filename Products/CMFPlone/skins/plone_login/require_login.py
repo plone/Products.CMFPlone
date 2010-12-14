@@ -8,7 +8,7 @@
 ##title=Login
 ##
 
-login = 'login_form'
+login = 'login'
 
 portal = context.portal_url.getPortalObject()
 # if cookie crumbler did a traverse instead of a redirect,

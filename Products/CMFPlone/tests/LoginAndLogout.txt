@@ -16,10 +16,10 @@ Using the Login Form
 
 First we try to log in with bad credentials:
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getLink('Log in').click()
     >>> browser.url
-    'http://nohost/plone/login_form'
+    'http://nohost/plone/login'
     >>> browser.getControl('Login Name').value = 'test_user_1_'
     >>> browser.getControl('Password').value = 'wrongpassword'
     >>> browser.getControl('Log in').click()
@@ -30,10 +30,10 @@ First we try to log in with bad credentials:
 
 And then we try again with the right credentials:
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getLink('Log in').click()
     >>> browser.url
-    'http://nohost/plone/login_form'
+    'http://nohost/plone/login'
     >>> browser.getControl('Login Name').value = 'test_user_1_'
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
@@ -166,7 +166,7 @@ Try to login.
 
     >>> browser.getLink('Log in').click()
     >>> browser.url
-    'http://nohost/plone/login_form'
+    'http://nohost/plone/login'
     >>> browser.getControl('Login Name').value = PTC.default_user
     >>> browser.getControl('Password').value = PTC.default_password
     >>> browser.getControl('Log in').click()

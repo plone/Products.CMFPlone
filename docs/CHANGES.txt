@@ -8,6 +8,14 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Single Sign On support in login forms.
+  [elro]
+
+- Refactored ``URLTool.isURLInPortal``, adding ``allow_external_login_sites``
+  property to ``site_properties`` for external sites considered to be internal
+  for the purposes of logging in.
+  [elro]
+
 - Improve table sort of 'listing' class tables. We can use a sortabledata-xxxx
   class in a cell (td) where xxxx is a sortable data value, then, sort uses xxxx
   value to compare cell values, instead of td text content.

@@ -36,7 +36,9 @@
     <metal:main fill-slot="main"
          tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
                      came_from request/came_from|request/HTTP_REFERER|nothing;
-                     came_from python:test(context.portal_url.isURLInPortal(came_from), came_from, None);
+                     came_from python:test(came_from is not None and context.portal_url.isURLInPortal(came_from), came_from, None);
+                     next request/next|nothing;
+                     next python:test(next is not None and context.portal_url.isURLInPortal(next), next, None);
                      errors options/state/getErrors;
                      ac_name auth/name_cookie|string:__ac_name;
                      ac_password auth/pw_cookie|string:__ac_password;
@@ -50,19 +52,25 @@
             tal:define="checkPermission nocall: context/portal_membership/checkPermission;
                         site_properties context/portal_properties/site_properties;
                         use_email_as_login site_properties/use_email_as_login|nothing;
+                        external_login_url site_properties/external_login_url|nothing;
                         ztu modules/ZTUtils;">
             <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
                   class="enableAutoFocus"
                   method="post"
                   id="login_form"
-                  tal:condition="python:auth">
+                  tal:condition="python:auth and not external_login_url">
 
                 <div id="login-form">
 
                     <input type="hidden"
                         name="came_from"
                         value=""
-                    tal:attributes="value came_from" />
+                    tal:attributes="value came_from|nothing" />
+
+                    <input type="hidden"
+                        name="next"
+                        value=""
+                    tal:attributes="value next|nothing" />
 
                     <input type="hidden" name="form.submitted" value="1" />
                     <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
@@ -157,7 +165,36 @@
 
             </form>
 
-            <div tal:condition="python:checkPermission('Mail forgotten password', context)">
+            <form tal:attributes="action external_login_url"
+                  class="enableAutoFocus"
+                  method="get"
+                  id="login_form"
+                  tal:condition="python:auth and external_login_url">
+
+                <div id="login-form">
+
+                    <input type="hidden"
+                        name="next"
+                        value=""
+                    tal:attributes="value string:${request/URL1}/logged_in" />
+
+                    <div class="formControls">
+
+                        <input class="context"
+                               type="submit"
+                               name="submit"
+                               value="Log in"
+                               i18n:attributes="value label_log_in;"
+                               />
+
+                    </div>
+
+                </div>
+
+            </form>
+
+
+            <div tal:condition="python:checkPermission('Mail forgotten password', context) and not external_login_url">
                 <strong i18n:translate="box_forgot_password_option">
                     Forgot your password?
                 </strong>
@@ -184,7 +221,7 @@
                     <a href=""
                        tal:define="join python:join.pop();
                                    join join;
-                                   join python:join+test(join.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from);"
+                                   join python:join+test(join.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from, next=next);"
                        tal:attributes="href join"
                        i18n:translate="description_no_account_registration_linktext">
                         registration form</a></span>.

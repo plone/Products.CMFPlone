@@ -20,7 +20,7 @@ First we login as admin.
     >>> from Products.PloneTestCase.ptc import portal_owner
     >>> from Products.PloneTestCase.ptc import default_user
     >>> from Products.PloneTestCase.ptc import default_password
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('Login Name').value = portal_owner
     >>> browser.getControl('Password').value = default_password
     >>> browser.getControl('Log in').click()
@@ -55,7 +55,7 @@ there:
 
 So that still works.  Now we become admin again.
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('Login Name').value = portal_owner
     >>> browser.getControl('Password').value = default_password
     >>> browser.getControl('Log in').click()
@@ -88,7 +88,7 @@ Login
 
 We can now login with this email address:
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> self.assertRaises(LookupError, browser.getControl, 'Login Name')
     >>> browser.getControl('E-mail').value = 'email@example.org'
     >>> browser.getControl('Password').value = default_password
@@ -108,7 +108,7 @@ logged it.  This test should be enough:
 
 The first registered user can still login with his non-email login name:
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('E-mail').value = 'username'
     >>> browser.getControl('Password').value = default_password
     >>> browser.getControl('Log in').click()
@@ -126,7 +126,7 @@ be remedied by running the provided migration.
 Now we try logging out and in again with the given email address.
 
     >>> browser.open('http://nohost/plone/logout')
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('E-mail').value = 'username@example.org'
     >>> browser.getControl('Password').value = default_password
     >>> browser.getControl('Log in').click()
@@ -144,7 +144,7 @@ Changing the email address
 We again log in as the user created after using email as login was
 switched on.
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('E-mail').value = 'email@example.org'
     >>> browser.getControl('Password').value = default_password
     >>> browser.getControl('Log in').click()
@@ -165,7 +165,7 @@ address.  This may be fixable by changing PluggableAuthService if we
 want. (See PLIP9214 notes.)
 
     >>> browser.open('http://nohost/plone/logout')
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('E-mail').value = 'email1@example.org'
     >>> browser.getControl('Password').value = default_password
     >>> browser.getControl('Log in').click()
@@ -174,7 +174,7 @@ want. (See PLIP9214 notes.)
 The current email address of course works fine for logging in:
 
     >>> browser.open('http://nohost/plone/logout')
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('E-mail').value = 'email2@example.org'
     >>> browser.getControl('Password').value = default_password
     >>> browser.getControl('Log in').click()
@@ -245,7 +245,7 @@ Now that we have the address, we will reset our password:
 
 We can now login using our new password:
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('E-mail').value = 'email2@example.org'
     >>> browser.getControl('Password').value = 'secretion'
     >>> browser.getControl('Log in').click()
@@ -291,7 +291,7 @@ We can now login using our new password.  We cannot use the initial
 login name though, but have to use our current email address as that
 is our login name:
 
-    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.open('http://nohost/plone/login')
     >>> browser.getControl('E-mail').value = 'username@example.org'
     >>> browser.getControl('Password').value = 'secretion'
     >>> browser.getControl('Log in').click()
