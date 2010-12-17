@@ -34,7 +34,8 @@
   <dt id="anon-personalbar">
     <tal:actions repeat="action view/user_actions">
         <a href=""
-           tal:attributes="href action/url"
+           tal:attributes="href action/url;
+                           id string:personaltools-${action/id};"
            tal:content="action/title"
            i18n:translate="">
             action title

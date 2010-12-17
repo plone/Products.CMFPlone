@@ -7,6 +7,11 @@ Changelog
 - Don't cache navigation_root_path and navigation_root_url contextless
   http://dev.plone.org/plone/ticket/11291
   [tom_gross]
+  
+- Add ids to links personal_bar when rendered as anonymous so they can be 
+  styled. This makes behavior consistent with the authenticated personal_bar. 
+  http://dev.plone.org/plone/ticket/10850 
+  [eleddy]
 
 2.0.5 - 2010-11-15
 ------------------
