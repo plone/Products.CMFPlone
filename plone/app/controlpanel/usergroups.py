@@ -291,7 +291,14 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             if delete:
                 self.deleteMembers(delete)
             if users_with_reset_passwords:
-                utils.addPortalMessage(_(u'The following users have been sent an e-mail with link to reset their password: ') + ', '.join(users_with_reset_passwords))
+                reset_passwords_message = _(
+                    u"reset_passwords_msg",
+                    default=u"The following users have been sent an e-mail with link to reset their password: ${user_ids}", 
+                    mapping={ 
+                        u"user_ids" : ', '.join(users_with_reset_passwords),
+                        },
+                    )
+                utils.addPortalMessage(reset_passwords_message)
             utils.addPortalMessage(_(u'Changes applied.'))
 
     def deleteMembers(self, member_ids):
