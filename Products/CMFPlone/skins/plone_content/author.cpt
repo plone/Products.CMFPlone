@@ -153,7 +153,7 @@
                         <div class="formControls" tal:condition="isAnon">
                         <form
                           tal:define="pss modules/Products/PythonScripts/standard"
-                          tal:attributes="action string:$portal_url/login_form">
+                          tal:attributes="action string:$portal_url/login">
                            <input class="standalone"
                                type="submit"
                                value="Log in to send feedback"
