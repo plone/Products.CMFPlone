@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Added some css ids on login form.
+  [thomasdesvenain]
+
 - Single Sign On support in login forms.
   [elro]
 
@@ -19,13 +22,13 @@ Changelog
 - Improve table sort of 'listing' class tables. We can use a sortabledata-xxxx
   class in a cell (td) where xxxx is a sortable data value, then, sort uses xxxx
   value to compare cell values, instead of td text content.
-  Refs http://dev.plone.org/plone/ticket10809 
+  Refs http://dev.plone.org/plone/ticket10809
   [thomasdesvenain]
 
-- Merge in PLIP #10901: Set and enforce base coding standards for our own 
+- Merge in PLIP #10901: Set and enforce base coding standards for our own
   JavaScript. Refs http://dev.plone.org/plone/ticket/10901
   [esteele]
-  
+
 - Removed IOrderedContainer-implementation from PloneFolder in favour
   of implementation in OFS.OrderSupport
   [tom_gross]
@@ -40,12 +43,12 @@ Changelog
   [davisagli]
 
 - Replaced the prefs_group_details.pt template with a browser view in
-  plone.app.controlpanel. Ss a side effect this means group creation is now 
+  plone.app.controlpanel. Ss a side effect this means group creation is now
   protected by the Plone Users and Groups control panel permission, rather than
   the CMF Manage Groups permission.
   [davisagli]
 
-- Turn plone_control_panel.pt into a deprecated alias for the 
+- Turn plone_control_panel.pt into a deprecated alias for the
   @@overview-controlpanel view from plone.app.controlpanel.
   [davisagli]
 
@@ -54,7 +57,7 @@ Changelog
   [davisagli]
 
 - Configure the Site Administrator role in the default rolemap and workflows.
-  This role is intended for people who should have full content editing 
+  This role is intended for people who should have full content editing
   privileges but not Manager access (i.e. to the ZMI).
   [davisagli]
 

@@ -194,7 +194,8 @@
             </form>
 
 
-            <div tal:condition="python:checkPermission('Mail forgotten password', context) and not external_login_url">
+            <div id="login-forgotten-password"
+                 tal:condition="python:checkPermission('Mail forgotten password', context) and not external_login_url">
                 <strong i18n:translate="box_forgot_password_option">
                     Forgot your password?
                 </strong>
@@ -207,7 +208,7 @@
                 </p>
             </div>
 
-            <div
+            <div id="login-new-user"
                tal:define="actions python:context.portal_actions.listActionInfos('user/join', object=context);
                            join python:[a['url'] for a in actions];"
                tal:condition="python: join and checkPermission('Add portal member', context)">
