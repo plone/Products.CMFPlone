@@ -7,10 +7,9 @@
 
 <head>
     <metal:js fill-slot="javascript_head_slot">
-        <script type="text/javascript"
-              src=""
-              tal:attributes="src string:${context/portal_url}/login.js">
-      </script>
+        <script type="text/javascript" src=""
+                tal:attributes="src string:${context/portal_url}/login.js">
+        </script>
     </metal:js>
     <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1);
@@ -19,41 +18,41 @@
 </head>
 
 <body>
+    <metal:main fill-slot="main">
 
-    <metal:header fill-slot="header">
-        <dl class="portalMessage error"
-            id="enable_cookies_message"
-            style="display:none">
-            <dt i18n:translate="">
-                Error
-            </dt>
-            <dd i18n:translate="enable_cookies_message_before_login">
-                Cookies are not enabled. You must enable cookies before you can log in.
-            </dd>
-        </dl>
-    </metal:header>
-
-    <metal:main fill-slot="main"
-         tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
-                     came_from request/came_from|request/HTTP_REFERER|nothing;
-                     came_from python:test(came_from is not None and context.portal_url.isURLInPortal(came_from), came_from, None);
-                     next request/next|nothing;
-                     next python:test(next is not None and context.portal_url.isURLInPortal(next), next, None);
-                     errors options/state/getErrors;
-                     ac_name auth/name_cookie|string:__ac_name;
-                     ac_password auth/pw_cookie|string:__ac_password;
-                     ac_persist auth/persist_cookie|nothing;
-                     login_name python:request.get('login_name', request.get(ac_name, ''));">
     <div id="content-core">
-        <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
-            Since cookie authentication is disabled, cookie-based login is not available.
-        </div>
         <metal:login define-macro="login"
-            tal:define="checkPermission nocall: context/portal_membership/checkPermission;
+            tal:define="auth auth|nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
+                        came_from request/came_from|request/HTTP_REFERER|nothing;
+                        came_from python:test(came_from is not None and context.portal_url.isURLInPortal(came_from), came_from, None);
+                        next request/next|nothing;
+                        next python:test(next is not None and context.portal_url.isURLInPortal(next), next, None);
+                        errors options/state/getErrors;
+                        ac_name auth/name_cookie|string:__ac_name;
+                        ac_password auth/pw_cookie|string:__ac_password;
+                        ac_persist auth/persist_cookie|nothing;
+                        login_name python:request.get('login_name', request.get(ac_name, ''));
+                        checkPermission nocall: context/portal_membership/checkPermission;
                         site_properties context/portal_properties/site_properties;
                         use_email_as_login site_properties/use_email_as_login|nothing;
                         external_login_url site_properties/external_login_url|nothing;
                         ztu modules/ZTUtils;">
+
+            <dl class="portalMessage error"
+                id="enable_cookies_message"
+                style="display:none">
+                <dt i18n:translate="">
+                    Error
+                </dt>
+                <dd i18n:translate="enable_cookies_message_before_login">
+                    Cookies are not enabled. You must enable cookies before you can log in.
+                </dd>
+            </dl>
+
+            <div tal:condition="python: not auth" i18n:translate="login_form_disabled">
+                Since cookie authentication is disabled, cookie-based login is not available.
+            </div>
+
             <form tal:attributes="action python:context.absolute_url()+'/'+template.id"
                   class="enableAutoFocus"
                   method="post"
