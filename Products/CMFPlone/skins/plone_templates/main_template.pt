@@ -20,7 +20,8 @@
                   portal_url portal_state/portal_url;
                   checkPermission nocall: context/portal_membership/checkPermission;
                   site_properties context/portal_properties/site_properties;
-                  ajax_load request/ajax_load | nothing"
+                  ajax_load request/ajax_load | nothing;
+                  ajax_include_head request/ajax_include_head | nothing"
       tal:attributes="lang lang;
                       xml:lang lang">
 
@@ -45,7 +46,7 @@
       <base tal:attributes="href plone_view/renderBase" /><!--[if lt IE 7]></base><![endif]-->
     </metal:baseslot>
 
-    <tal:notajax tal:condition="not:ajax_load">
+    <tal:notajax tal:condition="python:not ajax_load or ajax_include_head">
         <div tal:replace="structure provider:plone.htmlhead" />
 
         <link tal:replace="structure provider:plone.htmlhead.links" />
