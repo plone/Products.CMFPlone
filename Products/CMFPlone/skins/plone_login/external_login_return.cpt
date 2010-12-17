@@ -20,7 +20,9 @@
                  auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
                  session nocall:context/acl_users/session|nothing;
                  came_from request/came_from|nothing;
+                 came_from python:test(came_from is not None and context.portal_url.isURLInPortal(came_from), came_from, None);
                  next request/next|nothing;
+                 next python:test(next is not None and context.portal_url.isURLInPortal(next), next, None);
                  cookie_name auth/cookie_name|string:__ac;
                  ticket python:request.response.cookies.get(cookie_name, {}).get('value') or request.cookies.get(cookie_name, '');
                  valid python:not(isAnon) and next;">
