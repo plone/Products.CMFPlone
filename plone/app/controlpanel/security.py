@@ -60,7 +60,7 @@ class ISecuritySchema(Interface):
         title=_(u'Use email address as login name'),
         description=_(u"Allows new  users to login with their email address "
                       "instead of specifying a separate login name. (Existing "
-                      "users must go to the @@personal-information once "
+                      "users must go to the @@personal-information page once "
                       "and save it before this setting has effect for them. "
                       "Or use the @@migrate-to-emaillogin page as a site "
                       "admin)"),
