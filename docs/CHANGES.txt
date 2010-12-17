@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Removed duplicate code in login templates.
+  [elro]
+
 - Added ajax_include_head request parameter for use with cross domain iframe.
   [elro]
 
