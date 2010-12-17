@@ -38,6 +38,10 @@ Changelog
   [davisagli]
 
 - Replace reference to "personalize_form" with "@@personal-information".
+  http://dev.plone.org/plone/ticket/10890
+  [khink]
+
+- Add extra info message if passwords were reset.
   http://dev.plone.org/plone/ticket/10756
   [khink]
 
