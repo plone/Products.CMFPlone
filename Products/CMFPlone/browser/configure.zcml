@@ -85,4 +85,10 @@
             factory=".navtree.SitemapNavtreeStrategy"
             provides="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
 
+  <!-- Useful for cross domain iframe proxying -->
+  <browser:resource
+      file="blank.html"
+      name="blank.html"
+      />
+
 </configure>
