@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Added iframe option for single sign on login templates.
+  [elro]
+
 - Removed duplicate code in login templates.
   [elro]
 

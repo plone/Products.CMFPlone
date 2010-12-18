@@ -20,7 +20,8 @@ if (next is not None and context.portal_url.isURLInPortal(next)
 # Handle login on this portal where login is internal
 site_properties = context.portal_properties.site_properties
 external_login_url = site_properties.getProperty('external_login_url')
-if not external_login_url:
+external_login_iframe = site_properties.getProperty('external_login_iframe')
+if not external_login_url or external_login_iframe:
     return context.restrictedTraverse('login_form')()
 
 # Handle login on this portal where login is external

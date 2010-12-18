@@ -22,11 +22,12 @@
 
     <div id="content-core">
         <metal:login define-macro="login"
-            tal:define="auth auth|nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
+            tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
+                        isURLInPortal nocall:context/portal_url/isURLInPortal;
                         came_from request/came_from|request/HTTP_REFERER|nothing;
-                        came_from python:test(came_from is not None and context.portal_url.isURLInPortal(came_from), came_from, None);
+                        came_from python:test(came_from is not None and isURLInPortal(came_from), came_from, None);
                         next request/next|nothing;
-                        next python:test(next is not None and context.portal_url.isURLInPortal(next), next, None);
+                        next python:test(next is not None and isURLInPortal(next), next, None);
                         errors options/state/getErrors;
                         ac_name auth/name_cookie|string:__ac_name;
                         ac_password auth/pw_cookie|string:__ac_password;
@@ -36,6 +37,20 @@
                         site_properties context/portal_properties/site_properties;
                         use_email_as_login site_properties/use_email_as_login|nothing;
                         external_login_url site_properties/external_login_url|nothing;
+                        external_login_iframe site_properties/external_login_iframe|nothing;
+                        mail_password python:test(checkPermission('Mail forgotten password', context), portal_url + '/mail_password_form', '');
+                        mail_password_url request/mail_password_url|nothing;
+                        mail_password_url python:test(mail_password_url is not None and isURLInPortal(mail_password_url), mail_password_url, mail_password);
+                        join_actions python:context.portal_actions.listActionInfos('user/join', object=context) or [{}];
+                        join python:join_actions[0].get('url');
+                        join python:test(join and checkPermission('Add portal member', context), join, '');
+                        join_url request/join_url|nothing;
+                        join_url python:test(join_url is not None and isURLInPortal(join_url), join_url, join);
+                        use_normal python:auth and not external_login_url;
+                        use_iframe python:auth and external_login_url and external_login_iframe;
+                        use_external python:auth and external_login_url and not external_login_iframe;
+                        target request/target|nothing;
+                        target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                         ztu modules/ZTUtils;">
 
             <dl class="portalMessage error"
@@ -57,7 +72,7 @@
                   class="enableAutoFocus"
                   method="post"
                   id="login_form"
-                  tal:condition="python:auth and not external_login_url">
+                  tal:condition="use_normal">
 
                 <div id="login-form">
 
@@ -70,6 +85,31 @@
                         name="next"
                         value=""
                     tal:attributes="value next|nothing" />
+
+                    <input type="hidden"
+                        name="ajax_load"
+                        value=""
+                    tal:attributes="value request/ajax_load|nothing" />
+
+                    <input type="hidden"
+                        name="ajax_include_head"
+                        value=""
+                    tal:attributes="value request/ajax_include_head|nothing" />
+
+                    <input type="hidden"
+                        name="target"
+                        value=""
+                    tal:attributes="value request/target|nothing" />
+
+                    <input type="hidden"
+                        name="mail_password_url"
+                        value=""
+                    tal:attributes="value request/mail_password_url|nothing" />
+
+                    <input type="hidden"
+                        name="join_url"
+                        value=""
+                    tal:attributes="value request/join_url|nothing" />
 
                     <input type="hidden" name="form.submitted" value="1" />
                     <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
@@ -168,7 +208,7 @@
                   class="enableAutoFocus"
                   method="get"
                   id="login_form"
-                  tal:condition="python:auth and external_login_url">
+                  tal:condition="use_external">
 
                 <div id="login-form">
 
@@ -192,9 +232,47 @@
 
             </form>
 
+        <tal:use_iframe condition="use_iframe">
+
+            <form action="#"
+                  method="get"
+                  id="login_form"
+                  name="login_form"
+                  class="iframe-wrapper"
+                  tal:define="params python:dict(next=request.URL1+'/logged_in', target='_parent', ajax_load=True, ajax_include_head=True, mail_password_url=mail_password, join_url=join);
+                              src external_login_url"
+                  tal:attributes="action src">
+
+                <div id="login-form">
+
+                    <iframe name="login-form-iframe"
+                        id="login-form-iframe"
+                        tal:attributes="src python:external_login_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(params);"
+                        >
+
+                        <input tal:replace="structure python:ztu.make_hidden_input(params)" />
+
+                        <div class="formControls">
+
+                            <input class="context"
+                                   type="submit"
+                                   name="submit"
+                                   value="Log in"
+                                   i18n:attributes="value label_log_in;"
+                                   />
+
+                        </div>
+
+                    </iframe>
+
+                </div>
+
+            </form>
+
+        </tal:use_iframe>
 
             <div id="login-forgotten-password"
-                 tal:condition="python:checkPermission('Mail forgotten password', context) and not external_login_url">
+                 tal:condition="python:mail_password_url and use_normal">
                 <strong i18n:translate="box_forgot_password_option">
                     Forgot your password?
                 </strong>
@@ -202,15 +280,14 @@
                    i18n:translate="help_password_retrieval">
                     If you have forgotten your password,
                     <span i18n:name="click_here">
-                        <a tal:attributes="href python:'mail_password_form?'+ztu.make_query(userid=login_name)"
+                        <a tal:define="mail_password_url python:mail_password_url+test(mail_password_url.find('?')==-1, '?', '&amp;')+ztu.make_query(userid=login_name)"
+                            tal:attributes="href mail_password_url; target target;"
                            i18n:translate="label_click_here_to_retrieve">we can send you a new one</a></span>.
                 </p>
             </div>
 
             <div id="login-new-user"
-               tal:define="actions python:context.portal_actions.listActionInfos('user/join', object=context);
-                           join python:[a['url'] for a in actions];"
-               tal:condition="python: join and checkPermission('Add portal member', context)">
+               tal:condition="python:join_url and use_normal">
                 <h3 i18n:translate="heading_new_user">
                 New user?
                 </h3>
@@ -219,10 +296,8 @@
                 If you do not have an account here, head over to the
                 <span i18n:name="registration_form">
                     <a href=""
-                       tal:define="join python:join.pop();
-                                   join join;
-                                   join python:join+test(join.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from, next=next);"
-                       tal:attributes="href join"
+                       tal:define="join_url python:join_url+test(join_url.find('?')==-1, '?', '&amp;')+ztu.make_query(came_from=came_from);"
+                       tal:attributes="href join_url; target target;"
                        i18n:translate="description_no_account_registration_linktext">
                         registration form</a></span>.
                 </p>

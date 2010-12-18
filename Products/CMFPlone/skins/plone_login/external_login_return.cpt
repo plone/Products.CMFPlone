@@ -25,6 +25,8 @@
                  next python:test(next is not None and context.portal_url.isURLInPortal(next), next, None);
                  cookie_name auth/cookie_name|string:__ac;
                  ticket python:request.response.cookies.get(cookie_name, {}).get('value') or request.cookies.get(cookie_name, '');
+                 target request/target|nothing;
+                 target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                  valid python:not(isAnon) and next;">
 
   <metal:valid tal:condition="valid">
@@ -37,7 +39,7 @@
               Since cookie authentication is disabled, cookie-based login is not available.
           </div>
 
-          <form tal:attributes="action next"
+          <form tal:attributes="action next; target target;"
                 method="post"
                 id="external_login_form"
                 name="external_login_form"
