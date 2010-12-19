@@ -8,7 +8,7 @@ Changelog
   when some groups have a non-ascii character in their title.
   Sort groups on their title normalized.
   Similar as http://dev.plone.org/plone/ticket/11301
-  [thomasdesvenain]
+  [thomasdesvenain, davisagli]
 
 - Don't allow non-Managers to add new users to groups that grant the Manager
   role.

@@ -12,7 +12,7 @@ from AccessControl import getSecurityManager
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import normalizeString
+from Products.CMFPlone.utils import normalizeString, safe_unicode
 from Products.CMFPlone import PloneMessageFactory as _
 
 from ZODB.POSException import ConflictError
@@ -25,7 +25,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.controlpanel.widgets import MultiCheckBoxVocabularyWidget
 
-from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope.site.hooks import getSite
 from plone.protect import CheckAuthenticator
 
@@ -152,7 +152,7 @@ def getGroupIds(context):
     groups_tool = getToolByName(site, 'portal_groups')
     groups = groups_tool.listGroups()
     # Get group id, title tuples for each, omitting virtual group 'AuthenticatedUsers'
-    groupData = []
+    terms = []
     for g in groups:
         if g.id == 'AuthenticatedUsers':
             continue
@@ -160,10 +160,11 @@ def getGroupIds(context):
         if 'Manager' in g.getRoles() and not is_zope_manager:
             continue
         
-        groupData.append(('%s (%s)' % (g.getGroupTitleOrName(), g.id), g.id))
+        title = u'%s (%s)' % (safe_unicode(g.getGroupTitleOrName()), g.id)
+        terms.append(SimpleTerm(g.id, g.id, title))
     # Sort by title
-    groupData.sort(key=lambda x: normalizeString(x[0]))
-    return SimpleVocabulary.fromItems(groupData)
+    terms.sort(key=lambda x: normalizeString(x.title))
+    return SimpleVocabulary(terms)
 
 
 class BaseRegistrationForm(PageForm):
