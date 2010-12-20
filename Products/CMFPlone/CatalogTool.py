@@ -44,6 +44,7 @@ from zope.component import queryMultiAdapter
 
 from plone.indexer.interfaces import IIndexableObject
 from plone.indexer import indexer
+from plone.uuid.interfaces import IUUIDAware, IUUID
 
 _marker = object()
 
@@ -218,7 +219,6 @@ def is_default_page(obj):
 def getIcon(obj):
     """Make sure we index icon relative to portal"""
     return obj.getIcon(True)
-
 
 class CatalogTool(PloneBaseTool, BaseTool):
     """Plone's catalog tool"""

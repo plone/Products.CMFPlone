@@ -64,6 +64,7 @@ class HiddenProducts(object):
             'plone.app.blob',
             'plone.app.folder',
             'plone.app.imaging',
+            'plone.outputfilters',
             'plonetheme.sunburst',
             ]
 

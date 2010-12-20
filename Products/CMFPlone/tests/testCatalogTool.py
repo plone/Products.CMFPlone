@@ -18,6 +18,12 @@ from Products.CMFPlone.CatalogTool import CatalogTool
 
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
+from plone.uuid.interfaces import IUUIDAware, IUUID
+from plone.uuid.interfaces import IAttributeUUID
+
+from zope.event import notify
+from zope.lifecycleevent import ObjectCreatedEvent
+from zope.interface.declarations import alsoProvides
 
 portal_name = PloneTestCase.portal_name
 default_user  = PloneTestCase.default_user
@@ -919,6 +925,14 @@ class TestIndexers(PloneTestCase.PloneTestCase):
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.failUnlessEqual(wrapped.getIcon, iconname)
 
+    def test_uuid(self):
+        alsoProvides(self.doc, IAttributeUUID)
+        notify(ObjectCreatedEvent(self.doc))
+
+        uuid = IUUID(self.doc, None)
+        wrapped = IndexableObjectWrapper(self.doc, self.portal.portal_catalog)
+        self.failUnless(wrapped.UID)
+        self.failUnless(uuid == wrapped.UID)
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):
 

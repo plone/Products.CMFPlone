@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Depend on plone.app.uuid for indexing content UUIDs.
+  [toutpt, davisagli]
+
 - Added ++resource++blank.html, a building block for cross-domain iframe
   communication (e.g. with Disqus.)
   [elro]

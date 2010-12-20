@@ -41,6 +41,7 @@ class HiddenProfiles(object):
                 u'Products.TinyMCE:uninstall',
                 u'plone.browserlayer:default',
                 u'plone.keyring:default',
+                u'plone.outputfilters:default',
                 u'plone.portlet.static:default',
                 u'plone.portlet.collection:default',
                 u'plone.protect:default',

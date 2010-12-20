@@ -26,6 +26,7 @@
   <include package="plone.app.redirector" />
   <include package="plone.app.registry" />
   <include package="plone.app.users" />
+  <include package="plone.app.uuid" />
   <include package="plone.app.viewletmanager" />
   <include package="plone.app.vocabularies" />
   <include package="plone.app.workflow" />
