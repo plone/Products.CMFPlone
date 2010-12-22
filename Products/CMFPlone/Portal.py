@@ -9,6 +9,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.PloneFolder import OrderedContainer
 
 from AccessControl import ClassSecurityInfo
+from AccessControl import Permissions
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from App.class_init import InitializeClass
@@ -38,6 +39,14 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
         CMFSite.manage_options[:2] +
         CMFSite.manage_options[3:]
         )
+
+    __ac_permissions__ = tuple(list(CMFSite.__ac_permissions__) +
+        [('Modify portal content',
+         ('manage_cutObjects', 'manage_pasteObjects',
+          'manage_renameForm', 'manage_renameObject',
+          'manage_renameObjects'))])
+
+    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
     manage_renameObject = OrderedContainer.manage_renameObject
 

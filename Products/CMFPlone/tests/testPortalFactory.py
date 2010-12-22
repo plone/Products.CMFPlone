@@ -6,9 +6,12 @@ import urlparse
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.permissions import AddPortalContent
+from Products.CMFCore.permissions import ModifyPortalContent
 from Products.PluggableAuthService.interfaces.plugins import IChallengePlugin
 
 from AccessControl import Unauthorized
+from AccessControl import Permissions
+from AccessControl import getSecurityManager
 default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
 
@@ -156,6 +159,34 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         self.logout()
         self.assertRaises(Unauthorized, temp_object.document_edit,
                           id='foo', title='Foo', text_format='plain', text='')
+
+    def testCopyPermission(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', id='folder_to_copy')
+
+        pm = self.portal.portal_membership
+        pm.addMember('editor', 'secret', ['Editor'], [])
+        self.login('editor')
+        member = pm.getMemberById('editor')
+        self.assertTrue(member.checkPermission(Permissions.copy_or_move,
+                                               self.portal))
+        security = getSecurityManager()
+        self.assertTrue(security.validate(
+            self.portal, self.portal, 'manage_copyObjects'))
+
+    def testRenamePermission(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', id='folder_to_copy')
+
+        pm = self.portal.portal_membership
+        pm.addMember('editor', 'secret', ['Editor'], [])
+        self.login('editor')
+        member = pm.getMemberById('editor')
+        self.assertTrue(member.checkPermission(ModifyPortalContent,
+                                               self.portal))
+        security = getSecurityManager()
+        self.assertTrue(security.validate(
+            self.portal, self.portal, 'manage_renameObjects'))
 
 
 class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
