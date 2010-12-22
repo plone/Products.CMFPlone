@@ -4,6 +4,10 @@ Changelog
 2.0.6 - Unreleased
 ------------------
 
+- Avoid creating persistent DiscussionItemContainers prematurely when items
+  are viewed that have commenting enabled but no actual comments yet.
+  [davisagli]
+
 - Don't cache navigation_root_path and navigation_root_url contextless
   http://dev.plone.org/plone/ticket/11291
   [tom_gross]

@@ -1,4 +1,4 @@
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_inner, aq_base
 from AccessControl import getSecurityManager
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
@@ -29,8 +29,12 @@ class CommentsViewlet(ViewletBase):
         replies = []
 
         context = aq_inner(self.context)
-        container = aq_parent(context)
         pd = self.portal_discussion
+
+        # cut out early if there's no talkback attribute, to avoid having
+        # getDiscussionFor implicitly create one unnecessarily
+        if getattr(aq_base(context), 'talkback', None) is None:
+            return []
 
         def getRs(obj, replies, counter):
             rs = pd.getDiscussionFor(obj).getReplies()

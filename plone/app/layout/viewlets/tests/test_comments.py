@@ -40,6 +40,13 @@ class TestCommentsViewletView(ViewletsTestCase):
         time = DateTime('2009/10/20 15:00')
         self.assertEqual(viewlet.format_time(time), 'Oct 20, 2009 03:00 PM')
 
+    def test_viewing_uncommented_item_doesnt_create_talkback(self):
+        # make sure we avoid creating unnecessary persistent talkbacks
+        self.assertFalse(hasattr(self.portal.document, 'talkback'))
+        viewlet = CommentsViewlet(self.portal.document, self.app.REQUEST, None, None)
+        viewlet.update()
+        viewlet.render()
+        self.assertFalse(hasattr(self.portal.document, 'talkback'))
 
 def test_suite():
     from unittest import defaultTestLoader
