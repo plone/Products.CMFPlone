@@ -4,6 +4,9 @@ Changelog
 2.0.2 - unreleased
 ------------------
 
+- Recover from parse error on ``updated`` date.
+  [malthe]
+
 - Display full creator name in review portlet.
   [thomasdesvenain]
 

@@ -7,6 +7,7 @@ from zope.interface import implements, Interface
 from zope import schema
 
 from DateTime import DateTime
+from DateTime.interfaces import DateTimeError
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from plone.app.portlets import PloneMessageFactory as _
@@ -151,7 +152,13 @@ class RSSFeed(object):
                         'summary' : item.get('description',''),
                     }
                     if hasattr(item, "updated"):
-                        itemdict['updated']=DateTime(item.updated)
+                        try:
+                            itemdict['updated'] = DateTime(item.updated)
+                        except DateTimeError:
+                            # It's okay to drop it because in the
+                            # template, this is checked with
+                            # ``exists:``
+                            pass
                 except AttributeError:
                     continue
                 self._items.append(itemdict)
