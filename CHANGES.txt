@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.2 - unreleased
+2.0.2 - 2010-12-23
 ------------------
 
 - Recover from parse error on ``updated`` date.
