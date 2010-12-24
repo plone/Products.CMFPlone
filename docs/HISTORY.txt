@@ -6,6 +6,13 @@ For what's new in this release, see CHANGES.txt.
 4.0.3 - Unreleased
 ------------------
 
+- Make role/permission settings consistent in Plone root
+  http://dev.plone.org/plone/ticket/7922
+  [tom_gross]
+
+- Added some css ids on login form.
+  [thomasdesvenain]
+
 - Fixed possible Unauthorized error when registering a user when using
   the email address as login name.
   [maurits]

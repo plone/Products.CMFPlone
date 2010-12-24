@@ -8,10 +8,6 @@ Changelog
 4.1 - Unreleased
 ----------------
 
-- Make role/permission settings consistent in Plone root
-  http://dev.plone.org/plone/ticket/7922
-  [tom_gross]
-
 - Depend on plone.app.uuid for indexing content UUIDs.
   [toutpt, davisagli]
 
@@ -27,9 +23,6 @@ Changelog
 
 - Added ajax_include_head request parameter for use with cross domain iframe.
   [elro]
-
-- Added some css ids on login form.
-  [thomasdesvenain]
 
 - Single Sign On support in login forms.
   [elro]
