@@ -4,6 +4,9 @@ Changelog
 2.0.6 - Unreleased
 ------------------
 
+- Depend on ``Products.CMFPlone`` instead of ``Plone``.
+  [elro]
+
 - Avoid creating persistent DiscussionItemContainers prematurely when items
   are viewed that have commenting enabled but no actual comments yet.
   [davisagli]
