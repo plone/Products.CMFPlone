@@ -4,6 +4,8 @@ Changelog
 1.1b1 - unreleased
 ------------------
 
+- Depend on ``Products.CMFPlone`` instead of ``Plone``.
+  [elro]
 
 - Don't allow non-Managers to add new users to groups that grant the Manager
   role.
