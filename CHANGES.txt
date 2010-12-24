@@ -18,6 +18,12 @@ Changelog
 1.0.3 - unreleased
 ------------------
 
+- Don't assume that fields in the user schema will be saved in property sheets
+  when a new user registers. Instead, adapt the navigation root to the user
+  schema to get the same adapter as is used on the Personal Information form,
+  and use it to save the values from the registration form.
+  [davisagli]
+
 - Fixed critical error on add user page
   when some groups have a non-ascii character in their title.
   Sort groups on their title normalized.

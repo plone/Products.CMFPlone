@@ -1,5 +1,6 @@
 from zope.interface import Interface
-from zope.component import getUtility
+from zope.component import getUtility, getAdapter
+from zope.schema import getFieldNamesInOrder
 
 from five.formlib.formbase import PageForm
 from zope import schema
@@ -377,16 +378,23 @@ class BaseRegistrationForm(PageForm):
             # immediately when password reset is bypassed.
             self.request.form['form.username'] = data['email']
 
-        username = data['username']
+        user_id = data['username']
         password = data.get('password') or registration.generatePassword()
 
         try:
-            registration.addMember(username, password, properties=data,
-                                   REQUEST=self.request)
+            registration.addMember(user_id, password, REQUEST=self.request)
         except (AttributeError, ValueError), err:
             logging.exception(err)
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
+        
+        # set additional properties using the user schema adapter
+        schema = getUtility(IUserDataSchemaProvider).getSchema()
+        self.request.set('userid', user_id)
+        adapter = getAdapter(self.context, schema)
+        for name in getFieldNamesInOrder(schema):
+            if name in data:
+                setattr(adapter, name, data[name])
 
         if data.get('mail_me') or (portal.validate_email and not data.get('password')):
             # We want to validate the email address (users cannot
@@ -399,7 +407,7 @@ class BaseRegistrationForm(PageForm):
                 # effect, this removes any status messages added to
                 # the request so far, as they are already shown in
                 # this template.
-                response = registration.registeredNotify(username)
+                response = registration.registeredNotify(user_id)
                 return response
             except ConflictError:
                 # Let Zope handle this exception.
@@ -414,7 +422,7 @@ class BaseRegistrationForm(PageForm):
                     # address.  We remove the account:
                     # Remove the account:
                     self.context.acl_users.userFolderDelUsers(
-                        [username], REQUEST=self.request)
+                        [user_id], REQUEST=self.request)
                     IStatusMessage(self.request).addStatusMessage(
                         _(u'status_fatal_password_mail',
                           default=u"Failed to create your account: we were "
@@ -530,14 +538,14 @@ class AddUserForm(BaseRegistrationForm):
         securityManager = getSecurityManager()
         canManageUsers = securityManager.checkPermission('Manage users',
                                                          self.context)
-        username = data['username']
+        user_id = data['username']
 
         try:
             # Add user to the selected group(s)
             if 'groups' in data.keys() and canManageUsers:
                 for groupname in data['groups']:
                     group = portal_groups.getGroupById(groupname)
-                    group.addMember(username, REQUEST=self.request)
+                    group.addMember(user_id, REQUEST=self.request)
         except (AttributeError, ValueError), err:
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
@@ -546,4 +554,4 @@ class AddUserForm(BaseRegistrationForm):
             _(u"User added."), type='info')
         self.request.response.redirect(
             self.context.absolute_url() +
-            '/@@usergroup-userprefs?searchstring=' + username)
+            '/@@usergroup-userprefs?searchstring=' + user_id)

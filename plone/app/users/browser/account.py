@@ -1,5 +1,4 @@
 from Acquisition import aq_inner
-from zope.component import adapts
 from zope.interface import implements
 from zope.event import notify
 from zope.formlib import form
@@ -10,7 +9,6 @@ from plone.app.controlpanel.events import ConfigurationChangedEvent
 from plone.fieldsets.form import FieldsetsEditForm
 from plone.protect import CheckAuthenticator
 
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
@@ -26,10 +24,10 @@ class AccountPanelSchemaAdapter(SchemaAdapterBase):
         mt = getToolByName(context, 'portal_membership')
         userid = context.REQUEST.get('userid')
 
-        if mt.isAnonymousUser():
-            raise "Can't modify properties of anonymous user"
-        elif userid:
+        if userid:
             self.context = mt.getMemberById(userid)
+        elif mt.isAnonymousUser():
+            raise "Can't modify properties of anonymous user"
         else:
             self.context = mt.getAuthenticatedMember()
 
