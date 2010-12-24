@@ -4,6 +4,9 @@ Changelog
 2.1b1 - unreleased
 ------------------
 
+- Depend on ``Products.CMFPlone`` instead of ``Plone``.
+  [elro]
+
 - Make sure the ConfigurationChangedEvent is fired when the types
   control panel setting changed.
   [timo]
