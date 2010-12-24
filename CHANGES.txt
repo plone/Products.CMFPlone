@@ -4,11 +4,6 @@ Changelog
 1.1b1 - unreleased
 ------------------
 
-- Fix critical error on add user page
-  when some groups have a non-ascii character in their title.
-  Sort groups on their title normalized.
-  Similar as http://dev.plone.org/plone/ticket/11301
-  [thomasdesvenain, davisagli]
 
 - Don't allow non-Managers to add new users to groups that grant the Manager
   role.
@@ -19,6 +14,16 @@ Changelog
   "Manage portal" and "Manage users".  This requires
   plone.app.controlpanel >= 2.1b1.
   [davisagli]
+
+1.0.3 - unreleased
+------------------
+
+- Fixed critical error on add user page
+  when some groups have a non-ascii character in their title.
+  Sort groups on their title normalized.
+  Token and value in terms in the groups vocabulary were switched.
+  This closes http://dev.plone.org/plone/ticket/11316
+  [thomasdesvenain, vincentfretin, davisagli]
 
 1.0.2 - 2010-11-24
 ------------------

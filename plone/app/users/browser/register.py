@@ -160,7 +160,11 @@ def getGroupIds(context):
         if 'Manager' in g.getRoles() and not is_zope_manager:
             continue
         
-        title = u'%s (%s)' % (safe_unicode(g.getGroupTitleOrName()), g.id)
+        group_title = safe_unicode(g.getGroupTitleOrName())
+        if group_title != g.id:
+            title = u'%s (%s)' % (group_title, g.id)
+        else:
+            title = group_title
         terms.append(SimpleTerm(g.id, g.id, title))
     # Sort by title
     terms.sort(key=lambda x: normalizeString(x.title))
