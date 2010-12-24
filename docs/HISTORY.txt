@@ -17,6 +17,10 @@ For what's new in this release, see CHANGES.txt.
   the email address as login name.
   [maurits]
 
+- Fixed errors on kss update in portal factory.
+  This fixes http://dev.plone.org/plone/ticket/11311.
+  [thomasdesvenain]
+
 - In the registration tool strip the mail text before passing it
   through message_from_string.  A leading white line would prevent
   getting Subject, To and From headers from the generated message.

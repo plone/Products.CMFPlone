@@ -178,7 +178,7 @@ class TempFolder(TempFolderBase):
         # What we really want is for the inner acquisition chain to be
         # intended_parent_folder -> portal_factory -> temporary_folder -> object
         # So we need to rewrap...
-        portal_factory = aq_parent(self)
+        portal_factory = aq_parent(aq_inner(self))
         intended_parent = aq_parent(portal_factory)
 
         # If the intended parent has an object with the given id, just do a passthrough
