@@ -27,18 +27,22 @@ if contentFilter.get('path', None) is None:
 
 show_inactive = mtool.checkPermission('Access inactive portal content', context)
 
+# Provide batching hints to the catalog
+b_start = int(context.REQUEST.get('b_start', 0))
+contentFilter['b_start'] = b_start
+contentFilter['b_size'] = b_size
+
 # Evaluate in catalog context because some containers override queryCatalog
 # with their own unrelated method (Topics)
 contents = context.portal_catalog.queryCatalog(contentFilter, show_all=1,
-                                                  show_inactive=show_inactive)
+    show_inactive=show_inactive, )
 
 if full_objects:
     contents = [b.getObject() for b in contents]
 
 if batch:
     from Products.CMFPlone import Batch
-    b_start = context.REQUEST.get('b_start', 0)
-    batch = Batch(contents, b_size, int(b_start), orphan=0)
+    batch = Batch(contents, b_size, b_start, orphan=0)
     return batch
 
 return contents
