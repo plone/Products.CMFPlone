@@ -1,0 +1,13 @@
+
+
+You can visit the index page for the tests of this package:
+
+From Plone:
+
+    http://yoursite/yourplone/++resource++qunit-CMFPlone-testing.html
+
+From svn / filesystem:
+
+    ./qunit/testing.html
+
+

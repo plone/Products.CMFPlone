@@ -1,0 +1,62 @@
+
+(function($){
+
+$(document).ready(function() {
+
+    var server = new MockHttpServer();
+    server.handle = function(request) {
+        request.setResponseHeader("Content-Type", "application/json; charset=UTF-8");
+        //request.receive(200, '[0, 24, []]');
+
+        // give the response with some delay
+        // so we can see what's happening
+        setTimeout(function() {
+            request.receive(200, '[0, 54, 0, 35, [{"flavor": "added_edited_other", "context_url": "/offices", "description": "This is a test under selenium for add forum", "title": "selenium_test1", "url": "/offices/forums/selenium_test", "tags": [], "userid": "jpglenn09", "comment_count": 0, "author": "System User", "content_type": "Forum", "short_description": "This is a test under selenium for add forum", "context_name": "OSI", "operation": "edited", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:26:01Z"}, {"flavor": "added_edited_other", "context_url": "/offices", "description": "This is a test under selenium for add forum", "title": "selenium_test", "url": "/offices/forums/selenium_test", "tags": [], "userid": "jpglenn09", "comment_count": 0, "author": "System User", "content_type": "Forum", "short_description": "This is a test under selenium for add forum", "context_name": "OSI", "operation": "added", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:25:41Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "", "title": "selenium", "url": "/communities/selenium_test/wiki/selenium", "tags": [], "userid": "jpglenn09", "comment_count": false, "author": "System User", "content_type": "Wiki Page", "short_description": "", "context_name": "selenium_test", "operation": "added", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:25:09Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "This is the front page. This page is edited by selenium", "title": "Second Page", "url": "/communities/selenium_test/wiki/front_page", "tags": [], "userid": "jpglenn09", "comment_count": false, "author": "System User", "content_type": "Wiki Page", "short_description": "This is the front page. This page is edited by selenium", "context_name": "selenium_test", "operation": "edited", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:24:53Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "", "title": "test folder", "url": "/communities/selenium_test/files/test-folder", "tags": [], "userid": "jpglenn09", "comment_count": false, "author": "System User", "content_type": "Folder", "short_description": "", "context_name": "selenium_test", "operation": "added", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:24:01Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "", "title": "calendar_event_234", "url": "/communities/selenium_test/calendar/calendar_test_event_123", "tags": [], "userid": "jpglenn09", "comment_count": false, "author": "System User", "content_type": "Event", "short_description": "", "context_name": "selenium_test", "operation": "edited", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:23:10Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "", "title": "calendar_test_event_123", "url": "/communities/selenium_test/calendar/calendar_test_event_123", "tags": [], "userid": "jpglenn09", "comment_count": false, "author": "System User", "content_type": "Event", "short_description": "", "context_name": "selenium_test", "operation": "added", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:22:39Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "", "title": "selenium_test_blog", "url": "/communities/selenium_test/blog/selenium_test_blog", "tags": [], "userid": "jpglenn09", "comment_count": 1, "author": "System User", "content_type": "Blog Entry", "short_description": "", "context_name": "selenium_test", "operation": "edited", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:21:53Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "", "title": "Re: selenium_test_blog", "url": "/communities/selenium_test/blog/selenium_test_blog/comments/001", "tags": [], "userid": "jpglenn09", "comment_count": 0, "author": "System User", "content_type": "Comment", "short_description": "", "context_name": "selenium_test", "operation": "added", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:21:28Z"}, {"flavor": "added_edited_other", "context_url": "/communities/selenium_test", "description": "", "title": "selenium_test_blog", "url": "/communities/selenium_test/blog/selenium_test_blog", "tags": [], "userid": "jpglenn09", "comment_count": 0, "author": "System User", "content_type": "Blog Entry", "short_description": "", "context_name": "selenium_test", "operation": "added", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:21:22Z"}, {"flavor": "joined_left", "context_url": "/communities/selenium_test", "description": "This is a test of Karl Under Selenium.", "title": "selenium_test", "url": "/communities/selenium_test", "tags": [], "userid": "jpglenn09", "comment_count": false, "author": "System User", "content_type": "Community", "short_description": "This is a test of Karl Under Selenium.", "context_name": "selenium_test", "operation": "joined", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:20:49Z"}, {"flavor": "added_edited_community", "context_url": "/communities/selenium_test", "description": "This is a test of Karl Under Selenium.", "title": "selenium_test", "url": "/communities/selenium_test", "tags": [], "userid": "jpglenn09", "comment_count": false, "author": "System User", "content_type": "Community", "short_description": "This is a test of Karl Under Selenium.", "context_name": "selenium_test", "operation": "added", "thumbnail": "/profiles/jpglenn09/profile_thumbnail", "profile_url": "/profiles/jpglenn09", "timeago": "2010-07-28T19:20:48Z"}, {"flavor": "added_edited_other", "context_url": "/offices", "description": "Privacy Policy Open Society Institute (\\" OSI ,\\" \\" we ,\\" \\" us \\") cares about privacy issues and wants you to be familiar with how we collect, use and disclose your Personally Identifiable Information (as defined below). This Privacy Policy (the \\" Policy \\") describes our practices in connection...", "title": "privacy_statement", "url": "/offices/files/privacy_statement", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Page", "short_description": "Privacy Policy Open Society Institute (\\" OSI ,\\" \\" we ,\\" \\" us \\") cares about priv...", "context_name": "OSI", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}, {"flavor": "added_edited_other", "context_url": "/offices", "description": "Terms of Service LAST UPDATED: June 1, 2007 This Terms of Service Agreement (the \\"Agreement\\") is between you (\\"you\\") and Open Society Institute (\\"OSI,\\" \\"we,\\" \\"us\\") concerning your use of the KARL network (together with all Services (as defined below), the \\"Site\\"). This Terms of Service Agreement (the \\" Agreement...", "title": "terms_and_conditions", "url": "/offices/files/terms_and_conditions", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Page", "short_description": "Terms of Service LAST UPDATED: June 1, 2007 This Terms of Service Agreement (the...", "context_name": "OSI", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}, {"flavor": "added_edited_community", "context_url": "/offices/washington", "description": "", "title": "washington", "url": "/offices/washington", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Community", "short_description": "", "context_name": "washington", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}, {"flavor": "added_edited_community", "context_url": "/offices/paris", "description": "", "title": "paris", "url": "/offices/paris", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Community", "short_description": "", "context_name": "paris", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}, {"flavor": "added_edited_community", "context_url": "/offices/national-foundation", "description": "", "title": "national-foundation", "url": "/offices/national-foundation", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Community", "short_description": "", "context_name": "national-foundation", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}, {"flavor": "added_edited_community", "context_url": "/offices/london", "description": "", "title": "london", "url": "/offices/london", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Community", "short_description": "", "context_name": "london", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}, {"flavor": "added_edited_community", "context_url": "/offices/brussels", "description": "", "title": "brussels", "url": "/offices/brussels", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Community", "short_description": "", "context_name": "brussels", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}, {"flavor": "added_edited_community", "context_url": "/offices/budapest", "description": "", "title": "budapest", "url": "/offices/budapest", "tags": [], "userid": "admin", "comment_count": false, "author": "Ad Min", "content_type": "Community", "short_description": "", "context_name": "budapest", "operation": "added", "thumbnail": "/profiles/admin/profile_thumbnail", "profile_url": "/profiles/admin", "timeago": "2010-07-28T18:34:21Z"}]]'
+        );}, 1000);
+    };
+
+
+    server.start();
+
+    // wire the widgets
+    var info = $('#feedinfo')
+        .karlcontentfeeds_info({
+            selectLastUpdate: '#polled',
+            selectLastGen: '#last_gen',
+            selectLastIndex: '#last_index',
+            selectFeedUrl: '#json_feed_url'
+        });
+    var feedlist = $('#feedlist')
+        .karlcontentfeeds({
+            ajax_url: '/json_newest_feed_items.json'
+        })
+        .bind('changed.karlcontentfeeds', function(evt, summary_info) {
+            info.karlcontentfeeds_info('update', summary_info);
+        })
+        .bind('ajaxstatechanged.karlcontentfeeds', function(evt, state, errormsg) {
+            $('#feed-polling').karlcontentfeeds_polling('setAjaxState', state, {errormsg: errormsg});
+        });
+    $('#feed-polling')
+        .karlcontentfeeds_polling({
+            // XXX Classes still hardwired in the template.
+        })
+        .bind('ajaxstatechanged.karlcontentfeeds', function(evt, state) {
+            feedlist.karlcontentfeeds('setAjaxState', state);
+        });
+
+
+    // manual polling with this button
+    $('#testpoll').click(function() {
+        // get the items
+        feedlist.karlcontentfeeds('get_items');
+        return false;
+    });
+
+    // get the items
+    feedlist.karlcontentfeeds('get_items');
+
+
+});
+
+})(jQuery);
+
