@@ -6,6 +6,10 @@ For what's new in this release, see CHANGES.txt.
 4.0.3 - Unreleased
 ------------------
 
+- Change PloneBatch class to work with actual_result_count alone instead of
+  calculating the length of the provided sequence.
+  [hannosch]
+
 - Pass on batching hints to the catalog query in `getFolderContents`.
   [hannosch]
 

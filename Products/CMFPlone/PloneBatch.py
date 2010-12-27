@@ -1,5 +1,3 @@
-from __future__ import nested_scopes
-
 from ZTUtils.Batch import Batch as ZTUBatch
 from ZTUtils import make_query
 from ExtensionClass import Base
@@ -14,15 +12,17 @@ class LazyPrevBatch(Base):
 
 class LazyNextBatch(Base):
     def __of__(self, parent):
-        try: parent._sequence[parent.end]
-        except IndexError: return None
+        if parent.end >= (parent.last + parent.size):
+            return None
         return Batch(parent._sequence, parent._size,
                      parent.end - parent.overlap, 0,
                      parent.orphan, parent.overlap)
 
 class LazySequenceLength(Base):
     def __of__(self, parent):
-        parent.sequence_length = l = len(parent._sequence)
+        _sequence = parent._sequence
+        l = getattr(_sequence, 'actual_result_count', len(_sequence))
+        parent.sequence_length = l
         return l
 
 class Batch(ZTUBatch):
@@ -49,12 +49,13 @@ class Batch(ZTUBatch):
         b_start_str - the request variable used for start, default 'b_start'
         """
         start = start + 1
-
-        start,end,sz = opt(start,end,size,orphan,sequence)
-
         self._sequence = sequence
-        self.size = sz
         self._size = size
+        sequence_length = self.sequence_length
+
+        start,end,sz = opt(start,end,size,orphan,sequence_length)
+
+        self.size = sz
         self.start = start
         self.end = end
         self.orphan = orphan
@@ -64,7 +65,7 @@ class Batch(ZTUBatch):
 
         self.b_start_str = b_start_str
 
-        self.last = self.sequence_length - size
+        self.last = sequence_length - size
 
         # Set up next and previous
         if self.first == 0:
@@ -120,8 +121,8 @@ class Batch(ZTUBatch):
 # This is copied from ZTUtils.Batch.py because orphans were not correct there.
 # 04/16/04 modified by Danny Bloemendaal (_ender_). Removed try/except structs because
 # in some situations they cause some unexpected problems. Also fixed some problems with the orphan stuff. Seems to work now.
-def opt(start,end,size,orphan,sequence):
-    length = len(sequence)
+def opt(start,end,size,orphan,sequence_length):
+    length = sequence_length
     if size < 1:
         if start > 0 and end > 0 and end >= start:
             size = end + 1 - start
