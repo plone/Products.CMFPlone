@@ -239,7 +239,8 @@
                   id="login_form"
                   name="login_form"
                   class="iframe-wrapper"
-                  tal:define="params python:dict(next=request.URL1+'/logged_in', target='_parent', ajax_load=True, ajax_include_head=True, mail_password_url=mail_password, join_url=join, came_from=came_from);
+                  tal:define="params python:dict(next=request.URL1+'/logged_in', target='_parent', ajax_load=True, ajax_include_head=True, mail_password_url=mail_password, join_url=join);
+                              dummy python:came_from and params.update(dict(came_from=came_from));
                               src external_login_url"
                   tal:attributes="action src">
 
