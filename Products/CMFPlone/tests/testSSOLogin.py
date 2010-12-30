@@ -45,6 +45,9 @@ class SSOLoginTestCase(ptc.FunctionalTestCase):
             session._shared_secret = 'secret'
             session.path = portal.absolute_url_path()
 
+        # Turn on self-registration
+        self.portal.manage_permission('Add portal member', roles=['Manager', 'Anonymous'], acquire=0)
+
 
 class TestSSOLogin(SSOLoginTestCase):
 
@@ -124,6 +127,10 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         link = browser.getLink('we can send you a new one')
         self.failUnless(link.url.startswith(self.portal.absolute_url()))
         self.assertEqual(link.attrs['target'], '_parent')
+        # So does the registration form
+        link = browser.getLink('registration form')
+        self.failUnless(link.url.startswith(self.portal.absolute_url()))
+        self.assertEqual(link.attrs['target'], '_parent')
         # Login
         browser.getControl(name='__ac_name').value = ptc.default_user
         browser.getControl(name='__ac_password').value = ptc.default_password
@@ -149,6 +156,13 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         browser.getLink('Log out').click()
         # Check we really logged out, there should be a login link
         browser.getLink('Log in')
+        # The test browser does not support iframes
+        form = browser.getForm(name='login_form')
+        form.submit()
+        # Check the registration form does not have an incorrect came_from link
+        link = browser.getLink('registration form')
+        self.failIf('came_from' in link.url)
+        self.assertEqual(link.attrs['target'], '_parent')
         # Check we are logged out of the login_portal too
         browser.open(self.login_portal.absolute_url())
         browser.getLink('Log in')
