@@ -106,7 +106,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         vars['Zope'] = get_dist('Zope2').version
         vars['Python'] = sys.version
         vars['Platform'] = sys.platform
-        vars['Plone'] = get_dist('Plone').version
+        vars['Plone'] = get_dist('Products.CMFPlone').version
         vars['Plone Instance'] = self.getInstanceVersion()
         vars['Plone File System'] = self.getFileSystemVersion()
         vars['CMF'] = get_dist('Products.CMFCore').version
