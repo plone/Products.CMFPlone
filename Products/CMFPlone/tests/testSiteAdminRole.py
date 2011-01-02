@@ -201,7 +201,26 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'plone.portlet.collection: Add collection portlet':         1,
             'plone.portlet.static: Add static portlet':                 1,
             }
-        
+        try:
+            import Products.kupu
+        except ImportError:
+            pass
+        else:
+            expected.update({
+                'Add kupu Library Tools':                               0,
+                'Kupu: Manage libraries':                               1,
+                'Kupu: Query libraries':                                1,
+            })
+        try:
+            import plone.app.iterate
+        except ImportError:
+            pass
+        else:
+            expected.update({
+                'iterate : Check in content':                           1,
+                'iterate : Check out content':                          1
+            })
+
         site = self.portal
         errors = []
         for p, expected_value in sorted(expected.items(), key=lambda x: x[0]):
