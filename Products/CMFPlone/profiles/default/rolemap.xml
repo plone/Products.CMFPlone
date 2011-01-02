@@ -108,12 +108,6 @@
       <role name="Site Administrator"/>
       <role name="Owner"/>
     </permission>
-    <permission name="Kupu: Manage libraries" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Kupu: Query libraries" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
     <permission name="List folder contents" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
@@ -239,20 +233,6 @@
                 acquire="False">
       <role name="Manager"/>
       <role name="Site Administrator"/>
-    </permission>
-    <permission name="iterate : Check in content"
-                acquire="True">
-      <role name="Owner"/>
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Editor"/>
-    </permission>
-    <permission name="iterate : Check out content"
-                acquire="True">
-      <role name="Owner"/>
-      <role name="Manager"/>
-      <role name="Site Administrator"/>
-      <role name="Editor"/>
     </permission>
     <permission name="View"
                 acquire="True">

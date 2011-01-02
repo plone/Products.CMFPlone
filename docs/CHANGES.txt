@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Move PlacefulWorkflow, kupu, iterate and openid to Plone egg dependencies.
+  [elro]
+
 - Depend on plone.app.uuid for indexing content UUIDs.
   [toutpt, davisagli]
 
