@@ -17,6 +17,10 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         return [p['id'] for p in self.qi.listInstallableProducts()]
 
     def testInstallUninstallProduct(self):
+        try:
+            import Products.CMFPlacefuleWorkflow
+        except ImportError:
+            return
         # CMFPlacefulWorkflow should be uninstalled, we install it and
         # it should not show up as installable
         self.setRoles(('Manager',))

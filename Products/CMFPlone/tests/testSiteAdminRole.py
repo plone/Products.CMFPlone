@@ -198,8 +198,6 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'WebDAV Lock items':                                        1,
             'WebDAV Unlock items':                                      1,
             'WebDAV access':                                            1,
-            'iterate : Check in content':                               1,
-            'iterate : Check out content':                              1,
             'plone.portlet.collection: Add collection portlet':         1,
             'plone.portlet.static: Add static portlet':                 1,
             }
