@@ -17,7 +17,7 @@ Changelog
   plone.app.controlpanel >= 2.1b1.
   [davisagli]
 
-1.0.3 - unreleased
+1.0.3 - 2011-01-03
 ------------------
 
 - Don't assume that fields in the user schema will be saved in property sheets
