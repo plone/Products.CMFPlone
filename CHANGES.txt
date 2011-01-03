@@ -48,6 +48,27 @@ Changelog
   http://dev.plone.org/plone/ticket/10756
   [khink]
 
+2.0.5 - 2011-01-03
+------------------
+
+- Fix critical errors on user and group pages
+  when some groups or users have a non-ascii character in their title.
+  Sort groups and users on their fullname or title normalized.
+  Similar as http://dev.plone.org/plone/ticket/11301
+  [thomasdesvenain]
+
+- Fixed : Group titles were not display on group prefs page
+  when title property was got from mutable properties plugin.
+  [thomasdesvenain]
+
+- Replace reference to "personalize_form" with "@@personal-information".
+  http://dev.plone.org/plone/ticket/10756
+  [khink]
+
+- Add extra info message if passwords were reset.
+  http://dev.plone.org/plone/ticket/10756
+  [khink]
+
 2.0.4 - 2010-10-27
 ------------------
 
