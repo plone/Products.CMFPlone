@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.6 - Unreleased
+2.0.6 - 2011-01-03
 ------------------
 
 - Depend on ``Products.CMFPlone`` instead of ``Plone``.
