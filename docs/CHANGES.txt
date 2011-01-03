@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Alphabetical ordering of metadata.xml dependencies.
+  [thet]
+
 - Using tom gross' improved and tested safeToInt version.
   [thet]
 
