@@ -306,12 +306,32 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     return fti._constructInstance(container, id, *args, **kw)
 
 
-def safeToInt(value):
-    """Convert value to integer or just return 0 if we can't"""
+def safeToInt(value, default=0):
+    """Convert value to integer or just return 0 if we can't
+
+       >>> safeToInt(45)
+       45
+
+       >>> safeToInt("42")
+       42
+
+       >>> safeToInt("spam")
+       0
+
+       >>> safeToInt([])
+       0
+
+       >>> safeToInt(None)
+       0
+
+       >>> safeToInt(None, default=-1)
+       -1
+    """
     try:
         return int(value)
-    except ValueError:
-        return 0
+    except (ValueError, TypeError):
+        return default
+
 
 release_levels = ('alpha', 'beta', 'candidate', 'final')
 rl_abbr = {'a':'alpha', 'b':'beta', 'rc':'candidate'}
