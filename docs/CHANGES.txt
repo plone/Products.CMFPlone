@@ -8,6 +8,9 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Using tom gross' improved and tested safeToInt version.
+  [thet]
+
 - Move PlacefulWorkflow, kupu, iterate and openid to Plone egg dependencies.
   [elro]
 
