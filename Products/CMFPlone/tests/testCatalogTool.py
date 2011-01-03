@@ -18,7 +18,7 @@ from Products.CMFPlone.CatalogTool import CatalogTool
 
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
-from plone.uuid.interfaces import IUUIDAware, IUUID
+from plone.uuid.interfaces import IUUID
 from plone.uuid.interfaces import IAttributeUUID
 
 from zope.event import notify

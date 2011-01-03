@@ -8,11 +8,14 @@ Changelog
 4.1 - Unreleased
 ----------------
 
+- Removing unused import from testCatalogTool.
+  [thet]
+
 - Alphabetical ordering of metadata.xml dependencies.
   [thet]
 
 - Using tom gross' improved and tested safeToInt version.
-  [thet]
+  [tom_gross, thet]
 
 - Move PlacefulWorkflow, kupu, iterate and openid to Plone egg dependencies.
   [elro]
