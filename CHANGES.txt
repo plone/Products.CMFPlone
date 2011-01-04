@@ -1,8 +1,11 @@
 Changelog
 =========
 
-2.0.7 - Unreleased
+2.1 - Unreleased
 ------------------
+
+- Remove login redirect alias. As of Plone 4.1 there is a login script.
+  [elro]
 
 2.0.6 - 2011-01-03
 ------------------
