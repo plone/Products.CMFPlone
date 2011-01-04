@@ -21,7 +21,7 @@ class TestCommentsViewletView(ViewletsTestCase):
     
     def test_existent_login_url(self):
         """Make sure login_url() works when there is a login action defined."""
-        self.assertEqual(self._comment_login_url(), 'http://nohost/plone/login_form')
+        self.assertEqual(self._comment_login_url(), 'http://nohost/plone/login')
 
     def test_anonexistent_login_url(self):
         """Make sure login_url() works when there is no login action defined."""

@@ -4,6 +4,9 @@ Changelog
 2.1 - Unreleased
 ------------------
 
+- Update test to check for ``login`` instead of ``login_form``.
+  [elro]
+
 - Remove login redirect alias. As of Plone 4.1 there is a login script.
   [elro]
 
