@@ -55,4 +55,4 @@ Verify, that the settings have actually been changed:
     >>> getDefaultContentType(self.portal)
     'text/x-web-textile'
     >>> getAllowedContentTypes(self.portal)
-    ['text/html', 'text/x-web-textile']
+    ['text/html', 'text/x-plone-outputfilters-html', 'text/x-web-textile']
