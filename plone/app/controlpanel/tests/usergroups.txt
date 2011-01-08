@@ -31,7 +31,6 @@ Try a search with an accent...
     >>> 'Émilie Richard' in self.browser.contents
     True
 
-
 And now on userid...
     >>> self.browser.getControl(name='searchstring').value = 'TWrMCLIo'
     >>> self.browser.getControl(name='form.button.Search').click()
