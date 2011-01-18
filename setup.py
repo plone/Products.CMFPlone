@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.1a1'
+version = '4.1a2'
 
 setup(name='Products.CMFPlone',
       version=version,
