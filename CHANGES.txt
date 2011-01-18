@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1 - Unreleased
+2.1 - 2011-01-13
 ------------------
 
 - Update test to check for ``login`` instead of ``login_form``.
