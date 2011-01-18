@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.1 - Unreleased
+4.1 - 2011-01-18
 ----------------
 
 - Removing unused import from testCatalogTool.
