@@ -62,6 +62,7 @@ class HiddenProducts(object):
             'plone.protect',
             'plone.app.jquerytools',
             'plone.app.blob',
+            'plone.app.discussion',
             'plone.app.folder',
             'plone.app.imaging',
             'plone.outputfilters',

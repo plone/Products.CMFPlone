@@ -8,6 +8,10 @@ Changelog
 4.1a2 - Unreleased
 ------------------
 
+- Merge in PLIP #9288: Improved commenting infrastructure. Refs 
+  http://dev.plone.org/plone/ticket/9288
+  [timo]
+  
 4.1a1 - 2011-01-18
 ------------------
 
