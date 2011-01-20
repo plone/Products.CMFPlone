@@ -67,6 +67,9 @@ class HiddenProducts(object):
             'plone.app.imaging',
             'plone.outputfilters',
             'plonetheme.sunburst',
+            'plone.app.registry',
+            'plone.app.z3cform',
+            
             ]
 
 
