@@ -3,6 +3,8 @@ from zope.component import getUtility, getMultiAdapter
 
 from Acquisition import aq_inner
 
+from five.customerize.zpt import TTWViewTemplateRenderer
+
 from plone.app.kss.interfaces import IPloneKSSView
 from plone.app.kss.plonekssview import PloneKSSView as base
 
@@ -87,6 +89,10 @@ class PortletManagerKSS(base):
         context = aq_inner(self.context)
         request = aq_inner(self.request)
         view = getMultiAdapter((context, request), name=view_name)
+        # view can have been customized TTW, see #11409
+        if isinstance(view, TTWViewTemplateRenderer):
+            view = view._getView()
+
         manager = getUtility(IPortletManager, name=info['manager'])
 
         request['key'] = info['key']

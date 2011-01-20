@@ -32,6 +32,7 @@ setup(name='plone.app.portlets',
       install_requires=[
         'setuptools',
         'five.formlib',
+        'five.customerize',
         'plone.i18n',
         'plone.memoize',
         'plone.portlets>=1.1',

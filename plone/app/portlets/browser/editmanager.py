@@ -1,3 +1,5 @@
+import logging
+
 from plone.memoize.view import memoize
 
 from plone.portlets.constants import CONTEXT_CATEGORY
@@ -309,6 +311,20 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for the dashboard"""
     adapts(Interface, IDefaultBrowserLayer, IManageDashboardPortletsView, IDashboard)
+
+    @property
+    def view_name(self):
+        name = self.__parent__.__name__
+        if not name:
+            # try to fallback on the 'name' attribute for
+            # TTW customized views, see #11409
+            try:
+                name = name = self.__parent__.name
+            except:
+                logging.getLogger('plone.app.portlets.browser').debug(
+                    'Cant get view name for %s' % self.__parent__
+                )
+        return name
 
 class ManagePortletAssignments(BrowserView):
     """Utility views for managing portlets for a particular column"""

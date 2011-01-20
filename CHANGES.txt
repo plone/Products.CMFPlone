@@ -31,6 +31,9 @@ Changelog
   if libxml2 is not present on the system.
   [stefan]
 
+- Fix #11409: use the TTW customized view name if any.
+  [kiorky]
+
 2.0.1 - 2010-09-09
 ------------------
 

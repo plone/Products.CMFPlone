@@ -1,0 +1,121 @@
+Setup::
+
+    >>> import re
+    >>> from plone.app.portlets.browser.editmanager import DashboardEditPortletManagerRenderer
+    >>> from plone.portlets.interfaces import IPortletType
+    >>> from plone.portlets.interfaces import IPortletManager
+    >>> from zope.component import getUtility
+
+
+bug: 11409 test bits
+----------------------
+check the names for customized views are in place::
+
+    >>> portal.manage_permission('Portlets: Manage own portlets', roles=['Manager'], acquire=0)
+    >>> portlet = getUtility(IPortletType, name='portlets.Events')
+    >>> col = getUtility(IPortletManager, name='plone.dashboard1')
+    >>> view = portal.unrestrictedTraverse('@@manage-dashboard')
+    >>> renderer = DashboardEditPortletManagerRenderer(self.portal, self.portal.REQUEST, view, col)
+    >>> renderer.view_name == u'manage-dashboard'
+    True
+
+Now customize the manage dashboard view and check the name is in place too::
+
+    >>> self.setRoles('Manager')
+    >>> browser = self.getBrowser(loggedIn=True)
+    >>> browser.open(portal.absolute_url()+'/portal_view_customizations/registrations.html')
+    >>> browser.getLink(url='manage-dashboard').click()
+    >>> managedashboard_template = """
+    ... <html xmlns="http://www.w3.org/1999/xhtml"
+    ...       xmlns:tal="http://xml.zope.org/namespaces/tal"
+    ...       xmlns:metal="http://xml.zope.org/namespaces/metal"
+    ...       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    ...       xml:lang="en" lang="en"
+    ...       metal:use-macro="context/main_template/macros/master"
+    ...       i18n:domain="plone">
+    ...
+    ... <head>
+    ...     <metal:block fill-slot="top_slot"
+    ...                  tal:define="dummy python:request.set('disable_border',1);
+    ...                              disable_column_one python:request.set('disable_plone.leftcolumn',1);
+    ...                              disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+    ...     <div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
+    ...         <link type="text/css" rel="kinetic-stylesheet"
+    ...             tal:attributes="href string:${context/absolute_url}/++resource++manage-portlets.kss"/>
+    ...     </div>
+    ... </head>
+    ... <body>
+    ... <tal:comment replace="nothing">
+    ...     Please note that this template fills the "content" slot instead of the
+    ...     "main" slot, this is done so we can provide stuff like the content
+    ...     tabs. This also means that we have to supply things that are normally
+    ...     present from main_template.
+    ... </tal:comment>
+    ... <metal:main fill-slot="content"
+    ...     tal:define="errors options/state/getErrors | nothing">
+    ...     <tal:main-macro metal:define-macro="main">
+    ...             <div id="edit-bar">
+    ...                 <h5 class="hiddenStructure"
+    ...                      i18n:translate="heading_content_views">Content views</h5>
+    ...                 <ul id="content-views"
+    ...                     class="contentViews">
+    ...                   <li>
+    ...                     <a href=""
+    ...                        tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
+    ...                        i18n:translate="label_dashboard">Dashboard</a>
+    ...                   </li>
+    ...                   <li class="selected">
+    ...                     <a href=""
+    ...                        tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
+    ...                        i18n:translate="label_edit">Edit</a>
+    ...                   </li>
+    ...                 </ul>
+    ...
+    ...                 <div class="contentActions">
+    ...                   &nbsp;
+    ...                 </div>
+    ...             </div>
+    ...             <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+    ...                 Portal status message
+    ...             </div>
+    ...             <div id="content">
+    ...                 <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard">
+    ...                     Edit your dashboard
+    ...                 </h1>
+    ...                 <div id="content-core">
+    ...                     <div id="dashboard">
+    ...                         <div id="dashboard-portlets1"
+    ...                           tal:content="structure provider:plone.dashboard1" />
+    ...                         <div id="dashboard-portlets2"
+    ...                           tal:content="structure provider:plone.dashboard2" />
+    ...                         <div id="dashboard-portlets3"
+    ...                           tal:content="structure provider:plone.dashboard3" />
+    ...                         <div id="dashboard-portlets4"
+    ...                           tal:content="structure provider:plone.dashboard4" />
+    ...                     </div>
+    ...                     <div class="visualClear"><!-- --></div>
+    ...                 </div>
+    ...
+    ...             </div>
+    ...     </tal:main-macro>
+    ... </metal:main>
+    ... </body>
+    ... </html>"""
+    >>> browser.getControl('Customize').click()
+    >>> browser.getControl(name='text:text').value = managedashboard_template
+    >>> browser.getControl('Save Changes').click()
+
+Add a portlet in the dashboard and try to delete it::
+
+    >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')
+    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+test_user_1_/+/portlets.Calendar']
+    >>> browser.getForm(index=1).submit()
+    >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    True
+    >>> browser.getLink(url="delete-portlet?name=calendar").click()
+    >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    False
+
+
