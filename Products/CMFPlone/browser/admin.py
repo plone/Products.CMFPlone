@@ -123,6 +123,8 @@ class AddPloneSite(BrowserView):
             'kupu:default',
             'plonetheme.classic:uninstall',
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
+            'plone.app.registry:default',
+            'plone.app.z3cform:default',
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
         for util in utils:
