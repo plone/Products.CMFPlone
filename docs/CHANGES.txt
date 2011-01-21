@@ -15,7 +15,11 @@ Changelog
 - Merge in PLIP #9288: Improved commenting infrastructure. Refs 
   http://dev.plone.org/plone/ticket/9288
   [timo]
-  
+
+- Fixed handling of relative links used as default pages
+  https://dev.plone.org/plone/ticket/11340
+  [fRiSi]
+    
 4.1a1 - 2011-01-18
 ------------------
 

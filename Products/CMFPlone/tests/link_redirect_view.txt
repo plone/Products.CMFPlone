@@ -26,7 +26,7 @@ the 'redirect_links' property is on by default::
   'http://nohost/plone'
   >>> 'This link will immediately redirect' in browser.contents
   False
-  
+
 But if we turn off 'redirect_links', visiting the link should redirect us to
 plone.org::
 
@@ -61,3 +61,35 @@ If we turn redirect_links back off, that message should not be present::
   'http://nohost/plone/link'
   >>> "You see this page because you have permission to edit this link." in browser.contents
   False
+
+
+Relative Links as Default View
+``````````````````````````````
+
+Sometimes it's useful to redirect users to a certain element within a folder automatically
+using a link set as the default page of a folder.
+
+Therefore we change the location of the link and set it as default view for the portal.
+
+  >>> self.setRoles(['Manager'])
+  >>> link = self.portal.link
+  >>> link.setRemoteUrl('./news')
+  >>> self.portal.setDefaultPage('link')
+
+We turn on the redirect_link option again and create a browser for anonymous users:
+
+  >>> self.portal.portal_properties.site_properties.redirect_links = True
+  >>> anon = Browser()
+  >>> anon.handleErrors = False
+
+Now opening the portal, will redirect to the `news` section
+
+  >>> anon.open('http://nohost/plone')
+  >>> anon.url
+  'http://nohost/plone/news'
+
+Of course opening the link directly will redirect too:
+
+  >>> anon.open('http://nohost/plone/link')
+  >>> anon.url
+  'http://nohost/plone/news'
