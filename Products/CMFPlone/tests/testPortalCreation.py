@@ -605,8 +605,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                         if p['name'] == 'View Groups'][0]
         self.failUnless(member_has_permission['selected'])
 
-    def testDiscussionItemHasNoWorkflow(self):
-        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
+    def testDiscussionItemWorkflow(self):
+        # By default the discussion item has the one_state_workflow
+        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), 
+                         ('one_state_workflow',))
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'

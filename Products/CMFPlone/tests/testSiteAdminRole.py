@@ -191,6 +191,7 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'Use external editor':                                      1,
             'Use mailhost services':                                    1,
             'Use version control':                                      1,
+            'Reply to item':                                            0,
             'View':                                                     1,
             'View Groups':                                              1,
             'View History':                                             1,
