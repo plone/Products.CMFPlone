@@ -323,7 +323,7 @@ class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
                     path = self.request.get('PATH_INFO')
                     template_renderer = self.request.traverse(path)
                     name = getattr(template_renderer.template, 'view_name', None)
-                except:
+                except (AttributeError, KeyError, Unauthorized,):
                     logging.getLogger('plone.app.portlets.browser').debug(
                         'Cant get view name for TTV %s' % self.__parent__
                     )
