@@ -318,12 +318,15 @@ class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
         if not name:
             # try to fallback on the 'name' attribute for
             # TTW customized views, see #11409
-            try:
-                name = name = self.__parent__.name
-            except:
-                logging.getLogger('plone.app.portlets.browser').debug(
-                    'Cant get view name for %s' % self.__parent__
-                )
+            if 'TTWView' in self.__parent__.__class__.__name__:
+                try:
+                    path = self.request.get('PATH_INFO')
+                    template_renderer = self.request.traverse(path)
+                    name = getattr(template_renderer.template, 'view_name', None)
+                except:
+                    logging.getLogger('plone.app.portlets.browser').debug(
+                        'Cant get view name for TTV %s' % self.__parent__
+                    )
         return name
 
 class ManagePortletAssignments(BrowserView):
