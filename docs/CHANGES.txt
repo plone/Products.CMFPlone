@@ -8,6 +8,9 @@ Changelog
 4.1a2 - Unreleased
 ------------------
 
+- Use nocall: when getting the @@sitemap_view in sitemap.pt.
+  [elro]
+
 - Hide plone.app.registry, z3c.form as an add-on options from the
   @@plone-addsite view, quickinstaller.
   [esteele] 
