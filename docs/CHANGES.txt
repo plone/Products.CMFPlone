@@ -8,6 +8,10 @@ Changelog
 4.1a2 - Unreleased
 ------------------
 
+- Use the new optimized BooleanIndex for the `is_default_page` and
+  `is_folderish` indexes.
+  [hannosch]
+
 - Remove js-generated inline style from searchbox. Same CSS is in public.css.
   Fixes http://dev.plone.org/plone/tickets/11186.
   [msmith64]

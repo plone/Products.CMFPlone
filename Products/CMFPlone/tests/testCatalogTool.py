@@ -85,10 +85,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         # is_folderish should be in catalog schema
         self.failUnless('is_folderish' in self.catalog.schema())
 
-    def testIs_folderishIsFieldIndex(self):
-        # is_folderish should be a FieldIndex
+    def testIs_folderishIsBooleanIndex(self):
+        # is_folderish should be a BooleanIndex
         self.failUnless(self.catalog.Indexes['is_folderish'].__class__.__name__,
-                        'FieldIndex')
+                        'BooleanIndex')
 
     def testDateIsDateIndex(self):
         # Date should be a DateIndex
@@ -143,10 +143,10 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         # ExpirationDate column should be in catalog schema
         self.failIf('ExpiresDate' in self.catalog.schema())
 
-    def testIs_Default_PageIsFieldIndex(self):
-        # sortable_title should be a FieldIndex
+    def testIs_Default_PageIsBooleanIndex(self):
+        # sortable_title should be a BooleanIndex
         self.assertEqual(self.catalog.Indexes['is_default_page'].__class__.__name__,
-                         'FieldIndex')
+                         'BooleanIndex')
 
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
