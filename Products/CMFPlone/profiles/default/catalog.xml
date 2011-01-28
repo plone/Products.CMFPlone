@@ -43,7 +43,7 @@
  <index name="Type" meta_type="FieldIndex">
   <indexed_attr value="Type"/>
  </index>
- <index name="UID" meta_type="FieldIndex">
+ <index name="UID" meta_type="UUIDIndex">
   <indexed_attr value="UID"/>
  </index>
  <index name="allowedRolesAndUsers" meta_type="KeywordIndex">

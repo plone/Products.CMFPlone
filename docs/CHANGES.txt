@@ -13,7 +13,7 @@ Changelog
   [topherh, davisagli]
 
 - Use the new optimized BooleanIndex for the `is_default_page` and
-  `is_folderish` indexes.
+  `is_folderish` indexes and the new `UUIDIndex` for the `UID` index.
   [hannosch]
 
 - Remove js-generated inline style from searchbox. Same CSS is in public.css.
