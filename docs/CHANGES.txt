@@ -8,10 +8,9 @@ Changelog
 4.1a2 - Unreleased
 ------------------
 
-- Remove js-generated inline style from searchbox.
-  Same CSS is in public.css.
-  See https://dev.plone.org/plone/changeset/40654
-  Fixes https://dev.plone.org/plone/tickets/11186
+- Remove js-generated inline style from searchbox. Same CSS is in public.css.
+  Fixes http://dev.plone.org/plone/tickets/11186.
+  [msmith64]
 
 - Use nocall: when getting the @@sitemap_view in sitemap.pt.
   [elro]
