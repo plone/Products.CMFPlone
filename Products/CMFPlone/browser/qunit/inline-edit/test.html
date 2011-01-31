@@ -14,6 +14,9 @@
       -->
       <!-- Mock server -->
       <script type="text/javascript" src="http://github.com/philikon/MockHttpRequest/raw/master/lib/mock.js">//</script>
+      <!--
+      <script type="text/javascript" src="mock.js">//</script>
+      -->
       <script type="text/javascript" src="http://greenfinity.hu/pub/js.moremocks/trunk/moremockhttp.js"></script>
     
       <!-- Test support -->
@@ -30,6 +33,7 @@
 
       <!-- Page specific JS and CSS -->
       <link rel="stylesheet" href="demo.css"/>
+      <script src="server.js" type="text/javascript"></script>
       <script src="test.js" type="text/javascript"></script>
 
   </head>
@@ -45,7 +49,12 @@
       <p id='fake1'></p>
       <p id='fake2'></p>
 
-      <p id='test1' class='inlineEditable'>Test text 1</p>
+      <p id='parent-fieldname-title'
+         class="inlineEditable kssattr-atfieldname-title kssattr-templateId-kss_generic_macros kssattr-macro-title-field-view" 
+         >
+        Click on this text to edit it
+      </p>
+
 
 
     </div>

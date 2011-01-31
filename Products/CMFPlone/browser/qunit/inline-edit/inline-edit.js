@@ -42,15 +42,16 @@ $.extend(KssBaseWidget.prototype, {
         
         inherited = obj.parents("[class*='" + classname + "']");
         if (inherited.length){
-            return getKSSAttr(inherited, varname);
+            return this.getKSSAttr(inherited, varname);
         }
 
         return '';
     },
 
     handleKSSResponse: function(response){
+        var self = this;
         $(response).find('command').each(function(){
-                doKSSCommand(this);
+            self.doKSSCommand(this);
         });
     },
 
@@ -68,7 +69,7 @@ $.extend(KssBaseWidget.prototype, {
     },
 
     doKSSCommand: function(command){
-        selector = extractSelector(command);
+        selector = this.extractSelector(command);
         commandName = $(command).attr('name');
         switch (commandName){
             case 'clearChildNodes':
@@ -96,9 +97,7 @@ $.extend(KssBaseWidget.prototype, {
                 $(selector).css(name, value);
                 break;
             default:
-                if (console) {
-                    console.log('No handler for command ' + $(command).attr('name'));
-                }
+                log('No handler for command ' + $(command).attr('name'));
         }
     },
 
@@ -143,6 +142,7 @@ $.extend(InlineEditing.prototype, KssBaseWidget.prototype, {
         });
 
         $('form.inlineForm input[name="kss-save"]').live('click', function(){
+            log('CLICK 2!');
             serviceURL = self.base_href + '@@saveField';
             fieldname = self.getKSSAttr($(this), 'atfieldname');
             params = {
@@ -151,10 +151,8 @@ $.extend(InlineEditing.prototype, KssBaseWidget.prototype, {
         
             valueSelector = "input[name='" + params['fieldname'] + "']";
             value = $(this).parents('form').find(valueSelector).val();
-            if (value){
-                params['value']={
-                    fieldname: value
-                }
+            if (value) {
+                params[fieldname] = value;
             }
         
             templateId = self.getKSSAttr($(this), 'templateId');
@@ -177,7 +175,9 @@ $.extend(InlineEditing.prototype, KssBaseWidget.prototype, {
                 params['target']=target;
             }
 
+            log('CLICK 2 request...');
             $.get(serviceURL, params, function(data){
+                log('CLICK 2 response...');
                 self.handleKSSResponse(data);
             });        
         });
