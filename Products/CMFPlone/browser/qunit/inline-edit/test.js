@@ -32,7 +32,6 @@ module("CMFPlone inline-edit", {
 });
 
 
-/*
 test("Bind", function() {
 
     $(document).addInlineEditing('http://base-url');
@@ -78,7 +77,6 @@ test("Bind again, fails", function() {
     $(document).addInlineEditing('http://base-url');
 
 });
-*/
 
 test("Click", function() {
 
