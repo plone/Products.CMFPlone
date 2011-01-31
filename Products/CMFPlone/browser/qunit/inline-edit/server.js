@@ -111,6 +111,25 @@ $.extend(InlineEditMockHttpServer.prototype, MoreMockHttpServer.prototype, {
                 request.receive(200, response_text);
 
             //}
+        } else if (request.urlParts.file == 'base-url@@replaceWithView') {
+            request.setResponseHeader("Content-Type", "text/xml; charset=UTF-8");
+            //if (server_choose == 'default') {
+                var response_text= 
+                    '<?xml version="1.0" encoding="utf-8" ?>' +
+                    '<kukit>' +
+                    '<!-- xmlns="http://www.kukit.org/commands/1.1" removed from kukit tag as it' +
+                    '     breaks IE6 XP SP3 -->' +
+                    '<commands>' +
+                    '<command selector="parent-fieldname-title" name="replaceHTML" selectorType="htmlid">' +
+                    '    <param name="html"><![CDATA[<p id="parent-fieldname-title" class="documentFirstHeading kssattr-atfieldname-title kssattr-templateId-kss_generic_macros kssattr-macro-title-field-view inlineEditable">' +
+                    '                   ' + server_state.value +
+                    '                </p>]]></param>' +
+                    '    <param name="withKssSetup">True</param>' +
+                    '</command>' +
+                    '</commands>' +
+                    '</kukit>'
+                request.receive(200, response_text);
+            //}
         } else {
             request.receive(404, 'Not Found in Mock Server');
         }
