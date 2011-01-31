@@ -22,12 +22,8 @@ $.extend(InlineEditMockHttpServer.prototype, MoreMockHttpServer.prototype, {
     },
 
     getRequestParm: function(request, key) {
-        this._decodedParms = this._decodedParms || {};
-        var value = this._decodedParms[key];
-        if (value === undefined) {
-            value = request.urlParts.queryKey[key];
-            value = this._decodedParms[key] = this._decodeParm(value);
-        }
+        value = request.urlParts.queryKey[key];
+        value = this._decodeParm(value);
         return value;
     },
 
@@ -36,10 +32,13 @@ $.extend(InlineEditMockHttpServer.prototype, MoreMockHttpServer.prototype, {
     // Implement a mock server for inline editing functionality.
     //
     handle: function(request, server_state) {
-        log('HANDLE', request);
-        if (request.urlParts.file == 'base-url@@replaceField') {
+        var server_choose = server_state.choose || 'default';
+        if (server_choose == 'error') {
+            // simulate an error
+            request.receive(500, 'Error');
+        } else if (request.urlParts.file == 'base-url@@replaceField') {
             request.setResponseHeader("Content-Type", "text/xml; charset=UTF-8");
-            if (server_state == 0) {
+            //if (server_choose == 'default') {
                 /* response recorded from the server */
                 var response_text= 
                     '<?xml version="1.0" encoding="utf-8" ?>' +
@@ -74,7 +73,7 @@ $.extend(InlineEditMockHttpServer.prototype, MoreMockHttpServer.prototype, {
                     '          </span>' +
                     '<div class="formHelp" id="title_help"></div>' +
                     '<div class="fieldErrorBox"></div>' +
-                    '<input type="text" name="title" class="blurrable firstToFocus" id="title" value="Welcome to Plone" size="30" maxlength="255" />' +
+                    '<input type="text" name="title" class="blurrable firstToFocus" id="title" value="' + server_state.value + '" size="30" maxlength="255" />' +
                     '</div>' +
                     '<div class="formControls">' +
                     '<input name="kss-save" value="Save" type="button" class="context" />' +
@@ -90,16 +89,13 @@ $.extend(InlineEditMockHttpServer.prototype, MoreMockHttpServer.prototype, {
                     '</kukit>';
                 request.receive(200, response_text);
 
-                log('OK OK OK', request);
-            } else if (server_state == 4) {
-                // simulate an error
-                request.receive(500, 'Error');
-            }
+            //}
         } else if (request.urlParts.file == 'base-url@@saveField') {
             request.setResponseHeader("Content-Type", "text/xml; charset=UTF-8");
-            if (server_state == 0) {
+            //if (server_choose == 'default') {
                 var fieldname = this.getRequestParm(request, 'fieldname');
                 var value = this.getRequestParm(request, fieldname);
+                server_state.value = value;
                 var response_text= 
                     '<?xml version="1.0" encoding="utf-8" ?>' +
                     '<kukit>' +
@@ -114,16 +110,10 @@ $.extend(InlineEditMockHttpServer.prototype, MoreMockHttpServer.prototype, {
                     '</kukit>'
                 request.receive(200, response_text);
 
-                log('OK OK 22', request);
-            } else if (server_state == 4) {
-                // simulate an error
-                request.receive(500, 'Error');
-            }
-
+            //}
         } else {
             request.receive(404, 'Not Found in Mock Server');
         }
-        log('HANDLE finished', request);
     }
 
 

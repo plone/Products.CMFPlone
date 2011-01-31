@@ -112,12 +112,9 @@ $.extend(InlineEditing.prototype, KssBaseWidget.prototype, {
         var self = this;
         this.init(options.base_href);
 
-        log('base_href', this.base_href, options);
-
         $(document).data('InlineEditing', this);
 
         $('.inlineEditable').live('click', function(){
-            log('CLICK!');
             serviceURL = self.base_href + '@@replaceField';
             params = {
                 'fieldname': self.getKSSAttr($(this), 'atfieldname'),
@@ -133,16 +130,12 @@ $.extend(InlineEditing.prototype, KssBaseWidget.prototype, {
             if (target){
                 params['target']=target;
             }
-            log('get...');
             $.get(serviceURL, params, function(data){
-                log('response...');
                 self.handleKSSResponse(data);
             });
-            log('get over.');
         });
 
         $('form.inlineForm input[name="kss-save"]').live('click', function(){
-            log('CLICK 2!');
             serviceURL = self.base_href + '@@saveField';
             fieldname = self.getKSSAttr($(this), 'atfieldname');
             params = {
@@ -175,9 +168,7 @@ $.extend(InlineEditing.prototype, KssBaseWidget.prototype, {
                 params['target']=target;
             }
 
-            log('CLICK 2 request...');
             $.get(serviceURL, params, function(data){
-                log('CLICK 2 response...');
                 self.handleKSSResponse(data);
             });        
         });
