@@ -5,7 +5,7 @@
 
 <dl class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="python:view.user_actions and not view.anonymous">
-  <tal:block condition="not: view/anonymous"> 
+  <tal:block condition="not: view/anonymous">
   <dt class="actionMenuHeader">
     <a id="user-name"
        tal:attributes="href view/homelink_url"
@@ -30,7 +30,7 @@
 </dl>
 
 <dl class="actionMenu deactivated" id="portal-personaltools"
-    tal:condition="view/anonymous">
+    tal:condition="python:view.user_actions and view.anonymous">
   <dt id="anon-personalbar">
     <tal:actions repeat="action view/user_actions">
         <a href=""

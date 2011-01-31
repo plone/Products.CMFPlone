@@ -4,6 +4,10 @@ Changelog
 2.1.1 - Unreleased
 ------------------
 
+- Do not show personaltools if there aren't any user actions.
+  This fixes https://dev.plone.org/plone/ticket/11460
+  [fRiSi]
+
 2.1 - 2011-01-13
 ------------------
 
@@ -26,17 +30,17 @@ Changelog
 - Don't cache navigation_root_path and navigation_root_url contextless
   http://dev.plone.org/plone/ticket/11291
   [tom_gross]
-  
-- Add ids to links personal_bar when rendered as anonymous so they can be 
-  styled. This makes behavior consistent with the authenticated personal_bar. 
-  http://dev.plone.org/plone/ticket/10850 
+
+- Add ids to links personal_bar when rendered as anonymous so they can be
+  styled. This makes behavior consistent with the authenticated personal_bar.
+  http://dev.plone.org/plone/ticket/10850
   [eleddy]
 
 2.0.5 - 2010-11-15
 ------------------
 
 - Fix presentation view when headings have HTML attributes (such as headings
-  translated from reStructured Text). This fixes 
+  translated from reStructured Text). This fixes
   http://dev.plone.org/plone/ticket/10689
   [davisagli]
 
