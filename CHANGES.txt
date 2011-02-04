@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.1 - Unreleased
+2.1.1 - 2011-02-04
 ------------------
 
 - Do not show personaltools if there aren't any user actions.
@@ -9,7 +9,7 @@ Changelog
   [fRiSi]
 
 2.1 - 2011-01-13
-------------------
+----------------
 
 - Update test to check for ``login`` instead of ``login_form``.
   [elro]
