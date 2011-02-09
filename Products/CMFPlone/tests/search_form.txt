@@ -1,0 +1,63 @@
+We want to test the search form and the resulting page.
+
+Let's create a user to test upon
+see: testControlPanelScripts.txt:
+    >>> from DateTime import DateTime
+    >>> fullname = 'Test User Full Name'
+    >>> username = 'testuser'
+    >>> email = 'test@plone.org'
+    >>> last_login_time = DateTime()
+    >>> membership = self.portal.portal_membership
+    >>> membership.addMember(username, 'secret', [], [])
+    >>> member = membership.getMemberById(username)
+    >>> member.setMemberProperties({'fullname': fullname, 'email': email,
+    ...                             'last_login_time': last_login_time,})
+
+Check the member's properties
+    >>> props = membership.getMemberInfo(username)
+    >>> props.get('fullname') == fullname
+    True
+
+
+Now we test the members' search form
+
+    # BBB Zope 2.12
+    >>> try:
+    ...     from Testing.testbrowser import Browser
+    ... except ImportError:
+    ...     from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> portal_url = self.portal.absolute_url()
+    >>> logout_url = portal_url + '/logout'
+    >>> login_url  = portal_url + '/login'
+    >>> search_url = portal_url + '/search_form'
+    >>> self.portal.error_log._ignored_exceptions = ()
+
+Now we try to get a list of authors as Anonymous User
+    >>> browser.open(logout_url)
+    >>> '<h1 class="documentFirstHeading">You are now logged out</h1>' in browser.contents
+    True
+    >>> 'logged_out' in browser.url
+    True
+
+Open the portal home and get to the Advanced Search Form
+    >>> browser.open(search_url)
+
+Not allowed to get a list of creators
+    >>> '<input name="Creator" />' in browser.contents
+    True
+    >>> '<select name="Creator" id="Creator">' in browser.contents
+    False
+
+Now we login in the portal and retry
+    >>> from Products.PloneTestCase.setup import portal_owner
+    >>> from Products.PloneTestCase.setup import default_password
+    >>> browser.addHeader('Authorization',
+    ...                   'Basic %s:%s' % (portal_owner, default_password))
+    >>> browser.open(portal_url + '/search_form')
+
+The select box indicates a list of users is available
+    >>> '<input name="Creator" />' in browser.contents
+    False
+    >>> '<select name="Creator" id="Creator">' in browser.contents
+    True

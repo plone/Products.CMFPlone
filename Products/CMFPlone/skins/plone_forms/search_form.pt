@@ -295,14 +295,17 @@
                     Return items created by a particular person.
                     </div>
 
-                    <tal:creators tal:define="creators python:portal.portal_catalog.uniqueValuesFor('Creator');
+                    <tal:creators tal:define="anonymous context/@@plone_portal_state/anonymous;
+                                              allowAnonymousViewAbout python: portal.portal_properties.site_properties.getProperty('allowAnonymousViewAbout', True);
+                                              creators python:portal.portal_catalog.uniqueValuesFor('Creator');
+                                              showAuthors python: len(creators) &lt;= 30 and (not anonymous or allowAnonymousViewAbout);
                                               selected request/Creator|nothing">
                         <select name="Creator"
                                 id="Creator"
-                                tal:condition="python: len(creators) &lt;= 30">
+                                tal:condition="showAuthors">
                             <option value=""
-    				class="default_option"
-    				i18n:translate="label_any_author">Any Author</option>
+                                    class="default_option"
+                                    i18n:translate="label_any_author">Any Author</option>
                             <metal:block tal:repeat="creator creators">
                                 <option value=""
                                         tal:attributes="value creator;
@@ -312,7 +315,7 @@
                         </select>
 
                         <input name="Creator"
-                               tal:condition="python: len(creators) &gt; 30 "
+                               tal:condition="not:showAuthors"
                                tal:attributes="value selected" />
                     </tal:creators>
             </div>

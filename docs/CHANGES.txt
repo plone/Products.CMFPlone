@@ -8,6 +8,11 @@ Changelog
 4.1a2 - Unreleased
 ------------------
 
+- On search form don't show list of users when anonymous
+  unless explicitly allowed in @@security-controlpanel.
+  Fixes https://dev.plone.org/plone/ticket/11346
+  [msmith64]
+
 - Add fallback icon for control panels with no icon, in the portlet_prefs
   portlet. This fixes http://dev.plone.org/plone/tickets/11112.
   [topherh, davisagli]
