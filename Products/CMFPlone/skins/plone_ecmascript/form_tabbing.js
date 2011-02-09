@@ -146,7 +146,7 @@ $.fn.ploneTabInit = function(pbo) {
         //Select tab if it's part of the URL or designated in a hidden input
         var targetPane = item.find('.enableFormTabbing input[name=fieldset.current]').val() || window.location.hash;
         if (targetPane) {
-            item.find(".enableFormTabbing .formtab a[href='" +
+            item.find(".enableFormTabbing .formTab a[href='" +
              targetPane.replace("'", "").replace(/^#fieldset-/, "#fieldsetlegend-") +
              "']").click();
         }
