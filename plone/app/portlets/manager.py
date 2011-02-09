@@ -39,11 +39,7 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
     error_message = ViewPageTemplateFile('browser/templates/error_message.pt')
 
     def _context(self):
-        context = aq_inner(self.context)
-        container = aq_parent(context)
-        if isDefaultPage(container, context):
-            return container
-        return context
+        return aq_inner(self.context)
 
     def base_url(self):
         """If context is a default-page, return URL of folder, else

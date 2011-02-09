@@ -4,6 +4,10 @@ Changelog
 2.1.2 - unreleased
 ------------------
 
+- Enable managing portlets of default pages.
+  This fixes http://dev.plone.org/plone/ticket/10672
+  [fRiSi]
+
 - Be more graceful, when user doesn't belong to groups - e.g. when user is
   defined in non-PAS based top-level acl_users folder.
   Fixes http://dev.plone.org/plone/ticket/9929
