@@ -78,7 +78,7 @@ class ContentContext(object):
         if not member:
             return ()
 
-        groups = member.getGroups()
+        groups = hasattr(member, 'getGroups') and member.getGroups() or []
 
         # Ensure we get the list of ids - getGroups() suffers some acquision
         # ambiguity - the Plone member-data version returns ids.

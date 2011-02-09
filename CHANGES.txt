@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.1.2 - unreleased
+------------------
+
+- Be more graceful, when user doesn't belong to groups - e.g. when user is
+  defined in non-PAS based top-level acl_users folder.
+  Fixes http://dev.plone.org/plone/ticket/9929
+  [thet]
+
 2.1.1 - 2011-01-03
 ------------------
 
