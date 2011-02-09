@@ -321,7 +321,7 @@ class ManagePortletsFallbackViewlet(ViewletBase):
         self.portlet_assignable = context_state.portlet_assignable()
         self.sl = ploneview.have_portlets('plone.leftcolumn', self.context)
         self.sr = ploneview.have_portlets('plone.rightcolumn', self.context)
-        self.canonical_object_url = context_state.canonical_object_url()
+        self.object_url = context_state.object_url()
 
     def available(self):
         secman = getSecurityManager()
