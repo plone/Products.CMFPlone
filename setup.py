@@ -133,5 +133,6 @@ setup(name='Products.CMFPlone',
           'zope.structuredtext',
           'zope.tal',
           'zope.tales',
+          'Products.PloneHotfix20110720',
       ],
       )
