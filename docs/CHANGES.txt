@@ -5,12 +5,12 @@
 Changelog
 =========
 
-4.1a2 - Unreleased
+4.1a2 - 2011-02-10
 ------------------
 
 - On search form don't show list of users when anonymous
   unless explicitly allowed in @@security-controlpanel.
-  Fixes https://dev.plone.org/plone/ticket/11346
+  Fixes http://dev.plone.org/plone/ticket/11346
   [msmith64]
 
 - Add fallback icon for control panels with no icon, in the portlet_prefs
@@ -37,7 +37,7 @@ Changelog
   [timo]
 
 - Fixed handling of relative links used as default pages
-  https://dev.plone.org/plone/ticket/11340
+  http://dev.plone.org/plone/ticket/11340
   [fRiSi]
     
 4.1a1 - 2011-01-18
