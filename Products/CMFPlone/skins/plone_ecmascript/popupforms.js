@@ -165,6 +165,7 @@ jQuery(function($){
     // Content history popup
     $('#content-history a').prepOverlay({
        subtype: 'ajax', 
+       filter: 'h2, #content-history',
        urlmatch: '@@historyview',
        urlreplace: '@@contenthistorypopup'
     });
