@@ -4,6 +4,11 @@ Changelog
 2.1.2 - Unreleased
 ------------------
 
+- Add div#content wrapper to @@contenthistorypopup. This is the only popup
+  that has its own template, and it needs a #content id for xdv configurations
+  like that of plone.org.
+  [smcmahon]
+
 - Enable managing portlets of default pages.
   This fixes http://dev.plone.org/plone/ticket/10672
   [fRiSi]
