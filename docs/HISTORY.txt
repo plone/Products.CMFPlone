@@ -3,7 +3,28 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
-4.0.3 - Unreleased
+4.0.4 - Unreleased
+------------------
+
+- Add fallback icon for control panels with no icon, in the portlet_prefs
+  portlet. This fixes http://dev.plone.org/plone/tickets/11112.
+  [topherh, davisagli]
+
+- Remove js-generated inline style from searchbox. Same CSS is in public.css.
+  See http://dev.plone.org/plone/changeset/40654,
+  Fixes http://dev.plone.org/plone/ticket/11186
+  [msmith64]
+
+- Fixed handling of relative links used as default pages
+  This fixes https://dev.plone.org/plone/ticket/11340
+  [fRiSi]
+
+- Re-instate spinner.gif (animation), lost in the move to PNGs. The static
+  spinner.png has been deprecated.
+  Fixes http://dev.plone.org/plone/ticket/11504
+  [mj]
+
+4.0.3 - 2011-01-18
 ------------------
 
 - Change PloneBatch class to work with actual_result_count alone instead of
