@@ -5,9 +5,12 @@
 Changelog
 =========
 
-4.1b1 - Unreleased
+4.1a3 - Unreleased
 ------------------
 
+- Discontinue tagging plone_3rd party as a separate external.
+  [esteele]
+  
 4.1a2 - 2011-02-10
 ------------------
 
