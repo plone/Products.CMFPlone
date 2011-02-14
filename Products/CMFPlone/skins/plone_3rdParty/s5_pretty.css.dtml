@@ -1,0 +1,208 @@
+/* 
+*  S5 is a Simple Standards-based Slide Show System.
+*  Thanks to Eric Meyer for this excellent technique:
+*  http://meyerweb.com/eric/tools/s5/
+*/
+
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+/*
+** BASE STYLES
+*/
+
+body {
+    font-size: 2em;
+}
+html, body {margin: 0; padding: 0; line-height: 1.25em;}
+
+h1, h2, h3, h4 {font-size: 100%; margin: 0; padding: 0; font-weight: inherit;}
+ul, pre {margin: 0;}
+ol {margin: 0 1.5em;}
+blockquote, q {font-style: italic;}
+blockquote {padding: 0 2em 0.5em; margin: 0 1.5em 0.5em; text-align: center; font-size: 1em;}
+blockquote p {margin: 0;}
+blockquote i {font-style: normal;}
+blockquote b {display: block; margin-top: 0.5em; font-weight: normal; font-size: smaller; font-style: normal;}
+blockquote b i {font-style: italic;}
+
+kbd {font-weight: bold; font-size: 1em;}
+sup {font-size: smaller; line-height: 1px;}
+
+.slide code {padding: 2px 0.25em; font-weight: bold; color: &dtml-fontColor;;}
+.slide code.bad, code del {color: red;}
+.slide code.old {color: silver;}
+.slide pre {padding: 0; margin: 0.25em 0 0.5em 0.5em; color: &dtml-fontColor;; font-size: 90%;}
+.slide pre code {display: block;}
+.slide ul {margin-left: 5%; margin-right: 7%; list-style: square;}
+.slide li {margin-top: 0.75em; margin-right: 0;}
+.slide ul ul {line-height: 1;}
+.slide ul ul li {margin: .2em; font-size: 85%; list-style: square;}
+.slide img.leader {display: block; margin: 0 auto;}
+.slide a { text-decoration: none; border-bottom: 2px solid &dtml-linkColor;;}
+
+ul.urls {list-style: none; display: inline; margin: 0;}
+.urls li {display: inline; margin: 0;}
+.note, p, .discreet {display: none;}
+.external {border-bottom: &dtml-borderWidth; dotted &dtml-contentViewBorderColor;;}
+html>body .external {border-bottom: none;}
+.external:after {content: " \274F"; font-size: smaller; color: #77B;}
+
+.incremental, .incremental *, .incremental *:after {color: #DDE; visibility: visible;}
+img.incremental {visibility: hidden;}
+.slide .current {color: #B02;}
+
+div.long {
+    font-size: 0.75em;
+}
+h1 abbr {
+    font-variant: small-caps;
+}
+
+/*
+** TOP STYLES
+*/
+
+div#header {
+    color: &dtml-fontColor;;
+    line-height: 1px;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    background-color: &dtml-globalBackgroundColor;;
+}
+.slide h1 {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    z-index: 1;
+    margin: 0; 
+    padding: 0.3em 0 0 1em; 
+    white-space: nowrap;
+    font: bold 150%/1em Helvetica, sans-serif; 
+    color: &dtml-fontColor;; 
+    text-align: center;
+}
+
+/*
+** FOOTER STYLES
+*/
+
+div#footer {
+    background: &dtml-backgroundColor; url('&dtml-portal_url;/&dtml-logoName;') 10px 10px no-repeat; 
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;    
+    color: &dtml-fontColor;;
+    font-size: 0.5em; 
+    font-weight: bold; 
+    padding: 1em 0;    
+}
+#portal-logo img {
+    border: 0;
+    padding: 0;
+    margin: 0.5em;
+}
+#footer h1, 
+#footer h2 {
+    display: block; 
+    padding: 0 1em;
+}
+#footer h2 {
+    font-style: italic;
+}
+#currentSlide {
+    text-align: center; 
+    font-size: 0.5em; 
+    color: &dtml-fontColor;;
+}
+
+/* controls styles */
+#controls :focus {
+    outline: 1px dotted #227;
+}
+div#controls {
+    position: absolute; 
+    left: 50%; 
+    bottom: 0;
+    width: 50%;
+    text-align: right; 
+    font-weight: bold;
+    font-size: 0.9em;
+}
+html > body div#controls {
+    position: fixed; 
+    padding: 0 0 1em 0;
+    top: auto;
+}
+div#controls form {
+    position: absolute; 
+    bottom: 0; 
+    right: 0; 
+    width: 100%;
+    margin: 0; 
+    padding: 0;
+}
+#controls #navList {
+    height: 1em;
+}
+#controls #navList #jumplist {
+    position: absolute; 
+    bottom: 0; 
+    right: 0; 
+    background: &dtml-globalBackgroundColor;; 
+    color: &dtml-globalFontColor;;
+}
+#controls #navLinks a {
+    padding: 0; 
+    margin: 0 0.5em;
+    background: &dtml-backgroundColor;; 
+    border: none; 
+    color: &dtml-linkColor;; 
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/*
+** SLIDE CONTENT'S STYLES
+*/
+
+.slide h3 {
+    font-size: 130%;
+}
+#slide0 {
+    padding-top: 2.5em; 
+    font-size: 90%;
+}
+
+#slide0 #header {
+    display: none;
+}
+
+#slide0 h1 {
+    position: static; 
+    margin: 1em 0 0; 
+    padding: 0;
+    font-weight: bold;
+    font-size: 2em; 
+    white-space: normal;
+    color: #000; 
+    background: transparent;
+    text-align: center;
+}
+#slide0 h2 {
+    font-weight: bold;
+    font-size: 1em;
+    margin: 0.25em;
+    text-align: center;
+}
+#slide0 h3 {
+    margin-top: 1.5em; 
+    font-size: 1.5em;
+    text-align: center;
+    font-size: 1em;
+    color: #666;
+}
+#slide0 h4 {
+    margin-top: 0; 
+    font-size: 1em;
+}
+ 
+
+/* </dtml-with> */ 

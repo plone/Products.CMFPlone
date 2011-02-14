@@ -1,0 +1,14 @@
+http://docs.jquery.com/Licensing
+
+License
+-------
+
+jQuery is currently available for use in all personal or commercial projects
+under both MIT and GPL licenses. This means that you can choose the license
+that best suits your project, and use it accordingly.
+
+Licenses
+--------
+
+* `MIT License <http://jquery.com/dev/svn/trunk/jquery/MIT-LICENSE.txt>`_
+* `GPL License <http://jquery.com/dev/svn/trunk/jquery/GPL-LICENSE.txt>`_
