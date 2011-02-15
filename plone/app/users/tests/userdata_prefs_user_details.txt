@@ -110,9 +110,10 @@ Can we delete the Image using the checkbox?
     >>> 'Changes saved.' in self.browser.contents
     True
 
-Does the user have the default portrait now?
+Does the user have the default portrait now?  Note that this differs
+slightly depending on which Plone version you have.  Products.PlonePAS
+4.0.5 or higher has .png, earlier has .gif.
 
     >>> portrait_value = self.membership.getPersonalPortrait('test_user_1_')
     >>> portrait_value
-    <FSImage at /plone/defaultUser.gif>
-
+    <FSImage at /plone/defaultUser...>
