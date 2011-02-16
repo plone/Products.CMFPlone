@@ -44,6 +44,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         """
         return BaseTool.title(self)
 
+    security.declareProtected(ManagePortal, 'addPropertySheet')
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ Add a new PropertySheet
         """
@@ -63,7 +64,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
         self._setObject(id, o)
 
-
+    security.declareProtected(ManagePortal, 'manage_addPropertySheet')
     def manage_addPropertySheet(self, id, title='',
                                 propertysheet=None, REQUEST=None):
         """ Add a instance of a Property Sheet if handed a

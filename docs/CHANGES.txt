@@ -6,6 +6,10 @@ Changelog
 =========
 
 4.1b1 - Unreleased
+------------------
+
+- Add missing security declarations on PropertiesTool.
+  [davisagli]
 
 4.1a3 - 2011-02-14
 ------------------
