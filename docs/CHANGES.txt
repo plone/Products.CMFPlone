@@ -8,6 +8,10 @@ Changelog
 4.1b1 - Unreleased
 ------------------
 
+- Use correct argument order in utranslate.py script.
+  This fixes http://dev.plone.org/plone/ticket/10395
+  [fRiSi]
+
 - Add missing security declarations on PropertiesTool.
   [davisagli]
 
@@ -16,7 +20,7 @@ Changelog
 
 - Discontinue tagging plone_3rd party as a separate external.
   [esteele]
-  
+
 4.1a2 - 2011-02-10
 ------------------
 
@@ -42,16 +46,16 @@ Changelog
 
 - Hide plone.app.registry, z3c.form as an add-on options from the
   @@plone-addsite view, quickinstaller.
-  [esteele] 
-  
-- Merge in PLIP #9288: Improved commenting infrastructure. Refs 
+  [esteele]
+
+- Merge in PLIP #9288: Improved commenting infrastructure. Refs
   http://dev.plone.org/plone/ticket/9288
   [timo]
 
 - Fixed handling of relative links used as default pages
   http://dev.plone.org/plone/ticket/11340
   [fRiSi]
-    
+
 4.1a1 - 2011-01-18
 ------------------
 
