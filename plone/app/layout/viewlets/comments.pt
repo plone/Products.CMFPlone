@@ -30,7 +30,7 @@
                   tal:condition="login_url"
                   tal:attributes="action login_url">
                 <input type="submit" value="Log in to add comments"
-                       i18n:translate="label_login_to_add_comments" />
+                       i18n:attributes="value label_login_to_add_comments;" />
             </form>
         </tal:login>
         
