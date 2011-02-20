@@ -1,3 +1,4 @@
+from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from zope.interface import Interface
 from zope.component import getUtility, getAdapter
 from zope.schema import getFieldNamesInOrder
@@ -233,6 +234,12 @@ class BaseRegistrationForm(PageForm):
         for name in ('password', 'password_ctl'):
             all_fields[name].field.required = True
 
+        # Change the password description based on PAS Plugin
+        # Assume errors are phrased so can be used as help messages.
+        err = self.pasPasswordValidation(' ')
+        if err:
+            all_fields['password'].field.description = '. '.join(err)
+
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.
         return form.Fields(*[all_fields[id] for id in registration_fields])
@@ -285,8 +292,19 @@ class BaseRegistrationForm(PageForm):
             # Skip this check if password fields already have an error
             if not 'password' in error_keys:
                 password = self.widgets['password'].getInputValue()
-                if password and len(password) < 5:
-                    err_str = _(u'Passwords must contain at least 5 letters.')
+
+                # Use PAS to test validity
+                pas_instance = self.context.acl_users
+                plugins = pas_instance._getOb('plugins')
+                validators = plugins.listPlugins(IValidationPlugin)
+                err = self.pasPasswordValidation(password)
+                if err is None:
+                    # No validators in use. Use default behaviour
+                    if password and len(password) < 5:
+                        err += [_(u'Passwords must contain at least 5 letters.')]
+                else:
+                    # assume PAS plugin will i18n the error
+                    err_str = '. '.join(err)
                     errors.append(WidgetInputError(
                             'password', u'label_password', err_str))
                     self.widgets['password'].error = err_str
@@ -445,6 +463,24 @@ class BaseRegistrationForm(PageForm):
                     return
 
         return
+
+    def pasPasswordValidation(self, password):
+        """ @return None if no PAS password validators exist or a list of errors """
+        pas_instance = self.context.acl_users
+        plugins = pas_instance._getOb('plugins')
+        validators = plugins.listPlugins(IValidationPlugin)
+        err = []
+        for validator_id, validator in validators:
+            user = None
+            set_id = ''
+            set_info = {'password':password}
+            errors = validator.validateUserInfo( user, set_id, set_info )
+            err += [info['error'] for info in errors if info['id'] == 'password' ]
+        if not validators:
+            return None
+        else:
+            return err
+
 
 
 class RegistrationForm(BaseRegistrationForm):
