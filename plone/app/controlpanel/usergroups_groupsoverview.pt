@@ -96,8 +96,6 @@
                       method="post"
                       tal:attributes="action string:$portal_url/@@usergroup-groupdetails">
 
-                    <input type="hidden" name="form.submitted" value="1" />
-
                     <input class="standalone add"
                            type="submit"
                            name="form.button.AddGroup"

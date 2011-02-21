@@ -4,6 +4,11 @@ Changelog
 2.1b2 - Unreleased
 ------------------
 
+- Remove hidden form.submitted field in the form wrapping the "Add New User"
+  button on the groups overview page. The presence of that field forces a
+  CSRF check in the add groups form, which fails. Fixes #11553.
+  [smcmahon]
+
 2.1b1 - 2011-01-03
 ------------------
 
