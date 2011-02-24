@@ -8,6 +8,11 @@ Changelog
 4.1b1 - Unreleased
 ------------------
 
+- Remove invocation of do_search_collapse from advanced search form.
+  It caused the function to run twice, making collapsibles wink
+  rather than open. Fixes http://dev.plone.org/plone/ticket/11565
+  [smcmahon]
+
 - Use correct argument order in utranslate.py script.
   This fixes http://dev.plone.org/plone/ticket/10395
   [fRiSi]
