@@ -235,8 +235,10 @@ class BaseRegistrationForm(PageForm):
             all_fields[name].field.required = True
 
         # Change the password description based on PAS Plugin
-        # Assume errors are phrased so can be used as help messages.
-        err = self.pasPasswordValidation(' ')
+        # The user needs a list of instructions on what kind of password is required.
+        # We'll reuse password errors as instructions e.g. "Must contain a letter and a number".
+        # Assume PASPlugin errors are already translated
+        err = self.pasPasswordValidation('')
         if err:
             all_fields['password'].field.description = \
             _(u'Enter your new password. ') + (u' '.join(err))
@@ -303,10 +305,12 @@ class BaseRegistrationForm(PageForm):
                 if err is None:
                     # No validators in use. Use default behaviour
                     if password and len(password) < 5:
-                        err_str = u'Passwords must contain at least 5 letters.'
+                        err_str = _(u'Passwords must contain at least 5 letters.')
                 else:
-                    # assume PAS plugin will i18n the error
-                    err_str = unicode(' ').join(err)
+                    # We will assume that the PASPlugin returns a list of error
+                    # strings that have already been translated.
+                    # HACK. Need i18n way of joining sentances
+                    err_str = u' '.join(err)
                 if err_str:
                     errors.append(WidgetInputError('password',
                                   u'label_password', err_str))
