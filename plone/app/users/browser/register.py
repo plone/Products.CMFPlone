@@ -238,7 +238,8 @@ class BaseRegistrationForm(PageForm):
         # Assume errors are phrased so can be used as help messages.
         err = self.pasPasswordValidation(' ')
         if err:
-            all_fields['password'].field.description = '. '.join(err)
+            all_fields['password'].field.description = \
+            _(u'Enter your new password. ') + (u' '.join(err))
 
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.
@@ -298,16 +299,19 @@ class BaseRegistrationForm(PageForm):
                 plugins = pas_instance._getOb('plugins')
                 validators = plugins.listPlugins(IValidationPlugin)
                 err = self.pasPasswordValidation(password)
+                err_str = None
                 if err is None:
                     # No validators in use. Use default behaviour
                     if password and len(password) < 5:
-                        err += [_(u'Passwords must contain at least 5 letters.')]
+                        err_str = u'Passwords must contain at least 5 letters.'
                 else:
                     # assume PAS plugin will i18n the error
-                    err_str = '. '.join(err)
-                    errors.append(WidgetInputError(
-                            'password', u'label_password', err_str))
+                    err_str = unicode(' ').join(err)
+                if err_str:
+                    errors.append(WidgetInputError('password',
+                                  u'label_password', err_str))
                     self.widgets['password'].error = err_str
+
 
         username = ''
         email = ''

@@ -87,8 +87,10 @@ class TestPasswordStrength(BasePlugin, Cacheable):
 
         if set_info and set_info.get('password', None):
             password = set_info['password']
-
-            errors = [{'id':'password','error':u'Must be not be dead'}]
+            if password != 'parrot':
+                errors = [{'id':'password','error':u'Must not be dead'}]
+            else:
+                errors = []
         return errors
 
 
