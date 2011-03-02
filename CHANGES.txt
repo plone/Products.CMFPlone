@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1b2 - Unreleased
+1.1b2 - 2011-03-02
 ------------------
 
 - Fixed test of the default user portrait, which changed from
