@@ -24,6 +24,13 @@ Changelog
   plone.app.controlpanel >= 2.1b1.
   [davisagli]
 
+1.0.4 - 2011-02-25
+------------------
+
+- Fixed test of the default user portrait, which changed from defaultUser.gif to
+  defaultUser.png in Products.PlonePAS 4.0.5. 
+  [maurits]
+
 1.0.3 - 2011-01-03
 ------------------
 
