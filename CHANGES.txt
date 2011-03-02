@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.3 - Unreleased
+2.1.3 - 2011-03-02
 ------------------
 
 - Fixed i18n of the "Log in to add comments" button. It was a regression
