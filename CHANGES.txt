@@ -36,6 +36,13 @@ Changelog
 - Remove login redirect alias. As of Plone 4.1 there is a login script.
   [elro]
 
+2.0.7 - 2011-02-25
+------------------
+
+- Fixed i18n of the "Log in to add comments" button. It was a regression since
+  2.0. This fixes http://dev.plone.org/plone/ticket/11525 
+  [vincentfretin]
+
 2.0.6 - 2011-01-03
 ------------------
 
