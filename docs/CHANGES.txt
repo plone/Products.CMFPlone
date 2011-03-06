@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.1b1 - Unreleased
+4.1b1 - 2011-03-06
 ------------------
 
 - Remove useless trailing slash in 404.
