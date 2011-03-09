@@ -4,6 +4,10 @@ Changelog
 1.1b3 - Unreleased
 ------------------
 
+- Use portal object instead of self.context in AddUserForm so we can easily
+  subclass the class for another context.
+  [vincentfretin]
+
 1.1b2 - 2011-03-02
 ------------------
 
