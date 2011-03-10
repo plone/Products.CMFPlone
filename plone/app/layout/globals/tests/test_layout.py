@@ -1,7 +1,9 @@
 from plone.portlets.interfaces import IPortletType
 from zope.component import getUtility
+import zope.interface
 
 from plone.app.layout.globals.tests.base import GlobalsTestCase
+from plone.app.layout.navigation.interfaces import INavigationRoot
 
 
 class TestLayoutView(GlobalsTestCase):
@@ -45,6 +47,24 @@ class TestLayoutView(GlobalsTestCase):
         self.assertEqual(True, self.view.have_portlets('plone.rightcolumn'))
         self.app.REQUEST.set('disable_plone.rightcolumn', 1)
         self.assertEqual(False, self.view.have_portlets('plone.rightcolumn'))
+
+    def testBodyClass(self):
+        context = self.portal['front-page']
+        template = context.document_view
+        view = context.restrictedTraverse('@@plone_layout')
+        body_class = view.bodyClass(template, view)
+        assert 'section-front-page' in body_class
+
+    def testBodyClassWithNavigationRoot(self):
+        # mark a folder "between" self.folder and self.portal with
+        # INavigationRoot
+        members = self.portal['Members']
+        zope.interface.alsoProvides(members, INavigationRoot)
+        context = self.folder
+        view = context.restrictedTraverse('@@plone_layout')
+        template = context.folder_listing
+        body_class = view.bodyClass(template, view)
+        assert 'section-%s'%context.getId() in body_class
 
 
 def test_suite():

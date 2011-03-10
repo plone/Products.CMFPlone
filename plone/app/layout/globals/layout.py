@@ -119,7 +119,8 @@ class LayoutPolicy(BrowserView):
         """Returns the CSS class to be used on the body tag.
         """
         context = self.context
-        url = getToolByName(context, "portal_url")
+        portal_state = getMultiAdapter(
+            (context, self.request), name=u'plone_portal_state')
 
         # template class (required)
         name = ''
@@ -137,7 +138,8 @@ class LayoutPolicy(BrowserView):
             body_class += " portaltype-%s" % portal_type
 
         # section class (optional)
-        contentPath = url.getRelativeContentPath(context)
+        navroot = portal_state.navigation_root()
+        contentPath = context.getPhysicalPath()[len(navroot.getPhysicalPath()):]
         if contentPath:
             body_class += " section-%s" % contentPath[0]
 
