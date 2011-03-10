@@ -106,6 +106,10 @@ class IPortalState(Interface):
         """The URL of the portal object
         """
 
+    def navigation_root():
+        """The navigation root object
+        """
+
     def navigation_root_path():
         """ path of the navigation root
         """

@@ -4,6 +4,9 @@ Changelog
 2.1.4 - Unreleased
 ------------------
 
+- Added navigation_root to plone_portal_state.
+  [elro]
+
 2.1.3 - 2011-03-02
 ------------------
 

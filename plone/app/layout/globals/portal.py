@@ -8,6 +8,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.root import getNavigationRoot
+from plone.app.layout.navigation.root import getNavigationRootObject
+
 
 from interfaces import IPortalState
 
@@ -31,6 +33,12 @@ class PortalState(BrowserView):
     @memoize_contextless
     def portal_url(self):
         return self.portal().absolute_url()
+
+    @memoize
+    def navigation_root(self):
+        context = aq_inner(self.context)
+        portal = self.portal()
+        return getNavigationObject(context, portal)
 
     @memoize
     def navigation_root_path(self):
