@@ -22,6 +22,16 @@ class TestPortalStateView(GlobalsTestCase):
         
     def test_portal_url(self):
         self.assertEquals(self.view.portal_url(), self.portal.absolute_url())
+
+    def test_navigation_root(self):
+        self.assertEquals(self.view.navigation_root(), self.portal)
+
+        # mark a folder "between" self.folder and self.portal with
+        # INavigationRoot
+        members = self.portal['Members']
+        zope.interface.alsoProvides(members, INavigationRoot)
+        view = members.restrictedTraverse('@@plone_portal_state')
+        self.assertEquals(view.navigation_root(), members)
                        
     def test_navigation_root_path(self):
         self.assertEquals(self.view.navigation_root_path(), '/plone')
