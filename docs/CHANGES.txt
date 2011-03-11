@@ -8,6 +8,9 @@ Changelog
 4.1b2 - Unreleased
 ------------------
 
+- Switch to HTML5 doctype. References https://dev.plone.org/plone/ticket/11300
+  [spliter]
+
 4.1b1 - 2011-03-06
 ------------------
 
