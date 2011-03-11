@@ -5,8 +5,15 @@
 Changelog
 =========
 
-4.1b1 - Unreleased
+4.1b2 - Unreleased
 ------------------
+
+4.1b1 - 2011-03-06
+------------------
+
+- Remove useless trailing slash in 404.
+  This fixes http://dev.plone.org/plone/ticket/11550
+  [gotcha]
 
 - Remove invocation of do_search_collapse from advanced search form.
   It caused the function to run twice, making collapsibles wink
