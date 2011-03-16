@@ -6,6 +6,11 @@ For what's new in this release, see CHANGES.txt.
 4.0.4 - Unreleased
 ------------------
 
+- Fixed: "Show all" was not displayed in live search
+  when limit result was exceeded.
+  This fixes https://dev.plone.org/plone/ticket/11628.
+  [thomasdesvenain]
+
 - Add fallback icon for control panels with no icon, in the portlet_prefs
   portlet. This fixes http://dev.plone.org/plone/tickets/11112.
   [topherh, davisagli]
@@ -1855,7 +1860,7 @@ For what's new in this release, see CHANGES.txt.
 
 - Fixed ticket #9420 DC.date.valid_range not emitted if only Publishing Date is set.
   [jaroel]
-  
+
 
 3.3.6 - Unreleased
 ------------------
@@ -1921,7 +1926,7 @@ For what's new in this release, see CHANGES.txt.
   to ensure titles containing an ISO date can be sorted.
   [hannosch]
 
-- Added scroll to anchor tag in toc.js because Firefox was not bringing a user 
+- Added scroll to anchor tag in toc.js because Firefox was not bringing a user
   to any anchor tags when a link was directly given to one.
   This closes http://dev.plone.org/plone/ticket/9364
   [vangheem]
@@ -1959,8 +1964,8 @@ For what's new in this release, see CHANGES.txt.
 - Buttons on discussion form are now hidden from print view.
   Fixes http://dev.plone.org/plone/ticket/8460
   [lzdych]
-  
-- Added missing migration step to update permissions on "legacy" 
+
+- Added missing migration step to update permissions on "legacy"
   workflows for new roles. Thanks to Vitaliy Podoba for the patch.
   This fixes http://dev.plone.org/plone/ticket/8905
   [amleczko]
@@ -1969,10 +1974,10 @@ For what's new in this release, see CHANGES.txt.
 3.3.2 - November 3, 2009
 ------------------------
 
-- Shift "Item type" options under the advanced search page to the right 
-  when viewed for RTL scripts. This fixes 
-  http://dev.plone.org/plone/ticket/9666 
-  [emanlove] 
+- Shift "Item type" options under the advanced search page to the right
+  when viewed for RTL scripts. This fixes
+  http://dev.plone.org/plone/ticket/9666
+  [emanlove]
 
 - Make sure the folder_listing, folder_summary_view, and folder_tabular_view
   call getText with a full acquisition chain (but make the conditional for
@@ -1983,7 +1988,7 @@ For what's new in this release, see CHANGES.txt.
 
 - Use PlonePAS methods for adding and removing members from groups, as well
   as for listing group membership. These methods are PAS aware and thus work
-  correctly with PAS plugins other than the GroupUserFolder. Thanks to 
+  correctly with PAS plugins other than the GroupUserFolder. Thanks to
   Giovanni Toffoli for the initial patch.
   Fixes http://dev.plone.org/plone/ticket/9163
   [mj]
@@ -1993,7 +1998,7 @@ For what's new in this release, see CHANGES.txt.
   This fixes http://dev.plone.org/plone/ticket/7784
   [witsch]
 
-- Show template id or view name in <body class="template-..">. There was 
+- Show template id or view name in <body class="template-..">. There was
   template id only before.
   http://dev.plone.org/plone/ticket/9111
   [naro]
@@ -2027,7 +2032,7 @@ For what's new in this release, see CHANGES.txt.
   code that is also XHTML Strict
   See http://dev.plone.org/plone/ticket/4379
   [keul]
-  
+
 - Fixed *folder_constraintypes_form.cpt* template; was XHTML invalid when
   showing portal type with whitespaces (like "News Item")
   [keul]
@@ -2050,7 +2055,7 @@ For what's new in this release, see CHANGES.txt.
   back to a Zope3-style interface.
   [hannosch, witsch]
 
-- Fixed a bug which deletes an object in the acquisition path instead of 
+- Fixed a bug which deletes an object in the acquisition path instead of
   the original object in case of a catalog inconsistency. This closes #9046.
   [pilz]
 
@@ -2065,7 +2070,7 @@ For what's new in this release, see CHANGES.txt.
 3.3rc5 - August 1, 2009
 -----------------------
 
-- Remove trailing space from 
+- Remove trailing space from
   history_compare_with_previous_inline.png.metadata filename.
   This fixes http://dev.plone.org/old/plone/ticket/9367
   [wichert].
@@ -2078,16 +2083,16 @@ For what's new in this release, see CHANGES.txt.
 3.3rc4 - July 7, 2009
 ---------------------
 
-- Added migration step to fix missing cooked expressions in 
-  portal_css, which could mess up the site UI.  Fix by Tom Gross. 
-  Fixes http://dev.plone.org/plone/ticket/9141 
+- Added migration step to fix missing cooked expressions in
+  portal_css, which could mess up the site UI.  Fix by Tom Gross.
+  Fixes http://dev.plone.org/plone/ticket/9141
   [maurits]
 
 - Upgrade to jQuery 1.3.2. This fixes multiple bugs on various browsers,
   allows use of more jQuery plugins (particularly current versions of
   jQuery UI). The only BBB problem I am aware of is use of the @ in
   attribute selectors (as in a[@target=_blank]), which has been deprecated
-  for a long time and is no longer supported in jQuery 1.3. 
+  for a long time and is no longer supported in jQuery 1.3.
   [wichert]
 
 - Make the BBB support for registerIndexableAttribute() more robust by only
@@ -2175,8 +2180,8 @@ For what's new in this release, see CHANGES.txt.
   instead of 30 tables with 5 items each, made the table vertical.
   [limi]
 
-- batch_macros.pt: Added "current" class to current item, removed the brackets, 
-  added ellipses. Moved comments to a tal section to stop them from showing up 
+- batch_macros.pt: Added "current" class to current item, removed the brackets,
+  added ellipses. Moved comments to a tal section to stop them from showing up
   in the source.
   [limi]
 
@@ -2186,24 +2191,24 @@ For what's new in this release, see CHANGES.txt.
 - join_form.pt: Removed unnecessary fieldset.
   [limi]
 
-- logged_out.pt: Removed duplicate "new account" section (it's actually located 
+- logged_out.pt: Removed duplicate "new account" section (it's actually located
   in the login form).
   [limi]
 
-- login_form.pt: Moved Forgot/New out of the fieldset, fixed wording + added 
+- login_form.pt: Moved Forgot/New out of the fieldset, fixed wording + added
   headline.
   [limi]
 
 - main_template.pt: Moved #content to main template instead of offloading its
-  responsibility to the individual templates. This makes it easier to avoid 
-  duplication and make it possible to use it with Deliverance and similar 
+  responsibility to the individual templates. This makes it easier to avoid
+  duplication and make it possible to use it with Deliverance and similar
   theming approaches.
   [limi]
 
 - personalize_form.pt: Cleaned up the #content mismatch. No more double tabs.
   [limi]
 
-- search_form.pt: Removed unnecessary fieldset, inserted "searchform" id on 
+- search_form.pt: Removed unnecessary fieldset, inserted "searchform" id on
   form to not get it filled in as id="search" automatically.
   [limi]
 
@@ -2244,7 +2249,7 @@ For what's new in this release, see CHANGES.txt.
 
 - Make the Groups Overview search post back to the same page, since it displays a
   lot more useful information than the prefs_user_group_search, and fits more
-  with the way the Users Overview works. Include a "Show all" button as well. 
+  with the way the Users Overview works. Include a "Show all" button as well.
   [esteele]
 
 
@@ -2261,7 +2266,7 @@ For what's new in this release, see CHANGES.txt.
   @@plone_portal_state/navigation_root_url instead of portal_url.
   This implements http://plone.org/products/plone/roadmap/234
   [calvinhp]
- 
+
 - Removed CatalogTool.ExtensibleIndexableObjectWrapper in favour of the
   wrapper in plone.indexer, and made registerIndexableAttribute() a deprecated
   facade for registering an IIndexer adapter. See plone.indexer for more
@@ -2292,7 +2297,7 @@ For what's new in this release, see CHANGES.txt.
   not be turned off at all (#7383). Fixed by having either one enable the js
   support and adding a new site property to control marking. Implemented so
   that new site property will be assumed false if missing and created on change
-  if missing -- so no migration required. There is a matching change in 
+  if missing -- so no migration required. There is a matching change in
   plone.app.controlpanel.
   [smcmahon]
 
@@ -2334,9 +2339,9 @@ For what's new in this release, see CHANGES.txt.
   http://dev.plone.org/plone/ticket/8607
   [jnelson, calvinhp]
 
-- Fixed links-plain issue on the front-page. This closes  
-  http://dev.plone.org/plone/ticket/6479. 
-  [cwainwright, calvinhp] 
+- Fixed links-plain issue on the front-page. This closes
+  http://dev.plone.org/plone/ticket/6479.
+  [cwainwright, calvinhp]
 
 - Put in workaround for IE6 background caching problem, closes
   http://dev.plone.org/plone/ticket/7445
@@ -2461,12 +2466,12 @@ For what's new in this release, see CHANGES.txt.
   [stefan]
 
 - Fixed the silent fail of the group membership from a user via the
-  prefs_user_memberships form. This closes 
+  prefs_user_memberships form. This closes
   http://dev.plone.org/plone/ticket/8468
   [garbas, calvinhp]
 
 - Fixed the migration from 3.0.1 to 3.0.2 to now put back the actionicons
-  for the languages control panel. 
+  for the languages control panel.
   This closes http://dev.plone.org/plone/ticket/7901
   [KurtB, calvinhp]
 
@@ -2477,7 +2482,7 @@ For what's new in this release, see CHANGES.txt.
   [pbugni,dunlapm]
 
 - Changed prefs_group_members.pt search table to behave coherently with
-  prefs_users_overview.pt, including the results header only when 
+  prefs_users_overview.pt, including the results header only when
   there are results to show.
   [igbun]
 
