@@ -67,12 +67,16 @@ r = quote_bad_chars(r)+'*'
 searchterms = url_quote_plus(r)
 
 site_encoding = context.plone_utils.getSiteEncoding()
-if path is None:
-    path = getNavigationRoot(context)
+
+params = {'SearchableText': r,
+          'portal_type': friendly_types,
+          'sort_limit': limit+1,}
+
+if path is not None:
+    params['path'] = path
 
 # search limit+1 results to know if limit is exceeded
-results = catalog(SearchableText=r, portal_type=friendly_types, path=path,
-    sort_limit=limit+1)
+results = catalog(**params)
 
 searchterm_query = '?searchterm=%s'%url_quote_plus(q)
 
@@ -146,11 +150,13 @@ else:
     if len(results)>limit:
         # add a more... row
         write('''<li class="LSRow">''')
-        write( '<a href="%s" style="font-weight:normal">%s</a>' % ('search?SearchableText=' + searchterms, ts.translate(label_show_all, context=REQUEST)))
+        searchquery = 'search?SearchableText=' + searchterms
+        if 'path' in params:
+            searchquery += '&path=' + path
+        write( '<a href="%s" style="font-weight:normal">%s</a>' % (searchquery, ts.translate(label_show_all, context=REQUEST)))
         write('''</li>''')
     write('''</ul>''')
     write('''</div>''')
     write('''</fieldset>''')
 
 return '\n'.join(output).encode(site_encoding)
-

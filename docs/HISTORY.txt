@@ -6,6 +6,10 @@ For what's new in this release, see CHANGES.txt.
 4.0.4 - Unreleased
 ------------------
 
+- Fixed: "Show all" livesearch link manages "current folder only" option.
+  This fixes https://dev.plone.org/plone/ticket/11414.
+  [thomasdesvenain]
+
 - Fixed: "Show all" was not displayed in live search
   when limit result was exceeded.
   This fixes https://dev.plone.org/plone/ticket/11628.
@@ -20,13 +24,13 @@ For what's new in this release, see CHANGES.txt.
   Fixes http://dev.plone.org/plone/ticket/11186
   [msmith64]
 
-- Fixed handling of relative links used as default pages
-  This fixes https://dev.plone.org/plone/ticket/11340
+- Fixed handling of relative links used as default pages.
+  This fixes https://dev.plone.org/plone/ticket/11340.
   [fRiSi]
 
 - Re-instate spinner.gif (animation), lost in the move to PNGs. The static
   spinner.png has been deprecated.
-  Fixes http://dev.plone.org/plone/ticket/11504
+  Fixes http://dev.plone.org/plone/ticket/11504.
   [mj]
 
 4.0.3 - 2011-01-18
