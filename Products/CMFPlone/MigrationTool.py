@@ -90,7 +90,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'getSoftwareVersion')
     def getSoftwareVersion(self):
         """ The software version."""
-        dist = pkg_resources.get_distribution('Plone')
+        dist = pkg_resources.get_distribution('Products.CMFPlone')
         return dist.version
 
     security.declareProtected(ManagePortal, 'needUpgrading')

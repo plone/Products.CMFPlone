@@ -8,6 +8,9 @@ Changelog
 4.1b2 - Unreleased
 ------------------
 
+- Update MigrationTool.getSoftwareVersion to return Products.CMFPlone version.
+  [elro]
+
 4.1b1 - 2011-03-06
 ------------------
 
