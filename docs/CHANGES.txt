@@ -8,6 +8,9 @@ Changelog
 4.1b2 - Unreleased
 ------------------
 
+- Fix import of RoleManager to avoid deprecation warning.
+  [davisagli]
+
 - Update MigrationTool.getSoftwareVersion to return Products.CMFPlone version.
   [elro]
 

@@ -280,7 +280,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             a1['icon_expr'] = a.getIconExpression()
             actions.append(a1)
 
-        # possible_permissions is in AccessControl.Role.RoleManager.
+        # possible_permissions is in OFS.role.RoleManager.
         pp = self.possible_permissions()
         return self._actions_form( self
                                  , REQUEST
