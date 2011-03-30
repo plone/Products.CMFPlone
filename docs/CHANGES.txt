@@ -8,6 +8,10 @@ Changelog
 4.1b2 - Unreleased
 ------------------
 
+- Make wicked an optional dependency. (It is still pulled in by the Plone
+  distribution.)
+  [davisagli]
+
 - Fix import of RoleManager to avoid deprecation warning.
   [davisagli]
 

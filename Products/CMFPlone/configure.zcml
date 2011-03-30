@@ -48,7 +48,9 @@
   <include package="archetypes.referencebrowserwidget" />
 
   <!-- wicked -->
-  <include package="wicked.plone" file="selective-atct.zcml" />
+  <configure zcml:condition="installed wicked">
+    <include package="wicked.plone" file="selective-atct.zcml" />
+  </configure>
 
   <!-- extra portlets -->
   <include package="plone.portlet.static" />

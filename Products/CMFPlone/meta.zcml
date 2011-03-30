@@ -28,7 +28,9 @@
     <include package="kss.core" file="meta.zcml" />
 
     <!-- wicked -->
-    <include package="wicked.fieldevent" file="meta.zcml" />
+    <configure zcml:condition="installed wicked">
+      <include package="wicked.fieldevent" file="meta.zcml" />
+    </configure>
 
     <!-- z3c.autoinclude's `includePlugins` directive finds
          and executes ZCML files from any installed packages
