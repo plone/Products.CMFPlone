@@ -30,8 +30,14 @@ from Products.Archetypes.mimetype_utils import getDefaultContentType, \
 from persistent import Persistent
 from zope.annotation.interfaces import IAnnotations
 
-from wicked.plone.registration import basic_type_regs as wicked_basic_type_regs
-from wicked.txtfilter import BrackettedWickedFilter
+try:
+    from wicked.plone.registration import basic_type_regs as wicked_basic_type_regs
+    from wicked.txtfilter import BrackettedWickedFilter
+except ImportError:
+    HAS_WICKED = False
+    wicked_basic_type_regs = ()
+else:
+    HAS_WICKED = True
 
 WICKED_SETTING_KEY="plone.app.controlpanel.wicked"
 
@@ -109,9 +115,12 @@ controlpanel.WickedPortalTypes"))
 # Combined schemata and fieldsets
 #
 
-class IMarkupSchema(ITextMarkupSchema, IWikiMarkupSchema):
-    """Combined schema for the adapter lookup.
-    """
+if HAS_WICKED:
+    class IMarkupSchema(ITextMarkupSchema, IWikiMarkupSchema):
+        """Combined schema for the adapter lookup.
+        """
+else:
+    IMarkupSchema = ITextMarkupSchema
 
 class MarkupControlPanelAdapter(SchemaAdapterBase):
 
@@ -147,62 +156,67 @@ class MarkupControlPanelAdapter(SchemaAdapterBase):
 
     # Wiki settings
 
-    def get_enable_mediawiki(self):
-        return self.wicked_settings.enable_mediawiki
+    if HAS_WICKED:
+        def get_enable_mediawiki(self):
+            return self.wicked_settings.enable_mediawiki
 
-    def set_enable_mediawiki(self, value):
-        settings = self.wicked_settings
-        if settings.enable_mediawiki != value:
-            self.toggle_mediawiki = True
-            settings.enable_mediawiki = value
+        def set_enable_mediawiki(self, value):
+            settings = self.wicked_settings
+            if settings.enable_mediawiki != value:
+                self.toggle_mediawiki = True
+                settings.enable_mediawiki = value
 
-    enable_mediawiki = property(get_enable_mediawiki, set_enable_mediawiki)
+        enable_mediawiki = property(get_enable_mediawiki, set_enable_mediawiki)
 
-    def get_wiki_enabled_types(self):
-        return self.wicked_settings.types_enabled
+        def get_wiki_enabled_types(self):
+            return self.wicked_settings.types_enabled
 
-    def set_wiki_enabled_types(self, value):
-        settings = self.wicked_settings
-        if not self.toggle_mediawiki and value == settings.types_enabled:
-            return
+        def set_wiki_enabled_types(self, value):
+            settings = self.wicked_settings
+            if not self.toggle_mediawiki and value == settings.types_enabled:
+                return
 
-        self.unregister_wicked_types() # @@ use sets to avoid thrashing
-        for name in value:
-            reg = wicked_type_regs[name](self.context)
-            if self.enable_mediawiki:
-                reg.txtfilter = BrackettedWickedFilter
-            reg.handle()
+            self.unregister_wicked_types() # @@ use sets to avoid thrashing
+            for name in value:
+                reg = wicked_type_regs[name](self.context)
+                if self.enable_mediawiki:
+                    reg.txtfilter = BrackettedWickedFilter
+                reg.handle()
 
-        self.toggle_mediawiki = False
-        settings.types_enabled = value
+            self.toggle_mediawiki = False
+            settings.types_enabled = value
 
-    wiki_enabled_types = property(get_wiki_enabled_types,
-                                  set_wiki_enabled_types)
+        wiki_enabled_types = property(get_wiki_enabled_types,
+                                      set_wiki_enabled_types)
 
-    @property
-    def wicked_settings(self):
-        ann = IAnnotations(self.context)
-        return ann.setdefault(WICKED_SETTING_KEY, WickedSettings())
+        @property
+        def wicked_settings(self):
+            ann = IAnnotations(self.context)
+            return ann.setdefault(WICKED_SETTING_KEY, WickedSettings())
 
-    def unregister_wicked_types(self):
-        """Unregisters all previous registration objects
-        """
-        for name in wicked_type_regs.keys():
-            wicked_type_regs[name](self.context).handle(unregister=True)
+        def unregister_wicked_types(self):
+            """Unregisters all previous registration objects
+            """
+            for name in wicked_type_regs.keys():
+                wicked_type_regs[name](self.context).handle(unregister=True)
 
 textset = FormFieldsets(ITextMarkupSchema)
 textset.id = 'textmarkup'
 textset.label = _(u'Text markup')
 
-wikiset = FormFieldsets(IWikiMarkupSchema)
-wikiset.id = 'wiki'
-wikiset.label = _(u'Wiki behavior')
+if HAS_WICKED:
+    wikiset = FormFieldsets(IWikiMarkupSchema)
+    wikiset.id = 'wiki'
+    wikiset.label = _(u'Wiki behavior')
 
 class MarkupControlPanel(ControlPanelForm):
 
-    form_fields = FormFieldsets(textset, wikiset)
+    if HAS_WICKED:
+        form_fields = FormFieldsets(textset, wikiset)
+        form_fields['wiki_enabled_types'].custom_widget = MultiCheckBoxVocabularyWidget
+    else:
+        form_fields = FormFieldsets(textset)
     form_fields['allowed_types'].custom_widget = AllowedTypesWidget
-    form_fields['wiki_enabled_types'].custom_widget = MultiCheckBoxVocabularyWidget
 
     label = _("Markup settings")
     description = _("Lets you control what markup is available when editing "
