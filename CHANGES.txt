@@ -1,11 +1,11 @@
 Changelog
 =========
 
-2.1.4 - Unreleased
+2.1.4 - 2011-04-03
 ------------------
 
-- Make the body section- class based on the navigation root instead of the
-  portal root.
+- Make the body `section-` class based on the navigation root instead of the
+  site root.
   [elro]
 
 - Added navigation_root to plone_portal_state.
