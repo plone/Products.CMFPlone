@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1b3 - Unreleased
-------------------
+1.1 - 2011-04-03
+----------------
 
 - Include plone.app.controlpanel configure.zcml because we use permissions
   defined in this package.
