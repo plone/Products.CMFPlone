@@ -1,13 +1,13 @@
 Changelog
 =========
 
-2.1b2 - Unreleased
-------------------
+2.1 - 2011-04-03
+----------------
 
 - Make the dependency of the markup control panel on wicked optional.
   [davisagli]
 
-- Remove hidden form.submitted field in the form wrapping the "Add New User"
+- Remove hidden `form.submitted` field in the form wrapping the "Add New User"
   button on the groups overview page. The presence of that field forces a
   CSRF check in the add groups form, which fails. Fixes #11553.
   [smcmahon]
