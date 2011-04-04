@@ -8,6 +8,10 @@ Changelog
 4.1b2 - Unreleased
 ------------------
 
+- Added "rss" alias to "RSS". 
+  This fixes https://dev.plone.org/plone/ticket/11638.
+  [gotcha]
+
 - Make wicked an optional dependency. (It is still pulled in by the Plone
   distribution.)
   [davisagli]
