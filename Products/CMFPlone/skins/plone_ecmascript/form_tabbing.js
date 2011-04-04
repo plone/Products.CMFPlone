@@ -50,7 +50,7 @@ ploneFormTabbing._buildTabs = function(container, legends) {
             tab = '<option '+className+' id="'+lid+'" value="'+lid+'">';
             tab += $(legend).text()+'</option>';
         } else {
-            tab = '<li '+className+'><a href="#'+lid+'"><span>';
+            tab = '<li '+className+'><a id="'+lid+'" href="#'+lid+'"><span>';
             tab += $(legend).text()+'</span></a></li>';
         }
 
@@ -95,7 +95,7 @@ ploneFormTabbing.initializeForm = function() {
     // The fieldset.current hidden may change, but is not content
     $(this).find('input[name=fieldset.current]').addClass('noUnloadProtection');
 
-    $(this).find('.formPanel:has(div.field span.fieldRequired)').each(function() {
+    $(this).find('.formPanel:has(div.field span.required)').each(function() {
         var id = this.id.replace(/^fieldset-/, "#fieldsetlegend-");
         $(id).addClass('required');
     });
@@ -105,7 +105,7 @@ ploneFormTabbing.initializeForm = function() {
     var count = 0;
     var found = false;
     $(this).find('.formPanel').each(function() {
-        if (!found && $(this).find('div.field.error')) {
+        if (!found && $(this).find('div.field.error').length!=0) {
             initialIndex = count;
             found = true;
         }
@@ -116,9 +116,10 @@ ploneFormTabbing.initializeForm = function() {
     if ($(ftabs).is('select.formTabs')) {
         tabSelector = 'select.formTabs';
     }
+    var tabsConfig = $.extend({}, ploneFormTabbing.jqtConfig, {'initialIndex':initialIndex});
     jqForm.children(tabSelector).tabs(
         'form.enableFormTabbing fieldset.formPanel', 
-        ploneFormTabbing.jqtConfig || {'initialIndex':initialIndex}
+        tabsConfig
         );
     
     // save selected tab on submit
