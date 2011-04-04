@@ -12,6 +12,14 @@ Changelog
   This fixes https://dev.plone.org/plone/ticket/11638.
   [gotcha]
 
+- Fixed: "showing field with error is broken in edit view"
+  This fixes https://dev.plone.org/plone/ticket/11686.
+  [gotcha]
+
+- Fixed: "missing required icon in tabs in edit view"
+  This fixes https://dev.plone.org/plone/ticket/11685.
+  [gotcha]
+
 - Make wicked an optional dependency. (It is still pulled in by the Plone
   distribution.)
   [davisagli]
