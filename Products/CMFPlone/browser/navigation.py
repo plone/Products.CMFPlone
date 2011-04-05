@@ -27,12 +27,14 @@ def get_url(item):
         return item.getURL()
     return item.absolute_url()
 
+
 def get_id(item):
     getId = getattr(item, 'getId')
     if not utils.safe_callable(getId):
         # Looks like a brain
         return getId
     return getId()
+
 
 def get_view_url(context):
     props = getToolByName(context, 'portal_properties')
@@ -47,6 +49,7 @@ def get_view_url(context):
         name += '/view'
 
     return name, item_url
+
 
 class CatalogNavigationTree(BrowserView):
     implements(INavigationTree)
@@ -89,6 +92,7 @@ class CatalogNavigationTree(BrowserView):
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
         return buildFolderTree(context, obj=context, query=query, strategy=strategy)
+
 
 class CatalogSiteMap(BrowserView):
     implements(ISiteMap)
@@ -140,7 +144,7 @@ class CatalogNavigationTabs(BrowserView):
             query = {}
 
         rootPath = getNavigationRoot(context)
-        query['path'] = {'query' : rootPath, 'depth' : 1}
+        query['path'] = {'query': rootPath, 'depth': 1}
 
         blacklist = navtree_properties.getProperty('metaTypesNotToList', ())
         all_types = portal_catalog.uniqueValuesFor('portal_type')
@@ -169,9 +173,9 @@ class CatalogNavigationTabs(BrowserView):
         for item in rawresult:
             if not (item.getId in idsNotToList or item.exclude_from_nav):
                 id, item_url = get_view_url(item)
-                data = {'name'      : utils.pretty_title_or_id(context, item),
-                        'id'         : item.getId,
-                        'url'        : item_url,
+                data = {'name': utils.pretty_title_or_id(context, item),
+                        'id': item.getId,
+                        'url': item_url,
                         'description': item.Description}
                 result.append(data)
         return result
@@ -192,12 +196,12 @@ class CatalogNavigationBreadcrumbs(BrowserView):
             currentPath = '/'.join(utils.parent(context).getPhysicalPath())
         else:
             currentPath = '/'.join(context.getPhysicalPath())
-        query['path'] = {'query':currentPath, 'navtree':1, 'depth': 0}
+        query['path'] = {'query': currentPath, 'navtree': 1, 'depth': 0}
 
         rawresult = ct(**query)
 
         # Sort items on path length
-        dec_result = [(len(r.getPath()),r) for r in rawresult]
+        dec_result = [(len(r.getPath()), r) for r in rawresult]
         dec_result.sort()
 
         rootPath = getNavigationRoot(context)
@@ -226,7 +230,6 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         context = aq_inner(self.context)
         request = self.request
         container = utils.parent(context)
-
         try:
             name, item_url = get_view_url(context)
         except AttributeError:
@@ -235,8 +238,8 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
 
         if container is None:
             return ({'absolute_url': item_url,
-                     'Title': utils.pretty_title_or_id(context, context),
-                    },)
+                     'Title': utils.pretty_title_or_id(context, context), },
+                   )
 
         view = getMultiAdapter((container, request), name='breadcrumbs_view')
         base = tuple(view.breadcrumbs())
@@ -254,8 +257,8 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         # don't show default pages in breadcrumbs or pages above the navigation root
         if not utils.isDefaultPage(context, request) and not rootPath.startswith(itemPath):
             base += ({'absolute_url': item_url,
-                      'Title': utils.pretty_title_or_id(context, context),
-                     },)
+                      'Title': utils.pretty_title_or_id(context, context), },
+                    )
 
         return base
 

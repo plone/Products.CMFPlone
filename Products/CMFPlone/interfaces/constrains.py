@@ -1,5 +1,6 @@
 from zope.interface import Interface
 
+
 class IConstrainTypes(Interface):
     """
     Interface for folderish content types supporting restricting addable types
@@ -40,6 +41,7 @@ class IConstrainTypes(Interface):
         """
         Return the list of currently permitted FTIs.
         """
+
 
 class ISelectableConstrainTypes(IConstrainTypes):
     """

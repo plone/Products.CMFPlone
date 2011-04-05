@@ -32,21 +32,19 @@ class PortalFactoryXMLAdapter(XMLAdapterBase):
     def _purgeFactoryToolSettings(self):
         self.context.manage_setPortalFactoryTypes(listOfTypeIds=[])
 
-
     def _initFactoryToolSettings(self, node):
         for child in node.childNodes:
-            if child.nodeName=="factorytypes":
-                types=set(self.context.getFactoryTypes())
+            if child.nodeName == "factorytypes":
+                types = set(self.context.getFactoryTypes())
                 for type in child.getElementsByTagName("type"):
                     types.add(type.getAttribute("portal_type"))
                 self.context.manage_setPortalFactoryTypes(
                                     listOfTypeIds=list(types))
 
-
     def _extractFactoryToolSettings(self):
         node=self._doc.createElement("factorytypes")
         for t in sorted(self.context.getFactoryTypes()):
-            child=self._doc.createElement("type")
+            child = self._doc.createElement("type")
             child.setAttribute("portal_type", t)
             node.appendChild(child)
 
@@ -73,4 +71,3 @@ def exportFactoryTool(context):
         return
 
     exportObjects(tool, '', context)
-

@@ -14,16 +14,22 @@ var mark_special_links = '%(mark_links)s';
 var ajax_noresponse_message = '%(ajax_noresponse)s';
 """
 
-FORM_MODIFIED = _(u'text_form_modified_message', default=u'Your form has not been saved. All changes you have made will be lost.')
-FORM_RESUBMIT = _(u'text_form_resubmit_message', default=u'You already clicked the submit button. Do you really want to submit this form again?')
-AJAX_NORESPONSE = _(u'text_ajax_noresponse_message', default=u'No response from server. Please try again later.')
+FORM_MODIFIED = _(u'text_form_modified_message',
+    default=u'Your form has not been saved. All changes you have made will be lost.')
+
+FORM_RESUBMIT = _(u'text_form_resubmit_message',
+    default=u'You already clicked the submit button. Do you really want to submit this form again?')
+
+AJAX_NORESPONSE = _(u'text_ajax_noresponse_message',
+    default=u'No response from server. Please try again later.')
+
 
 class JSVariables(BrowserView):
 
     def __call__(self, *args, **kwargs):
         context = self.context
         response = self.request.response
-        response.setHeader('content-type','text/javascript;;charset=utf-8')
+        response.setHeader('content-type', 'text/javascript;;charset=utf-8')
 
         props = getToolByName(context, 'portal_properties').site_properties
         portal_url = getToolByName(context, 'portal_url')()

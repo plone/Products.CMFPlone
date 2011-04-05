@@ -17,11 +17,13 @@ class INavigationBreadcrumbs(Interface):
         """Breadcrumbs for Navigation.
         """
 
+
 class INavigationTabs(Interface):
 
     def topLevelTabs(actions=None, category='portal_tabs'):
         """Top level tabs
         """
+
 
 class INavigationTree(Interface):
 
@@ -33,11 +35,13 @@ class INavigationTree(Interface):
         """Navigation tree
         """
 
+
 class ISiteMap(Interface):
 
     def siteMap():
         """Site map
         """
+
 
 class INavigationPortlet(Interface):
     """Interface for portlet to display navigation tree"""
@@ -299,5 +303,3 @@ class IPlone(Interface):
         """ returns template or view name to mark body tag with
             template-${template_id} CSS class
         """
-
-

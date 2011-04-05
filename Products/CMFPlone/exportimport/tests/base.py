@@ -28,4 +28,3 @@ class NodeAdapterTestCase(NodeAdapterTestCase, unittest.TestCase):
 
     def tearDown(self):
         pass
-

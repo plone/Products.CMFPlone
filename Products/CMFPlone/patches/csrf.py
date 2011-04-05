@@ -30,8 +30,10 @@ def applyPatches():
 
     from Products.CMFCore.MemberDataTool import MemberData as MD
     original_setProperties = MD.setProperties
+
     def setProperties(self, properties=None, REQUEST=None, **kw):
         return original_setProperties(self, properties, **kw)
+
     setProperties.__doc__ = original_setProperties.__doc__
     MD.setProperties = patch(setProperties)
 
@@ -52,4 +54,3 @@ def applyPatches():
     PAS.userFolderAddUser = patch(PAS.userFolderAddUser)
     PAS.userFolderEditUser = patch(PAS.userFolderEditUser)
     PAS.userFolderDelUsers = patch(PAS.userFolderDelUsers)
-
