@@ -6,6 +6,7 @@ from Products.CMFDefault.permissions import ReplyToItem
 
 from plone.intelligenttext.transforms import convertWebIntelligentPlainTextToHtml
 
+
 class DiscussionTool(PloneBaseTool, BaseTool):
 
     meta_type = 'Plone Discussion Tool'

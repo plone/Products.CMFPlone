@@ -48,10 +48,12 @@ name_formatvariables = ('a', 'A', 'b', 'B')
 # from Products.CMFPlone import i18nl10n
 # i18nl10n.setDefaultTimeFormat(('en',), u'HH:mm:ss')
 
+
 def setDefaultDateFormat(localeid, value):
     gregorian = locales.getLocale(*localeid).dates.calendars[u'gregorian']
     date_format = gregorian.dateFormats['medium'].formats[None]
     date_format.pattern = value
+
 
 def setDefaultTimeFormat(localeid, value):
     gregorian = locales.getLocale(*localeid).dates.calendars[u'gregorian']
@@ -89,19 +91,19 @@ def ulocalized_time(time, long_format=None, time_only=None, context=None,
     # From http://docs.python.org/lib/module-time.html
     #
     # %a    Locale's abbreviated weekday name.
-    # %A 	Locale's full weekday name.
-    # %b 	Locale's abbreviated month name.
-    # %B 	Locale's full month name.
-    # %d 	Day of the month as a decimal number [01,31].
-    # %H 	Hour (24-hour clock) as a decimal number [00,23].
-    # %I 	Hour (12-hour clock) as a decimal number [01,12].
-    # %m 	Month as a decimal number [01,12].
-    # %M 	Minute as a decimal number [00,59].
-    # %p 	Locale's equivalent of either AM or PM.
-    # %S 	Second as a decimal number [00,61].
-    # %y 	Year without century as a decimal number [00,99].
-    # %Y 	Year with century as a decimal number.
-    # %Z 	Time zone name (no characters if no time zone exists).
+    # %A        Locale's full weekday name.
+    # %b        Locale's abbreviated month name.
+    # %B        Locale's full month name.
+    # %d        Day of the month as a decimal number [01,31].
+    # %H        Hour (24-hour clock) as a decimal number [00,23].
+    # %I        Hour (12-hour clock) as a decimal number [01,12].
+    # %m        Month as a decimal number [01,12].
+    # %M        Minute as a decimal number [00,59].
+    # %p        Locale's equivalent of either AM or PM.
+    # %S        Second as a decimal number [00,61].
+    # %y        Year without century as a decimal number [00,99].
+    # %Y        Year with century as a decimal number.
+    # %Z        Time zone name (no characters if no time zone exists).
 
     mapping = {}
     # convert to DateTime instances. Either a date string or
@@ -180,6 +182,7 @@ def ulocalized_time(time, long_format=None, time_only=None, context=None,
     # translate the time string
     return translate(msgid, domain, mapping, request)
 
+
 def _numbertoenglishname(number, format=None, attr='_days'):
     # returns the english name of day or month number
     # starting with Sunday == 0
@@ -198,13 +201,16 @@ def _numbertoenglishname(number, format=None, attr='_days'):
 
     return thelist[number]
 
+
 def monthname_english(number, format=None):
     # returns the english name of month with number
     return _numbertoenglishname(number, format=format, attr='_months')
 
+
 def weekdayname_english(number, format=None):
     # returns the english name of week with number
     return _numbertoenglishname(number, format=format, attr='_days')
+
 
 def monthname_msgid(number):
     # returns the msgid for monthname
@@ -212,11 +218,13 @@ def monthname_msgid(number):
     # e.g. month_jan, month_feb, ...
     return "month_%s" % monthname_english(number, format='a').lower()
 
+
 def monthname_msgid_abbr(number):
     # returns the msgid for the abbreviated monthname
     # use to translate to abbreviated format (Jan, Feb, ...)
     # e.g. month_jan_abbr, month_feb_abbr, ...
     return "month_%s_abbr" % monthname_english(number, format='a').lower()
+
 
 def weekdayname_msgid(number):
     # returns the msgid for the weekdayname
@@ -224,11 +232,13 @@ def weekdayname_msgid(number):
     # e.g. weekday_mon, weekday_tue, ...
     return "weekday_%s" % weekdayname_english(number, format='a').lower()
 
+
 def weekdayname_msgid_abbr(number):
     # returns the msgid for abbreviated weekdayname
     # use to translate to abbreviated format (Mon, Tue, ...)
     # e.g. weekday_mon_abbr, weekday_tue_abbr, ...
     return "weekday_%s_abbr" % weekdayname_english(number, format='a').lower()
+
 
 def weekdayname_msgid_short(number):
     # return the msgid for short weekdayname

@@ -4,6 +4,7 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
+
 class CalendarTool(PloneBaseTool, BaseTool):
 
     meta_type = 'Plone Calendar Tool'
@@ -57,7 +58,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
                 if events.has_key(day):
                     days.append(events[day])
                 else:
-                    days.append({'day': day, 'event': 0, 'eventslist':[]})
+                    days.append({'day': day, 'event': 0, 'eventslist': []})
 
             weeks.append(days)
 
@@ -80,8 +81,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
             'review_state': self.getCalendarStates(),
             'start': {'query': last_date, 'range': 'max'},
             'end': {'query': first_date, 'range': 'min'},
-            'sort_on': 'start'
-        }
+            'sort_on': 'start'}
         query_args.update(kw)
 
         ctool = getToolByName(self, 'portal_catalog')
@@ -124,14 +124,14 @@ class CalendarTool(PloneBaseTool, BaseTool):
                 eventDays[eventStartDay]['eventslist'].append(
                         {'end': None,
                          'start': result.start.Time(),
-                         'title': event['title']} )
+                         'title': event['title']})
                 eventDays[eventStartDay]['event'] = 1
 
                 for eventday in allEventDays[1:-1]:
                     eventDays[eventday]['eventslist'].append(
                         {'end': None,
                          'start': None,
-                         'title': event['title']} )
+                         'title': event['title']})
                     eventDays[eventday]['event'] = 1
 
                 if result.end == result.end.earliestTime():
@@ -140,8 +140,8 @@ class CalendarTool(PloneBaseTool, BaseTool):
                     last_days_event['end'] = (result.end-1).latestTime().Time()
                 else:
                     eventDays[eventEndDay]['eventslist'].append(
-                        { 'end': result.end.Time()
-                        , 'start': None, 'title': event['title']} )
+                        {'end': result.end.Time(),
+                         'start': None, 'title': event['title']})
                     eventDays[eventEndDay]['event'] = 1
             else:
                 eventDays[eventStartDay]['eventslist'].append(event)

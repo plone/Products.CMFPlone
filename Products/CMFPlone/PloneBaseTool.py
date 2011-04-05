@@ -18,13 +18,15 @@ TempFolderClass = None
 # ZPL 2.1
 from Products.CMFCore.ActionInformation import oai
 
+
 def initializeTFC():
     """To work around circular imports ...
     """
     global TempFolderClass
     if TempFolderClass is None:
-         from Products.CMFPlone.FactoryTool import TempFolder
-         TempFolderClass = TempFolder
+        from Products.CMFPlone.FactoryTool import TempFolder
+        TempFolderClass = TempFolder
+
 
 def getOAI(context, object=None):
     initializeTFC()
@@ -33,7 +35,7 @@ def getOAI(context, object=None):
         cache = request.get('_oai_cache', None)
         if cache is None:
             request['_oai_cache'] = cache = {}
-        info = cache.get( id(object), None )
+        info = cache.get(id(object), None)
     else:
         info = None
     if info is None:
@@ -57,8 +59,9 @@ def getOAI(context, object=None):
                         folder = parent
         info = oai(context, folder, object)
         if request:
-            cache[ id(object) ] = info
+            cache[id(object)] = info
     return info
+
 
 def createExprContext(folder, portal, object):
     expr_context = Expression.createExprContext(folder, portal, object)
@@ -99,6 +102,7 @@ def createExprContext(folder, portal, object):
 
     return expr_context
 
+
 def getExprContext(context, object=None):
     initializeTFC()
     request = getattr(context, 'REQUEST', None)
@@ -106,7 +110,7 @@ def getExprContext(context, object=None):
         cache = request.get('_plone_ec_cache', None)
         if cache is None:
             request['_plone_ec_cache'] = cache = {}
-        ec = cache.get( id(object), None )
+        ec = cache.get(id(object), None)
     else:
         ec = None
     if ec is None:
@@ -132,8 +136,9 @@ def getExprContext(context, object=None):
                         folder = parent
         ec = createExprContext(folder, portal, object)
         if request:
-            cache[ id(object) ] = ec
+            cache[id(object)] = ec
     return ec
+
 
 class PloneBaseTool:
     """Base class of all tools used in CMFPlone and Plone Core
@@ -150,5 +155,6 @@ class PloneBaseTool:
 
     def _getExprContext(self, object):
         return getExprContext(self, object)
+
 
 InitializeClass(PloneBaseTool)

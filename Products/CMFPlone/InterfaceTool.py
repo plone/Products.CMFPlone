@@ -14,7 +14,7 @@ from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
-_marker = ('module_finder',)
+_marker = ('module_finder', )
 
 
 class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
@@ -65,7 +65,7 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         bases = []
         for iface in ifaces:
             visitBaseInterfaces(iface, bases)
-        return [biface for biface in bases if biface not in ifaces ]
+        return [biface for biface in bases if biface not in ifaces]
 
     def getInterfaceInformations(self, iface):
         """Gets all useful informations from an iface
@@ -77,32 +77,33 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         * methods with signature and trimmed doc string
         * attributes with trimemd doc string
         """
-        bases = [ base for base in iface.getBases() ]
+        bases = [base for base in iface.getBases()]
 
         attributes = []
         methods = []
         for name, desc in iface.namesAndDescriptions():
             if IMethod.providedBy(desc):
-                methods.append({'signature' : desc.getSignatureString(),
-                                'name' : desc.getName(),
-                                'doc' : _trim_doc_string(desc.getDoc()),
+                methods.append({'signature': desc.getSignatureString(),
+                                'name': desc.getName(),
+                                'doc': _trim_doc_string(desc.getDoc()),
                                })
             else:
-                attributes.append({'name' : desc.getName(),
-                                   'doc' : _trim_doc_string(desc.getDoc()),
+                attributes.append({'name': desc.getName(),
+                                   'doc': _trim_doc_string(desc.getDoc()),
                                   })
 
         result = {
-            'name' : iface.getName(),
-            'dotted_name' : getDottedName(iface),
-            'doc' : _trim_doc_string(desc.getDoc()),
-            'bases' : bases,
-            'base_names' : [getDottedName(iface) for base in bases ],
-            'attributes' : attributes,
-            'methods' : methods,
+            'name': iface.getName(),
+            'dotted_name': getDottedName(iface),
+            'doc': _trim_doc_string(desc.getDoc()),
+            'bases': bases,
+            'base_names': [getDottedName(iface) for base in bases],
+            'attributes': attributes,
+            'methods': methods,
             }
 
         return result
+
 
 def resolveInterface(dotted_name):
     klass = resolve(dotted_name)
@@ -111,8 +112,10 @@ def resolveInterface(dotted_name):
     else:
         raise ValueError, '%r is not a valid Interface.' % dotted_name
 
+
 def getDottedName(iface):
     return "%s.%s" % (iface.__module__, iface.__name__)
+
 
 def _trim_doc_string(text):
     """
@@ -131,6 +134,7 @@ def _trim_doc_string(text):
         for line in lines[1:]:
             nlines.append(line[min_indent:])
     return '\n'.join(nlines)
+
 
 def visitBaseInterfaces(iface, lst):
     bases = iface.getBases()

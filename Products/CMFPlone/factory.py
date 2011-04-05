@@ -15,6 +15,7 @@ _CONTENT_PROFILE = 'Products.CMFPlone:plone-content'
 # A little hint for PloneTestCase
 _IMREALLYPLONE4 = True
 
+
 class HiddenProfiles(object):
     implements(INonInstallable)
 

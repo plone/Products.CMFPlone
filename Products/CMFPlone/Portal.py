@@ -27,6 +27,7 @@ member_search=context.restrictedTraverse('member_search_form')
 return member_search()
 """
 
+
 class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     """Make PloneSite subclass CMFSite and add some methods."""
 
@@ -59,8 +60,8 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     management_page_charset = 'utf-8'
     _default_sort_key = 'id'
     _properties = (
-        {'id':'title', 'type':'string', 'mode': 'w'},
-        {'id':'description', 'type':'text', 'mode': 'w'},
+        {'id': 'title', 'type': 'string', 'mode': 'w'},
+        {'id': 'description', 'type': 'text', 'mode': 'w'},
         )
     title = ''
     description = ''
@@ -77,7 +78,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
         if request is not None and 'REQUEST_METHOD' in request:
             if request.maybe_webdav_client:
                 method = request['REQUEST_METHOD']
-                if method in ('PUT',):
+                if method in ('PUT', ):
                     # Very likely a WebDAV client trying to create something
                     return ReplaceableWrapper(NullResource(self, 'index_html'))
                 elif method in ('GET', 'HEAD', 'POST'):
@@ -130,9 +131,9 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     def availableLanguages(self):
         util = queryUtility(IMetadataLanguageAvailability)
         languages = util.getLanguageListing()
-        languages.sort(lambda x,y:cmp(x[1], y[1]))
+        languages.sort(lambda x, y:cmp(x[1], y[1]))
         # Put language neutral at the top.
-        languages.insert(0,(u'',_(u'Language neutral (site default)')))
+        languages.insert(0, (u'', _(u'Language neutral (site default)')))
         return languages
 
     # Ensure portals don't get cataloged.
