@@ -439,6 +439,13 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         stack = stack[2:]
         if stack:
             obj = temp_obj.restrictedTraverse('/'.join(stack))
+
+            # Mimic URL traversal, sort of
+            if getattr(aq_base(obj), 'index_html', None):
+                obj = obj.restrictedTraverse('index_html')
+            else:
+                obj = getattr(obj, 'GET', obj)
+
         else:
             obj = temp_obj
         return mapply(obj, self.REQUEST.args, self.REQUEST,
