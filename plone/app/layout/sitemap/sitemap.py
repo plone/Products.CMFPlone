@@ -8,6 +8,7 @@ from cStringIO import StringIO
 
 from plone.memoize import ram
 
+
 def _render_cachekey(fun, self):
     # Cache by filename
     mtool = getToolByName(self.context, 'portal_membership')

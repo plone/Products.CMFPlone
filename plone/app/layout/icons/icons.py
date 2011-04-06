@@ -21,11 +21,11 @@ class BaseIcon(object):
 
     @memoize
     def html_tag(self):
-        
+
         if not self.url:
             return None
-        
-        tag = '<img width="%s" height="%s" src="%s"' % (self.width, self.height, self.url,)
+
+        tag = '<img width="%s" height="%s" src="%s"' % (self.width, self.height, self.url)
         if self.title:
             tag += ' title="%s"' % self.title
         if self.description:
@@ -85,7 +85,7 @@ class CMFContentIcon(BaseIcon):
         path = self.obj.getIcon(1)
         if not path:
             return path
-        
+
         portal_url = getToolByName(self.context, 'portal_url')()
         return "%s/%s" % (portal_url, path)
 
@@ -148,7 +148,7 @@ class PloneSiteContentIcon(BaseIcon):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
         if portal_state.is_rtl():
-            return "%s/rtl-site_icon.gif" % portal_url        
+            return "%s/rtl-site_icon.gif" % portal_url
         else:
             return "%s/site_icon.gif" % portal_url
 

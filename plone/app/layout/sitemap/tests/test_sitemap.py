@@ -41,7 +41,7 @@ class SiteMapTestCase(PloneTestCase):
         private = self.portal.private
         self.assertTrue('private' == self.wftool.getInfoFor(private,
                                                             'review_state'))
-        
+
         #setup published content that is accessible for anonymous
         self.portal.invokeFactory(id='published', type_name='Document')
         published = self.portal.published
@@ -56,7 +56,7 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('pending' == self.wftool.getInfoFor(pending,
                                                             'review_state'))
         self.logout()
-        
+
     def uncompress(self, sitemapdata):
         sio = StringIO(sitemapdata)
         unziped = GzipFile(fileobj=sio)
@@ -77,7 +77,7 @@ class SiteMapTestCase(PloneTestCase):
             self.assertTrue(INotFound.providedBy(e))
         else:
             self.fail('The disabled sitemap view has to raise NotFound!')
-            
+
     def test_authenticated_before_anonymous(self):
         '''
         Requests for the sitemap by authenticated users are not cached.
@@ -128,7 +128,7 @@ class SiteMapTestCase(PloneTestCase):
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/pending</loc>' in xml)
 
-        # changing the workflow state 
+        # changing the workflow state
         self.loginAsPortalOwner()
         pending = self.portal.pending
         self.wftool.doActionFor(pending, 'publish')
@@ -139,11 +139,11 @@ class SiteMapTestCase(PloneTestCase):
 
         #removing content
         self.loginAsPortalOwner()
-        self.portal.manage_delObjects(['published',])
+        self.portal.manage_delObjects(['published', ])
         self.logout()
 
         xml = self.uncompress(self.sitemap())
-        self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)        
+        self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
 
 
 def test_suite():

@@ -76,7 +76,9 @@ class NavigationViewlet(ViewletBase):
     def render(self):
         return xhtml_compress(self._template())
 
+
 class RSSViewlet(ViewletBase):
+
     def update(self):
         super(RSSViewlet, self).update()
         syntool = getToolByName(self.context, 'portal_syndication')

@@ -18,7 +18,7 @@ class PresentationView(BrowserView):
     @property
     def template(self):
         return self.index
-    
+
     def __call__(self):
         return self.template()
 
@@ -69,6 +69,7 @@ class PresentationView(BrowserView):
 
 
 class PresentationViewlet(ViewletBase):
+
     def update(self):
         getPresentation = getattr(self.context.aq_base, "getPresentation", None)
         self.presentation_enabled = False

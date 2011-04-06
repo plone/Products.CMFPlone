@@ -6,6 +6,7 @@ from Products.CMFCore.utils import getToolByName
 
 from interfaces import ITools
 
+
 class Tools(BrowserView):
     """Common tools
     """

@@ -17,7 +17,7 @@ class NextPreviousView(BrowserView):
         if provider is None:
             return None
         return provider.getNextItem(aq_inner(self.context))
-    
+
     def previous(self):
         provider = self._provider()
         if provider is None:

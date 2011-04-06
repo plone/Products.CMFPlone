@@ -18,7 +18,7 @@ class TestLayoutView(GlobalsTestCase):
         self.assertEqual(False, have_portlets('plone.rightcolumn'))
 
     def testDisableColumns(self):
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
         # Make sure we can force a column to appear even if there are no portlets
         self.app.REQUEST.set('disable_plone.leftcolumn', 0)

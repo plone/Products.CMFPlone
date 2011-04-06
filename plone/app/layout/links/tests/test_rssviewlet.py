@@ -8,6 +8,7 @@ class TestRSSViewletView(ViewletsTestCase):
     """
     Test the document by line viewlet
     """
+
     def afterSetUp(self):
         pass
 

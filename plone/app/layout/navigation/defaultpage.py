@@ -11,6 +11,7 @@ from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.interfaces import IDefaultPage
 
+
 class DefaultPage(BrowserView):
     implements(IDefaultPage)
 
@@ -21,7 +22,6 @@ class DefaultPage(BrowserView):
                           DeprecationWarning, 1)
 
         return isDefaultPage(aq_inner(self.context), obj)
-
 
     def getDefaultPage(self, context_=None):
         if context_ is not None:
@@ -72,7 +72,7 @@ def getDefaultPage(context):
             ids[id] = 1
 
     # 1. test for contentish index_html
-    if ids.has_key('index_html'):
+    if 'index_html' in ids:
         return 'index_html'
 
     # 2. Test for IBrowserDefault
@@ -98,7 +98,7 @@ def getDefaultPage(context):
     if isinstance(pages, basestring):
         pages = [pages]
     for page in pages:
-        if page and ids.has_key(page):
+        if page and page in ids:
             return page
 
     portal = queryUtility(ISiteRoot)
@@ -114,7 +114,7 @@ def getDefaultPage(context):
             site_properties = getattr(pp, 'site_properties', None)
             if site_properties is not None:
                 for page in site_properties.getProperty('default_page', []):
-                    if ids.has_key(page):
+                    if page in ids:
                         return page
 
     return None

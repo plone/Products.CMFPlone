@@ -4,6 +4,7 @@ from Testing import ZopeTestCase as ztc
 
 from plone.app.layout.analytics.tests import base
 
+
 def test_suite():
     return unittest.TestSuite((
         ztc.ZopeDocFileSuite(
