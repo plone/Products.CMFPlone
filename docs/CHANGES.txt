@@ -8,6 +8,10 @@ Changelog
 4.1b2 - Unreleased
 ------------------
 
+- Fix bug in formUnload.js where changes to select option lists without a
+  default were incorrectly detected (javascript indexes from 0, not 1.)
+  [elro]
+
 - Added "rss" alias to "RSS". 
   This fixes https://dev.plone.org/plone/ticket/11638.
   [gotcha]
