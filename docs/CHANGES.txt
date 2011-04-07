@@ -10,6 +10,7 @@ Changelog
 
 - Fix form submission when it has more than 5 tabs.
   This fixes http://dev.plone.org/plone/ticket/10868.
+  [thomasdesvenain]
 
 4.1b2 - 2011-04-06
 ------------------
