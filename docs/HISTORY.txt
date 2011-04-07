@@ -3,16 +3,40 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
-4.0.4 - Unreleased
+4.0.5 - 2011-04-06
 ------------------
 
+- Fixed: "showing field with error is broken in edit view"
+  This fixes http://dev.plone.orgplone/ticket/11686.
+  [gotcha]
+
+- Fixed: "missing required icon in tabs in edit view"
+  This fixes http://dev.plone.orgplone/ticket/11685.
+  [gotcha]
+
+- Added "rss" alias to "RSS". 
+  This fixes http://dev.plone.orgplone/ticket/11638.
+  [gotcha]
+
 - Fixed: "Show all" livesearch link manages "current folder only" option.
-  This fixes https://dev.plone.org/plone/ticket/11414.
+  This fixes http://dev.plone.orgplone/ticket/11414.
   [thomasdesvenain]
 
 - Fixed: "Show all" was not displayed in live search
   when limit result was exceeded.
-  This fixes https://dev.plone.org/plone/ticket/11628.
+  This fixes http://dev.plone.orgplone/ticket/11628.
+  [thomasdesvenain]
+
+4.0.4 - 2011-02-26
+------------------
+
+- Fixed: "Show all" livesearch link manages "current folder only" option.
+  This fixes http://dev.plone.orgplone/ticket/11414.
+  [thomasdesvenain]
+
+- Fixed: "Show all" was not displayed in live search
+  when limit result was exceeded.
+  This fixes http://dev.plone.orgplone/ticket/11628.
   [thomasdesvenain]
 
 - Add fallback icon for control panels with no icon, in the portlet_prefs
@@ -25,7 +49,7 @@ For what's new in this release, see CHANGES.txt.
   [msmith64]
 
 - Fixed handling of relative links used as default pages.
-  This fixes https://dev.plone.org/plone/ticket/11340.
+  This fixes http://dev.plone.orgplone/ticket/11340.
   [fRiSi]
 
 - Re-instate spinner.gif (animation), lost in the move to PNGs. The static
