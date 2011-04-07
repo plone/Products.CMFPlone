@@ -8,6 +8,9 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Fix form submission when it has more than 5 tabs.
+  This fixes http://dev.plone.org/plone/ticket/10868.
+
 4.1b2 - 2011-04-06
 ------------------
 
@@ -15,7 +18,7 @@ Changelog
   default were incorrectly detected (javascript indexes from 0, not 1.)
   [elro]
 
-- Added "rss" alias to "RSS". 
+- Added "rss" alias to "RSS".
   This fixes https://dev.plone.org/plone/ticket/11638.
   [gotcha]
 

@@ -22,8 +22,8 @@ var ploneFormTabbing = {
         // standard jQueryTools configuration options for all form tabs
         jqtConfig:{current:'selected'}
     };
-    
-    
+
+
 (function($) {
 
 ploneFormTabbing._buildTabs = function(container, legends) {
@@ -118,13 +118,19 @@ ploneFormTabbing.initializeForm = function() {
     }
     var tabsConfig = $.extend({}, ploneFormTabbing.jqtConfig, {'initialIndex':initialIndex});
     jqForm.children(tabSelector).tabs(
-        'form.enableFormTabbing fieldset.formPanel', 
+        'form.enableFormTabbing fieldset.formPanel',
         tabsConfig
         );
-    
+
     // save selected tab on submit
     jqForm.submit(function() {
-        var selected = ftabs.find('a.selected').attr('href').replace(/^#fieldsetlegend-/, "#fieldset-");
+    	var selected;
+    	if(ftabs.find('a.selected').length>=1){
+    		selected = ftabs.find('a.selected').attr('href').replace(/^#fieldsetlegend-/, "#fieldset-");
+    	}
+    	else{
+    		selected = ftabs.attr('value').replace(/^fieldsetlegend-/,'#fieldset-');
+    	}
         var fsInput = jqForm.find('input[name=fieldset.current]');
         if (selected && fsInput) {
             fsInput.val(selected);
@@ -140,7 +146,7 @@ ploneFormTabbing.initializeForm = function() {
 $.fn.ploneTabInit = function(pbo) {
     return this.each(function() {
         var item = $(this);
-        
+
         item.find("form.enableFormTabbing,div.enableFormTabbing").each(ploneFormTabbing.initializeForm);
         item.find("dl.enableFormTabbing").each(ploneFormTabbing.initializeDL);
 
