@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.1b2 - Unreleased
+4.1b2 - 2011-04-06
 ------------------
 
 - Fix bug in formUnload.js where changes to select option lists without a
