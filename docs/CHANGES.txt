@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Optimize the data indexed by the `allowedRolesAndUsers` index and the query
+  performed against it.
+  [hannosch]
+
 - Fix form submission when it has more than 5 tabs.
   This fixes http://dev.plone.org/plone/ticket/10868.
   [thomasdesvenain]

@@ -42,12 +42,17 @@ _marker = object()
 @indexer(Interface)
 def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.
-
-    Used by PortalCatalog to filter out items you're not allowed to see.
+    Used to filter out items you're not allowed to see.
     """
     allowed = {}
     for r in rolesForPermissionOn('View', obj):
         allowed[r] = 1
+    # shortcut roles and only index the most basic system role if the object
+    # is viewable by either of those
+    if 'Anonymous' in allowed:
+        return ['Anonymous']
+    elif 'Authenticated' in allowed:
+        return ['Authenticated']
     try:
         acl_users = getToolByName(obj, 'acl_users', None)
         if acl_users is not None:
@@ -257,9 +262,18 @@ class CatalogTool(PloneBaseTool, BaseTool):
     def _listAllowedRolesAndUsers(self, user):
         """Makes sure the list includes the user's groups.
         """
-        result = list(user.getRoles())
+        result = user.getRoles()
+        if 'Anonymous' in result:
+            # The anonymous user has no further roles
+            return ['Anonymous']
+        result = list(result)
         if hasattr(aq_base(user), 'getGroups'):
-            result = result + ['user:%s' % x for x in user.getGroups()]
+            # remove the AuthenticatedUsers group, the Authenticated role is
+            # already included in the user.getRoles() list
+            groups = ['user:%s' % x for x in user.getGroups() if
+                x != 'AuthenticatedUsers']
+            if groups:
+                result = result + groups
         result.append('Anonymous')
         result.append('user:%s' % user.getId())
         return result
