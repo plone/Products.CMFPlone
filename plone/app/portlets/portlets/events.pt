@@ -39,7 +39,7 @@
             <span tal:replace="obj/pretty_title_or_id">
              Some Event
             </span>
-        </a>    
+        </a>
             <span class="portletItemDetails">
                 <span
                  tal:condition="python: item_sametime"
