@@ -57,9 +57,6 @@
  </index>
  <index name="effectiveRange" meta_type="DateRangeIndex"
     since_field="effective" until_field="expires"/>
- <index name="end" meta_type="DateIndex">
-  <property name="index_naive_time_as_local">True</property>
- </index>
  <index name="expires" meta_type="DateIndex">
   <property name="index_naive_time_as_local">True</property>
  </index>
@@ -103,9 +100,6 @@
  <index name="sortable_title" meta_type="FieldIndex">
   <indexed_attr value="sortable_title"/>
  </index>
- <index name="start" meta_type="DateIndex">
-  <property name="index_naive_time_as_local">True</property>
- </index>
  <column value="CreationDate"/>
  <column value="Creator"/>
  <column value="Date"/>
@@ -119,7 +113,6 @@
  <column value="UID"/>
  <column value="created"/>
  <column value="effective"/>
- <column value="end"/>
  <column value="exclude_from_nav"/>
  <column value="expires"/>
  <column value="getIcon"/>
@@ -134,5 +127,4 @@
  <column value="modified"/>
  <column value="portal_type"/>
  <column value="review_state"/>
- <column value="start"/>
 </object>

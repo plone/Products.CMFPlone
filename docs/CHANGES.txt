@@ -5,6 +5,14 @@
 Changelog
 =========
 
+4.2 - Unreleased
+----------------
+
+- Adding plone.app.event dependency. Removing event related indexes from
+  catalog (those are set in p.a.event).
+  [thet]
+
+
 4.1b3 - Unreleased
 ------------------
 

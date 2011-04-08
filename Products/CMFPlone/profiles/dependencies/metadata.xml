@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>3.1</version>
+  <version>3.2</version>
   <dependencies>
     <dependency>profile-Products.Archetypes:Archetypes</dependency>
     <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
@@ -8,6 +8,7 @@
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
     <dependency>profile-Products.TinyMCE:TinyMCE</dependency>
     <dependency>profile-archetypes.referencebrowserwidget:default</dependency>
+    <dependency>profile-plone.app.event:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plone.app.imaging:default</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>

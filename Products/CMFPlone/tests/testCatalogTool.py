@@ -108,7 +108,7 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
     def testEndIsDateIndex(self):
         # end should be a DateIndex
         self.assertEqual(self.catalog.Indexes['end'].__class__.__name__,
-                         'DateIndex')
+                         'DateRecurringIndex')
 
     def testExpiresIsDateIndex(self):
         # expires should be a DateIndex
@@ -123,7 +123,7 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
     def testStartIsDateIndex(self):
         # start should be a DateIndex
         self.assertEqual(self.catalog.Indexes['start'].__class__.__name__,
-                         'DateIndex')
+                         'DateRecurringIndex')
 
     def testEffectiveRangeIsDateRangeIndex(self):
         # effectiveRange should be a DateRangeIndex
