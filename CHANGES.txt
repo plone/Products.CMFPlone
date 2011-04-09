@@ -1,6 +1,7 @@
 Changelog
 =========
 
+
 2.1.5 - unreleased
 ------------------
 
@@ -15,12 +16,14 @@ Changelog
 - Added navigation_root to plone_portal_state.
   [elro]
 
+
 2.1.3 - 2011-03-02
 ------------------
 
 - Fixed i18n of the "Log in to add comments" button. It was a regression
   since 2.0. This fixes http://dev.plone.org/plone/ticket/11525
   [vincentfretin]
+
 
 2.1.2 - 2011-02-10
 ------------------
@@ -34,12 +37,14 @@ Changelog
   This fixes http://dev.plone.org/plone/ticket/10672
   [fRiSi]
 
+
 2.1.1 - 2011-02-04
 ------------------
 
 - Do not show personaltools if there aren't any user actions.
   This fixes https://dev.plone.org/plone/ticket/11460
   [fRiSi]
+
 
 2.1 - 2011-01-13
 ----------------
@@ -50,12 +55,14 @@ Changelog
 - Remove login redirect alias. As of Plone 4.1 there is a login script.
   [elro]
 
+
 2.0.7 - 2011-02-25
 ------------------
 
 - Fixed i18n of the "Log in to add comments" button. It was a regression since
   2.0. This fixes http://dev.plone.org/plone/ticket/11525 
   [vincentfretin]
+
 
 2.0.6 - 2011-01-03
 ------------------
@@ -76,6 +83,7 @@ Changelog
   http://dev.plone.org/plone/ticket/10850
   [eleddy]
 
+
 2.0.5 - 2010-11-15
 ------------------
 
@@ -92,6 +100,7 @@ Changelog
   This fixes http://dev.plone.org/plone/ticket/11007
   [kiorky]
 
+
 2.0.4 - 2010-09-28
 ------------------
 
@@ -105,6 +114,7 @@ Changelog
   same id of an existing tab.
   Fixes http://dev.plone.org/plone/ticket/11140
   [WouterVH]
+
 
 2.0.3 - 2010-09-15
 ------------------
@@ -121,6 +131,7 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/10866
   [cwainwright]
 
+
 2.0.2 - 2010-08-03
 ------------------
 
@@ -135,11 +146,13 @@ Changelog
 - Correct CSS class attribute for next/previous links.
   [esteele]
 
+
 2.0.1 - 2010-07-18
 ------------------
 
 - Update license to GPL version 2 only.
   [hannosch]
+
 
 2.0 - 2010-07-01
 ----------------
@@ -166,6 +179,7 @@ Changelog
   applied via CSS can also be controlled.
   [davisagli]
 
+
 2.0b8 - 2010-06-03
 ------------------
 
@@ -178,6 +192,7 @@ Changelog
 
 - Document byline should not show history link to anonymous users.
   [elro]
+
 
 2.0b7 - 2010-05-03
 ------------------
@@ -198,6 +213,7 @@ Changelog
 - Added apple-touch-icon (iPhone/iPad home screen icon) definition to
   favicon.pt
   [limi]
+
 
 2.0b6 - 2010-04-07
 ------------------
@@ -224,6 +240,7 @@ Changelog
   achieve the old viewlet positions.
   [davisagli]
 
+
 2.0b5 - 2010-03-05
 ------------------
 
@@ -235,12 +252,14 @@ Changelog
   quadratic complexity.
   [hannosch]
 
+
 2.0b4 - 2010-02-18
 ------------------
 
 - Updated history_view.pt to the recent markup conventions.
   References http://dev.plone.org/old/plone/ticket/9981
   [spliter]
+
 
 2.0b3 - 2010-02-17
 ------------------
@@ -289,6 +308,7 @@ Changelog
 - Fixed broken reference to portal_workflow in document_relateditems-viewlet
   [tom_gross]
 
+
 2.0b2 - 2010-01-31
 ------------------
 
@@ -336,6 +356,7 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/9405 - thanks saily.
   [pelle]
 
+
 2.0a5 - 2009-12-27
 ------------------
 
@@ -349,6 +370,7 @@ Changelog
 - Use the correct ViewPageTemplateFile from Five for the links viewlets.
   [hannosch]
 
+
 2.0a4 - 2009-12-16
 ------------------
 
@@ -360,6 +382,7 @@ Changelog
 - ``plone.htmlhead.title`` was not editable TTW. This closes
   http://dev.plone.org/plone/ticket/9488.
   [hannosch]
+
 
 2.0a3 - 2009-12-02
 ------------------
@@ -389,6 +412,7 @@ Changelog
 - Portal logo has to have 'title' attribute for better accessibility.
   [spliter]
 
+
 2.0a2 - 2009-11-15
 ------------------
 
@@ -398,6 +422,7 @@ Changelog
 - Avoid calling lots of Python scripts from inside the content history viewlet
   and use methods on the view instead.
   [hannosch]
+
 
 2.0a1 - 2009-11-15
 ------------------
@@ -480,11 +505,12 @@ Changelog
   [elro]
 
 
-1.2.5 - unreleased
+1.2.5 - 2009-08-01
 ------------------
 
 - In the history viewlet, moved again the arrows inside a span, it's really needed to apply a style.
   [vincentfretin]
+
 
 1.2.4 - 2009-07-04
 ------------------
@@ -494,11 +520,13 @@ Changelog
   http://dev.plone.org/plone/ticket/9064
   [limi, vincentfretin]
 
+
 1.2.3 - 2009-06-12
 ------------------
 
 - Fix issue when dealing with empty version histories in history viewlet.
   [alecm]
+
 
 1.2.2 - 2009-06-11
 ------------------
@@ -510,14 +538,16 @@ Changelog
 - Make ContentHistoryViewlet check if context isVersionable.
   [elro]
 
+
 1.2.1 - 2009-05-20
 ------------------
 
 - Changed the search and author header links to respect the navigation root.
   [hannosch]
 
-1.2 - May 16, 2009
-------------------
+
+1.2 - 2009-05-16
+----------------
 
 - Filter not-interesting history entries in content history viewlet. This
   prevents an empty history viewlet from being shown.
@@ -539,8 +569,9 @@ Changelog
 - Author link tag should follow same rules as byline viewlet.
   [elro]
 
-1.2rc1 - March 20, 2009
------------------------
+
+1.2rc1 - 2009-03-20
+-------------------
 
 - Fixed i18n in content_history template.
   There were two nested msgids and dynamic content.
@@ -548,6 +579,7 @@ Changelog
 
 - Removed stray span tags in the comment byline.
   [limi]
+
 
 1.2b1 - 2009-03-07
 ------------------
@@ -590,8 +622,8 @@ Changelog
   [stefan]
 
 
-1.1.7 - December 15, 2008
--------------------------
+1.1.7 - 2008-12-15
+------------------
 
 - Modified user profile item on the dashboard to use an image tag
   instead of a background image. This makes it more consistent with
@@ -599,8 +631,8 @@ Changelog
   [emanlove]
 
 
-1.1.6 Released November 21st, 2008
-----------------------------------
+1.1.6 - 2008-11-21
+------------------
 
 - Avoid a test failure caused by test interdependencies.
   [hannosch]
@@ -624,8 +656,9 @@ Changelog
   closes http://dev.plone.org/plone/ticket/8402
   [encolpe]
 
-1.1.5 Released August 18th, 2008
---------------------------------
+
+1.1.5 - 2008-08-18
+------------------
 
 - Fixed an invalid message id for the dashboard. This closes
   http://dev.plone.org/plone/ticket/7758.
@@ -658,8 +691,9 @@ Changelog
   since we changed the version numbering again.
   [hannosch]
 
-1.1.3 Released July 7th, 2008
-------------------------------
+
+1.1.3 - 2008-07-07
+------------------
 
 - Made PersonalBarViewlet tolerate users who don't have a Plone user object, as
   when using OpenID or apachepas. This fixes
@@ -670,8 +704,9 @@ Changelog
   that they can be overridden using the 'template' ZCML attribute.
   [davisagli]
 
-1.1.0 Released April 20th, 2008
--------------------------------
+
+1.1.0 - 2008-04-20
+------------------
 
 - Applied patch from http://dev.plone.org/plone/ticket/7942 to ensure that the
   'currentParent' marker is not True for items that have a path that is a
@@ -712,8 +747,9 @@ Changelog
 - Make viewlet managers in head section order- and filterable.
   [fschulze]
 
-1.0.6
------
+
+1.0.6 - 2008-09-10
+------------------
 
 - Added i18n markup to nextprevious.pt.
   This closes http://dev.plone.org/plone/ticket/7537.
@@ -725,16 +761,16 @@ Changelog
   [maurits]
 
 
-1.0.5 Released January 3rd, 2008
---------------------------------
+1.0.5 - 2008-01-03
+------------------
 
 - Do not create an empty <ul> in the personal actions bar if there are
   no items in it. This fixes an XHTML syntax error.
   [wichert]
 
 
-1.0.4 Released December 6th, 2007
----------------------------------
+1.0.4 - 2007-12-06
+------------------
 
 - Added i18n domain to comment.pt.
   [martior]
@@ -750,15 +786,15 @@ Changelog
   [rsantos]
 
 
-1.0.3 Released November 9, 2007
---------------------------------
+1.0.3 - 2007-11-09
+------------------
 
 - Made getIcon urls relative to portal root.
   [tesdal]
 
 
-1.0.2 Released October 8th, 2007
---------------------------------
+1.0.2 - 2007-10-08
+------------------
 
 - Fixed getIcon code for use with ++resource++ and to use a safer method
   of getting the correct url.
@@ -769,8 +805,8 @@ Changelog
   [deo]
 
 
-1.0.1
------
+1.0.1.1 - 2007-09-10
+--------------------
 
 - Lower logging level of 'no associated workflow' to avoid a log entry
   on each view.
@@ -793,8 +829,8 @@ Changelog
   [hannosch]
 
 
-1.0 Released August 17th, 2007
-------------------------------
+1.0 - 2007-08-17
+----------------
 
 - Fixed the translation of the 'Show this page in presentation mode...'
   message.
