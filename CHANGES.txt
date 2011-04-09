@@ -1,8 +1,13 @@
 Changelog
 =========
 
+
 2.1.3 - Unreleased
 ------------------
+
+- Add MANIFEST.in.
+  [WouterVH]
+
 
 2.1.2 - 2011-02-10
 ------------------
@@ -16,11 +21,13 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/9929
   [thet]
 
+
 2.1.1 - 2011-01-03
 ------------------
 
 - Depend on ``Products.CMFPlone`` instead of ``Plone``.
   [elro]
+
 
 2.0.2 - 2010-12-23
 ------------------
@@ -49,6 +56,7 @@ Changelog
 - Fix #11409: use the TTW customized view name if any.
   [kiorky]
 
+
 2.0.1 - 2010-09-09
 ------------------
 
@@ -56,11 +64,13 @@ Changelog
   unless the title is explicitly specified.
   [spliter]
 
+
 2.0 - 2010-07-18
 ----------------
 
 - Update license to GPL version 2 only.
   [hannosch]
+
 
 2.0b11 - 2010-06-13
 -------------------
@@ -76,6 +86,7 @@ Changelog
 
 - Updated to use five.formlib.
   [hannosch]
+
 
 2.0b10 - 2010-06-03
 -------------------
@@ -100,6 +111,7 @@ Changelog
 - Fix regressions in date handling in events portlet.
   Fixes http://dev.plone.org/plone/ticket/10506.
   [davisagli]
+
 
 2.0b9 - 2010-05-01
 ------------------
@@ -130,6 +142,7 @@ Changelog
   when logged out. Closes http://dev.plone.org/plone/ticket/10045.
   [davisagli]
 
+
 2.0b8 - 2010-04-10
 ------------------
 
@@ -141,6 +154,7 @@ Changelog
 - Catch KeyError in EditPortletManagerRenderer. Now the manage-portlets
   doesn't break on invalid portlets any longer.
   [tom_gross]
+
 
 2.0b7 - 2010-04-07
 ------------------
@@ -154,6 +168,7 @@ Changelog
 
 - Add test coverage for empty type icons in the navigation portlet.
   [rossp]
+
 
 2.0b6 - 2010-03-05
 ------------------
@@ -173,11 +188,13 @@ Changelog
   navigation portlet. Fixes http://dev.plone.org/plone/ticket/10232.
   [WouterVH, hannosch]
 
+
 2.0b5 - 2010-02-18
 ------------------
 
 - Updated portlets-pageform.pt to disable columns via REQUEST variable.
   [spliter]
+
 
 2.0b4 - 2010-02-17
 ------------------
@@ -207,11 +224,13 @@ Changelog
 - Navtree item_icon must be accessed nocall: for later item_icon/html_tag.
   [elro]
 
+
 2.0b3 - 2010-01-28
 ------------------
 - Change group portlets and group dashboard links to point to the new
   @@usergroup-groupmembership view.
   [esteele]
+
 
 2.0b2 - 2010-01-25
 ------------------
@@ -235,6 +254,7 @@ Changelog
   portlets.xml keys. Fixes http://dev.plone.org/plone/ticket/9764.
   [maurits]
 
+
 2.0b1 - 2010-01-03
 ------------------
 
@@ -244,6 +264,7 @@ Changelog
 - Removed unhelpful log messages which cluttered the log during upgrades.
   [hannosch]
 
+
 2.0a4 - 2009-12-27
 ------------------
 
@@ -252,6 +273,7 @@ Changelog
 
 - Added missing package dependencies.
   [hannosch]
+
 
 2.0a3 - 2009-12-21
 ------------------
@@ -265,6 +287,7 @@ Changelog
   http://dev.plone.org/plone/ticket/9668
   [pelle]
 
+
 2.0a2 - 2009-12-02
 ------------------
 
@@ -277,6 +300,7 @@ Changelog
 - Remove the BBB code for the old style for= attributes on import of
   portlets pre-3.1.  This was deprecated for 4.0, it now raises an error.
   [matthewwilkes]
+
 
 2.0a1 - 2009-11-15
 ------------------
@@ -327,6 +351,7 @@ Changelog
 - Specified package dependencies.
   [hannosch]
 
+
 1.2.1 - unreleased
 -------------------
 
@@ -356,6 +381,7 @@ Changelog
 - Some XHTML fixes to be also XHTML Strict compliant.
   See http://dev.plone.org/plone/ticket/4379
   [keul]
+
 
 1.2 - July 13, 2009
 -------------------
@@ -408,11 +434,13 @@ Changelog
   Let the default view on the Link type decide what's best
   [andrewb]
 
+
 1.1.7 (Unreleased)
 ------------------
 
 - Fixed exportimport to support xml CDATA, thanks to lucie
   [calvinhp]
+
 
 1.1.6 - 2009-03-07
 ------------------
@@ -439,6 +467,7 @@ Changelog
 - Fixed Review List template that was making a bad call to
   pretty_title_or_id. This closes http://dev.plone.org/plone/ticket/8401.
   [dunlapm]
+
 
 1.1.5 (2008-08-18)
 ------------------
@@ -633,6 +662,7 @@ Changelog
   in situations where one of the sections was a navigation root.
   [wichert]
 
+
 1.0.5
 -----
 
@@ -647,6 +677,7 @@ Changelog
 - Provide proper 'id' implementations for assignment mappings and
   assignments. This makes absolute_url() work properly.
   [optilude]
+
 
 1.0.2
 -----
@@ -672,6 +703,7 @@ Changelog
   cachekey.
   [ldr]
 
+
 1.0.1
 -----
 
@@ -681,6 +713,7 @@ Changelog
 - Change event portlet to use getIcon. This fixes
   http://dev.plone.org/plone/ticket/5075.
   [limi]
+
 
 1.0
 ---
