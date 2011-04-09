@@ -24,11 +24,12 @@ from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMappin
 ATTEMPTS = 10000
 
 category_to_name = {
-    constants.CONTEXT_CATEGORY      : 'contextportlets',
-    constants.USER_CATEGORY         : 'dashboard',
-    constants.GROUP_CATEGORY        : 'groupportlets',
-    constants.CONTENT_TYPE_CATEGORY : 'contenttypeportlets',
+    constants.CONTEXT_CATEGORY: 'contextportlets',
+    constants.USER_CATEGORY: 'dashboard',
+    constants.GROUP_CATEGORY: 'groupportlets',
+    constants.CONTENT_TYPE_CATEGORY: 'contenttypeportlets',
 }
+
 
 class PortletAssignmentMapping(BaseMapping, SimpleItem):
     """A Zope 2 version of the default assignment mapping storage.
@@ -51,11 +52,13 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
     def __setitem__(self, key, assignment):
         BaseMapping.__setitem__(self, key, aq_base(assignment))
 
+
 class UserPortletAssignmentMapping(PortletAssignmentMapping):
     """An assignment mapping for user/dashboard portlets
     """
 
     implements(IUserPortletAssignmentMapping)
+
 
 class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
     """An assignment mapping for group dashboard portlets
@@ -68,7 +71,8 @@ class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
         manager = self.__manager__
         key = self.__name__
 
-        return "++groupdashboard++%s+%s" % (manager, key,)
+        return "++groupdashboard++%s+%s" % (manager, key)
+
 
 class PortletAssignmentMappingTraverser(ItemTraverser):
     """A traverser for portlet assignment mappings, that is acqusition-aware
@@ -79,6 +83,7 @@ class PortletAssignmentMappingTraverser(ItemTraverser):
     def publishTraverse(self, request, name):
         ob = ItemTraverser.publishTraverse(self, request, name)
         return ob.__of__(self.context)
+
 
 class PortletsNameChooser(NameChooser):
     """A name chooser for portlets

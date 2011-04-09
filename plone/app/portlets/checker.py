@@ -10,6 +10,7 @@ from plone.app.portlets.interfaces import IPortletPermissionChecker
 from AccessControl import getSecurityManager, Unauthorized
 from Acquisition import aq_inner
 
+
 class DefaultPortletPermissionChecker(object):
     implements(IPortletPermissionChecker)
     adapts(IPortletAssignmentMapping)
@@ -25,6 +26,7 @@ class DefaultPortletPermissionChecker(object):
         # run wild
         if not sm.checkPermission("Portlets: Manage portlets", context):
             raise Unauthorized("You are not allowed to manage portlets")
+
 
 class UserPortletPermissionChecker(object):
     implements(IPortletPermissionChecker)
@@ -46,6 +48,7 @@ class UserPortletPermissionChecker(object):
 
         if context.__name__ != user_id:
             raise Unauthorized("You are only allowed to manage your own portlets")
+
 
 class GroupDashboardPortletPermissionChecker(object):
     implements(IPortletPermissionChecker)

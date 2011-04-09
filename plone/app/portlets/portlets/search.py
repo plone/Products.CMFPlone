@@ -22,6 +22,7 @@ class ISearchPortlet(IPortletDataProvider):
             default = True,
             required = False)
 
+
 class Assignment(base.Assignment):
     implements(ISearchPortlet)
 

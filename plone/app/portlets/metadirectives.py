@@ -63,6 +63,7 @@ class IPortletDirective(Interface):
         required=False
         )
 
+
 class IPortletRendererDirective(Interface):
     """Register a portlet renderer, i.e. a different view of a portlet
     """

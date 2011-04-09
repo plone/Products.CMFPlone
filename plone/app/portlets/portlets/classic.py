@@ -22,6 +22,7 @@ class IClassicPortlet(IPortletDataProvider):
                          default='portlet',
                          required=True)
 
+
 class Assignment(base.Assignment):
     implements(IClassicPortlet)
 
@@ -32,6 +33,7 @@ class Assignment(base.Assignment):
     @property
     def title(self):
         return self.template
+
 
 class Renderer(base.Renderer):
 
@@ -51,6 +53,7 @@ class Renderer(base.Renderer):
             expr += '/macros/%s' % self.data.macro
         return expr
 
+
 class AddForm(base.AddForm):
     form_fields = form.Fields(IClassicPortlet)
     label = _(u"Add Classic Portlet")
@@ -59,6 +62,7 @@ class AddForm(base.AddForm):
     def create(self, data):
         return Assignment(template=data.get('template', ''),
                           macro=data.get('macro', ''))
+
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IClassicPortlet)

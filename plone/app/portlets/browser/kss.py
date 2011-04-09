@@ -40,7 +40,6 @@ class PortletManagerKSS(base):
 
         return self._render_column(info, viewname)
 
-
     def move_portlet_down(self, portlethash, viewname):
         info = unhashPortletInfo(portlethash)
         assignments = assignment_mapping_from_key(self.context,
@@ -80,8 +79,6 @@ class PortletManagerKSS(base):
         settings['visible'] = not visible
         return self._render_column(info, viewname)
 
-
-
     def _render_column(self, info, view_name):
         ksscore = self.getCommandSet('core')
         selector = ksscore.getCssSelector('div#portletmanager-' + info['manager'].replace('.', '-'))
@@ -98,7 +95,7 @@ class PortletManagerKSS(base):
         request['key'] = info['key']
 
         request['viewname'] = view_name
-        renderer = getMultiAdapter((context, request, view, manager,), IPortletManagerRenderer)
+        renderer = getMultiAdapter((context, request, view, manager), IPortletManagerRenderer)
         renderer.update()
         ksscore.replaceInnerHTML(selector, renderer.__of__(context).render())
         return self.render()

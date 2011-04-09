@@ -14,12 +14,13 @@ from plone.app.portlets.portlets import review
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Review')
@@ -61,12 +62,13 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, review.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(['Manager'])
+        self.setRoles(('Manager'), )
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
         self.portal.portal_membership.getMemberById('test_user_1_').setMemberProperties(

@@ -13,6 +13,7 @@ from Products.PluggableAuthService.PropertiedUser import PropertiedUser
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+
 class TestDashboard(PortletsTestCase):
 
     def test_default_dashboard_created_for_new_user(self):
@@ -45,7 +46,6 @@ class TestDashboard(PortletsTestCase):
         # portlets
         retriever.getPortlets()
 
-
     def test_disable_dasboard_breaks_event_portlet(self):
         # Bug #8230: disabling the dashboard breaks the event portlet
         self.portal.manage_permission('Portlets: Manage own portlets',
@@ -59,6 +59,7 @@ class TestDashboard(PortletsTestCase):
             addview()
         except Unauthorized:
             self.fail()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

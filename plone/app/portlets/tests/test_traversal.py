@@ -13,9 +13,9 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
-
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.portlets import classic
+
 
 class TestTraversal(PortletsTestCase):
 
@@ -58,10 +58,10 @@ class TestTraversal(PortletsTestCase):
 
         checker = IPortletPermissionChecker(mapping)
 
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
         checker() # no exception
 
-        self.setRoles(('Member',))
+        self.setRoles(('Member', ))
         self.assertRaises(Unauthorized, checker)
 
     def testGroupNamespace(self):
@@ -81,6 +81,7 @@ class TestTraversal(PortletsTestCase):
         mapping['foo'] = assignment
         self.failUnless(manager[CONTENT_TYPE_CATEGORY]['Image']['foo'] is assignment)
         self.assertEquals('++contenttypeportlets++plone.leftcolumn+Image', mapping.id)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -17,6 +17,7 @@ from plone.app.portlets.browser.adding import PortletAdding
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+
 class TestNameChooser(PortletsTestCase):
 
     def testNameChooser(self):
@@ -28,6 +29,7 @@ class TestNameChooser(PortletsTestCase):
         d = classic.Assignment()
         self.failIfEqual(chooser.chooseName(None, d), c.__name__)
 
+
 class TestContextMapping(PortletsTestCase):
 
     def afterSetUp(self):
@@ -36,16 +38,17 @@ class TestContextMapping(PortletsTestCase):
         self.manager = getUtility(IPortletManager, name=u'plone.leftcolumn')
 
     def testAdapting(self):
-        mapping = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)
+        mapping = getMultiAdapter((self.folder, self.manager), IPortletAssignmentMapping)
         self.assertEquals(0, len(mapping))
 
     def testEquivalence(self):
-        mapping = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)
+        mapping = getMultiAdapter((self.folder, self.manager), IPortletAssignmentMapping)
         c = classic.Assignment()
         mapping['foo'] = c
 
-        mapping2 = getMultiAdapter((self.folder, self.manager,), IPortletAssignmentMapping)
+        mapping2 = getMultiAdapter((self.folder, self.manager), IPortletAssignmentMapping)
         self.assertEquals(mapping2['foo'], c)
+
 
 class TestTraverser(PortletsTestCase):
 
@@ -67,6 +70,7 @@ class TestTraverser(PortletsTestCase):
 
     def testTraverseToNonExistent(self):
         self.assertRaises(NotFound, self.traverser.publishTraverse, self.folder.REQUEST, 'bar')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

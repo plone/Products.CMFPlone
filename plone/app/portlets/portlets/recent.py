@@ -22,6 +22,7 @@ class IRecentPortlet(IPortletDataProvider):
                        required=True,
                        default=5)
 
+
 class Assignment(base.Assignment):
     implements(IRecentPortlet)
 
@@ -32,10 +33,12 @@ class Assignment(base.Assignment):
     def title(self):
         return _(u"Recent items")
 
+
 def _render_cachekey(fun, self):
     if self.anonymous:
         raise ram.DontCache()
     return render_cachekey(fun, self)
+
 
 class Renderer(base.Renderer):
     _template = ViewPageTemplateFile('recent.pt')
@@ -88,6 +91,7 @@ class AddForm(base.AddForm):
 
     def create(self, data):
         return Assignment(count=data.get('count', 5))
+
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IRecentPortlet)

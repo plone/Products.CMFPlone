@@ -23,6 +23,7 @@ from plone.app.portlets.browser.interfaces import IPortletEditForm
 _template = ViewPageTemplateFile('templates/portlets-pageform.pt')
 portlets_named_template_adapter = named_template_adapter(_template)
 
+
 class AddForm(formbase.AddFormBase):
     """A base add form for portlets.
 
@@ -76,6 +77,7 @@ class AddForm(formbase.AddFormBase):
         if nextURL:
             self.request.response.redirect(self.nextURL())
         return ''
+
 
 class NullAddForm(BrowserView):
     """An add view that will add its content immediately, without presenting

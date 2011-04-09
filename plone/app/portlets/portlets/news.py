@@ -32,6 +32,7 @@ class INewsPortlet(IPortletDataProvider):
                              vocabulary="plone.app.vocabularies.WorkflowStates")
                          )
 
+
 class Assignment(base.Assignment):
     implements(INewsPortlet)
 
@@ -42,6 +43,7 @@ class Assignment(base.Assignment):
     @property
     def title(self):
         return _(u"News")
+
 
 class Renderer(base.Renderer):
 
@@ -86,13 +88,15 @@ class Renderer(base.Renderer):
                        sort_order='reverse',
                        sort_limit=limit)[:limit]
 
+
 class AddForm(base.AddForm):
     form_fields = form.Fields(INewsPortlet)
     label = _(u"Add News Portlet")
     description = _(u"This portlet displays recent News Items.")
 
     def create(self, data):
-        return Assignment(count=data.get('count', 5), state=data.get('state', ('published',)))
+        return Assignment(count=data.get('count', 5), state=data.get('state', ('published', )))
+
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(INewsPortlet)

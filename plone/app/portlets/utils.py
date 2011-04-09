@@ -23,6 +23,7 @@ from plone.app.portlets.storage import UserPortletAssignmentMapping
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 
+
 def assignment_mapping_from_key(context, manager_name, category, key, create=False):
     """Given the name of a portlet manager, the name of a category, and a
     key in that category, return the IPortletAssignmentMapping.
@@ -58,6 +59,7 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
                 mapping[key] = PortletAssignmentMapping()
         return mapping[key]
 
+
 def assignment_from_key(context, manager_name, category, key, name):
     """Given the name of a portlet manager, the name of a category, a
     key in that category and the name of a particular assignment, return
@@ -67,20 +69,21 @@ def assignment_from_key(context, manager_name, category, key, name):
 
 DONT_MIGRATE = object()
 
+
 def convert_legacy_portlets(context):
     """Convert legacy portlets (left_slots, right_slots) in the given
     context to new-style portlets.
     """
 
-    portletsMapping = { 'portlet_login'      : login.Assignment(),
-                        'portlet_news'       : news.Assignment(count=5),
-                        'portlet_events'     : events.Assignment(count=5),
-                        'portlet_navigation' : navigation.Assignment(),
-                        'portlet_calendar'   : calendar.Assignment(),
-                        'portlet_review'     : review.Assignment(),
-                        'portlet_recent'     : recent.Assignment(count=5),
-                        'portlet_related'    : DONT_MIGRATE,
-                        'portlet_languages'  : DONT_MIGRATE,
+    portletsMapping = {'portlet_login': login.Assignment(),
+                       'portlet_news': news.Assignment(count=5),
+                       'portlet_events': events.Assignment(count=5),
+                       'portlet_navigation': navigation.Assignment(),
+                       'portlet_calendar': calendar.Assignment(),
+                       'portlet_review': review.Assignment(),
+                       'portlet_recent': recent.Assignment(count=5),
+                       'portlet_related': DONT_MIGRATE,
+                       'portlet_languages': DONT_MIGRATE,
                       }
 
     # Convert left_slots and right_slots to portlets
@@ -104,7 +107,7 @@ def convert_legacy_portlets(context):
         path = item.split('/')
         if len(path) == 4:
             newPortlet = portletsMapping.get(path[1], None)
-            if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
+            if newPortlet is None and path[0] in ('context', 'here') and path[2] == 'macros':
                 newPortlet = classic.Assignment(path[1], path[3])
             if newPortlet is not None and newPortlet is not DONT_MIGRATE:
                 leftAssignable[leftChooser.chooseName(None, newPortlet)] = newPortlet
@@ -113,7 +116,7 @@ def convert_legacy_portlets(context):
         path = item.split('/')
         if len(path) == 4:
             newPortlet = portletsMapping.get(path[1], None)
-            if newPortlet is None and path[0] in ('context', 'here',) and path[2] == 'macros':
+            if newPortlet is None and path[0] in ('context', 'here') and path[2] == 'macros':
                 newPortlet = classic.Assignment(path[1], path[3])
             if newPortlet is not None and newPortlet is not DONT_MIGRATE:
                 rightAssignable[rightChooser.chooseName(None, newPortlet)] = newPortlet

@@ -10,15 +10,15 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletRenderer
 
 from plone.app.portlets.portlets import rss
-
 from plone.app.portlets.tests.base import PortletsTestCase
+
 
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.rss')
@@ -59,6 +59,7 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, rss.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
@@ -83,6 +84,7 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals(r.title, u'')
         r.data.portlet_title = u'Overridden title'
         self.assertEquals(r.title, u'Overridden title')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

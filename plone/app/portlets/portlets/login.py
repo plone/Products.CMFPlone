@@ -14,10 +14,12 @@ class ILoginPortlet(IPortletDataProvider):
     """A portlet which can render a login form.
     """
 
+
 class Assignment(base.Assignment):
     implements(ILoginPortlet)
 
     title = _(u'label_log_in', default=u'Log in')
+
 
 class Renderer(base.Renderer):
 
@@ -91,6 +93,7 @@ class Renderer(base.Renderer):
         pass
 
     render = ViewPageTemplateFile('login.pt')
+
 
 class AddForm(base.NullAddForm):
 

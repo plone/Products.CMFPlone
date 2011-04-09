@@ -15,12 +15,13 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
@@ -69,6 +70,7 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, classic.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
@@ -99,6 +101,7 @@ class TestRenderer(PortletsTestCase):
     def testRenderClassicPortlet(self):
         r = self.renderer(assignment=classic.Assignment(template='base_view', macro='content-core'))
         r.render()
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

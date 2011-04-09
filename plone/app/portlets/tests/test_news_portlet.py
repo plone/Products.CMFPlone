@@ -14,12 +14,13 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.News')
@@ -68,6 +69,7 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, news.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
@@ -86,16 +88,16 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def test_published_news_items(self):
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
         self.portal.invokeFactory('News Item', 'n1')
         self.portal.invokeFactory('News Item', 'n2')
         self.portal.portal_workflow.doActionFor(self.portal.n1, 'publish')
 
-        r = self.renderer(assignment=news.Assignment(count=5, state=('draft',)))
+        r = self.renderer(assignment=news.Assignment(count=5, state=('draft', )))
         self.assertEquals(0, len(r.published_news_items()))
         r = self.renderer(assignment=news.Assignment(count=5, state=('published', )))
         self.assertEquals(1, len(r.published_news_items()))
-        r = self.renderer(assignment=news.Assignment(count=5, state=('published', 'private',)))
+        r = self.renderer(assignment=news.Assignment(count=5, state=('published', 'private', )))
         self.assertEquals(2, len(r.published_news_items()))
 
     def test_all_news_link(self):
@@ -106,6 +108,7 @@ class TestRenderer(PortletsTestCase):
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Folder', 'news')
         self.failUnless(r.all_news_link().endswith('/news'))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

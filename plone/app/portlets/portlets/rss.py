@@ -21,6 +21,7 @@ ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride, )
 # store the feeds here (which means in RAM)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
+
 class IFeed(Interface):
 
     def __init__(url, timeout):
@@ -62,6 +63,7 @@ class IFeed(Interface):
 
     def ok():
         """is this feed ok to display?"""
+
 
 class RSSFeed(object):
     """an RSS feed"""
@@ -147,9 +149,9 @@ class RSSFeed(object):
                 try:
                     link = item.links[0]['href']
                     itemdict = {
-                        'title' : item.title,
-                        'url' : link,
-                        'summary' : item.get('description',''),
+                        'title': item.title,
+                        'url': link,
+                        'summary': item.get('description', ''),
                     }
                     if hasattr(item, "updated"):
                         try:
@@ -169,7 +171,6 @@ class RSSFeed(object):
         self._failed = True # no url set means failed
         return False # no url set, although that actually should not really happen
 
-
     @property
     def items(self):
         return self._items
@@ -180,7 +181,7 @@ class RSSFeed(object):
     @property
     def feed_link(self):
         """return rss url of feed for portlet"""
-        return self.url.replace("http://","feed://")
+        return self.url.replace("http://", "feed://")
 
     @property
     def title(self):
@@ -192,14 +193,14 @@ class RSSFeed(object):
         """return the link to the site the RSS feed points to"""
         return self._siteurl
 
+
 class IRSSPortlet(IPortletDataProvider):
 
     portlet_title = schema.TextLine(
         title=_(u'Title'),
-        description=_(u'Title of the portlet.  If omitted, the title of the feed will be used.'),
+        description=_(u'Title of the portlet. If omitted, the title of the feed will be used.'),
         required=False,
-        default=u''
-        )
+        default=u'')
 
     count = schema.Int(title=_(u'Number of items to display'),
                        description=_(u'How many items to list.'),
@@ -215,6 +216,7 @@ class IRSSPortlet(IPortletDataProvider):
                         required=True,
                         default=100)
 
+
 class Assignment(base.Assignment):
     implements(IRSSPortlet)
 
@@ -223,7 +225,7 @@ class Assignment(base.Assignment):
     @property
     def title(self):
         """return the title with RSS feed title or from URL"""
-        feed = FEED_DATA.get(self.data.url,None)
+        feed = FEED_DATA.get(self.data.url, None)
         if feed is None:
             return u'RSS: '+self.url[:20]
         else:
@@ -234,6 +236,7 @@ class Assignment(base.Assignment):
         self.count = count
         self.url = url
         self.timeout = timeout
+
 
 class Renderer(base.DeferredRenderer):
 
@@ -261,17 +264,16 @@ class Renderer(base.DeferredRenderer):
 
     def _getFeed(self):
         """return a feed object but do not update it"""
-        feed = FEED_DATA.get(self.data.url,None)
+        feed = FEED_DATA.get(self.data.url, None)
         if feed is None:
             # create it
-            feed = FEED_DATA[self.data.url] = RSSFeed(self.data.url,self.data.timeout)
+            feed = FEED_DATA[self.data.url] = RSSFeed(self.data.url, self.data.timeout)
         return feed
 
     @property
     def url(self):
         """return url of feed for portlet"""
         return self._getFeed().url
-
 
     @property
     def siteurl(self):
@@ -281,7 +283,7 @@ class Renderer(base.DeferredRenderer):
     @property
     def feedlink(self):
         """return rss url of feed for portlet"""
-        return self.data.url.replace("http://","feed://")
+        return self.data.url.replace("http://", "feed://")
 
     @property
     def title(self):
@@ -301,17 +303,18 @@ class Renderer(base.DeferredRenderer):
     def enabled(self):
         return self._getFeed().ok
 
+
 class AddForm(base.AddForm):
     form_fields = form.Fields(IRSSPortlet)
     label = _(u"Add RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
 
-
     def create(self, data):
         return Assignment(portlet_title=data.get('portlet_title', u''),
                           count=data.get('count', 5),
-                          url = data.get('url',''),
-                          timeout = data.get('timeout',100))
+                          url = data.get('url', ''),
+                          timeout = data.get('timeout', 100))
+
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IRSSPortlet)

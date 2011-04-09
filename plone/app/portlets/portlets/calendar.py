@@ -130,7 +130,8 @@ class Renderer(base.Renderer):
                 if day['event']:
                     cur_date = DateTime(year, month, daynumber)
                     localized_date = [self._ts.ulocalized_time(cur_date, context=context, request=self.request)]
-                    day['eventstring'] = '\n'.join(localized_date+[' %s' % self.getEventString(e) for e in day['eventslist']])
+                    day['eventstring'] = '\n'.join(localized_date+[' %s' %
+                        self.getEventString(e) for e in day['eventslist']])
                     day['date_string'] = '%s-%s-%s' % (year, month, daynumber)
 
         return weeks
@@ -217,7 +218,7 @@ class Renderer(base.Renderer):
 
     def getReviewStateString(self):
         states = self.calendar.getCalendarStates()
-        return ''.join(map(lambda x : 'review_state=%s&amp;' % self.url_quote_plus(x), states))
+        return ''.join(map(lambda x: 'review_state=%s&amp;' % self.url_quote_plus(x), states))
 
     def getQueryString(self):
         request = self.request

@@ -10,6 +10,7 @@ except ImportError:
     from Products.Five import zcml
     from Products.Five import fiveconfigure as metaconfigure
 
+
 class PlonePortlets(PloneSite):
 
     @classmethod

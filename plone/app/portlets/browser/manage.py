@@ -32,6 +32,7 @@ from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
 from plone.app.portlets import utils
 from plone.memoize.view import memoize
 
+
 class ManageContextualPortlets(BrowserView):
     implements(IManageContextualPortletsView)
 
@@ -72,7 +73,7 @@ class ManageContextualPortlets(BrowserView):
     # view @@set-portlet-blacklist-status
     def set_blacklist_status(self, manager, group_status, content_type_status, context_status):
         portletManager = getUtility(IPortletManager, name=manager)
-        assignable = getMultiAdapter((self.context, portletManager,), ILocalPortletAssignmentManager)
+        assignable = getMultiAdapter((self.context, portletManager), ILocalPortletAssignmentManager)
         assignments = getMultiAdapter((self.context, portletManager), IPortletAssignmentMapping)
 
         IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
@@ -98,6 +99,7 @@ class ManageContextualPortlets(BrowserView):
     def convert_legacy_portlets(self):
         utils.convert_legacy_portlets(self.context)
         self.context.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
+
 
 class ManageDashboardPortlets(BrowserView):
     implements(IManageDashboardPortletsView)
@@ -145,6 +147,7 @@ class ManageDashboardPortlets(BrowserView):
 
         return memberId
 
+
 class ManageGroupDashboardPortlets(BrowserView):
     implements(IManageDashboardPortletsView)
 
@@ -180,6 +183,7 @@ class ManageGroupDashboardPortlets(BrowserView):
                                                        category=GROUP_CATEGORY,
                                                        name=self.group)
         return mapping.values()
+
 
 class ManageGroupPortlets(BrowserView):
     implements(IManageGroupPortletsView)
@@ -222,6 +226,7 @@ class ManageGroupPortlets(BrowserView):
 
     def group(self):
         return self.request['key']
+
 
 class ManageContentTypePortlets(BrowserView):
     implements(IManageContentTypePortletsView)
@@ -277,6 +282,7 @@ class ManageContentTypePortlets(BrowserView):
             if fti.getId() == portal_type:
                 return fti
 
+
 class ManagePortletsViewlet(BrowserView):
     """A general base class for viewlets that want to be rendered on the
     manage portlets view. This makes it possible to have a viewlet that
@@ -324,17 +330,20 @@ class ManagePortletsViewlet(BrowserView):
     # we can use ZCML with the template attribute (hence we don't
     # put these here)
 
+
 class ManageContextualPortletsViewlet(ManagePortletsViewlet):
     """A viewlet base class for viewlets that need to render on the
     manage contextual portlets screen.
     """
     implements(IManageContextualPortletsView)
 
+
 class ManageGroupPortletsViewlet(ManagePortletsViewlet):
     """A viewlet base class for viewlets that need to render on the
     manage group portlets screen.
     """
     implements(IManageGroupPortletsView)
+
 
 class ManageContentTypePortletsViewlet(ManagePortletsViewlet):
     """A viewlet base class for viewlets that need to render on the

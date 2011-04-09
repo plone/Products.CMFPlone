@@ -12,6 +12,7 @@ from Products.Five import BrowserView
 from plone.app.portlets.browser.interfaces import IPortletAdding
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
+
 class PortletAdding(SimpleItem, BrowserView):
     implements(IPortletAdding)
 
@@ -53,7 +54,7 @@ class PortletAdding(SimpleItem, BrowserView):
 
     @property
     def contentName(self):
-         return None
+        return None
 
     def addingInfo():
         return None

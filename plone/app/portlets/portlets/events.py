@@ -33,6 +33,7 @@ class IEventsPortlet(IPortletDataProvider):
                              vocabulary="plone.app.vocabularies.WorkflowStates")
                          )
 
+
 class Assignment(base.Assignment):
     implements(IEventsPortlet)
 
@@ -43,6 +44,7 @@ class Assignment(base.Assignment):
     @property
     def title(self):
         return _(u"Events")
+
 
 class Renderer(base.Renderer):
 
@@ -106,13 +108,15 @@ class Renderer(base.Renderer):
                        sort_on='start',
                        sort_limit=limit)[:limit]
 
+
 class AddForm(base.AddForm):
     form_fields = form.Fields(IEventsPortlet)
     label = _(u"Add Events Portlet")
     description = _(u"This portlet lists upcoming Events.")
 
     def create(self, data):
-        return Assignment(count=data.get('count', 5), state=data.get('state', ('published',)))
+        return Assignment(count=data.get('count', 5), state=data.get('state', ('published', )))
+
 
 class EditForm(base.EditForm):
     form_fields = form.Fields(IEventsPortlet)

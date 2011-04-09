@@ -13,6 +13,7 @@ from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
+
 class ContentContext(object):
     """A portlet context for regular content items.
 
@@ -38,12 +39,12 @@ class ContentContext(object):
         if not placeless:
             pt = self._getContentType()
             if pt is not None:
-                cats.append((CONTENT_TYPE_CATEGORY, pt,))
+                cats.append((CONTENT_TYPE_CATEGORY, pt))
         u = self._getUserId()
         if u is not None:
-            cats.append((USER_CATEGORY, u,))
+            cats.append((USER_CATEGORY, u))
         for g in self._getGroupIds():
-            cats.append((GROUP_CATEGORY, g,))
+            cats.append((GROUP_CATEGORY, g))
         return cats
 
     def _getUserId(self):
@@ -99,6 +100,7 @@ class ContentContext(object):
         if portal_type is not None:
             return portal_type
         return None
+
 
 class PortalRootContext(ContentContext):
     """A portlet context for the site root.

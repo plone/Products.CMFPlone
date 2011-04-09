@@ -61,11 +61,13 @@ from zope.formlib import form
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
 
+
 class ITestPortlet(IPortletDataProvider):
     test_text = schema.TextLine(title=u"Test")
     test_bool = schema.Bool(title=u"Test")
     test_tuple = schema.Tuple(title=u"Test",
                               value_type=schema.Choice(vocabulary="plone.app.vocabularies.WorkflowStates"))
+
 
 class TestAssignment(base.Assignment):
     implements(ITestPortlet)
@@ -76,9 +78,12 @@ class TestAssignment(base.Assignment):
 
     title = "Sample portlet"
 
+
 class TestRenderer(base.Renderer):
+
     def render(self):
         return "Portlet for testing"
+
 
 class TestAddForm(base.AddForm):
     form_fields = form.Fields(ITestPortlet)
@@ -89,11 +94,14 @@ class TestAddForm(base.AddForm):
         a.title = data.get('title', u"")
         return a
 
+
 class TestEditForm(base.EditForm):
     form_fields = form.Fields(ITestPortlet)
     label = u"Test portlet"
 
+
 # A test portlet manager
+
 
 class ITestColumn(IColumn):
     pass
@@ -102,7 +110,7 @@ zcml_string = """\
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:plone="http://namespaces.plone.org/plone"
-           xmlns:gs="http://namespaces.zope.org/genericsetup"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
            package="plone.app.portlets"
            i18n_domain="test">
 
@@ -115,7 +123,7 @@ zcml_string = """\
         editview="plone.app.portlets.tests.test_configuration.TestEditForm"
         />
 
-    <gs:registerProfile
+    <genericsetup:registerProfile
         name="testing"
         title="plone.app.portlets testing"
         description="Used for testing only"
@@ -126,6 +134,7 @@ zcml_string = """\
 
 </configure>
 """
+
 
 class TestPortletZCMLLayer(PloneSite):
 
@@ -175,6 +184,7 @@ class TestZCML(PortletsTestCase):
 
         editview = getMultiAdapter((assignment, request), name=u"edit")
         self.failUnless(isinstance(editview, TestEditForm))
+
 
 class TestGenericSetup(PortletsTestCase):
 

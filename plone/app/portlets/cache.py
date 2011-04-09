@@ -2,10 +2,12 @@ from zope import component
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 
+
 def get_language(context, request):
     portal_state = component.getMultiAdapter(
         (context, request), name=u'plone_portal_state')
     return portal_state.locale().getLocaleID()
+
 
 def render_cachekey(fun, self):
     """

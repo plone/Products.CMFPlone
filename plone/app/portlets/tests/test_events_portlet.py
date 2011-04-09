@@ -17,12 +17,13 @@ from plone.app.portlets.tests.base import PortletsTestCase
 
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
+
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Events')
@@ -71,6 +72,7 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, events.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
@@ -89,16 +91,16 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def test_published_events(self):
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
         self.portal.invokeFactory('Event', 'e1')
         self.portal.invokeFactory('Event', 'e2')
         self.portal.portal_workflow.doActionFor(self.portal.e1, 'publish')
 
-        r = self.renderer(assignment=events.Assignment(count=5, state=('draft',)))
+        r = self.renderer(assignment=events.Assignment(count=5, state=('draft', )))
         self.assertEquals(0, len(r.published_events()))
         r = self.renderer(assignment=events.Assignment(count=5, state=('published', )))
         self.assertEquals(1, len(r.published_events()))
-        r = self.renderer(assignment=events.Assignment(count=5, state=('published', 'private',)))
+        r = self.renderer(assignment=events.Assignment(count=5, state=('published', 'private', )))
         self.assertEquals(2, len(r.published_events()))
 
     def test_all_events_link(self):
@@ -114,7 +116,6 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(assignment=events.Assignment(count=5))
         self.failUnless(r.all_events_link().endswith('/events'))
 
-
     def test_all_events_link_and_navigation_root(self):
         # ensure support of INavigationRoot features dosen't break #9246 #9668
         self.setRoles(['Manager'])
@@ -128,7 +129,6 @@ class TestRenderer(PortletsTestCase):
         self.portal.mynewsite.invokeFactory('Folder', 'events')
         r = self.renderer(context=self.portal.mynewsite, assignment=events.Assignment(count=5))
         self.failUnless(r.all_events_link().endswith('/mynewsite/events'))
-
 
     def test_prev_events_link(self):
         r = self.renderer(assignment=events.Assignment(count=5))
@@ -151,7 +151,6 @@ class TestRenderer(PortletsTestCase):
         self.portal._delObject('events')
         r = self.renderer(assignment=events.Assignment(count=5))
         self.assertEquals(None, r.prev_events_link())
-
 
     def test_prev_events_link_and_navigation_root(self):
         # ensure support of INavigationRoot features dosen't break #9246 #9668

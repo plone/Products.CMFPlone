@@ -43,7 +43,7 @@ class INavigationPortlet(IPortletDataProvider):
                                     "to act as the root of the navigation tree. "
                                     "Leave blank to use the Plone site root."),
             required=False,
-            source=SearchableTextSourceBinder({'is_folderish' : True},
+            source=SearchableTextSourceBinder({'is_folderish': True},
                                               default_query='path:'))
 
     includeTop = schema.Bool(
@@ -90,6 +90,7 @@ class INavigationPortlet(IPortletDataProvider):
             default=0,
             required=False)
 
+
 class Assignment(base.Assignment):
     implements(INavigationPortlet)
 
@@ -110,6 +111,7 @@ class Assignment(base.Assignment):
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
 
+
 class Renderer(base.Renderer):
 
     def __init__(self, context, request, view, manager, data):
@@ -120,7 +122,7 @@ class Renderer(base.Renderer):
 
     def title(self):
         return self.data.name or self.data.title
-        
+
     def hasName(self):
         return self.data.name
 
@@ -173,7 +175,8 @@ class Renderer(base.Renderer):
 
     @memoize
     def getNavRootPath(self):
-        currentFolderOnly = self.data.currentFolderOnly or self.properties.getProperty('currentFolderOnlyInNavtree', False)
+        currentFolderOnly = self.data.currentFolderOnly or \
+                            self.properties.getProperty('currentFolderOnlyInNavtree', False)
         topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
         return getRootPath(self.context, currentFolderOnly, topLevel, str(self.data.root))
 
@@ -189,7 +192,7 @@ class Renderer(base.Renderer):
         else:
             try:
                 return portal.unrestrictedTraverse(rootPath)
-            except (AttributeError, KeyError,):
+            except (AttributeError, KeyError):
                 return portal
 
     @memoize
@@ -209,6 +212,7 @@ class Renderer(base.Renderer):
     _template = ViewPageTemplateFile('navigation.pt')
     recurse = ViewPageTemplateFile('navigation_recurse.pt')
 
+
 class AddForm(base.AddForm):
     form_fields = form.Fields(INavigationPortlet)
     form_fields['root'].custom_widget = UberSelectionWidget
@@ -223,11 +227,13 @@ class AddForm(base.AddForm):
                           topLevel=data.get('topLevel', 0),
                           bottomLevel=data.get('bottomLevel', 0))
 
+
 class EditForm(base.EditForm):
     form_fields = form.Fields(INavigationPortlet)
     form_fields['root'].custom_widget = UberSelectionWidget
     label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet display a navigation tree.")
+
 
 class QueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties
@@ -261,14 +267,14 @@ class QueryBuilder(object):
         # nothing (since we explicitly start from the root always). Hence,
         # use a regular depth-1 query in this case.
 
-        if currentPath!=rootPath and not currentPath.startswith(rootPath+'/'):
-            query['path'] = {'query' : rootPath, 'depth' : 1}
+        if currentPath!=rootPath and not currentPath.startswith(rootPath + '/'):
+            query['path'] = {'query': rootPath, 'depth': 1}
         else:
-            query['path'] = {'query' : currentPath, 'navtree' : 1}
+            query['path'] = {'query': currentPath, 'navtree': 1}
 
         topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
         if topLevel and topLevel > 0:
-             query['path']['navtree_start'] = topLevel + 1
+            query['path']['navtree_start'] = topLevel + 1
 
         # XXX: It'd make sense to use 'depth' for bottomLevel, but it doesn't
         # seem to work with EPI.
@@ -293,6 +299,7 @@ class QueryBuilder(object):
     def __call__(self):
         return self.query
 
+
 class NavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet
     """
@@ -305,9 +312,12 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
         # XXX: We can't do this with a 'depth' query to EPI...
-        self.bottomLevel = portlet.bottomLevel or navtree_properties.getProperty('bottomLevel', 0)
+        self.bottomLevel = portlet.bottomLevel or \
+                           navtree_properties.getProperty('bottomLevel', 0)
 
-        currentFolderOnly = portlet.currentFolderOnly or navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
+        currentFolderOnly = portlet.currentFolderOnly or \
+            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
+
         topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
         self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root)
 
@@ -321,12 +331,14 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
         else:
             return True
 
+
 def getRootPath(context, currentFolderOnly, topLevel, root):
     """Helper function to calculate the real root path
     """
     context = aq_inner(context)
     if currentFolderOnly:
-        folderish = getattr(aq_base(context), 'isPrincipiaFolderish', False) and not INonStructuralFolder.providedBy(context)
+        folderish = getattr(aq_base(context), 'isPrincipiaFolderish', False) and \
+                    not INonStructuralFolder.providedBy(context)
         parent = aq_parent(context)
 
         is_default_page = False

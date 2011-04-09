@@ -13,6 +13,7 @@ from plone.app.portlets import portlets
 
 from plone.app.portlets.storage import UserPortletAssignmentMapping
 
+
 def new_user(principal, event):
     """Initialise the dashboard for a new user
     """
@@ -39,6 +40,7 @@ def new_user(principal, event):
                     for assignment in assignments:
                         manager[chooser.chooseName(None, assignment)] = assignment
 
+
 class DefaultDashboard(object):
     """The default default dashboard.
     """
@@ -51,8 +53,8 @@ class DefaultDashboard(object):
 
     def __call__(self):
         return {
-            'plone.dashboard1' : (portlets.news.Assignment(), portlets.events.Assignment(),),
-            'plone.dashboard2' : (portlets.recent.Assignment(),),
-            'plone.dashboard3' : (),
-            'plone.dashboard4' : (portlets.review.Assignment(),),
+            'plone.dashboard1': (portlets.news.Assignment(), portlets.events.Assignment(), ),
+            'plone.dashboard2': (portlets.recent.Assignment(), ),
+            'plone.dashboard3': (),
+            'plone.dashboard4': (portlets.review.Assignment(), ),
         }

@@ -18,12 +18,14 @@ class IReviewPortlet(IPortletDataProvider):
 
     pass
 
+
 class Assignment(base.Assignment):
     implements(IReviewPortlet)
 
     @property
     def title(self):
         return _(u"Review list")
+
 
 class Renderer(base.Renderer):
 

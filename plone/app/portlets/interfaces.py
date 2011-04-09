@@ -5,19 +5,23 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 
+
 class IPortletTypeInterface(Interface):
     """IInterface for portlet type interfaces. The portlet ZCML directive
     will register the portlet type interface as a utility providing this
     interface, with a name corresponding to the addview of the portlet.
     """
 
+
 class IUserPortletAssignmentMapping(IPortletAssignmentMapping):
     """A portlet assignment mapping that's user-specific
     """
 
+
 class IGroupDashboardPortletAssignmentMapping(IPortletAssignmentMapping):
     """Group portlets storage. Has its own security checker.
     """
+
 
 class IPortletPermissionChecker(Interface):
     """An adapter for an assignment manager, which can check whether the
@@ -29,6 +33,7 @@ class IPortletPermissionChecker(Interface):
         something fishy is going on.
         """
 
+
 class IColumn(IPortletManager):
     """Common base class for left and right columns.
 
@@ -36,11 +41,13 @@ class IColumn(IPortletManager):
     but not to the dashboard.
     """
 
+
 class ILeftColumn(IColumn):
     """The left column.
 
     Normally, you will register portlets for IColumn instead.
     """
+
 
 class IRightColumn(IColumn):
     """The right column
@@ -48,12 +55,14 @@ class IRightColumn(IColumn):
     Normally, you will register portlets for IColumn instead.
     """
 
+
 class IDashboard(IPlacelessPortletManager):
     """Common base class for dashboard columns
 
     Register a portlet for IDashboard if it is applicable to the dashboard
     only.
     """
+
 
 class IDeferredPortletRenderer(IPortletRenderer):
     """Provide refresh and dynamic loading functionality"""
@@ -84,6 +93,7 @@ class IDeferredPortletRenderer(IPortletRenderer):
         depending on this the render() method chooses whether to render the
         preload or full version (if initialized==True).
         """
+
 
 class IDefaultDashboard(Interface):
     """Define an adapter from the user/principal type (by default, this is

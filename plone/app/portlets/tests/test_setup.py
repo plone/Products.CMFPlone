@@ -6,8 +6,8 @@ from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletType
 
 from plone.app.portlets.interfaces import ILeftColumn, IRightColumn, IDashboard
-
 from plone.app.portlets.tests.base import PortletsTestCase
+
 
 class TestProductInstall(PortletsTestCase):
 
@@ -19,7 +19,8 @@ class TestProductInstall(PortletsTestCase):
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredUtilities()
                             if IPortletManager == r.provided]
-        self.assertEquals(['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4',
+        self.assertEquals(['plone.dashboard1', 'plone.dashboard2',
+                           'plone.dashboard3', 'plone.dashboard4',
                            'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
 
     def testInterfaces(self):
@@ -39,6 +40,7 @@ class TestProductInstall(PortletsTestCase):
         portlets = [u[0] for u in getUtilitiesFor(IPortletType)]
         self.failUnless('portlets.Classic' in portlets)
         self.failUnless('portlets.Login' in portlets)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -21,7 +21,9 @@ from plone.app.portlets.interfaces import IDashboard
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.tests.utils import FooPortletManager
 
+
 class PortletsExportImportTestCase(PortletsTestCase):
+
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
@@ -42,6 +44,7 @@ class PortletsExportImportTestCase(PortletsTestCase):
         file.seek(0)
         return file.read()
 
+
 class TestImportPortlets(PortletsExportImportTestCase):
 
     def test_removePortlet(self):
@@ -55,25 +58,20 @@ class TestImportPortlets(PortletsExportImportTestCase):
 
     def test_checkBasicPortletNodeErrors(self):
         node = parseString(_XML_INVALID_EXTEND_AND_PURGE).documentElement
-        self.assertEqual(
-          True, self.importer._checkBasicPortletNodeErrors(node,
-          ['portlets.Exists'])
-          )
+        self.assertEqual(True,
+            self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
+
         node = parseString(_XML_INVALID_EXTEND_NONEXISTS).documentElement
-        self.assertEqual(
-          True, self.importer._checkBasicPortletNodeErrors(node,
-          ['portlets.Exists'])
-          )
+        self.assertEqual(True,
+          self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
+
         node = parseString(_XML_INVALID_ADD_EXISTING).documentElement
-        self.assertEqual(
-          True, self.importer._checkBasicPortletNodeErrors(node,
-          ['portlets.Exists'])
-          )
+        self.assertEqual(True,
+            self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
+
         node = parseString(_XML_EXTEND_EXISTING).documentElement
-        self.assertEqual(
-          False, self.importer._checkBasicPortletNodeErrors(node,
-          ['portlets.Exists'])
-          )
+        self.assertEqual(False,
+          self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
 
     def test_modifyForList(self):
         node = parseString(_XML_SWITCH_COLUMNS).documentElement
@@ -164,6 +162,7 @@ class TestImportPortlets(PortletsExportImportTestCase):
         portlet = queryUtility(IPortletType, name='portlets.RemoveMe')
         self.failUnless(portlet is None)
 
+
 class TestExportPortlets(PortletsExportImportTestCase):
 
     def test_extractPortletNode(self):
@@ -185,6 +184,7 @@ class TestExportPortlets(PortletsExportImportTestCase):
         node.writexml(file)
         file.seek(0)
         self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"/>""", file.read())
+
 
 class TestImportPortletManagers(PortletsExportImportTestCase):
 
@@ -238,6 +238,7 @@ class TestExportPortletManagers(PortletsExportImportTestCase):
         r = results[0]
         node = self.exporter._extractPortletManagerNode(r)
         self.assertEqual('<portletmanager name="plone.foo_column"  class="plone.app.portlets.tests.utils.FooPortletManager"/>', self._node_as_string(node))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

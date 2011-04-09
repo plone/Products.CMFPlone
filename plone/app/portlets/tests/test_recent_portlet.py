@@ -14,12 +14,13 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Recent')
@@ -68,6 +69,7 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, recent.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
@@ -83,7 +85,7 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def test_recent_items(self):
-        self.setRoles(['Manager'])
+        self.setRoles(('Manager', ))
         if 'news' in self.portal:
             self.portal._delObject('news')
         if 'events' in self.portal:
@@ -108,6 +110,7 @@ class TestRenderer(PortletsTestCase):
     def test_title(self):
         r = self.renderer(assignment=recent.Assignment())
         self.assertEquals(str(r.title), 'box_recent_changes')
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

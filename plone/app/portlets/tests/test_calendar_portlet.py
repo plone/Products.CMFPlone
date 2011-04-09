@@ -19,7 +19,7 @@ class TestPortlet(PortletsTestCase):
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Calendar')
@@ -87,7 +87,7 @@ class TestRenderer(PortletsTestCase):
         year, month = r.getNextMonth(year, month)
         last_day_month = DateTime('%s/%s/1' % (year, month)) - 1
         hour = 1 / 24.0
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
         # Event starts at 23:00 and ends at 23:30
         self.portal.invokeFactory('Event', 'e1',
                                   startDate=last_day_month + 23*hour,

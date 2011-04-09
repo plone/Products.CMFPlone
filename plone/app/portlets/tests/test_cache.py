@@ -5,7 +5,9 @@ from zope.site.hooks import setSite, setHooks
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.cache import render_cachekey
 
+
 class MockBrain(object):
+
     def __init__(self, path=u"some/path", modified=u"2002-01-01"):
         self.path = path
         self.modified = modified
@@ -13,9 +15,12 @@ class MockBrain(object):
     def getPath(self):
         return self.path
 
+
 class MockLocation(object):
+
     def __init__(self, name):
         self.__name__ = name
+
 
 class MockRenderer(object):
     manager = MockLocation('some_manager')
@@ -28,6 +33,7 @@ class MockRenderer(object):
 
     def _data(self):
         return self.data_brains
+
 
 class TestCacheKey(PortletsTestCase):
 
@@ -62,6 +68,7 @@ class TestCacheKey(PortletsTestCase):
         renderer.data_brains = [
             MockBrain("Pr\xc5\xafvodce"), MockBrain("p\xc5\x99i")]
         render_cachekey(None, renderer)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

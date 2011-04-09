@@ -23,6 +23,7 @@ from Products.Five.browser.metaconfigure import page
 # subclass them in portletRendererDirective. Yes, this is evil.
 _default_renderers = {}
 
+
 def portletDirective(_context, name, interface, assignment, renderer, addview,
         view_permission=u"zope2.View", edit_permission="plone.app.portlets.ManageOwnPortlets", editview=None):
     """Register a portlet assignment type using typical options.
@@ -78,8 +79,8 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     #   provides="plone.portlets.interfaces.IPortletRenderer"
     #   />
 
-    adapter(_context, (renderer,), provides=IPortletRenderer,
-            for_=(Interface, IDefaultBrowserLayer, IBrowserView, IPortletManager, interface,))
+    adapter(_context, (renderer, ), provides=IPortletRenderer,
+            for_=(Interface, IDefaultBrowserLayer, IBrowserView, IPortletManager, interface))
     _default_renderers[interface] = renderer
 
     # Register the adding view
@@ -113,6 +114,7 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
              class_=editview,
              permission=edit_permission)
 
+
 def portletRendererDirective(_context, portlet, class_=None, template=None,
         for_=Interface, layer=IDefaultBrowserLayer, view=IBrowserView, manager=IPortletManager):
     """Register a custom/override portlet renderer
@@ -133,7 +135,7 @@ def portletRendererDirective(_context, portlet, class_=None, template=None,
 
         # Generate a subclass with 'renderer' using this template
         class_ = makeClass("PortletRenderer from %s" % template,
-                            (base_class,), {'render' : ViewPageTemplateFile(template)})
+                            (base_class, ), {'render': ViewPageTemplateFile(template)})
 
-    adapter(_context, (class_,), provides=IPortletRenderer,
-                for_=(for_, layer, view, manager, portlet,))
+    adapter(_context, (class_, ), provides=IPortletRenderer,
+                for_=(for_, layer, view, manager, portlet))

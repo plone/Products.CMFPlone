@@ -15,12 +15,13 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
         setHooks()
         setSite(self.portal)
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Login')
@@ -68,6 +69,7 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, login.Renderer))
 
+
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
@@ -96,7 +98,6 @@ class TestRenderer(PortletsTestCase):
         del request.__annotations__
         self.assertEquals(False, r.available)
 
-
     def testShow(self):
         request = self.folder.REQUEST
 
@@ -117,6 +118,7 @@ class TestRenderer(PortletsTestCase):
         self.assertEquals(False, self.renderer(request=request).show())
 
     # TODO: Add more detailed tests here
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

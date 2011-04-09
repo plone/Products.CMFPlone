@@ -22,7 +22,7 @@ from Products.CMFPlone.tests import dummy
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        self.setRoles(('Manager',))
+        self.setRoles(('Manager', ))
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Navigation')
@@ -69,6 +69,7 @@ class TestPortlet(PortletsTestCase):
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.failUnless(isinstance(renderer, navigation.Renderer))
+
 
 class TestRenderer(PortletsTestCase):
 
@@ -118,7 +119,7 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.failUnless(tree)
-        self.failUnless(tree.has_key('children'))
+        self.failUnless('children' in tree)
 
     def testCreateNavTreeCurrentItem(self):
         # With the context set to folder2 it should return a dict with
@@ -192,19 +193,19 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         # Ensure that our 'doc21' default page is not in the tree.
         self.assertEqual([c for c in tree['children'][-1]['children']
-                                            if c['item'].getPath()[-5:]=='doc21'],[])
+                                            if c['item'].getPath()[-5:]=='doc21'], [])
 
     def testNavTreeMarksParentMetaTypesNotToQuery(self):
         # Make sure that items whose ids are in the idsNotToList navTree
         # property get no_display set to True
         view = self.renderer(self.portal.folder2.file21)
         tree = view.getNavTree()
-        self.assertEqual(tree['children'][-1]['show_children'],True)
+        self.assertEqual(tree['children'][-1]['show_children'], True)
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
         view = self.renderer(self.portal.folder2.file21)
         tree = view.getNavTree()
-        self.assertEqual(tree['children'][-1]['show_children'],False)
+        self.assertEqual(tree['children'][-1]['show_children'], False)
 
     def testCreateNavTreeWithLink(self):
         view = self.renderer(self.portal)
@@ -249,7 +250,8 @@ class TestRenderer(PortletsTestCase):
     def testTopLevelWithNavigationRoot(self):
         self.portal.folder2.invokeFactory('Folder', 'folder21')
         self.portal.folder2.folder21.invokeFactory('Document', 'doc211')
-        view = self.renderer(self.portal.folder2.folder21, assignment=navigation.Assignment(topLevel=1, root='/folder2'))
+        view = self.renderer(self.portal.folder2.folder21,
+            assignment=navigation.Assignment(topLevel=1, root='/folder2'))
         tree = view.getNavTree()
         self.failUnless(tree)
         self.assertEqual(len(tree['children']), 1)
@@ -364,12 +366,12 @@ class TestRenderer(PortletsTestCase):
         factory = self.portal.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript('getCustomNavQuery')
         script = self.portal.getCustomNavQuery
-        script.ZPythonScript_edit('','return {"review_state":"published"}')
-        self.assertEqual(self.portal.getCustomNavQuery(),{"review_state":"published"})
+        script.ZPythonScript_edit('', 'return {"review_state": "published"}')
+        self.assertEqual(self.portal.getCustomNavQuery(), {"review_state": "published"})
         view = self.renderer(self.portal.folder2)
         tree = view.getNavTree()
         self.failUnless(tree)
-        self.failUnless(tree.has_key('children'))
+        self.failUnless('children' in tree)
         #Should only contain current object
         self.assertEqual(len(tree['children']), 1)
         #change workflow for folder1
@@ -390,7 +392,7 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal.folder2)
         tree = view.getNavTree()
         self.failUnless(tree)
-        self.failUnless(tree.has_key('children'))
+        self.failUnless('children' in tree)
         #Should only contain current object
         self.assertEqual(len(tree['children']), 1)
         #change workflow for folder1
@@ -425,10 +427,10 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/doc11')
 
     def testIsCurrentParentWithOverlapingNames(self):
-        self.setRoles(['Manager',])
+        self.setRoles(['Manager', ])
         self.portal.invokeFactory('Folder', 'folder2x')
         self.portal.folder2x.invokeFactory('Document', 'doc2x1')
-        self.setRoles(['Member',])
+        self.setRoles(['Member', ])
         view = self.renderer(self.portal.folder2x.doc2x1)
         tree = view.getNavTree()
         self.failUnless(tree)
@@ -444,7 +446,8 @@ class TestRenderer(PortletsTestCase):
         self.portal.folder1.invokeFactory('Folder', 'folder1_1')
         directlyProvides(self.portal.folder1, INavigationRoot)
         self.failUnless(INavigationRoot.providedBy(self.portal.folder1))
-        view = self.renderer(self.portal.folder1, assignment=navigation.Assignment(bottomLevel=0, topLevel=1, root=None))
+        view = self.renderer(self.portal.folder1,
+            assignment=navigation.Assignment(bottomLevel=0, topLevel=1, root=None))
         tree = view.getNavTree()
         root = view.getNavRoot()
         self.failIf(root is not None and len(tree['children']) > 0)
@@ -459,9 +462,9 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.failIf(tree['children'][3]['item_icon'].html_tag())
-        
+
     def testPortletsTitle(self):
-        """If portlet's name is not explicitely specified we show 
+        """If portlet's name is not explicitely specified we show
            default fallback 'Navigation', translate it and hide it
            with CSS."""
         view = self.renderer(self.portal)

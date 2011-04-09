@@ -10,10 +10,9 @@ from plone.portlets.constants import USER_CATEGORY, CONTEXT_CATEGORY
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.portlets import classic
-
 from plone.app.portlets.tests.base import PortletsTestCase
-
 from plone.app.portlets.utils import assignment_from_key
+
 
 class TestAssignmentFromKey(PortletsTestCase):
 
@@ -27,7 +26,7 @@ class TestAssignmentFromKey(PortletsTestCase):
                                                        name=user_name)
 
     def testGetPortletFromContext(self):
-        mapping = getMultiAdapter((self.portal, self.manager,), IPortletAssignmentMapping)
+        mapping = getMultiAdapter((self.portal, self.manager), IPortletAssignmentMapping)
         c = classic.Assignment()
         mapping['foo'] = c
         path = '/'.join(self.portal.getPhysicalPath())
@@ -39,6 +38,7 @@ class TestAssignmentFromKey(PortletsTestCase):
         self.cat[user_name]['foo'] = c
         a = assignment_from_key(self.portal, u'plone.leftcolumn', USER_CATEGORY, user_name, 'foo')
         self.assertEquals(c, a)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

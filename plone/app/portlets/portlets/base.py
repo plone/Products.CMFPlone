@@ -1,29 +1,28 @@
-import sys
+#import sys
 
 from Acquisition import Explicit
 from OFS.SimpleItem import SimpleItem
-from ZODB.POSException import ConflictError
+#from ZODB.POSException import ConflictError
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from zope.interface import Interface, implements
-from zope.component import adapts
-
-from zope.publisher.interfaces.browser import IBrowserView
-
-from plone.portlets.interfaces import IPortletDataProvider
-from plone.portlets.interfaces import IPortletAssignment
-from plone.portlets.interfaces import IPortletRenderer
-from plone.portlets.interfaces import IPortletManager
+from zope.container.contained import Contained
+from zope.interface import implements
+#from zope.interface import Interface
+#from zope.component import adapts
+#from zope.publisher.interfaces.browser import IBrowserView
 
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
-
-from zope.container.contained import Contained
+from plone.portlets.interfaces import IPortletAssignment
+#from plone.portlets.interfaces import IPortletDataProvider
+#from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletRenderer
 
 # Convenience imports
 from plone.app.portlets.browser.formhelper import AddForm
 from plone.app.portlets.browser.formhelper import NullAddForm
 from plone.app.portlets.browser.formhelper import EditForm
+
 
 class Assignment(SimpleItem, Contained):
     """Base class for assignments.
@@ -54,6 +53,7 @@ class Assignment(SimpleItem, Contained):
         """Make the assignment itself represent the data object that is being rendered.
         """
         return self
+
 
 class Renderer(Explicit):
     """Base class for portlet renderers.
@@ -92,6 +92,7 @@ class Renderer(Explicit):
         """
         return True
 
+
 class DeferredRenderer(Renderer):
     """provide defer functionality via KSS
 
@@ -115,4 +116,3 @@ class DeferredRenderer(Renderer):
             return self.render_preload()
         else:
             return self.render_full()
-
