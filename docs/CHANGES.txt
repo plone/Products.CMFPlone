@@ -8,6 +8,9 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Expose the query report and plan on the catalog tool.
+  [hannosch]
+
 - Optimize the data indexed by the `allowedRolesAndUsers` index and the query
   performed against it.
   [hannosch]

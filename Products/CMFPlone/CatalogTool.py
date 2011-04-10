@@ -245,6 +245,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         {'action': 'manage_catalogIndexes', 'label': 'Indexes'},
         {'action': 'manage_catalogSchema', 'label': 'Metadata'},
         {'action': 'manage_catalogAdvanced', 'label': 'Advanced'},
+        {'action': 'manage_catalogReport', 'label': 'Query Report'},
+        {'action': 'manage_catalogPlan', 'label': 'Query Plan'},
         {'action': 'manage_propertiesForm', 'label': 'Properties'},
     )
 
