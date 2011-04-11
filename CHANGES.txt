@@ -5,6 +5,11 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Make ``getNavigationRoot`` behave correctly in ``INavigationRoot``-folders
+  where a ``relativeRoot`` is specified.
+  This fixes https://dev.plone.org/plone/ticket/8787
+  [WouterVH]
+
 
 2.1.4 - 2011-04-03
 ------------------
