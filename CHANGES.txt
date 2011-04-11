@@ -5,6 +5,9 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Add MANIFEST.in.
+  [WouterVH]
+
 - Make ``getNavigationRoot`` behave correctly in ``INavigationRoot``-folders
   where a ``relativeRoot`` is specified.
   This fixes https://dev.plone.org/plone/ticket/8787
