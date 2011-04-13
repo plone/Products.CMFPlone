@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Sort on content title ignores accents.
+  So, d < é < f.
+  [thomasdesvenain]
+
 - Expose the query report and plan on the catalog tool.
   [hannosch]
 

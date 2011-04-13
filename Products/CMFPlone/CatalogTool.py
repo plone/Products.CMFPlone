@@ -36,6 +36,8 @@ from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.interfaces import IPloneCatalogTool
 
+from plone.i18n.normalizer.base import mapUnicode
+
 _marker = object()
 
 
@@ -93,13 +95,16 @@ def sortable_title(obj):
     if title is not None:
         if safe_callable(title):
             title = title()
+
         if isinstance(title, basestring):
-            sortabletitle = title.lower().strip()
+            # Ignore case, normalize accents, strip spaces
+            sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat
-            sortabletitle = safe_unicode(sortabletitle)[:70].encode('utf-8')
+            sortabletitle = sortabletitle[:70].encode('utf-8')
             return sortabletitle
+
     return ''
 
 
