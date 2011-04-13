@@ -16,6 +16,7 @@ Changelog
   CSRF check in the add groups form, which fails. Fixes #11553.
   [smcmahon]
 
+
 2.1b1 - 2011-01-03
 ------------------
 
@@ -25,7 +26,7 @@ Changelog
 - Make sure the ConfigurationChangedEvent is fired when the types
   control panel setting changed.
   [timo]
-  
+
 - Fix critical errors on user and group pages
   when some groups or users have a non-ascii character in their title.
   Sort groups and users on their fullname or title normalized.
@@ -63,6 +64,7 @@ Changelog
   http://dev.plone.org/plone/ticket/10756
   [khink]
 
+
 2.0.5 - 2011-01-03
 ------------------
 
@@ -84,6 +86,7 @@ Changelog
   http://dev.plone.org/plone/ticket/10756
   [khink]
 
+
 2.0.4 - 2010-10-27
 ------------------
 
@@ -103,11 +106,13 @@ Changelog
   maintenance control panel.
   [kleist, hannosch]
 
+
 2.0.2 - 2010-08-08
 ------------------
 
 - Changed some messages in @@ramcache-controlpanel view.
   [vincentfretin]
+
 
 2.0.1 - 2010-07-31
 ------------------
@@ -115,6 +120,7 @@ Changelog
 - Check whether users can be added to the group. Don't show the add form on
   @@usergroup-groupmembership if not.
   [esteele]
+
 
 2.0 - 2010-07-18
 ----------------
@@ -138,6 +144,7 @@ Changelog
 - Update license to GPL version 2 only.
   [hannosch]
 
+
 2.0b7 - 2010-05-31
 ------------------
 
@@ -150,6 +157,7 @@ Changelog
 
 - Updated help text for users overview control panel.
   [davisagli]
+
 
 2.0b6 - 2010-05-01
 ------------------
@@ -187,6 +195,7 @@ Changelog
 - Fixed various i18n issues.
   [vincentfretin]
 
+
 2.0b4 - 2010-03-05
 ------------------
 
@@ -221,6 +230,7 @@ Changelog
   the top.
   [esteele]
 
+
 2.0b3 - 2010-02-18
 ------------------
 
@@ -231,6 +241,7 @@ Changelog
 - Removed #region-content from all templates.
   This refs http://dev.plone.org/plone/ticket/10231
   [limi]
+
 
 2.0b2 - 2010-02-17
 ------------------
@@ -267,6 +278,7 @@ Changelog
 
 - Split @@site-controlpanel form in two fieldsets "general" and "editing".
   [csenger]
+
 
 2.0b1 - 2010-01-29
 ------------------
@@ -312,11 +324,13 @@ Changelog
 - Display group title in @@usergroup-groupprefs form.
   [esteele]
 
+
 2.0a4 - 2009-12-27
 ------------------
 
 - Specify all package dependencies and use zope.site for the getSite function.
   [hannosch]
+
 
 2.0a3 - 2009-12-16
 ------------------
@@ -324,6 +338,7 @@ Changelog
 - Don't mark site.py's "default_editor" field as required as it's a select
   field.
   [esteele]
+
 
 2.0a2 - 2009-12-03
 ------------------
@@ -349,6 +364,7 @@ Changelog
 - Fixed bad i18n markup in emaillogin.pt. This closes
   http://dev.plone.org/plone/ticket/9767
   [vincentfretin]
+
 
 2.0a1 - 2009-11-14
 ------------------
@@ -393,7 +409,8 @@ Changelog
   does not work with Zope 2.12.
   [hannosch]
 
-1.2.1 - unreleased
+
+1.3 - 2010-03-03
 ------------------
 
 - Fixed some duplicated msgids with different defaults.
@@ -452,8 +469,9 @@ Changelog
   when member creation is enabled http://dev.plone.org/plone/ticket/8417
   [pelle]
 
-1.1.2 - August 18, 2008
------------------------
+
+1.1.2 - 2008-08-18
+------------------
 
 - Use the MultiCheckBoxWidget from plone.app.form that uses <label>s
   to be accessible. This closes http://dev.plone.org/plone/ticket/7211
@@ -476,8 +494,8 @@ Changelog
   [hannosch]
 
 
-1.1.1 - June 2, 2008
---------------------
+1.1.1 - 2008-06-02
+------------------
 
 - Declare dependencies for plone.* packages.
   [wichert]
@@ -489,8 +507,8 @@ Changelog
   [witsch]
 
 
-1.1 - April 19. 2008
---------------------
+1.1 - 2008-04-19
+----------------
 
 - Fixed saving of esmtp username and password in SecureMailHost
   [csenger]
@@ -509,8 +527,8 @@ Changelog
   [witsch]
 
 
-1.0.5 - March 26, 2008
-----------------------
+1.0.5 - 2008-03-26
+------------------
 
 - `Enable self registration flag` in security control panel was broken
   in some cases with custom roles. Patch provided by davidray, thx!
@@ -524,8 +542,8 @@ Changelog
   [hannosch]
 
 
-1.0.4 - February 13, 2008
--------------------------
+1.0.4 -  2008-02-13
+-------------------
 
 - Take advantage of NORMALIZE_WHITESPACE to be independent of the tidy_html
   transform.
@@ -542,8 +560,8 @@ Changelog
   [hannosch]
 
 
-1.0.3 - November 30, 2007
---------------------------
+1.0.3 - 2007-11-30
+------------------
 
 - Fixed description in filter control panel to be recognizable by i18ndude.
   [hannosch]
@@ -554,8 +572,8 @@ Changelog
   [hannosch]
 
 
-1.0.2 - October 7, 2007
------------------------
+1.0.2 - 2007-10-07
+------------------
 
 - Fixed language control panel to only show one language option and fix
   its description. This closes http://dev.plone.org/plone/ticket/6963 and
@@ -563,8 +581,8 @@ Changelog
   [hannosch]
 
 
-1.0.1 - September 10, 2007
---------------------------
+1.0.1 - 2007-09-10
+------------------
 
 - Updated help text to match implementation.
   [fschulze]
@@ -580,8 +598,8 @@ Changelog
   [limi]
 
 
-1.0 - August 14, 2007
----------------------
+1.0 - 2007-08-14
+----------------
 
 - If we are looking at settings for the default workflow lookup the
   real workflow. This fixes http://dev.plone.org/plone/ticket/6843
@@ -636,15 +654,15 @@ Changelog
   [davconvent]
 
 
-1.0rc3 - July 28, 2007
-----------------------
+1.0rc3 - 2007-07-28
+-------------------
 
 - Fixed missing history entries.
   [hannosch]
 
 
-1.0rc2 - July 27, 2007
-----------------------
+1.0rc2 - 2007-07-27
+-------------------
 
 - Add a description to the no-workflow fallback. This fixes
   http://dev.plone.org/plone/ticket/6812.
@@ -673,8 +691,8 @@ Changelog
   [hannosch]
 
 
-1.0rc1 - July 9, 2007
----------------------
+1.0rc1 - 2007-07-09
+-------------------
 
 - Do not show really user unfriendly types anymore in the search and types
   control panels. This closes http://dev.plone.org/plone/ticket/6292.
@@ -721,15 +739,15 @@ Changelog
   [hannosch]
 
 
-1.0b5 - May 5, 2007
--------------------
+1.0b5 - 2007-05-05
+------------------
 
 - Fixed dummy on_save method to accept the data argument.
   [hannosch]
 
 
-1.0b4 - May 5, 2007
--------------------
+1.0b4 - 2007-05-05
+------------------
 
 - Pass data to the on-save template method.
   [optilude]
@@ -746,8 +764,8 @@ Changelog
   [limi]
 
 
-1.0b3 - May 1, 2007
--------------------
+1.0b3 - 2007-05-01
+------------------
 
 - Adjusted the mail control panel to store the email settings on the portal
   root intead of in the site properties. This closes
@@ -755,8 +773,8 @@ Changelog
   [hannosch]
 
 
-1.0b2 - March 23, 2007
-----------------------
+1.0b2 - 2007-03-23
+------------------
 
 - Spelling corrections and wording.
   [limi]
@@ -765,19 +783,18 @@ Changelog
   [hannosch]
 
 
-1.0b1 - March 5, 2007
----------------------
+1.0b1 - 2007-03-05
+------------------
 
 - Lots more control panels.
   [hannosch, optilude, limi, siebo, aclark, jladage, andrewb]
 
 
-1.0a2 - February 6, 2007
-------------------------
+1.0a2 - 2007-02-06
+------------------
 
 - Additional control panels.
   [tomster, whit]
 
 - Groundwork and first control panels.
   [hannosch]
-
