@@ -32,6 +32,7 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.interfaces import IPloneCatalogTool
 
 from OFS.interfaces import IOrderedContainer
+from plone.i18n.normalizer.base import mapUnicode
 
 from Products.ZCatalog.ZCatalog import ZCatalog
 
@@ -51,12 +52,17 @@ _marker = object()
 @indexer(Interface)
 def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.
-
-    Used by PortalCatalog to filter out items you're not allowed to see.
+    Used to filter out items you're not allowed to see.
     """
     allowed = {}
     for r in rolesForPermissionOn('View', obj):
         allowed[r] = 1
+    # shortcut roles and only index the most basic system role if the object
+    # is viewable by either of those
+    if 'Anonymous' in allowed:
+        return ['Anonymous']
+    elif 'Authenticated' in allowed:
+        return ['Authenticated']
     try:
         acl_users = getToolByName(obj, 'acl_users', None)
         if acl_users is not None:
@@ -94,13 +100,16 @@ def sortable_title(obj):
     if title is not None:
         if safe_callable(title):
             title = title()
+
         if isinstance(title, basestring):
-            sortabletitle = title.lower().strip()
+            # Ignore case, normalize accents, strip spaces
+            sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat
-            sortabletitle = safe_unicode(sortabletitle)[:70].encode('utf-8')
+            sortabletitle = sortabletitle[:70].encode('utf-8')
             return sortabletitle
+
     return ''
 
 @indexer(Interface)
@@ -238,6 +247,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         {'action': 'manage_catalogIndexes', 'label': 'Indexes'},
         {'action': 'manage_catalogSchema', 'label': 'Metadata'},
         {'action': 'manage_catalogAdvanced', 'label': 'Advanced'},
+        {'action': 'manage_catalogReport', 'label': 'Query Report'},
+        {'action': 'manage_catalogPlan', 'label': 'Query Plan'},
         {'action': 'manage_propertiesForm', 'label': 'Properties'},
     )
 
@@ -255,9 +266,18 @@ class CatalogTool(PloneBaseTool, BaseTool):
     def _listAllowedRolesAndUsers(self, user):
         """Makes sure the list includes the user's groups.
         """
-        result = list(user.getRoles())
+        result = user.getRoles()
+        if 'Anonymous' in result:
+            # The anonymous user has no further roles
+            return ['Anonymous']
+        result = list(result)
         if hasattr(aq_base(user), 'getGroups'):
-            result = result + ['user:%s' % x for x in user.getGroups()]
+            # remove the AuthenticatedUsers group, the Authenticated role is
+            # already included in the user.getRoles() list
+            groups = ['user:%s' % x for x in user.getGroups() if
+                x != 'AuthenticatedUsers']
+            if groups:
+                result = result + groups
         result.append('Anonymous')
         result.append('user:%s' % user.getId())
         return result

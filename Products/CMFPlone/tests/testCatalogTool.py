@@ -480,11 +480,12 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
     def testSortableNonASCIITitles(self):
         #test a utf-8 encoded string gets properly unicode converted
+        #sort must ignore accents
         title = 'La Pe\xc3\xb1a'
         doc = self.folder.doc
         doc.setTitle(title)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
-        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a'.encode('utf-8'))
+        self.assertEqual(wrapped.sortable_title, 'la pena')
 
     def testSortableLongNumberPrefix(self):
         title = '1.2.3 foo document'
