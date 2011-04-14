@@ -1,14 +1,28 @@
 import logging
+import transaction
+from transaction._transaction import Status
 
 log = logging.getLogger("MailDataManager")
 
-
+# BBB remove when zope.sendmail 3.8.0 is released.
 def catchAllExceptions(func):
     def _catch(*args, **kwargs):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            log.exception(e)
+            txn = transaction.get()
+            if txn.status == Status.ACTIVE:
+                # sent with immediate=True
+                raise
+            elif len(txn._resources) != len(txn._voted):
+                # Allow for local update to zope.sendmail 3.8.0 which raises
+                # errors during tpc_vote.
+                raise
+            else:
+                # Avoid raising errors during tpc_finish as these could lead to
+                # inconsistent state
+                log.exception(e)
+                
     return _catch
 
 

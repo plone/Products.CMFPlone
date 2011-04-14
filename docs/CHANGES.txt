@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Fix zope.sendmail patch to raise errors for immediate sending failures.
+  Relates to http://dev.plone.org/plone/ticket/10675.
+  [elro]
+
 - Sort on content title ignores accents.
   So, d < é < f.
   [thomasdesvenain]
