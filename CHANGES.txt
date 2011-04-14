@@ -1,8 +1,12 @@
 Changelog
 =========
 
+
 1.1.1 - unreleased
 ------------------
+
+- Add MANIFEST.in
+  [WouterVH]
 
 
 1.1 - 2011-04-03
@@ -16,12 +20,14 @@ Changelog
   subclass the class for another context.
   [vincentfretin]
 
+
 1.1b2 - 2011-03-02
 ------------------
 
 - Fixed test of the default user portrait, which changed from
   defaultUser.gif to defaultUser.png in Products.PlonePAS 4.0.5.
   [maurits]
+
 
 1.1b1 - 2011-01-03
 ------------------
@@ -39,12 +45,14 @@ Changelog
   plone.app.controlpanel >= 2.1b1.
   [davisagli]
 
+
 1.0.4 - 2011-02-25
 ------------------
 
 - Fixed test of the default user portrait, which changed from defaultUser.gif to
   defaultUser.png in Products.PlonePAS 4.0.5. 
   [maurits]
+
 
 1.0.3 - 2011-01-03
 ------------------
@@ -62,12 +70,14 @@ Changelog
   This closes http://dev.plone.org/plone/ticket/11316
   [thomasdesvenain, vincentfretin, davisagli]
 
+
 1.0.2 - 2010-11-24
 ------------------
 
 - Don't use a custom widget just to set the description of the fullname field,
   which should be set on the field itself.
   [davisagli]
+
 
 1.0.1 - 2010-07-18
 ------------------
@@ -84,12 +94,14 @@ Changelog
   given userid. Fixes http://dev.plone.org/plone/ticket/10731.
   [mr_savage]
 
+
 1.0 - 2010-07-01
 ----------------
 
 - Internationalized personal preferences form.
   Fixes http://dev.plone.org/plone/ticket/10619
   [thomasdesvenain]
+
 
 1.0b9 - 2010-06-13
 ------------------
@@ -124,6 +136,7 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/10330
   [davisagli]
 
+
 1.0b7 - 2010-05-01
 ------------------
 
@@ -147,17 +160,19 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/10258
   [khink, huub_bouma]
 
+
 1.0b6 - 2010-04-07
 ------------------
 
-- Update permission for the @@register view so only users with the Add
-  Portal Member permission can use it to add new members.
+- Update permission for the @@register view so only users with the
+  ``Add Portal Member`` permission can use it to add new members.
   Update tests accordingly.
   Fixes http://dev.plone.org/plone/ticket/3739
   [dukebody]
 
 - Fixed help_biography message.
   [vincentfretin]
+
 
 1.0b5 - 2010-03-05
 ------------------
@@ -178,6 +193,7 @@ Changelog
 - Fix some more duplicate id's, including some done through TAL that had nothing
   dynamic and so nee not be tal:attributes.
   [rossp]
+
 
 1.0b4 - 2010-02-18
 ------------------
@@ -204,11 +220,13 @@ Changelog
   @@personal-information and @@change-password.
   [khink, kcleong]
 
+
 1.0b3 - 2010-02-01
 ------------------
 
 - Retarget the registration and new-user forms at the navigation root.
   [mj]
+
 
 1.0b2 - 2010-01-28
 ------------------
@@ -216,34 +234,34 @@ Changelog
 - Fixed tests to account for new layout of users overview pages.
   [esteele]
 
+
 1.0b1 - 2009-12-27
 ------------------
 
 - Fixed package dependency declarations and use getSite from zope.site.
   [hannosch]
 
+
 1.0a3 - 2009-12-16
 ------------------
 
-- Make the password field optional for the admin when instead an email
-  can be sent.
+- Make the password field optional for the admin when instead an email can be sent.
   [maurits]
 
-- On the anonymous registration form, do not offer to send an email
-  with a link to reset your password if the password fields are right
-  there on the form already; we were never actually sending emails
-  with the plain password itself anyway.
+- On the anonymous registration form, do not offer to send an email with a link
+  to reset your password if the password fields are right there on the form
+  already; we were never actually sending emails with the plain password itself anyway.
   [maurits]
 
-- Allow admins to register a user at all times, also without valid
-  mailhost settings.  This means that in a fresh Plone site you can
-  create user accounts immediately without having to edit any
-  settings.
+- Allow admins to register a user at all times, also without valid mailhost
+  settings.  This means that in a fresh Plone site you can create user accounts
+  immediately without having to edit any settings.
   [maurits]
 
 - Use the proper SimpleVocabulary/SimpleTerm API instead of encouraging bad
   practice. This refs http://dev.plone.org/plone/ticket/6480.
   [hannosch]
+
 
 1.0a2 - 2009-12-01
 ------------------
@@ -273,6 +291,7 @@ Changelog
 - Internationalized title_join_form_fields and description_join_form_fields.
   This closes http://dev.plone.org/plone/attachment/ticket/9810
   [vincentfretin]
+
 
 1.0a1 - 2009-11-18
 ------------------
