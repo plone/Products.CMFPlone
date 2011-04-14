@@ -14,10 +14,6 @@ def catchAllExceptions(func):
             if txn.status == Status.ACTIVE:
                 # sent with immediate=True
                 raise
-            elif len(txn._resources) != len(txn._voted):
-                # Allow for local update to zope.sendmail 3.8.0 which raises
-                # errors during tpc_vote.
-                raise
             else:
                 # Avoid raising errors during tpc_finish as these could lead to
                 # inconsistent state
