@@ -5,7 +5,11 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
-- Reduce whitespace in sitemap.xml
+- Exclude types_not_searched from sitemap.xml.
+  This fixes http://dev.plone.org/plone/ticket/7145
+  [elro]
+
+- Reduce whitespace in sitemap.xml.
   [elro]
 
 - sitemap.xml.gz support for INavigationRoot.

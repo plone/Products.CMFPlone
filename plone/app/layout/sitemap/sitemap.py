@@ -38,7 +38,9 @@ class SiteMapView(BrowserView):
     def objects(self):
         """Returns the data to create the sitemap."""
         catalog = getToolByName(self.context, 'portal_catalog')
-        query = {'Language': 'all'}
+        query = {'Language': 'all'}        
+        utils = getToolByName(self.context, 'plone_utils')
+        query['portal_type'] = utils.getUserFriendlyTypes()
         if not IPloneSiteRoot.providedBy(self.context):
             query['path'] = '/'.join(self.context.getPhysicalPath())
         for item in catalog.searchResults(query):
