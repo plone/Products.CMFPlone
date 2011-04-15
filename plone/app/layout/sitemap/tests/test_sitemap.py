@@ -2,7 +2,10 @@ from gzip import GzipFile
 from StringIO import StringIO
 
 from zope.component import getMultiAdapter
+from zope.interface import alsoProvides
 from zope.publisher.interfaces import INotFound
+
+from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from Products.CMFCore.utils import getToolByName
 
@@ -49,12 +52,27 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('published' == self.wftool.getInfoFor(published,
                                                               'review_state'))
 
-        #setup pending content that is accessible for anonymous
+        #setup pending content that isn't accessible for anonymous
         self.portal.invokeFactory(id='pending', type_name='Document')
         pending = self.portal.pending
         self.wftool.doActionFor(pending, 'submit')
         self.assertTrue('pending' == self.wftool.getInfoFor(pending,
                                                             'review_state'))
+
+        #setup navroot content that is accessible for anonymous
+        self.portal.invokeFactory(id='navroot', type_name='Folder')
+        navroot = self.portal.navroot
+        self.wftool.doActionFor(navroot, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(navroot,
+                                                              'review_state'))
+        alsoProvides(navroot, INavigationRoot)
+
+        navroot.invokeFactory(id='published', type_name='Document')
+        published = navroot.published
+        self.wftool.doActionFor(published, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(published,
+                                                              'review_state'))
+        
         self.logout()
 
     def uncompress(self, sitemapdata):
@@ -145,6 +163,16 @@ class SiteMapTestCase(PloneTestCase):
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
 
+    def test_navroot(self):
+        '''
+        When a navigation root is published
+        '''
+        sitemap = getMultiAdapter((self.portal.navroot, self.portal.REQUEST),
+                                       name='sitemap.xml.gz')
+        xml = self.uncompress(sitemap())
+        self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
+        self.assertTrue('<loc>http://nohost/plone/navroot</loc>' in xml)
+        self.assertTrue('<loc>http://nohost/plone/navroot/published</loc>' in xml)
 
 def test_suite():
     from unittest import defaultTestLoader

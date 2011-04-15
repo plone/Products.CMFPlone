@@ -5,6 +5,9 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- sitemap.xml.gz support for INavigationRoot.
+  [elro]
+
 - Add MANIFEST.in.
   [WouterVH]
 

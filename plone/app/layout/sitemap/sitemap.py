@@ -1,6 +1,7 @@
 from Products.Five import BrowserView
 from zope.publisher.interfaces import NotFound
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from gzip import GzipFile
@@ -37,7 +38,10 @@ class SiteMapView(BrowserView):
     def objects(self):
         """Returns the data to create the sitemap."""
         catalog = getToolByName(self.context, 'portal_catalog')
-        for item in catalog.searchResults({'Language': 'all'}):
+        query = {'Language': 'all'}
+        if not IPloneSiteRoot.providedBy(self.context):
+            query['path'] = '/'.join(self.context.getPhysicalPath())
+        for item in catalog.searchResults(query):
             yield {
                 'loc': item.getURL(),
                 'lastmod': item.modified.ISO8601(),

@@ -4,7 +4,7 @@
 
   <browser:page
       name="sitemap.xml.gz"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
       class=".sitemap.SiteMapView"
       permission="zope2.Public"
      />
