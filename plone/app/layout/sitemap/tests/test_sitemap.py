@@ -58,21 +58,6 @@ class SiteMapTestCase(PloneTestCase):
         self.wftool.doActionFor(pending, 'submit')
         self.assertTrue('pending' == self.wftool.getInfoFor(pending,
                                                             'review_state'))
-
-        #setup navroot content that is accessible for anonymous
-        self.portal.invokeFactory(id='navroot', type_name='Folder')
-        navroot = self.portal.navroot
-        self.wftool.doActionFor(navroot, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(navroot,
-                                                              'review_state'))
-        alsoProvides(navroot, INavigationRoot)
-
-        navroot.invokeFactory(id='published', type_name='Document')
-        published = navroot.published
-        self.wftool.doActionFor(published, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(published,
-                                                              'review_state'))
-        
         self.logout()
 
     def uncompress(self, sitemapdata):
@@ -165,8 +150,21 @@ class SiteMapTestCase(PloneTestCase):
 
     def test_navroot(self):
         '''
-        When a navigation root is published
+        Sitemap generated from an INavigationRoot
         '''
+        #setup navroot content that is accessible for anonymous
+        self.loginAsPortalOwner()
+        self.portal.invokeFactory(id='navroot', type_name='Folder')
+        navroot = self.portal.navroot
+        self.wftool.doActionFor(navroot, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(navroot, 'review_state'))
+        alsoProvides(navroot, INavigationRoot)
+        navroot.invokeFactory(id='published', type_name='Document')
+        published = navroot.published
+        self.wftool.doActionFor(published, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(published, 'review_state'))
+        self.logout()
+        
         sitemap = getMultiAdapter((self.portal.navroot, self.portal.REQUEST),
                                        name='sitemap.xml.gz')
         xml = self.uncompress(sitemap())
