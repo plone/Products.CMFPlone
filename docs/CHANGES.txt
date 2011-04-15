@@ -8,6 +8,11 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Remove `previous` sub-collection from default content, as sub-collections are
+  not enabled by default since Plone 4.0 and having one in the default content
+  is confusing. Closes http://dev.plone.org/plone/ticket/10705.
+  [hannosch]
+
 - Fix zope.sendmail patch to raise errors for immediate sending failures.
   Relates to http://dev.plone.org/plone/ticket/10675.
   [elro]

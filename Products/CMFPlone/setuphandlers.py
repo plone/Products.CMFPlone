@@ -256,7 +256,7 @@ def setupPortalContent(p):
         topic.setLanguage(language)
         type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
         type_crit.setValue('News Item')
-        sort_crit = topic.addCriterion('created', 'ATSortCriterion')
+        topic.addCriterion('created', 'ATSortCriterion')
         state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
         state_crit.setValue('published')
         topic.setSortCriterion('effective', True)
@@ -301,7 +301,7 @@ def setupPortalContent(p):
         topic.setLanguage(language)
         type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
         type_crit.setValue('Event')
-        sort_crit = topic.addCriterion('start', 'ATSortCriterion')
+        topic.addCriterion('start', 'ATSortCriterion')
         state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
         state_crit.setValue('published')
         date_crit = topic.addCriterion('start', 'ATFriendlyDateCriteria')
@@ -315,39 +315,6 @@ def setupPortalContent(p):
 
     if wftool.getInfoFor(topic, 'review_state') != 'published':
         wftool.doActionFor(topic, 'publish')
-
-    # Previous events subtopic
-    if 'previous' not in topic.objectIds():
-        prev_events_title = 'Past Events'
-        prev_events_desc = 'Events which have already happened.'
-        if base_language != 'en':
-            util = queryUtility(ITranslationDomain, 'plonefrontpage')
-            if util is not None:
-                prev_events_title = util.translate(u'prev-events-title',
-                                       target_language=target_language,
-                                       default='Past Events')
-                prev_events_desc = util.translate(u'prev-events-description',
-                                      target_language=target_language,
-                                      default='Events which have already happened.')
-
-        _createObjectByType('Topic', topic, id='previous',
-                            title=prev_events_title,
-                            description=prev_events_desc)
-        topic = topic.previous
-        topic.setLanguage(language)
-        topic.setAcquireCriteria(True)
-        topic.unmarkCreationFlag()
-        sort_crit = topic.addCriterion('end', 'ATSortCriterion')
-        sort_crit.setReversed(True)
-        date_crit = topic.addCriterion('end', 'ATFriendlyDateCriteria')
-        # Set date reference to now
-        date_crit.setValue(0)
-        # Only take events in the past
-        date_crit.setDateRange('-') # This is irrelevant when the date is now
-        date_crit.setOperation('less')
-
-        if wftool.getInfoFor(topic, 'review_state') != 'published':
-            wftool.doActionFor(topic, 'publish')
 
     # configure Members folder
     members_title = 'Users'
