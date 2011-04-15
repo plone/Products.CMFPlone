@@ -1,6 +1,7 @@
 from gzip import GzipFile
 from StringIO import StringIO
 
+from DateTime import DateTime
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 from zope.publisher.interfaces import INotFound
@@ -11,7 +12,6 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
-
 
 setupPloneSite()
 
@@ -187,6 +187,40 @@ class SiteMapTestCase(PloneTestCase):
         
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/newsitem</loc>' in xml)
+
+    def test_default_pages(self):
+        '''
+        Default pages should show up at their parent's url with the greater of
+        their or their parent's modification time.
+        '''
+        
+        self.loginAsPortalOwner()
+        self.portal.invokeFactory(id='folder', type_name='Folder')
+        folder = self.portal.folder
+        folder.default_page = "default"
+        self.wftool.doActionFor(folder, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(folder, 'review_state'))
+
+        folder.invokeFactory(id='default', type_name='Document')
+        default = folder.default
+        self.wftool.doActionFor(default, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(default, 'review_state'))
+        self.assertTrue(self.portal.plone_utils.isDefaultPage(default))
+
+        default.modification_date = DateTime("2001-01-01")
+        folder.modification_date = DateTime("2000-01-01")
+        self.portal.portal_catalog.reindexObject(folder)
+        self.portal.portal_catalog.reindexObject(default)
+        self.portal.default_page = "published"
+        self.portal.portal_catalog.reindexObject(self.portal.published)
+        self.logout()
+        
+        xml = self.uncompress(self.sitemap())
+        self.assertFalse('<loc>http://nohost/plone/folder/default</loc>' in xml)
+        self.assertTrue('<loc>http://nohost/plone/folder</loc>' in xml)
+        self.assertTrue('<lastmod>2001-01-01T' in xml)
+        self.assertTrue('<loc>http://nohost/plone</loc>' in xml)
+        self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
 
 def test_suite():
     from unittest import defaultTestLoader

@@ -5,6 +5,9 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Use the parent url for default pages in sitemap.xml.
+  [elro]
+
 - Exclude types_not_searched from sitemap.xml.
   This fixes http://dev.plone.org/plone/ticket/7145
   [elro]

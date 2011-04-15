@@ -41,12 +41,46 @@ class SiteMapView(BrowserView):
         query = {'Language': 'all'}        
         utils = getToolByName(self.context, 'plone_utils')
         query['portal_type'] = utils.getUserFriendlyTypes()
-        if not IPloneSiteRoot.providedBy(self.context):
+        is_plone_site_root = IPloneSiteRoot.providedBy(self.context)
+        if not is_plone_site_root:
             query['path'] = '/'.join(self.context.getPhysicalPath())
-        for item in catalog.searchResults(query):
+
+        query['is_default_page'] = True
+        default_page_modified = dict((
+            item.getURL().rsplit('/', 1)[0],
+            (item.modified.micros(), item.modified.ISO8601())
+            ) for item in catalog.searchResults(query))
+        
+        # The plone site root is not catalogued.
+        if is_plone_site_root:
+            loc = self.context.absolute_url()
+            date = self.context.modified()
+            # Comparison must be on GMT value
+            modified = (date.micros(), date.ISO8601())
+            default_modified = default_page_modified.get(loc, None)
+            if default_modified is not None:
+                modified = max(modified, default_modified)
+            lastmod = modified[1]
             yield {
-                'loc': item.getURL(),
-                'lastmod': item.modified.ISO8601(),
+                'loc': loc,
+                'lastmod': lastmod,
+                #'changefreq': 'always', # hourly/daily/weekly/monthly/yearly/never
+                #'prioriy': 0.5, # 0.0 to 1.0
+            }
+
+        query['is_default_page'] = False
+        for item in catalog.searchResults(query):
+            loc = item.getURL()
+            date = item.modified
+            # Comparison must be on GMT value
+            modified = (date.micros(), date.ISO8601())
+            default_modified = default_page_modified.get(loc, None)
+            if default_modified is not None:
+                modified = max(modified, default_modified)
+            lastmod = modified[1]
+            yield {
+                'loc': loc,
+                'lastmod': lastmod,
                 #'changefreq': 'always', # hourly/daily/weekly/monthly/yearly/never
                 #'prioriy': 0.5, # 0.0 to 1.0
             }
