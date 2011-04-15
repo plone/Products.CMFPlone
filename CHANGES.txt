@@ -5,6 +5,9 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Reduce whitespace in sitemap.xml
+  [elro]
+
 - sitemap.xml.gz support for INavigationRoot.
   [elro]
 
