@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Change csrf patch to apply to MemberAdapter instead of MemberData when using
+  CMF 2.3.
+  [elro]
+
 - CMFCore registers a memberdata export/import handler in 2.3, so make our
   registration conditional.
   [elro]
