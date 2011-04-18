@@ -41,6 +41,12 @@ class SiteMapView(BrowserView):
         query = {'Language': 'all'}        
         utils = getToolByName(self.context, 'plone_utils')
         query['portal_type'] = utils.getUserFriendlyTypes()
+        ptool = getToolByName(self, 'portal_properties')
+        siteProperties = getattr(ptool, 'site_properties')
+        typesUseViewActionInListings = frozenset(
+            siteProperties.getProperty('typesUseViewActionInListings', [])
+            )
+        
         is_plone_site_root = IPloneSiteRoot.providedBy(self.context)
         if not is_plone_site_root:
             query['path'] = '/'.join(self.context.getPhysicalPath())
@@ -78,6 +84,8 @@ class SiteMapView(BrowserView):
             if default_modified is not None:
                 modified = max(modified, default_modified)
             lastmod = modified[1]
+            if item.portal_type in typesUseViewActionInListings:
+                loc += '/view'
             yield {
                 'loc': loc,
                 'lastmod': lastmod,

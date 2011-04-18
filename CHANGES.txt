@@ -5,6 +5,9 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Respect typesUseViewActionInListings in sitemap.xml.
+  [elro]
+
 - Use the parent url for default pages in sitemap.xml.
   [elro]
 

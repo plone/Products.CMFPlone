@@ -188,6 +188,39 @@ class SiteMapTestCase(PloneTestCase):
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/newsitem</loc>' in xml)
 
+
+    def test_types_not_searched(self):
+        '''
+        Test that types_not_searched is respected
+        '''
+        # Set News Items not to be searchable (more likely Images)
+        self.loginAsPortalOwner()
+        self.portal.invokeFactory(id='newsitem', type_name='News Item')
+        newsitem = self.portal.newsitem
+        self.wftool.doActionFor(newsitem, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(newsitem, 'review_state'))
+        self.site_properties.manage_changeProperties(types_not_searched=['News Item'])
+        self.logout()
+        
+        xml = self.uncompress(self.sitemap())
+        self.assertFalse('<loc>http://nohost/plone/newsitem</loc>' in xml)
+
+    def test_typesUseViewActionInListings(self):
+        '''
+        Test that typesUseViewActionInListings is respected
+        '''
+        # Set News Items not to be searchable (more likely Images)
+        self.loginAsPortalOwner()
+        self.portal.invokeFactory(id='newsitem', type_name='News Item')
+        newsitem = self.portal.newsitem
+        self.wftool.doActionFor(newsitem, 'publish')
+        self.assertTrue('published' == self.wftool.getInfoFor(newsitem, 'review_state'))
+        self.site_properties.manage_changeProperties(typesUseViewActionInListings=['News Item'])
+        self.logout()
+        
+        xml = self.uncompress(self.sitemap())
+        self.assertTrue('<loc>http://nohost/plone/newsitem/view</loc>' in xml)
+
     def test_default_pages(self):
         '''
         Default pages should show up at their parent's url with the greater of
