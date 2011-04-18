@@ -1,3 +1,4 @@
+from BTrees.OOBTree import OOBTree
 from Products.Five import BrowserView
 from zope.publisher.interfaces import NotFound
 from Products.CMFCore.utils import getToolByName
@@ -52,11 +53,12 @@ class SiteMapView(BrowserView):
             query['path'] = '/'.join(self.context.getPhysicalPath())
 
         query['is_default_page'] = True
-        default_page_modified = dict((
-            item.getURL().rsplit('/', 1)[0],
-            (item.modified.micros(), item.modified.ISO8601())
-            ) for item in catalog.searchResults(query))
-        
+        default_page_modified = OOBTree()
+        for item in catalog.searchResults(query):
+            key = item.getURL().rsplit('/', 1)[0]
+            value = (item.modified.micros(), item.modified.ISO8601())
+            default_page_modified[key] = value
+
         # The plone site root is not catalogued.
         if is_plone_site_root:
             loc = self.context.absolute_url()
