@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Set Content-Language header to default language when content language is an
+  empty string.
+  [elro]
+
 - Change csrf patch to apply to MemberAdapter instead of MemberData when using
   CMF 2.3.
   [elro]
