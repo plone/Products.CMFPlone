@@ -12,6 +12,9 @@ Changelog
 - Add MANIFEST.in.
   [WouterVH]
 
+- Fix cicular dependency in import steps.
+  This partially fixes http://dev.plone.org/plone/ticket/8350
+  [kiorky]  
 
 2.1.2 - 2011-02-10
 ------------------
