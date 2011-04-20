@@ -131,19 +131,13 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(r.all_events_link().endswith('/mynewsite/events'))
 
     def test_prev_events_link(self):
-        r = self.renderer(assignment=events.Assignment(count=5))
-        if r.have_events_folder():
-            self.failUnless(r.prev_events_link().endswith(
-                '/events/aggregator/previous'))
-
-        # before we continue, we need administrator privileges
         self.loginAsPortalOwner()
-
-        if r.have_events_folder():
+        if 'events' in self.portal:
             self.portal._delObject('events')
 
         self.portal.invokeFactory('Folder', 'events')
         self.portal.events.invokeFactory('Folder', 'previous')
+
         r = self.renderer(assignment=events.Assignment(count=5))
         self.failUnless(r.prev_events_link().endswith(
             '/events/previous'))
@@ -154,11 +148,7 @@ class TestRenderer(PortletsTestCase):
 
     def test_prev_events_link_and_navigation_root(self):
         # ensure support of INavigationRoot features dosen't break #9246 #9668
-
-        # before we continue, we need administrator privileges
         self.loginAsPortalOwner()
-
-        # remove default plone content(s)
         if 'events' in self.portal:
             self.portal._delObject('events')
 
