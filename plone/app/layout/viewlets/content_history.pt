@@ -9,6 +9,7 @@
                             actor_name python:actor and actor.get('fullname','username') or item['actorid'];
                             actor_home item/actor_home;
                             action item/transition_title;
+                            action_id python:item['action'] or item['review_state'];
                             effective item/effective_date|nothing;
                             effectiveDate python:effective and view.toLocalizedTime(item['effective_date'],long_format=True);
                             isVersion python:item['type']=='versioning'">
@@ -25,7 +26,7 @@
              <div class="historyByLine">
                  <tal:action i18n:translate="history_action">
                      <span class="historyAction" tal:content="action" i18n:translate="" i18n:name="action"
-                           tal:attributes="class string:historyAction state-${action}"/>
+                           tal:attributes="class string:historyAction state-${action_id}"/>
                      —
                      <tal:actor i18n:name="actor">
                          <a href=""

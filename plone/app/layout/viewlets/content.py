@@ -128,7 +128,7 @@ class WorkflowHistoryViewlet(ViewletBase):
 
     index = ViewPageTemplateFile("review_history.pt")
 
-    def workflowHistory(self, complete=False):
+    def workflowHistory(self, complete=True):
         """Return workflow history of this context.
 
         Taken from plone_scripts/getWorkflowHistory.py
@@ -159,8 +159,10 @@ class WorkflowHistoryViewlet(ViewletBase):
 
             for r in review_history:
                 r['type'] = 'workflow'
-                r['transition_title'] = workflow.getTitleForTransitionOnType(r['action'],
-                                                                             portal_type)
+                r['transition_title'] = workflow.getTitleForTransitionOnType(
+                    r['action'], portal_type) or _("Create")
+                r['state_title'] = workflow.getTitleForStateOnType(
+                    r['review_state'], portal_type)
                 actorid = r['actor']
                 r['actorid'] = actorid
                 if actorid is None:

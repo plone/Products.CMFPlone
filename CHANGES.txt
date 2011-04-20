@@ -5,6 +5,9 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Fix missing workflow history entry for content creation. Closes #11305.
+  [rossp]
+
 - Respect typesUseViewActionInListings in sitemap.xml.
   [elro]
 

@@ -18,12 +18,14 @@ class TestWorkflowHistoryViewlet(ViewletsTestCase):
     def delMember(self, username):
         self.portal.portal_membership.deleteMembers([username])
 
-    def test_emptyHistory(self):
+    def test_initHistory(self):
         request = self.app.REQUEST
         context = getattr(self.folder, 'd1')
         viewlet = WorkflowHistoryViewlet(context, request, None, None)
         viewlet.update()
-        self.assertEqual(viewlet.workflowHistory(), [])
+        history = viewlet.workflowHistory()
+        self.assertEqual(len(history), 1)
+        self.assertEqual(history[0]['action'], None)
 
     def test_transitionHistory(self):
         wf_tool = self.portal.portal_workflow
@@ -36,7 +38,7 @@ class TestWorkflowHistoryViewlet(ViewletsTestCase):
         viewlet.update()
 
         history = viewlet.workflowHistory()
-        self.assertEqual(len(history), 1)
+        self.assertEqual(len(history), 2)
         self.assertEqual(history[0]['action'], 'publish')
 
         # add a temporary user to perform a transition
@@ -56,7 +58,7 @@ class TestWorkflowHistoryViewlet(ViewletsTestCase):
         viewlet.update()
         history = viewlet.workflowHistory()
 
-        self.assertEqual(len(history), 2)
+        self.assertEqual(len(history), 3)
         self.assertEqual(history[0]['actor_home'], '')
 
 

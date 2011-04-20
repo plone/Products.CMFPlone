@@ -27,6 +27,8 @@ setup(name='plone.app.layout',
       extras_require=dict(
         test=[
           'Products.PloneTestCase',
+          'unittest2',
+          'plone.app.testing',
       ]),
       install_requires=[
         'setuptools',
