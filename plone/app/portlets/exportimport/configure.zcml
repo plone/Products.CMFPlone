@@ -20,8 +20,7 @@
         description="Import portlet managers, types, assignments and blacklistings"
         handler=".portlets.importPortlets">
         <depends name="componentregistry"/>
-        <!-- depends on the same ting that plone-final not to have circular deps in GS tree -->
-        <depends name="kss_mimetype"/>
+        <depends name="content"/>
     </genericsetup:importStep>
 
     <genericsetup:exportStep
