@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-2.1.3 - Unreleased
+2.1.3 - 2011-04-21
 ------------------
 
 - Let the portlets import step depend on the content import step
@@ -10,7 +10,7 @@ Changelog
   [maurits]
 
 - Add test ``testINavigationRootWithRelativeRootSet``.
-  Cfr. https://dev.plone.org/plone/ticket/8787
+  Cfr. http://dev.plone.org/plone/ticket/8787
   [anthonygerrard, WouterVH]
 
 - Add MANIFEST.in.
