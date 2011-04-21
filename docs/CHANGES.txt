@@ -8,6 +8,11 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Let the content import step (importing the site structure) not
+  depend on plone-final but on typeinfo.  Solves circular dependency.
+  Refs http://dev.plone.org/plone/ticket/8350
+  [maurits]
+
 - Set Content-Language header to default language when content language is an
   empty string.
   [elro]
