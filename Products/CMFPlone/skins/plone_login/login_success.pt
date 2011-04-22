@@ -20,7 +20,8 @@
 </tal:block>
 
 <metal:main fill-slot="main"
-     tal:define="isAnon context/@@plone_portal_state/anonymous;">
+     tal:define="portal_state nocall:context/@@plone_portal_state;
+                 isAnon portal_state/anonymous;">
 
   <metal:not-anon tal:condition="not:isAnon"
                   tal:define="came_from request/came_from|nothing;
@@ -46,13 +47,12 @@
               Continue</a>
           </p>
 
-          <p tal:define="portal context/@@plone_portal_state/portal;"
-             tal:condition="python:not came_from">
+          <p tal:condition="python:not came_from">
             <a href=""
-               tal:attributes="href context/@@plone_portal_state/navigation_root_url"
+               tal:attributes="href portal_state/navigation_root_url"
                i18n:translate="label_login_continue_to_home_page">
               Continue to the
-              <span tal:content="portal/title" i18n:name="portal_title">
+              <span tal:content="portal_state/navigation_root_title" i18n:name="portal_title">
                   portal title
               </span>
               home page
