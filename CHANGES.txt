@@ -5,6 +5,11 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Page title and logo image title are related to navigation root.
+  Refs http://dev.plone.org/plone/ticket/9175.
+  Added navigation_root_title to portal_state view.
+  [thomasdesvenain]
+
 - Fix missing workflow history entry for content creation. Closes #11305.
   [rossp]
 
@@ -87,7 +92,7 @@ Changelog
 ------------------
 
 - Fixed i18n of the "Log in to add comments" button. It was a regression since
-  2.0. This fixes http://dev.plone.org/plone/ticket/11525 
+  2.0. This fixes http://dev.plone.org/plone/ticket/11525
   [vincentfretin]
 
 

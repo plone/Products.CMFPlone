@@ -5,7 +5,9 @@ from zope.interface import noLongerProvides
 from Products.CMFPlone.interfaces import INonStructuralFolder
 
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
-from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.layout.viewlets.common import (
+    ViewletBase, LogoViewlet, TitleViewlet)
+
 from plone.app.layout.viewlets.common import ContentViewsViewlet
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
@@ -33,6 +35,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'test',
                                   title='Test default page')
+        self.folder.setTitle(u"Folder")
 
     def _invalidateRequestMemoizations(self):
         try:
@@ -77,6 +80,30 @@ class TestContentViewsViewlet(ViewletsTestCase):
         tabs = view.prepareObjectTabs()
         self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
         self.assertEquals(['edit'], [t['id'] for t in tabs if t['selected']])
+
+    def testTitleViewlet(self):
+        """Title viewlet renders navigation root title
+        """
+        self._invalidateRequestMemoizations()
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
+        directlyProvides(self.folder, INavigationRoot)
+        viewlet = TitleViewlet(self.folder.test, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEquals(viewlet.site_title,
+                          "Test default page &mdash; Folder")
+
+    def testLogoViewlet(self):
+        """Logo links towards navigation root
+        """
+        self._invalidateRequestMemoizations()
+        self.loginAsPortalOwner()
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
+        directlyProvides(self.folder, INavigationRoot)
+        viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEquals(viewlet.navigation_root_title, "Folder")
+        self.assertTrue("http://nohost/plone/logo.png" in viewlet.logo_tag)
 
 
 def test_suite():

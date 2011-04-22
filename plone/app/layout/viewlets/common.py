@@ -61,7 +61,7 @@ class TitleViewlet(ViewletBase):
         context_state = getMultiAdapter((self.context, self.request),
                                          name=u'plone_context_state')
         page_title = escape(safe_unicode(context_state.object_title()))
-        portal_title = escape(safe_unicode(portal_state.portal_title()))
+        portal_title = escape(safe_unicode(portal_state.navigation_root_title()))
         if page_title == portal_title:
             self.site_title = portal_title
         else:
@@ -142,9 +142,9 @@ class LogoViewlet(ViewletBase):
             logoName = bprops.logoName
         else:
             logoName = 'logo.jpg'
-        self.logo_tag = portal.restrictedTraverse(logoName).tag()
 
-        self.portal_title = self.portal_state.portal_title()
+        self.logo_tag = portal.restrictedTraverse(logoName).tag()
+        self.navigation_root_title = self.portal_state.navigation_root_title()
 
 
 class GlobalSectionsViewlet(ViewletBase):

@@ -41,6 +41,14 @@ class PortalState(BrowserView):
         return getNavigationRootObject(context, portal)
 
     @memoize
+    def navigation_root_title(self):
+        title = self.navigation_root().Title
+        if callable(title):
+            return title()
+        else:
+            return title
+
+    @memoize
     def navigation_root_path(self):
         return getNavigationRoot(aq_inner(self.context))
 
