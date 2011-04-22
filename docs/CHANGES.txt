@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Text on login success page uses navigation root title instead of portal title.
+  Refs http://dev.plone.org/plone/ticket/9175.
+  [thomasdesvenain]
+
 - Let the content import step (importing the site structure) not
   depend on plone-final but on typeinfo.  Solves circular dependency.
   Refs http://dev.plone.org/plone/ticket/8350
@@ -51,7 +55,7 @@ Changelog
 
 - Fix cicular dependency in import steps.
   This partially fixes http://dev.plone.org/plone/ticket/8350
-  [kiorky] 
+  [kiorky]
 
 4.1b2 - 2011-04-06
 ------------------
