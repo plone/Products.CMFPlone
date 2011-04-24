@@ -485,9 +485,9 @@ class TestGenericSetup(PortletsTestCase):
         expected = """\
 <?xml version="1.0"?>
 <portlets>
- <portletmanager name="test.testcolumn2"
-    type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
  <portletmanager name="test.testcolumn"
+    type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
+ <portletmanager name="test.testcolumn2"
     type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
  <portlet title="Test portlet" addview="portlets.test.Test"
     description="A test portlet"/>

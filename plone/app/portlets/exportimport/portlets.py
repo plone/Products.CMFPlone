@@ -1,3 +1,5 @@
+from operator import attrgetter
+
 from zope.interface import implements
 from zope.interface import Interface
 from zope.interface import alsoProvides
@@ -511,13 +513,13 @@ class PortletsXMLAdapter(XMLAdapterBase):
 
         # Export portlet manager registrations
 
-        for r in portletManagerRegistrations:
+        for r in sorted(portletManagerRegistrations, key=attrgetter('name')):
             fragment.appendChild(self._extractPortletManagerNode(r))
 
         # Export portlet type registrations
 
         for name, portletType in getUtilitiesFor(IPortletType):
-            if name in registeredPortletTypes:
+            if name in sorted(registeredPortletTypes):
                 fragment.appendChild(self._extractPortletNode(name, portletType))
 
         def extractMapping(manager_name, category, key, mapping):
