@@ -27,7 +27,7 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implements
-from zope.app.container.contained import notifyContainerModified
+from zope.container.contained import notifyContainerModified
 
 
 class ReplaceableWrapper:
