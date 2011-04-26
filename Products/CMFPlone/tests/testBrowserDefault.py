@@ -12,7 +12,7 @@ import re
 
 from Acquisition import aq_base
 from zope.event import notify
-from zope.app.publication.interfaces import BeforeTraverseEvent
+from zope.traversing.interfaces import BeforeTraverseEvent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
