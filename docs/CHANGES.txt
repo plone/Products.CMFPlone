@@ -8,6 +8,9 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Optimize images and icon file sizes.
+  [hannosch]
+
 - Fix the event_view to refer to the `icon_export_*` images relative to the
   portal and not the current context.
   [hannosch]
