@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Fix the event_view to refer to the `icon_export_*` images relative to the
+  portal and not the current context.
+  [hannosch]
+
 - Text on login success page uses navigation root title instead of portal title.
   Refs http://dev.plone.org/plone/ticket/9175.
   [thomasdesvenain]
