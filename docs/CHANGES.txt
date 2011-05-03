@@ -8,6 +8,15 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Added a new interface blacklist to the `CatalogTool` module. Items in this
+  list won't be indexed in the object_provides index. This saves about 1kb of
+  mostly useless data to be stored per object. If you need to query on one of
+  the blacklisted interfaces, consider using other indexes to get a small
+  result set and then checking the actual objects or add a specialized index
+  for the data you are interested in. Also changed the stored value to a tuple
+  to safe some memory overhead of the list type.
+  [hannosch]
+
 - Optimize images and icon file sizes.
   [hannosch]
 

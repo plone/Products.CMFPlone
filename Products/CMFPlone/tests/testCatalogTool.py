@@ -943,16 +943,15 @@ class TestObjectProvidedIndexExtender(unittest.TestCase):
     def testNoInterfaces(self):
         class Dummy(object):
             pass
-        self.assertEqual(self._index(Dummy()), ['zope.interface.Interface'])
+        self.assertEqual(self._index(Dummy()), ())
 
     def testSimpleInterface(self):
         class IDummy(zope.interface.Interface):
             pass
         class Dummy(object):
             zope.interface.implements(IDummy)
-        self.assertEqual(self._index(Dummy()), [
-            'Products.CMFPlone.tests.testCatalogTool.IDummy',
-            'zope.interface.Interface'])
+        self.assertEqual(self._index(Dummy()),
+            ('Products.CMFPlone.tests.testCatalogTool.IDummy', ))
 
 
 def test_suite():
