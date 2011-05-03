@@ -40,6 +40,83 @@ from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogE
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
 from AccessControl.PermissionRole import rolesForPermissionOn
 
+BLACKLISTED_INTERFACES = frozenset((
+    'AccessControl.interfaces.IOwned',
+    'AccessControl.interfaces.IPermissionMappingSupport',
+    'AccessControl.interfaces.IRoleManager',
+    'Acquisition.interfaces.IAcquirer',
+    'App.interfaces.INavigation',
+    'App.interfaces.IPersistentExtra',
+    'App.interfaces.IUndoSupport',
+    'archetypes.schemaextender.interfaces.IExtensible',
+    'OFS.interfaces.ICopyContainer',
+    'OFS.interfaces.ICopySource',
+    'OFS.interfaces.IFindSupport',
+    'OFS.interfaces.IFolder',
+    'OFS.interfaces.IFTPAccess',
+    'OFS.interfaces.IItem',
+    'OFS.interfaces.IManageable',
+    'OFS.interfaces.IObjectManager',
+    'OFS.interfaces.IOrderedContainer',
+    'OFS.interfaces.IPropertyManager',
+    'OFS.interfaces.ISimpleItem',
+    'OFS.interfaces.ITraversable',
+    'OFS.interfaces.IZopeObject',
+    'persistent.interfaces.IPersistent',
+    'plone.app.folder.bbb.IArchivable',
+    'plone.app.folder.bbb.IPhotoAlbumAble',
+    'plone.app.folder.folder.IATUnifiedFolder',
+    'plone.app.imaging.interfaces.IBaseObject',
+    'plone.app.iterate.interfaces.IIterateAware',
+    'plone.app.kss.interfaces.IPortalObject',
+    'plone.contentrules.engine.interfaces.IRuleAssignable',
+    'plone.folder.interfaces.IFolder',
+    'plone.folder.interfaces.IOrderableFolder',
+    'plone.locking.interfaces.ITTWLockable',
+    'plone.portlets.interfaces.ILocalPortletAssignable',
+    'plone.uuid.interfaces.IUUIDAware',
+    'Products.Archetypes.interfaces.athistoryaware.IATHistoryAware',
+    'Products.Archetypes.interfaces.base.IBaseContent',
+    'Products.Archetypes.interfaces.base.IBaseFolder',
+    'Products.Archetypes.interfaces.base.IBaseObject',
+    'Products.Archetypes.interfaces.metadata.IExtensibleMetadata',
+    'Products.Archetypes.interfaces.referenceable.IReferenceable',
+    'Products.ATContentTypes.exportimport.content.IDisabledExport',
+    'Products.ATContentTypes.interfaces.folder.IATBTreeFolder',
+    'Products.ATContentTypes.interfaces.interfaces.IATContentType',
+    'Products.ATContentTypes.interfaces.interfaces.IHistoryAware',
+    'Products.ATContentTypes.interfaces.interfaces.ITextContent',
+    'Products.CMFCore.interfaces._content.ICatalogableDublinCore',
+    'Products.CMFCore.interfaces._content.ICatalogAware',
+    'Products.CMFCore.interfaces._content.IDublinCore',
+    'Products.CMFCore.interfaces._content.IDynamicType',
+    'Products.CMFCore.interfaces._content.IFolderish',
+    'Products.CMFCore.interfaces._content.IMinimalDublinCore',
+    'Products.CMFCore.interfaces._content.IMutableDublinCore',
+    'Products.CMFCore.interfaces._content.IMutableMinimalDublinCore',
+    'Products.CMFCore.interfaces._content.IOpaqueItemManager',
+    'Products.CMFCore.interfaces._content.IWorkflowAware',
+    'Products.CMFDynamicViewFTI.interfaces.IBrowserDefault',
+    'Products.CMFDynamicViewFTI.interfaces.ISelectableBrowserDefault',
+    'Products.CMFPlone.interfaces.constrains.IConstrainTypes',
+    'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',
+    'Products.GenericSetup.interfaces.IDAVAware',
+    'webdav.EtagSupport.EtagBaseInterface',
+    'webdav.interfaces.IDAVCollection',
+    'webdav.interfaces.IDAVResource',
+    'zope.annotation.interfaces.IAnnotatable',
+    'zope.annotation.interfaces.IAttributeAnnotatable',
+    'zope.component.interfaces.IPossibleSite',
+    'zope.container.interfaces.IContainer',
+    'zope.container.interfaces.IItemContainer',
+    'zope.container.interfaces.IReadContainer',
+    'zope.container.interfaces.ISimpleReadContainer',
+    'zope.container.interfaces.IWriteContainer',
+    'zope.interface.common.mapping.IEnumerableMapping',
+    'zope.interface.common.mapping.IItemMapping',
+    'zope.interface.common.mapping.IReadMapping',
+    'zope.interface.Interface',
+))
 from zope.interface import Interface, providedBy
 from zope.component import queryMultiAdapter
 
@@ -49,6 +126,9 @@ from plone.uuid.interfaces import IUUIDAware, IUUID
 
 _marker = object()
 
+=======
+
+>>>>>>> .fusion-droit.r49296
 @indexer(Interface)
 def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.
@@ -79,7 +159,8 @@ def allowedRolesAndUsers(obj):
 
 @indexer(Interface)
 def object_provides(obj):
-    return [i.__identifier__ for i in providedBy(obj).flattened()]
+    return tuple([i.__identifier__ for i in providedBy(obj).flattened()
+        if i.__identifier__ not in BLACKLISTED_INTERFACES])
 
 def zero_fill(matchobj):
     return matchobj.group().zfill(6)

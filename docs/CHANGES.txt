@@ -16,6 +16,52 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Added a new interface blacklist to the `CatalogTool` module. Items in this
+  list won't be indexed in the object_provides index. This saves about 1kb of
+  mostly useless data to be stored per object. If you need to query on one of
+  the blacklisted interfaces, consider using other indexes to get a small
+  result set and then checking the actual objects or add a specialized index
+  for the data you are interested in. Also changed the stored value to a tuple
+  to safe some memory overhead of the list type.
+  [hannosch]
+
+- Optimize images and icon file sizes.
+  [hannosch]
+
+- Fix the event_view to refer to the `icon_export_*` images relative to the
+  portal and not the current context.
+  [hannosch]
+
+- Text on login success page uses navigation root title instead of portal title.
+  Refs http://dev.plone.org/plone/ticket/9175.
+  [thomasdesvenain]
+
+- Let the content import step (importing the site structure) not
+  depend on plone-final but on typeinfo.  Solves circular dependency.
+  Refs http://dev.plone.org/plone/ticket/8350
+  [maurits]
+
+- Set Content-Language header to default language when content language is an
+  empty string.
+  [elro]
+
+- Change csrf patch to apply to MemberAdapter instead of MemberData when using
+  CMF 2.3.
+  [elro]
+
+- CMFCore registers a memberdata export/import handler in 2.3, so make our
+  registration conditional.
+  [elro]
+
+- Remove `previous` sub-collection from default content, as sub-collections are
+  not enabled by default since Plone 4.0 and having one in the default content
+  is confusing. Closes http://dev.plone.org/plone/ticket/10705.
+  [hannosch]
+
+- Fix zope.sendmail patch to raise errors for immediate sending failures.
+  Relates to http://dev.plone.org/plone/ticket/10675.
+  [elro]
+
 - Sort on content title ignores accents.
   So, d < é < f.
   [thomasdesvenain]
@@ -30,6 +76,10 @@ Changelog
 - Fix form submission when it has more than 5 tabs.
   This fixes http://dev.plone.org/plone/ticket/10868.
   [thomasdesvenain]
+
+- Fix cicular dependency in import steps.
+  This partially fixes http://dev.plone.org/plone/ticket/8350
+  [kiorky]
 
 4.1b2 - 2011-04-06
 ------------------

@@ -2,6 +2,7 @@
    xmlns="http://namespaces.zope.org/zope"
    xmlns:five="http://namespaces.zope.org/five"
    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+   xmlns:zcml="http://namespaces.zope.org/zcml"
    i18n_domain="plone"
    >
 
@@ -10,7 +11,7 @@
       title="Content"
       description="Import the site's structure and content."
       handler="Products.CMFCore.exportimport.content.importSiteStructure">
-    <depends name="plone-final"/>
+    <depends name="typeinfo"/>
   </genericsetup:importStep>
 
   <genericsetup:importStep
@@ -213,6 +214,7 @@
      />
 
   <adapter
+     zcml:condition="not-installed Products.CMFCore.exportimport.memberdata"
      factory=".propertiestool.SimpleItemWithPropertiesXMLAdapter"
      provides="Products.GenericSetup.interfaces.IBody"
      for="Products.CMFCore.interfaces.IMemberDataTool

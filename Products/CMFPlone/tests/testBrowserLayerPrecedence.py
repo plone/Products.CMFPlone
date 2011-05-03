@@ -8,7 +8,7 @@ from zope.publisher.browser import TestRequest
 from zope.event import notify
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.app.publication.interfaces import BeforeTraverseEvent
+from zope.traversing.interfaces import BeforeTraverseEvent
 from plone.browserlayer.utils import register_layer, unregister_layer
 from plonetheme.sunburst.browser.interfaces import IThemeSpecific
 

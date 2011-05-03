@@ -317,22 +317,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(query['start']['range'], 'min')
         self.assertEqual(topic.checkCreationFlag(), False)
 
-    def testEventsSubTopic(self):
-        # past Events sub-topic is in place and has criteria to show
-        # only past Events Items.
-        events_topic = self.portal.events.aggregator
-        self.failUnless('previous' in events_topic.objectIds())
-        topic = getattr(events_topic, 'previous')
-        self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        query = topic.buildQuery()
-        self.assertEqual(query['Type'], ('Event',))
-        self.assertEqual(query['review_state'], 'published')
-        self.assertEqual(query['end']['query'].Date(), DateTime().Date())
-        self.assertEqual(query['end']['range'], 'max')
-        self.assertEqual(topic.checkCreationFlag(), False)
-        # TODO query shouldn't have a start key #8827
-        # self.failIf(query['start'], "Bug #8827 is not yet fixed")
-
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
         atool = self.actions
