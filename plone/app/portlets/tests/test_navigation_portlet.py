@@ -247,6 +247,16 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.assertEqual(len(tree['children']), 0)
 
+    def testIncludeTopWithoutNavigationRoot(self):
+        self.portal.folder2.invokeFactory('Folder', 'folder21')
+        self.portal.folder2.folder21.invokeFactory('Document', 'doc211')
+        view = self.renderer(self.portal.folder2.folder21,
+            assignment=navigation.Assignment(topLevel=0, root=None, includeTop=True))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.failUnless(view.root_is_portal())
+        self.assertEqual(len(tree['children']), 6)
+
     def testTopLevelWithNavigationRoot(self):
         self.portal.folder2.invokeFactory('Folder', 'folder21')
         self.portal.folder2.folder21.invokeFactory('Document', 'doc211')

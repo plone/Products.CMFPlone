@@ -4,6 +4,10 @@ Changelog
 2.1.4 - Unreleased
 ------------------
 
+- Fixed navigation portlet when include top activated
+  and no navigation root selected (bug appears behind apache).
+  [thomasdesvenain]
+
 - Sort exported portlet types and portlet manager registrations by name to
   avoid intermittent test failures.
   [davisagli]
@@ -24,8 +28,9 @@ Changelog
 
 - Fix circular dependency in import steps.
   This partially fixes http://dev.plone.org/plone/ticket/8350
-  [kiorky]  
+  [kiorky]
 
+>>>>>>> .r49312
 2.1.2 - 2011-02-10
 ------------------
 
