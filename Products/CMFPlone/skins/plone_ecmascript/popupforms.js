@@ -49,7 +49,7 @@ jQuery(function($){
     }
 
     // login form
-    $('#portal-personaltools a[href$=/login], #portal-personaltools a[href$=/login_form], .discussion a[href$=/login], .discussion a[href$=/login_form]').prepOverlay(
+    $('#portal-personaltools a[href$="/login"], #portal-personaltools a[href$="/login_form"], .discussion a[href$="/login"], .discussion a[href$="/login_form"]').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -143,7 +143,7 @@ jQuery(function($){
     );
 
     // registration
-    $('#portal-personaltools a[href$=/@@register]').prepOverlay(
+    $('#portal-personaltools a[href$="/@@register"]').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
