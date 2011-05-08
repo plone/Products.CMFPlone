@@ -8,6 +8,9 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Add forward compatibility with DateTime 3.
+  [hannosch]
+
 - Added a new interface blacklist to the `CatalogTool` module. Items in this
   list won't be indexed in the object_provides index. This saves about 1kb of
   mostly useless data to be stored per object. If you need to query on one of
