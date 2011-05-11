@@ -132,6 +132,25 @@ class UsersGroupsControlPanelView(ControlPanelView):
     def is_zope_manager(self):
         return getSecurityManager().checkPermission(ManagePortal, self.context)
 
+    @property
+    def show_group_listing_warning(self):
+        if not self.searchString:
+            acl = getToolByName(self, 'acl_users')
+            if acl.canListAllGroups():
+                if self.many_groups:
+                    return True
+        return False
+
+    @property
+    def show_users_listing_warning(self):
+        if not self.searchString:
+            acl = getToolByName(self, 'acl_users')
+            # XXX Huh? Is canListAllUsers broken?
+            if not acl.canListAllUsers():
+                if self.many_users:
+                    return True
+        return False
+
 
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 

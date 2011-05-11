@@ -69,7 +69,7 @@
                   indicates a role inherited from membership in a group.
                 </p>
                 <p i18n:translate="description_pas_users_listing"
-                   tal:condition="nothing | python:not view/searchString and not context.acl_users.canListAllUsers()">
+                   tal:condition="view/show_users_listing_warning">
                   Note: Some or all of your PAS user source
                   plugins do not allow listing of users, so you may not see
                   the users defined by those plugins unless doing a specific

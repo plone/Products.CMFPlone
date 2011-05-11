@@ -84,7 +84,7 @@
                 </p>
 
                 <p i18n:translate="description_pas_group_listing"
-                   tal:condition="python:not (view.many_groups or view.searchString) and not context.acl_users.canListAllGroups()">
+                   tal:condition="view/show_group_listing_warning">
                     Note: Some or all of your PAS groups
                     source plugins do not allow listing of groups, so you
                     may not see the groups defined by those plugins unless
