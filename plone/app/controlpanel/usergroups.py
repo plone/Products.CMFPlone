@@ -134,15 +134,18 @@ class UsersGroupsControlPanelView(ControlPanelView):
 
     # The next two class methods implement the following truth table:
     # 
-    # MANY GROUPS    SEARCHING       CAN LIST USERS/GROUPS   RESULT
-    # False          False           False                   Group lists unavailable
-    # False          False           True                    Show all groups
-    # False          True            False                   Show matching groups
-    # False          True            True                    Show matching groups
-    # True           False           False                   Too many groups to list
-    # True           False           True                    Group lists unavailable
-    # True           True            False                   Show matching groups
-    # True           True            True                    Show matching groups
+    # MANY USERS/GROUPS SEARCHING       CAN LIST USERS/GROUPS   RESULT
+    # False             False           False                   Lists unavailable
+    # False             False           True                    Show all
+    # False             True            False                   Show matching
+    # False             True            True                    Show matching
+    # True              False           False                   Too many to list
+    # True              False           True                    Lists unavailable
+    # True              True            False                   Show matching
+    # True              True            True                    Show matching
+
+    # TODO: Maybe have these methods return a text message (instead of a bool)
+    # corresponding to the actual result, e.g. "Too many to list", "Lists unavailable"
 
     @property
     def show_group_listing_warning(self):
