@@ -132,6 +132,18 @@ class UsersGroupsControlPanelView(ControlPanelView):
     def is_zope_manager(self):
         return getSecurityManager().checkPermission(ManagePortal, self.context)
 
+    # The next two class methods implement the following truth table:
+    # 
+    # MANY GROUPS    SEARCHING       CAN LIST USERS/GROUPS   RESULT
+    # False          False           False                   Group lists unavailable
+    # False          False           True                    Show all groups
+    # False          True            False                   Show matching groups
+    # False          True            True                    Show matching groups
+    # True           False           False                   Too many groups to list
+    # True           False           True                    Group lists unavailable
+    # True           True            False                   Show matching groups
+    # True           True            True                    Show matching groups
+
     @property
     def show_group_listing_warning(self):
         if not self.searchString:
