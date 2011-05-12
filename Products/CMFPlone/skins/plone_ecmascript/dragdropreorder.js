@@ -24,6 +24,12 @@ ploneDnDReorder.doDown = function(e) {
     dragging.data('ploneDnDReorder.startPosition', ploneDnDReorder.getPos(dragging));
     dragging.addClass("dragging");
     $(this).parents('tr').addClass('dragindicator');
+    // Find the original subset ids. This must be in the current order.
+    dragging.data('ploneDnDReorder.subset_ids', $.map(
+        ploneDnDReorder.table.find('tr.draggable'),
+        function(elem) {
+            return $(elem).attr('id').substr('folder-contents-item-'.length);
+    }));
 
     return false;
 };
@@ -75,6 +81,7 @@ ploneDnDReorder.doUp = function(e) {
     dragging.removeClass("dragging");
     ploneDnDReorder.updatePositionOnServer();
     dragging.removeData('ploneDnDReorder.startPosition');
+    dragging.removeData('ploneDnDReorder.subset_ids');
     ploneDnDReorder.dragging = null;
     ploneDnDReorder.rows.unbind('mousemove', ploneDnDReorder.doDrag);
     $(this).parents('tr').removeClass('dragindicator');
@@ -84,7 +91,8 @@ ploneDnDReorder.doUp = function(e) {
 ploneDnDReorder.updatePositionOnServer = function() {
     var dragging = ploneDnDReorder.dragging,
         delta,
-        args;
+        args,
+        encoded;
 
     if (!dragging) {return;}
 
@@ -96,10 +104,13 @@ ploneDnDReorder.updatePositionOnServer = function() {
     }
     // Strip off id prefix
     args = {
-        item_id: dragging.attr('id').substr('folder-contents-item-'.length)
+        item_id: dragging.attr('id').substr('folder-contents-item-'.length),
+        subset_ids: dragging.data('ploneDnDReorder.subset_ids')
     };
     args['delta:int'] = delta;
-    $.post('folder_moveitem', args);
+    // Convert jQuery's name[]=1&name[]=2 to Zope's name:list=1&name:list=2
+    encoded = $.param(args).replace(/%5B%5D=/g, '%3Alist=');
+    $.post('folder_moveitem', encoded);
 };
 
 }(jQuery));
