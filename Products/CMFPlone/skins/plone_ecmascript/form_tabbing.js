@@ -63,6 +63,10 @@ ploneFormTabbing._buildTabs = function(container, legends) {
 
     if (threshold) {
         tabs = $('<select class="formTabs">'+tabs+'</select>');
+        tabs.change(function(){
+        	var selected = $(this).attr('value');
+        	jq('#'+selected).click();
+        })
     } else {
         tabs = $('<ul class="formTabs">'+tabs+'</ul>');
     }

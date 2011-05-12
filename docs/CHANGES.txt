@@ -73,10 +73,6 @@ Changelog
   performed against it.
   [hannosch]
 
-- Fix form submission when it has more than 5 tabs.
-  This fixes http://dev.plone.org/plone/ticket/10868.
-  [thomasdesvenain]
-
 - Fix cicular dependency in import steps.
   This partially fixes http://dev.plone.org/plone/ticket/8350
   [kiorky]
