@@ -75,7 +75,7 @@ ploneDnDReorder.doUp = function(e) {
     dragging.removeClass("dragging");
     ploneDnDReorder.updatePositionOnServer();
     dragging.removeData('ploneDnDReorder.startPosition');
-    dragging = null;
+    ploneDnDReorder.dragging = null;
     ploneDnDReorder.rows.unbind('mousemove', ploneDnDReorder.doDrag);
     $(this).parents('tr').removeClass('dragindicator');
     return false;
