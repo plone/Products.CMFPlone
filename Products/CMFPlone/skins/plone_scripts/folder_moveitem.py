@@ -15,8 +15,9 @@ try:
         if subset_ids != [id for position, id in position_id]:
             raise ValueError("Client/server ordering mismatch.")
     context.moveObjectsByDelta(item_id, delta, subset_ids)
-    context.plone_utils.reindexOnReorder(context)
-    return "<done />"
 except ValueError as e:
     context.REQUEST.response.setStatus('BadRequest')
     return str(e)
+
+context.plone_utils.reindexOnReorder(context)
+return "<done />"
