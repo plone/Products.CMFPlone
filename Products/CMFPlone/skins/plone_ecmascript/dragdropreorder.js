@@ -21,7 +21,7 @@ ploneDnDReorder.doDown = function(e) {
     ploneDnDReorder.rows.mousemove(ploneDnDReorder.doDrag);
 
     ploneDnDReorder.dragging = dragging;
-    dragging._position = ploneDnDReorder.getPos(dragging);
+    dragging.data('ploneDnDReorder.startPosition', ploneDnDReorder.getPos(dragging));
     dragging.addClass("dragging");
     $(this).parents('tr').addClass('dragindicator');
 
@@ -74,10 +74,7 @@ ploneDnDReorder.doUp = function(e) {
 
     dragging.removeClass("dragging");
     ploneDnDReorder.updatePositionOnServer();
-    dragging._position = null;
-    try {
-        delete dragging._position;
-    } catch(exc) {}
+    dragging.removeData('ploneDnDReorder.startPosition');
     dragging = null;
     ploneDnDReorder.rows.unbind('mousemove', ploneDnDReorder.doDrag);
     $(this).parents('tr').removeClass('dragindicator');
@@ -91,7 +88,7 @@ ploneDnDReorder.updatePositionOnServer = function() {
 
     if (!dragging) {return;}
 
-    delta = ploneDnDReorder.getPos(dragging) - dragging._position;
+    delta = ploneDnDReorder.getPos(dragging) - dragging.data('ploneDnDReorder.startPosition');
 
     if (delta === 0) {
         // nothing changed
@@ -102,7 +99,7 @@ ploneDnDReorder.updatePositionOnServer = function() {
         item_id: dragging.attr('id').substr('folder-contents-item-'.length)
     };
     args['delta:int'] = delta;
-    jQuery.post('folder_moveitem', args);
+    $.post('folder_moveitem', args);
 };
 
 }(jQuery));
