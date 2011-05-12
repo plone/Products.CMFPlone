@@ -30,7 +30,7 @@ Changelog
   This partially fixes http://dev.plone.org/plone/ticket/8350
   [kiorky]
 
->>>>>>> .r49312
+
 2.1.2 - 2011-02-10
 ------------------
 
