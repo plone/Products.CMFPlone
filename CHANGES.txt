@@ -4,6 +4,9 @@ Changelog
 2.1.1 - unreleased
 ------------------
 
+- Many users/groups setting should provide warning to users/groups config
+  Fixes #11753
+  [aclark]
 
 2.1 - 2011-04-03
 ----------------
