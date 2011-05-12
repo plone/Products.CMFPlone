@@ -1,8 +1,7 @@
 Changelog
 =========
 
-
-2.1.5 - unreleased
+2.1.5 - 2011-05-12
 ------------------
 
 - Page title and logo image title are related to navigation root.
