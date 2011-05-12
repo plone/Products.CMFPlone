@@ -8,8 +8,9 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
-- Refactor dragdropreorder.js and folder_moveitem to detect (but not yet warn
-  of) client/server ordering mismatches.
+- Refactor dragdropreorder.js and folder_moveitem to detect client/server
+  ordering mismatches and be more robust in event of mousing out of the table
+  rows.
   [elro]
 
 - Add forward compatibility with DateTime 3.
