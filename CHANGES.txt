@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.4 - Unreleased
+2.1.4 - 2011-05-11
 ------------------
 
 - Fixed navigation portlet when include top activated
