@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.1 - unreleased
+2.1.1 - 2011-05-13
 ------------------
 
 - Many users/groups setting should provide warning to users/groups config
