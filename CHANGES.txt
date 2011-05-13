@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 - Many users/groups setting should provide warning to users/groups config
-  Fixes #11753
+  Fixes http://dev.plone.org/plone/ticket/11753
   [aclark]
 
 2.1 - 2011-04-03
