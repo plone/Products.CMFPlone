@@ -4,6 +4,9 @@ Changelog
 2.1.5 - unreleased
 ------------------
 
+- Fixed i18n regression caused by the pep8 cleanup.
+  [vincentfretin]
+
 
 2.1.4 - 2011-05-11
 ------------------
