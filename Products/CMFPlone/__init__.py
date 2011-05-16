@@ -71,6 +71,10 @@ def initialize(context):
     ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
 
     # Make DateTimeError importable TTW
+    ModuleSecurityInfo('DateTime.interfaces').declarePublic('DateTimeError')
+    ModuleSecurityInfo('DateTime.interfaces').declarePublic('SyntaxError')
+
+    # BBB support for DateTime < 3
     ModuleSecurityInfo('DateTime.DateTime').declarePublic('DateTimeError')
     ModuleSecurityInfo('DateTime.DateTime').declarePublic('SyntaxError')
 

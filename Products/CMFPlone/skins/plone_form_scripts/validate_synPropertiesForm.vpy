@@ -10,7 +10,7 @@
 ##
 
 from Products.CMFPlone import PloneMessageFactory as _
-from DateTime.DateTime import DateTimeError
+from DateTime.interfaces import DateTimeError
 
 if updateBase and updateBase!='None':
     try:

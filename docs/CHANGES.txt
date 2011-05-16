@@ -16,6 +16,14 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Refactor dragdropreorder.js and folder_moveitem to detect client/server
+  ordering mismatches and be more robust in event of mousing out of the table
+  rows.
+  [elro]
+
+- Add forward compatibility with DateTime 3.
+  [hannosch]
+
 - Added a new interface blacklist to the `CatalogTool` module. Items in this
   list won't be indexed in the object_provides index. This saves about 1kb of
   mostly useless data to be stored per object. If you need to query on one of
@@ -72,10 +80,6 @@ Changelog
 - Optimize the data indexed by the `allowedRolesAndUsers` index and the query
   performed against it.
   [hannosch]
-
-- Fix form submission when it has more than 5 tabs.
-  This fixes http://dev.plone.org/plone/ticket/10868.
-  [thomasdesvenain]
 
 - Fix cicular dependency in import steps.
   This partially fixes http://dev.plone.org/plone/ticket/8350

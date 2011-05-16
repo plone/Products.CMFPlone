@@ -3,6 +3,17 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
+4.0.6 - unreleased
+------------------
+
+- Fix form tab navigation when it has more than 5 tabs under ie, chrome, safari.
+  This fixes http://dev.plone.org/plone/ticket/11815.
+  [thomasdesvenain]
+
+- Fix form submission when it has more than 5 tabs.
+  This fixes http://dev.plone.org/plone/ticket/10868.
+  [thomasdesvenain]
+
 4.0.5 - 2011-04-06
 ------------------
 
@@ -14,7 +25,7 @@ For what's new in this release, see CHANGES.txt.
   This fixes http://dev.plone.orgplone/ticket/11685.
   [gotcha]
 
-- Added "rss" alias to "RSS". 
+- Added "rss" alias to "RSS".
   This fixes http://dev.plone.orgplone/ticket/11638.
   [gotcha]
 

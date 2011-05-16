@@ -22,6 +22,28 @@ _interp_regex = re.compile(r'(?<!\$)(\$(?:%(n)s|{%(n)s}))' %({'n': NAME_RE}))
 datetime_formatvariables = ('H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z')
 name_formatvariables = ('a', 'A', 'b', 'B')
 
+ENGLISH_NAMES = {}
+try:
+    from DateTime.DateTime import _DAYS
+    ENGLISH_NAMES['_days'] = _DAYS
+    from DateTime.DateTime import _DAYS_A
+    ENGLISH_NAMES['_days_a'] = _DAYS_A
+    from DateTime.DateTime import _DAYS_P
+    ENGLISH_NAMES['_days_p'] = _DAYS_P
+    from DateTime.DateTime import _MONTHS
+    ENGLISH_NAMES['_months'] = _MONTHS
+    from DateTime.DateTime import _MONTHS_A
+    ENGLISH_NAMES['_months_a'] = _MONTHS_A
+    from DateTime.DateTime import _MONTHS_P
+    ENGLISH_NAMES['_months_p'] = _MONTHS_P
+except ImportError:
+    ENGLISH_NAMES['_days'] = DateTime._days
+    ENGLISH_NAMES['_days_a'] = DateTime._days_a
+    ENGLISH_NAMES['_days_p'] = DateTime._days_p
+    ENGLISH_NAMES['_months'] = DateTime._months
+    ENGLISH_NAMES['_months_a'] = DateTime._months_a
+    ENGLISH_NAMES['_months_p'] = DateTime._months_p
+
 
 # The following are helper methods to change the default date and time formats
 # for a specific locale. These locale dependent formats are used in the
@@ -195,11 +217,7 @@ def _numbertoenglishname(number, format=None, attr='_days'):
     number = int(number)
     if format is not None:
         attr = '%s_%s' % (attr, format)
-
-    # get list from DateTime attribute
-    thelist = getattr(DateTime, attr)
-
-    return thelist[number]
+    return ENGLISH_NAMES[attr][number]
 
 
 def monthname_english(number, format=None):
