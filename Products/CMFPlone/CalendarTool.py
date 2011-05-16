@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from plone.event.interfaces import IRecurrenceSupport 
 
 
 class CalendarTool(PloneBaseTool, BaseTool):
@@ -94,36 +95,51 @@ class CalendarTool(PloneBaseTool, BaseTool):
                                     'event': 0,
                                     'day': daynumber}
         includedevents = []
+        
+        # prepare occurences
+        all_events_occurences = []
         for result in query:
-            if result.getRID() in includedevents:
-                break
-            else:
-                includedevents.append(result.getRID())
+            # we presume that .occurences() returns occurences only for this month
+            # TODO: the line below needs to be fixed to use the limit_start
+            # and limit_end of occurences()
+            occurences = IRecurrenceSupport(result.getObject()).occurences()[:3]
+            for occurence in occurences:
+                occurence['event'] = result
+                all_events_occurences.append(occurence)
+
+        for occurence in all_events_occurences:
+            # TODO: 4 lines below need to be removed. Does this break anything?
+            # It seems they are not needed: why would the catalog return
+            # one event multiple times?
+            # if occurence['event'].getRID() in includedevents:
+            #     break
+            # else:
+            #     includedevents.append(occurence['event'].getRID())
             event={}
             # we need to deal with events that end next month
-            if  result.end.month() != month:
+            if occurence['end_date'].month != month:
                 # doesn't work for events that last ~12 months
                 # fix it if it's a problem, otherwise ignore
                 eventEndDay = last_day
                 event['end'] = None
             else:
-                eventEndDay = result.end.day()
-                event['end'] = result.end.Time()
+                eventEndDay = occurence['end_date'].day
+                event['end'] = occurence['end_date'].strftime('%H:%M:%S')
             # and events that started last month
-            if result.start.month() != month:  # same as above (12 month thing)
+            if occurence['start_date'].month != month:  # same as above (12 month thing)
                 eventStartDay = 1
                 event['start'] = None
             else:
-                eventStartDay = result.start.day()
-                event['start'] = result.start.Time()
+                eventStartDay = occurence['start_date'].day
+                event['start'] = occurence['start_date'].strftime('%H:%M:%S')
 
-            event['title'] = result.Title or result.getId
+            event['title'] = occurence['event'].Title or occurence['event'].getId
 
             if eventStartDay != eventEndDay:
                 allEventDays = range(eventStartDay, eventEndDay+1)
                 eventDays[eventStartDay]['eventslist'].append(
                         {'end': None,
-                         'start': result.start.Time(),
+                         'start': occurence['start_date'].strftime('%H:%M:%S'),
                          'title': event['title']})
                 eventDays[eventStartDay]['event'] = 1
 
@@ -134,13 +150,13 @@ class CalendarTool(PloneBaseTool, BaseTool):
                          'title': event['title']})
                     eventDays[eventday]['event'] = 1
 
-                if result.end == result.end.earliestTime():
+                if occurence['end_date'] == occurence['end_date'].replace(hour=0, minute=0, second=0):
                     last_day_data = eventDays[allEventDays[-2]]
                     last_days_event = last_day_data['eventslist'][-1]
-                    last_days_event['end'] = (result.end-1).latestTime().Time()
+                    last_days_event['end'] = (occurence['end_date']-1).replace(hour=23, minute=59, second=59).strftime('%H:%M:%S')
                 else:
                     eventDays[eventEndDay]['eventslist'].append(
-                        {'end': result.end.Time(),
+                        {'end': occurence['end_date'].strftime('%H:%M:%S'),
                          'start': None, 'title': event['title']})
                     eventDays[eventEndDay]['event'] = 1
             else:
