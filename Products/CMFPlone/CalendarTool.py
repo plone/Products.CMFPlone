@@ -3,7 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from plone.event.interfaces import IRecurrenceSupport 
+from plone.event.interfaces import IRecurrenceSupport
 
 
 class CalendarTool(PloneBaseTool, BaseTool):
@@ -95,7 +95,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
                                     'event': 0,
                                     'day': daynumber}
         includedevents = []
-        
+
         # prepare occurences
         all_events_occurences = []
         for result in query:
@@ -104,8 +104,10 @@ class CalendarTool(PloneBaseTool, BaseTool):
             # and limit_end of occurences()
             occurences = IRecurrenceSupport(result.getObject()).occurences()[:3]
             for occurence in occurences:
-                occurence['event'] = result
-                all_events_occurences.append(occurence)
+                all_events_occurences.append(
+                        dict(event=result,
+                             start_date = occurence[0],
+                             end_date = occurence[1]))
 
         for occurence in all_events_occurences:
             # TODO: 4 lines below need to be removed. Does this break anything?
