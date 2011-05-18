@@ -102,7 +102,8 @@ class CalendarTool(PloneBaseTool, BaseTool):
             # we presume that .occurences() returns occurences only for this month
             # TODO: the line below needs to be fixed to use the limit_start
             # and limit_end of occurences()
-            occurences = IRecurrenceSupport(result.getObject()).occurences()[:3]
+            # TODO: avoid getobject, let occurences be a property of the event object and indexed as metadata?
+            occurences = IRecurrenceSupport(result.getObject()).occurences(first_date, last_date)
             for occurence in occurences:
                 all_events_occurences.append(
                         dict(event=result,
