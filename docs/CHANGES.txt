@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Error handling for folder_full_view_item so items using a BrowserView render
+  a link instead of causing an error.
+  [elro]
+
 - Refactor dragdropreorder.js and folder_moveitem to detect client/server
   ordering mismatches and be more robust in event of mousing out of the table
   rows.
