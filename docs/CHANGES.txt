@@ -8,6 +8,10 @@ Changelog
 4.1b3 - Unreleased
 ------------------
 
+- Make folder_listing filter on @@portal_state/friendly_types  when applied to
+  a container.
+  [elro]
+
 - Error handling for folder_full_view_item so items using a BrowserView render
   a link instead of causing an error.
   [elro]
