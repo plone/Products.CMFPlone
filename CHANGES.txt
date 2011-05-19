@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.5 - unreleased
+2.1.5 - 2011-06-19
 ------------------
 
 - Fixed i18n regression caused by the pep8 cleanup.
@@ -465,7 +465,7 @@ Changelog
   [andrewb]
 
 
-1.1.7 (Unreleased)
+1.1.7 (2011-05-19)
 ------------------
 
 - Fixed exportimport to support xml CDATA, thanks to lucie
