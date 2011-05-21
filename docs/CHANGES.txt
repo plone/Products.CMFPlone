@@ -8,6 +8,9 @@ Changelog
 4.1rc2 - Unreleased
 -------------------
 
+- Hide datepicker icon for date widget if plone.jscalendar is not loaded.
+  Fixes #11831.
+  [smcmahon]
 
 4.1rc1 - 2011-05-20
 -------------------
