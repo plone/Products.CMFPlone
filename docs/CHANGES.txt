@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.1rc2 - Unreleased
+4.1rc2 - 2011-05-21
 -------------------
 
 - Fixed PloneBatch class to handle limited result sets correctly. This closes
