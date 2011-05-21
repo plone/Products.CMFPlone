@@ -8,6 +8,10 @@ Changelog
 4.1rc2 - Unreleased
 -------------------
 
+- Fixed PloneBatch class to handle limited result sets correctly. This closes
+  http://dev.plone.org/plone/ticket/11733.
+  [hannosch]
+
 - Hide datepicker icon for date widget if plone.jscalendar is not loaded.
   Fixes #11831.
   [smcmahon]

@@ -126,6 +126,19 @@ class Batch(ZTUBatch):
         """ Helper method to get next navigation list from templates """
         return self.navurls(formvariables, self.nextlist)
 
+    def __getitem__(self, index):
+        actual = getattr(self._sequence, 'actual_result_count', None)
+        if actual != self.length:
+            # optmized batch that contains only the wanted items in the sequence
+            return self._sequence[index]
+        if index < 0:
+            if index + self.end < self.first:
+                raise IndexError(index)
+            return self._sequence[index + self.end]
+        if index >= self.length:
+            raise IndexError(index)
+        return self._sequence[index + self.first]
+
 
 # Calculate start, end, batchsize
 # This is copied from ZTUtils.Batch.py because orphans were not correct there.
