@@ -17,7 +17,6 @@
          be loaded. Doing this during the meta.zcml phase ensures this.
          The functionality in the following packages is not used and might
          interfere with Plone's own. -->
-    <exclude package="Products.CMFDefault" file="profiles.zcml" />
     <exclude package="Products.CMFDefault.browser" file="configure.zcml" />
     <exclude package="Products.CMFDefault.formlib" file="configure.zcml" />
     <exclude package="Products.CMFDefault.upgrade" file="configure.zcml" />

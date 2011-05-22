@@ -16,8 +16,7 @@ Changelog
   to be used in conditional ZCML registrations.
   [hannosch]
 
-- Avoid registering CMFDefault's extension profiles and upgrade steps, as they
-  are not applicable for Plone.
+- Avoid registering CMFDefault's upgrade steps, as they are not useful in Plone.
   [hannosch]
 
 4.1rc2 - 2011-05-21
