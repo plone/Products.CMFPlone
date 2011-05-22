@@ -8,6 +8,10 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- Define a ZCML feature called `plone-41` in addition to the existing `plone-4`
+  to be used in conditional ZCML registrations.
+  [hannosch]
+
 - Avoid registering CMFDefault's extension profiles and upgrade steps, as they
   are not applicable for Plone.
   [hannosch]
