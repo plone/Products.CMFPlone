@@ -8,6 +8,9 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- Avoid registering CMFDefault's extension profiles and upgrade steps, as they
+  are not applicable for Plone.
+  [hannosch]
 
 4.1rc2 - 2011-05-21
 -------------------
