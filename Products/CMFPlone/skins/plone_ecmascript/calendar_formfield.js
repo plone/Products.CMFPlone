@@ -160,4 +160,19 @@ plone.jscalendar = {
 // initialize fields
 jQuery(function($) { 
     $(plone.jscalendar.init);
+    // find and enable datepicker popups with data from
+    // hidden fields
+    $('.plone-jscalendar-popup').each(function() {
+        var jqt = $(this),
+            widget_id = this.id.replace('_popup', ''),
+            year_start = $('#' + widget_id + '_yearStart').val(),
+            year_end = $('#' + widget_id + '_yearEnd').val();
+        if (year_start && year_end) {
+            jqt.css('cursor', 'pointer')
+               .show()
+               .click(function(e) {
+                return plone.jscalendar.show('#' + widget_id, year_start, year_end);
+               });
+        }        
+    });
 });

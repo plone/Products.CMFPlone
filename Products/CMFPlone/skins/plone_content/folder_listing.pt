@@ -28,11 +28,13 @@
 
     <metal:listingmacro define-macro="listing">
     <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
-	                    contentFilter python:contentFilter and dict(contentFilter) or {};
+                        contentFilter python:contentFilter and dict(contentFilter) or {};
                         limit_display limit_display|request/limit_display|nothing;
                         limit_display python:limit_display and int(limit_display) or None;
                         more_url more_url|request/more_url|string:folder_contents;
                         is_a_topic python:context.portal_type=='Topic';
+                        friendly_types context/@@plone_portal_state/friendly_types;
+                        dummy python:not is_a_topic and contentFilter.setdefault('portal_type', friendly_types);
                         folderContents folderContents|nothing; folderContents python:folderContents or is_a_topic and context.queryCatalog(batch=True, **contentFilter) or context.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
                         site_properties context/portal_properties/site_properties;
                         use_view_action site_properties/typesUseViewActionInListings|python:();

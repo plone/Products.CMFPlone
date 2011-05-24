@@ -13,8 +13,42 @@ Changelog
   [thet]
 
 
-4.1b3 - Unreleased
-------------------
+4.1rc3 - Unreleased
+-------------------
+
+- Explicitly load the `configure.zcml` from `plone.app.upgrade`, so the upgrade
+  steps are loaded in `plone.app.testing` based test layers.
+  [hannosch]
+
+- Define a ZCML feature called `plone-41` in addition to the existing `plone-4`
+  to be used in conditional ZCML registrations.
+  [hannosch]
+
+- Avoid registering CMFDefault's upgrade steps, as they are not useful in Plone.
+  [hannosch]
+
+4.1rc2 - 2011-05-21
+-------------------
+
+- Fixed PloneBatch class to handle limited result sets correctly. This closes
+  http://dev.plone.org/plone/ticket/11733.
+  [hannosch]
+
+- Hide datepicker icon for date widget if plone.jscalendar is not loaded.
+  Fixes #11831.
+  [smcmahon]
+
+4.1rc1 - 2011-05-20
+-------------------
+
+- Make folder_listing filter on @@portal_state/friendly_types when applied to
+  a container. (Add portal_types to site_properties types_not_to_list to
+  exclude them from friendly_types.)
+  [elro]
+
+- Error handling for folder_full_view_item so items using a BrowserView render
+  a link instead of causing an error.
+  [elro]
 
 - Refactor dragdropreorder.js and folder_moveitem to detect client/server
   ordering mismatches and be more robust in event of mousing out of the table
