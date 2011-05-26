@@ -5,6 +5,10 @@ Changelog
 1.1.1 - unreleased
 ------------------
 
+- Check for permission when editing other user's profiles.
+  (This fixes http://dev.plone.org/plone/ticket/11842)
+  [fRiSi]
+
 - Add MANIFEST.in
   [WouterVH]
 
@@ -50,7 +54,7 @@ Changelog
 ------------------
 
 - Fixed test of the default user portrait, which changed from defaultUser.gif to
-  defaultUser.png in Products.PlonePAS 4.0.5. 
+  defaultUser.png in Products.PlonePAS 4.0.5.
   [maurits]
 
 

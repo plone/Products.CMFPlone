@@ -24,10 +24,8 @@ class AccountPanelSchemaAdapter(SchemaAdapterBase):
         mt = getToolByName(context, 'portal_membership')
         userid = context.REQUEST.get('userid')
 
-        if userid:
+        if userid and mt.checkPermission('plone.app.controlpanel.UsersAndGroups', context):
             self.context = mt.getMemberById(userid)
-        elif mt.isAnonymousUser():
-            raise "Can't modify properties of anonymous user"
         else:
             self.context = mt.getAuthenticatedMember()
 
@@ -79,7 +77,7 @@ class AccountPanelForm(FieldsetsEditForm):
 
         self.request.response.redirect(self.request['ACTUAL_URL'])
         return ''
-        
+
     def _on_save(self, data=None):
         pass
 
@@ -87,12 +85,12 @@ class AccountPanelForm(FieldsetsEditForm):
         return make_query(**kw)
 
     def showWidget(self, widget):
-        """ Hide widgets in the formbase template. 
+        """ Hide widgets in the formbase template.
         """
         widgetName = widget.name.strip('form.')
         if not widgetName in self.hidden_widgets:
             return True
-        
+
     def _checkPermission(self, permission, context):
         mt = getToolByName(context, 'portal_membership')
         return mt.checkPermission(permission, context)
@@ -117,7 +115,7 @@ class AccountPanelForm(FieldsetsEditForm):
 
     def getPasswordLink(self):
         context = aq_inner(self.context)
-        
+
         mt = getToolByName(context, 'portal_membership')
         member = mt.getAuthenticatedMember()
 

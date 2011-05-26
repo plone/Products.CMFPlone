@@ -160,7 +160,7 @@ def getGroupIds(context):
         is_zope_manager = getSecurityManager().checkPermission(ManagePortal, context)
         if 'Manager' in g.getRoles() and not is_zope_manager:
             continue
-        
+
         group_title = safe_unicode(g.getGroupTitleOrName())
         if group_title != g.id:
             title = u'%s (%s)' % (group_title, g.id)
@@ -367,6 +367,7 @@ class BaseRegistrationForm(PageForm):
         portal = getToolByName(self.context, 'portal_url').getPortalObject()
         registration = getToolByName(self.context, 'portal_registration')
         portal_props = getToolByName(self.context, 'portal_properties')
+        mt = getToolByName(self.context, 'portal_membership')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
 
@@ -388,11 +389,13 @@ class BaseRegistrationForm(PageForm):
             logging.exception(err)
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
-        
+
         # set additional properties using the user schema adapter
         schema = getUtility(IUserDataSchemaProvider).getSchema()
-        self.request.set('userid', user_id)
+
         adapter = getAdapter(portal, schema)
+        adapter.context = mt.getMemberById(user_id)
+
         for name in getFieldNamesInOrder(schema):
             if name in data:
                 setattr(adapter, name, data[name])
