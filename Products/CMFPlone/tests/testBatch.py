@@ -3,9 +3,9 @@ import unittest
 from Products.ZCatalog.Lazy import LazyMap
 
 from Products.CMFPlone.PloneBatch import Batch
+from Products.CMFPlone.tests import PloneTestCase
 
-
-class TestBatch(unittest.TestCase):
+class TestBatch(PloneTestCase.PloneTestCase):
 
     def test_batch_no_lazy(self):
         batch = Batch(range(100), size=10, start=10)
@@ -32,3 +32,15 @@ class TestBatch(unittest.TestCase):
             [(6, 'b_start:int=50'), (7, 'b_start:int=60'),
             (8, 'b_start:int=70')])
         self.assertEqual(batch.nexturls({}), [(10, 'b_start:int=90')])
+
+    def test_batch_brains(self):
+        self.loginAsPortalOwner()
+        portal = self.portal
+
+        for obj_id in ['%stest' % chr(c) for c in range(97, 123)]:
+            portal.invokeFactory('Document', obj_id)
+
+        brains = portal.portal_catalog.searchResults(portal_type='Document',
+                                                     sort_on='id')
+        batch = Batch(brains, size=10, start=10)
+        self.assertEqual(batch[0].id, 'ktest')
