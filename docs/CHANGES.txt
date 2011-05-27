@@ -16,6 +16,9 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- Fixed PloneBatch to work for non-lazy sequences.
+  [hannosch]
+
 - Explicitly load the `configure.zcml` from `plone.app.upgrade`, so the upgrade
   steps are loaded in `plone.app.testing` based test layers.
   [hannosch]
