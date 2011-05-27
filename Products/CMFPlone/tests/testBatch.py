@@ -43,4 +43,4 @@ class TestBatch(PloneTestCase.PloneTestCase):
         brains = portal.portal_catalog.searchResults(portal_type='Document',
                                                      sort_on='id')
         batch = Batch(brains, size=10, start=10)
-        self.assertEqual(batch[0].id, 'ktest')
+        self.assertEqual(batch[0].id, 'jtest')

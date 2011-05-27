@@ -128,7 +128,7 @@ class Batch(ZTUBatch):
 
     def __getitem__(self, index):
         actual = getattr(self._sequence, 'actual_result_count', None)
-        if actual is not None and actual != self.length:
+        if actual is not None and actual != len(self._sequence):
             # optmized batch that contains only the wanted items in the sequence
             return self._sequence[index]
         if index < 0:
