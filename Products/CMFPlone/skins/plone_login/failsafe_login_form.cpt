@@ -2,7 +2,8 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
+      i18n:domain="plone"
+      tal:define="dummy python:request.response.setHeader('X-Theme-Disabled', 'True');">
 <head>
   <title i18n:translate="heading_sign_in">Please log in</title>
 </head>

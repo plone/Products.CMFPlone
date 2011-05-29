@@ -8,6 +8,10 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- Added "X-Theme-Disabled" response header to failsafe_login_form to disable
+  Diazo/plone.app.theming.
+  [elro]
+
 - Fixed PloneBatch to work for non-lazy sequences.
   [hannosch]
 
