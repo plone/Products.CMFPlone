@@ -8,6 +8,10 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- Set appropriate cache headers on createObject redirects to prevent caching
+  by proxy servers.
+  [elro]
+
 - Added "X-Theme-Disabled" response header to failsafe_login_form to disable
   Diazo/plone.app.theming.
   [elro]
