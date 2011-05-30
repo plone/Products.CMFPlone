@@ -8,6 +8,10 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- Set Language to 'all' to list content in all languages when listing a
+  worklist's contents (workflow) to support LinguaPlone better.
+  [mj]
+
 - Set appropriate cache headers on createObject redirects to prevent caching
   by proxy servers.
   [elro]
