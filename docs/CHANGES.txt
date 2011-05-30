@@ -8,6 +8,10 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- In actions.xml, use object_url for the object_buttons.
+  Fixes http://dev.plone.org/plone/ticket/11733.
+  [WouterVH]
+
 - Set Language to 'all' to list content in all languages when listing a
   worklist's contents (workflow) to support LinguaPlone better.
   [mj]
