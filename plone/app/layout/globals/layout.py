@@ -124,7 +124,7 @@ class LayoutPolicy(BrowserView):
 
         # template class (required)
         name = ''
-        if isinstance(template, ViewPageTemplateFile):
+        if hasattr(aq_base(view), '__name__'):
             # Browser view
             name = view.__name__
         else:
