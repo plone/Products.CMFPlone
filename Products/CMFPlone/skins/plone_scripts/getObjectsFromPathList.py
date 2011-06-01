@@ -7,6 +7,10 @@
 ##parameters=paths=[],batch=False,b_size=100
 ##title=method to turn a list of paths into a list of objects
 ##
+from zExceptions import Forbidden
+if container.REQUEST['PUBLISHED'] is script:
+   raise Forbidden('Script may not be published.')
+
 contents = []
 portal = context.portal_url.getPortalObject()
 for path in paths:
