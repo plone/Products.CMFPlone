@@ -8,7 +8,7 @@
 ##title=method to turn a list of paths into a list of objects
 ##
 from zExceptions import Forbidden
-if container.REQUEST['PUBLISHED'] is script:
+if container.REQUEST.get('PUBLISHED') is script:
    raise Forbidden('Script may not be published.')
 
 contents = []
