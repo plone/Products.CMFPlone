@@ -4,15 +4,10 @@ Changelog
 2.1.6 - unreleased
 ------------------
 
-- Make the bodyClass play more nice with ZopeViewPageTemplateFile.
-  This fixes https://dev.plone.org/plone/ticket/11825
-  [WouterVH]
-
-- Use getPhysicalPath instead of absolute_url_path to handle correctly
-  virtual hosting.
-  This fixes http://dev.plone.org/plone/ticket/8787
-  [encolpe]
-
+ - Use getPhysicalPath instead of absolute_url_path to handle correctly 
+   virtual hosting. 
+   This fixes http://dev.plone.org/plone/ticket/8787 
+   [encolpe]
 
 2.1.5 - 2011-05-12
 ------------------
