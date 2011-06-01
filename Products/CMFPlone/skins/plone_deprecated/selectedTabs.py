@@ -7,6 +7,9 @@
 ##parameters=default_tab, obj=None, portal_tabs=[]
 ##title=
 ##
+from zExceptions import Forbidden
+if container.REQUEST['PUBLISHED'] is script:
+   raise Forbidden('Script may not be published.')
 
 from AccessControl import Unauthorized
 

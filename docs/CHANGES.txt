@@ -8,6 +8,9 @@ Changelog
 4.1rc3 - Unreleased
 -------------------
 
+- Apply patches to prevent exploitation of CVE-2011-1948 (Hotfix 20110531.)
+  [elro]
+
 - In actions.xml, use object_url for the object_buttons.
   Fixes http://dev.plone.org/plone/ticket/11733.
   [WouterVH]
