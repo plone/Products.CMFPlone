@@ -44,11 +44,3 @@ class TestAccountPanelSchemaAdapter(unittest.TestCase):
         context.REQUEST.form['userid'] = 'bob'
         adapter = AccountPanelSchemaAdapter(context)
         self.assertEqual('bob', adapter.context)
-
-    def test__init__userid_in_request_other(self):
-        # allowed for all users (used by the registration form)
-        context = makerequest(SimpleItem('foo'))
-        context.portal_membership = DummyPortalMembership(False)
-        context.REQUEST.set('userid', 'bob')
-        adapter = AccountPanelSchemaAdapter(context)
-        self.assertEqual('bob', adapter.context)

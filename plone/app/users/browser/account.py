@@ -23,11 +23,9 @@ class AccountPanelSchemaAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         mt = getToolByName(context, 'portal_membership')
-        if context.REQUEST.other.get('userid'):
-            self.context = mt.getMemberById(context.REQUEST.other.get('userid'))
-        elif (context.REQUEST.form.get('userid')
-              and mt.checkPermission('Plone Site Setup: Users and Groups', context)):
-            self.context = mt.getMemberById(context.REQUEST.form.get('userid'))
+        userid = context.REQUEST.form.get('userid')
+        if (userid and mt.checkPermission('Plone Site Setup: Users and Groups', context)):
+            self.context = mt.getMemberById(userid)
         else:
             self.context = mt.getAuthenticatedMember()
 
