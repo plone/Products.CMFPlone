@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.6 - unreleased
+2.1.6 - 2011-06-02
 ------------------
 
  - Use getPhysicalPath instead of absolute_url_path to handle correctly 
