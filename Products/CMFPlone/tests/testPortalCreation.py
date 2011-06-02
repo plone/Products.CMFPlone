@@ -513,7 +513,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         buttons = acts.get('object_buttons', [])
         self.assertEquals(0, len(buttons))
 
-    def testObjectButtonActionsOnDefaultDocumentApplyToParent(self):
+    def testObjectButtonActionsOnDefaultDocumentDoNotApplyToParent(self):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
         self.folder.invokeFactory('Document','index_html')
@@ -522,7 +522,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(len(buttons), 4)
         urls = [a['url'] for a in buttons]
         for url in urls:
-            self.failIf('index_html' in url, 'Action wrongly applied to default page object %s'%url)
+            self.failIf('index_html' not in url, 'Action wrongly applied to parent object %s'%url)
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
