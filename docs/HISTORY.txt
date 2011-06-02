@@ -3,16 +3,43 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
-4.0.6 - unreleased
+4.0.7 - 2011-06-02
 ------------------
 
-- Fix form tab navigation when it has more than 5 tabs under ie, chrome, safari.
+- Apply patches to prevent exploitation of CVE-2011-1948 (Hotfix 20110531.)
+  [elro]
+
+- Set Language to 'all' to list content in all languages when listing a
+  worklist's contents (workflow) to support LinguaPlone better.
+  [mj]
+
+4.0.6 - 2011-05-20
+------------------
+
+- Backport set appropriate cache headers on createObject redirects to prevent
+  caching by proxy servers.
+  [elro]
+
+- Fix form tab navigation when it has more than 6 tabs under ie, chrome, safari.
   This fixes http://dev.plone.org/plone/ticket/11815.
   [thomasdesvenain]
+
+- Let the content import step (importing the site structure) not
+  depend on plone-final but on typeinfo.  Solves circular dependency.
+  Refs http://dev.plone.org/plone/ticket/8350
+  [maurits]
+
+- Backport fix zope.sendmail patch to raise errors for immediate sending
+  failures. Relates to http://dev.plone.org/plone/ticket/10675.
+  [elro]
 
 - Fix form submission when it has more than 5 tabs.
   This fixes http://dev.plone.org/plone/ticket/10868.
   [thomasdesvenain]
+
+- Fix cicular dependency in import steps.
+  This partially fixes http://dev.plone.org/plone/ticket/8350
+  [kiorky]
 
 4.0.5 - 2011-04-06
 ------------------
