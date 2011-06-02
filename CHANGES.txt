@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.1.1 - unreleased
+1.1.1 - 2011-06-02
 ------------------
 
 - Check for permission when editing other users' profiles.
@@ -49,6 +49,14 @@ Changelog
   "Manage portal" and "Manage users".  This requires
   plone.app.controlpanel >= 2.1b1.
   [davisagli]
+
+1.0.5 - 2011-06-02
+------------------
+
+- Check for permission when editing other users' profiles.
+  This fixes http://dev.plone.org/plone/ticket/11842 and
+  http://plone.org/products/plone/security/advisories/CVE-2011-1950
+  [fRiSi, davisagli]
 
 
 1.0.4 - 2011-02-25
