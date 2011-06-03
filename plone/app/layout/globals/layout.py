@@ -13,6 +13,7 @@ from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile
 
 from plone.app.layout.globals.interfaces import ILayoutPolicy
 from plone.app.layout.globals.interfaces import IViewView
@@ -124,7 +125,8 @@ class LayoutPolicy(BrowserView):
 
         # template class (required)
         name = ''
-        if isinstance(template, ViewPageTemplateFile):
+        if isinstance(template, ViewPageTemplateFile) or \
+           isinstance(template, ZopeViewPageTemplateFile):
             # Browser view
             name = view.__name__
         else:
