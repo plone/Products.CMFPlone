@@ -23,13 +23,13 @@
  <javascript id="styleswitcher.js" />
  <javascript id="toc.js" />
  <javascript id="collapsibleformfields.js" />
+ <javascript id="dropdown.js" /> 
 
  <!-- Sarissa is used by both Kupu and KSS -->
  <javascript id="sarissa.js"
     expression="python:not context.restrictedTraverse('@@plone_portal_state').anonymous() or (getattr(portal, 'kupu_library_tool', None) and portal.kupu_library_tool.isKupuEnabled(REQUEST=request))" />
 
  <!-- Only for logged-in users -->
- <javascript id="dropdown.js" authenticated="True" />
  <javascript id="table_sorter.js" authenticated="True" />
  <javascript id="calendar_formfield.js" authenticated="True" />
  <javascript id="formUnload.js" authenticated="True" />
