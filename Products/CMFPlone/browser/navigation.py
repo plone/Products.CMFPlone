@@ -111,13 +111,51 @@ class CatalogSiteMap(BrowserView):
 class CatalogNavigationTabs(BrowserView):
     implements(INavigationTabs)
 
+    def _getNavQuery(self):
+        context = self.context
+        navtree_properties = self.navtree_properties
+
+        customQuery = getattr(context, 'getCustomNavQuery', False)
+        if customQuery is not None and utils.safe_callable(customQuery):
+            query = customQuery()
+        else:
+            query = {}
+
+        rootPath = getNavigationRoot(context)
+        query['path'] = {'query': rootPath, 'depth': 1}
+
+        blacklist = navtree_properties.getProperty('metaTypesNotToList', ())
+        all_types = self.portal_catalog.uniqueValuesFor('portal_type')
+        query['portal_type'] = [t for t in all_types if t not in blacklist]
+
+        sortAttribute = navtree_properties.getProperty('sortAttribute', None)
+        if sortAttribute is not None:
+            query['sort_on'] = sortAttribute
+            sortOrder = navtree_properties.getProperty('sortOrder', None)
+            if sortOrder is not None:
+                query['sort_order'] = sortOrder
+
+        if navtree_properties.getProperty('enable_wf_state_filtering', False):
+            query['review_state'] = navtree_properties.getProperty(
+                                                    'wf_states_to_show', [])
+
+        query['is_default_page'] = False
+
+        if self.site_properties.getProperty('disable_nonfolderish_sections',
+                                            False):
+            query['is_folderish'] = True
+
+        return query
+
     def topLevelTabs(self, actions=None, category='portal_tabs'):
         context = aq_inner(self.context)
 
-        portal_catalog = getToolByName(context, 'portal_catalog')
         portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
-        site_properties = getattr(portal_properties, 'site_properties')
+        self.navtree_properties = getattr(portal_properties,
+                                          'navtree_properties')
+        self.site_properties = getattr(portal_properties,
+                                       'site_properties')
+        self.portal_catalog = getToolByName(context, 'portal_catalog')
 
         if actions is None:
             context_state = getMultiAdapter((context, self.request),
@@ -134,42 +172,15 @@ class CatalogNavigationTabs(BrowserView):
                 result.append(data)
 
         # check whether we only want actions
-        if site_properties.getProperty('disable_folder_sections', False):
+        if self.site_properties.getProperty('disable_folder_sections', False):
             return result
 
-        customQuery = getattr(context, 'getCustomNavQuery', False)
-        if customQuery is not None and utils.safe_callable(customQuery):
-            query = customQuery()
-        else:
-            query = {}
+        query = self._getNavQuery()
 
-        rootPath = getNavigationRoot(context)
-        query['path'] = {'query': rootPath, 'depth': 1}
-
-        blacklist = navtree_properties.getProperty('metaTypesNotToList', ())
-        all_types = portal_catalog.uniqueValuesFor('portal_type')
-        query['portal_type'] = [t for t in all_types if t not in blacklist]
-
-        sortAttribute = navtree_properties.getProperty('sortAttribute', None)
-        if sortAttribute is not None:
-            query['sort_on'] = sortAttribute
-
-            sortOrder = navtree_properties.getProperty('sortOrder', None)
-            if sortOrder is not None:
-                query['sort_order'] = sortOrder
-
-        if navtree_properties.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = navtree_properties.getProperty('wf_states_to_show', [])
-
-        query['is_default_page'] = False
-
-        if site_properties.getProperty('disable_nonfolderish_sections', False):
-            query['is_folderish'] = True
-
-        rawresult = portal_catalog.searchResults(query)
+        rawresult = self.portal_catalog.searchResults(query)
 
         # now add the content to results
-        idsNotToList = navtree_properties.getProperty('idsNotToList', ())
+        idsNotToList = self.navtree_properties.getProperty('idsNotToList', ())
         for item in rawresult:
             if not (item.getId in idsNotToList or item.exclude_from_nav):
                 id, item_url = get_view_url(item)
@@ -178,6 +189,7 @@ class CatalogNavigationTabs(BrowserView):
                         'url': item_url,
                         'description': item.Description}
                 result.append(data)
+
         return result
 
 
