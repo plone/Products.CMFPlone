@@ -1,5 +1,6 @@
 from zope.interface import Interface
 
+
 class IMigrationTool(Interface):
     """Handles migrations between Plone releases."""
 

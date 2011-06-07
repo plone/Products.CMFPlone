@@ -51,7 +51,6 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         return tuple(transitions[:])
 
-
     def flattenTransitionsForPaths(self, paths):
         """ this is even more hokey!!"""
         if hasattr(paths, 'startswith'):
@@ -103,15 +102,15 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                                     'name': tdef.actbox_name,
                                     'url': tdef.actbox_url %
                                            {'content_url': obj.absolute_url(),
-                                            'portal_url' : '',
-                                            'folder_url' : ''}}
+                                            'portal_url': '',
+                                            'folder_url': ''}}
         return tuple(result.values())
 
     def workflows_in_use(self):
         """ gathers all the available workflow chains (sequence of workflow ids, ).  """
         in_use = []
 
-        in_use.append( self._default_chain )
+        in_use.append(self._default_chain)
 
         if self._chains_by_type:
             for chain in self._chains_by_type.values():
@@ -138,7 +137,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         types_by_wf = {} # wf:[list,of,types]
         for t in list_ptypes:
             for wf in self.getChainFor(t):
-                types_by_wf[wf] = types_by_wf.get(wf,[]) + [t]
+                types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
 
         # Placeful stuff
         placeful_tool = getToolByName(self, 'portal_placeful_workflow', None)
@@ -147,7 +146,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 for t in list_ptypes:
                     chain = policy.getChainFor(t) or ()
                     for wf in chain:
-                        types_by_wf[wf] = types_by_wf.get(wf,[]) + [t]
+                        types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
 
         wf_with_wlists = {}
         for id in self.getWorkflowIds():
@@ -160,15 +159,17 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     wlist_def=wf.worklists[worklist]
                     # Make the var_matches a dict instead of PersistentMapping to enable access from scripts
                     var_matches = {}
-                    for key in wlist_def.var_matches.keys(): var_matches[key] = wlist_def.var_matches[key]
-                    a_wlist = { 'id':worklist
-                              , 'guard' : wlist_def.getGuard()
-                              , 'guard_permissions' : wlist_def.getGuard().permissions
-                              , 'guard_roles' : wlist_def.getGuard().roles
-                              , 'catalog_vars' : var_matches
-                              , 'name' : getattr(wlist_def, 'actbox_name', None)
-                              , 'url' : getattr(wlist_def, 'actbox_url', None)
-                              , 'types' : types_by_wf.get(id,[]) }
+                    for key in wlist_def.var_matches.keys():
+                        var_matches[key] = wlist_def.var_matches[key]
+
+                    a_wlist = {'id':worklist
+                              ,'guard': wlist_def.getGuard()
+                              ,'guard_permissions': wlist_def.getGuard().permissions
+                              ,'guard_roles': wlist_def.getGuard().roles
+                              ,'catalog_vars': var_matches
+                              ,'name': getattr(wlist_def, 'actbox_name', None)
+                              ,'url': getattr(wlist_def, 'actbox_url', None)
+                              ,'types' : types_by_wf.get(id,[])}
                     wlists.append(a_wlist)
                 # yes, we can duplicates, we filter duplicates out on the calling PyhtonScript client
                 wf_with_wlists[id]=wlists
@@ -216,6 +217,10 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     catalog_vars = dict(portal_type=types_by_wf.get(id, []))
                     for key in wlist_def.var_matches:
                         catalog_vars[key] = wlist_def.var_matches[key]
+                    # Support LinguaPlone review situations, you want to see
+                    # content in *all* languages
+                    if 'Language' not in catalog_vars:
+                        catalog_vars['Language'] = 'all'
                     for result in catalog.searchResults(catalog_vars):
                         o = result.getObject()
                         if o \
@@ -227,7 +232,7 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         results = objects_by_path.values()
         results.sort()
-        return tuple([ obj[1] for obj in results ])
+        return tuple([obj[1] for obj in results])
 
 
     security.declareProtected(ManagePortal, 'getChainForPortalType')
@@ -295,20 +300,20 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     states.extend(state_folder.values())
                 else:
                     for state in state_folder.values():
-                        key = '%s:%s'%(state.id,state.title)
+                        key = '%s:%s' % (state.id, state.title)
                         if not key in dup_list:
                             states.append(state)
                         dup_list[key] = 1
         return [(s.title, s.getId()) for s in states]
 
     # PLIP 217 Workflow by adaptation
-    def getChainFor( self, ob ):
+    def getChainFor(self, ob):
         """
         Returns the chain that applies to the given object.
         If we get a string as the ob parameter, use it as
         the portal_type.
         """
-        return getMultiAdapter( (ob, self), IWorkflowChain )
+        return getMultiAdapter((ob, self), IWorkflowChain)
 
     security.declarePrivate('listActions')
     def listActions(self, info=None, object=None):

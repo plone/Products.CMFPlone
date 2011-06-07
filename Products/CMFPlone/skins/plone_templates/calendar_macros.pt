@@ -51,8 +51,9 @@
                  value="1"
                  tal:attributes="id string:${input_id}_day;"/>
        </tal:ymd>
+
       <tal:ymd condition="show_ymd">
-      <span tal:condition="python:len(years)!=1">
+        <span tal:condition="python:len(years)!=1">
           <select name="ic_year"
                   id="ic_year"
                   size="1"
@@ -66,62 +67,75 @@
                   tal:content="year/id">year</option>
 
           </select>
-      </span>
+        </span>
 
-      <span tal:condition="python:len(years)==1">
-        <input name="ic_year"
-               type="hidden"
-                id="ic_year"
+        <span tal:condition="python:len(years)==1">
+          <input name="ic_year"
+                 type="hidden"
+                  id="ic_year"
+                  size="1"
+                  value="00"
+                  tal:attributes="name string:${inputname}_year;
+                                  id string:${input_id}_year;
+                                  value python:years[0]['value']"/>
+          <span tal:content="python:years[0]['value']"
+                tal:condition="show_single_year"></span>
+        </span>
+
+        <span i18n:translate="date_separator"
+              tal:condition="not: python: years[0]['value'] and not show_single_year">/</span>
+
+        <span>
+        <select name="ic_month"
+                id="ic_month"
                 size="1"
-                value="00"
-                tal:attributes="name string:${inputname}_year;
-                                id string:${input_id}_year;
-                                value python:years[0]['value']"/>
-        <span tal:content="python:years[0]['value']"
-              tal:condition="show_single_year"></span>
-      </span>
+                tal:attributes="name string:${inputname}_month;
+                                id string:${input_id}_month;
+                                onfocus onfocus|nothing;
+                                onblur onblur|nothing;">
+          <option value="subj"
+                  tal:repeat="month months"
+                  tal:attributes="value month/value; selected month/selected"
+                  tal:content="month/title">
+              month name
+          </option>
+        </select>
+        </span>
 
-      <span i18n:translate="date_separator"
-            tal:condition="not: python: years[0]['value'] and not show_single_year">/</span>
+        <span i18n:translate="date_separator">/</span>
 
-      <span>
-      <select name="ic_month"
-              id="ic_month"
-              size="1"
-              tal:attributes="name string:${inputname}_month;
-                              id string:${input_id}_month;
-                              onfocus onfocus|nothing;
-                              onblur onblur|nothing;">
-        <option value="subj"
-                tal:repeat="month months"
-                tal:attributes="value month/value; selected month/selected"
-                tal:content="month/title">
-            month name
-        </option>
-      </select>
-      </span>
+        <select name="ic_day"
+                id="ic_day"
+                size="1"
+                tal:attributes="name string:${inputname}_day;
+                                id string:${input_id}_day;
+                                onfocus onfocus|nothing;
+                                onblur onblur|nothing;">
+        
+            <option value="subj"
+                    tal:repeat="day days"
+                    tal:attributes="value day/value; selected day/selected"
+                    tal:content="day/id">day</option>
+        
+        </select>
+        <span tal:condition="show_jscal" 
+              class="plone-jscalendar-popup"
+              style="display:none"
+              tal:attributes="id string:${input_id}_popup;">
+          <input type="hidden" 
+                 tal:attributes="name string:${inputname}_yearStart;
+                                 id string:${input_id}_yearStart;
+                                 value yearStart" />
+          <input type="hidden" 
+                 tal:attributes="name string:${inputname}_yearEnd;
+                                 id string:${input_id}_yearEnd;
+                                 value yearEnd" />
+          <img alt="" src="" tal:replace="structure context/popup_calendar.png" />
+        </span>
 
-      <span i18n:translate="date_separator">/</span>
-
-    <select name="ic_day"
-            id="ic_day"
-            size="1"
-            tal:attributes="name string:${inputname}_day;
-                            id string:${input_id}_day;
-                            onfocus onfocus|nothing;
-                            onblur onblur|nothing;">
-
-        <option value="subj"
-                tal:repeat="day days"
-                tal:attributes="value day/value; selected day/selected"
-                tal:content="day/id">day</option>
-
-    </select>
-
-      <a tal:condition="show_jscal"
-         tal:attributes="onclick string:return plone.jscalendar.show('#${input_id}', $yearStart, $yearEnd);"><img alt="" src="" tal:replace="structure context/popup_calendar.png" /></a>
       </tal:ymd>
 
+      &nbsp;
       <span tal:condition="show_hm">
           <select name="ic_hour"
                   id="ic_hour"

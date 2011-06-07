@@ -16,6 +16,7 @@ from Products.CMFPlone.interfaces import ISimpleItemWithProperties
 
 _FILENAME = 'propertiestool.xml'
 
+
 def importPloneProperties(context):
     """ Import plone properties tool.
     """
@@ -35,6 +36,7 @@ def importPloneProperties(context):
     importer.body = body
     logger.info('Properties tool imported.')
 
+
 def exportPloneProperties(context):
     """ Export plone properties tool.
     """
@@ -52,6 +54,7 @@ def exportPloneProperties(context):
 
     context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)
     logger.info('Properties tool exported.')
+
 
 class SimpleItemWithPropertiesXMLAdapter(XMLAdapterBase, PropertyManagerHelpers):
 
@@ -74,6 +77,7 @@ class SimpleItemWithPropertiesXMLAdapter(XMLAdapterBase, PropertyManagerHelpers)
         self._initProperties(node)
 
     node = property(_exportNode, _importNode)
+
 
 class PlonePropertiesToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers):
 

@@ -6,7 +6,7 @@ from cStringIO import StringIO
 from zExceptions import Forbidden
 from zope.interface import directlyProvides
 from zope import component
-from zope.app.container.interfaces import IObjectRemovedEvent
+from zope.container.interfaces import IObjectRemovedEvent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.setup import default_user
 from Products.PloneTestCase.setup import default_password

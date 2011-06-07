@@ -21,14 +21,13 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
     meta_type = 'Plone Properties Tool'
     meta_types = ((
-        {'name' : 'Plone Property Sheet',
-         'action' : 'manage_addPropertySheetForm'
-         },
+        {'name': 'Plone Property Sheet',
+         'action': 'manage_addPropertySheetForm'},
         ))
 
     implements(IPropertiesTool)
 
-    manage_options = ((Folder.manage_options[0],) +
+    manage_options = ((Folder.manage_options[0], ) +
                         BaseTool.manage_options)
 
     manage_addPropertySheetForm = PageTemplateFile('www/addPropertySheet',
@@ -108,7 +107,7 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
 
     meta_type = 'Plone Property Sheet'
 
-    manage_options = ( PropertyManager.manage_options
+    manage_options = (PropertyManager.manage_options
                      + SimpleItem.manage_options)
 
 InitializeClass(SimpleItemWithProperties)

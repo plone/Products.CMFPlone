@@ -92,7 +92,7 @@ class TempFolder(TempFolderBase):
         '''
         portal_factory = aq_parent(aq_inner(self))
         path = aq_parent(portal_factory).getPhysicalPath() + \
-            (portal_factory.getId(), self.getId(),)
+            (portal_factory.getId(), self.getId(), )
         return path
 
     # override / delegate local roles methods
@@ -237,10 +237,10 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     implements(IFactoryTool, IHideFromBreadcrumbs)
 
-    manage_options = ( ({'label':'Overview', 'action':'manage_overview'}, \
-                        {'label':'Documentation', 'action':'manage_docs'}, \
-                        {'label':'Factory Types', 'action':'manage_portal_factory_types'},) +
-                       SimpleItem.manage_options)
+    manage_options = (({'label': 'Overview', 'action': 'manage_overview'}, \
+                       {'label': 'Documentation', 'action': 'manage_docs'}, \
+                       {'label': 'Factory Types', 'action': 'manage_portal_factory_types'},) +
+                      SimpleItem.manage_options)
 
     security.declareProtected(ManagePortal, 'manage_overview')
     manage_overview = PageTemplateFile('www/portal_factory_manage_overview', globals())
@@ -255,7 +255,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     manage_main = manage_overview
 
     security.declareProtected(ManagePortal, 'manage_docs')
-    manage_docs = PageTemplateFile(os.path.join('www','portal_factory_manage_docs'), globals())
+    manage_docs = PageTemplateFile(os.path.join('www', 'portal_factory_manage_docs'), globals())
     manage_docs.__name__ = 'manage_docs'
 
     wwwpath = os.path.join(package_home(cmfplone_globals), 'www')
@@ -407,7 +407,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             REQUEST.set('TraversalRequestNameStack', [])
 
         stack.reverse()
-        factory_info = {'stack':stack}
+        factory_info = {'stack': stack}
         REQUEST.set(FACTORY_INFO, factory_info)
 
     def __bobo_traverse__(self, REQUEST, name):
@@ -439,6 +439,13 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         stack = stack[2:]
         if stack:
             obj = temp_obj.restrictedTraverse('/'.join(stack))
+
+            # Mimic URL traversal, sort of
+            if getattr(aq_base(obj), 'index_html', None):
+                obj = obj.restrictedTraverse('index_html')
+            else:
+                obj = getattr(obj, 'GET', obj)
+
         else:
             obj = temp_obj
         return mapply(obj, self.REQUEST.args, self.REQUEST,

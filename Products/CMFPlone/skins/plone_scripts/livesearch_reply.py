@@ -67,10 +67,19 @@ r = quote_bad_chars(r)+'*'
 searchterms = url_quote_plus(r)
 
 site_encoding = context.plone_utils.getSiteEncoding()
+
+params = {'SearchableText': r,
+          'portal_type': friendly_types,
+          'sort_limit': limit+1,}
+
 if path is None:
-    path = getNavigationRoot(context)
-results = catalog(SearchableText=r, portal_type=friendly_types, path=path,
-    sort_limit=limit)
+    # useful for subsides
+    params['path'] = getNavigationRoot(context)
+else:
+    params['path'] = path
+
+# search limit+1 results to know if limit is exceeded
+results = catalog(**params)
 
 searchterm_query = '?searchterm=%s'%url_quote_plus(q)
 
@@ -104,7 +113,6 @@ if not results:
     write('''</div>''')
     write('''</div>''')
     write('''</fieldset>''')
-
 else:
     write('''<fieldset class="livesearchContainer">''')
     write('''<legend id="livesearchLegend">%s</legend>''' % ts.translate(legend_livesearch, context=REQUEST))
@@ -116,6 +124,7 @@ else:
         itemUrl = result.getURL()
         if result.portal_type in useViewAction:
             itemUrl += '/view'
+
         itemUrl = itemUrl + searchterm_query
 
         write('''<li class="LSRow">''')
@@ -125,12 +134,14 @@ else:
             display_title = ''.join((full_title[:MAX_TITLE],'...'))
         else:
             display_title = full_title
+
         full_title = full_title.replace('"', '&quot;')
         klass = 'contenttype-%s' % ploneUtils.normalizeString(result.portal_type)
         write('''<a href="%s" title="%s" class="%s">%s</a>''' % (itemUrl, full_title, klass, display_title))
         display_description = safe_unicode(result.Description)
         if len(display_description) > MAX_DESCRIPTION:
             display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
+
         # need to quote it, to avoid injection of html containing javascript and other evil stuff
         display_description = html_quote(display_description)
         write('''<div class="LSDescr">%s</div>''' % (display_description))
@@ -138,17 +149,20 @@ else:
         full_title, display_title, display_description = None, None, None
 
     write('''<li class="LSRow">''')
-    write( '<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search, context=REQUEST))
+    write('<a href="search_form" style="font-weight:normal">%s</a>' % ts.translate(label_advanced_search, context=REQUEST))
     write('''</li>''')
 
     if len(results)>limit:
         # add a more... row
         write('''<li class="LSRow">''')
-        write( '<a href="%s" style="font-weight:normal">%s</a>' % ('search?SearchableText=' + searchterms, ts.translate(label_show_all, context=REQUEST)))
+        searchquery = 'search?SearchableText=%s&path=%s' % (searchterms, params['path'])
+        write( '<a href="%s" style="font-weight:normal">%s</a>' % (
+                             searchquery,
+                             ts.translate(label_show_all, context=REQUEST)))
         write('''</li>''')
+
     write('''</ul>''')
     write('''</div>''')
     write('''</fieldset>''')
 
 return '\n'.join(output).encode(site_encoding)
-

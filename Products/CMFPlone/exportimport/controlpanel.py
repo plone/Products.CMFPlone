@@ -25,6 +25,7 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.interfaces import IControlPanel
 
+
 class ControlPanelXMLAdapter(XMLAdapterBase):
 
     """
@@ -92,7 +93,6 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
             fragment.appendChild(child)
         return fragment
 
-
     def _initConfiglets(self, node):
         controlpanel = self.context
         default_domain = "plone"
@@ -156,6 +156,7 @@ def importControlPanel(context):
         return
 
     importObjects(tool, '', context)
+
 
 def exportControlPanel(context):
     """Export actions tool.

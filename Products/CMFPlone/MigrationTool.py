@@ -35,8 +35,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = 'Plone Migration Tool'
     toolicon = 'skins/plone_images/site_icon.png'
 
-    manage_options = ( ({'label':'Upgrade', 'action':'../@@plone-upgrade'}, ) +
-                       SimpleItem.manage_options)
+    manage_options = (({'label':'Upgrade', 'action':'../@@plone-upgrade'}, ) +
+                      SimpleItem.manage_options)
 
     _needRecatalog = 0
     _needUpdateRole = 0
@@ -90,7 +90,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'getSoftwareVersion')
     def getSoftwareVersion(self):
         """ The software version."""
-        dist = pkg_resources.get_distribution('Plone')
+        dist = pkg_resources.get_distribution('Products.CMFPlone')
         return dist.version
 
     security.declareProtected(ManagePortal, 'needUpgrading')
@@ -239,6 +239,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             gslogger.removeHandler(handler)
 
     upgrade = postonly(upgrade)
+
 
 def registerUpgradePath(oldversion, newversion, function):
     """ Basic register func """

@@ -6,9 +6,7 @@ $Id: _tools.py 38762 2005-10-05 10:44:00Z yuppie $
 from zope.interface import Interface
 from zope.interface import Attribute
 
-#
-#   Site Properties tool interface
-#
+
 class IPropertiesTool(Interface):
 
     """ Manage properties of the site as a whole.
@@ -27,6 +25,7 @@ class IPropertiesTool(Interface):
 
         Returns -- String
         """
+
 
 class ISimpleItemWithProperties(Interface):
     pass

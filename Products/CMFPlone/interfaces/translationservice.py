@@ -1,5 +1,6 @@
 from zope.interface import Interface
 
+
 class ITranslationServiceTool(Interface):
     """ Utility methods to access the translation machinery
     """

@@ -3,6 +3,7 @@ from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
+
 class MetadataTool(PloneBaseTool, BaseTool):
 
     meta_type = 'Plone Metadata Tool'

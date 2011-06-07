@@ -25,6 +25,7 @@
   <include package="plone.app.portlets" />
   <include package="plone.app.redirector" />
   <include package="plone.app.registry" />
+  <include package="plone.app.upgrade" />
   <include package="plone.app.users" />
   <include package="plone.app.uuid" />
   <include package="plone.app.viewletmanager" />
@@ -48,7 +49,9 @@
   <include package="archetypes.referencebrowserwidget" />
 
   <!-- wicked -->
-  <include package="wicked.plone" file="selective-atct.zcml" />
+  <configure zcml:condition="installed wicked">
+    <include package="wicked.plone" file="selective-atct.zcml" />
+  </configure>
 
   <!-- extra portlets -->
   <include package="plone.portlet.static" />

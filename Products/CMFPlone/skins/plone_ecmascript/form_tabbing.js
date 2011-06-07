@@ -22,8 +22,8 @@ var ploneFormTabbing = {
         // standard jQueryTools configuration options for all form tabs
         jqtConfig:{current:'selected'}
     };
-    
-    
+
+
 (function($) {
 
 ploneFormTabbing._buildTabs = function(container, legends) {
@@ -50,7 +50,7 @@ ploneFormTabbing._buildTabs = function(container, legends) {
             tab = '<option '+className+' id="'+lid+'" value="'+lid+'">';
             tab += $(legend).text()+'</option>';
         } else {
-            tab = '<li '+className+'><a href="#'+lid+'"><span>';
+            tab = '<li '+className+'><a id="'+lid+'" href="#'+lid+'"><span>';
             tab += $(legend).text()+'</span></a></li>';
         }
 
@@ -63,6 +63,10 @@ ploneFormTabbing._buildTabs = function(container, legends) {
 
     if (threshold) {
         tabs = $('<select class="formTabs">'+tabs+'</select>');
+        tabs.change(function(){
+        	var selected = $(this).attr('value');
+        	jq('#'+selected).click();
+        })
     } else {
         tabs = $('<ul class="formTabs">'+tabs+'</ul>');
     }
@@ -93,9 +97,9 @@ ploneFormTabbing.initializeForm = function() {
 
 
     // The fieldset.current hidden may change, but is not content
-    $(this).find('input[name=fieldset.current]').addClass('noUnloadProtection');
+    $(this).find('input[name="fieldset.current"]').addClass('noUnloadProtection');
 
-    $(this).find('.formPanel:has(div.field span.fieldRequired)').each(function() {
+    $(this).find('.formPanel:has(div.field span.required)').each(function() {
         var id = this.id.replace(/^fieldset-/, "#fieldsetlegend-");
         $(id).addClass('required');
     });
@@ -105,7 +109,7 @@ ploneFormTabbing.initializeForm = function() {
     var count = 0;
     var found = false;
     $(this).find('.formPanel').each(function() {
-        if (!found && $(this).find('div.field.error')) {
+        if (!found && $(this).find('div.field.error').length!=0) {
             initialIndex = count;
             found = true;
         }
@@ -116,35 +120,42 @@ ploneFormTabbing.initializeForm = function() {
     if ($(ftabs).is('select.formTabs')) {
         tabSelector = 'select.formTabs';
     }
+    var tabsConfig = $.extend({}, ploneFormTabbing.jqtConfig, {'initialIndex':initialIndex});
     jqForm.children(tabSelector).tabs(
-        'form.enableFormTabbing fieldset.formPanel', 
-        ploneFormTabbing.jqtConfig || {'initialIndex':initialIndex}
+        'form.enableFormTabbing fieldset.formPanel',
+        tabsConfig
         );
-    
+
     // save selected tab on submit
     jqForm.submit(function() {
-        var selected = ftabs.find('a.selected').attr('href').replace(/^#fieldsetlegend-/, "#fieldset-");
-        var fsInput = jqForm.find('input[name=fieldset.current]');
+    	var selected;
+    	if(ftabs.find('a.selected').length>=1){
+    		selected = ftabs.find('a.selected').attr('href').replace(/^#fieldsetlegend-/, "#fieldset-");
+    	}
+    	else{
+    		selected = ftabs.attr('value').replace(/^fieldsetlegend-/,'#fieldset-');
+    	}
+        var fsInput = jqForm.find('input[name="fieldset.current"]');
         if (selected && fsInput) {
             fsInput.val(selected);
         }
     });
 
     $("#archetypes-schemata-links").addClass('hiddenStructure');
-    $("div.formControls input[name=form.button.previous]," +
-      "div.formControls input[name=form.button.next]").remove();
+    $("div.formControls input[name='form.button.previous']," +
+      "div.formControls input[name='form.button.next']").remove();
 
 };
 
 $.fn.ploneTabInit = function(pbo) {
     return this.each(function() {
         var item = $(this);
-        
+
         item.find("form.enableFormTabbing,div.enableFormTabbing").each(ploneFormTabbing.initializeForm);
         item.find("dl.enableFormTabbing").each(ploneFormTabbing.initializeDL);
 
         //Select tab if it's part of the URL or designated in a hidden input
-        var targetPane = item.find('.enableFormTabbing input[name=fieldset.current]').val() || window.location.hash;
+        var targetPane = item.find('.enableFormTabbing input[name="fieldset.current"]').val() || window.location.hash;
         if (targetPane) {
             item.find(".enableFormTabbing .formTab a[href='" +
              targetPane.replace("'", "").replace(/^#fieldset-/, "#fieldsetlegend-") +

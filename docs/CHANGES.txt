@@ -5,11 +5,168 @@
 Changelog
 =========
 
-4.1b2 - Unreleased
-------------------
+4.2 - Unreleased
+----------------
 
 - Switch to HTML5 doctype. References https://dev.plone.org/plone/ticket/11300
   [spliter]
+
+4.1rc3 - 2011-06-02
+-------------------
+
+- Apply patches to prevent exploitation of CVE-2011-1948 (Hotfix 20110531.)
+  [elro]
+
+- In actions.xml, use object_url for the object_buttons.
+  Fixes http://dev.plone.org/plone/ticket/11733.
+  [WouterVH]
+
+- Set Language to 'all' to list content in all languages when listing a
+  worklist's contents (workflow) to support LinguaPlone better.
+  [mj]
+
+- Set appropriate cache headers on createObject redirects to prevent caching
+  by proxy servers.
+  [elro]
+
+- Added "X-Theme-Disabled" response header to failsafe_login_form to disable
+  Diazo/plone.app.theming.
+  [elro]
+
+- Fixed PloneBatch to work for non-lazy sequences.
+  [hannosch]
+
+- Explicitly load the `configure.zcml` from `plone.app.upgrade`, so the upgrade
+  steps are loaded in `plone.app.testing` based test layers.
+  [hannosch]
+
+- Define a ZCML feature called `plone-41` in addition to the existing `plone-4`
+  to be used in conditional ZCML registrations.
+  [hannosch]
+
+- Avoid registering CMFDefault's upgrade steps, as they are not useful in Plone.
+  [hannosch]
+
+4.1rc2 - 2011-05-21
+-------------------
+
+- Fixed PloneBatch class to handle limited result sets correctly. This closes
+  http://dev.plone.org/plone/ticket/11733.
+  [hannosch]
+
+- Hide datepicker icon for date widget if plone.jscalendar is not loaded.
+  Fixes #11831.
+  [smcmahon]
+
+4.1rc1 - 2011-05-20
+-------------------
+
+- Make folder_listing filter on @@portal_state/friendly_types when applied to
+  a container. (Add portal_types to site_properties types_not_to_list to
+  exclude them from friendly_types.)
+  [elro]
+
+- Error handling for folder_full_view_item so items using a BrowserView render
+  a link instead of causing an error.
+  [elro]
+
+- Refactor dragdropreorder.js and folder_moveitem to detect client/server
+  ordering mismatches and be more robust in event of mousing out of the table
+  rows.
+  [elro]
+
+- Add forward compatibility with DateTime 3.
+  [hannosch]
+
+- Added a new interface blacklist to the `CatalogTool` module. Items in this
+  list won't be indexed in the object_provides index. This saves about 1kb of
+  mostly useless data to be stored per object. If you need to query on one of
+  the blacklisted interfaces, consider using other indexes to get a small
+  result set and then checking the actual objects or add a specialized index
+  for the data you are interested in. Also changed the stored value to a tuple
+  to safe some memory overhead of the list type.
+  [hannosch]
+
+- Optimize images and icon file sizes.
+  [hannosch]
+
+- Fix the event_view to refer to the `icon_export_*` images relative to the
+  portal and not the current context.
+  [hannosch]
+
+- Text on login success page uses navigation root title instead of portal title.
+  Refs http://dev.plone.org/plone/ticket/9175.
+  [thomasdesvenain]
+
+- Let the content import step (importing the site structure) not
+  depend on plone-final but on typeinfo.  Solves circular dependency.
+  Refs http://dev.plone.org/plone/ticket/8350
+  [maurits]
+
+- Set Content-Language header to default language when content language is an
+  empty string.
+  [elro]
+
+- Change csrf patch to apply to MemberAdapter instead of MemberData when using
+  CMF 2.3.
+  [elro]
+
+- CMFCore registers a memberdata export/import handler in 2.3, so make our
+  registration conditional.
+  [elro]
+
+- Remove `previous` sub-collection from default content, as sub-collections are
+  not enabled by default since Plone 4.0 and having one in the default content
+  is confusing. Closes http://dev.plone.org/plone/ticket/10705.
+  [hannosch]
+
+- Fix zope.sendmail patch to raise errors for immediate sending failures.
+  Relates to http://dev.plone.org/plone/ticket/10675.
+  [elro]
+
+- Sort on content title ignores accents.
+  So, d < é < f.
+  [thomasdesvenain]
+
+- Expose the query report and plan on the catalog tool.
+  [hannosch]
+
+- Optimize the data indexed by the `allowedRolesAndUsers` index and the query
+  performed against it.
+  [hannosch]
+
+- Fix cicular dependency in import steps.
+  This partially fixes http://dev.plone.org/plone/ticket/8350
+  [kiorky]
+
+4.1b2 - 2011-04-06
+------------------
+
+- Fix bug in formUnload.js where changes to select option lists without a
+  default were incorrectly detected (javascript indexes from 0, not 1.)
+  [elro]
+
+- Added "rss" alias to "RSS".
+  This fixes https://dev.plone.org/plone/ticket/11638.
+  [gotcha]
+
+- Fixed: "showing field with error is broken in edit view"
+  This fixes https://dev.plone.org/plone/ticket/11686.
+  [gotcha]
+
+- Fixed: "missing required icon in tabs in edit view"
+  This fixes https://dev.plone.org/plone/ticket/11685.
+  [gotcha]
+
+- Make wicked an optional dependency. (It is still pulled in by the Plone
+  distribution.)
+  [davisagli]
+
+- Fix import of RoleManager to avoid deprecation warning.
+  [davisagli]
+
+- Update MigrationTool.getSoftwareVersion to return Products.CMFPlone version.
+  [elro]
 
 4.1b1 - 2011-03-06
 ------------------

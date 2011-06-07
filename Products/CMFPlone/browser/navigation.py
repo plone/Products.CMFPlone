@@ -27,12 +27,14 @@ def get_url(item):
         return item.getURL()
     return item.absolute_url()
 
+
 def get_id(item):
     getId = getattr(item, 'getId')
     if not utils.safe_callable(getId):
         # Looks like a brain
         return getId
     return getId()
+
 
 def get_view_url(context):
     props = getToolByName(context, 'portal_properties')
@@ -47,6 +49,7 @@ def get_view_url(context):
         name += '/view'
 
     return name, item_url
+
 
 class CatalogNavigationTree(BrowserView):
     implements(INavigationTree)
@@ -90,6 +93,7 @@ class CatalogNavigationTree(BrowserView):
 
         return buildFolderTree(context, obj=context, query=query, strategy=strategy)
 
+
 class CatalogSiteMap(BrowserView):
     implements(ISiteMap)
 
@@ -107,13 +111,51 @@ class CatalogSiteMap(BrowserView):
 class CatalogNavigationTabs(BrowserView):
     implements(INavigationTabs)
 
+    def _getNavQuery(self):
+        context = self.context
+        navtree_properties = self.navtree_properties
+
+        customQuery = getattr(context, 'getCustomNavQuery', False)
+        if customQuery is not None and utils.safe_callable(customQuery):
+            query = customQuery()
+        else:
+            query = {}
+
+        rootPath = getNavigationRoot(context)
+        query['path'] = {'query': rootPath, 'depth': 1}
+
+        blacklist = navtree_properties.getProperty('metaTypesNotToList', ())
+        all_types = self.portal_catalog.uniqueValuesFor('portal_type')
+        query['portal_type'] = [t for t in all_types if t not in blacklist]
+
+        sortAttribute = navtree_properties.getProperty('sortAttribute', None)
+        if sortAttribute is not None:
+            query['sort_on'] = sortAttribute
+            sortOrder = navtree_properties.getProperty('sortOrder', None)
+            if sortOrder is not None:
+                query['sort_order'] = sortOrder
+
+        if navtree_properties.getProperty('enable_wf_state_filtering', False):
+            query['review_state'] = navtree_properties.getProperty(
+                                                    'wf_states_to_show', [])
+
+        query['is_default_page'] = False
+
+        if self.site_properties.getProperty('disable_nonfolderish_sections',
+                                            False):
+            query['is_folderish'] = True
+
+        return query
+
     def topLevelTabs(self, actions=None, category='portal_tabs'):
         context = aq_inner(self.context)
 
-        portal_catalog = getToolByName(context, 'portal_catalog')
         portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
-        site_properties = getattr(portal_properties, 'site_properties')
+        self.navtree_properties = getattr(portal_properties,
+                                          'navtree_properties')
+        self.site_properties = getattr(portal_properties,
+                                       'site_properties')
+        self.portal_catalog = getToolByName(context, 'portal_catalog')
 
         if actions is None:
             context_state = getMultiAdapter((context, self.request),
@@ -130,50 +172,24 @@ class CatalogNavigationTabs(BrowserView):
                 result.append(data)
 
         # check whether we only want actions
-        if site_properties.getProperty('disable_folder_sections', False):
+        if self.site_properties.getProperty('disable_folder_sections', False):
             return result
 
-        customQuery = getattr(context, 'getCustomNavQuery', False)
-        if customQuery is not None and utils.safe_callable(customQuery):
-            query = customQuery()
-        else:
-            query = {}
+        query = self._getNavQuery()
 
-        rootPath = getNavigationRoot(context)
-        query['path'] = {'query' : rootPath, 'depth' : 1}
-
-        blacklist = navtree_properties.getProperty('metaTypesNotToList', ())
-        all_types = portal_catalog.uniqueValuesFor('portal_type')
-        query['portal_type'] = [t for t in all_types if t not in blacklist]
-
-        sortAttribute = navtree_properties.getProperty('sortAttribute', None)
-        if sortAttribute is not None:
-            query['sort_on'] = sortAttribute
-
-            sortOrder = navtree_properties.getProperty('sortOrder', None)
-            if sortOrder is not None:
-                query['sort_order'] = sortOrder
-
-        if navtree_properties.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = navtree_properties.getProperty('wf_states_to_show', [])
-
-        query['is_default_page'] = False
-
-        if site_properties.getProperty('disable_nonfolderish_sections', False):
-            query['is_folderish'] = True
-
-        rawresult = portal_catalog.searchResults(query)
+        rawresult = self.portal_catalog.searchResults(query)
 
         # now add the content to results
-        idsNotToList = navtree_properties.getProperty('idsNotToList', ())
+        idsNotToList = self.navtree_properties.getProperty('idsNotToList', ())
         for item in rawresult:
             if not (item.getId in idsNotToList or item.exclude_from_nav):
                 id, item_url = get_view_url(item)
-                data = {'name'      : utils.pretty_title_or_id(context, item),
-                        'id'         : item.getId,
-                        'url'        : item_url,
+                data = {'name': utils.pretty_title_or_id(context, item),
+                        'id': item.getId,
+                        'url': item_url,
                         'description': item.Description}
                 result.append(data)
+
         return result
 
 
@@ -192,12 +208,12 @@ class CatalogNavigationBreadcrumbs(BrowserView):
             currentPath = '/'.join(utils.parent(context).getPhysicalPath())
         else:
             currentPath = '/'.join(context.getPhysicalPath())
-        query['path'] = {'query':currentPath, 'navtree':1, 'depth': 0}
+        query['path'] = {'query': currentPath, 'navtree': 1, 'depth': 0}
 
         rawresult = ct(**query)
 
         # Sort items on path length
-        dec_result = [(len(r.getPath()),r) for r in rawresult]
+        dec_result = [(len(r.getPath()), r) for r in rawresult]
         dec_result.sort()
 
         rootPath = getNavigationRoot(context)
@@ -226,7 +242,6 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         context = aq_inner(self.context)
         request = self.request
         container = utils.parent(context)
-
         try:
             name, item_url = get_view_url(context)
         except AttributeError:
@@ -235,8 +250,8 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
 
         if container is None:
             return ({'absolute_url': item_url,
-                     'Title': utils.pretty_title_or_id(context, context),
-                    },)
+                     'Title': utils.pretty_title_or_id(context, context), },
+                   )
 
         view = getMultiAdapter((container, request), name='breadcrumbs_view')
         base = tuple(view.breadcrumbs())
@@ -254,8 +269,8 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         # don't show default pages in breadcrumbs or pages above the navigation root
         if not utils.isDefaultPage(context, request) and not rootPath.startswith(itemPath):
             base += ({'absolute_url': item_url,
-                      'Title': utils.pretty_title_or_id(context, context),
-                     },)
+                      'Title': utils.pretty_title_or_id(context, context), },
+                    )
 
         return base
 

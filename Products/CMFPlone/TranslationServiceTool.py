@@ -54,7 +54,8 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # check if input is not type unicode
         if not isinstance(m, unicode):
-            if input_encoding is None: input_encoding = 'utf-8'
+            if input_encoding is None:
+                input_encoding = 'utf-8'
             m = unicode(str(m), input_encoding, errors)
 
         if output_encoding is None:
@@ -69,7 +70,8 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
     def asunicodetype(self, m, input_encoding=None, errors='strict'):
         # create type unicode from type string
 
-        if isinstance(m, unicode): return m
+        if isinstance(m, unicode):
+            return m
 
         if input_encoding is None:
             # get input encoding from portal

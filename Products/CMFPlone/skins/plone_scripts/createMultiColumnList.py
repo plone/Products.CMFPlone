@@ -13,6 +13,9 @@
     'self', which will cause the list to be sorted in place without a sort
     function.
 """
+from zExceptions import Forbidden
+if container.REQUEST.get('PUBLISHED') is script:
+   raise Forbidden('Script may not be published.')
 
 list_len = len(input_list)
 

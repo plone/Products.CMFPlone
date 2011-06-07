@@ -32,6 +32,7 @@ invalid_password_chars = ['a','e','i','o','u','y','l','q']
 
 _ = MessageFactory('plone')
 
+
 def getValidPasswordChars():
     password_chars = []
     for i in range(0, 26):
@@ -97,7 +98,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # build and persist an MD5 key
         self.md5key = ''
         for i in range(0, 20):
-            self.md5key += chr(ord('a')+random.randint(0,26))
+            self.md5key += chr(ord('a') + random.randint(0, 26))
 
     def _md5base(self):
         if self._v_md5base is None:
@@ -118,7 +119,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             password = ''
             nchars = len(password_chars)
             for i in range(0, length):
-                password += password_chars[random.randint(0,nchars-1)]
+                password += password_chars[random.randint(0, nchars-1)]
             return password
         else:
             m = self._md5base().copy()
@@ -143,7 +144,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         else:
             return 1
 
-    security.declarePublic( 'testPropertiesValidity' )
+    security.declarePublic('testPropertiesValidity')
     def testPropertiesValidity(self, props, member=None):
 
         """ Verify that the properties supplied satisfy portal's requirements.
@@ -168,7 +169,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                 return _(u'You must enter an email address.')
 
             try:
-                checkEmailAddress( email )
+                checkEmailAddress(email)
             except EmailAddressInvalid:
                 return _(u'You must enter a valid email address.')
 
@@ -181,7 +182,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
                 if email is not None:
 
                     try:
-                        checkEmailAddress( email )
+                        checkEmailAddress(email)
                     except EmailAddressInvalid:
                         return _(u'You must enter a valid email address.')
 
@@ -197,7 +198,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     def isMemberIdAllowed(self, id):
         if len(id) < 1 or id == 'Anonymous User':
             return 0
-        if not self._ALLOWED_MEMBER_ID_PATTERN.match( id ):
+        if not self._ALLOWED_MEMBER_ID_PATTERN.match(id):
             return 0
 
         pas = getToolByName(self, 'acl_users')
@@ -206,11 +207,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             if results:
                 return 0
             else:
-               for parent in aq_chain(self):
-                   if hasattr(aq_base(parent), "acl_users"):
-                       parent = parent.acl_users
-                       if IPluggableAuthService.providedBy(parent):
-                           if parent.searchPrincipals(id=id, exact_match=True):
+                for parent in aq_chain(self):
+                    if hasattr(aq_base(parent), "acl_users"):
+                        parent = parent.acl_users
+                        if IPluggableAuthService.providedBy(parent):
+                            if parent.searchPrincipals(id=id, exact_match=True):
                                 return 0
             # When email address are used as logins, we need to check
             # if there are any users with the requested login.
@@ -304,16 +305,16 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id):
         """ Wrapper around registeredNotify """
-        membership = getToolByName( self, 'portal_membership' )
+        membership = getToolByName(self, 'portal_membership')
         utils = getToolByName(self, 'plone_utils')
-        member = membership.getMemberById( new_member_id )
+        member = membership.getMemberById(new_member_id)
 
         if member and member.getProperty('email'):
             # add the single email address
             if not utils.validateSingleEmailAddress(member.getProperty('email')):
                 raise ValueError(_(u'The email address did not validate.'))
 
-        email = member.getProperty( 'email' )
+        email = member.getProperty('email')
         try:
             checkEmailAddress(email)
         except EmailAddressInvalid:
@@ -381,9 +382,10 @@ _TESTS = ( ( re.compile("^[0-9a-zA-Z\.\-\_\+\']+\@[0-9a-zA-Z\.\-]+$")
            )
          )
 
-def _checkEmail( address ):
+
+def _checkEmail(address):
     for pattern, expected, message in _TESTS:
-        matched = pattern.search( address ) is not None
+        matched = pattern.search(address) is not None
         if matched != expected:
             return False, message
     return True, ''

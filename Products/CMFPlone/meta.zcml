@@ -11,6 +11,7 @@
       -->
 
     <meta:provides feature="plone-4" />
+    <meta:provides feature="plone-41" />
 
     <!-- Exclude directives need to be executed before the ZCML file would
          be loaded. Doing this during the meta.zcml phase ensures this.
@@ -18,6 +19,7 @@
          interfere with Plone's own. -->
     <exclude package="Products.CMFDefault.browser" file="configure.zcml" />
     <exclude package="Products.CMFDefault.formlib" file="configure.zcml" />
+    <exclude package="Products.CMFDefault.upgrade" file="configure.zcml" />
 
     <include package="Products.CMFCore" file="meta.zcml" />
     <include package="Products.GenericSetup" file="meta.zcml" />
@@ -28,7 +30,9 @@
     <include package="kss.core" file="meta.zcml" />
 
     <!-- wicked -->
-    <include package="wicked.fieldevent" file="meta.zcml" />
+    <configure zcml:condition="installed wicked">
+      <include package="wicked.fieldevent" file="meta.zcml" />
+    </configure>
 
     <!-- z3c.autoinclude's `includePlugins` directive finds
          and executes ZCML files from any installed packages

@@ -54,7 +54,7 @@ __show__.on()
 
 
 AllowSendto = 'Allow sendto'
-permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager',))
+permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager', ))
 
 _marker = utils._marker
 _icons = {}

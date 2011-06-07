@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.1b2'
+version = '4.1rc3'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -113,12 +113,10 @@ setup(name='Products.CMFPlone',
           'plonetheme.classic',
           'plonetheme.sunburst',
           'transaction',
-          'wicked',
           'z3c.autoinclude',
-          'zope.app.container',
           'zope.app.locales >= 3.6.0',
-          'zope.app.publication',
           'zope.component',
+          'zope.container',
           'zope.deferredimport',
           'zope.deprecation',
           'zope.dottedname',
@@ -133,5 +131,6 @@ setup(name='Products.CMFPlone',
           'zope.structuredtext',
           'zope.tal',
           'zope.tales',
+          'zope.traversing',
       ],
       )

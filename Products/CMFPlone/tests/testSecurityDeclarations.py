@@ -214,20 +214,20 @@ except ParseError: pass
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
-    from DateTime.DateTime import DateTimeError
+    from DateTime.interfaces import DateTimeError
 
     def testImport_DateTimeError(self):
-        self.check('from DateTime.DateTime import DateTimeError')
+        self.check('from DateTime.interfaces import DateTimeError')
 
     def testAccess_DateTimeError(self):
-        self.check('import DateTime.DateTime;'
-                   'print DateTime.DateTime.DateTimeError')
+        self.check('import DateTime.interfaces;'
+                   'print DateTime.interfaces.DateTimeError')
 
     def testCatch_DateTimeErrorRaisedByPythonModule(self):
         self.folder._setObject('raiseDateTimeError', dummy.Raiser(self.DateTimeError))
         try:
             self.check('''
-from DateTime.DateTime import DateTimeError
+from DateTime.interfaces import DateTimeError
 try: context.raiseDateTimeError()
 except DateTimeError: pass
 ''')
@@ -238,17 +238,17 @@ except DateTimeError: pass
     from DateTime.DateTime import SyntaxError
 
     def testImport_SyntaxError(self):
-        self.check('from DateTime.DateTime import SyntaxError')
+        self.check('from DateTime.interfaces import SyntaxError')
 
     def testAccess_SyntaxError(self):
-        self.check('import DateTime.DateTime;'
-                   'print DateTime.DateTime.SyntaxError')
+        self.check('import DateTime.interfaces;'
+                   'print DateTime.interfaces.SyntaxError')
 
     def testCatch_SyntaxErrorRaisedByPythonModule(self):
         self.folder._setObject('raiseSyntaxError', dummy.Raiser(self.SyntaxError))
         try:
             self.check('''
-from DateTime.DateTime import SyntaxError
+from DateTime.interfaces import SyntaxError
 try: context.raiseSyntaxError()
 except SyntaxError: pass
 ''')

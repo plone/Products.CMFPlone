@@ -12,18 +12,40 @@ var ploneDnDReorder = {};
 ploneDnDReorder.dragging = null;
 ploneDnDReorder.table = null;
 ploneDnDReorder.rows = null;
+ploneDnDReorder.locked = false;
 
 (function($) {
 
 ploneDnDReorder.doDown = function(e) {
-    var dragging =  $(this).parents('.draggable:first');
+    var dragging = ploneDnDReorder.dragging, 
+        body;
+    // Waiting for a server operation to complete or following an error
+    if (ploneDnDReorder.locked) {return;}
+    // already dragging, probably catching up a lost drag.
+    if (dragging) {
+        if ($(this).attr('id') !== dragging.attr('id')) {
+            ploneDnDReorder.locked = true;
+            dragging.removeClass('dragging').addClass('error');
+        }
+        return;
+    }
+    dragging =  $(this).parents('.draggable:first');
     if (!dragging.length) {return;}
     ploneDnDReorder.rows.mousemove(ploneDnDReorder.doDrag);
+    body = $('body');
+    body.mouseup(ploneDnDReorder.doUp);
+    body.mouseleave(ploneDnDReorder.doCancel);
 
     ploneDnDReorder.dragging = dragging;
-    dragging._position = ploneDnDReorder.getPos(dragging);
+    dragging.data('ploneDnDReorder.startPosition', ploneDnDReorder.getPos(dragging));
     dragging.addClass("dragging");
     $(this).parents('tr').addClass('dragindicator');
+    // Find the original subset ids. This must be in the current order.
+    dragging.data('ploneDnDReorder.subset_ids', $.map(
+        ploneDnDReorder.table.find('tr.draggable'),
+        function(elem) {
+            return $(elem).attr('id').substr('folder-contents-item-'.length);
+    }));
 
     return false;
 };
@@ -51,6 +73,11 @@ ploneDnDReorder.swapElements = function(child1, child2) {
         items = parent.children('[id]'),
         t;
 
+    // Only adjacent elements may be swapped.
+    if (Math.abs(ploneDnDReorder.getPos(child1) - ploneDnDReorder.getPos(child2)) !== 1) {
+        return;
+    }
+
     items.removeClass('even').removeClass('odd');
     if (child1[0].swapNode) {
         // IE proprietary method
@@ -69,29 +96,48 @@ ploneDnDReorder.swapElements = function(child1, child2) {
 };
 
 ploneDnDReorder.doUp = function(e) {
-    var dragging = ploneDnDReorder.dragging;
+    var dragging = ploneDnDReorder.dragging,
+        body = $('body');
     if (!dragging) {return;}
 
-    dragging.removeClass("dragging");
     ploneDnDReorder.updatePositionOnServer();
-    dragging._position = null;
-    try {
-        delete dragging._position;
-    } catch(exc) {}
-    dragging = null;
+    dragging.removeData('ploneDnDReorder.startPosition');
+    dragging.removeData('ploneDnDReorder.subset_ids');
     ploneDnDReorder.rows.unbind('mousemove', ploneDnDReorder.doDrag);
+    body.unbind('mouseup', ploneDnDReorder.doUp);
+    body.unbind('mouseleave', ploneDnDReorder.doCancel);
+
     $(this).parents('tr').removeClass('dragindicator');
+    return false;
+};
+
+ploneDnDReorder.doCancel = function(e) {
+    var dragging = ploneDnDReorder.dragging,
+        body = $('body');
+    if (!dragging) {return;}
+
+    dragging.removeClass("dragging")
+    if (ploneDnDReorder.getPos(dragging) - dragging.data('ploneDnDReorder.startPosition')) {
+        // position has changed, error out
+        ploneDnDReorder.locked = true;
+        dragging.addClass("error");
+    }
+    ploneDnDReorder.rows.unbind('mousemove', ploneDnDReorder.doDrag);
+    body.unbind('mouseup', ploneDnDReorder.doCancel);
+    body.unbind('mouseleave', ploneDnDReorder.doCancel);
+    ploneDnDReorder.dragging = null;
     return false;
 };
 
 ploneDnDReorder.updatePositionOnServer = function() {
     var dragging = ploneDnDReorder.dragging,
         delta,
-        args;
+        args,
+        encoded;
 
     if (!dragging) {return;}
 
-    delta = ploneDnDReorder.getPos(dragging) - dragging._position;
+    delta = ploneDnDReorder.getPos(dragging) - dragging.data('ploneDnDReorder.startPosition');
 
     if (delta === 0) {
         // nothing changed
@@ -99,10 +145,31 @@ ploneDnDReorder.updatePositionOnServer = function() {
     }
     // Strip off id prefix
     args = {
-        item_id: dragging.attr('id').substr('folder-contents-item-'.length)
+        item_id: dragging.attr('id').substr('folder-contents-item-'.length),
+        subset_ids: dragging.data('ploneDnDReorder.subset_ids')
     };
     args['delta:int'] = delta;
-    jQuery.post('folder_moveitem', args);
+    // Convert jQuery's name[]=1&name[]=2 to Zope's name:list=1&name:list=2
+    encoded = $.param(args).replace(/%5B%5D=/g, '%3Alist=');
+    $.ajax({
+        type: 'POST',
+        url: 'folder_moveitem',
+        data: encoded,
+        complete: ploneDnDReorder.complete
+    });
+    ploneDnDReorder.locked = true;
 };
+
+ploneDnDReorder.complete = function(xhr, textStatus) {
+    var dragging = ploneDnDReorder.dragging;
+    dragging.removeClass("dragging");
+    if (textStatus === "success" || textStatus === "notmodified") {
+        ploneDnDReorder.locked = false;
+    } else {
+        dragging.addClass("error");
+    }
+    ploneDnDReorder.dragging = null;
+};
+
 
 }(jQuery));

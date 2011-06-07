@@ -15,6 +15,7 @@ _CONTENT_PROFILE = 'Products.CMFPlone:plone-content'
 # A little hint for PloneTestCase
 _IMREALLYPLONE4 = True
 
+
 class HiddenProfiles(object):
     implements(INonInstallable)
 
@@ -83,10 +84,6 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
     if setup_content:
         setup_tool.runAllImportStepsFromProfile('profile-%s' % _CONTENT_PROFILE)
-
-    # Try to make the title work with Unicode
-    if isinstance(title, str):
-        title = unicode(title, 'utf-8', 'ignore')
 
     props = dict(
         title=title,

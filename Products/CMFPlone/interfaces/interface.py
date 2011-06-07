@@ -1,6 +1,7 @@
 from zope.interface import Attribute
 from basetool import IPloneBaseTool
 
+
 class IInterfaceTool(IPloneBaseTool):
     """ This tool exposes the interface package for TTW applications,
     by accepting a dotted name of an interface and exporting the

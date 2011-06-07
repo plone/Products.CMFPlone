@@ -32,8 +32,7 @@ user2  = 'u2'
 group2 = 'g2'
 
 base_content = ['Members', 'aggregator', 'aggregator',
-                'events', 'news', 'previous',
-                default_user, 'front-page', 'doc']
+                'events', 'news', default_user, 'front-page', 'doc']
 
 
 class TestCatalogSetup(PloneTestCase.PloneTestCase):
@@ -480,11 +479,12 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
     def testSortableNonASCIITitles(self):
         #test a utf-8 encoded string gets properly unicode converted
+        #sort must ignore accents
         title = 'La Pe\xc3\xb1a'
         doc = self.folder.doc
         doc.setTitle(title)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
-        self.assertEqual(wrapped.sortable_title, u'la pe\xf1a'.encode('utf-8'))
+        self.assertEqual(wrapped.sortable_title, 'la pena')
 
     def testSortableLongNumberPrefix(self):
         title = '1.2.3 foo document'
@@ -943,16 +943,15 @@ class TestObjectProvidedIndexExtender(unittest.TestCase):
     def testNoInterfaces(self):
         class Dummy(object):
             pass
-        self.assertEqual(self._index(Dummy()), ['zope.interface.Interface'])
+        self.assertEqual(self._index(Dummy()), ())
 
     def testSimpleInterface(self):
         class IDummy(zope.interface.Interface):
             pass
         class Dummy(object):
             zope.interface.implements(IDummy)
-        self.assertEqual(self._index(Dummy()), [
-            'Products.CMFPlone.tests.testCatalogTool.IDummy',
-            'zope.interface.Interface'])
+        self.assertEqual(self._index(Dummy()),
+            ('Products.CMFPlone.tests.testCatalogTool.IDummy', ))
 
 
 def test_suite():

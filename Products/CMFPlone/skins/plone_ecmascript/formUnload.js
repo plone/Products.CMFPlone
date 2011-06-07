@@ -131,7 +131,7 @@ if (!window.beforeunload) {(function($) {
         for (i = 0; i < ele.length; i+=1) {
             opt = ele[i];
             if (opt.selected !== opt.defaultSelected) {
-                if (i===1 && opt.selected) {
+                if (i===0 && opt.selected) {
                     continue; /* maybe no default */
                 }
                 return true;

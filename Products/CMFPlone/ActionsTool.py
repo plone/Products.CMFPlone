@@ -6,6 +6,7 @@ from Products.CMFCore.interfaces import IActionProvider
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFCore.interfaces import IActionCategory
 
+
 class ActionsTool(PloneBaseTool, BaseTool):
 
     meta_type = 'Plone Actions Tool'
@@ -52,12 +53,12 @@ class ActionsTool(PloneBaseTool, BaseTool):
             return []
 
         ec = self._getExprContext(object)
-        actions = [ ActionInfo(action, ec) for action in actions ]
+        actions = [ActionInfo(action, ec) for action in actions]
 
         if action_chain:
             filtered_actions = []
             if isinstance(action_chain, basestring):
-                action_chain = (action_chain,)
+                action_chain = (action_chain, )
             for action_ident in action_chain:
                 sep = action_ident.rfind('/')
                 category, id = action_ident[:sep], action_ident[sep+1:]
@@ -118,11 +119,11 @@ class ActionsTool(PloneBaseTool, BaseTool):
                 actions.extend(object.listActionInfos(object=object))
 
         # Reorganize the actions by category.
-        filtered_actions={'user':[],
-                          'folder':[],
-                          'object':[],
-                          'global':[],
-                          'workflow':[],
+        filtered_actions={'user': [],
+                          'folder': [],
+                          'object': [],
+                          'global': [],
+                          'workflow': [],
                           }
 
         for action in actions:

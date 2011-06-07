@@ -20,11 +20,12 @@ from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.log import log_deprecated
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
+
 class PloneConfiglet(ActionInformation):
 
     def __init__(self, appId, **kwargs):
-        self.appId=appId
-        ActionInformation.__init__(self,**kwargs)
+        self.appId = appId
+        ActionInformation.__init__(self, **kwargs)
 
     def getAppId(self):
         return self.appId
@@ -35,10 +36,11 @@ class PloneConfiglet(ActionInformation):
     def clone(self):
         return self.__class__(**self.__dict__)
 
-    def getAction(self,ec):
-        res=ActionInformation.getAction(self,ec)
-        res['description']=self.getDescription()
+    def getAction(self, ec):
+        res = ActionInformation.getAction(self, ec)
+        res['description'] = self.getDescription()
         return res
+
 
 class PloneControlPanel(PloneBaseTool, UniqueObject,
                         Folder, ActionProviderBase, PropertyManager):
@@ -54,7 +56,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     title = 'Control Panel'
     toolicon = 'skins/plone_images/site_icon.png'
     meta_type = 'Plone Control Panel Tool'
-    _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )
+    _actions_form = DTMLFile('www/editPloneConfiglets', globals())
 
     manage_options = (ActionProviderBase.manage_options +
                       PropertyManager.manage_options)
@@ -63,30 +65,29 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         member=[
             ('Member', _(u'My Preferences')),
         ],
-        site=[
-            ('Plone', _(u'Plone Configuration')),
-            ('Products', _(u'Add-on Configuration')),
-        ]
+        site=[('Plone', _(u'Plone Configuration')),
+              ('Products', _(u'Add-on Configuration')),
+             ]
     )
 
     def __init__(self, **kw):
         if kw:
             self.__dict__.update(**kw)
 
-    security.declareProtected( ManagePortal, 'registerConfiglets' )
-    def registerConfiglets(self,configlets):
+    security.declareProtected(ManagePortal, 'registerConfiglets')
+    def registerConfiglets(self, configlets):
         """ ATTENTION: must be called AFTER portal_actionicons
         is installed
         """
         for conf in configlets:
             self.registerConfiglet(**conf)
 
-    security.declareProtected( ManagePortal, 'getGroupIds' )
+    security.declareProtected(ManagePortal, 'getGroupIds')
     def getGroupIds(self, category='site'):
         groups = self.group.get(category, [])
         return [g[0] for g in groups if g]
 
-    security.declareProtected( View, 'getGroups' )
+    security.declareProtected(View, 'getGroups')
     def getGroups(self, category='site'):
         groups = self.group.get(category, [])
         return [{'id': g[0], 'title': g[1]} for g in groups if g]
@@ -100,10 +101,10 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         # before CMF 2.4 when support for old-style actions is removed.
         return self._actions or ()
 
-    security.declarePublic( 'enumConfiglets' )
+    security.declarePublic('enumConfiglets')
     def enumConfiglets(self, group=None):
-        portal=getToolByName(self, 'portal_url').getPortalObject()
-        context=createExprContext(self, portal, self)
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        context = createExprContext(self, portal, self)
         res = []
         for a in self.listActions():
             verified = 0
@@ -120,28 +121,30 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                     title = Message(title, domain='plone')
                 a['title'] = translate(title,
                                        context=self.REQUEST)
+
         def _title(v):
             return v['title']
+
         res.sort(key=_title)
         return res
 
-    security.declareProtected( ManagePortal, 'unregisterConfiglet' )
-    def unregisterConfiglet(self,id):
-        actids= [o.id for o in self.listActions()]
-        selection=[actids.index(a) for a in actids if a==id]
+    security.declareProtected(ManagePortal, 'unregisterConfiglet')
+    def unregisterConfiglet(self, id):
+        actids = [o.id for o in self.listActions()]
+        selection = [actids.index(a) for a in actids if a==id]
         self.deleteActions(selection)
 
         # BBB
-        actionicons=getToolByName(self, 'portal_actionicons', None)
+        actionicons = getToolByName(self, 'portal_actionicons', None)
         if actionicons is not None:
             if actionicons.queryActionInfo('controlpanel', id, None):
                 actionicons.removeActionIcon('controlpanel', id)
 
 
-    security.declareProtected( ManagePortal, 'unregisterApplication' )
-    def unregisterApplication(self,appId):
-        acts=list(self.listActions())
-        selection=[acts.index(a) for a in acts if a.appId==appId]
+    security.declareProtected(ManagePortal, 'unregisterApplication')
+    def unregisterApplication(self, appId):
+        acts = list(self.listActions())
+        selection = [acts.index(a) for a in acts if a.appId == appId]
         self.deleteActions(selection)
 
         # BBB
@@ -153,67 +156,68 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                     actionicons.removeActionIcon('controlpanel', a.id)
 
 
-    def _extractAction( self, properties, index ):
+    def _extractAction(self, properties, index):
         """ Extract an ActionInformation from the funky form properties.
         """
-        id          = str( properties.get( 'id_%d'          % index, '' ) )
-        name        = str( properties.get( 'name_%d'        % index, '' ) )
-        action      = str( properties.get( 'action_%d'      % index, '' ) )
-        condition   = str( properties.get( 'condition_%d'   % index, '' ) )
-        category    = str( properties.get( 'category_%d'    % index, '' ))
-        visible     =      properties.get( 'visible_%d'     % index, 0  )
-        permissions =      properties.get( 'permission_%d'  % index, () )
-        appId       =      properties.get( 'appId_%d'  % index, '' )
-        description =      properties.get( 'description_%d'  % index, '' )
-        icon_expr   =      properties.get( 'icon_expr_%d'   % index, '' )
+        id          = str(properties.get('id_%d'          % index, ''))
+        name        = str(properties.get('name_%d'        % index, ''))
+        action      = str(properties.get('action_%d'      % index, ''))
+        condition   = str(properties.get('condition_%d'   % index, ''))
+        category    = str(properties.get('category_%d'    % index, ''))
+        visible     =     properties.get('visible_%d'     % index, 0)
+        permissions =     properties.get('permission_%d'  % index, ())
+        appId       =     properties.get('appId_%d'  % index, '')
+        description =     properties.get('description_%d'  % index, '')
+        icon_expr   =     properties.get('icon_expr_%d'   % index, '')
 
         if not name:
             raise ValueError('A name is required.')
 
         if action is not '':
-            action = Expression( text=action )
+            action = Expression(text=action)
 
         if condition is not '':
-            condition = Expression( text=condition )
+            condition = Expression(text=condition)
 
         if category == '':
             category = 'object'
 
-        if type( visible ) is not type( 0 ):
+        if type(visible) is not type(0):
             try:
-                visible = int( visible )
+                visible = int(visible)
             except ValueError:
                 visible = 0
 
-        if type( permissions ) is type( '' ):
-            permissions = ( permissions, )
+        if type(permissions) is type(''):
+            permissions = (permissions, )
 
-        return PloneConfiglet( id=id
-                                , title=name
-                                , action=action
-                                , condition=condition
-                                , permissions=permissions
-                                , category=category
-                                , visible=visible
-                                , appId = appId
-                                , description = description
-                                , icon_expr = icon_expr
-                                )
-    security.declareProtected( ManagePortal, 'addAction' )
-    def addAction( self
-                 , id
-                 , name
-                 , action
-                 , condition=''
-                 , permission=''
-                 , category='Plone'
-                 , visible=1
-                 , appId=None
-                 , imageUrl=None
-                 , icon_expr = ''
-                 , description=''
-                 , REQUEST=None
-                 ):
+        return PloneConfiglet(id=id,
+                              title=name,
+                              action=action,
+                              condition=condition,
+                              permissions=permissions,
+                              category=category,
+                              visible=visible,
+                              appId = appId,
+                              description = description,
+                              icon_expr = icon_expr,
+                              )
+
+    security.declareProtected(ManagePortal, 'addAction')
+    def addAction(self,
+                  id,
+                  name,
+                  action,
+                  condition='',
+                  permission='',
+                  category='Plone',
+                  visible=1,
+                  appId=None,
+                  imageUrl=None,
+                  icon_expr = '',
+                  description='',
+                  REQUEST=None,
+                  ):
         """ Add an action to our list.
         """
         if not name:
@@ -222,8 +226,8 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         a_expr = action and Expression(text=str(action)) or ''
         c_expr = condition and Expression(text=str(condition)) or ''
 
-        if type( permission ) != type( () ):
-            permission = permission and (str(permission),) or ()
+        if type(permission) != type(()):
+            permission = permission and (str(permission), ) or ()
 
         if imageUrl:
             log_deprecated("The imageUrl parameter of the control panel tool's "
@@ -234,29 +238,29 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
 
         new_actions = self._cloneActions()
 
-        new_action = PloneConfiglet( id=str(id)
-                                      , title=name
-                                      , action=a_expr
-                                      , condition=c_expr
-                                      , permissions=permission
-                                      , category=str(category)
-                                      , visible=int(visible)
-                                      , appId=appId
-                                      , description=description
-                                      , icon_expr = icon_expr
-                                      )
+        new_action = PloneConfiglet(id=str(id),
+                                    title=name,
+                                    action=a_expr,
+                                    condition=c_expr,
+                                    permissions=permission,
+                                    category=str(category),
+                                    visible=int(visible),
+                                    appId=appId,
+                                    description=description,
+                                    icon_expr = icon_expr,
+                                    )
 
-        new_actions.append( new_action )
-        self._actions = tuple( new_actions )
+        new_actions.append(new_action)
+        self._actions = tuple(new_actions)
 
         if REQUEST is not None:
             return self.manage_editActionsForm(
                 REQUEST, manage_tabs_message='Added.')
 
-    registerConfiglet=addAction
+    registerConfiglet = addAction
 
-    security.declareProtected( ManagePortal, 'manage_editActionsForm' )
-    def manage_editActionsForm( self, REQUEST, manage_tabs_message=None ):
+    security.declareProtected(ManagePortal, 'manage_editActionsForm')
+    def manage_editActionsForm(self, REQUEST, manage_tabs_message=None):
         """ Show the 'Actions' management tab.
         """
         actions = []
@@ -280,14 +284,14 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             a1['icon_expr'] = a.getIconExpression()
             actions.append(a1)
 
-        # possible_permissions is in AccessControl.Role.RoleManager.
+        # possible_permissions is in OFS.role.RoleManager.
         pp = self.possible_permissions()
-        return self._actions_form( self
-                                 , REQUEST
-                                 , actions=actions
-                                 , possible_permissions=pp
-                                 , management_view='Actions'
-                                 , manage_tabs_message=manage_tabs_message
+        return self._actions_form(self,
+                                  REQUEST,
+                                  actions=actions,
+                                  possible_permissions=pp,
+                                  management_view='Actions',
+                                  manage_tabs_message=manage_tabs_message,
                                  )
 
 InitializeClass(PloneControlPanel)

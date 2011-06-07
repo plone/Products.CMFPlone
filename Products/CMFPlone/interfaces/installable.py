@@ -1,5 +1,6 @@
 from zope.interface import Interface
 
+
 class INonInstallable(Interface):
 
     def getNonInstallableProfiles():

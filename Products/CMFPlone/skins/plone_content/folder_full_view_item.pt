@@ -27,6 +27,7 @@
                      normalizeString nocall: context/plone_utils/normalizeString;
                      item_type_class python: 'contenttype-' + normalizeString(item_type);
                      kss_inline_editable python:False;
+                     rendering_error python:[];
                      ">
 
         <div tal:replace="structure provider:plone.abovecontenttitle" />
@@ -46,7 +47,7 @@
             Description
         </div>
 
-        <tal:block tal:condition="item_macro">
+        <tal:block tal:condition="item_macro" tal:on-error="python:rendering_error.append(True)">
 
             <div tal:replace="structure provider:plone.abovecontentbody" />
 
@@ -58,7 +59,11 @@
 
         </tal:block>
 
-        <p class="more" tal:condition="not:item_macro">
+        <tal:block tal:condition="rendering_error">
+            <!-- Error rendering item macro -->
+        </tal:block>
+
+        <p class="more" tal:condition="python:not(item_macro) or rendering_error">
             <a href=""
                tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);"
                i18n:translate="read_more">

@@ -1,28 +1,33 @@
-#
-# Plone CatalogTool
-#
 import re
 import time
 import urllib
 
-from zope.interface import implements
-
-from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
-
-from Products.CMFCore.permissions import AccessInactivePortalContent
 from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass
-from App.special_dtml import DTMLFile
+from AccessControl.Permissions import manage_zcatalog_entries as \
+    ManageZCatalogEntries
+from AccessControl.Permissions import search_zcatalog as SearchZCatalog
+from AccessControl.PermissionRole import rolesForPermissionOn
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from Acquisition import aq_base
-from DateTime import DateTime
+from App.class_init import InitializeClass
+from App.special_dtml import DTMLFile
 from BTrees.Length import Length
-
-from Products.CMFCore.utils import _getAuthenticatedUser
+from DateTime import DateTime
+from OFS.interfaces import IOrderedContainer
+from plone.indexer import indexer
+from plone.indexer.interfaces import IIndexableObject
 from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.CatalogTool import _mergedLocalRoles
+from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
+from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.ZCatalog.ZCatalog import ZCatalog
+from zope.component import queryMultiAdapter
+from zope.interface import Interface
+from zope.interface import implements
+from zope.interface import providedBy
 
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -31,32 +36,103 @@ from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.interfaces import IPloneCatalogTool
 
-from OFS.interfaces import IOrderedContainer
-
-from Products.ZCatalog.ZCatalog import ZCatalog
-
-from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
-from AccessControl.Permissions import search_zcatalog as SearchZCatalog
-from AccessControl.PermissionRole import rolesForPermissionOn
-
-from zope.interface import Interface, providedBy
-from zope.component import queryMultiAdapter
-
-from plone.indexer.interfaces import IIndexableObject
-from plone.indexer import indexer
-from plone.uuid.interfaces import IUUIDAware, IUUID
+from plone.i18n.normalizer.base import mapUnicode
 
 _marker = object()
+
+BLACKLISTED_INTERFACES = frozenset((
+    'AccessControl.interfaces.IOwned',
+    'AccessControl.interfaces.IPermissionMappingSupport',
+    'AccessControl.interfaces.IRoleManager',
+    'Acquisition.interfaces.IAcquirer',
+    'App.interfaces.INavigation',
+    'App.interfaces.IPersistentExtra',
+    'App.interfaces.IUndoSupport',
+    'archetypes.schemaextender.interfaces.IExtensible',
+    'OFS.interfaces.ICopyContainer',
+    'OFS.interfaces.ICopySource',
+    'OFS.interfaces.IFindSupport',
+    'OFS.interfaces.IFolder',
+    'OFS.interfaces.IFTPAccess',
+    'OFS.interfaces.IItem',
+    'OFS.interfaces.IManageable',
+    'OFS.interfaces.IObjectManager',
+    'OFS.interfaces.IOrderedContainer',
+    'OFS.interfaces.IPropertyManager',
+    'OFS.interfaces.ISimpleItem',
+    'OFS.interfaces.ITraversable',
+    'OFS.interfaces.IZopeObject',
+    'persistent.interfaces.IPersistent',
+    'plone.app.folder.bbb.IArchivable',
+    'plone.app.folder.bbb.IPhotoAlbumAble',
+    'plone.app.folder.folder.IATUnifiedFolder',
+    'plone.app.imaging.interfaces.IBaseObject',
+    'plone.app.iterate.interfaces.IIterateAware',
+    'plone.app.kss.interfaces.IPortalObject',
+    'plone.contentrules.engine.interfaces.IRuleAssignable',
+    'plone.folder.interfaces.IFolder',
+    'plone.folder.interfaces.IOrderableFolder',
+    'plone.locking.interfaces.ITTWLockable',
+    'plone.portlets.interfaces.ILocalPortletAssignable',
+    'plone.uuid.interfaces.IUUIDAware',
+    'Products.Archetypes.interfaces.athistoryaware.IATHistoryAware',
+    'Products.Archetypes.interfaces.base.IBaseContent',
+    'Products.Archetypes.interfaces.base.IBaseFolder',
+    'Products.Archetypes.interfaces.base.IBaseObject',
+    'Products.Archetypes.interfaces.metadata.IExtensibleMetadata',
+    'Products.Archetypes.interfaces.referenceable.IReferenceable',
+    'Products.ATContentTypes.exportimport.content.IDisabledExport',
+    'Products.ATContentTypes.interfaces.folder.IATBTreeFolder',
+    'Products.ATContentTypes.interfaces.interfaces.IATContentType',
+    'Products.ATContentTypes.interfaces.interfaces.IHistoryAware',
+    'Products.ATContentTypes.interfaces.interfaces.ITextContent',
+    'Products.CMFCore.interfaces._content.ICatalogableDublinCore',
+    'Products.CMFCore.interfaces._content.ICatalogAware',
+    'Products.CMFCore.interfaces._content.IDublinCore',
+    'Products.CMFCore.interfaces._content.IDynamicType',
+    'Products.CMFCore.interfaces._content.IFolderish',
+    'Products.CMFCore.interfaces._content.IMinimalDublinCore',
+    'Products.CMFCore.interfaces._content.IMutableDublinCore',
+    'Products.CMFCore.interfaces._content.IMutableMinimalDublinCore',
+    'Products.CMFCore.interfaces._content.IOpaqueItemManager',
+    'Products.CMFCore.interfaces._content.IWorkflowAware',
+    'Products.CMFDynamicViewFTI.interfaces.IBrowserDefault',
+    'Products.CMFDynamicViewFTI.interfaces.ISelectableBrowserDefault',
+    'Products.CMFPlone.interfaces.constrains.IConstrainTypes',
+    'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',
+    'Products.GenericSetup.interfaces.IDAVAware',
+    'webdav.EtagSupport.EtagBaseInterface',
+    'webdav.interfaces.IDAVCollection',
+    'webdav.interfaces.IDAVResource',
+    'zope.annotation.interfaces.IAnnotatable',
+    'zope.annotation.interfaces.IAttributeAnnotatable',
+    'zope.component.interfaces.IPossibleSite',
+    'zope.container.interfaces.IContainer',
+    'zope.container.interfaces.IItemContainer',
+    'zope.container.interfaces.IReadContainer',
+    'zope.container.interfaces.ISimpleReadContainer',
+    'zope.container.interfaces.IWriteContainer',
+    'zope.interface.common.mapping.IEnumerableMapping',
+    'zope.interface.common.mapping.IItemMapping',
+    'zope.interface.common.mapping.IReadMapping',
+    'zope.interface.Interface',
+))
+
 
 @indexer(Interface)
 def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.
-
-    Used by PortalCatalog to filter out items you're not allowed to see.
+    Used to filter out items you're not allowed to see.
     """
     allowed = {}
     for r in rolesForPermissionOn('View', obj):
         allowed[r] = 1
+    # shortcut roles and only index the most basic system role if the object
+    # is viewable by either of those
+    if 'Anonymous' in allowed:
+        return ['Anonymous']
+    elif 'Authenticated' in allowed:
+        return ['Authenticated']
     try:
         acl_users = getToolByName(obj, 'acl_users', None)
         if acl_users is not None:
@@ -71,14 +147,18 @@ def allowedRolesAndUsers(obj):
         del allowed['Owner']
     return list(allowed.keys())
 
+
 @indexer(Interface)
 def object_provides(obj):
-    return [i.__identifier__ for i in providedBy(obj).flattened()]
+    return tuple([i.__identifier__ for i in providedBy(obj).flattened()
+        if i.__identifier__ not in BLACKLISTED_INTERFACES])
+
 
 def zero_fill(matchobj):
     return matchobj.group().zfill(6)
 
 num_sort_regex = re.compile('\d+')
+
 
 @indexer(Interface)
 def sortable_title(obj):
@@ -94,14 +174,18 @@ def sortable_title(obj):
     if title is not None:
         if safe_callable(title):
             title = title()
+
         if isinstance(title, basestring):
-            sortabletitle = title.lower().strip()
+            # Ignore case, normalize accents, strip spaces
+            sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
             # Truncate to prevent bloat
-            sortabletitle = safe_unicode(sortabletitle)[:70].encode('utf-8')
+            sortabletitle = sortabletitle[:70].encode('utf-8')
             return sortabletitle
+
     return ''
+
 
 @indexer(Interface)
 def getObjPositionInParent(obj):
@@ -120,6 +204,7 @@ def getObjPositionInParent(obj):
 
 SIZE_CONST = {'kB': 1024, 'MB': 1024*1024, 'GB': 1024*1024*1024}
 SIZE_ORDER = ('GB', 'MB', 'kB')
+
 
 @indexer(Interface)
 def getObjSize(obj):
@@ -156,6 +241,7 @@ def getObjSize(obj):
         return '%.1f %s' % (float(size/float(SIZE_CONST[c])), c)
     return size
 
+
 @indexer(Interface)
 def is_folderish(obj):
     """Should this item be treated as a folder?
@@ -173,7 +259,8 @@ def is_folderish(obj):
 
     But if we make it an INonStructuralFolder it is not::
       >>> base_implements = directlyProvidedBy(self.folder)
-      >>> directlyProvides(self.folder, INonStructuralFolder, directlyProvidedBy(self.folder))
+      >>> directlyProvides(self.folder, INonStructuralFolder,
+      ...     directlyProvidedBy(self.folder))
       >>> is_folderish(self.folder)
       False
 
@@ -197,6 +284,7 @@ def is_folderish(obj):
     else:
         return folderish
 
+
 @indexer(Interface)
 def syndication_enabled(obj):
     """Get state of syndication.
@@ -205,6 +293,7 @@ def syndication_enabled(obj):
     if syn is not _marker:
         return True
     return False
+
 
 @indexer(Interface)
 def is_default_page(obj):
@@ -215,10 +304,12 @@ def is_default_page(obj):
         return False
     return ptool.isDefaultPage(obj)
 
+
 @indexer(Interface)
 def getIcon(obj):
     """Make sure we index icon relative to portal"""
     return obj.getIcon(True)
+
 
 class CatalogTool(PloneBaseTool, BaseTool):
     """Plone's catalog tool"""
@@ -238,6 +329,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         {'action': 'manage_catalogIndexes', 'label': 'Indexes'},
         {'action': 'manage_catalogSchema', 'label': 'Metadata'},
         {'action': 'manage_catalogAdvanced', 'label': 'Advanced'},
+        {'action': 'manage_catalogReport', 'label': 'Query Report'},
+        {'action': 'manage_catalogPlan', 'label': 'Query Plan'},
         {'action': 'manage_propertiesForm', 'label': 'Properties'},
     )
 
@@ -255,9 +348,18 @@ class CatalogTool(PloneBaseTool, BaseTool):
     def _listAllowedRolesAndUsers(self, user):
         """Makes sure the list includes the user's groups.
         """
-        result = list(user.getRoles())
+        result = user.getRoles()
+        if 'Anonymous' in result:
+            # The anonymous user has no further roles
+            return ['Anonymous']
+        result = list(result)
         if hasattr(aq_base(user), 'getGroups'):
-            result = result + ['user:%s' % x for x in user.getGroups()]
+            # remove the AuthenticatedUsers group, the Authenticated role is
+            # already included in the user.getRoles() list
+            groups = ['user:%s' % x for x in user.getGroups() if
+                x != 'AuthenticatedUsers']
+            if groups:
+                result = result + groups
         result.append('Anonymous')
         result.append('user:%s' % user.getId())
         return result
@@ -278,7 +380,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         w = object
         if not IIndexableObject.providedBy(object):
-            # This is the CMF 2.2 compatible approach, which should be used going forward
+            # This is the CMF 2.2 compatible approach, which should be used
+            # going forward
             wrapper = queryMultiAdapter((object, self), IIndexableObject)
             if wrapper is not None:
                 w = wrapper
@@ -319,7 +422,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not show_inactive and not _checkPermission(AccessInactivePortalContent, self):
+        if not show_inactive and not _checkPermission(
+            AccessInactivePortalContent, self):
+
             kw['effectiveRange'] = DateTime()
 
         return ZCatalog.searchResults(self, REQUEST, **kw)
@@ -343,12 +448,13 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     pass
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
-        portal.ZopeFindAndApply(portal, search_sub=True, apply_func=indexObject)
+        portal.ZopeFindAndApply(portal, search_sub=True,
+            apply_func=indexObject)
 
     security.declareProtected(ManageZCatalogEntries, 'manage_catalogRebuild')
     def manage_catalogRebuild(self, RESPONSE=None, URL1=None):
-        """Clears the catalog and indexes all objects with an 'indexObject' method.
-           This may take a long time.
+        """Clears the catalog and indexes all objects with an 'indexObject'
+        method. This may take a long time.
         """
         elapse = time.time()
         c_elapse = time.clock()
