@@ -217,6 +217,10 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     catalog_vars = dict(portal_type=types_by_wf.get(id, []))
                     for key in wlist_def.var_matches:
                         catalog_vars[key] = wlist_def.var_matches[key]
+                    # Support LinguaPlone review situations, you want to see
+                    # content in *all* languages
+                    if 'Language' not in catalog_vars:
+                        catalog_vars['Language'] = 'all'
                     for result in catalog.searchResults(catalog_vars):
                         o = result.getObject()
                         if o \

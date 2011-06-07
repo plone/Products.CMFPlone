@@ -14,6 +14,9 @@ from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 REQUEST=context.REQUEST
+response = REQUEST.response
+response.setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT')
+response.setHeader('Cache-Control', 'no-cache')
 
 if id is None:
     id=context.generateUniqueId(type_name)

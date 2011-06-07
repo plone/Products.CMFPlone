@@ -13,8 +13,27 @@ Changelog
   [thet]
 
 
-4.1rc3 - Unreleased
+4.1rc3 - 2011-06-02
 -------------------
+
+- Apply patches to prevent exploitation of CVE-2011-1948 (Hotfix 20110531.)
+  [elro]
+
+- In actions.xml, use object_url for the object_buttons.
+  Fixes http://dev.plone.org/plone/ticket/11733.
+  [WouterVH]
+
+- Set Language to 'all' to list content in all languages when listing a
+  worklist's contents (workflow) to support LinguaPlone better.
+  [mj]
+
+- Set appropriate cache headers on createObject redirects to prevent caching
+  by proxy servers.
+  [elro]
+
+- Added "X-Theme-Disabled" response header to failsafe_login_form to disable
+  Diazo/plone.app.theming.
+  [elro]
 
 - Fixed PloneBatch to work for non-lazy sequences.
   [hannosch]
