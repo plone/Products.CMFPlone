@@ -1,28 +1,28 @@
-<metal:page define-macro="master">
+<metal:page define-macro="master"
+            xmlns:tal="http://xml.zope.org/namespaces/tal"
+            xmlns:metal="http://xml.zope.org/namespaces/metal"
+            xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+            tal:define="portal_state context/@@plone_portal_state;
+                        context_state context/@@plone_context_state;
+                        plone_view context/@@plone;
+                        lang portal_state/language;
+                        view nocall:view | nocall: plone_view;
+                        dummy python: plone_view.mark_view(view);
+                        portal_url portal_state/portal_url;
+                        checkPermission nocall: context/portal_membership/checkPermission;
+                        site_properties context/portal_properties/site_properties;
+                        ajax_load request/ajax_load | nothing;
+                        ajax_include_head request/ajax_include_head | nothing;
+                        dummy python:request.RESPONSE.setHeader('X-UA-Compatible', 'IE=edge,chrome=1');">
 <metal:block define-slot="top_slot" />
 
 <tal:doctype tal:replace="structure string:&lt;!DOCTYPE html&gt;" />
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      xml:lang="en"
-      lang="en"
-      tal:define="portal_state context/@@plone_portal_state;
-                  context_state context/@@plone_context_state;
-                  plone_view context/@@plone;
-                  lang portal_state/language;
-                  view nocall:view | nocall: plone_view;
-                  dummy python: plone_view.mark_view(view);
-                  portal_url portal_state/portal_url;
-                  checkPermission nocall: context/portal_membership/checkPermission;
-                  site_properties context/portal_properties/site_properties;
-                  ajax_load request/ajax_load | nothing;
-                  ajax_include_head request/ajax_include_head | nothing;
-                  dummy python:request.RESPONSE.setHeader('X-UA-Compatible', 'IE=edge,chrome=1');"
-      tal:attributes="lang lang;
-                      xml:lang lang">
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]><html xmlns="http://www.w3.org/1999/xhtml" tal:attributes="lang lang;" class="no-js ie6 oldie"><![endif]-->
+<!--[if IE 7]><html xmlns="http://www.w3.org/1999/xhtml" tal:attributes="lang lang;" class="no-js ie7 oldie"><![endif]-->
+<!--[if IE 8]><html xmlns="http://www.w3.org/1999/xhtml" tal:attributes="lang lang;" class="no-js ie8 oldie"><![endif]-->
+<!--[if gt IE 8]><!--><html xmlns="http://www.w3.org/1999/xhtml" tal:attributes="lang lang;" class="no-js"><!--<![endif]-->
 
   <metal:cache use-macro="context/global_cache_settings/macros/cacheheaders">
     Get the global cache headers located in global_cache_settings.
