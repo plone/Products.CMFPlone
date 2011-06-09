@@ -369,4 +369,6 @@ class FooterViewlet(ViewletBase):
     index = ViewPageTemplateFile('footer.pt')
 
     def update(self):
+        super(FooterViewlet, self).update()
         self.year = date.today().year
+
