@@ -5,35 +5,35 @@
     <browser:viewlet
         name="plone.links.favicon"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class=".viewlets.FaviconViewlet"
+        class="plone.app.layout.links.viewlets.FaviconViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet
         name="plone.links.search"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class=".viewlets.SearchViewlet"
+        class="plone.app.layout.links.viewlets.SearchViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet
         name="plone.links.author"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class=".viewlets.AuthorViewlet"
+        class="plone.app.layout.links.viewlets.AuthorViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet
         name="plone.links.navigation"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class=".viewlets.NavigationViewlet"
+        class="plone.app.layout.links.viewlets.NavigationViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet
         name="plone.links.RSS"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class=".viewlets.RSSViewlet"
+        class="plone.app.layout.links.viewlets.RSSViewlet"
         permission="zope2.View" 
         />
 

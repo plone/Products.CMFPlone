@@ -6,91 +6,91 @@
 
     <browser:viewletManager
         name="plone.htmlhead"
-        provides=".interfaces.IHtmlHead"
+        provides="plone.app.layout.viewlets.interfaces.IHtmlHead"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.htmlhead.links"
-        provides=".interfaces.IHtmlHeadLinks"
+        provides="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.portaltop"
-        provides=".interfaces.IPortalTop"
+        provides="plone.app.layout.viewlets.interfaces.IPortalTop"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.portalheader"
-        provides=".interfaces.IPortalHeader"
+        provides="plone.app.layout.viewlets.interfaces.IPortalHeader"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.contentviews"
-        provides=".interfaces.IContentViews"
+        provides="plone.app.layout.viewlets.interfaces.IContentViews"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.abovecontent"
-        provides=".interfaces.IAboveContent"
+        provides="plone.app.layout.viewlets.interfaces.IAboveContent"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.abovecontenttitle"
-        provides=".interfaces.IAboveContentTitle"
+        provides="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.documentactions"
-        provides=".interfaces.IDocumentActions"
+        provides="plone.app.layout.viewlets.interfaces.IDocumentActions"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.belowcontenttitle"
-        provides=".interfaces.IBelowContentTitle"
+        provides="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.abovecontentbody"
-        provides=".interfaces.IAboveContentBody"
+        provides="plone.app.layout.viewlets.interfaces.IAboveContentBody"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.belowcontentbody"
-        provides=".interfaces.IBelowContentBody"
+        provides="plone.app.layout.viewlets.interfaces.IBelowContentBody"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.belowcontent"
-        provides=".interfaces.IBelowContent"
+        provides="plone.app.layout.viewlets.interfaces.IBelowContent"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
 
     <browser:viewletManager
         name="plone.portalfooter"
-        provides=".interfaces.IPortalFooter"
+        provides="plone.app.layout.viewlets.interfaces.IPortalFooter"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
@@ -100,7 +100,7 @@
     <!-- The portal header -->
     <browser:viewlet
         name="plone.header"
-        manager=".interfaces.IPortalTop"
+        manager="plone.app.layout.viewlets.interfaces.IPortalTop"
         template="portal_header.pt"
         permission="zope2.View"
         />
@@ -108,56 +108,56 @@
     <!-- The skip links for accessibility -->
     <browser:viewlet
         name="plone.skip_links"
-        manager=".interfaces.IPortalHeader"
-        class=".common.SkipLinksViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class="plone.app.layout.viewlets.common.SkipLinksViewlet"
         permission="zope2.View"
         />
 
     <!-- The site actions -->
     <browser:viewlet
         name="plone.site_actions"
-        manager=".interfaces.IPortalFooter"
-        class=".common.SiteActionsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        class="plone.app.layout.viewlets.common.SiteActionsViewlet"
         permission="zope2.View"
         />
 
     <!-- The search box -->
     <browser:viewlet
         name="plone.searchbox"
-        manager=".interfaces.IPortalHeader"
-        class=".common.SearchBoxViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class="plone.app.layout.viewlets.common.SearchBoxViewlet"
         permission="zope2.View"
         />
 
     <!-- The logo -->
     <browser:viewlet
         name="plone.logo"
-        manager=".interfaces.IPortalHeader"
-        class=".common.LogoViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class="plone.app.layout.viewlets.common.LogoViewlet"
         permission="zope2.View"
         />
 
     <!-- The global sections -->
     <browser:viewlet
         name="plone.global_sections"
-        manager=".interfaces.IPortalHeader"
-        class=".common.GlobalSectionsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class="plone.app.layout.viewlets.common.GlobalSectionsViewlet"
         permission="zope2.View"
         />
 
     <!-- The personal bar -->
     <browser:viewlet
         name="plone.personal_bar"
-        manager=".interfaces.IPortalHeader"
-        class=".common.PersonalBarViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class="plone.app.layout.viewlets.common.PersonalBarViewlet"
         permission="zope2.View"
         />
 
     <!-- Content views (tabs) -->
     <browser:viewlet
         name="plone.contentviews"
-        manager=".interfaces.IContentViews"
-        class=".common.ContentViewsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IContentViews"
+        class="plone.app.layout.viewlets.common.ContentViewsViewlet"
         permission="zope2.View"
         />
 
@@ -168,7 +168,7 @@
     <browser:viewlet
         name="plone.contentactions"
         for="*"
-        manager=".interfaces.IContentViews"
+        manager="plone.app.layout.viewlets.interfaces.IContentViews"
         template="contentactions_blank.pt"
         permission="zope2.View"
         />
@@ -177,8 +177,8 @@
         name="plone.contentactions"
         for="*"
         view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IContentViews"
-        class=".common.ContentActionsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IContentViews"
+        class="plone.app.layout.viewlets.common.ContentActionsViewlet"
         permission="zope2.View"
         />
 
@@ -186,32 +186,32 @@
         name="plone.contentactions"
         for="*"
         view="plone.app.content.browser.interfaces.IFolderContentsView"
-        manager=".interfaces.IContentViews"
-        class=".common.ContentActionsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IContentViews"
+        class="plone.app.layout.viewlets.common.ContentActionsViewlet"
         permission="zope2.View"
         />
 
     <!-- Render the browser title -->
     <browser:viewlet
         name="plone.htmlhead.title"
-        manager=".interfaces.IHtmlHead"
-        class=".common.TitleViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+        class="plone.app.layout.viewlets.common.TitleViewlet"
         permission="zope2.View"
         />
 
     <!-- Render the Dublin Core metadata -->
     <browser:viewlet
         name="plone.htmlhead.dublincore"
-        manager=".interfaces.IHtmlHead"
-        class=".common.DublinCoreViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+        class="plone.app.layout.viewlets.common.DublinCoreViewlet"
         permission="zope2.View"
         />
 
     <!-- The related items -->
     <browser:viewlet
         name="plone.belowcontentbody.relateditems"
-        manager=".interfaces.IBelowContentBody"
-        class=".content.ContentRelatedItems"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+        class="plone.app.layout.viewlets.content.ContentRelatedItems"
         view="plone.app.layout.globals.interfaces.IViewView"
         permission="zope2.View"
         />
@@ -220,8 +220,8 @@
          BBB: this is the Plone < 4 viewlet
     <browser:viewlet
         name="plone.belowcontentbody.inlinecontenthistory"
-        manager=".interfaces.IBelowContentBody"
-        class=".content.ContentHistoryViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+        class="plone.app.layout.viewlets.content.ContentHistoryViewlet"
         template="inline_content_history.pt"
         permission="zope2.View"
         />
@@ -231,7 +231,7 @@
     <browser:view
         for="*"
         name="contenthistory"
-        class=".content.ContentHistoryView"
+        class="plone.app.layout.viewlets.content.ContentHistoryView"
         permission="zope2.View"
         />
 
@@ -254,8 +254,8 @@
     <!-- Render the document actions -->
     <browser:viewlet
         name="plone.abovecontenttitle.documentactions"
-        manager=".interfaces.IBelowContentBody"
-        class=".content.DocumentActionsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+        class="plone.app.layout.viewlets.content.DocumentActionsViewlet"
         permission="zope2.View"
         />
 
@@ -266,8 +266,8 @@
         name="plone.manage_portlets_fallback"
         for="Products.ATContentTypes.interface.IATContentType"
         view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IBelowContent"
-        class=".common.ManagePortletsFallbackViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+        class="plone.app.layout.viewlets.common.ManagePortletsFallbackViewlet"
         permission="zope2.View"
         />
     <!-- We need this fallback link on site's root as well -->
@@ -275,31 +275,31 @@
         name="plone.manage_portlets_fallback"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IBelowContent"
-        class=".common.ManagePortletsFallbackViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+        class="plone.app.layout.viewlets.common.ManagePortletsFallbackViewlet"
         permission="zope2.View"
         />
 
     <!-- The breadcrumbs -->
     <browser:viewlet
         name="plone.path_bar"
-        manager=".interfaces.IAboveContent"
-        class=".common.PathBarViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IAboveContent"
+        class="plone.app.layout.viewlets.common.PathBarViewlet"
         permission="zope2.View"
         />
 
     <!-- Render the document byline -->
     <browser:viewlet
         name="plone.belowcontenttitle.documentbyline"
-        manager=".interfaces.IBelowContentTitle"
-        class=".content.DocumentBylineViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+        class="plone.app.layout.viewlets.content.DocumentBylineViewlet"
         permission="zope2.View"
         />
 
     <!-- Render the keywords -->
     <browser:viewlet
         name="plone.belowcontenttitle.keywords"
-        manager=".interfaces.IBelowContent"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
         view="plone.app.layout.globals.interfaces.IViewView"
         template="keywords.pt"
         permission="zope2.View"
@@ -309,16 +309,16 @@
     <browser:viewlet
         name="plone.comments"
         for="Products.CMFCore.interfaces.IContentish"
-        manager=".interfaces.IBelowContent"
-        view="..globals.interfaces.IViewView"
-        class=".comments.CommentsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        class="plone.app.layout.viewlets.comments.CommentsViewlet"
         permission="zope2.View"
         />
 
     <!-- Render lock info -->
     <browser:viewlet
         name="plone.lockinfo"
-        manager=".interfaces.IAboveContent"
+        manager="plone.app.layout.viewlets.interfaces.IAboveContent"
         class="plone.locking.browser.info.LockInfoViewlet"
         permission="cmf.ModifyPortalContent"
         for="plone.locking.interfaces.ITTWLockable"
@@ -328,8 +328,8 @@
     <browser:viewlet
         name="plone.tableofcontents"
         for="Products.ATContentTypes.interface.IATDocument"
-        manager=".interfaces.IAboveContentBody"
-        class=".common.TableOfContentsViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+        class="plone.app.layout.viewlets.common.TableOfContentsViewlet"
         permission="zope2.View"
         />
 
@@ -337,8 +337,8 @@
     <browser:viewlet
         name="plone.footer"
         for="*"
-        manager=".interfaces.IPortalFooter"
-        class=".common.FooterViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        class="plone.app.layout.viewlets.common.FooterViewlet"
         permission="zope.Public"
         />
 
@@ -346,7 +346,7 @@
     <browser:viewlet
         name="plone.colophon"
         for="*"
-        manager=".interfaces.IPortalFooter"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
         template="colophon.pt"
         permission="zope.Public"
         />

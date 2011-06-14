@@ -5,7 +5,7 @@
   <browser:page
       name="sitemap.xml.gz"
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
-      class=".sitemap.SiteMapView"
+      class="plone.app.layout.sitemap.sitemap.SiteMapView"
       permission="zope2.Public"
      />
 

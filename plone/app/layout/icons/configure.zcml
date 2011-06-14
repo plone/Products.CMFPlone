@@ -5,31 +5,31 @@
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
                 Products.ZCatalog.CatalogBrains.AbstractCatalogBrain"
-           factory=".icons.CatalogBrainContentIcon"
-           provides=".interfaces.IContentIcon" />
+           factory="plone.app.layout.icons.icons.CatalogBrainContentIcon"
+           provides="plone.app.layout.icons.interfaces.IContentIcon" />
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
                 Products.CMFCore.interfaces.IDynamicType"
-           factory=".icons.CMFContentIcon"
-           provides=".interfaces.IContentIcon" />
+           factory="plone.app.layout.icons.icons.CMFContentIcon"
+           provides="plone.app.layout.icons.interfaces.IContentIcon" />
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
                 Products.CMFCore.TypesTool.FactoryTypeInformation"
-           factory=".icons.FTIContentIcon"
-           provides=".interfaces.IContentIcon" />
+           factory="plone.app.layout.icons.icons.FTIContentIcon"
+           provides="plone.app.layout.icons.interfaces.IContentIcon" />
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
                 Products.CMFPlone.interfaces.IPloneSiteRoot"
-           factory=".icons.PloneSiteContentIcon"
-           provides=".interfaces.IContentIcon" />
+           factory="plone.app.layout.icons.icons.PloneSiteContentIcon"
+           provides="plone.app.layout.icons.interfaces.IContentIcon" />
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
                 *"
-           factory=".icons.DefaultContentIcon"
-           provides=".interfaces.IContentIcon" />
+           factory="plone.app.layout.icons.icons.DefaultContentIcon"
+           provides="plone.app.layout.icons.interfaces.IContentIcon" />
 
 </configure>

@@ -5,7 +5,7 @@
   <browser:page
       name="presentation_view"
       for="Products.ATContentTypes.interface.IATDocument"
-      class=".presentation.PresentationView"
+      class="plone.app.layout.presentation.presentation.PresentationView"
       template="presentation.pt"
       permission="zope2.View"
      />
@@ -14,7 +14,7 @@
       name="plone.presentation"
       for="Products.ATContentTypes.interface.IATDocument"
       manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
-      class=".presentation.PresentationViewlet"
+      class="plone.app.layout.presentation.presentation.PresentationViewlet"
       permission="zope2.View"
       />
 
