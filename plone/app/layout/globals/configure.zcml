@@ -8,40 +8,40 @@
         name="plone_interface_info"
         for="*"
         permission="zope.Public"
-        class="plone.app.layout.globals.interface.InterfaceInformation"
-        allowed_interface="plone.app.layout.globals.interfaces.IInterfaceInformation"
+        class=".interface.InterfaceInformation"
+        allowed_interface=".interfaces.IInterfaceInformation"
         />
 
     <browser:page
         name="plone_layout"
         for="*"
         permission="zope.Public"
-        class="plone.app.layout.globals.layout.LayoutPolicy"
-        allowed_interface="plone.app.layout.globals.interfaces.ILayoutPolicy"
+        class=".layout.LayoutPolicy"
+        allowed_interface=".interfaces.ILayoutPolicy"
         />
 
     <browser:page
         name="plone_tools"
         for="*"
         permission="zope.Public"
-        class="plone.app.layout.globals.tools.Tools"
-        allowed_interface="plone.app.layout.globals.interfaces.ITools"
+        class=".tools.Tools"
+        allowed_interface=".interfaces.ITools"
         />
 
     <browser:page
         name="plone_context_state"
         for="*"
         permission="zope.Public"
-        class="plone.app.layout.globals.context.ContextState"
-        allowed_interface="plone.app.layout.globals.interfaces.IContextState"
+        class=".context.ContextState"
+        allowed_interface=".interfaces.IContextState"
         />
 
     <browser:page
         name="plone_portal_state"
         for="*"
         permission="zope.Public"
-        class="plone.app.layout.globals.portal.PortalState"
-        allowed_interface="plone.app.layout.globals.interfaces.IPortalState"
+        class=".portal.PortalState"
+        allowed_interface=".interfaces.IPortalState"
         />
 
     <!-- We need to make the request annotatable for this to work -->

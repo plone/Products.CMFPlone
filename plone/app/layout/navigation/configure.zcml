@@ -2,16 +2,16 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-    <class class="plone.app.layout.navigation.navtree.NavtreeStrategyBase">
-        <allow interface="plone.app.layout.navigation.interfaces.INavtreeStrategy" />
+    <class class=".navtree.NavtreeStrategyBase">
+        <allow interface=".interfaces.INavtreeStrategy" />
     </class>
 
     <browser:page
       for="*"
       name="default_page"
-      class="plone.app.layout.navigation.defaultpage.DefaultPage"
+      class=".defaultpage.DefaultPage"
       permission="zope.Public"
-      allowed_interface="plone.app.layout.navigation.interfaces.IDefaultPage"
+      allowed_interface=".interfaces.IDefaultPage"
       />    
 
 </configure>

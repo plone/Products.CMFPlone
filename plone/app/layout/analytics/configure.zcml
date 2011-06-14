@@ -5,7 +5,7 @@
     <browser:viewlet  
         name="plone.analytics"
         manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
-        class="plone.app.layout.analytics.view.AnalyticsViewlet"
+        class=".view.AnalyticsViewlet"
         permission="zope2.View" 
         />
         

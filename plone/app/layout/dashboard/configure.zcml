@@ -8,7 +8,7 @@
         for="plone.app.layout.navigation.interfaces.INavigationRoot"
         name="dashboard"
         permission="plone.app.portlets.ViewDashboard"
-        class="plone.app.layout.dashboard.dashboard.DashboardView"
+        class=".dashboard.DashboardView"
         template="dashboard.pt"
         />
 

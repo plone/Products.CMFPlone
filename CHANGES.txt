@@ -4,10 +4,6 @@ Changelog
 2.1.7 - Unreleased
 ------------------
 
-- Use full namespace paths instead of relative in zcml files, so they can be
-  overridden e.g. by z3c.unconfigure.
-  [thet]
-
 - Footer viewlet have all viewlet base API (site_url, navigation_root_url, etc).
   [thomasdesvenain]
 

@@ -11,7 +11,7 @@
     <browser:page
         for="*"
         name="plone_nextprevious_view"
-        class="plone.app.layout.nextprevious.view.NextPreviousView"
+        class=".view.NextPreviousView"
         permission="zope.Public"
         allowed_attributes="next previous enabled"
         />
@@ -19,14 +19,14 @@
     <browser:viewlet  
         name="plone.nextprevious"
         manager="plone.app.layout.viewlets.interfaces.IBelowContent"
-        class="plone.app.layout.nextprevious.view.NextPreviousViewlet"
+        class=".view.NextPreviousViewlet"
         permission="zope2.View" 
         />
 
     <browser:viewlet  
         name="plone.nextprevious.links"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class="plone.app.layout.nextprevious.view.NextPreviousLinksViewlet"
+        class=".view.NextPreviousLinksViewlet"
         permission="zope2.View" 
         />
 
