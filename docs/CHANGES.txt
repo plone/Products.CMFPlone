@@ -5,6 +5,13 @@
 Changelog
 =========
 
+4.1rc4 - Unreleased
+-------------------
+
+- Optimized: Huge optimization of calendar_formfield.js under ie8 and lower.
+  Gain of 50% on js execution on a large page.
+  [thomasdesvenain]
+
 4.1rc3 - 2011-06-02
 -------------------
 
