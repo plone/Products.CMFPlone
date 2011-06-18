@@ -1,3 +1,32 @@
+"""
+When creating custom portlet managers, you will need to extend
+existing portlets to be addable to that manager: ::
+
+    <portlet extend="True" addview="portlets.Calendar">
+      <for interface="my.package.interfaces.ICustomPortletManager"/>
+    </portlet>
+
+You can also change the title and description of the portlet with the
+extend attribute: ::
+
+    <portlet
+      extend="True"
+      title="Dates of inquisition"
+      description="Nobody expects the SpanishInquisition!"
+      addview="portlets.Calendar"/>
+
+Remove a portlet definition using the 'remove' attribute so that it can
+no longer be added via @@manage-portlets. This does not remove
+any assignments: ::
+
+    <portlet remove="True" addview="portlets.Calendar"/>
+
+.. These docs are used in c.developermanual
+.. original content from http://www.sixfeetup.com/company/technologies/plone-content-management-new/quick-reference-cards/swag/swag-images-files/generic_setup.pdf
+
+
+"""
+
 from operator import attrgetter
 
 from zope.interface import implements
@@ -48,6 +77,7 @@ from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
+
 
 
 def dummyGetId():
