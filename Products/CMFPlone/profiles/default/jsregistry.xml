@@ -8,6 +8,7 @@
  <javascript id="plone_javascript_variables.js" />
  <javascript id="nodeutilities.js" />
  <javascript id="cookie_functions.js" />
+ <javascript id="modernizr.js" />
  <javascript id="livesearch.js" compression="full" />
  <javascript id="fullscreenmode.js" enabled="False" />
  <javascript id="select_all.js" />
