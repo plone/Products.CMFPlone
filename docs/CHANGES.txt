@@ -8,6 +8,11 @@ Changelog
 4.1rc4 - Unreleased
 -------------------
 
+- Fix: content status history form entries are not batched because there is
+  no batch navigation management on this page,
+  so that all selected elements from folder contents are displayed.
+  [thomasdesvenain]
+
 - Optimized: Huge optimization of calendar_formfield.js under ie8 and lower.
   Gain of 50% on js execution on a large page.
   [thomasdesvenain]
