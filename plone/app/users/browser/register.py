@@ -1,4 +1,3 @@
-from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from zope.interface import Interface
 from zope.component import getUtility, getAdapter
 from zope.schema import getFieldNamesInOrder
@@ -238,10 +237,12 @@ class BaseRegistrationForm(PageForm):
         # The user needs a list of instructions on what kind of password is required.
         # We'll reuse password errors as instructions e.g. "Must contain a letter and a number".
         # Assume PASPlugin errors are already translated
-        err = self.pasPasswordValidation('')
-        if err:
-            all_fields['password'].field.description = \
-            _(u'Enter your new password. ') + (u' '.join(err))
+        if 'password' in all_fields:
+            registration = getToolByName(self.context, 'portal_registration')
+            err_str = registration.testPasswordValidity('')
+            if err_str:
+                all_fields['password'].field.description = \
+                _(u'Enter your new password. ') + err_str
 
         # Pass the list of join form fields as a reference to the
         # Fields constructor, and return.
@@ -297,20 +298,7 @@ class BaseRegistrationForm(PageForm):
                 password = self.widgets['password'].getInputValue()
 
                 # Use PAS to test validity
-                pas_instance = self.context.acl_users
-                plugins = pas_instance._getOb('plugins')
-                validators = plugins.listPlugins(IValidationPlugin)
-                err = self.pasPasswordValidation(password)
-                err_str = None
-                if err is None:
-                    # No validators in use. Use default behaviour
-                    if password and len(password) < 5:
-                        err_str = _(u'Passwords must contain at least 5 letters.')
-                else:
-                    # We will assume that the PASPlugin returns a list of error
-                    # strings that have already been translated.
-                    # HACK. Need i18n way of joining sentances
-                    err_str = u' '.join(err)
+                err_str = registration.testPasswordValidity(password)
                 if err_str:
                     errors.append(WidgetInputError('password',
                                   u'label_password', err_str))
@@ -471,23 +459,6 @@ class BaseRegistrationForm(PageForm):
                     return
 
         return
-
-    def pasPasswordValidation(self, password):
-        """ @return None if no PAS password validators exist or a list of errors """
-        pas_instance = self.context.acl_users
-        plugins = pas_instance._getOb('plugins')
-        validators = plugins.listPlugins(IValidationPlugin)
-        err = []
-        for validator_id, validator in validators:
-            user = None
-            set_id = ''
-            set_info = {'password':password}
-            errors = validator.validateUserInfo( user, set_id, set_info )
-            err += [info['error'] for info in errors if info['id'] == 'password' ]
-        if not validators:
-            return None
-        else:
-            return err
 
 
 

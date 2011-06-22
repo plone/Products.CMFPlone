@@ -350,7 +350,23 @@ class PasswordAccountPanel(AccountPanelForm):
 
     """ Implementation of password reset form that uses formlib"""
 
-    form_fields = form.FormFields(IPasswordSchema)
+    @property
+    def form_fields(self):
+        all_fields =  form.Fields(IPasswordSchema)
+
+        # Change the password description based on PAS Plugin
+        # The user needs a list of instructions on what kind of password is required.
+        # We'll reuse password errors as instructions e.g. "Must contain a letter and a number".
+        # Assume PASPlugin errors are already translated
+        registration = getToolByName(self.context, 'portal_registration')
+        err_str = registration.testPasswordValidity('')
+        if err_str:
+            all_fields['new_password'].field.description = \
+            _(u'Enter your new password. ') + err_str
+
+        # Pass the list of join form fields as a reference to the
+        # Fields constructor, and return.
+        return form.Fields(*all_fields)
 
     label = _(u'listingheader_reset_password', default=u'Reset Password')
     description = _(u"Change Password")

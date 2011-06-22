@@ -19,6 +19,14 @@ try:
 except ImportError:
     from Products.Five.testbrowser import Browser
 
+from AccessControl.SecurityInfo import ClassSecurityInfo
+from OFS.Cache import Cacheable
+from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin, IPropertiesPlugin
+from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
+from Products.PluggableAuthService.utils import classImplements
+from Products.CMFCore.interfaces import ISiteRoot
+from zope.component import getUtility, getAdapter
+
 
 class TestCase(FunctionalTestCase):
     """base test case which adds amin user"""
@@ -40,7 +48,13 @@ class TestCase(FunctionalTestCase):
         obj = TestPasswordStrength('test')
         self.portal.acl_users._setObject(obj.getId(), obj)
         obj = self.portal.acl_users[obj.getId()]
-        obj.manage_activateInterfaces(['IValidationPlugin'])
+        obj.manage_activateInterfaces(['IValidationPlugin','IPropertiesPlugin'])
+
+        portal = getUtility(ISiteRoot)
+        pas_instance = portal.acl_users
+        plugins = pas_instance._getOb('plugins')
+        validators = plugins.listPlugins(IValidationPlugin)
+        assert validators
 
 
     def beforeTearDown(self):
@@ -49,10 +63,14 @@ class TestCase(FunctionalTestCase):
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(aq_base(self.portal._original_MailHost), provided=IMailHost)
 
-        try:
-            self.portal.acl_users.manage_delObjects('test')
-        except:
-            pass
+        portal = getUtility(ISiteRoot)
+        pas_instance = portal.acl_users
+        plugin = getattr(pas_instance,'test', None)
+        if plugin is not None:
+            plugins = pas_instance._getOb('plugins')
+            plugins.deactivatePlugin(IValidationPlugin, 'test')
+            #plugins.deactivatePlugin(IPropertiesPlugin, 'test')
+            pas_instance.manage_delObjects('test')
 
 
     def setMailHost(self):
@@ -65,11 +83,6 @@ class TestCase(FunctionalTestCase):
 
 # Dummy password validation PAS plugin
 
-from AccessControl.SecurityInfo import ClassSecurityInfo
-from OFS.Cache import Cacheable
-from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
-from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
-from Products.PluggableAuthService.utils import classImplements
 
 
 class TestPasswordStrength(BasePlugin, Cacheable):
@@ -85,14 +98,19 @@ class TestPasswordStrength(BasePlugin, Cacheable):
 
         errors = []
 
-        if set_info and set_info.get('password', None):
+        if set_info and set_info.get('password', None) is not None:
             password = set_info['password']
-            if password != 'parrot':
+            if password.count('dead') or password == '':
                 errors = [{'id':'password','error':u'Must not be dead'}]
             else:
                 errors = []
         return errors
 
+    def getPropertiesForUser(self, user):
+        return {'generated_password':'alive parrot'}
+
 
 classImplements(TestPasswordStrength,
                 IValidationPlugin)
+classImplements(TestPasswordStrength,
+                IPropertiesPlugin)
