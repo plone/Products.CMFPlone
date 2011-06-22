@@ -17,6 +17,7 @@ from Products.CMFCore.permissions import AddPortalMember
 
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
+from AccessControl.User import nobody
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 from Products.CMFDefault.utils import checkEmailAddress
@@ -24,9 +25,10 @@ from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFDefault.permissions import ManagePortal
 
-from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
+from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin, IPropertiesPlugin
 from Products.PluggableAuthService.interfaces.authservice \
         import IPluggableAuthService
+from Products.PluggableAuthService.PropertiedUser import PropertiedUser
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -158,12 +160,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         o If the password is valid, return None.
         o If not, return a string explaining why.
         """
-        if password == '':
-            return _(u'You must enter a password.')
-
         err = self.pasValidation('password', password)
         if err is None:
-            if password is None:
+            if not password:
+#                 return _(u'You must enter a password.')
                 return _(u'Minimum 5 characters.')
             elif len(password) < 5 and not _checkPermission(ManagePortal, self):
                 return _(u'Your password must contain at least 5 characters.')
@@ -184,9 +184,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         validators = pas_instance.plugins.listPlugins(IValidationPlugin)
         if not validators:
             return None
-        if password == None:
-            #special value for form description
-            password = ''
 
         err = []
         for validator_id, validator in validators:
@@ -199,24 +196,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         # strings that have already been translated.
         # HACK. Need i18n way of joining sentances
         return u' '.join(err)
-
-#    def generatePassword(user):
-#        """ @return password generated from pas plugins or portal_registration """
-#        portal = getUtility(ISiteRoot)
-#        pas_instance = portal.acl_users
-#        plugins = pas_instance.plugins.listPlugins(IPropertiesPlugin)
-#        if plugins:
-#        # We are looking for a plugin that will return a password
-#        # property which isn't the users current password
-#        for plugin_id, plugin in plugins:
-#            props = plugin.getPropertiesForUser( user )
-#            if 'password' in props:
-#                password = props['password']
-#
-#
-#
-#        return registration.generatePassword()
-
 
 
     security.declarePublic('testPropertiesValidity')
@@ -308,7 +287,24 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('generatePassword')
     def generatePassword(self):
         """Generates a password which is guaranteed to comply
-        with the password policy."""
+        with the password policy. Either PAS IPropertiesPlugin
+        which returns a 'generated_password' property,
+         or the default 5 char password"""
+
+        portal = getUtility(ISiteRoot)
+        pas_instance = portal.acl_users
+        plugins = pas_instance.plugins.listPlugins(IPropertiesPlugin)
+        user = PropertiedUser('')
+        for plugin_id, plugin in plugins:
+            props = plugin.getPropertiesForUser( user )
+            if hasattr(props,'getProperty'):
+                password = props.getProperty('generated_password',None)
+            else:
+                password = props.get('generated_password',None)
+            if password is not None:
+                return password
+
+
         return self.getPassword(6)
 
     security.declarePublic('generateResetCode')
