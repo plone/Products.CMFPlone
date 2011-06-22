@@ -21,7 +21,10 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.exceptions import EmailAddressInvalid
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFDefault.permissions import ManagePortal
 
+from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin
 from Products.PluggableAuthService.interfaces.authservice \
         import IPluggableAuthService
 
@@ -143,6 +146,78 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             return 0
         else:
             return 1
+
+    #
+    #   'portal_registration' interface
+    #
+    security.declarePublic( 'testPasswordValidity' )
+    def testPasswordValidity(self, password, confirm=None):
+
+        """ Verify that the password satisfies the portal's requirements.
+
+        o If the password is valid, return None.
+        o If not, return a string explaining why.
+        """
+        if password == '':
+            return _(u'You must enter a password.')
+
+        err = self.pasValidation('password', password)
+        if err is None:
+            if password is None:
+                return _(u'Minimum 5 characters.')
+            elif len(password) < 5 and not _checkPermission(ManagePortal, self):
+                return _(u'Your password must contain at least 5 characters.')
+        elif err != '':
+            return err
+
+        if confirm is not None and confirm != password:
+            return _(u'Your password and confirmation did not match. '
+                     u'Please try again.')
+
+        return None
+
+
+    def pasValidation(self, property, password):
+        """ @return None if no PAS password validators exist or a list of errors """
+        portal = getUtility(ISiteRoot)
+        pas_instance = portal.acl_users
+        validators = pas_instance.plugins.listPlugins(IValidationPlugin)
+        if not validators:
+            return None
+        if password == None:
+            #special value for form description
+            password = ''
+
+        err = []
+        for validator_id, validator in validators:
+            user = None
+            set_id = ''
+            set_info = {property:password}
+            errors = validator.validateUserInfo( user, set_id, set_info )
+            err += [info['error'] for info in errors if info['id'] == property ]
+        # We will assume that the PASPlugin returns a list of error
+        # strings that have already been translated.
+        # HACK. Need i18n way of joining sentances
+        return u' '.join(err)
+
+#    def generatePassword(user):
+#        """ @return password generated from pas plugins or portal_registration """
+#        portal = getUtility(ISiteRoot)
+#        pas_instance = portal.acl_users
+#        plugins = pas_instance.plugins.listPlugins(IPropertiesPlugin)
+#        if plugins:
+#        # We are looking for a plugin that will return a password
+#        # property which isn't the users current password
+#        for plugin_id, plugin in plugins:
+#            props = plugin.getPropertiesForUser( user )
+#            if 'password' in props:
+#                password = props['password']
+#
+#
+#
+#        return registration.generatePassword()
+
+
 
     security.declarePublic('testPropertiesValidity')
     def testPropertiesValidity(self, props, member=None):
