@@ -218,10 +218,10 @@ Testing the flexible user registration
     >>> browser.getControl(name='form.mail_me').value
     True
     >>> browser.getControl('Register').click()
-    >>> '@@usergroup-userprefs' in browser.url
-    True
-    >>> browser.contents
-    '...User added...user4...'
+    >>> print browser.url
+    http://...@@usergroup-userprefs...
+    >>> print browser.contents
+    <...User added...user4...
 
     Check that at least this one error does not show up:
     >>> "Failed to create your account" in browser.contents

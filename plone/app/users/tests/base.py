@@ -106,7 +106,7 @@ class TestPasswordStrength(BasePlugin, Cacheable):
                 errors = []
         return errors
 
-    def getPropertiesForUser(self, user):
+    def getPropertiesForUser(self, user, request=None):
         return {'generated_password':'alive parrot'}
 
 

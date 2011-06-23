@@ -237,7 +237,7 @@ class BaseRegistrationForm(PageForm):
         # The user needs a list of instructions on what kind of password is required.
         # We'll reuse password errors as instructions e.g. "Must contain a letter and a number".
         # Assume PASPlugin errors are already translated
-        if 'password' in all_fields:
+        if all_fields.get('password',None):
             registration = getToolByName(self.context, 'portal_registration')
             err_str = registration.testPasswordValidity('')
             if err_str:
@@ -291,18 +291,18 @@ class BaseRegistrationForm(PageForm):
                     self.widgets['password'].error = err_str
                     self.widgets['password_ctl'].error = err_str
 
-        # Password field should have a minimum length of 5
+        # Password field checked against RegistrationTool
         if 'password' in form_field_names:
             # Skip this check if password fields already have an error
             if not 'password' in error_keys:
                 password = self.widgets['password'].getInputValue()
-
-                # Use PAS to test validity
-                err_str = registration.testPasswordValidity(password)
-                if err_str:
-                    errors.append(WidgetInputError('password',
-                                  u'label_password', err_str))
-                    self.widgets['password'].error = err_str
+                if password:
+                    # Use PAS to test validity
+                    err_str = registration.testPasswordValidity(password)
+                    if err_str:
+                        errors.append(WidgetInputError('password',
+                                      u'label_password', err_str))
+                        self.widgets['password'].error = err_str
 
 
         username = ''
