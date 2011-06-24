@@ -8,6 +8,12 @@ Changelog
 4.1rc4 - Unreleased
 -------------------
 
+- Use ``transaction.savepoint`` instead of ``transaction.begin`` in
+  ``isLinked``; 
+  closes #7784;
+  does not reopen #6666 probably because we use fixed version of ZEO
+  [gotcha]
+
 - Fix: content status history form entries are not batched because there is
   no batch navigation management on this page,
   so that all selected elements from folder contents are displayed.
