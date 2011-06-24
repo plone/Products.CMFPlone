@@ -1,0 +1,111 @@
+Customizing Plone User Forms
+============================
+
+.. used in collective.developermanual
+
+#TODO Need to document other ways to extend plone.app.users
+
+
+Custom Password Validation Plugins
+----------------------------------
+
+In some organisations it's important to ensure a greater set of constraints on Plone
+passwords other than being >=5 chars. This is possible to implement by using the
+PluggableAuthenticationService which is included in Plone. For instance, let's say
+you have the following method you want to use to validate passwords
+
+  >>> def passwordvalidate(user, password):
+  >>>   if password.count('dead') or password == '':
+  >>>       return u'Must not be dead'
+
+This function will get used to as follows
+ - If no error is returned then password is accepted
+ - If the password is '' then any errors produced will be used as hints
+   as to what kind of password is expected and will be added to the end of the
+   password field description when registering or changing a password.
+ - If the password is invalid in any other way return a translated unicode
+   string which will be combined with any other errors and displayed back to
+   the user in the password field error message.
+
+
+In order to use this policy effectively we'll also need a password generator which
+will ensure if users don't select their own password that a strong password is still
+generated.
+
+  >>> def passwordgenerate():
+  >>>   return 'alive parrot'
+
+Now we need to make these into a PAS Plugin
+
+  >>> from AccessControl.SecurityInfo import ClassSecurityInfo
+  >>> from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin, IPropertiesPlugin
+  >>> from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
+  >>> from Products.PluggableAuthService.utils import classImplements
+  >>>
+  >>> class MyPasswordPolicy(BasePlugin):
+  >>>  meta_type = 'My Password Policy Plugin'
+  >>>  security = ClassSecurityInfo()
+  >>>
+  >>>  security.declarePrivate('validateUserInfo')
+  >>>  def validateUserInfo(self, user, set_id, set_info ):
+  >>>
+  >>>      errors = []
+  >>>      if set_info and set_info.get('password', None) is not None:
+  >>>          password = set_info['password']
+  >>>          error = passwordvalidate(user, password)
+  >>>          if error:
+  >>>              errors = [{'id':'password','error':error}]
+  >>>          else:
+  >>>              errors = []
+  >>>      return errors
+  >>>
+  >>>  security.declarePrivate('getPropertiesForUser')
+  >>>  def getPropertiesForUser(self, user, request=None):
+  >>>      return {'generated_password': passwordgenerate()}
+  >>>
+  
+We will need to register this class with the PAS system.
+
+  >>>  classImplements(MyPasswordPolicy,
+  >>>              IValidationPlugin)
+  >>>  classImplements(MyPasswordPolicy,
+  >>>              IPropertiesPlugin)
+
+And then add the plugin into acl_users and activate it
+
+  >>>  obj = MyPasswordPolicy('pw_pol')
+  >>>  self.portal.acl_users._setObject(obj.getId(), obj)
+  >>>  obj = self.portal.acl_users[obj.getId()]
+  >>>  obj.manage_activateInterfaces(['IValidationPlugin','IPropertiesPlugin'])
+
+Now our password policy is in force.
+
+    >>> browser.open('http://nohost/plone/@@new-user')
+
+Check that we are given instructions on what is a valid password
+
+   >>> print browser.contents
+    <...
+    ...Enter your new password. Must not be dead...
+
+
+We'll enter an invalid password
+
+    Fill out the form.
+    >>> browser.getControl('User Name').value = 'user5'
+    >>> browser.getControl('E-mail').value = 'user5@example.com'
+    >>> browser.getControl('Password').value = 'dead parrot'
+    >>> browser.getControl('Confirm password').value = 'dead parrot'
+    >>> browser.getControl('Register').click()
+
+    >>> print browser.contents
+    <...<div class="fieldErrorBox">Must not be dead</div>...
+    >>> print browser.url
+    http://...@@new-user...
+
+
+Code in Products.CMFPlone.RegistrationTool
+will access the PAS api to validate and generate passwords for users. Code in
+plone.app.users.browser.register and plone.app.users.browser.personalpreferences
+will use RegistrationTool to validate the password, generate a new password and also
+produce descriptions of what kind of password is expected.
