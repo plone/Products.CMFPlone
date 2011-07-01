@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.7 - Unreleased
+2.1.7 - 2011-06-30
 ------------------
 
 - Footer viewlet have all viewlet base API (site_url, navigation_root_url, etc).
