@@ -260,20 +260,9 @@
         />
 
     <!-- Manage portlets Fallback link -->
-
-    <!-- First for all ATContentTypes -->
     <browser:viewlet
         name="plone.manage_portlets_fallback"
-        for="Products.ATContentTypes.interface.IATContentType"
-        view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IBelowContent"
-        class=".common.ManagePortletsFallbackViewlet"
-        permission="zope2.View"
-        />
-    <!-- We need this fallback link on site's root as well -->
-    <browser:viewlet
-        name="plone.manage_portlets_fallback"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        for="plone.portlets.interfaces.ILocalPortletAssignable"
         view="plone.app.layout.globals.interfaces.IViewView"
         manager=".interfaces.IBelowContent"
         class=".common.ManagePortletsFallbackViewlet"

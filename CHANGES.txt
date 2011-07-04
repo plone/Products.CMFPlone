@@ -4,6 +4,11 @@ Changelog
 2.1.8 - unreleased
 ------------------
 
+- Show 'Manage portlets' fallback viewlet for all ILocalPortletAssignables, not
+  just ATContentTypes items. This fixes
+  http://code.google.com/p/dexterity/issues/detail?id=183
+  [davisagli]
+
 2.1.7 - 2011-06-30
 ------------------
 
