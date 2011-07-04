@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.8 - unreleased
+2.1.8 - 2011-07-04
 ------------------
 
 - Show 'Manage portlets' fallback viewlet for all ILocalPortletAssignables, not
