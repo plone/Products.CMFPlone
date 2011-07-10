@@ -90,3 +90,23 @@ This change should modify the redirect_links value in site_properties as well:
     >>> ptool.site_properties.redirect_links
     False
 
+
+No default workflow
+-------------------
+
+This references http://dev.plone.org/plone/ticket/11901
+
+Open the Types control panel and set the default workflow to None:
+    >>> self.browser.open(types_configlet_url)
+    >>> self.browser.getControl(name='new_workflow').value = ['[none]']
+    >>> self.browser.getControl(name="form.button.SelectWorkflow").click()
+    >>> self.browser.getControl(name="form.button.Save").click()
+
+Now choose a standard type and submit:
+    >>> self.browser.getControl(name='type_id').value = ['Link']
+    >>> self.browser.getControl(name="form.button.SelectContentType").click()
+
+    >>> self.browser.contents
+    '...Globally addable...
+    ...Allow comments...
+    ...Visible in searches...'
