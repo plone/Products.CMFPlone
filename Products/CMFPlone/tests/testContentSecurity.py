@@ -29,7 +29,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
     def testCreateOtherMemberContentFails(self):
         self.login('user1')
         folder = self.membership.getHomeFolder('user2')
-        self.assertRaises(Unauthorized, folder.invokeFactory, 'Document', 'new')
+        self.assertRaises(ValueError, folder.invokeFactory, 'Document', 'new')
 
     def testCreateRootContentFails(self):
         self.login('user1')
@@ -76,8 +76,8 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         folder.subfolder.unrestrictedTraverse('@@sharing').update_inherit(False)
 
         self.login('user2')
-        # This should now raise Unauthorized
-        self.assertRaises(Unauthorized, folder.subfolder.invokeFactory, 'Document', 'new')
+        # This should now raise ValueError
+        self.assertRaises(ValueError, folder.subfolder.invokeFactory, 'Document', 'new')
 
     def testCreateSucceedsWithLocalRoleBlockedInParentButAssingedInSubFolder(self):
         # Make sure that blocking a acquisition in a folder does not interfere
