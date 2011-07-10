@@ -4,12 +4,18 @@ Changelog
 2.1.2 - Unreleased
 ------------------
 
+- On the Type-panel, fix the case when no workflow is set as default workflow.
+  Fixes http://dev.plone.org/plone/ticket/11901
+  [WouterVH]
+
+
 2.1.1 - 2011-05-13
 ------------------
 
 - Many users/groups setting should provide warning to users/groups config
   Fixes http://dev.plone.org/plone/ticket/11753
   [aclark]
+
 
 2.1 - 2011-04-03
 ----------------
