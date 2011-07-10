@@ -1,4 +1,4 @@
-from Products.Five.testbrowser import Browser
+from Testing.testbrowser import Browser
 from Products.PloneTestCase import ptc
 
 ptc.setupPloneSite(id=ptc.portal_name)
