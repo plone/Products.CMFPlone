@@ -3,7 +3,7 @@ from plone.memoize.instance import memoize
 
 from zope.component import getUtility
 
-from zope.event import notify 
+from zope.event import notify
 
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
@@ -14,7 +14,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from plone.app.controlpanel.events import ConfigurationChangedEvent 
+from plone.app.controlpanel.events import ConfigurationChangedEvent
 
 from plone.app.controlpanel.form import ControlPanelView
 
@@ -161,9 +161,9 @@ class TypesControlPanel(ControlPanelView):
                     remap_workflow(context, type_ids=type_ids, chain=chain,
                                    state_map=state_map)
 
-                    data = {'workflow': new_wf} 
-                    notify(ConfigurationChangedEvent(self, data)) 
-                
+                    data = {'workflow': new_wf}
+                    notify(ConfigurationChangedEvent(self, data))
+
                 else:
                     portal_workflow = getToolByName(context, 'portal_workflow')
                     if self.new_workflow()=='(Default)':
@@ -217,7 +217,6 @@ type_id=%s' % (context.absolute_url() , type_id))
     def is_addable(self):
         return self.fti.getProperty('global_allow', False)
 
-
     def is_discussion_allowed(self):
         return self.fti.getProperty('allow_discussion', False)
 
@@ -247,34 +246,36 @@ type_id=%s' % (context.absolute_url() , type_id))
     def current_workflow(self):
         context = aq_inner(self.context)
         portal_workflow = getToolByName(context, 'portal_workflow')
-        try:
-            nondefault = [info[0] for info in portal_workflow.listChainOverrides()]
-            if self.type_id in nondefault:
-                wf_id = portal_workflow.getChainForPortalType(self.type_id)[0]
+        default_workflow = self.default_workflow(False)
+        nondefault = [info[0] for info in portal_workflow.listChainOverrides()]
+        chain = portal_workflow.getChainForPortalType(self.type_id)
+        empty_workflow_dict = dict(id='[none]',
+                                   title=_(u"label_no_workflow"),
+                                   description= [_(u"description_no_workflow",
+                                   default=u"This type has no workflow. The visibilty "
+                                       u"of items of this type is determined by "
+                                       u"the folder they are in.")])
+
+        if self.type_id in nondefault:
+            if chain:
+                wf_id = chain[0]
+                wf = getattr(portal_workflow, wf_id)
+                title = translate(wf.title, domain='plone', context=self.request)
+                return dict(id=wf.id, title=title, description=format_description(wf.description, self.request))
             else:
-                default_workflow = self.default_workflow(False)
-                default_title = translate(default_workflow.title,
-                                          domain='plone',
-                                          context=self.request)
-                return dict(id='(Default)',
-                        title=_(u"label_default_workflow_title",
-                                default=u"Default workflow (${title})",
-                                mapping=dict(title=default_title)),
-                        description=format_description(default_workflow.description, self.request))
-        except IndexError:
-            return dict(id='[none]',
-                    title=_(u"label_no_workflow",
-                        default=u"No workflow"),
-                    description=[
-                        _(u"description_no_workflow",
-                        default=u"This type has no workflow. The visibilty of "
-                                u"items of this type is determined by the "
-                                u"folder they are in.")])
-        wf = getattr(portal_workflow, wf_id)
-        title = translate(wf.title,
-                          domain='plone',
-                          context=self.request)
-        return dict(id=wf.id, title=title, description=format_description(wf.description, self.request))
+                return empty_workflow_dict
+
+        if default_workflow == '[none]':
+            return empty_workflow_dict
+
+        default_title = translate(default_workflow.title, domain='plone',
+                                  context=self.request)
+        return dict(id='(Default)',
+                    title=_(u"label_default_workflow_title",
+                        default=u"Default workflow (${title})",
+                        mapping=dict(title=default_title)),
+                    description=format_description(default_workflow.description, self.request))
+
 
     def available_workflows(self):
         vocab_factory = getUtility(IVocabularyFactory,
@@ -289,7 +290,9 @@ type_id=%s' % (context.absolute_url() , type_id))
         def _key(v):
             return v['title']
         workflows.sort(key=_key)
-        if self.type_id:
+
+        default_workflow = self.default_workflow(False)
+        if self.type_id and default_workflow != '[none]':
             # Only offer a default workflow option on a real type
             default_workflow = self.default_workflow(False)
             default_title = translate(default_workflow.title,
@@ -322,7 +325,11 @@ type_id=%s' % (context.absolute_url() , type_id))
     @memoize
     def default_workflow(self, id_only=True):
         portal_workflow = getToolByName(self.context, 'portal_workflow')
-        id = portal_workflow.getDefaultChain()[0]
+        default_chain = portal_workflow.getDefaultChain()
+        if not default_chain:
+            # There is no default workflow
+            return '[none]'
+        id = default_chain[0]
         if id_only:
             return id
         else:
