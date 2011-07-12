@@ -5,18 +5,19 @@
 Changelog
 =========
 
-4.1rc4 - Unreleased
--------------------
+4.1 - 2011-07-12
+----------------
 
 - Make the ``plone-final`` import step dependend on ``rolemap`` to
   prevent some hard-to-debug add-on product related issues.
-  Closes #11997;
+  Closes http://dev.plone.org/plone/ticket/11997;
   [MatthewWilkes]
 
 - Use ``transaction.savepoint`` instead of ``transaction.begin`` in
   ``isLinked``; 
-  closes #7784;
-  does not reopen #6666 probably because we use fixed version of ZEO
+  closes http://dev.plone.org/plone/ticket/7784; does not reopen
+  http://dev.plone.org/plone/ticket/6666 probably because we use fixed version
+  of ZEO
   [gotcha]
 
 - Fix: content status history form entries are not batched because there is
