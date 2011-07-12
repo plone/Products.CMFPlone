@@ -8,6 +8,11 @@ Changelog
 4.1rc4 - Unreleased
 -------------------
 
+- Make the ``plone-final`` import step dependend on ``rolemap`` to
+  prevent some hard-to-debug add-on product related issues.
+  Closes #11997;
+  [MatthewWilkes]
+
 - Use ``transaction.savepoint`` instead of ``transaction.begin`` in
   ``isLinked``; 
   closes #7784;
