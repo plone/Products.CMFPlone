@@ -1,8 +1,22 @@
 Changelog
 =========
 
-2.1.9 - unreleased
-------------------
+2.2 - Unreleased
+----------------
+
+- Set the search form to submit to @@search in order to use the new
+  search results page.
+  [elvix] 
+
+- Updated the BaseIcon to return its html tag when called.
+  [elvix]
+
+- Updated search link in <head> to link to @@search - updated search results
+  view.
+  [spliter]
+
+- Updated searchbox.pt to be linked to updated search results view.
+  [spliter]
 
 
 2.1.8 - 2011-07-04

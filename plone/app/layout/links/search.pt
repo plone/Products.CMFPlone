@@ -4,5 +4,5 @@
           href=""
           title="Search this site"
           i18n:attributes="title title_search_this_site"
-          tal:attributes="href string:${navigation_root_url}/search_form" />
+          tal:attributes="href string:${navigation_root_url}/@@search" />
 </tal:search>
