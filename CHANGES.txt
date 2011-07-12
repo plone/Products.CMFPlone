@@ -1,12 +1,13 @@
 Changelog
 =========
 
-2.1.6 - Unreleased
-------------------
+2.2 - Unreleased
+----------------
 
-- Nothing changed yet.
-
-
+- Updated 'Advanced Search' link and form's action of the search portlet to
+  link to updated search results view at @@search.
+  [spliter]
+  
 2.1.5 - 2011-06-19
 ------------------
 

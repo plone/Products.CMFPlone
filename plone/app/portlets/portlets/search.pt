@@ -8,7 +8,7 @@
   <dt class="portletHeader">
       <span class="portletTopLeft"></span>
       <a class="tile"
-         tal:attributes="href view/search_form"
+         tal:attributes="href view/search_action"
          i18n:translate="box_search">Search</a>
       <span class="portletTopRight"></span>
   </dt>
@@ -43,7 +43,7 @@
     <dd class="portletFooter">
         <a href="#"
          class="tile"
-         tal:attributes="href view/search_form"
+         tal:attributes="href view/search_action"
          i18n:translate="label_advanced_search">
         Advanced Search&hellip;
         </a>

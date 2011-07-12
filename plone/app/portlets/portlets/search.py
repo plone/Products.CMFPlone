@@ -47,11 +47,8 @@ class Renderer(base.Renderer):
     def enable_livesearch(self):
         return self.data.enableLivesearch
 
-    def search_form(self):
-        return '%s/search_form' % self.navigation_root_url
-
     def search_action(self):
-        return '%s/search' % self.navigation_root_url
+        return '%s/@@search' % self.navigation_root_url
 
 
 class AddForm(base.AddForm):
