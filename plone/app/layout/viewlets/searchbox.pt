@@ -5,8 +5,8 @@
 
     <form name="searchform" id="searchGadget_form" 
           action="@@search"
-          tal:attributes="action string:${navigation_root_url}/@@search">
-          id string:${search_input_id}_form">
+          tal:attributes="action string:${navigation_root_url}/@@search;
+                          id string:${search_input_id}_form;">
 
         <div class="LSBox">
         <label class="hiddenStructure"
