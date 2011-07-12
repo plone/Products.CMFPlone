@@ -185,14 +185,6 @@
       template="usergroups_groupdetails.pt"
       />
 
-  <browser:page
-      name="searchform-options"
-      for="*"
-      class=".search.SearchFormOptions"
-      permission="zope.Public"
-      allowed_interface=".search.ISearchFormOptions"
-      />
-
   <view
       type="zope.publisher.interfaces.browser.IBrowserRequest"
       for="zope.schema.interfaces.ITuple
