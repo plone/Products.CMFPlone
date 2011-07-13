@@ -24,13 +24,6 @@
         />
 
     <browser:viewlet
-        name="plone.links.navigation"
-        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class=".viewlets.NavigationViewlet"
-        permission="zope2.View" 
-        />
-
-    <browser:viewlet
         name="plone.links.RSS"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
         class=".viewlets.RSSViewlet"

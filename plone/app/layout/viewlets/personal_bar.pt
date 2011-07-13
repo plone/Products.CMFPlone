@@ -29,9 +29,9 @@
   </tal:block>
 </dl>
 
-<dl class="actionMenu deactivated" id="portal-personaltools"
+<ul class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="python:view.user_actions and view.anonymous">
-  <dt id="anon-personalbar">
+  <li id="anon-personalbar">
     <tal:actions repeat="action view/user_actions">
         <a href=""
            tal:attributes="href action/url;
@@ -41,7 +41,7 @@
             action title
         </a>
     </tal:actions>
-  </dt>
-</dl>
+  </li>
+</ul>
 
 </div>

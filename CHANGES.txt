@@ -4,6 +4,13 @@ Changelog
 2.2 - Unreleased
 ----------------
 
+- Fixed validation of the personal bar for anonymous user.
+  [spliter]
+
+- Replaced obsolete in HTML5 <acronym> element with <abbr>.
+  References https://dev.plone.org/plone/ticket/11300.
+  [spliter]
+
 - Set the search form to submit to @@search in order to use the new
   search results page.
   [elvix] 
