@@ -8,6 +8,17 @@ Changelog
 4.2a1 - Unreleased
 ------------------
 
+- Deprecated IEFixes.css after we have introduced Modernizr and removed it's
+  GS registration. References http://dev.plone.org/plone/ticket/11300
+  [spliter]
+
+- Added Modernizr 2 library. 
+  References http://dev.plone.org/plone/ticket/11300
+  [spliter]
+
+- Switch to HTML5 doctype. References http://dev.plone.org/plone/ticket/11300
+  [spliter]
+
 - Include plone.app.collection and related packages.
   Refs http://dev.plone.org/plone/ticket/10902
   [esteele]
