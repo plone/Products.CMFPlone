@@ -9,6 +9,7 @@
   <include package="Products.CMFCore" />
   <include package="Products.GenericSetup" />
   <include package="plone.app.blob" />
+  <include package="plone.app.collection" />
   <include package="plone.app.contentmenu" />
   <include package="plone.app.content" />
   <include package="plone.app.contentrules" />

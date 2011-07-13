@@ -7,3 +7,7 @@ Changelog
 
 4.2a1 - Unreleased
 ------------------
+
+- Include plone.app.collection and related packages.
+  Refs http://dev.plone.org/plone/ticket/10902
+  [esteele]
