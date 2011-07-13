@@ -73,7 +73,7 @@ setup(name='Products.CMFPlone',
           'five.customerize',
           'kss.core',
           'plone.app.blob',
-          'plone.app.collection'
+          'plone.app.collection',
           'plone.app.contentmenu >= 1.1.6dev-r22380',
           'plone.app.content',
           'plone.app.contentlisting',
