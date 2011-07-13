@@ -4,7 +4,10 @@ Changelog
 2.2 - Unreleased
 ----------------
 
-- Merge PLIP 9352. 
+- Merge PLIP 11774. Refs http://dev.plone.org/plone/ticket/11774
+  [esteele]
+  
+- Merge PLIP 9352. Refs http://dev.plone.org/plone/ticket/11774
   [esteele]
 
 2.1.2 - Unreleased

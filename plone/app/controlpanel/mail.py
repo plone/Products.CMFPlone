@@ -1,3 +1,6 @@
+import smtplib
+import socket
+
 from zope.interface import Interface
 from zope.component import adapts
 from zope.component import getUtility
@@ -19,6 +22,8 @@ from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_hasattr
+from Products.MailHost.MailHost import MailHostError
+from Products.statusmessages.interfaces import IStatusMessage
 
 from form import ControlPanelForm
 
@@ -73,8 +78,9 @@ class IMailSchema(Interface):
                                               "this address as the e-mail "
                                               "return address. It is also "
                                               "used as the destination "
-                                              "address on the site-wide "
-                                              "contact form."),
+                                              "address for the site-wide "
+                                              "contact form and the 'Send test "
+                                              "e-mail' feature."),
                                default=None,
                                required=True)
 
@@ -152,3 +158,54 @@ class MailControlPanel(ControlPanelForm):
     label = _("Mail settings")
     description = _("Mail settings for this site.")
     form_name = _("Mail settings")
+
+    actions = ControlPanelForm.actions.copy()
+
+    # 'Send test e-mail' form button
+    @form.action(_(u'label_test', default=u'Save and send test e-mail'), name=u'test')
+    def handle_test_action(self, action, data):
+        # Save data first
+        self.handle_edit_action.success(data)
+        mailhost = getToolByName(self.context, 'MailHost')
+
+        smtphost = mailhost.smtp_host
+        smtpport = mailhost.smtp_port
+
+        # XXX Will self.context always be the Plone site?
+        fromaddr = self.context.getProperty('email_from_address')
+        fromname = self.context.getProperty('email_from_name')
+
+        message = ("Hi,\n\nThis is a test message sent from the Plone 'Mail settings' control panel. "
+                   "Your receipt of this message (at the address specified in the "
+                   "Site 'From' address field) "
+                   "indicates that your e-mail server is working!\n\n"
+                   "Have a nice day.\n\n"
+                   "Love,\n\nPlone")
+        email_charset = self.context.getProperty('email_charset')
+        email_recipient, source = fromaddr, fromaddr
+        subject = "Test e-mail from Plone"
+
+        # Make the timeout incredibly short. This is enough time for most mail servers, wherever
+        # they may be in the world, to respond to the connection request. Make sure we save
+        # the current value and restore it afterward.
+        timeout = socket.getdefaulttimeout()
+        try:
+            socket.setdefaulttimeout(3)
+            try:
+                mailhost.send(message, email_recipient, source,
+                              subject=subject, charset=email_charset,
+                              immediate=True)
+
+            except (socket.error, MailHostError, smtplib.SMTPException):
+                # Connection refused or timeout.
+                IStatusMessage(self.request).addStatusMessage(
+                    _("Unable to send test e-mail, check your mail settings!"),
+                    type="error")
+            else:
+                # Report success
+                IStatusMessage(self.request).addStatusMessage(
+                    _("Success! Check your mailbox for the test message."),
+                    type="info")
+        finally:
+            # Restore timeout to default value
+            socket.setdefaulttimeout(timeout)
