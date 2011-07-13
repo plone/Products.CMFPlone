@@ -30,7 +30,7 @@ Now we test the members' search form
     >>> portal_url = self.portal.absolute_url()
     >>> logout_url = portal_url + '/logout'
     >>> login_url  = portal_url + '/login'
-    >>> search_url = portal_url + '/search_form'
+    >>> search_url = portal_url + '/@@search'
     >>> self.portal.error_log._ignored_exceptions = ()
 
 Now we try to get a list of authors as Anonymous User
