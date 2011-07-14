@@ -27,6 +27,8 @@ if type_name is None:
 types_tool = getToolByName(context, 'portal_types')
 
 fti = types_tool.getTypeInfo(type_name)
+if fti is None:
+    raise KeyError("Type name not found: %s." % type_name)
 
 if not fti.queryMethodID('edit'):
     state.setStatus('success_no_edit')
