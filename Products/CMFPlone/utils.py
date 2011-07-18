@@ -571,9 +571,15 @@ def _getSecurity(klass, create=True):
 
 def isLinked(obj):
     """ check if the given content object is linked from another one
-        WARNING: don't use this function in your code!!
-            it is a helper for the link integrity code and will potentially
-            abort the ongoing transaction, giving you unexpected results...
+
+        WARNING: this function can be time consuming !!
+
+            It deletes the object in a subtransaction that is rollbacked.
+            In other words, the object is kept safe.
+
+            Nevertheless, this implies that it also deletes recursively
+            all object's subobjects and references, which can be very
+            expensive.
     """
     # first check to see if link integrity handling has been enabled at all
     # and if so, if the removal of the object was already confirmed, i.e.
@@ -595,16 +601,14 @@ def isLinked(obj):
     linked = False
     parent = obj.aq_inner.aq_parent
     try:
+        savepoint = transaction.savepoint()
         parent.manage_delObjects(obj.getId())
     except OFS.ObjectManager.BeforeDeleteException:
         linked = True
     except: # ignore other exceptions, not useful to us at this point
         pass
-    # since this function is called first thing in `delete_confirmation.cpy`
-    # and therefore nothing can possibly have changed yet at this point, we
-    # might as well "begin" a new transaction instead of using a savepoint,
-    # which creates a funny exception when using zeo (see #6666)
-    transaction.begin()
+    finally:
+        savepoint.rollback()
     return linked
 
 

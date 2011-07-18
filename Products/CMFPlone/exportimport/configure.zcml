@@ -98,6 +98,7 @@
       description="Final Plone configuration.">
    <depends name="kss_mimetype" />
    <depends name="portlets" />
+   <depends name="rolemap" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
