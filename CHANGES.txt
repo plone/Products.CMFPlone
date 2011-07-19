@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2 - Unreleased
+2.2 - 2011-07-19
 ----------------
 
 - Merge PLIP 11774. Refs http://dev.plone.org/plone/ticket/11774
