@@ -128,7 +128,7 @@
   </index>
   <index name="sortable_title"
      description="An item's title transformed for sorting" enabled="True"
-     friendlyName="Title" i18n:attributes="description; friendlyName" />
+     friendlyName="Sortable Title" i18n:attributes="description; friendlyName" />
   <index name="start" description="The start date and time of an event"
      enabled="True" friendlyName="Start Date"
      i18n:attributes="description; friendlyName">
