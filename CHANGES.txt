@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2 - Unreleased
+2.2 - 2011-07-19
 ----------------
 
 - Updated 'Advanced Search' link and form's action of the search portlet to
