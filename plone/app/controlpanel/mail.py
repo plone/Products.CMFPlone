@@ -162,7 +162,7 @@ class MailControlPanel(ControlPanelForm):
     actions = ControlPanelForm.actions.copy()
 
     # 'Send test e-mail' form button
-    @form.action(_(u'label_test', default=u'Save and send test e-mail'), name=u'test')
+    @form.action(_(u'label_smtp_test', default=u'Save and send test e-mail'), name=u'test')
     def handle_test_action(self, action, data):
         # Save data first
         self.handle_edit_action.success(data)
