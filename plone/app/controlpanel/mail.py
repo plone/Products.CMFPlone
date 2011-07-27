@@ -189,29 +189,29 @@ class MailControlPanel(ControlPanelForm):
         email_recipient, source = fromaddr, fromaddr
         subject = "Test e-mail from Plone"
 
-        # Make the timeout incredibly short. This is enough time for most mail servers, wherever
-        # they may be in the world, to respond to the connection request. Make sure we save
-        # the current value and restore it afterward.
+        # Make the timeout incredibly short. This is enough time for most mail
+        # servers, wherever they may be in the world, to respond to the
+        # connection request. Make sure we save the current value
+        # and restore it afterward.
         timeout = socket.getdefaulttimeout()
         try:
             socket.setdefaulttimeout(3)
             try:
                 mailhost.send(message, email_recipient, source,
-                              subject=subject, charset=email_charset,
+                              subject=subject,
+                              charset=email_charset,
                               immediate=True)
 
             except (socket.error, MailHostError, smtplib.SMTPException):
                 # Connection refused or timeout.
-                IStatusMessage(self.request).addStatusMessage(
-                    _('Unable to send test e-mail, check your mail settings!'),
-                    type="error")
-                value= sys.exc_info()[1]
-                log.warn('Unable to send test e-mail: %s', value)
+                log.exception('Unable to send test e-mail.')
+                value = sys.exc_info()[1]
+                msg = _(u'Unable to send test e-mail %s.' % unicode(value))
+                IStatusMessage(self.request).addStatusMessage(msg, type='error')
             else:
-                # Report success
                 IStatusMessage(self.request).addStatusMessage(
-                    _("Success! Check your mailbox for the test message."),
-                    type="info")
+                    _(u'Success! Check your mailbox for the test message.'),
+                    type='info')
         finally:
             # Restore timeout to default value
             socket.setdefaulttimeout(timeout)
