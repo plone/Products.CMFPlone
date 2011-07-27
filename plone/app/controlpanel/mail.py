@@ -206,7 +206,7 @@ class MailControlPanel(ControlPanelForm):
                 # Connection refused or timeout.
                 log.exception('Unable to send test e-mail.')
                 value = sys.exc_info()[1]
-                msg = _(u'Unable to send test e-mail %s.' % unicode(value))
+                msg = _(u'Unable to send test e-mail ${error}.', mapping={'error': unicode(value)})
                 IStatusMessage(self.request).addStatusMessage(msg, type='error')
             else:
                 IStatusMessage(self.request).addStatusMessage(
