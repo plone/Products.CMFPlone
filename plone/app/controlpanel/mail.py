@@ -1,5 +1,7 @@
+from logging import getLogger
 import smtplib
 import socket
+import sys
 
 from zope.interface import Interface
 from zope.component import adapts
@@ -26,6 +28,8 @@ from Products.MailHost.MailHost import MailHostError
 from Products.statusmessages.interfaces import IStatusMessage
 
 from form import ControlPanelForm
+
+log = getLogger('Plone')
 
 class IMailSchema(Interface):
     """Combined schema for the adapter lookup.
@@ -199,8 +203,10 @@ class MailControlPanel(ControlPanelForm):
             except (socket.error, MailHostError, smtplib.SMTPException):
                 # Connection refused or timeout.
                 IStatusMessage(self.request).addStatusMessage(
-                    _("Unable to send test e-mail, check your mail settings!"),
+                    _('Unable to send test e-mail, check your mail settings!'),
                     type="error")
+                value= sys.exc_info()[1]
+                log.warn('Unable to send test e-mail: %s', value)
             else:
                 # Report success
                 IStatusMessage(self.request).addStatusMessage(
