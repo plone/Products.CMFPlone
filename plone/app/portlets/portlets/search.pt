@@ -18,7 +18,7 @@
             tal:define="livesearch view/enable_livesearch;"
             tal:attributes="action view/search_action">
         <div class="LSBox">
-          <input class="searchField inputLabel"
+          <input class="searchField"
               name="SearchableText"
               type="text"
               size="15"
