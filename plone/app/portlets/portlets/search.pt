@@ -23,9 +23,11 @@
               type="text"
               size="15"
               title="Search Site"
-              i18n:attributes="title title_search_title;"
+              placeholder="Search Site"
+              i18n:attributes="title title_search_title;
+                               placeholder title_search_site"
               tal:attributes="value request/SearchableText|nothing;
-                              class python:livesearch and 'inputLabel searchField portlet-search-gadget' or 'inputLabel searchField portlet-search-gadget-nols'"
+                              class python:livesearch and 'searchField portlet-search-gadget' or 'searchField portlet-search-gadget-nols'"
               />
           <input class="searchButton"
               type="submit"

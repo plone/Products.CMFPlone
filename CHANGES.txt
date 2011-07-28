@@ -4,6 +4,10 @@ Changelog
 2.2.1 - Unreleased
 ------------------
 
+- 'placeholder' attribute for the search portlet's field instead of the custom
+  JS handling of the same functionality.
+  [spliter]
+
 2.2 - 2011-07-19
 ----------------
 
