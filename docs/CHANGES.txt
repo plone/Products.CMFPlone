@@ -8,6 +8,16 @@ Changelog
 4.2a1 - Unreleased
 ------------------
 
+- Removed registration of the input-label.js from the portal_javascript tool.
+  Those with a desperate need to support the 'placeholder' text functionality
+  in the obsolete browsers are free to re-register the script in their own
+  instances.
+  [spliter]
+
+- Deprecated input-label.js — instead we are using the HTML5 'placeholder'
+  attribute on the input fields.
+  [spliter]
+
 - Deprecated IEFixes.css after we have introduced Modernizr and removed it's
   GS registration. References http://dev.plone.org/plone/ticket/11300
   [spliter]

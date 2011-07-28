@@ -17,7 +17,6 @@
  <javascript id="collapsiblesections.js" compression="full" />
  <javascript id="form_tabbing.js" />
  <javascript id="popupforms.js" />
- <javascript id="input-label.js" />
  <javascript id="jquery.highlightsearchterms.js" />
  <javascript id="first_input_focus.js" />
  <javascript id="accessibility.js" compression="full" />
