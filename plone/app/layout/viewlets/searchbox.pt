@@ -18,11 +18,13 @@
                size="18"
                value=""
                title="Search Site"
+               placeholder="Search Site"
                accesskey="4"
-               i18n:attributes="title title_search_site;"
+               i18n:attributes="title title_search_site;
+                                placeholder title_search_site"
                tal:attributes="value request/form/SearchableText|nothing;
                                id search_input_id"
-               class="searchField inputLabel" />
+               class="searchField" />
 
         <input class="searchButton"
                type="submit"

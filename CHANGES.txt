@@ -4,7 +4,9 @@ Changelog
 2.2.1 - Unreleased
 ------------------
 
-- Nothing changed yet.
+- 'placeholder' attribute for the searchbox instead of the custom JS handling
+  of the same functionality.
+  [spliter]
 
 
 2.2 - 2011-07-19
