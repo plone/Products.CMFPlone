@@ -185,7 +185,7 @@ class Renderer(base.Renderer):
         portal = self.urltool.getPortalObject()
         rootPath = self.getNavRootPath()
         if rootPath is None:
-            return rootPath
+            return None
 
         if rootPath == self.urltool.getPortalPath():
             return portal
@@ -248,8 +248,6 @@ class QueryBuilder(object):
 
         portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
-
-        portal_url = getToolByName(context, 'portal_url')
 
         # Acquire a custom nav query if available
         customQuery = getattr(context, 'getCustomNavQuery', None)
