@@ -7,72 +7,51 @@ from Products.CMFPlone import utils
 
 
 def getNavigationRoot(context, relativeRoot=None):
-    """Get the path to the root of the navigation tree. If context or one of
-    its parents until (but not including) the portal root implements
-    INavigationRoot, return this.
+    """Get the path to the root of the navigation tree.
 
-    Otherwise, if an explicit root is set in navtree_properties or given as
-    relativeRoot, use this. If the property is not set or is set to '/', use
-    the portal root.
+    If a relativeRoot argument is provided, navigation root is computed from
+    portal path and this relativeRoot.
+
+    If no relativeRoot argument is provided, and there is a root value set in
+    portal_properties, navigation root path is computed from
+    portal path and this root value.
+
+    IMPORTANT !!!
+    Previous paragraphs imply relativeRoot is relative to the Plone portal.
+
+    Else, a root must be computed : loop from the context to the portal,
+    through parents, looking for an object implementing INavigationRoot.
+    Return the path of that root.
     """
-
     portal_url = getToolByName(context, 'portal_url')
 
-    if not relativeRoot:
+    if relativeRoot is None:
+        # fetch from portal_properties
         portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         relativeRoot = navtree_properties.getProperty('root', None)
 
-    portal = portal_url.getPortalObject()
-    obj = getNavigationRootObject(context, portal)
-
+    # if relativeRoot has a meaningful value,
     if relativeRoot and relativeRoot != '/':
-        if portal == obj:
-            path = '/'.join(obj.getPhysicalPath() + tuple(relativeRoot.split('/')[1:]))
-        else:
-            path = '/'.join(obj.getPhysicalPath() + tuple(relativeRoot.split('/')[2:]))
-        return path
+        # use it
 
-    if INavigationRoot.providedBy(obj) and aq_base(obj) is not aq_base(portal):
-        return '/'.join(obj.getPhysicalPath())
+        # while taking care of case where
+        # relativeRoot is not starting with a '/'
+        if relativeRoot[0] != '/':
+            relativeRoot = '/' + relativeRoot
 
-    rootPath = relativeRoot
-    portalPath = portal_url.getPortalPath()
-
-    if rootPath:
-        if rootPath == '/':
-            return portalPath
-        else:
-            if len(rootPath) > 1 and rootPath[0] == '/':
-                return portalPath + rootPath
-            else:
-                return portalPath
-
-    # This code is stolen from Sprout, but it's unclear exactly how it
-    # should work and the test from Sprout isn't directly transferable
-    # to testNavTree.py, since it's testing something slightly different.
-    # Hoping Sidnei or someone else with a real use case can do this.
-    # The idea is that if the 'root' variable is set to '', you'll get
-    # the virtual root. This should probably also be used by the default
-    # search, as well as the tabs and breadcrumbs. Also, the text in
-    # prefs_navigation_form.cpt should be updated if this is re-enabled.
-    #
-    # Attempt to get use the virtual host root as root if an explicit
-    # root is not set
-    # if rootPath == '':
-    #    request = getattr(context, 'REQUEST', None)
-    #    if request is not None:
-    #        vroot = request.get('VirtualRootPhysicalPath', None)
-    #        if vroot is not None:
-    #            return '/'.join(('',) + vroot[len(portalPath):])
-
-    # Fall back on the portal root
-    if not rootPath:
-        return portalPath
+        portalPath = portal_url.getPortalPath()
+        return portalPath + relativeRoot
+    else:
+        # compute the root
+        portal = portal_url.getPortalObject()
+        root = getNavigationRootObject(context, portal)
+        return '/'.join(root.getPhysicalPath())
 
 
 def getNavigationRootObject(context, portal):
     obj = context
-    while not INavigationRoot.providedBy(obj) and aq_base(obj) is not aq_base(portal):
+    while (not INavigationRoot.providedBy(obj) and
+            aq_base(obj) is not aq_base(portal)):
         obj = utils.parent(obj)
     return obj

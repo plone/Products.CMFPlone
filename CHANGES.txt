@@ -4,6 +4,10 @@ Changelog
 2.2.1 - Unreleased
 ------------------
 
+- Refactor getNavigationRoot to make it simpler, fixing issues when
+  relativeRoot is specified.
+  [gotcha]
+
 - 'placeholder' attribute for the searchbox instead of the custom JS handling
   of the same functionality.
   [spliter]
