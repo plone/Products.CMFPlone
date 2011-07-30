@@ -4,7 +4,9 @@ Changelog
 2.2.1 - Unreleased
 ------------------
 
-- Nothing changed yet.
+- Mail-panel: If sending of test e-mail fails, log the exception
+  and show it in the status message.
+  [kleist]
 
 
 2.2 - 2011-07-19
@@ -12,7 +14,7 @@ Changelog
 
 - Merge PLIP 11774. Refs http://dev.plone.org/plone/ticket/11774
   [esteele]
-  
+
 - Merge PLIP 9352. Refs http://dev.plone.org/plone/ticket/9352
   [esteele]
 
