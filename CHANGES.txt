@@ -1,9 +1,11 @@
 Changelog
 =========
 
-2.2.1 - Unreleased
+2.2.1 - 2011-08-08
 ------------------
-
+- Imporove tests readability. Merged from branches/2.1
+  [gotcha]
+  
 - 'placeholder' attribute for the search portlet's field instead of the custom
   JS handling of the same functionality.
   [spliter]
@@ -146,7 +148,7 @@ Changelog
 
 - Fix GS export of portlets assignments
   when property is a tuple or a list
-  https://dev.plone.org/plone/ticket/10530
+  http://dev.plone.org/plone/ticket/10530
   [macadames]
 
 - Remove deprecated use of tabindex.
