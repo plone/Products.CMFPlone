@@ -9,7 +9,6 @@ Changelog
   the need of a subclass just to change the template.
   [toutpt]
 
-
 2.2.1 - 2011-08-08
 ------------------
 
@@ -20,9 +19,6 @@ Changelog
 - 'placeholder' attribute for the searchbox instead of the custom JS handling
   of the same functionality.
   [spliter]
-
-- replace hiddenStructure h5 with p tags. h5 should live inside h4 tag.
-  [toutpt]
 
 2.2 - 2011-07-19
 ----------------

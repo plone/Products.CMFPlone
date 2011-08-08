@@ -5,9 +5,9 @@
 
     <tal:block define="view_actions view/prepareObjectTabs;">
 
-        <p class="hiddenStructure"
+        <h5 class="hiddenStructure"
             tal:condition="view_actions"
-            i18n:translate="heading_views">Views</p>
+            i18n:translate="heading_views">Views</h5>
 
         <ul class="contentViews"
             id="content-views"

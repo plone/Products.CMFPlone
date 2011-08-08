@@ -5,9 +5,9 @@
 
     <tal:block define="content_actions view/object_actions;">
 
-        <p class="hiddenStructure" 
+        <h5 class="hiddenStructure" 
             tal:condition="content_actions | wf_state"
-            i18n:translate="heading_actions">Actions</p>
+            i18n:translate="heading_actions">Actions</h5>
 
         <ul tal:condition="content_actions" class="actionItems">
             <li tal:repeat="action content_actions"
