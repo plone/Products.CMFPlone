@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.2.2 - Unreleased
+------------------
+
+- Nothing changed yet.
+
+
 2.2.1 - 2011-08-08
 ------------------
 - Imporove tests readability. Merged from branches/2.1
