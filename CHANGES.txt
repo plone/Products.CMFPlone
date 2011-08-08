@@ -4,7 +4,10 @@ Changelog
 2.2.2 - Unreleased
 ------------------
 
-- Nothing changed yet.
+- move index template class variable to template zcml directive for common
+  viewlets. Make easier to override a viewlet with browser layer by removing
+  the need of a subclass just to change the template.
+  [toutpt]
 
 
 2.2.1 - 2011-08-08
@@ -18,6 +21,8 @@ Changelog
   of the same functionality.
   [spliter]
 
+- replace hiddenStructure h5 with p tags. h5 should live inside h4 tag.
+  [toutpt]
 
 2.2 - 2011-07-19
 ----------------

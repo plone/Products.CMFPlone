@@ -53,7 +53,6 @@ class ViewletBase(BrowserView):
 
 
 class TitleViewlet(ViewletBase):
-    index = ViewPageTemplateFile('title.pt')
 
     def update(self):
         portal_state = getMultiAdapter((self.context, self.request),
@@ -69,7 +68,6 @@ class TitleViewlet(ViewletBase):
 
 
 class DublinCoreViewlet(ViewletBase):
-    index = ViewPageTemplateFile('dublin_core.pt')
 
     def update(self):
         plone_utils = getToolByName(self.context, 'plone_utils')
@@ -78,7 +76,6 @@ class DublinCoreViewlet(ViewletBase):
 
 
 class TableOfContentsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('toc.pt')
 
     def update(self):
         obj = aq_base(self.context)
@@ -93,7 +90,6 @@ class TableOfContentsViewlet(ViewletBase):
 
 
 class SkipLinksViewlet(ViewletBase):
-    index = ViewPageTemplateFile('skip_links.pt')
 
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
@@ -102,7 +98,6 @@ class SkipLinksViewlet(ViewletBase):
 
 
 class SiteActionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('site_actions.pt')
 
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
@@ -111,7 +106,6 @@ class SiteActionsViewlet(ViewletBase):
 
 
 class SearchBoxViewlet(ViewletBase):
-    index = ViewPageTemplateFile('searchbox.pt')
 
     def update(self):
         super(SearchBoxViewlet, self).update()
@@ -131,7 +125,6 @@ class SearchBoxViewlet(ViewletBase):
 
 
 class LogoViewlet(ViewletBase):
-    index = ViewPageTemplateFile('logo.pt')
 
     def update(self):
         super(LogoViewlet, self).update()
@@ -148,7 +141,6 @@ class LogoViewlet(ViewletBase):
 
 
 class GlobalSectionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('sections.pt')
 
     def update(self):
         context = aq_inner(self.context)
@@ -191,7 +183,6 @@ class GlobalSectionsViewlet(ViewletBase):
 
 
 class PersonalBarViewlet(ViewletBase):
-    index = ViewPageTemplateFile('personal_bar.pt')
 
     def update(self):
         super(PersonalBarViewlet, self).update()
@@ -229,7 +220,6 @@ class PersonalBarViewlet(ViewletBase):
 
 
 class ContentViewsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('contentviews.pt')
 
     @memoize
     def prepareObjectTabs(self, default_tab='view', sort_first=['folderContents']):
@@ -332,7 +322,6 @@ class ManagePortletsFallbackViewlet(ViewletBase):
 
 
 class PathBarViewlet(ViewletBase):
-    index = ViewPageTemplateFile('path_bar.pt')
 
     def update(self):
         super(PathBarViewlet, self).update()
@@ -345,7 +334,6 @@ class PathBarViewlet(ViewletBase):
 
 
 class ContentActionsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('contentactions.pt')
 
     def update(self):
         context = aq_inner(self.context)
@@ -366,7 +354,6 @@ class ContentActionsViewlet(ViewletBase):
 
 
 class FooterViewlet(ViewletBase):
-    index = ViewPageTemplateFile('footer.pt')
 
     def update(self):
         super(FooterViewlet, self).update()
