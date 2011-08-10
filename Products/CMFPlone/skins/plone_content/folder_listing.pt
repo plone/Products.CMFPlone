@@ -135,6 +135,7 @@
                               <span i18n:translate="label_by_author">
                                 by
                               <a href="#"
+                                 class="userlink"
                                  tal:attributes="href string:${navigation_root_url}/author/${item_creator}"
                                  tal:content="author/name_or_id"
                                  tal:omit-tag="not:author"

@@ -106,7 +106,7 @@ Headlines
 <div id="plone-document-byline" class="documentByLine">
     <span class="documentAuthor">
       by
-      <a href="http://localhost:8080/Plone/author/admin">admin</a>
+      <a class="userlink" href="http://localhost:8080/Plone/author/admin">admin</a>
     </span>
 
    <span class="documentModified">

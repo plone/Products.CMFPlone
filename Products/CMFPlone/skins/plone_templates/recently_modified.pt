@@ -51,11 +51,14 @@
 
                         <span class="discreet" i18n:translate="text_creator_date">
                             by
-                            <span tal:define="creator result/Creator;
-                                              author python:context.portal_membership.getMemberInfo(creator)"
-                                  tal:content="python:author and author['fullname'] or creator"
-                                  tal:omit-tag=""
-                                  i18n:name="creator">creator</span>,
+                            <a href="#"
+                               class="userlink"
+                               tal:define="creator result/Creator;
+                               	           author python:context.portal_membership.getMemberInfo(creator)"
+                               tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${result/Creator}"
+                               tal:content="python:author and author['fullname'] or creator"
+                               tal:omit-tag="not:author"
+                               i18n:name="creator">creator</a>,
                             last updated:
                             <span tal:content="python:toLocalizedTime(result.ModificationDate, long_format=1)"
                                   tal:omit-tag=""

@@ -62,6 +62,7 @@
                                 <tal:name tal:condition="item_creator"
                                   tal:define="author python:pas_member.info(item_creator)">
                                 <a href="#"
+                                   class="userlink"
                                    tal:attributes="href string:${navigation_root_url}/author/${item_creator}"
                                    tal:content="author/name_or_id"
                                    tal:omit-tag="not:author">

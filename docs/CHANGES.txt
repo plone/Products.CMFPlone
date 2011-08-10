@@ -5,6 +5,11 @@
 Changelog
 =========
 
+
+- Links to authors are opened in an overlay.
+  refs PLIP 11697 http://dev.plone.org/plone/ticket/11697.
+  [thomasdesvenain]
+
 4.2a1 - 2011-08-08
 ------------------
 
@@ -22,7 +27,7 @@ Changelog
   GS registration. References http://dev.plone.org/plone/ticket/11300
   [spliter]
 
-- Added Modernizr 2 library. 
+- Added Modernizr 2 library.
   References http://dev.plone.org/plone/ticket/11300
   [spliter]
 

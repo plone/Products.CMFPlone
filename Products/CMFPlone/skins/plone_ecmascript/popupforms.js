@@ -1,8 +1,8 @@
 /******
     Set up standard Plone popups
-    
+
     Provides globals: common_content_filter
-    
+
     Extends jQuery.tools.overlay.conf to set up common Plone effects and
     visuals.
 ******/
@@ -10,7 +10,7 @@
 
 var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info';
 
-jQuery.extend(jQuery.tools.overlay.conf, 
+jQuery.extend(jQuery.tools.overlay.conf,
     {
         fixed:false,
         speed:'fast',
@@ -56,7 +56,7 @@ jQuery(function($){
         // enhancement.
         return;
     }
-    
+
     // login form
     $('#portal-personaltools a[href$="/login"], #portal-personaltools a[href$="/login_form"], .discussion a[href$="/login"], .discussion a[href$="/login_form"]').prepOverlay(
         {
@@ -173,11 +173,17 @@ jQuery(function($){
 
     // Content history popup
     $('#content-history a').prepOverlay({
-       subtype: 'ajax', 
+       subtype: 'ajax',
        filter: 'h2, #content-history',
        urlmatch: '@@historyview',
        urlreplace: '@@contenthistorypopup'
     });
+
+    // Author info popup
+    $('.userlink').prepOverlay({
+        subtype: 'ajax',
+        filter: common_content_filter,
+     });
 
 });
 
