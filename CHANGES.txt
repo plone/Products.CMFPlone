@@ -9,7 +9,11 @@ Changelog
   the need of a subclass just to change the template.
   [toutpt]
 
-2.2.1 - 2011-08-08
+- Links to authors are opened in an overlay.
+  refs PLIP 11697 http://dev.plone.org/plone/ticket/11697.
+  [thomasdesvenain]
+
+2.1.7 - Unreleased
 ------------------
 
 - Refactor getNavigationRoot to make it simpler, fixing issues when
@@ -32,7 +36,7 @@ Changelog
 
 - Set the search form to submit to @@search in order to use the new
   search results page.
-  [elvix] 
+  [elvix]
 
 - Updated the BaseIcon to return its html tag when called.
   [elvix]

@@ -30,6 +30,7 @@
                      —
                      <tal:actor i18n:name="actor">
                          <a href=""
+                            class="userlink"
                             tal:condition="actor_home"
                             tal:attributes="href actor_home"
                             tal:content="actor_name"> runyaga </a>

@@ -20,6 +20,7 @@
          tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
          tal:content="view/authorname"
          tal:omit-tag="python:view.author() is None"
+         class="userlink"
          i18n:name="author">Roland Barthes</a>
       </tal:i18n>
          —
