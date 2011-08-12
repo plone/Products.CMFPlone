@@ -5,6 +5,9 @@
 Changelog
 =========
 
+- getFolderContents only sets b_size if batching is true.
+  [do3cc]
+
 4.1 - 2011-07-12
 ----------------
 
