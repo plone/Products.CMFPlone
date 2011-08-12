@@ -10,6 +10,9 @@ Changelog
   refs PLIP 11697 http://dev.plone.org/plone/ticket/11697.
   [thomasdesvenain]
 
+- getFolderContents only sets b_size if batching is true.
+  [do3cc]
+
 4.2a1 - 2011-08-08
 ------------------
 
