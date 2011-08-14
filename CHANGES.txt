@@ -4,10 +4,8 @@ Changelog
 2.2.2 - Unreleased
 ------------------
 
-- move index template class variable to template zcml directive for common
-  viewlets. Make easier to override a viewlet with browser layer by removing
-  the need of a subclass just to change the template.
-  [toutpt]
+- Nothing changed yet.
+
 
 2.2.1 - 2011-08-08
 ------------------

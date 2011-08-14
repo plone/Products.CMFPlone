@@ -111,7 +111,6 @@
         manager=".interfaces.IPortalHeader"
         class=".common.SkipLinksViewlet"
         permission="zope2.View"
-        template="skip_links.pt"
         />
 
     <!-- The site actions -->
@@ -120,7 +119,6 @@
         manager=".interfaces.IPortalFooter"
         class=".common.SiteActionsViewlet"
         permission="zope2.View"
-        template="site_actions.pt"
         />
 
     <!-- The search box -->
@@ -129,7 +127,6 @@
         manager=".interfaces.IPortalHeader"
         class=".common.SearchBoxViewlet"
         permission="zope2.View"
-        template="searchbox.pt"
         />
 
     <!-- The logo -->
@@ -138,7 +135,6 @@
         manager=".interfaces.IPortalHeader"
         class=".common.LogoViewlet"
         permission="zope2.View"
-        template="logo.pt"
         />
 
     <!-- The global sections -->
@@ -147,7 +143,6 @@
         manager=".interfaces.IPortalHeader"
         class=".common.GlobalSectionsViewlet"
         permission="zope2.View"
-        template="sections.pt"
         />
 
     <!-- The personal bar -->
@@ -164,7 +159,6 @@
         manager=".interfaces.IContentViews"
         class=".common.ContentViewsViewlet"
         permission="zope2.View"
-        template="contentviews.pt"
         />
 
     <!-- Content actions (menus)
@@ -186,7 +180,6 @@
         manager=".interfaces.IContentViews"
         class=".common.ContentActionsViewlet"
         permission="zope2.View"
-        template="contentactions.pt"
         />
 
     <browser:viewlet
@@ -196,7 +189,6 @@
         manager=".interfaces.IContentViews"
         class=".common.ContentActionsViewlet"
         permission="zope2.View"
-        template="contentactions.pt"
         />
 
     <!-- Render the browser title -->
@@ -205,7 +197,6 @@
         manager=".interfaces.IHtmlHead"
         class=".common.TitleViewlet"
         permission="zope2.View"
-        template="title.pt"
         />
 
     <!-- Render the Dublin Core metadata -->
@@ -214,7 +205,6 @@
         manager=".interfaces.IHtmlHead"
         class=".common.DublinCoreViewlet"
         permission="zope2.View"
-        template="dublin_core.pt"
         />
 
     <!-- The related items -->
@@ -224,7 +214,6 @@
         class=".content.ContentRelatedItems"
         view="plone.app.layout.globals.interfaces.IViewView"
         permission="zope2.View"
-        template="document_relateditems.pt"
         />
 
     <!-- Render the workflow history viewlet;
@@ -239,12 +228,11 @@
      -->
 
     <!-- Render the workflow history as a view -->
-    <browser:page
+    <browser:view
         for="*"
         name="contenthistory"
         class=".content.ContentHistoryView"
         permission="zope2.View"
-        template="content_history.pt"
         />
 
     <!-- Render the workflow history for popup -->
@@ -269,7 +257,6 @@
         manager=".interfaces.IBelowContentBody"
         class=".content.DocumentActionsViewlet"
         permission="zope2.View"
-        template="document_actions.pt"
         />
 
     <!-- Manage portlets Fallback link -->
@@ -288,7 +275,6 @@
         manager=".interfaces.IAboveContent"
         class=".common.PathBarViewlet"
         permission="zope2.View"
-        template="path_bar.pt"
         />
 
     <!-- Render the document byline -->
@@ -297,7 +283,6 @@
         manager=".interfaces.IBelowContentTitle"
         class=".content.DocumentBylineViewlet"
         permission="zope2.View"
-        template="document_byline.pt"
         />
 
     <!-- Render the keywords -->
@@ -335,7 +320,6 @@
         manager=".interfaces.IAboveContentBody"
         class=".common.TableOfContentsViewlet"
         permission="zope2.View"
-        template="toc.pt"
         />
 
     <!-- Footer -->
@@ -345,7 +329,6 @@
         manager=".interfaces.IPortalFooter"
         class=".common.FooterViewlet"
         permission="zope.Public"
-        template="footer.pt"
         />
 
     <!-- Colophon -->
