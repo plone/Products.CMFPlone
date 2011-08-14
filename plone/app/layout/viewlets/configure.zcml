@@ -156,7 +156,6 @@
         manager=".interfaces.IPortalHeader"
         class=".common.PersonalBarViewlet"
         permission="zope2.View"
-        template="personal_bar.pt"
         />
 
     <!-- Content views (tabs) -->
