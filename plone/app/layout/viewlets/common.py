@@ -143,7 +143,7 @@ class LogoViewlet(ViewletBase):
         else:
             logoName = 'logo.jpg'
 
-        logoTitle = str(self.portal_state.portal_title())
+        logoTitle = self.portal_state.portal_title()
         self.logo_tag = portal.restrictedTraverse(logoName).tag(title=logoTitle, alt=logoTitle)
         self.navigation_root_title = self.portal_state.navigation_root_title()
 
