@@ -41,6 +41,14 @@ Changelog
 
 - Updated searchbox.pt to be linked to updated search results view.
   [spliter]
+  
+2.1.9 - unreleased
+------------------
+
+- Switching 'Skip to navigation' to be linked to the global navigation instead
+of the navigation portlet.
+This fixes http://dev.plone.org/plone/ticket/11728
+[spliter]  
 
 
 2.1.8 - 2011-07-04
