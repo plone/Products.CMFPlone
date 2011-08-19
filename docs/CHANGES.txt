@@ -11,6 +11,10 @@ Changelog
 4.2a1 - 2011-08-08
 ------------------
 
+- Added hidden year/month/day/hour/minute/ampm labels to calendar macros.
+  Part of a form accessibility cleanup.
+  [smcmahon]
+
 - Removed registration of the input-label.js from the portal_javascript tool.
   Those with a desperate need to support the 'placeholder' text functionality
   in the obsolete browsers are free to re-register the script in their own
