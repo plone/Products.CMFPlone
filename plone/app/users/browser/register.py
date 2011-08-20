@@ -17,6 +17,7 @@ from Products.CMFPlone.utils import normalizeString, safe_unicode
 from Products.CMFPlone import PloneMessageFactory as _
 
 from ZODB.POSException import ConflictError
+from zExceptions import Forbidden
 
 from Products.statusmessages.interfaces import IStatusMessage
 
@@ -536,20 +537,21 @@ class AddUserForm(BaseRegistrationForm):
     @form.action(_(u'label_register', default=u'Register'),
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
-        errors = super(AddUserForm, self).handle_join_success(data)
+        super(AddUserForm, self).handle_join_success(data)
+        
         portal_groups = getToolByName(self.context, 'portal_groups')
-
-        securityManager = getSecurityManager()
-        canManageUsers = securityManager.checkPermission('Manage users',
-                                                         self.context)
         user_id = data['username']
+        is_zope_manager = getSecurityManager().checkPermission(ManagePortal, self.context)
 
         try:
             # Add user to the selected group(s)
-            if 'groups' in data.keys() and canManageUsers:
+            if 'groups' in data.keys():
                 for groupname in data['groups']:
                     group = portal_groups.getGroupById(groupname)
-                    group.addMember(user_id, REQUEST=self.request)
+                    if 'Manager' in group.getRoles() and not is_zope_manager:
+                        raise Forbidden
+
+                    portal_groups.addPrincipalToGroup(user_id, groupname, self.request)
         except (AttributeError, ValueError), err:
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return

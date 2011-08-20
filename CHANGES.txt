@@ -4,6 +4,10 @@ Changelog
 1.1.2 - Unreleased
 ------------------
 
+- Make sure that users with the Site Administrator role can add new users to
+  groups. Fixes http://dev.plone.org/plone/ticket/11888
+  [davisagli]
+
 1.1.1 - 2011-06-02
 ------------------
 
