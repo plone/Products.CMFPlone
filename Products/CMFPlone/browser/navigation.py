@@ -242,11 +242,8 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         context = aq_inner(self.context)
         request = self.request
         container = utils.parent(context)
-        try:
-            name, item_url = get_view_url(context)
-        except AttributeError:
-            print context
-            raise
+
+        name, item_url = get_view_url(context)
 
         if container is None:
             return ({'absolute_url': item_url,
