@@ -5,6 +5,10 @@
 Changelog
 =========
 
+- Adding plone.app.event dependency. Removing event related indexes from
+  catalog (those are set in p.a.event).
+  [thet]
+
 - AuthenticatedUsers group is used for local roles etc, and is not the same
   as Authenticated role. Thus, it can not be optimized away in catalog queries.
   [tesdal]
