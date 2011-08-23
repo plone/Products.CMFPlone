@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.1 - Unreleased
+2.2.1 (2011-08-23)
 ------------------
 
 - Mail-panel: If sending of test e-mail fails, log the exception
