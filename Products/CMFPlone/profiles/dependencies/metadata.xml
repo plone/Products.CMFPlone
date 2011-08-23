@@ -8,7 +8,7 @@
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
     <dependency>profile-Products.TinyMCE:TinyMCE</dependency>
     <dependency>profile-archetypes.referencebrowserwidget:default</dependency>
-    <dependency>profile-plone.app.event:default</dependency>
+    <dependency>profile-plone.app.event.at:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plone.app.imaging:default</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>
