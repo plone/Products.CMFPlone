@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.2 - Unreleased
+1.1.2 (2011-08-23)
 ------------------
 
 - Make sure that users with the Site Administrator role can add new users to
