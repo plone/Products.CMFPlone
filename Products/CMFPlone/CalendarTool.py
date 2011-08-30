@@ -3,7 +3,6 @@ from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from plone.event.interfaces import IRecurrenceSupport
 
 
 class CalendarTool(PloneBaseTool, BaseTool):
@@ -94,16 +93,11 @@ class CalendarTool(PloneBaseTool, BaseTool):
             eventDays[daynumber] = {'eventslist': [],
                                     'event': 0,
                                     'day': daynumber}
-        includedevents = []
-
         # prepare occurences
         all_events_occurences = []
         for result in query:
-            # we presume that .occurences() returns occurences only for this month
-            # TODO: the line below needs to be fixed to use the limit_start
-            # and limit_end of occurences()
             # TODO: avoid getobject, let occurences be a property of the event object and indexed as metadata?
-            occurences = IRecurrenceSupport(result.getObject()).occurences(first_date, last_date)
+            occurences = result.getObject().occurences(first_date, last_date)
             for occurence in occurences:
                 all_events_occurences.append(
                         dict(event=result,
