@@ -3,6 +3,9 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
+- Fixed folder_listing template.
+  [thomasdesvenain]
+
 4.1 - 2011-07-12
 ----------------
 
@@ -12,7 +15,7 @@ For what's new in this release, see CHANGES.txt.
   [MatthewWilkes]
 
 - Use ``transaction.savepoint`` instead of ``transaction.begin`` in
-  ``isLinked``; 
+  ``isLinked``;
   closes http://dev.plone.org/plone/ticket/7784; does not reopen
   http://dev.plone.org/plone/ticket/6666 probably because we use fixed version
   of ZEO
