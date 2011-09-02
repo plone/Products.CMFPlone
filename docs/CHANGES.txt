@@ -5,7 +5,8 @@
 Changelog
 =========
 
-- Fixed folder_listing template.
+- Fixed folder_listing template
+  so that listing macro can be used outside of folder_listing.
   [thomasdesvenain]
 
 - AuthenticatedUsers group is used for local roles etc, and is not the same

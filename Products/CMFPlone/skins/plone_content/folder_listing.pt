@@ -47,7 +47,7 @@
                         show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
                         navigation_root_url context/@@plone_portal_state/navigation_root_url;
                         pas_member context/@@pas_member;
-                        plone_view context/@@plone_view;">
+                        plone_view context/@@plone;">
     <tal:listing condition="batch">
 
         <dl metal:define-slot="entries">
