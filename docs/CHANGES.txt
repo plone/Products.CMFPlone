@@ -8,7 +8,9 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
-
+- Fixed folder_listing template
+  so that listing macro can be used outside of folder_listing.
+  [thomasdesvenain]
 
 4.2a2 - 2011-08-25
 ------------------
@@ -41,7 +43,7 @@ Changelog
   GS registration. References http://dev.plone.org/plone/ticket/11300
   [spliter]
 
-- Added Modernizr 2 library. 
+- Added Modernizr 2 library.
   References http://dev.plone.org/plone/ticket/11300
   [spliter]
 

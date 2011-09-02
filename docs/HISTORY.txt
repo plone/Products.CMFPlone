@@ -3,9 +3,6 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
-- Fixed folder_listing template.
-  [thomasdesvenain]
-
 4.1 - 2011-07-12
 ----------------
 
