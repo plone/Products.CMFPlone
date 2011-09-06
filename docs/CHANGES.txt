@@ -8,6 +8,10 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Make control panel action GS export return actions alphabetically since
+  there is no other natural ordering.
+  [ggozad]
+
 - Fixed folder_listing template
   so that listing macro can be used outside of folder_listing.
   [thomasdesvenain]
