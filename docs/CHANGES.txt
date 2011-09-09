@@ -9,6 +9,10 @@ Changelog
   catalog (those are set in p.a.event).
   [thet]
 
+- Fixed folder_listing template
+  so that listing macro can be used outside of folder_listing.
+  [thomasdesvenain]
+
 - AuthenticatedUsers group is used for local roles etc, and is not the same
   as Authenticated role. Thus, it can not be optimized away in catalog queries.
   [tesdal]
@@ -25,7 +29,7 @@ Changelog
   [MatthewWilkes]
 
 - Use ``transaction.savepoint`` instead of ``transaction.begin`` in
-  ``isLinked``; 
+  ``isLinked``;
   closes http://dev.plone.org/plone/ticket/7784; does not reopen
   http://dev.plone.org/plone/ticket/6666 probably because we use fixed version
   of ZEO
