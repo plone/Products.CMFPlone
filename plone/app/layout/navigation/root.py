@@ -50,6 +50,9 @@ def getNavigationRoot(context, relativeRoot=None):
 
 
 def getNavigationRootObject(context, portal):
+    if context is None:
+        return None
+    
     obj = context
     while (not INavigationRoot.providedBy(obj) and
             aq_base(obj) is not aq_base(portal)):
