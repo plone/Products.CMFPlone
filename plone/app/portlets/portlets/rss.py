@@ -130,6 +130,24 @@ class RSSFeed(object):
 
         return self.ok
 
+    def _buildItemDict(self, item):
+        link = item.links[0]['href']
+        itemdict = {
+            'title': item.title,
+            'url': link,
+            'summary': item.get('description', ''),
+        }
+        if hasattr(item, "updated"):
+            try:
+                itemdict['updated'] = DateTime(item.updated)
+            except DateTimeError:
+                # It's okay to drop it because in the
+                # template, this is checked with
+                # ``exists:``
+                pass
+
+        return itemdict
+
     def _retrieveFeed(self):
         """do the actual work and try to retrieve the feed"""
         url = self.url
@@ -147,22 +165,10 @@ class RSSFeed(object):
             self._items = []
             for item in d['items']:
                 try:
-                    link = item.links[0]['href']
-                    itemdict = {
-                        'title': item.title,
-                        'url': link,
-                        'summary': item.get('description', ''),
-                    }
-                    if hasattr(item, "updated"):
-                        try:
-                            itemdict['updated'] = DateTime(item.updated)
-                        except DateTimeError:
-                            # It's okay to drop it because in the
-                            # template, this is checked with
-                            # ``exists:``
-                            pass
+                    itemdict = self._buildItemDict(item)
                 except AttributeError:
                     continue
+
                 self._items.append(itemdict)
             self._loaded = True
             self._failed = False
