@@ -75,6 +75,10 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         if actions and isinstance(actions[0], dict):
             return fragment
 
+        if actions:
+            actions = list(actions)
+            actions.sort(key=lambda action: action.getMapping()['id'])
+
         for ai in actions:
             mapping = ai.getMapping()
             child = self._doc.createElement('configlet')

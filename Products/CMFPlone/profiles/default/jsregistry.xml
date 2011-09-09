@@ -8,6 +8,7 @@
  <javascript id="plone_javascript_variables.js" />
  <javascript id="nodeutilities.js" />
  <javascript id="cookie_functions.js" />
+ <javascript id="modernizr.js" />
  <javascript id="livesearch.js" compression="full" />
  <javascript id="fullscreenmode.js" enabled="False" />
  <javascript id="select_all.js" />
@@ -16,20 +17,19 @@
  <javascript id="collapsiblesections.js" compression="full" />
  <javascript id="form_tabbing.js" />
  <javascript id="popupforms.js" />
- <javascript id="input-label.js" />
  <javascript id="jquery.highlightsearchterms.js" />
  <javascript id="first_input_focus.js" />
  <javascript id="accessibility.js" compression="full" />
  <javascript id="styleswitcher.js" />
  <javascript id="toc.js" />
  <javascript id="collapsibleformfields.js" />
+ <javascript id="dropdown.js" /> 
 
  <!-- Sarissa is used by both Kupu and KSS -->
  <javascript id="sarissa.js"
     expression="python:not context.restrictedTraverse('@@plone_portal_state').anonymous() or (getattr(portal, 'kupu_library_tool', None) and portal.kupu_library_tool.isKupuEnabled(REQUEST=request))" />
 
  <!-- Only for logged-in users -->
- <javascript id="dropdown.js" authenticated="True" />
  <javascript id="table_sorter.js" authenticated="True" />
  <javascript id="calendar_formfield.js" authenticated="True" />
  <javascript id="formUnload.js" authenticated="True" />

@@ -74,6 +74,7 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'nodeutilities.js',
              'plone_javascript_variables.js',
              'register_function.js',
+             'modernizr.js',
              'formUnload.js',
              'formsubmithelpers.js',
              'form_tabbing.js',

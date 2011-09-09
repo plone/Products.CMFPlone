@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.1'
+version = '4.2b1'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -66,14 +66,17 @@ setup(name='Products.CMFPlone',
           'Zope2 > 2.13.0',
           'ZODB3',
           'archetypes.kss',
+          'archetypes.querywidget',
           'archetypes.referencebrowserwidget',
           'borg.localrole',
           'five.localsitemanager',
           'five.customerize',
           'kss.core',
           'plone.app.blob',
+          'plone.app.collection',
           'plone.app.contentmenu >= 1.1.6dev-r22380',
           'plone.app.content',
+          'plone.app.contentlisting',
           'plone.app.contentrules',
           'plone.app.controlpanel',
           'plone.app.customerize',
@@ -90,6 +93,7 @@ setup(name='Products.CMFPlone',
           'plone.app.portlets',
           'plone.app.redirector',
           'plone.app.registry',
+          'plone.app.search',
           'plone.app.users',
           'plone.app.upgrade',
           'plone.app.uuid',

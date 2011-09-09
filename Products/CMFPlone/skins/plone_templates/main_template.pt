@@ -1,9 +1,7 @@
 <metal:page define-macro="master">
 <metal:block define-slot="top_slot" />
 
-<tal:doctype tal:replace="structure string:&lt;!DOCTYPE html PUBLIC
-  &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
-  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;" />
+<tal:doctype tal:replace="structure string:&lt;!DOCTYPE html&gt;" />
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
@@ -21,7 +19,8 @@
                   checkPermission nocall: context/portal_membership/checkPermission;
                   site_properties context/portal_properties/site_properties;
                   ajax_load request/ajax_load | nothing;
-                  ajax_include_head request/ajax_include_head | nothing"
+                  ajax_include_head request/ajax_include_head | nothing;
+                  dummy python:request.RESPONSE.setHeader('X-UA-Compatible', 'IE=edge,chrome=1');"
       tal:attributes="lang lang;
                       xml:lang lang">
 
@@ -35,13 +34,6 @@
 
     <meta name="generator" content="Plone - http://plone.org" />
 
-    <tal:comment tal:condition="nothing">
-      Internet Explorer fix, forces IE8 into newest possible rendering
-      engine even if it's on an intranet. This has to be defined before any
-      script/style tags.
-    </tal:comment>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
     <metal:baseslot define-slot="base">
       <base tal:attributes="href plone_view/renderBase" /><!--[if lt IE 7]></base><![endif]-->
     </metal:baseslot>
@@ -50,9 +42,6 @@
         <div tal:replace="structure provider:plone.htmlhead" />
 
         <link tal:replace="structure provider:plone.htmlhead.links" />
-
-        <!-- Disable IE6 image toolbar -->
-        <meta http-equiv="imagetoolbar" content="no" />
 
         <tal:comment replace="nothing"> A slot where you can insert elements in the header from a template </tal:comment>
         <metal:headslot define-slot="head_slot" />

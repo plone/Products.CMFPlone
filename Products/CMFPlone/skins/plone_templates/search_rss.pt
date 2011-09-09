@@ -19,7 +19,7 @@
         end python: int(request.get('b_end', start+max_items));
         order python: request.set('sort_order', 'reverse');
         dummy python: request.set('sort_on', request.get('sort_on', 'effective'));
-        objectList python:context.queryCatalog(use_types_blacklist=True)[start:end];
+        objectList python:context.queryCatalog(show_all=1, use_types_blacklist=True, use_navigation_root=True)[start:end];
         endnumber python: start+len(objectList)">
     <metal:block use-macro="context/rss_template/macros/master">
         RSS goes here
