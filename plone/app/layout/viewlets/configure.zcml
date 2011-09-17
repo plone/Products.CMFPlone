@@ -2,6 +2,8 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
+    <include package="Products.CMFCore" file="permissions.zcml"/>
+
     <!-- Register viewlet managers - used in plone's main_template -->
 
     <browser:viewletManager

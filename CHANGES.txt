@@ -4,7 +4,13 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
-- Fix #12186 getNavigationRootObject goes into infinite loop if context is None
+- Fix possible ZCML load order issue by explicitly loading CMF permissions.
+  Fixes http://dev.plone.org/plone/ticket/11869
+  [davisagli]
+
+- Fix bug where getNavigationRootObject goes into infinite loop if context is 
+  None.
+  Fixes http://dev.plone.org/plone/ticket/12186
   [anthonygerrard]
 
 
