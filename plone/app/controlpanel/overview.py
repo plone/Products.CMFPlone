@@ -55,10 +55,12 @@ class OverviewControlPanel(ControlPanelView):
         return 'PIL' in self.core_versions()
 
     def version_overview(self):
-        versions = [
-            'Plone ' + self.migration().getInstanceVersion(),
-        ]
+
         core_versions = self.core_versions()
+        versions = [
+            'Plone %s (%s)' % (core_versions['Plone'], 
+                               core_versions['Plone Instance'])]
+
         for v in ('CMF', 'Zope', 'Python'):
             versions.append(v + ' ' + core_versions.get(v))
         pil = core_versions.get('PIL', None)

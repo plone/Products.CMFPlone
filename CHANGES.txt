@@ -4,8 +4,10 @@ Changelog
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Forward-port http://dev.plone.org/plone/changeset/52199, which displays both 
+  CMFPlone's package and profile versions on the control panel overview.
+  [esteele]
+  
 
 2.2.1 (2011-08-23)
 ------------------
@@ -22,6 +24,12 @@ Changelog
   [esteele]
 
 - Merge PLIP 9352. Refs http://dev.plone.org/plone/ticket/9352
+  [esteele]
+
+2.1.3 (Unreleased)
+------------------
+- Display both CMFPlone's package version and profile version in the control 
+  panel overview.
   [esteele]
 
 
