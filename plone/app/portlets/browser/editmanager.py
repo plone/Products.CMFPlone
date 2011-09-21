@@ -106,6 +106,8 @@ class EditPortletManagerRenderer(Explicit):
         data = []
         for idx in range(len(assignments)):
             name = assignments[idx].__name__
+            if hasattr(assignments[idx], '__Broken_state__'):
+                name = assignments[idx].__Broken_state__['__name__']
 
             editview = queryMultiAdapter(
                 (assignments[idx], self.request), name='edit', default=None)
@@ -119,7 +121,11 @@ class EditPortletManagerRenderer(Explicit):
                 dict(manager=manager.__name__, category=category,
                      key=key, name=name,))
 
-            settings = IPortletAssignmentSettings(assignments[idx])
+            try:
+                settings = IPortletAssignmentSettings(assignments[idx])
+                visible = settings.get('visible', True)
+            except TypeError:
+                visible = False
 
             data.append({
                 'title'      : assignments[idx].title,
@@ -130,7 +136,7 @@ class EditPortletManagerRenderer(Explicit):
                 'delete_url' : '%s/@@delete-portlet?name=%s' % (base_url, name),
                 'hide_url'   : '%s/@@toggle-visibility?name=%s' % (base_url, name),
                 'show_url'   : '%s/@@toggle-visibility?name=%s' % (base_url, name),
-                'visible'    : settings.get('visible', True),
+                'visible'    : visible,
                 })
         if len(data) > 0:
             data[0]['up_url'] = data[-1]['down_url'] = None

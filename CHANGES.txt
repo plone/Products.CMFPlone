@@ -7,6 +7,9 @@ Changelog
 - Avoid empty <ul> tag in navigation_recurse.pt if bottomLevel is set.
   [gaudenzius]
 
+- Enable possibility to delete portlets with missing implementation 
+  [do3cc]
+
 
 2.2.1 - 2011-08-08
 ------------------
