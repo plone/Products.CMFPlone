@@ -5,6 +5,9 @@
 Changelog
 =========
 
+4.1.1 (2011-09-21)
+------------------
+
 - Fixed folder_listing template
   so that listing macro can be used outside of folder_listing.
   [thomasdesvenain]
