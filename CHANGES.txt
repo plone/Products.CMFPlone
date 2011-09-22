@@ -38,6 +38,7 @@ Changelog
   of the same functionality.
   [spliter]
 
+
 2.2 - 2011-07-19
 ----------------
 
@@ -61,7 +62,8 @@ Changelog
 
 - Updated searchbox.pt to be linked to updated search results view.
   [spliter]
-  
+
+
 2.1.9 - unreleased
 ------------------
 
@@ -79,6 +81,7 @@ Changelog
   http://code.google.com/p/dexterity/issues/detail?id=183
   [davisagli]
 
+
 2.1.7 - 2011-06-30
 ------------------
 
@@ -93,10 +96,10 @@ Changelog
 2.1.6 - 2011-06-02
 ------------------
 
- - Use getPhysicalPath instead of absolute_url_path to handle correctly
-   virtual hosting.
-   This fixes http://dev.plone.org/plone/ticket/8787
-   [encolpe]
+- Use getPhysicalPath instead of absolute_url_path to handle correctly
+  virtual hosting.
+  This fixes http://dev.plone.org/plone/ticket/8787
+  [encolpe]
 
 
 2.1.5 - 2011-05-12
@@ -184,12 +187,14 @@ Changelog
 - Remove login redirect alias. As of Plone 4.1 there is a login script.
   [elro]
 
+
 2.0.10 - 2011-06-02
 -------------------
 
 - Use getPhysicalPath instead of absolute_url_path to handle correctly virtual
   hosting. This fixes http://dev.plone.org/plone/ticket/8787
   [encolpe]
+
 
 2.0.9 - 2011-05-12
 ------------------
@@ -198,11 +203,14 @@ Changelog
   relativeRoot is specified. This fixes http://dev.plone.org/plone/ticket/8787
   [WouterVH]
 
+
 2.0.8 - 2011-04-01
 ------------------
+
 - Enable managing portlets of default pages. This fixes
   http://dev.plone.org/plone/ticket/10672
   [fRiSi]
+
 
 2.0.7 - 2011-02-25
 ------------------
@@ -991,4 +999,3 @@ Changelog
 - Show the authors full name in presentation view. This fixes
   http://dev.plone.org/plone/ticket/6810
   [wichert]
-
