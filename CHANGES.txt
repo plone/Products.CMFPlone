@@ -26,15 +26,33 @@ Changelog
 - Merge PLIP 9352. Refs http://dev.plone.org/plone/ticket/9352
   [esteele]
 
-2.1.3 (Unreleased)
+
+2.1.3 (2011-09-21)
 ------------------
+
 - Display both CMFPlone's package version and profile version in the control 
   panel overview.
   [esteele]
 
 
-2.1.2 - Unreleased
+2.1.2 (2011-09-16)
 ------------------
+
+- Introduced an update method in GroupMembershipControlPanel and
+  UserMembershipControlPanel to seperate setting of variables and template
+  rendering, so it is possible to subclass those classes to add new
+  functionnalities.
+  [vincentfretin]
+
+- Fixed canAddToGroup check in usergroups_usermembership view, apparently 
+  a bad copy and paste from the old prefs_search_macros. It checked against
+  the authenticated user instead of the member we're currently looking at.
+  [vincentfretin]
+
+- On usergroup-groupmembership view, check for each found principal that it
+  can be added to the group. Previously it checked that authenticated user can
+  be added to the group, that is non sense.
+  [vincentfretin]
 
 - On the Type-panel, fix the case when no workflow is set as default workflow.
   Fixes http://dev.plone.org/plone/ticket/11901

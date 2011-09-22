@@ -239,7 +239,8 @@
                                        class="noborder"
                                        name="add:list"
                                        value="value"
-                                         tal:attributes="value this_user/getId" />
+                                       tal:attributes="value this_user/getId;
+                                                       disabled python:this_user.canAddToGroup(view.groupname) and default or 'disabled'" />
                               </td>
 
                               <td>

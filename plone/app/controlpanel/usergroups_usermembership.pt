@@ -10,7 +10,6 @@
 
 <metal:main fill-slot="prefs_configlet_content"
      tal:define="template_id string:@@usergroup-usermembership;
-                 member context/@@plone_portal_state/member;
                  portal context/@@plone_portal_state/portal;
                  userid view/userid;
                  member python:context.portal_membership.getMemberById(userid);
@@ -166,12 +165,7 @@
                                      name="add:list"
                                      value="value"
                                          tal:define="calcId obj/getGroupId | obj/getId;
-                                                     userid userid | nothing;
-                                                     groupname groupname | nothing;
-                                                     member context/@@plone_portal_state/member;
-                                                     m python:userid and member or context.portal_membership.getMemberById(calcId);
-                                                     g python:groupname and groupname or calcId;
-                                                     canAddToGroup python:m.canAddToGroup(g) and ('Manager' not in obj.getRoles() or view.is_zope_manager)"
+                                                     canAddToGroup python:member.canAddToGroup(calcId) and ('Manager' not in obj.getRoles() or view.is_zope_manager)"
                                          tal:attributes="value calcId;
                                                          disabled python:canAddToGroup and default or 'disabled'" />
                             </td>

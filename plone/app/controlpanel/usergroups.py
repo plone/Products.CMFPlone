@@ -572,19 +572,15 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
 class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
-    def __call__(self):
+    def update(self):
         self.groupname = getattr(self.request, 'groupname')
         self.gtool = getToolByName(self, 'portal_groups')
         self.mtool = getToolByName(self, 'portal_membership')
         self.group = self.gtool.getGroupById(self.groupname)
         self.grouptitle = self.group.getGroupTitleOrName() or self.groupname
 
-        # Check that current user can be added to the group as a means of
-        # determining whether users, in general, can be added to the group.
-        currentUser = self.mtool.getAuthenticatedMember()
-        self.canAddUsers = currentUser.canAddToGroup(self.groupname)
-
         self.request.set('grouproles', self.group.getRoles() if self.group else [])
+        self.canAddUsers = True
         if 'Manager' in self.request.get('grouproles') and not self.is_zope_manager:
             self.canAddUsers = False
 
@@ -626,6 +622,8 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
         self.groupMembers = self.getMembers()
 
+    def __call__(self):
+        self.update()
         return self.index()
 
     def isGroup(self, itemName):
@@ -649,7 +647,7 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
 
 class UserMembershipControlPanel(UsersGroupsControlPanelView):
 
-    def __call__(self):
+    def update(self):
         self.userid = getattr(self.request, 'userid')
         self.gtool = getToolByName(self, 'portal_groups')
         self.mtool = getToolByName(self, 'portal_membership')
@@ -689,6 +687,9 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
             self.newSearch = True
 
         self.groups = self.getGroups()
+
+    def __call__(self):
+        self.update()
         return self.index()
 
     def getGroups(self):
