@@ -192,7 +192,7 @@ def setupPortalContent(p):
         front_title = u'Welcome to Plone'
         front_desc = u'Congratulations! You have successfully installed Plone.'
         front_text = None
-        _createObjectByType('Document', p, id='front-page',
+        _createObjectByType('page', p, id='front-page',
                             title=front_title, description=front_desc)
         fp = p['front-page']
         if wftool.getInfoFor(fp, 'review_state') != 'published':
@@ -221,13 +221,13 @@ def setupPortalContent(p):
         fp.setTitle(front_title)
         fp.setDescription(front_desc)
         fp.setLanguage(language)
-        fp.setText(front_text, mimetype='text/html')
+        #fp.setText(front_text, mimetype='text/html')
 
         # Show off presentation mode
-        fp.setPresentation(True)
+        #fp.setPresentation(True)
 
         # Mark as fully created
-        fp.unmarkCreationFlag()
+        #fp.unmarkCreationFlag()
 
         p.setDefaultPage('front-page')
         fp.reindexObject()
