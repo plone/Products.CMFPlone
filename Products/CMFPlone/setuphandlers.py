@@ -27,6 +27,8 @@ from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.Portal import member_indexhtml
 
+import lxml
+
 
 class HiddenProducts(object):
     implements(INonInstallable)
@@ -221,6 +223,15 @@ def setupPortalContent(p):
         fp.setTitle(front_title)
         fp.setDescription(front_desc)
         fp.setLanguage(language)
+        tile_html = '<div class="movable removable deco-tile deco-text-tile"><div class="deco-tile-content">%s</div></div>'
+        tile_html = tile_html % front_text
+        deco_html = '<div class="deco-grid-row"><div class="deco-grid-cell deco-width-full deco-position-leftmost">%s</div></div>'
+        deco_html = deco_html % tile_html
+
+        doc = lxml.etree.fromstring(fp.content)
+        lxml.cssselect.CSSSelector('#content').evaluate(doc)[0].append(lxml.etree.fromstring(deco_html))
+        fp.content = lxml.etree.tostring(doc)
+
         #fp.setText(front_text, mimetype='text/html')
 
         # Show off presentation mode
