@@ -10,7 +10,7 @@ Changelog
 
 - Removed the 'What' row in the event view that displayed the
   keywords; this is already handled by the keywords viewlet.
-  Fixes https://dev.plone.org/plone/ticket/10818
+  Fixes http://dev.plone.org/plone/ticket/10818
   [maurits]
 
 - Make control panel action GS export return actions alphabetically since
