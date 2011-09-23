@@ -109,13 +109,23 @@ class ContextState(BrowserView):
 
         if current_url == canonical_url or current_url == object_url:
             return True
-        elif current_url == object_url + '/view':
+        if not current_url.startswith(object_url):
+            # Cut short.
+            return False
+        # Get the part of the current_url minus the object_url.
+        last_part = current_url.split(object_url)[-1]
+        if not last_part.startswith('/'):
+            # Unexpected
+            return False
+        # Remove the slash from the front:
+        last_part = last_part[1:]
+        if last_part == 'view':
             return True
 
         template_id = self.view_template_id()
-        if current_url == "%s/%s" % (object_url, template_id):
+        if last_part == template_id:
             return True
-        elif current_url == "%s/@@%s" % (object_url, template_id):
+        elif last_part == '@@%s' % template_id:
             return True
 
         return False
