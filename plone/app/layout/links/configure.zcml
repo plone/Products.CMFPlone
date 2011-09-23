@@ -6,28 +6,28 @@
         name="plone.links.favicon"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
         class=".viewlets.FaviconViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <browser:viewlet
         name="plone.links.search"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
         class=".viewlets.SearchViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <browser:viewlet
         name="plone.links.author"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
         class=".viewlets.AuthorViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
     <browser:viewlet
         name="plone.links.RSS"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
         class=".viewlets.RSSViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
 </configure>

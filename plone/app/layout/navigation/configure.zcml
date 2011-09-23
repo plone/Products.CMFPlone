@@ -12,6 +12,6 @@
       class=".defaultpage.DefaultPage"
       permission="zope.Public"
       allowed_interface=".interfaces.IDefaultPage"
-      />    
+      />
 
 </configure>

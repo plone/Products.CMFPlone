@@ -52,7 +52,7 @@
               &nbsp;
             </div>
         </div>
-        
+
         <div metal:use-macro="context/global_statusmessage/macros/portal_message">
             Portal status message
         </div>
@@ -60,28 +60,28 @@
             class="portalMessage info visualClear" id="dashboard-info-message">
             <dt i18n:translate="">Info</dt>
             <dd i18n:translate="info_empty_dashboard">
-                Your dashboard is currently empty. Click the 
-                <em>edit</em> tab to assign some personal 
+                Your dashboard is currently empty. Click the
+                <em>edit</em> tab to assign some personal
                 portlets.
             </dd>
         </dl>
 
         <div id="content">
-            
+
             <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
                 <span tal:replace="name" i18n:name="user_name" />&#8217;s dashboard
             </h1>
-            
-            <div id="content-core">                
-                <div id="dashboard">                
+
+            <div id="content-core">
+                <div id="dashboard">
                     <div class="visualClear"><!-- --></div>
-                    <div id="dashboard-portlets1" 
+                    <div id="dashboard-portlets1"
                       tal:content="structure provider:plone.dashboard1" />
-                    <div id="dashboard-portlets2" 
+                    <div id="dashboard-portlets2"
                       tal:content="structure provider:plone.dashboard2" />
-                    <div id="dashboard-portlets3" 
+                    <div id="dashboard-portlets3"
                       tal:content="structure provider:plone.dashboard3" />
-                    <div id="dashboard-portlets4" 
+                    <div id="dashboard-portlets4"
                       tal:content="structure provider:plone.dashboard4" />
                 </div>
                 <div class="visualClear"><!-- --></div>

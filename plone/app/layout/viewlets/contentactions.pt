@@ -5,7 +5,7 @@
 
     <tal:block define="content_actions view/object_actions;">
 
-        <h5 class="hiddenStructure" 
+        <h5 class="hiddenStructure"
             tal:condition="content_actions | wf_state"
             i18n:translate="heading_actions">Actions</h5>
 
@@ -24,7 +24,7 @@
                     <tal:action tal:content="action/title" i18n:translate="">
                         Action name
                     </tal:action>
-                </a>            
+                </a>
 
             </li>
         </ul>

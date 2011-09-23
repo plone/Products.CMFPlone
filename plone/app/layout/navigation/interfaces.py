@@ -3,7 +3,7 @@ from zope.interface import Interface, Attribute
 class INavigationRoot(Interface):
     """A marker interface for signaling the navigation root.
     """
-    
+
 class IDefaultPage(Interface):
     """Interface for a view that can determine if its context is the
     default page or not.
@@ -19,17 +19,17 @@ class IDefaultPage(Interface):
         """
 
 class INavigationQueryBuilder(Interface):
-    """An object which returns a catalog query when called, used to 
+    """An object which returns a catalog query when called, used to
     construct a navigation tree.
     """
-    
+
     def __call__():
         """Returns a mapping describing a catalog query used to build a
            navigation structure.
         """
 
 class INavtreeStrategy(Interface):
-    """An object that is used by buildFolderTree() to determine how to 
+    """An object that is used by buildFolderTree() to determine how to
     construct a navigation tree.
     """
 
@@ -52,7 +52,7 @@ class INavtreeStrategy(Interface):
         """Inject any additional keys in the node that are needed and return
         the new node.
         """
-        
+
     def showChildrenOf(object):
         """Given an object (usually the root of the site), determine whether
         children should be shown or not. Even if this returns True, if

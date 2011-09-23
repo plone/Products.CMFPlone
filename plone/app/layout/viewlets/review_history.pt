@@ -1,6 +1,6 @@
 <div class="reviewHistory"
      id="review-history"
-     metal:define-macro="review_history" 
+     metal:define-macro="review_history"
      i18n:domain="plone"
      tal:define="history view/workflowHistory;">
     <tal:history tal:condition="history">
@@ -39,7 +39,7 @@
                    tal:content="python:fullname or username or actorid">
                   runyaga
                 </a>
-                <span tal:condition="not: item/actor_home" 
+                <span tal:condition="not: item/actor_home"
                       tal:replace="python:fullname or username or actorid"
                 />
               </td>

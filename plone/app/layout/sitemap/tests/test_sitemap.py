@@ -164,7 +164,7 @@ class SiteMapTestCase(PloneTestCase):
         self.wftool.doActionFor(published, 'publish')
         self.assertTrue('published' == self.wftool.getInfoFor(published, 'review_state'))
         self.logout()
-        
+
         sitemap = getMultiAdapter((self.portal.navroot, self.portal.REQUEST),
                                        name='sitemap.xml.gz')
         xml = self.uncompress(sitemap())
@@ -184,7 +184,7 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('published' == self.wftool.getInfoFor(newsitem, 'review_state'))
         self.site_properties.manage_changeProperties(types_not_searched=['News Item'])
         self.logout()
-        
+
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/newsitem</loc>' in xml)
 
@@ -201,7 +201,7 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('published' == self.wftool.getInfoFor(newsitem, 'review_state'))
         self.site_properties.manage_changeProperties(types_not_searched=['News Item'])
         self.logout()
-        
+
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/newsitem</loc>' in xml)
 
@@ -217,7 +217,7 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('published' == self.wftool.getInfoFor(newsitem, 'review_state'))
         self.site_properties.manage_changeProperties(typesUseViewActionInListings=['News Item'])
         self.logout()
-        
+
         xml = self.uncompress(self.sitemap())
         self.assertTrue('<loc>http://nohost/plone/newsitem/view</loc>' in xml)
 
@@ -226,7 +226,7 @@ class SiteMapTestCase(PloneTestCase):
         Default pages should show up at their parent's url with the greater of
         their or their parent's modification time.
         '''
-        
+
         self.loginAsPortalOwner()
         self.portal.invokeFactory(id='folder', type_name='Folder')
         folder = self.portal.folder
@@ -247,7 +247,7 @@ class SiteMapTestCase(PloneTestCase):
         self.portal.default_page = "published"
         self.portal.portal_catalog.reindexObject(self.portal.published)
         self.logout()
-        
+
         xml = self.uncompress(self.sitemap())
         self.assertFalse('<loc>http://nohost/plone/folder/default</loc>' in xml)
         self.assertTrue('<loc>http://nohost/plone/folder</loc>' in xml)

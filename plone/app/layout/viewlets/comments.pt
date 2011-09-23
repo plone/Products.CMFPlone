@@ -33,7 +33,7 @@
                        i18n:attributes="value label_login_to_add_comments;" />
             </form>
         </tal:login>
-        
+
         <tal:getreplies repeat="reply_dict replies">
             <div class="comment" style=""
                 tal:define="indent python:reply_dict['depth']*2;
@@ -53,9 +53,9 @@
                     <span class="commentTime" tal:content="python:view.format_time(reply.ModificationDate())">
                         8/23/2001 12:40:44 PM
                     </span>
-                    
+
                 </div>
-                
+
                 <div class="commentBody">
                     <!-- <h3 tal:content="reply/pretty_title_or_id">
                         Comment title

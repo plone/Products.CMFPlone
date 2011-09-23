@@ -1,5 +1,5 @@
 from zope.viewlet.interfaces import IViewletManager
-    
+
 class IHtmlHead(IViewletManager):
     """A viewlet manager that sits in the <head> of the rendered page
     """
@@ -50,7 +50,7 @@ class IBelowContentBody(IViewletManager):
 class IBelowContent(IViewletManager):
     """A viewlet manager that sits below the content area
     """
-    
+
 class IPortalFooter(IViewletManager):
     """A viewlet manager that sits in the portal footer
     """

@@ -16,18 +16,18 @@
         allowed_attributes="next previous enabled"
         />
 
-    <browser:viewlet  
+    <browser:viewlet
         name="plone.nextprevious"
         manager="plone.app.layout.viewlets.interfaces.IBelowContent"
         class=".view.NextPreviousViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
-    <browser:viewlet  
+    <browser:viewlet
         name="plone.nextprevious.links"
         manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
         class=".view.NextPreviousLinksViewlet"
-        permission="zope2.View" 
+        permission="zope2.View"
         />
 
 </configure>

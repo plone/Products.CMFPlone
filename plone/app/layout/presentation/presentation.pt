@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
 
 <metal:block use-macro="here/global_defines/macros/defines" />
@@ -21,23 +21,23 @@
         tal:attributes="href string:${context/portal_url}/base.css" />
     <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj"
         tal:attributes="href string:${context/portal_url}/s5_slides.css" />
-    <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" 
+    <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle"
         tal:attributes="href string:${context/portal_url}/s5_outline.css" />
-    <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" 
+    <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint"
         tal:attributes="href string:${context/portal_url}/s5_print.css" />
-    <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" 
+    <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix"
         tal:attributes="href string:${context/portal_url}/s5_opera.css" />
 
     <script type="text/javascript" tal:content="structure string:var base_url=&quot;${here/absolute_url}&quot;;">
       var base_url="/";
     </script>
     <script src="ui/default/slides.js" type="text/javascript"
-          tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>      
+          tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>
 
     <metal:baseslot define-slot="base">
       <base tal:attributes="href context/@@plone/renderBase" /><!--[if lt IE 7]></base><![endif]-->
     </metal:baseslot>
-    
+
 </head>
 <body>
 
@@ -68,7 +68,7 @@
             <h2 tal:content="context/Description" />
             <h3 tal:content="view/authorname" />
         </div>
-        <tal:block content="structure view/content" /> 
+        <tal:block content="structure view/content" />
     </tal:presentation>
 </div>
 
