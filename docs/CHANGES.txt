@@ -8,6 +8,11 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Removed the 'What' row in the event view that displayed the
+  keywords; this is already handled by the keywords viewlet.
+  Fixes https://dev.plone.org/plone/ticket/10818
+  [maurits]
+
 - Make control panel action GS export return actions alphabetically since
   there is no other natural ordering.
   [ggozad]
