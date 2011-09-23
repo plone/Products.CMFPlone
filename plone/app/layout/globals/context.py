@@ -121,6 +121,11 @@ class ContextState(BrowserView):
         last_part = last_part[1:]
         if last_part == 'view':
             return True
+        context = aq_inner(self.context)
+        browserDefault = IBrowserDefault(context, None)
+        fti = browserDefault.getTypeInfo()
+        if fti.getMethodAliases().get(last_part) == '(Default)':
+            return True
 
         template_id = self.view_template_id()
         if last_part == template_id:

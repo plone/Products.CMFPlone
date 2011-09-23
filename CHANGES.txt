@@ -4,6 +4,11 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Treat aliases to the ``(Default)`` view of a content type also as a
+  view template (providing IViewView).
+  Fixes http://dev.plone.org/plone/ticket/8198
+  [maurits]
+
 - Fix possible ZCML load order issue by explicitly loading CMF permissions.
   Fixes http://dev.plone.org/plone/ticket/11869
   [davisagli]

@@ -1,6 +1,7 @@
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 
 from zope.interface import directlyProvides
+from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import _createObjectByType
 from Products.PloneTestCase import PloneTestCase
@@ -138,6 +139,21 @@ class TestContextStateView(GlobalsTestCase):
         self.folder.setLayout('foo_view')
         self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/bar_view'
         self.assertEquals(self.fview.is_view_template(), False)
+        self.assertEquals(self.dview.is_view_template(), False)
+
+    def test_is_view_template_edit(self):
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/edit'
+        self.assertEquals(self.fview.is_view_template(), False)
+        self.assertEquals(self.dview.is_view_template(), False)
+
+    def test_is_view_template_alias(self):
+        browserDefault = IBrowserDefault(self.folder, None)
+        fti = browserDefault.getTypeInfo()
+        aliases = fti.getMethodAliases()
+        aliases['foo_alias'] = '(Default)'
+        fti.setMethodAliases(aliases)
+        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/foo_alias'
+        self.assertEquals(self.fview.is_view_template(), True)
         self.assertEquals(self.dview.is_view_template(), False)
 
     def test_object_url(self):
