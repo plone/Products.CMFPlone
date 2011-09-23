@@ -64,7 +64,9 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
-        return not self.anonymous and len(self._data())
+        return not self.anonymous and \
+               self.data.count > 0 and \
+               len(self._data())
 
     def recent_items(self):
         return self._data()

@@ -58,7 +58,7 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
-        return len(self._data())
+        return self.data.count > 0 and len(self._data())
 
     def published_news_items(self):
         return self._data()
