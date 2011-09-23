@@ -8,6 +8,10 @@ Changelog
 4.1.2 (unreleased)
 ------------------
 
+- Re-enable the getObjPositionInParent index in the portal_atct tool.
+  Fixes http://dev.plone.org/plone/ticket/11151
+  [davisagli]
+
 - Removed the 'What' row in the event view that displayed the
   keywords; this is already handled by the keywords viewlet.
   Fixes http://dev.plone.org/plone/ticket/10818

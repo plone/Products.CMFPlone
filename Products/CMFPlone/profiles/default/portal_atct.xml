@@ -64,7 +64,7 @@
    <criteria>ATListCriterion</criteria>
   </index>
   <index name="getObjPositionInParent"
-     description="The order of an item in its parent folder" enabled="False"
+     description="The order of an item in its parent folder" enabled="True"
      friendlyName="Order in folder"
      i18n:attributes="description; friendlyName">
    <criteria>ATSimpleIntCriterion</criteria>
