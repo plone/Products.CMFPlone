@@ -33,9 +33,12 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         memship.addMember('maurits', 'secret', [], [])
         member = memship.getMemberById('maurits')
         self.assertRaises(Unauthorized, set_own_login_name, member, 'vanrees')
-        # Not even the admin can change the login name of another user.
+        # The admin *should* be able to change the login name of
+        # another user.  See http://dev.plone.org/plone/ticket/11255
         self.loginAsPortalOwner()
-        self.assertRaises(Unauthorized, set_own_login_name, member, 'vanrees')
+        set_own_login_name(member, 'vanrees')
+        users = self.portal.acl_users.source_users
+        self.assertEqual(users.getLoginForUserId('maurits'), 'vanrees')
 
     def testAdminSetOwnLoginName(self):
         memship = self.portal.portal_membership
