@@ -229,7 +229,7 @@ def setupPortalContent(p):
         deco_html = deco_html % tile_html
 
         doc = lxml.etree.fromstring(fp.content)
-        lxml.cssselect.CSSSelector('#content').evaluate(doc)[0].append(lxml.etree.fromstring(deco_html))
+        lxml.cssselect.CSSSelector('[data-panel="content"]').evaluate(doc)[0].append(lxml.etree.fromstring(deco_html))
         fp.content = lxml.etree.tostring(doc)
 
         #fp.setText(front_text, mimetype='text/html')
