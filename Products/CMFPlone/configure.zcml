@@ -16,6 +16,7 @@
   <include package="plone.app.controlpanel" />
   <include package="plone.app.customerize" />
   <include package="plone.app.discussion" />
+  <include package="plone.app.deco" />
   <include package="plone.app.folder" />
   <include package="plone.app.form" />
   <include package="plone.app.i18n" />

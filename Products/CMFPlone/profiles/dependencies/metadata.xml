@@ -9,6 +9,7 @@
     <dependency>profile-Products.TinyMCE:TinyMCE</dependency>
     <dependency>profile-archetypes.referencebrowserwidget:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
+    <dependency>profile-plone.app.deco:default</dependency>
     <dependency>profile-plone.app.imaging:default</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>

@@ -27,6 +27,8 @@ from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFPlone.Portal import member_indexhtml
 
+import lxml
+
 
 class HiddenProducts(object):
     implements(INonInstallable)
@@ -58,19 +60,29 @@ class HiddenProducts(object):
             'plone.portlet.static',
             'plone.portlet.collection',
             'borg.localrole',
+            'plone.formwidget.querystring',
             'plone.keyring',
             'plone.protect',
+            'plone.resource',
             'plone.app.jquerytools',
             'plone.app.blob',
+            'plone.app.blocks',
+            'plone.app.cmsui',
+            'plone.app.collection',
             'plone.app.discussion',
+            'plone.app.deco',
+            'plone.app.dexterity',
+            'plone.app.mediarepository',
             'plone.app.folder',
             'plone.app.imaging',
             'plone.outputfilters',
             'plonetheme.sunburst',
+            'plone.app.page',
             'plone.app.registry',
             'plone.app.search',
+            'plone.app.tiles',
+            'plone.app.standardtiles',
             'plone.app.z3cform',
-
             ]
 
 
@@ -182,7 +194,7 @@ def setupPortalContent(p):
         front_title = u'Welcome to Plone'
         front_desc = u'Congratulations! You have successfully installed Plone.'
         front_text = None
-        _createObjectByType('Document', p, id='front-page',
+        _createObjectByType('page', p, id='front-page',
                             title=front_title, description=front_desc)
         fp = p['front-page']
         if wftool.getInfoFor(fp, 'review_state') != 'published':
@@ -211,13 +223,22 @@ def setupPortalContent(p):
         fp.setTitle(front_title)
         fp.setDescription(front_desc)
         fp.setLanguage(language)
-        fp.setText(front_text, mimetype='text/html')
+        tile_html = '<div class="movable removable deco-tile deco-text-tile"><div class="deco-tile-content">%s</div></div>'
+        tile_html = tile_html % front_text
+        deco_html = '<div class="deco-grid-row"><div class="deco-grid-cell deco-width-full deco-position-leftmost">%s</div></div>'
+        deco_html = deco_html % tile_html
+
+        doc = lxml.etree.fromstring(fp.content)
+        lxml.cssselect.CSSSelector('[data-panel="content"]').evaluate(doc)[0].append(lxml.etree.fromstring(deco_html))
+        fp.content = lxml.etree.tostring(doc)
+
+        #fp.setText(front_text, mimetype='text/html')
 
         # Show off presentation mode
-        fp.setPresentation(True)
+        #fp.setPresentation(True)
 
         # Mark as fully created
-        fp.unmarkCreationFlag()
+        #fp.unmarkCreationFlag()
 
         p.setDefaultPage('front-page')
         fp.reindexObject()
