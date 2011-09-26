@@ -4,6 +4,10 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Make Keyword viewlet link to the new p.a.search view, as well as respect
+  navigation root.
+  Fixes http://dev.plone.org/plone/ticket/12231
+
 - Treat aliases to the ``(Default)`` view of a content type also as a
   view template (providing IViewView).
   Fixes http://dev.plone.org/plone/ticket/8198
