@@ -27,6 +27,10 @@ Changelog
   so that listing macro can be used outside of folder_listing.
   [thomasdesvenain]
 
+- Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
+  Owned.changeOwnership, but a plain User object only.
+  [stefan]
+
 4.2a2 - 2011-08-25
 ------------------
 
