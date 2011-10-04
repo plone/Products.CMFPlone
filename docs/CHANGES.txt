@@ -23,6 +23,9 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/10818
   [maurits]
 
+- Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
+  Owned.changeOwnership, but a plain User object only.
+  [stefan]
 
 4.1.1 (2011-09-21)
 ------------------

@@ -179,6 +179,7 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
                         ['Owner'])
 
         self.utils.changeOwnershipOf(self.folder1, 'new_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[0], [portal_name, 'acl_users'])
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
         self.assertList(self.folder1.get_local_roles_for_userid('new_owner'),
                         ['Owner'])
@@ -190,6 +191,7 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         # Should be able to give ownership to a user in the top level
         # acl_users folder (even if this is not offered TTW).
         self.utils.changeOwnershipOf(self.folder1, 'portal_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[0], ['acl_users'])
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'portal_owner')
         self.assertList(self.folder1.get_local_roles_for_userid('portal_owner'),
                         ['Owner'])
