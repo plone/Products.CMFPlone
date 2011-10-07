@@ -30,7 +30,7 @@
               </li>
               <li>
                 <a href=""
-                   tal:attributes="href string:${context/absolute_url}/prefs_group_details?groupname=${view/group}"
+                   tal:attributes="href string:${context/absolute_url}/@@usergroup-groupdetails?groupname=${view/group}"
                    i18n:translate="label_group_properties">Group Properties</a>
               </li>
               <li>
