@@ -140,7 +140,7 @@
                                         tal:content="python:targetobject.propertyLabel(id).capitalize()">Property Value</label>
 
                                 <div tal:define="propertyitem python:targetobject.getProperty(id);
-                                                 disabled python:(not view.group or view.group.canWriteProperty(id)) and default or 'disabled';"
+                                                 disabled python:None if (not view.group or view.group.canWriteProperty(id)) else 'disabled';"
                                 tal:condition="python:'w' in property.get('mode', 'awd')">
 
                                 <input type="text" name="id" size="35"

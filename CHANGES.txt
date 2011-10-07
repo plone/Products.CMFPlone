@@ -7,7 +7,10 @@ Changelog
 - Forward-port http://dev.plone.org/plone/changeset/52199, which displays both 
   CMFPlone's package and profile versions on the control panel overview.
   [esteele]
-  
+
+- Make a condition in usergroup_groupdetails.pt Chameleon-safe.
+  [stefan]
+
 
 2.2.1 (2011-08-23)
 ------------------
