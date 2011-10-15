@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #
 # CatalogTool tests
 #
@@ -431,7 +432,20 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.login(user2)
         self.failIf(self.catalog(SearchableText='bar'))
 
+    def testSearchIgnoreAccents(self):
+        """PLIP 12110
+        """
+        self.folder.invokeFactory('Document', id='docwithaccents-1', text='Econométrie', title='foo')
+        self.folder.invokeFactory('Document', id='docwithaccents-2', text='Économétrie')
+        self.folder.invokeFactory('Document', id='docwithout-accents', text='ECONOMETRIE')
 
+        self.assertEqual(len(self.catalog(SearchableText='Économétrie')), 3)
+        self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 3)
+        self.assertEqual(len(self.catalog(SearchableText='ECONOMETRIE')), 3)
+                
+                
+
+        
 class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
