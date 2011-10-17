@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.3 (unreleased)
+2.2.3 (2011-10-17)
 ------------------
 
 - Make Keyword viewlet link to the new p.a.search view, as well as respect
