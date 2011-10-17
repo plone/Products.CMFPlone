@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.2.2dev'
+version = '2.2.2'
 
 setup(name='plone.app.controlpanel',
       version=version,

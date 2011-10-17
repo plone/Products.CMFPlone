@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.2 (unreleased)
+2.2.2 (2011-10-17)
 ------------------
 
 - Forward-port http://dev.plone.org/plone/changeset/52199, which displays both 
