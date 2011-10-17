@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.2 - Unreleased
+2.2.2 (2011-10-17)
 ------------------
 
 - Fixed issue where the events, news and recent portlet would fail
