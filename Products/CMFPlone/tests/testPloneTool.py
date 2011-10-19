@@ -143,6 +143,16 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.normalizeString("A String.a#b"),
                          'a-string-a-b')
 
+    def testURLNormalizer(self):
+        # No point testing extensively here, it's done in plone.i18n
+        self.assertEqual(self.utils.normalizeURL("text with spaces"),
+                         "text-with-spaces")
+
+    def testFileNameNormalizer(self):
+        # No point testing extensively here, it's done in plone.i18n
+        self.assertEqual(self.utils.normalizeFileName("file /$ name.pdf"),
+                         "file - name.pdf")
+
     def testTypesToList(self):
         # Make sure typesToList() returns the expected types
         wl = self.utils.typesToList()

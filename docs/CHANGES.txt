@@ -8,6 +8,11 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Add normalizeURL, normalizeFileName methods to PloneTool, since
+  normalizeString does no longer deal with urls/filenames. Allows python
+  scripts to call these instead.
+  [stefan, ggozad]
+
 - Allow users with the Manage Users permission to change the login
   name of other users; specifically this allows them to change the
   email address when this is used as login name.
