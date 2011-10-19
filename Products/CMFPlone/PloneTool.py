@@ -42,6 +42,8 @@ from Products.CMFPlone.utils import safe_hasattr
 from Products.statusmessages.interfaces import IStatusMessage
 from AccessControl.requestmethod import postonly
 from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
+from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 
 # BBB Plone 4.0
 from zope.deprecation import __show__
@@ -1021,17 +1023,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool.normalizeString("one with !@#$!@#$ stuff in the middle")
         'one-with-stuff-in-the-middle'
-
-        the exception to all this is that if there is something that looks like a
-        filename with an extension at the end, it will preserve the last period.
-
-        >>> ptool.normalizeString("this is a file.gif")
-        'this-is-a-file-gif'
-
-        >>> ptool.normalizeString("this is. also. a file.html")
-        'this-is-also-a-file-html'
         """
         return utils.normalizeString(text, context=self)
+
+    security.declarePublic('normalizeURL')
+    def normalizeURL(self, url):
+        """Normalizes a URL according to the language."""
+        return IUserPreferredURLNormalizer(self.REQUEST).normalize(url)
+
+    security.declarePublic('normalizeFileName')
+    def normalizeFileName(self, filename):
+        """Normalizes a filename according to the language."""
+        return IUserPreferredFileNameNormalizer(self.REQUEST).normalize(filename)
 
     security.declarePublic('listMetaTags')
     def listMetaTags(self, context):
