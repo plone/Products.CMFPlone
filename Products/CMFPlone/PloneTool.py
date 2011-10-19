@@ -1021,15 +1021,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool.normalizeString("one with !@#$!@#$ stuff in the middle")
         'one-with-stuff-in-the-middle'
-
-        the exception to all this is that if there is something that looks like a
-        filename with an extension at the end, it will preserve the last period.
-
-        >>> ptool.normalizeString("this is a file.gif")
-        'this-is-a-file-gif'
-
-        >>> ptool.normalizeString("this is. also. a file.html")
-        'this-is-also-a-file-html'
         """
         return utils.normalizeString(text, context=self)
 
