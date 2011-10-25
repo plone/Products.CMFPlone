@@ -98,7 +98,7 @@ class ManageContextualPortlets(BrowserView):
 
     def convert_legacy_portlets(self):
         utils.convert_legacy_portlets(self.context)
-        self.context.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
+        self.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
 
 
 class ManageDashboardPortlets(BrowserView):
