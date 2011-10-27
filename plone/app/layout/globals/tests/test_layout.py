@@ -65,6 +65,7 @@ class TestLayoutView(GlobalsTestCase):
         template = context.folder_listing
         body_class = view.bodyClass(template, view)
         assert 'section-%s'%context.getId() in body_class
+        assert 'site-Members' in body_class
 
 
 def test_suite():

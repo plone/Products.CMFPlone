@@ -141,6 +141,8 @@ class LayoutPolicy(BrowserView):
 
         # section class (optional)
         navroot = portal_state.navigation_root()
+        body_class += " site-%s" % navroot.getId()
+
         contentPath = context.getPhysicalPath()[len(navroot.getPhysicalPath()):]
         if contentPath:
             body_class += " section-%s" % contentPath[0]
