@@ -406,6 +406,8 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 4)
         self.assertEqual(len(self.catalog(SearchableText='ÉCONOMÉTRIE')), 4)
 
+        self.assertEqual(len(self.catalog(SearchableText='econom?trie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='econometr*')), 4)
 
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
         # After adding a group with access rights and containing user2,

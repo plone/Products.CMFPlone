@@ -8,14 +8,13 @@ Created by Mikio Hokari, CMScom and Manabu Terada, CMScom on 2009-09-30.
 import unicodedata
 
 from zope.interface import implements
-from zope.component import queryUtility
 
-from plone.i18n.normalizer.interfaces import IIDNormalizer
 from Products.ZCTextIndex.ISplitter import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
 
 from Products.CMFPlone.UnicodeSplitter.config import rx_U, rxGlob_U, \
             rx_L, rxGlob_L, rx_all, pattern, pattern_g
+from plone.i18n.normalizer.base import baseNormalize
 
 
 def bigram(u, limit=1):
@@ -195,7 +194,6 @@ class I18NNormalizer(object):
     def process(self, lst):
         enc = 'utf-8'
         result = []
-        normalizer = queryUtility(IIDNormalizer)
         for s in lst:
             # This is a hack to get the normalizer working with
             # non-unicode text.
@@ -203,9 +201,10 @@ class I18NNormalizer(object):
                 if not isinstance(s, unicode):
                     s = unicode(s, enc)
             except (UnicodeDecodeError, TypeError):
-                result.append(normalizer.normalize(s))
-            else:
-                result.append(normalizer.normalize(s).encode(enc))
+                pass
+
+            result.append(baseNormalize(s).lower())
+
         return result
 
 try:
