@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #
 # CatalogTool tests
 #
@@ -392,6 +393,19 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # Two documents (aaa, bbb)  should be found when owner does a search using OR
         results = self.catalog(SearchableText='aaa OR bbb')
         self.assertEqual(len(results), 2)
+    
+    def testSearchIgnoresAccents(self):
+        #plip 12110
+        self.folder.invokeFactory('Document', id='docwithaccents1', description='Econométrie')
+        self.folder.invokeFactory('Document', id='docwithaccents2', description='ECONOMETRIE')
+        self.folder.invokeFactory('Document', id='docwithaccents3', description='économétrie')
+        self.folder.invokeFactory('Document', id='docwithaccents4', description='ÉCONOMÉTRIE')
+
+        self.assertEqual(len(self.catalog(SearchableText='econometrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='économétrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='ÉCONOMÉTRIE')), 4)
+
 
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
         # After adding a group with access rights and containing user2,
