@@ -8,6 +8,9 @@
 ##title=wrapper method around to use catalog to get folder contents
 ##
 
+# NOTE: This script is obsolete, use the browser view
+#       @@folderListing in plone.app.contentlisting
+
 mtool = context.portal_membership
 cur_path = '/'.join(context.getPhysicalPath())
 path = {}
