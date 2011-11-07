@@ -1,0 +1,65 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup
+
+Test setup  
+
+*** Test cases ***
+
+Base Overlay Tests
+    Check close on click off form
+    Check close on click close
+
+    Check login by popup  admin  admin
+
+*** Keywords ***
+
+Check close on click off form
+    Goto homepage
+    Click Link  Contact  don't wait
+    Overlay should open
+    Page should contain  Contact form
+    Click Element  css=#exposeMask  don't wait
+    Overlay should close on same page
+    Page should not contain  Contact form
+
+Check close on click close
+    Goto homepage
+    Click Link  Contact  and don't wait
+    Overlay should open
+    Page should contain  Contact form
+    Click Element  css=div.overlay div.close  and don't wait
+    Overlay should close on same page
+    Page should not contain  Contact form
+
+Check login by popup
+    [Arguments]  ${userid}  ${password}
+    Confirm not logged in
+    Click Element  id=personaltools-login  and don't wait
+    Overlay should open
+    Page should contain  Login Name
+    Page should contain  Password
+    Input text  __ac_name  ${userid}
+    Input text  __ac_password  ${password}
+    Click Button  Log in
+    Confirm logged in
+    Page should not contain element  css=div.overlay
+
+
+
+
+Overlay should open
+    Wait until keyword succeeds  1  5  Element Should Be Visible  id=exposeMask
+    Element should be visible  css=div.overlay
+    Element should be visible  css=div.overlay div.close
+
+Overlay should close on same page
+    Wait until keyword succeeds  1  5  Element Should Not Be Visible  id=exposeMask
+    Wait until keyword succeeds  1  5  Page should not contain element  css=div.overlay
+
+Confirm not logged in
+    Page should not contain  id=user-name
+
+Confirm logged in
+    Page should contain element  id=user-name
