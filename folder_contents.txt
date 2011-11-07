@@ -1,0 +1,61 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup  Log in  admin  admin
+
+Test setup  Create Pages
+
+Test teardown  Remove Pages
+
+*** Test cases ***
+
+Reorder Folder Contents
+    Go to homepage
+    Click Contents In Edit Bar
+
+    # Moves the test2 page above the test1 page
+    Should be above  css=tr#folder-contents-item-test1  css=tr#folder-contents-item-test2
+    Reorder Element  folder-contents-item-test1  folder-contents-item-test2
+    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test1
+
+    # Moves the test4 page above the test2 page
+    Reorder Element  folder-contents-item-test4  folder-contents-item-test3
+    Reorder Element  folder-contents-item-test4  folder-contents-item-test1
+    Reorder Element  folder-contents-item-test4  folder-contents-item-test2
+
+    # Moves the test3 page above the test2 page
+    Reorder Element  folder-contents-item-test3  folder-contents-item-test1
+    Reorder Element  folder-contents-item-test3  folder-contents-item-test2
+
+    # The new order is 4 > 3 > 2 > 1
+    Should be above  css=tr#folder-contents-item-test4  css=tr#folder-contents-item-test3
+    Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test2
+    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test1
+
+*** Keywords ***
+
+Create Pages
+    Go to homepage
+    Add Page  test1
+    Go to homepage
+    Add Page  test2
+    Go to homepage
+    Add Page  test3
+    Go to homepage
+    Add Page  test4
+    Go to homepage
+
+Remove Pages
+    Remove Page  test1
+    Remove Page  test2
+    Remove Page  test3
+    Remove Page  test4
+
+Reorder Element
+    [arguments]  ${element}  ${destination}
+
+    Mouse Down  css=#${element} td.draggable
+    Mouse Move  css=#${destination} td.draggable
+    Mouse Up  css=#${element} td.draggable
+    Mouse Out  css=#${element} td.draggable
+
