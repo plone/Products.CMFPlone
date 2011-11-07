@@ -69,14 +69,6 @@
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="plone-content"
-      handler="Products.CMFPlone.setuphandlers.importContent"
-      title="Plone Content Import"
-      description="Plone content import.">
-   <depends name="plone-final" />
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
       name="plone-final"
       handler="Products.CMFPlone.setuphandlers.importFinalSteps"
       title="Final Plone Config"

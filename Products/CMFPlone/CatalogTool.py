@@ -24,7 +24,6 @@ from Products.CMFCore.CatalogTool import _mergedLocalRoles
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.ZCatalog.ZCatalog import ZCatalog
-from Products.Archetypes.interfaces import IExtensibleMetadata
 from zope.component import queryMultiAdapter
 from zope.interface import Interface
 from zope.interface import implements
@@ -265,11 +264,9 @@ def getIcon(obj):
     return obj.getIcon(True)
 
 
-@indexer(IExtensibleMetadata)
+@indexer(Interface)
 def location(obj):
     return obj.getField('location').get(obj)
-
-
 
 
 class CatalogTool(PloneBaseTool, BaseTool):

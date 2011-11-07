@@ -2,14 +2,8 @@
 <object name="portal_skins" meta_type="Plone Skins Tool" allow_any="False"
    cookie_persistence="False" default_skin="Plone Default"
    request_varname="plone_skin">
- <object name="ATContentTypes" meta_type="Filesystem Directory View"
-    directory="Products.ATContentTypes:skins/ATContentTypes"/>
- <object name="referencebrowser" meta_type="Filesystem Directory View"
-    directory="archetypes.referencebrowserwidget:skins/referencebrowser"/>
  <object name="LanguageTool" meta_type="Filesystem Directory View"
     directory="Products.PloneLanguageTool:skins/LanguageTool"/>
- <object name="archetypes" meta_type="Filesystem Directory View"
-    directory="Products.Archetypes:skins/archetypes"/>
  <object name="cmf_legacy" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/cmf_legacy"/>
  <object name="custom" meta_type="Folder"/>
@@ -45,9 +39,6 @@
     directory="Products.CMFPlone:skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
   <layer name="custom"/>
-  <layer name="ATContentTypes"/>
-  <layer name="referencebrowser"/>
-  <layer name="archetypes"/>
   <layer name="mimetypes_icons"/>
   <layer name="PasswordReset"/>
   <layer name="LanguageTool"/>

@@ -24,9 +24,6 @@
      interface="plone.app.viewletmanager.interfaces.IViewletSettingsStorage"
      factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"/>
   <utility
-     interface="Products.ATContentTypes.interface.IATCTTool"
-     object="portal_atct"/>
-  <utility
      interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
      object="portal_actionicons"/>
   <utility

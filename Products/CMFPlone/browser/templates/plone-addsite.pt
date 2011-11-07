@@ -92,15 +92,18 @@
 
         <div class="formHelp" />
 
-        <input type="checkbox" name="setup_content:boolean" />
+        <input type="checkbox" name="setup_content:boolean" checked="checked" />
 
         <span i18n:translate="">
             Should the default example content be added to the site?
         </span>
       </div>
+
       <tal:content tal:condition="not:advanced">
         <input type="hidden" name="setup_content:boolean" value="true" />
       </tal:content>
+
+
 
       <tal:baseprofile condition="python: len(base_profiles) > 1">
         <div class="field">

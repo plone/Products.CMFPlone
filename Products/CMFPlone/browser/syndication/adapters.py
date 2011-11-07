@@ -13,7 +13,6 @@ from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import IFeedItem
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.ATContentTypes.interfaces.file import IFileContent
 from plone.uuid.interfaces import IUUID
 from zope.cachedescriptors.property import Lazy as lazy_property
 
@@ -33,6 +32,12 @@ try:
     from plone.namedfile.interfaces import INamedField
 except ImportError:
     class INamedField(Interface):
+        pass
+# or without ATContentTypes
+try:
+    from Products.ATContentTypes.interfaces.file import IFileContent
+except ImportError:
+    class IFileContent(Interface):
         pass
 
 

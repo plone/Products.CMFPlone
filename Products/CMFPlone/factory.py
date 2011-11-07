@@ -10,7 +10,7 @@ from Products.CMFPlone.Portal import PloneSite
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
-_CONTENT_PROFILE = 'Products.CMFPlone:plone-content'
+_CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
 _IMREALLYPLONE4 = True
@@ -23,6 +23,7 @@ class HiddenProfiles(object):
         return [_DEFAULT_PROFILE,
                 _CONTENT_PROFILE,
                 u'Products.Archetypes:Archetypes',
+                u'Products.ATContentTypes:default',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
                 u'Products.CMFFormController:CMFFormController',
@@ -51,11 +52,18 @@ class HiddenProfiles(object):
                 u'plone.app.blob:file-replacement',
                 u'plone.app.blob:image-replacement',
                 u'plone.app.blob:sample-type',
+                u'plone.app.collection:default',
+                u'plone.app.contenttypes:default',
+                u'plone.app.dexterity:default',
                 u'plone.app.discussion:default',
+                u'plone.app.event.at:default',
+                u'plone.app.event.dx:default',
                 u'plone.app.folder:default',
                 u'plone.app.imaging:default',
                 u'plone.app.jquery:initial-upgrade',
                 u'plone.app.search:default',
+                u'plone.formwidget.querystring:default',
+                u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',
                 u'collective.z3cform.datetimewidget:default',
                 ]
@@ -88,7 +96,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
     if setup_content:
         setup_tool.runAllImportStepsFromProfile(
-                        'profile-%s' % _CONTENT_PROFILE)
+            'profile-%s' % _CONTENT_PROFILE)
 
     props = dict(
         title=title,

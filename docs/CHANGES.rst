@@ -8,6 +8,13 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Merged PLIP #12344: Use Dexterity-based core content types.
+
+  * Avoid including ATContentTypes and Archetypes as a dependency.
+  * Install the plone.app.contenttypes profile for new sites.
+
+  [davisagli et al]
+
 - Merged PLIP #13270: Move presentation mode out of core.
   If the feature is still desired, use the plone.app.s5slideshow add-on.
   [davisagli]

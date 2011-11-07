@@ -14,6 +14,7 @@
     <meta:provides feature="plone-41" />
     <meta:provides feature="plone-42" />
     <meta:provides feature="plone-43" />
+    <meta:provides feature="plone-44" />
     <meta:provides feature="plone-5" />
 
     <!-- Exclude directives need to be executed before the ZCML file would

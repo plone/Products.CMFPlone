@@ -21,15 +21,6 @@
       />
 
   <genericsetup:registerProfile
-      name="plone-content"
-      title="Plone Initial Content"
-      directory="profiles/content"
-      description="Extension profile to configure initial content"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
-
-  <genericsetup:registerProfile
       name="testfixture"
       title="Plone Test Fixture"
       directory="profiles/testfixture"
@@ -37,5 +28,5 @@
       for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-
+ 
 </configure>
