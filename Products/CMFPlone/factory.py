@@ -11,6 +11,7 @@ from Products.CMFPlone.Portal import PloneSite
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _CONTENT_PROFILE = 'Products.CMFPlone:plone-content'
+_ATCONTENTTYPES_PROFILE = 'Products.CMFPlone:plone-atcontenttypes'
 
 # A little hint for PloneTestCase
 _IMREALLYPLONE4 = True
@@ -22,6 +23,7 @@ class HiddenProfiles(object):
     def getNonInstallableProfiles(self):
         return [_DEFAULT_PROFILE,
                 _CONTENT_PROFILE,
+                _ATCONTENTTYPES_PROFILE,
                 u'Products.Archetypes:Archetypes',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
@@ -83,8 +85,11 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
+    if create_atcontenttypes:
+        setup_tool.runAllImportStepsFromProfile('profile-%s' % _ATCONTENTTYPES_PROFILE)
     if setup_content:
         setup_tool.runAllImportStepsFromProfile('profile-%s' % _CONTENT_PROFILE)
+        
 
     props = dict(
         title=title,

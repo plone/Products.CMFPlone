@@ -39,6 +39,33 @@
                     extension_profiles profiles/extensions;
                     advanced request/advanced|nothing;">
 
+      <div>
+        <ul>
+          <li>
+            <a href="#"
+               tal:condition="advanced"
+               tal:attributes="href string:${context/absolute_url}/@@plone-addsite?site_id=Plone"
+               i18n:translate="">
+               Default 
+             </a>
+             <span tal:condition="not:advanced" i18n:translate="">
+               Default 
+             </span>
+           </li>
+          <li>
+            <a href="#"
+               tal:condition="not: advanced" 
+               tal:attributes="href string:${context/absolute_url}/@@plone-addsite?site_id=Plone&advanced=1"
+               i18n:translate="">
+               Advanced
+            </a>
+            <span tal:condition="advanced" i18n:translate="">
+               Advanced
+            </span>
+          </li>
+        </ul>
+      </div>
+
       <div class="field">
         <label for="site_id" i18n:translate="">
           Path identifier
@@ -96,9 +123,25 @@
             Should the default example content be added to the site?
         </span>
       </div>
+
+      <div class="field" tal:condition="advanced">
+        <label for="create_atcontenttypes" i18n:translate="">Add archetype-based content-types</label>
+
+        <div class="formHelp" />
+
+        <input type="checkbox" name="create_atcontenttypes:boolean" checked="checked" />
+
+        <span i18n:translate="">
+            Should the default content-types be activated? 
+        </span>
+      </div>
+
       <tal:content tal:condition="not:advanced">
+        <input type="hidden" name="create_atcontenttypes:boolean" value="true" />
         <input type="hidden" name="setup_content:boolean" value="true" />
       </tal:content>
+
+
 
       <tal:baseprofile condition="python: len(base_profiles) > 1">
         <div class="field">
@@ -181,7 +224,7 @@
         <input type="submit" name="submit" value="Create Plone Site"
                i18n:attributes="value;" />
       </div>
-
+      
   </form>
   </body>
 </html>
