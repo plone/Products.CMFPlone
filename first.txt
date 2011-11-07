@@ -9,3 +9,37 @@ Test setup
 
 Goto homepage
     Goto homepage
+
+Add a page
+    Click link  document
+    Input text  title  Welcome Home
+    Click button  Save
+    Page should contain  Welcome Home
+
+Edit page
+    Click link  Edit
+    Input text  description  There is no place like home
+    Click button  Save
+    Page should contain  There is no place like home
+
+
+Display history
+    Click link  History  don't wait
+    Wait until page contains  css=.historyRecord
+    Page should contain  Edited
+
+
+Cancel delete
+    Click link  delete  don't wait
+    Wait until page contains element  input.standalone
+    Click button  Cancel  don't wait
+    Page should contain  Welcome home
+
+
+Delete content
+    Click link  delete  don't wait
+    Wait until page contains element  input.destructive
+    Click button  Delete
+    Page should not contain  Welcome home
+
+
