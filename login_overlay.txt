@@ -1,0 +1,54 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup
+
+Test setup  Log out  
+
+*** Test cases ***
+
+OpenLoginOverlay
+    # test that click on log-in opens overlay
+    Open login overlay
+    Wait Until Page Contains Element  css=div.overlay-ajax form#login_form
+    Wait Until Page Contains Element  css=#exposeMask
+
+OpenCloseLoginOverlay
+    Open login overlay
+
+    # clicking anywhere else should close overlay
+    Click Element  css=#exposeMask  don't wait
+    Wait until keyword succeeds  1  5  Page Should Not Contain Element  css=#login-form
+
+SubmitEmptyLogin
+    Open login overlay
+
+    # click on empty form submit and look for error in overlay
+    Click Button  submit  don't wait
+
+    Wait Until Page Contains Element  css=dl.portalMessage.error
+    Wait Until Page Contains Element  css=div.overlay-ajax form#login_form
+    Wait Until Page Contains  	      Error
+
+SubmitLogin
+    Open login overlay
+
+    Page should contain element  __ac_name
+    Input text  __ac_name      admin
+    Input text  __ac_password  admin
+    Click Button  Log in
+
+    Wait Until Page Contains Element  css=#personaltools-logout
+
+    # overlay should be gone
+    Wait until keyword succeeds  1  5  Page Should Not Contain Element  css=div.overlay-ajax form#login_form
+
+*** Keywords ***
+
+Open login overlay
+    Click Element  css=#personaltools-login  don't wait
+    Wait until keyword succeeds  1  5  Page Should Contain Element  css=form#login_form
+
+Logout and go to homepage
+    Log out
+    Goto homepage

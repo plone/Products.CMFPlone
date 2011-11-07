@@ -19,6 +19,8 @@ Start browser and wake plone up
     ${previous}  Register keyword to run on failure  Close Browser
     Wait until keyword succeeds  2min  3s  Open Browser  ${ZOPE_URL}  browser=${BROWSER}
     Register keyword to run on failure  ${previous}
+
+    Maximize browser window
     
     Set Selenium timeout  30s
     Wait until keyword succeeds  30s  1s  Log in  admin  admin
