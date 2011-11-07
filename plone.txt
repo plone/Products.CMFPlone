@@ -1,11 +1,12 @@
 *** Settings ***
-Library     SeleniumLibrary  run_on_failure=Capture Page Screenshot
+Resource  library-settings.txt
 
 *** Variables ***
 
 ${PORT} =  8080
 ${ZOPE_URL} =  http://localhost:${PORT}
 ${PLONE_URL} =  ${ZOPE_URL}/Plone
+${BROWSER} =  Firefox
 
 *** Keywords ***
 
@@ -16,7 +17,7 @@ Start browser and wake plone up
     Set Selenium timeout  3s
     
     ${previous}  Register keyword to run on failure  Close Browser
-    Wait until keyword succeeds  2min  3s  Open Browser  ${ZOPE_URL}
+    Wait until keyword succeeds  2min  3s  Open Browser  ${ZOPE_URL}  browser=${BROWSER}
     Register keyword to run on failure  ${previous}
     
     Set Selenium timeout  30s
