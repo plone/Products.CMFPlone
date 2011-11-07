@@ -200,6 +200,7 @@ class AddPloneSite(BrowserView):
                 title=form.get('title', ''),
                 profile_id=form.get('profile_id', _DEFAULT_PROFILE),
                 extension_ids=form.get('extension_ids', ()),
+                create_atcontenttypes=form.get('create_atcontenttypes', False),
                 setup_content=form.get('setup_content', False),
                 default_language=form.get('default_language', 'en'),
                 )

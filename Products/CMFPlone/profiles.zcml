@@ -37,5 +37,13 @@
       for="Products.CMFPlone.interfaces.ITestCasePloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+ 
+  <genericsetup:registerProfile
+      name="atcontenttypes"
+      title="Archetypes Content-Types for Plone"
+      directory="profiles/atcontenttypes"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
 
 </configure>
