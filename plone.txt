@@ -1,5 +1,5 @@
 *** Settings ***
-Library     SeleniumLibrary  run_on_failure=Capture Page Screenshot
+Resource  library-settings.txt
 
 *** Variables ***
 
