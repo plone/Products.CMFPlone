@@ -44,3 +44,18 @@ Log in
     Input text  __ac_password  ${password}
     Click Button  Log in
     Go to  ${PLONE_URL}
+
+Open Menu
+    [Arguments]  ${elementId}
+    Element Should Not Be Visible  css=dl#${elementId} dd.actionMenuContent
+    Click link  css=dl#${elementId} dt.actionMenuHeader a  don't wait
+    Wait until keyword succeeds  1  5  Element Should Be Visible  css=dl#${elementId} dd.actionMenuContent
+
+Open User Menu
+    Open Menu  portal-personaltools
+
+Open Add New Menu
+    Open Menu  plone-contentmenu-factories
+
+Open Display Menu
+    Open Menu  plone-contentmenu-display
