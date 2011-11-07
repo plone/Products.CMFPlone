@@ -39,7 +39,7 @@
       />
  
   <genericsetup:registerProfile
-      name="atcontenttypes"
+      name="plone-atcontenttypes"
       title="Archetypes Content-Types for Plone"
       directory="profiles/atcontenttypes"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"

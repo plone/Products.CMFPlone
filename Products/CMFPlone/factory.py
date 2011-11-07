@@ -71,7 +71,8 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                  create_userfolder=True, email_from_address='',
                  email_from_name='', validate_email=True,
                  profile_id=_DEFAULT_PROFILE, snapshot=False,
-                 extension_ids=(), setup_content=True, default_language='en'):
+                 extension_ids=(), setup_content=True, 
+                 create_atcontenttypes=True, default_language='en'):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
