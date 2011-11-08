@@ -1,0 +1,110 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup  Log in  admin  admin
+
+Test setup  
+
+*** Test cases ***
+
+Create Document
+    [Tags]  action-menu
+    Click Link  Page
+    Input Text  title  An actionsmenu page
+    Click Button  Save
+
+Create Folder
+    [Tags]  action-menu
+    Click Link  css=li#portaltab-index_html a
+    Click Link  Folder
+    Input Text  title  An actionsmenu folder
+    Click Button  Save
+
+Content Menu
+    [Tags]  action-menu
+    Click Link  An actionsmenu page
+    Element Should Not Be Visible  css=a#delete
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Be Visible  css=a#delete
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Not Be Visible  css=a#delete
+
+Switching Actions Menu
+    [Tags]  action-menu
+    Click Link  An actionsmenu page
+    Element Should Not Be Visible  css=a#delete
+    Element Should Not Be Visible  css=a#advanced
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Be Visible  css=a#delete
+    Element Should Not Be Visible  css=a#advanced
+    Mouse Over  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a
+    Element Should Not Be Visible  css=a#delete
+    Element Should Be Visible  css=a#advanced
+    Mouse Over  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
+    Element Should Be Visible  css=a#delete
+    Element Should Not Be Visible  css=a#advanced
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Not Be Visible  css=a#delete
+    Element Should Not Be Visible  css=a#advanced
+
+Clicking outside of Actions Menu
+    [Tags]  action-menu
+    Click Link  An actionsmenu page
+    Element Should Not Be Visible  css=a#delete
+    Element Should Not Be Visible  css=a#advanced
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Be Visible  css=a#delete
+    Element Should Not Be Visible  css=a#advanced
+    Mouse Down  css=h1
+    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  css=a#delete
+    Element Should Not Be Visible  css=a#advanced
+
+Publish Document
+    Click Link  An actionsmenu page
+    Page Should Contain Element  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a span.state-private
+    Click Link  Publish
+    Page Should Contain Element  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a span.state-published
+    Click Link  Send back
+    Page Should Contain Element  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a span.state-private
+
+Copy Document
+    Click Link  An actionsmenu page
+    Click Link  Copy  don't wait
+    Wait until keyword succeeds  10s  1s  Page Should Contain  An actionsmenu page copied.
+    Click Link  An actionsmenu folder
+    Click Link  Paste  don't wait
+    Wait until keyword succeeds  10s  1s  Page Should Contain  Item(s) pasted.
+    Click Link  Contents
+    Xpath Should Match X Times  //table[@id = 'listing-table']/tbody/tr  1
+    Click Button  Paste
+    Xpath Should Match X Times  //table[@id = 'listing-table']/tbody/tr  2
+
+Delete Document
+    [Tags]  action-menu
+    Click Link  An actionsmenu page
+    Element Should Not Be Visible  css=a#delete
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Be Visible  css=a#delete
+    Click Overlay Link  Delete
+    Page Should Contain  Do you really want to delete this item?
+    Click Button  css=form#delete_confirmation input.destructive
+
+Delete Folder
+    [Tags]  action-menu
+    Click Link  An actionsmenu folder
+    Element Should Not Be Visible  css=a#delete
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Be Visible  css=a#delete
+    Click Overlay Link  Delete
+    Page Should Contain  Do you really want to delete this folder and all its contents?
+    Click Button  css=form#delete_confirmation input.destructive
+
+*** Keywords ***
+
+Click Overlay Link
+    [Arguments]  ${element}
+    Click Link  ${element}  don't wait
+    Wait Until Page Contains Element  css=div.pb-ajax div#content-core
+
+Goto homepage
+    Goto homepage
