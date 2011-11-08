@@ -24,6 +24,18 @@ Add Calendar Portlet
     then I should see MoTuWeThFrSaSu in the right column
 
 
+Delete A Portlet
+
+    Given the view Manage portlets on Plone
+    when I delete the portlet Log in from the left column
+    then I should not see Log in in the left column
+    Given the view Manage portlets on Plone
+    when I delete the portlet Calendar from the right column
+    then I should not see Calendar in the right column
+
+
+
+
 ** Keywords **
 
 Given the view ${view} on ${content}
@@ -42,13 +54,29 @@ when I add the portlet ${portlet} to the right column
     Select from list  xpath=//div[@id="portletmanager-plone-rightcolumn"]//select  ${portlet}
 
 
+when I delete the portlet ${portlet} from the left column
+    Click Link  xpath=//div[@id="portal-column-one"]//div[@class="portletHeader" and contains(.,"${portlet}")]//a[@class="delete"]  don't wait
+    Wait until keyword succeeds  1s  10s  Flex Element Should not exist  xpath=//div[@id="portal-column-one"]//div[@class="portletHeader" and contains(.,"${portlet}")]
+
+
+when I delete the portlet ${portlet} from the right column
+    Click Link  xpath=//div[@id="portal-column-two"]//div[@class="portletHeader" and contains(.,"${portlet}")]//a[@class="delete"]  don't wait
+    Wait until keyword succeeds  1s  10s  Flex Element Should not exist  xpath=//div[@id="portal-column-two"]//div[@class="portletHeader" and contains(.,"${portlet}")]
+
+
 then I should see ${text} in the left column
     Element should contain  portal-column-one  ${text}
 
-    
 
 then I should see ${text} in the right column
     Element should contain  portal-column-two  ${text}
 
+
+then I should not see ${text} in the left column
+    Flex Element should not exist  xpath=//div[@id="portal-column-one" and contains(.,"${text}")]
+
+
+then I should not see ${text} in the right column
+    Flex Element should not exist  xpath=//div[@id="portal-column-two" and contains(.,"${text}")]
 
 
