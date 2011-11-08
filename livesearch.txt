@@ -3,36 +3,12 @@ Resource  plone.txt
 
 Suite setup  Log in  admin  admin
 
-Test setup  
+Test setup  Create Pages and Folder
+
+Test teardown  Remove Pages and Folder
 
 *** Test cases ***
 
-Create Document
-    [Tags]  livesearch
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  A livesearch test page
-    Click Button  Save
-
-Create Folder
-    [Tags]  livesearch
-    Click Link  css=li#portaltab-index_html a
-    Click Link  Folder
-    Input Text  title  A livesearch test folder
-    Click Button  Save
-
-Create Sub Document 1
-    [Tags]  livesearch
-    Click Link  css=li#portaltab-a-livesearch-test-folder a
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  A livesearch test page 1
-    Click Button  Save
-
-Create Sub Document 2
-    [Tags]  livesearch
-    Click Link  css=li#portaltab-a-livesearch-test-folder a
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  A livesearch test page 2
-    Click Button  Save
 
 Livesearch For pages
     [Tags]  livesearch
@@ -50,8 +26,43 @@ Livesearch Within folder
     Select Checkbox  css=input#searchbox_currentfolder_only
     Count Livesearch Items For  livesearch test page  3
 
+
+*** Keywords ***
+
+Create Pages and Folder
+    Create Document
+    Create Folder
+    Create Sub Document 1
+    Create Sub Document 2
+
+Create Document
+    Click Link  css=#plone-contentmenu-factories a#document
+    Input Text  title  A livesearch test page
+    Click Button  Save
+
+Create Folder
+    Click Link  css=li#portaltab-index_html a
+    Click Link  Folder
+    Input Text  title  A livesearch test folder
+    Click Button  Save
+
+Create Sub Document 1
+    Click Link  css=li#portaltab-a-livesearch-test-folder a
+    Click Link  css=#plone-contentmenu-factories a#document
+    Input Text  title  A livesearch test page 1
+    Click Button  Save
+
+Create Sub Document 2
+    Click Link  css=li#portaltab-a-livesearch-test-folder a
+    Click Link  css=#plone-contentmenu-factories a#document
+    Input Text  title  A livesearch test page 2
+    Click Button  Save
+
+Remove Pages and Folder
+    Delete Document
+    Delete Folder
+
 Delete Document
-    [Tags]  livesearch
     Click Link  A livesearch test page
     Element Should Not Be Visible  css=a#delete
     Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
@@ -61,7 +72,6 @@ Delete Document
     Click Button  css=form#delete_confirmation input.destructive
 
 Delete Folder
-    [Tags]  livesearch
     Click Link  A livesearch test folder
     Element Should Not Be Visible  css=a#delete
     Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
@@ -69,8 +79,6 @@ Delete Folder
     Click Overlay Link  Delete
     Page Should Contain  Do you really want to delete this folder and all its contents?
     Click Button  css=form#delete_confirmation input.destructive
-
-*** Keywords ***
 
 Count Livesearch Items For
     [Arguments]  ${string}  ${count}
