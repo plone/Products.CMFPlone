@@ -13,7 +13,6 @@ ${CLEAR_SELECTION} =  css=#foldercontents-clearselection
 *** Test cases ***
 
 Test Select All
-    [tags]  current
     Go to homepage
     Click Contents In Edit Bar
 
@@ -51,6 +50,16 @@ Cut Paste Element
     Page Should Contain  1 item(s) cut.
     Click Button  Paste
     Page Should Contain Element  css=#folder-contents-item-test1
+
+Test Rename Element
+    Go to homepage
+    Click Contents In Edit Bar
+
+    Select Checkbox  css=#cb_test1
+    Click Button  Rename
+    Input Text  css=#test1_title  TEST1
+    Click Button  Rename All
+    Page Should Contain  TEST1
 
 Delete Element
     Go to homepage
