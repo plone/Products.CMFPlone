@@ -1,18 +1,30 @@
 *** Settings ***
 Resource  plone.txt
 
-Suite setup  Log in  admin  admin
+Suite setup  Setup
 
-Test setup  Create Pages
-
-Test teardown  Remove Pages
+Suite teardown  Remove Pages
 
 *** Test cases ***
 
-Copy Elements
+Copy Element
     Go to homepage
     Click Contents In Edit Bar
-    Copy test1
+
+    Select Checkbox  css=#cb_test1
+    Click Button  Copy
+    Page Should Contain  1 item(s) copied.
+    Click Button  Paste
+    Page Should Contain Element  css=#folder-contents-item-copy_of_test1
+
+Delete Element
+    Go to homepage
+    Click Contents In Edit Bar
+
+    Select Checkbox  css=#cb_copy_of_test1
+    Click Button  Delete
+    Page Should Contain  Item(s) deleted.
+    Page Should Not Contain Element  css=#folder-contents-item-copy_of_test1    
 
 Reorder Folder Contents
     Go to homepage
@@ -39,6 +51,10 @@ Reorder Folder Contents
 
 *** Keywords ***
 
+Setup
+    Log in  admin  admin
+    Create Pages
+
 Create Pages
     Go to homepage
     Add Page  test1
@@ -63,12 +79,4 @@ Reorder Element
     Mouse Move  css=#${destination} td.draggable
     Mouse Up  css=#${element} td.draggable
     Mouse Out  css=#${element} td.draggable
-
-Copy ${element}
-    Select Checkbox  css=#cb_${element}
-	Click Button  Copy
-	Page Should Contain  1 item(s) copied.
-	Click Button  Paste
-	Page Should Contain Element  css=#folder-contents-item-copy_of_${element}
-
 
