@@ -5,9 +5,33 @@ Suite setup  Setup
 
 Suite teardown  Remove Pages
 
+*** Variables ***
+
+${SELECT_ALL} =  css=#foldercontents-selectall
+${CLEAR_SELECTION} =  css=#foldercontents-clearselection
+
 *** Test cases ***
 
-Copy Element
+Test Select All
+    Go to homepage
+    Click Contents In Edit Bar
+
+    # We have 4 pages on Plone site's root
+    Page Should Contain Element  ${SELECT_ALL}
+    Click Element  ${SELECT_ALL}
+    Page Should Contain  All 4 items in this folder are selected.
+    Page Should Contain Element  ${CLEAR_SELECTION}
+    Click Element  ${CLEAR_SELECTION}
+    Page Should Contain Element  ${SELECT_ALL}
+
+    # XXX: There's a bug in the implementation of this: if I select all items
+    # and then I click on one checkbox, I have no longer selected all items
+    # ergo, I must see the Select All link again, but that is not happening
+    Click Element  ${SELECT_ALL}
+    Select Checkbox  css=#cb_test1
+    Page Should Contain Element  ${SELECT_ALL}
+
+Copy Paste Element
     Go to homepage
     Click Contents In Edit Bar
 
@@ -16,6 +40,26 @@ Copy Element
     Page Should Contain  1 item(s) copied.
     Click Button  Paste
     Page Should Contain Element  css=#folder-contents-item-copy_of_test1
+
+Cut Paste Element
+    Go to homepage
+    Click Contents In Edit Bar
+
+    Select Checkbox  css=#cb_test1
+    Click Button  Cut
+    Page Should Contain  1 item(s) cut.
+    Click Button  Paste
+    Page Should Contain Element  css=#folder-contents-item-test1
+
+Test Rename Element
+    Go to homepage
+    Click Contents In Edit Bar
+
+    Select Checkbox  css=#cb_test1
+    Click Button  Rename
+    Input Text  css=#test1_title  TEST1
+    Click Button  Rename All
+    Page Should Contain  TEST1
 
 Delete Element
     Go to homepage
@@ -30,10 +74,16 @@ Reorder Folder Contents
     Go to homepage
     Click Contents In Edit Bar
 
-    # Moves the test2 page above the test1 page
+    # Original order
     Should be above  css=tr#folder-contents-item-test1  css=tr#folder-contents-item-test2
+    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test3
+    Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test4
+
+    # Moving items could fail on a fast computer
+    Set Selenium Speed  0.1 seconds
+
+    # Moves the test2 page above the test1 page
     Reorder Element  folder-contents-item-test1  folder-contents-item-test2
-    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test1
 
     # Moves the test4 page above the test2 page
     Reorder Element  folder-contents-item-test4  folder-contents-item-test3
@@ -44,10 +94,36 @@ Reorder Folder Contents
     Reorder Element  folder-contents-item-test3  folder-contents-item-test1
     Reorder Element  folder-contents-item-test3  folder-contents-item-test2
 
+    # Go back to normal speed
+    Set Selenium Speed  0 seconds
+
     # The new order is 4 > 3 > 2 > 1
     Should be above  css=tr#folder-contents-item-test4  css=tr#folder-contents-item-test3
     Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test2
     Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test1
+
+    # Moving items could fail on a fast computer
+    Set Selenium Speed  0.1 seconds
+
+    # Moves the test1 page above the test4 page
+    Reorder Element  folder-contents-item-test1  folder-contents-item-test2
+    Reorder Element  folder-contents-item-test1  folder-contents-item-test3
+    Reorder Element  folder-contents-item-test1  folder-contents-item-test4
+
+    # Moves the test2 page above the test4 page
+    Reorder Element  folder-contents-item-test2  folder-contents-item-test3
+    Reorder Element  folder-contents-item-test2  folder-contents-item-test4
+
+    # Moves the test3 page above the test4 page
+    Reorder Element  folder-contents-item-test3  folder-contents-item-test4
+
+    # Go back to normal speed
+    Set Selenium Speed  0 seconds
+
+    # Original order
+    Should be above  css=tr#folder-contents-item-test1  css=tr#folder-contents-item-test2
+    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test3
+    Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test4
 
 *** Keywords ***
 
