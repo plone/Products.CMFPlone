@@ -1,10 +1,13 @@
  Robot-Framework Example Buildout:
- 
+===================================
+
  https://github.com/plone/buildout.coredev/tree/4.1-robot
  
- How to get started with Robot Framework:
+How to get started with Robot Framework:
+========================================
  
- Fork the 4.1-robot repository:
+Fork the 4.1-robot repository:
+------------------------------
  
 
     Go to https://github.com/plone/buildout.coredev/tree/4.1-robot
@@ -14,7 +17,8 @@
     A new fork will be available at https://github.com/<YOUR_GITHUB_USERNAME>/buildout.coredev/
 
    
- Clone and create the Robot Framework coredev buildout:
+Clone and create the Robot Framework coredev buildout:
+------------------------------------------------------
  
    $ git clone https://github.com/<YOUR_GITHUB_USERNAME>/buildout.coredev
    $ cd buildout.coredev
