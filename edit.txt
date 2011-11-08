@@ -1,17 +1,11 @@
 *** Settings ***
 Resource  plone.txt
 
-Suite setup  Log in  admin  admin
+Suite setup  Setup
 
-Test setup  
+Suite teardown  Remove Editing Pages
 
 *** Test cases ***
-
-Create Document
-    [Tags]  edit
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  An edit test page
-    Click Button  Save
 
 Edit document
     [Tags]  edit
@@ -23,7 +17,7 @@ Edit document
     Element Should Not Be Visible  css=fieldset#fieldset-categorization
 
 Select categorization tab
-    [Tags]  edit
+    [Tags]  edit  justthis
     Click Link  css=li#contentview-edit a
     Click link  css=a#fieldsetlegend-categorization  don't wait
     Element Should Not Be Visible  css=fieldset#fieldset-default
@@ -40,13 +34,6 @@ Select settings tab
     Element Should Not Be Visible  css=fieldset#fieldset-dates
     Element Should Be Visible  css=fieldset#fieldset-settings
 
-
-Create Related Document
-    [Tags]  edit
-    Click Link  css=li#portaltab-index_html a
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  A related test page
-    Click Button  Save
 
 Test relationship
     [Tags]  edit
@@ -89,30 +76,22 @@ Test DateTime widget
     Page Should Contain  2002/02/01 01:00:00
 
 
+*** Keywords ***
+Setup
+    Log in  admin  admin
+    Create Editing Pages
 
-Delete Edit Document
-    [Tags]  edit
-    Click Link  An edit test page
-    Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
-    Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
-    Page Should Contain  Do you really want to delete this item?
-    Click Button  css=form#delete_confirmation input.destructive
+Create Editing Pages
 
+    Go to homepage
+    Add Page  An edit test page
+    Go to homepage
+    Add Page  A related test page
 
-Delete Related Document
-    [Tags]  edit
-    Click Link  A related test page
-    Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
-    Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
-    Page Should Contain  Do you really want to delete this item?
-    Click Button  css=form#delete_confirmation input.destructive
+Remove Editing Pages
 
-
-
+    Remove Content  an-edit-test-page
+    Remove Content  a-related-test-page
 
 
 
