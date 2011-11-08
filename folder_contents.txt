@@ -27,13 +27,20 @@ Delete Element
     Page Should Not Contain Element  css=#folder-contents-item-copy_of_test1    
 
 Reorder Folder Contents
+    [tags]  current
     Go to homepage
     Click Contents In Edit Bar
 
-    # Moves the test2 page above the test1 page
+    # Original order
     Should be above  css=tr#folder-contents-item-test1  css=tr#folder-contents-item-test2
+    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test3
+    Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test4
+
+    # Moving items could fail on a fast computer
+    Set Selenium Speed  0.1 seconds
+
+    # Moves the test2 page above the test1 page
     Reorder Element  folder-contents-item-test1  folder-contents-item-test2
-    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test1
 
     # Moves the test4 page above the test2 page
     Reorder Element  folder-contents-item-test4  folder-contents-item-test3
@@ -44,11 +51,37 @@ Reorder Folder Contents
     Reorder Element  folder-contents-item-test3  folder-contents-item-test1
     Reorder Element  folder-contents-item-test3  folder-contents-item-test2
 
+    # Go back to normal speed
+    Set Selenium Speed  0 seconds
+
     # The new order is 4 > 3 > 2 > 1
     Should be above  css=tr#folder-contents-item-test4  css=tr#folder-contents-item-test3
     Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test2
     Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test1
 
+    # Moving items could fail on a fast computer
+    Set Selenium Speed  0.1 seconds
+
+    # Moves the test1 page above the test4 page
+    Reorder Element  folder-contents-item-test1  folder-contents-item-test2
+    Reorder Element  folder-contents-item-test1  folder-contents-item-test3
+    Reorder Element  folder-contents-item-test1  folder-contents-item-test4
+
+    # Moves the test2 page above the test4 page
+    Reorder Element  folder-contents-item-test2  folder-contents-item-test3
+    Reorder Element  folder-contents-item-test2  folder-contents-item-test4
+
+    # Moves the test3 page above the test4 page
+    Reorder Element  folder-contents-item-test3  folder-contents-item-test4
+
+    # Go back to normal speed
+    Set Selenium Speed  0 seconds
+
+    # Original order
+    Should be above  css=tr#folder-contents-item-test1  css=tr#folder-contents-item-test2
+    Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test3
+    Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test4
+c
 *** Keywords ***
 
 Setup
