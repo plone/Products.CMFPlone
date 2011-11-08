@@ -46,6 +46,11 @@ Log in
     Click Button  Log in
     Go to  ${PLONE_URL}
 
+Click Overlay Link
+    [Arguments]  ${element}
+    Click Link  ${element}  don't wait
+    Wait Until Page Contains Element  css=div.pb-ajax div#content-core
+
 Should be above
     [Arguments]  ${locator1}  ${locator2}
 
@@ -121,4 +126,3 @@ Rename Content Title
     Wait Until Page Contains Element  css=input#${id}_id
     Input Text  css=input#${id}_title  ${new_title}
     Click Button  Rename All
-
