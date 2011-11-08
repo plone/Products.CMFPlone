@@ -15,6 +15,14 @@ Add Login Portlet
     then I should see Login in the left column
 
 
+Add Calendar Portlet
+
+    Given the view Manage portlets on Plone
+    when I add the portlet Calendar portlet to the right column
+    then I should see Calendar portlet in the right column
+
+
+
 ** Keywords **
 
 Given the view ${view} on ${content}
@@ -23,9 +31,19 @@ Given the view ${view} on ${content}
 
 
 when I add the portlet ${portlet} to the left column
-    Select from list  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  Login
+    Select from list  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  ${portlet}
+
+
+when I add the portlet ${portlet} to the right column
+    Select from list  xpath=//div[@id="portletmanager-plone-rightcolumn"]//select  ${portlet}
 
 
 then I should see ${text} in the left column
     Element should contain  portal-column-one  ${text}
+
+
+then I should see ${text} in the right column
+    Element should contain  portal-column-two  ${text}
+
+
 
