@@ -48,9 +48,6 @@
                i18n:translate="">
                Default 
              </a>
-             <span tal:condition="not:advanced" i18n:translate="">
-               Default 
-             </span>
            </li>
           <li>
             <a href="#"
@@ -59,9 +56,6 @@
                i18n:translate="">
                Advanced
             </a>
-            <span tal:condition="advanced" i18n:translate="">
-               Advanced
-            </span>
           </li>
         </ul>
       </div>
@@ -114,17 +108,21 @@
 
       <div class="field" tal:condition="python:advanced and len(view.available_content_frameworks) > 1">
         <label for="select_content_framework" i18n:translate="">Available content-type frameworks</label>
-
         <div class="formHelp" />
-	<tal:framework-values-block repeat="framework view/available_content_frameworks">
-          <input type="radio" name="base_contenttypes"
-		 tal:attributes="value python:framework[0];" />
-          <span i18n:translate="" tal:content="python:framework[1]" />
-	</tal:framework-values-block>
-	<input type="radio" name="base_contenttypes"
-	       value="--no-value--"
-	       checked="true" />
-	<span i18n:translate="">No base content-types</span>
+    	<dl>
+	       <dt tal:repeat="framework view/available_content_frameworks">
+              <input type="radio" name="base_contenttypes"
+                     tal:attributes="value python:framework[0];
+	               	                 checked python:repeat['framework'].start and 'checked' or ''" />
+                <span i18n:translate="" tal:content="python:framework[1]" />
+           </dt>
+           <dt>
+             <input type="radio" name="base_contenttypes"
+	                value="--no-value--"
+         	         />
+	            <span i18n:translate="">No base content-types</span>
+	       </dt>
+	    </dl>
       </div>
 
       <div class="field" tal:condition="advanced">
