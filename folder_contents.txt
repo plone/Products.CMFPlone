@@ -5,7 +5,32 @@ Suite setup  Setup
 
 Suite teardown  Remove Pages
 
+*** Variables ***
+
+${SELECT_ALL} =  css=#foldercontents-selectall
+${CLEAR_SELECTION} =  css=#foldercontents-clearselection
+
 *** Test cases ***
+
+Test Select All
+    [tags]  current
+    Go to homepage
+    Click Contents In Edit Bar
+
+    # We have 4 pages on Plone site's root
+    Page Should Contain Element  ${SELECT_ALL}
+    Click Element  ${SELECT_ALL}
+    Page Should Contain  All 4 items in this folder are selected.
+    Page Should Contain Element  ${CLEAR_SELECTION}
+    Click Element  ${CLEAR_SELECTION}
+    Page Should Contain Element  ${SELECT_ALL}
+
+    # XXX: There's a bug in the implementation of this: if I select all items
+    # and then I click on one checkbox, I have no longer selected all items
+    # ergo, I must see the Select All link again, but that is not happening
+    Click Element  ${SELECT_ALL}
+    Select Checkbox  css=#cb_test1
+    Page Should Contain Element  ${SELECT_ALL}
 
 Copy Paste Element
     Go to homepage
