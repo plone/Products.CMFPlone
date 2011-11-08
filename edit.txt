@@ -1,0 +1,111 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup  Log in  admin  admin
+
+Test setup  
+
+*** Test cases ***
+
+Create Document
+    [Tags]  edit
+    Click Link  css=#plone-contentmenu-factories a#document
+    Input Text  title  An edit test page
+    Click Button  Save
+
+Edit document
+    [Tags]  edit
+    Click Link  css=li#contentview-edit a
+    Element Should Be Visible  css=input#title
+    Element Should Be Visible  css=fieldset#fieldset-default
+    Element Should Not Be Visible  css=textarea#subject_keywords
+    Element Should Not Be Visible  css=fieldset#fieldset-dates
+    Element Should Not Be Visible  css=fieldset#fieldset-categorization
+
+Select categorization tab
+    [Tags]  edit
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-categorization  don't wait
+    Element Should Not Be Visible  css=fieldset#fieldset-default
+    Element Should Be Visible  css=textarea#subject_keywords
+    Element Should Not Be Visible  css=fieldset#fieldset-dates
+    Element Should Be Visible  css=fieldset#fieldset-categorization
+
+Select settings tab
+    [Tags]  edit
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-settings  don't wait
+    Element Should Not Be Visible  css=fieldset#fieldset-default
+    Element Should Not Be Visible  css=textarea#subject_keywords
+    Element Should Not Be Visible  css=fieldset#fieldset-dates
+    Element Should Be Visible  css=fieldset#fieldset-settings
+
+
+Create Related Document
+    [Tags]  edit
+    Click Link  css=li#portaltab-index_html a
+    Click Link  css=#plone-contentmenu-factories a#document
+    Input Text  title  A related test page
+    Click Button  Save
+
+Test relationship
+    [Tags]  edit
+    Click Link  css=li#portaltab-an-edit-test-page a
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-categorization  don't wait
+    Click Button  css=input.addreference  don't wait
+    Wait Until Page Contains Element  css=input.insertreference
+    Click Element  css=input.insertreference  don't wait
+    Wait until keyword succeeds  10s  1s  Xpath Should Match X Times  //ul[@id = 'ref_browser_relatedItems']/descendant::input  1
+    Click Element  css=div.close  don't wait
+    Click Button  Save
+    Xpath Should Match X Times  //dl[@id = 'relatedItemBox']/dd  1
+
+Test DateTime widget
+    [Tags]  edit
+    Click Link  css=li#portaltab-an-edit-test-page a
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-dates  don't wait
+    Select From List  css=select#edit_form_effectiveDate_0_year  2001
+    Select From List  css=select#edit_form_effectiveDate_0_month  January
+    Select From List  css=select#edit_form_effectiveDate_0_day  01
+    Select From List  css=select#edit_form_effectiveDate_0_hour  01
+    Select From List  css=select#edit_form_effectiveDate_0_minute  00
+    Select From List  css=select#edit_form_effectiveDate_0_ampm  AM
+    Click Element  css=span#edit_form_effectiveDate_0_popup  don't wait
+    Element Should Be Visible  css=div.calendar
+    Element Text Should Be  css=div.calendar thead td.title  January, 2001
+    Click Element  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div  don't wait
+    Wait until keyword succeeds  10s  1s  Element Text Should Be  css=div.calendar thead td.title  February, 2001
+    Click Element  xpath=//div[@class='calendar']/table/thead/tr[2]/td[5]/div  don't wait
+    Element Text Should Be  css=div.calendar thead td.title  February, 2002
+    Click Button  Save
+
+
+
+Delete Edit Document
+    [Tags]  edit
+    Click Link  An edit test page
+    Element Should Not Be Visible  css=a#delete
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Be Visible  css=a#delete
+    Click Overlay Link  Delete
+    Page Should Contain  Do you really want to delete this item?
+    Click Button  css=form#delete_confirmation input.destructive
+
+
+Delete Related Document
+    [Tags]  edit
+    Click Link  A related test page
+    Element Should Not Be Visible  css=a#delete
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Element Should Be Visible  css=a#delete
+    Click Overlay Link  Delete
+    Page Should Contain  Do you really want to delete this item?
+    Click Button  css=form#delete_confirmation input.destructive
+
+
+
+
+
+
