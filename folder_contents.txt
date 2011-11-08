@@ -81,7 +81,7 @@ Reorder Folder Contents
     Should be above  css=tr#folder-contents-item-test1  css=tr#folder-contents-item-test2
     Should be above  css=tr#folder-contents-item-test2  css=tr#folder-contents-item-test3
     Should be above  css=tr#folder-contents-item-test3  css=tr#folder-contents-item-test4
-c
+
 *** Keywords ***
 
 Setup
