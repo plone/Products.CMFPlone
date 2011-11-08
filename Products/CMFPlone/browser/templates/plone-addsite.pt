@@ -112,6 +112,21 @@
         </select>
       </div>
 
+      <div class="field" tal:condition="python:advanced and len(view.available_content_frameworks) > 1">
+        <label for="select_content_framework" i18n:translate="">Available content-type frameworks</label>
+
+        <div class="formHelp" />
+	<tal:framework-values-block repeat="framework view/available_content_frameworks">
+          <input type="radio" name="base_contenttypes"
+		 tal:attributes="value python:framework[0];" />
+          <span i18n:translate="" tal:content="python:framework[1]" />
+	</tal:framework-values-block>
+	<input type="radio" name="base_contenttypes"
+	       value="--no-value--"
+	       checked="true" />
+	<span i18n:translate="">No base content-types</span>
+      </div>
+
       <div class="field" tal:condition="advanced">
         <label for="setup_content" i18n:translate="">Example content</label>
 
@@ -121,18 +136,6 @@
 
         <span i18n:translate="">
             Should the default example content be added to the site?
-        </span>
-      </div>
-
-      <div class="field" tal:condition="advanced">
-        <label for="create_atcontenttypes" i18n:translate="">Add archetype-based content-types</label>
-
-        <div class="formHelp" />
-
-        <input type="checkbox" name="create_atcontenttypes:boolean" checked="checked" />
-
-        <span i18n:translate="">
-            Should the default content-types be activated? 
         </span>
       </div>
 

@@ -1,4 +1,5 @@
 from operator import itemgetter
+import pkg_resources
 
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from zope.component import adapts
@@ -21,7 +22,10 @@ from Products.GenericSetup.upgrade import normalize_version
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 
 from Products.CMFCore.permissions import ManagePortal
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.factory import (
+    _DEFAULT_PROFILE, _ATCONTENTTYPES_PROFILE,
+    _PLONE_APP_CONTENTTYPES_PROFILE,
+    )
 from Products.CMFPlone.factory import addPloneSite
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -125,6 +129,9 @@ class AddPloneSite(BrowserView):
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
             'plone.app.registry:default',
             'plone.app.z3cform:default',
+            # The following two profiles are mutually exclusive.
+            _ATCONTENTTYPES_PROFILE,
+            _PLONE_APP_CONTENTTYPES_PROFILE,
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
         for util in utils:
@@ -155,6 +162,33 @@ class AddPloneSite(BrowserView):
             default = _DEFAULT_PROFILE,
             extensions = tuple(extension_profiles),
         )
+
+    @property
+    def available_content_frameworks(self):
+        """Returns the human readible name, profile value and checked state
+        for the available content-type frameworks.
+        This checks for the framework then uses the correct package that integrates that
+        frameworks base types."""
+        values = []
+        # Check for Products.ATContentTypes.
+        try:
+            pkg_resources.get_distribution('Products.ATContentTypes')
+        except pkg_resources.DistributionNotFound:
+            pass
+        else:
+            values.append((_ATCONTENTTYPES_PROFILE,
+                           'Archetypes based content-types',
+                           False,))
+        # Check for plone.app.content_types
+        try:
+            pkg_resources.get_distribution('plone.app.contenttypes')
+        except pkg_resources.DistributionNotFound:
+            pass
+        else:
+            values.append((_PLONE_APP_CONTENTTYPES_PROFILE,
+                           'Dexterity based content-types',
+                           False,))
+        return values
 
     def browser_language(self):
         language = 'en'
@@ -194,13 +228,16 @@ class AddPloneSite(BrowserView):
         form = self.request.form
         submitted = form.get('form.submitted', False)
         if submitted:
+            base_contenttypes = form.get('base_contenttypes', _ATCONTENTTYPES_PROFILE)
+            if base_contenttypes == '--no-value--':
+                base_contenttypes = None
             site_id = form.get('site_id', 'Plone')
             site = addPloneSite(
                 context, site_id,
                 title=form.get('title', ''),
                 profile_id=form.get('profile_id', _DEFAULT_PROFILE),
                 extension_ids=form.get('extension_ids', ()),
-                create_atcontenttypes=form.get('create_atcontenttypes', False),
+                base_contenttypes_profile=base_contenttypes,
                 setup_content=form.get('setup_content', False),
                 default_language=form.get('default_language', 'en'),
                 )

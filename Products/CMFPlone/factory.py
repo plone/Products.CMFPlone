@@ -12,6 +12,7 @@ _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _CONTENT_PROFILE = 'Products.CMFPlone:plone-content'
 _ATCONTENTTYPES_PROFILE = 'Products.CMFPlone:plone-atcontenttypes'
+_PLONE_APP_CONTENTTYPES_PROFILE = 'plone.app.contenttypes:default'
 
 # A little hint for PloneTestCase
 _IMREALLYPLONE4 = True
@@ -71,8 +72,10 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                  create_userfolder=True, email_from_address='',
                  email_from_name='', validate_email=True,
                  profile_id=_DEFAULT_PROFILE, snapshot=False,
-                 extension_ids=(), setup_content=True, 
-                 create_atcontenttypes=True, default_language='en'):
+                 extension_ids=(),
+                 base_contenttypes_profile=_ATCONTENTTYPES_PROFILE,
+                 setup_content=True,
+                 default_language='en'):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
@@ -86,11 +89,12 @@ def addPloneSite(context, site_id, title='Plone site', description='',
 
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
-    if create_atcontenttypes:
-        setup_tool.runAllImportStepsFromProfile('profile-%s' % _ATCONTENTTYPES_PROFILE)
-    if setup_content:
-        setup_tool.runAllImportStepsFromProfile('profile-%s' % _CONTENT_PROFILE)
-        
+    if base_contenttypes_profile is not None:
+        profile = 'profile-%s' % base_contenttypes_profile
+        setup_tool.runAllImportStepsFromProfile(profile)
+        # Only set up content if a base contenttypes profile has been provided.
+        if setup_content:
+            setup_tool.runAllImportStepsFromProfile('profile-%s' % _CONTENT_PROFILE)
 
     props = dict(
         title=title,
