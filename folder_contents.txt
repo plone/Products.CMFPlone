@@ -9,6 +9,11 @@ Test teardown  Remove Pages
 
 *** Test cases ***
 
+Copy Elements
+    Go to homepage
+    Click Contents In Edit Bar
+    Copy test1
+
 Reorder Folder Contents
     Go to homepage
     Click Contents In Edit Bar
@@ -61,9 +66,9 @@ Reorder Element
 
 Copy ${element}
     Select Checkbox  css=#cb_${element}
-	Click Button  Copy  don't wait
-	Wait Until Page Contains  Paste
-	Click Button  Paste  don't wait
-	Wait Until Page Contains  css=#folder-contents-item-copy_of_${element}
+	Click Button  Copy
+	Page Should Contain  1 item(s) copied.
+	Click Button  Paste
+	Page Should Contain Element  css=#folder-contents-item-copy_of_${element}
 
 
