@@ -7,7 +7,7 @@ Suite teardown  Remove Pages
 
 *** Test cases ***
 
-Copy Element
+Copy Paste Element
     Go to homepage
     Click Contents In Edit Bar
 
@@ -16,6 +16,16 @@ Copy Element
     Page Should Contain  1 item(s) copied.
     Click Button  Paste
     Page Should Contain Element  css=#folder-contents-item-copy_of_test1
+
+Cut Paste Element
+    Go to homepage
+    Click Contents In Edit Bar
+
+    Select Checkbox  css=#cb_test1
+    Click Button  Cut
+    Page Should Contain  1 item(s) cut.
+    Click Button  Paste
+    Page Should Contain Element  css=#folder-contents-item-test1
 
 Delete Element
     Go to homepage
