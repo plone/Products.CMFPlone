@@ -17,7 +17,7 @@ Edit document
     Element Should Not Be Visible  css=fieldset#fieldset-categorization
 
 Select categorization tab
-    [Tags]  edit  justthis
+    [Tags]  edit
     Click Link  css=li#contentview-edit a
     Click link  css=a#fieldsetlegend-categorization  don't wait
     Element Should Not Be Visible  css=fieldset#fieldset-default
