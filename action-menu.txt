@@ -1,24 +1,13 @@
 *** Settings ***
 Resource  plone.txt
 
-Suite setup  Log in  admin  admin
+Suite setup  Setup
+Suite teardown  Remove Document and Folder
 
 Test setup  
 
 *** Test cases ***
 
-Create Document
-    [Tags]  action-menu
-    Click Link  Page
-    Input Text  title  An actionsmenu page
-    Click Button  Save
-
-Create Folder
-    [Tags]  action-menu
-    Click Link  css=li#portaltab-index_html a
-    Click Link  Folder
-    Input Text  title  An actionsmenu folder
-    Click Button  Save
 
 Content Menu
     [Tags]  action-menu
@@ -79,28 +68,24 @@ Copy Document
     Click Button  Paste
     Xpath Should Match X Times  //table[@id = 'listing-table']/tbody/tr  2
 
-Delete Document
-    [Tags]  action-menu
-    Click Link  An actionsmenu page
-    Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
-    Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
-    Page Should Contain  Do you really want to delete this item?
-    Click Button  css=form#delete_confirmation input.destructive
-
-Delete Folder
-    [Tags]  action-menu
-    Click Link  An actionsmenu folder
-    Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
-    Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
-    Page Should Contain  Do you really want to delete this folder and all its contents?
-    Click Button  css=form#delete_confirmation input.destructive
 
 *** Keywords ***
 
 
-Goto homepage
-    Goto homepage
+Setup  
+    Log in  admin  admin
+    Go to homepage
+    Add Page  An actionsmenu page
+    Go to homepage
+    Create Folder
+
+Create Folder
+    Click Link  css=li#portaltab-index_html a
+    Click Link  Folder
+    Input Text  title  An actionsmenu folder
+    Click Button  Save
+
+Remove Document and Folder
+    Remove Content  an-actionsmenu-page
+    Remove Content  an-actionsmenu-folder
+
