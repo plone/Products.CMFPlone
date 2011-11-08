@@ -27,7 +27,6 @@ Delete Element
     Page Should Not Contain Element  css=#folder-contents-item-copy_of_test1    
 
 Reorder Folder Contents
-    [tags]  current
     Go to homepage
     Click Contents In Edit Bar
 
