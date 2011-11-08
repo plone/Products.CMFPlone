@@ -70,6 +70,16 @@ Delete Element
     Page Should Contain  Item(s) deleted.
     Page Should Not Contain Element  css=#folder-contents-item-copy_of_test1    
 
+Test Change Element State
+    Go to homepage
+    Click Contents In Edit Bar
+
+    Select Checkbox  css=#cb_test1
+    Click Button  Change State
+    Select Radio Button  workflow_action  publish
+    Click Button  Save
+    Page Should Contain  Published
+
 Reorder Folder Contents
     Go to homepage
     Click Contents In Edit Bar
