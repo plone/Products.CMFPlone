@@ -1,0 +1,31 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup  Log in  admin  admin
+
+Test setup
+
+
+*** Test cases ***
+
+Add Login Portlet
+
+    Given the view Manage portlets on Plone
+    when I add the portlet Login to the left column
+    then I should see Login in the left column
+
+
+** Keywords **
+
+Given the view ${view} on ${content}
+    Go to  ${content}
+    Click link  ${view}
+
+
+when I add the portlet ${portlet} to the left column
+    Select from list  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  Login
+
+
+then I should see ${text} in the left column
+    Element should contain  portal-column-one  ${text}
+
