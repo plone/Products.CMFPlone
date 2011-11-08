@@ -1,0 +1,64 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup
+
+Test setup  Log out
+
+
+*** Variables ***
+
+${overlay_login_selector} =         css=div.overlay-ajax form#login_form
+${overlay_login_submit_selector} =  ${overlay_login_selector} input[name="submit"]
+${exposemask_selector} =            css=#exposeMask
+${personaltools_login_selector} =   css=#personaltools-login
+${personaltools_logout_selector} =  css=#personaltools-logout
+${portalmessage_error_selector} =   css=dl.portalMessage.error
+
+
+*** Test cases ***
+
+OpenLoginOverlay
+    # test that click on log-in opens overlay
+    Open login overlay
+    Wait Until Page Contains Element  ${overlay_login_selector}
+    Wait Until Page Contains Element  ${exposemask_selector}
+
+OpenCloseLoginOverlay
+    Open login overlay
+
+    # clicking anywhere else should close overlay
+    Wait Until Page Contains Element  ${exposemask_selector}
+    Click Element  ${exposemask_selector}  don't wait
+    Wait until keyword succeeds  1  5  Page Should Contain Element  ${overlay_login_selector}
+
+SubmitEmptyLogin
+    Open login overlay
+
+    # click on empty form submit
+    Wait Until Page Contains Element  ${overlay_login_submit_selector}
+    Click Button  ${overlay_login_submit_selector}  don't wait
+
+    # Error message must appear
+    Wait Until Page Contains Element  ${portalmessage_error_selector}
+    Wait Until Page Contains          Error
+
+SubmitLogin
+    Open login overlay
+
+    Page should contain element  __ac_name
+    Input text  __ac_name      admin
+    Input text  __ac_password  admin
+    Click Button  Log in
+
+    Wait Until Page Contains Element  ${personaltools_logout_selector}
+
+    # overlay should be gone
+    Wait until keyword succeeds  1  5  Page Should Not Contain Element  ${overlay_login_selector}
+
+
+*** Keywords ***
+
+Open login overlay
+    Click Element  ${personaltools_login_selector}  don't wait
+    Wait until keyword succeeds  1  5  Page Should Contain Element  ${overlay_login_selector}
