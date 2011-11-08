@@ -1,17 +1,15 @@
 *** Settings ***
 Resource  plone.txt
 
-Suite setup  Log in  admin  admin
+Suite setup  Setup
 
-Test setup  Create Pages and Folder
-
-Test teardown  Remove Pages and Folder
+Suite teardown  Remove Pages and Folder
 
 *** Test cases ***
 
 
 Livesearch For pages
-    [Tags]  livesearch
+    [Tags]  livesearch  justthis
     Click Link  Home
     Count Livesearch Items For  livesearch test page  4
 
@@ -29,16 +27,18 @@ Livesearch Within folder
 
 *** Keywords ***
 
-Create Pages and Folder
-    Create Document
-    Create Folder
-    Create Sub Document 1
-    Create Sub Document 2
+Setup
+    Log in  admin  admin
+    Create Pages and Folder
 
-Create Document
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  A livesearch test page
-    Click Button  Save
+Create Pages and Folder
+    Go to homepage
+    Add Page  A livesearch test page
+    Go to homepage
+    Create Folder
+    Add Page  A livesearch test page 1
+    Go to  ${PLONE_URL}/a-livesearch-test-folder
+    Add Page  A livesearch test page 2
 
 Create Folder
     Click Link  css=li#portaltab-index_html a
@@ -46,21 +46,10 @@ Create Folder
     Input Text  title  A livesearch test folder
     Click Button  Save
 
-Create Sub Document 1
-    Click Link  css=li#portaltab-a-livesearch-test-folder a
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  A livesearch test page 1
-    Click Button  Save
-
-Create Sub Document 2
-    Click Link  css=li#portaltab-a-livesearch-test-folder a
-    Click Link  css=#plone-contentmenu-factories a#document
-    Input Text  title  A livesearch test page 2
-    Click Button  Save
 
 Remove Pages and Folder
-    Delete Document
-    Delete Folder
+    Remove Content  a-livesearch-test-page
+    Remove Content  a-livesearch-test-folder
 
 Delete Document
     Click Link  A livesearch test page
@@ -86,10 +75,7 @@ Count Livesearch Items For
     Input Text  css=input#searchGadget  ${string}
     Key Down  css=input#searchGadget  e
     Key Up  css=input#searchGadget  e
-    Wait until keyword succeeds  10s  1s  Element Should Be Visible  css=div#LSResult
-    Wait until keyword succeeds  10s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=div#LSResult
+    Wait until keyword succeeds  5s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
     Focus  css=input#searchbox_currentfolder_only
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  css=div#LSResult
-
-Goto homepage
-    Goto homepage
+    Wait until keyword succeeds  5s  1s  Element Should Not Be Visible  css=div#LSResult
