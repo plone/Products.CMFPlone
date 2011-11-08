@@ -75,11 +75,18 @@ Test DateTime widget
     Click Element  css=span#edit_form_effectiveDate_0_popup  don't wait
     Element Should Be Visible  css=div.calendar
     Element Text Should Be  css=div.calendar thead td.title  January, 2001
-    Click Element  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div  don't wait
+    Mouse Down  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
+    Mouse Up  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
     Wait until keyword succeeds  10s  1s  Element Text Should Be  css=div.calendar thead td.title  February, 2001
-    Click Element  xpath=//div[@class='calendar']/table/thead/tr[2]/td[5]/div  don't wait
+    Mouse Down  xpath=//div[@class='calendar']/table/thead/tr[2]/td[5]/div
+    Mouse Up  xpath=//div[@class='calendar']/table/thead/tr[2]/td[5]/div
     Element Text Should Be  css=div.calendar thead td.title  February, 2002
     Click Button  Save
+    Click Link  css=span#content-history a.link-overlay  don't wait
+    Wait until keyword succeeds  10s  1s  Click Link  xpath=//div/a[@class='historyComparePrevious']
+    Wait Until Page Contains  Show differences
+    Select Radio Button  diffstyle  code
+    Page Should Contain  2002/02/01 01:00:00
 
 
 
