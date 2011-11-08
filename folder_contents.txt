@@ -46,10 +46,10 @@ Create Pages
     Go to homepage
 
 Remove Pages
-    Remove Page  test1
-    Remove Page  test2
-    Remove Page  test3
-    Remove Page  test4
+    Remove Content  test1
+    Remove Content  test2
+    Remove Content  test3
+    Remove Content  test4
 
 Reorder Element
     [arguments]  ${element}  ${destination}
@@ -58,4 +58,12 @@ Reorder Element
     Mouse Move  css=#${destination} td.draggable
     Mouse Up  css=#${element} td.draggable
     Mouse Out  css=#${element} td.draggable
+
+Copy ${element}
+    Select Checkbox  css=#cb_${element}
+	Click Button  Copy  don't wait
+	Wait Until Page Contains  Paste
+	Click Button  Paste  don't wait
+	Wait Until Page Contains  css=#folder-contents-item-copy_of_${element}
+
 

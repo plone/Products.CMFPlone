@@ -81,16 +81,16 @@ Click Actions ${name}
     Element Should Contain  css=dl#plone-contentmenu-actions dd.actionMenuContent  ${name}
     Click Link  ${name}  don't wait
 
-Click Cut
+Click Cut Action
     Click Actions Cut
 
-Click Copy
+Click Copy Action
     Click Actions Copy
 
-Click Delete
+Click Delete Action
     Click Actions Delete
 
-Click Rename
+Click Rename Action
     Click Actions Rename
 
 Add Page
@@ -102,24 +102,23 @@ Add Page
     Click Button  Save
     Page Should Contain  Changes saved.
 
-Remove Page
-    [arguments]  ${title}
+Remove Content
+    [arguments]  ${id}
 
-    Go to  ${PLONE_URL}/${title}
-    Page should contain  ${title}
-    Click Delete
+    Go to  ${PLONE_URL}/${id}
+    Page Should Contain Element  css=body.section-${id}
+    Click Delete Action
     Wait Until Page Contains Element  css=input.destructive
     Click Button  css=input.destructive
     Page Should Contain  Plone site
 
-Rename Page
-    [arguments]  ${title}  ${new_title}
+Rename Content Title
+    [arguments]  ${id}  ${new_title}
 
-    Go to  ${PLONE_URL}/${title}
-    Page should contain  ${title}
-    Click Rename
-    Wait Until Page Contains Element  css=input#${title}_id
-    Input Text  css=input#${title}_id  ${new_title}
-    Input Text  css=input#${title}_title  ${new_title}
+    Go to  ${PLONE_URL}/${id}
+    Page Should Contain Element  css=body.section-${id}
+    Click Rename Action
+    Wait Until Page Contains Element  css=input#${id}_id
+    Input Text  css=input#${id}_title  ${new_title}
     Click Button  Rename All
 
