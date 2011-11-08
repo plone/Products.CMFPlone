@@ -72,11 +72,6 @@ Delete Folder
 
 *** Keywords ***
 
-Click Overlay Link
-    [Arguments]  ${element}
-    Click Link  ${element}  don't wait
-    Wait Until Page Contains Element  css=div.pb-ajax div#content-core
-
 Count Livesearch Items For
     [Arguments]  ${string}  ${count}
     Focus  css=input#searchGadget
