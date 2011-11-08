@@ -20,7 +20,8 @@ Add Calendar Portlet
     Given the view Manage portlets on Plone
     when I add the portlet Calendar portlet to the right column
     then I should see Calendar portlet in the right column
-
+    Given the default view of Plone
+    then I should see MoTuWeThFrSaSu in the right column
 
 
 ** Keywords **
@@ -28,6 +29,9 @@ Add Calendar Portlet
 Given the view ${view} on ${content}
     Go to  ${content}
     Click link  ${view}
+
+Given the default view of ${content}
+    Goto  ${content}
 
 
 when I add the portlet ${portlet} to the left column
@@ -41,6 +45,7 @@ when I add the portlet ${portlet} to the right column
 then I should see ${text} in the left column
     Element should contain  portal-column-one  ${text}
 
+    
 
 then I should see ${text} in the right column
     Element should contain  portal-column-two  ${text}
