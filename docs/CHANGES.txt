@@ -8,6 +8,20 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Remove uneeded kss debugging code
+  [jfroche]
+
+- Allow users with the Manage Users permission to change the login
+  name of other users; specifically this allows them to change the
+  email address when this is used as login name.
+  Fixes http://dev.plone.org/plone/ticket/11255
+  [maurits]
+
+- Removed the 'What' row in the event view that displayed the
+  keywords; this is already handled by the keywords viewlet.
+  Fixes http://dev.plone.org/plone/ticket/10818
+  [maurits]
+
 - Make control panel action GS export return actions alphabetically since
   there is no other natural ordering.
   [ggozad]
@@ -15,6 +29,10 @@ Changelog
 - Fixed folder_listing template
   so that listing macro can be used outside of folder_listing.
   [thomasdesvenain]
+
+- Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
+  Owned.changeOwnership, but a plain User object only.
+  [stefan]
 
 4.2a2 - 2011-08-25
 ------------------
