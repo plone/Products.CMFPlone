@@ -45,7 +45,7 @@ class Assignment(base.Assignment):
 class Renderer(base.Renderer):
 
     def render(self, context, request):
-        pass
+        return self.data.foo
 
 
 class AddForm(z3cformhelper.AddForm):
@@ -139,6 +139,16 @@ class TestPortlet(PortletsTestCase):
         mapping['foo'] = Assignment(foo='bar')
         editview = queryMultiAdapter((mapping['foo'], request), name='edit', default=None)
         self.assertTrue(editview is not None)
+
+    def testRenderer(self):
+        context = self.folder
+        request = self.folder.REQUEST
+        view = self.folder.restrictedTraverse('@@plone')
+        manager = getUtility(IPortletManager, name='plone.leftcolumn', context=self.portal)
+        assignment = Assignment(foo='bar')
+        renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
+        self.failUnless(isinstance(renderer, Renderer))
+        self.assertEqual(renderer.render(context, request), 'bar')
 
 
 def test_suite():
