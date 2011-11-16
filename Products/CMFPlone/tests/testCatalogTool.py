@@ -409,6 +409,18 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.catalog(SearchableText='econom?trie')), 4)
         self.assertEqual(len(self.catalog(SearchableText='econometr*')), 4)
 
+        # non-regression with eastern language (use plone.i18n ja normalizer test)
+        self.folder.invokeFactory('Document', id='docwithjapanchars', description="テストページ")
+        self.assertEqual(len(self.catalog(SearchableText="テストページ")), 1)
+
+        # test with language specific char (fr)
+        self.folder.invokeFactory('Document', id='docwithfrenchlatinchar', description='œuf')
+        self.assertEqual(len(self.catalog(SearchableText='œuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='oeuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='Œuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='OEUF')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='uf')), 0)
+
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
         # After adding a group with access rights and containing user2,
         # a search must find the document.
