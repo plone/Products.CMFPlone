@@ -14,6 +14,11 @@ Changelog
   navigation root.
   Fixes http://dev.plone.org/plone/ticket/12231
 
+- Add the ability for the navtree strategy to suppliment the query.
+  Fixes a problem where the listing of default pages in navigation
+  trees could no longer be enabled.
+  [rossp]
+
 - Added on body a class related to subsite.
   The class is named site-x where x is navigation root object id.
   [thomasdesvenain]

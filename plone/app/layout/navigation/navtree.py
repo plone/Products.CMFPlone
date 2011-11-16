@@ -22,6 +22,10 @@ class NavtreeStrategyBase(object):
     rootPath = None
     showAllParents = False
 
+    # Default sorting and treatment of default-pages
+    supplimentQuery = {'sort_on': 'getObjPositionInParent',
+                       'is_default_page': False}
+
     def nodeFilter(self, node):
         return True
 
@@ -76,6 +80,11 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
             showAllParents -- a boolean property; if true and obj is given,
                 ensure that all parents of the object, including any that would
                 normally be filtered out are included in the tree.
+
+            supplimentQuery -- a dictionary property; provides
+                additional query terms which, if not already present
+                in the query, are added.  Useful, for example, to
+                affect default sorting or default page behavior.
 
             nodeFilter(node) -- a method returning a boolean; if this returns
                 False, the given node will not be inserted in the tree
@@ -168,13 +177,11 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
         if rootObject is not None:
             pruneRoot = not strategy.showChildrenOf(rootObject)
 
-    # Default sorting and threatment of default-pages
-
-    if 'sort_on' not in query:
-        query['sort_on'] = 'getObjPositionInParent'
-
-    if 'is_default_page' not in query:
-        query['is_default_page'] = False
+    # Allow the strategy to suppliment the query for keys not already
+    # present in the query such as sorting and omitting default pages
+    for key, value in strategy.supplimentQuery.iteritems():
+        if key not in query:
+            query[key] = value
 
     results = portal_catalog.searchResults(query)
 
