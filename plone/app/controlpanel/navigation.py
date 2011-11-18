@@ -103,11 +103,8 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
         # The menu pretends to be a whitelist, but we are storing a blacklist so that
         # new types are searchable by default. Inverse the list.
         allTypes = self.ttool.listContentTypes()
-        putils = getToolByName(self.context, 'plone_utils')
-        friendlyTypes = putils.getUserFriendlyTypes()
-
         blacklistedTypes = [t for t in allTypes if t not in value
-                                                or t not in friendlyTypes]
+                                                or t in BAD_TYPES]
         self.navProps._updateProperty('metaTypesNotToList', blacklistedTypes)
 
     displayed_types = property(get_displayed_types, set_displayed_types)
