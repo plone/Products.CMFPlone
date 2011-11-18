@@ -1,18 +1,12 @@
-from Acquisition import aq_base
-from plone.fieldsets.fieldsets import FormFieldsets
-from zope.interface import Interface, implements
+from zope.interface import Interface
+from zope.interface import implements
 from zope.component import adapts
 from zope.formlib import form
-from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Choice
-from zope.schema import List
 from zope.schema import Tuple
-from zope.schema.vocabulary import SimpleTerm
-from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -100,19 +94,17 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
     show_excluded_items = property(get_show_excluded_items, set_show_excluded_items)
 
     def get_displayed_types(self):
-        return [t for t in self.ttool.listContentTypes()
-                        if t not in self.navProps.metaTypesNotToList and
-                           t not in BAD_TYPES]
+        allTypes = self.ttool.listContentTypes()
+        blacklist = self.navProps.metaTypesNotToList
+        return [t for t in allTypes if t not in blacklist
+                                    and t not in BAD_TYPES]
 
     def set_displayed_types(self, value):
         # The menu pretends to be a whitelist, but we are storing a blacklist so that
         # new types are searchable by default. Inverse the list.
         allTypes = self.ttool.listContentTypes()
-        putils = getToolByName(self.context, 'plone_utils')
-        friendlyTypes = putils.getUserFriendlyTypes()
-
         blacklistedTypes = [t for t in allTypes if t not in value
-                                                or t not in friendlyTypes]
+                                                or t in BAD_TYPES]
         self.navProps._updateProperty('metaTypesNotToList', blacklistedTypes)
 
     displayed_types = property(get_displayed_types, set_displayed_types)

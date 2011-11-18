@@ -103,4 +103,3 @@ class UserGroupsControlPanelTestCase(ControlPanelTestCase):
         regtool = getToolByName(self.portal, 'portal_registration')
         for member in members:
             regtool.addMember(member['username'], 'somepassword', properties=member)
-

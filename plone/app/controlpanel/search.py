@@ -1,12 +1,9 @@
-from Acquisition import aq_base
 from plone.fieldsets.fieldsets import FormFieldsets
-from zope.interface import Interface, implements
-from zope.component import adapts
-from zope.formlib.form import FormFields
+from zope.interface import Interface
 from zope.interface import implements
+from zope.component import adapts
 from zope.schema import Bool
 from zope.schema import Choice
-from zope.schema import List
 from zope.schema import Tuple
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
@@ -15,13 +12,11 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.Five import BrowserView
 
 from plone.app.vocabularies.types import BAD_TYPES
 
 from form import ControlPanelForm
 from widgets import MultiCheckBoxThreeColumnWidget as MCBThreeColumnWidget
-from widgets import MultiCheckBoxVocabularyWidget
 
 
 anon_auth_items = (('anon', _(u'anonymous users')),

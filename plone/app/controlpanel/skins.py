@@ -162,4 +162,3 @@ class SkinsControlPanel(ControlPanelForm):
         # effect.
         if not self.errors and self.adapters['ISkinsSchema'].themeChanged:
             self.request.response.redirect(self.request.URL)
-

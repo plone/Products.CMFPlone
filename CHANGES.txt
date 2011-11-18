@@ -4,7 +4,13 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't use plone_utils's getUserFriendlyTypes for blacklisting calculation in
+  navigation-controlpanel, so it isn't dependend on search-controlpanel
+  settings anymore. Fixes: #9012.
+  [thet]
+
+- Pyflakes cleanup.
+  [thet]
 
 
 2.2.2 (2011-10-17)
