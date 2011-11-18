@@ -140,10 +140,13 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
 
     def get_use_popups(self):
         return self.jstool.getResource('popupforms.js').getEnabled()
+        return self.csstool.getResource('++resource++plone.app.jquerytools.overlays.css').getEnabled()
 
     def set_use_popups(self, value):
         self.jstool.getResource('popupforms.js').setEnabled(value)
         self.jstool.cookResources()
+        self.csstool.getResource('++resource++plone.app.jquerytools.overlays.css').setEnabled(value)
+        self.csstool.cookResources()
 
     use_popups = property(get_use_popups, set_use_popups)
 
