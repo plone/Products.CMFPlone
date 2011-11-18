@@ -61,10 +61,10 @@ Make sure the changes have been applied correctly:
 
     >>> siteProps.disable_nonfolderish_sections
     True
-    
+
     >>> navProps.showAllParents
     False
-    
+
     >>> 'Topic' in navProps.metaTypesNotToList
     True
 
@@ -76,6 +76,23 @@ Make sure the changes have been applied correctly:
 
     >>> navProps.enable_wf_state_filtering
     True
-    
+
     >>> 'private' in navProps.wf_states_to_show
+    True
+
+Make sure, settings in search do not affect the settings in navigation
+
+    >>> self.browser.open('http://nohost/plone/@@search-controlpanel')
+    >>> self.browser.getControl('Folder').selected = False
+    >>> self.browser.getControl(name="form.actions.save").click()
+
+    >>> self.browser.open('http://nohost/plone/@@navigation-controlpanel')
+    >>> self.browser.getControl('Folder').selected = False
+    >>> self.browser.getControl("Save").click()
+    >>> self.browser.getControl('Folder').selected
+    False
+
+    >>> self.browser.getControl('Folder').selected = True
+    >>> self.browser.getControl("Save").click()
+    >>> self.browser.getControl('Folder').selected
     True
