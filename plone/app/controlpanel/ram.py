@@ -88,7 +88,6 @@ class RAMCacheControlPanel(ControlPanelForm):
     @form.action(_(u'Clear cache'), validator=null_validator, name=u'clearall')
     def handle_clearall_action(self, action, data):
         CheckAuthenticator(self.request)
-        context = aq_inner(self.context)
         getUtility(IRAMCache).invalidateAll()
         self.status = _(u'Cleared the cache.')
 

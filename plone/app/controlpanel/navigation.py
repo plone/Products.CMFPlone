@@ -1,18 +1,12 @@
-from Acquisition import aq_base
-from plone.fieldsets.fieldsets import FormFieldsets
-from zope.interface import Interface, implements
+from zope.interface import Interface
+from zope.interface import implements
 from zope.component import adapts
 from zope.formlib import form
-from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Choice
-from zope.schema import List
 from zope.schema import Tuple
-from zope.schema.vocabulary import SimpleTerm
-from zope.schema.vocabulary import SimpleVocabulary
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot

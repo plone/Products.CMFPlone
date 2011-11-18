@@ -7,7 +7,6 @@ from zope.schema.interfaces import ITitledTokenizedTerm
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from plone.app.form.widgets import MultiCheckBoxWidget
 
@@ -85,7 +84,7 @@ class MultiCheckBoxColumnsWidget(MultiCheckBoxWidget):
 
         length = len(self.vocabulary)
         cc = self.how_many_columns
-        breaks = [ length % cc == 0 and length / cc or length / cc + 1 ]
+        breaks = [length % cc == 0 and length / cc or length / cc + 1]
         for b in range(2, cc):
             breaks.append(breaks[0] * b)
 
@@ -235,24 +234,24 @@ class LanguageTableWidget(MultiCheckBoxWidget):
 
     def renderItem(self, index, text, value, name, cssClass):
         id = '%s.%s' % (name, index)
-        elem = renderElement('input',
+        el = renderElement('input',
                              type="checkbox",
                              cssClass=cssClass,
                              name=name,
                              id=id,
                              value=value)
-        return self._joinButtonToMessageTemplate % (cssClass, elem, text, value)
+        return self._joinButtonToMessageTemplate % (cssClass, el, text, value)
 
     def renderSelectedItem(self, index, text, value, name, cssClass):
         id = '%s.%s' % (name, index)
-        elem = renderElement('input',
+        el = renderElement('input',
                              type="checkbox",
                              cssClass=cssClass,
                              name=name,
                              id=id,
                              value=value,
                              checked="checked")
-        return self._joinButtonToMessageTemplate % (cssClass, elem, text, value)
+        return self._joinButtonToMessageTemplate % (cssClass, el, text, value)
 
     def textForValue(self, term):
         """Extract a string from the `term`.
@@ -332,4 +331,3 @@ class AllowedTypesWidget(MultiCheckBoxWidget):
         """Initialize the widget."""
         super(AllowedTypesWidget, self).__init__(field,
             field.value_type.vocabulary, request)
-

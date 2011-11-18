@@ -172,9 +172,6 @@ class MailControlPanel(ControlPanelForm):
         self.handle_edit_action.success(data)
         mailhost = getToolByName(self.context, 'MailHost')
 
-        smtphost = mailhost.smtp_host
-        smtpport = mailhost.smtp_port
-
         # XXX Will self.context always be the Plone site?
         fromaddr = self.context.getProperty('email_from_address')
         fromname = self.context.getProperty('email_from_name')

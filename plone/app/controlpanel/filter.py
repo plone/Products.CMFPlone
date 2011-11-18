@@ -286,4 +286,3 @@ class FilterControlPanel(ControlPanelForm):
                     "immediately to show any changes you make, your changes "
                     "are not saved until you press the 'Save' button.")
     form_name = _("HTML Filter settings")
-

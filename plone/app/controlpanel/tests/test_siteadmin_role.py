@@ -11,16 +11,16 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
 
     def afterSetUp(self):
         super(TestSiteAdministratorRoleFunctional, self).afterSetUp()
-        
+
         # add a user with the Site Administrator role
         self.portal.portal_membership.addMember('siteadmin', 'secret', ['Site Administrator'], [])
-        
+
         token_re = re.compile(r'name="_authenticator" value="([^"]+)"')
         res = self.publish('/plone/@@usergroup-userprefs', basic='root:secret')
         self.manager_token = token_re.search(res.getOutput()).group(1)
         res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
         self.siteadmin_token = token_re.search(res.getOutput()).group(1)
-        
+
         self.normal_user = 'DIispfuF'
 
     def testControlPanelOverview(self):
@@ -150,7 +150,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
                            basic='siteadmin:secret')
         self.assertTrue('<input type="checkbox" class="noborder" name="add:list" '
                         'value="Administrators" disabled="disabled" />' in res.getOutput())
-        
+
         # and should not be addable
         form = {
             '_authenticator': self.siteadmin_token,
@@ -191,7 +191,7 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         self.assertFalse('<input class="label checkboxType" id="form.groups.0" '
                         'name="form.groups" type="checkbox" value="Administrators '
                         '(Administrators)" />' in res.getOutput())
-        
+
         # and should not be addable if we try to force it
         form = {
             '_authenticator': self.siteadmin_token,

@@ -35,7 +35,6 @@ try:
     from wicked.txtfilter import BrackettedWickedFilter
 except ImportError:
     HAS_WICKED = False
-    wicked_basic_type_regs = ()
 else:
     HAS_WICKED = True
 

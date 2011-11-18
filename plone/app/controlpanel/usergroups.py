@@ -133,7 +133,7 @@ class UsersGroupsControlPanelView(ControlPanelView):
         return getSecurityManager().checkPermission(ManagePortal, self.context)
 
     # The next two class methods implement the following truth table:
-    # 
+    #
     # MANY USERS/GROUPS SEARCHING       CAN LIST USERS/GROUPS   RESULT
     # False             False           False                   Lists unavailable
     # False             False           True                    Show all
@@ -327,8 +327,8 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             if users_with_reset_passwords:
                 reset_passwords_message = _(
                     u"reset_passwords_msg",
-                    default=u"The following users have been sent an e-mail with link to reset their password: ${user_ids}", 
-                    mapping={ 
+                    default=u"The following users have been sent an e-mail with link to reset their password: ${user_ids}",
+                    mapping={
                         u"user_ids" : ', '.join(users_with_reset_passwords),
                         },
                     )
@@ -700,4 +700,3 @@ class UserMembershipControlPanel(UsersGroupsControlPanelView):
     def getPotentialGroups(self, searchString):
         ignoredGroups = [x.id for x in self.getGroups() if x is not None]
         return self.membershipSearch(searchString, searchUsers=False, ignore=ignoredGroups)
-
