@@ -314,6 +314,21 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(tree['children'][-1]['item'].getPath(), '/plone/folder2')
         self.assertEqual(len(tree['children'][-1]['children']), 0)
 
+    def testBottomLevelZeroNoLimit(self):
+        """Test that bottomLevel=0 means no limit for bottomLevel."""
+
+        # first we set a high integer as bottomLevel to simulate "no limit"
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(bottomLevel=99, topLevel=0))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['children'][0]['item'].getPath(), '/plone/folder2/doc21')
+
+        # now set bottomLevel to 0 -> outcome should be the same
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(bottomLevel=0, topLevel=0))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['children'][0]['item'].getPath(), '/plone/folder2/doc21')
+
     def testNoRootSet(self):
         view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='', topLevel=0))
         tree = view.getNavTree()

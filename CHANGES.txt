@@ -4,7 +4,8 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Reverted commit 5cb41ffea to fix #12279 and added a test for it.
+  [zupo, jcerjak]
 
 
 2.2.2 (2011-10-17)
@@ -18,7 +19,7 @@ Changelog
 - Avoid empty <ul> tag in navigation_recurse.pt if bottomLevel is set.
   [gaudenzius]
 
-- Enable possibility to delete portlets with missing implementation 
+- Enable possibility to delete portlets with missing implementation
   [do3cc]
 
 - Replace use of deprecated skin template prefs_group_details with
@@ -30,7 +31,7 @@ Changelog
 ------------------
 - Imporove tests readability. Merged from branches/2.1
   [gotcha]
-  
+
 - 'placeholder' attribute for the search portlet's field instead of the custom
   JS handling of the same functionality.
   [spliter]
@@ -41,7 +42,7 @@ Changelog
 - Updated 'Advanced Search' link and form's action of the search portlet to
   link to updated search results view at @@search.
   [spliter]
-  
+
 2.1.5 - 2011-06-19
 ------------------
 
