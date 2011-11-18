@@ -94,9 +94,10 @@ class NavigationControlPanelAdapter(SchemaAdapterBase):
     show_excluded_items = property(get_show_excluded_items, set_show_excluded_items)
 
     def get_displayed_types(self):
-        return [t for t in self.ttool.listContentTypes()
-                        if t not in self.navProps.metaTypesNotToList and
-                           t not in BAD_TYPES]
+        allTypes = self.ttool.listContentTypes()
+        blacklist = self.navProps.metaTypesNotToList
+        return [t for t in allTypes if t not in blacklist
+                                    and t not in BAD_TYPES]
 
     def set_displayed_types(self, value):
         # The menu pretends to be a whitelist, but we are storing a blacklist so that
