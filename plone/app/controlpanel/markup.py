@@ -46,8 +46,9 @@ class WickedSettings(Persistent):
     types_enabled = []
     enable_mediawiki = False
 
-wicked_type_regs = dict((factory.type, factory) for factory in \
-                        wicked_basic_type_regs)
+if HAS_WICKED:
+    wicked_type_regs = dict((factory.type, factory) for factory in \
+                            wicked_basic_type_regs)
 
 class WickedTypesVocabulary(object):
     """Vocabulary factory for wickedized portal types.

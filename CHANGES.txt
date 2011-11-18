@@ -4,6 +4,9 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Really make the dependency of the markup control panel on wicked optional.
+  [vincentfretin]
+
 - Don't use plone_utils's getUserFriendlyTypes for blacklisting calculation in
   navigation-controlpanel, so it isn't dependend on search-controlpanel
   settings anymore. Fixes: #9012.
