@@ -7,6 +7,9 @@ Changelog
 
 4.1.2 (unreleased)
 ------------------
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
 
 - Allow users with the Manage Users permission to change the login
   name of other users; specifically this allows them to change the
