@@ -664,6 +664,27 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         for tab in tabs:
             self.assertEqual(validateCSSIdentifier(tab['id']),True)
 
+    def testLinkRemoteUrlsUsedUnlessLinkCreator(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Link', 'link1')
+        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.reindexObject()
+        view = self.view_class(self.portal, self.request)
+        tabs = view.topLevelTabs(actions=[])
+        for tab in tabs:
+            # as Creator tab for link1 should have url of the item
+            if tab['id'] == 'link1':
+                self.failUnless(tab['url'] == 'http://nohost/plone/link1')
+            
+        self.setRoles(['Manager'])
+        self.portal.link1.setCreators(['some_other_user'])
+        self.portal.link1.reindexObject()
+        tabs = view.topLevelTabs(actions=[])
+        for tab in tabs:
+            # as non-Creator user, tab for link1 should have url of the remote url
+            if tab['id'] == 'link1':
+                self.failUnless(tab['url'] == 'http://plone.org')
+
 
 class TestCatalogPortalTabs(TestBasePortalTabs):
         view_class = CatalogNavigationTabs
