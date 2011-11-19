@@ -8,6 +8,8 @@
 <li tal:define="show_children   node/show_children;
                 children        node/children;
                 item_url        node/getURL;
+                item_remote_url node/getRemoteUrl;
+                use_remote_url  node/useRemoteUrl | nothing;
                 item_icon       nocall:node/item_icon;
                 item_type       node/portal_type;
                 is_current      node/currentItem;
@@ -24,7 +26,7 @@
                        item_class python:is_current and item_class + ' navTreeCurrentItem' or item_class;">
 
 
-        <a tal:attributes="href python:item_url;
+        <a tal:attributes="href python:use_remote_url and item_remote_url or item_url;
                            title node/Description;
                            class string:$item_class${li_class}${li_extr_class}${li_folder_class} $item_type_class">
             <img tal:replace="structure item_icon/html_tag" />
