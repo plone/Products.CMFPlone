@@ -65,6 +65,7 @@ class IRegisterSchema(Interface):
     mail_me = schema.Bool(
         title=_(u'label_mail_password',
                 default=u"Send a confirmation mail with a link to set the password"),
+        required=True,
         default=False)
 
 
