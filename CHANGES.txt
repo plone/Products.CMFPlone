@@ -4,6 +4,10 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
 - Reverted commit 5cb41ffea to fix #12279 and added a test for it.
   [zupo, jcerjak]
 
