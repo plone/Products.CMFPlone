@@ -8,6 +8,11 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Call the view to unlock an item on unload synchronously, so that the
+  call succeeds on Webkit browsers. This closes
+  http://dev.plone.org/ticket/7885
+  [davisagli]
+
 - Remove uneeded kss debugging code
   [jfroche]
 
