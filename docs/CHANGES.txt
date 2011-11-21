@@ -7,6 +7,9 @@ Changelog
 
 4.2b1 - Unreleased
 ------------------
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
 
 - Call the view to unlock an item on unload synchronously, so that the
   call succeeds on Webkit browsers. This closes

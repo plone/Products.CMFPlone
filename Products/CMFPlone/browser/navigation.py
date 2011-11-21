@@ -150,6 +150,9 @@ class CatalogNavigationTabs(BrowserView):
     def topLevelTabs(self, actions=None, category='portal_tabs'):
         context = aq_inner(self.context)
 
+        mtool = getToolByName(context, 'portal_membership')
+        member = mtool.getAuthenticatedMember().id
+
         portal_properties = getToolByName(context, 'portal_properties')
         self.navtree_properties = getattr(portal_properties,
                                           'navtree_properties')
@@ -179,11 +182,18 @@ class CatalogNavigationTabs(BrowserView):
 
         rawresult = self.portal_catalog.searchResults(query)
 
+        def get_link_url(item):
+            linkremote = item.getRemoteUrl and not member == item.Creator
+            if linkremote:
+                return (get_id(item), item.getRemoteUrl)
+            else:
+                return False
+
         # now add the content to results
         idsNotToList = self.navtree_properties.getProperty('idsNotToList', ())
         for item in rawresult:
             if not (item.getId in idsNotToList or item.exclude_from_nav):
-                id, item_url = get_view_url(item)
+                id, item_url = get_link_url(item) or get_view_url(item)
                 data = {'name': utils.pretty_title_or_id(context, item),
                         'id': item.getId,
                         'url': item_url,
