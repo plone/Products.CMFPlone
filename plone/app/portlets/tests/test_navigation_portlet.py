@@ -212,9 +212,23 @@ class TestRenderer(PortletsTestCase):
         tree = view.getNavTree()
         for child in tree['children']:
             if child['portal_type'] != 'Link':
-                self.failIf(child['item'].getRemoteUrl)
+                self.failIf(child['getRemoteUrl'])
             if child['Title'] == 'link1':
-                self.failUnlessEqual(child['item'].getRemoteUrl, 'http://plone.org')
+                self.failUnlessEqual(child['getRemoteUrl'], 'http://plone.org')
+                # as Creator, link1 should not use the remote Url
+                self.failIf(child['useRemoteUrl'])
+        
+        self.portal.link1.setCreators(['some_other_user'])
+        self.portal.link1.reindexObject()
+        view = self.renderer(self.portal)
+        tree = view.getNavTree()
+        for child in tree['children']:
+            if child['portal_type'] != 'Link':
+                self.failIf(child['getRemoteUrl'])
+            if child['Title'] == 'link1':
+                self.failUnlessEqual(child['getRemoteUrl'], 'http://plone.org')
+                # as non-Creator user, link1 should use the remote Url
+                self.failUnless(child['useRemoteUrl'])
 
     def testNonStructuralFolderHidesChildren(self):
         # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
