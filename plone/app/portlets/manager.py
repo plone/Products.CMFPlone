@@ -51,7 +51,9 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
 
     def can_manage_portlets(self):
         context = self._context()
-        if not ILocalPortletAssignable.providedBy(context):
+        ftool = getToolByName(context, 'portal_factory')
+        if ftool.isTemporary(context) or \
+            not ILocalPortletAssignable.providedBy(context):
             return False
         mtool = getToolByName(context, 'portal_membership')
         return mtool.checkPermission("Portlets: Manage portlets", context)
