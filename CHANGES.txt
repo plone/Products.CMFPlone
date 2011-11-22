@@ -4,6 +4,10 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Do not display 'Manage portlets' when using portal_factory.
+  https://dev.plone.org/ticket/12376
+  [runyaga]
+  
 - Fixed the two high priority scenarios (global sections viewlet and nav 
   portlet) of http://dev.plone.org/ticket/11189.
   [fulv]
