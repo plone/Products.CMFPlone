@@ -14,7 +14,7 @@
  </object>
  <object name="plone_lexicon" meta_type="ZCTextIndex Lexicon">
   <element name="Unicode Whitespace splitter" group="Word Splitter"/>
-  <element name="Unicode Case Normalizer" group="Case Normalizer"/>
+  <element name="Unicode Ignoring Accents Case Normalizer" group="Case Normalizer"/>
  </object>
  <index name="Creator" meta_type="FieldIndex">
   <indexed_attr value="Creator"/>
