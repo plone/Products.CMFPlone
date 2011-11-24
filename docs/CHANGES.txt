@@ -5,8 +5,16 @@
 Changelog
 =========
 
+
+4.1.3 (unreleased)
+------------------
+
+- IE critical fix on toggle select and form submit helpers.
+  [thomasdesvenain]
+
 4.1.2 (unreleased)
 ------------------
+
 - Fixed the two high priority scenarios (global sections viewlet and nav 
   portlet) of http://dev.plone.org/ticket/11189.
   [fulv]
