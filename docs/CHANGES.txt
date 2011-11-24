@@ -8,6 +8,9 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- IE critical fix on toggle select and form submit helpers.
+  [thomasdesvenain]
+
 - Remove uneeded kss debugging code
   [jfroche]
 
