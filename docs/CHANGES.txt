@@ -8,6 +8,9 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Allow "Site Administrator to add keywords"
+  [kleist, suggested by keul]
+
 - IE critical fix on toggle select and form submit helpers.
   [thomasdesvenain]
 
