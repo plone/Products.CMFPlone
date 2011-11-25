@@ -9,32 +9,36 @@ Test setup
 
 Create Document
     [Tags]  action-menu
-    Click Link  Page
+    Click Link  link=Home
+    Open Add New Menu
+    Click Link  link=Page
     Input Text  title  An actionsmenu page
     Click Button  Save
 
 Create Folder
     [Tags]  action-menu
-    Click Link  css=li#portaltab-index_html a
-    Click Link  Folder
+    Click Link  link=Home
+    Open Add New Menu
+    Click Link  link=Folder
     Input Text  title  An actionsmenu folder
     Click Button  Save
 
 Content Menu
     [Tags]  action-menu
+    Click Link  link=Home
     Click Link  An actionsmenu page
     Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Not Be Visible  css=a#delete
 
 Switching Actions Menu
     [Tags]  action-menu
-    Click Link  An actionsmenu page
+    Click Link  link=An actionsmenu page
     Element Should Not Be Visible  css=a#delete
     Element Should Not Be Visible  css=a#advanced
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Be Visible  css=a#delete
     Element Should Not Be Visible  css=a#advanced
     Mouse Over  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a
@@ -43,16 +47,16 @@ Switching Actions Menu
     Mouse Over  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Be Visible  css=a#delete
     Element Should Not Be Visible  css=a#advanced
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Not Be Visible  css=a#delete
     Element Should Not Be Visible  css=a#advanced
 
 Clicking outside of Actions Menu
     [Tags]  action-menu
-    Click Link  An actionsmenu page
+    Click Link  link=An actionsmenu page
     Element Should Not Be Visible  css=a#delete
     Element Should Not Be Visible  css=a#advanced
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Be Visible  css=a#delete
     Element Should Not Be Visible  css=a#advanced
     Mouse Down  css=h1
@@ -60,32 +64,36 @@ Clicking outside of Actions Menu
     Element Should Not Be Visible  css=a#advanced
 
 Publish Document
-    Click Link  An actionsmenu page
+    Click Link  link=An actionsmenu page
     Page Should Contain Element  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a span.state-private
-    Click Link  Publish
+    Open Workflow Menu
+    Click Link  link=Publish
     Page Should Contain Element  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a span.state-published
-    Click Link  Send back
+    Open Workflow Menu
+    Click Link  link=Send back
     Page Should Contain Element  css=dl#plone-contentmenu-workflow dt.actionMenuHeader a span.state-private
 
 Copy Document
     Click Link  An actionsmenu page
-    Click Link  Copy  don't wait
+    Open Action Menu
+    Click Link  link=Copy
     Wait until keyword succeeds  10s  1s  Page Should Contain  An actionsmenu page copied.
     Click Link  An actionsmenu folder
-    Click Link  Paste  don't wait
+    Open Action Menu
+    Click Link  link=Paste
     Wait until keyword succeeds  10s  1s  Page Should Contain  Item(s) pasted.
-    Click Link  Contents
+    Click Link  link=Contents
     Xpath Should Match X Times  //table[@id = 'listing-table']/tbody/tr  1
     Click Button  Paste
     Xpath Should Match X Times  //table[@id = 'listing-table']/tbody/tr  2
 
 Delete Document
     [Tags]  action-menu
-    Click Link  An actionsmenu page
+    Click Link  link=An actionsmenu page
     Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
+    Click Overlay Link  link=Delete
     Page Should Contain  Do you really want to delete this item?
     Click Button  css=form#delete_confirmation input.destructive
 
@@ -93,9 +101,9 @@ Delete Folder
     [Tags]  action-menu
     Click Link  An actionsmenu folder
     Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
+    Click Overlay Link  link=Delete
     Page Should Contain  Do you really want to delete this folder and all its contents?
     Click Button  css=form#delete_confirmation input.destructive
 

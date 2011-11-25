@@ -29,15 +29,16 @@ OpenCloseLoginOverlay
 
     # clicking anywhere else should close overlay
     Wait Until Page Contains Element  ${exposemask_selector}
-    Click Element  ${exposemask_selector}  don't wait
+    Click Element  ${exposemask_selector}
     Wait until keyword succeeds  1  5  Page Should Contain Element  ${overlay_login_selector}
+    #Page Should Contain Element  ${overlay_login_selector}
 
 SubmitEmptyLogin
     Open login overlay
 
     # click on empty form submit
     Wait Until Page Contains Element  ${overlay_login_submit_selector}
-    Click Button  ${overlay_login_submit_selector}  don't wait
+    Click Button  ${overlay_login_submit_selector}
 
     # Error message must appear
     Wait Until Page Contains Element  ${portalmessage_error_selector}
@@ -55,10 +56,12 @@ SubmitLogin
 
     # overlay should be gone
     Wait until keyword succeeds  1  5  Page Should Not Contain Element  ${overlay_login_selector}
+    #Page Should Not Contain Element  ${overlay_login_selector}
 
 
 *** Keywords ***
 
 Open login overlay
-    Click Element  ${personaltools_login_selector}  don't wait
+    Click Element  ${personaltools_login_selector}
     Wait until keyword succeeds  1  5  Page Should Contain Element  ${overlay_login_selector}
+    #Page Should Contain Element  ${overlay_login_selector}

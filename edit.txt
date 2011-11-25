@@ -9,6 +9,7 @@ Test setup
 
 Create Document
     [Tags]  edit
+    Open Add New Menu
     Click Link  css=#plone-contentmenu-factories a#document
     Input Text  title  An edit test page
     Click Button  Save
@@ -25,7 +26,7 @@ Edit document
 Select categorization tab
     [Tags]  edit
     Click Link  css=li#contentview-edit a
-    Click link  css=a#fieldsetlegend-categorization  don't wait
+    Click link  css=a#fieldsetlegend-categorization
     Element Should Not Be Visible  css=fieldset#fieldset-default
     Element Should Be Visible  css=textarea#subject_keywords
     Element Should Not Be Visible  css=fieldset#fieldset-dates
@@ -34,7 +35,7 @@ Select categorization tab
 Select settings tab
     [Tags]  edit
     Click Link  css=li#contentview-edit a
-    Click link  css=a#fieldsetlegend-settings  don't wait
+    Click link  css=a#fieldsetlegend-settings
     Element Should Not Be Visible  css=fieldset#fieldset-default
     Element Should Not Be Visible  css=textarea#subject_keywords
     Element Should Not Be Visible  css=fieldset#fieldset-dates
@@ -44,6 +45,7 @@ Select settings tab
 Create Related Document
     [Tags]  edit
     Click Link  css=li#portaltab-index_html a
+    Open Add New Menu
     Click Link  css=#plone-contentmenu-factories a#document
     Input Text  title  A related test page
     Click Button  Save
@@ -52,12 +54,12 @@ Test relationship
     [Tags]  edit
     Click Link  css=li#portaltab-an-edit-test-page a
     Click Link  css=li#contentview-edit a
-    Click link  css=a#fieldsetlegend-categorization  don't wait
-    Click Button  css=input.addreference  don't wait
+    Click link  css=a#fieldsetlegend-categorization
+    Click Button  css=input.addreference
     Wait Until Page Contains Element  css=input.insertreference
-    Click Element  css=input.insertreference  don't wait
+    Click Element  css=input.insertreference
     Wait until keyword succeeds  10s  1s  Xpath Should Match X Times  //ul[@id = 'ref_browser_relatedItems']/descendant::input  1
-    Click Element  css=div.close  don't wait
+    Click Element  css=div.close
     Click Button  Save
     Xpath Should Match X Times  //dl[@id = 'relatedItemBox']/dd  1
 
@@ -65,14 +67,14 @@ Test DateTime widget
     [Tags]  edit
     Click Link  css=li#portaltab-an-edit-test-page a
     Click Link  css=li#contentview-edit a
-    Click link  css=a#fieldsetlegend-dates  don't wait
+    Click link  css=a#fieldsetlegend-dates
     Select From List  css=select#edit_form_effectiveDate_0_year  2001
     Select From List  css=select#edit_form_effectiveDate_0_month  January
     Select From List  css=select#edit_form_effectiveDate_0_day  01
     Select From List  css=select#edit_form_effectiveDate_0_hour  01
     Select From List  css=select#edit_form_effectiveDate_0_minute  00
     Select From List  css=select#edit_form_effectiveDate_0_ampm  AM
-    Click Element  css=span#edit_form_effectiveDate_0_popup  don't wait
+    Click Element  css=span#edit_form_effectiveDate_0_popup
     Element Should Be Visible  css=div.calendar
     Element Text Should Be  css=div.calendar thead td.title  January, 2001
     Mouse Down  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
@@ -82,7 +84,7 @@ Test DateTime widget
     Mouse Up  xpath=//div[@class='calendar']/table/thead/tr[2]/td[5]/div
     Element Text Should Be  css=div.calendar thead td.title  February, 2002
     Click Button  Save
-    Click Link  css=span#content-history a.link-overlay  don't wait
+    Click Link  css=span#content-history a.link-overlay
     Wait until keyword succeeds  10s  1s  Click Link  xpath=//div/a[@class='historyComparePrevious']
     Wait Until Page Contains  Show differences
     Select Radio Button  diffstyle  code
@@ -92,9 +94,9 @@ Test DateTime widget
 
 Delete Edit Document
     [Tags]  edit
-    Click Link  An edit test page
+    Click Link  link=An edit test page
     Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Open Action Menu
     Element Should Be Visible  css=a#delete
     Click Overlay Link  Delete
     Page Should Contain  Do you really want to delete this item?
@@ -103,9 +105,9 @@ Delete Edit Document
 
 Delete Related Document
     [Tags]  edit
-    Click Link  A related test page
+    Click Link  link=A related test page
     Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Open Action Menu
     Element Should Be Visible  css=a#delete
     Click Overlay Link  Delete
     Page Should Contain  Do you really want to delete this item?

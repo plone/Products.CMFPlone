@@ -9,6 +9,7 @@ Test setup
 
 Create Document
     [Tags]  livesearch
+    Open Add New Menu
     Click Link  css=#plone-contentmenu-factories a#document
     Input Text  title  A livesearch test page
     Click Button  Save
@@ -16,13 +17,15 @@ Create Document
 Create Folder
     [Tags]  livesearch
     Click Link  css=li#portaltab-index_html a
-    Click Link  Folder
+    Open Add New Menu
+    Click Link  link=Folder
     Input Text  title  A livesearch test folder
     Click Button  Save
 
 Create Sub Document 1
     [Tags]  livesearch
     Click Link  css=li#portaltab-a-livesearch-test-folder a
+    Open Add New Menu
     Click Link  css=#plone-contentmenu-factories a#document
     Input Text  title  A livesearch test page 1
     Click Button  Save
@@ -30,6 +33,7 @@ Create Sub Document 1
 Create Sub Document 2
     [Tags]  livesearch
     Click Link  css=li#portaltab-a-livesearch-test-folder a
+    Open Add New Menu
     Click Link  css=#plone-contentmenu-factories a#document
     Input Text  title  A livesearch test page 2
     Click Button  Save
@@ -46,17 +50,19 @@ Livesearch For folder
 
 Livesearch Within folder
     [Tags]  livesearch
+    Click Link  Home
     Click Link  A livesearch test folder
     Select Checkbox  css=input#searchbox_currentfolder_only
     Count Livesearch Items For  livesearch test page  3
 
 Delete Document
     [Tags]  livesearch
+    Click Link  Home
     Click Link  A livesearch test page
     Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Open Action Menu
     Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
+    Click Overlay Link  link=Delete
     Page Should Contain  Do you really want to delete this item?
     Click Button  css=form#delete_confirmation input.destructive
 
@@ -64,9 +70,9 @@ Delete Folder
     [Tags]  livesearch
     Click Link  A livesearch test folder
     Element Should Not Be Visible  css=a#delete
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a  don't wait
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
     Element Should Be Visible  css=a#delete
-    Click Overlay Link  Delete
+    Click Overlay Link  link=Delete
     Page Should Contain  Do you really want to delete this folder and all its contents?
     Click Button  css=form#delete_confirmation input.destructive
 
@@ -76,8 +82,8 @@ Count Livesearch Items For
     [Arguments]  ${string}  ${count}
     Focus  css=input#searchGadget
     Input Text  css=input#searchGadget  ${string}
-    Key Down  css=input#searchGadget  e
-    Key Up  css=input#searchGadget  e
+#    Key Down  css=input#searchGadget  e
+#    Key Up  css=input#searchGadget  e
     Wait until keyword succeeds  10s  1s  Element Should Be Visible  css=div#LSResult
     Wait until keyword succeeds  10s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
     Focus  css=input#searchbox_currentfolder_only
