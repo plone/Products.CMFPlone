@@ -56,6 +56,7 @@
   <property name="default_editor" type="string">TinyMCE</property>
   <property name="allowRolesToAddKeywords" type="lines">
    <element value="Manager"/>
+   <element value="Site Administrator"/>
    <element value="Reviewer"/>
   </property>
   <property name="auth_cookie_length" type="int">0</property>
