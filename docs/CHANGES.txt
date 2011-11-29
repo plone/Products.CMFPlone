@@ -6,7 +6,7 @@ Changelog
 =========
 
 
-4.1.3 (unreleased)
+4.1.3 (2011-11-28)
 ------------------
 
 - IE critical fix on toggle select and form submit helpers.
