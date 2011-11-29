@@ -12,7 +12,7 @@ Changelog
 - IE critical fix on toggle select and form submit helpers.
   [thomasdesvenain]
 
-4.1.2 (unreleased)
+4.1.2 (10/13/2011)
 ------------------
 
 - Fixed the two high priority scenarios (global sections viewlet and nav 
