@@ -8,6 +8,39 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Define a ZCML feature called `plone-42` in addition to the existing `plone-4`
+  and `plone-41` to be used in conditional ZCML registrations.
+  [vincentfretin]
+
+- Allow "Site Administrator to add keywords"
+  [kleist, suggested by keul]
+
+- IE critical fix on toggle select and form submit helpers.
+  [thomasdesvenain]
+
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
+- Call the view to unlock an item on unload synchronously, so that the
+  call succeeds on Webkit browsers. This closes
+  http://dev.plone.org/ticket/7885
+  [davisagli]
+
+- Remove uneeded kss debugging code
+  [jfroche]
+
+- Allow users with the Manage Users permission to change the login
+  name of other users; specifically this allows them to change the
+  email address when this is used as login name.
+  Fixes http://dev.plone.org/plone/ticket/11255
+  [maurits]
+
+- Removed the 'What' row in the event view that displayed the
+  keywords; this is already handled by the keywords viewlet.
+  Fixes http://dev.plone.org/plone/ticket/10818
+  [maurits]
+
 - Make control panel action GS export return actions alphabetically since
   there is no other natural ordering.
   [ggozad]
@@ -15,6 +48,10 @@ Changelog
 - Fixed folder_listing template
   so that listing macro can be used outside of folder_listing.
   [thomasdesvenain]
+
+- Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
+  Owned.changeOwnership, but a plain User object only.
+  [stefan]
 
 4.2a2 - 2011-08-25
 ------------------

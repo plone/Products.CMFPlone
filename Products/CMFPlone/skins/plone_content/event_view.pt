@@ -20,14 +20,6 @@
 
                 <tbody>
 
-                    <tr tal:condition="context/Subject">
-                        <th i18n:translate="event_what">What</th>
-                        <td>
-                            <metal:field use-macro="python:context.widget('subject', mode='view')">
-                            Categories
-                            </metal:field>
-                        </td>
-                    </tr>
                     <tr>
                         <th i18n:translate="event_when">When</th>
                         <td>
