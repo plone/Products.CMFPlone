@@ -8,6 +8,25 @@ Changelog
 4.2b1 - Unreleased
 ------------------
 
+- Define a ZCML feature called `plone-42` in addition to the existing `plone-4`
+  and `plone-41` to be used in conditional ZCML registrations.
+  [vincentfretin]
+
+- Allow "Site Administrator to add keywords"
+  [kleist, suggested by keul]
+
+- IE critical fix on toggle select and form submit helpers.
+  [thomasdesvenain]
+
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
+- Call the view to unlock an item on unload synchronously, so that the
+  call succeeds on Webkit browsers. This closes
+  http://dev.plone.org/ticket/7885
+  [davisagli]
+
 - Remove uneeded kss debugging code
   [jfroche]
 
