@@ -22,6 +22,7 @@ from App.ImageFile import ImageFile
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from Products.CMFCore.permissions import SetOwnProperties
+from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 from Products.CMFCore.utils import getToolByName
 from Products.PlonePAS.interfaces.plugins import IUserManagement
@@ -627,7 +628,8 @@ def set_own_login_name(member, loginname):
     if not secman.checkPermission(SetOwnProperties, member):
         raise Unauthorized('You are not allowed to update this login name')
     membership = getToolByName(member, 'portal_membership')
-    if member != membership.getAuthenticatedMember():
+    if member != membership.getAuthenticatedMember() \
+        and not secman.checkPermission(ManageUsers, member):
         raise Unauthorized('You can only change your OWN login name.')
     acl_users = getToolByName(member, 'acl_users')
     for plugin_id, userfolder in acl_users.plugins.listPlugins(IUserManagement):

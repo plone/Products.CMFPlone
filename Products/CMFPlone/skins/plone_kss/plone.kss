@@ -216,18 +216,6 @@ div.inlineEditable:load {
   updateSharingInfo-error: plone-submitCurrentForm;
 }
 
-#sharing-user-group-search:keydown {
-    evt-keydown-preventdefault: true;
-    evt-keydown-keycodes: 13;
-    action-client: log;
-}
-
-#sharing-user-group-search:keypress {
-    evt-keypress-preventdefault: true;
-    evt-keypress-keycodes: 13;
-    action-client: log;
-}
-
 #sharing-user-group-search:keyup {
   evt-keyup-preventdefault: true;
   evt-keyup-keycodes: 13;

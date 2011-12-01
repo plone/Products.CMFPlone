@@ -489,6 +489,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             user = membership.getMemberById(userid)
             if user is None:
                 raise KeyError, 'Only retrievable users in this site can be made owners.'
+            # Be careful not to pass MemberData to changeOwnership
+            user = user.getUser()
         object.changeOwnership(user, recursive)
 
         def fixOwnerRole(object, user_id):
