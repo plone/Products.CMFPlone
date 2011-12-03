@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.4 (unreleased)
+2.2.4 (2011-12-03)
 ------------------
 
 - Nothing changed yet.
