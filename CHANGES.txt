@@ -1,10 +1,19 @@
 Changelog
 =========
 
-2.2.4 (2011-12-03)
+2.2.5 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+2.2.4 (2011-12-03)
+------------------
+
+- Add the ability for the navtree strategy to suppliment the query.
+  Fixes a problem where the listing of default pages in navigation
+  trees could no longer be enabled.
+  [rossp]
 
 
 2.2.3 (2011-10-17)
@@ -13,11 +22,6 @@ Changelog
 - Make Keyword viewlet link to the new p.a.search view, as well as respect
   navigation root.
   Fixes http://dev.plone.org/plone/ticket/12231
-
-- Add the ability for the navtree strategy to suppliment the query.
-  Fixes a problem where the listing of default pages in navigation
-  trees could no longer be enabled.
-  [rossp]
 
 - Added on body a class related to subsite.
   The class is named site-x where x is navigation root object id.
