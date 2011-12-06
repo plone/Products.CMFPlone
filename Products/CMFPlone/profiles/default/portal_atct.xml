@@ -147,7 +147,7 @@
      i18n:attributes="description; friendlyName">
    <criteria>ATSimpleStringCriterion</criteria>
   </index>
-  <index name="Type" description="An item's type (e.g. Event)" enabled="True"
+  <index name="portal_type" description="An item's type (e.g. Event)" enabled="True"
      friendlyName="Item Type"
      i18n:attributes="description; friendlyName">
    <criteria>ATPortalTypeCriterion</criteria>

@@ -255,7 +255,7 @@ def setupPortalContent(p):
 
         topic = p.news.aggregator
         topic.setLanguage(language)
-        type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
+        type_crit = topic.addCriterion('portal_type', 'ATPortalTypeCriterion')
         type_crit.setValue('News Item')
         topic.addCriterion('created', 'ATSortCriterion')
         state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
@@ -300,7 +300,7 @@ def setupPortalContent(p):
         topic = folder.aggregator
         topic.unmarkCreationFlag()
         topic.setLanguage(language)
-        type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
+        type_crit = topic.addCriterion('portal_type', 'ATPortalTypeCriterion')
         type_crit.setValue('Event')
         topic.addCriterion('start', 'ATSortCriterion')
         state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
