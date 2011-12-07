@@ -1,4 +1,5 @@
 from Acquisition import aq_inner
+from AccessControl import Unauthorized
 
 from zope.component import getUtility
 from zope.component import adapts
@@ -253,6 +254,42 @@ class UserDataPanel(AccountPanelForm):
 
     label = _(u'title_personal_information_form', default=u'Personal Information')
     form_name = _(u'User Data Form')
+
+    def validate(self, action, data):
+        errors = super(UserDataPanel, self).validate(action, data)
+
+        if not self.widgets['email'].error():
+            reg_tool = getToolByName(self.context, 'portal_registration')
+            props = getToolByName(self.context, 'portal_properties').site_properties
+            if props.getProperty('use_email_as_login'):
+                err_str = ''
+                try:
+                    id_allowed = reg_tool.isMemberIdAllowed(data['email'])
+                except Unauthorized:
+                    err_str = _('message_email_cannot_change',
+                                u"Sorry, you are not allowed to change your email address.")
+                else:
+
+                    if not id_allowed:
+                        # Keeping your email the same (which happens when you
+                        # change something else on the personalize form) or
+                        # changing it back to your login name, is fine.
+                        membership = getToolByName(self.context, 'portal_membership')
+                        if self.userid:
+                            member = membership.getMemberById(self.userid)
+                        else:
+                            member = membership.getAuthenticatedMember()
+                        if data['email'] not in (member.getId(), member.getUserName()):
+                            err_str = _('message_email_in_use',
+                                        u"The email address you selected is already in use "
+                                         "or is not valid as login name. Please choose "
+                                         "another.")
+
+                if err_str:
+                    errors.append(WidgetInputError('email', u'label_email', err_str))
+                    self.widgets['email'].error = err_str
+
+        return errors
 
     @property
     def description(self):
