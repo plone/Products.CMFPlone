@@ -4,7 +4,8 @@ Changelog
 1.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Explicitly set the mail_me field as not required.
+  [jcbrand]
 
 
 1.1.2 (2011-08-23)
