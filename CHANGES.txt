@@ -4,8 +4,8 @@ Changelog
 1.1.3 (unreleased)
 ------------------
 
-- Fix for #12297: Plone Administrator unable to edit User Data
-  when email is used as login.
+- Fix for: Plone Administrator unable to edit User Data when email is
+  used as login.  Fixes http://dev.plone.org/plone/ticket/12297
   [vmaksymiv, myroslav]
 
 - Explicitly set the mail_me field as not required.
