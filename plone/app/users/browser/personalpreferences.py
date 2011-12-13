@@ -15,7 +15,8 @@ from zope.formlib import form
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 
-from plone.app.users.browser.account import AccountPanelForm, AccountPanelSchemaAdapter
+from plone.app.users.browser.account import AccountPanelForm
+from plone.app.users.browser.account import AccountPanelSchemaAdapter
 from plone.app.users.userdataschema import IUserDataSchemaProvider
 
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
@@ -25,6 +26,7 @@ from Products.CMFPlone.utils import set_own_login_name, safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 
+
 class IPersonalPreferences(Interface):
 
     """ Provide schema for personalize form """
@@ -32,23 +34,27 @@ class IPersonalPreferences(Interface):
     visible_ids = Bool(
         title=_(u'label_edit_short_names',
             default=u'Allow editing of Short Names'),
-        description=_(u'help_display_names',
-                      default=u'Determines if Short Names (also known '
-               'as IDs) are changable when editing items. If Short '
-               'Names are not displayed, they will be generated automatically.'),
+        description=_(
+            u'help_display_names',
+            default=(u'Determines if Short Names (also known '
+                     u'as IDs) are changable when editing items. If Short '
+                     u'Names are not displayed, they will be generated '
+                     u'automatically.')),
         required=False
            )
 
     wysiwyg_editor = Choice(
         title=_(u'label_wysiwyg_editor', default=u'Wysiwyg editor'),
-        description=_(u'help_wysiwyg_editor', default=u'Wysiwyg editor to use.'),
+        description=_(u'help_wysiwyg_editor',
+                       default=u'Wysiwyg editor to use.'),
         vocabulary="plone.app.vocabularies.AvailableEditors",
         required=False,
         )
 
     ext_editor = Bool(
         title=_(u'label_ext_editor', default=u'Enable external editing'),
-        description=_(u'help_content_ext_editor', default=u'When checked, an option will be '
+        description=_(u'help_content_ext_editor',
+           default=u'When checked, an option will be '
            'made visible on each page which allows you '
            'to edit content with your favorite editor '
            'instead of using browser-based editors. This '
@@ -61,8 +67,8 @@ class IPersonalPreferences(Interface):
     listed = Bool(
         title=_(u'label_listed_status', default=u'Listed in searches'),
         description=_(u'help_listed_status',
-                      default=u'Determines if your user name is listed in user '
-                               'searches done on this site.'),
+            default=u'Determines if your user name is listed in user '
+            'searches done on this site.'),
         required=False
         )
 
@@ -73,20 +79,21 @@ class IPersonalPreferences(Interface):
         required=False
         )
 
+
 class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
 
     def get_wysiwyg_editor(self):
         return self.context.getProperty('wysiwyg_editor', '')
 
     def set_wysiwyg_editor(self, value):
-        # No value means "use site default", portal_memberdata expects an empty string, not a None.
-        # (As opposed to "None" which means "no editor")
+        # No value means "use site default", portal_memberdata expects
+        # an empty string, not a None.  (As opposed to "None" which
+        # means "no editor")
         if value is None:
             value = ''
         return self.context.setMemberProperties({'wysiwyg_editor': value})
 
     wysiwyg_editor = property(get_wysiwyg_editor, set_wysiwyg_editor)
-
 
     def get_ext_editor(self):
         return self.context.getProperty('ext_editor', '')
@@ -96,7 +103,6 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
 
     ext_editor = property(get_ext_editor, set_ext_editor)
 
-
     def get_listed(self):
         return self.context.getProperty('listed', '')
 
@@ -105,7 +111,6 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
 
     listed = property(get_listed, set_listed)
 
-
     def get_visible_ids(self):
         return self.context.getProperty('visible_ids', '')
 
@@ -113,7 +118,6 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
         return self.context.setMemberProperties({'visible_ids': value})
 
     visible_ids = property(get_visible_ids, set_visible_ids)
-
 
     def get_language(self):
         return self.context.getProperty('language', '')
@@ -125,7 +129,6 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
 
 
 def LanguageWidget(field, request):
-
     """ Create selector with languages vocab """
 
     widget = DropdownWidget(field, field.vocabulary, request)
@@ -143,17 +146,18 @@ def WysiwygEditorWidget(field, request):
                         u"Use site default")
     return widget
 
+
 class PersonalPreferencesPanel(AccountPanelForm):
     """ Implementation of personalize form that uses formlib """
 
     label = _(u"heading_my_preferences", default=u"Personal Preferences")
-    description = _(u"description_my_preferences", default=u"Your personal settings.")
+    description = _(u"description_my_preferences",
+                    default=u"Your personal settings.")
     form_name = _(u'legend_personal_details', u'Personal Details')
 
     form_fields = form.FormFields(IPersonalPreferences)
     form_fields['language'].custom_widget = LanguageWidget
     form_fields['wysiwyg_editor'].custom_widget = WysiwygEditorWidget
-
 
     def setUpWidgets(self, ignore_request=False):
         """ Hide the visible_ids field based on portal_properties.
@@ -166,6 +170,7 @@ class PersonalPreferencesPanel(AccountPanelForm):
             self.hidden_widgets.append('visible_ids')
 
         super(PersonalPreferencesPanel, self).setUpWidgets(ignore_request)
+
 
 class PersonalPreferencesConfiglet(PersonalPreferencesPanel):
     """ """
@@ -201,7 +206,6 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
     email = property(get_email, set_email)
 
-
     def get_home_page(self):
         return self._getProperty('home_page')
 
@@ -210,7 +214,6 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
     home_page = property(get_home_page, set_home_page)
 
-
     def get_description(self):
         return self._getProperty('description')
 
@@ -218,7 +221,6 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
         return self.context.setMemberProperties({'description': value})
 
     description = property(get_description, set_description)
-
 
     def get_location(self):
         return self._getProperty('location')
@@ -250,43 +252,51 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
 
     pdelete = property(get_pdelete, set_pdelete)
 
+
 class UserDataPanel(AccountPanelForm):
 
-    label = _(u'title_personal_information_form', default=u'Personal Information')
+    label = _(u'title_personal_information_form',
+              default=u'Personal Information')
     form_name = _(u'User Data Form')
 
     def validate(self, action, data):
+        context = aq_inner(self.context)
         errors = super(UserDataPanel, self).validate(action, data)
 
         if not self.widgets['email'].error():
-            reg_tool = getToolByName(self.context, 'portal_registration')
-            props = getToolByName(self.context, 'portal_properties').site_properties
-            if props.getProperty('use_email_as_login'):
+            reg_tool = getToolByName(context, 'portal_registration')
+            props = getToolByName(context, 'portal_properties')
+            if props.site_properties.getProperty('use_email_as_login'):
                 err_str = ''
                 try:
                     id_allowed = reg_tool.isMemberIdAllowed(data['email'])
                 except Unauthorized:
                     err_str = _('message_email_cannot_change',
-                                u"Sorry, you are not allowed to change your email address.")
+                                default=(u"Sorry, you are not allowed to "
+                                         u"change your email address."))
                 else:
-
                     if not id_allowed:
                         # Keeping your email the same (which happens when you
                         # change something else on the personalize form) or
                         # changing it back to your login name, is fine.
-                        membership = getToolByName(self.context, 'portal_membership')
+                        membership = getToolByName(context,
+                                                   'portal_membership')
                         if self.userid:
                             member = membership.getMemberById(self.userid)
                         else:
                             member = membership.getAuthenticatedMember()
-                        if data['email'] not in (member.getId(), member.getUserName()):
-                            err_str = _('message_email_in_use',
-                                        u"The email address you selected is already in use "
-                                         "or is not valid as login name. Please choose "
-                                         "another.")
+                        if data['email'] not in (member.getId(),
+                                                 member.getUserName()):
+                            err_str = _(
+                                'message_email_in_use',
+                                default=(
+                                    u"The email address you selected is "
+                                    u"already in use or is not valid as login "
+                                    u"name. Please choose another."))
 
                 if err_str:
-                    errors.append(WidgetInputError('email', u'label_email', err_str))
+                    errors.append(WidgetInputError(
+                        'email', u'label_email', err_str))
                     self.widgets['email'].error = err_str
 
         return errors
@@ -296,17 +306,19 @@ class UserDataPanel(AccountPanelForm):
         mt = getToolByName(self.context, 'portal_membership')
         if self.userid and (self.userid != mt.getAuthenticatedMember().id):
             #editing someone else's profile
-            return _(u'description_personal_information_form_otheruser', default='Change personal information for $name', mapping={'name': self.userid})
+            return _(u'description_personal_information_form_otheruser',
+                     default='Change personal information for $name',
+                     mapping={'name': self.userid})
         else:
             #editing my own profile
-            return _(u'description_personal_information_form', default='Change your personal information')
+            return _(u'description_personal_information_form',
+                     default='Change your personal information')
 
     def __init__(self, context, request):
         """ Load the UserDataSchema at view time.
 
         (Because doing getUtility for IUserDataSchemaProvider fails at startup
         time.)
-
         """
         super(UserDataPanel, self).__init__(context, request)
         util = getUtility(IUserDataSchemaProvider)
@@ -317,6 +329,7 @@ class UserDataPanel(AccountPanelForm):
     def getPortrait(self):
         context = aq_inner(self.context)
         return context.portal_membership.getPersonalPortrait()
+
 
 class UserDataConfiglet(UserDataPanel):
     """ """
@@ -343,29 +356,33 @@ def checkCurrentPassword(value):
 
     return True
 
+
 class IPasswordSchema(Interface):
 
     """ Provide schema for password form """
 
-    current_password = schema.Password(title=_(u'label_current_password',
-                                                    default=u'Current password'),
-                                 description=_(u'help_current_password',
-                                                    default=u'Enter your current password.'),
-                                 #constraint=checkCurrentPassword,
-                                       )
+    current_password = schema.Password(
+        title=_(u'label_current_password',
+                 default=u'Current password'),
+        description=_(u'help_current_password',
+                       default=u'Enter your current password.'),
+        #constraint=checkCurrentPassword,
+        )
 
-    new_password = schema.Password(title=_(u'label_new_password', default=u'New password'),
-                                   description=_(u'help_new_password',
-                                                    default=u"Enter your new password. "
-                                                             "Minimum 5 characters."),
-                                   )
+    new_password = schema.Password(
+        title=_(u'label_new_password', default=u'New password'),
+        description=_(
+            u'help_new_password',
+            default=u"Enter your new password. Minimum 5 characters."),
+        )
 
-    new_password_ctl = schema.Password(title=_(u'label_confirm_password', default=u'Confirm password'),
-                                 description=_(u'help_confirm_password',
-                                                    default=u"Re-enter the password. "
-                                                            "Make sure the passwords are identical."),
-                                       )
-
+    new_password_ctl = schema.Password(
+        title=_(u'label_confirm_password', default=u'Confirm password'),
+        description=_(
+            u'help_confirm_password',
+            default=u"Re-enter the password. "
+            u"Make sure the passwords are identical."),
+            )
 
 
 class PasswordPanelAdapter(SchemaAdapterBase):
@@ -374,16 +391,11 @@ class PasswordPanelAdapter(SchemaAdapterBase):
     implements(IPasswordSchema)
 
     def __init__(self, context):
-
         self.context = getToolByName(context, 'portal_membership')
 
-
     def get_dummy(self):
-
         """ We don't actually need to 'get' anything ..."""
-
         return ''
-
 
     current_password = property(get_dummy)
 
@@ -420,7 +432,6 @@ class PasswordAccountPanel(AccountPanelForm):
                                   u'label_current_password', err_str))
                 self.widgets['current_password'].error = err_str
 
-
         # check if passwords are same and minimum length of 5 chars
         new_password = data.get('new_password')
         new_password_ctl = data.get('new_password_ctl')
@@ -437,7 +448,8 @@ class PasswordAccountPanel(AccountPanelForm):
 
         return errors
 
-    @form.action(_(u'label_change_password', default=u'Change Password') ,validator='validate_password', name=u'reset_passwd')
+    @form.action(_(u'label_change_password', default=u'Change Password'),
+                 validator='validate_password', name=u'reset_passwd')
     def action_reset_passwd(self, action, data):
         membertool = getToolByName(self.context, 'portal_membership')
 
@@ -446,7 +458,9 @@ class PasswordAccountPanel(AccountPanelForm):
         try:
             membertool.setPassword(password, None, REQUEST=self.request)
         except AttributeError:
-            failMessage=_(u'While changing your password an AttributeError occurred. This is usually caused by your user being defined outside the portal.')
+            failMessage = _(u'While changing your password an AttributeError '
+                            u'occurred. This is usually caused by your user '
+                            u'being defined outside the portal.')
 
             IStatusMessage(self.request).addStatusMessage(_(failMessage),
                                                           type="error")

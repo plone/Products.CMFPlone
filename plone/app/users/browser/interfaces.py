@@ -1,4 +1,6 @@
-from plone.app.controlpanel.interfaces import IPloneControlPanelView, IPloneControlPanelForm
+from plone.app.controlpanel.interfaces import IPloneControlPanelView
+from plone.app.controlpanel.interfaces import IPloneControlPanelForm
+
 
 class IAccountPanelView(IPloneControlPanelView):
     """A marker interface for views showing an account panel.

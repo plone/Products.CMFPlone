@@ -1,9 +1,6 @@
-from AccessControl import Unauthorized
-
 from zope.interface import Interface, implements
 from zope import schema
 from zope.component import getUtility
-from zope.schema import ValidationError
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName

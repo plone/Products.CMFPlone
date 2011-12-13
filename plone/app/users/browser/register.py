@@ -64,7 +64,8 @@ class IRegisterSchema(Interface):
 
     mail_me = schema.Bool(
         title=_(u'label_mail_password',
-                default=u"Send a confirmation mail with a link to set the password"),
+                default=u"Send a confirmation mail with a link to set the "
+                u"password"),
         required=False,
         default=False)
 
@@ -154,12 +155,14 @@ def getGroupIds(context):
     site = getSite()
     groups_tool = getToolByName(site, 'portal_groups')
     groups = groups_tool.listGroups()
-    # Get group id, title tuples for each, omitting virtual group 'AuthenticatedUsers'
+    # Get group id, title tuples for each, omitting virtual group
+    # 'AuthenticatedUsers'
     terms = []
     for g in groups:
         if g.id == 'AuthenticatedUsers':
             continue
-        is_zope_manager = getSecurityManager().checkPermission(ManagePortal, context)
+        is_zope_manager = getSecurityManager().checkPermission(
+            ManagePortal, context)
         if 'Manager' in g.getRoles() and not is_zope_manager:
             continue
 
@@ -320,7 +323,6 @@ class BaseRegistrationForm(PageForm):
                         username_field, u'label_username', err_str))
                 self.widgets[username_field].error = err_str
 
-
         # check if username is allowed
         if not username_field in error_keys:
             if not registration.isMemberIdAllowed(username):
@@ -329,7 +331,6 @@ class BaseRegistrationForm(PageForm):
                 errors.append(WidgetInputError(
                         username_field, u'label_username', err_str))
                 self.widgets[username_field].error = err_str
-
 
         # Skip this check if email was already in error list
         if not 'email' in error_keys:
@@ -402,7 +403,8 @@ class BaseRegistrationForm(PageForm):
             if name in data:
                 setattr(adapter, name, data[name])
 
-        if data.get('mail_me') or (portal.validate_email and not data.get('password')):
+        if data.get('mail_me') or (portal.validate_email and
+                                   not data.get('password')):
             # We want to validate the email address (users cannot
             # select their own passwords on the register form) or the
             # admin has explicitly requested to send an email on the
@@ -468,10 +470,12 @@ class RegistrationForm(BaseRegistrationForm):
            (users are not allowed to select their own passwords).
         """
         portal = getUtility(ISiteRoot)
-        ctrlOverview = getMultiAdapter((portal, self.request), name='overview-controlpanel')
+        ctrlOverview = getMultiAdapter((portal, self.request),
+                                       name='overview-controlpanel')
 
         # hide form iff mailhost_warning == True and validate_email == True
-        return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
+        return not (ctrlOverview.mailhost_warning() and
+                    portal.getProperty('validate_email', True))
 
     @property
     def form_fields(self):
@@ -542,7 +546,8 @@ class AddUserForm(BaseRegistrationForm):
 
         portal_groups = getToolByName(self.context, 'portal_groups')
         user_id = data['username']
-        is_zope_manager = getSecurityManager().checkPermission(ManagePortal, self.context)
+        is_zope_manager = getSecurityManager().checkPermission(
+            ManagePortal, self.context)
 
         try:
             # Add user to the selected group(s)
@@ -551,8 +556,8 @@ class AddUserForm(BaseRegistrationForm):
                     group = portal_groups.getGroupById(groupname)
                     if 'Manager' in group.getRoles() and not is_zope_manager:
                         raise Forbidden
-
-                    portal_groups.addPrincipalToGroup(user_id, groupname, self.request)
+                    portal_groups.addPrincipalToGroup(user_id, groupname,
+                                                      self.request)
         except (AttributeError, ValueError), err:
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return

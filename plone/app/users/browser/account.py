@@ -16,7 +16,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 
-from plone.app.users.browser.interfaces import IAccountPanelForm, IAccountPanelView
+from plone.app.users.browser.interfaces import IAccountPanelForm
+from plone.app.users.browser.interfaces import IAccountPanelView
 
 
 class AccountPanelSchemaAdapter(SchemaAdapterBase):
@@ -24,7 +25,8 @@ class AccountPanelSchemaAdapter(SchemaAdapterBase):
     def __init__(self, context):
         mt = getToolByName(context, 'portal_membership')
         userid = context.REQUEST.form.get('userid')
-        if (userid and mt.checkPermission('Plone Site Setup: Users and Groups', context)):
+        if (userid and mt.checkPermission('Plone Site Setup: Users and Groups',
+                                           context)):
             self.context = mt.getMemberById(userid)
         else:
             self.context = mt.getAuthenticatedMember()
@@ -60,14 +62,13 @@ class AccountPanelForm(FieldsetsEditForm):
 
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
-            IStatusMessage(self.request).addStatusMessage(_("Changes saved."),
-                                                          type="info")
+            IStatusMessage(self.request).addStatusMessage(
+                _("Changes saved."), type="info")
             notify(ConfigurationChangedEvent(self, data))
             self._on_save(data)
         else:
-            IStatusMessage(self.request).addStatusMessage(_("No changes made."),
-                                                          type="info")
-
+            IStatusMessage(self.request).addStatusMessage(
+                _("No changes made."), type="info")
 
     @form.action(_(u'label_cancel', default=u'Cancel'),
                  validator=null_validator,
