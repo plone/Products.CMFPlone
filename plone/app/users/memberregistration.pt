@@ -35,19 +35,19 @@
           </ul>
           <div class="contentActions">
             &nbsp;
-          </div>          
+          </div>
       </div>
 
       <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
       </div>
 
-      <div id="content">    
-          <metal:block use-macro="view/base_template/macros/header" />      
-      
+      <div id="content">
+          <metal:block use-macro="view/base_template/macros/header" />
+
           <h1 class="documentFirstHeading"
               i18n:translate="heading_usergroup_settings">User/Groups Settings</h1>
-      
+
           <div id="content-core">
               <a href=""
                  class="link-parent"
@@ -55,7 +55,7 @@
                  i18n:translate="label_up_to_plone_setup">
                 Up to Site Setup
               </a>
-      
+
               <metal:block use-macro="view/base_template/macros/master" />
           </div>
       </div>

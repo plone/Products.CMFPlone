@@ -539,7 +539,7 @@ class AddUserForm(BaseRegistrationForm):
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
         super(AddUserForm, self).handle_join_success(data)
-        
+
         portal_groups = getToolByName(self.context, 'portal_groups')
         user_id = data['username']
         is_zope_manager = getSecurityManager().checkPermission(ManagePortal, self.context)

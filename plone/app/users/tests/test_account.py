@@ -28,7 +28,7 @@ class TestAccountPanelSchemaAdapter(unittest.TestCase):
         context.portal_membership = DummyPortalMembership(False)
         adapter = AccountPanelSchemaAdapter(context)
         self.assertEqual('(authenticated)', adapter.context)
-    
+
     def test__init__userid_in_request_form_for_non_manager(self):
         # disallow for non-privileged users
         context = makerequest(SimpleItem('foo'))
@@ -36,7 +36,7 @@ class TestAccountPanelSchemaAdapter(unittest.TestCase):
         context.REQUEST.form['userid'] = 'bob'
         adapter = AccountPanelSchemaAdapter(context)
         self.assertEqual('(authenticated)', adapter.context)
-    
+
     def test__init__userid_in_request_form_for_manager(self):
         # should allow for privileged users
         context = makerequest(SimpleItem('foo'))

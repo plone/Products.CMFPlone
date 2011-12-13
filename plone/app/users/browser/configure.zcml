@@ -66,12 +66,12 @@
              component=".register.getGroupIds"
              name="Group Ids"/>
 
-    <adapter 
+    <adapter
       provides=".personalpreferences.IPersonalPreferences"
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       factory=".personalpreferences.PersonalPreferencesPanelAdapter"
       />
-    <adapter 
+    <adapter
       provides="..userdataschema.IUserDataSchema"
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       factory=".personalpreferences.UserDataPanelAdapter"
