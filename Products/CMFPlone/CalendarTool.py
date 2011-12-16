@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from plone.app.event.interfaces import IRecurrence
 
 
 class CalendarTool(PloneBaseTool, BaseTool):
@@ -97,7 +98,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
         all_events_occurences = []
         for result in query:
             # TODO: avoid getobject, let occurences be a property of the event object and indexed as metadata?
-            occurences = result.getObject().occurences(first_date, last_date)
+            occurences = IRecurrence(result.getObject()).occurences(first_date, last_date)
             for occurence in occurences:
                 all_events_occurences.append(
                         dict(event=result,
@@ -113,10 +114,10 @@ class CalendarTool(PloneBaseTool, BaseTool):
             # else:
             #     includedevents.append(occurence['event'].getRID())
             event={}
-            # we need to deal with events that end next month
-            if occurence['end_date'].month != month:
-                # doesn't work for events that last ~12 months
-                # fix it if it's a problem, otherwise ignore
+            # We need to deal with events that end next month.
+            # The end_date is None if the event.end_date is not included
+            # between first_date and last_date included.
+            if occurence['end_date'] is None:
                 eventEndDay = last_day
                 event['end'] = None
             else:
@@ -147,13 +148,13 @@ class CalendarTool(PloneBaseTool, BaseTool):
                          'title': event['title']})
                     eventDays[eventday]['event'] = 1
 
-                if occurence['end_date'] == occurence['end_date'].replace(hour=0, minute=0, second=0):
+                if occurence['end_date'] is not None and occurence['end_date'] == occurence['end_date'].replace(hour=0, minute=0, second=0):
                     last_day_data = eventDays[allEventDays[-2]]
                     last_days_event = last_day_data['eventslist'][-1]
                     last_days_event['end'] = (occurence['end_date']-1).replace(hour=23, minute=59, second=59).strftime('%H:%M:%S')
                 else:
                     eventDays[eventEndDay]['eventslist'].append(
-                        {'end': occurence['end_date'].strftime('%H:%M:%S'),
+                        {'end': occurence['end_date'] is not None and occurence['end_date'].strftime('%H:%M:%S') or None,
                          'start': None, 'title': event['title']})
                     eventDays[eventEndDay]['event'] = 1
             else:
