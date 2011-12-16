@@ -59,6 +59,11 @@ Changelog
   Owned.changeOwnership, but a plain User object only.
   [stefan]
 
+- Fixed bug that treated ids of objects outside the portal, but on the
+  acquisition path, as reserved.
+  Fixeѕ https://dev.plone.org/ticket/10547
+  [rochecompaan]
+
 4.2a2 - 2011-08-25
 ------------------
 
