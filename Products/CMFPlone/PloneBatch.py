@@ -1,18 +1,9 @@
-# XXX do we want to expose this?
-#from plone.sequencebatch.batch import (
-#        calculate_pagenumber, calculate_pagenumber,
-#        calculate_quantum_leap_gap, calculate_leapback,
-#        calculate_leapforward)
-
 from ZTUtils import make_query
 
 from plone.batching.batch import QuantumBatch
 from plone.batching.utils import calculate_pagerange
-#from plone.batching.utils import (
-#    opt, calculate_pagenumber,
-#    calculate_leapback, calculate_leapforward)
 
-#from copy import copy
+from zope.deprecation import deprecated
 
 class Batch(QuantumBatch):
 
@@ -24,6 +15,12 @@ class Batch(QuantumBatch):
         super(Batch, self).__init__(sequence, size, start, end, orphan, overlap,
               pagerange, quantumleap)
         self.b_start_str = b_start_str
+
+    def __len__(self):
+        return self.length
+    __len__ = deprecated(__len__,
+        ('Using len() for getting the actual pagesize is deprecated. Use the '
+         '`pagesize` attribute instead.'))
 
     def initialize(self, start, end, size):
         super(Batch, self).initialize(start, end, size)
