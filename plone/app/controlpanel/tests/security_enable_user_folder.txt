@@ -14,7 +14,7 @@ Lets ensure that we currently are the 'root' user:
 
     >>> browser.getLink('root').click()
     >>> browser.url
-    'http://nohost/plone/dashboard'
+    'http://nohost/plone/useractions'
 
 There shouldn't be a user folder in a default Plone:
 
@@ -85,7 +85,7 @@ Lets ensure that we currently are the 'member' user:
 
     >>> browser.getLink('member').click()
     >>> browser.url
-    'http://nohost/plone/dashboard'
+    'http://nohost/plone/useractions'
  
 There should be a user folder now and the 'My Folder' link should be visible
 in the personal bar:
@@ -138,7 +138,7 @@ Lets ensure that we currently are the 'newmember' user:
 
     >>> browser.getLink('newmember').click()
     >>> browser.url
-    'http://nohost/plone/dashboard'
+    'http://nohost/plone/useractions'
 
 There shouldn't be a new member folder and no 'My Folder' link:
 

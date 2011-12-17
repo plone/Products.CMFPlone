@@ -4,6 +4,10 @@ Changelog
 2.2.3 (unreleased)
 ------------------
 
+- Fix tests after recent plone.app.layout change to create a
+  useractions view.
+  [maurits]
+
 - Really make the dependency of the markup control panel on wicked optional.
   [vincentfretin]
 
