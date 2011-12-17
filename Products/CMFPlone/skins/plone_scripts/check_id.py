@@ -172,6 +172,15 @@ if checkForCollision:
         portal = context.portal_url.getPortalObject()
         if id not in portal.contentIds(): # can override root *content*
             try:
+                # it is allowed to give an object the same id as another
+                # container in it's acquisition path as long as the
+                # object is outside the portal
+                outsideportal = getattr(portal.aq_parent, id, None)
+                insideportal = getattr(portal, id, None)
+                if (insideportal is not None and 
+                    outsideportal is not None and 
+                    outsideportal.aq_base == insideportal.aq_base):
+                    return
                 if getattr(portal, id, None) is not None: # but not other things
                     return xlate(
                         _(u'${name} is reserved.',

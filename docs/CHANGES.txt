@@ -5,8 +5,36 @@
 Changelog
 =========
 
-4.2b1 - Unreleased
+4.2b2 (unreleased)
 ------------------
+
+- Nothing changed yet.
+
+
+4.2b1 (2011-12-05)
+------------------
+
+- Define a ZCML feature called `plone-42` in addition to the existing `plone-4`
+  and `plone-41` to be used in conditional ZCML registrations.
+  [vincentfretin]
+
+- Allow "Site Administrator to add keywords"
+  [kleist, suggested by keul]
+
+- IE critical fix on toggle select and form submit helpers.
+  [thomasdesvenain]
+
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
+- Call the view to unlock an item on unload synchronously, so that the
+  call succeeds on Webkit browsers. This closes
+  http://dev.plone.org/ticket/7885
+  [davisagli]
+
+- Remove uneeded kss debugging code
+  [jfroche]
 
 - Allow users with the Manage Users permission to change the login
   name of other users; specifically this allows them to change the
@@ -30,6 +58,11 @@ Changelog
 - Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
   Owned.changeOwnership, but a plain User object only.
   [stefan]
+
+- Fixed bug that treated ids of objects outside the portal, but on the
+  acquisition path, as reserved.
+  Fixeѕ https://dev.plone.org/ticket/10547
+  [rochecompaan]
 
 4.2a2 - 2011-08-25
 ------------------
