@@ -16,8 +16,8 @@
 <body>
 
 <metal:main fill-slot="main">
-<h1 i18n:translate="">User Actions</h1>
-<ul>
+<h1 i18n:translate="" class="documentFirstHeading">User Actions</h1>
+<ul id="user-actions">
     <li tal:repeat="action view/user_actions">
         <a href=""
            tal:attributes="href action/url;
