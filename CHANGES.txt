@@ -4,7 +4,8 @@ Changelog
 2.2.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added a page as a not-js fallback for the user dropdown menu
+  [giacomos]
 
 
 2.2.4 (2011-12-03)

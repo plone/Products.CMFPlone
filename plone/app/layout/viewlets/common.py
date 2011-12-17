@@ -211,7 +211,7 @@ class PersonalBarViewlet(ViewletBase):
             userid = member.getId()
 
             if sm.checkPermission('Portlets: View dashboard', context):
-                self.homelink_url = "%s/dashboard" % self.navigation_root_url
+                self.homelink_url = "%s/useractions" % self.navigation_root_url
             else:
                 self.homelink_url = "%s/personalize_form" % (
                                         self.navigation_root_url)
