@@ -163,11 +163,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         err = self.pasValidation('password', password)
         if err is None:
             if not password:
-#                 return _(u'You must enter a password.')
-                return _(u'Minimum 5 characters.')
-            elif len(password) < 5 and not _checkPermission(ManagePortal, self):
-                return _(u'Your password must contain at least 5 characters.')
-        elif err != '':
+                 return _(u'You must enter a password.')
+        elif err != '' and not _checkPermission(ManagePortal, self):
             return err
 
         if confirm is not None and confirm != password:
@@ -286,26 +283,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
     security.declarePublic('generatePassword')
     def generatePassword(self):
-        """Generates a password which is guaranteed to comply
-        with the password policy. Either PAS IPropertiesPlugin
-        which returns a 'generated_password' property,
-         or the default 5 char password"""
+        """Generate a strong default password. The user never gets sent
+        this so we can make it very long."""
 
-        portal = getUtility(ISiteRoot)
-        pas_instance = portal.acl_users
-        plugins = pas_instance.plugins.listPlugins(IPropertiesPlugin)
-        user = PropertiedUser('')
-        for plugin_id, plugin in plugins:
-            props = plugin.getPropertiesForUser( user )
-            if hasattr(props,'getProperty'):
-                password = props.getProperty('generated_password',None)
-            else:
-                password = props.get('generated_password',None)
-            if password is not None:
-                return password
-
-
-        return self.getPassword(6)
+        return self.getPassword(56)
 
     security.declarePublic('generateResetCode')
     def generateResetCode(self, salt, length=14):
