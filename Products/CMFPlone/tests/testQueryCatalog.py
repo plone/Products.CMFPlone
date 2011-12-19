@@ -1,7 +1,7 @@
 #
 # Test queryCatalog and plone search forms
 #
-
+from zope.component import getMultiAdapter
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.ZCTextIndex.ParseTree import ParseError
@@ -232,7 +232,8 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
     """Render all forms related to queryCatalog"""
 
     def testRenderSearchForm(self):
-        self.portal.search_form()
+        searchView = getMultiAdapter((self.portal, self.app.REQUEST), name="search")
+        searchView()
 
     def testRenderSearchResults(self):
         self.portal.search()

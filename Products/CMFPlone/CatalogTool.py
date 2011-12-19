@@ -133,6 +133,7 @@ def allowedRolesAndUsers(obj):
         return ['Anonymous']
     elif 'Authenticated' in allowed:
         return ['Authenticated']
+    localroles = {}
     try:
         acl_users = getToolByName(obj, 'acl_users', None)
         if acl_users is not None:
@@ -354,10 +355,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
             return ['Anonymous']
         result = list(result)
         if hasattr(aq_base(user), 'getGroups'):
-            # remove the AuthenticatedUsers group, the Authenticated role is
-            # already included in the user.getRoles() list
-            groups = ['user:%s' % x for x in user.getGroups() if
-                x != 'AuthenticatedUsers']
+            groups = ['user:%s' % x for x in user.getGroups()]
             if groups:
                 result = result + groups
         result.append('Anonymous')

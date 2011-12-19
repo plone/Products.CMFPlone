@@ -8,6 +8,9 @@
 ##title=wrapper method around to use catalog to get folder contents
 ##
 
+# NOTE: This script is obsolete, use the browser view
+#       @@folderListing in plone.app.contentlisting
+
 mtool = context.portal_membership
 cur_path = '/'.join(context.getPhysicalPath())
 path = {}
@@ -30,7 +33,8 @@ show_inactive = mtool.checkPermission('Access inactive portal content', context)
 # Provide batching hints to the catalog
 b_start = int(context.REQUEST.get('b_start', 0))
 contentFilter['b_start'] = b_start
-contentFilter['b_size'] = b_size
+if batch:
+    contentFilter['b_size'] = b_size
 
 # Evaluate in catalog context because some containers override queryCatalog
 # with their own unrelated method (Topics)

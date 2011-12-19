@@ -53,8 +53,9 @@
        </tal:ymd>
 
       <tal:ymd condition="show_ymd">
+        <label tal:attributes="for string:${input_id}_year" class="hiddenStructure" style="float:left" i18n:translate="">Year</label>
         <span tal:condition="python:len(years)!=1">
-          <select name="ic_year"
+           <select name="ic_year"
                   id="ic_year"
                   size="1"
                   tal:attributes="name string:${inputname}_year;
@@ -86,6 +87,7 @@
               tal:condition="not: python: years[0]['value'] and not show_single_year">/</span>
 
         <span>
+        <label tal:attributes="for string:${input_id}_month" class="hiddenStructure" style="float:left" i18n:translate="">Month</label>
         <select name="ic_month"
                 id="ic_month"
                 size="1"
@@ -104,6 +106,7 @@
 
         <span i18n:translate="date_separator">/</span>
 
+        <label tal:attributes="for string:${input_id}_day" class="hiddenStructure" style="float:left" i18n:translate="">Day</label>
         <select name="ic_day"
                 id="ic_day"
                 size="1"
@@ -137,6 +140,7 @@
 
       &nbsp;
       <span tal:condition="show_hm">
+        <label tal:attributes="for string:${input_id}_hour" class="hiddenStructure" style="float:left" i18n:translate="">Hour</label>
           <select name="ic_hour"
                   id="ic_hour"
                   size="1"
@@ -167,6 +171,7 @@
             tal:condition="show_hm">:</span>
 
       <span tal:condition="show_hm">
+        <label tal:attributes="for string:${input_id}_minute" class="hiddenStructure" style="float:left" i18n:translate="">Minute</label>
           <select name="ic_minute"
                   id="ic_minute"
                   size="1"
@@ -195,6 +200,7 @@
 
 
       <span tal:condition="python: ampm and show_hm">
+        <label tal:attributes="for string:${input_id}_ampm" class="hiddenStructure" style="float:left" i18n:translate="">AM/PM</label>
         <select name="ic_ampm"
                 id="ic_ampm"
                 size="1"

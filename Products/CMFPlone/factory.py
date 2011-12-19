@@ -54,6 +54,7 @@ class HiddenProfiles(object):
                 u'plone.app.discussion:default',
                 u'plone.app.folder:default',
                 u'plone.app.imaging:default',
+                u'plone.app.search:default',                
                 ]
 
 

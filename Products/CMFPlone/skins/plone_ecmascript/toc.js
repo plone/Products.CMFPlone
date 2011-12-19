@@ -44,7 +44,6 @@ jQuery(function($) {
     });
 
     if (stack.length) {
-        $('dl.toc').show();
         var oltoc = $(stack[0]);
         // first level is a level with at least two entries #11160
         var i = 1;
@@ -52,6 +51,11 @@ jQuery(function($) {
             oltoc = $(stack[i]);
             i += 1;
         }
+        
+        if (i <= stack.length) {
+            $('dl.toc').show();
+        }
+        
         numdigits = oltoc.children().length.toString().length;
         //Use a clever class name to add margin that's MUCH easier to customize
         oltoc.addClass("TOC"+numdigits+"Digit");
