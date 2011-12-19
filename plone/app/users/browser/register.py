@@ -17,6 +17,7 @@ from Products.CMFPlone.utils import normalizeString, safe_unicode
 from Products.CMFPlone import PloneMessageFactory as _
 
 from ZODB.POSException import ConflictError
+from zExceptions import Forbidden
 
 from Products.statusmessages.interfaces import IStatusMessage
 
@@ -63,7 +64,9 @@ class IRegisterSchema(Interface):
 
     mail_me = schema.Bool(
         title=_(u'label_mail_password',
-                default=u"Send a confirmation mail with a link to set the password"),
+                default=u"Send a confirmation mail with a link to set the "
+                u"password"),
+        required=False,
         default=False)
 
 
@@ -152,15 +155,17 @@ def getGroupIds(context):
     site = getSite()
     groups_tool = getToolByName(site, 'portal_groups')
     groups = groups_tool.listGroups()
-    # Get group id, title tuples for each, omitting virtual group 'AuthenticatedUsers'
+    # Get group id, title tuples for each, omitting virtual group
+    # 'AuthenticatedUsers'
     terms = []
     for g in groups:
         if g.id == 'AuthenticatedUsers':
             continue
-        is_zope_manager = getSecurityManager().checkPermission(ManagePortal, context)
+        is_zope_manager = getSecurityManager().checkPermission(
+            ManagePortal, context)
         if 'Manager' in g.getRoles() and not is_zope_manager:
             continue
-        
+
         group_title = safe_unicode(g.getGroupTitleOrName())
         if group_title != g.id:
             title = u'%s (%s)' % (group_title, g.id)
@@ -325,14 +330,12 @@ class BaseRegistrationForm(PageForm):
         # check if username is valid
         # Skip this check if username was already in error list
         if not username_field in error_keys:
-            portal = getUtility(ISiteRoot)
             if username == portal.getId():
                 err_str = _(u"This username is reserved. Please choose a "
                             "different name.")
                 errors.append(WidgetInputError(
                         username_field, u'label_username', err_str))
                 self.widgets[username_field].error = err_str
-
 
         # check if username is allowed
         if not username_field in error_keys:
@@ -342,7 +345,6 @@ class BaseRegistrationForm(PageForm):
                 errors.append(WidgetInputError(
                         username_field, u'label_username', err_str))
                 self.widgets[username_field].error = err_str
-
 
         # Skip this check if email was already in error list
         if not 'email' in error_keys:
@@ -377,9 +379,12 @@ class BaseRegistrationForm(PageForm):
         return self.context.unrestrictedTraverse('registered')()
 
     def handle_join_success(self, data):
-        portal = getUtility(ISiteRoot)
+        # portal should be acquisition wrapped, this is needed for the schema
+        # adapter below
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
         registration = getToolByName(self.context, 'portal_registration')
         portal_props = getToolByName(self.context, 'portal_properties')
+        mt = getToolByName(self.context, 'portal_membership')
         props = portal_props.site_properties
         use_email_as_login = props.getProperty('use_email_as_login')
 
@@ -401,16 +406,19 @@ class BaseRegistrationForm(PageForm):
             logging.exception(err)
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return
-        
+
         # set additional properties using the user schema adapter
         schema = getUtility(IUserDataSchemaProvider).getSchema()
-        self.request.set('userid', user_id)
-        adapter = getAdapter(self.context, schema)
+
+        adapter = getAdapter(portal, schema)
+        adapter.context = mt.getMemberById(user_id)
+
         for name in getFieldNamesInOrder(schema):
             if name in data:
                 setattr(adapter, name, data[name])
 
-        if data.get('mail_me') or (portal.validate_email and not data.get('password')):
+        if data.get('mail_me') or (portal.validate_email and
+                                   not data.get('password')):
             # We want to validate the email address (users cannot
             # select their own passwords on the register form) or the
             # admin has explicitly requested to send an email on the
@@ -427,7 +435,7 @@ class BaseRegistrationForm(PageForm):
                 # Let Zope handle this exception.
                 raise
             except Exception:
-                ctrlOverview = getMultiAdapter((self.context, self.request),
+                ctrlOverview = getMultiAdapter((portal, self.request),
                                                name='overview-controlpanel')
                 mail_settings_correct = not ctrlOverview.mailhost_warning()
                 if mail_settings_correct:
@@ -476,11 +484,13 @@ class RegistrationForm(BaseRegistrationForm):
            incapable of sending emails and email validation is switched on
            (users are not allowed to select their own passwords).
         """
-        ctrlOverview = getMultiAdapter((self.context, self.request), name='overview-controlpanel')
         portal = getUtility(ISiteRoot)
+        ctrlOverview = getMultiAdapter((portal, self.request),
+                                       name='overview-controlpanel')
 
         # hide form iff mailhost_warning == True and validate_email == True
-        return not (ctrlOverview.mailhost_warning() and portal.getProperty('validate_email', True))
+        return not (ctrlOverview.mailhost_warning() and
+                    portal.getProperty('validate_email', True))
 
     @property
     def form_fields(self):
@@ -520,7 +530,8 @@ class AddUserForm(BaseRegistrationForm):
         # The mail_me field needs special handling depending on the
         # validate_email property and on the correctness of the mail
         # settings.
-        ctrlOverview = getMultiAdapter((self.context, self.request),
+        portal = getUtility(ISiteRoot)
+        ctrlOverview = getMultiAdapter((portal, self.request),
                                        name='overview-controlpanel')
         mail_settings_correct = not ctrlOverview.mailhost_warning()
         if not mail_settings_correct:
@@ -531,7 +542,6 @@ class AddUserForm(BaseRegistrationForm):
             # will check that at least one of the options is chosen.
             defaultFields['password'].field.required = False
             defaultFields['password_ctl'].field.required = False
-            portal = getUtility(ISiteRoot)
             if portal.getProperty('validate_email', True):
                 defaultFields['mail_me'].field.default = True
             else:
@@ -547,20 +557,22 @@ class AddUserForm(BaseRegistrationForm):
     @form.action(_(u'label_register', default=u'Register'),
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
-        errors = super(AddUserForm, self).handle_join_success(data)
-        portal_groups = getToolByName(self.context, 'portal_groups')
+        super(AddUserForm, self).handle_join_success(data)
 
-        securityManager = getSecurityManager()
-        canManageUsers = securityManager.checkPermission('Manage users',
-                                                         self.context)
+        portal_groups = getToolByName(self.context, 'portal_groups')
         user_id = data['username']
+        is_zope_manager = getSecurityManager().checkPermission(
+            ManagePortal, self.context)
 
         try:
             # Add user to the selected group(s)
-            if 'groups' in data.keys() and canManageUsers:
+            if 'groups' in data.keys():
                 for groupname in data['groups']:
                     group = portal_groups.getGroupById(groupname)
-                    group.addMember(user_id, REQUEST=self.request)
+                    if 'Manager' in group.getRoles() and not is_zope_manager:
+                        raise Forbidden
+                    portal_groups.addPrincipalToGroup(user_id, groupname,
+                                                      self.request)
         except (AttributeError, ValueError), err:
             IStatusMessage(self.request).addStatusMessage(err, type="error")
             return

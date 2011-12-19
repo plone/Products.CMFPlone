@@ -4,6 +4,8 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="plone.app.users">
 
+    <include package="plone.app.controlpanel" />
+
     <utility provides=".userdataschema.IUserDataSchemaProvider"
              factory=".userdataschema.UserDataSchemaProvider"/>
 

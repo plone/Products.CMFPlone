@@ -134,3 +134,14 @@ we put in.
     # >>> portrait_value == portrait
     # True
 
+
+
+Modifying other users's data
+----------------------------
+
+When trying to access the personal-information of the admin user
+we still get our own data
+
+    >>> self.browser.open('http://nohost/plone/' + view_name + '?userid=admin')
+    >>> self.browser.getControl(name='form.fullname').value == full_name
+    True

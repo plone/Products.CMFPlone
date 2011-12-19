@@ -1,9 +1,6 @@
-from AccessControl import Unauthorized
-
 from zope.interface import Interface, implements
 from zope import schema
 from zope.component import getUtility
-from zope.schema import ValidationError
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
@@ -30,18 +27,6 @@ class UserDataSchemaProvider(object):
         return IUserDataSchema
 
 
-class CantChangeEmailError(ValidationError):
-    __doc__ = _('message_email_cannot_change',
-                u"Sorry, you are not allowed to change your email address.")
-
-
-class EmailInUseError(ValidationError):
-    __doc__ = _('message_email_in_use',
-                u"The email address you selected is already in use "
-                  "or is not valid as login name. Please choose "
-                  "another.")
-
-
 def checkEmailAddress(value):
     portal = getUtility(ISiteRoot)
 
@@ -50,26 +35,6 @@ def checkEmailAddress(value):
         pass
     else:
         raise EmailAddressInvalid
-
-    # If emails are used as logins, ensure that the address fits all
-    # constraints.
-    props = getToolByName(portal, 'portal_properties').site_properties
-    if props.getProperty('use_email_as_login'):
-        try:
-            id_allowed = reg_tool.isMemberIdAllowed(value)
-        except Unauthorized:
-            raise CantChangeEmailError
-        else:
-            if not id_allowed:
-                # Keeping your email the same (which happens when you
-                # change something else on the personalize form) or
-                # changing it back to your login name, is fine.
-                membership = getToolByName(portal, 'portal_membership')
-                if not membership.isAnonymousUser():
-                    member = membership.getAuthenticatedMember()
-                    if value in (member.getId(), member.getUserName()):
-                        return True
-                raise EmailInUseError
     return True
 
 

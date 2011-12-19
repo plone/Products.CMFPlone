@@ -13,14 +13,14 @@
 
 <body>
     <metal:body fill-slot="body">
-        
-        <div id="content">    
+
+        <div id="content">
             <tal:mailhost tal:condition="view/showForm">
                 <div metal:use-macro="context/base-pageform.html/form" />
             </tal:mailhost>
 
             <tal:nomailhost tal:condition="not:view/showForm">
-            
+
                 <h1 class="documentFirstHeading"
                     i18n:translate=""
                     tal:content="view/label" />
@@ -29,7 +29,7 @@
                     This site doesn't have a valid email setup, so you
                     cannot register at this time.
                 </div>
-                            
+
             </tal:nomailhost>
         </div>
 

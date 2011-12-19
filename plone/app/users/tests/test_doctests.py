@@ -10,6 +10,12 @@ setupPloneSite()
 
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
+
+class DocTestCase(TestCase):
+    # just here to work around a weird error message
+    pass
+
+
 def test_suite():
     tests = ['flexible_user_registration.txt',
              'registration_forms.txt',
@@ -24,5 +30,5 @@ def test_suite():
         suite.addTest(FunctionalDocFileSuite(test,
             optionflags=OPTIONFLAGS,
             package="plone.app.users.tests",
-            test_class=TestCase))
+            test_class=DocTestCase))
     return suite

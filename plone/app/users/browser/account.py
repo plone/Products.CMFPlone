@@ -16,20 +16,21 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 
-from plone.app.users.browser.interfaces import IAccountPanelForm, IAccountPanelView
+from plone.app.users.browser.interfaces import IAccountPanelForm
+from plone.app.users.browser.interfaces import IAccountPanelView
+
 
 class AccountPanelSchemaAdapter(SchemaAdapterBase):
 
     def __init__(self, context):
         mt = getToolByName(context, 'portal_membership')
-        userid = context.REQUEST.get('userid')
-
-        if userid:
+        userid = context.REQUEST.form.get('userid')
+        if (userid and mt.checkPermission('Plone Site Setup: Users and Groups',
+                                           context)):
             self.context = mt.getMemberById(userid)
-        elif mt.isAnonymousUser():
-            raise "Can't modify properties of anonymous user"
         else:
             self.context = mt.getAuthenticatedMember()
+
 
 class AccountPanelView(BrowserView):
     """ The bare view for the account panel with macro function.
@@ -61,14 +62,13 @@ class AccountPanelForm(FieldsetsEditForm):
 
         if form.applyChanges(self.context, self.form_fields, data,
                              self.adapters):
-            IStatusMessage(self.request).addStatusMessage(_("Changes saved."),
-                                                          type="info")
+            IStatusMessage(self.request).addStatusMessage(
+                _("Changes saved."), type="info")
             notify(ConfigurationChangedEvent(self, data))
             self._on_save(data)
         else:
-            IStatusMessage(self.request).addStatusMessage(_("No changes made."),
-                                                          type="info")
-
+            IStatusMessage(self.request).addStatusMessage(
+                _("No changes made."), type="info")
 
     @form.action(_(u'label_cancel', default=u'Cancel'),
                  validator=null_validator,
@@ -79,7 +79,7 @@ class AccountPanelForm(FieldsetsEditForm):
 
         self.request.response.redirect(self.request['ACTUAL_URL'])
         return ''
-        
+
     def _on_save(self, data=None):
         pass
 
@@ -87,12 +87,12 @@ class AccountPanelForm(FieldsetsEditForm):
         return make_query(**kw)
 
     def showWidget(self, widget):
-        """ Hide widgets in the formbase template. 
+        """ Hide widgets in the formbase template.
         """
         widgetName = widget.name.strip('form.')
         if not widgetName in self.hidden_widgets:
             return True
-        
+
     def _checkPermission(self, permission, context):
         mt = getToolByName(context, 'portal_membership')
         return mt.checkPermission(permission, context)
@@ -117,7 +117,7 @@ class AccountPanelForm(FieldsetsEditForm):
 
     def getPasswordLink(self):
         context = aq_inner(self.context)
-        
+
         mt = getToolByName(context, 'portal_membership')
         member = mt.getAuthenticatedMember()
 

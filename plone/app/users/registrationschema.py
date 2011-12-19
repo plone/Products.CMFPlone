@@ -18,14 +18,15 @@ _ = MessageFactory('plone')
 class IRegistrationSchema(Interface):
 
     user_registration_fields = schema.Tuple(
-        title=_(u'title_user_registration_fields', default=u'User registration fields'),
+        title=_(u'title_user_registration_fields',
+                 default=u'User registration fields'),
 
         description=_(u"description_user_registration_fields",
             default=(u"Select the fields for the join form. Fields in the "
-            u"right box will be shown on the form, fields on the left are disabled. "
-            u"Use the left/right buttons to move a field from right to left (to "
-            u"disable it) and vice versa. Use the up/down buttons to change the order "
-            u"in which the fields appear on the form."),
+            u"right box will be shown on the form, fields on the left are "
+            u"disabled. Use the left/right buttons to move a field from right "
+            u"to left (to disable it) and vice versa. Use the up/down buttons "
+            u"to change the order in which the fields appear on the form."),
         )
     )
 
