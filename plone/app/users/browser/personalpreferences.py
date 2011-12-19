@@ -373,7 +373,7 @@ class IPasswordSchema(Interface):
         title=_(u'label_new_password', default=u'New password'),
         description=_(
             u'help_new_password',
-            default=u"Enter your new password. Minimum 5 characters."),
+            default=u"Enter your new password."),
         )
 
     new_password_ctl = schema.Password(
@@ -448,7 +448,7 @@ class PasswordAccountPanel(AccountPanelForm):
                                   u'label_current_password', err_str))
                 self.widgets['current_password'].error = err_str
 
-        # check if passwords are same and minimum length of 5 chars
+        # check if passwords are same and valid according to plugin
         new_password = data.get('new_password')
         new_password_ctl = data.get('new_password_ctl')
         if new_password and new_password_ctl:
