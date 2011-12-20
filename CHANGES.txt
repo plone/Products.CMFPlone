@@ -4,6 +4,10 @@ Changelog
 1.1.3 (unreleased)
 ------------------
 
+- Setting a member data field to an empty string now works.
+  Fixes http://dev.plone.org/ticket/12314
+  [maurits]
+
 - Fix for: Plone Administrator unable to edit User Data when email is
   used as login.  Fixes http://dev.plone.org/plone/ticket/12297
   [vmaksymiv, myroslav]
