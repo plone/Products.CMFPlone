@@ -148,6 +148,15 @@
                         </p>
                     </tal:noemailsetup>
 
+                    <tal:noemail tal:condition="python:not isAnon and not member.getProperty('email')">
+                        <p class="discreet"
+                           i18n:translate="text_no_member_email">
+                            You do not have an email address, so you
+                            cannot use any contact forms. Please edit
+                            your personal information.
+                        </p>
+                    </tal:noemail>
+
                     <tal:mailsetup tal:condition="python:email_from_address and authorinfo['has_email']">
 
                         <div class="formControls" tal:condition="isAnon">
@@ -165,7 +174,7 @@
                         <!-- feedback form -->
 
 
-                        <tal:owner tal:condition="python: not isOwner and not isAnon">
+                        <tal:owner tal:condition="python: not isOwner and not isAnon and member.getProperty('email')">
                             <p class="discreet"
                                i18n:translate="description_author_feedback">
                                 If you want to contact this author, fill in the form
