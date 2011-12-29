@@ -5,7 +5,16 @@
 Changelog
 =========
 
-4.2b1 - Unreleased
+4.2b2 (unreleased)
+------------------
+
+- Do not display the author contact form when the logged in user does
+  not have an email address.
+  Fixes http://dev.plone.org/ticket/12258
+  [maurits]
+
+
+4.2b1 (2011-12-05)
 ------------------
 
 - Define a ZCML feature called `plone-42` in addition to the existing `plone-4`
@@ -52,6 +61,11 @@ Changelog
 - Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
   Owned.changeOwnership, but a plain User object only.
   [stefan]
+
+- Fixed bug that treated ids of objects outside the portal, but on the
+  acquisition path, as reserved.
+  Fixeѕ https://dev.plone.org/ticket/10547
+  [rochecompaan]
 
 4.2a2 - 2011-08-25
 ------------------
