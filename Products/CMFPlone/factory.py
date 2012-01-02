@@ -28,7 +28,6 @@ class HiddenProfiles(object):
                 _AT_CONTENT_PROFILE,
                 _DEX_CONTENT_PROFILE,
                 _ATCONTENTTYPES_PROFILE,
-                _PLONE_APP_CONTENTTYPES_PROFILE,
                 u'Products.Archetypes:Archetypes',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
