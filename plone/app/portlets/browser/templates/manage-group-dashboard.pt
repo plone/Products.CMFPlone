@@ -53,7 +53,7 @@
         <div metal:use-macro="context/global_statusmessage/macros/portal_message">
             Portal status message
         </div>
-        
+
         <div id="content">
 
             <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard_group">
@@ -81,7 +81,7 @@
 
                 <div class="visualClear"><!-- --></div>
             </div>
-            
+
         </div>
 
     </tal:main-macro>

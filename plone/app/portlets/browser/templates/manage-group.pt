@@ -49,13 +49,13 @@
           &nbsp;
         </div>
     </div>
-    
+
     <div metal:use-macro="here/global_statusmessage/macros/portal_message">
       Portal status message
     </div>
-    
+
     <div id="content">
-        
+
         <metal:block metal:define-macro="props" tal:omit-tag="">
 
           <h1 class="documentFirstHeading"
@@ -63,7 +63,7 @@
               Manage Group Portlets for
               <span i18n:name="group_name" tal:content="view/group">group</span>
           </h1>
-          
+
           <div id="content-core">
               <a href=""
                    class="link-parent"

@@ -14,4 +14,4 @@ def test_suite():
                                 package="plone.app.portlets.tests",
                                 test_class=PortletsFunctionalTestCase),
                      )
-    return suite 
+    return suite

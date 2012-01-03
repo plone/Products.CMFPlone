@@ -217,7 +217,7 @@ class TestRenderer(PortletsTestCase):
                 self.failUnlessEqual(child['getRemoteUrl'], 'http://plone.org')
                 # as Creator, link1 should not use the remote Url
                 self.failIf(child['useRemoteUrl'])
-        
+
         self.portal.link1.setCreators(['some_other_user'])
         self.portal.link1.reindexObject()
         view = self.renderer(self.portal)

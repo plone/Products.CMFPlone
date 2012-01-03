@@ -33,7 +33,7 @@
          </a>
             <span class="portletItemDetails"
                   tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
-        
+
     </dd>
     </tal:newsitems>
 

@@ -15,8 +15,8 @@
 
   <h1 class="documentFirstHeading"
       i18n:translate="title_manage_contenttype_portlets">
-      <img i18n:name="contenttype_icon" 
-           tal:define="icon view/portal_type_icon" 
+      <img i18n:name="contenttype_icon"
+           tal:define="icon view/portal_type_icon"
            tal:replace="structure icon/html_tag" />
       Manage content type portlets for
       <span i18n:name="contenttype_name" tal:content="view/portal_type">content type</span>

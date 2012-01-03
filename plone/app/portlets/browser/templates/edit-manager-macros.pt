@@ -23,7 +23,7 @@
             </tal:options>
 
         </select>
-        
+
         <noscript>
             <input class="standalone"
                    type="submit"
