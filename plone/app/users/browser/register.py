@@ -53,7 +53,7 @@ class IRegisterSchema(Interface):
     password = schema.Password(
         title=_(u'label_password', default=u'Password'),
         description=_(u'help_password_creation',
-                      default=u'Minimum 5 characters.'))
+                      default=u'Enter your new password.'))
 
     password_ctl = schema.Password(
         title=_(u'label_confirm_password',
