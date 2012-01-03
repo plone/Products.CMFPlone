@@ -162,8 +162,9 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         """
         err = self.pasValidation('password', password)
         if err is None:
-            if not password:
-                 return _(u'You must enter a password.')
+            return None
+        elif password == '':
+            return err
         elif err != '' and not _checkPermission(ManagePortal, self):
             return err
 
