@@ -26,6 +26,7 @@ from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PluggableAuthService.utils import classImplements
 from Products.CMFCore.interfaces import ISiteRoot
 from zope.component import getUtility, getAdapter
+from Products.PlonePAS.Extensions.Install import activatePluginInterfaces
 
 
 class TestCase(FunctionalTestCase):
@@ -45,10 +46,15 @@ class TestCase(FunctionalTestCase):
         sm.registerUtility(mailhost, provided=IMailHost)
 
     def addPasswordStrength(self):
-        obj = TestPasswordStrength('test')
+        # remove default policy
+        uf = self.portal.acl_users
+        for policy in uf.objectIds(['Default Plone Password Policy']):
+            uf.plugins.deactivatePlugin(IValidationPlugin, policy)
+
+        obj = DeadParrotPassword('test')
         self.portal.acl_users._setObject(obj.getId(), obj)
         obj = self.portal.acl_users[obj.getId()]
-        obj.manage_activateInterfaces(['IValidationPlugin','IPropertiesPlugin'])
+        activatePluginInterfaces(self.portal, obj.getId())
 
         portal = getUtility(ISiteRoot)
         pas_instance = portal.acl_users
@@ -85,7 +91,7 @@ class TestCase(FunctionalTestCase):
 
 
 
-class TestPasswordStrength(BasePlugin, Cacheable):
+class DeadParrotPassword(BasePlugin, Cacheable):
     meta_type = 'Test Password Strength Plugin'
     security = ClassSecurityInfo()
 
@@ -106,11 +112,6 @@ class TestPasswordStrength(BasePlugin, Cacheable):
                 errors = []
         return errors
 
-    def getPropertiesForUser(self, user, request=None):
-        return {'generated_password':'alive parrot'}
 
-
-classImplements(TestPasswordStrength,
+classImplements(DeadParrotPassword,
                 IValidationPlugin)
-classImplements(TestPasswordStrength,
-                IPropertiesPlugin)

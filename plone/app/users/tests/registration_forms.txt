@@ -238,8 +238,33 @@ Testing the flexible user registration
 Now let's test using a PAS Password validation plugin. Add a test plugin.
 
     >>> self.addPasswordStrength()
-    >>> browser.open('http://nohost/plone/@@new-user')
 
+Enable setting own password
+
+    Disable the mailhost and enable user ability to set their own password.
+    >>> self.unsetMailHost()
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl('Let users select their own passwords').selected = True
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+
+Logout and register as a new user
+
+    >>> browser.getLink(url='http://nohost/plone/logout').click()
+    >>> 'Log in' in browser.contents
+    True
+
+    >>> browser.getLink('Register').click()
+    >>> '@@register' in browser.url
+    True
+
+    
 Check that we are given instructions on what is a valid password
 
    >>> print browser.contents
@@ -258,8 +283,6 @@ We'll enter an invalid password
 
     >>> print browser.contents
     <...<div class="fieldErrorBox">Must not be dead</div>...
-    >>> print browser.url
-    http://...@@new-user...
 
 
 Now try a valid password
@@ -268,8 +291,14 @@ Now try a valid password
     >>> browser.getControl('Confirm password').value = 'fish'
 
     >>> browser.getControl('Register').click()
-    >>> print browser.url
-    http://...@@usergroup-userprefs...
-    >>> print browser.contents
-    <...User added...user5...
+    >>> browser.contents
+    '...Welcome!...You have been registered...'
 
+    Ensure that the user has, in fact, been added.
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> 'user5' in browser.contents
+    True
