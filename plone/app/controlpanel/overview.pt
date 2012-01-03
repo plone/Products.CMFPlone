@@ -8,7 +8,7 @@
 
 <body>
 
-<metal:override fill-slot="top_slot" 
+<metal:override fill-slot="top_slot"
                 tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
                             disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
 

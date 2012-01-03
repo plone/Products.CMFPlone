@@ -1,6 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope">
-  
+
   <permission id="plone.app.controlpanel.Overview"
               title="Plone Site Setup: Overview">
     <role name="Manager"/>

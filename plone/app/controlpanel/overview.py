@@ -58,7 +58,7 @@ class OverviewControlPanel(ControlPanelView):
 
         core_versions = self.core_versions()
         versions = [
-            'Plone %s (%s)' % (core_versions['Plone'], 
+            'Plone %s (%s)' % (core_versions['Plone'],
                                core_versions['Plone Instance'])]
 
         for v in ('CMF', 'Zope', 'Python'):
