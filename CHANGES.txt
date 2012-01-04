@@ -4,6 +4,9 @@ Changelog
 2.2.5 (unreleased)
 ------------------
 
+- Slightly changed the whitespace in sitemap.xml.gz.
+  [maurits]
+
 - Use the link_target attribute (e.g. ``_target``) of user actions in
   the personal bar, if set.
   Fixes http://dev.plone.org/ticket/11609
