@@ -56,8 +56,11 @@ Now we login in the portal and retry
     ...                   'Basic %s:%s' % (portal_owner, default_password))
     >>> browser.open(portal_url + '/search_form')
 
-The select box indicates a list of users is available
+The select box indicates a list of users is available. Note that
+'[\W]*' indicates white space, which is slightly different when using
+five.pt (Chameleon).
     >>> '<input name="Creator" />' in browser.contents
     False
-    >>> '<select name="Creator" id="Creator">' in browser.contents
+    >>> import re
+    >>> re.search('<select[\W]*name="Creator"[\W]*id="Creator"[\W]*>', browser.contents) is not None
     True
