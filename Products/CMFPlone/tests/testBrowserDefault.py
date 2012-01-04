@@ -19,7 +19,7 @@ from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav"')
-RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav">.*?</ul>', re.S)
+RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav".*?</ul>', re.S)
 
 
 class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
