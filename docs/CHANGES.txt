@@ -9,6 +9,9 @@ Changelog
 4.1.4 (unreleased)
 ------------------
 
+- Fixed some mail tests in combination with five.pt.
+  [maurits]
+
 - Do not display the author contact form when the logged in user does
   not have an email address.
   Fixes http://dev.plone.org/ticket/12258
