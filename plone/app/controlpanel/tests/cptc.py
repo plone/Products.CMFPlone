@@ -50,9 +50,9 @@ class ControlPanelTestCase(FunctionalTestCase):
 
           <p id="foo">Bar</p>
         """
-        text = re.sub('[\s]*<[\s]*', '<', text)
-        text = re.sub('[\s]*>[\s]*', '>', text)
-        text = re.sub('[\s]+', ' ', text)
+        text = re.sub('\s*<\s*', '<', text)
+        text = re.sub('\s*>\s*', '>', text)
+        text = re.sub('\s+', ' ', text)
         return text
 
 
