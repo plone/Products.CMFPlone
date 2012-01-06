@@ -6,9 +6,12 @@ packages which register controlpanels. They should be able to import it
 without the PloneTestCase.setupPloneSite() side effects.
 """
 
+import re
+
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.Five.testbrowser import Browser
 from Products.CMFCore.utils import getToolByName
+
 
 class ControlPanelTestCase(FunctionalTestCase):
     """base test case with convenience methods for all control panel tests"""
@@ -31,6 +34,27 @@ class ControlPanelTestCase(FunctionalTestCase):
         self.browser.getControl('Login Name').value = user
         self.browser.getControl('Password').value = pwd
         self.browser.getControl('Log in').click()
+
+    def simplify_white_space(self, text):
+        """For easier testing we replace all white space with one space.
+
+        And we remove white space around '<' and '>'.
+
+        So this:
+
+          <p
+              id="foo"> Bar
+          </p>
+
+        becomes this:
+
+          <p id="foo">Bar</p>
+        """
+        text = re.sub('[\s]*<[\s]*', '<', text)
+        text = re.sub('[\s]*>[\s]*', '>', text)
+        text = re.sub('[\s]+', ' ', text)
+        return text
+
 
 class UserGroupsControlPanelTestCase(ControlPanelTestCase):
     """user/groups-specific test case"""

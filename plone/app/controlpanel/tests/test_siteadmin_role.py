@@ -33,9 +33,10 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
 
     def testUserManagerRoleCheckboxIsDisabledForNonManagers(self):
         res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
+        contents = self.simplify_white_space(res.getOutput())
         self.assertTrue('<input type="checkbox" class="noborder" '
                         'name="users.roles:list:records" value="Manager" '
-                        'disabled="disabled" />' in res.getOutput())
+                        'disabled="disabled" />' in contents)
 
     def testManagerCanDelegateManagerRoleForUsers(self):
         # a user with the Manager role can grant the Manager role
@@ -91,9 +92,10 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
 
     def testGroupManagerRoleCheckboxIsDisabledForNonManagers(self):
         res = self.publish('/plone/@@usergroup-groupprefs', basic='siteadmin:secret')
+        contents = self.simplify_white_space(res.getOutput())
         self.assertTrue('<input type="checkbox" class="noborder" '
                         'name="group_Reviewers:list" value="Manager" '
-                        'disabled="disabled" />' in res.getOutput())
+                        'disabled="disabled" />' in contents)
 
     def testManagerCanDelegateManagerRoleForGroups(self):
         # a user with the Manager role can grant the Manager role
@@ -148,8 +150,9 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         # groups granting the Manager role shouldn't show as a valid option to add
         res = self.publish('/plone/@@usergroup-usermembership?userid=%s' % self.normal_user,
                            basic='siteadmin:secret')
+        contents = self.simplify_white_space(res.getOutput())
         self.assertTrue('<input type="checkbox" class="noborder" name="add:list" '
-                        'value="Administrators" disabled="disabled" />' in res.getOutput())
+                        'value="Administrators" disabled="disabled" />' in contents)
 
         # and should not be addable
         form = {
@@ -169,7 +172,8 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         # should not show section to add users for groups granting the Manager role
         res = self.publish('/plone/@@usergroup-groupmembership?groupname=Administrators',
                            basic='siteadmin:secret')
-        self.assertFalse('Search for new group members' in res.getOutput())
+        contents = self.simplify_white_space(res.getOutput())
+        self.assertFalse('Search for new group members' in contents)
 
         # and should not be addable if we try to force it
         form = {
@@ -188,9 +192,10 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
     def test_user_registration_form_blocks_escalation(self):
         # groups granting the Manager role should not be available for selection
         res = self.publish('/plone/@@new-user', basic='siteadmin:secret')
+        contents = self.simplify_white_space(res.getOutput())
         self.assertFalse('<input class="label checkboxType" id="form.groups.0" '
                         'name="form.groups" type="checkbox" value="Administrators '
-                        '(Administrators)" />' in res.getOutput())
+                        '(Administrators)" />' in contents)
 
         # and should not be addable if we try to force it
         form = {
@@ -215,9 +220,10 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         # a user without the Manager role cannot delete a user with the
         # Manager role
         res = self.publish('/plone/@@usergroup-userprefs', basic='siteadmin:secret')
+        contents = self.simplify_white_space(res.getOutput())
         self.assertTrue('<input type="checkbox" class="noborder notify" '
                         'name="delete:list" value="root" disabled="disabled" />'
-                        in res.getOutput())
+                        in contents)
 
         form = {
             '_authenticator': self.siteadmin_token,
@@ -238,9 +244,10 @@ class TestSiteAdministratorRoleFunctional(UserGroupsControlPanelTestCase):
         # a user without the Manager role cannot delete a group with the
         # Manager role
         res = self.publish('/plone/@@usergroup-groupprefs', basic='siteadmin:secret')
+        contents = self.simplify_white_space(res.getOutput())
         self.assertTrue('<input type="checkbox" class="noborder notify" '
                         'name="delete:list" value="Administrators" disabled="disabled" />'
-                        in res.getOutput())
+                        in contents)
 
         form = {
             '_authenticator': self.siteadmin_token,
