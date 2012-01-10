@@ -4,7 +4,8 @@ Changelog
 2.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Prevent buggy RSS feed to break page display.
+  [patch by dieter, applied by kleist]
 
 
 2.2.3 (2011-11-24)
