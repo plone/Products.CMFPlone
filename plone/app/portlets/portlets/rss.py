@@ -1,3 +1,4 @@
+from logging import getLogger
 import time
 
 import feedparser
@@ -21,6 +22,7 @@ ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride, )
 # store the feeds here (which means in RAM)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
+logger = getLogger(__name__)
 
 class IFeed(Interface):
 
@@ -115,18 +117,22 @@ class RSSFeed(object):
 
     def update(self):
         """update this feed"""
-        now = time.time()/60    # time in minutes
+        now = time.time() / 60  # time in minutes
 
-        # check for failure and retry
-        if self.update_failed:
-            if (self.last_update_time_in_minutes+self.FAILURE_DELAY) < now:
+        try:
+            # check for failure and retry
+            # TODO: should be "self.update_failed()"?
+            if self.update_failed:
+                if (self.last_update_time_in_minutes + self.FAILURE_DELAY) < now:
+                    return self._retrieveFeed()
+                else:
+                    return False
+            # check for regular update
+            if self.needs_update:
                 return self._retrieveFeed()
-            else:
-                return False
-
-        # check for regular update
-        if self.needs_update:
-            return self._retrieveFeed()
+        except:
+            self._failed = True
+            logger.exception('failed to update RSS feed %s', self.url)
 
         return self.ok
 
