@@ -121,7 +121,6 @@ class RSSFeed(object):
 
         try:
             # check for failure and retry
-            # TODO: should be "self.update_failed()"?
             if self.update_failed:
                 if (self.last_update_time_in_minutes + self.FAILURE_DELAY) < now:
                     return self._retrieveFeed()
