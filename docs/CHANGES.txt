@@ -11,7 +11,7 @@ Changelog
 
 - Notify ObjectModifiedEvent when a content title is modified
   through action > rename.
-  Fixes https://dev.plone.org/ticket/12460
+  Fixes http://dev.plone.org/ticket/12460
   [thomasdesvenain]
 
 - Fixed some mail tests in combination with five.pt.
