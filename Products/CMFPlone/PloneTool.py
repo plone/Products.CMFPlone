@@ -7,6 +7,8 @@ import transaction
 
 from zope.component import queryAdapter
 from zope.interface import implements
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Acquisition import aq_base
@@ -1294,6 +1296,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 changed = False
                 if change_title:
                     obj.setTitle(new_title)
+                    notify(ObjectModifiedEvent(obj))
                     changed = True
                 if new_id and obid != new_id:
                     parent = aq_parent(aq_inner(obj))

@@ -8,6 +8,12 @@ Changelog
 4.2b2 (unreleased)
 ------------------
 
+
+- Notify ObjectModifiedEvent when a content title is modified
+  through action > rename.
+  Fixes http://dev.plone.org/ticket/12460
+  [thomasdesvenain]
+
 - Fixed some mail tests in combination with five.pt.
   [maurits]
 
