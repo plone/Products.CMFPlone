@@ -12,7 +12,7 @@ _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _AT_CONTENT_PROFILE = 'Products.CMFPlone:plone-content'
 _DEX_CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
-_ATCONTENTTYPES_PROFILE = 'Products.CMFPlone:plone-atcontenttypes'
+_ATCONTENTTYPES_PROFILE = 'Products.ATContentTypes:default'
 _PLONE_APP_CONTENTTYPES_PROFILE = 'plone.app.contenttypes:default'
 _CONTENTTYPES_PROFILES = (_ATCONTENTTYPES_PROFILE, _PLONE_APP_CONTENTTYPES_PROFILE,)
 

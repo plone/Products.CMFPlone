@@ -8,8 +8,6 @@
   <include package="zope.app.locales" />
   <include package="Products.CMFCore" />
   <include package="Products.GenericSetup" />
-  <include package="plone.app.blob" />
-  <include package="plone.app.collection" />
   <include package="plone.app.contentmenu" />
   <include package="plone.app.content" />
   <include package="plone.app.contentrules" />
@@ -27,7 +25,7 @@
   <include package="plone.app.redirector" />
   <include package="plone.app.search" />
   <include package="plone.app.registry" />
-  <include package="plone.app.upgrade" />
+  <include zcml:condition="installed plone.app.upgrade" package="plone.app.upgrade" />
   <include package="plone.app.users" />
   <include package="plone.app.uuid" />
   <include package="plone.app.viewletmanager" />
@@ -45,10 +43,9 @@
   <!-- kss -->
   <include package="kss.core" />
   <include package="plone.app.kss" />
-  <include package="archetypes.kss" />
 
-  <!-- referencebrowser -->
-  <include package="archetypes.referencebrowserwidget" />
+  <!-- Archetypes -->
+  <include package="Products.ATContentTypes" />
 
   <!-- wicked -->
   <configure zcml:condition="installed wicked">

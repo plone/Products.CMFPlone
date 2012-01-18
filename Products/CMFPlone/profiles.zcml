@@ -38,12 +38,4 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
  
-  <genericsetup:registerProfile
-      name="plone-atcontenttypes"
-      title="Archetypes Content-Types for Plone"
-      directory="profiles/atcontenttypes"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
-
 </configure>

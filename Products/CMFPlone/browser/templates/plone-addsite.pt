@@ -106,7 +106,7 @@
         </select>
       </div>
 
-      <div class="field" tal:condition="python:advanced and len(view.available_content_frameworks) > 1">
+      <div class="field" tal:condition="python:advanced and len(view.available_content_frameworks)">
         <label for="select_content_framework" i18n:translate="">Available content-type frameworks</label>
         <div class="formHelp" />
     	<dl>

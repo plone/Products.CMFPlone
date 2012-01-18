@@ -2,14 +2,14 @@
 <metadata>
   <version>3.1</version>
   <dependencies>
-    <dependency>profile-Products.Archetypes:Archetypes</dependency>
+    <dependency>profile-Products.CMFFormController:CMFFormController</dependency>
+    <dependency>profile-Products.MimetypesRegistry:MimetypesRegistry</dependency>
+    <dependency>profile-Products.PortalTransforms:PortalTransforms</dependency>
     <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
     <dependency>profile-Products.PloneLanguageTool:PloneLanguageTool</dependency>
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
     <dependency>profile-Products.TinyMCE:TinyMCE</dependency>
-    <dependency>profile-archetypes.referencebrowserwidget:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
-    <dependency>profile-plone.app.imaging:default</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.search:default</dependency>
