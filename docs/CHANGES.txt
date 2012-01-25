@@ -8,6 +8,10 @@ Changelog
 
 4.1.4 (unreleased)
 ------------------
+- Catch KeyError on 'userid' that occurs when mail_password is
+  accessed directly (without 'userid' in the request). Return
+  mail_password_form.
+  [brayt]
 
 - Notify ObjectModifiedEvent when a content title is modified
   through action > rename.

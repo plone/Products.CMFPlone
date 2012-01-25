@@ -24,4 +24,6 @@ except ValueError, e:
             raise e
     context.plone_utils.addPortalMessage(msg)
     response = context.mail_password_form()
+except KeyError:
+    response = context.mail_password_form()
 return response
