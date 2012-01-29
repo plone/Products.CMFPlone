@@ -45,15 +45,15 @@ class TestCase(FunctionalTestCase):
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(mailhost, provided=IMailHost)
 
-    def addPasswordStrength(self):
+    def addParrotPasswordPolicy(self):
         # remove default policy
         uf = self.portal.acl_users
         for policy in uf.objectIds(['Default Plone Password Policy']):
             uf.plugins.deactivatePlugin(IValidationPlugin, policy)
 
         obj = DeadParrotPassword('test')
-        self.portal.acl_users._setObject(obj.getId(), obj)
-        obj = self.portal.acl_users[obj.getId()]
+        uf._setObject(obj.getId(), obj)
+        obj = uf[obj.getId()]
         activatePluginInterfaces(self.portal, obj.getId())
 
         portal = getUtility(ISiteRoot)
@@ -62,6 +62,13 @@ class TestCase(FunctionalTestCase):
         validators = plugins.listPlugins(IValidationPlugin)
         assert validators
 
+    def activateDefaultPasswordPolicy(self):
+        uf = self.portal.acl_users
+        plugins = uf._getOb('plugins')
+        for policy in uf.objectIds(['Default Plone Password Policy']):
+            activatePluginInterfaces(self.portal, policy.getId())
+            validators = plugins.listPlugins(IValidationPlugin)
+            assert policy in validators
 
     def beforeTearDown(self):
         self.portal.MailHost = self.portal._original_MailHost

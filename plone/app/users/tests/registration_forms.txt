@@ -235,11 +235,11 @@ Testing the flexible user registration
     ...Reviewers...'
     
     
-Now let's test using a PAS Password validation plugin. Add a test plugin.
+    Now let's test using a PAS Password validation plugin. Add a test plugin.
 
-    >>> self.addPasswordStrength()
+    >>> self.addParrotPasswordPolicy()
 
-Enable setting own password
+    Enable setting own password
 
     Disable the mailhost and enable user ability to set their own password.
     >>> self.unsetMailHost()
@@ -254,7 +254,7 @@ Enable setting own password
     True
 
 
-Logout and register as a new user
+    Logout and register as a new user
 
     >>> browser.getLink(url='http://nohost/plone/logout').click()
     >>> 'Log in' in browser.contents
@@ -265,14 +265,18 @@ Logout and register as a new user
     True
 
     
-Check that we are given instructions on what is a valid password
+    Check that we are given instructions on what is a valid password
 
-   >>> print browser.contents
+    >>> print browser.contents
     <...
     ...Enter your new password. Must not be dead...
 
+    And we no longer see the default message
+    >>> 'Minimum 5 characters.' not in browser.contents
+    True
 
-We'll enter an invalid password
+
+    We'll enter an invalid password
 
     Fill out the form.
     >>> browser.getControl('User Name').value = 'user5'
@@ -285,7 +289,7 @@ We'll enter an invalid password
     <...<div class="fieldErrorBox">Must not be dead</div>...
 
 
-Now try a valid password
+    Now try a valid password
 
     >>> browser.getControl('Password').value = 'fish'
     >>> browser.getControl('Confirm password').value = 'fish'
@@ -301,4 +305,54 @@ Now try a valid password
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
     >>> 'user5' in browser.contents
+    True
+
+    Add the default policy back in so we can test two plugins at once
+    >>> self.activateDefaultPasswordPolicy()
+
+    >>> browser.getLink(url='http://nohost/plone/logout').click()
+    >>> 'Log in' in browser.contents
+    True
+
+    >>> browser.getLink('Register').click()
+    >>> '@@register' in browser.url
+    True
+
+
+    Check that we are given instructions on what is a valid password
+
+   >>> print browser.contents
+    <...
+    ...Enter your new password. Must not be dead. Minimum 5 characters....
+
+
+    We'll enter an invalid password
+
+    Fill out the form.
+    >>> browser.getControl('User Name').value = 'user6'
+    >>> browser.getControl('E-mail').value = 'user6@example.com'
+    >>> browser.getControl('Password').value = 'dead'
+    >>> browser.getControl('Confirm password').value = 'dead'
+    >>> browser.getControl('Register').click()
+
+    >>> print browser.contents
+    <...<div class="fieldErrorBox">Must not be dead</div>...
+
+
+    Now try a valid password
+
+    >>> browser.getControl('Password').value = 'fish'
+    >>> browser.getControl('Confirm password').value = 'fish'
+
+    >>> browser.getControl('Register').click()
+    >>> browser.contents
+    '...Welcome!...You have been registered...'
+
+    Ensure that the user has, in fact, been added.
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
+    >>> 'user6' in browser.contents
     True
