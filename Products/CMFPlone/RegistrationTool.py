@@ -183,18 +183,26 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         if not validators:
             return None
 
-        err = []
+        err = u""
         for validator_id, validator in validators:
             user = None
             set_id = ''
             set_info = {property:password}
             errors = validator.validateUserInfo( user, set_id, set_info )
-            err += [info['error'] for info in errors if info['id'] == property ]
-        # We will assume that the PASPlugin returns a list of error
-        # strings that have already been translated.
-        # HACK. Need i18n way of joining sentances
-        return u' '.join(err)
-
+            # We will assume that the PASPlugin returns a list of error
+            # strings that have already been translated.
+            # We just need to join them in an i18n friendly way
+            for error in [info['error'] for info in errors if info['id'] == property ]:
+                if not err:
+                    err = error
+                else:
+                    err = _(u'${sentances} ${sentance}',
+                            mapping={'sentances': err, 'sentance':error})
+        if not err:
+            return None
+        else:
+            return err
+ 
 
     security.declarePublic('testPropertiesValidity')
     def testPropertiesValidity(self, props, member=None):
