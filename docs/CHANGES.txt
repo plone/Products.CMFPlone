@@ -8,6 +8,8 @@ Changelog
 4.2b2 (unreleased)
 ------------------
 
+- Changed link from search to @@search for the "More" link in livesearch_reply.
+  [vincentfretin]
 
 - Notify ObjectModifiedEvent when a content title is modified
   through action > rename.

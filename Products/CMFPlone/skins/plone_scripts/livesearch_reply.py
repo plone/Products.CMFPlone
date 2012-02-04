@@ -158,7 +158,7 @@ else:
     if len(results)>limit:
         # add a more... row
         write('''<li class="LSRow">''')
-        searchquery = 'search?SearchableText=%s&path=%s' % (searchterms, params['path'])
+        searchquery = '@@search?SearchableText=%s&path=%s' % (searchterms, params['path'])
         write( '<a href="%s" style="font-weight:normal">%s</a>' % (
                              searchquery,
                              ts.translate(label_show_all, context=REQUEST)))
