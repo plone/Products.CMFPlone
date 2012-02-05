@@ -179,6 +179,7 @@ class CaseNormalizer(object):
                 result.append(s.lower())
             else:
                 result.append(s.lower().encode(enc))
+
         return result
 
 try:
@@ -195,15 +196,19 @@ class I18NNormalizer(object):
         enc = 'utf-8'
         result = []
         for s in lst:
-            # This is a hack to get the normalizer working with
-            # non-unicode text.
             try:
                 if not isinstance(s, unicode):
                     s = unicode(s, enc)
             except (UnicodeDecodeError, TypeError):
                 pass
 
-            result.append(baseNormalize(s).lower())
+            if 0x41 <= ord(s[0]) <= 0x24F:
+                # normalize latin words
+                # words beginning with a latin character
+                # are commonly latin words
+                s = baseNormalize(s).lower()
+
+            result.append(s.lower())
 
         return result
 
