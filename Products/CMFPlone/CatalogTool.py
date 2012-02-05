@@ -133,6 +133,7 @@ def allowedRolesAndUsers(obj):
         return ['Anonymous']
     elif 'Authenticated' in allowed:
         return ['Authenticated']
+    localroles = {}
     try:
         acl_users = getToolByName(obj, 'acl_users', None)
         if acl_users is not None:

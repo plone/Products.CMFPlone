@@ -34,7 +34,7 @@ plone.UnlockHandler = {
         // form submit process. This means: no unlock needed,
         // and it also would be harmful (ConflictError)
         if (this.submitting) {return;}
-        $.get(plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/safe_unlock');
+        $.ajax({url: plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/safe_unlock', async: false});
     },
     
     refresh: function() {
