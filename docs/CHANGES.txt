@@ -6,7 +6,7 @@ Changelog
 =========
 
 
-4.1.4 (unreleased)
+4.1.4 (2012-02-08)
 ------------------
 - Catch KeyError on 'userid' that occurs when mail_password is
   accessed directly (without 'userid' in the request). Return
