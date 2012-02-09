@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.2b2 (unreleased)
+4.2b2 (2012-02-09)
 ------------------
 
 - Changed link from search to @@search for the "More" link in livesearch_reply.
