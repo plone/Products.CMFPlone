@@ -5,8 +5,25 @@
 Changelog
 =========
 
-4.2b2 (unreleased)
+4.2b3 (unreleased)
 ------------------
+
+- Nothing changed yet.
+
+
+4.2b2 (2012-02-09)
+------------------
+
+- Changed link from search to @@search for the "More" link in livesearch_reply.
+  [vincentfretin]
+
+- Notify ObjectModifiedEvent when a content title is modified
+  through action > rename.
+  Fixes http://dev.plone.org/ticket/12460
+  [thomasdesvenain]
+
+- Fixed some mail tests in combination with five.pt.
+  [maurits]
 
 - Do not display the author contact form when the logged in user does
   not have an email address.

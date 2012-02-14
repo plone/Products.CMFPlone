@@ -11,7 +11,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.utils import safe_unicode
-from Products.PythonScripts.standard import url_quote
 from Products.PythonScripts.standard import url_quote_plus
 from Products.PythonScripts.standard import html_quote
 
@@ -159,7 +158,7 @@ else:
     if len(results)>limit:
         # add a more... row
         write('''<li class="LSRow">''')
-        searchquery = 'search?SearchableText=%s&path=%s' % (searchterms, params['path'])
+        searchquery = '@@search?SearchableText=%s&path=%s' % (searchterms, params['path'])
         write( '<a href="%s" style="font-weight:normal">%s</a>' % (
                              searchquery,
                              ts.translate(label_show_all, context=REQUEST)))
