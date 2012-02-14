@@ -118,10 +118,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 vars['PIL'] = get_dist('PILwoTK').version
             except pkg_resources.DistributionNotFound:
                 try:
-                    import _imaging
-                    vars['PIL'] = 'unknown'
-                except ImportError:
-                    pass
+                    vars['PIL'] = "%s (Pillow)" % get_dist('Pillow').version
+                except pkg_resources.DistributionNotFound:
+                    try:
+                        import _imaging
+                        vars['PIL'] = 'unknown'
+                    except ImportError:
+                        pass
 
         return vars
 
