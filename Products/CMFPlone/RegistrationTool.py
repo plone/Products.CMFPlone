@@ -251,7 +251,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
         utils = getToolByName(self, 'plone_utils')
         props = getToolByName(self, 'portal_properties').site_properties
-        member = get_member_by_login_name(self, login)
+        member = get_member_by_login_name(self, login, raise_exceptions=False)
 
         if member is None:
             raise ValueError(_(u'The username you entered could not be found.'))
