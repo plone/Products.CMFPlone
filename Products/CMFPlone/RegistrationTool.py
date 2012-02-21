@@ -72,9 +72,9 @@ def get_member_by_login_name(context, login_name, raise_exceptions=True):
     elif len(userids) > 1:
         if raise_exceptions:
             raise ValueError(
-                'Multiple users found with the same login name.')
+                _(u'Multiple users found with the same login name.'))
     if member is None and raise_exceptions:
-        raise ValueError('The username you entered could not be found')
+        raise ValueError(_(u'The username you entered could not be found'))
     return member
 
 # seed the random number generator
