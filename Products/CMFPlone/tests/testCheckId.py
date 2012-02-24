@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Test id autogeneration related scripts
 #
@@ -72,6 +73,10 @@ class TestCheckId(PloneTestCase.PloneTestCase):
     def testBadId(self):
         r = self.folder.check_id('=')
         self.assertEqual(r, u'= is not a legal name. The following characters are invalid: =')
+
+    def testDecodeId(self):
+        r = self.folder.check_id('ä')
+        self.assertEqual(r, u'ä is not a legal name. The following characters are invalid: ä')
 
     def testCatalogIndex(self):
         # TODO: Tripwire
