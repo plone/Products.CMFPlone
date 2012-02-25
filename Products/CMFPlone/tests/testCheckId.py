@@ -73,6 +73,10 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         r = self.folder.check_id('=')
         self.assertEqual(r, u'= is not a legal name. The following characters are invalid: =')
 
+    def testDecodeId(self):
+        r = self.folder.check_id('\xc3\xa4')
+        self.assertEqual(r, u'\xe4 is not a legal name. The following characters are invalid: \xe4')
+
     def testCatalogIndex(self):
         # TODO: Tripwire
         portal_membership = getToolByName(self.portal, 'portal_membership')
