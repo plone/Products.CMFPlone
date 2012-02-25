@@ -13,6 +13,11 @@ Changelog
   http://dev.plone.org/ticket/12158
   [smcmahon]
 
+- Decode id and bad characters in check_id script with default_encoding to
+  prevent UnicodeDecodeError when bad characters contains non-ascii letters.
+  Fixes https://dev.plone.org/ticket/12525
+  [pingviini]
+
 
 4.2b2 (2012-02-09)
 ------------------
@@ -47,7 +52,7 @@ Changelog
 - IE critical fix on toggle select and form submit helpers.
   [thomasdesvenain]
 
-- Fixed the two high priority scenarios (global sections viewlet and nav 
+- Fixed the two high priority scenarios (global sections viewlet and nav
   portlet) of http://dev.plone.org/ticket/11189.
   [fulv]
 
