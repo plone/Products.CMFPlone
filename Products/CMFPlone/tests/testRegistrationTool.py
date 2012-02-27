@@ -137,7 +137,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.portal.setTitle('T\xc3\xa4st Portal')
         self.portal.email_from_name = 'T\xc3\xa4st Admin'
         self.portal.email_from_address = 'bar@baz.com'
-        self.registration.mailPassword(member_id, self.app['REQUEST'])
+        from zope.publisher.browser import TestRequest
+        self.registration.mailPassword(member_id, TestRequest())
         self.assertEqual(len(mails.messages), 1)
         msg = message_from_string(mails.messages[0])
         # We get an encoded subject

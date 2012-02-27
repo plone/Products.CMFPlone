@@ -116,7 +116,11 @@ ploneDnDReorder.doCancel = function(e) {
         body = $('body');
     if (!dragging) {return;}
 
-    dragging.removeClass("dragging")
+    dragging.removeClass("dragging");
+    // Need to remove the indicator as well, important in the
+    // case when the mouse up occurs outside the grid.
+    dragging.removeClass('dragindicator');
+
     if (ploneDnDReorder.getPos(dragging) - dragging.data('ploneDnDReorder.startPosition')) {
         // position has changed, error out
         ploneDnDReorder.locked = true;
@@ -126,6 +130,7 @@ ploneDnDReorder.doCancel = function(e) {
     body.unbind('mouseup', ploneDnDReorder.doCancel);
     body.unbind('mouseleave', ploneDnDReorder.doCancel);
     ploneDnDReorder.dragging = null;
+
     return false;
 };
 
@@ -141,6 +146,9 @@ ploneDnDReorder.updatePositionOnServer = function() {
 
     if (delta === 0) {
         // nothing changed
+        // Do not just leave: need to cancel.
+        // ... or, up to big surprise at next click.
+        ploneDnDReorder.doCancel.call();
         return;
     }
     // Strip off id prefix
@@ -163,6 +171,9 @@ ploneDnDReorder.updatePositionOnServer = function() {
 ploneDnDReorder.complete = function(xhr, textStatus) {
     var dragging = ploneDnDReorder.dragging;
     dragging.removeClass("dragging");
+    // Need to remove the indicator as well, important in the
+    // case when the mouse up occurs outside the grid.
+    dragging.removeClass('dragindicator');
     if (textStatus === "success" || textStatus === "notmodified") {
         ploneDnDReorder.locked = false;
     } else {

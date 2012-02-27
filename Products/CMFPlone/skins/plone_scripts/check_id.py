@@ -70,9 +70,13 @@ plone_utils = getToolByName(container, 'plone_utils', None)
 if plone_utils is not None:
     bad_chars = plone_utils.bad_chars(id)
     if len(bad_chars) > 0:
+        pprop = getToolByName(context, 'portal_properties')
+        charset = getattr(pprop.site_properties, 'default_charset', 'utf-8')
+        bad_chars = ''.join(bad_chars).decode(charset)
+        decoded_id = id.decode(charset)
         return xlate(
             _(u'${name} is not a legal name. The following characters are invalid: ${characters}',
-                mapping={u'name': id, u'characters': ''.join(bad_chars)}))
+                mapping={u'name': decoded_id, u'characters': bad_chars}))
 
 # check for a catalog index
 portal_catalog = getToolByName(container, 'portal_catalog', None)
