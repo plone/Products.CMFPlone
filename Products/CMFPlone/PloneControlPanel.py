@@ -101,6 +101,16 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         # before CMF 2.4 when support for old-style actions is removed.
         return self._actions or ()
 
+    security.declarePublic('maySeeSomeConfiglets')
+    def maySeeSomeConfiglets(self):
+        groups = self.getGroups('site')
+
+        all = []
+        for group in groups:
+            all.extend(self.enumConfiglets(group=group['id']))
+        all = [item for item in all if item['visible']]
+        return len(all) != 0
+
     security.declarePublic('enumConfiglets')
     def enumConfiglets(self, group=None):
         portal = getToolByName(self, 'portal_url').getPortalObject()
