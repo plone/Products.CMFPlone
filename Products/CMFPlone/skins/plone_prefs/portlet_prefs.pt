@@ -10,7 +10,8 @@
                portal_url context/portal_url;">
 
 <dl class="portlet"
-    id="portlet-prefs">
+    id="portlet-prefs"
+    tal:condition="controlPanel/maySeeSomeConfiglets">
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href=""
