@@ -262,13 +262,10 @@ class ContentViewsViewlet(ViewletBase):
         if request_url_path.startswith('/'):
             request_url_path = request_url_path[1:]
 
-        for action in action_list:
-            item = {'title'    : action['title'],
-                    'id'       : action['id'],
-                    'url'      : '',
-                    'selected' : False}
+        for item in action_list:
+            item.update({'selected' : False})
 
-            action_url = action['url'].strip()
+            action_url = item['url'].strip()
             starts = action_url.startswith
             if starts('http') or starts('javascript'):
                 item['url'] = action_url
