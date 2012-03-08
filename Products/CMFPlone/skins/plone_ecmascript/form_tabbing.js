@@ -118,11 +118,12 @@ ploneFormTabbing.initializeForm = function() {
 
     var tabSelector = 'ul.formTabs';
     if ($(ftabs).is('select.formTabs')) {
+    Products.CMFPlone
         tabSelector = 'select.formTabs';
     }
     var tabsConfig = $.extend({}, ploneFormTabbing.jqtConfig, {'initialIndex':initialIndex});
     jqForm.children(tabSelector).tabs(
-        'form.enableFormTabbing fieldset.formPanel',
+        'fieldset.formPanel',
         tabsConfig
         );
 
