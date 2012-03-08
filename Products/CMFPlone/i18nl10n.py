@@ -94,11 +94,11 @@ def utranslate(domain, msgid, mapping=None, context=None,
 
 
 # unicode aware localized time method (l10n)
-def ulocalized_time(time, long_format=None, time_only=None, context=None,
+def ulocalized_time(time, long_format=None, time_only=False, context=None,
                     domain='plonelocales', request=None):
     # get msgid
     msgid = long_format and 'date_format_long' or 'date_format_short'
-    if time_only is not None:
+    if time_only:
         msgid = 'time_format'
 
     # NOTE: this requires the presence of three msgids inside the translation catalog
