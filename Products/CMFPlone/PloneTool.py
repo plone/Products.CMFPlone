@@ -1223,7 +1223,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 obj = traverse(path)
                 obj_parent = aq_parent(aq_inner(obj))
                 obj_parent.manage_delObjects([obj.getId()])
-                success.append('%s (%s)' % (obj.title_or_id(), path))
+                success.append('%s (%s)' % (obj.getId(), path))
             except ConflictError:
                 raise
             except LinkIntegrityNotificationException:
