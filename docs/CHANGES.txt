@@ -8,6 +8,11 @@ Changelog
 4.2b3 (unreleased)
 ------------------
 
+- Use getId() instead of title_or_id() for displaying which items get 
+  deleted, to avoid unicode error
+  Fixes https://dev.plone.org/ticket/12765
+  [spereverde]
+
 - Allow form tabbing to be used across different DOM documents.
   [rossp]
 
