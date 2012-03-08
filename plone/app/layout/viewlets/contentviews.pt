@@ -19,7 +19,8 @@
                                   class python:selected and 'selected' or 'plain'">
                 <a href=""
                    tal:content="action/title"
-                   tal:attributes="href action/url;"
+                   tal:attributes="href action/url;
+                                   target action/link_target|nothing;"
                    i18n:translate="">
                 View name
                 </a>

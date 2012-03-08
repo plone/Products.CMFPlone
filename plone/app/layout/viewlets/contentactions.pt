@@ -15,7 +15,8 @@
 
                 <a class="" href=""
                    tal:define="icon python:view.icon(action)"
-                   tal:attributes="href action/url;">
+                   tal:attributes="href action/url;
+                                   target action/link_target|nothing;">
 
                     <img alt="" src=""
                          tal:condition="icon"

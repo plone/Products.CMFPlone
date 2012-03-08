@@ -4,7 +4,9 @@ Changelog
 2.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add link targets for all action based links.  The target can be
+  configured on a per-action basis.
+  [rpatterson]
 
 
 2.2.5 (2012-01-26)

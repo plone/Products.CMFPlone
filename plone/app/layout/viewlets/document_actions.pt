@@ -15,6 +15,7 @@
                       tal:attributes="id python:'document-action-' + normalizeString(daction['id'])">
                       <a href=""
                          tal:attributes="href daction/url;
+                                         target daction/link_target|nothing;
                                          title daction/description"
                          tal:content="daction/title">
                       </a>

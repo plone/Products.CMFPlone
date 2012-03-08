@@ -21,6 +21,7 @@
     <li tal:repeat="action view/user_actions">
         <a href=""
            tal:attributes="href action/url;
+                           target action/link_target|nothing;
                            id string:personaltoolspage-${action/id};"
            tal:content="action/title"
            i18n:translate="">
