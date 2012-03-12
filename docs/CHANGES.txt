@@ -8,6 +8,11 @@ Changelog
 4.2b3 (unreleased)
 ------------------
 
+- Use getId() instead of title_or_id() for displaying which items get 
+  deleted, to avoid unicode error
+  Fixes https://dev.plone.org/ticket/12765
+  [spereverde]
+
 - Hide left column in prefs_main_template when user does not have access to
   configlets.
   Fixes https://dev.plone.org/ticket/12572
