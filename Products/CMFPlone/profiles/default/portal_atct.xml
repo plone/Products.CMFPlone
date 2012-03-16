@@ -108,11 +108,6 @@
    <criteria>ATPathCriterion</criteria>
    <criteria>ATRelativePathCriterion</criteria>
   </index>
-  <index name="portal_type" description="" enabled="False"
-     friendlyName="Item Type (internal)"
-     i18n:attributes="description; friendlyName">
-   <criteria>ATPortalTypeCriterion</criteria>
-  </index>
   <index name="review_state"
      description="An item's workflow state (e.g.published)" enabled="True"
      friendlyName="State"
@@ -147,7 +142,7 @@
      i18n:attributes="description; friendlyName">
    <criteria>ATSimpleStringCriterion</criteria>
   </index>
-  <index name="Type" description="An item's type (e.g. Event)" enabled="True"
+  <index name="portal_type" description="An item's type (e.g. Event)" enabled="True"
      friendlyName="Item Type"
      i18n:attributes="description; friendlyName">
    <criteria>ATPortalTypeCriterion</criteria>
