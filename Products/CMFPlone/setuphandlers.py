@@ -239,7 +239,7 @@ def setupPortalContent(p):
 
         _createObjectByType('Folder', p, id='news',
                             title=news_title, description=news_desc)
-        _createObjectByType('Topic', p.news, id='aggregator',
+        _createObjectByType('Collection', p.news, id='aggregator',
                             title=news_title, description=news_desc)
 
         folder = p.news
@@ -256,12 +256,15 @@ def setupPortalContent(p):
 
         topic = p.news.aggregator
         topic.setLanguage(language)
-        type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
-        type_crit.setValue('News Item')
-        topic.addCriterion('created', 'ATSortCriterion')
-        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        topic.setSortCriterion('effective', True)
+
+        query = [{'i': 'portal_type',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['News Item']},
+                 {'i': 'review_state',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['published']}]
+        topic.setQuery(query)
+        topic.setSort_on('effective')
         topic.setLayout('folder_summary_view')
         topic.unmarkCreationFlag()
 
@@ -284,7 +287,7 @@ def setupPortalContent(p):
 
         _createObjectByType('Folder', p, id='events',
                             title=events_title, description=events_desc)
-        _createObjectByType('Topic', p.events, id='aggregator',
+        _createObjectByType('Collection', p.events, id='aggregator',
                             title=events_title, description=events_desc)
         folder = p.events
         folder.setOrdering('unordered')
@@ -301,17 +304,18 @@ def setupPortalContent(p):
         topic = folder.aggregator
         topic.unmarkCreationFlag()
         topic.setLanguage(language)
-        type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
-        type_crit.setValue('Event')
-        topic.addCriterion('start', 'ATSortCriterion')
-        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        date_crit = topic.addCriterion('start', 'ATFriendlyDateCriteria')
-        # Set date reference to now
-        date_crit.setValue(0)
-        # Only take events in the future
-        date_crit.setDateRange('+') # This is irrelevant when the date is now
-        date_crit.setOperation('more')
+
+        query = [{'i': 'portal_type',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['Event']},
+                 {'i': 'start',
+                  'o': 'plone.app.querystring.operation.date.afterToday',
+                  'v': ''},
+                 {'i': 'review_state',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['published']}]
+        topic.setQuery(query)
+        topic.setSort_on('start')
     else:
         topic = p.events
 
