@@ -264,7 +264,9 @@ def setupPortalContent(p):
                   'o': 'plone.app.querystring.operation.selection.is',
                   'v': ['published']}]
         topic.setQuery(query)
+
         topic.setSort_on('effective')
+        topic.setSort_reversed(True)
         topic.setLayout('folder_summary_view')
         topic.unmarkCreationFlag()
 
