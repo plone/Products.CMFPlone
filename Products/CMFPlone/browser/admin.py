@@ -125,6 +125,7 @@ class AddPloneSite(BrowserView):
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
             'plone.app.registry:default',
             'plone.app.z3cform:default',
+            'plone.app.collection:default',
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
         for util in utils:
