@@ -4,6 +4,10 @@ Changelog
 2.2.6 (unreleased)
 ------------------
 
+- Move .row and .cell styles from footer.pt to Sunburst main_template.
+  Fixes https://dev.plone.org/ticket/12156
+  [agnogueira]
+
 - Add link targets for all action based links.  The target can be
   configured on a per-action basis.
   [rpatterson]
