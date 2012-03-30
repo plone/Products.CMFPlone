@@ -293,29 +293,29 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
         self.assertEqual(folder.checkCreationFlag(), False)
 
-    def testNewsTopic(self):
-        # News topic is in place as default view and has a criterion to show
+    def testNewsCollection(self):
+        # News collection is in place as default view and has a criterion to show
         # only News Items, and uses the folder_summary_view.
         self.assertEqual(['aggregator'], [i for i in self.portal.news.objectIds()])
-        topic = getattr(self.portal.news, 'aggregator')
-        self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
-        self.assertEqual(topic.buildQuery()['review_state'], 'published')
-        self.assertEqual(topic.getLayout(), 'folder_summary_view')
-        self.assertEqual(topic.checkCreationFlag(), False)
+        collection = getattr(self.portal.news, 'aggregator')
+        self.assertEqual(collection._getPortalTypeName(), 'Collection')
+        query = collection.query
+        self.assertTrue({'i': 'portal_type', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['News Item']} in query)
+        self.assertTrue({'i': 'review_state', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['published']} in query)
+        self.assertEqual(collection.getLayout(), 'folder_summary_view')
+        self.assertEqual(collection.checkCreationFlag(), False)
 
-    def testEventsTopic(self):
-        # Events topic is in place as default view and has criterion to show
+    def testEventsCollection(self):
+        # Events collection is in place as default view and has criterion to show
         # only future Events Items.
         self.assertEqual(['aggregator'], [i for i in self.portal.events.objectIds()])
-        topic = getattr(self.portal.events, 'aggregator')
-        self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        query = topic.buildQuery()
-        self.assertEqual(query['Type'], ('Event',))
-        self.assertEqual(query['review_state'], 'published')
-        self.assertEqual(query['start']['query'].Date(), DateTime().Date())
-        self.assertEqual(query['start']['range'], 'min')
-        self.assertEqual(topic.checkCreationFlag(), False)
+        collection = getattr(self.portal.events, 'aggregator')
+        self.assertEqual(collection._getPortalTypeName(), 'Collection')
+        query = collection.query
+        self.assertTrue({'i': 'portal_type', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['Event']} in query)
+        self.assertTrue({'i': 'review_state', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['published']} in query)
+        self.assertTrue({'i': 'start', 'o': 'plone.app.querystring.operation.date.afterToday', 'v': ''} in query)
+        self.assertEqual(collection.checkCreationFlag(), False)
 
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])

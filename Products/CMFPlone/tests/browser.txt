@@ -20,7 +20,7 @@ Test for "template id" in <body> tag. See tickets #9111/#8777
     '...<body class="template-document_view portaltype-document site-plone section-front-page icons-on"...'
     >>> browser.open('http://nohost/plone/news')
     >>> browser.contents
-    '...<body class="template-folder_summary_view portaltype-topic site-plone section-news icons-on"...'
+    '...<body class="template-folder_summary_view portaltype-collection site-plone section-news icons-on"...'
 
 Login 
 
