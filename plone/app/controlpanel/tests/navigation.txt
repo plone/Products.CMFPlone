@@ -37,7 +37,7 @@ Make some changes
     >>> self.browser.getControl('Automatically generate tabs').selected = False
     >>> self.browser.getControl('Generate tabs for items other than folders').selected = False
     >>> self.browser.getControl('Show items normally excluded from navigation if viewing their children.').selected = False
-    >>> self.browser.getControl('Collection').selected = False
+    >>> self.browser.getControl('Collection', index=0).selected = False
     >>> self.browser.getControl('Page').selected = False
     >>> self.browser.getControl('News Item').selected = False
     >>> self.browser.getControl('Filter on workflow state').selected = True
@@ -65,7 +65,7 @@ Make sure the changes have been applied correctly:
     >>> navProps.showAllParents
     False
 
-    >>> 'Topic' in navProps.metaTypesNotToList
+    >>> 'Collection' in navProps.metaTypesNotToList
     True
 
     >>> 'Document' in navProps.metaTypesNotToList
