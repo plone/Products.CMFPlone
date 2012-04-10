@@ -84,25 +84,26 @@
 
                 <ul class="configlets"
                     tal:condition="sublist">
-                    <li tal:repeat="action sublist">
-                        <a href=""
-                           tal:define="icon action/icon"
-                           tal:condition="action/visible"
-                           tal:attributes="href action/url">
-                            <img src="" alt=""
-                                 tal:condition="not:icon"
-                                 tal:attributes="src string:${portal_url}/maintenance_icon.png" />
-                            <img src="" alt=""
-                                 tal:condition="icon"
-                                 tal:attributes="src icon;
-                                                 alt action/title;"
-                                 i18n:attributes="alt" />
-                            <tal:title tal:content="action/title"
-                                       i18n:translate="">
-                                Title
-                            </tal:title>
-                        </a>
-                    </li>
+                    <tal:actions tal:repeat="action sublist">
+                      <li tal:condition="action/visible">
+                          <a href=""
+                             tal:define="icon action/icon"
+                             tal:attributes="href action/url">
+                              <img src="" alt=""
+                                   tal:condition="not:icon"
+                                   tal:attributes="src string:${portal_url}/maintenance_icon.png" />
+                              <img src="" alt=""
+                                   tal:condition="icon"
+                                   tal:attributes="src icon;
+                                                   alt action/title;"
+                                   i18n:attributes="alt" />
+                              <tal:title tal:content="action/title"
+                                         i18n:translate="">
+                                  Title
+                              </tal:title>
+                          </a>
+                      </li>
+                  </tal:actions>
                 </ul>
             </div>
 
