@@ -8,6 +8,9 @@ Changelog
 4.2b3 (unreleased)
 ------------------
 
+- PloneControlPanel's enumConfiglets no longer returns invisible configlets.
+  [esteele]
+
 - Hide the (old) Collections control panel by default for new sites.
   [esteele]
 
