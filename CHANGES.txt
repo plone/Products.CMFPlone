@@ -4,7 +4,11 @@ Changelog
 2.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Restore the ILockSettings support using the
+  EditingControlPanelAdapter.  This may affect plone.app.form (IOW,
+  formlib) forms whose subscribers call
+  plone.locking.TTWLockable.lock().
+  [rossp]
 
 
 2.2.3 (2012-01-26)

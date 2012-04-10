@@ -1,10 +1,11 @@
 from zope.component import adapts
 from zope.formlib import form
 from zope.interface import implements
-from zope.interface import Interface
 from zope.schema import Bool
 from zope.schema import Choice
 from zope.site.hooks import getSite
+
+from plone.locking.interfaces import ILockSettings
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
@@ -15,7 +16,7 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from form import ControlPanelForm
 
 
-class IEditingSchema(Interface):
+class IEditingSchema(ILockSettings):
 
     visible_ids = Bool(title=_(u"Show 'Short Name' on content?"),
                        description=_(u"Display and allow users to edit the "
@@ -69,7 +70,6 @@ class IEditingSchema(Interface):
 
 class EditingControlPanelAdapter(SchemaAdapterBase):
 
-    adapts(IPloneSiteRoot)
     implements(IEditingSchema)
 
     def __init__(self, context):

@@ -1,7 +1,7 @@
-from plone.locking.interfaces import ILockSettings
 from zope.app.form.browser import TextAreaWidget
 from zope.component import adapts
 from zope.formlib import form
+from zope.interface import Interface
 from zope.interface import implements
 from zope.schema import Bool
 from zope.schema import Text
@@ -19,7 +19,7 @@ from Products.CMFPlone.utils import safe_unicode
 from form import ControlPanelForm
 
 
-class ISiteSchema(ILockSettings):
+class ISiteSchema(Interface):
 
     site_title = TextLine(title=_(u'Site title'),
                           description=_(u"This shows up in the title bar of "

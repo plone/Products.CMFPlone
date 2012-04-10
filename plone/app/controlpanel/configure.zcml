@@ -7,7 +7,8 @@
 
   <adapter factory=".calendar.CalendarControlPanelAdapter" />
 
-  <adapter factory=".editing.EditingControlPanelAdapter" />
+  <adapter for="*"
+           factory=".editing.EditingControlPanelAdapter" />
 
   <adapter factory=".filter.FilterControlPanelAdapter" />
 
