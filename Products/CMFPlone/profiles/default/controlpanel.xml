@@ -123,7 +123,7 @@
     category="Plone" condition_expr=""
     icon_expr="string:$portal_url/topic_icon.png"
     url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
-    visible="True" i18n:attributes="title">
+    visible="False" i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
  <configlet title="Calendar" action_id="CalendarSettings" appId="Plone"
