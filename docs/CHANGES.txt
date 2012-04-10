@@ -8,6 +8,9 @@ Changelog
 4.1.5 (unreleased)
 ------------------
 
+- PloneControlPanel's enumConfiglets no longer returns invisible configlets.
+  [esteele]
+  
 - Use getId() instead of title_or_id() for displaying which items get 
   deleted, to avoid unicode error
   Fixes https://dev.plone.org/ticket/12765
