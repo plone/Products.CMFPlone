@@ -6,7 +6,7 @@ function inputSubmitOnClick(event) {
 }
 
 (function($) { $(function() {
-    $('input:submit').each(function() {
+    $('input:submit,input:image').each(function() {
       if (!this.onclick)
         $(this).click(inputSubmitOnClick);
     });
