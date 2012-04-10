@@ -8,6 +8,9 @@ Changelog
 4.2b3 (unreleased)
 ------------------
 
+- Hide the (old) Collections control panel by default for new sites.
+  [esteele]
+
 - Apply duplicate-submit protection to inputs of type 'image' in addition
   to type 'submit'.
   [davisagli]
