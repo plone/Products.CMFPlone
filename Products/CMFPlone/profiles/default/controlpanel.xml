@@ -119,7 +119,7 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Language</permission>
  </configlet>
- <configlet title="Collections" action_id="portal_atct" appId="ATContentTypes"
+ <configlet title="Collections (old style)" action_id="portal_atct" appId="ATContentTypes"
     category="Plone" condition_expr=""
     icon_expr="string:$portal_url/topic_icon.png"
     url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
