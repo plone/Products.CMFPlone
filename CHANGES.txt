@@ -7,6 +7,8 @@ Changelog
 - Prevent buggy RSS feed to break page display.
   [patch by dieter, applied by kleist]
 
+- Fix inherited local portlets for objects allowing locally-assigned
+  portlets which are contained by an object that does not. [mitchellrj]
 
 2.2.3 (2011-11-24)
 ------------------
