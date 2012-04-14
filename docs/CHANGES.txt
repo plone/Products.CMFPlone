@@ -8,6 +8,11 @@ Changelog
 4.2b3 (unreleased)
 ------------------
 
+- Stop filtering folder_listing to the types from 
+  @@plone_portal_state/friendly_types, since that excludes non-searchable
+  types rather than non-listable types.
+  [davisagli]
+
 - PloneControlPanel's enumConfiglets no longer returns invisible configlets.
   [esteele]
 
