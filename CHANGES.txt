@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.4 (unreleased)
+2.2.4 (2012-04-15)
 ------------------
 
 - Prevent buggy RSS feed to break page display.
