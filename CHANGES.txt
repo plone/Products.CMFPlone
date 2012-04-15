@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.4 (unreleased)
+2.2.4 (2012-04-15)
 ------------------
 
 - Don't display an empty list element if the control panel item isn't visible.
