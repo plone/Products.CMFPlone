@@ -32,6 +32,7 @@ class TestUTranslate(PloneTestCase.PloneTestCase):
         value = self.tool.translate('foo', 'domain', default=None)
         self.assertEquals(value, u'foo')
 
+
 class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -57,7 +58,7 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
 
     def testLocalized_time_only(self):
         value = self.tool.ulocalized_time('Mar 9, 1997 1:45pm',
-                                         long_format=True,
+                                         long_format=False,
                                          time_only=True,
                                          context=self.portal)
         # TranslationServiceTool falls back to time formats in site properties
