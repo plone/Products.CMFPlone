@@ -5,6 +5,12 @@
 Changelog
 =========
 
+4.3a1 (unreleased)
+------------------
+
+- Use plone.batching for all batches (PLIP #12235)
+  [tom_gross]
+
 4.2b3 (unreleased)
 ------------------
 
