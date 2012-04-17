@@ -11,6 +11,10 @@ Changelog
 - Use plone.batching for all batches (PLIP #12235)
   [tom_gross]
 
+- Re-apply PLIP 10901 to table_sort.js, fixing a bug with reversing sort
+  on the first column.
+  [mj]
+
 4.2b3 (unreleased)
 ------------------
 
