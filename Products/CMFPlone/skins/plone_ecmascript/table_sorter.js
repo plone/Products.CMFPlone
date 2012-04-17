@@ -1,4 +1,3 @@
-
 /********* Table sorter script *************/
 /*
  * For all table elements with 'listing' class,
@@ -10,10 +9,12 @@
 (function($) {
 
 function sortabledataclass(cell){
-	var re = new RegExp("sortabledata-([^ ]*)","g");
-	var matches = re.exec(cell.attr('class'));
-	if(matches) return matches[1]
-	else return null
+    var re, matches;
+	
+    re = new RegExp("sortabledata-([^ ]*)","g");
+	matches = re.exec(cell.attr('class'));
+	if (matches) { return matches[1]; }
+    else { return null; }
 }
 
 function sortable(cell) {
@@ -21,33 +22,39 @@ function sortable(cell) {
 
 	// use sortabledata-xxx cell class if it is defined
 	var text = sortabledataclass(cell);
-	if(text == null) text = cell.text();
+	if (text === null) { text = cell.text(); }
 
 	// A number, but not a date?
-    if (text.charAt(4) != '-' && text.charAt(7) != '-' && !isNaN(parseFloat(text)))
+    if (text.charAt(4) !== '-' && text.charAt(7) !== '-' && !isNaN(parseFloat(text))) {
         return parseFloat(text);
+    }
     return text.toLowerCase();
 }
 
 function sort() {
-	var th = $(this).closest('th');
-	var colnum = $('th', $(this).closest('thead')).index(th);
-    var table = $(this).parents('table:first');
-    var tbody = table.find('tbody:first');
-    var reverse = table.attr('sorted') == colnum;
+    var th, colnum, table, tbody, reverse, index, data, usenumbers, tsorted;
+
+	th = $(this).closest('th');
+    colnum = $('th', $(this).closest('thead')).index(th);
+    table = $(this).parents('table:first');
+    tbody = table.find('tbody:first');
+    tsorted = parseInt(table.attr('sorted') || '-1', 10);
+    reverse = tsorted === colnum;
 
     $(this).parent().find('th:not(.nosort) .sortdirection')
         .html('&#x2003;');
     $(this).children('.sortdirection').html(
         reverse ? '&#x25b2;' : '&#x25bc;');
 
-    var index = $(this).parent().children('th').index(this);
-    var data = [];
-    var usenumbers = true;
+    index = $(this).parent().children('th').index(this),
+    data = [],
+    usenumbers = true;
     tbody.find('tr').each(function() {
-        var cells = $(this).children('td');
-        var sortableitem = sortable(cells.slice(index,index+1));
-        if (isNaN(sortableitem)) usenumbers = false;
+        var cells, sortableitem;
+
+        cells = $(this).children('td');
+        sortableitem = sortable(cells.slice(index,index+1));
+        if (isNaN(sortableitem)) { usenumbers = false; }
         data.push([
             sortableitem,
             // crude way to sort by surname and name after first choice
@@ -56,11 +63,12 @@ function sort() {
     });
 
     if (data.length) {
-        if (usenumbers)
+        if (usenumbers) {
             data.sort(function(a,b) {return a[0]-b[0];});
-        else
+        } else {
             data.sort();
-        if (reverse) data.reverse();
+        }
+        if (reverse) { data.reverse(); }
         table.attr('sorted', reverse ? '' : colnum);
 
         // appending the tr nodes in sorted order will remove them from their old ordering

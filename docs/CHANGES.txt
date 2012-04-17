@@ -47,6 +47,10 @@ Changelog
   Fixes https://dev.plone.org/ticket/12525
   [pingviini]
 
+- Re-apply PLIP 10901 to table_sort.js, fixing a bug with reversing sort
+  on the first column.
+  [mj]
+
 
 4.2b2 (2012-02-09)
 ------------------
