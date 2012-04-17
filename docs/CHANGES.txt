@@ -26,6 +26,10 @@ Changelog
   Fixes https://dev.plone.org/ticket/12572
   [gotcha]
 
+- Re-apply PLIP 10901 to table_sort.js, fixing a bug with reversing sort
+  on the first column.
+  [mj]
+
 
 4.1.4 (2012-02-08)
 ------------------
