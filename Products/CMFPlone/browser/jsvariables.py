@@ -6,6 +6,9 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 
 TEMPLATE = """\
+var context_url = '%(context_url)s';
+var relative_context_url = '%(relative_context_url)s';
+var actual_url = '%(actual_url)s';
 var portal_url = '%(portal_url)s';
 var form_modified_message = '%(form_modified)s';
 var form_resubmit_message = '%(form_resubmit)s';
@@ -33,7 +36,10 @@ class JSVariables(BrowserView):
 
         props = getToolByName(context, 'portal_properties').site_properties
         portal_url = getToolByName(context, 'portal_url')()
-
+        actual_url = self.request.ACTUAL_URL
+        context_url = self.context.absolute_url()
+        relative_context_url = self.context.absolute_url(1)
+        
         # the following are flags for mark_special_links.js
         # links get the target="_blank" attribute
         open_links = props.getProperty('external_links_open_new_window', 'false')
@@ -50,6 +56,9 @@ class JSVariables(BrowserView):
 
         return TEMPLATE % dict(
             portal_url=portal_url,
+            actual_url=actual_url,
+            context_url=context_url,
+            relative_context_url=relative_context_url,
             open_links=open_links,
             mark_links=mark_links,
             form_modified=form_modified,
