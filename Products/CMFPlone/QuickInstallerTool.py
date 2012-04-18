@@ -41,6 +41,29 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
         profile_id = profile['id']
         setup = getToolByName(self, 'portal_setup')
         profile_version = str(setup.getVersionForProfile(profile_id))
+        if profile_version == 'latest':
+            # Look to see if there are any profiles that haven't been applied
+            # assumes that all profiles are numeric and single digit
+            # if anything errors out then go back to old way
+            try:
+                available = setup.listUpgrades(profile_id, True)
+                if available:  # could return empty sequence
+                    def maxstep(step):
+                        # step could be one step or a list of steps
+                        if isinstance(step, list):
+                            # Recurse until we get  to the dictionary
+                            # This seems gross but I don't know how people
+                            # have things set up
+                            return int(max(max(step, key=maxstep)['dest']))
+                        elif isinstance(step, dict):
+                            return int(max(step['dest']))
+                        else:  # who knows
+                            return 0
+                    latest = max(available, key=maxstep)
+                    profile_version = max(latest['dest'])
+            except Exception, e:
+                profile_version = 'unknown'
+
         if profile_version == 'unknown':
             # If a profile doesn't have a metadata.xml use product version
             profile_version = product_version
