@@ -8,6 +8,10 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- removed search_form-template form plone_deprecated-skin. Use
+  collective.searchform if you need this functionality.
+  [tom_gross]
+
 - Use plone.batching for all batches (PLIP #12235)
   [tom_gross]
 
