@@ -1,0 +1,441 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+      <metal:block fill-slot="top_slot"
+                   tal:define="dummy python:request.set('disable_border',1);
+                               disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                               disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_advanced_search">Advanced search for content</h1>
+
+    <div class="documentDescription" i18n:translate="description_advanced_search">
+        This search form enables you to find content on the site by
+        specifying one or more search terms.
+        <br />
+        Remember that you can use the quick search anytime, it's normally
+        good enough, this search form is just if you want to be more specific.
+    </div>
+
+    <div id="content-core">
+
+        <metal:define define-macro="form">
+
+        <form action="search"
+              class="enableAutoFocus"
+              method="get"
+              name="search"
+              id="searchform"
+              tal:define="DateTime python:modules['DateTime'].DateTime;
+                          portal context/@@plone_portal_state/portal;
+                          options context/@@searchform-options;
+                          field_collapsible_class  python:'field'+(options.collapse() and ' collapsible' or '');
+                          first_call  not:request/advanced_search|nothing">
+
+            <input type="hidden" name="advanced_search" value="True" />
+
+                <div class="field">
+                    <label for="SearchableText" i18n:translate="label_search_text">Search text</label>
+
+                    <div class="formHelp" i18n:translate="help_search_text">
+                    For a simple text search, enter your search term
+                    here. Multiple words may be found by combining
+                    them with <strong>AND</strong> and <strong>OR</strong>.
+                    The text in this field will be matched with
+                    items' contents, title and description.
+                    </div>
+
+                    <input type="text"
+                           id="SearchableText"
+                           name="SearchableText"
+                           size="25"
+                           tal:attributes="value request/SearchableText|nothing"
+                           />
+                </div>
+
+
+                <div class="field"
+             tal:define="usedSubjects python:context.portal_catalog.uniqueValuesFor('Subject');"
+             tal:condition="usedSubjects">
+
+                    <label for="Subject" i18n:translate="label_tags">Tags</label>
+
+                    <div class="formHelp" i18n:translate="help_search_tags">
+                    Return items matching some or all of these tags.
+                    Multiple words may be found by pressing <strong>Ctrl</strong>
+                    (or <strong>Apple</strong> key on Mac) while clicking the
+                    keywords.
+                    </div>
+
+                    <select name="Subject:list"
+                            id="Subject"
+                            size="7"
+                            multiple="multiple"
+                            tal:define="contentSubjects context/Subject;">
+                        <option value="#"
+                                tal:repeat="subject usedSubjects"
+                                tal:content="subject"
+                                tal:attributes="value subject"
+                                i18n:domain="plone-metadata"
+                                i18n:translate=""
+                                >dummy</option>
+                    </select>
+                    <br />
+
+                    <input type="radio"
+                           name="Subject_usage:ignore_empty"
+                           id="Subject_or"
+                           value=""
+                           class="noborder"
+                           tal:attributes="checked python:(request.get('Subject_usage:ignore_empty', '') == '') and 1 or ''"/>
+                        <label for="Subject_or" i18n:translate="description_subject_or">
+                            Match any
+                        </label>
+                        <br />
+
+                    <input type="radio"
+                            name="Subject_usage:ignore_empty"
+                            id="Subject_and"
+                            value="operator:and"
+                            class="noborder"
+                            tal:attributes="checked python:(request.get('Subject_usage:ignore_empty') != '') and 1 or 0"/>
+                    <label for="Subject_and" i18n:translate="description_subject_and">
+                        Match all
+                    </label>
+                </div>
+
+
+                <h2 i18n:translate="">More search options</h2>
+
+
+                <div class="field collapsible"
+                     tal:attributes="class field_collapsible_class"
+                     tal:define="portal_types portal/portal_types;
+                                 all_used_types  python:context.portal_catalog.uniqueValuesFor('portal_type');
+                                 used_types  python:context.plone_utils.getUserFriendlyTypes(all_used_types);
+                                 all_checked python:(len(used_types) == len(request.get('portal_type', []))) or first_call;
+                                 toggle_select_state python:all_checked and 'true' or 'false';">
+                    <label i18n:translate="label_item_type"
+                           class="collapser">Item type</label>
+
+    		<div class="collapse">
+                    <div class="formHelp" i18n:translate="help_search_item_type">
+                    Return items of a specific type.
+                    </div>
+
+                    <span class="optionsToggle">
+                        <input type="checkbox"
+                               onclick=""
+                               name="pt_toggle"
+                               value="#"
+                               id="pt_toggle"
+                               class="noborder"
+                               checked="checked"
+                               tal:attributes="checked python:all_checked and 'checked' or '';
+                                               onclick string:javascript:toggleSelect(this, 'portal_type:list', ${toggle_select_state});"/>
+                        <label for="pt_toggle"
+                               i18n:translate="label_toggle"
+                               >Select All/None
+                        </label>
+                    </span>
+                    <br />
+                    <div style="float:left; margin-right: 2em;"
+                         tal:define="typeLists python:context.createMultiColumnList(used_types, numCols=2, sort_on='self');"
+                         tal:attributes="style python:test(isRTL, 'float: right;; margin-left: 2em;;', 'float: left;; margin-right: 2em;;');"
+                         tal:repeat="sublist typeLists">
+                        <tal:items repeat="type sublist">
+                        <input type="checkbox"
+                               name="portal_type:list"
+                               value="#"
+                               class="noborder"
+                               checked="checked"
+                               tal:attributes="value type;
+                                               id string:portal_type_${repeat/sublist/number}_${repeat/type/number};
+                                               checked python:((type in request.get('portal_type', [])) or first_call) and 'checked' or ''"/>
+                        <label for=""
+                               i18n:translate=""
+                               tal:attributes="for string:portal_type_${repeat/sublist/number}_${repeat/type/number}"
+                               tal:content="python: portal_types.getTypeInfo(type).Title()"
+                               />
+                        <br />
+                        </tal:items>
+                    </div>
+                <div class="visualClear" id="clear-after-item-type"><!-- --></div>
+                </div>
+    	  </div>
+
+
+                <div class="field collapsible"
+                     tal:attributes="class field_collapsible_class">
+                    <label for="created"
+                           class="collapser"
+                           i18n:translate="label_new_items_since">New items since</label>
+
+            <div class="collapse">
+                    <div class="formHelp" i18n:translate="help_search_new_items_since">
+                    Return items added since you were last logged on, the last week, etc.
+                    </div>
+
+                    <tal:datetime define="today python:DateTime().earliestTime();
+                                          isAnon context/@@plone_portal_state/anonymous;
+                                          member context/@@plone_portal_state/member;">
+                    <select name="created:list:date"
+                            id="created"
+                            tal:define="yesterday python:(today-1).Date();
+                                        lastweek python:(today-7).Date();
+                                        lastmonth python:(today-31).Date();
+                                        ever string:1970/02/01;
+                                        selected python:request.get('created', []);
+                                        selected python:(len(selected) == 1) and selected[0].Date() or ever">
+                        <option value="#"
+                                tal:condition="not: isAnon"
+                                tal:define="value python:member is not None and member.getProperty('last_login_time') or today"
+                                tal:attributes="value value;
+                                                selected python:selected==value and 'selected' or '';"
+                                i18n:translate="last_login">Last log-in</option>
+                        <option value="#"
+                                tal:attributes="value yesterday;
+                                                selected python:selected==yesterday and 'selected' or '';"
+                                i18n:translate="time_yesterday"> Yesterday </option>
+                        <option value="#"
+                                tal:attributes="value lastweek;
+                                                selected python:selected==lastweek and 'selected' or '';"
+                                i18n:translate="time_last_week"> Last week </option>
+                        <option value="#" tal:attributes="value lastmonth;
+                                                          selected python:selected==lastmonth and 'selected' or '';"
+                                i18n:translate="time_last_month"> Last month </option>
+                        <option value="#"
+    			    class="default_option"
+                                tal:attributes="value ever;
+                                                selected python:selected==ever and 'selected' or '';"
+                                i18n:translate="time_ever"> Ever </option>
+                    </select>
+                    </tal:datetime>
+                </div>
+
+                    <input type="hidden" name="created_usage" value="range:min" />
+                </div>
+
+                <div class="field collapsible"
+                     tal:attributes="class field_collapsible_class"
+                     tal:condition="options/show_review_state">
+
+                    <label for="review_state"
+                           class="collapser"
+                           i18n:translate="label_review_status">Review status</label>
+
+            <div class="collapse"
+                 tal:define="navtree_props portal/portal_properties/navtree_properties;
+                             states python:portal.portal_workflow.listWFStatesByTitle(filter_similar=1);
+                             used_states python:portal.portal_catalog.uniqueValuesFor('review_state');
+                             filtered_states python:[state for state in states if state[1] in used_states];
+                             all_checked python:(len(filtered_states) == len(request.get('review_state', []))) or first_call;
+                             toggle_select_state python:all_checked and 'true' or 'false';">
+                    <div class="formHelp" i18n:translate="help_search_review_status">
+                    You may search for items based on their
+                    review state. If you wish to constrain results to items
+                    in certain states, select them from this list.
+                    </div>
+
+                    <span class="optionsToggle">
+                    <input type="checkbox"
+                           onclick="javascript:toggleSelect(this, 'review_state:list', true);"
+                           name="rs_toggle"
+                           value="#"
+                           id="rs_toggle"
+                           class="noborder"
+                           checked="checked"
+                           tal:attributes="checked python:all_checked and 'checked' or '';
+                                           onclick string:javascript:toggleSelect(this, 'review_state:list', ${toggle_select_state});"/>
+                    <label for="rs_toggle"
+                           i18n:translate="label_toggle"
+                           >Select All/None
+                    </label>
+                    <br />
+                    </span>
+
+                    <tal:states define="
+                                    state_lists python:context.createMultiColumnList(filtered_states, numCols=1, sort_on='self');
+                                    normalizeString nocall:context/@@plone/normalizeString;"
+                                repeat="sublist state_lists">
+                        <tal:items repeat="state sublist">
+                        <input class="noborder"
+                               type="checkbox"
+                               name="review_state:list"
+                               checked="checked"
+                               tal:attributes="value python:state[1];
+                                               id python:normalizeString(state[1]);
+                                               checked python:((state[1] in request.get('review_state', [])) or first_call) and 'checked' or ''" />
+                        <label for=""
+                               tal:attributes="for python:normalizeString(state[1])"
+                               i18n:translate=""
+                               tal:content="python:state[0] or state[1]"
+                               />
+                        <br />
+                        </tal:items>
+                    </tal:states>
+            </div>
+                </div>
+
+                <div class="field collapsible"
+                     tal:attributes="class field_collapsible_class">
+                    <label for="Creator"
+                           class="collapser"
+                           i18n:translate="label_author">Author</label>
+
+                    <div class="collapse">
+                    <div class="formHelp" i18n:translate="help_search_author">
+                    Return items created by a particular person.
+                    </div>
+
+                    <tal:creators tal:define="anonymous context/@@plone_portal_state/anonymous;
+                                              allowAnonymousViewAbout python: portal.portal_properties.site_properties.getProperty('allowAnonymousViewAbout', True);
+                                              creators python:portal.portal_catalog.uniqueValuesFor('Creator');
+                                              showAuthors python: len(creators) &lt;= 30 and (not anonymous or allowAnonymousViewAbout);
+                                              selected request/Creator|nothing">
+                        <select name="Creator"
+                                id="Creator"
+                                tal:condition="showAuthors">
+                            <option value=""
+                                    class="default_option"
+                                    i18n:translate="label_any_author">Any Author</option>
+                            <metal:block tal:repeat="creator creators">
+                                <option value=""
+                                        tal:attributes="value creator;
+                                                        selected python:selected == creator and 'selected' or '';"
+                                        tal:content="creator">username </option>
+                            </metal:block>
+                        </select>
+
+                        <input name="Creator"
+                               tal:condition="not:showAuthors"
+                               tal:attributes="value selected" />
+                    </tal:creators>
+            </div>
+                </div>
+
+                <div class="field collapsible"
+                     tal:attributes="class field_collapsible_class"
+                     tal:condition="options/show_title">
+                    <label for="Title"
+                           class="collapser"
+                           i18n:translate="label_title">Title</label>
+
+                    <div class="collapse">
+                    <div class="formHelp" i18n:translate="help_search_title">
+                    Return items matching this title.
+                    </div>
+
+                    <input type="text"
+                           id="Title"
+                           name="Title"
+                           size="25"
+                           value=""
+                           tal:attributes="value request/Title|nothing"
+                           />
+                    </div>
+                </div>
+
+                <div class="field collapsible"
+                     tal:attributes="class field_collapsible_class"
+                     tal:condition="options/show_description">
+
+                    <label for="Description"
+                           class="collapser"
+                           i18n:translate="label_description">Description</label>
+
+                    <div class="collapse">
+                    <div class="formHelp" i18n:translate="help_search_description">
+                    Return items matching this description.
+                    Multiple words may be found
+                    by combining them with <strong>AND</strong> and <strong>OR</strong>.
+                    </div>
+
+                    <input type="text"
+                           id="Description"
+                           name="Description"
+                           size="25"
+                           value=""
+                           tal:attributes="value request/Description|nothing"
+                           />
+                    </div>
+                </div>
+
+                <h2 i18n:translate="">Display options</h2>
+
+                <div class="field"
+                     tal:condition="options/show_sort_on">
+                  <label for="sort_on" i18n:translate="">Sort results</label>
+
+                  <div class="formHelp" i18n:translate="">
+                    Sort the Search Results based on the selected criterion
+                  </div>
+
+                  <select name="sort_on"
+                          id="sort_on"
+                          tal:define="selected request/form/sort_on|nothing">
+                    <option value=""
+                            tal:attributes="selected python:selected == '' and 'selected' or ''"
+                            i18n:translate="">Relevance</option>
+                    <option value="created"
+                            tal:attributes="selected python:selected == 'created' and 'selected' or ''"
+                            i18n:translate="">Creation Date</option>
+                    <option value="modified"
+                            tal:attributes="selected python:selected == 'modified' and 'selected' or ''"
+                            i18n:translate="">Modification Date</option>
+                    <option value="sortable_title"
+                            tal:attributes="selected python:selected == 'sortable_title' and 'selected' or ''"
+                            i18n:translate="">Title</option>
+                  </select>
+
+                </div>
+
+                <div class="field"
+                     tal:condition="options/show_batch_size">
+                  <label for="b_size" i18n:translate="">Results per page</label>
+
+                  <div class="formHelp" i18n:translate="">
+                    The number of results that is displayed on one page.
+                  </div>
+
+                  <select name="b_size:int"
+                          id="b_size"
+                          tal:define="selected request/form/b_size|nothing">
+                    <option value="30"
+                            tal:attributes="selected python:selected == 30 and 'selected' or ''"
+                            i18n:translate="">30</option>
+                    <option value="60"
+                            tal:attributes="selected python:selected == 60 and 'selected' or ''"
+                            i18n:translate="">60</option>
+                    <option value="90"
+                            tal:attributes="selected python:selected == 90 and 'selected' or ''"
+                            i18n:translate="">90</option>
+                  </select>
+
+                </div>
+
+                <div class="visualClear" id="clear-space-before-submit"><!-- --></div>
+
+                <div class="formControls">
+                    <input class="context"
+                           type="submit"
+                           name="submit"
+                           value="Search"
+                           i18n:attributes="value label_search;"
+                           />
+                </div>
+
+        </form>
+
+        </metal:define>
+    </div>
+</metal:main>
+
+</html>

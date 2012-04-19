@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+<body>
+
+<tal:comment condition="nothing">You can feed in batch_base_url by enclosing
+the metal:use-macro="context/batch_macros/macros/navigation" statement in your
+template with a tal:define="batch_base_url YOUR_BASE_URL" tales expression.
+</tal:comment>
+<div class="listingBar"
+     metal:define-macro="navigation"
+     tal:define="request request|context/request|container/request|nothing;
+                 batch batch|nothing;
+                 batchformkeys batchformkeys|nothing;
+                 batchlinkparams python:batchformkeys and dict([(key, request.form[key]) for key in batchformkeys if key in request]) or request.form;
+                 mq python:modules['ZTUtils'].make_query;
+                 url batch_base_url | request/ACTUAL_URL;
+                 currentpage batch/pagenumber;"
+     tal:condition="python: batch.next or  batch.previous">
+
+    <span class="previous"
+      tal:define="p batch/previous | nothing"
+      tal:condition="p">
+        <a href=""
+           tal:attributes="href python: '%s?%s' % (url , mq( batchlinkparams, {batch.b_start_str:p.first} ))">
+           &laquo;
+           <span i18n:translate="batch_previous_x_items" tal:omit-tag="">
+               Previous
+               <span i18n:name="number" tal:omit-tag="" tal:content="p/length">n</span>
+               items
+           </span>
+        </a>
+    </span>
+
+    <span class="next"
+      tal:define="n batch/next | nothing"
+      tal:condition="n">
+        <a href=""
+           tal:attributes="href python: '%s?%s' % (url , mq( batchlinkparams, {batch.b_start_str:n.first} ))">
+           <span i18n:translate="batch_next_x_items" tal:omit-tag="">
+               Next
+               <span i18n:name="number" tal:omit-tag="" tal:content="n/length">n</span>
+               items
+           </span>
+           &raquo;
+        </a>
+    </span>
+
+    <tal:comment tal:condition="nothing">
+      Link to first
+    </tal:comment>
+    <span tal:condition="python: 1 not in batch.navlist">
+        <a href=""
+           tal:attributes="href python: '%s?%s' % (url, batch.pageurl(batchlinkparams,1));">1</a>
+        <span tal:condition="python: 2 not in (batch.prevlist or batch.leapback)"
+              tal:omit-tag="">
+           &hellip;
+        </span>
+    </span>
+
+    <tal:comment tal:condition="nothing">
+      Pagelist with quantum leap links to previous pages for quick navigation
+    </tal:comment>
+    <span tal:repeat="linklist python:batch.navurls(batchlinkparams, batch.leapback)"
+          tal:condition="batch/leapback"
+          tal:omit-tag="" >
+        <a href=""
+           tal:define="page python:linklist[0];
+                       query python:linklist[1];"
+           tal:content="page"
+           tal:attributes="href python: '%s?%s' % (url,query)" >
+        </a>
+        &hellip;
+    </span>
+
+    <tal:comment tal:condition="nothing">
+      Pagelist with links to previous pages for quick navigation
+    </tal:comment>
+    <span tal:repeat="linklist python:batch.prevurls(batchlinkparams)"
+          tal:condition="batch/prevlist"
+          tal:omit-tag="" >
+        <a href=""
+           tal:define="page python:linklist[0];
+                       query python:linklist[1];"
+           tal:content="page"
+           tal:attributes="href python: '%s?%s' % (url,query)" >
+        </a>
+    </span>
+
+    <tal:comment tal:replace="nothing">
+      Current page
+    </tal:comment>
+    <span tal:condition="batch/navlist" class="current"
+           tal:content="batch/pagenumber">Current page number</span>
+
+    <tal:comment tal:replace="nothing">
+      Pagelist with links to next pages for quick navigation
+    </tal:comment>
+    <span tal:repeat="linklist python:batch.nexturls(batchlinkparams)"
+          tal:condition="batch/nextlist"
+          tal:omit-tag="" >
+        <a href=""
+           tal:define="page python:linklist[0];
+                       query python:linklist[1];"
+           tal:content="page"
+           tal:attributes="href python: '%s?%s' % (url,query)" >
+        </a>
+    </span>
+
+    <tal:comment tal:replace="nothing">
+      Pagelist with quantum leap links to next pages for quick navigation
+    </tal:comment>
+    <span tal:repeat="linklist python:batch.navurls(batchlinkparams, batch.leapforward)"
+          tal:condition="batch/leapforward"
+          tal:omit-tag="" >
+        &hellip;
+        <a href=""
+           tal:define="page python:linklist[0];
+                       query python:linklist[1];"
+           tal:content="page"
+           tal:attributes="href python: '%s?%s' % (url,query)" >
+        </a>
+    </span>
+
+    <tal:comment tal:replace="nothing">
+      Link to last
+    </tal:comment>
+    <span tal:condition="python:batch.numpages not in batch.navlist">
+        <span tal:condition="python: batch.numpages - 1 not in (batch.nextlist or batch.leapforward)"
+              tal:omit-tag="">
+        &hellip;
+        </span>
+        <a href=""
+           tal:attributes="href python: '%s?%s' % (url,batch.pageurl(batchlinkparams,batch.numpages));"
+           tal:content="batch/numpages">3457</a>
+    </span>
+
+</div>
+
+</body>
+</html>
