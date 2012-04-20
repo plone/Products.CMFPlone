@@ -7,6 +7,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFQuickInstallerTool.QuickInstallerTool \
    import QuickInstallerTool as BaseTool
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
+import pkg_resources
 
 
 class QuickInstallerTool(PloneBaseTool, BaseTool):
@@ -43,24 +44,13 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
         profile_version = str(setup.getVersionForProfile(profile_id))
         if profile_version == 'latest':
             # Look to see if there are any profiles that haven't been applied
-            # assumes that all profiles are numeric and single digit
             # if anything errors out then go back to old way
             try:
                 available = setup.listUpgrades(profile_id, True)
                 if available:  # could return empty sequence
-                    def maxstep(step):
-                        # step could be one step or a list of steps
-                        if isinstance(step, list):
-                            # Recurse until we get  to the dictionary
-                            # This seems gross but I don't know how people
-                            # have things set up
-                            return int(max(max(step, key=maxstep)['dest']))
-                        elif isinstance(step, dict):
-                            return int(max(step['dest']))
-                        else:  # who knows
-                            return 0
-                    latest = max(available, key=maxstep)
-                    profile_version = max(latest['dest'])
+                    latest = available[-1]
+                    profile_version = max(latest['dest'],
+                            key=pkg_resources.parse_version)
             except Exception, e:
                 profile_version = 'unknown'
 
