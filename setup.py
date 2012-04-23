@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.2b3dev'
+version = '4.3a1dev'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -101,6 +101,7 @@ setup(name='Products.CMFPlone',
           'plone.app.viewletmanager',
           'plone.app.vocabularies',
           'plone.app.workflow',
+          'plone.batching',
           'plone.browserlayer >= 1.0rc4',
           'plone.contentrules',
           'plone.fieldsets',

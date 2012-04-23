@@ -241,11 +241,6 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
     def testRenderSearchRSS(self):
         self.portal.search_rss(self.portal, self.app.REQUEST)
 
-    def testRenderTopicView(self):
-        self.setPermissions([AddPortalTopics])
-        self.folder.invokeFactory('Topic', id='topic')
-        self.folder.topic.atct_topic_view()
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

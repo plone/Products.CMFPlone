@@ -121,7 +121,8 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             for permission in a.permissions:
                 if _checkPermission(permission, portal):
                     verified = 1
-            if verified and a.category==group and a.testCondition(context):
+            if verified and a.category == group and a.testCondition(context) \
+                    and a.visible:
                 res.append(a.getAction(context))
         # Translate the title for sorting
         if getattr(self, 'REQUEST', None) is not None:

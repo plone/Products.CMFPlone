@@ -5,8 +5,37 @@
 Changelog
 =========
 
+4.3a1 (unreleased)
+------------------
+
+- removed search_form-template form plone_deprecated-skin. Use
+  collective.searchform if you need this functionality.
+  [tom_gross]
+
+- Use plone.batching for all batches (PLIP #12235)
+  [tom_gross]
+
+- Re-apply PLIP 10901 to table_sort.js, fixing a bug with reversing sort
+  on the first column.
+  [mj]
+
 4.2b3 (unreleased)
 ------------------
+
+- Stop filtering folder_listing to the types from 
+  @@plone_portal_state/friendly_types, since that excludes non-searchable
+  types rather than non-listable types.
+  [davisagli]
+
+- PloneControlPanel's enumConfiglets no longer returns invisible configlets.
+  [esteele]
+
+- Hide the (old) Collections control panel by default for new sites.
+  [esteele]
+
+- Apply duplicate-submit protection to inputs of type 'image' in addition
+  to type 'submit'.
+  [davisagli]
 
 - Use getId() instead of title_or_id() for displaying which items get 
   deleted, to avoid unicode error

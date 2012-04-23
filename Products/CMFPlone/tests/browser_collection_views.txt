@@ -17,7 +17,7 @@ First create a folder and a demo collection:
     >>> folder = self.portal.folder
     >>> folder.setTitle('Folder title')
     >>> folder.setDescription('Folder description')    
-    >>> _ = folder.invokeFactory('Topic', 'collection')
+    >>> _ = folder.invokeFactory('Collection', 'collection')
     >>> collection = folder.collection
     >>> collection_title = 'Title. Lorem ipsum dolor sit amet'
     >>> collection.setTitle(collection_title)
@@ -77,6 +77,7 @@ Lets check the folder_full_view (All content):
 
 Lets check the folder_tabular_view (Tabular view):
 
+    >>> browser.handleErrors = False
     >>> browser.getLink('Tabular view').click()
     >>> collection_title in browser.contents
     True

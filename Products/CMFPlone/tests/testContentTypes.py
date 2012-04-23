@@ -110,6 +110,7 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
     def testTopicEdit(self):
+        self.portal.portal_types.Topic.global_allow = True
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.edit(title='Foo')
         self.assertEqual(self.folder.topic.Title(), 'Foo')
