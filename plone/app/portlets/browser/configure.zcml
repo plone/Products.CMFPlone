@@ -161,7 +161,7 @@
       name="+"
       class=".adding.PortletAdding"
       allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
-      permission="plone.app.portlets.ManagePortlets"
+      permission="plone.app.portlets.ManageOwnPortlets"
       />
 
     <class class=".adding.PortletAdding">

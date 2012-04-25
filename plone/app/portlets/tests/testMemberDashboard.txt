@@ -1,0 +1,40 @@
+Setup::
+
+    >>> user1, pass1 = u'user1', 'pass1'
+    >>> uf = portal.acl_users
+    >>> uf.userFolderAddUser(user1, pass1, ['Member'], [])
+    >>> import re
+
+
+bug: 11174: Portal Members can't add portlets to their dashboard
+----------------------
+Login as the 'user1' user
+
+    >>> browser = self.getBrowser()
+    >>> portalURL = portal.absolute_url()
+
+    >>> browser.open(portalURL + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'user1'
+    >>> browser.getControl(name='__ac_password').value = 'pass1'
+    >>> browser.getControl(name='submit').click()
+
+Go to the dashboard and check that portlets are addable here
+
+    >>> browser.getLink('Dashboard').click()
+    >>> browser.getLink('Edit').click()
+    >>> 'Add portlet' in browser.contents
+    True
+
+Let's try to add a Calendar portlet and then remove it
+
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    False
+    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+user1/+/portlets.Calendar']
+    >>> browser.getForm(index=1).submit()
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    True
+    >>> browser.getLink(url="delete-portlet?name=calendar").click()
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    False
