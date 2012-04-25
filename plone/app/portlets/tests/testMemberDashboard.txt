@@ -1,8 +1,10 @@
 Setup::
 
     >>> user1, pass1 = u'user1', 'pass1'
+    >>> user2, pass2 = u'user2', 'pass2'
     >>> uf = portal.acl_users
     >>> uf.userFolderAddUser(user1, pass1, ['Member'], [])
+    >>> uf.userFolderAddUser(user2, pass2, ['Member'], [])
     >>> import re
 
 
@@ -38,3 +40,59 @@ Let's try to add a Calendar portlet and then remove it
     >>> browser.open(portalURL+'/@@manage-dashboard')
     >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
     False
+
+Now, let's try to add a portlet using the addview
+
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user1/+/portlets.Calendar?referer="+portalURL)
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    True
+    >>> browser.getLink(url="delete-portlet?name=calendar").click()
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    False
+
+Using the addview, let's see that we cannot add a portlet for another user
+
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user2/+/portlets.Calendar?referer="+portalURL)
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    False
+
+    >>> browser.open(portalURL + '/logout')
+
+    >>> browser.open(portalURL + '/login_form')
+    >>> browser.getControl(name='__ac_name').value = 'user2'
+    >>> browser.getControl(name='__ac_password').value = 'pass2'
+    >>> browser.getControl(name='submit').click()
+
+    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    False
+
+Now, we try to open the @@manage-portlets view and also try to call the addview
+for a portlet. We shouldn't be able to do any of this
+
+    >>> browser.open(portalURL+'/@@manage-portlets')
+    >>> "Insufficient Privileges" in browser.contents
+    True
+    >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Calendar")
+    >>> "Insufficient Privileges" in browser.contents
+    True
+
+Finally, if we add the "Member" role to the "Portlets: Manage portlets" permission, we should be able to call
+those views
+
+    >>> portal.manage_permission('Portlets: Manage portlets', roles=['Manager', 'Member'], acquire=0)
+    >>> browser.open(portalURL+'/@@manage-portlets')
+    >>> "Insufficient Privileges" in browser.contents
+    False
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    False
+    >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Calendar")
+    >>> "Insufficient Privileges" in browser.contents
+    False
+    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    True
