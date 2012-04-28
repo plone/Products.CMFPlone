@@ -43,17 +43,7 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
         setup = getToolByName(self, 'portal_setup')
         profile_version = str(setup.getVersionForProfile(profile_id))
         if profile_version == 'latest':
-            # Look to see if there are any profiles that haven't been applied
-            # if anything errors out then go back to old way
-            try:
-                available = setup.listUpgrades(profile_id, True)
-                if available:  # could return empty sequence
-                    latest = available[-1]
-                    profile_version = max(latest['dest'],
-                            key=pkg_resources.parse_version)
-            except Exception, e:
-                profile_version = 'unknown'
-
+            profile_version = self.getLatestUpgradeStep(profile_id)
         if profile_version == 'unknown':
             # If a profile doesn't have a metadata.xml use product version
             profile_version = product_version
@@ -69,6 +59,28 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
             installedVersion=installed_profile_version,
             newVersion=profile_version,
             )
+
+    security.declareProtected(ManagePortal, 'getLatestUpgradeStep')
+    def getLatestUpgradeStep(self, profile_id):
+        '''
+        Get the highest ordered upgrade step available to
+        a specific profile. 
+
+        If anything errors out then go back to "old way"
+        by returning 'unknown'
+        '''
+        setup = getToolByName(self, 'portal_setup')
+        profile_version = 'unknown'
+        try:
+            available = setup.listUpgrades(profile_id, True)
+            if available:  # could return empty sequence
+                latest = available[-1]
+                profile_version = max(latest['dest'],
+                        key=pkg_resources.parse_version)
+        except Exception, e:
+            pass
+
+        return profile_version
 
     security.declareProtected(ManagePortal, 'upgradeProduct')
     def upgradeProduct(self, pid):
