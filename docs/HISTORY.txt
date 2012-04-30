@@ -6,13 +6,6 @@ For what's new in this release, see CHANGES.txt.
 4.0.8 - (unknown)
 -----------------
 
-- Add keyword 'latest' to metadata.xml's version tag, which then looks for 
-  the highest numbered profile that is registered and pins that to the 
-  upgrade step. This means that the version field in metadata.xml only 
-  has to be set to 'latest' once and then it automatically searches for 
-  the highest numbered profile.
-  [eleddy]
-
 4.0.7 - 2011-06-02
 ------------------
 
