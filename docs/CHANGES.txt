@@ -12,6 +12,13 @@ Changelog
   collective.searchform if you need this functionality.
   [tom_gross]
 
+- Use plone.batching for all batches (PLIP #12235)
+  [tom_gross]
+
+- Re-apply PLIP 10901 to table_sort.js, fixing a bug with reversing sort
+  on the first column.
+  [mj]
+
 - Stop filtering folder_listing to the types from 
   @@plone_portal_state/friendly_types, since that excludes non-searchable
   types rather than non-listable types.
@@ -55,6 +62,12 @@ Changelog
   on the first column.
   [mj]
 
+- Add keyword 'latest' to metadata.xml's version tag, which then looks for
+  the highest numbered profile that is registered and pins that to the
+  upgrade step. This means that the version field in metadata.xml only
+  has to be set to 'latest' once and then it automatically searches for
+  the highest numbered profile.
+  [eleddy]
 
 4.2b2 (2012-02-09)
 ------------------
