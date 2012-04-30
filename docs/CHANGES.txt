@@ -19,6 +19,7 @@ Changelog
   on the first column.
   [mj]
 
+
 4.2b3 (unreleased)
 ------------------
 
@@ -65,6 +66,12 @@ Changelog
   Fixes https://dev.plone.org/ticket/12525
   [pingviini]
 
+- Add keyword 'latest' to metadata.xml's version tag, which then looks for
+  the highest numbered profile that is registered and pins that to the
+  upgrade step. This means that the version field in metadata.xml only
+  has to be set to 'latest' once and then it automatically searches for
+  the highest numbered profile.
+  [eleddy]
 
 4.2b2 (2012-02-09)
 ------------------

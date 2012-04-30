@@ -1,0 +1,35 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone">
+
+  <genericsetup:upgradeStep
+      source="*"
+      destination="1"
+      title="Null upgrade step"
+      description=""
+      profile="Products.CMFPlone:testfixture"
+      handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
+      />
+
+ 
+  <genericsetup:upgradeStep
+      source="2"
+      destination="3"
+      title="Add pants"
+      description=""
+      handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
+      profile="Products.CMFPlone:testfixture"
+      />
+
+  <genericsetup:upgradeStep
+      source="1"
+      destination="2"
+      title="Remove pants"
+      description=""
+      handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
+      profile="Products.CMFPlone:testfixture"
+      />
+
+
+</configure>
