@@ -8,6 +8,9 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Fix an outdated "Send this" form handler property reference.
+  [rossp]
+
 - removed search_form-template form plone_deprecated-skin. Use
   collective.searchform if you need this functionality.
   [tom_gross]
