@@ -6,7 +6,7 @@ Changelog
 
 - Changed the permission for members to be able to add portlets
   to their dashboards. ( https://dev.plone.org/ticket/11174 )
-  [credits to buchi, applied and tests by frapell]
+  [credits to buchi and jstegle, applied and tests by frapell]
 
 
 2.2.4 (2012-04-15)
