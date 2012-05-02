@@ -7,6 +7,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFQuickInstallerTool.QuickInstallerTool \
    import QuickInstallerTool as BaseTool
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
+import pkg_resources
 
 
 class QuickInstallerTool(PloneBaseTool, BaseTool):
