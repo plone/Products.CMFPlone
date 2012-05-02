@@ -18,7 +18,7 @@ from ZODB.POSException import ConflictError
 
 plone_utils = getToolByName(context, 'plone_utils')
 mtool = getToolByName(context, 'portal_membership')
-site_properties = getToolByName(context, 'portal_properties').site_properties
+site = getToolByName(context, 'portal_url').getPortalObject()
 pretty_title_or_id = plone_utils.pretty_title_or_id
 
 if not mtool.checkPermission(AllowSendto, context):
@@ -36,7 +36,7 @@ variables = {'send_from_address' : REQUEST.send_from_address,
              'title'             : pretty_title_or_id(context),
              'description'       : context.Description(),
              'comment'           : REQUEST.get('comment', None),
-             'envelope_from'     : site_properties.email_from_address
+             'envelope_from'     : site.getProperty('email_from_address'),
              }
 
 try:
