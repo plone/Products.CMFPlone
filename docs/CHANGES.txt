@@ -26,6 +26,9 @@ Changelog
 4.2b3 (unreleased)
 ------------------
 
+- added some more useful JS variables to plone_javascript_variables.js
+  [ajung]
+
 - Stop filtering folder_listing to the types from 
   @@plone_portal_state/friendly_types, since that excludes non-searchable
   types rather than non-listable types.
