@@ -100,6 +100,15 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(assignment=calendar.Assignment())
         self.assertNotEqual(html, r.render(), "Cache key wasn't invalidated")
 
+    def test_invalid_request(self):
+        self.folder.REQUEST.form['month'] = [3, 4]
+        self.folder.REQUEST.form['year'] = [2011]
+        r = self.renderer()
+        r.update()
+        now = DateTime()
+        self.assertEqual(r.getYearAndMonthToDisplay(),
+                         (now.year(), now.month()))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

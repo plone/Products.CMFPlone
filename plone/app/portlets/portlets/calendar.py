@@ -175,7 +175,12 @@ class Renderer(base.Renderer):
         if not month:
             month = self.now[1]
 
-        year, month = int(year), int(month)
+        # try to transform to number but fall back to current
+        # date if this is ambiguous
+        try:
+            year, month = int(year), int(month)
+        except (TypeError, ValueError):
+            year, month = self.now[:2]
 
         # Store the results in the session for next time
         if session:
