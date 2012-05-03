@@ -8,6 +8,13 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Ensure multiple tabbed forms on the same page work when number of
+  tabs is greater than threshold.
+  [davidjb]
+
+- Remove deprecated `jq` reference from form tabbing JavaScript.
+  [davidjb]
+
 - Fix an outdated "Send this" form handler property reference.
   [rossp]
 
