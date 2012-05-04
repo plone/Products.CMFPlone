@@ -100,6 +100,8 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
                 step = upgradestep['step']
                 step.doStep(setup)
         version = str(profile['version'])
+        if version == 'latest':
+            version = self.getLatestUpgradeStep(profile_id)
         setup.setLastVersionForProfile(profile_id, version)
 
 
