@@ -5,8 +5,8 @@
 Changelog
 =========
 
-4.2b3 (unreleased)
-------------------
+4.2rc1 (2012-05-07)
+-------------------
 
 - Fix an outdated "Send this" form handler property reference.
   [rossp]
