@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.5 (unreleased)
+2.2.5 (2012-05-07)
 ------------------
 
 - Changed the permission for members to be able to add portlets
