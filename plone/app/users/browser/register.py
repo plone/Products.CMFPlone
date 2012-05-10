@@ -362,6 +362,12 @@ class BaseRegistrationForm(PageForm):
         self.handle_join_success(data)
         # XXX Return somewhere else, depending on what
         # handle_join_success returns?
+        came_from = self.request.form.get('came_from')
+        if came_from:
+            utool = getToolByName(self.context, 'portal_url')
+            if utool.isURLInPortal(came_from):
+                self.request.response.redirect(came_from)
+                return ''
         return self.context.unrestrictedTraverse('registered')()
 
     def handle_join_success(self, data):

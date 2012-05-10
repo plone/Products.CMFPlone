@@ -4,7 +4,9 @@ Changelog
 1.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Support redirecting to a URL specified in the 'came_from' query string
+  parameter following registration.
+  [davisagli]
 
 
 1.1.3 (2012-01-04)
