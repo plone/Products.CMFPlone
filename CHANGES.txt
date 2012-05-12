@@ -4,7 +4,12 @@ Changelog
 2.2.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- add missing condition in usergroups template
+  [pjstevns]
+- add .gitignore
+  [pjstevns]
+- fix component lookup error during startup
+  [pjstevns]
 
 
 2.2.4 (2012-04-15)
