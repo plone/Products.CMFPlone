@@ -6,8 +6,10 @@ Changelog
 
 - add missing condition in usergroups template
   [pjstevns]
+
 - add .gitignore
   [pjstevns]
+
 - fix component lookup error during startup
   [pjstevns]
 
