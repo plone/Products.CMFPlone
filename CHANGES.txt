@@ -4,13 +4,13 @@ Changelog
 2.2.5 (unreleased)
 ------------------
 
-- add missing condition in usergroups template
+- Add missing condition in usergroups template.
   [pjstevns]
 
-- add .gitignore
+- Add .gitignore.
   [pjstevns]
 
-- fix component lookup error during startup
+- Fix component lookup error during startup.
   [pjstevns]
 
 
