@@ -234,7 +234,3 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             self.fail('Unexpected permissions for Site Administrator role:\n' + 
                       ''.join(['\t%s\n' % msg for msg in errors])
                      )
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

@@ -1,7 +1,3 @@
-#
-# InterfaceTool tests
-#
-
 import unittest
 
 from zope.interface import implements

@@ -195,10 +195,3 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id = 'd1', title = 'Doc 1')
         self.folder.d1.content_status_modify(workflow_action = 'publish')
         self.failIf(self.folder.d1.isExpired())
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestContentPublishing))
-    return suite

@@ -1,7 +1,3 @@
-#
-# SyndicationTool tests
-#
-
 from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -48,10 +44,3 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
                           self.folder)
         self.assertRaises(Unauthorized, self.syndication.disableSyndication,
                           self.folder)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestSyndicationTool))
-    return suite

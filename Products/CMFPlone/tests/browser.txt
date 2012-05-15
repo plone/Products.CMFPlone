@@ -2,11 +2,7 @@ Browser tests
 =============
 Test the presence of the "title" tag in html page
 
-    # BBB Zope 2.12
-    >>> try:
-    ...     from Testing.testbrowser import Browser
-    ... except ImportError:
-    ...     from Products.Five.testbrowser import Browser
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
     >>> browser.open('http://nohost/plone/front-page')
     >>> "<title>%s" % self.portal['front-page'].Title() in browser.contents

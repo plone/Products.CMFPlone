@@ -1,7 +1,3 @@
-#
-# Tests portal creation
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFCore.tests.base.testcase import WarningInterceptor
@@ -17,7 +13,6 @@ from zope.location.interfaces import ISite
 from zope.site.hooks import setSite, clearSite
 
 from Acquisition import aq_base
-from DateTime import DateTime
 
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
@@ -934,12 +929,3 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.failUnless(manage_charset)
         self.assertEqual(manage_charset, 'utf-8')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortalCreation))
-    suite.addTest(makeSuite(TestPortalBugs))
-    suite.addTest(makeSuite(TestManagementPageCharset))
-    return suite

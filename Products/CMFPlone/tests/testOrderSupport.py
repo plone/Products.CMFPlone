@@ -1,7 +1,3 @@
-#
-# Test our OrderSupport implementation
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 import transaction
@@ -10,7 +6,6 @@ import transaction
 class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        membership = self.portal.portal_membership
         # Add a bunch of subobjects we can order later on
         self.folder.invokeFactory('Document', id='foo')
         self.folder.invokeFactory('Document', id='bar')
@@ -185,33 +180,6 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('foo'), 1)
         self.assertEqual(self.folder.getObjectPosition('baz'), 2)
 
-    # NOTE: These tests are disabled, as the new unified, BTree-based,
-    # ordered-by-adapter folder implementation doesn't support this. It's
-    # not used anywhere, causes the re-ordering to be needlessly slow and
-    # generally shouldn't be necessary.
-
-    def DISABLED_testMoveCMFObjectsOnly(self):
-        # Plone speciality
-        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
-        self.folder.moveObject('wilma', 2)
-        # Non-CMF object should keep position
-        self.folder.moveObjectToPosition('foo', 2)
-        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
-        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
-        self.assertEqual(self.folder.getObjectPosition('foo'), 3)
-
-    def DISABLED_testMoveUpCMFObjectsOnly(self):
-        # Plone speciality
-        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
-        self.folder.moveObject('wilma', 2)
-        # Non-CMF object should keep position
-        self.folder.moveObjectsUp(['baz'])
-        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
-        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
-        self.assertEqual(self.folder.getObjectPosition('bar'), 3)
-
 
 class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
 
@@ -233,11 +201,3 @@ class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.getObjectPosition('foo'), 0)
         self.assertEqual(self.portal.getObjectPosition('barney'), 1)
         self.assertEqual(self.portal.getObjectPosition('baz'), 2)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestOrderSupport))
-    suite.addTest(makeSuite(TestOrderSupportInPortal))
-    return suite

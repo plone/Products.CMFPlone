@@ -1,6 +1,4 @@
-#
 # logged_in.cpy tests
-#
 
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -58,10 +56,3 @@ class TestLogin(PloneTestCase.PloneTestCase):
         # login_time did change
         member = self.membership.getAuthenticatedMember()
         self.failUnless(DateTime(member.getProperty('login_time')) > login_time)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestLogin))
-    return suite

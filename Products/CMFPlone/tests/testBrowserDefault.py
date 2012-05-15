@@ -1,7 +1,3 @@
-#
-# Test the browserDefault script
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone.tests.PloneTestCase import default_user
@@ -80,7 +76,6 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
         else:
             viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
 
-        base_path = obj.absolute_url(1)
         viewed = obj.restrictedTraverse(viewaction)()
         called = obj()
 
@@ -363,12 +358,3 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         finally:
             # Restore title to avoid side-effects
             folderListing.title = 'Standard view'
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneToolBrowserDefault))
-    suite.addTest(makeSuite(TestDefaultPage))
-    suite.addTest(makeSuite(TestPortalBrowserDefault))
-    return suite

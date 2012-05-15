@@ -1,7 +1,3 @@
-#
-# CatalogTool tests
-#
-
 import unittest
 import zope.interface
 
@@ -952,20 +948,3 @@ class TestObjectProvidedIndexExtender(unittest.TestCase):
             zope.interface.implements(IDummy)
         self.assertEqual(self._index(Dummy()),
             ('Products.CMFPlone.tests.testCatalogTool.IDummy', ))
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCatalogSetup))
-    suite.addTest(makeSuite(TestCatalogIndexing))
-    suite.addTest(makeSuite(TestCatalogSearching))
-    suite.addTest(makeSuite(TestFolderCataloging))
-    suite.addTest(makeSuite(TestCatalogOrdering))
-    suite.addTest(makeSuite(TestCatalogBugs))
-    suite.addTest(makeSuite(TestCatalogUnindexing))
-    suite.addTest(makeSuite(TestCatalogExpirationFiltering))
-    suite.addTest(makeSuite(TestIndexers))
-    suite.addTest(makeSuite(TestCatalogSorting))
-    suite.addTest(makeSuite(TestObjectProvidedIndexExtender))
-    return suite

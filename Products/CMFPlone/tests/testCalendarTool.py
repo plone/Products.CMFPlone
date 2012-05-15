@@ -1,7 +1,3 @@
-#
-# CalendarTool tests
-#
-
 from DateTime import DateTime
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -159,10 +155,3 @@ class TestCalendarTool(PloneTestCase.PloneTestCase):
                           'title': 'event11'}]}]
 
         self.assertEqual([events[e] for e in range(2,9)], data)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCalendarTool))
-    return suite

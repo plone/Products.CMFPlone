@@ -1,4 +1,3 @@
-from unittest import TestSuite, makeSuite
 from Products.PloneTestCase import PloneTestCase as ptc
 
 from zope.component import queryUtility
@@ -115,10 +114,3 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
     def test_userFolderDelUsers(self):
         self.checkAuthenticator('/acl_users/userFolderDelUsers',
             'names:list=%s' % ptc.default_user)
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(AuthenticatorTestCase),
-    ])
-

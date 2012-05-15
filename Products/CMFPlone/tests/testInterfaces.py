@@ -1,7 +1,3 @@
-#
-# interface testing suite
-#
-
 from Testing import ZopeTestCase
 
 from types import TupleType, TypeType, ClassType
@@ -9,10 +5,6 @@ from zope.interface.interface import InterfaceClass
 from ExtensionClass import ExtensionClass
 
 from zope.interface import implementedBy, providedBy
-
-###############################################################################
-###               import classes and interfaces for testing                 ###
-###############################################################################
 
 from Products.CMFPlone.ActionIconsTool import ActionIconsTool
 from Products.CMFPlone.ActionsTool import ActionsTool
@@ -313,6 +305,3 @@ def test_suite():
     for test in tests:
         suite.addTest(unittest.makeSuite(test))
     return suite
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')

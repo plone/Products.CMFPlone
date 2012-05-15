@@ -11,11 +11,7 @@ getTypeInfo.
 
 We test this by starting up a test browser:
 
-    # BBB Zope 2.12
-    >>> try:
-    ...     from Testing.testbrowser import Browser
-    ... except ImportError:
-    ...     from Products.Five.testbrowser import Browser
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
 
 Let's check what happens when we get a file from a resourceDirectory.

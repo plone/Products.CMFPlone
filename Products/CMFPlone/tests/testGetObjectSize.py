@@ -76,11 +76,3 @@ class TestGetObjSizedItem(PloneTestCase.PloneTestCase):
     def testGBFloat(self):
         self.ob.set_size(float(1024*1024*1024+1024*1024*107))
         self.assertEquals(self.portal.getObjSize(self.ob), '1.1 GB')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestGetObjSize))
-    suite.addTest(makeSuite(TestGetObjSizedItem))
-    return suite

@@ -1,7 +1,3 @@
-#
-# Tests the content type scripts
-#
-
 from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
@@ -139,7 +135,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         tool = self.portal.plone_utils
         doc = self.folder.doc
         doc.setTitle('title')
-        metatypes = tool.listMetaTags(doc)
+        tool.listMetaTags(doc)
         # TODO: atm it checks only of the script can be called w/o an error
 
     def testObjectDeleteFailsOnGET(self):
@@ -365,16 +361,3 @@ class TestImageProps(PloneTestCase.PloneTestCase):
         endswith = ('alt="alt tag" title="some title" '
                     'height="100" width="100" />')
         self.assertEqual(tag(self.ob)[-len(endswith):], endswith)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestContentTypeScripts))
-    suite.addTest(makeSuite(TestEditShortName))
-    suite.addTest(makeSuite(TestEditFileKeepsMimeType))
-    suite.addTest(makeSuite(TestFileURL))
-    suite.addTest(makeSuite(TestFileExtensions))
-    suite.addTest(makeSuite(TestBadFileIds))
-    suite.addTest(makeSuite(TestImageProps))
-    return suite

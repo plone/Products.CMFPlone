@@ -1,7 +1,3 @@
-#
-# CSSRegistry tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
@@ -85,11 +81,3 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
     def testJSIsInsertedInPage(self):
         page = self.portal.index_html()
         self.failUnless("" in page)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCSSRegistry))
-    suite.addTest(makeSuite(TestJSRegistry))
-    return suite

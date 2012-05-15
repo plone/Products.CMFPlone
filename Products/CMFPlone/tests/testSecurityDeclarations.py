@@ -1,7 +1,5 @@
-#
 # Tests the security declarations Plone makes on resources
 # for access by restricted code (aka PythonScripts)
-#
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
@@ -421,13 +419,6 @@ class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
                     'n.subtreeFilter({});'
                     'n.decoratorFactory({});')
 
-    def testNavtreeStrategyBase(self):
-        self.check('from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
-                    'n=NavtreeStrategyBase();'
-                    'n.nodeFilter({});'
-                    'n.subtreeFilter({});'
-                    'n.decoratorFactory({});')
-
     def testSitemapNavtreeStrategy(self):
         # We don't test the decorator factory because that requres an
         # actual brain in item
@@ -456,14 +447,3 @@ class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
 
     def testGetNavigationRoot(self):
         self.check('from Products.CMFPlone.browser.navtree import getNavigationRoot')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestSecurityDeclarations))
-    suite.addTest(makeSuite(TestAcquisitionMethods))
-    suite.addTest(makeSuite(TestAllowSendtoSecurity))
-    suite.addTest(makeSuite(TestSkinSecurity))
-    suite.addTest(makeSuite(TestNavtreeSecurity))
-    return suite

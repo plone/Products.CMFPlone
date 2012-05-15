@@ -1,7 +1,3 @@
-#
-# DateIndex range tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from DateTime import DateTime
@@ -28,10 +24,3 @@ class TestDateIndexRanges(PloneTestCase.PloneTestCase):
         # No OverflowError due to monkey patch
         #self.assertRaises(OverflowError, self.folder.doc1.reindexObject)
         self.folder.doc1.reindexObject()
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestDateIndexRanges))
-    return suite
