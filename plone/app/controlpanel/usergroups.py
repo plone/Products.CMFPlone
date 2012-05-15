@@ -497,7 +497,7 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             for rolemaker_id, rolemaker in rolemakers:
                 # getRolesForPrincipal can return None
                 roles = rolemaker.getRolesForPrincipal(group) or ()
-                allAssignedRoles.extend(rolemaker.getRolesForPrincipal(roles))
+                allAssignedRoles.extend(roles)
             allInheritedRoles[groupId] = allAssignedRoles
 
         # Now, search for all roles explicitly assigned to each group.
