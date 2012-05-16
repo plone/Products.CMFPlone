@@ -5,8 +5,26 @@
 Changelog
 =========
 
-4.2b3 (unreleased)
-------------------
+4.2rc2 (unreleased)
+-------------------
+
+- Ensure multiple tabbed forms on the same page work when number of
+  tabs is greater than threshold.
+  [davidjb]
+
+- Remove deprecated `jq` reference from form tabbing JavaScript.
+  [davidjb]
+
+- Remove incorrect line of form tabbing JavaScript which broke
+  forms with more than 6 tabs.
+  Fixes https://dev.plone.org/ticket/12877
+  [davidjb]
+
+4.2rc1 (2012-05-07)
+-------------------
+
+- Fix an outdated "Send this" form handler property reference.
+  [rossp]
 
 - removed search_form-template form plone_deprecated-skin. Use
   collective.searchform if you need this functionality.
