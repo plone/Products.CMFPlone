@@ -1,7 +1,3 @@
-#
-# Test portal factory
-#
-
 import urlparse
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -322,14 +318,3 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
         path = "%s/++resource++plone-logo.png" % self.tmp_obj_path
         data = self.publish(path)
         self.assertEqual(data.getHeader('Content-Type'), 'image/png')
-
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortalFactory))
-    suite.addTest(makeSuite(TestCreateObject))
-    suite.addTest(makeSuite(TestCreateObjectByURL))
-    suite.addTest(makeSuite(TestPortalFactoryTraverseByURL))
-    return suite

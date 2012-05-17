@@ -1,6 +1,5 @@
-#
 # Test queryCatalog and plone search forms
-#
+
 from zope.component import getMultiAdapter
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -37,10 +36,6 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testEmptyRequest(self):
         request = {}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
-
-    def testNonexistantIndex(self):
-        request = {'foo':'bar'}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testNonexistantIndex(self):
@@ -115,6 +110,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         ntp.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEquals('/yyy/zzz', qry['path'])
+
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     """Test logic quoting features queryCatalog script.
@@ -225,7 +221,6 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.queryCatalog(request), expected)
 
 
-
 AddPortalTopics = 'Add portal topics'
 
 class TestSearchForms(PloneTestCase.PloneTestCase):
@@ -240,13 +235,3 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
 
     def testRenderSearchRSS(self):
         self.portal.search_rss(self.portal, self.app.REQUEST)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestQueryCatalog))
-    suite.addTest(makeSuite(TestQueryCatalogQuoting))
-    suite.addTest(makeSuite(TestQueryCatalogParseError))
-    suite.addTest(makeSuite(TestSearchForms))
-    return suite

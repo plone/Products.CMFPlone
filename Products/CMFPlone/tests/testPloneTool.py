@@ -1,7 +1,3 @@
-#
-# Tests the PloneTool
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -610,15 +606,3 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         self.assertEqual(len(expectedAliases), len(aliases))
         for k, v in aliases.items():
             self.assertEqual(expectedAliases[k], v)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneTool))
-    suite.addTest(makeSuite(TestOwnershipStuff))
-    suite.addTest(makeSuite(TestEditMetadata))
-    suite.addTest(makeSuite(TestEditMetadataIndependence))
-    suite.addTest(makeSuite(TestBreadCrumbs))
-    suite.addTest(makeSuite(TestIDGenerationMethods))
-    return suite

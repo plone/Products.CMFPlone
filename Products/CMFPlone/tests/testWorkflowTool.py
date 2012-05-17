@@ -1,7 +1,3 @@
-#
-# Tests the workflow tool
-#
-
 from zope.interface import directlyProvides
 from zope.component import provideAdapter, getGlobalSiteManager
 
@@ -13,7 +9,7 @@ from Products.CMFCore.interfaces import IWorkflowTool
 default_user = PloneTestCase.default_user
 
 # INFO - Ugh...Rather than use and update ambiguous numbers,
-# we maintain a mapping of the various workflows to stats
+# we maintain a mapping of the various workflows to states
 # though there are some obvious downsides to this, it's better than just
 # asserting that there are X published states in all workflows, etc.
 workflow_dict = {
@@ -127,9 +123,3 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         components = getGlobalSiteManager()
         components.unregisterAdapter(DummyWorkflowChainAdapter,
                                      required=(IDocument, IWorkflowTool))
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestWorkflowTool))
-    return suite

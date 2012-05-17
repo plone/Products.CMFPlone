@@ -3,11 +3,7 @@ Mail related functional tests
 
 Some initial setup:
 
-  # BBB Zope 2.12
-  >>> try:
-  ...     from Testing.testbrowser import Browser
-  ... except ImportError:
-  ...     from Products.Five.testbrowser import Browser
+  >>> from Testing.testbrowser import Browser
   >>> browser = Browser()
 
 We need to fake a valid mail setup:

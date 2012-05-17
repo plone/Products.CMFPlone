@@ -34,10 +34,3 @@ class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
     def testSetDefaultPageWithoutPage(self):
         # Make sure we can't define a default page if no object in folder
         self.failUnless(self.folder.canSelectDefaultPage())
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestBrowserDefaultScripts))
-    return suite

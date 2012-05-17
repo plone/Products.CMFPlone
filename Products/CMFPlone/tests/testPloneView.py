@@ -5,7 +5,6 @@ from Products.CMFPlone.browser.ploneview import Plone
 
 
 class TestPloneView(PloneTestCase.PloneTestCase):
-    """Tests the global plone view."""
 
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'test',
@@ -173,10 +172,3 @@ class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
         self.props.manage_changeProperties(visible_ids=True)
         self.member.setProperties(visible_ids=True)
         self.failUnless(self.view.visibleIdsEnabled())
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneView))
-    suite.addTest(makeSuite(TestVisibleIdsEnabled))
-    return suite

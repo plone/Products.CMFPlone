@@ -28,10 +28,3 @@ class TestFactoryPloneSite(PloneTestCase.PloneTestCase):
         ploneSiteTitle = ploneSite.Title()
         self.failUnless(isinstance(ploneSiteTitle, str))
         self.assertEqual(ploneSiteTitle, TITLE)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestFactoryPloneSite))
-    return suite

@@ -1,8 +1,7 @@
-#
-# QuickInstallerTool tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone import tests
+from Products.Five import zcml
+from Products.Five import fiveconfigure
 
 
 class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
@@ -34,8 +33,24 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
     def testUpgradeProfilesNotShown(self):
         self.failIf('plone.app.upgrade.v30' in self._available())
 
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestQuickInstallerTool))
-    return suite
+    def testLatestUpgradeProfiles(self):
+        self._load_zcml('test_upgrades1.zcml')
+        latest = self.qi.getLatestUpgradeStep('Products.CMFPlone:testfixture')
+        self.failUnless(latest == '3')
+
+    def testLatestUpgradeProfiles2(self):
+        # make sure strings don't break things
+        # note that pkg_resources interprets 1 as
+        # ''00000001', which is > 'banana'
+        self._load_zcml('test_upgrades2.zcml')
+        latest = self.qi.getLatestUpgradeStep('Products.CMFPlone:testfixture')
+        self.failUnless(latest == '3')
+
+
+    def _load_zcml(self, filename):
+        fiveconfigure.debug_mode = True
+        zcml.load_config(filename, package=tests)
+        fiveconfigure.debug_mode = False
+
+def dummy_handler():
+    pass

@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# Tests the UnicodeSplitter
-#
-
 import unittest
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -12,11 +8,7 @@ from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.tests.base.dummy import DummyContent
 
-# BBB Zope 2.12
-try:
-    from OFS.metaconfigure import setDeprecatedManageAddDelete
-except ImportError:
-    from Products.Five.eventconfigure import setDeprecatedManageAddDelete
+from OFS.metaconfigure import setDeprecatedManageAddDelete
 
 import locale
 LATIN1 = ('en_US.ISO-8859-1', 'en_US.ISO8859-15', 'en_GB.ISO8859-15',

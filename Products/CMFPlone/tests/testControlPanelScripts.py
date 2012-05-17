@@ -1,7 +1,3 @@
-#
-# Tests the control panel scripts
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from zExceptions import Forbidden
 from cStringIO import StringIO
@@ -157,12 +153,3 @@ class TestAccessControlPanelScripts(PloneTestCase.FunctionalTestCase):
 
 
         self.assertEquals(response.getStatus(), 200)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPrefsUserManage))
-    suite.addTest(makeSuite(TestAccessControlPanelScripts))
-    suite.addTest(makeSuite(TestNoGETControlPanel))
-    return suite

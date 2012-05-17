@@ -1,13 +1,7 @@
-#
-# Next / Previous navigation tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
 
 class TestNextPrevious(PloneTestCase.PloneTestCase):
-    """Basic use cases and tests for next/previous navigation
-    """
 
     def afterSetUp(self):
         self.populateSite()
@@ -86,7 +80,6 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
             self.folder.case3.invokeFactory('Document', 'subDoc%d' % documentCounter)
 
         container  = self.folder.case3
-        testedItem = container.subDoc2
 
         #set up the adapter for the folder
         adapter = INextPreviousProvider(container)
@@ -109,9 +102,3 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
         #last item should not have a next item
         next = adapter.getNextItem(self.folder.case3.subDoc5)
         self.failUnlessEqual(next, None)
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestNextPrevious))
-    return suite

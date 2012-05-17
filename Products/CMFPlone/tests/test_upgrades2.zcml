@@ -1,0 +1,26 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone">
+
+ 
+  <genericsetup:upgradeStep
+      source="apples"
+      destination="banana"
+      title="Add pants"
+      description=""
+      handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
+      profile="Products.CMFPlone:testfixture"
+      />
+
+  <genericsetup:upgradeStep
+      source="cumquats"
+      destination="dandelions"
+      title="Remove pants"
+      description=""
+      handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
+      profile="Products.CMFPlone:testfixture"
+      />
+
+
+</configure>

@@ -1,6 +1,4 @@
-#
 # Test toLocalizedTime script and TranslationServiceTool.
-#
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFCore.utils import getToolByName
@@ -69,11 +67,3 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
         error = "(Missing.Value,), {}"
         value = self.tool.ulocalized_time(error)
         self.failUnlessEqual(value, None)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestUTranslate))
-    suite.addTest(makeSuite(TestTranslationServiceTool))
-    return suite

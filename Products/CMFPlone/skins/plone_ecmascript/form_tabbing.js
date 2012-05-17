@@ -65,7 +65,7 @@ ploneFormTabbing._buildTabs = function(container, legends) {
         tabs = $('<select class="formTabs">'+tabs+'</select>');
         tabs.change(function(){
         	var selected = $(this).attr('value');
-        	jq('#'+selected).click();
+        	$(this).parent().find('option#'+selected).click();
         })
     } else {
         tabs = $('<ul class="formTabs">'+tabs+'</ul>');
@@ -118,12 +118,11 @@ ploneFormTabbing.initializeForm = function() {
 
     var tabSelector = 'ul.formTabs';
     if ($(ftabs).is('select.formTabs')) {
-    Products.CMFPlone
         tabSelector = 'select.formTabs';
     }
     var tabsConfig = $.extend({}, ploneFormTabbing.jqtConfig, {'initialIndex':initialIndex});
     jqForm.children(tabSelector).tabs(
-        'fieldset.formPanel',
+        jqForm.children('fieldset.formPanel'),
         tabsConfig
         );
 

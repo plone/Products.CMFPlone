@@ -1,17 +1,11 @@
 from AccessControl import Unauthorized
-from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.utils import set_own_login_name
 from Products.CMFPlone.RegistrationTool import get_member_by_login_name
-from Products.CMFPlone.tests.test_mails import MockMailHostTestCase
-from Products.CMFPlone.tests.test_mails import OPTIONFLAGS
 
 
 class TestEmailLogin(PloneTestCase.PloneTestCase):
-
-    def afterSetUp(self):
-        pass
 
     def testUseEmailProperty(self):
         props = getToolByName(self.portal, 'portal_properties').site_properties
@@ -89,18 +83,3 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         found = get_member_by_login_name(context, 'portal_owner')
         member = memship.getMemberById('portal_owner')
         self.assertEqual(member, found)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestEmailLogin))
-    # We have some browser tests as well.  Part of that is testing the
-    # password reset email, so we borrow some setup from
-    # test_mails.py.
-    suite.addTest(FunctionalDocFileSuite(
-                'emaillogin.txt',
-                optionflags=OPTIONFLAGS,
-                package='Products.CMFPlone.tests',
-                test_class=MockMailHostTestCase))
-    return suite

@@ -31,8 +31,16 @@ class MockMailHostTestCase(PloneTestCase.FunctionalTestCase):
 
 def test_suite():
     return unittest.TestSuite((
-        FunctionalDocFileSuite('mails.txt',
-                               optionflags=OPTIONFLAGS,
-                               package='Products.CMFPlone.tests',
-                               test_class=MockMailHostTestCase),
+        FunctionalDocFileSuite(
+            'mails.txt',
+            optionflags=OPTIONFLAGS,
+            package='Products.CMFPlone.tests',
+            test_class=MockMailHostTestCase,
+            ),
+        FunctionalDocFileSuite(
+            'emaillogin.txt',
+            optionflags=OPTIONFLAGS,
+            package='Products.CMFPlone.tests',
+            test_class=MockMailHostTestCase
+            ),
         ))

@@ -130,8 +130,3 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         obj.setExpirationDate('2010-06-01 10:00 Europe/Belgrade')
         self.failUnless(obj.effective_date.tzoffset() == 3600)
         self.failUnless(obj.expiration_date.tzoffset() == 7200)
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

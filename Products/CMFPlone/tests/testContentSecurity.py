@@ -1,7 +1,3 @@
-#
-# Tests content security
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from AccessControl import Unauthorized
@@ -169,10 +165,3 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         except Unauthorized:
             self.fail("Could not access base_view on 'new'")
         # This should not raise Unauthorized
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestContentSecurity))
-    return suite

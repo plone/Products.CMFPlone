@@ -197,11 +197,3 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         browser.getForm('external_login_form').submit()
         self.assertEqual(browser.url, protected_url)
         browser.getLink('Log out')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestSSOLogin))
-    suite.addTest(makeSuite(TestSSOLoginIframe))
-    return suite

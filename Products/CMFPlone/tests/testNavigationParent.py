@@ -1,6 +1,4 @@
-#
 # Tests the navigationParent script
-#
 
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -116,10 +114,3 @@ class TestNavigationParent(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
 
         self.failUnless(lf.navigationParent(checkPermissions = ['List folder contents']) is None)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestNavigationParent))
-    return suite

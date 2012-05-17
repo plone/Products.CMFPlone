@@ -1,6 +1,3 @@
-#
-# Tests the registration tool
-#
 import unittest
 
 from email import message_from_string
@@ -190,6 +187,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         rc = self.registration.generateResetCode(salt)
         self.assertEqual(rc, self.registration.generateResetCode(salt))
 
+
 class TestEmailValidityChecker(unittest.TestCase):
 
     check = lambda _, email: _checkEmail(email)
@@ -210,15 +208,7 @@ class TestEmailValidityChecker(unittest.TestCase):
         result = self.check(u"webmaster@example.onion")
         self.assertTrue(*result)
 
+
 class TestRegistrationToolEmailValidityChecker(PloneTestCase.PloneTestCase):
 
     check = lambda _, email: _.portal.portal_registration.isValidEmail(email)
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestRegistrationTool))
-    suite.addTest(makeSuite(TestPasswordGeneration))
-    suite.addTest(makeSuite(TestEmailValidityChecker))
-    suite.addTest(makeSuite(TestRegistrationToolEmailValidityChecker))
-    return suite

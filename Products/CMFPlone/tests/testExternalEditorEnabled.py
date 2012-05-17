@@ -1,5 +1,6 @@
 from Products.CMFPlone.tests import PloneTestCase
 
+
 class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
     '''Tests the externalEditorEnabled script'''
 
@@ -64,10 +65,3 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
         self.doc.external_edit()
         redirect = self.doc.REQUEST.RESPONSE.headers['location']
         self.failUnless(redirect.endswith('.zem?macosx=1'))
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestExternalEditorEnabled))
-    return suite
