@@ -62,15 +62,6 @@ div.portlet-deferred:load {
 }
 
 /*
-Content Menu Sections: General
-*/
-
-#contentActionMenus:load {
-    evt-load-initial: false;
-    action-client: bindActionMenus;
-}
-
-/*
 Content Menu Sections: Change View
 */
 
