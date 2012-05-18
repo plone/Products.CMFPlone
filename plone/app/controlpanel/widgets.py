@@ -1,6 +1,6 @@
-from zope.app.form.browser import MultiSelectWidget
-from zope.app.form.browser import DropdownWidget
-from zope.app.form.browser.widget import renderElement
+from zope.formlib.itemswidgets import MultiSelectWidget
+from zope.formlib.itemswidgets import DropdownWidget
+from zope.formlib.widget import renderElement
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.schema.interfaces import ITitledTokenizedTerm
@@ -51,7 +51,7 @@ class MultiCheckBoxColumnsWidget(MultiCheckBoxWidget):
         """Render the list of possible values, with those found in
         `values` being marked as selected.
 
-        This code is mostly taken from from zope.app.form.browser.itemswidgets
+        This code is mostly taken from from zope.formlib.itemswidgets
         import ItemsEditWidgetBase licensed under the ZPL 2.1.
         """
 
@@ -165,7 +165,7 @@ class LanguageTableWidget(MultiCheckBoxWidget):
         """Render the list of possible values, with those found in
         `values` being marked as selected.
 
-        This code is mostly taken from from zope.app.form.browser.itemswidgets
+        This code is mostly taken from from zope.formlib.itemswidgets
         import ItemsEditWidgetBase licensed under the ZPL 2.1.
         """
 

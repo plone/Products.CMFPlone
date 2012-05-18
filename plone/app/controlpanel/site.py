@@ -1,4 +1,4 @@
-from zope.app.form.browser import TextAreaWidget
+from zope.formlib.textwidgets import TextAreaWidget
 from zope.component import adapts
 from zope.formlib import form
 from zope.interface import Interface

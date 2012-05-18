@@ -12,10 +12,10 @@ from zope.schema import Int
 from zope.schema import Password
 from zope.schema import TextLine
 from zope.schema import ASCII
-from zope.app.form import CustomWidgetFactory
-from zope.app.form.browser.textwidgets import ASCIIWidget
-from zope.app.form.browser.textwidgets import PasswordWidget
-from zope.app.form.browser.textwidgets import TextWidget
+from zope.formlib.widget import CustomWidgetFactory
+from zope.formlib.textwidgets import ASCIIWidget
+from zope.formlib.textwidgets import PasswordWidget
+from zope.formlib.textwidgets import TextWidget
 
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName

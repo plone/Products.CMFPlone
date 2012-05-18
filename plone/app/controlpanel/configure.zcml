@@ -192,7 +192,7 @@
       type="zope.publisher.interfaces.browser.IBrowserRequest"
       for="zope.schema.interfaces.ITuple
            zope.schema.interfaces.IVocabularyTokenized"
-      provides="zope.app.form.interfaces.IInputWidget"
+      provides="zope.formlib.interfaces.IInputWidget"
       factory=".widgets.MultiSelectTupleWidget"
       permission="zope.Public"
       />

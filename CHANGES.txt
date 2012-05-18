@@ -4,6 +4,9 @@ Changelog
 2.2.5 (unreleased)
 ------------------
 
+- Updated zope.formlib imports.
+  [hannosch]
+
 - Avoid hard dependency on Archetypes.
   [davisagli]
 
