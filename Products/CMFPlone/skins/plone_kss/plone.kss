@@ -272,11 +272,6 @@ body:load {
 } 
 
 #folderlisting-main-table:load { 
-    action-client: plone-initDragAndDrop;
-    plone-initDragAndDrop-table: '#listing-table';
-}
-
-#folderlisting-main-table:load { 
     action-client: plone-initCheckBoxSelection;
 }
 
