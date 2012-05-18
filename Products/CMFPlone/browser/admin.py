@@ -228,9 +228,12 @@ class AddPloneSite(BrowserView):
         form = self.request.form
         submitted = form.get('form.submitted', False)
         if submitted:
-            base_contenttypes = form.get('base_contenttypes', _ATCONTENTTYPES_PROFILE)
+            base_contenttypes = form.get('base_contenttypes', '--no-value--')
             if base_contenttypes == '--no-value--':
-                base_contenttypes = None
+                if len(self.available_content_frameworks) == 1:
+                    base_contenttypes = self.available_content_frameworks[0]
+                else:
+                    base_contenttypes = None
             site_id = form.get('site_id', 'Plone')
             site = addPloneSite(
                 context, site_id,
