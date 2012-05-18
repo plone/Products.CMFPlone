@@ -22,6 +22,7 @@ from Products.CMFPlone import utils
 # to expand the default navtree behaviour, and pass instances of your subclasses
 # to buildFolderTree().
 
+
 class NavtreeQueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties
     """
@@ -48,13 +49,13 @@ class NavtreeQueryBuilder(object):
         # use a regular depth-1 query in this case.
 
         if not currentPath.startswith(rootPath):
-            query['path'] = {'query' : rootPath, 'depth' : 1}
+            query['path'] = {'query': rootPath, 'depth': 1}
         else:
-            query['path'] = {'query' : currentPath, 'navtree' : 1}
+            query['path'] = {'query': currentPath, 'navtree': 1}
 
         topLevel = navtree_properties.getProperty('topLevel', 0)
         if topLevel and topLevel > 0:
-             query['path']['navtree_start'] = topLevel + 1
+            query['path']['navtree_start'] = topLevel + 1
 
         # XXX: It'd make sense to use 'depth' for bottomLevel, but it doesn't
         # seem to work with EPI.
@@ -79,6 +80,7 @@ class NavtreeQueryBuilder(object):
     def __call__(self):
         return self.query
 
+
 class SitemapQueryBuilder(NavtreeQueryBuilder):
     """Build a folder tree query suitable for a sitemap
     """
@@ -89,8 +91,9 @@ class SitemapQueryBuilder(NavtreeQueryBuilder):
         portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
         sitemapDepth = navtree_properties.getProperty('sitemapDepth', 2)
-        self.query['path'] = {'query' : portal_url.getPortalPath(),
-                              'depth' : sitemapDepth}
+        self.query['path'] = {'query': portal_url.getPortalPath(),
+                              'depth': sitemapDepth}
+
 
 class SitemapNavtreeStrategy(NavtreeStrategyBase):
     """The navtree building strategy used by the sitemap, based on
@@ -147,6 +150,12 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         if portalType is not None and portalType in self.viewActionTypes:
             itemUrl += '/view'
 
+        useRemoteUrl = False
+        getRemoteUrl = getattr(item, 'getRemoteUrl', None)
+        isCreator = self.memberId == getattr(item, 'Creator', None)
+        if getRemoteUrl and not isCreator:
+            useRemoteUrl = True
+        
         isFolderish = getattr(item, 'is_folderish', None)
         showChildren = False
         if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
@@ -170,6 +179,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['no_display'] = False # We sort this out with the nodeFilter
         # BBB getRemoteUrl and link_remote are deprecated, remove in Plone 4
         newNode['getRemoteUrl'] = getattr(item, 'getRemoteUrl', None)
+        newNode['useRemoteUrl'] = useRemoteUrl
         newNode['link_remote'] = newNode['getRemoteUrl'] and newNode['Creator'] != self.memberId
 
         idnormalizer = queryUtility(IIDNormalizer)
@@ -186,6 +196,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
             if portal_type in self.parentTypesNQ:
                 return False
         return True
+
 
 class DefaultNavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet

@@ -86,7 +86,7 @@ class DateTimeFunctionalTests(FunctionalTestCase):
             # Time is saved in the local timezone for the given date
             self.assertEqual(local_start_value.tzoffset(), obj.effective_date.tzoffset())
             # but should be equivalent to the original time
-            self.assertEqual(start_value, obj.effective_date)
+            self.assertTrue(start_value.equalTo(obj.effective_date))
 
     def testDSTPublicationDateRemainsUnchangedThroughEdit(self):
         # this test is for a date when daylight savings time is in effect
@@ -117,7 +117,7 @@ class DateTimeFunctionalTests(FunctionalTestCase):
             # Time is saved in the local timezone for the given date
             self.assertEqual(local_start_value.tzoffset(), obj.effective_date.tzoffset())
             # but should be equivalent to the original time
-            self.assertEqual(start_value, obj.effective_date)
+            self.assertTrue(start_value.equalTo(obj.effective_date))
 
     def testRespectDaylightSavingTime(self):
         """ When saving dates, the date's timezone and Daylight Saving Time
@@ -130,8 +130,3 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         obj.setExpirationDate('2010-06-01 10:00 Europe/Belgrade')
         self.failUnless(obj.effective_date.tzoffset() == 3600)
         self.failUnless(obj.expiration_date.tzoffset() == 7200)
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

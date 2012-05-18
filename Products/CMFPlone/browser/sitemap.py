@@ -20,5 +20,5 @@ class SitemapView(BrowserView):
         navtree_properties = getattr(properties, 'navtree_properties')
         bottomLevel = navtree_properties.getProperty('bottomLevel', 0)
         # XXX: The recursion should probably be done in python code
-        return context.portlet_navtree_macro(children=data.get('children',[]),
+        return context.portlet_navtree_macro(children=data.get('children', []),
                                              level=1, bottomLevel=bottomLevel)

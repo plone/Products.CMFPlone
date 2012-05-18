@@ -51,9 +51,11 @@
                  value="1"
                  tal:attributes="id string:${input_id}_day;"/>
        </tal:ymd>
+
       <tal:ymd condition="show_ymd">
-      <span tal:condition="python:len(years)!=1">
-          <select name="ic_year"
+        <label tal:attributes="for string:${input_id}_year" class="hiddenStructure" style="float:left" i18n:translate="">Year</label>
+        <span tal:condition="python:len(years)!=1">
+           <select name="ic_year"
                   id="ic_year"
                   size="1"
                   tal:attributes="name string:${inputname}_year;
@@ -66,63 +68,79 @@
                   tal:content="year/id">year</option>
 
           </select>
-      </span>
+        </span>
 
-      <span tal:condition="python:len(years)==1">
-        <input name="ic_year"
-               type="hidden"
-                id="ic_year"
+        <span tal:condition="python:len(years)==1">
+          <input name="ic_year"
+                 type="hidden"
+                  id="ic_year"
+                  size="1"
+                  value="00"
+                  tal:attributes="name string:${inputname}_year;
+                                  id string:${input_id}_year;
+                                  value python:years[0]['value']"/>
+          <span tal:content="python:years[0]['value']"
+                tal:condition="show_single_year"></span>
+        </span>
+
+        <span i18n:translate="date_separator"
+              tal:condition="not: python: years[0]['value'] and not show_single_year">/</span>
+
+        <span>
+        <label tal:attributes="for string:${input_id}_month" class="hiddenStructure" style="float:left" i18n:translate="">Month</label>
+        <select name="ic_month"
+                id="ic_month"
                 size="1"
-                value="00"
-                tal:attributes="name string:${inputname}_year;
-                                id string:${input_id}_year;
-                                value python:years[0]['value']"/>
-        <span tal:content="python:years[0]['value']"
-              tal:condition="show_single_year"></span>
-      </span>
+                tal:attributes="name string:${inputname}_month;
+                                id string:${input_id}_month;
+                                onfocus onfocus|nothing;
+                                onblur onblur|nothing;">
+          <option value="subj"
+                  tal:repeat="month months"
+                  tal:attributes="value month/value; selected month/selected"
+                  tal:content="month/title">
+              month name
+          </option>
+        </select>
+        </span>
 
-      <span i18n:translate="date_separator"
-            tal:condition="not: python: years[0]['value'] and not show_single_year">/</span>
+        <span i18n:translate="date_separator">/</span>
 
-      <span>
-      <select name="ic_month"
-              id="ic_month"
-              size="1"
-              tal:attributes="name string:${inputname}_month;
-                              id string:${input_id}_month;
-                              onfocus onfocus|nothing;
-                              onblur onblur|nothing;">
-        <option value="subj"
-                tal:repeat="month months"
-                tal:attributes="value month/value; selected month/selected"
-                tal:content="month/title">
-            month name
-        </option>
-      </select>
-      </span>
+        <label tal:attributes="for string:${input_id}_day" class="hiddenStructure" style="float:left" i18n:translate="">Day</label>
+        <select name="ic_day"
+                id="ic_day"
+                size="1"
+                tal:attributes="name string:${inputname}_day;
+                                id string:${input_id}_day;
+                                onfocus onfocus|nothing;
+                                onblur onblur|nothing;">
+        
+            <option value="subj"
+                    tal:repeat="day days"
+                    tal:attributes="value day/value; selected day/selected"
+                    tal:content="day/id">day</option>
+        
+        </select>
+        <span tal:condition="show_jscal" 
+              class="plone-jscalendar-popup"
+              style="display:none"
+              tal:attributes="id string:${input_id}_popup;">
+          <input type="hidden" 
+                 tal:attributes="name string:${inputname}_yearStart;
+                                 id string:${input_id}_yearStart;
+                                 value yearStart" />
+          <input type="hidden" 
+                 tal:attributes="name string:${inputname}_yearEnd;
+                                 id string:${input_id}_yearEnd;
+                                 value yearEnd" />
+          <img alt="" src="" tal:replace="structure context/popup_calendar.png" />
+        </span>
 
-      <span i18n:translate="date_separator">/</span>
-
-    <select name="ic_day"
-            id="ic_day"
-            size="1"
-            tal:attributes="name string:${inputname}_day;
-                            id string:${input_id}_day;
-                            onfocus onfocus|nothing;
-                            onblur onblur|nothing;">
-
-        <option value="subj"
-                tal:repeat="day days"
-                tal:attributes="value day/value; selected day/selected"
-                tal:content="day/id">day</option>
-
-    </select>
-
-      <a tal:condition="show_jscal"
-         tal:attributes="onclick string:return plone.jscalendar.show('#${input_id}', $yearStart, $yearEnd);"><img alt="" src="" tal:replace="structure context/popup_calendar.png" /></a>
       </tal:ymd>
 
+      &nbsp;
       <span tal:condition="show_hm">
+        <label tal:attributes="for string:${input_id}_hour" class="hiddenStructure" style="float:left" i18n:translate="">Hour</label>
           <select name="ic_hour"
                   id="ic_hour"
                   size="1"
@@ -153,6 +171,7 @@
             tal:condition="show_hm">:</span>
 
       <span tal:condition="show_hm">
+        <label tal:attributes="for string:${input_id}_minute" class="hiddenStructure" style="float:left" i18n:translate="">Minute</label>
           <select name="ic_minute"
                   id="ic_minute"
                   size="1"
@@ -181,6 +200,7 @@
 
 
       <span tal:condition="python: ampm and show_hm">
+        <label tal:attributes="for string:${input_id}_ampm" class="hiddenStructure" style="float:left" i18n:translate="">AM/PM</label>
         <select name="ic_ampm"
                 id="ic_ampm"
                 size="1"

@@ -1,3 +1,4 @@
+from plone.memoize import view
 from App.class_init import InitializeClass
 from zExceptions import NotFound
 from Acquisition import aq_base
@@ -26,10 +27,12 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implements
-from zope.app.container.contained import notifyContainerModified
+from zope.container.contained import notifyContainerModified
+
 
 class ReplaceableWrapper:
     """A wrapper around an object to make it replaceable."""
+
     def __init__(self, ob):
         self.__ob = ob
 
@@ -46,7 +49,7 @@ class OrderedContainer(Folder, OrderSupport):
 
     security.declareProtected(ModifyPortalContent, 'moveObject')
     def moveObject(self, id, position):
-        obj_idx  = self.getObjectPosition(id)
+        obj_idx = self.getObjectPosition(id)
         if obj_idx == position:
             return None
         elif position < 0:
@@ -74,7 +77,6 @@ class OrderedContainer(Folder, OrderSupport):
         except ValueError:
             raise NotFound, 'Object %s was not found' % str(id)
 
-
     def manage_renameObject(self, id, new_id, REQUEST=None):
         """Rename a particular sub-object."""
         objidx = self.getObjectPosition(id)
@@ -86,6 +88,7 @@ class OrderedContainer(Folder, OrderSupport):
         return result
 
 InitializeClass(OrderedContainer)
+
 
 class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFolderBase, DefaultDublinCoreImpl):
     """Implements basic Plone folder functionality except ordering support.
@@ -103,7 +106,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
         ('Modify portal content',
          ('manage_cutObjects', 'manage_pasteObjects',
           'manage_renameForm', 'manage_renameObject',
-          'manage_renameObjects',)),
+          'manage_renameObjects', )),
         )
 
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
@@ -125,8 +128,8 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
             else:
                 return method()
         else:
-            raise NotFound( 'Cannot find default view for "%s"' %
-                            '/'.join( self.getPhysicalPath() ) )
+            raise NotFound('Cannot find default view for "%s"' %
+                            '/'.join(self.getPhysicalPath()))
 
     security.declareProtected(Permissions.view, 'view')
     view = __call__
@@ -137,7 +140,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
         if request and request.has_key('REQUEST_METHOD'):
             if request.maybe_webdav_client:
                 method = request['REQUEST_METHOD']
-                if method in ('PUT',):
+                if method in ('PUT', ):
                     # Very likely a WebDAV client trying to create something
                     return ReplaceableWrapper(NullResource(self, 'index_html'))
                 elif method in ('GET', 'HEAD', 'POST'):
@@ -187,8 +190,8 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
         values = PortalFolderBase.contentValues(self, filter=filter)
         if sort_on is not None:
             values.sort(lambda x, y,
-                        sort_on=sort_on: safe_cmp(getattr(x,sort_on),
-                                                  getattr(y,sort_on)))
+                        sort_on=sort_on: safe_cmp(getattr(x, sort_on),
+                                                  getattr(y, sort_on)))
         if reverse:
             values.reverse()
 
@@ -206,8 +209,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
             contents = [obj for obj in contents if obj.getId()[:1]!='.']
         return contents
 
-    security.declareProtected(AccessContentsInformation,
-                              'folderlistingFolderContents')
+    security.declareProtected(AccessContentsInformation, 'folderlistingFolderContents')
     def folderlistingFolderContents(self, contentFilter=None,
                                     suppressHiddenFiles=0):
         """Calls listFolderContents in protected only by ACI so that
@@ -232,27 +234,31 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
             new_id = id
         return new_id
 
+
 InitializeClass(BasePloneFolder)
+
 
 class PloneFolder(BasePloneFolder, OrderedContainer):
     """A Plone Folder."""
     meta_type = 'Plone Folder'
-    security=ClassSecurityInfo()
+    security = ClassSecurityInfo()
 
     manage_renameObject = OrderedContainer.manage_renameObject
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
 InitializeClass(PloneFolder)
 
+
 def safe_cmp(x, y):
     if callable(x): x=x()
     if callable(y): y=y()
-    return cmp(x,y)
+    return cmp(x, y)
+
 
 def addPloneFolder(self, id, title='', description='', REQUEST=None):
     """Adds a Plone Folder."""
     sf = PloneFolder(id, title=title)
-    sf.description=description
+    sf.description = description
     self._setObject(id, sf)
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect(sf.absolute_url() + '/manage_main')

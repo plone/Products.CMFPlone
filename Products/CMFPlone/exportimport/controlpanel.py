@@ -25,6 +25,7 @@ from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.interfaces import IControlPanel
 
+
 class ControlPanelXMLAdapter(XMLAdapterBase):
 
     """
@@ -74,6 +75,10 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
         if actions and isinstance(actions[0], dict):
             return fragment
 
+        if actions:
+            actions = list(actions)
+            actions.sort(key=lambda action: action.getMapping()['id'])
+
         for ai in actions:
             mapping = ai.getMapping()
             child = self._doc.createElement('configlet')
@@ -91,7 +96,6 @@ class ControlPanelXMLAdapter(XMLAdapterBase):
                 child.appendChild(sub)
             fragment.appendChild(child)
         return fragment
-
 
     def _initConfiglets(self, node):
         controlpanel = self.context
@@ -156,6 +160,7 @@ def importControlPanel(context):
         return
 
     importObjects(tool, '', context)
+
 
 def exportControlPanel(context):
     """Export actions tool.

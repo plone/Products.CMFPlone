@@ -3,7 +3,7 @@ import os
 from App.ImageFile import ImageFile
 
 cmfplone_globals = globals()
-this_module = sys.modules[ __name__ ]
+this_module = sys.modules[__name__]
 _marker = []
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
@@ -71,6 +71,10 @@ def initialize(context):
     ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
 
     # Make DateTimeError importable TTW
+    ModuleSecurityInfo('DateTime.interfaces').declarePublic('DateTimeError')
+    ModuleSecurityInfo('DateTime.interfaces').declarePublic('SyntaxError')
+
+    # BBB support for DateTime < 3
     ModuleSecurityInfo('DateTime.DateTime').declarePublic('DateTimeError')
     ModuleSecurityInfo('DateTime.DateTime').declarePublic('SyntaxError')
 
@@ -109,60 +113,73 @@ def initialize(context):
     # Usage of PloneFolder is discouraged.
     import PloneFolder
 
-    contentClasses      = ( PloneFolder.PloneFolder, )
-    contentConstructors = ( PloneFolder.addPloneFolder, )
+    contentClasses = (PloneFolder.PloneFolder, )
+    contentConstructors = (PloneFolder.addPloneFolder, )
 
     # CMFCore and CMFDefault tools
     from Products.CMFCore import CachingPolicyManager
 
     # Plone tools
-    import PloneTool, FactoryTool
-    import InterfaceTool, MigrationTool, PloneControlPanel
-    import WorkflowTool, URLTool, MetadataTool
-    import RegistrationTool, SyndicationTool
-    import PropertiesTool, ActionsTool, TypesTool, UndoTool
-    import CatalogTool, SkinsTool, DiscussionTool
-    import CalendarTool, ActionIconsTool, QuickInstallerTool
+    import PloneTool
+    import FactoryTool
+    import InterfaceTool
+    import MigrationTool
+    import PloneControlPanel
+    import WorkflowTool
+    import URLTool
+    import MetadataTool
+    import RegistrationTool
+    import SyndicationTool
+    import PropertiesTool
+    import ActionsTool
+    import TypesTool
+    import UndoTool
+    import CatalogTool
+    import SkinsTool
+    import DiscussionTool
+    import CalendarTool
+    import ActionIconsTool
+    import QuickInstallerTool
     import TranslationServiceTool
 
-    tools = ( PloneTool.PloneTool,
-              WorkflowTool.WorkflowTool,
-              CachingPolicyManager.CachingPolicyManager,
-              FactoryTool.FactoryTool,
-              PropertiesTool.PropertiesTool,
-              MigrationTool.MigrationTool,
-              InterfaceTool.InterfaceTool,
-              PloneControlPanel.PloneControlPanel,
-              RegistrationTool.RegistrationTool,
-              URLTool.URLTool,
-              MetadataTool.MetadataTool,
-              ActionsTool.ActionsTool,
-              TypesTool.TypesTool,
-              UndoTool.UndoTool,
-              SyndicationTool.SyndicationTool,
-              CatalogTool.CatalogTool,
-              SkinsTool.SkinsTool,
-              DiscussionTool.DiscussionTool,
-              ActionIconsTool.ActionIconsTool,
-              CalendarTool.CalendarTool,
-              QuickInstallerTool.QuickInstallerTool,
-              TranslationServiceTool.TranslationServiceTool,
+    tools = (PloneTool.PloneTool,
+             WorkflowTool.WorkflowTool,
+             CachingPolicyManager.CachingPolicyManager,
+             FactoryTool.FactoryTool,
+             PropertiesTool.PropertiesTool,
+             MigrationTool.MigrationTool,
+             InterfaceTool.InterfaceTool,
+             PloneControlPanel.PloneControlPanel,
+             RegistrationTool.RegistrationTool,
+             URLTool.URLTool,
+             MetadataTool.MetadataTool,
+             ActionsTool.ActionsTool,
+             TypesTool.TypesTool,
+             UndoTool.UndoTool,
+             SyndicationTool.SyndicationTool,
+             CatalogTool.CatalogTool,
+             SkinsTool.SkinsTool,
+             DiscussionTool.DiscussionTool,
+             ActionIconsTool.ActionIconsTool,
+             CalendarTool.CalendarTool,
+             QuickInstallerTool.QuickInstallerTool,
+             TranslationServiceTool.TranslationServiceTool,
             )
 
     from Products.CMFCore.utils import ContentInit
     from Products.CMFPlone.utils import ToolInit
 
     # Register tools and content
-    ToolInit('Plone Tool'
-             , tools=tools
-             , icon='tool.gif'
-             ).initialize( context )
+    ToolInit('Plone Tool',
+             tools=tools,
+             icon='tool.gif',
+             ).initialize(context)
 
-    ContentInit('Plone Content'
-                , content_types=contentClasses
-                , permission=ADD_CONTENT_PERMISSION
-                , extra_constructors=contentConstructors
-                ).initialize( context )
+    ContentInit('Plone Content',
+                content_types=contentClasses,
+                permission=ADD_CONTENT_PERMISSION,
+                extra_constructors=contentConstructors,
+                ).initialize(context)
 
     from Products.CMFPlone.Portal import PloneSite
     from Products.CMFPlone.factory import zmi_constructor
@@ -170,7 +187,7 @@ def initialize(context):
     context.registerClass(
         instance_class=PloneSite,
         permission=view_management_screens,
-        constructors=(zmi_constructor,),
+        constructors=(zmi_constructor, ),
     )
 
     from plone.app.folder import nogopip

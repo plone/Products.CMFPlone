@@ -1,7 +1,3 @@
-#
-# Tests the content types
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -110,6 +106,7 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
     def testTopicEdit(self):
+        self.portal.portal_types.Topic.global_allow = True
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.edit(title='Foo')
         self.assertEqual(self.folder.topic.Title(), 'Foo')
@@ -128,12 +125,3 @@ class TestContentTypeInformation(PloneTestCase.PloneTestCase):
             # Descriptions may be blank. Only check if there's a value.
             if t.description:
                 self.failUnless(isinstance(t.Description(), Message))
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestATContentTypes))
-    suite.addTest(makeSuite(TestContentTypes))
-    suite.addTest(makeSuite(TestContentTypeInformation))
-    return suite

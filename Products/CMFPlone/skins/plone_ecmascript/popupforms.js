@@ -17,6 +17,37 @@ jQuery.extend(jQuery.tools.overlay.conf,
         mask:{color:'#fff',opacity: 0.4,loadSpeed:0,closeSpeed:0}
     });
 
+
+(function($) {
+		
+	// static constructs
+	$.plonepopups = $.plonepopups || {};
+    
+    $.extend($.plonepopups,
+        {
+            // method to show error message in a noform
+            // situation.
+            noformerrorshow: function noformerrorshow(el, noform) {
+                var o = $(el),
+                    emsg = o.find('dl.portalMessage.error');
+                if (emsg.length) {
+                    o.children().replaceWith(emsg);
+                    return false;
+                } else {
+                    return noform;
+                }
+            },
+            // After deletes we need to redirect to the target page.
+            redirectbasehref: function redirectbasehref(el, responseText) {
+                var mo = responseText.match(/<base href="(\S+?)"/i);
+                if (mo.length === 2) {
+                    return mo[1];
+                }
+                return location;
+            }
+        })
+})(jQuery);
+
 jQuery(function($){
 
     if (jQuery.browser.msie && parseInt(jQuery.browser.version, 10) < 7) {
@@ -26,30 +57,8 @@ jQuery(function($){
         return;
     }
     
-    // method to show error message in a noform
-    // situation.
-    function noformerrorshow(el, noform) {
-        var o = $(el),
-            emsg = o.find('dl.portalMessage.error');
-        if (emsg.length) {
-            o.children().replaceWith(emsg);
-            return false;
-        } else {
-            return noform;
-        }
-    }
-
-    // After deletes we need to redirect to the target page.
-    function redirectbasehref(el, responseText) {
-        var mo = responseText.match(/<base href="(\S+?)"/i);
-        if (mo.length === 2) {
-            return mo[1];
-        }
-        return location;
-    }
-
     // login form
-    $('#portal-personaltools a[href$=/login], #portal-personaltools a[href$=/login_form], .discussion a[href$=/login], .discussion a[href$=/login_form]').prepOverlay(
+    $('#portal-personaltools a[href$="/login"], #portal-personaltools a[href$="/login_form"], .discussion a[href$="/login"], .discussion a[href$="/login_form"]').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -78,7 +87,7 @@ jQuery(function($){
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: 'form[name="feedback_form"]',
-            noform: function(el) {return noformerrorshow(el, 'close');}
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'close');}
         }
     );
 
@@ -88,8 +97,8 @@ jQuery(function($){
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: 'form:has(input[name="discussion_reply:method"])',
-            noform: function(el) {return noformerrorshow(el, 'redirect');},
-            redirect: redirectbasehref
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref
         }
     );
 
@@ -100,7 +109,7 @@ jQuery(function($){
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: 'form[name="default_page_form"]',
-            noform: function(el) {return noformerrorshow(el, 'reload');},
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
             closeselector: '[name=form.button.Cancel]',
             width:'40%'
         }
@@ -114,7 +123,7 @@ jQuery(function($){
     //         subtype: 'ajax',
     //         filter: common_content_filter,
     //         formselector: 'form',
-    //         noform: function(el) {return noformerrorshow(el, 'reload');},
+    //         noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
     //         closeselector: '[name=form.button.Cancel]'
     //     }
     // );
@@ -125,8 +134,8 @@ jQuery(function($){
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: '#delete_confirmation',
-            noform: function(el) {return noformerrorshow(el, 'redirect');},
-            redirect: redirectbasehref,
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
             closeselector: '[name=form.button.Cancel]',
             width:'50%'
         }
@@ -143,7 +152,7 @@ jQuery(function($){
     );
 
     // registration
-    $('#portal-personaltools a[href$=/@@register]').prepOverlay(
+    $('#portal-personaltools a[href$="/@@register"]').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -157,7 +166,7 @@ jQuery(function($){
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: 'form.kssattr-formname-new-user, form[name="groups"]',
-            noform: function(el) {return noformerrorshow(el, 'redirect');},
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: function () {return location.href;}
         }
     );
@@ -165,6 +174,7 @@ jQuery(function($){
     // Content history popup
     $('#content-history a').prepOverlay({
        subtype: 'ajax', 
+       filter: 'h2, #content-history',
        urlmatch: '@@historyview',
        urlreplace: '@@contenthistorypopup'
     });

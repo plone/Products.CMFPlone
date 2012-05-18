@@ -8,11 +8,7 @@ unique across the site.
 
 Some bootstrapping::
 
-    # BBB Zope 2.12
-    >>> try:
-    ...     from Testing.testbrowser import Browser
-    ... except ImportError:
-    ...     from Products.Five.testbrowser import Browser
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
 
 First we login as admin.
@@ -227,6 +223,8 @@ then we extract the address that lets us reset our password:
 
 Now get the link:
 
+    >>> import quopri
+    >>> msg = quopri.decodestring(msg)
     >>> url_index = msg.index('http://nohost/plone/passwordreset/')
     >>> address = msg[url_index:].split()[0]
 
@@ -271,6 +269,7 @@ The email is sent to the correct email address:
 
 Now get the link:
 
+    >>> msg = quopri.decodestring(msg)
     >>> url_index = msg.index('http://nohost/plone/passwordreset/')
     >>> address = msg[url_index:].split()[0]
 

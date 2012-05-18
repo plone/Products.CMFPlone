@@ -1,4 +1,4 @@
-from AccessControl.Role import RoleManager
+from OFS.role import RoleManager
 
 ADD_SECURITY_WARNING = '''
 <!-- Added security warning -->

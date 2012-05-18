@@ -1,5 +1,6 @@
 from basetool import IPloneBaseTool
 
+
 class IControlPanel(IPloneBaseTool):
     """ Interface for the ControlPanel """
 

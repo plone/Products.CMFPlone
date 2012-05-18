@@ -8,7 +8,7 @@
 ##title=
 ##
 
-from DateTime.DateTime import DateTimeError
+from DateTime.interfaces import DateTimeError
 
 # 'id' is what shows up.  December for month 12.
 # 'value' is the value for the form.

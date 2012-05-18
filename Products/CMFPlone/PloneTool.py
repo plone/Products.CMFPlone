@@ -7,6 +7,8 @@ import transaction
 
 from zope.component import queryAdapter
 from zope.interface import implements
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 from AccessControl import ClassSecurityInfo, Unauthorized
 from Acquisition import aq_base
@@ -54,7 +56,7 @@ __show__.on()
 
 
 AllowSendto = 'Allow sendto'
-permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager',))
+permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager', ))
 
 _marker = utils._marker
 _icons = {}
@@ -489,6 +491,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             user = membership.getMemberById(userid)
             if user is None:
                 raise KeyError, 'Only retrievable users in this site can be made owners.'
+            # Be careful not to pass MemberData to changeOwnership
+            user = user.getUser()
         object.changeOwnership(user, recursive)
 
         def fixOwnerRole(object, user_id):
@@ -1145,26 +1149,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Get a list of types which are considered "user friendly" for search
         and selection purposes.
 
-        This is the list of types available in the portal, minus those defines
+        This is the list of types available in the portal, minus those defined
         in the types_not_searched property in site_properties, if it exists.
 
         If typesList is given, this is used as the base list; else all types
         from portal_types are used.
         """
-
         ptool = getToolByName(self, 'portal_properties')
         siteProperties = getattr(ptool, 'site_properties')
         blacklistedTypes = siteProperties.getProperty('types_not_searched', [])
 
         ttool = getToolByName(self, 'portal_types')
-        types = typesList or ttool.listContentTypes()
+        types = typesList or ttool.keys()
 
-        friendlyTypes = []
-        for t in types:
-            if not t in blacklistedTypes and not t in friendlyTypes:
-                friendlyTypes.append(t)
-
-        return friendlyTypes
+        friendlyTypes = set(types) - set(blacklistedTypes)
+        return list(friendlyTypes)
 
     security.declarePublic('reindexOnReorder')
     def reindexOnReorder(self, parent):
@@ -1224,7 +1223,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 obj = traverse(path)
                 obj_parent = aq_parent(aq_inner(obj))
                 obj_parent.manage_delObjects([obj.getId()])
-                success.append('%s (%s)' % (obj.title_or_id(), path))
+                success.append('%s (%s)' % (obj.getId(), path))
             except ConflictError:
                 raise
             except LinkIntegrityNotificationException:
@@ -1297,6 +1296,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 changed = False
                 if change_title:
                     obj.setTitle(new_title)
+                    notify(ObjectModifiedEvent(obj))
                     changed = True
                 if new_id and obid != new_id:
                     parent = aq_parent(aq_inner(obj))

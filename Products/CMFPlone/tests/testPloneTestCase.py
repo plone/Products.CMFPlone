@@ -1,6 +1,4 @@
-#
 # Example PloneTestCase
-#
 
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -51,10 +49,3 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.new.EditableBody(), '')
         self.folder.new.document_edit('plain', 'data', title='Foo')
         self.assertEqual(self.folder.new.EditableBody(), 'data')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneTestCase))
-    return suite

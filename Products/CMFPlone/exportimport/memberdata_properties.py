@@ -9,6 +9,7 @@ from Products.GenericSetup.interfaces import IBody
 
 _FILENAME = 'memberdata_properties.xml'
 
+
 def importMemberDataProperties(context):
     """ Import MemberData tool properties.
     """
@@ -28,6 +29,7 @@ def importMemberDataProperties(context):
     importer.body = body
     logger.info('MemberData tool imported.')
 
+
 def exportMemberDataProperties(context):
     """ Export MemberData tool properties .
     """
@@ -44,4 +46,3 @@ def exportMemberDataProperties(context):
 
     context.writeDataFile(_FILENAME, exporter.body, exporter.mime_type)
     logger.info('MemberData tool exported.')
-

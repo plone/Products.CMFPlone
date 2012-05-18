@@ -1,6 +1,7 @@
 <metal:cacheheaders define-macro="cacheheaders"
     tal:define="portal_state context/@@plone_portal_state;
-                lang context/Language|portal_state/default_language;
+                lang context/Language|nothing;
+                lang python: lang or portal_state.default_language();
                 setHeader python:request.RESPONSE.setHeader;">
     <metal:block tal:define="dummy python:setHeader('Content-Type', 'text/html;;charset=utf-8')" />
     <metal:block tal:define="dummy python:setHeader('Content-Language', lang)" />

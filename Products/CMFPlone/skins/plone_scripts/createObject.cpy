@@ -14,6 +14,9 @@ from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 REQUEST=context.REQUEST
+response = REQUEST.response
+response.setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT')
+response.setHeader('Cache-Control', 'no-cache')
 
 if id is None:
     id=context.generateUniqueId(type_name)
@@ -24,6 +27,8 @@ if type_name is None:
 types_tool = getToolByName(context, 'portal_types')
 
 fti = types_tool.getTypeInfo(type_name)
+if fti is None:
+    raise KeyError("Type name not found: %s." % type_name)
 
 if not fti.queryMethodID('edit'):
     state.setStatus('success_no_edit')

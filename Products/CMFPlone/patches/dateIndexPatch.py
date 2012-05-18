@@ -6,6 +6,7 @@ from DateTime import DateTime
 
 maxDate = DateTime(4008, 0)
 
+
 def _convert(self, value, default=None):
     try:
         return self.__old_convert(value, default)
@@ -15,6 +16,7 @@ def _convert(self, value, default=None):
 DateIndex.__old_convert = DateIndex._convert
 DateIndex._convert = _convert
 
+
 def _convertDateTime(self, value):
     try:
         return self.__old_convertDateTime(value)
@@ -23,4 +25,3 @@ def _convertDateTime(self, value):
 
 DateRangeIndex.__old_convertDateTime = DateRangeIndex._convertDateTime
 DateRangeIndex._convertDateTime = _convertDateTime
-

@@ -13,11 +13,11 @@ rangetable = dict(
     #ascii = u"a-zA-Z0-9_",
     #digit = u"\d",
 
-    # U+AC00-D7AF 	Hangul Syllables 	ハングル音節文字
+    # U+AC00-D7AF       Hangul Syllables        ハングル音節文字
     hangul = u"\uAC00-\uD7AF",
 
-    # U+30A0-30FF 	Katakana 	片仮名
-    # U+3040-309F 	Hiragana 	平仮名
+    # U+30A0-30FF       Katakana        片仮名
+    # U+3040-309F       Hiragana        平仮名
     #kana = u"\u3040-\u30FF",
     # hiragana = u"\u3040-\u309F\u30FC",
     # katakana = u"\u30A0-\u30FF",

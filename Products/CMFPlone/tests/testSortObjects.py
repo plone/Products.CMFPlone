@@ -1,6 +1,4 @@
-#
 # Tests the sortObjects script
-#
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
@@ -36,10 +34,3 @@ class TestSortObjects(PloneTestCase.PloneTestCase):
         # Sorts by passed in method
         sorted = self.portal.sortObjects(self.items2, 'getId')
         self.assertEqual([x.getId() for x in sorted], ['a', 'B', 'c', 'D'])
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestSortObjects))
-    return suite

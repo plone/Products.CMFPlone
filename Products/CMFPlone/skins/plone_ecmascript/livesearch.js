@@ -29,7 +29,7 @@ var livesearch = (function () {
         var $lastsearch = null,
             $request = null,
             $cache = {},
-            $querytarget = $form.attr('action').replace(/search$/g,"") + "livesearch_reply",
+            $querytarget = $form.attr('action').replace(/@@search$/g,"") + "livesearch_reply",
             $$result = $form.find('div.LSResult'),
             $shadow = $form.find('div.LSShadow'),
             $path = $form.find('input[name=path]');
@@ -185,7 +185,7 @@ var livesearch = (function () {
 
         _search_handlers[$id] = _searchfactory($form, this);
 
-        $form.attr('id', $id).css('white-space', 'nowrap').submit($key_handler.submit);
+        $form.attr('id', $id).submit($key_handler.submit);
         jQuery(this).attr('autocomplete','off')
                .keydown($key_handler.handler)
                .focus(_search_handlers[$id].search_delayed)

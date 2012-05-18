@@ -1,7 +1,3 @@
-#
-# Tests the PloneTool
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.utils import getToolByName
@@ -11,11 +7,6 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.navtree import NavtreeStrategyBase
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
-
-from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
-from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
-from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
-from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy
 
 from zope.interface import directlyProvides
 from zope.interface import implements
@@ -351,7 +342,6 @@ class TestFolderTree(PloneTestCase.PloneTestCase):
     def testShowAllParentsWithParentNotInCatalog(self):
         strategy = NavtreeStrategyBase()
         strategy.showAllParents = True
-        wftool = getToolByName(self.portal, 'portal_workflow')
         self.portal.folder1.unindexObject()
         query = {'portal_type' : 'Folder'}
         context = self.portal.folder1.doc11
@@ -495,11 +485,3 @@ class TestNavigationRoot(PloneTestCase.PloneTestCase):
         directlyProvides(self.folder, INavigationRoot)
         root = getNavigationRoot(self.folder.folder1.doc1)
         self.assertEqual(root, folderPath)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestFolderTree))
-    suite.addTest(makeSuite(TestNavigationRoot))
-    return suite

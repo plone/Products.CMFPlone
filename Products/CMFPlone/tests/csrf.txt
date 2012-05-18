@@ -16,11 +16,7 @@ sure the authenticator view exists:
 
 The same can be checked again from a testbrowser:
 
-  # BBB Zope 2.12
-  >>> try:
-  ...     from Testing.testbrowser import Browser
-  ... except ImportError:
-  ...     from Products.Five.testbrowser import Browser
+  >>> from Testing.testbrowser import Browser
   >>> browser = Browser()
   >>> browser.open('http://nohost/plone/@@authenticator')
   >>> browser.contents

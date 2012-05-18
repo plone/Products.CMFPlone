@@ -1,7 +1,3 @@
-#
-# Test the browserDefault script
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone.tests.PloneTestCase import default_user
@@ -12,14 +8,14 @@ import re
 
 from Acquisition import aq_base
 from zope.event import notify
-from zope.app.publication.interfaces import BeforeTraverseEvent
+from zope.traversing.interfaces import BeforeTraverseEvent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import _createObjectByType
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
-RE_REMOVE_NAVTREE = re.compile('\s*href="http://.*?#portlet-navigation-tree"')
-RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav">.*?</ul>', re.S)
+RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav"')
+RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav".*?</ul>', re.S)
 
 
 class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
@@ -57,11 +53,11 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
 
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
-        resolved = RE_REMOVE_NAVTREE.sub('', resolved)
+        resolved = RE_REMOVE_SKIPNAV.sub('', resolved)
         resolved = RE_REMOVE_TABS.sub('', resolved)
 
         body = RE_REMOVE_DOCCONT.sub('', body)
-        body = RE_REMOVE_NAVTREE.sub('', body)
+        body = RE_REMOVE_SKIPNAV.sub('', body)
         body = RE_REMOVE_TABS.sub('', body)
 
         if not body:
@@ -80,7 +76,6 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
         else:
             viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
 
-        base_path = obj.absolute_url(1)
         viewed = obj.restrictedTraverse(viewaction)()
         called = obj()
 
@@ -363,12 +358,3 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         finally:
             # Restore title to avoid side-effects
             folderListing.title = 'Standard view'
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneToolBrowserDefault))
-    suite.addTest(makeSuite(TestDefaultPage))
-    suite.addTest(makeSuite(TestPortalBrowserDefault))
-    return suite

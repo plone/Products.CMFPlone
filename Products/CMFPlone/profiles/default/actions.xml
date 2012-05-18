@@ -228,7 +228,7 @@
    <property name="title" i18n:translate="">Cut</property>
    <property name="description" i18n:translate=""></property>
    <property
-      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_cut</property>
+      name="url_expr">string:$object_url/object_cut</property>
    <property
       name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
@@ -240,7 +240,7 @@
    <property name="title" i18n:translate="">Copy</property>
    <property name="description" i18n:translate=""></property>
    <property
-      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_copy</property>
+      name="url_expr">string:$object_url/object_copy</property>
    <property
       name="available_expr">python:checkPermission("Copy or Move", object) and not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
@@ -262,7 +262,7 @@
    <property name="title" i18n:translate="">Delete</property>
    <property name="description" i18n:translate=""></property>
    <property
-      name="url_expr">string:${globals_view/getCurrentObjectUrl}/delete_confirmation</property>
+      name="url_expr">string:$object_url/delete_confirmation</property>
    <property
       name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and not globals_view.isPortalOrPortalDefaultPage()</property>
    <property name="permissions">
@@ -274,7 +274,7 @@
    <property name="title" i18n:translate="">Rename</property>
    <property name="description" i18n:translate=""></property>
    <property
-      name="url_expr">string:${globals_view/getCurrentObjectUrl}/object_rename</property>
+      name="url_expr">string:$object_url/object_rename</property>
    <property name="icon_expr"></property>
    <property
       name="available_expr">python:checkPermission("Delete objects", globals_view.getParentObject()) and checkPermission("Copy or Move", object) and checkPermission("Add portal content", object) and not globals_view.isPortalOrPortalDefaultPage()</property>

@@ -1,7 +1,3 @@
-#
-# ActionIconsTool tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 
@@ -43,10 +39,3 @@ class TestActionIconsTool(PloneTestCase.PloneTestCase):
                                                'doesnotexist',
                                                None)
         self.assertEqual(icon, None)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestActionIconsTool))
-    return suite

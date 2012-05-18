@@ -10,7 +10,8 @@
                portal_url context/portal_url;">
 
 <dl class="portlet"
-    id="portlet-prefs">
+    id="portlet-prefs"
+    tal:condition="controlPanel/maySeeSomeConfiglets">
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href=""
@@ -30,11 +31,15 @@
                 <tal:configlets tal:repeat="configlet configlets">
                 <li tal:condition="configlet/visible">
                     <a href=""
+                       tal:define="icon configlet/icon|nothing"
                        tal:attributes="href configlet/url">
-                        <img src="" alt="" tal:attributes="src configlet/icon;
+                        <img src="" alt=""
+                             tal:condition="not:icon"
+                             tal:attributes="src string:${portal_url}/maintenance_icon.png" />
+                        <img src="" alt="" tal:attributes="src icon;
                                              alt configlet/description"
-                             i18n:attributes="alt"
-                             tal:on-error="string:" />
+                             tal:condition="icon"
+                             i18n:attributes="alt" />
                     <tal:configletname tal:content="configlet/title"
                                        i18n:translate=""></tal:configletname>
                     </a>

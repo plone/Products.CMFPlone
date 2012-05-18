@@ -8,7 +8,7 @@ from email.Message import Message
 from email.MIMEText import MIMEText
 from zope.deprecation import deprecate
 from zope.deferredimport.deferredmodule import (ModuleProxy,
-                                                DeferredAndDeprecated,)
+                                                DeferredAndDeprecated, )
 from AccessControl.Permissions import use_mailhost_services
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import InitializeClass
@@ -56,10 +56,12 @@ def email_list_to_string(addr_list, charset='us-ascii'):
                              for a in addresses)
     return addr_str
 
+
 def _addHeaders(message, **kwargs):
     for key, value in kwargs.iteritems():
         del message[key]
         message[key] = value
+
 
 @deprecate('The MailHost secureSend method is deprecated, '
            'use send instead.  secureSend will be removed in Plone 5')
@@ -86,7 +88,7 @@ def secureSend(self, message, mto, mfrom, subject='[No Subject]',
     # Add extra headers
     _addHeaders(message, Subject=Header(subject, charset),
                 To=mto, Cc=mcc, From=mfrom,
-                **dict((k, Header(v,charset)) for k, v in kwargs.iteritems()))
+                **dict((k, Header(v, charset)) for k, v in kwargs.iteritems()))
 
     all_recipients = [formataddr(pair) for pair in
                       getaddresses((mto, mcc, mbcc))]
@@ -102,18 +104,19 @@ msg = ('The %(name)s method of the MailHost is deprecated, '
        'this method will be removed in '
        'Plone 5.')
 
+
 def applyPatches():
     if not hasattr(MailHost, 'secureSend'):
         pt = PloneTool.PloneTool
         MailHost.secureSend = secureSend
         MailHost.validateSingleNormalizedEmailAddress = deprecate(
-            msg%{'name':'validateSingleNormalizedEmailAddress'})(
+            msg%{'name': 'validateSingleNormalizedEmailAddress'})(
             pt.validateSingleNormalizedEmailAddress.im_func)
         MailHost.validateSingleEmailAddress = deprecate(
-            msg%{'name':'validateSingleEmailAddress'})(
+            msg%{'name': 'validateSingleEmailAddress'})(
             pt.validateSingleEmailAddress.im_func)
         MailHost.validateEmailAddresses = deprecate(
-            msg%{'name':'validateEmailAddresses'})(
+            msg%{'name': 'validateEmailAddresses'})(
             pt.validateEmailAddresses.im_func)
         MailHost.emailListToString = deprecate(
             'The MailHost method emailListToString is deprecated and '
@@ -137,6 +140,7 @@ def applyPatches():
         if not smh_module:
             sys.modules['Products.SecureMailHost'] = fake_module
         sys.modules['Products.SecureMailHost.SecureMailHost'] = fake_module
+
 
 def removePatches():
     smh = sys.modules.get('Products.SecureMailHost.SecureMailHost')

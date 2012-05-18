@@ -1,7 +1,3 @@
-#
-# Tests portal creation
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Products.CMFCore.tests.base.testcase import WarningInterceptor
@@ -17,7 +13,6 @@ from zope.location.interfaces import ISite
 from zope.site.hooks import setSite, clearSite
 
 from Acquisition import aq_base
-from DateTime import DateTime
 
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
@@ -293,45 +288,29 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
         self.assertEqual(folder.checkCreationFlag(), False)
 
-    def testNewsTopic(self):
-        # News topic is in place as default view and has a criterion to show
+    def testNewsCollection(self):
+        # News collection is in place as default view and has a criterion to show
         # only News Items, and uses the folder_summary_view.
         self.assertEqual(['aggregator'], [i for i in self.portal.news.objectIds()])
-        topic = getattr(self.portal.news, 'aggregator')
-        self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        self.assertEqual(topic.buildQuery()['Type'], ('News Item',))
-        self.assertEqual(topic.buildQuery()['review_state'], 'published')
-        self.assertEqual(topic.getLayout(), 'folder_summary_view')
-        self.assertEqual(topic.checkCreationFlag(), False)
+        collection = getattr(self.portal.news, 'aggregator')
+        self.assertEqual(collection._getPortalTypeName(), 'Collection')
+        query = collection.query
+        self.assertTrue({'i': 'portal_type', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['News Item']} in query)
+        self.assertTrue({'i': 'review_state', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['published']} in query)
+        self.assertEqual(collection.getLayout(), 'folder_summary_view')
+        self.assertEqual(collection.checkCreationFlag(), False)
 
-    def testEventsTopic(self):
-        # Events topic is in place as default view and has criterion to show
+    def testEventsCollection(self):
+        # Events collection is in place as default view and has criterion to show
         # only future Events Items.
         self.assertEqual(['aggregator'], [i for i in self.portal.events.objectIds()])
-        topic = getattr(self.portal.events, 'aggregator')
-        self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        query = topic.buildQuery()
-        self.assertEqual(query['Type'], ('Event',))
-        self.assertEqual(query['review_state'], 'published')
-        self.assertEqual(query['start']['query'].Date(), DateTime().Date())
-        self.assertEqual(query['start']['range'], 'min')
-        self.assertEqual(topic.checkCreationFlag(), False)
-
-    def testEventsSubTopic(self):
-        # past Events sub-topic is in place and has criteria to show
-        # only past Events Items.
-        events_topic = self.portal.events.aggregator
-        self.failUnless('previous' in events_topic.objectIds())
-        topic = getattr(events_topic, 'previous')
-        self.assertEqual(topic._getPortalTypeName(), 'Topic')
-        query = topic.buildQuery()
-        self.assertEqual(query['Type'], ('Event',))
-        self.assertEqual(query['review_state'], 'published')
-        self.assertEqual(query['end']['query'].Date(), DateTime().Date())
-        self.assertEqual(query['end']['range'], 'max')
-        self.assertEqual(topic.checkCreationFlag(), False)
-        # TODO query shouldn't have a start key #8827
-        # self.failIf(query['start'], "Bug #8827 is not yet fixed")
+        collection = getattr(self.portal.events, 'aggregator')
+        self.assertEqual(collection._getPortalTypeName(), 'Collection')
+        query = collection.query
+        self.assertTrue({'i': 'portal_type', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['Event']} in query)
+        self.assertTrue({'i': 'review_state', 'o': 'plone.app.querystring.operation.selection.is', 'v': ['published']} in query)
+        self.assertTrue({'i': 'start', 'o': 'plone.app.querystring.operation.date.afterToday', 'v': ''} in query)
+        self.assertEqual(collection.checkCreationFlag(), False)
 
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
@@ -529,7 +508,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         buttons = acts.get('object_buttons', [])
         self.assertEquals(0, len(buttons))
 
-    def testObjectButtonActionsOnDefaultDocumentApplyToParent(self):
+    def testObjectButtonActionsOnDefaultDocumentDoNotApplyToParent(self):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
         self.folder.invokeFactory('Document','index_html')
@@ -538,7 +517,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(len(buttons), 4)
         urls = [a['url'] for a in buttons]
         for url in urls:
-            self.failIf('index_html' in url, 'Action wrongly applied to default page object %s'%url)
+            self.failIf('index_html' not in url, 'Action wrongly applied to parent object %s'%url)
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
@@ -605,8 +584,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                         if p['name'] == 'View Groups'][0]
         self.failUnless(member_has_permission['selected'])
 
-    def testDiscussionItemHasNoWorkflow(self):
-        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), ())
+    def testDiscussionItemWorkflow(self):
+        # By default the discussion item has the one_state_workflow
+        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), 
+                         ('one_state_workflow',))
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'
@@ -948,12 +929,3 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.failUnless(manage_charset)
         self.assertEqual(manage_charset, 'utf-8')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortalCreation))
-    suite.addTest(makeSuite(TestPortalBugs))
-    suite.addTest(makeSuite(TestManagementPageCharset))
-    return suite

@@ -22,13 +22,13 @@ class URLTool(PloneBaseTool, BaseTool):
             if context is passed in to allow for url parsing. When context is
             not provided, assume that relative urls are in the portal. It is
             assumed that http://portal is the same portal as https://portal.
-            
+
             External sites listed in 'allow_external_login_sites' of
             site_properties are also considered within the portal to allow for
             single sign on.
         """
         p_url = self()
-        
+
         _, u_host, u_path, _, _, _ = urlparse(url)
         if not u_host and not u_path.startswith('/'):
             if context is None:
@@ -41,10 +41,10 @@ class URLTool(PloneBaseTool, BaseTool):
             useurl = p_url # when u_path.startswith('/')
         if not useurl.endswith('/'):
             useurl += '/'
-        
+
         # urljoin to current url to get an absolute path
         _, u_host, u_path, _, _, _ = urlparse(urljoin(useurl, url))
-        
+
         # normalise to end with a '/' so /foobar is not considered within /foo
         if not u_path:
             u_path = '/'
@@ -57,7 +57,7 @@ class URLTool(PloneBaseTool, BaseTool):
             path += '/'
         if host == u_host and u_path.startswith(path):
             return True
-        
+
         props = getToolByName(self, 'portal_properties').site_properties
         for external_site in props.getProperty('allow_external_login_sites', []):
             _, host, path, _, _, _ = urlparse(external_site)

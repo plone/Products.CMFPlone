@@ -70,9 +70,13 @@ plone_utils = getToolByName(container, 'plone_utils', None)
 if plone_utils is not None:
     bad_chars = plone_utils.bad_chars(id)
     if len(bad_chars) > 0:
+        pprop = getToolByName(context, 'portal_properties')
+        charset = getattr(pprop.site_properties, 'default_charset', 'utf-8')
+        bad_chars = ''.join(bad_chars).decode(charset)
+        decoded_id = id.decode(charset)
         return xlate(
             _(u'${name} is not a legal name. The following characters are invalid: ${characters}',
-                mapping={u'name': id, u'characters': ''.join(bad_chars)}))
+                mapping={u'name': decoded_id, u'characters': bad_chars}))
 
 # check for a catalog index
 portal_catalog = getToolByName(container, 'portal_catalog', None)
@@ -172,6 +176,15 @@ if checkForCollision:
         portal = context.portal_url.getPortalObject()
         if id not in portal.contentIds(): # can override root *content*
             try:
+                # it is allowed to give an object the same id as another
+                # container in it's acquisition path as long as the
+                # object is outside the portal
+                outsideportal = getattr(portal.aq_parent, id, None)
+                insideportal = getattr(portal, id, None)
+                if (insideportal is not None and 
+                    outsideportal is not None and 
+                    outsideportal.aq_base == insideportal.aq_base):
+                    return
                 if getattr(portal, id, None) is not None: # but not other things
                     return xlate(
                         _(u'${name} is reserved.',

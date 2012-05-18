@@ -1,7 +1,3 @@
-#
-# Tests security of cut/paste operations
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from AccessControl import Unauthorized
@@ -137,10 +133,3 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
             self.portal.manage_pasteObjects,
             self.folder.manage_copyObjects(ids=['doc'])
         )
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCutPasteSecurity))
-    return suite

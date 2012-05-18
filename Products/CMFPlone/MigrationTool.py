@@ -35,8 +35,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = 'Plone Migration Tool'
     toolicon = 'skins/plone_images/site_icon.png'
 
-    manage_options = ( ({'label':'Upgrade', 'action':'../@@plone-upgrade'}, ) +
-                       SimpleItem.manage_options)
+    manage_options = (({'label':'Upgrade', 'action':'../@@plone-upgrade'}, ) +
+                      SimpleItem.manage_options)
 
     _needRecatalog = 0
     _needUpdateRole = 0
@@ -90,7 +90,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'getSoftwareVersion')
     def getSoftwareVersion(self):
         """ The software version."""
-        dist = pkg_resources.get_distribution('Plone')
+        dist = pkg_resources.get_distribution('Products.CMFPlone')
         return dist.version
 
     security.declareProtected(ManagePortal, 'needUpgrading')
@@ -106,7 +106,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         vars['Zope'] = get_dist('Zope2').version
         vars['Python'] = sys.version
         vars['Platform'] = sys.platform
-        vars['Plone'] = get_dist('Plone').version
+        vars['Plone'] = get_dist('Products.CMFPlone').version
         vars['Plone Instance'] = self.getInstanceVersion()
         vars['Plone File System'] = self.getFileSystemVersion()
         vars['CMF'] = get_dist('Products.CMFCore').version
@@ -118,10 +118,13 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
                 vars['PIL'] = get_dist('PILwoTK').version
             except pkg_resources.DistributionNotFound:
                 try:
-                    import _imaging
-                    vars['PIL'] = 'unknown'
-                except ImportError:
-                    pass
+                    vars['PIL'] = "%s (Pillow)" % get_dist('Pillow').version
+                except pkg_resources.DistributionNotFound:
+                    try:
+                        import _imaging
+                        vars['PIL'] = 'unknown'
+                    except ImportError:
+                        pass
 
         return vars
 
@@ -239,6 +242,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             gslogger.removeHandler(handler)
 
     upgrade = postonly(upgrade)
+
 
 def registerUpgradePath(oldversion, newversion, function):
     """ Basic register func """

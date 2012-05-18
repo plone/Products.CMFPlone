@@ -1,7 +1,6 @@
-#
 # Test queryCatalog and plone search forms
-#
 
+from zope.component import getMultiAdapter
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.ZCTextIndex.ParseTree import ParseError
@@ -37,10 +36,6 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testEmptyRequest(self):
         request = {}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
-
-    def testNonexistantIndex(self):
-        request = {'foo':'bar'}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testNonexistantIndex(self):
@@ -115,6 +110,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         ntp.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEquals('/yyy/zzz', qry['path'])
+
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     """Test logic quoting features queryCatalog script.
@@ -225,32 +221,17 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.queryCatalog(request), expected)
 
 
-
 AddPortalTopics = 'Add portal topics'
 
 class TestSearchForms(PloneTestCase.PloneTestCase):
     """Render all forms related to queryCatalog"""
 
     def testRenderSearchForm(self):
-        self.portal.search_form()
+        searchView = getMultiAdapter((self.portal, self.app.REQUEST), name="search")
+        searchView()
 
     def testRenderSearchResults(self):
         self.portal.search()
 
     def testRenderSearchRSS(self):
         self.portal.search_rss(self.portal, self.app.REQUEST)
-
-    def testRenderTopicView(self):
-        self.setPermissions([AddPortalTopics])
-        self.folder.invokeFactory('Topic', id='topic')
-        self.folder.topic.atct_topic_view()
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestQueryCatalog))
-    suite.addTest(makeSuite(TestQueryCatalogQuoting))
-    suite.addTest(makeSuite(TestQueryCatalogParseError))
-    suite.addTest(makeSuite(TestSearchForms))
-    return suite

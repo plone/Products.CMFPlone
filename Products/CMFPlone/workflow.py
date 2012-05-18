@@ -4,9 +4,10 @@ from Acquisition import aq_base
 from Products.CMFCore.interfaces import IWorkflowTool
 from Products.CMFPlone.interfaces import IWorkflowChain
 
+
 @adapter(Interface, IWorkflowTool)
 @implementer(IWorkflowChain)
-def ToolWorkflowChain( context, workflow_tool ):
+def ToolWorkflowChain(context, workflow_tool):
     """Looks up the workflow chain by portal type suing a mapping
     stored on the tool::
 
@@ -43,7 +44,7 @@ def ToolWorkflowChain( context, workflow_tool ):
     elif hasattr(aq_base(context), 'getPortalTypeName'):
         pt = context.getPortalTypeName()
     else:
-       pt = None
+        pt = None
     if pt is None:
         return ()
     chain = None
@@ -58,4 +59,3 @@ def ToolWorkflowChain( context, workflow_tool ):
         if chain is None:
             return ()
     return chain
-

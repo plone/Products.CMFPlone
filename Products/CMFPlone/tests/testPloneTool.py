@@ -1,7 +1,3 @@
-#
-# Tests the PloneTool
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -179,6 +175,7 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
                         ['Owner'])
 
         self.utils.changeOwnershipOf(self.folder1, 'new_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[0], [portal_name, 'acl_users'])
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'new_owner')
         self.assertList(self.folder1.get_local_roles_for_userid('new_owner'),
                         ['Owner'])
@@ -190,6 +187,7 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
         # Should be able to give ownership to a user in the top level
         # acl_users folder (even if this is not offered TTW).
         self.utils.changeOwnershipOf(self.folder1, 'portal_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[0], ['acl_users'])
         self.assertEqual(self.folder1.getOwnerTuple()[1], 'portal_owner')
         self.assertList(self.folder1.get_local_roles_for_userid('portal_owner'),
                         ['Owner'])
@@ -608,15 +606,3 @@ class TestIDGenerationMethods(PloneTestCase.PloneTestCase):
         self.assertEqual(len(expectedAliases), len(aliases))
         for k, v in aliases.items():
             self.assertEqual(expectedAliases[k], v)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneTool))
-    suite.addTest(makeSuite(TestOwnershipStuff))
-    suite.addTest(makeSuite(TestEditMetadata))
-    suite.addTest(makeSuite(TestEditMetadataIndependence))
-    suite.addTest(makeSuite(TestBreadCrumbs))
-    suite.addTest(makeSuite(TestIDGenerationMethods))
-    return suite

@@ -1,7 +1,3 @@
-#
-# Tests for date_components_support.py
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from DateTime import DateTime
@@ -483,15 +479,3 @@ class TestSpecialCases(PloneTestCase.PloneTestCase):
         hours = d.get('hours')
         # default == 1
         self.failUnless(hours[0]['selected'])
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestDateComponentsSupport))
-    suite.addTest(makeSuite(TestDateComponentsSupportDefault))
-    suite.addTest(makeSuite(TestDateComponentsSupportAMPM))
-    suite.addTest(makeSuite(TestDateComponentsSupportAMPMDefault))
-    suite.addTest(makeSuite(TestDateComponentsSupportMinuteStepDefault))
-    suite.addTest(makeSuite(TestSpecialCases))
-    return suite

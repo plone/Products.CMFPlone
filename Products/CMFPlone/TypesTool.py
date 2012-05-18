@@ -18,14 +18,14 @@ class TypesTool(PloneBaseTool, BaseTool):
     def listTypeTitles(self, container=None):
         """ Return a dictionary of id/Title combinations """
         typenames = {}
-        for t in self.listTypeInfo( container ):
+        for t in self.listTypeInfo(container):
             name = t.getId()
             if name:
-                typenames[ name ] = t.title_or_id()
+                typenames[name] = t.title_or_id()
 
         return typenames
 
-    security.declarePrivate( 'listActions' )
+    security.declarePrivate('listActions')
     def listActions(self, info=None, object=None, category=None):
         """ List all the actions defined by a provider.
         """
@@ -37,15 +37,13 @@ class TypesTool(PloneBaseTool, BaseTool):
             if type_info is not None:
                 type_actions = type_info.listActions(info, object)
                 if category is not None:
-                    type_actions = [
-                        a for a in type_actions
-                        if a.category == category
-                        ]
+                    type_actions = [a for a in type_actions
+                                    if a.category == category ]
                 actions.extend(type_actions)
 
         if category == 'folder/add':
-            add_actions = [ ti for ti in self.values()
-                            if IAction.providedBy(ti) ]
+            add_actions = [ti for ti in self.values()
+                            if IAction.providedBy(ti)]
             actions.extend(add_actions)
 
         return actions
@@ -62,12 +60,12 @@ class TypesTool(PloneBaseTool, BaseTool):
             return []
 
         ec = self._getExprContext(object)
-        actions = [ ActionInfo(action, ec) for action in actions ]
+        actions = [ActionInfo(action, ec) for action in actions]
 
         if action_chain:
             filtered_actions = []
             if isinstance(action_chain, basestring):
-                action_chain = (action_chain,)
+                action_chain = (action_chain, )
             for action_ident in action_chain:
                 sep = action_ident.rfind('/')
                 category, id = action_ident[:sep], action_ident[sep+1:]

@@ -1,8 +1,3 @@
-#
-# Tests the ControlPanel
-#
-
-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -33,10 +28,3 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
             self.failUnless(title in [a.getAction(self)['id']
                                    for a in self.controlpanel.listActions()],
                             "Missing configlet with id '%s'" % title)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestControlPanel))
-    return suite

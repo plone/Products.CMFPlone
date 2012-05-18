@@ -1,5 +1,6 @@
 from zope.interface import Interface
 
+
 class INonStructuralFolder(Interface):
     """Marker for folderish content types that are folderish as an
     implementation detail only.

@@ -18,13 +18,10 @@ from OFS.SimpleItem import SimpleItem
 from OFS.Folder import Folder as SimpleFolder
 from ZPublisher.HTTPRequest import FileUpload
 
-from App.Common import package_home
-from Products.CMFPlone.tests import GLOBALS
-PACKAGE_HOME = package_home(GLOBALS)
 
 TEXT = 'file data'
 UTEXT = u'file data'
-GIF = open(os.path.join(PACKAGE_HOME, os.pardir, 'tool.gif')).read()
+GIF = open(os.path.join(os.path.dirname(__file__), os.pardir, 'tool.gif')).read()
 
 
 class Dummy:

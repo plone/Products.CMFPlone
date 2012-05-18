@@ -22,6 +22,6 @@ except ValueError, e:
             # If we are not allowed to tell the user, what is wrong, he
             # should get an error message and contact the admins
             raise e
-    context.plone_utils.addPortalMessage(pmf(e.message))
+    context.plone_utils.addPortalMessage(msg)
     response = context.mail_password_form()
 return response

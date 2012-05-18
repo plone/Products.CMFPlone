@@ -18,11 +18,11 @@ from ZODB.POSException import ConflictError
 
 plone_utils = getToolByName(context, 'plone_utils')
 mtool = getToolByName(context, 'portal_membership')
-site_properties = getToolByName(context, 'portal_properties').site_properties
+site = getToolByName(context, 'portal_url').getPortalObject()
 pretty_title_or_id = plone_utils.pretty_title_or_id
 
 if not mtool.checkPermission(AllowSendto, context):
-    context.plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'), 'error')
+    plone_utils.addPortalMessage(_(u'You are not allowed to send this link.'), 'error')
     return state.set(status='failure')
 
 # Find the view action.
@@ -36,7 +36,7 @@ variables = {'send_from_address' : REQUEST.send_from_address,
              'title'             : pretty_title_or_id(context),
              'description'       : context.Description(),
              'comment'           : REQUEST.get('comment', None),
-             'envelope_from'     : site_properties.email_from_address
+             'envelope_from'     : site.getProperty('email_from_address'),
              }
 
 try:
@@ -44,14 +44,14 @@ try:
 except ConflictError:
     raise
 except: # TODO To many things could possibly go wrong. So we catch all.
-    exception = context.plone_utils.exceptionString()
+    exception = plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
                 mapping={u'exception' : exception})
-    context.plone_utils.addPortalMessage(message, 'error')
+    plone_utils.addPortalMessage(message, 'error')
     return state.set(status='failure')
 
 tmsg='Sent page %s to %s' % (url, REQUEST.send_to_address)
 transaction_note(tmsg)
 
-context.plone_utils.addPortalMessage(_(u'Mail sent.'))
+plone_utils.addPortalMessage(_(u'Mail sent.'))
 return state

@@ -6,6 +6,10 @@
 ##bind subpath=traverse_subpath
 ##parameters=qs=None, **kw
 ##title=Creates a query string based on existing string plus keyword arguments
+from zExceptions import Forbidden
+if container.REQUEST.get('PUBLISHED') is script:
+   raise Forbidden('Script may not be published.')
+
 from Products.PythonScripts.standard import url_quote_plus
 
 L = []

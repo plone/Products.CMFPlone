@@ -123,6 +123,9 @@ class AddPloneSite(BrowserView):
             'kupu:default',
             'plonetheme.classic:uninstall',
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
+            'plone.app.registry:default',
+            'plone.app.z3cform:default',
+            'plone.app.collection:default',
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
         for util in utils:
@@ -136,6 +139,7 @@ class AddPloneSite(BrowserView):
                     if profile_id in self.default_extension_profiles:
                         info['selected'] = 'selected'
                     extension_profiles.append(info)
+
         def _key(v):
             # Make sure implicitly selected items come first
             selected = v.get('selected') and 'automatic' or 'manual'
@@ -182,7 +186,7 @@ class AddPloneSite(BrowserView):
         else:
             available = util.getLanguages()
         languages = [(code, v.get(u'native', v.get(u'name'))) for
-                     code,v in available.items()]
+                     code, v in available.items()]
         languages.sort(key=itemgetter(1))
         return languages
 

@@ -5,7 +5,6 @@ from Products.CMFPlone.browser.ploneview import Plone
 
 
 class TestPloneView(PloneTestCase.PloneTestCase):
-    """Tests the global plone view."""
 
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'test',
@@ -123,16 +122,9 @@ class TestPloneView(PloneTestCase.PloneTestCase):
 
         # And even a structural folder that is used as a default page
         # returns its parent
-        self.setRoles(['Manager'])
-        self.folder.invokeFactory('Topic', 'topic')
-
+        self.folder.saveDefaultPage('ns_folder')
         self._invalidateRequestMemoizations()
-        view = Plone(self.folder.topic, self.app.REQUEST)
-        self.assertEqual(view.getCurrentFolder(), self.folder.topic)
-        self.folder.saveDefaultPage('topic')
-
-        self._invalidateRequestMemoizations()
-        view = Plone(self.folder.topic, self.app.REQUEST)
+        view = Plone(self.folder.ns_folder, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
 
     def testCropText(self):
@@ -180,10 +172,3 @@ class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
         self.props.manage_changeProperties(visible_ids=True)
         self.member.setProperties(visible_ids=True)
         self.failUnless(self.view.visibleIdsEnabled())
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneView))
-    suite.addTest(makeSuite(TestVisibleIdsEnabled))
-    return suite

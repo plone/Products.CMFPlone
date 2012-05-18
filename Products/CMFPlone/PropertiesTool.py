@@ -21,14 +21,13 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
     meta_type = 'Plone Properties Tool'
     meta_types = ((
-        {'name' : 'Plone Property Sheet',
-         'action' : 'manage_addPropertySheetForm'
-         },
+        {'name': 'Plone Property Sheet',
+         'action': 'manage_addPropertySheetForm'},
         ))
 
     implements(IPropertiesTool)
 
-    manage_options = ((Folder.manage_options[0],) +
+    manage_options = ((Folder.manage_options[0], ) +
                         BaseTool.manage_options)
 
     manage_addPropertySheetForm = PageTemplateFile('www/addPropertySheet',
@@ -44,6 +43,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         """
         return BaseTool.title(self)
 
+    security.declareProtected(ManagePortal, 'addPropertySheet')
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ Add a new PropertySheet
         """
@@ -63,7 +63,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
         self._setObject(id, o)
 
-
+    security.declareProtected(ManagePortal, 'manage_addPropertySheet')
     def manage_addPropertySheet(self, id, title='',
                                 propertysheet=None, REQUEST=None):
         """ Add a instance of a Property Sheet if handed a
@@ -107,7 +107,7 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
 
     meta_type = 'Plone Property Sheet'
 
-    manage_options = ( PropertyManager.manage_options
+    manage_options = (PropertyManager.manage_options
                      + SimpleItem.manage_options)
 
 InitializeClass(SimpleItemWithProperties)

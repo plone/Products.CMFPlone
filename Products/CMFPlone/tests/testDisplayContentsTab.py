@@ -1,7 +1,3 @@
-#
-# Tests for displayContentsTab script
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.permissions import ListFolderContents
@@ -114,10 +110,3 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         # Clear the memoized results, as it would happen for a new request
         del self.app.REQUEST.__annotations__
         self.failIf(def_page.displayContentsTab())
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestDisplayContentsTab))
-    return suite

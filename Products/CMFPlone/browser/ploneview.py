@@ -73,7 +73,7 @@ class Plone(BrowserView):
         checkPerm = portal_membership.checkPermission
 
         if checkPerm('Modify portal content', context) or \
-               checkPerm('Add portal content', context)  or \
+               checkPerm('Add portal content', context) or \
                checkPerm('Review portal content', context):
             return True
 
@@ -104,7 +104,7 @@ class Plone(BrowserView):
 
         if 'edit' in idActions:
             if (template_id in idActions or \
-                template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']) :
+                template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']):
                 return True
 
         # Check to see if the user is able to add content
@@ -189,7 +189,7 @@ class Plone(BrowserView):
 
     def getCurrentUrl(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request),name=u'plone_context_state')
+            (aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.current_page_url()
 
     def isDefaultPageInFolder(self):

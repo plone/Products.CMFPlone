@@ -31,7 +31,7 @@ if came_from is not None:
     scheme, location, path, parameters, query, fragment = util.urlparse(came_from)
     template_id = path.split('/')[-1]
     if template_id in ['login', 'login_success', 'login_password', 'login_failed',
-                       'login_form', 'logged_in', 'logged_out', 'registered',
+                       'login_form', 'logged_in', 'logout', 'logged_out', 'registered',
                        'mail_password', 'mail_password_form', 'register',
                        'require_login', 'member_search_results', 'pwreset_finish',
                        # We need localhost in the list, or Testing.testbrowser

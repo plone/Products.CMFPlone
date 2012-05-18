@@ -1,7 +1,3 @@
-#
-# CSSRegistry tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
@@ -74,6 +70,7 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'nodeutilities.js',
              'plone_javascript_variables.js',
              'register_function.js',
+             'modernizr.js',
              'formUnload.js',
              'formsubmithelpers.js',
              'form_tabbing.js',
@@ -84,11 +81,3 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
     def testJSIsInsertedInPage(self):
         page = self.portal.index_html()
         self.failUnless("" in page)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCSSRegistry))
-    suite.addTest(makeSuite(TestJSRegistry))
-    return suite

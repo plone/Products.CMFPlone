@@ -1,5 +1,6 @@
 from zope.interface import Attribute, Interface
 
+
 class IFactoryTool(Interface):
     """This tool manages the portal factory type registration.
     """
@@ -9,4 +10,3 @@ class IFactoryTool(Interface):
     def getFactoryTypes():
         """Return the list of factory types which use the portal factory.
         """
-

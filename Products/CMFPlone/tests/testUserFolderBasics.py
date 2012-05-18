@@ -1,7 +1,5 @@
-#
 # Generic user folder tests. Every user folder implementation
 # must pass these.
-#
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
@@ -132,10 +130,3 @@ class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def beforeTearDown(self):
         self._free_warning_output()
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestUserFolder))
-    return suite

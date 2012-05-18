@@ -13,9 +13,6 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
 
-# WARNING: don't use the `isLinked` function in your code!!
-#   it is a helper for the link integrity code and will potentially abort
-#   the ongoing transaction, giving you unexpected results...
 if isLinked(context):
     # go ahead with the removal, triggering link integrity...
     # we need to copy the code from 'object_delete' here, since traversing

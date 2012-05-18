@@ -1,7 +1,3 @@
-#
-# ActionsTool tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from traceback import format_exception
@@ -104,7 +100,7 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
                                visible=1)
 
         actions = self.actions.listFilteredActionsFor(self.folder)
-        url = actions['folder'][0]['url']
+        actions['folder'][0]['url']
 
     def testAllActionsAreRenderedAsMessages(self):
         actions = self.actions.listActions()
@@ -118,13 +114,6 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
          me = Action("not_action_category")
          self.actions['not_a_category'] = me
          try:
-             action_infos = self.actions.listActions()
+             self.actions.listActions()
          except:
              self.fail_tb('Should not fail if item exists w/o IActionCategory interface')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestActionsTool))
-    return suite

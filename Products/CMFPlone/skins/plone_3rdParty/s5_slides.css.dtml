@@ -1,0 +1,8 @@
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+@import url(&dtml-portal_url;/s5_core.css); /* required to make the slide show run at all */
+@import url(&dtml-portal_url;/s5_framing.css); /* sets basic placement and size of slide components */
+@import url(&dtml-portal_url;/s5_pretty.css);  /* stuff that makes the slides look better than blah */
+
+/* </dtml-with> */ 

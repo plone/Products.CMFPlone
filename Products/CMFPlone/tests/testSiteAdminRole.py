@@ -98,7 +98,6 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'Add Workflow Policy':                                      0,
             'Add ZCatalogs':                                            0,
             'Add ZODB Mount Points':                                    0,
-            'Add kupu Library Tools':                                   0,
             'Add plone.app.customerizes':                               0,
             'Add portal content':                                       1,
             'Add portal events':                                        1,
@@ -144,8 +143,6 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'FTP access':                                               1,
             'Five: Add TTW View Template':                              0,
             'Import/Export objects':                                    0,
-            'Kupu: Manage libraries':                                   1,
-            'Kupu: Query libraries':                                    1,
             'List folder contents':                                     1,
             'List portal members':                                      1,
             'List undoable changes':                                    1,
@@ -194,6 +191,7 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'Use external editor':                                      1,
             'Use mailhost services':                                    1,
             'Use version control':                                      1,
+            'Reply to item':                                            0,
             'View':                                                     1,
             'View Groups':                                              1,
             'View History':                                             1,
@@ -201,12 +199,29 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'WebDAV Lock items':                                        1,
             'WebDAV Unlock items':                                      1,
             'WebDAV access':                                            1,
-            'iterate : Check in content':                               1,
-            'iterate : Check out content':                              1,
             'plone.portlet.collection: Add collection portlet':         1,
             'plone.portlet.static: Add static portlet':                 1,
             }
-        
+        try:
+            import Products.kupu
+        except ImportError:
+            pass
+        else:
+            expected.update({
+                'Add kupu Library Tools':                               0,
+                'Kupu: Manage libraries':                               1,
+                'Kupu: Query libraries':                                1,
+            })
+        try:
+            import plone.app.iterate
+        except ImportError:
+            pass
+        else:
+            expected.update({
+                'iterate : Check in content':                           1,
+                'iterate : Check out content':                          1
+            })
+
         site = self.portal
         errors = []
         for p, expected_value in sorted(expected.items(), key=lambda x: x[0]):
@@ -219,7 +234,3 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             self.fail('Unexpected permissions for Site Administrator role:\n' + 
                       ''.join(['\t%s\n' % msg for msg in errors])
                      )
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

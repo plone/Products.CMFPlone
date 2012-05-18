@@ -1,12 +1,8 @@
-#
-# Tests for scripts behind folder_contents view
-#
-
 from cStringIO import StringIO
 from zExceptions import Forbidden
 from zope.interface import directlyProvides
 from zope import component
-from zope.app.container.interfaces import IObjectRemovedEvent
+from zope.container.interfaces import IObjectRemovedEvent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.PloneTestCase.setup import default_user
 from Products.PloneTestCase.setup import default_password
@@ -360,7 +356,6 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         vhmBaseUrl = 'http://example.org/'
 
         self.folder.invokeFactory('Document', 'd1', title='Doc1')
-        folderPath = vhmBasePath + '/'.join(self.folder.getPhysicalPath()[2:])
         folderUrl = vhmBaseUrl + '/'.join(self.folder.getPhysicalPath()[2:])
         objPath = vhmBasePath + '/'.join(self.folder.d1.getPhysicalPath()[2:])
         objectUrl = vhmBaseUrl + '/'.join(self.folder.d1.getPhysicalPath()[2:])
@@ -411,14 +406,3 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         self.failUnless('new-id' in self.folder)
         self.failIf('d1' in self.folder)
         self.assertEqual(self.folder['new-id'].Title(), 'New title')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestFolderRename))
-    suite.addTest(makeSuite(TestFolderDelete))
-    suite.addTest(makeSuite(TestFolderPublish))
-    suite.addTest(makeSuite(TestFolderCutCopy))
-    suite.addTest(makeSuite(TestObjectActions))
-    return suite

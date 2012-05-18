@@ -1,7 +1,3 @@
-#
-# PloneFolder tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -175,14 +171,3 @@ class TestManageDelObjectsInPortal(PloneTestCase.PloneTestCase):
         # additional permission checks.
         self.sub1.manage_permission(DeleteObjects, ['Manager'], acquire=0)
         self.assertRaises(Unauthorized, self.portal.manage_delObjects, 'sub1')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneFolder))
-    suite.addTest(makeSuite(TestCheckIdAvailable))
-    suite.addTest(makeSuite(TestFolderListing))
-    suite.addTest(makeSuite(TestManageDelObjects))
-    suite.addTest(makeSuite(TestManageDelObjectsInPortal))
-    return suite

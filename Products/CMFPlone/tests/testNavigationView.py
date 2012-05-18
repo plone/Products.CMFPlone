@@ -1,7 +1,3 @@
-#
-# Test methods used to make ...
-#
-
 from zope.interface import directlyProvides
 
 from Products.CMFPlone.tests import PloneTestCase
@@ -212,7 +208,7 @@ class TestBaseNavTree(PloneTestCase.PloneTestCase):
         newObject=self.portal.folder1.restrictedTraverse('portal_factory/' + typeName + '/' + id)
         # Will raise a KeyError unless bug is fixed
         view = self.view_class(newObject, self.request)
-        tree = view.navigationTree()
+        view.navigationTree()
 
     def testShowAllParentsOverridesBottomLevel(self):
         ntp=self.portal.portal_properties.navtree_properties
@@ -397,7 +393,6 @@ class TestBaseSiteMap(PloneTestCase.PloneTestCase):
         subfolder1.invokeFactory('Folder','subfolder11')
         subfolder11 = subfolder1.subfolder11
         subfolder1.invokeFactory('Folder','subfolder12')
-        subfolder12 = subfolder1.subfolder12
         subfolder2.invokeFactory('Folder','subfolder21')
         subfolder21 = subfolder2.subfolder21
         folder1.invokeFactory('Folder','subfolder3')
@@ -645,7 +640,6 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         self.portal.folder1.invokeFactory('Folder', 'folder2')
         self.setRoles(['Member'])
 
-        rootPath = '/'.join(self.portal.getPhysicalPath()) + '/folder1'
         self.portal.portal_properties.navtree_properties.root = '/folder1'
         self.portal.portal_properties.site_properties.disable_nonfolderish_sections = True
 
@@ -663,6 +657,27 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         tabs = view.topLevelTabs(actions=[])
         for tab in tabs:
             self.assertEqual(validateCSSIdentifier(tab['id']),True)
+
+    def testLinkRemoteUrlsUsedUnlessLinkCreator(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Link', 'link1')
+        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.reindexObject()
+        view = self.view_class(self.portal, self.request)
+        tabs = view.topLevelTabs(actions=[])
+        for tab in tabs:
+            # as Creator tab for link1 should have url of the item
+            if tab['id'] == 'link1':
+                self.failUnless(tab['url'] == 'http://nohost/plone/link1')
+            
+        self.setRoles(['Manager'])
+        self.portal.link1.setCreators(['some_other_user'])
+        self.portal.link1.reindexObject()
+        tabs = view.topLevelTabs(actions=[])
+        for tab in tabs:
+            # as non-Creator user, tab for link1 should have url of the remote url
+            if tab['id'] == 'link1':
+                self.failUnless(tab['url'] == 'http://plone.org')
 
 
 class TestCatalogPortalTabs(TestBasePortalTabs):
@@ -700,7 +715,6 @@ class TestBaseBreadCrumbs(PloneTestCase.PloneTestCase):
     def testBreadcrumbsRespectTypesWithViewAction(self):
         # With a type in typesUseViewActionInListings as current action it
         # should return a breadcrumb which has '/view' appended to the url
-        file = self.portal.folder1.file11
         view = self.view_class(self.portal.folder1.file11, self.request)
         crumbs = view.breadcrumbs()
         self.failUnless(crumbs)

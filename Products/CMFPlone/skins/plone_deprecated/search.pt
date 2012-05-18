@@ -1,0 +1,223 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+    <metal:block metal:fill-slot="head_slot">
+        <link rel="alternate" title="RSS 1.0" type="application/rss+xml"
+              tal:define="here_url context/@@plone_context_state/object_url"
+              tal:condition="request/SearchableText|nothing"
+              tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}"/>
+    </metal:block>
+
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+
+<body>
+<metal:main fill-slot="main"
+     tal:define="use_types_blacklist request/use_types_blacklist | python:True;
+                 use_navigation_root request/use_navigation_root | python:True;
+                 sort_on request/sort_on|nothing;
+                 sort_order python:(sort_on == 'created' or sort_on == 'modified') and 'descending' or 'ascending';
+                 dummy python:request.form.update({'sort_order': sort_order});
+                 results python:context.queryCatalog(REQUEST=request,use_types_blacklist=use_types_blacklist, use_navigation_root=use_navigation_root);
+                 Batch python:modules['Products.CMFPlone'].Batch;
+                 b_size python:30; b_size request/b_size | b_size;
+                 b_start python:0;b_start request/b_start | b_start;
+                 site_properties context/portal_properties/site_properties;
+                 desc_length site_properties/search_results_description_length;
+                 desc_ellipsis site_properties/ellipsis;
+                 use_view_action site_properties/typesUseViewActionInListings|python:();
+                 portal_url context/portal_url;
+                 is_advanced_search request/form/advanced_search|nothing;
+                 advanced_search_url string:${context/@@plone_portal_state/navigation_root_url}/search_form;
+                 searchterm request/SearchableText|nothing;">
+
+    <div id="content-core">
+        <form name="searchform"
+              action="search"
+              class="searchPage"
+              tal:condition="not:is_advanced_search">
+            <input class="searchPage"
+                   name="SearchableText"
+                   type="text"
+                   size="25"
+                   title="Search Site"
+                   i18n:attributes="title title_search_title;"
+                   tal:attributes="value searchterm;"
+                   />
+            <input class="searchPage searchButton"
+                   type="submit"
+                   value="Search"
+                   i18n:attributes="value label_search;"/>
+
+            <p class="discreet"
+               i18n:translate="search_results_advanced">
+            Did you not find what you were looking for? Try the
+            <span i18n:name="advanced_search">
+            <a href=""
+               i18n:translate="search_results_advanced_link"
+               tal:attributes="href string:${advanced_search_url}?${request/QUERY_STRING}">Advanced Search</a>
+            </span>
+            to refine your search.
+            </p>
+        </form>
+
+        <div class="search-advanced"
+             tal:condition="is_advanced_search">
+            <div id="hide-form" style="display:none;">
+            <p>
+                <a href=""
+                   i18n:translate="hide_the_search_form"
+                   tal:attributes="href string:${advanced_search_url}?${request/QUERY_STRING}">
+                    Hide the search form
+                </a>
+          </p>
+                <metal:use use-macro="context/search_form/macros/form" />
+            </div>
+            <p id="show-form">
+                <a href=""
+                   i18n:translate="edit_your_search_options"
+                   tal:attributes="href string:${advanced_search_url}?${request/QUERY_STRING}">
+                    Edit your search options
+                </a>
+            </p>
+        </div>
+        <script type="text/javascript">
+
+            jq(document).ready(function(){
+              jq('#show-form a').click(function(event) {
+                 event.preventDefault();
+                 jq('#hide-form').show('slow');
+                 jq('#show-form').hide('slow');
+              });
+            });
+            jq(document).ready(function(){
+              jq('#hide-form a').click(function(event) {
+                 event.preventDefault();
+                 jq('#show-form').show('slow');
+                 jq('#hide-form').hide('slow');
+              });
+            });
+
+
+        </script>
+        <h1 class="documentFirstHeading">
+            <span i18n:translate="heading_search_results">
+                Search results
+            </span>
+            <span class="discreet">
+            &mdash;
+            <span i18n:translate="batch_x_items_matching_your_criteria"
+            ><span i18n:name="number"
+            tal:omit-tag=""
+            tal:content="python:len(results)">234</span> items matching your search terms.</span>
+          </span>
+        </h1>
+
+        <p class="discreet"
+           tal:condition="context/portal_syndication/isSiteSyndicationAllowed">
+            <a href=""
+               class="link-feed"
+               i18n:translate="title_rss_feed"
+               tal:define="here_url context/@@plone_context_state/object_url"
+               tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
+                 Subscribe to an always-updated feed of these search terms</a>
+        </p>
+
+        <div tal:condition="not: results">
+            <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>
+        </div>
+
+        <div tal:condition="results"
+              tal:define="normalizeString nocall: context/plone_utils/normalizeString;
+                          isAnon context/@@plone_portal_state/anonymous;
+                          toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+                          batch python:Batch(results, b_size, int(b_start), orphan=1);">
+
+            <dl class="searchResults">
+            <tal:results repeat="result batch">
+            <tal:entry define="result_url result/getURL;
+                               result_type result/portal_type;
+                               item_icon python:plone_view.getIcon(result);
+                               url python:result_url+'/view' if result_type in use_view_action else result_url">
+                <dt tal:define="item_wf_state_class string:state-${result/review_state};"
+                    tal:attributes="class python:'contenttype-' + normalizeString(result.portal_type)">
+                  <img tal:replace="structure item_icon/html_tag" />
+                   <a
+                     href="#"
+                     tal:attributes="href url;
+                                     class string:$item_wf_state_class"
+                     tal:content="result/pretty_title_or_id" />
+                </dt>
+
+                <dd>
+                    <span tal:replace="python:plone_view.cropText(result.Description, desc_length, desc_ellipsis)">
+                        Cropped description
+                    </span>
+
+                <span class="documentByLine"
+                      tal:condition="python:not isAnon or site_properties.allowAnonymousViewAbout">
+                    <span class="documentAuthor"
+                        i18n:translate="label_by_author">
+                    by
+                        <tal:block tal:condition="result/Creator"
+                            tal:define="author python:context.portal_membership.getMemberInfo(result.Creator)">
+                          <a href="#"
+                             tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${result/Creator}"
+                             tal:content="python:author and author['fullname'] or result.Creator"
+                             tal:omit-tag="not:result/Creator"
+                             i18n:name="author">
+                            Bob Dobalina
+                          </a>
+                        </tal:block>
+                    </span>
+
+                    <span class="documentModified">
+                      &mdash;
+                        <span i18n:translate="box_last_modified">
+                        last modified
+                        </span>
+                        <span tal:replace="python:toLocalizedTime(result.ModificationDate, long_format=1)">
+                        August 16, 2001 at 23:35:59
+                        </span>
+                    </span>
+
+
+                    <span tal:define="tags result/Subject|nothing"
+                          tal:condition="tags">
+                        &mdash;
+                        <tal:filedunder i18n:translate="label_filed_under">Filed under:</tal:filedunder>
+                            <span tal:repeat="tag tags">
+                                <a href=""
+                                   class="link-tag"
+                                   rel="tag"
+                                   tal:content="tag"
+                                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/search?Subject%3Alist=${tag}">
+                                   Tag
+                                </a><tal:separator condition="not: repeat/tag/end">,</tal:separator>
+                            </span>
+                    </span>
+                </span>
+
+                </dd>
+
+            </tal:entry>
+            </tal:results>
+            </dl>
+
+            <div metal:use-macro="context/batch_macros/macros/navigation" />
+
+        </div>
+    </div>
+
+</metal:main>
+</body>
+</html>
+

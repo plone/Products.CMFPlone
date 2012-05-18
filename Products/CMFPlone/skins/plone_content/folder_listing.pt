@@ -28,7 +28,7 @@
 
     <metal:listingmacro define-macro="listing">
     <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
-	                    contentFilter python:contentFilter and dict(contentFilter) or {};
+	                      contentFilter python:contentFilter and dict(contentFilter) or {};
                         limit_display limit_display|request/limit_display|nothing;
                         limit_display python:limit_display and int(limit_display) or None;
                         more_url more_url|request/more_url|string:folder_contents;
@@ -44,7 +44,8 @@
                         toLocalizedTime nocall: context/@@plone/toLocalizedTime;
                         show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
                         navigation_root_url context/@@plone_portal_state/navigation_root_url;
-                        pas_member context/@@pas_member;">
+                        pas_member context/@@pas_member;
+                        plone_view context/@@plone;">
     <tal:listing condition="batch">
 
         <dl metal:define-slot="entries">

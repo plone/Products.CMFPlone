@@ -29,7 +29,7 @@
               tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1)">
 
             <strong i18n:translate="batch_x_items_matching_your_criteria">
-                <span i18n:name="number" tal:omit-tag="" tal:content="python:len(results)">234</span> items matching your search terms
+                <span i18n:name="number" tal:omit-tag="" tal:content="python:len(results)">234</span> items matching your search terms.
             </strong>
 
             <div metal:use-macro="here/batch_macros/macros/navigation"/>

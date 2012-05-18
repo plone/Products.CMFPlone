@@ -1,7 +1,3 @@
-#
-# Tests the content type scripts
-#
-
 from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
@@ -28,16 +24,26 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         return [p['name'] for p in perms if p['selected']]
 
     def testDiscussionReply(self):
-        self.folder.invokeFactory('Document', id='doc')
-        # Create the talkback object
-        self.discussion.overrideDiscussionFor(self.folder.doc, 1)
-        self.discussion.getDiscussionFor(self.folder.doc)
-        # Now test it
-        self.folder.doc.discussion_reply('Foo', 'blah')
-        talkback = self.discussion.getDiscussionFor(self.folder.doc)
-        reply = talkback.objectValues()[0]
-        self.assertEqual(reply.Title(), 'Foo')
-        self.assertEqual(reply.EditableBody(), 'blah')
+        from zope.component import createObject, queryUtility
+        from plone.registry.interfaces import IRegistry
+        from plone.app.discussion.interfaces import IDiscussionSettings
+        from plone.app.discussion.interfaces import IConversation
+        self.folder.invokeFactory('Document', id='doc', title="Document")
+        # Enable discussion         
+        registry = queryUtility(IRegistry)
+        settings = registry.forInterface(IDiscussionSettings)
+        settings.globally_enabled = True
+        # Create the conversation object
+        conversation = IConversation(self.folder.doc)
+        # Add a comment 
+        comment = createObject('plone.Comment')
+        comment.text = 'Comment text'
+        conversation.addComment(comment)
+        # Test the comment
+        self.assertEquals(len(list(conversation.getComments())), 1)
+        reply = conversation.getComments().next()
+        self.assertEqual(reply.Title(), u'Anonymous on Document')
+        self.assertEquals(reply.text, 'Comment text')
 
     def testDocumentCreate(self):
         self.folder.invokeFactory('Document', id='doc', text='data')
@@ -129,7 +135,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         tool = self.portal.plone_utils
         doc = self.folder.doc
         doc.setTitle('title')
-        metatypes = tool.listMetaTags(doc)
+        tool.listMetaTags(doc)
         # TODO: atm it checks only of the script can be called w/o an error
 
     def testObjectDeleteFailsOnGET(self):
@@ -355,16 +361,3 @@ class TestImageProps(PloneTestCase.PloneTestCase):
         endswith = ('alt="alt tag" title="some title" '
                     'height="100" width="100" />')
         self.assertEqual(tag(self.ob)[-len(endswith):], endswith)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestContentTypeScripts))
-    suite.addTest(makeSuite(TestEditShortName))
-    suite.addTest(makeSuite(TestEditFileKeepsMimeType))
-    suite.addTest(makeSuite(TestFileURL))
-    suite.addTest(makeSuite(TestFileExtensions))
-    suite.addTest(makeSuite(TestBadFileIds))
-    suite.addTest(makeSuite(TestImageProps))
-    return suite

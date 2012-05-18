@@ -75,7 +75,7 @@
                             <tal:entry define="result_url first_parent/absolute_url;
                                                result_type python:hasattr(first_parent, 'getTypeInfo') and first_parent.getTypeInfo().getId();
                                                item_icon python:plone_view.getIcon(first_parent);
-                                               url python:test(result_type in use_view_action, result_url+'/view', result_url+'/');"
+                                               url python:test(result_type in use_view_action, result_url+'/view', result_url);"
                                        tal:condition="result_type">
                                 <dt tal:define="item_wf_state_class python:'state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
                                     tal:attributes="class python:'contenttype-' + normalizeString(result_type)">
@@ -103,7 +103,7 @@
                             <tal:entry define="result_url similar/getURL;
                                                result_type similar/portal_type;
                                                item_icon python:plone_view.getIcon(similar);
-                                               url python:test(result_type in use_view_action, result_url+'/view', result_url+'/');">
+                                               url python:test(result_type in use_view_action, result_url+'/view', result_url);">
                                 <dt tal:define="item_wf_state_class string:state-${similar/review_state};"
                                     tal:attributes="class python:'contenttype-' + normalizeString(result_type)">
                                   <img tal:replace="structure item_icon/html_tag" />

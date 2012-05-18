@@ -66,7 +66,8 @@
 
           </form>
           <script type="text/javascript">
-              external_login_form = document.external_login_form;
+              /*jslint browser: true */
+              var external_login_form = document.forms.external_login_form;
               external_login_form.style.display = 'none';
               external_login_form.submit();
           </script>
