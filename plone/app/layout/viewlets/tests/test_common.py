@@ -49,8 +49,8 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.app.REQUEST['ACTUAL_URL'] = self.portal.absolute_url()
         view = ContentViewsViewlet(self.portal, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
-        self.assertEquals(tabs[0]['id'], 'folderContents')
-        self.assertEquals(['view'], [t['id'] for t in tabs if t['selected']])
+        self.assertEqual(tabs[0]['id'], 'folderContents')
+        self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
 
     def testPrepareObjectTabsNonFolder(self):
         self._invalidateRequestMemoizations()
@@ -58,8 +58,8 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
-        self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
-        self.assertEquals(['view'], [t['id'] for t in tabs if t['selected']])
+        self.assertEqual(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
 
     def testPrepareObjectTabsNonStructuralFolder(self):
         self._invalidateRequestMemoizations()
@@ -69,8 +69,8 @@ class TestContentViewsViewlet(ViewletsTestCase):
         view = ContentViewsViewlet(self.folder, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
         noLongerProvides(self.folder, INonStructuralFolder)
-        self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
-        self.assertEquals(['view'], [t['id'] for t in tabs if t['selected']])
+        self.assertEqual(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
 
     def testPrepareObjectTabsDefaultView(self):
         self._invalidateRequestMemoizations()
@@ -78,8 +78,8 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url() + '/edit'
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
-        self.assertEquals(0, len([t for t in tabs if t['id'] == 'folderContents']))
-        self.assertEquals(['edit'], [t['id'] for t in tabs if t['selected']])
+        self.assertEqual(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEqual(['edit'], [t['id'] for t in tabs if t['selected']])
 
     def testTitleViewlet(self):
         """Title viewlet renders navigation root title
@@ -90,7 +90,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         directlyProvides(self.folder, INavigationRoot)
         viewlet = TitleViewlet(self.folder.test, self.app.REQUEST, None)
         viewlet.update()
-        self.assertEquals(viewlet.site_title,
+        self.assertEqual(viewlet.site_title,
                           "Test default page &mdash; Folder")
 
     def testLogoViewlet(self):
@@ -102,7 +102,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         directlyProvides(self.folder, INavigationRoot)
         viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
         viewlet.update()
-        self.assertEquals(viewlet.navigation_root_title, "Folder")
+        self.assertEqual(viewlet.navigation_root_title, "Folder")
         self.assertTrue("http://nohost/plone/logo.png" in viewlet.logo_tag)
 
 
