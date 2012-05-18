@@ -30,6 +30,9 @@ Changelog
 2.2.3 (2012-01-26)
 ------------------
 
+- Avoid hard dependency on Archetypes.
+  [davisagli]
+
 - Fix tests after recent plone.app.layout change to create a
   useractions view.
   [maurits]

@@ -19,14 +19,6 @@ from plone.app.controlpanel.form import ControlPanelForm
 from plone.app.controlpanel.widgets import AllowedTypesWidget
 from plone.app.controlpanel.widgets import MultiCheckBoxVocabularyWidget
 
-# For Archetypes markup
-
-from Products.Archetypes.mimetype_utils import getDefaultContentType, \
-    setDefaultContentType, getAllowedContentTypes, getAllowableContentTypes, \
-    setForbiddenContentTypes
-
-# For Wicked
-
 from persistent import Persistent
 from zope.annotation.interfaces import IAnnotations
 
@@ -70,7 +62,7 @@ class WickedTypesVocabulary(object):
 WickedTypesVocabularyFactory = WickedTypesVocabulary()
 
 #
-# Archetypes markup types
+# Markup types
 #
 
 class ITextMarkupSchema(Interface):
@@ -135,22 +127,52 @@ class MarkupControlPanelAdapter(SchemaAdapterBase):
     # Text markup settings
 
     def get_default_type(self):
-        return getDefaultContentType(self.context)
+        portal_properties = getToolByName(self.context, 'portal_properties', None)
+        if portal_properties is not None:
+            site_properties = getattr(portal_properties, 'site_properties', None)
+            if site_properties is not None:
+                return site_properties.getProperty('default_contenttype')
+        return 'text/plain'
 
     def set_default_type(self, value):
-        setDefaultContentType(self.context, value)
+        portal_properties = getToolByName(self.context, 'portal_properties', None)
+        if portal_properties is not None:
+            site_properties = getattr(portal_properties, 'site_properties', None)
+            if site_properties is not None:
+                site_properties.manage_changeProperties(default_contenttype=value)
 
     default_type = property(get_default_type, set_default_type)
 
+    def _get_allowable_types(self):
+        portal_transforms = getToolByName(self.context, 'portal_transforms')
+        return portal_transforms.listAvailableTextInputs()
+
+    def _get_forbidden_types(self, forbidden_contenttypes=[]):
+        portal_properties = getToolByName(self.context, 'portal_properties', None)
+        if portal_properties is not None:
+            site_properties = getattr(portal_properties, 'site_properties', None)
+            if site_properties is not None:
+                if site_properties.hasProperty('forbidden_contenttypes'):
+                    return list(site_properties.getProperty('forbidden_contenttypes'))
+        return []
+
     def get_allowed_types(self):
-        return getAllowedContentTypes(self.context)
+        allowable_types = self._get_allowable_types()
+        forbidden_types = self._get_forbidden_types()
+        allowed_types = [type for type in allowable_types if type not in forbidden_types]
+        return allowed_types
 
     def set_allowed_types(self, value):
         # The menu pretends to be a whitelist, but we are storing a blacklist
         # so that new types are available by default. So, we inverse the list.
-        allowable_types = getAllowableContentTypes(self.context)
+        allowable_types = self._get_allowable_types()
         forbidden_types = [t for t in allowable_types if t not in value]
-        setForbiddenContentTypes(self.context, forbidden_types)
+        
+        portal_properties = getToolByName(self.context, 'portal_properties', None)
+        if portal_properties is not None:
+            site_properties = getattr(portal_properties, 'site_properties', None)
+            if site_properties is not None:
+                site_properties.manage_changeProperties(forbidden_contenttypes=tuple(forbidden_types))
 
     allowed_types = property(get_allowed_types, set_allowed_types)
 

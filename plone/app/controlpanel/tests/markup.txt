@@ -51,8 +51,8 @@ Modifying values
 
 Verify, that the settings have actually been changed:
 
-    >>> from Products.Archetypes.mimetype_utils import getDefaultContentType, getAllowedContentTypes
-    >>> getDefaultContentType(self.portal)
+    >>> self.portal.portal_properties.site_properties.default_contenttype
     'text/x-web-textile'
-    >>> getAllowedContentTypes(self.portal)
-    ['text/html', 'text/x-web-textile']
+    >>> forbidden_types = self.portal.portal_properties.site_properties.forbidden_contenttypes
+    >>> set(self.portal.portal_transforms.listAvailableTextInputs()) - set([forbidden_types])
+    set(['text/html', 'text/x-web-textile'])
