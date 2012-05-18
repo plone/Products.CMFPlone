@@ -306,19 +306,6 @@ body:load {
     action-client: plone-initCheckBoxSelection;
 }
 
-/* kupu stuff */
-#kupu-save-button:load {
-   action-client: setStyle;
-   setStyle-name: display;
-   setStyle-value: inline;
-}
-
-div.kupu-save-message:timeout {
-   evt-timeout-delay: 2000;
-   evt-timeout-repeat: '';
-   action-client: deleteNode;
-}
-
 #portal-message:timeout {
    evt-timeout-delay: 2000;
    evt-timeout-repeat: '';
