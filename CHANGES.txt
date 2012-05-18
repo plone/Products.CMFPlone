@@ -4,7 +4,8 @@ Changelog
 2.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove hard dependency on ATContentTypes.
+  [davisagli]
 
 
 2.2.6 (2012-04-15)
@@ -21,9 +22,6 @@ Changelog
 
 2.2.5 (2012-01-26)
 ------------------
-
-- Remove hard dependency on ATContentTypes.
-  [davisagli]
 
 - Slightly changed the whitespace in sitemap.xml.gz.
   [maurits]
