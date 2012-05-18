@@ -23,18 +23,6 @@ ul.contentViews li a:plone-formProtectionChecked {
     action-client: plone-removeLockProtection;
 }
 
-/* 
-Load the kupu editor.
-
-The editor is also loaded from the page, so
-we give the initial=false, otherwise that
-should be left out if we do that too.
-*/
-
-iframe.kupu-editor-iframe:load {
-    action-client: plone-initKupu;
-}
-
 #content:load {
     evt-load-initial: false;
     action-client: initializeCollapsible;
@@ -221,20 +209,6 @@ div.inlineEditable:load {
   evt-keyup-keycodes: 13;
   action-server: updateSharingInfo;
   updateSharingInfo-kssSubmitForm: currentForm();
-}
-
-
-/* kupu stuff */
-#kupu-save-button:load {
-   action-client: setStyle;
-   setStyle-name: display;
-   setStyle-value: inline;
-}
-
-button.kupu-save:click {
-   action-server: savekupu;
-   savekupu-text: currentFormVarFromKssAttr("atfieldname", true);
-   savekupu-fieldname: kssAttr("atfieldname", true);
 }
 
 /* Folder contents stuff */
