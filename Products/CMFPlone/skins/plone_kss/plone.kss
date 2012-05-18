@@ -171,11 +171,6 @@ a.kssCalendarChange:click {
 ** Form tabs
 */
 
-form.enableFormTabbing:load {
-    evt-load-initial: false;
-    action-client: plone-initFormTabs;
-}
-
 form.enableUnloadProtection:load {
     evt-load-initial: false;
     action-client: plone-initFormProtection;
