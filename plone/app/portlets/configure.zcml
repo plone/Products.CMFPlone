@@ -1,7 +1,8 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five">
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
 
     <include package="plone.portlets" />
     <include package="plone.app.vocabularies" />
@@ -32,7 +33,8 @@
         <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
     </class>
 
-    <class class="Products.ATContentTypes.content.base.ATCTMixin">
+    <class zcml:condition="installed Products.ATContentTypes"
+           class="Products.ATContentTypes.content.base.ATCTMixin">
         <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
     </class>
 
