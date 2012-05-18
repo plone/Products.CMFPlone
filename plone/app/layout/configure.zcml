@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser">
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
 
     <include package=".globals" />
     <include package=".navigation" />
@@ -10,7 +11,8 @@
     <include package=".links" />
     <include package=".sitemap" />
     <include package=".dashboard" />
-    <include package=".presentation" />
+    <include zcml:condition="installed Products.ATContentTypes"
+             package=".presentation" />
     <include package=".analytics" />
 
 </configure>
