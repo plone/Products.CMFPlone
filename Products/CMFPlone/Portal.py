@@ -22,7 +22,7 @@ from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
 from zope.component import queryUtility
 
-member_indexhtml="""\
+member_indexhtml = """\
 member_search=context.restrictedTraverse('member_search_form')
 return member_search()
 """
@@ -85,7 +85,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
                     # Do nothing, let it go and acquire.
                     pass
                 else:
-                    raise AttributeError, 'index_html'
+                    raise AttributeError('index_html')
         # Acquire from skin.
         _target = self.__getattr__('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
@@ -94,8 +94,9 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
 
     def manage_beforeDelete(self, container, item):
         """ Should send out an Event before Site is being deleted """
-        self.removal_inprogress=1
-        PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
+        self.removal_inprogress = 1
+        PloneSite.inheritedAttribute('manage_beforeDelete')(self, container,
+                                                            item)
 
     security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
     def manage_delObjects(self, ids=[], REQUEST=None):
@@ -105,7 +106,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
         for id in ids:
             item = self._getOb(id)
             if not _checkPermission(permissions.DeleteObjects, item):
-                raise Unauthorized, (
+                raise Unauthorized(
                     "Do not have permissions to remove this object")
         return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
 
@@ -116,7 +117,8 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
         return self()
 
     security.declareProtected(permissions.AccessContentsInformation,
-        'folderlistingFolderContents')
+                              'folderlistingFolderContents')
+
     def folderlistingFolderContents(self, contentFilter=None):
         """Calls listFolderContents in protected only by ACI so that
         folder_listing can work without the List folder contents permission,
@@ -131,7 +133,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     def availableLanguages(self):
         util = queryUtility(IMetadataLanguageAvailability)
         languages = util.getLanguageListing()
-        languages.sort(lambda x, y:cmp(x[1], y[1]))
+        languages.sort(lambda x, y: cmp(x[1], y[1]))
         # Put language neutral at the top.
         languages.insert(0, (u'', _(u'Language neutral (site default)')))
         return languages
