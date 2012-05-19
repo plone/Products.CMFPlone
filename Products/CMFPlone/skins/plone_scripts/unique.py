@@ -7,7 +7,8 @@
 ##parameters=s
 ##title=Tim Peters unique recipe
 
-# taken from ASPN Python Cookbook, http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52560
+# taken from ASPN Python Cookbook,
+# http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52560
 """Return a list of the elements in s, but without duplicates.
 
 For example, unique([1,2,3,1,2,3]) is some permutation of [1,2,3],
