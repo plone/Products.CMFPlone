@@ -177,7 +177,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             for step in steps:
                 try:
                     step['step'].doStep(setup)
-                    setup.setLastVersionForProfile(_DEFAULT_PROFILE, step['dest'])
+                    setup.setLastVersionForProfile(
+                        _DEFAULT_PROFILE, step['dest'])
                     logger.info("Ran upgrade step: %s" % step['title'])
                 except (ConflictError, KeyboardInterrupt):
                     raise
