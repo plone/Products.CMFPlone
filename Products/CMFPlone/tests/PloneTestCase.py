@@ -11,7 +11,7 @@ from Products.CMFPlone.Portal import PloneSite
 from Products.CMFPlone.interfaces import ITestCasePloneSiteRoot
 classImplements(PloneSite, ITestCasePloneSiteRoot)
 
-TEST_PROFILE= 'Products.CMFPlone:testfixture'
+TEST_PROFILE = 'Products.CMFPlone:testfixture'
 
 from plone.protect.authenticator import AuthenticatorView
 from re import match
