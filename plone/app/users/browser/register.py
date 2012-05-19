@@ -5,8 +5,10 @@ from zope.schema import getFieldNamesInOrder
 from five.formlib.formbase import PageForm
 from zope import schema
 from zope.formlib import form
-from zope.app.form.browser import CheckBoxWidget, ASCIIWidget
-from zope.app.form.interfaces import WidgetInputError, InputErrors
+from zope.formlib.boolwidgets import CheckBoxWidget
+from zope.formlib.interfaces import InputErrors
+from zope.formlib.interfaces import WidgetInputError
+from zope.formlib.textwidgets import ASCIIWidget
 from zope.component import getMultiAdapter
 
 from AccessControl import getSecurityManager

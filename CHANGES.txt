@@ -4,6 +4,9 @@ Changelog
 1.1.4 (unreleased)
 ------------------
 
+- Avoid direct zope.app.form dependency.
+  [hannosch]
+
 - Support redirecting to a URL specified in the 'came_from' query string
   parameter following registration.
   [davisagli]

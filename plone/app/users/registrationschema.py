@@ -5,7 +5,7 @@ from zope.schema import getFieldNames
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.formlib import form
-from zope.app.form.browser import OrderedMultiSelectWidget
+from zope.formlib.itemswidgets import OrderedMultiSelectWidget
 
 from plone.app.users.userdataschema import IUserDataSchemaProvider
 from plone.app.users.browser.register import JOIN_CONST

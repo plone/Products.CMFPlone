@@ -3,10 +3,10 @@ from AccessControl import Unauthorized
 
 from zope.component import getUtility
 from zope.component import adapts
+from zope.formlib.interfaces import WidgetInputError
+from zope.formlib.itemswidgets import DropdownWidget
 from zope.interface import implements, Interface
 from zope import schema
-from zope.app.form.interfaces import WidgetInputError
-from zope.app.form.browser import DropdownWidget
 from zope.schema import ValidationError
 from zope.schema import Choice
 from zope.schema import Bool
