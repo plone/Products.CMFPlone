@@ -18,7 +18,8 @@ class ITranslationServiceTool(Interface):
     def asunicodetype(m, input_encoding=None, errors='strict'):
         """Create type unicode from type string"""
 
-    def ulocalized_time(time, long_format = None, time_only = None, context = None, domain='plonelocales'):
+    def ulocalized_time(time, long_format=None, time_only=None, context=None,
+                        domain='plonelocales'):
         """Returns localized time."""
 
     def day_msgid(number, format=''):
@@ -28,7 +29,8 @@ class ITranslationServiceTool(Interface):
 
     def month_msgid(number, format=''):
         """Returns the msgid which can be passed to the translation service for
-           l10n of month names. Format is either '' or 'a' (long or abbreviation).
+           l10n of month names. Format is either '' or 'a' (long or
+           abbreviation).
         """
 
     def month_english(number, format=''):
