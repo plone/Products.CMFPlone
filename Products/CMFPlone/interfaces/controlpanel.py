@@ -4,18 +4,9 @@ from basetool import IPloneBaseTool
 class IControlPanel(IPloneBaseTool):
     """ Interface for the ControlPanel """
 
-    def registerConfiglet( id
-                 , name
-                 , action
-                 , condition=''
-                 , permission=''
-                 , category='Plone'
-                 , visible=1
-                 , appId=None
-                 , imageUrl=None
-                 , description=''
-                 , REQUEST=None
-                 ):
+    def registerConfiglet(id, name, action, condition='', permission='',
+                          category='Plone', visible=1, appId=None,
+                          imageUrl=None, description='', REQUEST=None):
         """ Registration of a Configlet """
 
     def unregisterConfiglet(id):
