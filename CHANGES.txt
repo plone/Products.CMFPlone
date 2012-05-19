@@ -11,6 +11,9 @@ Changelog
   Code basically copied from plone.app.kss
   [vangheem]
 
+- Remove kss attributes from calender portlet markup.
+  [vangheem]
+
 
 2.2.5 (2012-05-07)
 ------------------
