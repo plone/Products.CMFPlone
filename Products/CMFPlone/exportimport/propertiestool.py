@@ -11,7 +11,8 @@ from Products.GenericSetup.utils import XMLAdapterBase
 from Products.GenericSetup.utils import ObjectManagerHelpers
 from Products.GenericSetup.utils import PropertyManagerHelpers
 from Products.CMFPlone.PropertiesTool import SimpleItemWithProperties
-from Products.CMFPlone.interfaces import IPropertiesTool as IPlonePropertiesTool
+from Products.CMFPlone.interfaces \
+    import IPropertiesTool as IPlonePropertiesTool
 from Products.CMFPlone.interfaces import ISimpleItemWithProperties
 
 _FILENAME = 'propertiestool.xml'
@@ -56,7 +57,8 @@ def exportPloneProperties(context):
     logger.info('Properties tool exported.')
 
 
-class SimpleItemWithPropertiesXMLAdapter(XMLAdapterBase, PropertyManagerHelpers):
+class SimpleItemWithPropertiesXMLAdapter(
+        XMLAdapterBase, PropertyManagerHelpers):
 
     """Node im- and exporter for SimpleItemWithProperties.
     """
@@ -137,7 +139,7 @@ class PlonePropertiesToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers):
                 else:
                     try:
                         position = parent.getObjectPosition(insert_after)
-                        parent.moveObjectToPosition(obj_id, position+1)
+                        parent.moveObjectToPosition(obj_id, position + 1)
                     except ValueError:
                         pass
 
