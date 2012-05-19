@@ -248,4 +248,12 @@
         file="portlets.kss"
         />
 
+    <browser:page
+        for="*"
+        name="render-portlet"
+        class=".utils.PortletUtilities"
+        attribute="render_portlet"
+        permission="zope2.View"
+        />
+
 </configure>
