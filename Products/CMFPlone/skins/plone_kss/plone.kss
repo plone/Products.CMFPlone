@@ -40,27 +40,6 @@ and not rebind everything
     action-client: bindExternalLinks;
 }
 
-/* 
-Portlet refreshing. The refreshing portlets
-must have the kssPortletRefresh class for selection.
-You can also select per portlet, however this shows
-how to handle them all in one rule.
-*/
-/*
-dl.kssPortletRefresh:timeout {
-    evt-timeout-delay: 60000;
-    action-server: refreshPortlet;
-    refreshPortlet-portlethash: kssAttr("portlethash", True);
-    refreshPortlet-name: nodeAttr(id);
-}
-*/
-
-/* Deferred portlets */
-div.portlet-deferred:load {
-    action-server: refreshPortlet;
-    refreshPortlet-portlethash: kssAttr(portlethash, True);
-}
-
 /*
 Content Menu Sections: Change View
 */

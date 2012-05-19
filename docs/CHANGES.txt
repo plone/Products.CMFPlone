@@ -9,6 +9,12 @@ Changelog
 4.3a2 (unreleased)
 ------------------
 
+- Add kss refresh portlet equivelant code
+  [vangheem]
+
+- Move deferred portlet rendering out of kss
+  [vangheem]
+
 - Add kss-bbb.js for js that replaces kss
   [vangheem]
 
