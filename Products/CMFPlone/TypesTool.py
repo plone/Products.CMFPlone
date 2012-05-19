@@ -38,7 +38,7 @@ class TypesTool(PloneBaseTool, BaseTool):
                 type_actions = type_info.listActions(info, object)
                 if category is not None:
                     type_actions = [a for a in type_actions
-                                    if a.category == category ]
+                                    if a.category == category]
                 actions.extend(type_actions)
 
         if category == 'folder/add':
@@ -68,7 +68,7 @@ class TypesTool(PloneBaseTool, BaseTool):
                 action_chain = (action_chain, )
             for action_ident in action_chain:
                 sep = action_ident.rfind('/')
-                category, id = action_ident[:sep], action_ident[sep+1:]
+                category, id = action_ident[:sep], action_ident[sep + 1:]
                 for ai in actions:
                     if id == ai['id'] and category == ai['category']:
                         filtered_actions.append(ai)
