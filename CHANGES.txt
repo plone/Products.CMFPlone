@@ -11,7 +11,7 @@ Changelog
   Code basically copied from plone.app.kss
   [vangheem]
 
-- Remove kss attributes from all portlet markup.
+- Remove kss
   [vangheem]
 
 

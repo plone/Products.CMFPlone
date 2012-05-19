@@ -36,8 +36,7 @@ Let's try to add a Calendar portlet and then remove it
     >>> browser.open(portalURL+'/@@manage-dashboard')
     >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
     True
-    >>> browser.getLink(url="delete-portlet?name=calendar").click()
-    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> browser.getControl(name="calendar-remove").click()
     >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
     False
 
@@ -48,8 +47,7 @@ Now, let's try to add a portlet using the addview
     >>> browser.open(portalURL+'/@@manage-dashboard')
     >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
     True
-    >>> browser.getLink(url="delete-portlet?name=calendar").click()
-    >>> browser.open(portalURL+'/@@manage-dashboard')
+    >>> browser.getControl(name="calendar-remove").click()
     >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
     False
 

@@ -1,9 +1,10 @@
+from Products.Five import BrowserView
+from zope.component import getUtility, getMultiAdapter
+
+from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.utils import unhashPortletInfo
 
-from Products.Five import BrowserView
-from zope.component import getUtility, getMultiAdapter
-from plone.portlets.interfaces import IPortletManager
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.app.portlets.utils import assignment_from_key
 

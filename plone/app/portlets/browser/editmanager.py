@@ -10,11 +10,13 @@ from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletContext
 from plone.portlets.utils import hashPortletInfo
+from plone.portlets.utils import unhashPortletInfo
 
 from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, queryMultiAdapter, queryAdapter
+from zope.component import adapts, getMultiAdapter, queryMultiAdapter, queryAdapter, getUtility
 from zope.contentprovider.interfaces import UpdateNotCalled
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from five.customerize.zpt import TTWViewTemplateRenderer
 
 from Acquisition import Explicit, aq_parent, aq_inner
 from Acquisition.interfaces import IAcquirer
@@ -131,11 +133,12 @@ class EditPortletManagerRenderer(Explicit):
                 'title'      : assignments[idx].title,
                 'editview'   : editviewName,
                 'hash'       : portlet_hash,
-                'up_url'     : '%s/@@move-portlet-up?name=%s' % (base_url, name),
-                'down_url'   : '%s/@@move-portlet-down?name=%s' % (base_url, name),
-                'delete_url' : '%s/@@delete-portlet?name=%s' % (base_url, name),
-                'hide_url'   : '%s/@@toggle-visibility?name=%s' % (base_url, name),
-                'show_url'   : '%s/@@toggle-visibility?name=%s' % (base_url, name),
+                'name'       : name,
+                'up_url'     : '%s/@@move-portlet-up' % (base_url),
+                'down_url'   : '%s/@@move-portlet-down' % (base_url),
+                'delete_url' : '%s/@@delete-portlet' % (base_url),
+                'hide_url'   : '%s/@@toggle-visibility' % (base_url),
+                'show_url'   : '%s/@@toggle-visibility' % (base_url),
                 'visible'    : visible,
                 })
         if len(data) > 0:
@@ -339,8 +342,37 @@ class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
 class ManagePortletAssignments(BrowserView):
     """Utility views for managing portlets for a particular column"""
 
+    def authorize(self):
+        authenticator = getMultiAdapter((self.context, self.request),
+                                        name=u"authenticator")
+        if not authenticator.verify():
+            raise Unauthorized
+
+    def _render_column(self):
+        view_name = self.request.form.get('viewname')
+        obj = aq_inner(self.context.__parent__)
+        request = aq_inner(self.request)
+        view = getMultiAdapter((obj, request), name=view_name)
+        # view can have been customized TTW, see #11409
+        if isinstance(view, TTWViewTemplateRenderer):
+            view = view._getView()
+
+        manager = getUtility(IPortletManager, name=self.context.__manager__)
+        renderer = getMultiAdapter((obj, request, view, manager),
+                                   IPortletManagerRenderer)
+        renderer.update()
+        return renderer.__of__(obj).render()
+
+    def finish_portlet_change(self):
+        if self.request.form.get('ajax', False):
+            return self._render_column()
+        else:
+            self.request.response.redirect(self._nextUrl())
+            return ''
+
     # view @@move-portlet-up
     def move_portlet_up(self, name):
+        self.authorize()
         assignments = aq_inner(self.context)
         IPortletPermissionChecker(assignments)()
 
@@ -350,12 +382,11 @@ class ManagePortletAssignments(BrowserView):
         keys.remove(name)
         keys.insert(idx-1, name)
         assignments.updateOrder(keys)
-
-        self.request.response.redirect(self._nextUrl())
-        return ''
+        return self.finish_portlet_change()
 
     # view @@move-portlet-down
     def move_portlet_down(self, name):
+        self.authorize()
         assignments = aq_inner(self.context)
         IPortletPermissionChecker(assignments)()
 
@@ -365,17 +396,15 @@ class ManagePortletAssignments(BrowserView):
         keys.remove(name)
         keys.insert(idx+1, name)
         assignments.updateOrder(keys)
-
-        self.request.response.redirect(self._nextUrl())
-        return ''
+        return self.finish_portlet_change()
 
     # view @@delete-portlet
     def delete_portlet(self, name):
+        self.authorize()
         assignments = aq_inner(self.context)
         IPortletPermissionChecker(assignments)()
         del assignments[name]
-        self.request.response.redirect(self._nextUrl())
-        return ''
+        return self.finish_portlet_change()
 
     def _nextUrl(self):
         referer = self.request.get('referer')
@@ -386,9 +415,9 @@ class ManagePortletAssignments(BrowserView):
         return referer
 
     def toggle_visibility(self, name):
+        self.authorize()
         assignments = aq_inner(self.context)
         settings = IPortletAssignmentSettings(assignments[name])
         visible = settings.get('visible', True)
         settings['visible'] = not visible
-        self.request.response.redirect(self._nextUrl())
-        return ''
+        return self.finish_portlet_change()
