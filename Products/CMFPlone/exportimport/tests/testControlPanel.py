@@ -35,15 +35,16 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
         return ControlPanelXMLAdapter
 
     def _populate(self, obj):
-        obj.registerConfiglet(id='QuickInstaller',
-                              name='Add/Remove Products',
-                              action='string:${portal_url}/prefs_install_products_form',
-                              permission='Manage portal',
-                              category='Plone',
-                              visible=True,
-                              appId='QuickInstaller',
-                              icon_expr='string:${portal_url}/product_icon.png',
-                             )
+        obj.registerConfiglet(
+            id='QuickInstaller',
+            name='Add/Remove Products',
+            action='string:${portal_url}/prefs_install_products_form',
+            permission='Manage portal',
+            category='Plone',
+            visible=True,
+            appId='QuickInstaller',
+            icon_expr='string:${portal_url}/product_icon.png',
+          )
 
     def setUp(self):
         setHooks()
