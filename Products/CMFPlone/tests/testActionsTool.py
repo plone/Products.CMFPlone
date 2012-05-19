@@ -8,6 +8,7 @@ from OFS.SimpleItem import Item
 from Products.CMFCore.ActionInformation import ActionInfo
 from Products.CMFCore.ActionInformation import Action
 
+
 class ExplicitItem(Item, Explicit):
     '''Item without implicit acquisition'''
     id = 'dummy'
@@ -87,17 +88,19 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.portal.portal_workflow.doActionFor(self.folder, 'hide')
         self.login('user1')
         actions = self.actions.listFilteredActionsFor(self.folder)
-        match = [a for a in actions.get('document_actions', []) if a['id'] == 'foo']
+        match = [a for a in actions.get('document_actions', [])
+                    if a['id'] == 'foo']
         self.failIf(match)
 
     def testActionNamespace(self):
-        self.actions.addAction(id='foo',
-                               name='foo_name',
-                               action='string:${globals_view/isStructuralFolder}',
-                               condition='',
-                               permission='View',
-                               category='folder',
-                               visible=1)
+        self.actions.addAction(
+                    id='foo',
+                    name='foo_name',
+                    action='string:${globals_view/isStructuralFolder}',
+                    condition='',
+                    permission='View',
+                    category='folder',
+                    visible=1)
 
         actions = self.actions.listFilteredActionsFor(self.folder)
         actions['folder'][0]['url']
@@ -110,10 +113,11 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
             self.failUnless(isinstance(info['description'], Message))
 
     def testListActionsSkipsItemsWithOldInterface(self):
-         # Ticket #10791
-         me = Action("not_action_category")
-         self.actions['not_a_category'] = me
-         try:
-             self.actions.listActions()
-         except:
-             self.fail_tb('Should not fail if item exists w/o IActionCategory interface')
+        # Ticket #10791
+        me = Action("not_action_category")
+        self.actions['not_a_category'] = me
+        try:
+            self.actions.listActions()
+        except:
+            self.fail_tb('Should not fail if item exists w/o IActionCategory '
+                         'interface')
