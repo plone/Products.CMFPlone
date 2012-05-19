@@ -6,17 +6,17 @@
 ##bind subpath=traverse_subpath
 ##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText','Description','Title'],use_types_blacklist=False,show_inactive=False,use_navigation_root=False
 ##title=wraps the portal_catalog with a rules qualified query
-##
+
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
 
-results=[]
-catalog=context.portal_catalog
-indexes=catalog.indexes()
-query={}
-show_query=show_all
+results = []
+catalog = context.portal_catalog
+indexes = catalog.indexes()
+query = {}
+show_query = show_all
 second_pass = {}
 
 if REQUEST is None:
@@ -26,8 +26,10 @@ if REQUEST is None:
 # an explanation of '\u3000'
 multispace = u'\u3000'.encode('utf-8')
 
+
 def quotestring(s):
     return '"%s"' % s
+
 
 def quotequery(s):
     if not s:
@@ -46,9 +48,10 @@ def quotequery(s):
             terms[idx] = quotestring(terms[idx])
     for idx in range(1, len(terms)):
         if (terms[idx].upper() in s_tokens and
-            terms[idx-1].upper() in tokens):
+            terms[idx - 1].upper() in tokens):
             terms[idx] = quotestring(terms[idx])
     return ' '.join(terms)
+
 
 # We need to quote parentheses when searching text indices (we use
 # quote_logic_indexes as the list of text indices)
@@ -57,6 +60,7 @@ def quote_bad_chars(s):
     for char in bad_chars:
         s = s.replace(char, quotestring(char))
     return s
+
 
 def ensureFriendlyTypes(query):
     ploneUtils = getToolByName(context, 'plone_utils')
@@ -70,6 +74,7 @@ def ensureFriendlyTypes(query):
     if not typesList:
         friendlyTypes = ploneUtils.getUserFriendlyTypes(typesList)
         query['portal_type'] = friendlyTypes
+
 
 def rootAtNavigationRoot(query):
     if 'path' not in query:
@@ -92,7 +97,7 @@ for k in REQUEST.keys():
     elif k.endswith('_usage'):
         key = k[:-6]
         param, value = v.split(':')
-        second_pass[key] = {param:value}
+        second_pass[key] = {param: value}
     elif k in ('sort_on', 'sort_order', 'sort_limit'):
         if k == 'sort_limit' and not same_type(v, 0):
             query[k] = int(v)
@@ -103,7 +108,7 @@ for k, v in second_pass.items():
     qs = query.get(k)
     if qs is None:
         continue
-    query[k] = q = {'query':qs}
+    query[k] = q = {'query': qs}
     q.update(v)
 
 # doesn't normal call catalog unless some field has been queried
