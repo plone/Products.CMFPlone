@@ -6,7 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=
-##
+
 # customize this script to filter addable portal types based on
 # context, the current user or other criteria
 return ()
