@@ -53,5 +53,3 @@ class Batch(QuantumBatch):
 
     prevlist = QuantumBatch.previous_pages
     nextlist = QuantumBatch.next_pages
-
-
