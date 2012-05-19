@@ -21,7 +21,9 @@ from ZPublisher.HTTPRequest import FileUpload
 
 TEXT = 'file data'
 UTEXT = u'file data'
-GIF = open(os.path.join(os.path.dirname(__file__), os.pardir, 'tool.gif')).read()
+GIF = open(os.path.join(os.path.dirname(__file__),
+           os.pardir,
+           'tool.gif')).read()
 
 
 class Dummy:
@@ -45,6 +47,7 @@ class Item(SimpleItem):
             self.id = id
         if title is not None:
             self.title = title
+
 
 class SizedItem(Item):
     '''Item maintaining a size'''
@@ -85,9 +88,14 @@ class File(FileUpload):
         if headers is not None:
             self.headers = headers
 
-    def seek(self, *args): pass
-    def tell(self, *args): return 1
-    def read(self, *args): return self.data
+    def seek(self, *args):
+        pass
+
+    def tell(self, *args):
+        return 1
+
+    def read(self, *args):
+        return self.data
 
 
 class Image(File):
@@ -172,7 +180,7 @@ class ICantBeDeleted(Interface):
 
 def disallow_delete_handler(obj, event):
     obj.delete_attempted = True
-    raise Exception, "You can't delete this!"
+    raise Exception("You can't delete this!")
 
 
 class DummyContent(Dummy):
@@ -180,6 +188,7 @@ class DummyContent(Dummy):
 
     def getPortalTypeName(self):
         return getattr(self, 'portal_type')
+
 
 class DummyWorkflowTool(object):
     """A dummy workflow tool for testing adaptation based workflow"""
@@ -193,6 +202,7 @@ class DummyWorkflowTool(object):
 
     def getDefaultChainFor(self, context):
         return ('Default Workflow',)
+
 
 @implementer(IWorkflowChain)
 def DummyWorkflowChainAdapter(context, tool):
