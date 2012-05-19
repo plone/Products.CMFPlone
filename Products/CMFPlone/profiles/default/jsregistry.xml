@@ -43,4 +43,5 @@
  <javascript id="++resource++base2-dom-fp.js" compression="none" authenticated="True" enabled="False" />
  <javascript id="++resource++kukit.js" compression="none" authenticated="True" />
  <javascript id="++resource++kukit-devel.js" compression="none" enabled="False" />
+ <javascript id="kss-bbb.js" />
 </object>
