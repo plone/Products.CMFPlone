@@ -4,6 +4,7 @@ from transaction._transaction import Status
 
 log = logging.getLogger("MailDataManager")
 
+
 # BBB remove when zope.sendmail 3.8.0 is released.
 def catchAllExceptions(func):
     def _catch(*args, **kwargs):
@@ -18,7 +19,7 @@ def catchAllExceptions(func):
                 # Avoid raising errors during tpc_finish as these could lead to
                 # inconsistent state
                 log.exception(e)
-                
+
     return _catch
 
 
