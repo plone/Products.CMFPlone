@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=contentFilter=None,batch=False,b_size=100,full_objects=False
 ##title=wrapper method around to use catalog to get folder contents
-##
 
 # NOTE: This script is obsolete, use the browser view
 #       @@folderListing in plone.app.contentlisting
@@ -28,7 +27,8 @@ if contentFilter.get('path', None) is None:
     path['depth'] = 1
     contentFilter['path'] = path
 
-show_inactive = mtool.checkPermission('Access inactive portal content', context)
+show_inactive = mtool.checkPermission(
+                    'Access inactive portal content', context)
 
 # Provide batching hints to the catalog
 b_start = int(context.REQUEST.get('b_start', 0))
