@@ -6,6 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=adds ext_edit actions to types
+
 types = context.portal_types
 omit_types = ('Folder', 'Discussion Item', 'Event', 'Topic', 'Collector',
              'Collector Issue', 'Collector Issue Transcript',
