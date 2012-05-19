@@ -7,18 +7,16 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Delete objects from a folder
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
-from OFS.ObjectManager import BeforeDeleteException
 
 req = context.REQUEST
-paths=req.get('paths', [])
+paths = req.get('paths', [])
 
 putils = context.plone_utils
 
-status='failure'
-message=_(u'Please select one or more items to delete.')
+status = 'failure'
+message = _(u'Please select one or more items to delete.')
 
 # a hint to the link integrity code to indicate the number of events to
 # expect, so that all integrity breaches can be handled in a single form
@@ -30,7 +28,7 @@ context.REQUEST.set('link_integrity_events_to_expect', len(paths))
 success, failure = putils.deleteObjectsByPaths(paths, REQUEST=req)
 
 if success:
-    status='success'
+    status = 'success'
     message = _(u'Item(s) deleted.')
 
 if failure:
@@ -59,7 +57,8 @@ if failure:
 
     if locked:
         mapping[u'lockeditems'] = ', '.join(locked)
-        message = _(u'These items are locked for editing: ${lockeditems}.', mapping=mapping)
+        message = _(u'These items are locked for editing: ${lockeditems}.',
+                    mapping=mapping)
     else:
         mapping[u'items'] = ', '.join(other)
         message = _(u'${items} could not be deleted.', mapping=mapping)
