@@ -9,8 +9,7 @@
 
 from Products.CMFCore.utils import getToolByName
 
-portal_types_tool=getToolByName(context,'portal_types')
-installed_types=portal_types_tool.listContentTypes()
+portal_types_tool = getToolByName(context, 'portal_types')
+installed_types = portal_types_tool.listContentTypes()
 
 return installed_types
-
