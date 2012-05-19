@@ -27,7 +27,6 @@ class ActionIconsTool(PloneBaseTool, BaseTool):
     toolicon = 'skins/plone_images/confirm_icon.png'
 
     security.declareProtected(View, 'renderActionIcon')
-
     def renderActionIcon(self,
                          category,
                          action_id,
