@@ -9,7 +9,7 @@
 ##title=validates the form for sending feedback
 
 from Products.CMFPlone import PloneMessageFactory as _
-plone_utils=context.plone_utils
+plone_utils = context.plone_utils
 
 if not (subject and subject.strip()):
     state.setError('subject', _(u'Please enter a subject.'), 'email_required')
@@ -18,7 +18,8 @@ if not (message and message.strip()):
     state.setError('message', _(u'Please enter a message'), 'email_required')
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
+    context.plone_utils.addPortalMessage(
+        _(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     return state
