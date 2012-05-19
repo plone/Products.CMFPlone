@@ -41,30 +41,6 @@ and not rebind everything
 }
 
 /*
-Content Menu Sections: Change View
-*/
-
-/*
-#plone-contentmenu-display dd.actionMenuContent a:click {
-    evt-click-preventdefault: True;
-    action-server: changeViewTemplate;
-    evt-click-allowbubbling: True; 
-    changeViewTemplate-url: nodeAttr(href);
-}
-*/
-
-/* This rule is needed for keeping the default behavior for menu elements that */
-/* are supposed to send user to another page */
-#contextSetDefaultPage:click {
-    evt-click-preventdefault: False;
-    action-cancel: changeViewTemplate;
-}
-#folderChangeDefaultPage:click {
-    evt-click-preventdefault: False;
-    action-cancel: changeViewTemplate;
-}
-
-/*
 Content Menu Sections: Cut and Paste
 */
  /* Needed allowbubbling, because the menu-item is inside a span an the event selector is on the enclosing a-tag */
