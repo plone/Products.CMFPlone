@@ -6,14 +6,13 @@
 ##bind subpath=traverse_subpath
 ##parameters=userid, portrait='',delete_portrait=''
 ##title=Edit user
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 
 #update portrait
-REQUEST=context.REQUEST
+REQUEST = context.REQUEST
 portal_membership = context.portal_membership
-member=portal_membership.getMemberById(userid)
+member = portal_membership.getMemberById(userid)
 if portrait:
     portrait.seek(0)
     portal_membership.changeMemberPortrait(portrait, userid)
@@ -21,7 +20,7 @@ if portrait:
 if delete_portrait:
     context.portal_membership.deletePersonalPortrait(member.getId())
 
-processed={}
+processed = {}
 for id, property in context.portal_memberdata.propertyItems():
     if id == 'last_login_time':
         continue
