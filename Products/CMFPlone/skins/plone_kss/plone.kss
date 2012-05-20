@@ -23,11 +23,6 @@ ul.contentViews li a:plone-formProtectionChecked {
     action-client: plone-removeLockProtection;
 }
 
-#content:load {
-    evt-load-initial: false;
-    action-client: initializeCollapsible;
-}
-
 /*
 This loads the external links markers each time an element marked inlineEditable
 is reloaded (needed to make it work with inlineEditable). However, this isn't the best,
