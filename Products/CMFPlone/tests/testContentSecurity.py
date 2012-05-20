@@ -12,7 +12,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         #_ender_'s member who's not a Member usecase
         self.portal.acl_users._doAddUser('user3', 'secret', [], [])
         self.membership = self.portal.portal_membership
-        self.workflow= self.portal.portal_workflow
+        self.workflow = self.portal.portal_workflow
         self.createMemberarea('user1')
         self.createMemberarea('user2')
 
@@ -29,7 +29,8 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
 
     def testCreateRootContentFails(self):
         self.login('user1')
-        self.assertRaises(Unauthorized, self.portal.invokeFactory, 'Document', 'new')
+        self.assertRaises(Unauthorized, self.portal.invokeFactory,
+                          'Document', 'new')
 
     def testDeleteMemberContent(self):
         self.login('user1')
@@ -66,14 +67,15 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
                                            'type':'user',
                                            'roles':['Owner']}])
 
-
         folder.invokeFactory('Folder', id='subfolder')
         #Turn off local role acquisition
-        folder.subfolder.unrestrictedTraverse('@@sharing').update_inherit(False)
+        folder.subfolder.unrestrictedTraverse('@@sharing') \
+                .update_inherit(False)
 
         self.login('user2')
         # This should now raise ValueError
-        self.assertRaises(ValueError, folder.subfolder.invokeFactory, 'Document', 'new')
+        self.assertRaises(ValueError, folder.subfolder.invokeFactory,
+                          'Document', 'new')
 
     def testCreateSucceedsWithLocalRoleBlockedInParentButAssingedInSubFolder(self):
         # Make sure that blocking a acquisition in a folder does not interfere
@@ -135,14 +137,16 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # Create more private workflow starting with folder_workflow
         wf = self.portal.portal_workflow.folder_workflow
         visible = wf.states.visible
-        visible.setPermission('View',0,('Manager','Owner'))
-        visible.setPermission('Modify portal content',0,('Manager','Owner'))
+        visible.setPermission('View', 0, ('Manager', 'Owner'))
+        visible.setPermission('Modify portal content', 0, ('Manager', 'Owner'))
         # Then plone workflow
         p_wf = self.portal.portal_workflow.plone_workflow
         published = p_wf.states.published
-        published.setPermission('View',0,('Manager','Member','Owner'))
-        published.setPermission('Access contents information',0,('Manager','Member','Owner'))
-        published.setPermission('Modify portal content',0,('Manager','Member','Owner'))
+        published.setPermission('View', 0, ('Manager', 'Member', 'Owner'))
+        published.setPermission('Access contents information', 0,
+                                ('Manager', 'Member', 'Owner'))
+        published.setPermission('Modify portal content', 0,
+                                ('Manager', 'Member', 'Owner'))
         self.portal.portal_workflow.updateRoleMappings()
 
         self.login('user1')
