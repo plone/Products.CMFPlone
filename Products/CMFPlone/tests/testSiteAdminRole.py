@@ -1,3 +1,4 @@
+import pkg_resources
 from Testing import ZopeTestCase as ztc
 from AccessControl.PermissionRole import rolesForPermissionOn
 from Products.CMFPlone.tests import PloneTestCase
@@ -203,11 +204,7 @@ class TestSiteAdministratorRole(PloneTestCase.PloneTestCase):
             'plone.portlet.collection: Add collection portlet':         1,
             'plone.portlet.static: Add static portlet':                 1,
             }
-        try:
-            import Products.kupu
-        except ImportError:
-            pass
-        else:
+        if 'products.kupu' in pkg_resources.working_set.by_key:
             expected.update({
                 'Add kupu Library Tools':                               0,
                 'Kupu: Manage libraries':                               1,
