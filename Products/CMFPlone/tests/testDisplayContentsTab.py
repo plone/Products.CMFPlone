@@ -14,12 +14,12 @@ import transaction
 # moved there.  We will leave the script around for a while, so we still test
 # there for now.
 class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
-    '''For the contents tab to display a user must have the ListFolderContents,
-       and one of the (Modify portal contents, Copy or move, Add portal contents,
-       Delete objects) permissions either on the object itself, or on the
-       parent object if the object is not folderish or is the default page for
-       its parent.
-    '''
+    """For the contents tab to display a user must have the ListFolderContents,
+       and one of the (Modify portal contents, Copy or move, Add portal
+       contents, Delete objects) permissions either on the object itself, or on
+       the parent object if the object is not folderish or is the default page
+       for its parent.
+    """
 
     def afterSetUp(self):
         self.parent = self.folder.aq_parent
@@ -27,11 +27,12 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.foo.invokeFactory('Folder', id='folder1')
         folder_path = '/'.join(self.folder.foo.folder1.getPhysicalPath())
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         # Make the folder the default page
         self.setupAuthenticator()
         self.setRequestMethod('POST')
-        self.folder.folder_rename(paths=[folder_path], new_ids=['index_html'], new_titles=['Default Folderish Document'])
+        self.folder.folder_rename(paths=[folder_path], new_ids=['index_html'],
+                                  new_titles=['Default Folderish Document'])
         self.setRequestMethod('GET')
 
     def getModificationPermissions(self):
@@ -56,7 +57,8 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
 
     def testNoListPermission(self):
         # We should not see the tab without ListFolderContents
-        self.folder.manage_permission(ListFolderContents, ['Manager'], acquire=0)
+        self.folder.manage_permission(ListFolderContents, ['Manager'],
+                                      acquire=0)
         self.failIf(self.folder.displayContentsTab())
 
     def testNoModificationPermissions(self):
@@ -95,8 +97,8 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.failUnless(self.folder.displayContentsTab())
 
     def testNonFolderishObjectDoesNotShowTab(self):
-        # The availability of the contents tab on a non-folderish object should be
-        # based on the parents permissions.
+        # The availability of the contents tab on a non-folderish object should
+        # be based on the parents permissions.
         doc = self.folder.foo.doc1
         self.failIf(doc.displayContentsTab())
 
@@ -106,7 +108,8 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         # folderish or not.
         def_page = self.folder.foo.index_html
         self.failUnless(def_page.displayContentsTab())
-        self.folder.foo.manage_permission(ListFolderContents, ['Manager'], acquire=0)
+        self.folder.foo.manage_permission(ListFolderContents, ['Manager'],
+                                          acquire=0)
         # Clear the memoized results, as it would happen for a new request
         del self.app.REQUEST.__annotations__
         self.failIf(def_page.displayContentsTab())
