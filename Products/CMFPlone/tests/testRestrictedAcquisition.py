@@ -24,6 +24,7 @@ class AllowedItem(SimpleItem):
 
 InitializeClass(AllowedItem)
 
+
 class DeniedItem(SimpleItem):
     id = 'denied'
     security = ClassSecurityInfo()
