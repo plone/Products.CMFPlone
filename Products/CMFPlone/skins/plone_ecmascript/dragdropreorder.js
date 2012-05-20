@@ -182,9 +182,12 @@ ploneDnDReorder.complete = function(xhr, textStatus) {
     ploneDnDReorder.dragging = null;
 };
 
+}(jQuery));
+
+
 function initializeDnDReorder(table_selector) {
     var table = table_selector;
-    ploneDnDReorder.table = jq(table);
+    ploneDnDReorder.table = $(table);
     if (!ploneDnDReorder.table.length)
         return;
     ploneDnDReorder.rows = $(table + " > tr," +
@@ -200,8 +203,5 @@ function initializeDnDReorder(table_selector) {
 }
 
 $(document).ready(function() {
-jQuery(initializeDnDReorder('#listing-table'));
+    initializeDnDReorder('#listing-table');
 });
-
-
-}(jQuery));
