@@ -8,10 +8,10 @@ from Products.CMFCore.tests.base.testcase import WarningInterceptor
 import base64
 from AccessControl import Unauthorized
 
-default_user     = PloneTestCase.default_user
+default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
-user_perms       = ZopeTestCase.standard_permissions
-user_role        = 'Member'
+user_perms = ZopeTestCase.standard_permissions
+user_role = 'Member'
 
 
 class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
@@ -19,7 +19,9 @@ class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
     def afterSetUp(self):
         self.logout()
         self.uf = self.portal.acl_users
-        self.basic = 'Basic %s' % base64.encodestring('%s:%s' % (default_user, default_password))
+        self.basic = \
+            'Basic %s' % base64.encodestring(
+                            '%s:%s' % (default_user, default_password))
         # Set up a published object accessible to the default user
         self.folder.addDTMLMethod('doc', file='')
         self.folder.doc.manage_permission('View', [user_role], acquire=0)
@@ -35,7 +37,8 @@ class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
 
         # Nuke Administators and Reviewers groups added in 2.1a2 migrations
         # (and any other migrated-in groups) to avoid test confusion
-        self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
+        self.portal.portal_groups.removeGroups(
+            self.portal.portal_groups.listGroupIds())
 
     def testGetUser(self):
         self.failIfEqual(self.uf.getUser(default_user), None)

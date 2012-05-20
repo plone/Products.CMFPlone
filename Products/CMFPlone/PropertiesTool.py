@@ -11,7 +11,8 @@ from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.interfaces import IPropertiesTool, ISimpleItemWithProperties
+from Products.CMFPlone.interfaces \
+    import IPropertiesTool, ISimpleItemWithProperties
 
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
@@ -52,12 +53,12 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         # copy the propertysheet values onto the new instance
         if propertysheet is not None:
             if not hasattr(propertysheet, 'propertyIds'):
-                raise TypeError, 'propertysheet needs to be a PropertyManager'
+                raise TypeError('propertysheet needs to be a PropertyManager')
 
             for property in propertysheet.propertyMap():
-                pid=property.get('id')
-                ptype=property.get('type')
-                pvalue=propertysheet.getProperty(pid)
+                pid = property.get('id')
+                ptype = property.get('type')
+                pvalue = propertysheet.getProperty(pid)
                 if not hasattr(o, pid):
                     o._setProperty(pid, pvalue, ptype)
 

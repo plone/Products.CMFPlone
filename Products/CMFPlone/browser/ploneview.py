@@ -34,8 +34,9 @@ class Plone(BrowserView):
         """
         context = aq_inner(self.context)
         util = getToolByName(context, 'translation_service')
-        return util.ulocalized_time(time, long_format, time_only, context=context,
-                                    domain='plonelocales', request=self.request)
+        return util.ulocalized_time(time, long_format, time_only,
+                                    context=context, domain='plonelocales',
+                                    request=self.request)
 
     @memoize
     def visibleIdsEnabled(self):
@@ -80,7 +81,8 @@ class Plone(BrowserView):
         if portal_membership.isAnonymousUser():
             return False
 
-        context_state = getMultiAdapter((context, request), name="plone_context_state")
+        context_state = getMultiAdapter((context, request),
+                                        name="plone_context_state")
         actions = context_state.actions
 
         if actions('workflow', max=1):
@@ -96,7 +98,7 @@ class Plone(BrowserView):
         template_id = None
         if 'PUBLISHED' in request:
             if getattr(request['PUBLISHED'], 'getId', None):
-                template_id=request['PUBLISHED'].getId()
+                template_id = request['PUBLISHED'].getId()
 
         idActions = {}
         for obj in actions('object') + actions('folder'):
@@ -104,7 +106,8 @@ class Plone(BrowserView):
 
         if 'edit' in idActions:
             if (template_id in idActions or \
-                template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']):
+                template_id in ['synPropertiesForm', 'folder_contents',
+                                'folder_listing']):
                 return True
 
         # Check to see if the user is able to add content
@@ -171,11 +174,11 @@ class Plone(BrowserView):
             encoding = utils.getSiteEncoding(aq_inner(self.context))
             text = unicode(text, encoding)
             converted = True
-        if len(text)>length:
+        if len(text) > length:
             text = text[:length]
             l = text.rfind(' ')
-            if l > length/2:
-                text = text[:l+1]
+            if l > length / 2:
+                text = text[:l + 1]
             text += ellipsis
         if converted:
             # encode back from unicode
@@ -189,66 +192,78 @@ class Plone(BrowserView):
 
     def getCurrentUrl(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.current_page_url()
 
     def isDefaultPageInFolder(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.is_default_page()
 
     def isStructuralFolder(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.is_structural_folder()
 
     def navigationRootPath(self):
         portal_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_portal_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_portal_state')
         return portal_state.navigation_root_path()
 
     def navigationRootUrl(self):
         portal_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_portal_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_portal_state')
         return portal_state.navigation_root_url()
 
     def getParentObject(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.parent()
 
     def getCurrentFolder(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.folder()
 
     def getCurrentFolderUrl(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.folder().absolute_url()
 
     @memoize
     def getCurrentObjectUrl(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.canonical_object_url()
 
     @memoize
     def isFolderOrFolderDefaultPage(self):
         state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return state.is_structural_folder() or state.is_default_page()
 
     @memoize
     def isPortalOrPortalDefaultPage(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.is_portal_root()
 
     @memoize
     def getViewTemplateId(self):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u'plone_context_state')
+            (aq_inner(self.context), self.request),
+            name=u'plone_context_state')
         return context_state.view_template_id()
 
     # Deprecated in favour of @@plone_layout
@@ -287,8 +302,8 @@ class Plone(BrowserView):
         return layout.getIcon(item)
 
     def have_portlets(self, manager_name, view=None):
-        """Determine whether a column should be shown. The left column is called
-        plone.leftcolumn; the right column is called plone.rightcolumn.
+        """Determine whether a column should be shown. The left column is
+        called plone.leftcolumn; the right column is called plone.rightcolumn.
         """
         context = aq_inner(self.context)
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')

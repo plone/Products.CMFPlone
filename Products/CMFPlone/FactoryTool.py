@@ -50,17 +50,17 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     IFactory implementation. this ensures the availability of the acquisition
     chain if needed inside the construction logic.
 
-    The kw argument hack is some kind of semi-valid since the IFactory interface
-    promises the __call__ function to accept all given args and kw args.
-    As long as the specific IFactory implementation provides this signature
-    everything works well unless any other 3rd party factory expects another
-    kind of object as 'parent' kw arg than the provided one.
+    The kw argument hack is some kind of semi-valid since the IFactory
+    interface promises the __call__ function to accept all given args and kw
+    args. As long as the specific IFactory implementation provides this
+    signature everything works well unless any other 3rd party factory expects
+    another kind of object as 'parent' kw arg than the provided one.
     """
     id = str(id)
     typesTool = getToolByName(container, 'portal_types')
     fti = typesTool.getTypeInfo(type_name)
     if not fti:
-        raise ValueError, 'Invalid type %s' % type_name
+        raise ValueError('Invalid type %s' % type_name)
 
     if not fti.product:
         kw['parent'] = container
@@ -68,7 +68,7 @@ def _createObjectByType(type_name, container, id, *args, **kw):
     return fti._constructInstance(container, id, *args, **kw)
 
 
-# ##############################################################################
+# #############################################################################
 # A class used for generating the temporary folder that will
 # hold temporary objects.  We need a separate class so that
 # we can add all types to types_tool's allowed_content_types
@@ -109,7 +109,7 @@ class TempFolder(TempFolderBase):
             lr = getattr(object, '__ac_local_roles__', None)
             if lr:
                 if callable(lr):
-                    lr=lr()
+                    lr = lr()
                 lr = lr or {}
                 for k, v in lr.items():
                     if not k in local_roles:
@@ -130,8 +130,8 @@ class TempFolder(TempFolderBase):
                 object = parent
                 continue
             if hasattr(object, 'im_self'):
-                object=object.im_self
-                object=getattr(object, 'aq_inner', object)
+                object = object.im_self
+                object = getattr(object, 'aq_inner', object)
                 continue
             break
         return local_roles
@@ -163,7 +163,9 @@ class TempFolder(TempFolderBase):
                  UnownableOwner=Owned.UnownableOwner,
                  getSecurityManager=getSecurityManager,
                  ):
-        return aq_parent(aq_parent(self)).getOwner(info, aq_get, UnownableOwner, getSecurityManager)
+        return aq_parent(
+                    aq_parent(self)).getOwner(
+                        info, aq_get, UnownableOwner, getSecurityManager)
 
     def userCanTakeOwnership(self):
         return aq_parent(aq_parent(self)).userCanTakeOwnership()
@@ -173,15 +175,16 @@ class TempFolder(TempFolderBase):
         return aq_parent(aq_parent(self)).allowedContentTypes()
 
     def __getitem__(self, id):
-        # Zope's inner acquisition chain for objects returned by __getitem__ will be
-        # portal -> portal_factory -> temporary_folder -> object
+        # Zope's inner acquisition chain for objects returned by __getitem__
+        # will be portal -> portal_factory -> temporary_folder -> object
         # What we really want is for the inner acquisition chain to be
         # intended_parent_folder -> portal_factory -> temporary_folder -> object
         # So we need to rewrap...
         portal_factory = aq_parent(aq_inner(self))
         intended_parent = aq_parent(portal_factory)
 
-        # If the intended parent has an object with the given id, just do a passthrough
+        # If the intended parent has an object with the given id, just do a
+        # passthrough
         if hasattr(intended_parent, id):
             return getattr(intended_parent, id)
 
@@ -191,14 +194,16 @@ class TempFolder(TempFolderBase):
         temp_folder = aq_base(self).__of__(portal_factory)
 
         if id in self:
-            return (aq_base(self._getOb(id)).__of__(temp_folder)).__of__(intended_parent)
+            return (aq_base(self._getOb(id)).__of__(temp_folder)) \
+                        .__of__(intended_parent)
         else:
             type_name = self.getId()
             try:
                 # We fake an archetype tool which returns no catalogs for the
                 # object to be indexed in to avoid it showing up in the catalog
                 # in the first place.
-                self.archetype_tool = FauxArchetypeTool(getToolByName(self, 'archetype_tool'))
+                self.archetype_tool = FauxArchetypeTool(
+                                        getToolByName(self, 'archetype_tool'))
                 _createObjectByType(type_name, self, id)
             except ConflictError:
                 raise
@@ -226,36 +231,40 @@ class TempFolder(TempFolderBase):
         pass
 
 
-# ##############################################################################
+# #############################################################################
 class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ """
     id = 'portal_factory'
-    meta_type= 'Plone Factory Tool'
+    meta_type = 'Plone Factory Tool'
     toolicon = 'skins/plone_images/add_icon.png'
     security = ClassSecurityInfo()
     isPrincipiaFolderish = 0
 
     implements(IFactoryTool, IHideFromBreadcrumbs)
 
-    manage_options = (({'label': 'Overview', 'action': 'manage_overview'}, \
-                       {'label': 'Documentation', 'action': 'manage_docs'}, \
-                       {'label': 'Factory Types', 'action': 'manage_portal_factory_types'},) +
-                      SimpleItem.manage_options)
+    manage_options = (
+        ({'label': 'Overview', 'action': 'manage_overview'},
+         {'label': 'Documentation', 'action': 'manage_docs'},
+         {'label': 'Factory Types', 'action': 'manage_portal_factory_types'}) +
+        SimpleItem.manage_options)
 
     security.declareProtected(ManagePortal, 'manage_overview')
-    manage_overview = PageTemplateFile('www/portal_factory_manage_overview', globals())
+    manage_overview = PageTemplateFile(
+                        'www/portal_factory_manage_overview', globals())
     manage_overview.__name__ = 'manage_overview'
     manage_overview._need__name__ = 0
 
     security.declareProtected(ManagePortal, 'manage_portal_factory_types')
-    manage_portal_factory_types = PageTemplateFile(os.path.join('www', 'portal_factory_manage_types'), globals())
+    manage_portal_factory_types = PageTemplateFile(
+        os.path.join('www', 'portal_factory_manage_types'), globals())
     manage_portal_factory_types.__name__ = 'manage_portal_factory_types'
     manage_portal_factory_types._need__name__ = 0
 
     manage_main = manage_overview
 
     security.declareProtected(ManagePortal, 'manage_docs')
-    manage_docs = PageTemplateFile(os.path.join('www', 'portal_factory_manage_docs'), globals())
+    manage_docs = PageTemplateFile(
+        os.path.join('www', 'portal_factory_manage_docs'), globals())
     manage_docs.__name__ = 'manage_docs'
 
     wwwpath = os.path.join(package_home(cmfplone_globals), 'www')
@@ -304,7 +313,8 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
                     id = obj.getId()
                 else:
                     id = getattr(obj, 'id', None)
-            type_name = aq_parent(aq_inner(obj)).id  # get the ID of the TempFolder
+            # get the ID of the TempFolder
+            type_name = aq_parent(aq_inner(obj)).id
             folder = aq_parent(aq_parent(aq_parent(aq_inner(obj))))
             folder.invokeFactory(id=id, type_name=type_name)
             obj = getattr(folder, id)
@@ -350,7 +360,8 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
         ob = aq_base(aq_parent(aq_inner(obj)))
-        return hasattr(ob, 'meta_type') and ob.meta_type == TempFolder.meta_type
+        return hasattr(ob, 'meta_type') \
+                and ob.meta_type == TempFolder.meta_type
 
     def __before_publishing_traverse__(self, other, REQUEST):
 
@@ -358,10 +369,14 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             del REQUEST[FACTORY_INFO]
 
         stack = REQUEST.get('TraversalRequestNameStack')
-        stack = [str(s) for s in stack]  # convert from unicode if necessary (happens in Epoz for some weird reason)
-        # need 2 more things on the stack at least for portal_factory to kick in:
+        # convert from unicode if necessary (happens in Epoz for some weird
+        # reason)
+        stack = [str(s) for s in stack]
+
+        # need 2 more things on the stack at least for portal_factory to
+        # kick in:
         #    (1) a type, and (2) an id
-        if len(stack) < 2: # ignore
+        if len(stack) < 2:  # ignore
             return
 
         # Keep track of how many path elements we want to eat
@@ -371,14 +386,14 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         types_tool = getToolByName(self, 'portal_types')
         # make sure this is really a type name
         if not type_name in types_tool.listContentTypes():
-            return # nope -- do nothing
+            return  # nope -- do nothing
 
         gobbled_length += 1
 
         id = stack[-2]
         intended_parent = aq_parent(self)
         if hasattr(intended_parent, id):
-            return # do normal traversal via __bobo_traverse__
+            return  # do normal traversal via __bobo_traverse__
 
         gobbled_length += 1
 
@@ -411,13 +426,16 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         REQUEST.set(FACTORY_INFO, factory_info)
 
     def __bobo_traverse__(self, REQUEST, name):
-        # __bobo_traverse__ can be invoked directly by a restricted_traverse method call
-        # in which case the traversal stack will not have been cleared by __before_publishing_traverse__
-        name = str(name) # fix unicode weirdness
+        # __bobo_traverse__ can be invoked directly by a restricted_traverse
+        # method call in which case the traversal stack will not have been
+        # cleared by __before_publishing_traverse__
+        name = str(name)  # fix unicode weirdness
         types_tool = getToolByName(self, 'portal_types')
         if not name in types_tool.listContentTypes():
-            return getattr(self, name) # not a type name -- do the standard thing
-        return self._getTempFolder(str(name)) # a type name -- return a temp folder
+            # not a type name -- do the standard thing
+            return getattr(self, name)
+        # a type name -- return a temp folder
+        return self._getTempFolder(str(name))
 
     security.declarePublic('__call__')
     def __call__(self, *args, **kwargs):
@@ -430,10 +448,12 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # do a passthrough if parent contains the id
         if id in aq_parent(self):
-            return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
+            return aq_parent(self).restrictedTraverse(
+                        '/'.join(stack[1:]))(*args, **kwargs)
 
         tempFolder = self._getTempFolder(type_name)
-        # Mysterious hack that fixes some problematic interactions with SpeedPack:
+        # Mysterious hack that fixes some problematic interactions with
+        # SpeedPack:
         #   Get the first item in the stack by explicitly calling __getitem__
         temp_obj = tempFolder.__getitem__(id)
         stack = stack[2:]
@@ -449,8 +469,8 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             obj = temp_obj
         return mapply(obj, self.REQUEST.args, self.REQUEST,
-                               call_object, 1, missing_name, dont_publish_class,
-                               self.REQUEST, bind=1)
+                               call_object, 1, missing_name,
+                               dont_publish_class, self.REQUEST, bind=1)
 
     index_html = None  # call __call__, not index_html
 
@@ -465,7 +485,8 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         types_tool = getToolByName(self, 'portal_types')
         if not type_name in types_tool.TempFolder.allowed_content_types:
             # update allowed types for tempfolder
-            types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
+            types_tool.TempFolder.allowed_content_types = \
+                (types_tool.listContentTypes())
 
         tempFolder = TempFolder(type_name).__of__(self)
 

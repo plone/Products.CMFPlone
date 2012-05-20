@@ -9,7 +9,8 @@ class ITranslatable(Interface):
 
     def isTranslation():
         """
-        return language if this object is used as multilingual content, 0 otherwise
+        return language if this object is used as multilingual content, 0
+        otherwise
         """
 
     def addTranslation(language, **kwargs):

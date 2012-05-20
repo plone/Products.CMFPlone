@@ -25,7 +25,7 @@ def bigram(u, limit=1):
         日本人-> [日本,本人]
         金 -> []
     """
-    return [u[i:i+2] for i in xrange(len(u) - limit)]
+    return [u[i:i + 2] for i in xrange(len(u) - limit)]
 
 
 def process_str_post(s, enc):

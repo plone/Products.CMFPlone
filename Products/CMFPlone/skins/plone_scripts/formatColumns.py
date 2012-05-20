@@ -3,21 +3,21 @@
 
 # returns a list of lists of items
 
-rows=[]
+rows = []
 
-i=0
-l=len(items)
+i = 0
+l = len(items)
 
 while 1:
-    col=[]
+    col = []
     for n in range(columns):
-        if i>=l:
+        if i >= l:
             col.append(None)
         else:
             col.append(items[i])
-            i=i+1
+            i = i + 1
     rows.append(list(col))
-    if i>=l: break
+    if i >= l:
+        break
 
 return rows
-

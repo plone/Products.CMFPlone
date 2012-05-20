@@ -6,7 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=catalog_sequence
 ##title=
-##
+
 sorted = catalog_sequence[:]
 sorted.sort(lambda x, y: cmp(x.modified(), y.modified()))
 return sorted

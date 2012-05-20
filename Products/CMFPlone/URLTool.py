@@ -18,9 +18,9 @@ class URLTool(PloneBaseTool, BaseTool):
     def isURLInPortal(self, url, context=None):
         """ Check if a given url is on the same host and contains the portal
             path.  Used to ensure that login forms can determine relevant
-            referrers (i.e. in portal).  Also return true for some relative urls
-            if context is passed in to allow for url parsing. When context is
-            not provided, assume that relative urls are in the portal. It is
+            referrers (i.e. in portal).  Also return true for some relative
+            urls if context is passed in to allow for url parsing. When context
+            is not provided, assume that relative urls are in the portal. It is
             assumed that http://portal is the same portal as https://portal.
 
             External sites listed in 'allow_external_login_sites' of
@@ -32,13 +32,13 @@ class URLTool(PloneBaseTool, BaseTool):
         _, u_host, u_path, _, _, _ = urlparse(url)
         if not u_host and not u_path.startswith('/'):
             if context is None:
-                return True #old behavior
+                return True  # old behavior
             if not context.isPrincipiaFolderish:
                 useurl = context.aq_parent.absolute_url()
             else:
                 useurl = context.absolute_url()
         else:
-            useurl = p_url # when u_path.startswith('/')
+            useurl = p_url  # when u_path.startswith('/')
         if not useurl.endswith('/'):
             useurl += '/'
 

@@ -35,8 +35,9 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = 'Plone Migration Tool'
     toolicon = 'skins/plone_images/site_icon.png'
 
-    manage_options = (({'label':'Upgrade', 'action':'../@@plone-upgrade'}, ) +
-                      SimpleItem.manage_options)
+    manage_options = (
+        ({'label': 'Upgrade', 'action': '../@@plone-upgrade'}, )
+        + SimpleItem.manage_options)
 
     _needRecatalog = 0
     _needUpdateRole = 0
@@ -176,7 +177,8 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
             for step in steps:
                 try:
                     step['step'].doStep(setup)
-                    setup.setLastVersionForProfile(_DEFAULT_PROFILE, step['dest'])
+                    setup.setLastVersionForProfile(
+                        _DEFAULT_PROFILE, step['dest'])
                     logger.info("Ran upgrade step: %s" % step['title'])
                 except (ConflictError, KeyboardInterrupt):
                     raise

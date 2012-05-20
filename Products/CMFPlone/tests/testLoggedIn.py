@@ -37,8 +37,8 @@ class TestLogin(PloneTestCase.PloneTestCase):
         self.failUnless(DateTime(member.getProperty('last_login_time')) >= now)
 
     def testLoggedInSetsLastLoginTimeIfMemberLacksSetOwnPropertiesPermission(self):
-        # If members lack the "Set own properties" permission, they should still
-        # be able to log in, and their login times should be set.
+        # If members lack the "Set own properties" permission, they should
+        # still be able to log in, and their login times should be set.
         now = DateTime()
         self.portal.manage_permission(SetOwnProperties, ['Manager'], acquire=0)
         self.portal.logged_in()
@@ -55,4 +55,5 @@ class TestLogin(PloneTestCase.PloneTestCase):
         self.portal.logged_in()
         # login_time did change
         member = self.membership.getAuthenticatedMember()
-        self.failUnless(DateTime(member.getProperty('login_time')) > login_time)
+        self.failUnless(
+            DateTime(member.getProperty('login_time')) > login_time)

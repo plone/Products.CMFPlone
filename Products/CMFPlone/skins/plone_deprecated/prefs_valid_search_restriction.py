@@ -6,6 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=searchonly, specified=['users','groups']
 ##title=Valid Search Resriction
-##
+
 # 'specified' must be a list
 return ((searchonly != None) and (searchonly in specified))

@@ -50,9 +50,12 @@ class PropertiesToolXMLAdapterTests(BodyAdapterTestCase):
         return PlonePropertiesToolXMLAdapter
 
     def _populate(self, obj):
-        obj._setObject('site_properties', SimpleItemWithProperties('site_properties'))
-        obj.site_properties.manage_changeProperties(title='Site wide properties')
-        obj.site_properties.manage_addProperty('allowAnonymousViewAbout', True, 'boolean')
+        obj._setObject('site_properties',
+                       SimpleItemWithProperties('site_properties'))
+        obj.site_properties.manage_changeProperties(
+            title='Site wide properties')
+        obj.site_properties.manage_addProperty('allowAnonymousViewAbout',
+                                               True, 'boolean')
 
     def setUp(self):
         self._obj = PropertiesTool()

@@ -29,13 +29,13 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         from plone.app.discussion.interfaces import IDiscussionSettings
         from plone.app.discussion.interfaces import IConversation
         self.folder.invokeFactory('Document', id='doc', title="Document")
-        # Enable discussion         
+        # Enable discussion
         registry = queryUtility(IRegistry)
         settings = registry.forInterface(IDiscussionSettings)
         settings.globally_enabled = True
         # Create the conversation object
         conversation = IConversation(self.folder.doc)
-        # Add a comment 
+        # Add a comment
         comment = createObject('plone.Comment')
         comment.text = 'Comment text'
         conversation.addComment(comment)
@@ -59,12 +59,14 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testEventCreate(self):
         self.folder.invokeFactory('Event', id='event',
-                                  title = 'Foo',
+                                  title='Foo',
                                   start_date='2003-09-18',
                                   end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.failUnless(self.folder.event.start().ISO8601().startswith('2003-09-18T00:00:00'))
-        self.failUnless(self.folder.event.end().ISO8601().startswith('2003-09-19T00:00:00'))
+        self.failUnless(self.folder.event.start().ISO8601() \
+                            .startswith('2003-09-18T00:00:00'))
+        self.failUnless(self.folder.event.end().ISO8601() \
+                            .startswith('2003-09-19T00:00:00'))
 
     def testEventEdit(self):
         self.folder.invokeFactory('Event', id='event')
@@ -72,8 +74,10 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
                                      start_date='2003-09-18',
                                      end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.failUnless(self.folder.event.start().ISO8601().startswith('2003-09-18T00:00:00'))
-        self.failUnless(self.folder.event.end().ISO8601().startswith('2003-09-19T00:00:00'))
+        self.failUnless(self.folder.event.start().ISO8601() \
+                            .startswith('2003-09-18T00:00:00'))
+        self.failUnless(self.folder.event.end().ISO8601() \
+                            .startswith('2003-09-19T00:00:00'))
 
     def testFileCreate(self):
         self.folder.invokeFactory('File', id='file', file=dummy.File())
@@ -94,12 +98,14 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFolderCreate(self):
-        self.folder.invokeFactory('Folder', id='folder', title='Foo', description='Bar')
+        self.folder.invokeFactory('Folder', id='folder', title='Foo',
+                                  description='Bar')
         self.assertEqual(self.folder.folder.Title(), 'Foo')
         self.assertEqual(self.folder.folder.Description(), 'Bar')
 
     def testLinkCreate(self):
-        self.folder.invokeFactory('Link', id='link', remote_url='http://foo.com', title='Foo')
+        self.folder.invokeFactory('Link', id='link',
+                                  remote_url='http://foo.com', title='Foo')
         self.assertEqual(self.folder.link.Title(), 'Foo')
         self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
 
@@ -110,7 +116,8 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
 
     def testNewsItemCreate(self):
-        self.folder.invokeFactory('News Item', id='newsitem', text='data', title='Foo')
+        self.folder.invokeFactory('News Item', id='newsitem',
+                                  text='data', title='Foo')
         self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
@@ -125,7 +132,8 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
     def testClearImageTitle(self):
         # Test for http://dev.plone.org/plone/ticket/3303
         # Should be able to clear Image title
-        self.folder.invokeFactory('Image', id='image', title='Foo', file=dummy.Image())
+        self.folder.invokeFactory('Image', id='image', title='Foo',
+                                  file=dummy.Image())
         self.assertEqual(self.folder.image.Title(), 'Foo')
         self.folder.image.image_edit(title='')
         self.assertEqual(self.folder.image.Title(), '')
@@ -194,12 +202,12 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFileEditShortName(self):
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.file.file_edit(id='fred')
         self.failUnless('fred' in self.folder)
 
     def testImageEditShortName(self):
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.image.image_edit(id='fred')
         self.failUnless('fred' in self.folder)
 
@@ -216,7 +224,8 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
 
     def testFileMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type,
+                         'application/pdf')
 
     def testImageMimeType(self):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
@@ -224,11 +233,13 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
 
     def testFileEditKeepsMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type,
+                         'application/pdf')
         self.folder.file.file_edit(title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type,
+                         'application/pdf')
 
     def testImageEditKeepsMimeType(self):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
@@ -240,16 +251,18 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
 
     def testFileRenameKeepsMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
-        transaction.savepoint(optimistic=True) # make rename work
+        self.assertEqual(self.folder.file.getFile().content_type,
+                         'application/pdf')
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.file.file_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'application/pdf')
-        self.assertEqual(self.folder.foo.getFile().content_type, 'application/pdf')
+        self.assertEqual(self.folder.foo.getFile().content_type,
+                         'application/pdf')
 
     def testImageRenameKeepsMimeType(self):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.content_type, 'image/gif')
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.image.image_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'image/gif')
         self.assertEqual(self.folder.foo.content_type, 'image/gif')
@@ -261,27 +274,36 @@ class TestFileURL(PloneTestCase.PloneTestCase):
     # NOTABUG: This is how urlparse.urlparse() works.
 
     def testFileURLWithHost(self):
-        self.folder.invokeFactory('Link', id='link', remote_url='file://foo.com/baz.txt')
-        self.assertEqual(self.folder.link.getRemoteUrl(), 'file://foo.com/baz.txt')
+        self.folder.invokeFactory('Link', id='link',
+                                  remote_url='file://foo.com/baz.txt')
+        self.assertEqual(self.folder.link.getRemoteUrl(),
+                         'file://foo.com/baz.txt')
 
     def testFileURLNoHost(self):
-        self.folder.invokeFactory('Link', id='link', remote_url='file:///foo.txt')
+        self.folder.invokeFactory('Link', id='link',
+                                  remote_url='file:///foo.txt')
         self.assertEqual(self.folder.link.getRemoteUrl(), 'file:///foo.txt')
 
     def testFileURLFourSlash(self):
-        self.folder.invokeFactory('Link', id='link', remote_url='file:////foo.com/baz.txt')
+        self.folder.invokeFactory('Link', id='link',
+                                  remote_url='file:////foo.com/baz.txt')
         # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.getRemoteUrl(), 'file://foo.com/baz.txt')
+        self.assertEqual(self.folder.link.getRemoteUrl(),
+                         'file://foo.com/baz.txt')
 
     def testFileURLFiveSlash(self):
-        self.folder.invokeFactory('Link', id='link', remote_url='file://///foo.com/baz.txt')
+        self.folder.invokeFactory('Link', id='link',
+                                  remote_url='file://///foo.com/baz.txt')
         # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.getRemoteUrl(), 'file:///foo.com/baz.txt')
+        self.assertEqual(self.folder.link.getRemoteUrl(),
+                         'file:///foo.com/baz.txt')
 
     def testFileURLSixSlash(self):
-        self.folder.invokeFactory('Link', id='link', remote_url='file://////foo.com/baz.txt')
+        self.folder.invokeFactory('Link', id='link',
+                                  remote_url='file://////foo.com/baz.txt')
         # See urlparse.urlparse()
-        self.assertEqual(self.folder.link.getRemoteUrl(), 'file:////foo.com/baz.txt')
+        self.assertEqual(self.folder.link.getRemoteUrl(),
+                         'file:////foo.com/baz.txt')
 
 
 class TestFileExtensions(PloneTestCase.PloneTestCase):
@@ -292,7 +314,7 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
 
     def testUploadFile(self):
         self.folder[self.file_id].file_edit(file=dummy.File('fred.txt'))
@@ -321,7 +343,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
 
     def testUploadBadFile(self):
         # http://dev.plone.org/plone/ticket/3416
@@ -351,10 +373,10 @@ class TestImageProps(PloneTestCase.PloneTestCase):
     def testImageComputedProps(self):
         from OFS.Image import Image
         tag = Image.tag.im_func
-        kw = {'_title':'some title',
-              '_alt':'alt tag',
-              'height':100,
-              'width':100}
+        kw = {'_title': 'some title',
+              '_alt': 'alt tag',
+              'height': 100,
+              'width': 100}
         # Wrap object so that ComputedAttribute gets executed.
         self.ob = dummy.ImageComputedProps(**kw).__of__(self.folder)
 
