@@ -138,9 +138,11 @@ $(document).ready(function(){
     /* Workflow State Change */
     $('#plone-contentmenu-workflow dd.actionMenuContent').delegate('button', 'click', function(){
         $('#kss-spinner').show();
+        var form = $(this).parent();
         $.ajax({
-            url: $(this).parent().attr('action'),
+            url: form.attr('action'),
             type: 'POST',
+            data: form.serializeArray(),
             success: hideSpinner,
             error: hideSpinner
         });
