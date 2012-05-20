@@ -215,6 +215,8 @@ except ParseError: pass
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
+    from DateTime.interfaces import DateTimeError
+
     def testImport_DateTimeError(self):
         self.check('from DateTime.interfaces import DateTimeError')
 
@@ -234,6 +236,8 @@ except DateTimeError: pass
         except Exception, e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
+
+    from DateTime.DateTime import SyntaxError
 
     def testImport_SyntaxError(self):
         self.check('from DateTime.interfaces import SyntaxError')
@@ -334,7 +338,6 @@ except DiscussionNotAllowed: pass
 
     def testImport_mergeResults(self):
         self.check('from Products.ZCatalog.Catalog import mergeResults')
-
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):
