@@ -135,19 +135,6 @@ $(document).ready(function(){
         return false;
     });
 
-    /* Workflow State Change */
-    $('#plone-contentmenu-workflow dd.actionMenuContent').delegate('button', 'click', function(){
-        $('#kss-spinner').show();
-        var form = $(this).parent();
-        $.ajax({
-            url: form.attr('action'),
-            type: 'POST',
-            data: form.serializeArray(),
-            success: hideSpinner,
-            error: hideSpinner
-        });
-        return false;
-    });
 });
 
 })(jQuery);
