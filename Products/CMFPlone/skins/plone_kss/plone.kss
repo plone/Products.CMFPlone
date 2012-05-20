@@ -101,24 +101,6 @@ Content Menu Sections: Workflow State
     setStyle-value: none;
 }
 
-/*  Selector for the sharing page in plone.app.workflow.
-    the search_term parameters, puts the needed info into the request
- */
-
-#sharing-save-button:click {
-  evt-click-preventdefault: true;
-  action-server: updateSharingInfo;
-  updateSharingInfo-kssSubmitForm: currentForm();
-  updateSharingInfo-error: plone-submitCurrentForm;
-}
-
-#sharing-user-group-search:keyup {
-  evt-keyup-preventdefault: true;
-  evt-keyup-keycodes: 13;
-  action-server: updateSharingInfo;
-  updateSharingInfo-kssSubmitForm: currentForm();
-}
-
 /* Folder contents stuff */
 
 body:load { 

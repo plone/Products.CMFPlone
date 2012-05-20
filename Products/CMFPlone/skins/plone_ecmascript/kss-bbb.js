@@ -1,5 +1,9 @@
 (function($){
 
+function hideSpinner(){
+    $('#kss-spinner').hide();
+}
+
 function refreshPortlet(hash, _options){
     var options = {
         data: {},
@@ -26,7 +30,7 @@ function refreshPortlet(hash, _options){
 }
 
 /* Calendar Portlet KSS Replacement */
-$('#calendar-next,#calendar-previous').live('click', function(){
+$('body').delegate('#calendar-next,#calendar-previous', 'click', function(){
     $('#kss-spinner').show();
     var el = $(this);
     var container = el.parents('.portletWrapper');
@@ -90,45 +94,63 @@ $(document).ready(function(){
         refreshPortlet($(this).parents('.portletWrapper').data('portlethash'));
     });
 
-    /* folder contents table loading actions */
-    if($("body.template-folder_contents").length) {
-        var ccore = $("#content-core");
-        ccore.delegate("#foldercontents-show-all", "click", function(event) {
-            event.preventDefault();
-            replaceFolderContentsTable({ "show_all": "True", "pagenumber": "1" });
-        });
-        ccore.delegate("#foldercontents-show-batched", "click", function(event) {
-            event.preventDefault();
-            replaceFolderContentsTable({ "show_all": "False" });
-        });
-        ccore.delegate("#foldercontents-title-column", "click", function(event) {
-            replaceFolderContentsTable({ "sort_on": "sortable_title" });
-        });
-        ccore.delegate("#foldercontents-modified-column", "click", function(event) {
-            replaceFolderContentsTable({ "sort_on": "modified" });
-        });
-        ccore.delegate("#foldercontents-status-column", "click", function(event) {
-            replaceFolderContentsTable({ "sort_on": "review_state" });
-        });
-        ccore.delegate("#foldercontents-selectall", "click", function(event) {
-            event.preventDefault();
-            replaceFolderContentsTable({ "select": "screen" });
-        });
-        ccore.delegate("#foldercontents-selectall-completebatch", "click", function(event) {
-            event.preventDefault();
-            replaceFolderContentsTable({ "select": "all" });
-        });
-        ccore.delegate("#foldercontents-clearselection", "click", function(event) {
-            event.preventDefault();
-            replaceFolderContentsTable({ "select": "none" });
-        });
-        ccore.delegate("div.listingBar a", "click", function(event) {
-            event.preventDefault();
-            var link = $(this).attr("href");
-            var page = decodeURI((RegExp("pagenumber\:int" + '=' + '(.+?)(&|$)').exec(link)||[,null])[1]);
-            replaceFolderContentsTable({ "pagenumber": page });
-        });
+    /* sharing related kss */
+    function updateSharing(data){
+        var sharing = $(data.body);
+        var messages = $(data.messages).filter(function(){ return this.tagName == 'DL'; });
+        $('.portalMessage').remove();
+        $('#user-group-sharing').replaceWith(sharing);
+        $('#content').prepend(messages);
+        $('#kss-spinner').hide();
     }
+
+    /* sharing search form */
+    var search_timeout = null;
+    $('#content-core').delegate('#sharing-user-group-search', 'change input', function(){
+        var text = $(this);
+        if(search_timeout != null){
+            clearTimeout(search_timeout);
+        }
+        if(text.val().length > 3){
+            search_timeout = setTimeout($.proxy(function(){
+                $('#sharing-search-button').trigger('click');
+            }, text), 300);
+        }
+    });
+
+    $('#content-core').delegate('#sharing-search-button', 'click', function(){
+        $('#kss-spinner').show();
+        $.ajax({
+            url: $('base').attr('href') + '/@@updateSharingInfo',
+            data: {
+                search_term: $('#sharing-user-group-search').val(),
+                'form.button.Search': 'Search'
+            },
+            type: 'GET',
+            dataType: 'json',
+            success: updateSharing,
+            error: hideSpinner
+        });
+        return false;
+    });
+
+    /* Sharing save button */
+    $('#content-core').delegate('#sharing-save-button', 'click', function(){
+        $('#kss-spinner').show();
+        var btn = $(this);
+        var form = btn.parents('form');
+        var data = form.serializeArray();
+        data.push({name: 'form.button.Save', value: 'Save'});
+        $.ajax({
+            url: $('base').attr('href') + '/@@updateSharingInfo',
+            data: data,
+            type: 'POST',
+            dataType: 'json',
+            success: updateSharing,
+            error: hideSpinner
+        })
+        return false;
+    });
 
 });
 
