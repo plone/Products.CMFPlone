@@ -131,10 +131,21 @@ $(document).ready(function(){
             dataType: 'json',
             success: updateSharing,
             error: hideSpinner
-        })
+        });
         return false;
     });
 
+    /* Workflow State Change */
+    $('#plone-contentmenu-workflow dd.actionMenuContent').delegate('button', 'click', function(){
+        $('#kss-spinner').show();
+        $.ajax({
+            url: $(this).parent().attr('action'),
+            type: 'POST',
+            success: hideSpinner,
+            error: hideSpinner
+        });
+        return false;
+    });
 });
 
 })(jQuery);
