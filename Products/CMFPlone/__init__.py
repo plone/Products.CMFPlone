@@ -28,11 +28,6 @@ def initialize(context):
     from logging import Logger
     allow_class(Logger)
 
-    # Register kss extension to allow it used from fs skins
-    from Products.CMFCore.DirectoryView import registerFileExtension
-    from Products.CMFCore.FSFile import FSFile
-    registerFileExtension('kss', FSFile)
-
     # various small utils functions
     # added for unescaping view names in urls when finding selected action
     ModuleSecurityInfo('urllib').declarePublic('unquote')
