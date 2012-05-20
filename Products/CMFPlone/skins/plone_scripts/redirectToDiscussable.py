@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Redirect from a discussionItem to it's absolute parent (discussable object)
-##
 
 from Products.CMFCore.utils import getToolByName
 

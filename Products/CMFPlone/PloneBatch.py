@@ -5,6 +5,7 @@ from plone.batching.utils import calculate_pagerange
 
 from zope.deprecation import deprecated
 
+
 class Batch(QuantumBatch):
 
     b_start_str = 'b_start'
@@ -12,7 +13,8 @@ class Batch(QuantumBatch):
     def __init__(self, sequence, size, start=0, end=0, orphan=0,
                  overlap=0, pagerange=7, quantumleap=0,
                  b_start_str='b_start'):
-        super(Batch, self).__init__(sequence, size, start, end, orphan, overlap,
+        super(Batch, self).__init__(sequence, size, start,
+                                    end, orphan, overlap,
               pagerange, quantumleap)
         self.b_start_str = b_start_str
 
@@ -24,8 +26,8 @@ class Batch(QuantumBatch):
 
     def initialize(self, start, end, size):
         super(Batch, self).initialize(start, end, size)
-        self.pagerange, self.pagerangestart, self.pagerangeend = calculate_pagerange(
-            self.pagenumber, self.numpages, self.pagerange)
+        self.pagerange, self.pagerangestart, self.pagerangeend = \
+            calculate_pagerange(self.pagenumber, self.numpages, self.pagerange)
 
     def pageurl(self, formvariables, pagenumber=-1):
         """ Makes the url for a given page """
@@ -38,7 +40,8 @@ class Batch(QuantumBatch):
         """ Returns the page number and url for the navigation quick links """
         if not navlist:
             navlist = self.navlist
-        return map(lambda x, formvariables = formvariables: (x, self.pageurl(formvariables, x)), navlist)
+        return map(lambda x, formvariables=formvariables:
+                (x, self.pageurl(formvariables, x)), navlist)
 
     def prevurls(self, formvariables):
         """ Helper method to get prev navigation list from templates """
@@ -50,5 +53,3 @@ class Batch(QuantumBatch):
 
     prevlist = QuantumBatch.previous_pages
     nextlist = QuantumBatch.next_pages
-
-

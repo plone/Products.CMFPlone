@@ -7,12 +7,12 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Validates an event edit_form contents
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
+    context.plone_utils.addPortalMessage(
+        _(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     return state

@@ -22,17 +22,23 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='new')
         self.setRoles(['Reviewer'])
         self.workflow.doActionFor(self.folder.new, 'publish')
-        self.assertEqual(self.workflow.getInfoFor(self.folder.new, 'review_state'), 'published')
+        self.assertEqual(
+                self.workflow.getInfoFor(self.folder.new, 'review_state'),
+                'published')
         self.failUnless(self.catalog(id='new', review_state='published'))
 
     def testRetractDocument(self):
         self.folder.invokeFactory('Document', id='new')
         self.setRoles(['Reviewer'])
         self.workflow.doActionFor(self.folder.new, 'publish')
-        self.assertEqual(self.workflow.getInfoFor(self.folder.new, 'review_state'), 'published')
+        self.assertEqual(
+                self.workflow.getInfoFor(self.folder.new, 'review_state'),
+                'published')
         self.setRoles(['Member'])
         self.workflow.doActionFor(self.folder.new, 'retract')
-        self.assertEqual(self.workflow.getInfoFor(self.folder.new, 'review_state'), 'visible')
+        self.assertEqual(
+                self.workflow.getInfoFor(self.folder.new, 'review_state'),
+                'visible')
 
     def testEditDocument(self):
         self.folder.invokeFactory('Document', id='new')

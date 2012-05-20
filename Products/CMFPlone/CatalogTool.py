@@ -203,7 +203,7 @@ def getObjPositionInParent(obj):
         return ordered.getObjectPosition(obj.getId())
     return 0
 
-SIZE_CONST = {'kB': 1024, 'MB': 1024*1024, 'GB': 1024*1024*1024}
+SIZE_CONST = {'kB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
 SIZE_ORDER = ('GB', 'MB', 'kB')
 
 
@@ -237,9 +237,9 @@ def getObjSize(obj):
         if size < SIZE_CONST[smaller]:
             return '1 %s' % smaller
         for c in SIZE_ORDER:
-            if size/SIZE_CONST[c] > 0:
+            if size / SIZE_CONST[c] > 0:
                 break
-        return '%.1f %s' % (float(size/float(SIZE_CONST[c])), c)
+        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
     return size
 
 
@@ -467,6 +467,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
               URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
               urllib.quote('Catalog Rebuilt\n'
                            'Total time: %s\n'
-                           'Total CPU time: %s' % (`elapse`, `c_elapse`)))
+                           'Total CPU time: %s'
+                                % (repr(elapse), repr(c_elapse))))
 
 InitializeClass(CatalogTool)

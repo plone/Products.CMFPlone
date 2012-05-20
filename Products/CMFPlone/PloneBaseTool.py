@@ -148,8 +148,8 @@ class PloneBaseTool:
 
     implements(IPloneBaseTool)
 
-    # overwrite getOAI and getExprContext to use our variants that understand the
-    # temp folder of portal factory
+    # overwrite getOAI and getExprContext to use our variants that understand
+    # the temp folder of portal factory
     def _getOAI(self, object):
         return getOAI(self, object)
 

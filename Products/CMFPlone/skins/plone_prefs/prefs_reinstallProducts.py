@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=prefs_reinstallProducts
-##
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -19,7 +18,7 @@ putil = getToolByName(context, 'plone_utils')
 product = req.get('prefs_reinstallProducts', None)
 if product:
     qi.upgradeProduct(product)
-    msg = _(u'Upgraded ${product}', mapping={'product':product})
+    msg = _(u'Upgraded ${product}', mapping={'product': product})
     putil.addPortalMessage(msg)
 
 purl = getToolByName(context, 'portal_url')()

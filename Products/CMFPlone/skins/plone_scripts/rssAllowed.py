@@ -22,7 +22,8 @@ if site and not ps.isSiteSyndicationAllowed():
 # really we should be raising an HTTP error, something that
 # rss news readers would understand
 if not allowed:
-    raise ValueError, "Site syndication via RSS feeds is not allowed. Ask the sites"\
-    " system administrator to go to portal_syndication > Policies and enable syndication. Each folder"\
-    " then needs to have syndication enabled."
-
+    raise ValueError(
+        "Site syndication via RSS feeds is not allowed. Ask the sites"
+        " system administrator to go to portal_syndication > Policies and"
+        " enable syndication. Each folder then needs to have syndication"
+        " enabled.")

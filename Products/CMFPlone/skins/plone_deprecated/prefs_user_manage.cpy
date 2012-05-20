@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=users=[], resetpassword=[], delete=[]
 ##title=Edit users
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -28,7 +27,9 @@ for user in users:
         # If the email field was disabled (ie: non-writeable), the
         # property might not exist.
         if user.email != member.getProperty('email'):
-            setMemberProperties(member, REQUEST=context.REQUEST, email=user.email)
+            setMemberProperties(member,
+                                REQUEST=context.REQUEST,
+                                email=user.email)
 
     # If reset password has been checked email user a new password
     if hasattr(user, 'resetpassword'):
@@ -36,7 +37,8 @@ for user in users:
     else:
         pw = None
 
-    acl_users.userFolderEditUser(user.id, pw, user.get('roles',[]), member.getDomains(), REQUEST=context.REQUEST)
+    acl_users.userFolderEditUser(user.id, pw, user.get('roles', []),
+                                 member.getDomains(), REQUEST=context.REQUEST)
     if pw:
         context.REQUEST.form['new_password'] = pw
         mailPassword(user.id, context.REQUEST)
@@ -44,7 +46,8 @@ for user in users:
 if delete:
     # TODO We should eventually have a global switch to determine member area
     # deletion
-    mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1, REQUEST=context.REQUEST)
+    mtool.deleteMembers(delete, delete_memberareas=0, delete_localroles=1,
+                        REQUEST=context.REQUEST)
 
 context.plone_utils.addPortalMessage(_(u'Changes applied.'))
 return state

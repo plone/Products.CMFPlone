@@ -30,15 +30,15 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         # TODO Need to behave differently for paths
         if len(objs) and '/' in objs[0]:
             return self.flattenTransitionsForPaths(objs)
-        transitions=[]
-        t_names=[]
+        transitions = []
+        t_names = []
 
         if container is None:
             container = self
         for o in [getattr(container, oid, None) for oid in objs]:
-            trans=()
+            trans = ()
             try:
-                trans=self.getTransitionsFor(o, container)
+                trans = self.getTransitionsFor(o, container)
             except ConflictError:
                 raise
             except:
@@ -56,14 +56,14 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         if hasattr(paths, 'startswith'):
             return ()
 
-        transitions=[]
-        t_names=[]
+        transitions = []
+        t_names = []
         portal = getToolByName(self, 'portal_url').getPortalObject()
 
         for o in [portal.restrictedTraverse(path) for path in paths]:
-            trans=()
+            trans = ()
             try:
-                trans=self.getTransitionsFor(o, o.aq_inner.aq_parent)
+                trans = self.getTransitionsFor(o, o.aq_inner.aq_parent)
             except ConflictError:
                 raise
             except:
@@ -107,7 +107,9 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         return tuple(result.values())
 
     def workflows_in_use(self):
-        """ gathers all the available workflow chains (sequence of workflow ids, ).  """
+        """ gathers all the available workflow chains (sequence
+        of workflow ids).
+        """
         in_use = []
 
         in_use.append(self._default_chain)
@@ -126,15 +128,17 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
             i.e. map[workflow_id]=(workflow definition map, )
             each workflow defintion map contains the following:
-            (worklist)id, guard (Guard instance), guard_permissions (permission of Guard instance),
-            guard_roles (roles of Guard instance), catalog_vars (mapping), actbox_name (actions box label),
+            (worklist)id, guard (Guard instance), guard_permissions (permission
+            of Guard instance), guard_roles (roles of Guard instance),
+            catalog_vars (mapping), actbox_name (actions box label),
             actbox_url (actions box url) and types (list of portal types)
         """
         # We want to know which types use the workflows with worklists
-        # This for example avoids displaying 'pending' of multiple workflows in the same worklist
+        # This for example avoids displaying 'pending' of multiple workflows in
+        # the same worklist
         types_tool = getToolByName(self, 'portal_types')
         list_ptypes = types_tool.listContentTypes()
-        types_by_wf = {} # wf:[list,of,types]
+        types_by_wf = {}  # wf:[list,of,types]
         for t in list_ptypes:
             for wf in self.getChainFor(t):
                 types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
@@ -150,29 +154,33 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         wf_with_wlists = {}
         for id in self.getWorkflowIds():
-            # the above list incomprehension merely _flattens_ nested sequences into 1 sequence
+            # the above list incomprehension merely _flattens_ nested sequences
+            # into 1 sequence
 
-            wf=self.getWorkflowById(id)
+            wf = self.getWorkflowById(id)
             if hasattr(wf, 'worklists'):
                 wlists = []
                 for worklist in wf.worklists:
-                    wlist_def=wf.worklists[worklist]
-                    # Make the var_matches a dict instead of PersistentMapping to enable access from scripts
+                    wlist_def = wf.worklists[worklist]
+                    # Make the var_matches a dict instead of PersistentMapping
+                    # to enable access from scripts
                     var_matches = {}
                     for key in wlist_def.var_matches.keys():
                         var_matches[key] = wlist_def.var_matches[key]
 
-                    a_wlist = {'id':worklist
-                              ,'guard': wlist_def.getGuard()
-                              ,'guard_permissions': wlist_def.getGuard().permissions
-                              ,'guard_roles': wlist_def.getGuard().roles
-                              ,'catalog_vars': var_matches
-                              ,'name': getattr(wlist_def, 'actbox_name', None)
-                              ,'url': getattr(wlist_def, 'actbox_url', None)
-                              ,'types' : types_by_wf.get(id,[])}
+                    a_wlist = {
+                        'id': worklist,
+                        'guard': wlist_def.getGuard(),
+                        'guard_permissions': wlist_def.getGuard().permissions,
+                        'guard_roles': wlist_def.getGuard().roles,
+                        'catalog_vars': var_matches,
+                        'name': getattr(wlist_def, 'actbox_name', None),
+                        'url': getattr(wlist_def, 'actbox_url', None),
+                        'types': types_by_wf.get(id, [])}
                     wlists.append(a_wlist)
-                # yes, we can duplicates, we filter duplicates out on the calling PyhtonScript client
-                wf_with_wlists[id]=wlists
+                # yes, we can duplicates, we filter duplicates out on the
+                # calling PyhtonScript client
+                wf_with_wlists[id] = wlists
 
         return wf_with_wlists
 
@@ -182,17 +190,18 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         This method replace 'getWorklists' by implementing the whole worklists
         work for the script.
-        An object is returned only once, even if is return by several worklists.
-        Make the whole work as expensive it is.
+        An object is returned only once, even if is return by several
+        worklists. Make the whole work as expensive it is.
         """
         sm = getSecurityManager()
         # We want to know which types use the workflows with worklists
-        # This for example avoids displaying 'pending' of multiple workflows in the same worklist
+        # This for example avoids displaying 'pending' of multiple workflows in
+        # the same worklist
         types_tool = getToolByName(self, 'portal_types')
         catalog = getToolByName(self, 'portal_catalog')
 
         list_ptypes = types_tool.listContentTypes()
-        types_by_wf = {} # wf:[list,of,types]
+        types_by_wf = {}  # wf:[list,of,types]
         for t in list_ptypes:
             for wf in self.getChainFor(t):
                 types_by_wf[wf] = types_by_wf.get(wf, []) + [t]
@@ -208,12 +217,12 @@ class WorkflowTool(PloneBaseTool, BaseTool):
 
         objects_by_path = {}
         for id in self.getWorkflowIds():
-
-            wf=self.getWorkflowById(id)
+            wf = self.getWorkflowById(id)
             if hasattr(wf, 'worklists'):
                 for worklist in wf.worklists:
-                    wlist_def=wf.worklists[worklist]
-                    # Make the var_matches a dict instead of PersistentMapping to enable access from scripts
+                    wlist_def = wf.worklists[worklist]
+                    # Make the var_matches a dict instead of PersistentMapping
+                    # to enable access from scripts
                     catalog_vars = dict(portal_type=types_by_wf.get(id, []))
                     for key in wlist_def.var_matches:
                         catalog_vars[key] = wlist_def.var_matches[key]
@@ -233,7 +242,6 @@ class WorkflowTool(PloneBaseTool, BaseTool):
         results = objects_by_path.values()
         results.sort()
         return tuple([obj[1] for obj in results])
-
 
     security.declareProtected(ManagePortal, 'getChainForPortalType')
     def getChainForPortalType(self, pt_name, managescreen=0):
@@ -268,7 +276,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     states = wf.states
                     state = getattr(states, state_name, None)
                     if state is not None:
-                        return getattr(aq_base(state), 'title', None) or state_name
+                        return getattr(aq_base(state), 'title', None) \
+                                or state_name
         return state_name
 
     security.declarePublic('getTitleForTransitionOnType')
@@ -284,7 +293,8 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     transitions = wf.transitions
                     trans = getattr(transitions, trans_name, None)
                     if trans is not None:
-                        return getattr(aq_base(trans), 'actbox_name', None) or trans_name
+                        return getattr(aq_base(trans), 'actbox_name', None) \
+                                or trans_name
         return trans_name
 
     security.declarePublic('listWFStatesByTitle')

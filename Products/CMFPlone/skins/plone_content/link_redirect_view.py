@@ -25,7 +25,10 @@ if redirect_links and not can_edit:
         # we just need to adapt ../relative/links, /absolute/ones work anyway
         # -> this requires relative links to start with ./ or ../
         context_state = context.restrictedTraverse('@@plone_context_state')
-        return context.REQUEST.RESPONSE.redirect(context_state.canonical_object_url()  + '/' + context.getRemoteUrl())
+        return context.REQUEST.RESPONSE.redirect(
+                    context_state.canonical_object_url()
+                    + '/'
+                    + context.getRemoteUrl())
     else:
         return context.REQUEST.RESPONSE.redirect(context.getRemoteUrl())
 else:

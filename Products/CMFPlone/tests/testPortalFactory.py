@@ -10,6 +10,7 @@ from AccessControl import getSecurityManager
 default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
 
+
 def sortTuple(t):
     l = list(t)
     l.sort()
@@ -26,20 +27,24 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.membership.addMember('manager', 'secret', ['Manager'], [])
 
     def testTraverse(self):
-        temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_doc = self.folder.restrictedTraverse(
+                        'portal_factory/Document/tmp_id')
         self.assertEqual(temp_doc.portal_type, 'Document')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
 
     def testTraverseEditView(self):
-        edit_view = self.folder.restrictedTraverse('portal_factory/Document/tmp_id/edit')
+        edit_view = self.folder.restrictedTraverse(
+                        'portal_factory/Document/tmp_id/edit')
         self.assertEquals('tmp_id', edit_view.im_self.getId())
         self.assertEquals('Document', edit_view.im_self.portal_type)
 
     def testTraverseTwiceByDifferentContentTypes(self):
-        temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_doc = self.folder.restrictedTraverse(
+                        'portal_factory/Document/tmp_id')
         self.assertEqual(temp_doc.portal_type, 'Document')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
-        temp_img = self.folder.restrictedTraverse('portal_factory/Image/tmp_id_image')
+        temp_img = self.folder.restrictedTraverse(
+                        'portal_factory/Image/tmp_id_image')
         self.assertEqual(temp_img.portal_type, 'Image')
         self.assertEqual(temp_img.getId(), 'tmp_id_image')
 
@@ -55,11 +60,13 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
 
-        temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object = self.folder.restrictedTraverse(
+                        'portal_factory/Document/tmp_id')
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
                          ('Authenticated', 'Foo', 'Member'))
 
-        temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object2 = self.folder.folder2.restrictedTraverse(
+                        'portal_factory/Document/tmp_id')
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
 
@@ -73,12 +80,15 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='folder2')
         self.folder.folder2.manage_addLocalRoles('member', ('Reviewer',))
         # make folder2 not inherit local roles
-        self.portal.plone_utils.acquireLocalRoles(self.folder.folder2, status=0)
+        self.portal.plone_utils.acquireLocalRoles(self.folder.folder2,
+                                                  status=0)
 
-        self.assertEqual(sortTuple(member.getRolesInContext(self.folder.folder2)),
-                         ('Authenticated', 'Member', 'Reviewer'))
+        self.assertEqual(
+                sortTuple(member.getRolesInContext(self.folder.folder2)),
+                ('Authenticated', 'Member', 'Reviewer'))
 
-        temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object2 = self.folder.folder2.restrictedTraverse(
+                        'portal_factory/Document/tmp_id')
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
                          ('Authenticated', 'Member', 'Reviewer'))
 
@@ -95,7 +105,8 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         # Assume identify of the ordinary member
         self.login('member')
         folder = self.membership.getHomeFolder()
-        temp_object = folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object = \
+                folder.restrictedTraverse('portal_factory/Document/tmp_id')
 
         # Make sure member is owner of temporary object
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
@@ -110,14 +121,19 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
 
     def testTempFolderPermissions(self):
         # TempFolder should "inherit" permission mappings from container
-        previous_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
+        previous_roles = \
+                [r for r in self.folder.rolesOfPermission(AddPortalContent)
+                    if r['name'] == 'Anonymous']
         self.folder.manage_permission(AddPortalContent, ['Anonymous'], 1)
-        new_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
+        new_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent)
+                        if r['name'] == 'Anonymous']
         self.failIfEqual(previous_roles, new_roles)
 
         temp_folder = self.folder.restrictedTraverse(
                                 'portal_factory/Document/tmp_id').aq_parent
-        temp_roles = [r for r in temp_folder.rolesOfPermission(AddPortalContent) if r['name'] == 'Anonymous']
+        temp_roles = \
+                [r for r in temp_folder.rolesOfPermission(AddPortalContent)
+                    if r['name'] == 'Anonymous']
 
         self.assertEqual(temp_roles, new_roles)
 
@@ -126,31 +142,39 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
 
     def testCreateObjectByDoCreate(self):
         # doCreate should create the real object
-        temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object = \
+            self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         foo = temp_object.portal_factory.doCreate(temp_object, 'foo')
         self.failUnless('foo' in self.folder)
-        self.assertEqual(foo.get_local_roles_for_userid(default_user), ('Owner',))
+        self.assertEqual(foo.get_local_roles_for_userid(default_user),
+                         ('Owner',))
 
     def testUnauthorizedToCreateObjectByDoCreate(self):
         # Anonymous should not be able to create the (real) object
         # Note that Anonymous used to be able to create the temp object...
-        temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object = \
+            self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         self.logout()
         self.assertRaises(ValueError, temp_object.portal_factory.doCreate,
                           temp_object, 'foo')
 
     def testCreateObjectByDocumentEdit(self):
         # document_edit should create the real object
-        temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        temp_object.document_edit(id='foo', title='Foo', text_format='plain', text='')
+        temp_object = \
+            self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object.document_edit(id='foo', title='Foo', text_format='plain',
+                                  text='')
         self.failUnless('foo' in self.folder)
         self.assertEqual(self.folder.foo.Title(), 'Foo')
-        self.assertEqual(self.folder.foo.get_local_roles_for_userid(default_user), ('Owner',))
+        self.assertEqual(
+                self.folder.foo.get_local_roles_for_userid(default_user),
+                ('Owner',))
 
     def testUnauthorizedToCreateObjectByDocumentEdit(self):
         # Anonymous should not be able to create the (real) object
         # Note that Anonymous used to be able to create the temp object...
-        temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        temp_object = \
+            self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         self.logout()
         self.assertRaises(ValueError, temp_object.document_edit,
                           id='foo', title='Foo', text_format='plain', text='')
@@ -193,7 +217,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         self.basic_auth = '%s:%s' % (default_user, default_password)
         # We want 401 responses, not redirects to a login page
         plugins = self.portal.acl_users.plugins
-        plugins.deactivatePlugin( IChallengePlugin, 'credentials_cookie_auth')
+        plugins.deactivatePlugin(IChallengePlugin, 'credentials_cookie_auth')
 
         # Enable portal_factory for Document type
         self.factory = self.portal.portal_factory
@@ -205,43 +229,48 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 '/createObject?type_name=Document',
                                 self.basic_auth)
 
-        self.assertEqual(response.getStatus(), 302) # Redirect to document_edit_form
+        # Redirect to document_edit_form
+        self.assertEqual(response.getStatus(), 302)
 
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
+        self.failUnless(location.startswith(
+                                self.folder_url + '/portal_factory/Document/'))
         # CMFFormController redirects should not do alias translation
         self.failUnless(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
         response = self.publish(edit_form_path, self.basic_auth)
-        self.assertEqual(response.getStatus(), 200) # OK
+        self.assertEqual(response.getStatus(), 200)  # OK
 
     def testCreateNonGloballyAllowedObject(self):
         # TempFolder allows to create all portal types
-        self.portal.portal_types.Document.manage_changeProperties(global_allow=0)
+        self.portal.portal_types.Document.manage_changeProperties(
+                                                        global_allow=0)
         response = self.publish(self.folder_path +
                                 '/createObject?type_name=Document',
                                 self.basic_auth)
 
-        self.assertEqual(response.getStatus(), 302) # Redirect to document_edit_form
+        # Redirect to document_edit_form
+        self.assertEqual(response.getStatus(), 302)
 
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(self.folder_url+'/portal_factory/Document/'))
+        self.failUnless(location.startswith(
+                                self.folder_url + '/portal_factory/Document/'))
         self.failUnless(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
         response = self.publish(edit_form_path, self.basic_auth)
-        self.assertEqual(response.getStatus(), 200) # OK
+        self.assertEqual(response.getStatus(), 200)  # OK
 
     def testUnauthorizedToViewEditForm(self):
         # Anonymous should not be able to see document_edit_form
         response = self.publish(self.folder_path +
                                 '/createObject?type_name=Document',
-                                ) # No basic out info
+                                )  # No basic out info
         # We got redirected to the factory
         self.assertEqual(response.getStatus(), 302)
         newpath = response.getHeader('location')
@@ -249,15 +278,15 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # Let's follow it
         response = self.publish(path)
         # And we are forbidden
-        self.assertEqual(response.getStatus(), 401) # Unauthorized
+        self.assertEqual(response.getStatus(), 401)  # Unauthorized
 
     def testUnauthorizedToViewEditFormOfNonFactoryObject(self):
         # Anonymous should not be able to see newsitem_edit_form
         response = self.publish(self.folder_path +
                                 '/createObject?type_name=News%20Item',
-                                ) # No basic out info
+                                )  # No basic out info
 
-        self.assertEqual(response.getStatus(), 401) # Unauthorized
+        self.assertEqual(response.getStatus(), 401)  # Unauthorized
 
     def testCreateObjectByDocumentEdit(self):
         # document_edit should create the real object
@@ -265,21 +294,26 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
             '/portal_factory/Document/tmp_id/document_edit?id=foo&title=Foo&text_format=plain&text=',
             self.basic_auth)
 
-        self.assertEqual(response.getStatus(), 302) # Redirect to document_view
-        viewAction = self.portal.portal_types['Document'].getActionInfo('object/view', self.folder.foo)['url']
+        # Redirect to document_view
+        self.assertEqual(response.getStatus(), 302)
+        viewAction = self.portal.portal_types['Document'].getActionInfo(
+                                'object/view',
+                                self.folder.foo)['url']
         self.failUnless(response.getHeader('Location').startswith(viewAction))
 
         self.failUnless('foo' in self.folder)
         self.assertEqual(self.folder.foo.Title(), 'Foo')
-        self.assertEqual(self.folder.foo.get_local_roles_for_userid(default_user), ('Owner',))
+        self.assertEqual(
+                self.folder.foo.get_local_roles_for_userid(default_user),
+                ('Owner',))
 
     def testUnauthorizedToCreateObjectByDocumentEdit(self):
         # Anonymous should not be able to create the real object
         response = self.publish(self.folder_path +
             '/portal_factory/Document/tmp_id/document_edit?id=foo&title=Foo&text_format=plain&text=',
-            ) # No basic auth info
+            )  # No basic auth info
 
-        self.assertEqual(response.getStatus(), 500) # ValueError
+        self.assertEqual(response.getStatus(), 500)  # ValueError
 
 
 class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
@@ -291,7 +325,7 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
         self.basic_auth = '%s:%s' % (default_user, default_password)
         # We want 401 responses, not redirects to a login page
         plugins = self.portal.acl_users.plugins
-        plugins.deactivatePlugin( IChallengePlugin, 'credentials_cookie_auth')
+        plugins.deactivatePlugin(IChallengePlugin, 'credentials_cookie_auth')
 
         # Enable portal_factory for Document type
         self.factory = self.portal.portal_factory

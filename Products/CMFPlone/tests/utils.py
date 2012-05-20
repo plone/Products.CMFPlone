@@ -36,6 +36,7 @@ class MockMailHost(MailBase):
     # that for our MockMailHost as well.
     secureSend = secureSend
 
+
 # a function to test if a string is a valid CSS identifier
 def validateCSSIdentifier(identifier):
     match = VALID_CSS_ID.match(identifier)

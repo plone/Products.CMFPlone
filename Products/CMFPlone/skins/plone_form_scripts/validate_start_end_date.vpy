@@ -7,18 +7,21 @@
 ##bind subpath=traverse_subpath
 ##parameters=start_date='',end_date=''
 ##title=Validates an event edit_form contents
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 from DateTime.interfaces import DateTimeError
 
-REQUEST=context.REQUEST
+REQUEST = context.REQUEST
 
 if not start_date:
-     state.setError('start_date', _(u'Input is required but not given.'), 'input_required')
+    state.setError('start_date',
+                   _(u'Input is required but not given.'),
+                   'input_required')
 
 if not end_date:
-     state.setError('end_date', _(u'Input is required but not given.'), 'input_required')
+     state.setError('end_date',
+                    _(u'Input is required but not given.'),
+                    'input_required')
 
 if not state.getError('start_date') and not state.getError('end_date'):
     tmp_start_date = None
@@ -38,13 +41,16 @@ if not state.getError('start_date') and not state.getError('end_date'):
 
     if tmp_start_date and tmp_end_date:
         if tmp_start_date.greaterThan(tmp_end_date):
-            state.setError('end_date', _(u'An event must end after it starts.'))
-            state.setError('start_date', _(u'An event must start before it ends.'))
+            state.setError('end_date',
+                           _(u'An event must end after it starts.'))
+            state.setError('start_date',
+                           _(u'An event must start before it ends.'))
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
+    context.plone_utils.addPortalMessage(
+        _(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
-    REQUEST.set('start_date',start_date)
-    REQUEST.set('end_date',end_date)
+    REQUEST.set('start_date', start_date)
+    REQUEST.set('end_date', end_date)
     return state

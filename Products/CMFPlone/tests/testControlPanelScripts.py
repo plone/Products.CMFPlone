@@ -11,9 +11,10 @@ default_password = PloneTestCase.default_password
 class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
-        self.folder_path = '/'+self.folder.absolute_url(1)
+        self.folder_path = '/' + self.folder.absolute_url(1)
         self.setRoles(['Manager'])
-        self.portal.portal_membership.addMember('bribri', 'secret', ['Manager'], [])
+        self.portal.portal_membership.addMember('bribri', 'secret',
+                                                ['Manager'], [])
         self.login('bribri')
 
     def _onlyPOST(self, path, qstring='', success=200, rpath=None):
@@ -38,9 +39,8 @@ class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup('foo')
         path = self.folder_path + '/prefs_group_members_add'
-        qstring = 'groupname=%s&add:list=%s' % ('foo',default_user)
+        qstring = 'groupname=%s&add:list=%s' % ('foo', default_user)
         self._onlyPOST(path, qstring)
-
 
     def test_prefsGroupMemberRemove(self):
         self.groups = self.portal.portal_groups
@@ -49,7 +49,7 @@ class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
         group = self.groups.getGroupById('foo')
         group.addMember(default_user)
         path = self.folder_path + '/prefs_group_members_delete'
-        qstring = 'groupname=%s&delete:list=%s' % ('foo',default_user)
+        qstring = 'groupname=%s&delete:list=%s' % ('foo', default_user)
         self._onlyPOST(path, qstring)
 
     def test_prefsGroupEdit(self):
@@ -67,6 +67,7 @@ class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
         qstring = 'password=foo'
         self._onlyPOST(path, qstring)
 
+
 class TestPrefsUserManage(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -77,36 +78,44 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
     def addMember(self, username, fullname, email, roles, last_login_time):
         self.membership.addMember(username, 'secret', roles, [])
         member = self.membership.getMemberById(username)
-        member.setMemberProperties({'fullname': fullname, 'email': email,
-                                    'last_login_time': DateTime(last_login_time),})
+        member.setMemberProperties({
+                        'fullname': fullname,
+                        'email': email,
+                        'last_login_time': DateTime(last_login_time), })
 
     def testPrefsAddGroupPostOnly(self):
-        self.setRoles(['Manager'])	
+        self.setRoles(['Manager'])
         self.setRequestMethod('GET')
-        self.assertRaises(Forbidden, self.portal.prefs_group_edit, addname='foo')
+        self.assertRaises(Forbidden, self.portal.prefs_group_edit,
+                          addname='foo')
 
     def testPrefsUserMembershipEditPostOnly(self):
- 	self.setRoles(['Manager'])
+        self.setRoles(['Manager'])
         self.groups = self.portal.portal_groups
         self.groups.groupWorkspacesCreationFlag = 0
         self.groups.addGroup('foo')
         self.setRequestMethod('GET')
-        self.app.REQUEST.set('delete',['foo'])
-        self.assertRaises(Forbidden, self.portal.prefs_user_membership_edit, userid='barney')
+        self.app.REQUEST.set('delete', ['foo'])
+        self.assertRaises(Forbidden, self.portal.prefs_user_membership_edit,
+                          userid='barney')
         del self.app.REQUEST.other['delete']
-        self.app.REQUEST.set('add',['foo'])
-        self.assertRaises(Forbidden, self.portal.prefs_user_membership_edit, userid='barney')
+        self.app.REQUEST.set('add', ['foo'])
+        self.assertRaises(Forbidden, self.portal.prefs_user_membership_edit,
+                          userid='barney')
 
     def test_ploneChangePasswordPostOnly(self):
         self.login(default_user)
         self.setRequestMethod('GET')
-        self.assertRaises(Forbidden, self.portal.plone_change_password, current=default_password, password=default_password, password_confirm=default_password)
+        self.assertRaises(Forbidden, self.portal.plone_change_password,
+                          current=default_password, password=default_password,
+                          password_confirm=default_password)
 
     def test_bug4333_delete_user_remove_memberdata(self):
         # delete user should delete portal_memberdata
         memberdata = self.portal.portal_memberdata
         self.setRoles(['Manager'])
-        self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
+        self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com',
+                       ['Member'], '2002-01-01')
         barney = self.membership.getMemberById('barney')
         self.failUnlessEqual(barney.getProperty('email'), 'barney@bedrock.com')
         del barney
@@ -150,6 +159,5 @@ class TestAccessControlPanelScripts(PloneTestCase.FunctionalTestCase):
         response = self.publish('%s/@@user-preferences?userid=%s' %
                                 (self.portal_path, default_user),
                                 self.basic_auth)
-
 
         self.assertEquals(response.getStatus(), 200)
