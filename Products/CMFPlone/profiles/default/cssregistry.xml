@@ -12,7 +12,6 @@
  <stylesheet id="navtree.css" />
  <stylesheet id="invisibles.css" />
  <stylesheet id="forms.css" />
- <stylesheet id="ploneKss.css" />
 
  <stylesheet id="print.css" media="print" />
  <stylesheet id="mobile.css"
