@@ -108,13 +108,6 @@ def addCacheForResourceRegistry(portal):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
-    reg = getToolByName(portal, 'portal_kss', None)
-    if reg is not None \
-            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-                is not None:
-        reg.ZCacheable_setManagerId(ram_cache_id)
-        reg.ZCacheable_setEnabled(1)
-
     reg = getToolByName(portal, 'portal_javascripts', None)
     if reg is not None \
             and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
