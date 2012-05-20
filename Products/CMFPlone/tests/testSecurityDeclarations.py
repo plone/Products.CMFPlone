@@ -94,15 +94,17 @@ class TestSecurityDeclarations(RestrictedPythonTest):
                    'print ObjectDeleted().getResult')
 
     def testImport_WorkflowException(self):
-        self.check('from Products.CMFCore.WorkflowCore import WorkflowException')
+        self.check(
+            'from Products.CMFCore.WorkflowCore import WorkflowException')
 
     def testAccess_WorkflowException(self):
         self.check('from Products.CMFCore import WorkflowCore;'
                    'print WorkflowCore.WorkflowException')
 
     def testUse_WorkflowException(self):
-        self.check('from Products.CMFCore.WorkflowCore import WorkflowException;'
-                   'print WorkflowException().args')
+        self.check(
+            'from Products.CMFCore.WorkflowCore import WorkflowException;'
+            'print WorkflowException().args')
 
     def testImport_Batch(self):
         self.check('from Products.CMFPlone import Batch')
@@ -182,7 +184,8 @@ except ConflictError: pass
                       (e.__class__.__name__, e, e.__module__))
 
     def testCatch_ConflictErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseConflictError', dummy.Raiser(ConflictError))
+        self.folder._setObject('raiseConflictError',
+                               dummy.Raiser(ConflictError))
         try:
             self.check('''
 from ZODB.POSException import ConflictError
@@ -212,8 +215,6 @@ except ParseError: pass
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
-    from DateTime.interfaces import DateTimeError
-
     def testImport_DateTimeError(self):
         self.check('from DateTime.interfaces import DateTimeError')
 
@@ -222,7 +223,8 @@ except ParseError: pass
                    'print DateTime.interfaces.DateTimeError')
 
     def testCatch_DateTimeErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseDateTimeError', dummy.Raiser(self.DateTimeError))
+        self.folder._setObject('raiseDateTimeError',
+                               dummy.Raiser(self.DateTimeError))
         try:
             self.check('''
 from DateTime.interfaces import DateTimeError
@@ -233,8 +235,6 @@ except DateTimeError: pass
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
-    from DateTime.DateTime import SyntaxError
-
     def testImport_SyntaxError(self):
         self.check('from DateTime.interfaces import SyntaxError')
 
@@ -243,7 +243,8 @@ except DateTimeError: pass
                    'print DateTime.interfaces.SyntaxError')
 
     def testCatch_SyntaxErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseSyntaxError', dummy.Raiser(self.SyntaxError))
+        self.folder._setObject('raiseSyntaxError',
+                               dummy.Raiser(self.SyntaxError))
         try:
             self.check('''
 from DateTime.interfaces import SyntaxError
@@ -278,8 +279,9 @@ except CopyError: pass
                    'import DiscussionNotAllowed')
 
     def testAccess_DiscussionNotAllowed(self):
-        self.check('import Products.CMFDefault.DiscussionTool;'
-                   'print Products.CMFDefault.DiscussionTool.DiscussionNotAllowed')
+        self.check(
+            'import Products.CMFDefault.DiscussionTool;'
+            'print Products.CMFDefault.DiscussionTool.DiscussionNotAllowed')
 
     def testCatch_DiscussionNotAllowedRaisedByPythonModule(self):
         self.folder._setObject('raiseDiscussionNotAllowed',
@@ -305,7 +307,7 @@ except DiscussionNotAllowed: pass
                                'print utils.getToolByName')
 
     def testUse_getToolByName(self):
-        self.app.manage_addFolder('portal_membership') # Fake a portal tool
+        self.app.manage_addFolder('portal_membership')  # Fake a portal tool
         self.check('from Products.CMFCore.utils import getToolByName;'
                    'print getToolByName(context, "portal_membership")')
 
@@ -413,37 +415,43 @@ class TestSkinSecurity(PloneTestCase.PloneTestCase):
 class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
 
     def testNavtreeStrategyBase(self):
-        self.check('from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
-                    'n=NavtreeStrategyBase();'
-                    'n.nodeFilter({});'
-                    'n.subtreeFilter({});'
-                    'n.decoratorFactory({});')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
+            'n=NavtreeStrategyBase();'
+            'n.nodeFilter({});'
+            'n.subtreeFilter({});'
+            'n.decoratorFactory({});')
 
     def testSitemapNavtreeStrategy(self):
         # We don't test the decorator factory because that requres an
         # actual brain in item
-        self.check('from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy;'
-                    'n=SitemapNavtreeStrategy(context);'
-                    'n.nodeFilter({"item":1});'
-                    'n.subtreeFilter({"item":1});')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy;'
+            'n=SitemapNavtreeStrategy(context);'
+            'n.nodeFilter({"item":1});'
+            'n.subtreeFilter({"item":1});')
 
     def testDefaultNavtreeStrategy(self):
         # We don't test the decorator factory because that requres an
         # actual brain in item
-        self.check('from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy;'
-                    'n=DefaultNavtreeStrategy(context);'
-                    'n.nodeFilter({"item":1});'
-                    'n.subtreeFilter({"item":1});')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy;'
+            'n=DefaultNavtreeStrategy(context);'
+            'n.nodeFilter({"item":1});'
+            'n.subtreeFilter({"item":1});')
 
     def testNavtreeQueryBuilder(self):
-        self.check('from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder;'
-                    'n=NavtreeQueryBuilder(context);'
-                    'n();')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder;'
+            'n=NavtreeQueryBuilder(context);'
+            'n();')
 
     def testSitemapQueryBuilder(self):
-        self.check('from Products.CMFPlone.browser.navtree import SitemapQueryBuilder;'
-                    'n=SitemapQueryBuilder(context);'
-                    'n();')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import SitemapQueryBuilder;'
+            'n=SitemapQueryBuilder(context);'
+            'n();')
 
     def testGetNavigationRoot(self):
-        self.check('from Products.CMFPlone.browser.navtree import getNavigationRoot')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import getNavigationRoot')
