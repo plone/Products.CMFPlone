@@ -76,6 +76,7 @@ function replaceFolderContentsTable(overrides, prevent) {
         $("div.listingBar a").each(function(){
             $(this).attr("href", $(this).attr("href").replace(/foldercontents_get_table/, orig_template));
         });
+        $(initializeDnDReorder('#listing-table'));
     });
 }
 
