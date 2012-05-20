@@ -28,9 +28,6 @@
 
     <include package="plone.app.portlets" file="meta.zcml" />
 
-    <!-- kss -->
-    <include package="kss.core" file="meta.zcml" />
-
     <!-- wicked -->
     <configure zcml:condition="installed wicked">
       <include package="wicked.fieldevent" file="meta.zcml" />
