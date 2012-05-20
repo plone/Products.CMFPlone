@@ -96,28 +96,6 @@ Content Menu Sections: Workflow State
     setStyle-value: none;
 }
 
-/* Folder contents stuff */
-
-body:load { 
-    action-client: plone-initShiftDetection;
-}
-
-#folderlisting-main-table input[type="checkbox"]:change {
-    action-client: plone-createCheckBoxSelection;
-    plone-createCheckBoxSelection-group: 'table.listing input[type="checkbox"]';
-}
-
-
-#folderlisting-main-table input[type="checkbox"]:change {
-    action-client: toggleClass;
-    toggleClass-kssSelector: parentnode("table.listing tbody tr");
-    toggleClass-classname: "selected";
-}
-
-#folderlisting-main-table:load { 
-    action-client: plone-initCheckBoxSelection;
-}
-
 #portal-message:timeout {
    evt-timeout-delay: 2000;
    evt-timeout-repeat: '';
