@@ -4,6 +4,7 @@
 
 from Products.CMFPlone.tests import PloneTestCase
 
+
 class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
     """Tests the browser default and folder-default page scripts"""
 
@@ -12,7 +13,8 @@ class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
         self.failIf(self.folder.hasIndexHtml())
 
     def testHasIndexHtml(self):
-        # Make sure we can determine if a container contains a index_html object
+        # Make sure we can determine if a container contains a index_html
+        # object
         self.folder.invokeFactory('Document', 'index_html',
                                   title='Test index')
         self.failUnless(self.folder.hasIndexHtml())
