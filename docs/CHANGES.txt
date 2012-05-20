@@ -11,8 +11,7 @@ Changelog
 - Move sharing kss to js.
   [vangheem]
 
-- Replace folder_contents-related KSS with jQuery equivalents in kss-bbb.js
-  and support AJAX fetch of batched increments.
+- Replace folder_contents-related KSS with jQuery.
   [cah190]
 
 - Add kss refresh portlet equivelant code
