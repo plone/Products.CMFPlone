@@ -137,48 +137,6 @@ body:load {
     toggleClass-classname: "selected";
 }
 
-/* Generic setup which (made more specific by other rules) */
-.update-selection:click, #listing-table .column:click {
-    action-server: update_table url(kssAttr("serveraction", true));
-    evt-click-preventdefault: True;
-    update_table-pagenumber: currentFormVar('pagenumber');
-    update_table-show_all: currentFormVar('show_all');
-    update_table-sort_on: currentFormVar('sort_on');
-}
-
-#foldercontents-show-batched:click {
-    update_table-show_all: "false";
-} 
-
-#foldercontents-show-all:click {
-    update_table-show_all: "true";
-        update_table-pagenumber: "1";
-} 
-
-#foldercontents-title-column:click {
-    update_table-sort_on: "sortable_title";
-} 
-
-#foldercontents-modified-column:click {
-    update_table-sort_on: "modified";
-} 
-
-#foldercontents-status-column:click {
-    update_table-sort_on: "review_state";
-} 
-
-#foldercontents-selectall:click {
-    update_table-select: 'screen';
-} 
-
-#foldercontents-selectall-completebatch:click {
-    update_table-select: 'all';
-} 
-
-#foldercontents-clearselection:click {
-    update_table-select: 'none';
-} 
-
 #folderlisting-main-table:load { 
     action-client: plone-initCheckBoxSelection;
 }
