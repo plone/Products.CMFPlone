@@ -243,6 +243,7 @@ from Products.CMFPlone.UnicodeSplitter \
      import process_str, process_str_post, process_str_glob,\
      process_unicode, process_unicode_glob
 
+
 class TestBigramFunctions(unittest.TestCase):
 
     def test_process_str(self):
@@ -333,6 +334,7 @@ class TestSearchingJapanese(PloneTestCase.PloneTestCase):
         self.portal.manage_delObjects(['doc1'])
         items2 = catalog(SearchableText="予想")
         self.assertEqual(len(items2), 0)
+
 
 class TestSearchingUnicodeJapanese(PloneTestCase.PloneTestCase):
     """ Install Unicode Japanese test """
