@@ -44,11 +44,6 @@
   <include package="plone.browserlayer" />
   <include package="plone.theme" />
 
-  <!-- kss -->
-  <include package="kss.core" />
-  <include package="plone.app.kss" />
-  <include package="archetypes.kss" />
-
   <!-- referencebrowser -->
   <include package="archetypes.referencebrowserwidget" />
 
