@@ -38,4 +38,5 @@ class TestBrowserLayerPrecedence(PloneTestCase.FunctionalTestCase):
         unregister_layer('Plone.testlayer')
 
         self.failUnless(iro.index(IThemeSpecific) < iro.index(IAdditiveLayer),
-            'Theme-specific browser layers should take precedence over other browser layers.')
+            'Theme-specific browser layers should take precedence over other '
+            'browser layers.')

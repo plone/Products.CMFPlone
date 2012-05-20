@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+      <title>CMFPlone inline-edit tests</title>
+
+      <!-- Load jQuery -->
+      <script src="http://www.google.com/jsapi"
+	      type="text/javascript"></script>
+      <script type="text/javascript">
+          google.load("jquery", "1.4.2");
+      </script>
+      <!--
+      <script type="text/javascript" src="jquery-1.4.2.js">//</script>
+      -->
+      <!-- Mock server -->
+      <script type="text/javascript" src="http://github.com/philikon/MockHttpRequest/raw/master/lib/mock.js">//</script>
+      <!--
+      <script type="text/javascript" src="mock.js">//</script>
+      -->
+      <script type="text/javascript" src="http://bazaar.launchpad.net/~ree/js.moremocks/trunk/download/head:/moremockhttp.js-20100826230312-abb72pr1o28q0qjl-1/moremockhttp.js"></script>
+    
+      <!-- Test support -->
+      <script type="text/javascript" src="http://soc.googlecode.com/hg/app/json.min/json2.js"></script>
+      <script type="text/javascript" src="http://github.com/eduardolundgren/jquery-simulate/raw/master/jquery.simulate.js">//</script>
+
+      <!-- Test suite -->
+      <script type="text/javascript" src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
+      <link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css" />
+
+      <!-- The widget plugin JS and CSS -->
+      <script src="inline-edit.js" type="text/javascript" ></script>
+      <link rel="stylesheet" href="inline-edit.css"/>
+
+      <!-- Page specific JS and CSS -->
+      <link rel="stylesheet" href="demo.css"/>
+      <script src="server.js" type="text/javascript"></script>
+      <script src="test.js" type="text/javascript"></script>
+
+  </head>
+
+  <body>
+    <h1 id="qunit-header">CMFPlone inline-edit tests</h1>  
+    <h2 id="qunit-banner"></h2>  
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>  
+
+    <div id="main">
+
+      <p id='fake1'></p>
+      <p id='fake2'></p>
+
+      <p id='parent-fieldname-title'
+         class="inlineEditable kssattr-atfieldname-title kssattr-templateId-kss_generic_macros kssattr-macro-title-field-view" 
+         >
+        Click on this text to edit it
+      </p>
+
+
+
+    </div>
+
+  </body>
+
+</html>

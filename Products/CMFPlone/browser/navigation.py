@@ -13,7 +13,8 @@ from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
 
-from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder, SitemapQueryBuilder
+from Products.CMFPlone.browser.navtree \
+    import NavtreeQueryBuilder, SitemapQueryBuilder
 
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 
@@ -61,7 +62,8 @@ class CatalogNavigationTree(BrowserView):
 
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
-        currentFolderOnlyInNavtree = navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
+        currentFolderOnlyInNavtree = \
+            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
         if currentFolderOnlyInNavtree:
             if context.restrictedTraverse('@@plone').isStructuralFolder():
                 return '/'.join(context.getPhysicalPath())
@@ -76,10 +78,12 @@ class CatalogNavigationTree(BrowserView):
             contextPath = '/'.join(context.getPhysicalPath())
             if not contextPath.startswith(rootPath):
                 return None
-            contextSubPathElements = contextPath[len(rootPath)+1:].split('/')
+            contextSubPathElements = contextPath[len(rootPath) + 1:].split('/')
             if len(contextSubPathElements) < topLevel:
                 return None
-            rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLevel])
+            rootPath = rootPath \
+                        + '/' \
+                        + '/'.join(contextSubPathElements[:topLevel])
 
         return rootPath
 
@@ -91,7 +95,8 @@ class CatalogNavigationTree(BrowserView):
 
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
-        return buildFolderTree(context, obj=context, query=query, strategy=strategy)
+        return buildFolderTree(context, obj=context,
+                               query=query, strategy=strategy)
 
 
 class CatalogSiteMap(BrowserView):
@@ -105,7 +110,8 @@ class CatalogSiteMap(BrowserView):
 
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
-        return buildFolderTree(context, obj=context, query=query, strategy=strategy)
+        return buildFolderTree(context, obj=context,
+                               query=query, strategy=strategy)
 
 
 class CatalogNavigationTabs(BrowserView):
@@ -273,8 +279,10 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         rootPath = getNavigationRoot(context)
         itemPath = '/'.join(context.getPhysicalPath())
 
-        # don't show default pages in breadcrumbs or pages above the navigation root
-        if not utils.isDefaultPage(context, request) and not rootPath.startswith(itemPath):
+        # don't show default pages in breadcrumbs or pages above the navigation
+        # root
+        if not utils.isDefaultPage(context, request) \
+                and not rootPath.startswith(itemPath):
             base += ({'absolute_url': item_url,
                       'Title': utils.pretty_title_or_id(context, context), },
                     )

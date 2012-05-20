@@ -6,6 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=
-##
+
 from AccessControl import Unauthorized
+
 raise Unauthorized

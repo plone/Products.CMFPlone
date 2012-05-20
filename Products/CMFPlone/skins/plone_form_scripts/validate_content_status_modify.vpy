@@ -7,16 +7,19 @@
 ##bind subpath=traverse_subpath
 ##parameters=workflow_action=''
 ##title=Validates content publishing
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 
 if not workflow_action:
-    state.setError('workflow_action', _(u'This field is required, please provide some information.'), 'workflow_missing')
+    state.setError('workflow_action',
+                   _(u'This field is required, please provide some '
+                     u'information.'),
+                   'workflow_missing')
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
+    context.plone_utils.addPortalMessage(_(u'Please correct the indicated '
+                                           u'errors.'),
+                                         'error')
     return state.set(status='failure')
 else:
     return state
-

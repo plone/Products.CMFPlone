@@ -23,18 +23,6 @@ ul.contentViews li a:plone-formProtectionChecked {
     action-client: plone-removeLockProtection;
 }
 
-/* 
-Load the kupu editor.
-
-The editor is also loaded from the page, so
-we give the initial=false, otherwise that
-should be left out if we do that too.
-*/
-
-iframe.kupu-editor-iframe:load {
-    action-client: plone-initKupu;
-}
-
 #content:load {
     evt-load-initial: false;
     action-client: initializeCollapsible;
@@ -71,15 +59,6 @@ dl.kssPortletRefresh:timeout {
 div.portlet-deferred:load {
     action-server: refreshPortlet;
     refreshPortlet-portlethash: kssAttr(portlethash, True);
-}
-
-/*
-Content Menu Sections: General
-*/
-
-#contentActionMenus:load {
-    evt-load-initial: false;
-    action-client: bindActionMenus;
 }
 
 /*
@@ -183,11 +162,6 @@ a.kssCalendarChange:click {
 ** Form tabs
 */
 
-form.enableFormTabbing:load {
-    evt-load-initial: false;
-    action-client: plone-initFormTabs;
-}
-
 form.enableUnloadProtection:load {
     evt-load-initial: false;
     action-client: plone-initFormProtection;
@@ -221,20 +195,6 @@ div.inlineEditable:load {
   evt-keyup-keycodes: 13;
   action-server: updateSharingInfo;
   updateSharingInfo-kssSubmitForm: currentForm();
-}
-
-
-/* kupu stuff */
-#kupu-save-button:load {
-   action-client: setStyle;
-   setStyle-name: display;
-   setStyle-value: inline;
-}
-
-button.kupu-save:click {
-   action-server: savekupu;
-   savekupu-text: currentFormVarFromKssAttr("atfieldname", true);
-   savekupu-fieldname: kssAttr("atfieldname", true);
 }
 
 /* Folder contents stuff */
@@ -298,25 +258,7 @@ body:load {
 } 
 
 #folderlisting-main-table:load { 
-    action-client: plone-initDragAndDrop;
-    plone-initDragAndDrop-table: '#listing-table';
-}
-
-#folderlisting-main-table:load { 
     action-client: plone-initCheckBoxSelection;
-}
-
-/* kupu stuff */
-#kupu-save-button:load {
-   action-client: setStyle;
-   setStyle-name: display;
-   setStyle-value: inline;
-}
-
-div.kupu-save-message:timeout {
-   evt-timeout-delay: 2000;
-   evt-timeout-repeat: '';
-   action-client: deleteNode;
 }
 
 #portal-message:timeout {

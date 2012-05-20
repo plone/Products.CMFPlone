@@ -91,4 +91,15 @@
       name="blank.html"
       />
 
+
+    <browser:resource
+        name="qunit-CMFPlone-testing.html"
+        file="qunit/testing.html"
+        />
+
+    <browser:resourceDirectory
+        name="qunit-CMFPlone-inline-edit"
+        directory="qunit/inline-edit"
+        />
+
 </configure>

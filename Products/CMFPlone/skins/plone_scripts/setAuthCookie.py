@@ -15,6 +15,10 @@ except ValueError:
 cookie_path = '/'
 if length:
     expires = (DateTime() + length).toZone('GMT').rfc822()
-    resp.setCookie( cookie_name, cookie_value, path=cookie_path, expires=expires)
+    resp.setCookie(
+        cookie_name,
+        cookie_value,
+        path=cookie_path,
+        expires=expires)
 else:
-    resp.setCookie( cookie_name, cookie_value, path=cookie_path)
+    resp.setCookie(cookie_name, cookie_value, path=cookie_path)

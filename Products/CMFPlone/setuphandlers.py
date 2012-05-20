@@ -18,8 +18,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.lib import constraintypes
 from Products.CMFDefault.utils import bodyfinder
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
-from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
-     AcceleratedHTTPCacheManager
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
+    import AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 
 from Products.CMFPlone.utils import _createObjectByType
@@ -97,21 +97,28 @@ def addCacheForResourceRegistry(portal):
     if ram_cache_id in portal:
         cache = getattr(portal, ram_cache_id)
         settings = cache.getSettings()
-        settings['max_age'] = 24*3600 # keep for up to 24 hours
+        settings['max_age'] = 24 * 3600  # keep for up to 24 hours
         settings['request_vars'] = ('URL', )
-        cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
+        cache.manage_editProps('Cache for saved ResourceRegistry files',
+                               settings)
     reg = getToolByName(portal, 'portal_css', None)
-    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+    if reg is not None \
+            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
+                is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
     reg = getToolByName(portal, 'portal_kss', None)
-    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+    if reg is not None \
+            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
+                is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
     reg = getToolByName(portal, 'portal_javascripts', None)
-    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+    if reg is not None \
+            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
+                is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
@@ -192,12 +199,15 @@ def setupPortalContent(p):
         if base_language != 'en':
             util = queryUtility(ITranslationDomain, 'plonefrontpage')
             if util is not None:
-                front_title = util.translate(u'front-title',
-                                   target_language=target_language,
-                                   default="Welcome to Plone")
-                front_desc = util.translate(u'front-description',
-                                   target_language=target_language,
-                                   default="Congratulations! You have successfully installed Plone.")
+                front_title = util.translate(
+                                    u'front-title',
+                                    target_language=target_language,
+                                    default="Welcome to Plone")
+                front_desc = util.translate(
+                    u'front-description',
+                    target_language=target_language,
+                    default="Congratulations! You have successfully installed "
+                            "Plone.")
                 translated_text = util.translate(u'front-text',
                                    target_language=target_language)
                 if translated_text != u'front-text':
@@ -355,7 +365,8 @@ def setupPortalContent(p):
 
         # add index_html to Members area
         if 'index_html' not in members.objectIds():
-            addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
+            addPy = members.manage_addProduct['PythonScripts'] \
+                        .manage_addPythonScript
             addPy('index_html')
             index_html = getattr(members, 'index_html')
             index_html.write(member_indexhtml)
@@ -364,7 +375,9 @@ def setupPortalContent(p):
         # Block all right column portlets by default
         manager = queryUtility(IPortletManager, name='plone.rightcolumn')
         if manager is not None:
-            assignable = queryMultiAdapter((members, manager), ILocalPortletAssignmentManager)
+            assignable = queryMultiAdapter(
+                            (members, manager),
+                            ILocalPortletAssignmentManager)
             assignable.setBlacklistStatus('context', True)
             assignable.setBlacklistStatus('group', True)
             assignable.setBlacklistStatus('content_type', True)
@@ -382,7 +395,7 @@ def setProfileVersion(portal):
 
 
 def assignTitles(portal):
-    titles={
+    titles = {
      'acl_users': 'User / Group storage and authentication settings',
      'archetype_tool': 'Archetypes specific settings',
      'caching_policy_manager': 'Settings related to proxy caching',

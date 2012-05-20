@@ -6,11 +6,12 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=
-##
+
 from ZODB.POSException import ConflictError
 
-try :
-    return context.portal_url.getPortalObject().plone_utils.isTranslatable(context)
+try:
+    return context.portal_url.getPortalObject().plone_utils \
+                .isTranslatable(context)
 except ConflictError:
     raise
 except:

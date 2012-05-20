@@ -6,7 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=mailaddress=None, mailname=None, cssclass=None, cssid=None
 ##title=Returns a spam-protected mail address tag
-##
+
 email = mailaddress.replace('@', '&#0064;').replace(':', '&#0058;')
 
 if mailname is None:
@@ -20,4 +20,5 @@ if cssclass is None:
 else:
     cssclass = ' class="%s"' % cssclass
 
-return '<a href="&#0109;ailto&#0058;' + email + '"' + cssclass + cssid + '>' + mailname + '</a>'
+return '<a href="&#0109;ailto&#0058;' + email + '"' + cssclass \
+        + cssid + '>' + mailname + '</a>'

@@ -30,6 +30,7 @@ class TestUTranslate(PloneTestCase.PloneTestCase):
         value = self.tool.translate('foo', 'domain', default=None)
         self.assertEquals(value, u'foo')
 
+
 class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):

@@ -8,6 +8,7 @@ if not 'ZOPETESTCASE' in environ:
     FactoryDispatcher._product_packages = \
         forever.memoize(FactoryDispatcher._product_packages)
 
+
 # Avoid unneeded line breaks in TAL output, by effectively disabling the
 # internal beautified wrapping inside tags
 def wrap_init(func):
@@ -18,6 +19,7 @@ def wrap_init(func):
 
 from zope.tal.talinterpreter import TALInterpreter
 TALInterpreter.__init__ = wrap_init(TALInterpreter.__init__)
+
 
 # This is an optimization based on the fact, that apart from talkback
 # items, opaque items are completely unused inside Plone

@@ -41,7 +41,8 @@ if props.getProperty('use_email_as_login'):
                 state.setError(
                     'email',
                     _('message_email_cannot_change',
-                      u"Sorry, you are not allowed to change your email address."),
+                      u"Sorry, you are not allowed to change your email "
+                        u"address."),
                     'message_email_cannot_change')
             else:
                 if not id_allowed:

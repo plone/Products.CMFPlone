@@ -30,7 +30,8 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         # Make sure our title is updated on the object
         title = 'Test Doc - Snooze!'
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
-        self.folder.folder_rename(paths=[doc_path], new_ids=['doc1'], new_titles=[title])
+        self.folder.folder_rename(paths=[doc_path], new_ids=['doc1'],
+                                  new_titles=[title])
         obj = self.folder.foo.doc1
         self.assertEqual(obj.Title(), title)
 
@@ -38,7 +39,8 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         # Make sure our title is updated in the catalog
         title = 'Test Doc - Snooze!'
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
-        self.folder.folder_rename(paths=[doc_path], new_ids=['doc1'], new_titles=[title])
+        self.folder.folder_rename(paths=[doc_path], new_ids=['doc1'],
+                                  new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
         for result in results:
@@ -48,19 +50,21 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
     def testTitleAndIdAreUpdatedOnFolderRename(self):
         # Make sure rename updates both title and id
         title = 'Test Folder - Snooze!'
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
-        self.folder.folder_rename(paths=[doc_path], new_ids=['baz'], new_titles=[title])
+        self.folder.folder_rename(paths=[doc_path], new_ids=['baz'],
+                                  new_titles=[title])
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.failUnless(getattr(self.folder.foo, 'baz', None) is not None)
-        self.assertEqual(self.folder.foo.baz.Title(),title)
+        self.assertEqual(self.folder.foo.baz.Title(), title)
 
     def testCatalogTitleAndIdAreUpdatedOnFolderRename(self):
         # Make sure catalog updates title on rename
         title = 'Test Folder - Snooze!'
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
-        self.folder.folder_rename(paths=[doc_path], new_ids=['baz'], new_titles=[title])
+        self.folder.folder_rename(paths=[doc_path], new_ids=['baz'],
+                                  new_titles=[title])
         results = self.catalog(Title='Snooze')
         self.failUnless(results)
         for result in results:
@@ -70,16 +74,18 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
     def testUpdateMultiplePaths(self):
         # Ensure this works for multiple paths
         title = 'Test Folder - Snooze!'
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
-        self.folder.folder_rename(paths=[doc1_path,doc2_path], new_ids=['baz','blah'], new_titles=[title,title])
+        self.folder.folder_rename(paths=[doc1_path, doc2_path],
+                                  new_ids=['baz', 'blah'],
+                                  new_titles=[title, title])
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
         self.failUnless(getattr(self.folder.foo, 'baz', None) is not None)
         self.failUnless(getattr(self.folder.bar, 'blah', None) is not None)
-        self.assertEqual(self.folder.foo.baz.Title(),title)
-        self.assertEqual(self.folder.bar.blah.Title(),title)
+        self.assertEqual(self.folder.foo.baz.Title(), title)
+        self.assertEqual(self.folder.bar.blah.Title(), title)
 
     def testNoErrorOnBadPaths(self):
         # Ensure we don't fail on a bad path
@@ -96,7 +102,8 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
     def testGetObjectsFromPathList(self):
         doc1_path = unicode('/'.join(self.folder.foo.doc1.getPhysicalPath()))
         doc2_path = unicode('/'.join(self.folder.bar.doc2.getPhysicalPath()))
-        self.assertEqual(len(self.folder.getObjectsFromPathList([doc1_path, doc2_path])),2)
+        self.assertEqual(
+            len(self.folder.getObjectsFromPathList([doc1_path, doc2_path])), 2)
 
 
 class TestFolderDelete(PloneTestCase.PloneTestCase):
@@ -111,8 +118,8 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         undeletable = Item('no_delete', 'Just Try!')
         # make it undeletable
         directlyProvides(undeletable, ICantBeDeleted)
-        component.provideHandler(disallow_delete_handler, [ICantBeDeleted,
-                                                           IObjectRemovedEvent])
+        component.provideHandler(disallow_delete_handler,
+                                 [ICantBeDeleted, IObjectRemovedEvent])
         self.folder._setObject('no_delete', undeletable)
         # folder_delete requires a non-GET request
         self.setRequestMethod('POST')
@@ -143,7 +150,7 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         # Make sure deletion works for list of paths
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
-        self.app.REQUEST.set('paths', [doc1_path,doc2_path])
+        self.app.REQUEST.set('paths', [doc1_path, doc2_path])
         self.folder.folder_delete()
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
@@ -175,7 +182,6 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.assertRaises(Forbidden, self.folder.folder_delete)
 
 
-
 class TestFolderPublish(PloneTestCase.PloneTestCase):
     # Tests for folder_publish and content_status_history and
     # content_status_modify
@@ -187,7 +193,8 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', id='bar')
         self.folder.foo.invokeFactory('Document', id='doc1')
         self.folder.bar.invokeFactory('Document', id='doc2')
-        self.portal.acl_users._doAddUser('reviewer', 'secret', ['Reviewer'], [])
+        self.portal.acl_users._doAddUser('reviewer', 'secret',
+                                         ['Reviewer'], [])
         # folder_publish requires a non-GET request
         self.setRequestMethod('POST')
 
@@ -196,18 +203,20 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
         self.setupAuthenticator()
-        self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
-        self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
+        self.folder.folder_publish(workflow_action='publish', paths=[doc_path])
+        self.assertEqual(
+            self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state', None),
+            'published')
 
     def testCatalogIsUpdatedOnFolderPublish(self):
         # Make sure catalog gets updated
         doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         self.login('reviewer')
         self.setupAuthenticator()
-        self.folder.folder_publish(workflow_action='publish',paths=[doc_path])
+        self.folder.folder_publish(workflow_action='publish', paths=[doc_path])
         results = self.catalog(path=doc_path)
-        self.assertEqual(len(results),1)
-        self.assertEqual(results[0].review_state,'published')
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].review_state, 'published')
 
     def testPublishMultiplePaths(self):
         # Make sure publish works for list of paths
@@ -215,15 +224,19 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
         self.login('reviewer')
         self.setupAuthenticator()
-        self.folder.folder_publish('publish',paths=[doc1_path,doc2_path])
-        self.assertEqual(self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state',None), 'published')
-        self.assertEqual(self.wtool.getInfoFor(self.folder.bar.doc2, 'review_state',None), 'published')
+        self.folder.folder_publish('publish', paths=[doc1_path, doc2_path])
+        self.assertEqual(
+            self.wtool.getInfoFor(self.folder.foo.doc1, 'review_state', None),
+            'published')
+        self.assertEqual(
+            self.wtool.getInfoFor(self.folder.bar.doc2, 'review_state', None),
+            'published')
 
     def testNoErrorOnBadPaths(self):
         # Ensure we don't fail on a bad path, but transition the good ones
         doc1_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
         doc2_path = '/'.join(self.folder.bar.doc2.getPhysicalPath())
-        paths=[doc1_path, '/garbage/path', doc2_path]
+        paths = [doc1_path, '/garbage/path', doc2_path]
         self.login('reviewer')
         self.setupAuthenticator()
         self.folder.folder_publish('publish', paths=paths)
@@ -240,8 +253,9 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # First we add a failing notifySuccess method to the workflow
         # via a nasty monkey-patch
         from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
+
         def notifySuccess(self, obj, action, result):
-            raise Exception, 'Cannot transition'
+            raise Exception('Cannot transition')
         orig_notify = DCWorkflowDefinition.notifySuccess
         DCWorkflowDefinition.notifySuccess = notifySuccess
 
@@ -304,9 +318,9 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         origTemplate = self.folder.d1.absolute_url() + '/document_view?foo=bar'
 
         response = self.publish(objPath + '/object_rename', self.basic_auth,
-                                env={'HTTP_REFERER' : origTemplate})
+                                env={'HTTP_REFERER': origTemplate})
 
-        self.assertStatusEqual(response.getStatus(), 302) # Redirect to edit
+        self.assertStatusEqual(response.getStatus(), 302)  # Redirect to edit
 
         location = response.getHeader('Location').split('?')[0]
         params = {}
@@ -324,7 +338,8 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         editFormPath = location[len(self.app.REQUEST.SERVER_URL):]
         newParams = "orig_template=%s" % params['orig_template']
         newParams += "&paths:list=%s" % params['paths%3Alist']
-        response = self.publish("%s?%s" % (editFormPath, newParams,), self.basic_auth)
+        response = self.publish("%s?%s" % (editFormPath, newParams),
+                                self.basic_auth)
         self.assertStatusEqual(response.getStatus(), 200)
 
         # Set up next set of params, faking user submission
@@ -352,7 +367,9 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         adding = self.app.manage_addProduct['SiteAccess']
         adding.manage_addVirtualHostMonster('vhm')
 
-        vhmBasePath = "/VirtualHostBase/http/example.org:80/%s/VirtualHostRoot/" % self.portal.getId()
+        vhmBasePath = \
+            "/VirtualHostBase/http/example.org:80/%s/VirtualHostRoot/" \
+                % self.portal.getId()
         vhmBaseUrl = 'http://example.org/'
 
         self.folder.invokeFactory('Document', 'd1', title='Doc1')
@@ -363,9 +380,9 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         origTemplate = objectUrl + '/document_view?foo=bar'
 
         response = self.publish(objPath + '/object_rename', self.basic_auth,
-                                env={'HTTP_REFERER' : origTemplate})
+                                env={'HTTP_REFERER': origTemplate})
 
-        self.assertStatusEqual(response.getStatus(), 302) # Redirect to edit
+        self.assertStatusEqual(response.getStatus(), 302)  # Redirect to edit
 
         location = response.getHeader('Location').split('?')[0]
         params = {}
@@ -383,7 +400,8 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         editFormPath = vhmBasePath + location[len(vhmBaseUrl):]
         newParams = "orig_template=%s" % params['orig_template']
         newParams += "&paths:list=%s" % params['paths%3Alist']
-        response = self.publish("%s?%s" % (editFormPath, newParams,), self.basic_auth)
+        response = self.publish("%s?%s" % (editFormPath, newParams),
+                                self.basic_auth)
         self.assertStatusEqual(response.getStatus(), 200)
 
         # Set up next set of params, faking user submission
