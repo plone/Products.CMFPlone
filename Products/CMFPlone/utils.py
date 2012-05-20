@@ -35,6 +35,8 @@ WWW_DIR = join(PACKAGE_HOME, 'www')
 
 # Log methods
 from log import log
+from log import log_exc
+from log import log_deprecated
 
 _marker = []
 
