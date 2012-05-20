@@ -412,7 +412,6 @@ def assignTitles(portal):
      'portal_groups': 'Handles group related functionality',
      'portal_interface': 'Allows to query object interfaces',
      'portal_javascripts': 'Registry of JavaScript files',
-     'portal_kss': 'Registry of Kinetic Style Sheets',
      'portal_languages': 'Language specific settings',
      'portal_membership': 'Handles membership policies',
      'portal_memberdata': 'Handles the available properties on members',
