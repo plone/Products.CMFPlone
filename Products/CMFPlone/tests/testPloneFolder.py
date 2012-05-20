@@ -101,7 +101,8 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         # 3)
         self.login()
         self.folder.A.invokeFactory('Document', id='B')
-        self.folder.A.B.manage_permission('View', ['Manager', 'Reviewer'], acquire=0)
+        self.folder.A.B.manage_permission('View', ['Manager', 'Reviewer'],
+                                          acquire=0)
 
         self.logout()
         self.assertEqual(self._contentIds(self.folder.A), [])
@@ -109,11 +110,12 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         # 4)
         self.login()
         self.folder.A.invokeFactory('Folder', id='C')
-        self.folder.A.C.manage_permission('View', ['Manager', 'Reviewer'], acquire=0)
+        self.folder.A.C.manage_permission('View', ['Manager', 'Reviewer'],
+                                          acquire=0)
 
         # Here comes the reported bug:
         self.logout()
-        self.assertEqual(self._contentIds(self.folder.A), ['C']) # <--
+        self.assertEqual(self._contentIds(self.folder.A), ['C'])
 
         # 4a)
         # BUT: removing 'View' is simply not enough!
