@@ -37,7 +37,7 @@ class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
         self.folder_path = self.folder.absolute_url(1)
 
     def testDocumentMetadata(self):
-        response = self.publish(self.folder_path+'/doc',
+        response = self.publish(self.folder_path + '/doc',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
                                 stdin=StringIO(html),
@@ -68,7 +68,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
     def testPUTDocument(self):
         # Create a new document via FTP/DAV
-        response = self.publish(self.folder_path+'/new_html',
+        response = self.publish(self.folder_path + '/new_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
                                 stdin=StringIO(html),
@@ -82,8 +82,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
     def testPUTTextDocumentRSTNoContentType(self):
         # Create a new document via FTP/DAV, some clients do not send
         # a proper Content-Type header.
-        response = self.publish(self.folder_path+'/test.rst',
-                                env={'CONTENT_LENGTH':'0'},
+        response = self.publish(self.folder_path + '/test.rst',
+                                env={'CONTENT_LENGTH': '0'},
                                 request_method='PUT',
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
@@ -96,8 +96,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
     def testPUTTextDocumentTXTNoContentType(self):
         # Create a new document via FTP/DAV, some clients do not send
         # a proper Content-Type header.
-        response = self.publish(self.folder_path+'/test.txt',
-                                env={'CONTENT_LENGTH':'0'},
+        response = self.publish(self.folder_path + '/test.txt',
+                                env={'CONTENT_LENGTH': '0'},
                                 request_method='PUT',
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
@@ -110,8 +110,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
     def testPUTTextDocumentININoContentType(self):
         # Create a new document via FTP/DAV, some clients do not send
         # a proper Content-Type header.
-        response = self.publish(self.folder_path+'/test.ini',
-                                env={'CONTENT_LENGTH':'0'},
+        response = self.publish(self.folder_path + '/test.ini',
+                                env={'CONTENT_LENGTH': '0'},
                                 request_method='PUT',
                                 stdin=StringIO(),
                                 basic=self.basic_auth)
@@ -123,7 +123,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
     def testPUTIndexHtmlDocument(self):
         # Create an index_html document via FTP/DAV
-        response = self.publish(self.folder_path+'/index_html',
+        response = self.publish(self.folder_path + '/index_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
                                 stdin=StringIO(html),
@@ -137,7 +137,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
 
     def testPUTImage(self):
         # Create a new image via FTP/DAV
-        response = self.publish(self.folder_path+'/new_image',
+        response = self.publish(self.folder_path + '/new_image',
                                 env={'CONTENT_TYPE': 'image/gif'},
                                 request_method='PUT',
                                 stdin=StringIO(dummy.GIF),
@@ -154,8 +154,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         # image, but the content_type_registry only looks at the
         # extension. We just send a GIF image so that PIL doesn't
         # complain.
-        response = self.publish(self.folder_path+'/test.gif',
-                                env={'CONTENT_LENGTH':len(dummy.GIF)},
+        response = self.publish(self.folder_path + '/test.gif',
+                                env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
                                 stdin=StringIO(dummy.GIF),
                                 basic=self.basic_auth)
@@ -163,7 +163,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.gif' in self.folder)
         self.assertEqual(self.folder['test.gif'].portal_type, 'Image')
-        self.assertEqual(str(self.folder['test.gif'].getImage().data), dummy.GIF)
+        self.assertEqual(str(self.folder['test.gif'].getImage().data),
+                         dummy.GIF)
 
     def testPUTImageJPGNoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -171,8 +172,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         # image, but the content_type_registry only looks at the
         # extension. We just send a GIF image so that PIL doesn't
         # complain.
-        response = self.publish(self.folder_path+'/test.jpg',
-                                env={'CONTENT_LENGTH':len(dummy.GIF)},
+        response = self.publish(self.folder_path + '/test.jpg',
+                                env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
                                 stdin=StringIO(dummy.GIF),
                                 basic=self.basic_auth)
@@ -180,7 +181,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.jpg' in self.folder)
         self.assertEqual(self.folder['test.jpg'].portal_type, 'Image')
-        self.assertEqual(str(self.folder['test.jpg'].getImage().data), dummy.GIF)
+        self.assertEqual(str(self.folder['test.jpg'].getImage().data),
+                         dummy.GIF)
 
     def testPUTImagePNGNoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -188,8 +190,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         # image, but the content_type_registry only looks at the
         # extension. We just send a GIF image so that PIL doesn't
         # complain.
-        response = self.publish(self.folder_path+'/test.png',
-                                env={'CONTENT_LENGTH':len(dummy.GIF)},
+        response = self.publish(self.folder_path + '/test.png',
+                                env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
                                 stdin=StringIO(dummy.GIF),
                                 basic=self.basic_auth)
@@ -197,7 +199,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.png' in self.folder)
         self.assertEqual(self.folder['test.png'].portal_type, 'Image')
-        self.assertEqual(str(self.folder['test.png'].getImage().data), dummy.GIF)
+        self.assertEqual(str(self.folder['test.png'].getImage().data),
+                         dummy.GIF)
 
     def testPUTImageTIFFNoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -205,8 +208,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         # image, but the content_type_registry only looks at the
         # extension. We just send a GIF image so that PIL doesn't
         # complain.
-        response = self.publish(self.folder_path+'/test.tiff',
-                                env={'CONTENT_LENGTH':len(dummy.GIF)},
+        response = self.publish(self.folder_path + '/test.tiff',
+                                env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
                                 stdin=StringIO(dummy.GIF),
                                 basic=self.basic_auth)
@@ -214,7 +217,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.tiff' in self.folder)
         self.assertEqual(self.folder['test.tiff'].portal_type, 'Image')
-        self.assertEqual(str(self.folder['test.tiff'].getImage().data), dummy.GIF)
+        self.assertEqual(str(self.folder['test.tiff'].getImage().data),
+                         dummy.GIF)
 
     def testPUTImageICONoContentType(self):
         # Create a new image via FTP/DAV, some clients do not send a
@@ -222,8 +226,8 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         # image, but the content_type_registry only looks at the
         # extension. We just send a GIF image so that PIL doesn't
         # complain.
-        response = self.publish(self.folder_path+'/test.ico',
-                                env={'CONTENT_LENGTH':len(dummy.GIF)},
+        response = self.publish(self.folder_path + '/test.ico',
+                                env={'CONTENT_LENGTH': len(dummy.GIF)},
                                 request_method='PUT',
                                 stdin=StringIO(dummy.GIF),
                                 basic=self.basic_auth)
@@ -231,13 +235,16 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('test.ico' in self.folder)
         self.assertEqual(
-            self.folder['test.ico'].portal_type, 'Image',
-            'If you are on a Mac and this fails, please see: http://plone.org/documentation/error/unittest to fix.')
-        self.assertEqual(str(self.folder['test.ico'].getImage().data), dummy.GIF)
+            self.folder['test.ico'].portal_type,
+            'Image',
+            'If you are on a Mac and this fails, please see: '
+                'http://plone.org/documentation/error/unittest to fix.')
+        self.assertEqual(str(self.folder['test.ico'].getImage().data),
+                         dummy.GIF)
 
     def testPUTIndexHtmlImage(self):
         # Create a new image named index_html via FTP/DAV
-        response = self.publish(self.folder_path+'/index_html',
+        response = self.publish(self.folder_path + '/index_html',
                                 env={'CONTENT_TYPE': 'image/gif'},
                                 request_method='PUT',
                                 stdin=StringIO(dummy.GIF),
@@ -246,13 +253,14 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 201)
         self.failUnless('index_html' in self.folder)
         self.assertEqual(self.folder.index_html.portal_type, 'Image')
-        self.assertEqual(str(self.folder.index_html.getImage().data), dummy.GIF)
+        self.assertEqual(str(self.folder.index_html.getImage().data),
+                         dummy.GIF)
 
     def testPUTDocumentIntoPortal(self):
         # Create a new document in the portal via FTP/DAV
         self.setRoles(['Manager'])
 
-        response = self.publish(self.portal_path+'/new_html',
+        response = self.publish(self.portal_path + '/new_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
                                 stdin=StringIO(html),
@@ -267,7 +275,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
         # Create an index_html document in the portal via FTP/DAV
         self.setRoles(['Manager'])
 
-        response = self.publish(self.portal_path+'/index_html',
+        response = self.publish(self.portal_path + '/index_html',
                                 env={'CONTENT_TYPE': 'text/html'},
                                 request_method='PUT',
                                 stdin=StringIO(html),
@@ -284,7 +292,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
         self.loginAsPortalOwner()
-        self.basic_auth = '%s:%s' % (PloneTestCase.portal_owner, PloneTestCase.default_password)
+        self.basic_auth = '%s:%s' % (PloneTestCase.portal_owner,
+                                     PloneTestCase.default_password)
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
 
@@ -306,7 +315,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         self.folder.invokeFactory('Folder', 'sub')
         self.failIf('index_html' in self.folder.sub)
 
-        # Do a PROPFIND on folder/index_html, this needs to result in a NotFound.
+        # Do a PROPFIND on folder/index_html, this needs to result in a
+        # NotFound.
         response = self.publish(self.folder_path + '/sub/index_html',
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
@@ -336,7 +346,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
         self.failIf('index_html' in self.portal)
 
-        # Do a PROPFIND on portal/index_html, this needs to result in a NotFound.
+        # Do a PROPFIND on portal/index_html, this needs to result in a
+        # NotFound.
         response = self.publish(self.portal_path + '/index_html',
                                 request_method='PROPFIND',
                                 env={'HTTP_DEPTH': '0'},
