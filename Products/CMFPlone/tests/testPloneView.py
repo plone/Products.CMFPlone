@@ -46,7 +46,8 @@ class TestPloneView(PloneTestCase.PloneTestCase):
 
     def testNavigationRootPath(self):
         view = Plone(self.folder, self.app.REQUEST)
-        self.assertEqual(view.navigationRootPath(), self.portal.portal_url.getPortalPath())
+        self.assertEqual(view.navigationRootPath(),
+                         self.portal.portal_url.getPortalPath())
 
     def testNavigationRootUrl(self):
         view = Plone(self.folder, self.app.REQUEST)
@@ -103,7 +104,8 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.assertEqual(view.getCurrentFolder(), self.folder)
 
         # If context is not a folder, then the parent is returned
-        # A bit crude ... we need to make sure our memos don't stick in the tests
+        # A bit crude ... we need to make sure our memos don't stick in the
+        # tests
         self._invalidateRequestMemoizations()
         view = Plone(self.folder.test, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)
@@ -133,7 +135,8 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         self.assertEqual(view.cropText('Hello world', 99), 'Hello world')
         self.assertEqual(view.cropText('Hello world', 10), 'Hello worl...')
         self.assertEqual(view.cropText(u'Hello world', 10), u'Hello worl...')
-        self.assertEqual(view.cropText(u'Koko\u0159\xedn', 5), u'Koko\u0159...')
+        self.assertEqual(view.cropText(u'Koko\u0159\xedn', 5),
+                                       u'Koko\u0159...')
         # Test utf encoded string Kokorin with 'r' and 'i' accented
         # Must return 6 characters, because 5th character is two byte
         text = u'Koko\u0159\xedn'.encode('utf8')
