@@ -73,7 +73,7 @@ class DocumentBylineViewlet(ViewletBase):
             return ""
 
         portal = self.portal_state.portal()
-        icon = portal.restrictedTraverse('lock_icon.gif')
+        icon = portal.restrictedTraverse('lock_icon.png')
         return icon.tag(title='Locked')
 
     def creator(self):

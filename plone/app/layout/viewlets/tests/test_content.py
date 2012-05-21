@@ -35,7 +35,7 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         viewlet.update()
         self.assertEqual(viewlet.locked_icon(), "")
         ILockable(context).lock()
-        lockIconUrl = '<img src="http://nohost/plone/lock_icon.gif" alt="" \
+        lockIconUrl = '<img src="http://nohost/plone/lock_icon.png" alt="" \
 title="Locked" height="16" width="16" />'
         self.assertEqual(viewlet.locked_icon(), lockIconUrl)
 

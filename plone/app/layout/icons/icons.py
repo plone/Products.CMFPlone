@@ -148,9 +148,9 @@ class PloneSiteContentIcon(BaseIcon):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
         if portal_state.is_rtl():
-            return "%s/rtl-site_icon.gif" % portal_url
+            return "%s/rtl-site_icon.png" % portal_url
         else:
-            return "%s/site_icon.gif" % portal_url
+            return "%s/site_icon.png" % portal_url
 
     @property
     def description(self):
@@ -174,7 +174,7 @@ class DefaultContentIcon(BaseIcon):
         portal_url = getToolByName(self.context, 'portal_url')()
         if self.obj is None:
             return None
-        return "%s/error_icon.gif" % portal_url
+        return "%s/error_icon.png" % portal_url
 
     @property
     def description(self):
