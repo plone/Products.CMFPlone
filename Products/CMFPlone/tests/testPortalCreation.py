@@ -214,7 +214,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testResourceRegistries(self):
         # We should have portal_css and portal_javascripts tools
         self.assertTrue(hasattr(self.portal, 'portal_css'))
-        self.assertTrue(hasattr(self.portal, 'portal_kss'))
         self.assertTrue(hasattr(self.portal, 'portal_javascripts'))
 
     def testUnfriendlyTypesProperty(self):
