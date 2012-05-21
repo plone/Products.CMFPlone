@@ -13,19 +13,20 @@ default_user = PloneTestCase.default_user
 # though there are some obvious downsides to this, it's better than just
 # asserting that there are X published states in all workflows, etc.
 workflow_dict = {
-      'folder_workflow':('private','published','visible',)
-    , 'intranet_folder_workflow':('internal','private',)
-    , 'intranet_workflow':('internal','internally_published','pending',
-                           'private','external',)
-    , 'one_state_workflow':('published',)
-    , 'plone_workflow':('pending','private','published','visible',)
-    , 'simple_publication_workflow':('private','published','pending',)
-    , 'comment_review_workflow':('pending', 'published',)
+    'folder_workflow': ('private', 'published', 'visible',),
+    'intranet_folder_workflow': ('internal', 'private',),
+    'intranet_workflow': ('internal', 'internally_published', 'pending',
+                          'private', 'external',),
+    'one_state_workflow': ('published',),
+    'plone_workflow': ('pending', 'private', 'published', 'visible',),
+    'simple_publication_workflow': ('private', 'published', 'pending',),
+    'comment_review_workflow': ('pending', 'published',)
 }
 # then we join all states into one master list
 all_states = []
 for states in workflow_dict.values():
     all_states += list(states)
+
 
 class TestWorkflowTool(PloneTestCase.PloneTestCase):
 
@@ -33,7 +34,8 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
         self.workflow = self.portal.portal_workflow
 
         self.portal.acl_users._doAddUser('member', 'secret', ['Member'], [])
-        self.portal.acl_users._doAddUser('reviewer', 'secret', ['Reviewer'], [])
+        self.portal.acl_users._doAddUser('reviewer', 'secret',
+                                         ['Reviewer'], [])
         self.portal.acl_users._doAddUser('manager', 'secret', ['Manager'], [])
 
         self.folder.invokeFactory('Document', id='doc')
@@ -56,50 +58,62 @@ class TestWorkflowTool(PloneTestCase.PloneTestCase):
 
     def testGetTitleForStateOnType(self):
         state_id = self.workflow.getInfoFor(self.doc, 'review_state', '')
-        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        state_title = self.workflow.getTitleForStateOnType(
+                        state_id,
+                        self.doc.portal_type)
         self.assertEqual(state_id, 'visible')
         self.assertEqual(state_title.lower(), 'public draft')
 
     def testGetTitleForStateOnTypeFallsBackOnStateId(self):
         state_id = 'nonsense'
-        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        state_title = self.workflow.getTitleForStateOnType(
+                        state_id,
+                        self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
 
     def testGetTitleForStateOnTypeSucceedsWithNonString(self):
         # Related to http://dev.plone.org/plone/ticket/4638
         # Non content objects can pass None or MissingValue.
         state_id = None
-        state_title = self.workflow.getTitleForStateOnType(state_id, self.doc.portal_type)
+        state_title = self.workflow.getTitleForStateOnType(
+                        state_id,
+                        self.doc.portal_type)
         self.assertEqual(state_title, state_id)
 
     def testGetTitleForTransitionOnType(self):
         state_id = 'hide'
-        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        state_title = self.workflow.getTitleForTransitionOnType(
+                        state_id,
+                        self.doc.portal_type)
         self.assertEqual(state_title, 'Make private')
 
     def testGetTitleForTransitionOnTypeFallsBackOnTransitionId(self):
         state_id = 'nonsense'
-        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        state_title = self.workflow.getTitleForTransitionOnType(
+                        state_id,
+                        self.doc.portal_type)
         self.assertEqual(state_title, 'nonsense')
 
     def testGetTitleForTransitionOnTypeSucceedsWithNonString(self):
         # Related to http://dev.plone.org/plone/ticket/4638
         # Non content objects can pass None or MissingValue.
         state_id = None
-        state_title = self.workflow.getTitleForTransitionOnType(state_id, self.doc.portal_type)
+        state_title = self.workflow.getTitleForTransitionOnType(
+                        state_id,
+                        self.doc.portal_type)
         self.assertEqual(state_title, state_id)
 
     def testListWFStatesByTitle(self):
         states = self.workflow.listWFStatesByTitle()
         self.assertEqual(len(states), len(all_states))
-        pub_states = [s for s in states if s[1]=='published']
-        priv_states = [s for s in states if s[1]=='private']
-        pend_states = [s for s in states if s[1]=='pending']
-        vis_states = [s for s in states if s[1]=='visible']
-        external_states = [s for s in states if s[1]=='external']
-        internal_states = [s for s in states if s[1]=='internal']
+        pub_states = [s for s in states if s[1] == 'published']
+        priv_states = [s for s in states if s[1] == 'private']
+        pend_states = [s for s in states if s[1] == 'pending']
+        vis_states = [s for s in states if s[1] == 'visible']
+        external_states = [s for s in states if s[1] == 'external']
+        internal_states = [s for s in states if s[1] == 'internal']
         internal_pub_states = [s for s in states
-                                 if s[1]=='internally_published']
+                                 if s[1] == 'internally_published']
 
         self.assertEqual(len(pub_states), all_states.count('published'))
         self.assertEqual(len(priv_states), all_states.count('private'))

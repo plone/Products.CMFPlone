@@ -153,9 +153,9 @@ class AddPloneSite(BrowserView):
                 base_profiles.append(info)
 
         return dict(
-            base = tuple(base_profiles),
-            default = _DEFAULT_PROFILE,
-            extensions = tuple(extension_profiles),
+            base=tuple(base_profiles),
+            default=_DEFAULT_PROFILE,
+            extensions=tuple(extension_profiles),
         )
 
     def browser_language(self):

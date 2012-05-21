@@ -14,11 +14,14 @@ from Products.CMFPlone.InterfaceTool import resolveInterface, getDottedName
 class IMyPortalContent(IContentish):
     pass
 
+
 class A(PortalContent, DefaultDublinCoreImpl):
     pass
 
+
 class B(PortalContent, DefaultDublinCoreImpl):
     implements(IMyPortalContent)
+
 
 class TestInterfaceResolution(unittest.TestCase):
 
@@ -47,13 +50,16 @@ class TestInterfaceTool(unittest.TestCase):
     def testContentImplements(self):
         tool = self._makeOne()
         content = PortalContent()
-        self.failUnless(tool.objectImplements(content, getDottedName(IContentish)))
+        self.failUnless(tool.objectImplements(content,
+                                              getDottedName(IContentish)))
 
     def testDocumentImplements(self):
         tool = self._makeOne()
         document = Document(id='foo')
-        self.failUnless(tool.objectImplements(document, getDottedName(IContentish)))
-        self.failUnless(tool.objectImplements(document, getDottedName(IDublinCore)))
+        self.failUnless(tool.objectImplements(document,
+                        getDottedName(IContentish)))
+        self.failUnless(tool.objectImplements(document,
+                        getDottedName(IDublinCore)))
 
     def testDCImplements(self):
         tool = self._makeOne()
@@ -72,4 +78,5 @@ class TestInterfaceTool(unittest.TestCase):
         b = B()
         self.failUnless(tool.objectImplements(b, getDottedName(IContentish)))
         self.failUnless(tool.objectImplements(b, getDottedName(IDublinCore)))
-        self.failUnless(tool.objectImplements(b, getDottedName(IMyPortalContent)))
+        self.failUnless(
+                tool.objectImplements(b, getDottedName(IMyPortalContent)))

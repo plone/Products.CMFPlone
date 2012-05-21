@@ -7,10 +7,9 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Send feedback to portal administrator
-##
-REQUEST=context.REQUEST
 
-from Products.CMFPlone.utils import transaction_note
+REQUEST = context.REQUEST
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
@@ -34,9 +33,9 @@ sender_fullname = REQUEST.get('sender_fullname', '')
 send_to_address = portal.getProperty('email_from_address')
 envelope_from = portal.getProperty('email_from_address')
 
-state.set(status=state_success) ## until proven otherwise
+state.set(status=state_success)  # until proven otherwise
 
-host = context.MailHost # plone_utils.getMailHost() (is private)
+host = context.MailHost  # plone_utils.getMailHost() (is private)
 encoding = portal.getProperty('email_charset')
 
 variables = {'sender_from_address' : sender_from_address,
@@ -53,10 +52,10 @@ try:
                        subject=subject, charset=encoding)
 except ConflictError:
     raise
-except: # TODO Too many things could possibly go wrong. So we catch all.
+except:  # TODO Too many things could possibly go wrong. So we catch all.
     exception = plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
-                mapping={u'exception' : exception})
+                mapping={u'exception': exception})
     plone_utils.addPortalMessage(message, 'error')
     return state.set(status=state_failure)
 

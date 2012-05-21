@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=
-##
 
 from Products.CMFCore.utils import getToolByName
 

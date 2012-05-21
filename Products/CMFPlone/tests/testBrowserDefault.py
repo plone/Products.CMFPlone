@@ -48,7 +48,7 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
         resolved = obj.restrictedTraverse(viewaction)()
         base_path = obj.absolute_url(1)
 
-        response = self.publish(base_path+path, self.basic_auth)
+        response = self.publish(base_path + path, self.basic_auth)
         body = response.getBody().decode('utf-8')
 
         # request/ACTUAL_URL is fubar in tests, remove lines that depend on it
@@ -108,7 +108,8 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
                          (self.portal.atctfolder, ['index_html'],))
 
     def testBrowserDefaultMixinFolderGlobalDefaultPage(self):
-        getToolByName(self.portal, "portal_properties").site_properties.manage_changeProperties(default_page = ['foo'])
+        getToolByName(self.portal, "portal_properties") \
+            .site_properties.manage_changeProperties(default_page=['foo'])
         self.portal.atctfolder.invokeFactory('Document', 'foo')
         self.assertEqual(self.putils.browserDefault(self.portal.atctfolder),
                          (self.portal.atctfolder, ['foo']))
@@ -121,15 +122,17 @@ class TestPloneToolBrowserDefault(PloneTestCase.FunctionalTestCase):
     def testCallWithBrowserDefaultMixinGetsSelectedLayout(self):
         self.compareLayoutVsView(self.portal.atctdocument, path="")
 
-    # Dump data from file objects (via index_html), but get template when explicitly called
+    # Dump data from file objects (via index_html), but get template when
+    # explicitly called
 
     def testBrowserDefaultMixinFileViewMethodGetsTemplate(self):
         self.compareLayoutVsView(self.portal.atctfile, path="/view")
 
     def testBrowserDefaultMixinFileDumpsContent(self):
-        response = self.publish(self.portal.atctfile.absolute_url(1), self.basic_auth)
-        self.failUnlessEqual(response.getBody(), str(self.portal.atctfile.getFile()))
-
+        response = self.publish(self.portal.atctfile.absolute_url(1),
+                                self.basic_auth)
+        self.failUnlessEqual(response.getBody(),
+                             str(self.portal.atctfile.getFile()))
 
     # Ensure index_html acquisition and replaceablewrapper
 
@@ -216,6 +219,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.portal.plone_utils.browserDefault(self.folder),
                             (self.folder, ['d1']))
 
+
 class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
     """Test the BrowserDefaultMixin as implemented by the root portal object
     """
@@ -227,22 +231,22 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         # care of this, but let's not be dependent on that in the test
         if not 'front-page' in self.portal.objectIds():
             self.portal.invokeFactory('Document', 'front-page',
-                                      title = 'Welcome to Plone')
+                                      title='Welcome to Plone')
         self.portal.setDefaultPage('front-page')
 
         # Also make sure we have folder_listing as a template
-        self.portal.getTypeInfo().manage_changeProperties(view_methods =
-                                        ['folder_listing'],
-                                        default_view = 'folder_listing')
+        self.portal.getTypeInfo().manage_changeProperties(
+                                    view_methods=['folder_listing'],
+                                    default_view='folder_listing')
 
     def failIfDiff(self, text1, text2):
         """
-        Compare two bodies of text.  If they are not the same, fail and output the diff
+        Compare two bodies of text.  If they are not the same, fail and output
+        the diff
         """
         if text1 != text2:
             diff = difflib.unified_diff(text1.split("\n"), text2.split("\n"))
             self.fail("\n".join([line for line in diff]))
-
 
     def testCall(self):
         self.portal.setLayout('folder_listing')
@@ -257,12 +261,13 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.getDefaultLayout(), 'folder_listing')
         layoutKeys = [v[0] for v in self.portal.getAvailableLayouts()]
         self.failUnless('folder_listing' in layoutKeys)
-        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['front-page',]))
+        self.assertEqual(self.portal.__browser_default__(None),
+                         (self.portal, ['front-page', ]))
 
     def testCanSetLayout(self):
         self.failUnless(self.portal.canSetLayout())
         self.portal.manage_permission("Modify view template", [], 0)
-        self.failIf(self.portal.canSetLayout()) # Not permitted
+        self.failIf(self.portal.canSetLayout())  # Not permitted
 
     def testSetLayout(self):
         self.portal.setLayout('folder_listing')
@@ -275,27 +280,28 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
 
         view = self.portal.view()
         browserDefault = self.portal.__browser_default__(None)[1][0]
-        browserDefaultResolved = self.portal.unrestrictedTraverse(browserDefault)()
+        browserDefaultResolved = \
+            self.portal.unrestrictedTraverse(browserDefault)()
         template = self.portal.defaultView()
         templateResolved = self.portal.unrestrictedTraverse(template)()
 
         self.failIfDiff(view, browserDefaultResolved)
         self.failIfDiff(view, templateResolved)
 
-
     def testCanSetDefaultPage(self):
         self.failUnless(self.portal.canSetDefaultPage())
         self.portal.invokeFactory('Document', 'ad')
-        self.failIf(self.portal.ad.canSetDefaultPage()) # Not folderish
+        self.failIf(self.portal.ad.canSetDefaultPage())  # Not folderish
         self.portal.manage_permission("Modify view template", [], 0)
-        self.failIf(self.portal.canSetDefaultPage()) # Not permitted
+        self.failIf(self.portal.canSetDefaultPage())  # Not permitted
 
     def testSetDefaultPage(self):
         self.portal.invokeFactory('Document', 'ad')
         self.portal.setDefaultPage('ad')
         self.assertEqual(self.portal.getDefaultPage(), 'ad')
         self.assertEqual(self.portal.defaultView(), 'ad')
-        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['ad',]))
+        self.assertEqual(self.portal.__browser_default__(None),
+                         (self.portal, ['ad', ]))
 
         # still have layout settings
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
@@ -308,14 +314,19 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         cat = getToolByName(self.portal, "portal_catalog")
         self.portal.invokeFactory('Document', 'ad')
         self.portal.invokeFactory('Document', 'other')
-        self.assertEqual(len(cat(getId=['ad','other'],is_default_page=True)), 0)
+        self.assertEqual(
+            len(cat(getId=['ad', 'other'], is_default_page=True)), 0)
         self.portal.setDefaultPage('ad')
-        self.assertEqual(len(cat(getId='ad',is_default_page=True)), 1)
+        self.assertEqual(
+            len(cat(getId='ad', is_default_page=True)), 1)
         self.portal.setDefaultPage('other')
-        self.assertEqual(len(cat(getId='other',is_default_page=True)), 1)
-        self.assertEqual(len(cat(getId='ad',is_default_page=True)), 0)
+        self.assertEqual(
+            len(cat(getId='other', is_default_page=True)), 1)
+        self.assertEqual(
+            len(cat(getId='ad', is_default_page=True)), 0)
         self.portal.setDefaultPage(None)
-        self.assertEqual(len(cat(getId=['ad','other'],is_default_page=True)), 0)
+        self.assertEqual(
+            len(cat(getId=['ad', 'other'], is_default_page=True)), 0)
 
     def testSetLayoutUnsetsDefaultPage(self):
         self.portal.invokeFactory('Document', 'ad')
@@ -329,7 +340,8 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
 
         view = self.portal.view()
         browserDefault = self.portal.__browser_default__(None)[1][0]
-        browserDefaultResolved = self.portal.unrestrictedTraverse(browserDefault)()
+        browserDefaultResolved = \
+            self.portal.unrestrictedTraverse(browserDefault)()
         template = self.portal.defaultView()
         templateResolved = self.portal.unrestrictedTraverse(template)()
 
@@ -337,7 +349,8 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         self.failIfDiff(view, templateResolved)
 
     def testMissingTemplatesIgnored(self):
-        self.portal.getTypeInfo().manage_changeProperties(view_methods = ['folder_listing', 'foo'])
+        self.portal.getTypeInfo() \
+            .manage_changeProperties(view_methods=['folder_listing', 'foo'])
         views = [v[0] for v in self.portal.getAvailableLayouts()]
         self.failUnless(views == ['folder_listing'])
 
@@ -345,15 +358,18 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         self.portal.setDefaultPage('inexistent')
         self.assertEqual(self.portal.getDefaultPage(), None)
         self.assertEqual(self.portal.defaultView(), 'folder_listing')
-        self.assertEqual(self.portal.__browser_default__(None), (self.portal, ['folder_listing',]))
+        self.assertEqual(self.portal.__browser_default__(None),
+                         (self.portal, ['folder_listing', ]))
 
     def testTemplateTitles(self):
-        views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
+        views = [v for v in self.portal.getAvailableLayouts()
+                    if v[0] == 'folder_listing']
         self.assertEqual(views[0][1], 'Standard view')
         try:
             folderListing = self.portal.unrestrictedTraverse('folder_listing')
             folderListing.title = 'foo'
-            views = [v for v in self.portal.getAvailableLayouts() if v[0] == 'folder_listing']
+            views = [v for v in self.portal.getAvailableLayouts()
+                        if v[0] == 'folder_listing']
             self.assertEqual(views[0][1], 'foo')
         finally:
             # Restore title to avoid side-effects

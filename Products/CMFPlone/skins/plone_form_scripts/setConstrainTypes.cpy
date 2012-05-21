@@ -28,8 +28,8 @@ currentAllow = context.REQUEST.get('currentAllow', [])
 # - if the user wants to see a certain type _only_ in the "more ..."
 #   form, then they select it inside the "locallyAllowedTypes" list.
 
-immediatelyAddableTypes = [ t for t in currentPrefer if not t in currentAllow ]
-locallyAllowedTypes = [ t for t in currentPrefer ]
+immediatelyAddableTypes = [t for t in currentPrefer if not t in currentAllow]
+locallyAllowedTypes = [t for t in currentPrefer]
 
 #plone_log( "SET: immediatelyAddableTypes=%s, locallyAllowedTypes=%s" % ( immediatelyAddableTypes, locallyAllowedTypes ) )
 

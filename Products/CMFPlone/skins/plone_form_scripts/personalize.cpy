@@ -12,30 +12,30 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import transaction_note, set_own_login_name
 from Products.CMFPlone import PloneMessageFactory as _
 
-member=context.portal_membership.getAuthenticatedMember()
+member = context.portal_membership.getAuthenticatedMember()
 member.setProperties(properties=context.REQUEST, REQUEST=REQUEST)
-member_context=context.portal_membership.getHomeFolder(member.getId())
+member_context = context.portal_membership.getHomeFolder(member.getId())
 context.portal_skins.updateSkinCookie()
 
 if member_context is None:
-    member_context=context.portal_url.getPortalObject()
+    member_context = context.portal_url.getPortalObject()
 
 if visible_ids is None and REQUEST is not None:
-    visible_ids=0
+    visible_ids = 0
 else:
-    visible_ids=1
+    visible_ids = 1
 REQUEST.set('visible_ids', visible_ids)
 
 if ext_editor is None and REQUEST is not None:
-    ext_editor=0
+    ext_editor = 0
 else:
-    ext_editor=1
+    ext_editor = 1
 REQUEST.set('ext_editor', ext_editor)
 
 if listed is None and REQUEST is not None:
-    listed=0
+    listed = 0
 else:
-    listed=1
+    listed = 1
 REQUEST.set('listed', listed)
 
 if (portrait and portrait.filename):
@@ -55,10 +55,12 @@ if email:
             # Probably user in zope root
             pass
 
-member.setProperties(ext_editor=ext_editor, listed=listed, visible_ids=visible_ids)
+member.setProperties(ext_editor=ext_editor, listed=listed,
+                     visible_ids=visible_ids)
 
-tmsg='Edited personal settings for %s' % member.getId()
+tmsg = 'Edited personal settings for %s' % member.getId()
 transaction_note(tmsg)
 
-context.plone_utils.addPortalMessage(_(u'Your personal settings have been saved.'))
+context.plone_utils.addPortalMessage(_(u'Your personal settings have been '
+                                       u'saved.'))
 return state

@@ -30,5 +30,5 @@ else:
         target_url = "%s?next=%s" % (external_logout_url, target_url)
 
 # Double '$' to avoid injection into TALES
-target_url = target_url.replace('$','$$')
-return state.set(next_action='redirect_to:string:' + target_url )
+target_url = target_url.replace('$', '$$')
+return state.set(next_action='redirect_to:string:' + target_url)

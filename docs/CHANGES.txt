@@ -8,6 +8,12 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Don't register the plone_deprecated skin layer. These items are no
+  longer supported as part of Plone and remain here temporarily as a
+  convenience to those who may need to move them into their own
+  packages.
+  [davisagli]
+
 - Ensure multiple tabbed forms on the same page work when number of
   tabs is greater than threshold.
   [davidjb]

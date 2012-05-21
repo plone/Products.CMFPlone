@@ -42,9 +42,12 @@ def initialize(context):
     # For content_status_modify
     from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, \
                                               WorkflowException
-    ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('ObjectMoved')
-    ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('ObjectDeleted')
-    ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('WorkflowException')
+    ModuleSecurityInfo('Products.CMFCore.WorkflowCore') \
+        .declarePublic('ObjectMoved')
+    ModuleSecurityInfo('Products.CMFCore.WorkflowCore') \
+        .declarePublic('ObjectDeleted')
+    ModuleSecurityInfo('Products.CMFCore.WorkflowCore') \
+        .declarePublic('WorkflowException')
     allow_class(ObjectMoved)
     allow_class(ObjectDeleted)
     allow_class(WorkflowException)
@@ -68,7 +71,8 @@ def initialize(context):
     ModuleSecurityInfo('ZODB.POSException').declarePublic('ConflictError')
 
     # Make ZCTextIndex ParseError importable TTW
-    ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
+    ModuleSecurityInfo('Products.ZCTextIndex.ParseTree') \
+        .declarePublic('ParseError')
 
     # Make DateTimeError importable TTW
     ModuleSecurityInfo('DateTime.interfaces').declarePublic('DateTimeError')
@@ -82,13 +86,16 @@ def initialize(context):
     ModuleSecurityInfo('OFS.CopySupport').declarePublic('CopyError')
 
     # Make DiscussionNotAllowed importable TTW
-    ModuleSecurityInfo('Products.CMFDefault.DiscussionTool').declarePublic('DiscussionNotAllowed')
+    ModuleSecurityInfo('Products.CMFDefault.DiscussionTool') \
+        .declarePublic('DiscussionNotAllowed')
 
     # Make AllowSendto importable TTW
-    ModuleSecurityInfo('Products.CMFPlone.PloneTool').declarePublic('AllowSendto')
+    ModuleSecurityInfo('Products.CMFPlone.PloneTool') \
+        .declarePublic('AllowSendto')
 
     # Make ZCatalog's mergeResults importable TTW
-    ModuleSecurityInfo('Products.ZCatalog.Catalog').declarePublic('mergeResults')
+    ModuleSecurityInfo('Products.ZCatalog.Catalog') \
+        .declarePublic('mergeResults')
 
     # Make the navtree constructs available TTW
     allow_module('Products.CMFPlone.browser.navtree')
@@ -192,17 +199,18 @@ def initialize(context):
 
     from plone.app.folder import nogopip
     context.registerClass(nogopip.GopipIndex,
-        permission = 'Add Pluggable Index',
-        constructors = (nogopip.manage_addGopipForm,
-                        nogopip.manage_addGopipIndex),
-        icon = 'index.gif',
-        visibility = None)
+        permission='Add Pluggable Index',
+        constructors=(nogopip.manage_addGopipForm,
+                      nogopip.manage_addGopipIndex),
+        icon='index.gif',
+        visibility=None)
 
 
 # Import PloneMessageFactory to create messages in the plone domain
 from zope.i18nmessageid import MessageFactory
 PloneMessageFactory = MessageFactory('plone')
 
-# Import PloneLocalesMessageFactory to create messages in the plonelocales domain
+# Import PloneLocalesMessageFactory to create messages in the
+# plonelocales domain
 from zope.i18nmessageid import MessageFactory
 PloneLocalesMessageFactory = MessageFactory('plonelocales')

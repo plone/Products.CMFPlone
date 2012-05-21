@@ -6,8 +6,8 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.syndication = self.portal.portal_syndication
-        self.folder.invokeFactory('Document','doc1')
-        self.folder.invokeFactory('Document','doc2')
+        self.folder.invokeFactory('Document', 'doc1')
+        self.folder.invokeFactory('Document', 'doc2')
         self.doc1 = self.folder.doc1
         self.doc2 = self.folder.doc2
         #Enable syndication sitewide
@@ -31,7 +31,7 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
 
     def testGetSyndicatableContent(self):
         content = self.syndication.getSyndicatableContent(self.folder)
-        self.assertEqual(len(content),2)
+        self.assertEqual(len(content), 2)
 
     def testOwnerCanEnableAndDisableSyndication(self):
         self.setRoles(['Owner'])

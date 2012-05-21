@@ -6,12 +6,11 @@
 ##bind subpath=traverse_subpath
 ##parameters=aList
 ##title=Reverse A List or Tuple and Return it
-##
 
-myList=[]
+myList = []
 
 try:
-    myList=list(aList)[:]
+    myList = list(aList)[:]
     myList.reverse()
 except TypeError:
     pass

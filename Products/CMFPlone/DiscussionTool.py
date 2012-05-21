@@ -4,7 +4,8 @@ from App.class_init import InitializeClass
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFDefault.permissions import ReplyToItem
 
-from plone.intelligenttext.transforms import convertWebIntelligentPlainTextToHtml
+from plone.intelligenttext.transforms \
+    import convertWebIntelligentPlainTextToHtml
 
 
 class DiscussionTool(PloneBaseTool, BaseTool):

@@ -68,7 +68,6 @@
   <layer name="plone_images"/>
   <layer name="plone_content"/>
   <layer name="plone_login"/>
-  <layer name="plone_deprecated"/>
   <layer name="plone_3rdParty"/>
   <layer name="cmf_legacy"/>
  </skin-path>

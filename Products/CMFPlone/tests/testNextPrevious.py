@@ -1,6 +1,7 @@
 from Products.CMFPlone.tests import PloneTestCase
 from plone.app.layout.nextprevious.interfaces import INextPreviousProvider
 
+
 class TestNextPrevious(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -30,7 +31,8 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
     def testIfFolderImplementsPreviousNext(self):
         self.folder.invokeFactory('Folder', 'case')
-        self.failUnless(INextPreviousProvider(self.folder.case, None) is not None)
+        self.failUnless(
+                INextPreviousProvider(self.folder.case, None) is not None)
 
     def testNextPreviousEnablingOnCreation(self):
         self.folder.invokeFactory('Folder', 'case')
@@ -44,7 +46,8 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
         self.failIf(adapter.enabled)
 
     def testNextPreviousViewDisabled(self):
-        view = self.portal.folder1.doc11.restrictedTraverse('@@plone_nextprevious_view', None)
+        view = self.portal.folder1.doc11.restrictedTraverse(
+                '@@plone_nextprevious_view', None)
         self.failIf(view is None)
 
         #is it enabled (default is false)
@@ -55,19 +58,23 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
         self.portal.folder1.setNextPreviousEnabled(True)
 
         # clear request memos
-        view = self.portal.folder1.doc12.restrictedTraverse('@@plone_nextprevious_view', None)
+        view = self.portal.folder1.doc12.restrictedTraverse(
+                '@@plone_nextprevious_view', None)
         self.failUnless(view.enabled())
 
         # test the next method
         next = view.next()
-        self.assertEquals(next['url'], self.portal.folder1.doc13.absolute_url())
+        self.assertEquals(next['url'],
+                          self.portal.folder1.doc13.absolute_url())
 
         # test the previous method
         previous = view.previous()
-        self.assertEquals(previous['url'], self.portal.folder1.doc11.absolute_url())
+        self.assertEquals(previous['url'],
+                          self.portal.folder1.doc11.absolute_url())
 
     def testAdapterOnPortal(self):
-        view = self.portal.doc1.restrictedTraverse('@@plone_nextprevious_view', None)
+        view = self.portal.doc1.restrictedTraverse('@@plone_nextprevious_view',
+                                                   None)
         self.failUnless(view)
         self.failIf(view.enabled())
         self.assertEquals(None, view.next())
@@ -77,9 +84,10 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Folder', 'case3')
 
         for documentCounter in range(1, 6):
-            self.folder.case3.invokeFactory('Document', 'subDoc%d' % documentCounter)
+            self.folder.case3.invokeFactory('Document',
+                                            'subDoc%d' % documentCounter)
 
-        container  = self.folder.case3
+        container = self.folder.case3
 
         #set up the adapter for the folder
         adapter = INextPreviousProvider(container)

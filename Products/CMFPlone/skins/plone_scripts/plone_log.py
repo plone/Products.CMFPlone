@@ -6,7 +6,8 @@
 ##bind subpath=traverse_subpath
 ##parameters=summary='',text=''
 ##title=
-##
+
 from logging import getLogger
+
 log = getLogger('Plone')
 log.info('Debug: %s \n%s', summary, text)
