@@ -244,7 +244,7 @@
             </tal:workflows>
 
             <div tal:condition="view/have_new_workflow">
-                <img tal:replace="structure here/info_icon.gif" />
+                <img tal:replace="structure here/info_icon.png" />
                 <span style="color: red" i18n:translate="types_controlpanel_warn_remap">
                     Changing the workflow of a type will take a while, and may slow down
                     the site significantly while the content is updated to the new setting.
