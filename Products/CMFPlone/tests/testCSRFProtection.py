@@ -31,15 +31,6 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
                                 request_method='POST', stdin=data)
         self.assertEqual(response.getStatus(), status)
 
-    def test_PloneTool_setMemberProperties(self):
-        member = self.portal.portal_membership.getMemberById
-        email = 'john@spamfactory.com'
-        self.assertNotEqual(member(ptc.default_user).getProperty('email'),
-                            email)
-        self.checkAuthenticator('/prefs_user_edit',
-            'userid=%s&email=%s' % (ptc.default_user, email))
-        self.assertEqual(member(ptc.default_user).getProperty('email'), email)
-
     def test_PloneTool_changeOwnershipOf(self):
         self.assertNotEqual(self.portal.getOwner().getUserName(),
                             ptc.default_user)
@@ -95,25 +86,6 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
         self.checkAuthenticator(
             '/portal_membership/deleteMembers',
             'member_ids:list=%s' % ptc.default_user)
-
-    def test_GroupData_addMember(self):
-        member = self.portal.portal_membership.getMemberById
-        self.failIf('Administrators' in member(ptc.default_user).getGroups())
-        self.checkAuthenticator(
-            '/prefs_user_membership_edit',
-            'userid=%s&add:list=Administrators' % ptc.default_user,
-            status=302)
-        self.failUnless(
-            'Administrators' in member(ptc.default_user).getGroups())
-
-    def test_GroupData_removeMember(self):
-        group = self.portal.portal_groups.getGroupById('Reviewers')
-        group.addMember(ptc.default_user)
-        member = self.portal.portal_membership.getMemberById
-        self.failUnless('Reviewers' in member(ptc.default_user).getGroups())
-        self.checkAuthenticator('/prefs_user_membership_edit',
-            'userid=%s&delete:list=Reviewers' % ptc.default_user, status=302)
-        self.failIf('Reviewers' in member(ptc.default_user).getGroups())
 
     def test_userFolderAddUser(self):
         self.checkAuthenticator(

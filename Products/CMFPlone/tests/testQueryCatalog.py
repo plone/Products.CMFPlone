@@ -257,8 +257,5 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
                                      name="search")
         searchView()
 
-    def testRenderSearchResults(self):
-        self.portal.search()
-
     def testRenderSearchRSS(self):
         self.portal.search_rss(self.portal, self.app.REQUEST)
