@@ -95,7 +95,7 @@
         <a href="mail_password_form"
            class="tile"
            tal:attributes="href view/mail_password_form">
-           <tal:block replace="structure context/info_icon.gif"/>
+           <tal:block replace="structure context/info_icon.png"/>
            <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
         </a>
     </dd>
@@ -104,7 +104,7 @@
         <a href=""
            class="tile"
            tal:attributes="href view/join_action">
-            <tal:block replace="structure context/user.gif"/>
+            <tal:block replace="structure context/user.png"/>
             <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
         </a>
         <span class="portletBottomLeft"></span>
