@@ -240,7 +240,7 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
                                         ['folder_listing'],
                                         default_view = 'folder_listing')
 
-    def assertFalseDiff(self, text1, text2):
+    def failIfDiff(self, text1, text2):
         """
         Compare two bodies of text.  If they are not the same, fail and output the diff
         """
@@ -253,7 +253,7 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         self.portal.setLayout('folder_listing')
         resolved = self.portal()
         target = self.portal.unrestrictedTraverse('folder_listing')()
-        self.assertFalseDiff(resolved, target)
+        self.failIfDiff(resolved, target)
 
     def testDefaultViews(self):
         self.assertEqual(self.portal.getLayout(), 'folder_listing')
@@ -284,8 +284,8 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         template = self.portal.defaultView()
         templateResolved = self.portal.unrestrictedTraverse(template)()
 
-        self.assertFalseDiff(view, browserDefaultResolved)
-        self.assertFalseDiff(view, templateResolved)
+        self.failIfDiff(view, browserDefaultResolved)
+        self.failIfDiff(view, templateResolved)
 
 
     def testCanSetDefaultPage(self):
@@ -329,8 +329,8 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         self.assertEqual(self.portal.defaultView(), 'ad')
         self.portal.setLayout('folder_listing')
 
-        self.assertFalseDiff(self.portal.getDefaultPage(), None)
-        self.assertFalseDiff(self.portal.defaultView(), 'folder_listing')
+        self.failIfDiff(self.portal.getDefaultPage(), None)
+        self.failIfDiff(self.portal.defaultView(), 'folder_listing')
 
         view = self.portal.view()
         browserDefault = self.portal.__browser_default__(None)[1][0]
@@ -338,8 +338,8 @@ class TestPortalBrowserDefault(PloneTestCase.PloneTestCase):
         template = self.portal.defaultView()
         templateResolved = self.portal.unrestrictedTraverse(template)()
 
-        self.assertFalseDiff(view, browserDefaultResolved)
-        self.assertFalseDiff(view, templateResolved)
+        self.failIfDiff(view, browserDefaultResolved)
+        self.failIfDiff(view, templateResolved)
 
     def testMissingTemplatesIgnored(self):
         self.portal.getTypeInfo().manage_changeProperties(view_methods = ['folder_listing', 'foo'])
