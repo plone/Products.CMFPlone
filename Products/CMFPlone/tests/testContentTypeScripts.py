@@ -63,9 +63,9 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
                                   start_date='2003-09-18',
                                   end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.failUnless(self.folder.event.start().ISO8601() \
+        self.assertTrue(self.folder.event.start().ISO8601() \
                             .startswith('2003-09-18T00:00:00'))
-        self.failUnless(self.folder.event.end().ISO8601() \
+        self.assertTrue(self.folder.event.end().ISO8601() \
                             .startswith('2003-09-19T00:00:00'))
 
     def testEventEdit(self):
@@ -74,9 +74,9 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
                                      start_date='2003-09-18',
                                      end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.failUnless(self.folder.event.start().ISO8601() \
+        self.assertTrue(self.folder.event.start().ISO8601() \
                             .startswith('2003-09-18T00:00:00'))
-        self.failUnless(self.folder.event.end().ISO8601() \
+        self.assertTrue(self.folder.event.end().ISO8601() \
                             .startswith('2003-09-19T00:00:00'))
 
     def testFileCreate(self):
@@ -154,7 +154,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.setupAuthenticator()
         self.setRequestMethod('POST')
         self.folder.doc.object_delete()
-        self.failIf('doc' in self.folder)
+        self.assertFalse('doc' in self.folder)
 
 
 class TestEditShortName(PloneTestCase.PloneTestCase):
@@ -204,12 +204,12 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
     def testFileEditShortName(self):
         transaction.savepoint(optimistic=True)  # make rename work
         self.folder.file.file_edit(id='fred')
-        self.failUnless('fred' in self.folder)
+        self.assertTrue('fred' in self.folder)
 
     def testImageEditShortName(self):
         transaction.savepoint(optimistic=True)  # make rename work
         self.folder.image.image_edit(id='fred')
-        self.failUnless('fred' in self.folder)
+        self.assertTrue('fred' in self.folder)
 
 
 class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
@@ -318,21 +318,21 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
 
     def testUploadFile(self):
         self.folder[self.file_id].file_edit(file=dummy.File('fred.txt'))
-        self.failUnless('fred.txt' in self.folder)
+        self.assertTrue('fred.txt' in self.folder)
 
     def testUploadImage(self):
         self.folder[self.image_id].image_edit(file=dummy.Image('fred.gif'))
-        self.failUnless('fred.gif' in self.folder)
+        self.assertTrue('fred.gif' in self.folder)
 
     def DISABLED_testFileRenameKeepsExtension(self):
         # XXX Wishful thinking
         self.folder[self.file_id].file_edit(id='barney')
-        self.failUnless('barney.txt' in self.folder)
+        self.assertTrue('barney.txt' in self.folder)
 
     def DISABLED_testImageRenameKeepsExtension(self):
         # XXX Wishful thinking
         self.folder[self.image_id].image_edit(id='barney')
-        self.failUnless('barney.gif' in self.folder)
+        self.assertTrue('barney.gif' in self.folder)
 
 
 class TestBadFileIds(PloneTestCase.PloneTestCase):
@@ -354,7 +354,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
             # when running tests... since all we're testing is that the
             # object doesn't get renamed, this shouldn't matter
             pass
-        self.failIf('fred%.txt' in self.folder)
+        self.assertFalse('fred%.txt' in self.folder)
 
     def testUploadBadImage(self):
         # http://dev.plone.org/plone/ticket/3518
@@ -363,7 +363,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
         except CopyError:
             # (ditto - see above)
             pass
-        self.failIf('fred%.gif' in self.folder)
+        self.assertFalse('fred%.gif' in self.folder)
 
     # TODO: Dang! No easy way to get at the validator state...
 

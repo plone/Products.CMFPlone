@@ -58,7 +58,7 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
     def testCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest
         self.folder._setObject('foo', dummy.Item())
-        self.failIf(self.folder.checkIdAvailable('foo'))
+        self.assertFalse(self.folder.checkIdAvailable('foo'))
 
 
 class TestFolderListing(PloneTestCase.PloneTestCase):
@@ -141,7 +141,7 @@ class TestManageDelObjects(PloneTestCase.PloneTestCase):
     def testManageDelObjects(self):
         # Should be able to delete sub1
         self.folder.manage_delObjects('sub1')
-        self.failIf('sub1' in self.folder.objectIds())
+        self.assertFalse('sub1' in self.folder.objectIds())
 
     def testManageDelObjectsIfSub1Denied(self):
         # Should NOT be able to delete sub1 due to permission checks in
@@ -154,7 +154,7 @@ class TestManageDelObjects(PloneTestCase.PloneTestCase):
         # -> the check is only 1 level deep!
         self.sub2.manage_permission(DeleteObjects, ['Manager'], acquire=0)
         self.folder.manage_delObjects('sub1')
-        self.failIf('sub1' in self.folder.objectIds())
+        self.assertFalse('sub1' in self.folder.objectIds())
 
 
 class TestManageDelObjectsInPortal(PloneTestCase.PloneTestCase):
@@ -166,7 +166,7 @@ class TestManageDelObjectsInPortal(PloneTestCase.PloneTestCase):
     def testManageDelObjects(self):
         # Should be able to delete sub1
         self.portal.manage_delObjects('sub1')
-        self.failIf('sub1' in self.portal.objectIds())
+        self.assertFalse('sub1' in self.portal.objectIds())
 
     def testManageDelObjectsIfSub1Denied(self):
         # Should be able to delete sub1 as the portal does not implement

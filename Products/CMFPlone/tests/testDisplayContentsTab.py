@@ -48,31 +48,31 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
 
     def testDisplayContentsTab(self):
         # We should see the tab
-        self.failUnless(self.folder.displayContentsTab())
+        self.assertTrue(self.folder.displayContentsTab())
 
     def testAnonymous(self):
         # Anonymous should not see the tab
         self.logout()
-        self.failIf(self.folder.displayContentsTab())
+        self.assertFalse(self.folder.displayContentsTab())
 
     def testNoListPermission(self):
         # We should not see the tab without ListFolderContents
         self.folder.manage_permission(ListFolderContents, ['Manager'],
                                       acquire=0)
-        self.failIf(self.folder.displayContentsTab())
+        self.assertFalse(self.folder.displayContentsTab())
 
     def testNoModificationPermissions(self):
         # We should see the tab with only copy_or_move
         perms = self.getModificationPermissions()
         self.removePermissionsFromObject(perms, self.folder)
-        self.failIf(self.folder.displayContentsTab())
+        self.assertFalse(self.folder.displayContentsTab())
 
     def testOnlyModifyPermission(self):
         # We should see the tab with only ModifyPortalContent
         perms = self.getModificationPermissions()
         perms.remove(ModifyPortalContent)
         self.removePermissionsFromObject(perms, self.folder)
-        self.failUnless(self.folder.displayContentsTab())
+        self.assertTrue(self.folder.displayContentsTab())
 
     def testOnlyCopyPermission(self):
         # We should NOT see the tab with only copy_or_move (r8620)
@@ -80,36 +80,36 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         perms = self.getModificationPermissions()
         perms.remove(copy_or_move)
         self.removePermissionsFromObject(perms, self.folder)
-        self.failIf(self.folder.displayContentsTab())
+        self.assertFalse(self.folder.displayContentsTab())
 
     def testOnlyDeletePermission(self):
         # We should see the tab with only copy_or_move
         perms = self.getModificationPermissions()
         perms.remove(delete_objects)
         self.removePermissionsFromObject(perms, self.folder)
-        self.failUnless(self.folder.displayContentsTab())
+        self.assertTrue(self.folder.displayContentsTab())
 
     def testOnlyAddPermission(self):
         # We should see the tab with only copy_or_move
         perms = self.getModificationPermissions()
         perms.remove(AddPortalContent)
         self.removePermissionsFromObject(perms, self.folder)
-        self.failUnless(self.folder.displayContentsTab())
+        self.assertTrue(self.folder.displayContentsTab())
 
     def testNonFolderishObjectDoesNotShowTab(self):
         # The availability of the contents tab on a non-folderish object should
         # be based on the parents permissions.
         doc = self.folder.foo.doc1
-        self.failIf(doc.displayContentsTab())
+        self.assertFalse(doc.displayContentsTab())
 
     def testFolderishDefaultPageUsesParentPermissions(self):
         # The availability of the contents tab on a default page should be
         # based on the parents permissions, whether the default page is
         # folderish or not.
         def_page = self.folder.foo.index_html
-        self.failUnless(def_page.displayContentsTab())
+        self.assertTrue(def_page.displayContentsTab())
         self.folder.foo.manage_permission(ListFolderContents, ['Manager'],
                                           acquire=0)
         # Clear the memoized results, as it would happen for a new request
         del self.app.REQUEST.__annotations__
-        self.failIf(def_page.displayContentsTab())
+        self.assertFalse(def_page.displayContentsTab())

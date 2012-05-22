@@ -30,13 +30,13 @@ class TestBrowserLayerPrecedence(PloneTestCase.FunctionalTestCase):
         iro = self._get_request_interfaces()
         unregister_layer('Plone.testlayer')
 
-        self.failUnless(iro.index(IAdditiveLayer) < iro.index(IDefaultBrowserLayer))
+        self.assertTrue(iro.index(IAdditiveLayer) < iro.index(IDefaultBrowserLayer))
 
     def testThemeSpecificLayerTakesHighestPrecedence(self):
         register_layer(IAdditiveLayer, 'Plone.testlayer')
         iro = self._get_request_interfaces()
         unregister_layer('Plone.testlayer')
 
-        self.failUnless(iro.index(IThemeSpecific) < iro.index(IAdditiveLayer),
+        self.assertTrue(iro.index(IThemeSpecific) < iro.index(IAdditiveLayer),
             'Theme-specific browser layers should take precedence over other '
             'browser layers.')

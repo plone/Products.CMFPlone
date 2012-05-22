@@ -48,7 +48,7 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(foo_action.category, 'foo_category')
 
     def testPortalTypesIsActionProvider(self):
-        self.failUnless('portal_types' in self.actions.listActionProviders())
+        self.assertTrue('portal_types' in self.actions.listActionProviders())
 
     def testMissingActionProvider(self):
         self.portal._delObject('portal_types')
@@ -84,13 +84,13 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
                                visible=1)
         actions = self.actions.listFilteredActionsFor(self.folder)
         match = [a for a in actions['document_actions'] if a['id'] == 'foo']
-        self.failUnless(match)
+        self.assertTrue(match)
         self.portal.portal_workflow.doActionFor(self.folder, 'hide')
         self.login('user1')
         actions = self.actions.listFilteredActionsFor(self.folder)
         match = [a for a in actions.get('document_actions', [])
                     if a['id'] == 'foo']
-        self.failIf(match)
+        self.assertFalse(match)
 
     def testActionNamespace(self):
         self.actions.addAction(
@@ -109,8 +109,8 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         actions = self.actions.listActions()
         for action in actions:
             info = ActionInfo(action, self.portal)
-            self.failUnless(isinstance(info['title'], Message))
-            self.failUnless(isinstance(info['description'], Message))
+            self.assertTrue(isinstance(info['title'], Message))
+            self.assertTrue(isinstance(info['description'], Message))
 
     def testListActionsSkipsItemsWithOldInterface(self):
         # Ticket #10791

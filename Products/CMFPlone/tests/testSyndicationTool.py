@@ -18,16 +18,16 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
     def testIsSiteSyndicationAllowed(self):
         # Make sure isSiteSyndicationAllowed returns proper value so that tabs
         # appear
-        self.failUnless(self.syndication.isSiteSyndicationAllowed())
+        self.assertTrue(self.syndication.isSiteSyndicationAllowed())
         self.syndication.editProperties(isAllowed=False)
-        self.failIf(self.syndication.isSiteSyndicationAllowed())
+        self.assertFalse(self.syndication.isSiteSyndicationAllowed())
 
     def testIsSyndicationAllowed(self):
         # Make sure isSyndicationAllowed returns proper value so that the
         # action appears
-        self.failUnless(self.syndication.isSyndicationAllowed(self.folder))
+        self.assertTrue(self.syndication.isSyndicationAllowed(self.folder))
         self.syndication.disableSyndication(self.folder)
-        self.failIf(self.syndication.isSyndicationAllowed(self.folder))
+        self.assertFalse(self.syndication.isSyndicationAllowed(self.folder))
 
     def testGetSyndicatableContent(self):
         content = self.syndication.getSyndicatableContent(self.folder)
@@ -36,9 +36,9 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
     def testOwnerCanEnableAndDisableSyndication(self):
         self.setRoles(['Owner'])
         self.syndication.disableSyndication(self.folder)
-        self.failIf(self.syndication.isSyndicationAllowed(self.folder))
+        self.assertFalse(self.syndication.isSyndicationAllowed(self.folder))
         self.syndication.enableSyndication(self.folder)
-        self.failUnless(self.syndication.isSyndicationAllowed(self.folder))
+        self.assertTrue(self.syndication.isSyndicationAllowed(self.folder))
         self.logout()
         self.assertRaises(Unauthorized, self.syndication.enableSyndication,
                           self.folder)

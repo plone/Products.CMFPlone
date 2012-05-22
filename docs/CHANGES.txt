@@ -8,6 +8,9 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Deprecated aliases were replaced on tests.
+  [hvelarde]
+
 - Don't register the plone_deprecated skin layer. These items are no
   longer supported as part of Plone and remain here temporarily as a
   convenience to those who may need to move them into their own

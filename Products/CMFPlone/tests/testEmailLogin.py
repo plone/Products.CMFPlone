@@ -9,7 +9,7 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
 
     def testUseEmailProperty(self):
         props = getToolByName(self.portal, 'portal_properties').site_properties
-        self.failUnless(props.hasProperty('use_email_as_login'))
+        self.assertTrue(props.hasProperty('use_email_as_login'))
         self.assertEqual(props.getProperty('use_email_as_login'), False)
 
     def testSetOwnLoginName(self):
@@ -43,22 +43,22 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
 
     def testNormalMemberIdsAllowed(self):
         pattern = self.portal.portal_registration._ALLOWED_MEMBER_ID_PATTERN
-        self.failUnless(pattern.match('maurits'))
-        self.failUnless(pattern.match('Maur1ts'))
+        self.assertTrue(pattern.match('maurits'))
+        self.assertTrue(pattern.match('Maur1ts'))
         # PLIP9214: the next test actually passes with the original
         # pattern but fails with the new one as email addresses cannot
         # end in a number:
-        #self.failUnless(pattern.match('maurits76'))
-        self.failUnless(pattern.match('MAURITS'))
+        #self.assertTrue(pattern.match('maurits76'))
+        self.assertTrue(pattern.match('MAURITS'))
 
     def testEmailMemberIdsAllowed(self):
         pattern = self.portal.portal_registration._ALLOWED_MEMBER_ID_PATTERN
-        self.failUnless(pattern.match('user@example.org'))
-        self.failUnless(pattern.match('user123@example.org'))
-        self.failUnless(pattern.match('user.name@example.org'))
+        self.assertTrue(pattern.match('user@example.org'))
+        self.assertTrue(pattern.match('user123@example.org'))
+        self.assertTrue(pattern.match('user.name@example.org'))
         # PLIP9214: perhaps we should change the regexp so the next
         # test passes as well?
-        #self.failUnless(pattern.match('user+test@example.org'))
+        #self.assertTrue(pattern.match('user+test@example.org'))
 
     def test_get_member_by_login_name(self):
         memship = self.portal.portal_membership

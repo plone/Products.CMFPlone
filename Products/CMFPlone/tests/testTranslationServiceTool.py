@@ -67,4 +67,4 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
         # http://dev.plone.org/plone/ticket/4251
         error = "(Missing.Value,), {}"
         value = self.tool.ulocalized_time(error)
-        self.failUnlessEqual(value, None)
+        self.assertEqual(value, None)

@@ -127,7 +127,7 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.folder.manage_permission(AddPortalContent, ['Anonymous'], 1)
         new_roles = [r for r in self.folder.rolesOfPermission(AddPortalContent)
                         if r['name'] == 'Anonymous']
-        self.failIfEqual(previous_roles, new_roles)
+        self.assertNotEqual(previous_roles, new_roles)
 
         temp_folder = self.folder.restrictedTraverse(
                                 'portal_factory/Document/tmp_id').aq_parent
@@ -145,7 +145,7 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         temp_object = \
             self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         foo = temp_object.portal_factory.doCreate(temp_object, 'foo')
-        self.failUnless('foo' in self.folder)
+        self.assertTrue('foo' in self.folder)
         self.assertEqual(foo.get_local_roles_for_userid(default_user),
                          ('Owner',))
 
@@ -164,7 +164,7 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
             self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         temp_object.document_edit(id='foo', title='Foo', text_format='plain',
                                   text='')
-        self.failUnless('foo' in self.folder)
+        self.assertTrue('foo' in self.folder)
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         self.assertEqual(
                 self.folder.foo.get_local_roles_for_userid(default_user),
@@ -234,10 +234,10 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
 
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(
+        self.assertTrue(location.startswith(
                                 self.folder_url + '/portal_factory/Document/'))
         # CMFFormController redirects should not do alias translation
-        self.failUnless(location.endswith('/edit'))
+        self.assertTrue(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
@@ -257,9 +257,9 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
 
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(
+        self.assertTrue(location.startswith(
                                 self.folder_url + '/portal_factory/Document/'))
-        self.failUnless(location.endswith('/edit'))
+        self.assertTrue(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
@@ -299,9 +299,9 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         viewAction = self.portal.portal_types['Document'].getActionInfo(
                                 'object/view',
                                 self.folder.foo)['url']
-        self.failUnless(response.getHeader('Location').startswith(viewAction))
+        self.assertTrue(response.getHeader('Location').startswith(viewAction))
 
-        self.failUnless('foo' in self.folder)
+        self.assertTrue('foo' in self.folder)
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         self.assertEqual(
                 self.folder.foo.get_local_roles_for_userid(default_user),

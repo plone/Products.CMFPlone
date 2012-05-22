@@ -56,9 +56,9 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             'I hate spam',
         )
         for address in validInputs:
-            self.failUnless(val(address), '%s should validate' % address)
+            self.assertTrue(val(address), '%s should validate' % address)
         for address in invalidInputs:
-            self.failIf(val(address), '%s should fail' % address)
+            self.assertFalse(val(address), '%s should fail' % address)
 
     def testvalidateEmailAddresses(self):
         # Any RFC 822 email address allowed and address list allowed
@@ -82,9 +82,9 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             #py stdlib bug? 'user@example.org\nuser2@example.org', # continuation line doesn't begin with white space
         )
         for address in validInputs:
-            self.failUnless(val(address), '%s should validate' % address)
+            self.assertTrue(val(address), '%s should validate' % address)
         for address in invalidInputs:
-            self.failIf(val(address), '%s should fail' % address)
+            self.assertFalse(val(address), '%s should fail' % address)
 
     def testEditFormatMetadataOfFile(self):
         # Test fix for http://dev.plone.org/plone/ticket/1323
@@ -147,9 +147,9 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
     def testTypesToList(self):
         # Make sure typesToList() returns the expected types
         wl = self.utils.typesToList()
-        self.failUnless('Folder' in wl)
-        self.failUnless('Topic' in wl)
-        self.failIf('ATReferenceCriterion' in wl)
+        self.assertTrue('Folder' in wl)
+        self.assertTrue('Topic' in wl)
+        self.assertFalse('ATReferenceCriterion' in wl)
 
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
@@ -365,12 +365,12 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
     def testSetEffectiveDate(self):
         self.assertEqual(self.doc.EffectiveDate(), 'None')
         self.utils.editMetadata(self.doc, effective_date='2001-01-01')
-        self.failUnless(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601() \
                             .startswith('2001-01-01T00:00:00'))
 
     def testClearEffectiveDate(self):
         self.utils.editMetadata(self.doc, effective_date='2001-01-01')
-        self.failUnless(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601() \
                             .startswith('2001-01-01T00:00:00'))
         self.utils.editMetadata(self.doc, effective_date='None')
         self.assertEqual(self.doc.EffectiveDate(), 'None')
@@ -379,12 +379,12 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
     def testSetExpirationDate(self):
         self.assertEqual(self.doc.ExpirationDate(), 'None')
         self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
-        self.failUnless(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601() \
                             .startswith('2001-01-01T00:00:00'))
 
     def testClearExpirationDate(self):
         self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
-        self.failUnless(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601() \
                             .startswith('2001-01-01T00:00:00'))
         self.utils.editMetadata(self.doc, expiration_date='None')
         self.assertEqual(self.doc.ExpirationDate(), 'None')
@@ -447,9 +447,9 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.failUnless(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601() \
                             .startswith('2001-01-01T00:00:00'))
-        self.failUnless(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601() \
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
@@ -462,9 +462,9 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Title(), 'Foo')
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.failUnless(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601() \
                             .startswith('2001-01-01T00:00:00'))
-        self.failUnless(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601() \
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
@@ -472,14 +472,14 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
 
     def testEditEffectiveDateOnly(self):
         self.utils.editMetadata(self.doc, effective_date='2001-12-31')
-        self.failUnless(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601() \
                             .startswith('2001-12-31T00:00:00'))
         # Other elements must not change
         self.assertEqual(self.doc.Title(), 'Foo')
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.failUnless(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601() \
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Language(), 'de')
@@ -493,9 +493,9 @@ class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Subject(), ('Bar',))
         self.assertEqual(self.doc.Description(), 'Baz')
         self.assertEqual(self.doc.Contributors(), ('Fred',))
-        self.failUnless(self.doc.effective_date.ISO8601() \
+        self.assertTrue(self.doc.effective_date.ISO8601() \
                             .startswith('2001-01-01T00:00:00'))
-        self.failUnless(self.doc.expiration_date.ISO8601() \
+        self.assertTrue(self.doc.expiration_date.ISO8601() \
                             .startswith('2003-01-01T00:00:00'))
         self.assertEqual(self.doc.Format(), 'text/html')
         self.assertEqual(self.doc.Rights(), 'Copyleft')
@@ -520,7 +520,7 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         # See if we can create one at all
         doc = self.portal.folder1.doc11
         crumbs = self.utils.createBreadCrumbs(doc)
-        self.failUnless(crumbs)
+        self.assertTrue(crumbs)
         self.assertEqual(len(crumbs), 2)
         self.assertEqual(crumbs[-1]['absolute_url'], doc.absolute_url())
         self.assertEqual(crumbs[-2]['absolute_url'],
@@ -531,7 +531,7 @@ class TestBreadCrumbs(PloneTestCase.PloneTestCase):
         # should return a breadcrumb which has '/view' appended to the url
         file = self.portal.folder1.file11
         crumbs = self.utils.createBreadCrumbs(file)
-        self.failUnless(crumbs)
+        self.assertTrue(crumbs)
         self.assertEqual(crumbs[-1]['absolute_url'][-5:], '/view')
 
 

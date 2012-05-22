@@ -13,7 +13,7 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
         self.setRoles(('Manager',))
 
     def test_KeyManager(self):
-        self.failUnless(queryUtility(IKeyManager), 'key manager not found')
+        self.assertTrue(queryUtility(IKeyManager), 'key manager not found')
 
     def checkAuthenticator(self, path, query='', status=200):
         credentials = '%s:%s' % (ptc.default_user, ptc.default_password)
@@ -40,10 +40,10 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
                          ptc.default_user)
 
     def test_PloneTool_deleteObjectsByPaths(self):
-        self.failUnless(self.portal.get('news', None))
+        self.assertTrue(self.portal.get('news', None))
         self.checkAuthenticator('/plone_utils/deleteObjectsByPaths',
             'paths:list=news')
-        self.failIf(self.portal.get('news', None))
+        self.assertFalse(self.portal.get('news', None))
 
     def test_PloneTool_transitionObjectsByPaths(self):
         infoFor = self.portal.portal_workflow.getInfoFor
@@ -55,11 +55,11 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
         self.assertEqual(infoFor(frontpage, 'review_state'), 'published')
 
     def test_PloneTool_renameObjectsByPaths(self):
-        self.failIf(self.portal.get('foo', None))
+        self.assertFalse(self.portal.get('foo', None))
         self.checkAuthenticator(
             '/plone_utils/renameObjectsByPaths',
             'paths:list=events&new_ids:list=foo&new_titles:list=Foo')
-        self.failUnless(self.portal.get('foo', None))
+        self.assertTrue(self.portal.get('foo', None))
 
     def test_RegistrationTool_addMember(self):
         self.checkAuthenticator(

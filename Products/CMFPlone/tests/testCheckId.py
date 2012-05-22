@@ -77,7 +77,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         # TODO: Tripwire
         portal_membership = getToolByName(self.portal, 'portal_membership')
         have_permission = portal_membership.checkPermission
-        self.failUnless(have_permission('Search ZCatalog',
+        self.assertTrue(have_permission('Search ZCatalog',
                         self.portal.portal_catalog),
                         'Expected permission "Search ZCatalog"')
 
@@ -87,8 +87,8 @@ class TestCheckId(PloneTestCase.PloneTestCase):
     def testCatalogMetadata(self):
         portal_catalog = getToolByName(self.portal, 'portal_catalog')
         portal_catalog.addColumn('new_metadata')
-        self.failUnless('new_metadata' in portal_catalog.schema())
-        self.failIf('new_metadata' in portal_catalog.indexes())
+        self.assertTrue('new_metadata' in portal_catalog.schema())
+        self.assertFalse('new_metadata' in portal_catalog.indexes())
         r = self.folder.check_id('new_metadata')
         self.assertEqual(r, u'new_metadata is reserved.')
 
@@ -233,7 +233,7 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         # Proxy roles should cover missing view permission for all but the
         # most unusual workflows.
         proxy_roles = self.folder.check_id._proxy_roles
-        self.failUnless('Manager' in proxy_roles)
-        self.failUnless('Owner' in proxy_roles)
-        self.failUnless('Authenticated' in proxy_roles)
-        self.failUnless('Anonymous' in proxy_roles)
+        self.assertTrue('Manager' in proxy_roles)
+        self.assertTrue('Owner' in proxy_roles)
+        self.assertTrue('Authenticated' in proxy_roles)
+        self.assertTrue('Anonymous' in proxy_roles)

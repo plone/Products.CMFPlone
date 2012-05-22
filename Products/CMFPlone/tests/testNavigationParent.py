@@ -12,7 +12,7 @@ class TestNavigationParent(PloneTestCase.PloneTestCase):
         self.f2 = getattr(self.f1, 'f2')
 
     def testPortalRoot(self):
-        self.failUnless(self.portal.navigationParent() is None)
+        self.assertTrue(self.portal.navigationParent() is None)
 
     def testFolderInPortal(self):
         self.setRoles(['Manager'])
@@ -104,7 +104,7 @@ class TestNavigationParent(PloneTestCase.PloneTestCase):
         lf.manage_permission('View', ['Member', 'Manager', 'Owner'], 0)
         self.setRoles(['Member'])
 
-        self.failUnless(lf.navigationParent() is None)
+        self.assertTrue(lf.navigationParent() is None)
 
     def testNoParentListPermissions(self):
         self.setRoles(['Manager'])
@@ -117,5 +117,5 @@ class TestNavigationParent(PloneTestCase.PloneTestCase):
                              ['Member', 'Manager', 'Owner'], 0)
         self.setRoles(['Member'])
 
-        self.failUnless(lf.navigationParent(
+        self.assertTrue(lf.navigationParent(
                 checkPermissions=['List folder contents']) is None)

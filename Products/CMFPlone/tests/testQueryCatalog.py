@@ -95,8 +95,8 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         siteProps = self.portal.portal_properties.site_properties
         siteProps.types_not_searched = ['Event', 'Unknown Type']
         qry = self.folder.queryCatalog(request, use_types_blacklist=True)
-        self.failUnless('Document' in qry['portal_type'])
-        self.failUnless('Event' not in qry['portal_type'])
+        self.assertTrue('Document' in qry['portal_type'])
+        self.assertTrue('Event' not in qry['portal_type'])
 
     def testNavigationRoot(self):
         request = {'SearchableText': 'a*'}
@@ -225,7 +225,7 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
     def testSearchableText(self):
         request = {'SearchableText': 'foo'}
         # We expect a non-empty result set
-        self.failUnless(self.portal.queryCatalog(request))
+        self.assertTrue(self.portal.queryCatalog(request))
 
     def testParseError(self):
         # ZCTextIndex raises ParseError

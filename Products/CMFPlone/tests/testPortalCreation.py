@@ -75,7 +75,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testPloneSkins(self):
         # Plone skins should have been set up
-        self.failUnless(hasattr(self.folder, 'plone_powered.png'))
+        self.assertTrue(hasattr(self.folder, 'plone_powered.png'))
 
     def testDefaultSkin(self):
         # index_html should render
@@ -83,7 +83,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testNoIndexHtmlDocument(self):
         # The portal should not contain an index_html Document
-        self.failIf('index_html' in self.portal)
+        self.assertFalse('index_html' in self.portal)
 
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works
@@ -91,7 +91,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testWorkflowIsActionProvider(self):
         # The workflow tool is one of the last remaining action providers.
-        self.failUnless(
+        self.assertTrue(
             'portal_workflow' in self.actions.listActionProviders())
 
     def testMembersFolderMetaType(self):
@@ -160,48 +160,48 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testNoPortalFormTool(self):
         # portal_form should have been removed
-        self.failIf('portal_form' in self.portal)
+        self.assertFalse('portal_form' in self.portal)
 
     def testNoPortalNavigationTool(self):
         # portal_navigation should have been removed
-        self.failIf('portal_navigation' in self.portal)
+        self.assertFalse('portal_navigation' in self.portal)
 
     def testNoFormProperties(self):
         # form_properties should have been removed
-        self.failIf('form_properties' in self.properties)
+        self.assertFalse('form_properties' in self.properties)
 
     def testNoNavigationProperties(self):
         # navigation_properties should have been removed
-        self.failIf('navigation_properties' in self.properties)
+        self.assertFalse('navigation_properties' in self.properties)
 
     def testFullScreenAction(self):
         # There should be a full_screen action
-        self.failUnless(
+        self.assertTrue(
             self.actions.getActionInfo('document_actions/full_screen')
                 is not None)
         action = self.actions.getActionInfo('document_actions/full_screen')
-        self.failUnless('fullscreenexpand_icon' in action['icon'])
+        self.assertTrue('fullscreenexpand_icon' in action['icon'])
 
     def testVisibleIdsProperties(self):
         # visible_ids should be a site property and a memberdata property
-        self.failUnless(
+        self.assertTrue(
             self.properties.site_properties.hasProperty('visible_ids'))
-        self.failUnless(self.memberdata.hasProperty('visible_ids'))
+        self.assertTrue(self.memberdata.hasProperty('visible_ids'))
 
     def testFormToolTipsProperty(self):
         # formtooltips should have been removed
-        self.failIf(self.memberdata.hasProperty('formtooltips'))
+        self.assertFalse(self.memberdata.hasProperty('formtooltips'))
 
     def testNavTreeProperties(self):
         # navtree_properties should contain the new properties
-        self.failUnless(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
-        self.failUnless(self.properties.navtree_properties.hasProperty('parentMetaTypesNotToQuery'))
-        self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
-        self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
-        self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
-        self.failUnless(self.properties.navtree_properties.hasProperty('showAllParents'))
-        self.failUnless(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
-        self.failUnless(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('metaTypesNotToList'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('parentMetaTypesNotToQuery'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('sortAttribute'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('sortOrder'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('showAllParents'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('wf_states_to_show'))
+        self.assertTrue(self.properties.navtree_properties.hasProperty('enable_wf_state_filtering'))
 
     def testSitemapAction(self):
         # There should be a sitemap action
@@ -213,22 +213,22 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testResourceRegistries(self):
         # We should have portal_css and portal_javascripts tools
-        self.failUnless(hasattr(self.portal, 'portal_css'))
-        self.failUnless(hasattr(self.portal, 'portal_kss'))
-        self.failUnless(hasattr(self.portal, 'portal_javascripts'))
+        self.assertTrue(hasattr(self.portal, 'portal_css'))
+        self.assertTrue(hasattr(self.portal, 'portal_kss'))
+        self.assertTrue(hasattr(self.portal, 'portal_javascripts'))
 
     def testUnfriendlyTypesProperty(self):
         # We should have an types_not_searched property
-        self.failUnless(
+        self.assertTrue(
             self.properties.site_properties.hasProperty('types_not_searched'))
-        self.failUnless('Plone Site' in self.properties.site_properties.getProperty('types_not_searched'))
+        self.assertTrue('Plone Site' in self.properties.site_properties.getProperty('types_not_searched'))
 
     def testNonDefaultPageTypes(self):
         # We should have a default_page_types property
-        self.failUnless(
+        self.assertTrue(
             self.properties.site_properties.hasProperty('default_page_types'))
-        self.failUnless('Folder' not in self.properties.site_properties.getProperty('default_page_types'))
-        self.failUnless('Topic' in self.properties.site_properties.getProperty('default_page_types'))
+        self.assertTrue('Folder' not in self.properties.site_properties.getProperty('default_page_types'))
+        self.assertTrue('Topic' in self.properties.site_properties.getProperty('default_page_types'))
 
     def testNoMembersAction(self):
         # There should not be a Members action
@@ -279,7 +279,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(res[0].Description, 'Site Events')
 
     def testNewsFolder(self):
-        self.failUnless('news' in self.portal.objectIds())
+        self.assertTrue('news' in self.portal.objectIds())
         folder = getattr(self.portal, 'news')
         self.assertEqual(folder.portal_type, 'Folder')
         self.assertEqual(folder._ordering, 'unordered')
@@ -290,7 +290,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(folder.checkCreationFlag(), False)
 
     def testEventsFolder(self):
-        self.failUnless('events' in self.portal.objectIds())
+        self.assertTrue('events' in self.portal.objectIds())
         folder = getattr(self.portal, 'events')
         self.assertEqual(folder.portal_type, 'Folder')
         self.assertEqual(folder._ordering, 'unordered')
@@ -339,61 +339,61 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testObjectButtonActions(self):
         self.setRoles(['Manager', 'Member'])
         atool = self.actions
-        self.failIf(atool.getActionInfo('object_buttons/cut') is None)
-        self.failIf(atool.getActionInfo('object_buttons/copy') is None)
-        self.failIf(atool.getActionInfo('object_buttons/paste') is None)
-        self.failIf(atool.getActionInfo('object_buttons/delete') is None)
+        self.assertFalse(atool.getActionInfo('object_buttons/cut') is None)
+        self.assertFalse(atool.getActionInfo('object_buttons/copy') is None)
+        self.assertFalse(atool.getActionInfo('object_buttons/paste') is None)
+        self.assertFalse(atool.getActionInfo('object_buttons/delete') is None)
 
     def testContentsTabVisible(self):
         for a in self.actions.listActions():
             if a.getId() == 'folderContents':
-                self.failUnless(a.visible)
+                self.assertTrue(a.visible)
 
     def testDefaultGroupsAdded(self):
         self._trap_warning_output()
-        self.failUnless('Administrators' in self.groups.listGroupIds())
-        self.failUnless('Reviewers' in self.groups.listGroupIds())
+        self.assertTrue('Administrators' in self.groups.listGroupIds())
+        self.assertTrue('Reviewers' in self.groups.listGroupIds())
 
     def testDefaultTypesInPortalFactory(self):
         types = self.factory.getFactoryTypes().keys()
         for metaType in ('Document', 'Event', 'File', 'Folder', 'Image',
                          'Folder', 'Link', 'News Item',
                          'Topic'):
-            self.failUnless(metaType in types)
+            self.assertTrue(metaType in types)
 
     def testDisableFolderSectionsSiteProperty(self):
         # The disable_folder_sections site property should be emtpy
         props = self.portal.portal_properties.site_properties
-        self.failUnless(
+        self.assertTrue(
             props.getProperty('disable_folder_sections', None) is not None)
-        self.failIf(props.getProperty('disable_folder_sections'))
+        self.assertFalse(props.getProperty('disable_folder_sections'))
 
     def testSelectableViewsOnFolder(self):
         views = self.portal.portal_types.Folder.getAvailableViewMethods(None)
-        self.failUnless('folder_listing' in views)
-        self.failUnless('atct_album_view' in views)
+        self.assertTrue('folder_listing' in views)
+        self.assertTrue('atct_album_view' in views)
 
     def testSelectableViewsOnTopic(self):
         views = self.portal.portal_types.Topic.getAvailableViewMethods(None)
-        self.failUnless('folder_listing' in views)
-        self.failUnless('atct_album_view' in views)
-        self.failUnless('atct_topic_view' in views)
+        self.assertTrue('folder_listing' in views)
+        self.assertTrue('atct_album_view' in views)
+        self.assertTrue('atct_topic_view' in views)
 
     def testLocationMemberdataProperty(self):
         # portal_memberdata should have a location property
-        self.failUnless(self.memberdata.hasProperty('location'))
+        self.assertTrue(self.memberdata.hasProperty('location'))
 
     def testLanguageMemberdataProperty(self):
         # portal_memberdata should have a language property
-        self.failUnless(self.memberdata.hasProperty('language'))
+        self.assertTrue(self.memberdata.hasProperty('language'))
 
     def testDescriptionMemberdataProperty(self):
         # portal_memberdata should have a description property
-        self.failUnless(self.memberdata.hasProperty('description'))
+        self.assertTrue(self.memberdata.hasProperty('description'))
 
     def testHome_PageMemberdataProperty(self):
         # portal_memberdata should have a home_page property
-        self.failUnless(self.memberdata.hasProperty('home_page'))
+        self.assertTrue(self.memberdata.hasProperty('home_page'))
 
     def testExtEditorMemberdataProperty(self):
         # portal_memberdata should have a location property
@@ -406,7 +406,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testTypesUseViewActionInListingsProperty(self):
         # site_properties should have the typesUseViewActionInListings property
-        self.failUnless(self.properties.site_properties.hasProperty(
+        self.assertTrue(self.properties.site_properties.hasProperty(
                             'typesUseViewActionInListings'))
 
     def testSiteSetupAction(self):
@@ -429,11 +429,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testEnableLivesearchProperty(self):
         # site_properties should have enable_livesearch property
-        self.failUnless(self.properties.site_properties \
+        self.assertTrue(self.properties.site_properties \
             .hasProperty('enable_livesearch'))
 
     def testRedirectLinksProperty(self):
-        self.failUnless(self.properties.site_properties \
+        self.assertTrue(self.properties.site_properties \
             .hasProperty('redirect_links'))
         self.assertEquals(True, self.properties.site_properties.redirect_links)
 
@@ -441,7 +441,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(self.types.Link.default_view, 'link_redirect_view')
 
     def testTTWLockableProperty(self):
-        self.failUnless(self.properties.site_properties \
+        self.assertTrue(self.properties.site_properties \
             .hasProperty('lock_on_ttw_edit'))
         self.assertEquals(True,
                           self.properties.site_properties.lock_on_ttw_edit)
@@ -467,15 +467,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testSiteActions(self):
         self.setRoles(['Manager', 'Member'])
         atool = self.actions
-        self.failIf(atool.getActionInfo('site_actions/sitemap') is None)
-        self.failIf(atool.getActionInfo('site_actions/contact') is None)
-        self.failIf(atool.getActionInfo('site_actions/accessibility') is None)
+        self.assertFalse(atool.getActionInfo('site_actions/sitemap') is None)
+        self.assertFalse(atool.getActionInfo('site_actions/contact') is None)
+        self.assertFalse(atool.getActionInfo('site_actions/accessibility') is None)
 
     def testSetupAction(self):
         self.setRoles(['Manager', 'Member'])
         atool = self.actions
-        self.failIf(atool.getActionInfo('user/plone_setup') is None)
-        self.failIf(atool.getActionInfo('site_actions/plone_setup') is None)
+        self.assertFalse(atool.getActionInfo('user/plone_setup') is None)
+        self.assertFalse(atool.getActionInfo('site_actions/plone_setup') is None)
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
@@ -505,24 +505,24 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                 haveSearch = True
             elif panel.getId() == 'NavigationSettings':
                 haveNavigation = True
-        self.failUnless(haveSearch and haveNavigation)
+        self.assertTrue(haveSearch and haveNavigation)
 
     def testOwnerHasAccessInactivePermission(self):
         permission_on_role = [p for p in self.portal.permissionsOfRole('Owner')
             if p['name'] == AccessInactivePortalContent][0]
-        self.failUnless(permission_on_role['selected'])
+        self.assertTrue(permission_on_role['selected'])
         cur_perms = self.portal.permission_settings(
                             AccessInactivePortalContent)[0]
-        self.failUnless(cur_perms['acquire'])
+        self.assertTrue(cur_perms['acquire'])
 
     def testSyndicationEnabledByDefault(self):
         syn = self.portal.portal_syndication
-        self.failUnless(syn.isSiteSyndicationAllowed())
+        self.assertTrue(syn.isSiteSyndicationAllowed())
 
     def testSyndicationEnabledOnNewsAndEvents(self):
         syn = self.portal.portal_syndication
-        self.failUnless(syn.isSyndicationAllowed(self.portal.news.aggregator))
-        self.failUnless(syn.isSyndicationAllowed(
+        self.assertTrue(syn.isSyndicationAllowed(self.portal.news.aggregator))
+        self.assertTrue(syn.isSyndicationAllowed(
                             self.portal.events.aggregator))
 
     def testSyndicationTabDisabled(self):
@@ -556,7 +556,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(len(buttons), 4)
         urls = [a['url'] for a in buttons]
         for url in urls:
-            self.failIf('index_html' not in url,
+            self.assertFalse('index_html' not in url,
                         'Action wrongly applied to parent object %s' % url)
 
     def testObjectButtonActionsPerformCorrectAction(self):
@@ -571,13 +571,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                 if a['id'] not in ('delete',)]
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
-            self.failUnless('object_' + url[0] in url[1],
+            self.assertTrue('object_' + url[0] in url[1],
                             "%s does not perform the expected object_%s action"
                                 % (url[0], url[0]))
 
         delete_action = [(a['id'], a['url']) for a in buttons
                 if a['id'] == 'delete'][0]
-        self.failUnless('delete_confirmation' in delete_action[1],
+        self.assertTrue('delete_confirmation' in delete_action[1],
                          "object_delete does not use the confirmation form")
 
     def testObjectButtonActionsInExpectedOrder(self):
@@ -594,12 +594,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testPlone3rdPartyLayerInDefault(self):
         # plone_3rdParty layer should exist
         path = self.skins.getSkinPath('Plone Default')
-        self.failUnless('plone_3rdParty' in path)
+        self.assertTrue('plone_3rdParty' in path)
 
     def testPloneLoginLayerInDefault(self):
         # plone_login layer should exist
         path = self.skins.getSkinPath('Plone Default')
-        self.failUnless('plone_login' in path)
+        self.assertTrue('plone_login' in path)
 
     def testCMFLegacySkinComesLastInDefault(self):
         # cmf_legacy should be the last skin layer
@@ -609,7 +609,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testCustomSkinFolderExists(self):
         # the custom skin needs to be created
-        self.failUnless('custom' in self.skins)
+        self.assertTrue('custom' in self.skins)
 
     def testCustomSkinFolderComesFirst(self):
         firstInDefaultSkin = (
@@ -624,7 +624,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         member_has_permission = [p for p in
                 self.portal.permissionsOfRole('Member')
                                         if p['name'] == 'View Groups'][0]
-        self.failUnless(member_has_permission['selected'])
+        self.assertTrue(member_has_permission['selected'])
 
     def testDiscussionItemWorkflow(self):
         # By default the discussion item has the one_state_workflow
@@ -634,21 +634,21 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testFolderHasFolderListingView(self):
         # Folder type should allow 'folder_listing'
-        self.failUnless('folder_listing' in self.types.Folder.view_methods)
+        self.assertTrue('folder_listing' in self.types.Folder.view_methods)
 
     def testFolderHasSummaryView(self):
         # Folder type should allow 'folder_summary_view'
-        self.failUnless(
+        self.assertTrue(
             'folder_summary_view' in self.types.Folder.view_methods)
 
     def testFolderHasTabularView(self):
         # Folder type should allow 'folder_tabular_view'
-        self.failUnless(
+        self.assertTrue(
             'folder_tabular_view' in self.types.Folder.view_methods)
 
     def testFolderHasAlbumView(self):
         # Folder type should allow 'atct_album_view'
-        self.failUnless('atct_album_view' in self.types.Folder.view_methods)
+        self.assertTrue('atct_album_view' in self.types.Folder.view_methods)
 
     def testConfigurableSafeHtmlTransform(self):
         # The safe_html transformation should be configurable
@@ -675,16 +675,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testvcXMLRPCRemoved(self):
         # vcXMLRPC.js should no longer be registered
-        self.failIf('vcXMLRPC.js' in self.javascripts.getResourceIds())
+        self.assertFalse('vcXMLRPC.js' in self.javascripts.getResourceIds())
 
     def testCacheManagers(self):
         # The cache and caching policy managers should exist
         httpcache = self.portal._getOb('HTTPCache', None)
         ramcache = self.portal._getOb('RAMCache', None)
         cpm = self.portal._getOb('caching_policy_manager', None)
-        self.failUnless(isinstance(httpcache, AcceleratedHTTPCacheManager))
-        self.failUnless(isinstance(ramcache, RAMCacheManager))
-        self.failUnless(isinstance(cpm, CachingPolicyManager))
+        self.assertTrue(isinstance(httpcache, AcceleratedHTTPCacheManager))
+        self.assertTrue(isinstance(ramcache, RAMCacheManager))
+        self.assertTrue(isinstance(cpm, CachingPolicyManager))
 
     def testHomeActionUsesView(self):
         actions = self.actions.listActions()
@@ -695,9 +695,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testPloneLexicon(self):
         # Plone lexicon should use new splitter and case normalizer
         pipeline = self.catalog.plone_lexicon._pipeline
-        self.failUnless(len(pipeline) >= 2)
-        self.failUnless(isinstance(pipeline[0], Splitter))
-        self.failUnless(isinstance(pipeline[1], CaseNormalizer))
+        self.assertTrue(len(pipeline) >= 2)
+        self.assertTrue(isinstance(pipeline[0], Splitter))
+        self.assertTrue(isinstance(pipeline[1], CaseNormalizer))
 
     def testMakeSnapshot(self):
         # GenericSetup snapshot should work
@@ -707,12 +707,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testValidateEmail(self):
         # validate_email should be on by default
-        self.failUnless(self.portal.getProperty('validate_email'))
+        self.assertTrue(self.portal.getProperty('validate_email'))
 
     def testSiteManagerSetup(self):
         clearSite()
         # The portal should be an ISite
-        self.failUnless(ISite.providedBy(self.portal))
+        self.assertTrue(ISite.providedBy(self.portal))
         # There should be a IComponentRegistry
         comp = IComponentLookup(self.portal)
         IComponentRegistry.providedBy(comp)
@@ -721,13 +721,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         gsm = getGlobalSiteManager()
         sm = getSiteManager()
         # Without setting the site we should get the global site manager
-        self.failUnless(sm is gsm)
+        self.assertTrue(sm is gsm)
 
         # Now we set the site, as it is done in url traversal normally
         setSite(self.portal)
         # And should get the local site manager
         sm = getSiteManager()
-        self.failUnless(aq_base(sm) is aq_base(comp))
+        self.assertTrue(aq_base(sm) is aq_base(comp))
 
     def testUtilityRegistration(self):
         gsm = getGlobalSiteManager()
@@ -758,7 +758,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
         # Make sure unregistration was successful
         util = queryUtility(dummy.IDummyUtility)
-        self.failUnless(util is None)
+        self.assertTrue(util is None)
 
     def testPortletManagersInstalled(self):
         sm = getSiteManager(self.portal)
@@ -831,17 +831,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
               ], addable_types)
 
     def testReaderEditorRoles(self):
-        self.failUnless('Reader' in self.portal.valid_roles())
-        self.failUnless('Editor' in self.portal.valid_roles())
-        self.failUnless('Reader' in self.portal.acl_users.portal_role_manager \
+        self.assertTrue('Reader' in self.portal.valid_roles())
+        self.assertTrue('Editor' in self.portal.valid_roles())
+        self.assertTrue('Reader' in self.portal.acl_users.portal_role_manager \
                                         .listRoleIds())
-        self.failUnless('Editor' in self.portal.acl_users.portal_role_manager \
+        self.assertTrue('Editor' in self.portal.acl_users.portal_role_manager \
                                         .listRoleIds())
-        self.failUnless('View' in
+        self.assertTrue('View' in
                         [r['name'] for r in
                             self.portal.permissionsOfRole('Reader')
                             if r['selected']])
-        self.failUnless('Modify portal content' in
+        self.assertTrue('Modify portal content' in
                         [r['name'] for r in
                             self.portal.permissionsOfRole('Editor')
                             if r['selected']])
@@ -849,11 +849,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testWorkflowsInstalled(self):
         for wf in ['intranet_workflow', 'intranet_folder_workflow',
                 'one_state_workflow', 'simple_publication_workflow']:
-            self.failUnless(wf in self.portal.portal_workflow)
+            self.assertTrue(wf in self.portal.portal_workflow)
 
     def testAddPermisssionsGivenToContributorRole(self):
-        self.failUnless('Contributor' in self.portal.valid_roles())
-        self.failUnless('Contributor' in self.portal.acl_users \
+        self.assertTrue('Contributor' in self.portal.valid_roles())
+        self.assertTrue('Contributor' in self.portal.acl_users \
                                             .portal_role_manager.listRoleIds())
         for p in ['Add portal content', 'Add portal folders',
                   'ATContentTypes: Add Document',
@@ -861,22 +861,22 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                   'ATContentTypes: Add Folder',
                   'ATContentTypes: Add Link',
                   'ATContentTypes: Add News Item', ]:
-            self.failUnless(p in [r['name'] for r in
+            self.assertTrue(p in [r['name'] for r in
                                 self.portal.permissionsOfRole('Contributor')
                                 if r['selected']])
 
     def testSharingAction(self):
         # Should be in portal_actions
-        self.failUnless('local_roles' in self.actions.object)
+        self.assertTrue('local_roles' in self.actions.object)
 
         # Should not be in any of the default FTIs
         for fti in self.types.values():
-            self.failIf('local_roles' in [a.id for a in fti.listActions()])
+            self.assertFalse('local_roles' in [a.id for a in fti.listActions()])
 
     def testSecondaryEditorPermissionsGivenToEditorRole(self):
         for p in ['Manage properties', 'Modify view template',
                   'Request review']:
-            self.failUnless(p in [r['name'] for r in
+            self.assertTrue(p in [r['name'] for r in
                                 self.portal.permissionsOfRole('Editor')
                                 if r['selected']])
 
@@ -904,13 +904,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.folder.german.setLanguage('de')
         self.loginAsPortalOwner()
         setuphandlers.setupPortalContent(self.folder.german)
-        self.failUnlessEqual(self.folder.german.news.Title(), 'Foo')
+        self.assertEqual(self.folder.german.news.Title(), 'Foo')
 
         # Check if the content is being created in a composite
         # language code, in this case Brazilian Portuguese
         self.folder.brazilian.setLanguage('pt-br')
         setuphandlers.setupPortalContent(self.folder.brazilian)
-        self.failUnlessEqual(self.folder.brazilian.news.Title(), 'Bar')
+        self.assertEqual(self.folder.brazilian.news.Title(), 'Bar')
 
     def testNoDoubleGenericSetupImportSteps(self):
         view = ImportStepsView(self.setup, None)
@@ -942,7 +942,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         # index_html for Members folder should be a Page Template
         members = self.members
         self.assertEqual(aq_base(members).meta_type, 'ATFolder')
-        self.failUnless(hasattr(aq_base(members), 'index_html'))
+        self.assertTrue(hasattr(aq_base(members), 'index_html'))
         # getitem works
         self.assertEqual(aq_base(members)['index_html'].meta_type,
                          self.mem_index_type)
@@ -974,7 +974,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         # this will raise an error if it fails
         profile = setup_tool.getBaselineContextID()
         setup_tool.runAllImportStepsFromProfile(profile, purge_old=True)
-        self.failUnless(1 == 1)
+        self.assertTrue(1 == 1)
 
     def testFinalStepsWithMembersFolderDeleted(self):
         # We want the final steps to work even if the 'Members' folder
@@ -991,7 +991,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
                 return True  # Anything other than None runs the step
 
         setuphandlers.importFinalSteps(FakeContext())  # raises error if fail
-        self.failUnless(1 == 1)
+        self.assertTrue(1 == 1)
 
 
 class TestManagementPageCharset(PloneTestCase.PloneTestCase):
@@ -1001,5 +1001,5 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
 
     def testManagementPageCharset(self):
         manage_charset = getattr(self.portal, 'management_page_charset', None)
-        self.failUnless(manage_charset)
+        self.assertTrue(manage_charset)
         self.assertEqual(manage_charset, 'utf-8')
