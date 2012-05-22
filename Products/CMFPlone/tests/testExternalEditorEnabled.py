@@ -26,44 +26,44 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
                 )
 
     def testFailForAnonymous(self):
-        self.failUnless(self.doc.externalEditorEnabled())
+        self.assertTrue(self.doc.externalEditorEnabled())
         self.logout()
-        self.failIf(self.doc.externalEditorEnabled())
+        self.assertFalse(self.doc.externalEditorEnabled())
 
     def testFailOnDisabledMemberProperty(self):
-        self.failUnless(self.doc.externalEditorEnabled())
+        self.assertTrue(self.doc.externalEditorEnabled())
         member = self.mtool.getAuthenticatedMember()
         member.setMemberProperties({'ext_editor' : 0})
-        self.failIf(self.doc.externalEditorEnabled())
+        self.assertFalse(self.doc.externalEditorEnabled())
 
     def testFailOnUnSupportedObjects(self):
         # Structural Folders are not editable by default
-        self.failIf(self.folder.externalEditorEnabled())
+        self.assertFalse(self.folder.externalEditorEnabled())
 
     def testFailWithoutUseExtEditPermission(self):
         self.portal.manage_permission('Use external editor',
                                       ('Owner','Manager'), 0)
         self.login('user1')
-        self.failIf(self.doc.externalEditorEnabled())
+        self.assertFalse(self.doc.externalEditorEnabled())
 
     def testFailWhenObjectIsLocked(self):
         # Should not show if someone already has a webdav lock on the object
         self.doc.REQUEST.set('BODY', self.lockbody)
         self.doc.LOCK(self.doc.REQUEST, self.doc.REQUEST.RESPONSE)
-        self.failIf(self.doc.externalEditorEnabled())
+        self.assertFalse(self.doc.externalEditorEnabled())
         self.doc.wl_clearLocks()
-        self.failUnless(self.doc.externalEditorEnabled())
+        self.assertTrue(self.doc.externalEditorEnabled())
 
     def testExternalEditorUsesZemExtensionForOSX(self):
         self.doc.external_edit()
         redirect = self.doc.REQUEST.RESPONSE.headers['location']
-        self.failUnless(redirect.endswith('doc'))
+        self.assertTrue(redirect.endswith('doc'))
 
         # if Mac OS X in the user agent, add a .zem extension
         self.doc.REQUEST.environ['HTTP_USER_AGENT'] = 'Mac OS X'
         self.doc.external_edit()
         redirect = self.doc.REQUEST.RESPONSE.headers['location']
-        self.failUnless(redirect.endswith('.zem?macosx=1'))
+        self.assertTrue(redirect.endswith('.zem?macosx=1'))
 
 
 def test_suite():

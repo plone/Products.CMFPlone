@@ -80,7 +80,7 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         from zope.interface.exceptions import BrokenMethodImplementation
 
         # is the class really implemented by the given interface?
-        self.failUnless(interface.implementedBy(klass),
+        self.assertTrue(interface.implementedBy(klass),
             'The class %s does not implement %s' % (dottedName(klass),
                                                     dottedName(interface)))
         # verify if the implementation is correct
@@ -98,7 +98,7 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         from zope.interface.exceptions import BrokenMethodImplementation
 
         # is the class really implemented by the given interface?
-        self.failUnless(interface.providedBy(instance),
+        self.assertTrue(interface.providedBy(instance),
             'The instance of %s does not implement %s' % (dottedName(instance),
                                                           dottedName(interface)))
         # verify if the implementation is correct
@@ -123,7 +123,7 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
             interfaces = (interfaces)
         impl = self.getImplementsOfInstanceOf(klass)
         for interface in interfaces:
-            self.failUnless(
+            self.assertTrue(
                 interface in impl,
                 'The class %s does not implement %s' % (dottedName(klass),
                                                         dottedName(interface)))
@@ -134,7 +134,7 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
             interfaces = (interfaces)
         impl = self.getImplementsOf(instance)
         for interface in interfaces:
-            self.failUnless(
+            self.assertTrue(
                 interface in impl,
                 'The instance of %s does not implement %s' % (dottedName(instance),
                                                               dottedName(interface)))
@@ -182,7 +182,7 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
         from zope.interface.exceptions import BrokenMethodImplementation
 
         # is the class really implemented by the given interface?
-        self.failUnless(interface.implementedBy(klass),
+        self.assertTrue(interface.implementedBy(klass),
             'The class %s does not implement %s' % (dottedName(klass),
                                                     dottedName(interface)))
         # verify if the implementation is correct
@@ -200,7 +200,7 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
         from zope.interface.exceptions import BrokenMethodImplementation
 
         # is the class really implemented by the given interface?
-        self.failUnless(interface.providedBy(instance),
+        self.assertTrue(interface.providedBy(instance),
             'The instance of %s does not provide %s' % (dottedName(instance),
                                                         dottedName(interface)))
         # verify if the implementation is correct
@@ -225,7 +225,7 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
         """ make sure that the klass implements at least these interfaces"""
         impl = self.getImplementedBy(klass)
         for interface in interfaces:
-            self.failUnless(
+            self.assertTrue(
                 interface in impl,
                 'The class %s does not implement %s' % (dottedName(klass),
                                                         dottedName(interface)))
@@ -234,7 +234,7 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
         """ make sure that the klass implements at least these interfaces"""
         impl = self.getProvidedBy(instance)
         for interface in interfaces:
-            self.failUnless(
+            self.assertTrue(
                 interface in impl,
                 'The instance of %s does not provide %s' % (dottedName(instance),
                                                             dottedName(interface)))

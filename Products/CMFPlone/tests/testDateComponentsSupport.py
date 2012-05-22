@@ -450,39 +450,39 @@ class TestSpecialCases(PloneTestCase.PloneTestCase):
         d = self.portal.date_components_support(None)
         hours = d.get('hours')
         # default == 1
-        self.failUnless(hours[0]['selected'])
+        self.assertTrue(hours[0]['selected'])
 
     def testEmptyStringUsesDefault(self):
         d = self.portal.date_components_support('')
         hours = d.get('hours')
         # default == 1
-        self.failUnless(hours[0]['selected'])
+        self.assertTrue(hours[0]['selected'])
 
     def testDateWithGMT(self):
         # Any GMT suffix gets truncated
         d = self.portal.date_components_support('2004/08/31 04:30:00 GMT+2')
         hours = d.get('hours')
         # default == 0
-        self.failUnless(hours[5]['selected'])   # 4th hour
+        self.assertTrue(hours[5]['selected'])   # 4th hour
 
     def testDateOnly(self):
         d = self.portal.date_components_support('2004/08/31')
         hours = d.get('hours')
         # default == 0
-        self.failUnless(hours[1]['selected'])   # 0th hour
+        self.assertTrue(hours[1]['selected'])   # 0th hour
 
     def testInvalidDateWithGMT(self):
         # Any GMT suffix gets truncated
         d = self.portal.date_components_support('2004/02/31 00:30:00 GMT+2')
         hours = d.get('hours')
         # default == 1
-        self.failUnless(hours[0]['selected'])
+        self.assertTrue(hours[0]['selected'])
 
     def testInvalidDateOnly(self):
         d = self.portal.date_components_support('2004/02/31')
         hours = d.get('hours')
         # default == 1
-        self.failUnless(hours[0]['selected'])
+        self.assertTrue(hours[0]['selected'])
 
 
 def test_suite():

@@ -14,7 +14,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
         self.tool = getToolByName(self.portal, CSSTOOLNAME)
 
     def testToolExists(self):
-        self.failUnless(CSSTOOLNAME in self.portal)
+        self.assertTrue(CSSTOOLNAME in self.portal)
 
     def testDefaultCssIsInstalled(self):
         installedStylesheetIds = self.tool.getResourceIds()
@@ -29,7 +29,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'RTL.css',
                     'mobile.css',]
         for e in expected:
-            self.failUnless(e in installedStylesheetIds, e)
+            self.assertTrue(e in installedStylesheetIds, e)
 
     def testRTLShouldHaveHigherPrecedence(self):
         installedStylesheetIds = self.tool.getResourceIds()
@@ -46,7 +46,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                         'invisibles.css',
                         'forms.css',]
         for cb in comes_before:
-            self.failUnless(cb in installedStylesheetIds[:indexRTLStylesheet],cb)
+            self.assertTrue(cb in installedStylesheetIds[:indexRTLStylesheet],cb)
 
 class TestJSRegistry(PloneTestCase.PloneTestCase):
 
@@ -54,7 +54,7 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
         self.tool = getToolByName(self.portal, JSTOOLNAME)
 
     def testToolExists(self):
-        self.failUnless(JSTOOLNAME in self.portal)
+        self.assertTrue(JSTOOLNAME in self.portal)
 
     def testDefaultJSIsInstalled(self):
         installedScriptIds = self.tool.getResourceIds()
@@ -80,11 +80,11 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
              'form_tabbing.js',
              'popupforms.js']
         for e in expected:
-            self.failUnless(e in installedScriptIds, e)
+            self.assertTrue(e in installedScriptIds, e)
 
     def testJSIsInsertedInPage(self):
         page = self.portal.index_html()
-        self.failUnless("" in page)
+        self.assertTrue("" in page)
 
 
 def test_suite():

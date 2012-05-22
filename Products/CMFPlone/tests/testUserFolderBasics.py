@@ -40,63 +40,63 @@ class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.portal.portal_groups.removeGroups(self.portal.portal_groups.listGroupIds())
 
     def testGetUser(self):
-        self.failIfEqual(self.uf.getUser(default_user), None)
+        self.assertNotEqual(self.uf.getUser(default_user), None)
 
     def testGetBadUser(self):
         self.assertEqual(self.uf.getUser('user2'), None)
 
     def testGetUserById(self):
-        self.failIfEqual(self.uf.getUserById(default_user), None)
+        self.assertNotEqual(self.uf.getUserById(default_user), None)
 
     def testGetBadUserById(self):
         self.assertEqual(self.uf.getUserById('user2'), None)
 
     def testGetUsers(self):
         users = self.uf.getUsers()
-        self.failUnless(users)
+        self.assertTrue(users)
         self.assertEqual(users[0].getUserName(), default_user)
 
     def testGetUserNames(self):
         names = self.uf.getUserNames()
-        self.failUnless(names)
+        self.assertTrue(names)
         self.assertEqual(names[0], default_user)
 
     def testGetRoles(self):
         user = self.uf.getUser(default_user)
-        self.failUnless(user_role in user.getRoles())
+        self.assertTrue(user_role in user.getRoles())
 
     def testGetRolesInContext(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
         roles = user.getRolesInContext(self.folder)
-        self.failUnless(user_role in roles)
-        self.failUnless('Owner' in roles)
+        self.assertTrue(user_role in roles)
+        self.assertTrue('Owner' in roles)
 
     def testHasRole(self):
         user = self.uf.getUser(default_user)
-        self.failUnless(user.has_role(user_role, self.folder))
+        self.assertTrue(user.has_role(user_role, self.folder))
 
     def testHasLocalRole(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
-        self.failUnless(user.has_role('Owner', self.folder))
+        self.assertTrue(user.has_role('Owner', self.folder))
 
     def testHasPermission(self):
         user = self.uf.getUser(default_user)
-        self.failUnless(user.has_permission('View', self.folder))
+        self.assertTrue(user.has_permission('View', self.folder))
         self.folder.manage_role(user_role, ['Add Folders'])
-        self.failUnless(user.has_permission('Add Folders', self.folder))
+        self.assertTrue(user.has_permission('Add Folders', self.folder))
 
     def testHasLocalRolePermission(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_role('Owner', ['Add Folders'])
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
-        self.failUnless(user.has_permission('Add Folders', self.folder))
+        self.assertTrue(user.has_permission('Add Folders', self.folder))
 
     def testValidate(self):
         self.app.REQUEST._auth = self.basic
         user = self.uf.validate(self.app.REQUEST, self.basic, [user_role])
-        self.failIfEqual(user, None)
+        self.assertNotEqual(user, None)
         self.assertEqual(user.getUserName(), default_user)
 
     def testNotValidateWithoutAuth(self):

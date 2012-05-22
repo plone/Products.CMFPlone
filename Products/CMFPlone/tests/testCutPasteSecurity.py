@@ -28,8 +28,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         # will work
         transaction.savepoint(optimistic=True)
         folder.manage_renameObject('testrename', 'new')
-        self.failIf(hasattr(aq_base(folder), 'testrename'))
-        self.failUnless(hasattr(aq_base(folder), 'new'))
+        self.assertFalse(hasattr(aq_base(folder), 'testrename'))
+        self.assertTrue(hasattr(aq_base(folder), 'new'))
 
     def testRenameOtherMemberContentFails(self):
         self.login('user1')
@@ -49,8 +49,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         dest.manage_pasteObjects(src.manage_copyObjects('testcopy'))
 
         # After a copy/paste, they should *both* have a copy
-        self.failUnless(hasattr(aq_base(src), 'testcopy'))
-        self.failUnless(hasattr(aq_base(dest), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(src), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(dest), 'testcopy'))
 
     def testCopyOtherMemberContent(self):
         self.login('user1')
@@ -61,8 +61,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         dest = self.membership.getHomeFolder('user2')
         dest.manage_pasteObjects(src.manage_copyObjects('testcopy'))
         # After a copy/paste, they should *both* have a copy
-        self.failUnless(hasattr(aq_base(src), 'testcopy'))
-        self.failUnless(hasattr(aq_base(dest), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(src), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(dest), 'testcopy'))
 
     def testCutMemberContent(self):
         self.login('user1')
@@ -78,8 +78,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         dest.manage_pasteObjects(src.manage_cutObjects('testcut'))
 
         # After a cut/paste, only destination has a copy
-        self.failIf(hasattr(aq_base(src), 'testcut'))
-        self.failUnless(hasattr(aq_base(dest), 'testcut'))
+        self.assertFalse(hasattr(aq_base(src), 'testcut'))
+        self.assertTrue(hasattr(aq_base(dest), 'testcut'))
 
     def testCutOtherMemberContent(self):
         self.login('user1')

@@ -122,14 +122,14 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         form = browser.getForm(name='login_form')
         form.submit()
         # We are now inside the iframe
-        self.failUnless(browser.url.startswith(self.login_portal.absolute_url()))
+        self.assertTrue(browser.url.startswith(self.login_portal.absolute_url()))
         # The Link to get  a new password points back to self.portal
         link = browser.getLink('we can send you a new one')
-        self.failUnless(link.url.startswith(self.portal.absolute_url()))
+        self.assertTrue(link.url.startswith(self.portal.absolute_url()))
         self.assertEqual(link.attrs['target'], '_parent')
         # So does the registration form
         link = browser.getLink('registration form')
-        self.failUnless(link.url.startswith(self.portal.absolute_url()))
+        self.assertTrue(link.url.startswith(self.portal.absolute_url()))
         self.assertEqual(link.attrs['target'], '_parent')
         # Login
         browser.getControl(name='__ac_name').value = ptc.default_user
@@ -137,7 +137,7 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         browser.getControl(name='submit').click()
         self.assertEqual(self.browser.cookies.getinfo('__ac')['path'], self.login_portal.absolute_url_path())
         # The external_login_form has a target attribute too (but difficult to test for)
-        self.failUnless(browser.contents.find('target=') > 0)
+        self.assertTrue(browser.contents.find('target=') > 0)
         # Without javascript we must click through
         browser.getForm('external_login_form').submit()
         self.assertEqual(self.browser.cookies.getinfo('__ac')['path'], self.portal.absolute_url_path())
@@ -148,7 +148,7 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         form = browser.getForm(name='login_form')
         form.submit()
         # We are now inside the iframe
-        self.failUnless(browser.url.startswith(self.login_portal.absolute_url()))
+        self.assertTrue(browser.url.startswith(self.login_portal.absolute_url()))
         browser.getForm('external_login_form').submit()
         self.assertEqual(self.browser.cookies.getinfo('__ac')['path'], self.another_portal.absolute_url_path())
         # Now logout
@@ -161,7 +161,7 @@ class TestSSOLoginIframe(SSOLoginTestCase):
         form.submit()
         # Check the registration form does not have an incorrect came_from link
         link = browser.getLink('registration form')
-        self.failIf('came_from' in link.url)
+        self.assertFalse('came_from' in link.url)
         self.assertEqual(link.attrs['target'], '_parent')
         # Check we are logged out of the login_portal too
         browser.open(self.login_portal.absolute_url())

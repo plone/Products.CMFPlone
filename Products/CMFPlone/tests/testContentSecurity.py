@@ -24,7 +24,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         self.login('user1')
         folder = self.membership.getHomeFolder('user1')
         folder.invokeFactory('Document', id='new')
-        self.failUnless(hasattr(aq_base(folder), 'new'))
+        self.assertTrue(hasattr(aq_base(folder), 'new'))
 
     def testCreateOtherMemberContentFails(self):
         self.login('user1')
@@ -40,7 +40,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         folder = self.membership.getHomeFolder('user1')
         folder.invokeFactory('Document', id='new')
         folder.manage_delObjects(['new'])
-        self.failIf(hasattr(aq_base(folder), 'new'))
+        self.assertFalse(hasattr(aq_base(folder), 'new'))
 
     def testDeleteOtherMemberContent(self):
         self.login('user1')

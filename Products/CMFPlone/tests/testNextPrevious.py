@@ -36,25 +36,25 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
     def testIfFolderImplementsPreviousNext(self):
         self.folder.invokeFactory('Folder', 'case')
-        self.failUnless(INextPreviousProvider(self.folder.case, None) is not None)
+        self.assertTrue(INextPreviousProvider(self.folder.case, None) is not None)
 
     def testNextPreviousEnablingOnCreation(self):
         self.folder.invokeFactory('Folder', 'case')
 
         #first the field on the atfolder direct, to get sure the field is there
         enabled = self.folder.case.getNextPreviousEnabled()
-        self.failIf(enabled)
+        self.assertFalse(enabled)
 
         #secoundly we test if the adapter provides the isNextPreviousEnabled()
         adapter = INextPreviousProvider(self.folder.case)
-        self.failIf(adapter.enabled)
+        self.assertFalse(adapter.enabled)
 
     def testNextPreviousViewDisabled(self):
         view = self.portal.folder1.doc11.restrictedTraverse('@@plone_nextprevious_view', None)
-        self.failIf(view is None)
+        self.assertFalse(view is None)
 
         #is it enabled (default is false)
-        self.failIf(view.enabled())
+        self.assertFalse(view.enabled())
 
     def testNextPreviousViewEnabled(self):
         #set the parent folder "getNextPreviousEnabled" to true
@@ -62,7 +62,7 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
         # clear request memos
         view = self.portal.folder1.doc12.restrictedTraverse('@@plone_nextprevious_view', None)
-        self.failUnless(view.enabled())
+        self.assertTrue(view.enabled())
 
         # test the next method
         next = view.next()
@@ -74,8 +74,8 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
     def testAdapterOnPortal(self):
         view = self.portal.doc1.restrictedTraverse('@@plone_nextprevious_view', None)
-        self.failUnless(view)
-        self.failIf(view.enabled())
+        self.assertTrue(view)
+        self.assertFalse(view.enabled())
         self.assertEquals(None, view.next())
         self.assertEquals(None, view.previous())
 
@@ -93,22 +93,22 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
         #test the next item of subDoc2
         next = adapter.getNextItem(self.folder.case3.subDoc2)
-        self.failUnlessEqual(next["id"], 'subDoc3')
+        self.assertEqual(next["id"], 'subDoc3')
 
         #test that the contenttype is defined correct
-        self.failUnlessEqual(next["portal_type"], 'Document')
+        self.assertEqual(next["portal_type"], 'Document')
 
         #test the previous item of subDoc2
         previous = adapter.getPreviousItem(self.folder.case3.subDoc2)
-        self.failUnlessEqual(previous["id"], 'subDoc1')
+        self.assertEqual(previous["id"], 'subDoc1')
 
         #first item should not have a previous item
         previous = adapter.getPreviousItem(self.folder.case3.subDoc1)
-        self.failUnlessEqual(previous, None)
+        self.assertEqual(previous, None)
 
         #last item should not have a next item
         next = adapter.getNextItem(self.folder.case3.subDoc5)
-        self.failUnlessEqual(next, None)
+        self.assertEqual(next, None)
 
 def test_suite():
     from unittest import TestSuite, makeSuite

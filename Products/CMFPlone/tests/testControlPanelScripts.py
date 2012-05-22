@@ -112,14 +112,14 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
         barney = self.membership.getMemberById('barney')
-        self.failUnlessEqual(barney.getProperty('email'), 'barney@bedrock.com')
+        self.assertEqual(barney.getProperty('email'), 'barney@bedrock.com')
         del barney
 
         self.setRequestMethod('POST')
         self.portal.prefs_user_manage(delete=['barney'])
         self.setRequestMethod('GET')
         md = memberdata._members
-        self.failIf('barney' in md)
+        self.assertFalse('barney' in md)
 
         # There is an _v_ variable that is killed at the end of each request
         # which stores a temporary version of the member object, this is
@@ -128,8 +128,8 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
 
         self.membership.addMember('barney', 'secret', ['Member'], [])
         barney = self.membership.getMemberById('barney')
-        self.failIfEqual(barney.getProperty('fullname'), 'Barney Rubble')
-        self.failIfEqual(barney.getProperty('email'), 'barney@bedrock.com')
+        self.assertNotEqual(barney.getProperty('fullname'), 'Barney Rubble')
+        self.assertNotEqual(barney.getProperty('email'), 'barney@bedrock.com')
 
 
 class TestAccessControlPanelScripts(PloneTestCase.FunctionalTestCase):

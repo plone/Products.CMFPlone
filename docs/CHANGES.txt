@@ -8,6 +8,9 @@ Changelog
 4.2rc2 (unreleased)
 -------------------
 
+- Deprecated aliases were replaced on tests.
+  [hvelarde]
+
 - Ensure multiple tabbed forms on the same page work when number of
   tabs is greater than threshold.
   [davidjb]

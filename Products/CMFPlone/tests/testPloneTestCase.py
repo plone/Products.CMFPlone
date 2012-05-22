@@ -15,17 +15,17 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.setupAuthenticator()
 
     def testAddDocument(self):
-        self.failIf(self.catalog(id='new'))
+        self.assertFalse(self.catalog(id='new'))
         self.folder.invokeFactory('Document', id='new')
-        self.failUnless(hasattr(aq_base(self.folder), 'new'))
-        self.failUnless(self.catalog(id='new'))
+        self.assertTrue(hasattr(aq_base(self.folder), 'new'))
+        self.assertTrue(self.catalog(id='new'))
 
     def testPublishDocument(self):
         self.folder.invokeFactory('Document', id='new')
         self.setRoles(['Reviewer'])
         self.workflow.doActionFor(self.folder.new, 'publish')
         self.assertEqual(self.workflow.getInfoFor(self.folder.new, 'review_state'), 'published')
-        self.failUnless(self.catalog(id='new', review_state='published'))
+        self.assertTrue(self.catalog(id='new', review_state='published'))
 
     def testRetractDocument(self):
         self.folder.invokeFactory('Document', id='new')

@@ -20,28 +20,28 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
                          'Migration failed')
 
     def testMigrationNeedsUpgrading(self):
-        self.failIf(self.migration.needUpgrading(),
+        self.assertFalse(self.migration.needUpgrading(),
                     'Migration needs upgrading')
 
     def testMigrationNeedsUpdateRole(self):
-        self.failIf(self.migration.needUpdateRole(),
+        self.assertFalse(self.migration.needUpdateRole(),
                     'Migration needs role update')
 
     def testMigrationNeedsRecatalog(self):
-        self.failIf(self.migration.needRecatalog(),
+        self.assertFalse(self.migration.needRecatalog(),
                     'Migration needs recataloging')
 
     def testListUpgradeSteps(self):
         # There should be no upgrade steps from the current version
         upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
-        self.failUnless(len(upgrades) == 0)
+        self.assertTrue(len(upgrades) == 0)
 
     def testDoUpgrades(self):
         self.setRoles(['Manager'])
 
         self.setup.setLastVersionForProfile(_DEFAULT_PROFILE, '2.5')
         upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
-        self.failUnless(len(upgrades) > 0)
+        self.assertTrue(len(upgrades) > 0)
 
         request = self.portal.REQUEST
         request.form['profile_id'] = _DEFAULT_PROFILE
@@ -64,7 +64,7 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
 
         # There are no more upgrade steps available
         upgrades = self.setup.listUpgrades(_DEFAULT_PROFILE)
-        self.failUnless(len(upgrades) == 0)
+        self.assertTrue(len(upgrades) == 0)
 
 
 def test_suite():

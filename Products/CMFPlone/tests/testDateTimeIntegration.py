@@ -22,7 +22,7 @@ class DateTimeTests(PloneTestCase):
         after = DateTime()
         modified = obj.ModificationDate()   # the string representation...
         modified = DateTime(modified)       # is usually parsed again in Plone
-        self.failUnless(int(before) <= int(modified) <= int(after),
+        self.assertTrue(int(before) <= int(modified) <= int(after),
             (before, modified, after))
 
     def testCreationDate(self):
@@ -31,7 +31,7 @@ class DateTimeTests(PloneTestCase):
         after = DateTime()
         creation = obj.CreationDate()       # the string representation...
         creation = DateTime(creation)       # is usually parsed again in Plone
-        self.failUnless(int(before) <= int(creation) <= int(after),
+        self.assertTrue(int(before) <= int(creation) <= int(after),
             (before, creation, after))
 
     def testEffectiveDate(self):
@@ -42,7 +42,7 @@ class DateTimeTests(PloneTestCase):
         obj.processForm(values=dict(Description='foo!'))
         effective = obj.EffectiveDate()     # the string representation...
         effective = DateTime(effective)     # is usually parsed again in Plone
-        self.failUnless(date.equalTo(effective), (date, effective))
+        self.assertTrue(date.equalTo(effective), (date, effective))
 
     def testExpirationDate(self):
         obj = self.folder
@@ -52,7 +52,7 @@ class DateTimeTests(PloneTestCase):
         obj.processForm(values=dict(Description='foo!'))
         expired = obj.ExpirationDate()      # the string representation...
         expired = DateTime(expired)         # is usually parsed again in Plone
-        self.failUnless(date.equalTo(expired), (date, expired))
+        self.assertTrue(date.equalTo(expired), (date, expired))
 
 
 class DateTimeFunctionalTests(FunctionalTestCase):
@@ -66,7 +66,7 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         for tz in ('', ' US/Central', ' US/Eastern'):
             # save the time represented in the specified time zone
             obj.setEffectiveDate('2020-02-20 00:00%s' % tz)
-            self.failUnless(obj.effective_date.ISO8601().startswith(
+            self.assertTrue(obj.effective_date.ISO8601().startswith(
                 '2020-02-20T00:00:00'))
             start_value = obj.effective_date
             browser = self.getBrowser()
@@ -97,7 +97,7 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         for tz in ('', ' GMT-6', ' GMT-5'):
             # save the time represented in the specified time zone
             obj.setEffectiveDate('2020-06-20 16:00%s' % tz)
-            self.failUnless(obj.effective_date.ISO8601().startswith(
+            self.assertTrue(obj.effective_date.ISO8601().startswith(
                 '2020-06-20T16:00:00'))
             start_value = obj.effective_date
             browser = self.getBrowser()
@@ -128,8 +128,8 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         obj = self.portal['front-page']
         obj.setEffectiveDate('2010-01-01 10:00 Europe/Belgrade')
         obj.setExpirationDate('2010-06-01 10:00 Europe/Belgrade')
-        self.failUnless(obj.effective_date.tzoffset() == 3600)
-        self.failUnless(obj.expiration_date.tzoffset() == 7200)
+        self.assertTrue(obj.effective_date.tzoffset() == 3600)
+        self.assertTrue(obj.expiration_date.tzoffset() == 7200)
 
 
 def test_suite():
