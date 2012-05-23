@@ -56,6 +56,13 @@ class ISecuritySchema(Interface):
         default=False,
         required=False)
 
+    display_pub_date_in_byline = Bool(
+        title=_(u"Display publication date in 'about' information"),
+        description=_(u"If set, object Effective Date will be used. Otherwise "
+                      "workflow publication date will be used."),
+        default=False,
+        required=False)
+
     use_email_as_login = Bool(
         title=_(u'Use email address as login name'),
         description=_(u"Allows new  users to login with their email address "
@@ -166,6 +173,15 @@ class SecurityControlPanelAdapter(SchemaAdapterBase):
 
     allow_anon_views_about = property(get_allow_anon_views_about,
                                       set_allow_anon_views_about)
+
+    def get_display_pub_date_in_byline(self):
+        return self.context.site_properties.displayPublicationDateInByline
+
+    def set_display_pub_date_in_byline(self, value):
+        self.context.site_properties.displayPublicationDateInByline = value
+
+    display_pub_date_in_byline = property(get_display_pub_date_in_byline,
+                                          set_display_pub_date_in_byline)
 
     def get_use_email_as_login(self):
         return self.context.use_email_as_login

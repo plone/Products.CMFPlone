@@ -4,6 +4,10 @@ Changelog
 2.2.5 (unreleased)
 ------------------
 
+- Added 'display publication date in author byline' option to Security
+  Settings control panel.
+  [vipod]
+
 - Updated zope.formlib imports.
   [hannosch]
 
