@@ -5,6 +5,7 @@ from zope.component import getMultiAdapter, queryMultiAdapter
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
+from DateTime import DateTime
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
@@ -99,6 +100,76 @@ class DocumentBylineViewlet(ViewletBase):
         return util.ulocalized_time(time, long_format, time_only, self.context,
                                     domain='plonelocales')
 
+    @memoize
+    def pub_date(self):
+        """Return object published date.
+        
+        Return None if object is not published at the moment or
+        if publication date is switched off in global site settings.
+        
+        If we have set Effective Date then we use it.
+        Otherwise we try to get publication date from worfklow history.
+        """
+        # check if we are allowed to display publication date
+        properties = getToolByName(self.context, 'portal_properties')
+        site_properties = getattr(properties, 'site_properties')
+        if not site_properties.getProperty('displayPublicationDateInByline',
+           False):
+            return None
+        
+        # check if object is published (we avoid using workflow tool here as it
+        # requires Reviewer role, thus we won't be able to display publication
+        # date to Anonymous users)
+        review_history = self._review_history()
+        if not review_history:
+            return None
+        
+        info = review_history[-1]
+        if info.get('review_state', '') != 'published':
+            return None
+        
+        # check if we have Effective Date set
+        date = self.context.EffectiveDate()
+        if date and date != 'None':
+            return DateTime(date)
+        
+        # finally fallback to publication date from review history
+        return info.get('time', None)
+    
+    def modified_date(self):
+        """Return modification date if object was modified after it was
+        published, or if object is not published yet.
+        """
+        modified = DateTime(self.context.ModificationDate())
+        published = self.pub_date()
+        if modified is not None and published is not None and \
+           modified <= published:
+            return None
+        
+        return modified
+
+    def _review_history(self):
+        """Return review history using low level API to skip security checks
+        against Review Portal Content permission.
+        
+        Otherwise published date won't be available for anonymous and plain
+        member users.
+        """
+        context = aq_inner(self.context)
+        
+        wtool = getToolByName(context, 'portal_workflow')
+        found = None
+        for wf in wtool.getWorkflowsFor(context):
+            if wf.isInfoSupported(context, 'review_history'):
+                found = wf
+                break
+        
+        if found and base_hasattr(context, 'workflow_history'):
+            history = getattr(context, 'workflow_history')
+            if history is not None and found.id in history:
+                return history[found.id]
+        
+        return None
 
 class ContentRelatedItems(ViewletBase):
 

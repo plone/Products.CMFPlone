@@ -4,6 +4,10 @@ Changelog
 2.2.7 (unreleased)
 ------------------
 
+- Display publication date in author byline:
+  https://dev.plone.org/ticket/8699
+  [vipod]
+
 - Remove hard dependency on ATContentTypes.
   [davisagli]
 
