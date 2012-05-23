@@ -12,6 +12,8 @@ _PROPERTYSHEET_XML = """\
 <object name="site_properties" meta_type="Plone Property Sheet">
  <property name="title">Site wide properties</property>
  <property name="allowAnonymousViewAbout" type="boolean">True</property>
+ <property name="displayPublicationDateInByline"
+    type="boolean">True</property>
 </object>
 """
 
@@ -21,6 +23,8 @@ _PROPERTIESTOOL_XML = """\
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
   <property name="allowAnonymousViewAbout" type="boolean">True</property>
+  <property name="displayPublicationDateInByline"
+     type="boolean">True</property>
  </object>
 </object>
 """
@@ -36,6 +40,7 @@ class PropertySheetXMLAdapterTests(BodyAdapterTestCase):
     def _populate(self, obj):
         obj.manage_changeProperties(title='Site wide properties')
         obj.manage_addProperty('allowAnonymousViewAbout', True, 'boolean')
+        obj.manage_addProperty('displayPublicationDateInByline', True, 'boolean')
 
     def setUp(self):
         self._obj = SimpleItemWithProperties('site_properties')
@@ -55,6 +60,8 @@ class PropertiesToolXMLAdapterTests(BodyAdapterTestCase):
         obj.site_properties.manage_changeProperties(
             title='Site wide properties')
         obj.site_properties.manage_addProperty('allowAnonymousViewAbout',
+                                               True, 'boolean')
+        obj.site_properties.manage_addProperty('displayPublicationDateInByline',
                                                True, 'boolean')
 
     def setUp(self):

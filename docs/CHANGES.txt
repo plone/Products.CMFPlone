@@ -8,6 +8,10 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Add 'displayPublicationDateInByline' to site properties property sheet in
+  order to finish PLIP #8699: Display publication date in author byline.
+  [vipod]
+
 - Deprecated aliases were replaced on tests.
   [hvelarde]
 
