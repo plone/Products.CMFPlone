@@ -12,6 +12,9 @@ Changelog
   order to finish PLIP #8699: Display publication date in author byline.
   [vipod]
 
+- Hide Kupu base profile on Plone site creation screen.
+  [hannosch]
+
 - Deprecated aliases were replaced on tests.
   [hvelarde]
 
