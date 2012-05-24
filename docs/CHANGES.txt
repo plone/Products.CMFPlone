@@ -7,6 +7,9 @@ Changelog
 
 4.2rc2 (unreleased)
 -------------------
+- calculate the dynamic fontsize in s5_slides.js (Presentation Mode) in em, not px. This for WCAG 2.0 compliance. 
+  See https://dev.plone.org/ticket/12902
+  [polyester]
 
 - Let the RR export/import steps depend on the skins tool and
   plone.app.registry steps, as either of them might create new theme bundles
