@@ -11,6 +11,9 @@ Changelog
 - Hide Kupu base profile on Plone site creation screen.
   [hannosch]
 
+- PEP 8 (ignoring W602, W604, E301, E302, E501 and E701).
+  [hvelarde]
+
 - Deprecated aliases were replaced on tests.
   [hvelarde]
 
