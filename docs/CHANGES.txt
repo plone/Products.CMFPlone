@@ -36,6 +36,10 @@ Changelog
   Fixes https://dev.plone.org/ticket/12877
   [davidjb]
 
+- accessibility improvements for screen readers regarding "more" links, 
+  see http://dev.plone.org/ticket/11982 
+  [rmattb, applied by polyester]   
+
 - Fix an outdated "Send this" form handler property reference.
   [rossp]
 
@@ -56,6 +60,11 @@ Changelog
 
 - Hide Kupu base profile on Plone site creation screen.
   [hannosch]
+
+
+- Accessibility improvements for screen readers regarding "more" links, see 
+  http://dev.plone.org/ticket/11982 
+  [rmattb, applied by polyester]  
 
 
 4.2b3 (unreleased)
