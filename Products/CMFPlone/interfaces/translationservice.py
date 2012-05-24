@@ -18,7 +18,7 @@ class ITranslationServiceTool(Interface):
     def asunicodetype(m, input_encoding=None, errors='strict'):
         """Create type unicode from type string"""
 
-    def ulocalized_time(time, long_format = None, time_only = None, context = None, domain='plonelocales'):
+    def ulocalized_time(time, long_format=None, time_only=None, context=None, domain='plonelocales'):
         """Returns localized time."""
 
     def day_msgid(number, format=''):

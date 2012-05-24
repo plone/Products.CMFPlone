@@ -76,7 +76,7 @@ class CatalogNavigationTree(BrowserView):
             contextPath = '/'.join(context.getPhysicalPath())
             if not contextPath.startswith(rootPath):
                 return None
-            contextSubPathElements = contextPath[len(rootPath)+1:].split('/')
+            contextSubPathElements = contextPath[len(rootPath) + 1:].split('/')
             if len(contextSubPathElements) < topLevel:
                 return None
             rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLevel])

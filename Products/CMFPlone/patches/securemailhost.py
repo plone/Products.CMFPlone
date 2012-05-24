@@ -36,6 +36,7 @@ deferred['EMAIL_CUTOFF_RE'] = DeferredAndDeprecated('EMAIL_CUTOFF_RE',
                      'which is no longer shipped with Plone.  It can be '
                      'imported from Products.CMFPlone.utils.EMAIL_CUTOFF_RE')
 
+
 # We can't depend on SecureMailHost, so we have to reimplement
 # a couple methods for BBB
 def email_list_to_string(addr_list, charset='us-ascii'):
@@ -110,13 +111,13 @@ def applyPatches():
         pt = PloneTool.PloneTool
         MailHost.secureSend = secureSend
         MailHost.validateSingleNormalizedEmailAddress = deprecate(
-            msg%{'name': 'validateSingleNormalizedEmailAddress'})(
+            msg % {'name': 'validateSingleNormalizedEmailAddress'})(
             pt.validateSingleNormalizedEmailAddress.im_func)
         MailHost.validateSingleEmailAddress = deprecate(
-            msg%{'name': 'validateSingleEmailAddress'})(
+            msg % {'name': 'validateSingleEmailAddress'})(
             pt.validateSingleEmailAddress.im_func)
         MailHost.validateEmailAddresses = deprecate(
-            msg%{'name': 'validateEmailAddresses'})(
+            msg % {'name': 'validateEmailAddresses'})(
             pt.validateEmailAddresses.im_func)
         MailHost.emailListToString = deprecate(
             'The MailHost method emailListToString is deprecated and '

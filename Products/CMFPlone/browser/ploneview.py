@@ -96,7 +96,7 @@ class Plone(BrowserView):
         template_id = None
         if 'PUBLISHED' in request:
             if getattr(request['PUBLISHED'], 'getId', None):
-                template_id=request['PUBLISHED'].getId()
+                template_id = request['PUBLISHED'].getId()
 
         idActions = {}
         for obj in actions('object') + actions('folder'):
@@ -171,11 +171,11 @@ class Plone(BrowserView):
             encoding = utils.getSiteEncoding(aq_inner(self.context))
             text = unicode(text, encoding)
             converted = True
-        if len(text)>length:
+        if len(text) > length:
             text = text[:length]
             l = text.rfind(' ')
-            if l > length/2:
-                text = text[:l+1]
+            if l > length / 2:
+                text = text[:l + 1]
             text += ellipsis
         if converted:
             # encode back from unicode

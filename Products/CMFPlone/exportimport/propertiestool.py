@@ -137,7 +137,7 @@ class PlonePropertiesToolXMLAdapter(XMLAdapterBase, ObjectManagerHelpers):
                 else:
                     try:
                         position = parent.getObjectPosition(insert_after)
-                        parent.moveObjectToPosition(obj_id, position+1)
+                        parent.moveObjectToPosition(obj_id, position + 1)
                     except ValueError:
                         pass
 

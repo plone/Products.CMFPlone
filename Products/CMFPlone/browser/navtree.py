@@ -155,7 +155,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         isCreator = self.memberId == getattr(item, 'Creator', None)
         if getRemoteUrl and not isCreator:
             useRemoteUrl = True
-        
+
         isFolderish = getattr(item, 'is_folderish', None)
         showChildren = False
         if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
@@ -176,7 +176,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['review_state'] = getattr(item, 'review_state', None)
         newNode['Description'] = getattr(item, 'Description', None)
         newNode['show_children'] = showChildren
-        newNode['no_display'] = False # We sort this out with the nodeFilter
+        newNode['no_display'] = False  # We sort this out with the nodeFilter
         # BBB getRemoteUrl and link_remote are deprecated, remove in Plone 4
         newNode['getRemoteUrl'] = getattr(item, 'getRemoteUrl', None)
         newNode['useRemoteUrl'] = useRemoteUrl
