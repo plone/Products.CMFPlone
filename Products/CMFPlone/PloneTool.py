@@ -936,7 +936,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return True
 
     security.declarePublic('acquireLocalRoles')
-    def acquireLocalRoles(self, obj, status = 1, REQUEST=None):
+    def acquireLocalRoles(self, obj, status=1, REQUEST=None):
         """If status is 1, allow acquisition of local roles (regular
         behaviour).
 

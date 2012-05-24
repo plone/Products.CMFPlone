@@ -351,9 +351,9 @@ def safeToInt(value, default=0):
     except (ValueError, TypeError):
         return default
 
-
 release_levels = ('alpha', 'beta', 'candidate', 'final')
 rl_abbr = {'a': 'alpha', 'b': 'beta', 'rc': 'candidate'}
+
 
 def versionTupleFromString(v_str):
     """Returns version tuple from passed in version string

@@ -101,7 +101,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
                 includedevents.append(result.getRID())
             event = {}
             # we need to deal with events that end next month
-            if  result.end.month() != month:
+            if result.end.month() != month:
                 # doesn't work for events that last ~12 months
                 # fix it if it's a problem, otherwise ignore
                 eventEndDay = last_day

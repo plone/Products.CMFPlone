@@ -8,6 +8,9 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- PEP 8 (ignoring W602, E203, E241, E301, E501 and E701).
+  [hvelarde]
+
 - Add 'displayPublicationDateInByline' to site properties property sheet in
   order to finish PLIP #8699: Display publication date in author byline.
   [vipod]
@@ -58,7 +61,7 @@ Changelog
 4.2b3 (unreleased)
 ------------------
 
-- Stop filtering folder_listing to the types from 
+- Stop filtering folder_listing to the types from
   @@plone_portal_state/friendly_types, since that excludes non-searchable
   types rather than non-listable types.
   [davisagli]
@@ -73,8 +76,8 @@ Changelog
   to type 'submit'.
   [davisagli]
 
-- Use getId() instead of title_or_id() for displaying which items get 
-  deleted, to avoid unicode error
+- Use getId() instead of title_or_id() for displaying which items get deleted,
+  to avoid unicode error
   Fixes https://dev.plone.org/ticket/12765
   [spereverde]
 
@@ -111,7 +114,8 @@ Changelog
 4.2b2 (2012-02-09)
 ------------------
 
-- Changed link from search to @@search for the "More" link in livesearch_reply.
+- Changed link from search to @@search for the "More" link in
+  livesearch_reply.
   [vincentfretin]
 
 - Notify ObjectModifiedEvent when a content title is modified
@@ -131,8 +135,8 @@ Changelog
 4.2b1 (2011-12-05)
 ------------------
 
-- Define a ZCML feature called `plone-42` in addition to the existing `plone-4`
-  and `plone-41` to be used in conditional ZCML registrations.
+- Define a ZCML feature called `plone-42` in addition to the existing
+  `plone-4` and `plone-41` to be used in conditional ZCML registrations.
   [vincentfretin]
 
 - Allow "Site Administrator to add keywords"
@@ -184,8 +188,8 @@ Changelog
 4.2a2 - 2011-08-25
 ------------------
 
-- AuthenticatedUsers group is used for local roles etc, and is not the same
-  as Authenticated role. Thus, it can not be optimized away in catalog queries.
+- AuthenticatedUsers group is used for local roles etc, and is not the same as
+  Authenticated role. Thus, it can not be optimized away in catalog queries.
   [tesdal]
 
 - getFolderContents only sets b_size if batching is true.
