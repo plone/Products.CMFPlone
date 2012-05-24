@@ -3,6 +3,9 @@
 
 <metal:block use-macro="here/global_defines/macros/defines" />
 <html xmlns="http://www.w3.org/1999/xhtml"
+      tal:define="portal_state context/@@plone_portal_state;
+                  lang portal_state/language;"
+      tal:attributes="lang lang;"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"

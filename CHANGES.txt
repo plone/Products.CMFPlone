@@ -4,6 +4,10 @@ Changelog
 2.2.7 (unreleased)
 ------------------
 
+- Add language atribute to presentation.pt for WCAG 2.0 compliance. 
+  See https://dev.plone.org/ticket/12902
+  [rmatt, polyester]
+
 - Remove hard dependency on ATContentTypes.
   [davisagli]
 
