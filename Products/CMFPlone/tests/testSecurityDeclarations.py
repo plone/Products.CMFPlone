@@ -307,7 +307,7 @@ except DiscussionNotAllowed: pass
                                'print utils.getToolByName')
 
     def testUse_getToolByName(self):
-        self.app.manage_addFolder('portal_membership') # Fake a portal tool
+        self.app.manage_addFolder('portal_membership')  # Fake a portal tool
         self.check('from Products.CMFCore.utils import getToolByName;'
                    'print getToolByName(context, "portal_membership")')
 
@@ -334,7 +334,6 @@ except DiscussionNotAllowed: pass
 
     def testImport_mergeResults(self):
         self.check('from Products.ZCatalog.Catalog import mergeResults')
-
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):

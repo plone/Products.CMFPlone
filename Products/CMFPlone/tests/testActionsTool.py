@@ -12,6 +12,7 @@ from OFS.SimpleItem import Item
 from Products.CMFCore.ActionInformation import ActionInfo
 from Products.CMFCore.ActionInformation import Action
 
+
 class ExplicitItem(Item, Explicit):
     '''Item without implicit acquisition'''
     id = 'dummy'
@@ -114,13 +115,13 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
             self.assertTrue(isinstance(info['description'], Message))
 
     def testListActionsSkipsItemsWithOldInterface(self):
-         # Ticket #10791
-         me = Action("not_action_category")
-         self.actions['not_a_category'] = me
-         try:
-             action_infos = self.actions.listActions()
-         except:
-             self.fail_tb('Should not fail if item exists w/o IActionCategory interface')
+        # Ticket #10791
+        me = Action("not_action_category")
+        self.actions['not_a_category'] = me
+        try:
+            action_infos = self.actions.listActions()
+        except:
+            self.fail_tb('Should not fail if item exists w/o IActionCategory interface')
 
 
 def test_suite():

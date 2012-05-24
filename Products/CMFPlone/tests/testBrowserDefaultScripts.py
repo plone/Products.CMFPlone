@@ -4,6 +4,7 @@
 
 from Products.CMFPlone.tests import PloneTestCase
 
+
 class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
     """Tests the browser default and folder-default page scripts"""
 

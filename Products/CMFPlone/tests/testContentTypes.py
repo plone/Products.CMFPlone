@@ -37,7 +37,7 @@ class TestATContentTypes(PloneTestCase.PloneTestCase):
         # manual creation
         p = folder.manage_addProduct[fti.product]
         m = getattr(p, fti.factory)
-        m(id) # create it
+        m(id)  # create it
         return folder._getOb(id)
 
     def testPortalTypeName(self):

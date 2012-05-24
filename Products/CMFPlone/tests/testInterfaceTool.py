@@ -18,11 +18,14 @@ from Products.CMFPlone.InterfaceTool import resolveInterface, getDottedName
 class IMyPortalContent(IContentish):
     pass
 
+
 class A(PortalContent, DefaultDublinCoreImpl):
     pass
 
+
 class B(PortalContent, DefaultDublinCoreImpl):
     implements(IMyPortalContent)
+
 
 class TestInterfaceResolution(unittest.TestCase):
 

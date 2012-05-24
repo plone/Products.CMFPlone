@@ -17,7 +17,6 @@ from zope.location.interfaces import ISite
 from zope.site.hooks import setSite, clearSite
 
 from Acquisition import aq_base
-from DateTime import DateTime
 
 from Products.CMFCore.CachingPolicyManager import CachingPolicyManager
 from Products.CMFCore.permissions import AccessInactivePortalContent
@@ -243,7 +242,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testNewsTopicIsIndexed(self):
         # News (smart) folder should be cataloged
-        res = self.catalog(path={'query' : '/plone/news/aggregator', 'depth' : 0})
+        res = self.catalog(path={'query': '/plone/news/aggregator', 'depth': 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'aggregator')
         self.assertEqual(res[0].Title, 'News')
@@ -251,7 +250,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testEventsTopicIsIndexed(self):
         # Events (smart) folder should be cataloged
-        res = self.catalog(path={'query' : '/plone/events/aggregator', 'depth' : 0})
+        res = self.catalog(path={'query': '/plone/events/aggregator', 'depth': 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'aggregator')
         self.assertEqual(res[0].Title, 'Events')
@@ -259,7 +258,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testNewsFolderIsIndexed(self):
         # News folder should be cataloged
-        res = self.catalog(path={'query' : '/plone/news', 'depth' : 0})
+        res = self.catalog(path={'query': '/plone/news', 'depth': 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'news')
         self.assertEqual(res[0].Title, 'News')
@@ -267,7 +266,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testEventsFolderIsIndexed(self):
         # Events folder should be cataloged
-        res = self.catalog(path={'query' : '/plone/events', 'depth' : 0})
+        res = self.catalog(path={'query': '/plone/events', 'depth': 0})
         self.assertEqual(len(res), 1)
         self.assertEqual(res[0].getId, 'events')
         self.assertEqual(res[0].Title, 'Events')
@@ -426,11 +425,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testPloneSiteFTIHasMethodAliases(self):
         # Should add method aliases to the Plone Site FTI
         expected_aliases = {
-                '(Default)'  : '(dynamic view)',
-                'view'       : '(selected layout)',
-                'edit'       : '@@site-controlpanel',
-                'sharing'    : '@@sharing',
-              }
+            '(Default)': '(dynamic view)',
+            'view': '(selected layout)',
+            'edit': '@@site-controlpanel',
+            'sharing': '@@sharing',
+            }
         fti = self.portal.getTypeInfo()
         aliases = fti.getMethodAliases()
         self.assertEqual(aliases, expected_aliases)
@@ -502,13 +501,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
         acts = self.actions.listFilteredActionsFor(self.portal)
-        buttons = acts.get('object_buttons',[])
+        buttons = acts.get('object_buttons', [])
         self.assertEquals(0, len(buttons))
 
     def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
-        self.portal.invokeFactory('Document','index_html')
+        self.portal.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.portal.index_html)
         buttons = acts.get('object_buttons', [])
         self.assertEquals(0, len(buttons))
@@ -516,29 +515,31 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testObjectButtonActionsOnDefaultDocumentDoNotApplyToParent(self):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
-        self.folder.invokeFactory('Document','index_html')
+        self.folder.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
         self.assertEqual(len(buttons), 4)
         urls = [a['url'] for a in buttons]
         for url in urls:
-            self.assertFalse('index_html' not in url, 'Action wrongly applied to parent object %s'%url)
+            self.assertFalse('index_html' not in url,
+                             'Action wrongly applied to parent object %s' % url)
 
     def testObjectButtonActionsPerformCorrectAction(self):
         # only a manager would have proper permissions
         self.setRoles(['Manager', 'Member'])
-        self.folder.invokeFactory('Document','index_html')
+        self.folder.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.folder.index_html)
         buttons = acts['object_buttons']
         self.assertEqual(len(buttons), 4)
         # special case for delete which needs a confirmation form
-        urls = [(a['id'],a['url']) for a in buttons
+        urls = [(a['id'], a['url']) for a in buttons
                 if a['id'] not in ('delete',)]
         for url in urls:
             # ensure that e.g. the 'copy' url contains object_copy
-            self.assertTrue('object_'+url[0] in url[1], "%s does not perform the expected object_%s action"%(url[0],url[0]))
+            self.assertTrue('object_' + url[0] in url[1],
+                            "%s does not perform the expected object_%s action" % (url[0], url[0]))
 
-        delete_action = [(a['id'],a['url']) for a in buttons
+        delete_action = [(a['id'], a['url']) for a in buttons
                 if a['id'] == 'delete'][0]
         self.assertTrue('delete_confirmation' in delete_action[1],
                          "object_delete does not use the confirmation form")
@@ -550,9 +551,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.folder.cb_dataValid = True
         acts = self.actions.listFilteredActionsFor(self.folder)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons),5)
+        self.assertEqual(len(buttons), 5)
         ids = [(a['id']) for a in buttons]
-        self.assertEqual(ids, ['cut','copy','paste','delete', 'rename',])
+        self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename'])
 
     def testPlone3rdPartyLayerInDefault(self):
         # plone_3rdParty layer should exist
@@ -591,7 +592,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testDiscussionItemWorkflow(self):
         # By default the discussion item has the one_state_workflow
-        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'), 
+        self.assertEqual(self.workflow.getChainForPortalType('Discussion Item'),
                          ('one_state_workflow',))
 
     def testFolderHasFolderListingView(self):
@@ -624,7 +625,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                     'rolesSeeContentView', 'rolesSeeUnpublishedContent', 'rolesSeeContentsView ',
                     'batchSize', 'sortCriteria', 'croppingLength', 'forceParentsInBatch',
                     'rolesSeeHiddenContent', 'typesLinkToFolderContents']
-        toAdd = {'name' : '', 'root' : '/', 'currentFolderOnlyInNavtree' : False}
+        toAdd = {'name': '', 'root': '/', 'currentFolderOnlyInNavtree': False}
         for property in toRemove:
             self.assertEqual(ntp.getProperty(property, None), None)
         for property, value in toAdd.items():
@@ -851,19 +852,19 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(self.folder.brazilian.news.Title(), 'Bar')
 
     def testNoDoubleGenericSetupImportSteps(self):
-        view=ImportStepsView(self.setup, None)
+        view = ImportStepsView(self.setup, None)
         self.assertEqual([i['id'] for i in view.doubleSteps()], [])
 
     def testNoInvalidGenericSetupImportSteps(self):
-        view=ImportStepsView(self.setup, None)
+        view = ImportStepsView(self.setup, None)
         self.assertEqual([i['id'] for i in view.invalidSteps()], [])
 
     def testNoDoubleGenericSetupExportSteps(self):
-        view=ExportStepsView(self.setup, None)
+        view = ExportStepsView(self.setup, None)
         self.assertEqual([i['id'] for i in view.doubleSteps()], [])
 
     def testNoInvalidGenericSetupExportSteps(self):
-        view=ExportStepsView(self.setup, None)
+        view = ExportStepsView(self.setup, None)
         self.assertEqual([i['id'] for i in view.invalidSteps()], [])
 
 
@@ -915,13 +916,15 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.loginAsPortalOwner()
         portal = self.portal
         portal.manage_delObjects(['Members'])
+
         class FakeContext:
             def getSite(self):
                 return portal
-            def readDataFile(self, filename):
-                return True # Anything other than None runs the step
 
-        setuphandlers.importFinalSteps(FakeContext()) # raises error if fail
+            def readDataFile(self, filename):
+                return True  # Anything other than None runs the step
+
+        setuphandlers.importFinalSteps(FakeContext())  # raises error if fail
         self.assertTrue(1 == 1)
 
 

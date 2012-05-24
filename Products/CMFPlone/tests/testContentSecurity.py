@@ -16,7 +16,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         #_ender_'s member who's not a Member usecase
         self.portal.acl_users._doAddUser('user3', 'secret', [], [])
         self.membership = self.portal.portal_membership
-        self.workflow= self.portal.portal_workflow
+        self.workflow = self.portal.portal_workflow
         self.createMemberarea('user1')
         self.createMemberarea('user2')
 
@@ -69,7 +69,6 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         sharingView.update_role_settings([{'id':'user2',
                                            'type':'user',
                                            'roles':['Owner']}])
-
 
         folder.invokeFactory('Folder', id='subfolder')
         #Turn off local role acquisition
@@ -139,14 +138,14 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # Create more private workflow starting with folder_workflow
         wf = self.portal.portal_workflow.folder_workflow
         visible = wf.states.visible
-        visible.setPermission('View',0,('Manager','Owner'))
-        visible.setPermission('Modify portal content',0,('Manager','Owner'))
+        visible.setPermission('View', 0, ('Manager', 'Owner'))
+        visible.setPermission('Modify portal content', 0, ('Manager', 'Owner'))
         # Then plone workflow
         p_wf = self.portal.portal_workflow.plone_workflow
         published = p_wf.states.published
-        published.setPermission('View',0,('Manager','Member','Owner'))
-        published.setPermission('Access contents information',0,('Manager','Member','Owner'))
-        published.setPermission('Modify portal content',0,('Manager','Member','Owner'))
+        published.setPermission('View', 0, ('Manager', 'Member', 'Owner'))
+        published.setPermission('Access contents information', 0, ('Manager', 'Member', 'Owner'))
+        published.setPermission('Modify portal content', 0, ('Manager', 'Member', 'Owner'))
         self.portal.portal_workflow.updateRoleMappings()
 
         self.login('user1')

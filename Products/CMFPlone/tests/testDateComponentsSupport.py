@@ -6,6 +6,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from DateTime import DateTime
 
+
 def sortTuple(t):
     l = list(t)
     l.sort()
@@ -32,7 +33,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
             {'selected': None, 'id': '--', 'value': '0000'}
         ]
 
-        for y in range(min_year, max_year+1):
+        for y in range(min_year, max_year + 1):
             d = {'selected': None, 'id': y, 'value': y}
             if y == 2002:
                 d['selected'] = 1
@@ -44,19 +45,19 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def testMonths(self):
         data = [
-            {'selected': None, 'id': '--',      'value': '00'},
-            {'selected': None, 'id': 'January',   'value': '01'},
-            {'selected': None, 'id': 'February',  'value': '02'},
-            {'selected': None, 'id': 'March',     'value': '03'},
-            {'selected': None, 'id': 'April',     'value': '04'},
-            {'selected': None, 'id': 'May',       'value': '05'},
-            {'selected': None, 'id': 'June',      'value': '06'},
-            {'selected': None, 'id': 'July',      'value': '07'},
-            {'selected': 1,    'id': 'August',    'value': '08'},
+            {'selected': None, 'id': '--', 'value': '00'},
+            {'selected': None, 'id': 'January', 'value': '01'},
+            {'selected': None, 'id': 'February', 'value': '02'},
+            {'selected': None, 'id': 'March', 'value': '03'},
+            {'selected': None, 'id': 'April', 'value': '04'},
+            {'selected': None, 'id': 'May', 'value': '05'},
+            {'selected': None, 'id': 'June', 'value': '06'},
+            {'selected': None, 'id': 'July', 'value': '07'},
+            {'selected': 1, 'id': 'August', 'value': '08'},
             {'selected': None, 'id': 'September', 'value': '09'},
-            {'selected': None, 'id': 'October',   'value': '10'},
-            {'selected': None, 'id': 'November',  'value': '11'},
-            {'selected': None, 'id': 'December',  'value': '12'},
+            {'selected': None, 'id': 'October', 'value': '10'},
+            {'selected': None, 'id': 'November', 'value': '11'},
+            {'selected': None, 'id': 'December', 'value': '12'},
         ]
 
         months = self.d.get('months')
@@ -66,37 +67,37 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
     def testDays(self):
         data = [
             {'selected': None, 'id': '--', 'value': '00'},
-            {'selected': 1,    'id': 1,      'value': '01'},
-            {'selected': None, 'id': 2,      'value': '02'},
-            {'selected': None, 'id': 3,      'value': '03'},
-            {'selected': None, 'id': 4,      'value': '04'},
-            {'selected': None, 'id': 5,      'value': '05'},
-            {'selected': None, 'id': 6,      'value': '06'},
-            {'selected': None, 'id': 7,      'value': '07'},
-            {'selected': None, 'id': 8,      'value': '08'},
-            {'selected': None, 'id': 9,      'value': '09'},
-            {'selected': None, 'id': 10,     'value': '10'},
-            {'selected': None, 'id': 11,     'value': '11'},
-            {'selected': None, 'id': 12,     'value': '12'},
-            {'selected': None, 'id': 13,     'value': '13'},
-            {'selected': None, 'id': 14,     'value': '14'},
-            {'selected': None, 'id': 15,     'value': '15'},
-            {'selected': None, 'id': 16,     'value': '16'},
-            {'selected': None, 'id': 17,     'value': '17'},
-            {'selected': None, 'id': 18,     'value': '18'},
-            {'selected': None, 'id': 19,     'value': '19'},
-            {'selected': None, 'id': 20,     'value': '20'},
-            {'selected': None, 'id': 21,     'value': '21'},
-            {'selected': None, 'id': 22,     'value': '22'},
-            {'selected': None, 'id': 23,     'value': '23'},
-            {'selected': None, 'id': 24,     'value': '24'},
-            {'selected': None, 'id': 25,     'value': '25'},
-            {'selected': None, 'id': 26,     'value': '26'},
-            {'selected': None, 'id': 27,     'value': '27'},
-            {'selected': None, 'id': 28,     'value': '28'},
-            {'selected': None, 'id': 29,     'value': '29'},
-            {'selected': None, 'id': 30,     'value': '30'},
-            {'selected': None, 'id': 31,     'value': '31'},
+            {'selected': 1, 'id': 1, 'value': '01'},
+            {'selected': None, 'id': 2, 'value': '02'},
+            {'selected': None, 'id': 3, 'value': '03'},
+            {'selected': None, 'id': 4, 'value': '04'},
+            {'selected': None, 'id': 5, 'value': '05'},
+            {'selected': None, 'id': 6, 'value': '06'},
+            {'selected': None, 'id': 7, 'value': '07'},
+            {'selected': None, 'id': 8, 'value': '08'},
+            {'selected': None, 'id': 9, 'value': '09'},
+            {'selected': None, 'id': 10, 'value': '10'},
+            {'selected': None, 'id': 11, 'value': '11'},
+            {'selected': None, 'id': 12, 'value': '12'},
+            {'selected': None, 'id': 13, 'value': '13'},
+            {'selected': None, 'id': 14, 'value': '14'},
+            {'selected': None, 'id': 15, 'value': '15'},
+            {'selected': None, 'id': 16, 'value': '16'},
+            {'selected': None, 'id': 17, 'value': '17'},
+            {'selected': None, 'id': 18, 'value': '18'},
+            {'selected': None, 'id': 19, 'value': '19'},
+            {'selected': None, 'id': 20, 'value': '20'},
+            {'selected': None, 'id': 21, 'value': '21'},
+            {'selected': None, 'id': 22, 'value': '22'},
+            {'selected': None, 'id': 23, 'value': '23'},
+            {'selected': None, 'id': 24, 'value': '24'},
+            {'selected': None, 'id': 25, 'value': '25'},
+            {'selected': None, 'id': 26, 'value': '26'},
+            {'selected': None, 'id': 27, 'value': '27'},
+            {'selected': None, 'id': 28, 'value': '28'},
+            {'selected': None, 'id': 29, 'value': '29'},
+            {'selected': None, 'id': 30, 'value': '30'},
+            {'selected': None, 'id': 31, 'value': '31'},
         ]
 
         days = self.d.get('days')
@@ -106,30 +107,30 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
     def testHours(self):
         data = [
             {'selected': None, 'id': '--', 'value': '00'},
-            {'selected': None, 'id': '00',   'value': '00'},
-            {'selected': None, 'id': '01',   'value': '01'},
-            {'selected': None, 'id': '02',   'value': '02'},
-            {'selected': None, 'id': '03',   'value': '03'},
-            {'selected': None, 'id': '04',   'value': '04'},
-            {'selected': None, 'id': '05',   'value': '05'},
-            {'selected': None, 'id': '06',   'value': '06'},
-            {'selected': None, 'id': '07',   'value': '07'},
-            {'selected': None, 'id': '08',   'value': '08'},
-            {'selected': None, 'id': '09',   'value': '09'},
-            {'selected': None, 'id': '10',   'value': '10'},
-            {'selected': None, 'id': '11',   'value': '11'},
-            {'selected': None, 'id': '12',   'value': '12'},
-            {'selected': None, 'id': '13',   'value': '13'},
-            {'selected': None, 'id': '14',   'value': '14'},
-            {'selected': None, 'id': '15',   'value': '15'},
-            {'selected': None, 'id': '16',   'value': '16'},
-            {'selected': 1,    'id': '17',   'value': '17'},
-            {'selected': None, 'id': '18',   'value': '18'},
-            {'selected': None, 'id': '19',   'value': '19'},
-            {'selected': None, 'id': '20',   'value': '20'},
-            {'selected': None, 'id': '21',   'value': '21'},
-            {'selected': None, 'id': '22',   'value': '22'},
-            {'selected': None, 'id': '23',   'value': '23'},
+            {'selected': None, 'id': '00', 'value': '00'},
+            {'selected': None, 'id': '01', 'value': '01'},
+            {'selected': None, 'id': '02', 'value': '02'},
+            {'selected': None, 'id': '03', 'value': '03'},
+            {'selected': None, 'id': '04', 'value': '04'},
+            {'selected': None, 'id': '05', 'value': '05'},
+            {'selected': None, 'id': '06', 'value': '06'},
+            {'selected': None, 'id': '07', 'value': '07'},
+            {'selected': None, 'id': '08', 'value': '08'},
+            {'selected': None, 'id': '09', 'value': '09'},
+            {'selected': None, 'id': '10', 'value': '10'},
+            {'selected': None, 'id': '11', 'value': '11'},
+            {'selected': None, 'id': '12', 'value': '12'},
+            {'selected': None, 'id': '13', 'value': '13'},
+            {'selected': None, 'id': '14', 'value': '14'},
+            {'selected': None, 'id': '15', 'value': '15'},
+            {'selected': None, 'id': '16', 'value': '16'},
+            {'selected': 1, 'id': '17', 'value': '17'},
+            {'selected': None, 'id': '18', 'value': '18'},
+            {'selected': None, 'id': '19', 'value': '19'},
+            {'selected': None, 'id': '20', 'value': '20'},
+            {'selected': None, 'id': '21', 'value': '21'},
+            {'selected': None, 'id': '22', 'value': '22'},
+            {'selected': None, 'id': '23', 'value': '23'},
         ]
 
         hours = self.d.get('hours')
@@ -139,18 +140,18 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
     def testMinutes(self):
         data = [
             {'selected': None, 'id': '--', 'value': '00'},
-            {'selected': None, 'id': '00',   'value': '00'},
-            {'selected': None, 'id': '05',   'value': '05'},
-            {'selected': None, 'id': '10',   'value': '10'},
-            {'selected': None, 'id': '15',   'value': '15'},
-            {'selected': None, 'id': '20',   'value': '20'},
-            {'selected': None, 'id': '25',   'value': '25'},
-            {'selected': None, 'id': '30',   'value': '30'},
-            {'selected': None, 'id': '35',   'value': '35'},
-            {'selected': None, 'id': '40',   'value': '40'},
-            {'selected': 1,    'id': '45',   'value': '45'},
-            {'selected': None, 'id': '50',   'value': '50'},
-            {'selected': None, 'id': '55',   'value': '55'},
+            {'selected': None, 'id': '00', 'value': '00'},
+            {'selected': None, 'id': '05', 'value': '05'},
+            {'selected': None, 'id': '10', 'value': '10'},
+            {'selected': None, 'id': '15', 'value': '15'},
+            {'selected': None, 'id': '20', 'value': '20'},
+            {'selected': None, 'id': '25', 'value': '25'},
+            {'selected': None, 'id': '30', 'value': '30'},
+            {'selected': None, 'id': '35', 'value': '35'},
+            {'selected': None, 'id': '40', 'value': '40'},
+            {'selected': 1, 'id': '45', 'value': '45'},
+            {'selected': None, 'id': '50', 'value': '50'},
+            {'selected': None, 'id': '55', 'value': '55'},
         ]
 
         minutes = self.d.get('minutes')
@@ -186,7 +187,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
             {'selected': None, 'id': '--', 'value': '0000'}
         ]
 
-        for y in range(min_year, max_year+1):
+        for y in range(min_year, max_year + 1):
             d = {'selected': None, 'id': y, 'value': y}
             if y == this_year:
                 d['selected'] = 1
@@ -198,19 +199,19 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testMonths(self):
         data = [
-            {'selected': 1,    'id': '--',      'value': '00'},
-            {'selected': None, 'id': 'January',   'value': '01'},
-            {'selected': None, 'id': 'February',  'value': '02'},
-            {'selected': None, 'id': 'March',     'value': '03'},
-            {'selected': None, 'id': 'April',     'value': '04'},
-            {'selected': None, 'id': 'May',       'value': '05'},
-            {'selected': None, 'id': 'June',      'value': '06'},
-            {'selected': None, 'id': 'July',      'value': '07'},
-            {'selected': None, 'id': 'August',    'value': '08'},
+            {'selected': 1, 'id': '--', 'value': '00'},
+            {'selected': None, 'id': 'January', 'value': '01'},
+            {'selected': None, 'id': 'February', 'value': '02'},
+            {'selected': None, 'id': 'March', 'value': '03'},
+            {'selected': None, 'id': 'April', 'value': '04'},
+            {'selected': None, 'id': 'May', 'value': '05'},
+            {'selected': None, 'id': 'June', 'value': '06'},
+            {'selected': None, 'id': 'July', 'value': '07'},
+            {'selected': None, 'id': 'August', 'value': '08'},
             {'selected': None, 'id': 'September', 'value': '09'},
-            {'selected': None, 'id': 'October',   'value': '10'},
-            {'selected': None, 'id': 'November',  'value': '11'},
-            {'selected': None, 'id': 'December',  'value': '12'},
+            {'selected': None, 'id': 'October', 'value': '10'},
+            {'selected': None, 'id': 'November', 'value': '11'},
+            {'selected': None, 'id': 'December', 'value': '12'},
         ]
 
         months = self.d.get('months')
@@ -219,38 +220,38 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testDays(self):
         data = [
-            {'selected': 1,    'id': '--', 'value': '00'},
-            {'selected': None, 'id': 1,      'value': '01'},
-            {'selected': None, 'id': 2,      'value': '02'},
-            {'selected': None, 'id': 3,      'value': '03'},
-            {'selected': None, 'id': 4,      'value': '04'},
-            {'selected': None, 'id': 5,      'value': '05'},
-            {'selected': None, 'id': 6,      'value': '06'},
-            {'selected': None, 'id': 7,      'value': '07'},
-            {'selected': None, 'id': 8,      'value': '08'},
-            {'selected': None, 'id': 9,      'value': '09'},
-            {'selected': None, 'id': 10,     'value': '10'},
-            {'selected': None, 'id': 11,     'value': '11'},
-            {'selected': None, 'id': 12,     'value': '12'},
-            {'selected': None, 'id': 13,     'value': '13'},
-            {'selected': None, 'id': 14,     'value': '14'},
-            {'selected': None, 'id': 15,     'value': '15'},
-            {'selected': None, 'id': 16,     'value': '16'},
-            {'selected': None, 'id': 17,     'value': '17'},
-            {'selected': None, 'id': 18,     'value': '18'},
-            {'selected': None, 'id': 19,     'value': '19'},
-            {'selected': None, 'id': 20,     'value': '20'},
-            {'selected': None, 'id': 21,     'value': '21'},
-            {'selected': None, 'id': 22,     'value': '22'},
-            {'selected': None, 'id': 23,     'value': '23'},
-            {'selected': None, 'id': 24,     'value': '24'},
-            {'selected': None, 'id': 25,     'value': '25'},
-            {'selected': None, 'id': 26,     'value': '26'},
-            {'selected': None, 'id': 27,     'value': '27'},
-            {'selected': None, 'id': 28,     'value': '28'},
-            {'selected': None, 'id': 29,     'value': '29'},
-            {'selected': None, 'id': 30,     'value': '30'},
-            {'selected': None, 'id': 31,     'value': '31'},
+            {'selected': 1, 'id': '--', 'value': '00'},
+            {'selected': None, 'id': 1, 'value': '01'},
+            {'selected': None, 'id': 2, 'value': '02'},
+            {'selected': None, 'id': 3, 'value': '03'},
+            {'selected': None, 'id': 4, 'value': '04'},
+            {'selected': None, 'id': 5, 'value': '05'},
+            {'selected': None, 'id': 6, 'value': '06'},
+            {'selected': None, 'id': 7, 'value': '07'},
+            {'selected': None, 'id': 8, 'value': '08'},
+            {'selected': None, 'id': 9, 'value': '09'},
+            {'selected': None, 'id': 10, 'value': '10'},
+            {'selected': None, 'id': 11, 'value': '11'},
+            {'selected': None, 'id': 12, 'value': '12'},
+            {'selected': None, 'id': 13, 'value': '13'},
+            {'selected': None, 'id': 14, 'value': '14'},
+            {'selected': None, 'id': 15, 'value': '15'},
+            {'selected': None, 'id': 16, 'value': '16'},
+            {'selected': None, 'id': 17, 'value': '17'},
+            {'selected': None, 'id': 18, 'value': '18'},
+            {'selected': None, 'id': 19, 'value': '19'},
+            {'selected': None, 'id': 20, 'value': '20'},
+            {'selected': None, 'id': 21, 'value': '21'},
+            {'selected': None, 'id': 22, 'value': '22'},
+            {'selected': None, 'id': 23, 'value': '23'},
+            {'selected': None, 'id': 24, 'value': '24'},
+            {'selected': None, 'id': 25, 'value': '25'},
+            {'selected': None, 'id': 26, 'value': '26'},
+            {'selected': None, 'id': 27, 'value': '27'},
+            {'selected': None, 'id': 28, 'value': '28'},
+            {'selected': None, 'id': 29, 'value': '29'},
+            {'selected': None, 'id': 30, 'value': '30'},
+            {'selected': None, 'id': 31, 'value': '31'},
         ]
 
         days = self.d.get('days')
@@ -259,31 +260,31 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testHours(self):
         data = [
-            {'selected': 1,    'id': '--', 'value': '00'},
-            {'selected': None, 'id': '00',   'value': '00'},
-            {'selected': None, 'id': '01',   'value': '01'},
-            {'selected': None, 'id': '02',   'value': '02'},
-            {'selected': None, 'id': '03',   'value': '03'},
-            {'selected': None, 'id': '04',   'value': '04'},
-            {'selected': None, 'id': '05',   'value': '05'},
-            {'selected': None, 'id': '06',   'value': '06'},
-            {'selected': None, 'id': '07',   'value': '07'},
-            {'selected': None, 'id': '08',   'value': '08'},
-            {'selected': None, 'id': '09',   'value': '09'},
-            {'selected': None, 'id': '10',   'value': '10'},
-            {'selected': None, 'id': '11',   'value': '11'},
-            {'selected': None, 'id': '12',   'value': '12'},
-            {'selected': None, 'id': '13',   'value': '13'},
-            {'selected': None, 'id': '14',   'value': '14'},
-            {'selected': None, 'id': '15',   'value': '15'},
-            {'selected': None, 'id': '16',   'value': '16'},
-            {'selected': None, 'id': '17',   'value': '17'},
-            {'selected': None, 'id': '18',   'value': '18'},
-            {'selected': None, 'id': '19',   'value': '19'},
-            {'selected': None, 'id': '20',   'value': '20'},
-            {'selected': None, 'id': '21',   'value': '21'},
-            {'selected': None, 'id': '22',   'value': '22'},
-            {'selected': None, 'id': '23',   'value': '23'},
+            {'selected': 1, 'id': '--', 'value': '00'},
+            {'selected': None, 'id': '00', 'value': '00'},
+            {'selected': None, 'id': '01', 'value': '01'},
+            {'selected': None, 'id': '02', 'value': '02'},
+            {'selected': None, 'id': '03', 'value': '03'},
+            {'selected': None, 'id': '04', 'value': '04'},
+            {'selected': None, 'id': '05', 'value': '05'},
+            {'selected': None, 'id': '06', 'value': '06'},
+            {'selected': None, 'id': '07', 'value': '07'},
+            {'selected': None, 'id': '08', 'value': '08'},
+            {'selected': None, 'id': '09', 'value': '09'},
+            {'selected': None, 'id': '10', 'value': '10'},
+            {'selected': None, 'id': '11', 'value': '11'},
+            {'selected': None, 'id': '12', 'value': '12'},
+            {'selected': None, 'id': '13', 'value': '13'},
+            {'selected': None, 'id': '14', 'value': '14'},
+            {'selected': None, 'id': '15', 'value': '15'},
+            {'selected': None, 'id': '16', 'value': '16'},
+            {'selected': None, 'id': '17', 'value': '17'},
+            {'selected': None, 'id': '18', 'value': '18'},
+            {'selected': None, 'id': '19', 'value': '19'},
+            {'selected': None, 'id': '20', 'value': '20'},
+            {'selected': None, 'id': '21', 'value': '21'},
+            {'selected': None, 'id': '22', 'value': '22'},
+            {'selected': None, 'id': '23', 'value': '23'},
         ]
 
         hours = self.d.get('hours')
@@ -292,19 +293,19 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def testMinutes(self):
         data = [
-            {'selected': 1,    'id': '--', 'value': '00'},
-            {'selected': None, 'id': '00',   'value': '00'},
-            {'selected': None, 'id': '05',   'value': '05'},
-            {'selected': None, 'id': '10',   'value': '10'},
-            {'selected': None, 'id': '15',   'value': '15'},
-            {'selected': None, 'id': '20',   'value': '20'},
-            {'selected': None, 'id': '25',   'value': '25'},
-            {'selected': None, 'id': '30',   'value': '30'},
-            {'selected': None, 'id': '35',   'value': '35'},
-            {'selected': None, 'id': '40',   'value': '40'},
-            {'selected': None, 'id': '45',   'value': '45'},
-            {'selected': None, 'id': '50',   'value': '50'},
-            {'selected': None, 'id': '55',   'value': '55'},
+            {'selected': 1, 'id': '--', 'value': '00'},
+            {'selected': None, 'id': '00', 'value': '00'},
+            {'selected': None, 'id': '05', 'value': '05'},
+            {'selected': None, 'id': '10', 'value': '10'},
+            {'selected': None, 'id': '15', 'value': '15'},
+            {'selected': None, 'id': '20', 'value': '20'},
+            {'selected': None, 'id': '25', 'value': '25'},
+            {'selected': None, 'id': '30', 'value': '30'},
+            {'selected': None, 'id': '35', 'value': '35'},
+            {'selected': None, 'id': '40', 'value': '40'},
+            {'selected': None, 'id': '45', 'value': '45'},
+            {'selected': None, 'id': '50', 'value': '50'},
+            {'selected': None, 'id': '55', 'value': '55'},
         ]
 
         minutes = self.d.get('minutes')
@@ -329,18 +330,18 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
     def testHours(self):
         data = [
             {'selected': None, 'id': '--', 'value': '12'},
-            {'selected': None, 'id': '12',   'value': '12'},
-            {'selected': None, 'id': '01',   'value': '01'},
-            {'selected': None, 'id': '02',   'value': '02'},
-            {'selected': None, 'id': '03',   'value': '03'},
-            {'selected': None, 'id': '04',   'value': '04'},
-            {'selected': 1,    'id': '05',   'value': '05'},
-            {'selected': None, 'id': '06',   'value': '06'},
-            {'selected': None, 'id': '07',   'value': '07'},
-            {'selected': None, 'id': '08',   'value': '08'},
-            {'selected': None, 'id': '09',   'value': '09'},
-            {'selected': None, 'id': '10',   'value': '10'},
-            {'selected': None, 'id': '11',   'value': '11'},
+            {'selected': None, 'id': '12', 'value': '12'},
+            {'selected': None, 'id': '01', 'value': '01'},
+            {'selected': None, 'id': '02', 'value': '02'},
+            {'selected': None, 'id': '03', 'value': '03'},
+            {'selected': None, 'id': '04', 'value': '04'},
+            {'selected': 1, 'id': '05', 'value': '05'},
+            {'selected': None, 'id': '06', 'value': '06'},
+            {'selected': None, 'id': '07', 'value': '07'},
+            {'selected': None, 'id': '08', 'value': '08'},
+            {'selected': None, 'id': '09', 'value': '09'},
+            {'selected': None, 'id': '10', 'value': '10'},
+            {'selected': None, 'id': '11', 'value': '11'},
         ]
 
         hours = self.d.get('hours')
@@ -353,8 +354,8 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
 
         data = [
             {'selected': None, 'id': '--', 'value': 'AM'},
-            {'selected': 1,    'id': 'AM',   'value': 'AM'},
-            {'selected': None, 'id': 'PM',   'value': 'PM'},
+            {'selected': 1, 'id': 'AM', 'value': 'AM'},
+            {'selected': None, 'id': 'PM', 'value': 'PM'},
         ]
 
         ampm = d.get('ampm')
@@ -364,8 +365,8 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
     def testPM(self):
         data = [
             {'selected': None, 'id': '--', 'value': 'AM'},
-            {'selected': None, 'id': 'AM',   'value': 'AM'},
-            {'selected': 1,    'id': 'PM',   'value': 'PM'},
+            {'selected': None, 'id': 'AM', 'value': 'AM'},
+            {'selected': 1, 'id': 'PM', 'value': 'PM'},
         ]
 
         ampm = self.d.get('ampm')
@@ -384,19 +385,19 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
 
     def testHours(self):
         data = [
-            {'selected': 1,    'id': '--', 'value': '12'},
-            {'selected': None, 'id': '12',   'value': '12'},
-            {'selected': None, 'id': '01',   'value': '01'},
-            {'selected': None, 'id': '02',   'value': '02'},
-            {'selected': None, 'id': '03',   'value': '03'},
-            {'selected': None, 'id': '04',   'value': '04'},
-            {'selected': None, 'id': '05',   'value': '05'},
-            {'selected': None, 'id': '06',   'value': '06'},
-            {'selected': None, 'id': '07',   'value': '07'},
-            {'selected': None, 'id': '08',   'value': '08'},
-            {'selected': None, 'id': '09',   'value': '09'},
-            {'selected': None, 'id': '10',   'value': '10'},
-            {'selected': None, 'id': '11',   'value': '11'},
+            {'selected': 1, 'id': '--', 'value': '12'},
+            {'selected': None, 'id': '12', 'value': '12'},
+            {'selected': None, 'id': '01', 'value': '01'},
+            {'selected': None, 'id': '02', 'value': '02'},
+            {'selected': None, 'id': '03', 'value': '03'},
+            {'selected': None, 'id': '04', 'value': '04'},
+            {'selected': None, 'id': '05', 'value': '05'},
+            {'selected': None, 'id': '06', 'value': '06'},
+            {'selected': None, 'id': '07', 'value': '07'},
+            {'selected': None, 'id': '08', 'value': '08'},
+            {'selected': None, 'id': '09', 'value': '09'},
+            {'selected': None, 'id': '10', 'value': '10'},
+            {'selected': None, 'id': '11', 'value': '11'},
         ]
 
         hours = self.d.get('hours')
@@ -405,9 +406,9 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
 
     def testAMPM(self):
         data = [
-            {'selected': 1,    'id': '--', 'value': 'AM'},
-            {'selected': None, 'id': 'AM',   'value': 'AM'},
-            {'selected': None, 'id': 'PM',   'value': 'PM'},
+            {'selected': 1, 'id': '--', 'value': 'AM'},
+            {'selected': None, 'id': 'AM', 'value': 'AM'},
+            {'selected': None, 'id': 'PM', 'value': 'PM'},
         ]
 
         ampm = self.d.get('ampm')
@@ -419,10 +420,10 @@ class TestDateComponentsSupportMinuteStepDefault(PloneTestCase.PloneTestCase):
 
     def testMinutesStep1(self):
         data = [
-            {'selected': 1,    'id': '--', 'value': '00'},
+            {'selected': 1, 'id': '--', 'value': '00'},
         ]
         for x in range(0, 60, 1):
-            d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
+            d = {'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
             data.append(d)
 
         d = self.portal.date_components_support(None, minute_step=1)
@@ -432,10 +433,10 @@ class TestDateComponentsSupportMinuteStepDefault(PloneTestCase.PloneTestCase):
 
     def testMinutesStep10(self):
         data = [
-            {'selected': 1,    'id': '--', 'value': '00'},
+            {'selected': 1, 'id': '--', 'value': '00'},
         ]
         for x in range(0, 60, 10):
-            d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
+            d = {'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
             data.append(d)
 
         d = self.portal.date_components_support(None, minute_step=10)

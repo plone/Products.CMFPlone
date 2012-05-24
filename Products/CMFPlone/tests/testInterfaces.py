@@ -2,6 +2,8 @@
 # interface testing suite
 #
 
+import unittest
+
 from Testing import ZopeTestCase
 
 from types import TupleType, TypeType, ClassType
@@ -37,6 +39,7 @@ from Products.CMFPlone.UndoTool import UndoTool
 from Products.CMFPlone.URLTool import URLTool
 from Products.CMFPlone.WorkflowTool import WorkflowTool
 
+
 def className(klass):
     """ get the short class name """
     if not isinstance(klass, (TypeType, ClassType,
@@ -46,11 +49,13 @@ def className(klass):
             klass = klass.__class__
     return klass.__name__
 
+
 def dottedName(klass):
     return "%s.%s" % (klass.__module__, klass.__name__)
 
 # list of tests
 tests = []
+
 
 class InterfaceTest(ZopeTestCase.ZopeTestCase):
     """general interface testing class
@@ -69,9 +74,9 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
 
     _setup_fixture = 0  # No default fixture
 
-    klass = None    # test this class
-    instance = None # test this instance
-    forcedImpl = () # class must implement this tuple of interfaces
+    klass = None  # test this class
+    instance = None  # test this instance
+    forcedImpl = ()  # class must implement this tuple of interfaces
 
     def interfaceImplementedByInstanceOf(self, klass, interface):
         """ tests if the klass implements the interface in the right way """
@@ -170,9 +175,9 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
 
     _setup_fixture = 0  # No default fixture
 
-    klass = None    # test this class
-    instance = None # test this instance
-    forcedImpl = () # class must implement this tuple of interfaces
+    klass = None  # test this class
+    instance = None  # test this instance
+    forcedImpl = ()  # class must implement this tuple of interfaces
 
     def interfaceImplementedBy(self, klass, interface):
         """ tests if the klass implements the interface in the right way """
@@ -290,7 +295,7 @@ for testClass in testClasses:
 
     class KlassInterfaceTest(InterfaceTest):
         """ implementation for %s """ % name
-        klass      = klass
+        klass = klass
         forcedImpl = forcedImpl
 
     # add the testing method to the class to get a nice name
@@ -299,14 +304,13 @@ for testClass in testClasses:
 
     class KlassInterfaceTest(zope_interface_test):
         """ implementation for %s """ % name
-        klass      = klass
+        klass = klass
         forcedImpl = forcedImpl
 
     # add the testing method to the class to get a nice name
     setattr(KlassInterfaceTest, funcName, lambda self: self._testStuff())
     tests.append(KlassInterfaceTest)
 
-import unittest
 
 def test_suite():
     suite = unittest.TestSuite()

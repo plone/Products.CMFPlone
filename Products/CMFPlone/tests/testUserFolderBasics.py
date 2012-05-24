@@ -10,10 +10,10 @@ from Products.CMFCore.tests.base.testcase import WarningInterceptor
 import base64
 from AccessControl import Unauthorized
 
-default_user     = PloneTestCase.default_user
+default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
-user_perms       = ZopeTestCase.standard_permissions
-user_role        = 'Member'
+user_perms = ZopeTestCase.standard_permissions
+user_role = 'Member'
 
 
 class TestUserFolder(PloneTestCase.PloneTestCase, WarningInterceptor):

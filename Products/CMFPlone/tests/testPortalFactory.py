@@ -14,6 +14,7 @@ from AccessControl import getSecurityManager
 default_user = PloneTestCase.default_user
 default_password = PloneTestCase.default_password
 
+
 def sortTuple(t):
     l = list(t)
     l.sort()
@@ -197,7 +198,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         self.basic_auth = '%s:%s' % (default_user, default_password)
         # We want 401 responses, not redirects to a login page
         plugins = self.portal.acl_users.plugins
-        plugins.deactivatePlugin( IChallengePlugin, 'credentials_cookie_auth')
+        plugins.deactivatePlugin(IChallengePlugin, 'credentials_cookie_auth')
 
         # Enable portal_factory for Document type
         self.factory = self.portal.portal_factory
@@ -209,18 +210,18 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 '/createObject?type_name=Document',
                                 self.basic_auth)
 
-        self.assertEqual(response.getStatus(), 302) # Redirect to document_edit_form
+        self.assertEqual(response.getStatus(), 302)  # Redirect to document_edit_form
 
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
-        self.assertTrue(location.startswith(self.folder_url+'/portal_factory/Document/'))
+        self.assertTrue(location.startswith(self.folder_url + '/portal_factory/Document/'))
         # CMFFormController redirects should not do alias translation
         self.assertTrue(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
         response = self.publish(edit_form_path, self.basic_auth)
-        self.assertEqual(response.getStatus(), 200) # OK
+        self.assertEqual(response.getStatus(), 200)  # OK
 
     def testCreateNonGloballyAllowedObject(self):
         # TempFolder allows to create all portal types
@@ -229,23 +230,23 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 '/createObject?type_name=Document',
                                 self.basic_auth)
 
-        self.assertEqual(response.getStatus(), 302) # Redirect to document_edit_form
+        self.assertEqual(response.getStatus(), 302)  # Redirect to document_edit_form
 
         # The redirect URL should contain the factory parts
         location = response.getHeader('Location')
-        self.assertTrue(location.startswith(self.folder_url+'/portal_factory/Document/'))
+        self.assertTrue(location.startswith(self.folder_url + '/portal_factory/Document/'))
         self.assertTrue(location.endswith('/edit'))
 
         # Perform the redirect
         edit_form_path = location[len(self.app.REQUEST.SERVER_URL):]
         response = self.publish(edit_form_path, self.basic_auth)
-        self.assertEqual(response.getStatus(), 200) # OK
+        self.assertEqual(response.getStatus(), 200)  # OK
 
     def testUnauthorizedToViewEditForm(self):
         # Anonymous should not be able to see document_edit_form
         response = self.publish(self.folder_path +
                                 '/createObject?type_name=Document',
-                                ) # No basic out info
+                                )  # No basic out info
         # We got redirected to the factory
         self.assertEqual(response.getStatus(), 302)
         newpath = response.getHeader('location')
@@ -253,15 +254,15 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # Let's follow it
         response = self.publish(path)
         # And we are forbidden
-        self.assertEqual(response.getStatus(), 401) # Unauthorized
+        self.assertEqual(response.getStatus(), 401)  # Unauthorized
 
     def testUnauthorizedToViewEditFormOfNonFactoryObject(self):
         # Anonymous should not be able to see newsitem_edit_form
         response = self.publish(self.folder_path +
                                 '/createObject?type_name=News%20Item',
-                                ) # No basic out info
+                                )  # No basic out info
 
-        self.assertEqual(response.getStatus(), 401) # Unauthorized
+        self.assertEqual(response.getStatus(), 401)  # Unauthorized
 
     def testCreateObjectByDocumentEdit(self):
         # document_edit should create the real object
@@ -269,7 +270,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
             '/portal_factory/Document/tmp_id/document_edit?id=foo&title=Foo&text_format=plain&text=',
             self.basic_auth)
 
-        self.assertEqual(response.getStatus(), 302) # Redirect to document_view
+        self.assertEqual(response.getStatus(), 302)  # Redirect to document_view
         viewAction = self.portal.portal_types['Document'].getActionInfo('object/view', self.folder.foo)['url']
         self.assertTrue(response.getHeader('Location').startswith(viewAction))
 
@@ -281,9 +282,9 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # Anonymous should not be able to create the real object
         response = self.publish(self.folder_path +
             '/portal_factory/Document/tmp_id/document_edit?id=foo&title=Foo&text_format=plain&text=',
-            ) # No basic auth info
+            )  # No basic auth info
 
-        self.assertEqual(response.getStatus(), 500) # ValueError
+        self.assertEqual(response.getStatus(), 500)  # ValueError
 
 
 class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
@@ -295,7 +296,7 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
         self.basic_auth = '%s:%s' % (default_user, default_password)
         # We want 401 responses, not redirects to a login page
         plugins = self.portal.acl_users.plugins
-        plugins.deactivatePlugin( IChallengePlugin, 'credentials_cookie_auth')
+        plugins.deactivatePlugin(IChallengePlugin, 'credentials_cookie_auth')
 
         # Enable portal_factory for Document type
         self.factory = self.portal.portal_factory
@@ -322,7 +323,6 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
         path = "%s/++resource++plone-logo.png" % self.tmp_obj_path
         data = self.publish(path)
         self.assertEqual(data.getHeader('Content-Type'), 'image/png')
-
 
 
 def test_suite():

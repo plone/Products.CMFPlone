@@ -121,4 +121,3 @@ def test_suite():
     return TestSuite([
         makeSuite(AuthenticatorTestCase),
     ])
-

@@ -50,14 +50,15 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         latest = self.qi.getLatestUpgradeStep('Products.CMFPlone:testfixture')
         self.assertTrue(latest == '3')
 
-
     def _load_zcml(self, filename):
         fiveconfigure.debug_mode = True
         zcml.load_config(filename, package=tests)
         fiveconfigure.debug_mode = False
 
+
 def dummy_handler():
     pass
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

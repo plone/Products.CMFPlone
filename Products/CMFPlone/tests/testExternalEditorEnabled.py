@@ -1,18 +1,19 @@
 from Products.CMFPlone.tests import PloneTestCase
 
+
 class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
     '''Tests the externalEditorEnabled script'''
 
     def afterSetUp(self):
         PloneTestCase.PloneTestCase.afterSetUp(self)
-        self.folder.invokeFactory('Document','doc')
+        self.folder.invokeFactory('Document', 'doc')
         self.doc = self.folder.doc
-        self.folder.invokeFactory('Folder','folder2')
+        self.folder.invokeFactory('Folder', 'folder2')
         self.folder = self.folder.folder2
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
         self.mtool = self.portal.portal_membership
         member = self.mtool.getAuthenticatedMember()
-        member.setMemberProperties({'ext_editor' : 1})
+        member.setMemberProperties({'ext_editor': 1})
 
         self.lockbody = ('<?xml version="1.0" encoding="utf-8"?>\n'
                 '<d:lockinfo xmlns:d="DAV:">\n'
@@ -33,7 +34,7 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
     def testFailOnDisabledMemberProperty(self):
         self.assertTrue(self.doc.externalEditorEnabled())
         member = self.mtool.getAuthenticatedMember()
-        member.setMemberProperties({'ext_editor' : 0})
+        member.setMemberProperties({'ext_editor': 0})
         self.assertFalse(self.doc.externalEditorEnabled())
 
     def testFailOnUnSupportedObjects(self):
@@ -42,7 +43,7 @@ class TestExternalEditorEnabled(PloneTestCase.PloneTestCase):
 
     def testFailWithoutUseExtEditPermission(self):
         self.portal.manage_permission('Use external editor',
-                                      ('Owner','Manager'), 0)
+                                      ('Owner', 'Manager'), 0)
         self.login('user1')
         self.assertFalse(self.doc.externalEditorEnabled())
 

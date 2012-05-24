@@ -117,7 +117,7 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
 
         # Here comes the reported bug:
         self.logout()
-        self.assertEqual(self._contentIds(self.folder.A), ['C']) # <--
+        self.assertEqual(self._contentIds(self.folder.A), ['C'])  # <--
 
         # 4a)
         # BUT: removing 'View' is simply not enough!

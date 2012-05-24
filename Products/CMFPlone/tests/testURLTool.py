@@ -8,7 +8,7 @@ from Acquisition import aq_parent
 
 
 class DummyFolder(DummyFolder):
-    
+
     def absolute_url(self):
         return '/'.join([aq_parent(self).absolute_url(), self.getId()])
 
@@ -62,15 +62,15 @@ class TestURLTool(unittest.TestCase):
                                'images/img1.jpg'))
         self.assertTrue(iURLiP(
                                './images/img1.jpg'))
-        self.assertTrue(iURLiP( #/bar/foo/something
+        self.assertTrue(iURLiP(  # /bar/foo/something
                                '../something', self.site.foo.doc1))
-        self.assertFalse(iURLiP( #/bar/afolder
+        self.assertFalse(iURLiP(  # /bar/afolder
                            '../../afolder', self.site.foo.doc1))
-        self.assertFalse(iURLiP( #/afolder
+        self.assertFalse(iURLiP(  # /afolder
                            '../../../afolder', self.site.foo.doc1))
-        self.assertFalse(iURLiP( #/../afolder? How do we have more ../'s than there are parts in the URL?
+        self.assertFalse(iURLiP(  # /../afolder? How do we have more ../'s than there are parts in the URL?
                            '../../../../afolder', self.site.foo.doc1))
-        self.assertTrue(iURLiP( #/bar/foo/afolder
+        self.assertTrue(iURLiP(  # /bar/foo/afolder
                                '../../foo/afolder', self.site.foo.doc1))
 
     def test_isURLInPortalExternal(self):

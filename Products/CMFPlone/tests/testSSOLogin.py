@@ -12,10 +12,10 @@ class SSOLoginTestCase(ptc.FunctionalTestCase):
         ptc.FunctionalTestCase.afterSetUp(self)
 
         self.browser = Browser()
-        self.browser.handleErrors = False # Don't get HTTP 500 pages
+        self.browser.handleErrors = False  # Don't get HTTP 500 pages
 
-        self.login_portal = self.app.login_portal # logins go here
-        self.another_portal = self.app.another_portal # another portal
+        self.login_portal = self.app.login_portal  # logins go here
+        self.another_portal = self.app.another_portal  # another portal
         # The extra portals do not get a member setup from the base class.
         # Add our user to the other portals to simulate an ldap environment.
         for portal in (self.login_portal, self.another_portal):
@@ -83,7 +83,7 @@ class TestSSOLogin(SSOLoginTestCase):
 
     def test_requireLogin(self):
         browser = self.browser
-        browser.handleErrors = True # So unauthorized renders a login form
+        browser.handleErrors = True  # So unauthorized renders a login form
         # Login to the central portal
         browser.open(self.login_portal.absolute_url())
         browser.getLink('Log in').click()
@@ -173,7 +173,7 @@ class TestSSOLoginIframe(SSOLoginTestCase):
 
     def test_requireLoginSSO(self):
         browser = self.browser
-        browser.handleErrors = True # So unauthorized renders a login form
+        browser.handleErrors = True  # So unauthorized renders a login form
         # Login to the central portal
         browser.open(self.login_portal.absolute_url())
         browser.getLink('Log in').click()

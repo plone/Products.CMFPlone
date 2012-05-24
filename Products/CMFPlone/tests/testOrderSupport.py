@@ -10,7 +10,6 @@ import transaction
 class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        membership = self.portal.portal_membership
         # Add a bunch of subobjects we can order later on
         self.folder.invokeFactory('Document', id='foo')
         self.folder.invokeFactory('Document', id='bar')
@@ -109,7 +108,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.manage_renameObjects(['bar'], ['barney'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('barney'), 1)
@@ -117,7 +116,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameFirstObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.manage_renameObjects(['foo'], ['flintstone'])
         self.assertEqual(self.folder.getObjectPosition('flintstone'), 0)
         self.assertEqual(self.folder.getObjectPosition('bar'), 1)
@@ -125,7 +124,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameLastObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.manage_renameObjects(['baz'], ['bedrock'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('bar'), 1)
@@ -174,13 +173,13 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
     def testSkipObjectsNotInSubsetIds(self):
         self.folder.moveObjectsByDelta(['baz'], -1, ['foo', 'baz'])
         self.assertEqual(self.folder.getObjectPosition('baz'), 0)
-        self.assertEqual(self.folder.getObjectPosition('bar'), 1) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('bar'), 1)  # Did not move
         self.assertEqual(self.folder.getObjectPosition('foo'), 2)
 
     def testIgnoreNonObjects(self):
         #Fix for (http://dev.plone.org/plone/ticket/3959) non contentish objects
         #cause errors, we should just ignore them
-        self.folder.moveObjectsByDelta(['bar','blah'], -1)
+        self.folder.moveObjectsByDelta(['bar', 'blah'], -1)
         self.assertEqual(self.folder.getObjectPosition('bar'), 0)
         self.assertEqual(self.folder.getObjectPosition('foo'), 1)
         self.assertEqual(self.folder.getObjectPosition('baz'), 2)
@@ -198,7 +197,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.folder.moveObjectToPosition('foo', 2)
         self.assertEqual(self.folder.getObjectPosition('bar'), 0)
         self.assertEqual(self.folder.getObjectPosition('baz'), 1)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('wilma'), 2)  # Did not move
         self.assertEqual(self.folder.getObjectPosition('foo'), 3)
 
     def DISABLED_testMoveUpCMFObjectsOnly(self):
@@ -209,7 +208,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.folder.moveObjectsUp(['baz'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('baz'), 1)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('wilma'), 2)  # Did not move
         self.assertEqual(self.folder.getObjectPosition('bar'), 3)
 
 
@@ -228,7 +227,7 @@ class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
 
     def testRenameObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.portal.manage_renameObjects(['bar'], ['barney'])
         self.assertEqual(self.portal.getObjectPosition('foo'), 0)
         self.assertEqual(self.portal.getObjectPosition('barney'), 1)

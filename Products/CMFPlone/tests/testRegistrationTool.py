@@ -84,10 +84,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
     def testNewIdAllowed(self):
         self.assertEqual(self.registration.isMemberIdAllowed('newuser'), 1)
 
-
     def testTakenUserId(self):
         self.assertEqual(self.registration.isMemberIdAllowed('userid'), 0)
-
 
     def testTakenGroupd(self):
         self.assertEqual(self.registration.isMemberIdAllowed('groupid'), 0)
@@ -179,7 +177,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         self.assertEqual(pw, self.registration.getPassword(6, salt))
         # These should fail
         self.assertNotEqual(pw, self.registration.getPassword(7, salt))
-        self.assertNotEqual(pw, self.registration.getPassword(6, salt+'x'))
+        self.assertNotEqual(pw, self.registration.getPassword(6, salt + 'x'))
 
     def testGeneratePassword(self):
         pw = self.registration.generatePassword()
@@ -189,6 +187,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         salt = 'foo'
         rc = self.registration.generateResetCode(salt)
         self.assertEqual(rc, self.registration.generateResetCode(salt))
+
 
 class TestEmailValidityChecker(unittest.TestCase):
 
@@ -210,9 +209,11 @@ class TestEmailValidityChecker(unittest.TestCase):
         result = self.check(u"webmaster@example.onion")
         self.assertTrue(*result)
 
+
 class TestRegistrationToolEmailValidityChecker(PloneTestCase.PloneTestCase):
 
     check = lambda _, email: _.portal.portal_registration.isValidEmail(email)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

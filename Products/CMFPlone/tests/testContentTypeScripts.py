@@ -33,13 +33,13 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         from plone.app.discussion.interfaces import IDiscussionSettings
         from plone.app.discussion.interfaces import IConversation
         self.folder.invokeFactory('Document', id='doc', title="Document")
-        # Enable discussion         
+        # Enable discussion
         registry = queryUtility(IRegistry)
         settings = registry.forInterface(IDiscussionSettings)
         settings.globally_enabled = True
         # Create the conversation object
         conversation = IConversation(self.folder.doc)
-        # Add a comment 
+        # Add a comment
         comment = createObject('plone.Comment')
         comment.text = 'Comment text'
         conversation.addComment(comment)
@@ -63,7 +63,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testEventCreate(self):
         self.folder.invokeFactory('Event', id='event',
-                                  title = 'Foo',
+                                  title='Foo',
                                   start_date='2003-09-18',
                                   end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
@@ -198,12 +198,12 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFileEditShortName(self):
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.file.file_edit(id='fred')
         self.assertTrue('fred' in self.folder)
 
     def testImageEditShortName(self):
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.image.image_edit(id='fred')
         self.assertTrue('fred' in self.folder)
 
@@ -245,7 +245,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
     def testFileRenameKeepsMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
         self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.file.file_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'application/pdf')
         self.assertEqual(self.folder.foo.getFile().content_type, 'application/pdf')
@@ -253,7 +253,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
     def testImageRenameKeepsMimeType(self):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.content_type, 'image/gif')
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.image.image_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'image/gif')
         self.assertEqual(self.folder.foo.content_type, 'image/gif')
@@ -296,7 +296,7 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
 
     def testUploadFile(self):
         self.folder[self.file_id].file_edit(file=dummy.File('fred.txt'))
@@ -325,7 +325,7 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
 
     def testUploadBadFile(self):
         # http://dev.plone.org/plone/ticket/3416
@@ -355,10 +355,10 @@ class TestImageProps(PloneTestCase.PloneTestCase):
     def testImageComputedProps(self):
         from OFS.Image import Image
         tag = Image.tag.im_func
-        kw = {'_title':'some title',
-              '_alt':'alt tag',
-              'height':100,
-              'width':100}
+        kw = {'_title': 'some title',
+              '_alt': 'alt tag',
+              'height': 100,
+              'width': 100}
         # Wrap object so that ComputedAttribute gets executed.
         self.ob = dummy.ImageComputedProps(**kw).__of__(self.folder)
 

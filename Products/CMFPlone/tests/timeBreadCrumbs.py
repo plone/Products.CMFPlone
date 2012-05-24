@@ -9,6 +9,7 @@ from Products.CMFCore.tests.base.security import OmnipotentUser
 from Products.Archetypes.tests.utils import populateFolder
 from Products.CMFPlone.browser import navigation
 
+
 def setup(app, path):
     _policy = PermissiveSecurityPolicy()
     _oldpolicy = setSecurityPolicy(_policy)

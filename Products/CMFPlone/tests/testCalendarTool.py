@@ -30,7 +30,8 @@ class TestCalendarTool(PloneTestCase.PloneTestCase):
         self.setRoles(['Member'])
 
     def testGetEventsForCalendar(self):
-        events = self.calendar.getEventsForCalendar(month=self.event_date.month(),year=self.event_date.year())
+        events = self.calendar.getEventsForCalendar(month=self.event_date.month(),
+                                                    year=self.event_date.year())
 
         data = [
          [{'eventslist': [], 'day': 0, 'event': 0},
@@ -80,7 +81,9 @@ class TestCalendarTool(PloneTestCase.PloneTestCase):
 
     def testGetEventsForCalendarInPath(self):
         path = "/".join(self.portal.folder1.getPhysicalPath())
-        events = self.calendar.getEventsForCalendar(month=self.event_date.month(),year=self.event_date.year(),path=path)
+        events = self.calendar.getEventsForCalendar(month=self.event_date.month(),
+                                                    year=self.event_date.year(),
+                                                    path=path)
         data = [
          [{'eventslist': [], 'day': 0, 'event': 0},
           {'eventslist': [], 'day': 0, 'event': 0},
@@ -125,7 +128,8 @@ class TestCalendarTool(PloneTestCase.PloneTestCase):
         self.assertEqual(events, data)
 
     def testCatalogGetEvents(self):
-        events = self.calendar.catalog_getevents(month=self.event_date.month(),year=self.event_date.year())
+        events = self.calendar.catalog_getevents(month=self.event_date.month(),
+                                                 year=self.event_date.year())
         data = [
          {'eventslist': [], 'day': 2, 'event': 0},
          {'eventslist': [], 'day': 3, 'event': 0},
@@ -140,11 +144,13 @@ class TestCalendarTool(PloneTestCase.PloneTestCase):
                           'start': '00:00:00',
                           'title': 'event11'}]}]
 
-        self.assertEqual([events[e] for e in range(2,9)], data)
+        self.assertEqual([events[e] for e in range(2, 9)], data)
 
     def testCatalogGetEventsInPath(self):
         path = "/".join(self.portal.folder1.getPhysicalPath())
-        events = self.calendar.catalog_getevents(month=self.event_date.month(),year=self.event_date.year(),path=path)
+        events = self.calendar.catalog_getevents(month=self.event_date.month(),
+                                                 year=self.event_date.year(),
+                                                 path=path)
         data = [
          {'eventslist': [], 'day': 2, 'event': 0},
          {'eventslist': [], 'day': 3, 'event': 0},
@@ -158,7 +164,7 @@ class TestCalendarTool(PloneTestCase.PloneTestCase):
                           'start': '00:00:00',
                           'title': 'event11'}]}]
 
-        self.assertEqual([events[e] for e in range(2,9)], data)
+        self.assertEqual([events[e] for e in range(2, 9)], data)
 
 
 def test_suite():

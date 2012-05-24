@@ -174,6 +174,7 @@ class TestVisibleIdsEnabled(PloneTestCase.PloneTestCase):
         self.member.setProperties(visible_ids=True)
         self.assertTrue(self.view.visibleIdsEnabled())
 
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

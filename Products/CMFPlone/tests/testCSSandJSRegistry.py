@@ -27,7 +27,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                     'member.css',
                     'print.css',
                     'RTL.css',
-                    'mobile.css',]
+                    'mobile.css']
         for e in expected:
             self.assertTrue(e in installedStylesheetIds, e)
 
@@ -44,9 +44,10 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                         'mobile.css',
                         'deprecated.css',
                         'invisibles.css',
-                        'forms.css',]
+                        'forms.css']
         for cb in comes_before:
-            self.assertTrue(cb in installedStylesheetIds[:indexRTLStylesheet],cb)
+            self.assertTrue(cb in installedStylesheetIds[:indexRTLStylesheet], cb)
+
 
 class TestJSRegistry(PloneTestCase.PloneTestCase):
 
