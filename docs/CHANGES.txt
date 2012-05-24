@@ -58,9 +58,12 @@ Changelog
 4.2rc2 (unreleased)
 -------------------
 
-- Hide Kupu base profile on Plone site creation screen.
+- Let the RR export/import steps depend on the skins tool and
+  plone.app.registry steps, as either of them might create new theme bundles
   [hannosch]
 
+- Hide Kupu base profile on Plone site creation screen.
+  [hannosch]
 
 - Accessibility improvements for screen readers regarding "more" links, see 
   http://dev.plone.org/ticket/11982 
