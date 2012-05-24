@@ -43,10 +43,6 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         request = {'foo':'bar'}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
 
-    def testNonexistantIndex(self):
-        request = {'foo':'bar'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
-
     def testRealIndex(self):
         request = {'SearchableText':'bar'}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
