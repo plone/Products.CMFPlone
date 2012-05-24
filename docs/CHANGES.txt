@@ -12,9 +12,6 @@ Changelog
   order to finish PLIP #8699: Display publication date in author byline.
   [vipod]
 
-- Hide Kupu base profile on Plone site creation screen.
-  [hannosch]
-
 - Deprecated aliases were replaced on tests.
   [hvelarde]
 
@@ -49,6 +46,13 @@ Changelog
 - Re-apply PLIP 10901 to table_sort.js, fixing a bug with reversing sort
   on the first column.
   [mj]
+
+
+4.2rc2 (unreleased)
+-------------------
+
+- Hide Kupu base profile on Plone site creation screen.
+  [hannosch]
 
 
 4.2b3 (unreleased)
