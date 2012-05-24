@@ -421,13 +421,6 @@ class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
                     'n.subtreeFilter({});'
                     'n.decoratorFactory({});')
 
-    def testNavtreeStrategyBase(self):
-        self.check('from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
-                    'n=NavtreeStrategyBase();'
-                    'n.nodeFilter({});'
-                    'n.subtreeFilter({});'
-                    'n.decoratorFactory({});')
-
     def testSitemapNavtreeStrategy(self):
         # We don't test the decorator factory because that requres an
         # actual brain in item
