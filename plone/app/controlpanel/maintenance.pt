@@ -116,26 +116,26 @@
                                          error widget/error"
                              tal:attributes="class python:'field'+(error and ' error' or '')">
 
-                            <label i18n:translate=""
-                                   tal:attributes="for widget/name"
-                                   tal:content="widget/label">
+                            <label tal:attributes="for widget/name">
+                              <span i18n:translate="" tal:replace="widget/label">
                                 label
+                              </span>
+
+                              <span class="fieldRequired"
+                                    title="Required"
+                                    i18n:attributes="title title_required;"
+                                    i18n:translate="label_required"
+                                    tal:condition="widget/required">
+                                  (Required)
+                              </span>
+
+                              <span class="formHelp"
+                                   i18n:translate=""
+                                   tal:content="description"
+                                   tal:condition="description">
+                                  field description
+                              </span>
                             </label>
-
-                            <span class="fieldRequired"
-                                  title="Required"
-                                  i18n:attributes="title title_required;"
-                                  i18n:translate="label_required"
-                                  tal:condition="widget/required">
-                                (Required)
-                            </span>
-
-                            <div class="formHelp"
-                                 i18n:translate=""
-                                 tal:content="description"
-                                 tal:condition="description">
-                                field description
-                            </div>
 
                             <div tal:condition="error"
                                  tal:content="structure error">

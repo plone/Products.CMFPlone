@@ -4,6 +4,9 @@ Changelog
 2.2.5 (unreleased)
 ------------------
 
+- Move form help inside field labels to improve accessibility.
+  [smcmahon]
+
 - Updated zope.formlib imports.
   [hannosch]
 
