@@ -8,6 +8,9 @@ Changelog
 4.2rc2 (unreleased)
 -------------------
 
+- Hide Kupu base profile on Plone site creation screen.
+  [hannosch]
+
 - Deprecated aliases were replaced on tests.
   [hvelarde]
 
