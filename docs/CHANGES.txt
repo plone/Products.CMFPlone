@@ -23,6 +23,9 @@ Changelog
   Fixes https://dev.plone.org/ticket/12877
   [davidjb]
 
+- accessibility improvements for screen readers regarding "more" links, see https://dev.plone.org/ticket/11982 
+  [rmattb, applied by polyester]   
+
 4.2rc1 (2012-05-07)
 -------------------
 
