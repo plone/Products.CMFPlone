@@ -7,8 +7,8 @@
 ##parameters=userid
 ##title=Edit user's group membership
 ##
-REQUEST=context.REQUEST
-RESPONSE=REQUEST.RESPONSE
+REQUEST = context.REQUEST
+RESPONSE = REQUEST.RESPONSE
 
 gtool = context.portal_groups
 

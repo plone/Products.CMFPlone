@@ -25,9 +25,9 @@ if restrict != "groups":
 retlist = groupsList + usersList
 
 if ignore:
-  retlist = [r for r in retlist if r not in ignore]
+    retlist = [r for r in retlist if r not in ignore]
 
 # reorder retlist?
 if return_form:
-    context.REQUEST.RESPONSE.redirect( context.absolute_url() + '/' + return_form )
+    context.REQUEST.RESPONSE.redirect(context.absolute_url() + '/' + return_form)
 return retlist

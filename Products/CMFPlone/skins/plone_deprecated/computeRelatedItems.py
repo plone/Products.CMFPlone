@@ -20,7 +20,7 @@ if base_hasattr(context, 'getRelatedItems'):
     res = []
     mtool = context.portal_membership
 
-    in_out = outgoing+incoming
+    in_out = outgoing + incoming
     for d in range(len(in_out)):
         try:
             obj = in_out[d]
