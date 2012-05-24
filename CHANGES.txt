@@ -7,6 +7,9 @@ Changelog
 - Remove hard dependency on Archetypes.
   [davisagli]
 
+- accessibility improvements for screen readers regarding "more" links, see https://dev.plone.org/ticket/11982 
+  [rmattb, applied by polyester] 
+
 2.2.5 (2012-05-07)
 ------------------
 
