@@ -9,7 +9,7 @@ Changelog
 ------------------
 
 - PEP 8 (ignoring W602, E203, E241, E301, E501 and E701).
-  [hvelarde]
+  [pbdiode, hvelarde]
 
 - Add 'displayPublicationDateInByline' to site properties property sheet in
   order to finish PLIP #8699: Display publication date in author byline.
