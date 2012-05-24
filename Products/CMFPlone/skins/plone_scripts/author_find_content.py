@@ -16,7 +16,7 @@ utils = getToolByName(context, 'plone_utils')
 
 friendly_types = utils.getUserFriendlyTypes()
 
-found   = {}
+found = {}
 if path is None:
     path = getNavigationRoot(context)
 
@@ -44,7 +44,6 @@ types.sort()
 results = []
 
 for t in types:
-    results.append({'portal_type' : t, 'content_items' : found[t]})
+    results.append({'portal_type': t, 'content_items': found[t]})
 
 return results
-

@@ -15,7 +15,7 @@
 """
 from zExceptions import Forbidden
 if container.REQUEST.get('PUBLISHED') is script:
-   raise Forbidden('Script may not be published.')
+    raise Forbidden('Script may not be published.')
 
 list_len = len(input_list)
 
@@ -36,9 +36,9 @@ sublist_len = (list_len % numCols == 0 and list_len / numCols or
 
 # Calculate the list end point given the list number
 list_end = lambda list_num: (list_num == numCols - 1 and list_len or
-                             (list_num+1)*sublist_len)
+                             (list_num + 1) * sublist_len)
 
 # Generate columns
-final_lists = [input_list[i*sublist_len:list_end(i)] for i in range(numCols)]
+final_lists = [input_list[i * sublist_len: list_end(i)] for i in range(numCols)]
 
 return final_lists

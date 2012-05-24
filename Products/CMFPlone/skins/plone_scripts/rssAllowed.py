@@ -25,4 +25,3 @@ if not allowed:
     raise ValueError, "Site syndication via RSS feeds is not allowed. Ask the sites"\
     " system administrator to go to portal_syndication > Policies and enable syndication. Each folder"\
     " then needs to have syndication enabled."
-

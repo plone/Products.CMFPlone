@@ -9,7 +9,7 @@
 ##
 from ZODB.POSException import ConflictError
 
-try :
+try:
     return context.portal_url.getPortalObject().plone_utils.isTranslatable(context)
 except ConflictError:
     raise

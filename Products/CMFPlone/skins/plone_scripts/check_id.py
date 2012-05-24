@@ -35,6 +35,8 @@ from Products.CMFPlone.utils import base_hasattr
 
 # http://dev.plone.org/plone/ticket/10518#comment:7
 ts = getToolByName(context, 'translation_service')
+
+
 def xlate(message):
     return ts.translate(message, context=context.REQUEST)
 
@@ -87,7 +89,7 @@ if portal_catalog is not None:
                 _(u'${name} is reserved.',
                   mapping={u'name': id}))
     except Unauthorized:
-        pass # ignore if we don't have permission; will get picked up at the end
+        pass  # ignore if we don't have permission; will get picked up at the end
 
 # id is good; decide if we should check for id collisions
 portal_factory = getToolByName(container, 'portal_factory', None)
@@ -116,7 +118,7 @@ if checkForCollision:
         try:
             contained_by = context.getParentNode()
         except Unauthorized:
-            return # nothing we can do
+            return  # nothing we can do
 
     # Check for an existing object.
     if id in contained_by:
@@ -140,7 +142,7 @@ if checkForCollision:
                     _(u'${name} is reserved.',
                       mapping={u'name': id}))
         except Unauthorized:
-            pass # ignore if we don't have permission
+            pass  # ignore if we don't have permission
 
     # containers may implement this hook to further restrict ids
     if base_hasattr(contained_by, 'checkValidId'):
@@ -172,22 +174,22 @@ if checkForCollision:
     # we do want to allow overriding of *content* in the object's parent path,
     # including the portal root.
 
-    if id != 'index_html': # always allow index_html
+    if id != 'index_html':  # always allow index_html
         portal = context.portal_url.getPortalObject()
-        if id not in portal.contentIds(): # can override root *content*
+        if id not in portal.contentIds():  # can override root *content*
             try:
                 # it is allowed to give an object the same id as another
                 # container in it's acquisition path as long as the
                 # object is outside the portal
                 outsideportal = getattr(portal.aq_parent, id, None)
                 insideportal = getattr(portal, id, None)
-                if (insideportal is not None and 
-                    outsideportal is not None and 
+                if (insideportal is not None and
+                    outsideportal is not None and
                     outsideportal.aq_base == insideportal.aq_base):
                     return
-                if getattr(portal, id, None) is not None: # but not other things
+                if getattr(portal, id, None) is not None:  # but not other things
                     return xlate(
                         _(u'${name} is reserved.',
                           mapping={u'name': id}))
             except Unauthorized:
-                pass # ignore if we don't have permission
+                pass  # ignore if we don't have permission

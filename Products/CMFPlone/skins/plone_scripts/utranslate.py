@@ -33,4 +33,3 @@ if escape_for_js:
     value = value.replace("'", "\\'")
 
 return value
-

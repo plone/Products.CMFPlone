@@ -7,6 +7,8 @@
 ##parameters=contents, method='title_or_id'
 ##title=sorts and pre-filters objects
 ##
+
+
 def get_sortable(o):
     val = getattr(o, method)()
     try:

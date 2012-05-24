@@ -9,13 +9,14 @@
 ##
 from zExceptions import Forbidden
 if container.REQUEST.get('PUBLISHED') is script:
-   raise Forbidden('Script may not be published.')
+    raise Forbidden('Script may not be published.')
 
 contents = []
 portal = context.portal_url.getPortalObject()
 for path in paths:
     obj = portal.restrictedTraverse(str(path), None)
-    if obj is not None: contents.append(obj)
+    if obj is not None:
+        contents.append(obj)
 
 if batch:
     from Products.CMFPlone import Batch

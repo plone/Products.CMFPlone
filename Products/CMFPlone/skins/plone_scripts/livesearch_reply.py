@@ -36,8 +36,10 @@ catalog = context.portal_catalog
 
 friendly_types = ploneUtils.getUserFriendlyTypes()
 
+
 def quotestring(s):
     return '"%s"' % s
+
 
 def quote_bad_chars(s):
     bad_chars = ["(", ")"]
@@ -62,14 +64,14 @@ for char in ('?', '-', '+', '*', multispace):
     q = q.replace(char, ' ')
 r = q.split()
 r = " AND ".join(r)
-r = quote_bad_chars(r)+'*'
+r = quote_bad_chars(r) + '*'
 searchterms = url_quote_plus(r)
 
 site_encoding = context.plone_utils.getSiteEncoding()
 
 params = {'SearchableText': r,
           'portal_type': friendly_types,
-          'sort_limit': limit+1,}
+          'sort_limit': limit + 1}
 
 if path is None:
     # useful for subsides
@@ -80,7 +82,7 @@ else:
 # search limit+1 results to know if limit is exceeded
 results = catalog(**params)
 
-searchterm_query = '?searchterm=%s'%url_quote_plus(q)
+searchterm_query = '?searchterm=%s' % url_quote_plus(q)
 
 REQUEST = context.REQUEST
 RESPONSE = REQUEST.RESPONSE
@@ -97,6 +99,7 @@ label_show_all = _('label_show_all', default='Show all items')
 ts = getToolByName(context, 'translation_service')
 
 output = []
+
 
 def write(s):
     output.append(safe_unicode(s))
@@ -132,7 +135,7 @@ else:
         write(icon.html_tag() or '')
         full_title = safe_unicode(pretty_title_or_id(result))
         if len(full_title) > MAX_TITLE:
-            display_title = ''.join((full_title[:MAX_TITLE],'...'))
+            display_title = ''.join((full_title[:MAX_TITLE], '...'))
         else:
             display_title = full_title
 
@@ -141,7 +144,7 @@ else:
         write('''<a href="%s" title="%s" class="%s">%s</a>''' % (itemUrl, full_title, klass, display_title))
         display_description = safe_unicode(result.Description)
         if len(display_description) > MAX_DESCRIPTION:
-            display_description = ''.join((display_description[:MAX_DESCRIPTION],'...'))
+            display_description = ''.join((display_description[:MAX_DESCRIPTION], '...'))
 
         # need to quote it, to avoid injection of html containing javascript and other evil stuff
         display_description = html_quote(display_description)
@@ -150,16 +153,16 @@ else:
         full_title, display_title, display_description = None, None, None
 
     write('''<li class="LSRow">''')
-    write( '<a href="%s" style="font-weight:normal">%s</a>' %
+    write('<a href="%s" style="font-weight:normal">%s</a>' %
          (portal_url + '/@@search',
           ts.translate(label_advanced_search, context=REQUEST)))
     write('''</li>''')
 
-    if len(results)>limit:
+    if len(results) > limit:
         # add a more... row
         write('''<li class="LSRow">''')
         searchquery = '@@search?SearchableText=%s&path=%s' % (searchterms, params['path'])
-        write( '<a href="%s" style="font-weight:normal">%s</a>' % (
+        write('<a href="%s" style="font-weight:normal">%s</a>' % (
                              searchquery,
                              ts.translate(label_show_all, context=REQUEST)))
         write('''</li>''')
