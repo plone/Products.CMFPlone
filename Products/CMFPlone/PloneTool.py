@@ -69,6 +69,7 @@ EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+
 # used to find double new line (in any variant)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]")
 
+# XXX: we don't depend on Python 2.1 any longer, can we get rid of this?
 # XXX Remove this when we don't depend on python2.1 any longer,
 # use email.Utils.getaddresses instead
 from rfc822 import AddressList
@@ -81,21 +82,22 @@ def _getaddresses(fieldvalues):
 # dublic core accessor name -> metadata name
 METADATA_DCNAME = {
     # The first two rows are handle in a special way
-    # 'Description'      : 'description',
-    # 'Subject'          : 'keywords',
-    'Description'      : 'DC.description',
-    'Subject'          : 'DC.subject',
-    'Creator'          : 'DC.creator',
-    'Contributors'     : 'DC.contributors',
-    'Publisher'        : 'DC.publisher',
-    'CreationDate'     : 'DC.date.created',
-    'ModificationDate' : 'DC.date.modified',
-    'Type'             : 'DC.type',
-    'Format'           : 'DC.format',
-    'Language'         : 'DC.language',
-    'Rights'           : 'DC.rights',
+    # 'Description': 'description',
+    # 'Subject': 'keywords',
+    'Description': 'DC.description',
+    'Subject': 'DC.subject',
+    'Creator': 'DC.creator',
+    'Contributors': 'DC.contributors',
+    'Publisher': 'DC.publisher',
+    'CreationDate': 'DC.date.created',
+    'ModificationDate': 'DC.date.modified',
+    'Type': 'DC.type',
+    'Format': 'DC.format',
+    'Language': 'DC.language',
+    'Rights': 'DC.rights',
     }
 METADATA_DC_AUTHORFIELDS = ('Creator', 'Contributors', 'Publisher')
+
 
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Various utility methods."""
@@ -195,7 +197,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(address, basestring):
             return False
 
-        sub = EMAIL_CUTOFF_RE.match(address);
+        sub = EMAIL_CUTOFF_RE.match(address)
         if sub != None:
             # Address contains two newlines (possible spammer relay attack)
             return False
@@ -212,7 +214,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(address, basestring):
             return False
 
-        sub = EMAIL_CUTOFF_RE.match(address);
+        sub = EMAIL_CUTOFF_RE.match(address)
         if sub != None:
             # Address contains two newlines (spammer attack using
             # "address\n\nSpam message")
@@ -223,7 +225,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
 
         # Validate the address
-        for name,addr in getaddresses([address]):
+        for name, addr in getaddresses([address]):
             if not self.validateSingleNormalizedEmailAddress(addr):
                 return False
         return True
@@ -236,32 +238,32 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(addresses, basestring):
             return False
 
-        sub = EMAIL_CUTOFF_RE.match(addresses);
+        sub = EMAIL_CUTOFF_RE.match(addresses)
         if sub != None:
             # Addresses contains two newlines (spammer attack using
             # "To: list\n\nSpam message")
             return False
 
         # Validate each address
-        for name,addr in getaddresses([addresses]):
+        for name, addr in getaddresses([addresses]):
             if not self.validateSingleNormalizedEmailAddress(addr):
                 return False
         return True
 
     security.declarePublic('editMetadata')
-    def editMetadata(self
-                     , obj
-                     , allowDiscussion=None
-                     , title=None
-                     , subject=None
-                     , description=None
-                     , contributors=None
-                     , effective_date=None
-                     , expiration_date=None
-                     , format=None
-                     , language=None
-                     , rights=None
-                     ,  **kwargs):
+    def editMetadata(self,
+                     obj,
+                     allowDiscussion=None,
+                     title=None,
+                     subject=None,
+                     description=None,
+                     contributors=None,
+                     effective_date=None,
+                     expiration_date=None,
+                     format=None,
+                     language=None,
+                     rights=None,
+                     **kwargs):
         """Responsible for setting metadata on a content object.
 
         We assume the obj implements IDublinCoreMetadata.
@@ -473,8 +475,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if discussionContainer.portal_type == 'Discussion Item':
                 thread.append(discussionContainer)
         else:
-            if discussionContainer.id=='talkback':
-                thread=[discussionContainer._getDiscussable()]
+            if discussionContainer.id == 'talkback':
+                thread = [discussionContainer._getDiscussable()]
             else:
                 thread = [discussionContainer]
         return thread
@@ -519,7 +521,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             purl = getToolByName(self, 'portal_url')
             _path = purl.getRelativeContentURL(object)
             subobjects = [b.getObject() for b in \
-                         catalog_tool(path={'query':_path,'level':1})]
+                         catalog_tool(path={'query': _path, 'level': 1})]
             for obj in subobjects:
                 fixOwnerRole(obj, user.getId())
                 if base_hasattr(obj, 'reindexObject'):
@@ -660,7 +662,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     parent = aq_parent(parent)
 
         # Tuplize all inner roles
-        for pos in range(len(result)-1,-1,-1):
+        for pos in range(len(result) - 1, -1, -1):
             result[pos][1] = tuple(result[pos][1])
             result[pos] = tuple(result[pos])
 
@@ -863,7 +865,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             layout = browserDefault.getLayout()
             if layout is None:
                 raise AttributeError(
-                    "%s has no assigned layout, perhaps it needs an FTI"%obj)
+                    "%s has no assigned layout, perhaps it needs an FTI" % obj)
             else:
                 return obj, [layout]
 
@@ -932,7 +934,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return True
 
     security.declarePublic('acquireLocalRoles')
-    def acquireLocalRoles(self, obj, status = 1, REQUEST=None):
+    def acquireLocalRoles(self, obj, status=1, REQUEST=None):
         """If status is 1, allow acquisition of local roles (regular behaviour).
 
         If it's 0, prohibit it (it will allow some kind of local role
@@ -1082,15 +1084,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # Check for fullnames
             if view_about and accessor in METADATA_DC_AUTHORFIELDS:
                 if not isinstance(value, (list, tuple)):
-                    value=[value]
-                tmp=[]
+                    value = [value]
+                tmp = []
                 for userid in value:
-                    member=mt.getMemberInfo(userid)
-                    name=userid
+                    member = mt.getMemberInfo(userid)
+                    name = userid
                     if member:
-                        name=member['fullname'] or userid
+                        name = member['fullname'] or userid
                     tmp.append(name)
-                value=tmp
+                value = tmp
 
             if isinstance(value, (list, tuple)):
                 # convert a list to a string
@@ -1231,7 +1233,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             except Exception, e:
                 if handle_errors:
                     sp.rollback()
-                    failure[path]= e
+                    failure[path] = e
                 else:
                     raise
         transaction_note('Deleted %s' % (', '.join(success)))
@@ -1263,7 +1265,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()
-                    failure[path]= e
+                    failure[path] = e
                 else:
                     raise
             if getattr(o, 'isPrincipiaFolderish', None) and include_children:
@@ -1306,14 +1308,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     # the rename will have already triggered a reindex
                     obj.reindexObject()
                 if changed:
-                    success[path]=(new_id,new_title)
+                    success[path] = (new_id, new_title)
             except ConflictError:
                 raise
             except Exception, e:
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()
-                    failure[path]= e
+                    failure[path] = e
                 else:
                     raise
         transaction_note('Renamed %s' % str(success.keys()))

@@ -35,7 +35,7 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     meta_type = 'Plone Migration Tool'
     toolicon = 'skins/plone_images/site_icon.png'
 
-    manage_options = (({'label':'Upgrade', 'action':'../@@plone-upgrade'}, ) +
+    manage_options = (({'label': 'Upgrade', 'action': '../@@plone-upgrade'}, ) +
                       SimpleItem.manage_options)
 
     _needRecatalog = 0

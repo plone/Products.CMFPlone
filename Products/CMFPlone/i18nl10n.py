@@ -17,7 +17,7 @@ from Products.CMFPlone.log import log
 
 # these are taken from PTS, used for format interpolation
 NAME_RE = r"[a-zA-Z][a-zA-Z0-9_]*"
-_interp_regex = re.compile(r'(?<!\$)(\$(?:%(n)s|{%(n)s}))' %({'n': NAME_RE}))
+_interp_regex = re.compile(r'(?<!\$)(\$(?:%(n)s|{%(n)s}))' % ({'n': NAME_RE}))
 
 datetime_formatvariables = ('H', 'I', 'm', 'd', 'M', 'p', 'S', 'Y', 'y', 'Z')
 name_formatvariables = ('a', 'A', 'b', 'B')
@@ -152,14 +152,14 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
         # msg catalog was not able to translate this msgids
         # use default setting
 
-        properties=getToolByName(context, 'portal_properties').site_properties
+        properties = getToolByName(context, 'portal_properties').site_properties
         if long_format:
-            format=properties.localLongTimeFormat
+            format = properties.localLongTimeFormat
         else:
             if time_only:
-                format=properties.localTimeOnlyFormat
+                format = properties.localTimeOnlyFormat
             else:
-                format=properties.localTimeFormat
+                format = properties.localTimeFormat
 
         return time.strftime(format)
 
@@ -182,20 +182,20 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
         month_included = False
 
     for key in elements:
-        mapping[key]=time.strftime('%'+key)
+        mapping[key] = time.strftime('%' + key)
 
     if week_included:
-        weekday = int(time.strftime('%w')) # weekday, sunday = 0
+        weekday = int(time.strftime('%w'))  # weekday, sunday = 0
         if 'a' in name_elements:
-            mapping['a']=weekdayname_msgid_abbr(weekday)
+            mapping['a'] = weekdayname_msgid_abbr(weekday)
         if 'A' in name_elements:
-            mapping['A']=weekdayname_msgid(weekday)
+            mapping['A'] = weekdayname_msgid(weekday)
     if month_included:
-        monthday = int(time.strftime('%m')) # month, january = 1
+        monthday = int(time.strftime('%m'))  # month, january = 1
         if 'b' in name_elements:
-            mapping['b']=monthname_msgid_abbr(monthday)
+            mapping['b'] = monthname_msgid_abbr(monthday)
         if 'B' in name_elements:
-            mapping['B']=monthname_msgid(monthday)
+            mapping['B'] = monthname_msgid(monthday)
 
     # translate translateable elements
     for key in name_elements:

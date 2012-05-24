@@ -11,7 +11,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/event_icon.png'
 
-    firstweekday = 0 # 0 is Monday
+    firstweekday = 0  # 0 is Monday
 
     security.declarePublic('getDayNumbers')
     def getDayNumbers(self):
@@ -31,8 +31,8 @@ class CalendarTool(PloneBaseTool, BaseTool):
         >>> ctool.getDayNumbers()[0] == fwday
         True
         """
-        firstweekday = self._getCalendar().firstweekday()+1
-        return [i%7 for i in range(firstweekday, firstweekday + 7)]
+        firstweekday = self._getCalendar().firstweekday() + 1
+        return [i % 7 for i in range(firstweekday, firstweekday + 7)]
 
     security.declarePublic('getEventsForCalendar')
     def getEventsForCalendar(self, month='1', year='2002', **kw):
@@ -55,7 +55,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
         for week in daysByWeek:
             days = []
             for day in week:
-                if events.has_key(day):
+                if day in events:
                     days.append(events[day])
                 else:
                     days.append({'day': day, 'event': 0, 'eventslist': []})
@@ -88,8 +88,8 @@ class CalendarTool(PloneBaseTool, BaseTool):
         query = ctool(**query_args)
 
         # compile a list of the days that have events
-        eventDays={}
-        for daynumber in range(1, 32): # 1 to 31
+        eventDays = {}
+        for daynumber in range(1, 32):  # 1 to 31
             eventDays[daynumber] = {'eventslist': [],
                                     'event': 0,
                                     'day': daynumber}
@@ -99,7 +99,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
                 break
             else:
                 includedevents.append(result.getRID())
-            event={}
+            event = {}
             # we need to deal with events that end next month
             if  result.end.month() != month:
                 # doesn't work for events that last ~12 months
@@ -120,7 +120,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
             event['title'] = result.Title or result.getId
 
             if eventStartDay != eventEndDay:
-                allEventDays = range(eventStartDay, eventEndDay+1)
+                allEventDays = range(eventStartDay, eventEndDay + 1)
                 eventDays[eventStartDay]['eventslist'].append(
                         {'end': None,
                          'start': result.start.Time(),
@@ -137,7 +137,7 @@ class CalendarTool(PloneBaseTool, BaseTool):
                 if result.end == result.end.earliestTime():
                     last_day_data = eventDays[allEventDays[-2]]
                     last_days_event = last_day_data['eventslist'][-1]
-                    last_days_event['end'] = (result.end-1).latestTime().Time()
+                    last_days_event['end'] = (result.end - 1).latestTime().Time()
                 else:
                     eventDays[eventEndDay]['eventslist'].append(
                         {'end': result.end.Time(),

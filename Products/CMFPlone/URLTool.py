@@ -32,13 +32,13 @@ class URLTool(PloneBaseTool, BaseTool):
         _, u_host, u_path, _, _, _ = urlparse(url)
         if not u_host and not u_path.startswith('/'):
             if context is None:
-                return True #old behavior
+                return True  # old behavior
             if not context.isPrincipiaFolderish:
                 useurl = context.aq_parent.absolute_url()
             else:
                 useurl = context.absolute_url()
         else:
-            useurl = p_url # when u_path.startswith('/')
+            useurl = p_url  # when u_path.startswith('/')
         if not useurl.endswith('/'):
             useurl += '/'
 

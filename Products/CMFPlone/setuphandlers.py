@@ -97,7 +97,7 @@ def addCacheForResourceRegistry(portal):
     if ram_cache_id in portal:
         cache = getattr(portal, ram_cache_id)
         settings = cache.getSettings()
-        settings['max_age'] = 24*3600 # keep for up to 24 hours
+        settings['max_age'] = 24 * 3600  # keep for up to 24 hours
         settings['request_vars'] = ('URL', )
         cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
     reg = getToolByName(portal, 'portal_css', None)
@@ -382,7 +382,7 @@ def setProfileVersion(portal):
 
 
 def assignTitles(portal):
-    titles={
+    titles = {
      'acl_users': 'User / Group storage and authentication settings',
      'archetype_tool': 'Archetypes specific settings',
      'caching_policy_manager': 'Settings related to proxy caching',

@@ -142,7 +142,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     security.declareProtected(ManagePortal, 'unregisterConfiglet')
     def unregisterConfiglet(self, id):
         actids = [o.id for o in self.listActions()]
-        selection = [actids.index(a) for a in actids if a==id]
+        selection = [actids.index(a) for a in actids if a == id]
         self.deleteActions(selection)
 
         # BBB
@@ -151,7 +151,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             if actionicons.queryActionInfo('controlpanel', id, None):
                 actionicons.removeActionIcon('controlpanel', id)
 
-
     security.declareProtected(ManagePortal, 'unregisterApplication')
     def unregisterApplication(self, appId):
         acts = list(self.listActions())
@@ -159,27 +158,26 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         self.deleteActions(selection)
 
         # BBB
-        actionicons=getToolByName(self, 'portal_actionicons', None)
+        actionicons = getToolByName(self, 'portal_actionicons', None)
         if actionicons is not None:
             for a in acts:
                 if (a.appId == appId and
                     actionicons.queryActionInfo('controlpanel', a.id, None)):
                     actionicons.removeActionIcon('controlpanel', a.id)
 
-
     def _extractAction(self, properties, index):
         """ Extract an ActionInformation from the funky form properties.
         """
-        id          = str(properties.get('id_%d'          % index, ''))
-        name        = str(properties.get('name_%d'        % index, ''))
-        action      = str(properties.get('action_%d'      % index, ''))
-        condition   = str(properties.get('condition_%d'   % index, ''))
-        category    = str(properties.get('category_%d'    % index, ''))
-        visible     =     properties.get('visible_%d'     % index, 0)
-        permissions =     properties.get('permission_%d'  % index, ())
-        appId       =     properties.get('appId_%d'  % index, '')
-        description =     properties.get('description_%d'  % index, '')
-        icon_expr   =     properties.get('icon_expr_%d'   % index, '')
+        id = str(properties.get('id_%d' % index, ''))
+        name = str(properties.get('name_%d' % index, ''))
+        action = str(properties.get('action_%d' % index, ''))
+        condition = str(properties.get('condition_%d' % index, ''))
+        category = str(properties.get('category_%d' % index, ''))
+        visible = properties.get('visible_%d' % index, 0)
+        permissions = properties.get('permission_%d' % index, ())
+        appId = properties.get('appId_%d' % index, '')
+        description = properties.get('description_%d' % index, '')
+        icon_expr = properties.get('icon_expr_%d' % index, '')
 
         if not name:
             raise ValueError('A name is required.')
@@ -209,9 +207,9 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                               permissions=permissions,
                               category=category,
                               visible=visible,
-                              appId = appId,
-                              description = description,
-                              icon_expr = icon_expr,
+                              appId=appId,
+                              description=description,
+                              icon_expr=icon_expr,
                               )
 
     security.declareProtected(ManagePortal, 'addAction')
@@ -225,7 +223,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                   visible=1,
                   appId=None,
                   imageUrl=None,
-                  icon_expr = '',
+                  icon_expr='',
                   description='',
                   REQUEST=None,
                   ):
@@ -258,7 +256,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                                     visible=int(visible),
                                     appId=appId,
                                     description=description,
-                                    icon_expr = icon_expr,
+                                    icon_expr=icon_expr,
                                     )
 
         new_actions.append(new_action)
@@ -291,7 +289,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             a1['action'] = a.getActionExpression()
             a1['condition'] = a.getCondition()
             a1['appId'] = a.getAppId()
-            a1['description']=a.getDescription()
+            a1['description'] = a.getDescription()
             a1['icon_expr'] = a.getIconExpression()
             actions.append(a1)
 

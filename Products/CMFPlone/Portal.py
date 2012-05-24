@@ -22,7 +22,7 @@ from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
 from zope.component import queryUtility
 
-member_indexhtml="""\
+member_indexhtml = """\
 member_search=context.restrictedTraverse('member_search_form')
 return member_search()
 """
@@ -94,7 +94,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
 
     def manage_beforeDelete(self, container, item):
         """ Should send out an Event before Site is being deleted """
-        self.removal_inprogress=1
+        self.removal_inprogress = 1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
 
     security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
@@ -131,7 +131,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     def availableLanguages(self):
         util = queryUtility(IMetadataLanguageAvailability)
         languages = util.getLanguageListing()
-        languages.sort(lambda x, y:cmp(x[1], y[1]))
+        languages.sort(lambda x, y: cmp(x[1], y[1]))
         # Put language neutral at the top.
         languages.insert(0, (u'', _(u'Language neutral (site default)')))
         return languages

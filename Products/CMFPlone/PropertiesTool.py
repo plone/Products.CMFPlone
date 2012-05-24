@@ -55,9 +55,9 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
                 raise TypeError, 'propertysheet needs to be a PropertyManager'
 
             for property in propertysheet.propertyMap():
-                pid=property.get('id')
-                ptype=property.get('type')
-                pvalue=propertysheet.getProperty(pid)
+                pid = property.get('id')
+                ptype = property.get('type')
+                pvalue = propertysheet.getProperty(pid)
                 if not hasattr(o, pid):
                     o._setProperty(pid, pvalue, ptype)
 

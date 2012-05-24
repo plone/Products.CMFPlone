@@ -25,7 +25,7 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
     implements(IInterfaceTool)
 
     id = 'portal_interface'
-    meta_type= 'Portal Interface Tool'
+    meta_type = 'Portal Interface Tool'
     security = ClassSecurityInfo()
 
     security.declarePublic('objectImplements')
@@ -126,11 +126,11 @@ def _trim_doc_string(text):
     lines = text.split('\n')
     nlines = [lines[0]]
     if len(lines) > 1:
-        min_indent=None
+        min_indent = None
         for line in lines[1:]:
-            indent=len(line) - len(line.lstrip())
+            indent = len(line) - len(line.lstrip())
             if indent < min_indent or min_indent is None:
-                min_indent=indent
+                min_indent = indent
         for line in lines[1:]:
             nlines.append(line[min_indent:])
     return '\n'.join(nlines)

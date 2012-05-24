@@ -82,7 +82,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         return unicode(str(m), input_encoding, errors)
 
     security.declarePublic('ulocalized_time')
-    def ulocalized_time(self, time, long_format=None, time_only = None, context=None,
+    def ulocalized_time(self, time, long_format=None, time_only=None, context=None,
                         domain='plonelocales', request=None):
         # get some context if none is passed
         if context is None:

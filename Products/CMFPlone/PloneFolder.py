@@ -10,10 +10,8 @@ from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 
 from OFS.Folder import Folder
-from OFS.interfaces import IOrderedContainer
 from OFS.ObjectManager import REPLACEABLE
 from OFS.OrderSupport import OrderSupport
-from DocumentTemplate.sequence import sort
 from webdav.NullResource import NullResource
 from webdav.interfaces import IWriteLock
 
@@ -27,7 +25,6 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implements
-from zope.container.contained import notifyContainerModified
 
 
 class ReplaceableWrapper:
@@ -137,7 +134,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
     def index_html(self):
         """Acquire if not present."""
         request = getattr(self, 'REQUEST', None)
-        if request and request.has_key('REQUEST_METHOD'):
+        if request and 'REQUEST_METHOD' in request:
             if request.maybe_webdav_client:
                 method = request['REQUEST_METHOD']
                 if method in ('PUT', ):
@@ -206,7 +203,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
         contents = PortalFolderBase.listFolderContents(self,
                                                   contentFilter=contentFilter)
         if suppressHiddenFiles:
-            contents = [obj for obj in contents if obj.getId()[:1]!='.']
+            contents = [obj for obj in contents if obj.getId()[:1] != '.']
         return contents
 
     security.declareProtected(AccessContentsInformation, 'folderlistingFolderContents')
@@ -250,8 +247,10 @@ InitializeClass(PloneFolder)
 
 
 def safe_cmp(x, y):
-    if callable(x): x=x()
-    if callable(y): y=y()
+    if callable(x):
+        x = x()
+    if callable(y):
+        y = y()
     return cmp(x, y)
 
 

@@ -109,7 +109,7 @@ class TempFolder(TempFolderBase):
             lr = getattr(object, '__ac_local_roles__', None)
             if lr:
                 if callable(lr):
-                    lr=lr()
+                    lr = lr()
                 lr = lr or {}
                 for k, v in lr.items():
                     if not k in local_roles:
@@ -130,8 +130,8 @@ class TempFolder(TempFolderBase):
                 object = parent
                 continue
             if hasattr(object, 'im_self'):
-                object=object.im_self
-                object=getattr(object, 'aq_inner', object)
+                object = object.im_self
+                object = getattr(object, 'aq_inner', object)
                 continue
             break
         return local_roles
@@ -230,7 +230,7 @@ class TempFolder(TempFolderBase):
 class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ """
     id = 'portal_factory'
-    meta_type= 'Plone Factory Tool'
+    meta_type = 'Plone Factory Tool'
     toolicon = 'skins/plone_images/add_icon.png'
     security = ClassSecurityInfo()
     isPrincipiaFolderish = 0
@@ -361,7 +361,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         stack = [str(s) for s in stack]  # convert from unicode if necessary (happens in Epoz for some weird reason)
         # need 2 more things on the stack at least for portal_factory to kick in:
         #    (1) a type, and (2) an id
-        if len(stack) < 2: # ignore
+        if len(stack) < 2:  # ignore
             return
 
         # Keep track of how many path elements we want to eat
@@ -371,14 +371,14 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         types_tool = getToolByName(self, 'portal_types')
         # make sure this is really a type name
         if not type_name in types_tool.listContentTypes():
-            return # nope -- do nothing
+            return  # nope -- do nothing
 
         gobbled_length += 1
 
         id = stack[-2]
         intended_parent = aq_parent(self)
         if hasattr(intended_parent, id):
-            return # do normal traversal via __bobo_traverse__
+            return  # do normal traversal via __bobo_traverse__
 
         gobbled_length += 1
 
@@ -413,11 +413,11 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     def __bobo_traverse__(self, REQUEST, name):
         # __bobo_traverse__ can be invoked directly by a restricted_traverse method call
         # in which case the traversal stack will not have been cleared by __before_publishing_traverse__
-        name = str(name) # fix unicode weirdness
+        name = str(name)  # fix unicode weirdness
         types_tool = getToolByName(self, 'portal_types')
         if not name in types_tool.listContentTypes():
-            return getattr(self, name) # not a type name -- do the standard thing
-        return self._getTempFolder(str(name)) # a type name -- return a temp folder
+            return getattr(self, name)  # not a type name -- do the standard thing
+        return self._getTempFolder(str(name))  # a type name -- return a temp folder
 
     security.declarePublic('__call__')
     def __call__(self, *args, **kwargs):
@@ -465,7 +465,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         types_tool = getToolByName(self, 'portal_types')
         if not type_name in types_tool.TempFolder.allowed_content_types:
             # update allowed types for tempfolder
-            types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
+            types_tool.TempFolder.allowed_content_types = (types_tool.listContentTypes())
 
         tempFolder = TempFolder(type_name).__of__(self)
 

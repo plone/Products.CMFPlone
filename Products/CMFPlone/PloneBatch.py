@@ -41,7 +41,7 @@ class Batch(ZTUBatch):
     next = LazyNextBatch()
     sequence_length = LazySequenceLength()
 
-    size = first= start = end = orphan = overlap = navlist = None
+    size = first = start = end = orphan = overlap = navlist = None
     numpages = pagenumber = pagerange = pagerangeend = pagerangestart = pagenumber = quantumleap = None
 
     def __init__(self, sequence, size, start=0, end=0, orphan=0, overlap=0, pagerange=7, quantumleap=0, b_start_str='b_start'):
@@ -116,7 +116,7 @@ class Batch(ZTUBatch):
         """ Returns the page number and url for the navigation quick links """
         if not navlist:
             navlist = self.navlist
-        return map(lambda x, formvariables = formvariables: (x, self.pageurl(formvariables, x)), navlist)
+        return map(lambda x, formvariables=formvariables: (x, self.pageurl(formvariables, x)), navlist)
 
     def prevurls(self, formvariables):
         """ Helper method to get prev navigation list from templates """
@@ -153,17 +153,17 @@ def opt(start, end, size, orphan, sequence_length):
         else:
             size = 25
     if start > 0:
-        if start>length:
+        if start > length:
             start = length
         if end > 0:
             if end < start:
                 end = start
         else:
             end = start + size - 1
-            if (end+orphan)>=length:
+            if (end + orphan) >= length:
                 end = length
     elif end > 0:
-        if (end)>length:
+        if (end) > length:
             end = length
         start = end + 1 - size
         if start - 1 < orphan:
@@ -171,7 +171,7 @@ def opt(start, end, size, orphan, sequence_length):
     else:
         start = 1
         end = start + size - 1
-        if (end+orphan)>=length:
+        if (end + orphan) >= length:
             end = length
     return start, end, size
 
@@ -203,14 +203,14 @@ def calculate_pagerange(pagenumber, numpages, pagerange):
 
 def calculate_quantum_leap_gap(numpages, pagerange):
     """ Find the QuantumLeap gap. Current width of list is 6 clicks (30/5) """
-    return int(max(1, round(float(numpages - pagerange)/30))*5)
+    return int(max(1, round(float(numpages - pagerange) / 30)) * 5)
 
 
 def calculate_leapback(pagenumber, numpages, pagerange):
     """ Check the distance between start and 0 and add links as necessary """
     leapback = []
     quantum_leap_gap = calculate_quantum_leap_gap(numpages, pagerange)
-    num_back_leaps = max(0, min(3, int(round(float(pagenumber - pagerange)/quantum_leap_gap) - 0.3)))
+    num_back_leaps = max(0, min(3, int(round(float(pagenumber - pagerange) / quantum_leap_gap) - 0.3)))
     if num_back_leaps:
         pagerange, pagerangestart, pagerangeend = calculate_pagerange(pagenumber, numpages, pagerange)
         leapback = range(pagerangestart - num_back_leaps * quantum_leap_gap, pagerangestart, quantum_leap_gap)
@@ -221,8 +221,10 @@ def calculate_leapforward(pagenumber, numpages, pagerange):
     """ Check the distance between end and length and add links as necessary """
     leapforward = []
     quantum_leap_gap = calculate_quantum_leap_gap(numpages, pagerange)
-    num_forward_leaps = max(0, min(3, int(round(float(numpages - pagenumber - pagerange)/quantum_leap_gap) - 0.3)))
+    num_forward_leaps = max(0, min(3, int(round(float(numpages - pagenumber - pagerange) / quantum_leap_gap) - 0.3)))
     if num_forward_leaps:
         pagerange, pagerangestart, pagerangeend = calculate_pagerange(pagenumber, numpages, pagerange)
-        leapforward = range(pagerangeend-1 + quantum_leap_gap, pagerangeend-1 + (num_forward_leaps+1) * quantum_leap_gap, quantum_leap_gap)
+        leapforward = range(pagerangeend - 1 + quantum_leap_gap,
+                            pagerangeend - 1 + (num_forward_leaps + 1) * quantum_leap_gap,
+                            quantum_leap_gap)
     return leapforward
