@@ -11,6 +11,11 @@ Changelog
   See https://dev.plone.org/ticket/12902
   [polyester]
 
+- When adding, changing or removing skins, automatically recook all resource
+  registries, to keep theme bundles in-sync. This mirrors the event subscriber
+  support used in plone.app.registry for the same purpose.
+  [hannosch]
+
 - Let the RR export/import steps depend on the skins tool and
   plone.app.registry steps, as either of them might create new theme bundles
   [hannosch]
