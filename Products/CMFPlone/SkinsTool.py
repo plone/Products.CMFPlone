@@ -27,12 +27,12 @@ class SkinsTool(PloneBaseTool, BaseTool):
     security.declareProtected(ManagePortal, 'manage_skinLayers')
     def manage_skinLayers(self, chosen=(), add_skin=0, del_skin=0,
                           skinname='', skinpath='', REQUEST=None):
-        super(SkinsTool, self).manage_skinLayers(chosen=chosen,
+        response = super(SkinsTool, self).manage_skinLayers(chosen=chosen,
             add_skin=add_skin, del_skin=del_skin, skinname=skinname,
             skinpath=skinpath, REQUEST=REQUEST)
         # when changing skins, we need to tell RR about it
         cookWhenChangingSettings(None, None)
-
+        return response
 
 SkinsTool.__doc__ = BaseTool.__doc__
 
