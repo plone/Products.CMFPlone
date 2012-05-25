@@ -4,6 +4,10 @@ Changelog
 2.2.7 (unreleased)
 ------------------
 
+- Change breadcrumb separator to / (slash character) for accessibility, and added SEO benefits. 
+  see https://dev.plone.org/ticket/12904
+  [polyester]
+
 - Add language atribute to presentation.pt for WCAG 2.0 compliance. 
   See https://dev.plone.org/ticket/12902
   [rmatt, polyester]
