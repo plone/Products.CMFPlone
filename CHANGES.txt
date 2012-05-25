@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.5 (unreleased)
+2.2.5 (2012-05-25)
 ------------------
 
 - Move form help inside field labels to improve accessibility.
