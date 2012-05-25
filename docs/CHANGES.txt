@@ -7,6 +7,10 @@ Changelog
 
 4.2rc2 (unreleased)
 -------------------
+- Add translatable js message for closing popup boxes.
+  Part of fix for https://dev.plone.org/ticket/12122
+  [smcmahon]
+
 - Handle server redirects during login via popup by detecting change in base.
   Fixed by incorporating zenwryly's patch, http://dev.plone.org/ticket/12029
   [smcmahon]
