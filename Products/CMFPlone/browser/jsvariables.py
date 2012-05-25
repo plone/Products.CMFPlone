@@ -12,6 +12,7 @@ var form_resubmit_message = '%(form_resubmit)s';
 var external_links_open_new_window = '%(open_links)s';
 var mark_special_links = '%(mark_links)s';
 var ajax_noresponse_message = '%(ajax_noresponse)s';
+var close_box_message = '%(close_box_message)s';
 """
 
 FORM_MODIFIED = _(u'text_form_modified_message',
@@ -22,6 +23,9 @@ FORM_RESUBMIT = _(u'text_form_resubmit_message',
 
 AJAX_NORESPONSE = _(u'text_ajax_noresponse_message',
     default=u'No response from server. Please try again later.')
+
+CLOSE_BOX_MESSAGE = _(u'text_ajax_close_box_message',
+    default=u'Close this box.')
 
 
 class JSVariables(BrowserView):
@@ -42,11 +46,13 @@ class JSVariables(BrowserView):
         form_modified = translate(FORM_MODIFIED, context=self.request)
         form_resubmit = translate(FORM_RESUBMIT, context=self.request)
         ajax_noresponse = translate(AJAX_NORESPONSE, context=self.request)
+        close_box_message = translate(CLOSE_BOX_MESSAGE, context=self.request)
 
         # escape_for_js
         form_modified = form_modified.replace("'", "\\'")
         form_resubmit = form_resubmit.replace("'", "\\'")
         ajax_noresponse = ajax_noresponse.replace("'", "\\'")
+        close_box_message = close_box_message.replace("'", "\\'")
 
         return TEMPLATE % dict(
             portal_url=portal_url,
@@ -55,4 +61,5 @@ class JSVariables(BrowserView):
             form_modified=form_modified,
             form_resubmit=form_resubmit,
             ajax_noresponse=ajax_noresponse,
+            close_box_message=close_box_message,
         )
