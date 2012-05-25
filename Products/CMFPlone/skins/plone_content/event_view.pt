@@ -15,14 +15,10 @@
                                     toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
 
         <div class="eventDetails vcard">
-            <table class="vertical listing"
-                   summary="Event details" i18n:attributes="summary summary_event_details;">
-
-                <tbody>
-
-                    <tr>
-                        <th i18n:translate="event_when">When</th>
-                        <td>
+            <h2 i18n:translate="summary_event_details">Event details</h2> 
+                        <div class="eventDetail">
+                        <h3 i18n:translate="event_when">When</h3>
+                        <div>
                             <tal:differentday tal:condition="python:not context.start().Date() == context.end().Date()"
                                               i18n:translate="event_when_differentday">
                                 <abbr i18n:name="startdate"
@@ -87,22 +83,26 @@
                                             tal:content="python:toLocalizedTime(context.end(), time_only=1)">End Time</span>
                                 </abbr>
                             </tal:sameday>
-                        </td>
-                    </tr>
-                    <tr tal:condition="context/location">
-                        <th i18n:translate="event_where">Where</th>
-                        <td class="location">
+                        </div>
+                        </div>
+                  
+                    <tal:where tal:condition="context/location">
+                    <div class="eventDetail">
+                        <h3 i18n:translate="event_where">Where</h3>
+                        <div class="location">
 
                             <metal:field use-macro="python:context.widget('location', mode='view')">
                             Location
                             </metal:field>
-                        </td>
-                    </tr>
-                    <tr tal:define="contact_email context/contact_email;
+                        </div>
+                    </div>
+                    </tal:where>
+                    <tal:contact tal:define="contact_email context/contact_email;
                                     contact_name python:context.contact_name() or None;"
                         tal:condition="python:contact_name or contact_email">
-                        <th i18n:translate="contact_name">Contact Name</th>
-                        <td>
+                    <div class="eventDetail">
+                        <h3 i18n:translate="contact_name">Contact Name</h3>
+                        <div>
                             <a id="parent-fieldname-contactEmail"
                                tal:condition="contact_email"
                                tal:replace="structure python: context.spamProtect(mailaddress=contact_email, mailname=contact_name, cssclass='email fn')"
@@ -110,27 +110,32 @@
                             <span class="fn"
                                   tal:condition="not: contact_email"
                                   tal:content="contact_name" />
-                        </td>
-                    </tr>
-                    <tr tal:condition="context/contact_phone">
-                        <th i18n:translate="contact_phone">Contact Phone</th>
-                        <td class="tel">
+                        </div>
+                    </div>
+                    </tal:contact>
+                    <tal:phone tal:condition="context/contact_phone">
+                    <div class="eventDetail">
+                        <h3 i18n:translate="contact_phone">Contact Phone</h3>
+                        <div class="tel">
                             <metal:field use-macro="python:context.widget('contactPhone', mode='view')">
                             Phone number
                             </metal:field>
-                        </td>
-                    </tr>
-                    <tr tal:condition="context/getAttendees|nothing">
-                        <th i18n:translate="contact_attendees">Attendees</th>
-                        <td class="attendees">
+                        </div>
+                    </div>
+                    </tal:phone>
+                    <tal:attendees tal:condition="context/getAttendees|nothing">
+                    <div class="eventDetail">
+                        <h3 i18n:translate="contact_attendees">Attendees</h3>
+                        <div class="attendees">
                             <metal:field use-macro="python:context.widget('attendees', mode='view')">
                             Attendees
                             </metal:field>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
-                        <td tal:define="here_url context/@@plone_context_state/object_url;
+                        </div>
+                    </div>
+                    </tal:attendees>
+                    <div class="eventDetail">
+                        <h3 i18n:translate="heading_add_to_calendar">Add event to calendar</h3>
+                        <div tal:define="here_url context/@@plone_context_state/object_url;
                                         portal context/@@plone_portal_state/portal;">
                             <a href="#"
                                tal:attributes="href string:$here_url/vcs_view"
@@ -144,10 +149,8 @@
                                i18n:attributes="title title_add_to_ical;">
                                 <img tal:replace="structure portal/icon_export_ical.png" src="" alt="" />
                                 <span i18n:translate="label_add_to_ical">iCal</span></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
         </div>
 
         <metal:field use-macro="python:context.widget('text', mode='view')">

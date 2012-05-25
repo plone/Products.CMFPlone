@@ -7,6 +7,10 @@ Changelog
 
 4.2rc2 (unreleased)
 -------------------
+
+- For event view template, changed headerless table to headings and divs for better accessibility. See bug #13181
+  [hmharter]
+
 - Add translatable js message for closing popup boxes.
   Part of fix for https://dev.plone.org/ticket/12122
   [smcmahon]
