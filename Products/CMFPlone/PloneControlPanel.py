@@ -159,7 +159,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         self.deleteActions(selection)
 
         # BBB
-        actionicons=getToolByName(self, 'portal_actionicons', None)
+        actionicons = getToolByName(self, 'portal_actionicons', None)
         if actionicons is not None:
             for a in acts:
                 if (a.appId == appId and

@@ -20,11 +20,11 @@ class TestControlPanel(PloneTestCase.PloneTestCase):
 
     def testDefaultGroups(self):
         for group in self.groups:
-            self.failUnless(group in self.controlpanel.getGroupIds(),
+            self.assertTrue(group in self.controlpanel.getGroupIds(),
                             "Missing group with id '%s'" % group)
 
     def testDefaultConfiglets(self):
         for title in self.configlets:
-            self.failUnless(title in [a.getAction(self)['id']
+            self.assertTrue(title in [a.getAction(self)['id']
                                    for a in self.controlpanel.listActions()],
                             "Missing configlet with id '%s'" % title)

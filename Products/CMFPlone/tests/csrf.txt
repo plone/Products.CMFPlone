@@ -181,7 +181,7 @@ anymore (which at the same time tests the security control panel):
 
   >>> browser.open('http://nohost/plone/plone_control_panel')
   >>> browser.getLink('Security').click()
-  >>> browser.getControl('Let users select their own passwords').selected = True
+  >>> browser.getControl(name='form.enable_user_pwd_choice').value = True
   >>> browser.getControl('Save').click()
 
   >>> browser.getLink('Users and Groups').click()
@@ -463,16 +463,16 @@ so testing one of them already makes sure the protection works in most cases:
 
   >>> browser.open('http://nohost/plone/plone_control_panel')
   >>> browser.getLink('Security').click()
-  >>> browser.getControl('Enable self-registration').selected
+  >>> browser.getControl(name='form.enable_self_reg').value
   False
-  >>> browser.getControl('Enable self-registration').selected = True
+  >>> browser.getControl(name='form.enable_self_reg').value = True
   >>> browser.getControl('Save').click()
   >>> browser.contents
   '...Info...Changes saved...'
 
   >>> browser.getLink('Security').click()
   >>> browser.getControl(name='_authenticator').value = 'invalid!'
-  >>> browser.getControl('Enable self-registration').selected = False
+  >>> browser.getControl(name='form.enable_self_reg').value = False
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...

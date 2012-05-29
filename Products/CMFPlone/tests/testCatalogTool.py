@@ -53,7 +53,7 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
 
     def testPloneLexiconIsZCTextLexicon(self):
         # Lexicon should be a ZCTextIndex lexicon
-        self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
+        self.assertTrue(hasattr(aq_base(self.catalog), 'plone_lexicon'))
         self.assertEqual(self.catalog.plone_lexicon.meta_type,\
                          'ZCTextIndex Lexicon')
 
@@ -71,19 +71,19 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
 
     def testGetObjSizeInSchema(self):
         # getObjSize column should be in catalog schema
-        self.failUnless('getObjSize' in self.catalog.schema())
+        self.assertTrue('getObjSize' in self.catalog.schema())
 
     def testExclude_from_navInSchema(self):
         # exclude_from_nav column should be in catalog schema
-        self.failUnless('exclude_from_nav' in self.catalog.schema())
+        self.assertTrue('exclude_from_nav' in self.catalog.schema())
 
     def testIs_folderishInSchema(self):
         # is_folderish should be in catalog schema
-        self.failUnless('is_folderish' in self.catalog.schema())
+        self.assertTrue('is_folderish' in self.catalog.schema())
 
     def testIs_folderishIsBooleanIndex(self):
         # is_folderish should be a BooleanIndex
-        self.failUnless(
+        self.assertTrue(
              self.catalog.Indexes['is_folderish'].__class__.__name__,
              'BooleanIndex')
 
@@ -126,11 +126,11 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
 
     def testExpirationDateInSchema(self):
         # ExpirationDate column should be in catalog schema
-        self.failUnless('ExpirationDate' in self.catalog.schema())
+        self.assertTrue('ExpirationDate' in self.catalog.schema())
 
     def testExpiresDateNotInSchema(self):
         # ExpirationDate column should be in catalog schema
-        self.failIf('ExpiresDate' in self.catalog.schema())
+        self.assertFalse('ExpiresDate' in self.catalog.schema())
 
     def testIs_Default_PageIsBooleanIndex(self):
         # sortable_title should be a BooleanIndex
@@ -261,7 +261,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.catalog.indexObject(self.folder.doc, idxs=['Title'])
         # The document is cataloged
         path = self.catalog._CatalogTool__url(self.folder.doc)
-        self.failUnless(path in self.catalog._catalog.paths.values())
+        self.assertTrue(path in self.catalog._catalog.paths.values())
         # But it is not returned when searching...
         self.assertEqual(len(self.catalog(getId='doc')), 0)
         self.assertEqual(len(self.catalog(Title='Foo')), 0)  # <-- Should be 1
@@ -276,7 +276,7 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.catalog.indexObject(self.folder.doc, idxs=['getId'])
         # The document is cataloged
         path = self.catalog._CatalogTool__url(self.folder.doc)
-        self.failUnless(path in self.catalog._catalog.paths.values())
+        self.assertTrue(path in self.catalog._catalog.paths.values())
         # But it is not returned when searching...
         self.assertEqual(len(self.catalog(getId='doc')), 0)  # <-- Should be 1
         self.assertEqual(len(self.catalog(Title='Foo')), 0)
@@ -360,7 +360,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # Should include the group in list of allowed users
         groupname = self.addUser2ToGroup()
         uf = self.portal.acl_users
-        self.failUnless(('user:%s' % groupname) in
+        self.assertTrue(('user:%s' % groupname) in
                 self.catalog._listAllowedRolesAndUsers(uf.getUser(user2)))
 
     def testSearchReturnsDocument(self):
@@ -426,7 +426,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
             .update_inherit(False)
         # Everything in subfolder should be invisible
         self.login(user2)
-        self.failIf(self.catalog(SearchableText='bar'))
+        self.assertFalse(self.catalog(SearchableText='bar'))
 
 
 class TestCatalogSorting(PloneTestCase.PloneTestCase):
@@ -514,7 +514,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.folder.folder_rename(paths=[foo_path], new_ids=['foo'],
                                   new_titles=[title])
         results = self.catalog(Title='Snooze')
-        self.failUnless(results)
+        self.assertTrue(results)
         for result in results:
             self.assertEqual(result.Title, title)
             self.assertEqual(result.getId, 'foo')
@@ -528,7 +528,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.folder.folder_rename(paths=[foo_path], new_ids=['bar'],
                                   new_titles=[title])
         results = self.catalog(Title='Snooze')
-        self.failUnless(results)
+        self.assertTrue(results)
         for result in results:
             self.assertEqual(result.Title, title)
             self.assertEqual(result.getId, 'bar')
@@ -536,10 +536,10 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
     def testSetTitleDoesNotUpdateCatalog(self):
         # setTitle() should not update the catalog
         title = 'Test Folder - Snooze!'
-        self.failUnless(self.catalog(getId='foo'))
+        self.assertTrue(self.catalog(getId='foo'))
         self.folder.foo.setTitle(title)
         #Title is a TextIndex
-        self.failIf(self.catalog(Title='Snooze'))
+        self.assertFalse(self.catalog(Title='Snooze'))
 
 
 class TestCatalogOrdering(PloneTestCase.PloneTestCase):
@@ -552,10 +552,10 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='doc4', text='blee')
 
     def testInitialOrder(self):
-        self.failUnlessEqual(self.folder.getObjectPosition('doc1'), 0)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc2'), 1)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 2)
-        self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 3)
+        self.assertEqual(self.folder.getObjectPosition('doc1'), 0)
+        self.assertEqual(self.folder.getObjectPosition('doc2'), 1)
+        self.assertEqual(self.folder.getObjectPosition('doc3'), 2)
+        self.assertEqual(self.folder.getObjectPosition('doc4'), 3)
 
     def testOrderIsUpdatedOnMoveDown(self):
         self.folder.folder_position('down', 'doc1')
@@ -564,7 +564,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc2', 'doc1', 'doc3', 'doc4']
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveUp(self):
         self.folder.folder_position('up', 'doc3')
@@ -573,7 +573,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc1', 'doc3', 'doc2', 'doc4']
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveTop(self):
         self.folder.folder_position('top', 'doc3')
@@ -582,7 +582,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc3', 'doc1', 'doc2', 'doc4']
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveBottom(self):
         self.folder.folder_position('bottom', 'doc3')
@@ -591,7 +591,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc1', 'doc2', 'doc4', 'doc3']
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectCreation(self):
         self.folder.invokeFactory('Document', id='doc5', text='blam')
@@ -600,7 +600,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc1', 'doc2', 'doc3', 'doc4', 'doc5']
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectDeletion(self):
         self.folder.manage_delObjects(['doc3', ])
@@ -609,7 +609,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc1', 'doc2', 'doc4']
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsFineWithObjectRenaming(self):
 
@@ -626,7 +626,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
         expected = ['doc1', 'buzz', 'doc3', 'doc4']
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderAfterALotOfChanges(self):
         # ['doc1','doc2','doc3','doc4']
@@ -653,7 +653,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
                             sort_on='getObjPositionInParent')
-        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+        self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testAllObjectsHaveOrder(self):
         #Make sure that a query with sort_on='getObjPositionInParent'
@@ -661,7 +661,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         #the Members folder is in the catalog and has getObjPositionInParent
         all_objs = self.catalog()
         sorted_objs = self.catalog(sort_on='getObjPositionInParent')
-        self.failUnlessEqual(len(all_objs), len(sorted_objs))
+        self.assertEqual(len(all_objs), len(sorted_objs))
 
         members = self.portal.Members
         members_path = '/'.join(members.getPhysicalPath())
@@ -669,8 +669,8 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         members_sorted = self.catalog(
                                 path=members_path,
                                 sort_on='getObjPositionInParent')
-        self.failUnless(len(members_query))
-        self.failUnlessEqual(len(members_query), len(members_sorted))
+        self.assertTrue(len(members_query))
+        self.assertEqual(len(members_query), len(members_sorted))
 
 
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
@@ -690,18 +690,18 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         self.setRoles(['Manager'])
         cb = self.portal.manage_copyObjects(['portal_catalog'])
         self.folder.manage_pasteObjects(cb)
-        self.failUnless(hasattr(aq_base(self.folder), 'portal_catalog'))
+        self.assertTrue(hasattr(aq_base(self.folder), 'portal_catalog'))
 
     def testPastingCatalogPreservesTextIndexes(self):
         # Pasting the catalog should not cause indexes to be removed.
         self.setRoles(['Manager'])
         cb = self.portal.manage_copyObjects(['portal_catalog'])
         self.folder.manage_pasteObjects(cb)
-        self.failUnless(hasattr(aq_base(self.folder), 'portal_catalog'))
+        self.assertTrue(hasattr(aq_base(self.folder), 'portal_catalog'))
         cat = self.folder.portal_catalog
-        self.failUnless('SearchableText' in cat.indexes())
+        self.assertTrue('SearchableText' in cat.indexes())
         # CMF added lexicons should stick around too
-        self.failUnless(hasattr(aq_base(cat), 'plaintext_lexicon'))
+        self.assertTrue(hasattr(aq_base(cat), 'plaintext_lexicon'))
 
 
 class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
@@ -719,41 +719,41 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.assertEqual(state, 'visible')
 
     def testVisibleCanBeFound(self):
-        self.failUnless(self.catalog(getId='doc'))
+        self.assertTrue(self.catalog(getId='doc'))
 
     def testVisibleIsUnindexed(self):
         self.folder._delObject('doc')
-        self.failIf(self.catalog(getId='doc'))
+        self.assertFalse(self.catalog(getId='doc'))
 
     def testPrivateCanBeFound(self):
         self.workflow.doActionFor(self.folder.doc, 'hide')
-        self.failUnless(self.catalog(getId='doc'))
+        self.assertTrue(self.catalog(getId='doc'))
 
     def testPrivateIsUnindexed(self):
         self.workflow.doActionFor(self.folder.doc, 'hide')
         self.folder._delObject('doc')
-        self.failIf(self.catalog(getId='doc'))
+        self.assertFalse(self.catalog(getId='doc'))
 
     def testPendingCanBeFound(self):
         self.workflow.doActionFor(self.folder.doc, 'submit')
-        self.failUnless(self.catalog(getId='doc'))
+        self.assertTrue(self.catalog(getId='doc'))
 
     def testPendingIsUnindexed(self):
         self.workflow.doActionFor(self.folder.doc, 'submit')
         self.folder._delObject('doc')
-        self.failIf(self.catalog(getId='doc'))
+        self.assertFalse(self.catalog(getId='doc'))
 
     def testPublishedCanBeFound(self):
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
-        self.failUnless(self.catalog(getId='doc'))
+        self.assertTrue(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexed(self):
         # Works here!
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.folder._delObject('doc')
-        self.failIf(self.catalog(getId='doc'))
+        self.assertFalse(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedIfOwnerDeletes(self):
         # Works here!
@@ -761,7 +761,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.setRoles(['Member'])
         self.folder._delObject('doc')
-        self.failIf(self.catalog(getId='doc'))
+        self.assertFalse(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedByFolderDeleteScript(self):
         # Works here too!
@@ -774,7 +774,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.setRequestMethod('POST')
         self.folder.folder_delete()
         self.setRequestMethod('GET')
-        self.failIf(self.catalog(getId='doc'))
+        self.assertFalse(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedWhenDeletingParentFolder(self):
         # Works here too!
@@ -782,7 +782,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.setRoles(['Member'])
         self.folder.aq_parent._delObject(self.folder.getId())
-        self.failIf(self.catalog(getId='doc'))
+        self.assertFalse(self.catalog(getId='doc'))
 
 
 class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
@@ -906,20 +906,20 @@ class TestIndexers(PloneTestCase.PloneTestCase):
 
     def testSetup(self):
         doc = self.doc
-        self.failUnlessEqual(doc.getId(), 'doc')
-        self.failUnlessEqual(doc.Title(), 'document')
+        self.assertEqual(doc.getId(), 'doc')
+        self.assertEqual(doc.Title(), 'document')
 
     def test_is_folderishWithNonFolder(self):
         i = dummy.Item()
-        self.failIf(is_folderish(i)())
+        self.assertFalse(is_folderish(i)())
 
     def test_is_folderishWithFolder(self):
         f = dummy.Folder('struct_folder')
-        self.failUnless(is_folderish(f)())
+        self.assertTrue(is_folderish(f)())
 
     def test_is_folderishWithNonStructuralFolder(self):
         f = dummy.NonStructuralFolder('ns_folder')
-        self.failIf(is_folderish(f)())
+        self.assertFalse(is_folderish(f)())
 
     def test_provided(self):
         from Products.CMFCore.interfaces import IContentish
@@ -929,14 +929,14 @@ class TestIndexers(PloneTestCase.PloneTestCase):
         obj = DummyContent()
         w = IndexableObjectWrapper(obj, self.portal.portal_catalog)
 
-        self.failUnless(IIndexableObjectWrapper.providedBy(w))
-        self.failUnless(IContentish.providedBy(w))
+        self.assertTrue(IIndexableObjectWrapper.providedBy(w))
+        self.assertTrue(IContentish.providedBy(w))
 
     def test_getIcon(self):
         doc = self.doc
         iconname = doc.getIcon(relative_to_portal=1)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
-        self.failUnlessEqual(wrapped.getIcon, iconname)
+        self.assertEqual(wrapped.getIcon, iconname)
 
     def test_uuid(self):
         alsoProvides(self.doc, IAttributeUUID)
@@ -944,8 +944,8 @@ class TestIndexers(PloneTestCase.PloneTestCase):
 
         uuid = IUUID(self.doc, None)
         wrapped = IndexableObjectWrapper(self.doc, self.portal.portal_catalog)
-        self.failUnless(wrapped.UID)
-        self.failUnless(uuid == wrapped.UID)
+        self.assertTrue(wrapped.UID)
+        self.assertTrue(uuid == wrapped.UID)
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):

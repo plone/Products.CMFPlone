@@ -26,7 +26,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           properties={'username': member_id,
                                       'email': 'foo@bar.com'})
         user = self.portal.acl_users.getUserById(member_id)
-        self.failUnless(user, 'addMember failed to create user')
+        self.assertTrue(user, 'addMember failed to create user')
 
     def testCannotRegisterWithRootAdminUsername(self):
         root_user = self.portal.aq_parent.acl_users.users.listUserIds()[0]
@@ -41,7 +41,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           properties={'username': member_id,
                                       'email': 'FOO@BAR.COM'})
         user = self.portal.acl_users.getUserById(member_id)
-        self.failUnless(user, 'addMember failed to create user')
+        self.assertTrue(user, 'addMember failed to create user')
 
     def testJoinWithoutEmailRaisesValueError(self):
         self.assertRaises(ValueError,
@@ -97,7 +97,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
     def testIsMemberIdAllowedIfSubstringOfExisting(self):
         # http://dev.plone.org/plone/ticket/6396
-        self.failUnless(self.registration.isMemberIdAllowed('useri'))
+        self.assertTrue(self.registration.isMemberIdAllowed('useri'))
 
     def testRegisteredNotify(self):
         # tests email sending on registration
@@ -126,7 +126,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                          '=?utf-8?q?T=C3=A4st_Admin?= <bar@baz.com>')
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
         # And a Quoted Printable encoded body
-        self.failUnless('T=C3=A4st Admin' in msg.get_payload())
+        self.assertTrue('T=C3=A4st Admin' in msg.get_payload())
 
     def testMailPassword(self):
         # tests email sending for password emails
@@ -155,7 +155,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                          '=?utf-8?q?T=C3=A4st_Admin?= <bar@baz.com>')
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
         # And a Quoted Printable encoded body
-        self.failUnless('T=C3=A4st Porta' in msg.get_payload())
+        self.assertTrue('T=C3=A4st Porta' in msg.get_payload())
 
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
@@ -167,7 +167,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         # Verify that if the _v_md5base attribute is missing, things
         # fall back to the class attribute and its default value.
         self.registration._md5base()
-        self.failIfEqual(self.registration._v_md5base, None)
+        self.assertNotEqual(self.registration._v_md5base, None)
         delattr(self.registration, '_v_md5base')
         self.assertEqual(self.registration._v_md5base, None)
 
@@ -184,8 +184,8 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         self.assertEqual(pw, self.registration.getPassword(6, salt))
         self.assertEqual(pw, self.registration.getPassword(6, salt))
         # These should fail
-        self.failIfEqual(pw, self.registration.getPassword(7, salt))
-        self.failIfEqual(pw, self.registration.getPassword(6, salt + 'x'))
+        self.assertNotEqual(pw, self.registration.getPassword(7, salt))
+        self.assertNotEqual(pw, self.registration.getPassword(6, salt + 'x'))
 
     def testGeneratePassword(self):
         pw = self.registration.generatePassword()

@@ -61,7 +61,7 @@ class ActionsTool(PloneBaseTool, BaseTool):
                 action_chain = (action_chain, )
             for action_ident in action_chain:
                 sep = action_ident.rfind('/')
-                category, id = action_ident[:sep], action_ident[sep+1:]
+                category, id = action_ident[:sep], action_ident[sep + 1:]
                 for ai in actions:
                     if id == ai['id'] and category == ai['category']:
                         filtered_actions.append(ai)

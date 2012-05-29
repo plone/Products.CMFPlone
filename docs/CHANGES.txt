@@ -8,6 +8,16 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- PEP 8 (ignoring W602, E203, E241, E301, E501 and E701).
+  [pbdiode, hvelarde]
+
+- Add 'displayPublicationDateInByline' to site properties property sheet in
+  order to finish PLIP #8699: Display publication date in author byline.
+  [vipod]
+
+- Deprecated aliases were replaced on tests.
+  [hvelarde]
+
 - Don't register the plone_deprecated skin layer. These items are no
   longer supported as part of Plone and remain here temporarily as a
   convenience to those who may need to move them into their own
@@ -26,6 +36,10 @@ Changelog
   Fixes https://dev.plone.org/ticket/12877
   [davidjb]
 
+- accessibility improvements for screen readers regarding "more" links,
+  see http://dev.plone.org/ticket/11982
+  [rmattb, applied by polyester]
+
 - Fix an outdated "Send this" form handler property reference.
   [rossp]
 
@@ -41,10 +55,36 @@ Changelog
   [mj]
 
 
+4.2rc2 (unreleased)
+-------------------
+
+- Check the existence of a portal_type attribute before accessing it to construct
+  navigation URLs. This avoids an exception when constructing breadcrumb navigation
+  for search results if the result is a 'Discussion Item' as the parent Conversation
+  object does not have a portal_type attribute.
+  [gaudenz]
+
+- When adding, changing or removing skins, automatically recook all resource
+  registries, to keep theme bundles in-sync. This mirrors the event subscriber
+  support used in plone.app.registry for the same purpose.
+  [hannosch]
+
+- Let the RR export/import steps depend on the skins tool and
+  plone.app.registry steps, as either of them might create new theme bundles
+  [hannosch]
+
+- Hide Kupu base profile on Plone site creation screen.
+  [hannosch]
+
+- Accessibility improvements for screen readers regarding "more" links, see
+  http://dev.plone.org/ticket/11982
+  [rmattb, applied by polyester]
+
+
 4.2b3 (unreleased)
 ------------------
 
-- Stop filtering folder_listing to the types from 
+- Stop filtering folder_listing to the types from
   @@plone_portal_state/friendly_types, since that excludes non-searchable
   types rather than non-listable types.
   [davisagli]
@@ -59,8 +99,8 @@ Changelog
   to type 'submit'.
   [davisagli]
 
-- Use getId() instead of title_or_id() for displaying which items get 
-  deleted, to avoid unicode error
+- Use getId() instead of title_or_id() for displaying which items get deleted,
+  to avoid unicode error
   Fixes https://dev.plone.org/ticket/12765
   [spereverde]
 
@@ -97,7 +137,8 @@ Changelog
 4.2b2 (2012-02-09)
 ------------------
 
-- Changed link from search to @@search for the "More" link in livesearch_reply.
+- Changed link from search to @@search for the "More" link in
+  livesearch_reply.
   [vincentfretin]
 
 - Notify ObjectModifiedEvent when a content title is modified
@@ -117,8 +158,8 @@ Changelog
 4.2b1 (2011-12-05)
 ------------------
 
-- Define a ZCML feature called `plone-42` in addition to the existing `plone-4`
-  and `plone-41` to be used in conditional ZCML registrations.
+- Define a ZCML feature called `plone-42` in addition to the existing
+  `plone-4` and `plone-41` to be used in conditional ZCML registrations.
   [vincentfretin]
 
 - Allow "Site Administrator to add keywords"
@@ -170,8 +211,8 @@ Changelog
 4.2a2 - 2011-08-25
 ------------------
 
-- AuthenticatedUsers group is used for local roles etc, and is not the same
-  as Authenticated role. Thus, it can not be optimized away in catalog queries.
+- AuthenticatedUsers group is used for local roles etc, and is not the same as
+  Authenticated role. Thus, it can not be optimized away in catalog queries.
   [tesdal]
 
 - getFolderContents only sets b_size if batching is true.

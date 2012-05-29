@@ -50,33 +50,33 @@ class TestInterfaceTool(unittest.TestCase):
     def testContentImplements(self):
         tool = self._makeOne()
         content = PortalContent()
-        self.failUnless(tool.objectImplements(content,
+        self.assertTrue(tool.objectImplements(content,
                                               getDottedName(IContentish)))
 
     def testDocumentImplements(self):
         tool = self._makeOne()
         document = Document(id='foo')
-        self.failUnless(tool.objectImplements(document,
+        self.assertTrue(tool.objectImplements(document,
                         getDottedName(IContentish)))
-        self.failUnless(tool.objectImplements(document,
+        self.assertTrue(tool.objectImplements(document,
                         getDottedName(IDublinCore)))
 
     def testDCImplements(self):
         tool = self._makeOne()
         dc = DefaultDublinCoreImpl()
-        self.failUnless(tool.objectImplements(dc, getDottedName(IDublinCore)))
+        self.assertTrue(tool.objectImplements(dc, getDottedName(IDublinCore)))
 
     def testAImplements(self):
         tool = self._makeOne()
         a = A()
-        self.failUnless(tool.objectImplements(a, getDottedName(IContentish)))
-        self.failUnless(tool.objectImplements(a, getDottedName(IDublinCore)))
-        self.failIf(tool.objectImplements(a, getDottedName(IMyPortalContent)))
+        self.assertTrue(tool.objectImplements(a, getDottedName(IContentish)))
+        self.assertTrue(tool.objectImplements(a, getDottedName(IDublinCore)))
+        self.assertFalse(tool.objectImplements(a, getDottedName(IMyPortalContent)))
 
     def testBImplements(self):
         tool = self._makeOne()
         b = B()
-        self.failUnless(tool.objectImplements(b, getDottedName(IContentish)))
-        self.failUnless(tool.objectImplements(b, getDottedName(IDublinCore)))
-        self.failUnless(
+        self.assertTrue(tool.objectImplements(b, getDottedName(IContentish)))
+        self.assertTrue(tool.objectImplements(b, getDottedName(IDublinCore)))
+        self.assertTrue(
                 tool.objectImplements(b, getDottedName(IMyPortalContent)))

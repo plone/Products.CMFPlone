@@ -45,54 +45,54 @@ class TestURLTool(unittest.TestCase):
     def test_isURLInPortal(self):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
-        self.failUnless(iURLiP('http://www.foobar.com/bar/foo/folder'))
-        self.failUnless(iURLiP('http://www.foobar.com/bar/foo'))
-        self.failIf(iURLiP('http://www.foobar.com/bar2/foo'))
-        self.failUnless(iURLiP('https://www.foobar.com/bar/foo/folder'))
-        self.failIf(iURLiP('http://www.foobar.com:8080/bar/foo/folder'))
-        self.failIf(iURLiP('http://www.foobar.com/bar'))
-        self.failIf(iURLiP('/images'))
-        self.failUnless(iURLiP('/bar/foo/foo'))
+        self.assertTrue(iURLiP('http://www.foobar.com/bar/foo/folder'))
+        self.assertTrue(iURLiP('http://www.foobar.com/bar/foo'))
+        self.assertFalse(iURLiP('http://www.foobar.com/bar2/foo'))
+        self.assertTrue(iURLiP('https://www.foobar.com/bar/foo/folder'))
+        self.assertFalse(iURLiP('http://www.foobar.com:8080/bar/foo/folder'))
+        self.assertFalse(iURLiP('http://www.foobar.com/bar'))
+        self.assertFalse(iURLiP('/images'))
+        self.assertTrue(iURLiP('/bar/foo/foo'))
 
     def test_isURLInPortalRelative(self):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
 
         #non-root relative urls will need a current context to be passed in
-        self.failUnless(iURLiP('images/img1.jpg'))
-        self.failUnless(iURLiP('./images/img1.jpg'))
+        self.assertTrue(iURLiP('images/img1.jpg'))
+        self.assertTrue(iURLiP('./images/img1.jpg'))
 
         # /bar/foo/something
-        self.failUnless(iURLiP('../something', self.site.foo.doc1))
+        self.assertTrue(iURLiP('../something', self.site.foo.doc1))
         # /bar/afolder
-        self.failIf(iURLiP('../../afolder', self.site.foo.doc1))
+        self.assertFalse(iURLiP('../../afolder', self.site.foo.doc1))
         # /afolder
-        self.failIf(iURLiP('../../../afolder', self.site.foo.doc1))
+        self.assertFalse(iURLiP('../../../afolder', self.site.foo.doc1))
 
         # /../afolder? How do we have more ../'s than there are parts in
         # the URL?
-        self.failIf(iURLiP('../../../../afolder', self.site.foo.doc1))
+        self.assertFalse(iURLiP('../../../../afolder', self.site.foo.doc1))
 
         # /bar/foo/afolder
-        self.failUnless(iURLiP('../../foo/afolder', self.site.foo.doc1))
+        self.assertTrue(iURLiP('../../foo/afolder', self.site.foo.doc1))
 
     def test_isURLInPortalExternal(self):
         url_tool = self._makeOne()
         iURLiP = url_tool.isURLInPortal
-        self.failUnless(iURLiP('http://external1'))
-        self.failUnless(iURLiP('http://external1/'))
-        self.failUnless(iURLiP('http://external1/something'))
-        self.failUnless(iURLiP('http://external2'))
-        self.failUnless(iURLiP('http://external2/'))
-        self.failUnless(iURLiP('http://external2/something'))
-        self.failUnless(iURLiP('http://external3/site'))
-        self.failUnless(iURLiP('http://external3/site/'))
-        self.failUnless(iURLiP('http://external3/site/something'))
-        self.failUnless(iURLiP('http://external4/site'))
-        self.failUnless(iURLiP('http://external4/site/'))
-        self.failUnless(iURLiP('http://external4/site/something'))
+        self.assertTrue(iURLiP('http://external1'))
+        self.assertTrue(iURLiP('http://external1/'))
+        self.assertTrue(iURLiP('http://external1/something'))
+        self.assertTrue(iURLiP('http://external2'))
+        self.assertTrue(iURLiP('http://external2/'))
+        self.assertTrue(iURLiP('http://external2/something'))
+        self.assertTrue(iURLiP('http://external3/site'))
+        self.assertTrue(iURLiP('http://external3/site/'))
+        self.assertTrue(iURLiP('http://external3/site/something'))
+        self.assertTrue(iURLiP('http://external4/site'))
+        self.assertTrue(iURLiP('http://external4/site/'))
+        self.assertTrue(iURLiP('http://external4/site/something'))
 
-        self.failIf(iURLiP('http://external3/other'))
-        self.failIf(iURLiP('http://external4/other'))
-        self.failIf(iURLiP('http://external5'))
-        self.failIf(iURLiP('http://external11'))
+        self.assertFalse(iURLiP('http://external3/other'))
+        self.assertFalse(iURLiP('http://external4/other'))
+        self.assertFalse(iURLiP('http://external5'))
+        self.assertFalse(iURLiP('http://external11'))

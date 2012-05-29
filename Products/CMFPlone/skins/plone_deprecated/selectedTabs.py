@@ -9,7 +9,7 @@
 ##
 from zExceptions import Forbidden
 if container.REQUEST.get('PUBLISHED') is script:
-   raise Forbidden('Script may not be published.')
+    raise Forbidden('Script may not be published.')
 
 from AccessControl import Unauthorized
 
@@ -39,6 +39,6 @@ for action in portal_tabs:
 # Sort by path length, the longest matching path wins
 valid_actions.sort()
 if valid_actions:
-    return {'portal':valid_actions[-1][1]}
+    return {'portal': valid_actions[-1][1]}
 
-return {'portal':default_tab}
+return {'portal': default_tab}

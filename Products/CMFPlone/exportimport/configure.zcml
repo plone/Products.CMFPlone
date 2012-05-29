@@ -19,6 +19,7 @@
       title="Stylesheet registry"
       description="Import stylesheet registry"
       handler="Products.ResourceRegistries.exportimport.cssregistry.importCSSRegistry">
+    <depends name="skins"/>
     <depends name="toolset"/>
     <depends name="componentregistry"/>
   </genericsetup:importStep>
@@ -28,6 +29,7 @@
       title="KSS registry"
       description="Import KSS registry"
       handler="Products.ResourceRegistries.exportimport.kssregistry.importKSSRegistry">
+    <depends name="skins"/>
     <depends name="toolset"/>
     <depends name="componentregistry"/>
   </genericsetup:importStep>
@@ -37,6 +39,7 @@
       title="Javascript registry"
       description="Import javascript registry"
       handler="Products.ResourceRegistries.exportimport.jsregistry.importJSRegistry">
+    <depends name="skins"/>
     <depends name="toolset"/>
     <depends name="componentregistry"/>
   </genericsetup:importStep>

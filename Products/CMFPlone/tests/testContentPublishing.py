@@ -122,7 +122,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
                   self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, 'review_state'),
                              'published')
-            self.failUnless(self.portal.isExpired(o))
+            self.assertTrue(self.portal.isExpired(o))
 
     def testPublishingWithoutSubobjects(self):
         self.setRoles(['Manager'])  # Make sure we can publish directly
@@ -191,7 +191,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.folder.d1.content_status_modify(workflow_action='publish',
                                              effective_date='1/1/2001',
                                              expiration_date='1/2/2001')
-        self.failUnless(self.portal.isExpired(self.folder.d1))
+        self.assertTrue(self.portal.isExpired(self.folder.d1))
 
     def testIsExpiredWithImplicitExpiredContent(self):
         self.setRoles(['Manager'])
@@ -199,16 +199,16 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.folder.d1.content_status_modify(workflow_action='publish',
                                              effective_date='1/1/2001',
                                              expiration_date='1/2/2001')
-        self.failUnless(self.folder.d1.isExpired())
+        self.assertTrue(self.folder.d1.isExpired())
 
     def testIsExpiredWithExplicitNonExpiredContent(self):
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Document', id='d1', title='Doc 1')
         self.folder.d1.content_status_modify(workflow_action='publish')
-        self.failIf(self.portal.isExpired(self.folder.d1))
+        self.assertFalse(self.portal.isExpired(self.folder.d1))
 
     def testIsExpiredWithImplicitNonExpiredContent(self):
         self.setRoles(['Manager'])
         self.folder.invokeFactory('Document', id='d1', title='Doc 1')
         self.folder.d1.content_status_modify(workflow_action='publish')
-        self.failIf(self.folder.d1.isExpired())
+        self.assertFalse(self.folder.d1.isExpired())

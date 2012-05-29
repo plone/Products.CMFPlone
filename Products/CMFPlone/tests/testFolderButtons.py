@@ -42,7 +42,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.folder.folder_rename(paths=[doc_path], new_ids=['doc1'],
                                   new_titles=[title])
         results = self.catalog(Title='Snooze')
-        self.failUnless(results)
+        self.assertTrue(results)
         for result in results:
             self.assertEqual(result.Title, title)
             self.assertEqual(result.id, 'doc1')
@@ -55,7 +55,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.folder.folder_rename(paths=[doc_path], new_ids=['baz'],
                                   new_titles=[title])
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
-        self.failUnless(getattr(self.folder.foo, 'baz', None) is not None)
+        self.assertTrue(getattr(self.folder.foo, 'baz', None) is not None)
         self.assertEqual(self.folder.foo.baz.Title(), title)
 
     def testCatalogTitleAndIdAreUpdatedOnFolderRename(self):
@@ -66,7 +66,7 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.folder.folder_rename(paths=[doc_path], new_ids=['baz'],
                                   new_titles=[title])
         results = self.catalog(Title='Snooze')
-        self.failUnless(results)
+        self.assertTrue(results)
         for result in results:
             self.assertEqual(result.Title, title)
             self.assertEqual(result.id, 'baz')
@@ -82,8 +82,8 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
                                   new_titles=[title, title])
         self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
-        self.failUnless(getattr(self.folder.foo, 'baz', None) is not None)
-        self.failUnless(getattr(self.folder.bar, 'blah', None) is not None)
+        self.assertTrue(getattr(self.folder.foo, 'baz', None) is not None)
+        self.assertTrue(getattr(self.folder.bar, 'blah', None) is not None)
         self.assertEqual(self.folder.foo.baz.Title(), title)
         self.assertEqual(self.folder.bar.blah.Title(), title)
 
@@ -144,7 +144,7 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.app.REQUEST.set('paths', [doc_path])
         self.folder.folder_delete()
         results = self.catalog(path=doc_path)
-        self.failIf(results)
+        self.assertFalse(results)
 
     def testDeleteMultiplePaths(self):
         # Make sure deletion works for list of paths
@@ -171,10 +171,10 @@ class TestFolderDelete(PloneTestCase.PloneTestCase):
         self.assertEqual(getattr(self.folder.bar, 'doc2', None), None)
         # but the undeletable object will still be in place
         undeletable = getattr(self.folder, 'no_delete', None)
-        self.failIfEqual(undeletable, None)
+        self.assertNotEqual(undeletable, None)
         # manage_beforeDelete will have been called, but the change it
         # makes should have been rolled back
-        self.failIf(hasattr(undeletable, 'delete_attempted'))
+        self.assertFalse(hasattr(undeletable, 'delete_attempted'))
 
     def testGETRaisesUnauthorized(self):
         # folder_delete requires a non-GET request and will fail otherwise
@@ -267,7 +267,7 @@ class TestFolderPublish(PloneTestCase.PloneTestCase):
         # because an error was raised during post transition the
         # transaction should have been rolled-back and the state
         # should not have changed
-        self.failIfEqual(self.wtool.getInfoFor(self.folder.foo.doc1,
+        self.assertNotEqual(self.wtool.getInfoFor(self.folder.foo.doc1,
                                                'review_state', None),
                          'published')
 
@@ -308,7 +308,7 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
             else:
                 if not msg:
                     msg = 'no error log entry available'
-        self.failUnlessEqual(a, b, msg)
+        self.assertEqual(a, b, msg)
 
     def testObjectRenameWithoutVHM(self):
         self.folder.invokeFactory('Document', 'd1', title='Doc1')
@@ -326,13 +326,13 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         params = {}
         for p in response.getHeader('Location').split('?')[1].split('&'):
             key, val = p.split('=')
-            self.failIf(key in params)
+            self.assertFalse(key in params)
             params[key] = val
-        self.failUnless('paths%3Alist' in params)
-        self.failUnless('orig_template' in params)
+        self.assertTrue('paths%3Alist' in params)
+        self.assertTrue('orig_template' in params)
 
-        self.failUnless(location.startswith(objectUrl), location)
-        self.failUnless(location.endswith('folder_rename_form'), location)
+        self.assertTrue(location.startswith(objectUrl), location)
+        self.assertTrue(location.endswith('folder_rename_form'), location)
 
         # Perform the redirect
         editFormPath = location[len(self.app.REQUEST.SERVER_URL):]
@@ -356,11 +356,11 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
 
         # Make sure we landed in the right place
         location = response.getHeader('Location').split('?')[0]
-        self.failUnless(location.startswith(folderUrl + '/new-id'), location)
-        self.failUnless(location.endswith('document_view'), location)
+        self.assertTrue(location.startswith(folderUrl + '/new-id'), location)
+        self.assertTrue(location.endswith('document_view'), location)
 
-        self.failUnless('new-id' in self.folder)
-        self.failIf('d1' in self.folder)
+        self.assertTrue('new-id' in self.folder)
+        self.assertFalse('d1' in self.folder)
         self.assertEqual(self.folder['new-id'].Title(), 'New title')
 
     def testObjectRenameWithVHM(self):
@@ -388,13 +388,13 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
         params = {}
         for p in response.getHeader('Location').split('?')[1].split('&'):
             key, val = p.split('=')
-            self.failIf(key in params)
+            self.assertFalse(key in params)
             params[key] = val
-        self.failUnless('paths%3Alist' in params)
-        self.failUnless('orig_template' in params)
+        self.assertTrue('paths%3Alist' in params)
+        self.assertTrue('orig_template' in params)
 
-        self.failUnless(location.startswith(objectUrl), location)
-        self.failUnless(location.endswith('folder_rename_form'), location)
+        self.assertTrue(location.startswith(objectUrl), location)
+        self.assertTrue(location.endswith('folder_rename_form'), location)
 
         # Perform the redirect
         editFormPath = vhmBasePath + location[len(vhmBaseUrl):]
@@ -418,9 +418,9 @@ class TestObjectActions(PloneTestCase.FunctionalTestCase):
 
         # Make sure we landed in the right place
         location = response.getHeader('Location').split('?')[0]
-        self.failUnless(location.startswith(folderUrl + '/new-id'), location)
-        self.failUnless(location.endswith('document_view'), location)
+        self.assertTrue(location.startswith(folderUrl + '/new-id'), location)
+        self.assertTrue(location.endswith('document_view'), location)
 
-        self.failUnless('new-id' in self.folder)
-        self.failIf('d1' in self.folder)
+        self.assertTrue('new-id' in self.folder)
+        self.assertFalse('d1' in self.folder)
         self.assertEqual(self.folder['new-id'].Title(), 'New title')

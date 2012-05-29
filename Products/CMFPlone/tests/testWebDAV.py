@@ -21,10 +21,10 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
     def testPropertiesToolTitle(self):
         ptool = getToolByName(self.portal, 'portal_properties')
         psets = dict(ptool.propertysheets.items())
-        self.failUnless('webdav' in psets.keys())
+        self.assertTrue('webdav' in psets.keys())
         default = psets['webdav']
         items = dict(default.propertyItems())
-        self.failUnless('displayname' in items.keys())
+        self.assertTrue('displayname' in items.keys())
         self.assertEquals(items['displayname'], ptool.title)
 
 
@@ -75,7 +75,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('new_html' in self.folder)
+        self.assertTrue('new_html' in self.folder)
         self.assertEqual(self.folder.new_html.portal_type, 'Document')
         self.assertEqual(self.folder.new_html.EditableBody(), html)
 
@@ -89,7 +89,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.rst' in self.folder)
+        self.assertTrue('test.rst' in self.folder)
         self.assertEqual(self.folder['test.rst'].portal_type, 'Document')
         self.assertEqual(self.folder['test.rst'].EditableBody(), '')
 
@@ -103,7 +103,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.txt' in self.folder)
+        self.assertTrue('test.txt' in self.folder)
         self.assertEqual(self.folder['test.txt'].portal_type, 'Document')
         self.assertEqual(self.folder['test.txt'].EditableBody(), '')
 
@@ -117,7 +117,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.ini' in self.folder)
+        self.assertTrue('test.ini' in self.folder)
         self.assertEqual(self.folder['test.ini'].portal_type, 'Document')
         self.assertEqual(self.folder['test.ini'].EditableBody(), '')
 
@@ -130,7 +130,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('index_html' in self.folder)
+        self.assertTrue('index_html' in self.folder)
         self.assertEqual(self.folder.index_html.portal_type, 'Document')
         self.assertEqual(self.folder.index_html.EditableBody(), html)
         self.assertEqual(self.folder._getOb('index_html').EditableBody(), html)
@@ -144,7 +144,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('new_image' in self.folder)
+        self.assertTrue('new_image' in self.folder)
         self.assertEqual(self.folder.new_image.portal_type, 'Image')
         self.assertEqual(str(self.folder.new_image.getImage().data), dummy.GIF)
 
@@ -161,7 +161,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.gif' in self.folder)
+        self.assertTrue('test.gif' in self.folder)
         self.assertEqual(self.folder['test.gif'].portal_type, 'Image')
         self.assertEqual(str(self.folder['test.gif'].getImage().data),
                          dummy.GIF)
@@ -179,7 +179,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.jpg' in self.folder)
+        self.assertTrue('test.jpg' in self.folder)
         self.assertEqual(self.folder['test.jpg'].portal_type, 'Image')
         self.assertEqual(str(self.folder['test.jpg'].getImage().data),
                          dummy.GIF)
@@ -197,7 +197,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.png' in self.folder)
+        self.assertTrue('test.png' in self.folder)
         self.assertEqual(self.folder['test.png'].portal_type, 'Image')
         self.assertEqual(str(self.folder['test.png'].getImage().data),
                          dummy.GIF)
@@ -215,7 +215,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.tiff' in self.folder)
+        self.assertTrue('test.tiff' in self.folder)
         self.assertEqual(self.folder['test.tiff'].portal_type, 'Image')
         self.assertEqual(str(self.folder['test.tiff'].getImage().data),
                          dummy.GIF)
@@ -233,7 +233,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('test.ico' in self.folder)
+        self.assertTrue('test.ico' in self.folder)
         self.assertEqual(
             self.folder['test.ico'].portal_type,
             'Image',
@@ -251,7 +251,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('index_html' in self.folder)
+        self.assertTrue('index_html' in self.folder)
         self.assertEqual(self.folder.index_html.portal_type, 'Image')
         self.assertEqual(str(self.folder.index_html.getImage().data),
                          dummy.GIF)
@@ -267,7 +267,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('new_html' in self.portal)
+        self.assertTrue('new_html' in self.portal)
         self.assertEqual(self.portal.new_html.portal_type, 'Document')
         self.assertEqual(self.portal.new_html.EditableBody(), html)
 
@@ -282,7 +282,7 @@ class TestPUTObjects(PloneTestCase.FunctionalTestCase):
                                 basic=self.basic_auth)
 
         self.assertEqual(response.getStatus(), 201)
-        self.failUnless('index_html' in self.portal)
+        self.assertTrue('index_html' in self.portal)
         self.assertEqual(self.portal.index_html.portal_type, 'Document')
         self.assertEqual(self.portal.index_html.EditableBody(), html)
         self.assertEqual(self.portal._getOb('index_html').EditableBody(), html)
@@ -300,7 +300,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
     def test_document_propfind_index_html_exist_folder(self):
         self.folder.invokeFactory('Folder', 'sub')
         self.folder.sub.invokeFactory('Document', 'index_html')
-        self.failUnless('index_html' in self.folder.sub)
+        self.assertTrue('index_html' in self.folder.sub)
 
         # Do a PROPFIND on folder/index_html, this needs to result in a 207
         response = self.publish(self.folder_path + '/sub/index_html',
@@ -313,7 +313,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
     def test_document_propfind_index_html_non_exist_folder(self):
         self.folder.invokeFactory('Folder', 'sub')
-        self.failIf('index_html' in self.folder.sub)
+        self.assertFalse('index_html' in self.folder.sub)
 
         # Do a PROPFIND on folder/index_html, this needs to result in a
         # NotFound.
@@ -329,7 +329,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         if 'index_html' not in self.portal:
             self.portal.invokeFactory('Document', 'index_html')
 
-        self.failUnless('index_html' in self.portal)
+        self.assertTrue('index_html' in self.portal)
 
         # Do a PROPFIND on folder/index_html, this needs to result in a 207
         response = self.publish(self.portal_path + '/index_html',
@@ -344,7 +344,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         if 'index_html' in self.portal:
             self.portal.manage_delObjects('index_html')
 
-        self.failIf('index_html' in self.portal)
+        self.assertFalse('index_html' in self.portal)
 
         # Do a PROPFIND on portal/index_html, this needs to result in a
         # NotFound.
@@ -360,7 +360,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         if 'index_html' not in self.portal:
             self.portal.invokeFactory('Document', 'index_html')
 
-        self.failUnless('index_html' in self.portal)
+        self.assertTrue('index_html' in self.portal)
 
         # Do a PROPFIND on portal, this needs to result in a 207
         response = self.publish(self.portal_path,
@@ -375,7 +375,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         if 'index_html' in self.portal:
             self.portal.manage_delObjects('index_html')
 
-        self.failIf('index_html' in self.portal)
+        self.assertFalse('index_html' in self.portal)
 
         # Do a PROPFIND on portal, this needs to result in a 207
         response = self.publish(self.portal_path,
@@ -390,7 +390,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         if 'index_html' not in self.folder:
             self.folder.invokeFactory('Document', 'index_html')
 
-        self.failUnless('index_html' in self.folder)
+        self.assertTrue('index_html' in self.folder)
 
         # Do a PROPFIND on folder, this needs to result in a 207
         response = self.publish(self.folder_path,
@@ -405,7 +405,7 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
         if 'index_html' in self.folder:
             self.folder.manage_delObjects('index_html')
 
-        self.failIf('index_html' in self.folder)
+        self.assertFalse('index_html' in self.folder)
 
         # Do a PROPFIND on folder, this needs to result in a 207
         response = self.publish(self.folder_path,

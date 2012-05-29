@@ -39,9 +39,9 @@ class TestATContentTypes(PloneTestCase.PloneTestCase):
     def testPortalTypeName(self):
         for pt in atct_types:
             ob = self.construct(pt, pt, self.folder)
-            self.failUnlessEqual(ob._getPortalTypeName(), pt)
-            self.failUnlessEqual(ob.portal_type, pt)
-            self.failUnless(IATContentType.providedBy(ob))
+            self.assertEqual(ob._getPortalTypeName(), pt)
+            self.assertEqual(ob.portal_type, pt)
+            self.assertTrue(IATContentType.providedBy(ob))
 
 
 class TestContentTypes(PloneTestCase.PloneTestCase):
@@ -69,9 +69,9 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
                                start_date='2003-09-18',
                                end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.failUnless(self.folder.event.start().ISO8601() \
+        self.assertTrue(self.folder.event.start().ISO8601() \
                             .startswith('2003-09-18T00:00:00'))
-        self.failUnless(self.folder.event.end().ISO8601() \
+        self.assertTrue(self.folder.event.end().ISO8601() \
                             .startswith('2003-09-19T00:00:00'))
 
     def testFileEdit(self):
@@ -123,7 +123,7 @@ class TestContentTypeInformation(PloneTestCase.PloneTestCase):
         for t in self.types.values():
             # If the title is empty we get back the id
             if t.title:
-                self.failUnless(isinstance(t.Title(), Message))
+                self.assertTrue(isinstance(t.Title(), Message))
             # Descriptions may be blank. Only check if there's a value.
             if t.description:
-                self.failUnless(isinstance(t.Description(), Message))
+                self.assertTrue(isinstance(t.Description(), Message))

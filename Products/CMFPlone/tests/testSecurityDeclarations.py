@@ -372,13 +372,13 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         checkPermission = mtool.checkPermission
 
         # should be allowed as Member
-        self.failUnless(checkPermission(AllowSendto, portal))
+        self.assertTrue(checkPermission(AllowSendto, portal))
         # should be allowed as Manager
         self.setRoles(['Manager'])
-        self.failUnless(checkPermission(AllowSendto, portal))
+        self.assertTrue(checkPermission(AllowSendto, portal))
         # should be allowed as anonymous
         self.logout()
-        self.failUnless(checkPermission(AllowSendto, portal))
+        self.assertTrue(checkPermission(AllowSendto, portal))
 
     def test_allowsendto_changed(self):
         mtool = self.portal.portal_membership
@@ -389,7 +389,7 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
                                       acquire=False)
         self.setRoles(['Member'])
 
-        self.failIf(checkPermission(AllowSendto, self.portal))
+        self.assertFalse(checkPermission(AllowSendto, self.portal))
 
     def test_sendto_script_failes(self):
         # set permission to Manager only
@@ -403,7 +403,7 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         # contains the string
         msg = sendto()
         errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
-        self.failIf(str(msg).find(errormsg) != -1, str(msg))
+        self.assertFalse(str(msg).find(errormsg) != -1, str(msg))
 
 
 class TestSkinSecurity(PloneTestCase.PloneTestCase):
