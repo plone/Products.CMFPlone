@@ -44,7 +44,7 @@ def get_view_url(context):
     item_url = get_url(context)
     name = get_id(context)
 
-    if context.portal_type in view_action_types:
+    if hasattr(context, 'portal_type') and context.portal_type in view_action_types:
         item_url += '/view'
         name += '/view'
 

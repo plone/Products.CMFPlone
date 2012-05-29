@@ -8,6 +8,12 @@ Changelog
 4.2rc2 (unreleased)
 -------------------
 
+- Check the existence of a portal_type attribute before accessing it to construct
+  navigation URLs. This avoids an exception when constructing breadcrumb navigation
+  for search results if the result is a 'Discussion Item' as the parent Conversation
+  object does not have a portal_type attribute.
+  [gaudenz]
+
 - For event view template, changed headerless table to headings and divs for better accessibility. See bug #13181
   [hmharter]
 
