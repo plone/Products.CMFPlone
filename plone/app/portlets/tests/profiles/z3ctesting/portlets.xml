@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+
+
+    <portlet
+        addview="portlet.z3cTest"
+        title="Test portlet"
+        description="A test portlet"
+        i18n:attributes="title title_test_portlet;
+                         description description_test_portlet"
+        />
+
+</portlets>
