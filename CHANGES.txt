@@ -1,14 +1,20 @@
 Changelog
 =========
 
+2.3.0 (unreleased)
+------------------
+
+- Make it possible to create portlets using z3c.form.
+  [ggozad]
+
 2.2.6 (unreleased)
 ------------------
 
 - Remove hard dependency on Archetypes.
   [davisagli]
 
-- accessibility improvements for screen readers regarding "more" links, see https://dev.plone.org/ticket/11982 
-  [rmattb, applied by polyester] 
+- accessibility improvements for screen readers regarding "more" links, see https://dev.plone.org/ticket/11982
+  [rmattb, applied by polyester]
 
 2.2.5 (2012-05-07)
 ------------------
@@ -33,8 +39,8 @@ Changelog
 - Do not display 'Manage portlets' when using portal_factory.
   https://dev.plone.org/ticket/12376
   [runyaga]
-  
-- Fixed the two high priority scenarios (global sections viewlet and nav 
+
+- Fixed the two high priority scenarios (global sections viewlet and nav
   portlet) of http://dev.plone.org/ticket/11189.
   [fulv]
 
