@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.2rc2 (unreleased)
+4.2rc2 (2012-05-31)
 -------------------
 
 - Check the existence of a portal_type attribute before accessing it to construct
