@@ -5,8 +5,10 @@ from zope.schema import getFieldNamesInOrder
 from five.formlib.formbase import PageForm
 from zope import schema
 from zope.formlib import form
-from zope.app.form.browser import CheckBoxWidget, ASCIIWidget
-from zope.app.form.interfaces import WidgetInputError, InputErrors
+from zope.formlib.boolwidgets import CheckBoxWidget
+from zope.formlib.interfaces import InputErrors
+from zope.formlib.interfaces import WidgetInputError
+from zope.formlib.textwidgets import ASCIIWidget
 from zope.component import getMultiAdapter
 
 from AccessControl import getSecurityManager
@@ -376,6 +378,12 @@ class BaseRegistrationForm(PageForm):
         self.handle_join_success(data)
         # XXX Return somewhere else, depending on what
         # handle_join_success returns?
+        came_from = self.request.form.get('came_from')
+        if came_from:
+            utool = getToolByName(self.context, 'portal_url')
+            if utool.isURLInPortal(came_from):
+                self.request.response.redirect(came_from)
+                return ''
         return self.context.unrestrictedTraverse('registered')()
 
     def handle_join_success(self, data):

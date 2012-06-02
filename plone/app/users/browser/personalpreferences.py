@@ -3,10 +3,10 @@ from AccessControl import Unauthorized
 
 from zope.component import getUtility
 from zope.component import adapts
+from zope.formlib.interfaces import WidgetInputError
+from zope.formlib.itemswidgets import DropdownWidget
 from zope.interface import implements, Interface
 from zope import schema
-from zope.app.form.interfaces import WidgetInputError
-from zope.app.form.browser import DropdownWidget
 from zope.schema import ValidationError
 from zope.schema import Choice
 from zope.schema import Bool
@@ -123,6 +123,8 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
         return self.context.getProperty('language', '')
 
     def set_language(self, value):
+        if value is None:
+            value = ''
         return self.context.setMemberProperties({'language': value})
 
     language = property(get_language, set_language)
@@ -191,6 +193,8 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
         return self._getProperty('fullname')
 
     def set_fullname(self, value):
+        if value is None:
+            value = ''
         return self.context.setMemberProperties({'fullname': value})
 
     fullname = property(get_fullname, set_fullname)
@@ -199,6 +203,8 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
         return self._getProperty('email')
 
     def set_email(self, value):
+        if value is None:
+            value = ''
         props = getToolByName(self, 'portal_properties').site_properties
         if props.getProperty('use_email_as_login'):
             set_own_login_name(self.context, value)
@@ -210,6 +216,8 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
         return self._getProperty('home_page')
 
     def set_home_page(self, value):
+        if value is None:
+            value = ''
         return self.context.setMemberProperties({'home_page': value})
 
     home_page = property(get_home_page, set_home_page)
@@ -218,6 +226,8 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
         return self._getProperty('description')
 
     def set_description(self, value):
+        if value is None:
+            value = ''
         return self.context.setMemberProperties({'description': value})
 
     description = property(get_description, set_description)
@@ -226,6 +236,8 @@ class UserDataPanelAdapter(AccountPanelSchemaAdapter):
         return self._getProperty('location')
 
     def set_location(self, value):
+        if value is None:
+            value = ''
         return self.context.setMemberProperties({'location': value})
 
     location = property(get_location, set_location)

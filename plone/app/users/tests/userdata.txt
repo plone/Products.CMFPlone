@@ -135,6 +135,48 @@ we put in.
     # True
 
 
+Clearing user data
+------------------
+
+If we empty all non-required inputs, the corresponding fields should
+be cleared, instead of keeping their old value
+
+    >>> self.browser.getControl(name='form.fullname').value = ''
+    >>> self.browser.getControl(name='form.home_page').value = ''
+    >>> self.browser.getControl(name='form.description').value = ''
+    >>> self.browser.getControl(name='form.location').value = ''
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Required input is missing.' in self.browser.contents
+    False
+    >>> 'No changes made.' in self.browser.contents
+    False
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Check the values
+
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> marker = object()
+    >>> member.getProperty('fullname', marker)
+    ''
+    >>> member.getProperty('home_page', marker)
+    ''
+    >>> member.getProperty('description', marker)
+    ''
+    >>> member.getProperty('email', marker) == email_address
+    True
+    >>> member.getProperty('location', marker)
+    ''
+
+Set the full name again:
+
+    >>> full_name = 'Plone user'
+    >>> self.browser.getControl(name='form.fullname').value = full_name
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> member.getProperty('fullname', marker) == full_name
+    True
+
 
 Modifying other users's data
 ----------------------------

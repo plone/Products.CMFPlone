@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.1.3dev'
+version = '1.1.4dev'
 
 setup(name='plone.app.users',
       version=version,
@@ -36,7 +36,6 @@ setup(name='plone.app.users',
           'plone.protect',
           'plone.app.controlpanel >=2.1b1',
           'plone.app.layout',
-          'zope.app.form',
           'zope.component',
           'zope.formlib',
           'zope.i18nmessageid',

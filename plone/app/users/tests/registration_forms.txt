@@ -125,6 +125,19 @@ Testing the flexible user registration
     >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
     >>> 'user2' in browser.contents
     True
+
+    Sometimes the user may be asked to register in order to access some
+    particular view. Let's make sure a came_from parameter in the query
+    string will be respected.
+
+    >>> browser.open('http://nohost/plone/@@register?came_from=http://nohost/plone/news')
+    >>> browser.getControl('User Name').value = 'user5'
+    >>> browser.getControl('E-mail').value = 'user5@example.com'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Confirm password').value = 'secret'
+    >>> browser.getControl('Register').click()
+    >>> browser.url
+    'http://nohost/plone/news'
     
     Great! The user-facing form works. Let's try the manager's version...
     >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
