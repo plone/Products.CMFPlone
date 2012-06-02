@@ -321,12 +321,10 @@ Testing the flexible user registration
 
     Check that we are given instructions on what is a valid password
 
-   >>> print browser.contents
-    <...
-    ...Enter your new password. Must not be dead. Minimum 5 characters....
-
-
-    We'll enter an invalid password
+    >>> print browser.getControl(name="form.password").mech_control.get_labels()[0]._text
+    Password...Enter your new password. Must not be dead. Minimum 5 characters...
+    
+We'll enter an invalid password
 
     Fill out the form.
     >>> browser.getControl('User Name').value = 'user6'
@@ -336,13 +334,13 @@ Testing the flexible user registration
     >>> browser.getControl('Register').click()
 
     >>> print browser.contents
-    <...<div class="fieldErrorBox">Must not be dead</div>...
+    <...<div class="fieldErrorBox">Must not be dead. Your password must contain at least 5 characters.</div>...
 
 
     Now try a valid password
 
-    >>> browser.getControl('Password').value = 'fish'
-    >>> browser.getControl('Confirm password').value = 'fish'
+    >>> browser.getControl('Password').value = 'bigfish'
+    >>> browser.getControl('Confirm password').value = 'bigfish'
 
     >>> browser.getControl('Register').click()
     >>> browser.contents
