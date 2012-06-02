@@ -292,7 +292,7 @@ Testing the flexible user registration
     We'll enter an invalid password
 
     Fill out the form.
-    >>> browser.getControl('User Name').value = 'user5'
+    >>> browser.getControl('User Name').value = 'user5pas'
     >>> browser.getControl('E-mail').value = 'user5@example.com'
     >>> browser.getControl('Password').value = 'dead parrot'
     >>> browser.getControl('Confirm password').value = 'dead parrot'
@@ -317,7 +317,7 @@ Testing the flexible user registration
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
-    >>> 'user5' in browser.contents
+    >>> 'user5pas' in browser.contents
     True
 
     Add the default policy back in so we can test two plugins at once
@@ -340,7 +340,7 @@ Testing the flexible user registration
 We'll enter an invalid password
 
     Fill out the form.
-    >>> browser.getControl('User Name').value = 'user6'
+    >>> browser.getControl('User Name').value = 'user6pas'
     >>> browser.getControl('E-mail').value = 'user6@example.com'
     >>> browser.getControl('Password').value = 'dead'
     >>> browser.getControl('Confirm password').value = 'dead'
@@ -365,5 +365,5 @@ We'll enter an invalid password
     >>> browser.getControl('Password').value = 'secret'
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/@@usergroup-userprefs')
-    >>> 'user6' in browser.contents
+    >>> 'user6pas' in browser.contents
     True
