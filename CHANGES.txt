@@ -15,6 +15,8 @@ Changelog
 - Remove hard dependency on ATContentTypes.
   [davisagli]
 
+- Add body class for each part of url path. plip12905
+  [vangheem]
 
 2.2.6 (2012-04-15)
 ------------------

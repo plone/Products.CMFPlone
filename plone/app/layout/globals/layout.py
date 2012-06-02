@@ -117,7 +117,18 @@ class LayoutPolicy(BrowserView):
         return context.absolute_url()
 
     def bodyClass(self, template, view):
-        """Returns the CSS class to be used on the body tag.
+        """
+        Returns the CSS class to be used on the body tag.
+
+        Included body classes
+        - template name: template-{}
+        - portal type: portaltype-{}
+        - navigation root: site-{}
+        - section: section-{}
+            - only the first section
+        - section structure
+            - a class for every container in the tree
+        - hide icons: icons-on
         """
         context = self.context
         portal_state = getMultiAdapter(
@@ -146,6 +157,12 @@ class LayoutPolicy(BrowserView):
         contentPath = context.getPhysicalPath()[len(navroot.getPhysicalPath()):]
         if contentPath:
             body_class += " section-%s" % contentPath[0]
+            # skip first section since we already have that...
+            if len(contentPath) > 1:
+                classes = [contentPath[1]]
+                for section in contentPath[2:]:
+                    classes.append('-'.join([classes[-1], section]))
+                body_class += " %s" % ' '.join(classes)
 
         # class for hiding icons (optional)
         if self.icons_visible():
