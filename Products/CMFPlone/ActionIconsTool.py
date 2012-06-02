@@ -27,27 +27,27 @@ class ActionIconsTool(PloneBaseTool, BaseTool):
     toolicon = 'skins/plone_images/confirm_icon.png'
 
     security.declareProtected(View, 'renderActionIcon')
-    def renderActionIcon( self,
-                          category,
-                          action_id,
-                          default=None,
-                          context=None ):
+    def renderActionIcon(self,
+                         category,
+                         action_id,
+                         default=None,
+                         context=None):
         """ Returns the actual object for the icon.  If you
             pass in a path elements in default it will attempt
             to traverse to that path.  Otherwise it will return
             None
         """
-        icon = self.queryActionIcon( category,
-                                     action_id,
-                                     default=default,
-                                     context=context )
+        icon = self.queryActionIcon(category,
+                                    action_id,
+                                    default=default,
+                                    context=context)
         if icon is not None:
-            portal=getToolByName(self, 'portal_url').getPortalObject()
+            portal = getToolByName(self, 'portal_url').getPortalObject()
             return portal.restrictedTraverse(icon)
 
         return default
 
-    def getActionIcon( self, category, action_id, context=None ):
+    def getActionIcon(self, category, action_id, context=None):
         ai = BaseTool.getActionIcon(self, category, action_id,
                                     context=context)
         if ai:
@@ -60,8 +60,7 @@ class ActionIconsTool(PloneBaseTool, BaseTool):
             return ai
         return None
 
-    def queryActionIcon( self, category, action_id
-                       , default=None, context=None ):
+    def queryActionIcon(self, category, action_id, default=None, context=None):
         ai = BaseTool.queryActionIcon(self, category, action_id,
                                       default=default, context=context)
         if ai:
@@ -89,13 +88,8 @@ class ActionIconsTool(PloneBaseTool, BaseTool):
 
     #Below we need to invalidate the cache for icons.  We have to
     #hardocde the module dict because we do not have events, yet.
-    def updateActionIcon( self
-                        , category
-                        , action_id
-                        , icon_expr
-                        , title=None
-                        , priority=0
-                        ):
+    def updateActionIcon(self, category, action_id, icon_expr,
+                         title=None, priority=0):
         """ update ActionIcons and remove cache entry """
         log_deprecated("The icon for the '%s/%s' action is being updated on "
                        "the action icons tool. The action icons tool has "
@@ -107,30 +101,24 @@ class ActionIconsTool(PloneBaseTool, BaseTool):
                                   title, priority)
         removeAICacheEntry(category, action_id)
 
-    def removeActionIcon( self, category, action_id ):
+    def removeActionIcon(self, category, action_id):
         """ remove ActionIcon and remove cache entry """
         BaseTool.removeActionIcon(self, category, action_id)
         removeAICacheEntry(category, action_id)
 
-    def clearActionIcons( self ):
+    def clearActionIcons(self):
         """ clear ActionIcons and cache entries """
         BaseTool.clearActionIcons(self)
         iconcache.clear()
 
-    def manage_updateActionIcon( self
-                               , category
-                               , action_id
-                               , icon_expr
-                               , title
-                               , priority
-                               , REQUEST
-                               ):
+    def manage_updateActionIcon(self, category, action_id, icon_expr, title,
+                                priority, REQUEST):
         """ update ActionIcons from ZMI and remove cache entry """
-        BaseTool.manage_updateActionIcon( self, category, action_id, icon_expr,
-                                          title, priority, REQUEST )
+        BaseTool.manage_updateActionIcon(self, category, action_id, icon_expr,
+                                         title, priority, REQUEST)
         removeAICacheEntry(category, action_id)
 
-    def manage_removeActionIcon( self, category, action_id, REQUEST ):
+    def manage_removeActionIcon(self, category, action_id, REQUEST):
         """ remove ActionIcons from ZMI and remove cache entry """
         BaseTool.manage_removeActionIcon(self, category, action_id, REQUEST)
         removeAICacheEntry(category, action_id)

@@ -54,7 +54,8 @@ class HiddenProfiles(object):
                 u'plone.app.discussion:default',
                 u'plone.app.folder:default',
                 u'plone.app.imaging:default',
-                u'plone.app.search:default',                
+                u'plone.app.jquery:initial-upgrade',
+                u'plone.app.search:default',
                 ]
 
 
@@ -84,7 +85,8 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     setup_tool.setBaselineContext('profile-%s' % profile_id)
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
     if setup_content:
-        setup_tool.runAllImportStepsFromProfile('profile-%s' % _CONTENT_PROFILE)
+        setup_tool.runAllImportStepsFromProfile(
+                        'profile-%s' % _CONTENT_PROFILE)
 
     props = dict(
         title=title,

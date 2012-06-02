@@ -7,7 +7,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Redirects to the regular vs link integrity confirmation page
-##
+
 from Products.CMFPlone.utils import isLinked
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import transaction_note
@@ -28,11 +28,11 @@ if isLinked(context):
 
     if lock_info is not None and lock_info.is_locked():
         message = _(u'${title} is locked and cannot be deleted.',
-            mapping={u'title' : title})
+                    mapping={u'title': title})
     else:
         parent.manage_delObjects(context.getId())
         message = _(u'${title} has been deleted.',
-                    mapping={u'title' : title})
+                    mapping={u'title': title})
         transaction_note('Deleted %s' % context.absolute_url())
 
     context.plone_utils.addPortalMessage(message)

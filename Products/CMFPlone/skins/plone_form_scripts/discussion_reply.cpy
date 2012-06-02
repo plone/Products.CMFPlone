@@ -24,7 +24,8 @@ if username or password:
     # and show them the result.  if 'logged_in' fails, the user will be
     # presented with the stock login failure page.  This all depends
     # heavily on cookiecrumbler, but I believe that is a Plone requirement.
-    came_from = '%s?subject=%s&amp;body_text=%s' % (req['URL'], subject, body_text)
+    came_from = '%s?subject=%s&amp;body_text=%s' \
+                  % (req['URL'], subject, body_text)
     came_from = url_quote_plus(came_from)
     portal_url = context.portal_url()
 

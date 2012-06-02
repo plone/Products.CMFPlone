@@ -2,7 +2,7 @@
 <object name="Topic"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">Collection</property>
+ <property name="title" i18n:translate="">Collection (old-style)</property>
  <property name="description"
      i18n:translate="">An always-updated saved search that can be used to display items matching criteria you specify.</property>
  <property name="icon_expr"></property>
@@ -10,7 +10,7 @@
  <property name="product">ATContentTypes</property>
  <property name="factory">addATTopic</property>
  <property name="immediate_view">atct_topic_view</property>
- <property name="global_allow">True</property>
+ <property name="global_allow">False</property>
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types"></property>
  <property name="allow_discussion">False</property>

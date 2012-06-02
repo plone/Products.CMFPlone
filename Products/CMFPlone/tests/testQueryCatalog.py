@@ -1,6 +1,5 @@
-#
 # Test queryCatalog and plone search forms
-#
+
 from zope.component import getMultiAdapter
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -19,7 +18,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
     would be searched.
     """
 
-    def dummyCatalog(self,REQUEST=None,**kw):
+    def dummyCatalog(self, REQUEST=None, **kw):
         return kw
 
     def stripStuff(self, query_dict):
@@ -37,66 +36,70 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testEmptyRequest(self):
         request = {}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testNonexistantIndex(self):
-        request = {'foo':'bar'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
-
-    def testNonexistantIndex(self):
-        request = {'foo':'bar'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
+        request = {'foo': 'bar'}
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testRealIndex(self):
-        request = {'SearchableText':'bar'}
+        request = {'SearchableText': 'bar'}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
-                            {'SearchableText':'bar'})
+                            {'SearchableText': 'bar'})
 
     def testTwoIndexes(self):
-        request = {'SearchableText':'bar','foo':'bar'}
+        request = {'SearchableText': 'bar', 'foo': 'bar'}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
-                            {'SearchableText':'bar'})
+                            {'SearchableText': 'bar'})
 
     def testRealIndexes(self):
-        request = {'SearchableText':'bar','Subject':'bar'}
+        request = {'SearchableText': 'bar', 'Subject': 'bar'}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
                             request)
 
     def testOnlySort(self):
         # if we only sort, we shouldn't actually call the catalog
-        request = {'sort_on':'foozle'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
-        request = {'sort_order':'foozle','sort_on':'foozle'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
-        request = {'sort_order':'foozle'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
+        request = {'sort_on': 'foozle'}
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)), [])
+        request = {'sort_order': 'foozle', 'sort_on': 'foozle'}
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)), [])
+        request = {'sort_order': 'foozle'}
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testOnlyUsage(self):
-        request = {'date_usage':'range:min'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), [])
+        request = {'date_usage': 'range:min'}
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)), [])
 
     def testRealWithUsage(self):
-        request = {'modified':'2004-01-01','modified_usage':'range:min'}
+        request = {'modified': '2004-01-01', 'modified_usage': 'range:min'}
         expected = {'modified': {'query': '2004-01-01', 'range': 'min'}}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
                             expected)
 
     def testSortLimit(self):
         # the script ignored 'sort_limit'; test to show it no longer does.
-        request = {'SearchableText':'bar','sort_on':'foozle','sort_limit':50}
+        request = {'SearchableText': 'bar',
+                   'sort_on': 'foozle',
+                   'sort_limit': 50}
         self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
                             request)
 
     def testBlacklistedTypes(self):
-        request = {'SearchableText':'a*'}
+        request = {'SearchableText': 'a*'}
         siteProps = self.portal.portal_properties.site_properties
         siteProps.types_not_searched = ['Event', 'Unknown Type']
-        qry = self.folder.queryCatalog(request,use_types_blacklist=True)
-        self.failUnless('Document' in qry['portal_type'])
-        self.failUnless('Event' not in qry['portal_type'])
+        qry = self.folder.queryCatalog(request, use_types_blacklist=True)
+        self.assertTrue('Document' in qry['portal_type'])
+        self.assertTrue('Event' not in qry['portal_type'])
 
     def testNavigationRoot(self):
-        request = {'SearchableText':'a*'}
+        request = {'SearchableText': 'a*'}
         ntp = self.portal.portal_properties.navtree_properties
         ntp.root = '/'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
@@ -105,16 +108,18 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Folder', 'foo')
         ntp.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
-        self.assertEquals('/'.join(self.portal.foo.getPhysicalPath()), qry['path'])
+        self.assertEquals('/'.join(self.portal.foo.getPhysicalPath()),
+                          qry['path'])
 
     def testNavigationRootDoesNotOverrideExplicitPath(self):
-        request = {'SearchableText':'a*', 'path':'/yyy/zzz'}
+        request = {'SearchableText': 'a*', 'path': '/yyy/zzz'}
         ntp = self.portal.portal_properties.navtree_properties
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Folder', 'foo')
         ntp.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
         self.assertEquals('/yyy/zzz', qry['path'])
+
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     """Test logic quoting features queryCatalog script.
@@ -143,52 +148,68 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
         self.portal.portal_catalog.__call__ = self.dummyCatalog
 
     def testQuotingNone(self):
-        request = {'SearchableText':'Hello Joel'}
+        request = {'SearchableText': 'Hello Joel'}
         expected = request
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)),
+            expected)
 
     def testQuotingNotNeeded(self):
-        request = {'SearchableText':'Hello or Joel'}
+        request = {'SearchableText': 'Hello or Joel'}
         expected = request
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)),
+            expected)
 
     def testQuotingNotNeededWithNot(self):
-        request = {'SearchableText':'Hello or not Joel'}
+        request = {'SearchableText': 'Hello or not Joel'}
         expected = request
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)),
+            expected)
 
     def testQuotingRequiredToEscape(self):
-        request = {'SearchableText':'Hello Joel Or'}
-        expected = {'SearchableText':'Hello Joel "Or"'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)), expected)
+        request = {'SearchableText': 'Hello Joel Or'}
+        expected = {'SearchableText': 'Hello Joel "Or"'}
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request, quote_logic=1)),
+            expected)
 
     def testQuotingRequiredToEscapeOptionOff(self):
-        request = {'SearchableText':'Hello Joel Or'}
+        request = {'SearchableText': 'Hello Joel Or'}
         expected = request
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
+                         expected)
 
     def testQuotingWithLeadingNot(self):
-        request = {'SearchableText':'Not Hello Joel'}
+        request = {'SearchableText': 'Not Hello Joel'}
         expected = request
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
+                         expected)
 
     def testEmptyItem(self):
-        request = {'SearchableText':''}
-        # queryCatalog will return empty result without calling the catalog tool
+        request = {'SearchableText': ''}
+        # queryCatalog will return empty result without calling the catalog
+        # tool
         expected = []
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
+        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
+                         expected)
 
     def testEmptyItemShowAll(self):
-        request = {'SearchableText':''}
+        request = {'SearchableText': ''}
         # Catalog gets a blank search, and returns the empty dict
         expected = {}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request, show_all=1)), expected)
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request, show_all=1)),
+            expected)
 
     def testBadCharsAreQuoted(self):
-        request = {'SearchableText':'context(1)'}
+        request = {'SearchableText': 'context(1)'}
         # Catalog gets ( or ) in search and quotes them to avoid parse error
-        expected = {'SearchableText':'context"("1")"'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)), expected)
+        expected = {'SearchableText': 'context"("1")"'}
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)),
+            expected)
 
 
 class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
@@ -202,9 +223,9 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='doc', text='foo bar baz')
 
     def testSearchableText(self):
-        request = {'SearchableText':'foo'}
+        request = {'SearchableText': 'foo'}
         # We expect a non-empty result set
-        self.failUnless(self.portal.queryCatalog(request))
+        self.assertTrue(self.portal.queryCatalog(request))
 
     def testParseError(self):
         # ZCTextIndex raises ParseError
@@ -212,46 +233,29 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
                           SearchableText='-foo')
 
     def testQueryCatalogParseError(self):
-        request = {'SearchableText':'-foo'}
+        request = {'SearchableText': '-foo'}
         # ZCTextIndex raises ParseError which translates to empty result
         expected = []
         self.assertEqual(self.portal.queryCatalog(request), expected)
 
     def testQueryCatalogParseError3050(self):
         # http://dev.plone.org/plone/ticket/3050
-        request = {'SearchableText':'AND'}
+        request = {'SearchableText': 'AND'}
         # ZCTextIndex raises ParseError which translates to empty result
         expected = []
         self.assertEqual(self.portal.queryCatalog(request), expected)
 
 
-
 AddPortalTopics = 'Add portal topics'
+
 
 class TestSearchForms(PloneTestCase.PloneTestCase):
     """Render all forms related to queryCatalog"""
 
     def testRenderSearchForm(self):
-        searchView = getMultiAdapter((self.portal, self.app.REQUEST), name="search")
+        searchView = getMultiAdapter((self.portal, self.app.REQUEST),
+                                     name="search")
         searchView()
-
-    def testRenderSearchResults(self):
-        self.portal.search()
 
     def testRenderSearchRSS(self):
         self.portal.search_rss(self.portal, self.app.REQUEST)
-
-    def testRenderTopicView(self):
-        self.setPermissions([AddPortalTopics])
-        self.folder.invokeFactory('Topic', id='topic')
-        self.folder.topic.atct_topic_view()
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestQueryCatalog))
-    suite.addTest(makeSuite(TestQueryCatalogQuoting))
-    suite.addTest(makeSuite(TestQueryCatalogParseError))
-    suite.addTest(makeSuite(TestSearchForms))
-    return suite

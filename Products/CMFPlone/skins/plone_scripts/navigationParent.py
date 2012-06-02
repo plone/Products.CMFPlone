@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=obj=None,templateId=None,fallThroughDefaultPage=True,checkPermissions=[]
 ##title=Returns the appropriate url for the parent object
-##
 
 # - If obj is given, use this as the object to find the parent of, else
 # use the context.

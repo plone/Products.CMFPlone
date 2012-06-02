@@ -15,13 +15,16 @@ var ajax_noresponse_message = '%(ajax_noresponse)s';
 """
 
 FORM_MODIFIED = _(u'text_form_modified_message',
-    default=u'Your form has not been saved. All changes you have made will be lost.')
+                  default=u'Your form has not been saved. All changes you '
+                          u'have made will be lost.')
 
 FORM_RESUBMIT = _(u'text_form_resubmit_message',
-    default=u'You already clicked the submit button. Do you really want to submit this form again?')
+                  default=u'You already clicked the submit button. Do you '
+                          u'really want to submit this form again?')
 
 AJAX_NORESPONSE = _(u'text_ajax_noresponse_message',
-    default=u'No response from server. Please try again later.')
+                    default=u'No response from server. Please try again '
+                            u'later.')
 
 
 class JSVariables(BrowserView):
@@ -36,7 +39,8 @@ class JSVariables(BrowserView):
 
         # the following are flags for mark_special_links.js
         # links get the target="_blank" attribute
-        open_links = props.getProperty('external_links_open_new_window', 'false')
+        open_links = props.getProperty('external_links_open_new_window',
+                                       'false')
         mark_links = props.getProperty('mark_special_links', 'false')
 
         form_modified = translate(FORM_MODIFIED, context=self.request)

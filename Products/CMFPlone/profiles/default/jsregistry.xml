@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
- <javascript id="jquery.js" compression="none" />
  <javascript id="jquery-integration.js" />
  <javascript id="event-registration.js" enabled="False" />
  <javascript id="register_function.js" />

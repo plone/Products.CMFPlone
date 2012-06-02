@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.2b2dev'
+version = '4.3a1dev'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -84,6 +84,7 @@ setup(name='Products.CMFPlone',
           'plone.app.folder',
           'plone.app.form',
           'plone.app.i18n',
+          'plone.app.jquery',
           'plone.app.jquerytools',
           'plone.app.kss',
           'plone.app.layout >=1.1.7dev-r23744',
@@ -99,6 +100,7 @@ setup(name='Products.CMFPlone',
           'plone.app.viewletmanager',
           'plone.app.vocabularies',
           'plone.app.workflow',
+          'plone.batching',
           'plone.browserlayer >= 1.0rc4',
           'plone.contentrules',
           'plone.fieldsets',

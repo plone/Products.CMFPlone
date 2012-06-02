@@ -1,7 +1,3 @@
-#
-# Tests the content types
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -37,15 +33,15 @@ class TestATContentTypes(PloneTestCase.PloneTestCase):
         # manual creation
         p = folder.manage_addProduct[fti.product]
         m = getattr(p, fti.factory)
-        m(id) # create it
+        m(id)  # create it
         return folder._getOb(id)
 
     def testPortalTypeName(self):
         for pt in atct_types:
             ob = self.construct(pt, pt, self.folder)
-            self.failUnlessEqual(ob._getPortalTypeName(), pt)
-            self.failUnlessEqual(ob.portal_type, pt)
-            self.failUnless(IATContentType.providedBy(ob))
+            self.assertEqual(ob._getPortalTypeName(), pt)
+            self.assertEqual(ob.portal_type, pt)
+            self.assertTrue(IATContentType.providedBy(ob))
 
 
 class TestContentTypes(PloneTestCase.PloneTestCase):
@@ -73,8 +69,10 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
                                start_date='2003-09-18',
                                end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.failUnless(self.folder.event.start().ISO8601().startswith('2003-09-18T00:00:00'))
-        self.failUnless(self.folder.event.end().ISO8601().startswith('2003-09-19T00:00:00'))
+        self.assertTrue(self.folder.event.start().ISO8601() \
+                            .startswith('2003-09-18T00:00:00'))
+        self.assertTrue(self.folder.event.end().ISO8601() \
+                            .startswith('2003-09-19T00:00:00'))
 
     def testFileEdit(self):
         self.folder.invokeFactory('File', id='file')
@@ -110,6 +108,7 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
     def testTopicEdit(self):
+        self.portal.portal_types.Topic.global_allow = True
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.edit(title='Foo')
         self.assertEqual(self.folder.topic.Title(), 'Foo')
@@ -124,16 +123,7 @@ class TestContentTypeInformation(PloneTestCase.PloneTestCase):
         for t in self.types.values():
             # If the title is empty we get back the id
             if t.title:
-                self.failUnless(isinstance(t.Title(), Message))
+                self.assertTrue(isinstance(t.Title(), Message))
             # Descriptions may be blank. Only check if there's a value.
             if t.description:
-                self.failUnless(isinstance(t.Description(), Message))
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestATContentTypes))
-    suite.addTest(makeSuite(TestContentTypes))
-    suite.addTest(makeSuite(TestContentTypeInformation))
-    return suite
+                self.assertTrue(isinstance(t.Description(), Message))

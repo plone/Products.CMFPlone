@@ -12,7 +12,8 @@ from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.permissions import ManagePortal, View
-from Products.CMFCore.utils import _checkPermission, getToolByName, UniqueObject
+from Products.CMFCore.utils \
+    import _checkPermission, getToolByName, UniqueObject
 from Products.CMFCore.utils import registerToolInterface
 
 from Products.CMFPlone import PloneMessageFactory as _
@@ -101,6 +102,16 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         # before CMF 2.4 when support for old-style actions is removed.
         return self._actions or ()
 
+    security.declarePublic('maySeeSomeConfiglets')
+    def maySeeSomeConfiglets(self):
+        groups = self.getGroups('site')
+
+        all = []
+        for group in groups:
+            all.extend(self.enumConfiglets(group=group['id']))
+        all = [item for item in all if item['visible']]
+        return len(all) != 0
+
     security.declarePublic('enumConfiglets')
     def enumConfiglets(self, group=None):
         portal = getToolByName(self, 'portal_url').getPortalObject()
@@ -111,7 +122,8 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             for permission in a.permissions:
                 if _checkPermission(permission, portal):
                     verified = 1
-            if verified and a.category==group and a.testCondition(context):
+            if verified and a.category == group and a.testCondition(context) \
+                    and a.visible:
                 res.append(a.getAction(context))
         # Translate the title for sorting
         if getattr(self, 'REQUEST', None) is not None:
@@ -131,7 +143,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     security.declareProtected(ManagePortal, 'unregisterConfiglet')
     def unregisterConfiglet(self, id):
         actids = [o.id for o in self.listActions()]
-        selection = [actids.index(a) for a in actids if a==id]
+        selection = [actids.index(a) for a in actids if a == id]
         self.deleteActions(selection)
 
         # BBB
@@ -140,7 +152,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             if actionicons.queryActionInfo('controlpanel', id, None):
                 actionicons.removeActionIcon('controlpanel', id)
 
-
     security.declareProtected(ManagePortal, 'unregisterApplication')
     def unregisterApplication(self, appId):
         acts = list(self.listActions())
@@ -148,27 +159,26 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         self.deleteActions(selection)
 
         # BBB
-        actionicons=getToolByName(self, 'portal_actionicons', None)
+        actionicons = getToolByName(self, 'portal_actionicons', None)
         if actionicons is not None:
             for a in acts:
                 if (a.appId == appId and
                     actionicons.queryActionInfo('controlpanel', a.id, None)):
                     actionicons.removeActionIcon('controlpanel', a.id)
 
-
     def _extractAction(self, properties, index):
         """ Extract an ActionInformation from the funky form properties.
         """
-        id          = str(properties.get('id_%d'          % index, ''))
-        name        = str(properties.get('name_%d'        % index, ''))
-        action      = str(properties.get('action_%d'      % index, ''))
-        condition   = str(properties.get('condition_%d'   % index, ''))
-        category    = str(properties.get('category_%d'    % index, ''))
-        visible     =     properties.get('visible_%d'     % index, 0)
-        permissions =     properties.get('permission_%d'  % index, ())
-        appId       =     properties.get('appId_%d'  % index, '')
-        description =     properties.get('description_%d'  % index, '')
-        icon_expr   =     properties.get('icon_expr_%d'   % index, '')
+        id = str(properties.get('id_%d' % index, ''))
+        name = str(properties.get('name_%d' % index, ''))
+        action = str(properties.get('action_%d' % index, ''))
+        condition = str(properties.get('condition_%d' % index, ''))
+        category = str(properties.get('category_%d' % index, ''))
+        visible = properties.get('visible_%d' % index, 0)
+        permissions = properties.get('permission_%d' % index, ())
+        appId = properties.get('appId_%d' % index, '')
+        description = properties.get('description_%d' % index, '')
+        icon_expr = properties.get('icon_expr_%d' % index, '')
 
         if not name:
             raise ValueError('A name is required.')
@@ -198,9 +208,9 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                               permissions=permissions,
                               category=category,
                               visible=visible,
-                              appId = appId,
-                              description = description,
-                              icon_expr = icon_expr,
+                              appId=appId,
+                              description=description,
+                              icon_expr=icon_expr,
                               )
 
     security.declareProtected(ManagePortal, 'addAction')
@@ -214,7 +224,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                   visible=1,
                   appId=None,
                   imageUrl=None,
-                  icon_expr = '',
+                  icon_expr='',
                   description='',
                   REQUEST=None,
                   ):
@@ -230,9 +240,9 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             permission = permission and (str(permission), ) or ()
 
         if imageUrl:
-            log_deprecated("The imageUrl parameter of the control panel tool's "
-                           "addAction/registerConfiglet method has been "
-                           "deprecated and will be removed in Plone 5. "
+            log_deprecated("The imageUrl parameter of the control panel "
+                           "tool's addAction/registerConfiglet method has "
+                           "been deprecated and will be removed in Plone 5. "
                            "Please use the icon_expr parameter instead.")
             icon_expr = 'string:${portal_url}/%s' % imageUrl
 
@@ -247,7 +257,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                                     visible=int(visible),
                                     appId=appId,
                                     description=description,
-                                    icon_expr = icon_expr,
+                                    icon_expr=icon_expr,
                                     )
 
         new_actions.append(new_action)
@@ -280,7 +290,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             a1['action'] = a.getActionExpression()
             a1['condition'] = a.getCondition()
             a1['appId'] = a.getAppId()
-            a1['description']=a.getDescription()
+            a1['description'] = a.getDescription()
             a1['icon_expr'] = a.getIconExpression()
             actions.append(a1)
 

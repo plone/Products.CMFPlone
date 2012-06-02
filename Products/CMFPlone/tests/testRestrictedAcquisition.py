@@ -12,7 +12,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 PloneTestCase.installProduct('PythonScripts')
 
-
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -24,6 +23,7 @@ class AllowedItem(SimpleItem):
     security.setDefaultAccess('allow')
 
 InitializeClass(AllowedItem)
+
 
 class DeniedItem(SimpleItem):
     id = 'denied'
@@ -55,10 +55,3 @@ class BrokenAcquisitionTest(PloneTestCase.PloneTestCase):
         # Also see http://zope.org/Collectors/CMF/259
         self._makePS(self.folder, 'ps', '', 'print context.portal_membership')
         self.folder.denied.ps()
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(BrokenAcquisitionTest))
-    return suite

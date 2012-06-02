@@ -11,10 +11,10 @@ class TestFactoryPloneSite(PloneTestCase.PloneTestCase):
                      setup_content=False)
         ploneSiteTitleProperty = ploneSite.getProperty('title')
         # CMF stores title as string only so Plone should keep the same track
-        self.failUnless(isinstance(ploneSiteTitleProperty, str))
+        self.assertTrue(isinstance(ploneSiteTitleProperty, str))
         self.assertEqual(ploneSiteTitleProperty, TITLE)
         ploneSiteTitle = ploneSite.Title()
-        self.failUnless(isinstance(ploneSiteTitle, str))
+        self.assertTrue(isinstance(ploneSiteTitle, str))
         self.assertEqual(ploneSiteTitle, TITLE)
 
     def testPlonesiteWithoutUnicodeTitle(self):
@@ -23,15 +23,8 @@ class TestFactoryPloneSite(PloneTestCase.PloneTestCase):
                      setup_content=False)
         ploneSiteTitleProperty = ploneSite.getProperty('title')
         # CMF stores title as string only so Plone should keep the same track
-        self.failUnless(isinstance(ploneSiteTitleProperty, str))
+        self.assertTrue(isinstance(ploneSiteTitleProperty, str))
         self.assertEqual(ploneSiteTitleProperty, TITLE)
         ploneSiteTitle = ploneSite.Title()
-        self.failUnless(isinstance(ploneSiteTitle, str))
+        self.assertTrue(isinstance(ploneSiteTitle, str))
         self.assertEqual(ploneSiteTitle, TITLE)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestFactoryPloneSite))
-    return suite

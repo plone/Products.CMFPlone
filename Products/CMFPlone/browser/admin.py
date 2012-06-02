@@ -125,6 +125,7 @@ class AddPloneSite(BrowserView):
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
             'plone.app.registry:default',
             'plone.app.z3cform:default',
+            'plone.app.collection:default',
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
         for util in utils:
@@ -147,13 +148,14 @@ class AddPloneSite(BrowserView):
 
         for info in profile_registry.listProfileInfo():
             if info.get('type') == BASE and \
-               info.get('for') in (IPloneSiteRoot, None):
+               info.get('for') in (IPloneSiteRoot, None) and \
+               info.get('id') != u'Products.kupu:default':
                 base_profiles.append(info)
 
         return dict(
-            base = tuple(base_profiles),
-            default = _DEFAULT_PROFILE,
-            extensions = tuple(extension_profiles),
+            base=tuple(base_profiles),
+            default=_DEFAULT_PROFILE,
+            extensions=tuple(extension_profiles),
         )
 
     def browser_language(self):

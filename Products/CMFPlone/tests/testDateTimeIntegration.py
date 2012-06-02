@@ -13,6 +13,7 @@ from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from DateTime import DateTime
 from time import localtime
 
+
 class DateTimeTests(PloneTestCase):
 
     def testModificationDate(self):
@@ -22,7 +23,7 @@ class DateTimeTests(PloneTestCase):
         after = DateTime()
         modified = obj.ModificationDate()   # the string representation...
         modified = DateTime(modified)       # is usually parsed again in Plone
-        self.failUnless(int(before) <= int(modified) <= int(after),
+        self.assertTrue(int(before) <= int(modified) <= int(after),
             (before, modified, after))
 
     def testCreationDate(self):
@@ -31,7 +32,7 @@ class DateTimeTests(PloneTestCase):
         after = DateTime()
         creation = obj.CreationDate()       # the string representation...
         creation = DateTime(creation)       # is usually parsed again in Plone
-        self.failUnless(int(before) <= int(creation) <= int(after),
+        self.assertTrue(int(before) <= int(creation) <= int(after),
             (before, creation, after))
 
     def testEffectiveDate(self):
@@ -42,7 +43,7 @@ class DateTimeTests(PloneTestCase):
         obj.processForm(values=dict(Description='foo!'))
         effective = obj.EffectiveDate()     # the string representation...
         effective = DateTime(effective)     # is usually parsed again in Plone
-        self.failUnless(date.equalTo(effective), (date, effective))
+        self.assertTrue(date.equalTo(effective), (date, effective))
 
     def testExpirationDate(self):
         obj = self.folder
@@ -52,7 +53,7 @@ class DateTimeTests(PloneTestCase):
         obj.processForm(values=dict(Description='foo!'))
         expired = obj.ExpirationDate()      # the string representation...
         expired = DateTime(expired)         # is usually parsed again in Plone
-        self.failUnless(date.equalTo(expired), (date, expired))
+        self.assertTrue(date.equalTo(expired), (date, expired))
 
 
 class DateTimeFunctionalTests(FunctionalTestCase):
@@ -66,25 +67,31 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         for tz in ('', ' US/Central', ' US/Eastern'):
             # save the time represented in the specified time zone
             obj.setEffectiveDate('2020-02-20 00:00%s' % tz)
-            self.failUnless(obj.effective_date.ISO8601().startswith(
+            self.assertTrue(obj.effective_date.ISO8601().startswith(
                 '2020-02-20T00:00:00'))
             start_value = obj.effective_date
             browser = self.getBrowser()
             browser.open(obj.absolute_url())
             browser.getLink('Edit').click()
-            # Time should appear on the edit page in the timezone that was local
-            # for that date (not always the same, due to DST)
-            local_zone = start_value.localZone(localtime(start_value.timeTime()))
+            # Time should appear on the edit page in the timezone that was
+            # local for that date (not always the same, due to DST)
+            local_zone = start_value.localZone(
+                            localtime(start_value.timeTime()))
             local_start_value = start_value.toZone(local_zone)
             localHour = local_start_value.h_12()
             localAMPM = local_start_value.ampm().upper()
-            self.assertEqual(localHour, int(browser.getControl(name='effectiveDate_hour').value[0]))
-            self.assertEqual([localAMPM], browser.getControl(name='effectiveDate_ampm').value)
+            self.assertEqual(
+                   localHour,
+                   int(browser.getControl(name='effectiveDate_hour').value[0]))
+            self.assertEqual(
+                           [localAMPM],
+                           browser.getControl(name='effectiveDate_ampm').value)
             if not tz:
                 self.assertEqual(12, localHour)
             browser.getControl('Save').click()
             # Time is saved in the local timezone for the given date
-            self.assertEqual(local_start_value.tzoffset(), obj.effective_date.tzoffset())
+            self.assertEqual(local_start_value.tzoffset(),
+                             obj.effective_date.tzoffset())
             # but should be equivalent to the original time
             self.assertTrue(start_value.equalTo(obj.effective_date))
 
@@ -97,25 +104,31 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         for tz in ('', ' GMT-6', ' GMT-5'):
             # save the time represented in the specified time zone
             obj.setEffectiveDate('2020-06-20 16:00%s' % tz)
-            self.failUnless(obj.effective_date.ISO8601().startswith(
+            self.assertTrue(obj.effective_date.ISO8601().startswith(
                 '2020-06-20T16:00:00'))
             start_value = obj.effective_date
             browser = self.getBrowser()
             browser.open(obj.absolute_url())
             browser.getLink('Edit').click()
-            # Time should appear on the edit page in the timezone that was local
-            # for that date (not always the same, due to DST)
-            local_zone = start_value.localZone(localtime(start_value.timeTime()))
+            # Time should appear on the edit page in the timezone that was
+            # local for that date (not always the same, due to DST)
+            local_zone = start_value.localZone(
+                            localtime(start_value.timeTime()))
             local_start_value = start_value.toZone(local_zone)
             localHour = local_start_value.h_12()
             localAMPM = local_start_value.ampm().upper()
-            self.assertEqual(localHour, int(browser.getControl(name='effectiveDate_hour').value[0]))
-            self.assertEqual([localAMPM], browser.getControl(name='effectiveDate_ampm').value)
+            self.assertEqual(
+                   localHour,
+                   int(browser.getControl(name='effectiveDate_hour').value[0]))
+            self.assertEqual(
+                   [localAMPM],
+                   browser.getControl(name='effectiveDate_ampm').value)
             if not tz:
                 self.assertEqual(4, localHour)
             browser.getControl('Save').click()
             # Time is saved in the local timezone for the given date
-            self.assertEqual(local_start_value.tzoffset(), obj.effective_date.tzoffset())
+            self.assertEqual(local_start_value.tzoffset(),
+                             obj.effective_date.tzoffset())
             # but should be equivalent to the original time
             self.assertTrue(start_value.equalTo(obj.effective_date))
 
@@ -128,10 +141,5 @@ class DateTimeFunctionalTests(FunctionalTestCase):
         obj = self.portal['front-page']
         obj.setEffectiveDate('2010-01-01 10:00 Europe/Belgrade')
         obj.setExpirationDate('2010-06-01 10:00 Europe/Belgrade')
-        self.failUnless(obj.effective_date.tzoffset() == 3600)
-        self.failUnless(obj.expiration_date.tzoffset() == 7200)
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)
+        self.assertTrue(obj.effective_date.tzoffset() == 3600)
+        self.assertTrue(obj.expiration_date.tzoffset() == 7200)

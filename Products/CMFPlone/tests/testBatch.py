@@ -1,9 +1,8 @@
-import unittest
-
 from Products.ZCatalog.Lazy import LazyMap
 
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.tests import PloneTestCase
+
 
 class TestBatch(PloneTestCase.PloneTestCase):
 

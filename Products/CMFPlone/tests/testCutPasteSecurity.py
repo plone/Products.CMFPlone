@@ -1,7 +1,3 @@
-#
-# Tests security of cut/paste operations
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from AccessControl import Unauthorized
@@ -28,8 +24,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         # will work
         transaction.savepoint(optimistic=True)
         folder.manage_renameObject('testrename', 'new')
-        self.failIf(hasattr(aq_base(folder), 'testrename'))
-        self.failUnless(hasattr(aq_base(folder), 'new'))
+        self.assertFalse(hasattr(aq_base(folder), 'testrename'))
+        self.assertTrue(hasattr(aq_base(folder), 'new'))
 
     def testRenameOtherMemberContentFails(self):
         self.login('user1')
@@ -38,7 +34,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
         self.login('user2')
         folder = self.membership.getHomeFolder('user1')
-        self.assertRaises(CopyError, folder.manage_renameObject, 'testrename', 'bad')
+        self.assertRaises(CopyError, folder.manage_renameObject,
+                          'testrename', 'bad')
 
     def testCopyMemberContent(self):
         self.login('user1')
@@ -49,8 +46,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         dest.manage_pasteObjects(src.manage_copyObjects('testcopy'))
 
         # After a copy/paste, they should *both* have a copy
-        self.failUnless(hasattr(aq_base(src), 'testcopy'))
-        self.failUnless(hasattr(aq_base(dest), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(src), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(dest), 'testcopy'))
 
     def testCopyOtherMemberContent(self):
         self.login('user1')
@@ -61,8 +58,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         dest = self.membership.getHomeFolder('user2')
         dest.manage_pasteObjects(src.manage_copyObjects('testcopy'))
         # After a copy/paste, they should *both* have a copy
-        self.failUnless(hasattr(aq_base(src), 'testcopy'))
-        self.failUnless(hasattr(aq_base(dest), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(src), 'testcopy'))
+        self.assertTrue(hasattr(aq_base(dest), 'testcopy'))
 
     def testCutMemberContent(self):
         self.login('user1')
@@ -78,8 +75,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         dest.manage_pasteObjects(src.manage_cutObjects('testcut'))
 
         # After a cut/paste, only destination has a copy
-        self.failIf(hasattr(aq_base(src), 'testcut'))
-        self.failUnless(hasattr(aq_base(dest), 'testcut'))
+        self.assertFalse(hasattr(aq_base(src), 'testcut'))
+        self.assertTrue(hasattr(aq_base(dest), 'testcut'))
 
     def testCutOtherMemberContent(self):
         self.login('user1')
@@ -91,7 +88,8 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
         transaction.savepoint(optimistic=True)
 
         self.login('user2')
-        self.assertRaises(Unauthorized, src.restrictedTraverse, 'manage_cutObjects')
+        self.assertRaises(Unauthorized, src.restrictedTraverse,
+                          'manage_cutObjects')
 
     def test_Bug2183_PastingIntoFolderFailsForNotAllowedContentTypes(self):
         # Test fix for http://dev.plone.org/plone/ticket/2183
@@ -137,10 +135,3 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
             self.portal.manage_pasteObjects,
             self.folder.manage_copyObjects(ids=['doc'])
         )
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCutPasteSecurity))
-    return suite

@@ -6,8 +6,10 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
+
 from AccessControl import Unauthorized
 from Products.CMFPlone.utils import base_hasattr
+
 # It's silly but because this is often called on the parent folder, we must
 # ensure we have permission.
 try:

@@ -7,11 +7,8 @@
 ##bind subpath=traverse_subpath
 ##parameters=paths=[],new_ids=[],new_titles=[]
 ##title=Rename Objects
-##
 
-from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
-from ZODB.POSException import ConflictError
 from Products.PythonScripts.standard import url_unquote
 
 portal = context.portal_url.getPortalObject()
@@ -39,18 +36,18 @@ if change_template:
                                               new_path)
         request.set('orig_template', orig_template)
         message = _(u"Renamed '${oldid}' to '${newid}'.",
-                    mapping={u'oldid' : obid, u'newid' : new_id})
+                    mapping={u'oldid': obid, u'newid': new_id})
 
 success, failure = putils.renameObjectsByPaths(paths, new_ids, new_titles,
                                                REQUEST=request)
 
 if message is None:
     message = _(u'${count} item(s) renamed.',
-                mapping={u'count' : str(len(success))})
+                mapping={u'count': str(len(success))})
 
 if failure:
     message = _(u'The following item(s) could not be renamed: ${items}.',
-                mapping={u'items' : ', '.join(failure.keys())})
+                mapping={u'items': ', '.join(failure.keys())})
 
 context.plone_utils.addPortalMessage(message)
 return state

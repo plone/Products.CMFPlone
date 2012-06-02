@@ -5,8 +5,9 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFQuickInstallerTool.QuickInstallerTool \
-   import QuickInstallerTool as BaseTool
+    import QuickInstallerTool as BaseTool
 from Products.CMFQuickInstallerTool.interfaces import IQuickInstallerTool
+import pkg_resources
 
 
 class QuickInstallerTool(PloneBaseTool, BaseTool):
@@ -15,7 +16,6 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
     meta_type = 'Plone QuickInstaller Tool'
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/product_icon.png'
-
 
     security.declareProtected(ManagePortal, 'upgradeInfo')
     def upgradeInfo(self, pid):
@@ -41,6 +41,8 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
         profile_id = profile['id']
         setup = getToolByName(self, 'portal_setup')
         profile_version = str(setup.getVersionForProfile(profile_id))
+        if profile_version == 'latest':
+            profile_version = self.getLatestUpgradeStep(profile_id)
         if profile_version == 'unknown':
             # If a profile doesn't have a metadata.xml use product version
             profile_version = product_version
@@ -51,11 +53,33 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
                 '.'.join(installed_profile_version))
         return dict(
             required=profile_version != installed_profile_version,
-            available=len(setup.listUpgrades(profile_id))>0,
+            available=len(setup.listUpgrades(profile_id)) > 0,
             hasProfile=True,
             installedVersion=installed_profile_version,
             newVersion=profile_version,
             )
+
+    security.declareProtected(ManagePortal, 'getLatestUpgradeStep')
+    def getLatestUpgradeStep(self, profile_id):
+        '''
+        Get the highest ordered upgrade step available to
+        a specific profile.
+
+        If anything errors out then go back to "old way"
+        by returning 'unknown'
+        '''
+        setup = getToolByName(self, 'portal_setup')
+        profile_version = 'unknown'
+        try:
+            available = setup.listUpgrades(profile_id, True)
+            if available:  # could return empty sequence
+                latest = available[-1]
+                profile_version = max(latest['dest'],
+                        key=pkg_resources.parse_version)
+        except Exception:
+            pass
+
+        return profile_version
 
     security.declareProtected(ManagePortal, 'upgradeProduct')
     def upgradeProduct(self, pid):
@@ -76,6 +100,8 @@ class QuickInstallerTool(PloneBaseTool, BaseTool):
                 step = upgradestep['step']
                 step.doStep(setup)
         version = str(profile['version'])
+        if version == 'latest':
+            version = self.getLatestUpgradeStep(profile_id)
         setup.setLastVersionForProfile(profile_id, version)
 
 

@@ -7,7 +7,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=remote_url, id='', title=None, description=None, subject=None
 ##title=Edit a link
-##
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFPlone import PloneMessageFactory as _
@@ -23,7 +22,9 @@ new_context.plone_utils.contentEdit(new_context,
                                     title=title,
                                     description=description)
 
-transaction_note('Edited link %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
+transaction_note('Edited link %s at %s'
+                    % (new_context.title_or_id(),
+                       new_context.absolute_url()))
 
 context.plone_utils.addPortalMessage(_(u'Link changes saved.'))
 return state.set(context=new_context)
