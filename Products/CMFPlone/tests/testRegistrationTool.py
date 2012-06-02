@@ -189,7 +189,8 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
 
     def testGeneratePassword(self):
         pw = self.registration.generatePassword()
-        self.assertEqual(len(pw), 6)
+        # default password is now very long as it's never seen by the user
+        self.assertTrue(len(pw)>=20)
 
     def testGenerateResetCode(self):
         salt = 'foo'
