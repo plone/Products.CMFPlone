@@ -199,11 +199,6 @@ SIZE_ORDER = ('GB', 'MB', 'kB')
 @indexer(Interface)
 def getObjSize(obj):
     """ Helper method for catalog based folder contents.
-
-    >>> from Products.CMFPlone.CatalogTool import getObjSize
-
-    >>> getObjSize(self.folder)
-    '1 kB'
     """
     smaller = SIZE_ORDER[-1]
 

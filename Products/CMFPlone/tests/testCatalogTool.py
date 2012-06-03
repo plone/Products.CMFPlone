@@ -954,6 +954,13 @@ class TestIndexers(PloneTestCase.PloneTestCase):
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.getIcon, iconname)
 
+    def test_getObjSize(self):
+        from Products.CMFPlone.CatalogTool import getObjSize
+        get_size = getObjSize.callable
+        self.doc.setText(u'a' * 1000)
+        self.doc.reindexObject()
+        self.assertEqual(get_size(self.doc), '1 kB')
+
     def test_uuid(self):
         alsoProvides(self.doc, IAttributeUUID)
         notify(ObjectCreatedEvent(self.doc))
