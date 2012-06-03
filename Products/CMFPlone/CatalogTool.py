@@ -185,11 +185,6 @@ def sortable_title(obj):
 @indexer(Interface)
 def getObjPositionInParent(obj):
     """ Helper method for catalog based folder contents.
-
-    >>> from Products.CMFPlone.CatalogTool import getObjPositionInParent
-
-    >>> getObjPositionInParent(self.folder)
-    0
     """
     parent = aq_parent(aq_inner(obj))
     ordered = IOrderedContainer(parent, None)

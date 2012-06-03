@@ -682,6 +682,12 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.assertTrue(len(members_query))
         self.assertEqual(len(members_query), len(members_sorted))
 
+    def testGopipIndexer(self):
+        from Products.CMFPlone.CatalogTool import getObjPositionInParent
+        get_pos = getObjPositionInParent.callable
+        self.assertEqual(get_pos(self.folder.doc1), 0)
+        self.assertEqual(get_pos(self.folder.doc4), 3)
+
 
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
