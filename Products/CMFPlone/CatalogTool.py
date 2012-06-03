@@ -233,31 +233,6 @@ def is_folderish(obj):
 
     Checks isPrincipiaFolderish, as well as the INonStructuralFolder
     interfaces.
-
-      >>> from Products.CMFPlone.CatalogTool import is_folderish
-      >>> from Products.CMFPlone.interfaces import INonStructuralFolder
-      >>> from zope.interface import directlyProvidedBy, directlyProvides
-
-    A Folder is folderish generally::
-      >>> is_folderish(self.folder)
-      True
-
-    But if we make it an INonStructuralFolder it is not::
-      >>> base_implements = directlyProvidedBy(self.folder)
-      >>> directlyProvides(self.folder, INonStructuralFolder,
-      ...     directlyProvidedBy(self.folder))
-      >>> is_folderish(self.folder)
-      False
-
-    Now we revert our interface change and check to make sure that
-    PrincipiaFolderish is respected::
-      >>> directlyProvides(self.folder, base_implements)
-      >>> is_folderish(self.folder)
-      True
-      >>> self.folder.isPrincipiaFolderish = False
-      >>> is_folderish(self.folder)
-      False
-
     """
     # If the object explicitly states it doesn't want to be treated as a
     # structural folder, don't argue with it.
