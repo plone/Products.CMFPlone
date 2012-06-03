@@ -164,12 +164,6 @@ num_sort_regex = re.compile('\d+')
 @indexer(Interface)
 def sortable_title(obj):
     """ Helper method for to provide FieldIndex for Title.
-
-    >>> from Products.CMFPlone.CatalogTool import sortable_title
-
-    >>> self.folder.setTitle('Plone42 _foo')
-    >>> sortable_title(self.folder, self.portal)
-    'plone000042 _foo'
     """
     title = getattr(obj, 'Title', None)
     if title is not None:
