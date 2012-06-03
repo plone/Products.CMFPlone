@@ -8,6 +8,13 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Tweak rules for `sortable_title`. So far we took the first 70 chars and
+  zero-padded numbers to six digits. Now we zero-pad to four digits and take
+  the first 30 and the last 10 characters, thus saving space while still
+  distinguishing long titles which only differ at the end, like imported
+  file or image names.
+  [hannosch]
+
 - PEP 8 (ignoring W602, E203, E241, E301, E501 and E701).
   [pbdiode, hvelarde]
 

@@ -156,7 +156,7 @@ def object_provides(obj):
 
 
 def zero_fill(matchobj):
-    return matchobj.group().zfill(6)
+    return matchobj.group().zfill(4)
 
 num_sort_regex = re.compile('\d+')
 
@@ -175,10 +175,12 @@ def sortable_title(obj):
             sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
-            # Truncate to prevent bloat
-            sortabletitle = sortabletitle[:70].encode('utf-8')
-            return sortabletitle
-
+            # Truncate to prevent bloat, take bits from start and end
+            if len(sortabletitle) > 40:
+                start = sortabletitle[:27]
+                end = sortabletitle[-10:]
+                sortabletitle = start + '...' + end
+            return sortabletitle.encode('utf-8')
     return ''
 
 

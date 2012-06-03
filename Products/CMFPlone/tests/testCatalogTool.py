@@ -482,7 +482,7 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         doc = self.folder.doc
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
 
-        self.assertEqual(wrapped.sortable_title, u'000012 document 000025')
+        self.assertEqual(wrapped.sortable_title, '0012 document 0025')
 
     def testSortableNonASCIITitles(self):
         #test a utf-8 encoded string gets properly unicode converted
@@ -493,18 +493,35 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title, 'la pena')
 
+    def testSortableDate(self):
+        title = '2012-06-01 foo document'
+        doc = self.folder.doc
+        doc.setTitle(title)
+        wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
+        self.assertEqual(wrapped.sortable_title,
+                         '2012-0006-0001 foo document')
+
     def testSortableLongNumberPrefix(self):
         title = '1.2.3 foo document'
         doc = self.folder.doc
         doc.setTitle(title)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title,
-                         u'000001.000002.000003 foo document')
+                         '0001.0002.0003 foo document')
         title = '1.2.3 foo program'
         doc.setTitle(title)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title,
-                         u'000001.000002.000003 foo program')
+                         '0001.0002.0003 foo program')
+
+    def testSortableLongCommonPrefix(self):
+        title = 'some documents have too long a name and only differ at ' \
+            'the very end - like 1.jpeg'
+        doc = self.folder.doc
+        doc.setTitle(title)
+        wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
+        self.assertEqual(wrapped.sortable_title,
+                         'some documents have too lon... 0001.jpeg')
 
 
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
