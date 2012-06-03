@@ -317,8 +317,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
             groups = ['user:%s' % x for x in user.getGroups()]
             if groups:
                 result = result + groups
+        # Order the arguments from small to large sets
+        result.insert(0, 'user:%s' % user.getId())
         result.append('Anonymous')
-        result.append('user:%s' % user.getId())
         return result
 
     security.declarePrivate('indexObject')
