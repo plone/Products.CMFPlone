@@ -249,16 +249,6 @@ def is_folderish(obj):
 
 
 @indexer(Interface)
-def syndication_enabled(obj):
-    """Get state of syndication.
-    """
-    syn = getattr(aq_base(obj), 'syndication_information', _marker)
-    if syn is not _marker:
-        return True
-    return False
-
-
-@indexer(Interface)
 def is_default_page(obj):
     """Is this the default page in its folder
     """

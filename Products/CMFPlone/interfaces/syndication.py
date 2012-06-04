@@ -36,6 +36,10 @@ class IFeed(Interface):
         """
 
 
+class ISearchFeed(IFeed):
+    pass
+
+
 class IFeedItem(Interface):
     """
     An adapter on the feed item and IFeed instance
@@ -72,7 +76,7 @@ class IFeedSettings(Interface):
         title=_(u'Feed Types'),
         required=True,
         missing_value=None,
-        default=("rss", "atom"),
+        default=("rss.xml", "atom.xml"),
         value_type=schema.Choice(
             # XXX Should be registry configurable
             vocabulary=SimpleVocabulary([
@@ -170,3 +174,7 @@ class ISyndicationTool(Interface):
         """
         """
 
+    def search_adapter():
+        """
+        """
+    

@@ -516,14 +516,20 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue(cur_perms['acquire'])
 
     def testSyndicationEnabledByDefault(self):
-        syn = self.portal.portal_syndication
-        self.assertTrue(syn.isSiteSyndicationAllowed())
+        syn = getMultiAdapter(
+            (self.portal, self.portal.REQUEST),
+            name="syndication-tool")
+        self.assertTrue(syn.site_enabled())
 
     def testSyndicationEnabledOnNewsAndEvents(self):
-        syn = self.portal.portal_syndication
-        self.assertTrue(syn.isSyndicationAllowed(self.portal.news.aggregator))
-        self.assertTrue(syn.isSyndicationAllowed(
-                            self.portal.events.aggregator))
+        syn = getMultiAdapter(
+            (self.portal.news.aggregator, self.portal.REQUEST),
+            name="syndication-tool")
+        self.assertTrue(syn.context_enabled())
+        syn = getMultiAdapter(
+            (self.portal.events.aggregator, self.portal.REQUEST),
+            name="syndication-tool")
+        self.assertTrue(syn.context_enabled())
 
     def testSyndicationTabDisabled(self):
         # Syndication tab should be disabled by default

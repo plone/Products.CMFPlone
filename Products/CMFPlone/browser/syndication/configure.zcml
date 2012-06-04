@@ -34,6 +34,9 @@
   <adapter factory=".adapters.CollectionFeed"
     for="Products.ATContentTypes.interfaces.topic.IATTopic"
     zcml:condition="installed Products.ATContentTypes" />
+  <adapter factory=".adapters.SearchFeed"
+    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    provides="Products.CMFPlone.interfaces.syndication.ISearchFeed" />
 
   <browser:page
     for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
@@ -76,6 +79,13 @@
     name="itunes.xml"
     permission="zope2.View"
     template="templates/itunes.xml.pt"
+    />
+
+  <browser:page
+    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    name="search_rss"
+    permission="zope2.View"
+    template="templates/search-rss.pt"
     />
 
 </configure>

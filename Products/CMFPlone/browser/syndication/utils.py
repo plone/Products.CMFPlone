@@ -1,7 +1,9 @@
+from zExceptions import NotFound
 from zope.interface import implements
 from zope.component import queryAdapter
 from Products.Five import BrowserView
 from Products.CMFPlone.interfaces.syndication import IFeed
+from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import ISyndicationTool
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
@@ -41,6 +43,11 @@ class SyndicationTool(BrowserView):
             adpt.full_objects = True
         return adpt
 
+    def search_adapter(self):
+        adpt = queryAdapter(self.context, ISearchFeed)
+        adpt.full_objects = True
+        return adpt
+
     def allowed_feed_types(self):
         settings = IFeedSettings(self.context)
         return [_feed_type_infos[t] for t in settings.feed_types]
@@ -74,10 +81,15 @@ class SyndicationTool(BrowserView):
         except AttributeError:
             return True
 
-    def search_rss_enabled(self):
+    def search_rss_enabled(self, raise404=False):
         try:
             settings = self.site_settings
-            return settings.search_rss_enabled
+            if settings.search_rss_enabled:
+                return True
+            elif raise404:
+                raise NotFound
+            else:
+                return False
         except AttributeError:
             return True
 

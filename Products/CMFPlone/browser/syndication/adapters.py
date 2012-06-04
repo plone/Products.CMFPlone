@@ -1,10 +1,13 @@
+from zope.component import getMultiAdapter
 from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implements
 from Products.CMFCore.utils import getToolByName
 from zope.component import queryMultiAdapter
 from Products.ZCatalog.interfaces import ICatalogBrain
-from Products.CMFPlone.interfaces.syndication import IFeed, IFeedItem
+from Products.CMFPlone.interfaces.syndication import IFeed
+from Products.CMFPlone.interfaces.syndication import IFeedItem
+from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from DateTime import DateTime
 
@@ -117,6 +120,22 @@ class CollectionFeed(FolderFeed):
         return self.context.queryCatalog()[:self.limit]
 
 
+class SearchFeed(FolderFeed):
+    implements(ISearchFeed)
+
+    def _items(self):
+        syntool = getMultiAdapter(
+            (self.context, self.request), name="syndication-tools")
+        max_items = syntool.max_items()
+        request = self.request
+        start = int(request.get('b_start', 0))
+        end = int(request.get('b_end', start + max_items))
+        request.set('sort_order', 'reverse')
+        request.set('sort_on', request.get('sort_on', 'effective'))
+        return self.context.queryCatalog(show_all=1, use_types_blacklist=True,
+            use_navigation_root=True)[start:end]
+
+
 class BaseItem(object):
     implements(IFeedItem)
     adapts(ICatalogBrain, IFeed)
@@ -157,7 +176,7 @@ class BaseItem(object):
                 return self.content.getBody()
             elif hasattr(self.content, 'body'):
                 return self.content.body
-        return ''
+        return self.description
 
     @property
     def base_url(self):
