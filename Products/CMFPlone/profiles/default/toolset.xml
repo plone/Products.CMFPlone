@@ -56,8 +56,6 @@
            class="Products.CMFPlone.RegistrationTool.RegistrationTool"/>
  <required tool_id="portal_skins"
            class="Products.CMFPlone.SkinsTool.SkinsTool"/>
- <required tool_id="portal_syndication"
-           class="Products.CMFPlone.SyndicationTool.SyndicationTool"/>
  <required tool_id="portal_types"
            class="Products.CMFPlone.TypesTool.TypesTool"/>
  <required tool_id="portal_uidannotation"

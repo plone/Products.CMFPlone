@@ -12,7 +12,7 @@
 
 <tal:block
     define="
-        syn context/portal_syndication;
+        syn context/@@syndication-tool;
         max_items syn/max_items;
         start python: int(request.get('b_start', 0));
         startnumber python: start+1;
