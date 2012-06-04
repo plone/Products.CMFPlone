@@ -1,6 +1,6 @@
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.links.viewlets import RSSViewlet
-
+from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFCore.utils import getToolByName
 
 
@@ -13,11 +13,11 @@ class TestRSSViewletView(ViewletsTestCase):
         pass
 
     def test_RSSViewlet(self):
-        syntool = getToolByName(self.portal, 'portal_syndication')
-        if syntool.isSyndicationAllowed(self.portal):
+        settings = IFeedSettings(self.portal)
+        if settings.enabled:
             # make sure syndication is disabled
             self.loginAsPortalOwner()
-            syntool.disableSyndication(self.portal)
+            settings.enabled = False
             self.logout()
         request = self.app.REQUEST
         viewlet = RSSViewlet(self.portal, request, None, None)
@@ -25,7 +25,7 @@ class TestRSSViewletView(ViewletsTestCase):
         result = viewlet.render()
         self.assertEquals(result.strip(), '')
         self.loginAsPortalOwner()
-        syntool.enableSyndication(self.portal)
+        settings.enabled = True
         self.logout()
         request = self.app.REQUEST
         viewlet = RSSViewlet(self.portal, request, None, None)

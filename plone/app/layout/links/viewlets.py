@@ -5,7 +5,6 @@ from plone.memoize.compress import xhtml_compress
 from zope.component import getMultiAdapter
 
 from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.viewlets import ViewletBase
@@ -72,13 +71,8 @@ class RSSViewlet(ViewletBase):
 
     def update(self):
         super(RSSViewlet, self).update()
-        syntool = getToolByName(self.context, 'portal_syndication')
-        if syntool.isSyndicationAllowed(self.context):
-            self.allowed = True
-            context_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_context_state')
-            self.url = '%s/RSS' % context_state.object_url()
-        else:
-            self.allowed = False
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
+        self.base_url = context_state.object_url()
 
     index = ViewPageTemplateFile('rsslink.pt')

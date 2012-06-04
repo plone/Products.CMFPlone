@@ -21,9 +21,6 @@ class TestToolsView(GlobalsTestCase):
     def test_properties(self):
         self.assertEquals(self.view.properties(), getToolByName(self.folder, 'portal_properties'))
 
-    def test_syndication(self):
-        self.assertEquals(self.view.syndication(), getToolByName(self.folder, 'portal_syndication'))
-
     def test_types(self):
         self.assertEquals(self.view.types(), getToolByName(self.folder, 'portal_types'))
 
