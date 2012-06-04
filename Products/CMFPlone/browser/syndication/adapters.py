@@ -124,10 +124,8 @@ class SearchFeed(FolderFeed):
     implements(ISearchFeed)
 
     def _items(self):
-        syntool = getMultiAdapter(
-            (self.context, self.request), name="syndication-tools")
-        max_items = syntool.max_items()
-        request = self.request
+        max_items = self.limit
+        request = self.context.REQUEST
         start = int(request.get('b_start', 0))
         end = int(request.get('b_end', start + max_items))
         request.set('sort_order', 'reverse')

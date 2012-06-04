@@ -14,18 +14,10 @@
 <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=utf-8')" />
 
 <tal:synd tal:define="feed syn/search_adapter;
-                      objects python: [i for i in feed.items()];">
+                      objects python: [i for i in feed.items];">
 <channel rdf:about="" tal:attributes="rdf:about request/URL">
   <title tal:content="context/pretty_title_or_id">The title</title>
   <link tal:content="context/portal_url">http://url.to.portal</link>
-
-  <description>
-    <metal:block define-slot="description">
-      <tal:block content="context/Description">
-        Default rss description goes here
-      </tal:block>
-    </metal:block>
-  </description>
 
   <image
     rdf:resource=""
