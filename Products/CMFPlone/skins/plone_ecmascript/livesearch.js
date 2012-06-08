@@ -32,7 +32,7 @@ var livesearch = (function () {
             $querytarget = $form.attr('action').replace(/@@search$/g,"") + "livesearch_reply",
             $$result = $form.find('div.LSResult'),
             $shadow = $form.find('div.LSShadow'),
-            $path = $form.find('input[name=path]');
+            $path = $form.find('input[name="path"]');
 
         function _hide() {
             // hides the result window
