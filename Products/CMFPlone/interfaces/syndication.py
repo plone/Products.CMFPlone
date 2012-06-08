@@ -60,6 +60,37 @@ class ISiteSyndicationSettings(Interface):
         title=_(u'Show author info'),
         default=True)
 
+    update_period = schema.Choice(
+        title=_(u'label_syndication_updateperiod',
+                default=u'Update Period'),
+        description=_(u'help_syndication_update_period',
+                default=u'Controls how often the channel is updated.'),
+        vocabulary=SimpleVocabulary([
+            SimpleTerm(value='hourly', token='hourly', title=_(u'hourly')),
+            SimpleTerm(value='daily', token='daily', title=_(u'daily')),
+            SimpleTerm(value='weekly', token='weekly', title=_(u'weekly')),
+            SimpleTerm(value='monthly', token='monthly', title=_(u'monthly'))
+        ]),
+        default=u'hourly')
+
+    update_frequency = schema.Int(
+        title=_(u'label_syndication_update_frequency',
+                default=u'Update Frequency'),
+        description=_(u'help_syndication_update_frequency',
+                default=u"Controls the frequency of the updates. For example,"
+                        u"if you want it to update twice a week,"
+                        u'select "weekly" above, and "2" here.'),
+        default=1)
+
+    update_base = schema.Datetime(
+        title=_(u'label_syndication_update_base',
+                default=u'Update Base'),
+        description=_(u'help_syndication_update_base',
+                default=u'This is the date the updater starts counting from.'
+                        u'So if you want to update weekly every Tuesday,'
+                        u'make sure this starts on a Tuesday.'),
+        required=False)
+
     max_items = schema.Int(
         title=_(u'label_syndication_max_items',
                 default=u'Maximum Items'),
@@ -142,7 +173,7 @@ class IFeedSettings(Interface):
         default=15)
 
 
-class ISyndicationTool(Interface):
+class ISyndicationUtil(Interface):
 
     def adapter():
         """

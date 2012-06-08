@@ -50,7 +50,7 @@
     for="*"
     name="syndication-tool"
     class=".utils.SyndicationTool"
-    allowed_interface="Products.CMFPlone.interfaces.syndication.ISyndicationTool"
+    allowed_interface="Products.CMFPlone.interfaces.syndication.ISyndicationUtil"
     permission="zope2.View"
     />
 
@@ -88,5 +88,10 @@
     permission="zope2.View"
     template="templates/search-rss.pt"
     />
+
+<utility
+       factory=".tool.SyndicationTool"
+       provides="Products.CMFCore.interfaces.ISyndicationTool"
+       />
 
 </configure>

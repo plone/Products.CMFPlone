@@ -4,7 +4,7 @@ from zope.component import queryAdapter
 from Products.Five import BrowserView
 from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
-from Products.CMFPlone.interfaces.syndication import ISyndicationTool
+from Products.CMFPlone.interfaces.syndication import ISyndicationUtil
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
@@ -33,7 +33,7 @@ _feed_type_infos = {
 
 
 class SyndicationTool(BrowserView):
-    implements(ISyndicationTool)
+    implements(ISyndicationUtil)
 
     def adapter(self, full_objects=False):
         if not ISyndicatable.providedBy(self.context):

@@ -1,3 +1,4 @@
+from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
@@ -7,9 +8,7 @@ from Products.CMFPlone.interfaces.syndication import IFeedSettings
 class TestSyndicationTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.syndication = getMultiAdapter(
-            (self.portal, self.portal.REQUEST),
-            name="syndication-tool")
+        self.syndication = getToolByName(self.portal, 'portal_syndication')
         self.folder.invokeFactory('Document', 'doc1')
         self.folder.invokeFactory('Document', 'doc2')
         self.doc1 = self.folder.doc1
@@ -21,9 +20,9 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
     def testIsSiteSyndicationAllowed(self):
         # Make sure isSiteSyndicationAllowed returns proper value so that tabs
         # appear
-        self.assertTrue(self.syndication.site_enabled())
+        self.assertTrue(self.syndication.isSiteSyndicationAllowed())
         self.syndication.editProperties(isAllowed=False)
-        self.assertTrue(self.syndication.site_enabled())
+        self.assertTrue(not self.syndication.isSiteSyndicationAllowed())
 
     def testIsSyndicationAllowed(self):
         # Make sure isSyndicationAllowed returns proper value so that the
