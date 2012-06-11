@@ -5,6 +5,9 @@ from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from zope.annotation.interfaces import IAnnotations
 from persistent.dict import PersistentDict
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
 
 FEED_SETTINGS_KEY = 'syndication_settings'
 
@@ -22,16 +25,20 @@ class FeedSettings(object):
             self._metadata = PersistentDict()
             annotations[FEED_SETTINGS_KEY] = self._metadata
 
+        registry = getUtility(IRegistry)
+        self.site_settings = registry.forInterface(ISiteSyndicationSettings)
+
     def __setattr__(self, name, value):
-        if name in ('context', '_metadata'):
+        if name in ('context', '_metadata', 'site_settings'):
             self.__dict__[name] = value
         else:
             self._metadata[name] = value
 
     def __getattr__(self, name):
         default = None
-
-        if name in IFeedSettings.names():
+        if name in ISiteSyndicationSettings.names():
+            default = getattr(self.site_settings, name)
+        elif name in IFeedSettings.names():
             default = IFeedSettings[name].default
 
         return self._metadata.get(name, default)
