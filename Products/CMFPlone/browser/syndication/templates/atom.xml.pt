@@ -21,7 +21,7 @@
   <logo tal:content="feed/logo" />
   <icon tal:content="feed/icon" />
   <generator uri="http://www.plone.org" version="1.0">plone</generator>
-  <rights tal:content="feed/rigths" />
+  <rights tal:content="feed/rights" />
   <author tal:condition="feed/show_about">
     <name tal:content="feed/author_name" />
     <email tal:content="feed/author_email" />

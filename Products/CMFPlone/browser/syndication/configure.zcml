@@ -98,4 +98,11 @@
     provides="Products.CMFCore.interfaces.ISyndicationTool"
     />
 
+  <browser:page
+    for="Products.ATContentTypes.interfaces.file.IFileContent"
+    name="download"
+    class=".views.DownloadArchetypeFile"
+    permission="zope2.View"
+    />
+
 </configure>

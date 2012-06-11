@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
-<rss version="2.0" tal:define="feed view/feed">
+<rss version="2.0"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  tal:define="feed view/feed">
   <channel>
     <title tal:content="feed/title" />
     <link tal:content="feed/link" />

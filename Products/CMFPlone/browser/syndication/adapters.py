@@ -10,6 +10,7 @@ from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from DateTime import DateTime
 from OFS.interfaces import IItem
 from plone.uuid.interfaces import IUUID
+from Products.ATContentTypes.interfaces.file import IFileContent
 
 
 class BaseFeedData(object):
@@ -206,7 +207,7 @@ class BaseItem(BaseFeedData):
 
     @property
     def file(self):
-        if self.context.portal_type == 'File':
+        if IFileContent.providedBy(self.context):
             return self.context.getFile()
 
     @property
@@ -214,12 +215,12 @@ class BaseItem(BaseFeedData):
         url = self.base_url
         fi = self.file
         if fi is not None:
-            url += '++byfilename++' + fi.getFilename()
+            url += '/@@download/file/%s' + fi.getFilename()
         return url
 
     @property
     def file_length(self):
-        return self.file.getSize()
+        return self.file.get_size()
 
     @property
     def file_type(self):
