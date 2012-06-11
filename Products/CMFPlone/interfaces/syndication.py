@@ -98,6 +98,19 @@ class ISiteSyndicationSettings(Interface):
                 default=u'Maximum number of items that will be syndicated.'),
         default=15)
 
+    allowed_feed_types = schema.Tuple(
+        title=_(u'Allowed Feed Types'),
+        description=_(u'Seprate view name and title by "|"'),
+        required=True,
+        missing_value=None,
+        default=(
+            "RSS|RSS 1.0",
+            "rss.xml|RSS 2.0",
+            "atom.xml|Atom",
+            "itunes.xml|iTunes"),
+        value_type=schema.TextLine()
+    )
+
 
 class IFeedSettings(Interface):
 
@@ -110,16 +123,7 @@ class IFeedSettings(Interface):
         default=("rss.xml", "atom.xml"),
         value_type=schema.Choice(
             # XXX Should be registry configurable
-            vocabulary=SimpleVocabulary([
-                SimpleTerm(value='RSS', token='RSS',
-                    title=_(u'RSS 1.0')),
-                SimpleTerm(value='rss.xml', token='rss.xml',
-                    title=_(u'RSS 2.0')),
-                SimpleTerm(value='atom.xml', token='atom.xml',
-                    title=_(u'Atom')),
-                SimpleTerm(value='itunes.xml', token='itunes.xml',
-                    title=_(u'iTunes')),
-            ])
+            vocabulary="plone.app.vocabularies.SyndicationFeedTypes"
         ))
 
     render_body = schema.Bool(
@@ -196,10 +200,10 @@ class ISyndicationUtil(Interface):
         """
         """
 
-    def allowed_feed_types():
+    def search_adapter():
         """
         """
 
-    def search_adapter():
+    def allowed_feed_types():
         """
         """

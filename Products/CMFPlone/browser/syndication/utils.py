@@ -8,30 +8,7 @@ from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from plone.memoize.view import memoize
-
-
-_feed_type_infos = {
-    'atom.xml': {
-        'path': 'atom.xml',
-        'content-type': 'application/atom+xml',
-        'title': 'Atom'
-    },
-    'rss.xml': {
-        'path': 'rss.xml',
-        'content-type': 'application/rss+xml',
-        'title': 'RSS 1.0'
-    },
-    'itunes.xml': {
-        'path': 'itunes.xml',
-        'content-type': 'application/rss+xml',
-        'title': 'iTunes'
-    },
-    'RSS': {
-        'path': 'RSS',
-        'content-type': 'application/rss+xml',
-        'title': 'RSS'
-    }
-}
+from zope.schema.interfaces import IVocabularyFactory
 
 
 class SyndicationUtil(BrowserView):
@@ -39,7 +16,13 @@ class SyndicationUtil(BrowserView):
 
     def allowed_feed_types(self):
         settings = IFeedSettings(self.context)
-        return [_feed_type_infos[t] for t in settings.feed_types]
+        factory = getUtility(IVocabularyFactory,
+            "plone.app.vocabularies.SyndicationFeedTypes")
+        vocabulary = factory(self.context)
+        types = []
+        for typ in settings.feed_types:
+            types.append(vocabulary.getTerm(typ))
+        return [{'path': t.value, 'title': t.title} for t in types]
 
     def context_allowed(self):
         if not ISyndicatable.providedBy(self.context):
