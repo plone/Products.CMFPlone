@@ -213,4 +213,11 @@
       permission="cmf.ManagePortal"
       />
 
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="syndication-settings"
+      class=".syndication.SyndicationControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
 </configure>
