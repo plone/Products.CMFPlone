@@ -6,22 +6,18 @@
   xmlns="http://purl.org/rss/1.0/"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  tal:define="syn context/@@syndication-tool">
+  tal:define="syn context/@@syndication-util;
+              dummy python:syn.search_rss_enabled(raise404=True);
+              dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=utf-8');
+              ">
 
-<tal:block define="dummy python:syn.search_rss_enabled(raise404=True)" />
-
-<metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=utf-8')" />
-
-<tal:synd tal:define="feed syn/search_adapter;
+<tal:synd tal:define="feed view/feed;
                       objects python: [i for i in feed.items];">
 <channel rdf:about="" tal:attributes="rdf:about request/URL">
   <title tal:content="context/pretty_title_or_id">The title</title>
   <link tal:content="context/portal_url">http://url.to.portal</link>
 
-  <image
-    rdf:resource=""
-    tal:attributes="rdf:resource string:${context/portal_url}/logo.png" />
+  <image tal:attributes="rdf:resource feed/logo" />
 
   <items>
     <rdf:Seq>
@@ -42,15 +38,15 @@
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
         tal:content="structure python:'&lt;![CDATA[' + item.body + ']]&gt;'">Content</content:encoded>
     <tal:about tal:condition="syn/show_author_info">
-      <dc:publisher tal:content="item/content/Publisher">Publisher</dc:publisher>
+      <dc:publisher tal:content="item/publisher" />
       <dc:creator tal:content="item/author_name">Creator</dc:creator>
     </tal:about>
-    <dc:rights tal:content="item/content/Rights">Rights</dc:rights>
+    <dc:rights tal:content="item/rights">Rights</dc:rights>
     <tal:block tal:repeat="cat item/categories">
       <dc:subject tal:content="cat">Item</dc:subject>
     </tal:block>
     <dc:date tal:content="item/published|item/modified">Published or last modified date if no published date</dc:date>
-    <dc:type tal:content="item/content/Type">Type</dc:type>
+    <dc:type tal:content="item/context/Type">Type</dc:type>
   </item>
 </tal:block>
 

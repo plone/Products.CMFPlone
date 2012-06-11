@@ -48,35 +48,38 @@
 
   <browser:page
     for="*"
-    name="syndication-tool"
-    class=".utils.SyndicationTool"
+    name="syndication-util"
+    class=".utils.SyndicationUtil"
     allowed_interface="Products.CMFPlone.interfaces.syndication.ISyndicationUtil"
     permission="zope2.View"
     />
 
   <browser:page
-    name="feed"
     for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
-    class=".views.Feeds"
-    permission="zope2.View"
-    allowed_interface="OFS.interfaces.IItem" />
-
-  <browser:page
-    for="Products.CMFPlone.interfaces.syndication.IFeeds"
+    class=".views.FeedView"
     name="atom.xml"
     permission="zope2.View"
     template="templates/atom.xml.pt"
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.IFeeds"
+    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    class=".views.FeedView"
     name="rss.xml"
     permission="zope2.View"
     template="templates/rss.xml.pt"
     />
+  <browser:page
+    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    class=".views.FeedView"
+    name="RSS"
+    permission="zope2.View"
+    template="templates/RSS.pt"
+    />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.syndication.IFeeds"
+    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    class=".views.FeedView"
     name="itunes.xml"
     permission="zope2.View"
     template="templates/itunes.xml.pt"
@@ -84,14 +87,15 @@
 
   <browser:page
     for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    class=".views.SearchFeedView"
     name="search_rss"
     permission="zope2.View"
     template="templates/search-rss.pt"
     />
 
-<utility
-       factory=".tool.SyndicationTool"
-       provides="Products.CMFCore.interfaces.ISyndicationTool"
-       />
+  <utility
+    factory=".tool.SyndicationTool"
+    provides="Products.CMFCore.interfaces.ISyndicationTool"
+    />
 
 </configure>

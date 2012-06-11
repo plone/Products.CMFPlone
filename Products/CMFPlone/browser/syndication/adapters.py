@@ -1,21 +1,74 @@
-from zope.component import getMultiAdapter
 from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implements
 from Products.CMFCore.utils import getToolByName
 from zope.component import queryMultiAdapter
-from Products.ZCatalog.interfaces import ICatalogBrain
 from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import IFeedItem
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from DateTime import DateTime
+from OFS.interfaces import IItem
+from plone.uuid.interfaces import IUUID
 
 
-ADAPTER_NAME_PREFIX = 'syndicate-'
+class BaseFeedData(object):
+
+    @property
+    def link(self):
+        # XXX check setting in portal_properties
+        url = self.base_url
+        if self.context.portal_type in ('File', 'Image'):
+            url = url + '/view'
+        return url
+
+    @property
+    def base_url(self):
+        return self.context.absolute_url()
+
+    @property
+    def title(self):
+        return self.context.Title()
+
+    @property
+    def description(self):
+        return self.context.Description()
+
+    @property
+    def categories(self):
+        return self.context.Subject()
+
+    @property
+    def published(self):
+        date = self.context.EffectiveDate()
+        if date and date != 'None':
+            return DateTime(date)
+
+    @property
+    def modified(self):
+        date = self.context.ModificationDate()
+        if date:
+            return DateTime(date)
+
+    @property
+    def uid(self):
+        uuid = IUUID(self.context, None)
+        if uuid is None and hasattr(self.context, 'UID'):
+            return self.context.UID()
+        return uuid
+
+    @property
+    def rights(self):
+        return self.context.Rights()
+
+    @property
+    def publisher(self):
+        if hasattr(self.context, 'Publisher'):
+            return self.context.Publisher()
+        return 'No Publisher'
 
 
-class FolderFeed(object):
+class FolderFeed(BaseFeedData):
     implements(IFeed)
 
     def __init__(self, context):
@@ -24,7 +77,6 @@ class FolderFeed(object):
         self.site = getSite()
         if self.show_about:
             self.pm = getToolByName(self.context, 'portal_membership')
-        self.full_objects = False
 
     @property
     def show_about(self):
@@ -49,14 +101,6 @@ class FolderFeed(object):
             return self.author.getProperty('email')
 
     @property
-    def title(self):
-        return self.context.Title()
-
-    @property
-    def description(self):
-        return self.context.Description()
-
-    @property
     def logo(self):
         return '%s/logo.png' % self.site.absolute_url()
 
@@ -64,39 +108,25 @@ class FolderFeed(object):
     def icon(self):
         return '%s/favicon.ico' % self.site.absolute_url()
 
-    @property
-    def categories(self):
-        return self.context.Subject()
-
-    @property
-    def published(self):
-        return DateTime(self.context.EffectiveDate())
-
-    @property
-    def modified(self):
-        return DateTime(self.context.ModificationDate())
-
-    @property
-    def uid(self):
-        return self.context.UID()
-
-    def _items(self):
-        """
-        do catalog query
-        """
+    def _brains(self):
         catalog = getToolByName(self.context, 'portal_catalog')
         return catalog(path={
             'query': '/'.join(self.context.getPhysicalPath()),
             'depth': 1
             })
 
+    def _items(self):
+        """
+        do catalog query
+        """
+        return [b.getObject() for b in self._brains()]
+
     @property
     def items(self):
         for item in self._items():
             # look for custom adapter
             # otherwise, just use default
-            adapter = queryMultiAdapter(
-                (item, self), name=ADAPTER_NAME_PREFIX + item.portal_type)
+            adapter = queryMultiAdapter((item, self), IFeedItem)
             if adapter is None:
                 adapter = BaseItem(item, self)
             yield adapter
@@ -106,24 +136,25 @@ class FolderFeed(object):
         return self.settings.max_items
 
     @property
-    def full_object(self):
-        return self.settings.render_body or self.settings.media_feed or \
-            self.full_objects
+    def update_base(self):
+        if self.settings.update_base:
+            return DateTime(self.settings.update_base)
 
     @property
-    def media_feed(self):
-        return self.settings.media_feed
+    def language(self):
+        langtool = getToolByName(self.context, 'portal_languages')
+        return langtool.getDefaultLanguage()
 
 
 class CollectionFeed(FolderFeed):
-    def _items(self):
-        return self.context.queryCatalog()[:self.limit]
+    def _brains(self):
+        return self.context.queryCatalog(batch=False)[:self.limit]
 
 
 class SearchFeed(FolderFeed):
     implements(ISearchFeed)
 
-    def _items(self):
+    def _brains(self):
         max_items = self.limit
         request = self.context.REQUEST
         start = int(request.get('b_start', 0))
@@ -134,22 +165,18 @@ class SearchFeed(FolderFeed):
             use_navigation_root=True)[start:end]
 
 
-class BaseItem(object):
+class BaseItem(BaseFeedData):
     implements(IFeedItem)
-    adapts(ICatalogBrain, IFeed)
+    adapts(IItem, IFeed)
 
-    def __init__(self, brain, feed):
-        self.brain = brain
-        if feed.full_object:
-            self.content = brain.getObject()
-        else:
-            self.content = None
+    def __init__(self, context, feed):
+        self.context = context
         self.feed = feed
 
     @property
     def author(self):
         if self.feed.show_about:
-            creator = self.brain.Creator
+            creator = self.context.Creator()
             member = self.feed.pm.getMemberById(creator)
             return member and member.getProperty('fullname') or creator
 
@@ -164,58 +191,23 @@ class BaseItem(object):
             return self.author.getProperty('email')
 
     @property
-    def title(self):
-        return self.brain.Title
-
-    @property
     def body(self):
-        if self.content is not None:
-            if hasattr(self.content, 'getBody'):
-                return self.content.getBody()
-            elif hasattr(self.content, 'body'):
-                return self.content.body
+        if hasattr(self.context, 'getText'):
+            return self.context.getText()
+        elif hasattr(self.context, 'text'):
+            return self.context.text
         return self.description
 
-    @property
-    def base_url(self):
-        return self.brain.getURL()
+    guid = BaseFeedData.link
 
     @property
-    def link(self):
-        # XXX check for file and image types
-        url = self.base_url
-        if self.brain.portal_type in ('File', 'Image'):
-            url = url + '/view'
-        return url
-
-    guid = link
-
-    @property
-    def description(self):
-        return self.brain.Description
-
-    @property
-    def categories(self):
-        return self.brain.Subject
-
-    @property
-    def published(self):
-        date = self.brain.EffectiveDate
-        if date and date != 'None':
-            return DateTime(date)
-
-    @property
-    def modified(self):
-        date = self.brain.ModificationDate
-        if date:
-            return DateTime(date)
+    def hasEncolsure(self):
+        return self.context.portal_type == 'File'
 
     @property
     def file(self):
-        if self.brain.portal_type == 'File':
-            return self.content.getFile()
-        elif self.brain.portal_type == 'Image':
-            return self.content.getImage()
+        if self.context.portal_type == 'File':
+            return self.context.getFile()
 
     @property
     def file_url(self):
@@ -232,7 +224,3 @@ class BaseItem(object):
     @property
     def file_type(self):
         return self.file.getContentType()
-
-    @property
-    def uid(self):
-        return self.brain.UID

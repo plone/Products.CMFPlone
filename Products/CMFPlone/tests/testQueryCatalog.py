@@ -258,4 +258,6 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         searchView()
 
     def testRenderSearchRSS(self):
-        self.portal.search_rss(self.portal, self.app.REQUEST)
+        searchRssView = getMultiAdapter((self.portal, self.app.REQUEST),
+                                        name="search_rss")
+        searchRssView()

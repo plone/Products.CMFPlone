@@ -1,12 +1,17 @@
+from zope.component import getMultiAdapter
+from Acquisition import aq_parent
 from DateTime import DateTime
 from zope.interface import implements
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.utils import registerToolInterface
+from Products.CMFDefault.permissions import ModifyPortalContent
+from Products.CMFDefault.permissions import ManagePortal
+from AccessControl import Unauthorized
+from Products.CMFCore.utils import _checkPermission
 
 
 class SyndicationTool(object):
@@ -19,6 +24,8 @@ class SyndicationTool(object):
         SyndicationTool.
         """
         registry = getUtility(IRegistry)
+        if not _checkPermission(ManagePortal, aq_parent(registry)):
+            raise Unauthorized
         settings = registry.forInterface(ISiteSyndicationSettings)
         if isAllowed is not None:
             settings.enabled = isAllowed
@@ -30,7 +37,7 @@ class SyndicationTool(object):
             settings.update_frequency = int(updateFrequency)
 
         if updateBase is not None:
-            if type(updateBase) is type(''):
+            if isinstance(updateBase, basestring):
                 updateBase = DateTime(updateBase)
             settings.update_base = updateBase.asdatetime()
 
@@ -42,11 +49,8 @@ class SyndicationTool(object):
         An interface for allowing folderish items to implement an
         equivalent of PortalFolderBase.contentValues()
         """
-        if hasattr(obj, 'synContentValues'):
-            values = obj.synContentValues()
-        else:
-            values = PortalFolderBase.contentValues(obj)
-        return values
+        util = getMultiAdapter((obj, obj.REQUEST), name="syndication-util")
+        return util.adapter()._items()
 
     def isSiteSyndicationAllowed(self):
         """
@@ -70,8 +74,15 @@ class SyndicationTool(object):
         """
         Enable syndication for the obj
         """
+        if not _checkPermission(ModifyPortalContent, obj):
+            raise Unauthorized
         settings = IFeedSettings(obj)
         settings.enabled = True
 
+    def disableSyndication(self, obj):
+        if not _checkPermission(ModifyPortalContent, obj):
+            raise Unauthorized
+        settings = IFeedSettings(obj)
+        settings.enabled = False
 
 registerToolInterface('portal_syndication', ISyndicationTool)

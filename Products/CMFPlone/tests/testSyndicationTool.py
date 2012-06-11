@@ -1,5 +1,4 @@
 from Products.CMFCore.utils import getToolByName
-from zope.component import getMultiAdapter
 from AccessControl import Unauthorized
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
@@ -21,6 +20,7 @@ class TestSyndicationTool(PloneTestCase.PloneTestCase):
         # Make sure isSiteSyndicationAllowed returns proper value so that tabs
         # appear
         self.assertTrue(self.syndication.isSiteSyndicationAllowed())
+        self.setRoles(['Manager'])
         self.syndication.editProperties(isAllowed=False)
         self.assertTrue(not self.syndication.isSiteSyndicationAllowed())
 

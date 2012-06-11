@@ -1,9 +1,6 @@
 from zExceptions import NotFound
 from zope.interface import implements
-from zope.component import queryAdapter
 from Products.Five import BrowserView
-from Products.CMFPlone.interfaces.syndication import IFeed
-from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import ISyndicationUtil
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
@@ -28,25 +25,17 @@ _feed_type_infos = {
         'path': 'itunes.xml',
         'content-type': 'application/rss+xml',
         'title': 'iTunes'
+    },
+    'RSS': {
+        'path': 'RSS',
+        'content-type': 'application/rss+xml',
+        'title': 'RSS'
     }
 }
 
 
-class SyndicationTool(BrowserView):
+class SyndicationUtil(BrowserView):
     implements(ISyndicationUtil)
-
-    def adapter(self, full_objects=False):
-        if not ISyndicatable.providedBy(self.context):
-            return
-        adpt = queryAdapter(self.context, IFeed)
-        if adpt is not None and full_objects:
-            adpt.full_objects = True
-        return adpt
-
-    def search_adapter(self):
-        adpt = queryAdapter(self.context, ISearchFeed)
-        adpt.full_objects = True
-        return adpt
 
     def allowed_feed_types(self):
         settings = IFeedSettings(self.context)
@@ -59,11 +48,15 @@ class SyndicationTool(BrowserView):
             return False
         return True
 
-    def context_enabled(self):
-        if not self.context_allowed():
-            return False
-        settings = IFeedSettings(self.context)
-        return settings.enabled
+    def context_enabled(self, raise404=False):
+        settings = IFeedSettings(self.context, None)
+        if not self.context_allowed() or not settings.enabled:
+            if raise404:
+                raise NotFound
+            else:
+                return False
+        else:
+            return True
 
     @property
     @memoize

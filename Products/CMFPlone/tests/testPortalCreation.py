@@ -518,17 +518,17 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testSyndicationEnabledByDefault(self):
         syn = getMultiAdapter(
             (self.portal, self.portal.REQUEST),
-            name="syndication-tool")
+            name="syndication-util")
         self.assertTrue(syn.site_enabled())
 
     def testSyndicationEnabledOnNewsAndEvents(self):
         syn = getMultiAdapter(
             (self.portal.news.aggregator, self.portal.REQUEST),
-            name="syndication-tool")
+            name="syndication-util")
         self.assertTrue(syn.context_enabled())
         syn = getMultiAdapter(
             (self.portal.events.aggregator, self.portal.REQUEST),
-            name="syndication-tool")
+            name="syndication-util")
         self.assertTrue(syn.context_enabled())
 
     def testSyndicationTabDisabled(self):

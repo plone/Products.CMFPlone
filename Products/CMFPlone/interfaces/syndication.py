@@ -111,6 +111,8 @@ class IFeedSettings(Interface):
         value_type=schema.Choice(
             # XXX Should be registry configurable
             vocabulary=SimpleVocabulary([
+                SimpleTerm(value='RSS', token='RSS',
+                    title=_(u'RSS 1.0')),
                 SimpleTerm(value='rss.xml', token='rss.xml',
                     title=_(u'RSS 2.0')),
                 SimpleTerm(value='atom.xml', token='atom.xml',
@@ -125,13 +127,6 @@ class IFeedSettings(Interface):
         description=_(u'help_render_body',
                 default=u'If body text available for item, '
                         u'render it, otherwise use description.'),
-        default=False)
-
-    media_feed = schema.Bool(
-        title=_(u'Media Feed'),
-        description=_(u'help_media_feed',
-                default=u'If you want to support media files with enclosures '
-                        u'if your feed.'),
         default=False)
 
     update_period = schema.Choice(
@@ -208,4 +203,3 @@ class ISyndicationUtil(Interface):
     def search_adapter():
         """
         """
-    
