@@ -58,6 +58,12 @@ Changelog
 4.2rc2 (unreleased)
 -------------------
 
+- Check the existence of a portal_type attribute before accessing it to construct
+  navigation URLs. This avoids an exception when constructing breadcrumb navigation
+  for search results if the result is a 'Discussion Item' as the parent Conversation
+  object does not have a portal_type attribute.
+  [gaudenz]
+
 - When adding, changing or removing skins, automatically recook all resource
   registries, to keep theme bundles in-sync. This mirrors the event subscriber
   support used in plone.app.registry for the same purpose.
