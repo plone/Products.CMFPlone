@@ -61,6 +61,11 @@ Changelog
   on the first column.
   [mj]
 
+- support a PAS plugin for validating passwords
+  PLIP http://dev.plone.org/ticket/10959
+  [djay75]
+
+
 
 4.2rc2 (unreleased)
 -------------------
