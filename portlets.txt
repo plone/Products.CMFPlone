@@ -1,9 +1,9 @@
 *** Settings ***
 Resource  plone.txt
 
-Suite setup  Log in  admin  admin
+Suite setup
 
-Test setup
+Test setup  Log in  admin  admin
 
 
 *** Test cases ***

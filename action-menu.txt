@@ -9,23 +9,23 @@ Test setup
 
 Create Document
     [Tags]  action-menu
-    Click Link  link=Home
+    Click Link  Home
     Open Add New Menu
     Click Link  link=Page
-    Input Text  title  An actionsmenu page
+    Input Text  name=title  An actionsmenu page
     Click Button  Save
 
 Create Folder
     [Tags]  action-menu
-    Click Link  link=Home
+    Click Link  Home
     Open Add New Menu
-    Click Link  link=Folder
+    Click Link  css=#plone-contentmenu-factories a#folder
     Input Text  title  An actionsmenu folder
     Click Button  Save
 
 Content Menu
     [Tags]  action-menu
-    Click Link  link=Home
+    Click Link  Home
     Click Link  An actionsmenu page
     Element Should Not Be Visible  css=a#delete
     Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
@@ -89,6 +89,7 @@ Copy Document
 
 Delete Document
     [Tags]  action-menu
+    Click Link  Home
     Click Link  link=An actionsmenu page
     Element Should Not Be Visible  css=a#delete
     Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
@@ -99,6 +100,7 @@ Delete Document
 
 Delete Folder
     [Tags]  action-menu
+    Click Link  Home
     Click Link  An actionsmenu folder
     Element Should Not Be Visible  css=a#delete
     Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
