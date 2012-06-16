@@ -92,7 +92,7 @@ jQuery(function($){
     );
 
     // comment form
-    $('form[name=reply]').prepOverlay(
+    $('form[name="reply"]').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -110,7 +110,7 @@ jQuery(function($){
             filter: common_content_filter,
             formselector: 'form[name="default_page_form"]',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
-            closeselector: '[name=form.button.Cancel]',
+            closeselector: '[name="form.button.Cancel"]',
             width:'40%'
         }
     );
@@ -124,7 +124,7 @@ jQuery(function($){
     //         filter: common_content_filter,
     //         formselector: 'form',
     //         noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
-    //         closeselector: '[name=form.button.Cancel]'
+    //         closeselector: '[name="form.button.Cancel"]'
     //     }
     // );
 
@@ -136,7 +136,7 @@ jQuery(function($){
             formselector: '#delete_confirmation',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref,
-            closeselector: '[name=form.button.Cancel]',
+            closeselector: '[name="form.button.Cancel"]',
             width:'50%'
         }
     );
@@ -146,7 +146,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
-            closeselector: '[name=form.button.Cancel]',
+            closeselector: '[name="form.button.Cancel"]',
             width:'40%'
         }
     );
@@ -161,7 +161,7 @@ jQuery(function($){
     );
 
     // add new user, group
-    $('form[name=users_add], form[name=groups_add]').prepOverlay(
+    $('form[name="users_add"], form[name="groups_add"]').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
