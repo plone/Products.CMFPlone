@@ -315,6 +315,7 @@
                         </select>
 
                         <input name="Creator"
+                               id="Creator"
                                tal:condition="not:showAuthors"
                                tal:attributes="value selected" />
                     </tal:creators>
