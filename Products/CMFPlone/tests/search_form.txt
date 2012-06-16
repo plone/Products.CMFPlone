@@ -44,7 +44,7 @@ Open the portal home and get to the Advanced Search Form
     >>> browser.open(search_url)
 
 Not allowed to get a list of creators
-    >>> '<input name="Creator" />' in browser.contents
+    >>> '<input name="Creator" id="Creator" />' in browser.contents
     True
     >>> '<select name="Creator" id="Creator">' in browser.contents
     False
@@ -59,7 +59,7 @@ Now we login in the portal and retry
 The select box indicates a list of users is available. Note that
 '[\W]*' indicates white space, which is slightly different when using
 five.pt (Chameleon).
-    >>> '<input name="Creator" />' in browser.contents
+    >>> '<input name="Creator" id="Creator" />' in browser.contents
     False
     >>> import re
     >>> re.search('<select[\W]*name="Creator"[\W]*id="Creator"[\W]*>', browser.contents) is not None
