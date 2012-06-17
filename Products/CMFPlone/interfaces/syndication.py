@@ -3,6 +3,8 @@ from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from Products.CMFPlone import PloneMessageFactory as _
 from OFS.interfaces import IItem
+from plone.app.vocabularies.catalog import SearchableTextSourceBinder
+from Products.ATContentTypes.interface.topic import IATTopic
 
 
 class ISyndicatable(Interface):
@@ -50,14 +52,17 @@ class ISiteSyndicationSettings(Interface):
 
     enabled = schema.Bool(
         title=_(u'Enabled'),
+        description=_(u'Globally enabled for the site'),
         default=True)
 
     search_rss_enabled = schema.Bool(
         title=_(u'Search RSS enabled'),
+        description=_(u'If the search_rss is enabled'),
         default=True)
 
     show_author_info = schema.Bool(
         title=_(u'Show author info'),
+        description=_(u'Should feeds include author information'),
         default=True)
 
     update_period = schema.Choice(
@@ -110,6 +115,24 @@ class ISiteSyndicationSettings(Interface):
             "itunes.xml|iTunes"),
         value_type=schema.TextLine()
     )
+
+    site_rss_items = schema.Tuple(
+        title=_(u'Site RSS'),
+        description=_(u'Paths to folders and collections to link to '
+                      u'at the portal root.'),
+        required=False,
+        default=('/news/aggregator',),
+        value_type=schema.TextLine()
+    )
+
+    show_syndication_button = schema.Bool(
+        title=_(u"Show Settings Button"),
+        description=_(u"To easily modify syndication settings on "
+                      u"folders an collections"))
+
+    show_syndication_link = schema.Bool(
+        title=_(u"Show Feed Link"),
+        description=_(u"Should the link to the feed be displayed."))
 
 
 class IFeedSettings(Interface):
