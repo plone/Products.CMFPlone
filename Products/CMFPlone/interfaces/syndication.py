@@ -3,8 +3,6 @@ from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from Products.CMFPlone import PloneMessageFactory as _
 from OFS.interfaces import IItem
-from plone.app.vocabularies.catalog import SearchableTextSourceBinder
-from Products.ATContentTypes.interface.topic import IATTopic
 
 
 class ISyndicatable(Interface):
@@ -122,7 +120,8 @@ class ISiteSyndicationSettings(Interface):
                       u'at the portal root.'),
         required=False,
         default=('/news/aggregator',),
-        value_type=schema.TextLine()
+        value_type=schema.Choice(
+            vocabulary="plone.app.vocabularies.SyndicatableFeedItems")
     )
 
     show_syndication_button = schema.Bool(

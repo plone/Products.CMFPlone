@@ -17,6 +17,7 @@ from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFPlone.interfaces.syndication import ISyndicatable
 
 from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
@@ -34,7 +35,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
 
-    implements(IPloneSiteRoot)
+    implements(IPloneSiteRoot, ISyndicatable)
 
     manage_options = (
         CMFSite.manage_options[:2] +

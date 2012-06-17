@@ -26,7 +26,6 @@
   </class>
 
   <adapter factory=".settings.FeedSettings" />
-  <adapter factory=".settings.SearchSettings" />
   <adapter factory=".adapters.FolderFeed"
     for="Products.CMFCore.interfaces._content.IFolderish" />
   <adapter factory=".adapters.CollectionFeed"

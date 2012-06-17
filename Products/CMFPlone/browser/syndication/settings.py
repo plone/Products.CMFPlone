@@ -4,7 +4,6 @@ from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
 from zope.annotation.interfaces import IAnnotations
 from persistent.dict import PersistentDict
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
@@ -42,13 +41,3 @@ class FeedSettings(object):
             default = IFeedSettings[name].default
 
         return self._metadata.get(name, default)
-
-
-class SearchSettings(object):
-    implements(IFeedSettings)
-    adapts(IPloneSiteRoot)
-
-    def __init__(self, context):
-        self.render_body = True
-        # XXX Need to get actual site settings!
-        self.max_items = 15
