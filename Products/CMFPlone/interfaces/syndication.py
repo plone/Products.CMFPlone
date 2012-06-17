@@ -145,7 +145,6 @@ class IFeedSettings(Interface):
         missing_value=None,
         default=("rss.xml", "atom.xml"),
         value_type=schema.Choice(
-            # XXX Should be registry configurable
             vocabulary="plone.app.vocabularies.SyndicationFeedTypes"
         ))
 
@@ -197,36 +196,37 @@ class IFeedSettings(Interface):
 
 class ISyndicationUtil(Interface):
 
-    def adapter():
+    def allowed_feed_types():
         """
-        get the feed adapter
+        get a list of allow feed types
         """
 
     def context_allowed():
         """
-        if syndication is enabled on the context
+        If syndication is allowed on the context
         """
 
-    def context_enabled():
+    def context_enabled(raise404=False):
         """
+        If syndication is enabled on the context
         """
 
     def site_enabled():
         """
+        If syndication is enabled on the site
         """
 
-    def search_rss_enabled():
+    def search_rss_enabled(raise404=False):
         """
+        If search_rss is enabled
         """
 
     def show_author_info():
         """
+        If author information should show on feeds
         """
 
-    def search_adapter():
+    def max_items():
         """
-        """
-
-    def allowed_feed_types():
-        """
+        Default max items to show on the site
         """

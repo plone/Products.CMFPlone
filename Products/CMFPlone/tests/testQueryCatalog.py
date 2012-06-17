@@ -4,7 +4,10 @@ from zope.component import getMultiAdapter
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.ZCTextIndex.ParseTree import ParseError
-
+from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
+from zExceptions import NotFound
 import types
 
 
@@ -261,3 +264,11 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         searchRssView = getMultiAdapter((self.portal, self.app.REQUEST),
                                         name="search_rss")
         searchRssView()
+
+    def testSearchGives404WhenDisabled(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSyndicationSettings)
+        settings.search_rss_enabled = False
+        searchRssView = getMultiAdapter((self.portal, self.app.REQUEST),
+                                        name="search_rss")
+        self.assertRaises(NotFound, searchRssView)

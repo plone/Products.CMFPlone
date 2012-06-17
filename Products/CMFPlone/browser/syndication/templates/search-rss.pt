@@ -6,10 +6,7 @@
   xmlns="http://purl.org/rss/1.0/"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
-  tal:define="syn context/@@syndication-util;
-              dummy python:syn.search_rss_enabled(raise404=True);
-              dummy python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=utf-8');
-              ">
+  tal:define="syn context/@@syndication-util;">
 
 <tal:synd tal:define="feed view/feed;
                       objects python: [i for i in feed.items];">

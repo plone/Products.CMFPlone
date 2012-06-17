@@ -34,6 +34,14 @@ class SearchFeedView(FeedView):
     def feed(self):
         return getAdapter(self.context, ISearchFeed)
 
+    def __call__(self):
+        util = getMultiAdapter((self.context, self.request),
+                               name='syndication-util')
+        if util.search_rss_enabled(raise404=True):
+            self.request.response.setHeader('Content-Type',
+                                            'application/atom+xml')
+            return self.index()
+
 
 class SettingsForm(form.EditForm):
     label = _(u'heading_syndication_properties',

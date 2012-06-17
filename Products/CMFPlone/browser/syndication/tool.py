@@ -1,4 +1,4 @@
-from zope.component import getMultiAdapter
+from zope.component import getAdapter
 from Acquisition import aq_parent
 from DateTime import DateTime
 from zope.interface import implements
@@ -12,6 +12,7 @@ from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import ManagePortal
 from AccessControl import Unauthorized
 from Products.CMFCore.utils import _checkPermission
+from Products.CMFPlone.interfaces.syndication import IFeed
 
 
 class SyndicationTool(object):
@@ -49,8 +50,7 @@ class SyndicationTool(object):
         An interface for allowing folderish items to implement an
         equivalent of PortalFolderBase.contentValues()
         """
-        util = getMultiAdapter((obj, obj.REQUEST), name="syndication-util")
-        return util.adapter()._items()
+        return getAdapter(obj, IFeed)._items()
 
     def isSiteSyndicationAllowed(self):
         """
