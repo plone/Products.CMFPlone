@@ -8,6 +8,12 @@ from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.viewlets import ViewletBase
+from plone.app.uuid.utils import uuidToObject
+from zope.schema.interfaces import IVocabularyFactory
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces.syndication import IFeedSettings
+from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 
 
 def get_language(context, request):
@@ -69,10 +75,40 @@ class AuthorViewlet(ViewletBase):
 
 class RSSViewlet(ViewletBase):
 
+    def getRssLinks(self, obj):
+        settings = IFeedSettings(obj, None)
+        if settings is None:
+            return []
+        factory = getUtility(IVocabularyFactory,
+            "plone.app.vocabularies.SyndicationFeedTypes")
+        vocabulary = factory(self.context)
+        urls = []
+        for typ in settings.feed_types:
+            term = vocabulary.getTerm(typ)
+            urls.append({
+                'title': term.title,
+                'url': obj.absolute_url() + '/' + term.value})
+        return urls
+
     def update(self):
         super(RSSViewlet, self).update()
+        rsslinks = []
+        util = getMultiAdapter((self.context, self.request),
+                               name="syndication-util")
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
-        self.base_url = context_state.object_url()
+        if context_state.is_portal_root():
+            if util.site_enabled():
+                registry = getUtility(IRegistry)
+                settings = registry.forInterface(ISiteSyndicationSettings)
+                for uid in settings.site_rss_items:
+                    obj = uuidToObject(uid)
+                    if obj is not None:
+                        rsslinks.extend(self.getRssLinks(obj))
+                rsslinks.extend(self.getRssLinks(self.portal_state.portal()))
+        else:
+            if util.context_enabled():
+                rsslinks.extend(self.getRssLinks(self.context))
+        self.rsslinks = rsslinks
 
     index = ViewPageTemplateFile('rsslink.pt')

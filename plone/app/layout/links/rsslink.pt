@@ -1,11 +1,7 @@
-<tal:syndication tal:define="syn context/@@syndication-util"
-    tal:condition="syn/context_enabled">
-
-    <tal:feeds tal:repeat="typ syn/allowed_feed_types">
-        <link rel="alternate" href="" title="RSS 1.0"
-              type="application/rss+xml"
-              tal:attributes="href string:${view/base_url}/@@feed/${typ/path};
-                              title typ/title"
-              />
-    </tal:feeds>
-</tal:syndication>
+<tal:feeds tal:repeat="link view/rsslinks">
+    <link rel="alternate" href="" title="RSS 1.0"
+          type="application/rss+xml"
+          tal:attributes="href link/url;
+                          title link/title"
+          />
+</tal:feeds>

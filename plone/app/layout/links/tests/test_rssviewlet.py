@@ -1,7 +1,8 @@
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.links.viewlets import RSSViewlet
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.CMFCore.utils import getToolByName
 
 
 class TestRSSViewletView(ViewletsTestCase):
@@ -13,7 +14,8 @@ class TestRSSViewletView(ViewletsTestCase):
         pass
 
     def test_RSSViewlet(self):
-        settings = IFeedSettings(self.portal)
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSyndicationSettings)
         if settings.enabled:
             # make sure syndication is disabled
             self.loginAsPortalOwner()
@@ -26,13 +28,15 @@ class TestRSSViewletView(ViewletsTestCase):
         self.assertEquals(result.strip(), '')
         self.loginAsPortalOwner()
         settings.enabled = True
+        settings.site_rss_items = (self.portal.news.UID(),)
         self.logout()
         request = self.app.REQUEST
         viewlet = RSSViewlet(self.portal, request, None, None)
         viewlet.update()
         result = viewlet.render()
         self.failIf("<link" not in result)
-        self.failIf("http://nohost/plone/RSS" not in result)
+        self.failIf("http://nohost/plone/atom.xml" not in result)
+        self.failIf("http://nohost/plone/news/atom.xml" not in result)
 
 
 def test_suite():
