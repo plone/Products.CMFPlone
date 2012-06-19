@@ -12,7 +12,7 @@ Changelog
   modifier.
   [rossp]
 
-- Make redirection_view/attempt_redirect fall back to nothing. If plone.app.redirector gets a URL with illegal characters, OOBTree.get raises a UnicodeDecodeError and the template fails.
+- Make redirection_view/attempt_redirect fall back to nothing. If plone.app.redirector gets a URL with special characters, OOBTree.get raises a UnicodeDecodeError and the template fails. This fixes http://dev.plone.org/ticket/12976.
   [timo]
 
 
