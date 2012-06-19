@@ -19,6 +19,13 @@ Changelog
   on the search form, so that the corresponding <label> can associate with it
   in the case where showAuthors is None.
 
+- Make redirection_view/attempt_redirect fall back to nothing in 
+  default_error_message template. If plone.app.redirector gets a URL with 
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template 
+  fails. This fixes http://dev.plone.org/ticket/12976.
+  [timo]
+
+
 4.1.5 (2012-04-18)
 ------------------
 
