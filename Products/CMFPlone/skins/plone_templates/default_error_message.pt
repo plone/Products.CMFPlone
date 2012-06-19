@@ -29,7 +29,7 @@
 
             <tal:redirect define="redirection_view context/@@plone_redirector_view">
 
-                <tal:redirect define="redirect_success redirection_view/attempt_redirect" replace="nothing">
+                <tal:redirect define="redirect_success redirection_view/attempt_redirect|nothing" replace="nothing">
                     If the attempt succeeds, we won't see any more of this template
                 </tal:redirect>
 
