@@ -1,21 +1,30 @@
-from zope.component import getAdapter
 from Acquisition import aq_parent
 from DateTime import DateTime
+from AccessControl import Unauthorized
+
+from zope.component import getAdapter
 from zope.interface import implements
-from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
+
 from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.utils import registerToolInterface
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFDefault.permissions import ModifyPortalContent
 from Products.CMFDefault.permissions import ManagePortal
-from AccessControl import Unauthorized
-from Products.CMFCore.utils import _checkPermission
+
 from Products.CMFPlone.interfaces.syndication import IFeed
+from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
+from Products.CMFPlone.interfaces.syndication import IFeedSettings
+
+from plone.registry.interfaces import IRegistry
 
 
 class SyndicationTool(object):
+    """
+    Backward compatible tool. This just implements
+    what some other packages use for now to provide
+    backwards compatibility.
+    """
     implements(ISyndicationTool)
 
     def editProperties(self, updatePeriod=None, updateFrequency=None,

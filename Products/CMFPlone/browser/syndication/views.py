@@ -1,16 +1,19 @@
-from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from zope.component import getAdapter
-from Products.CMFPlone.interfaces.syndication import IFeed
 from zope.component import getMultiAdapter
-from Products.Five import BrowserView
-from zExceptions import NotFound
-from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from z3c.form import form, button, field
-from Products.CMFPlone import PloneMessageFactory as _
-from plone.app.z3cform.layout import wrap_form
 from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound as pNotFound
+
+from Products.Five import BrowserView
+from zExceptions import NotFound
+
+from Products.CMFPlone.interfaces.syndication import ISearchFeed
+from Products.CMFPlone.interfaces.syndication import IFeed
+from Products.CMFPlone.interfaces.syndication import IFeedSettings
+from Products.CMFPlone import PloneMessageFactory as _
+
+from z3c.form import form, button, field
+from plone.app.z3cform.layout import wrap_form
 
 
 class FeedView(BrowserView):
@@ -58,8 +61,6 @@ class SettingsForm(form.EditForm):
             self.status = self.formErrorsMessage
             return
         self.applyChanges(data)
-
-
 SettingsFormView = wrap_form(SettingsForm)
 
 

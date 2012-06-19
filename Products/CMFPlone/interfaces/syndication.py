@@ -2,37 +2,111 @@ from zope.interface import Interface
 from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from Products.CMFPlone import PloneMessageFactory as _
-from OFS.interfaces import IItem
 
 
 class ISyndicatable(Interface):
     pass
 
 
-class IFeeds(IItem):
-    pass
+class IFeedData(Interface):
+    def link():
+        """
+        Link to item
+        """
+
+    def base_url():
+        """
+        base url to item
+        """
+
+    def title():
+        """
+        title of item
+        """
+
+    def description():
+        """
+        """
+
+    def categories():
+        """
+        """
+
+    def published():
+        """
+        """
+
+    def modified():
+        """
+        """
+
+    def uid():
+        """
+        """
+
+    def rights():
+        """
+        """
+
+    def publisher():
+        """
+        """
+
+    def author():
+        """
+        """
+
+    def author_name():
+        """
+        """
+
+    def author_email():
+        """
+        """
 
 
-class IFeed(Interface):
+class IFeed(IFeedData):
     """
     An adapter on the context and request
     to get feed information
     """
-    def author(self):
-        pass
-
-    def title(self):
-        pass
-
-    def description(self):
-        pass
-
-    def image():
-        pass
-
-    def _items(self):
+    def show_about():
         """
-        returns items for feed
+        """
+
+    def logo():
+        """
+        """
+
+    def icon():
+        """
+        """
+
+    def _brains():
+        """
+        return list of brains
+        """
+
+    def _items():
+        """
+        return full objects
+        """
+
+    def items():
+        """
+        adapted items
+        """
+
+    def limit():
+        """
+        """
+
+    def update_base():
+        """
+        """
+
+    def language(self):
+        """
         """
 
 
@@ -40,10 +114,38 @@ class ISearchFeed(IFeed):
     pass
 
 
-class IFeedItem(Interface):
+class IFeedItem(IFeedData):
     """
     An adapter on the feed item and IFeed instance
     """
+
+    def body():
+        """
+        """
+
+    def guid():
+        """
+        """
+
+    def hasEncolsure():
+        """
+        """
+
+    def file():
+        """
+        """
+
+    def file_url():
+        """
+        """
+
+    def file_length():
+        """
+        """
+
+    def file_type():
+        """
+        """
 
 
 class ISiteSyndicationSettings(Interface):

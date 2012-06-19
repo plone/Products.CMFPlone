@@ -1,16 +1,20 @@
 from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implements
-from Products.CMFCore.utils import getToolByName
 from zope.component import queryMultiAdapter
+
+from DateTime import DateTime
+from OFS.interfaces import IItem
+
+from Products.CMFCore.utils import getToolByName
+
 from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import IFeedItem
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from DateTime import DateTime
-from OFS.interfaces import IItem
-from plone.uuid.interfaces import IUUID
 from Products.ATContentTypes.interfaces.file import IFileContent
+
+from plone.uuid.interfaces import IUUID
 
 
 class BaseFeedData(object):
@@ -203,11 +207,11 @@ class BaseItem(BaseFeedData):
 
     @property
     def hasEncolsure(self):
-        return self.context.portal_type == 'File'
+        return IFileContent.providedBy(self.context)
 
     @property
     def file(self):
-        if IFileContent.providedBy(self.context):
+        if self.hasEncolsure:
             return self.context.getFile()
 
     @property

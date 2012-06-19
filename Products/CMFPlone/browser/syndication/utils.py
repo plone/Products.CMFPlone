@@ -1,14 +1,17 @@
 from zExceptions import NotFound
-from zope.interface import implements
 from Products.Five import BrowserView
+
+from zope.schema.interfaces import IVocabularyFactory
+from zope.interface import implements
+from zope.component import getUtility
+
 from Products.CMFPlone.interfaces.syndication import ISyndicationUtil
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
-from zope.component import getUtility
+
 from plone.registry.interfaces import IRegistry
 from plone.memoize.view import memoize
-from zope.schema.interfaces import IVocabularyFactory
 
 
 class SyndicationUtil(BrowserView):
