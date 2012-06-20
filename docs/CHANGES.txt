@@ -70,6 +70,10 @@ Changelog
   special characters, OOBTree.get raises a UnicodeDecodeError and the template 
   fails. This fixes http://dev.plone.org/ticket/12976.
 
+- Channel link in RSS feed now points to the un-syndicated content for the RSS feed,
+  instead of the portal root.
+  [patch by pydanny, applied by kleist]
+
 
 4.2rc2 (unreleased)
 -------------------
