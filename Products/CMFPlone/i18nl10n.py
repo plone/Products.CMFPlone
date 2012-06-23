@@ -153,18 +153,14 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
     if formatstring is None \
             or formatstring.startswith('date_') \
             or formatstring.startswith('time_'):
-        # msg catalog was not able to translate this msgids
-        # use default setting
-
-        properties = \
-            getToolByName(context, 'portal_properties').site_properties
+        # msg catalog not able to translate, fall back to ISO defaults
         if long_format:
-            format = properties.localLongTimeFormat
+            format = '%Y-%m-%d %H:%M' # 2038-01-19 03:14
         else:
             if time_only:
-                format = properties.localTimeOnlyFormat
+                format = '%H:%M' # 03:14
             else:
-                format = properties.localTimeFormat
+                format = '%Y-%m-%d' # 2038-01-19
 
         return time.strftime(format)
 
