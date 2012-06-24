@@ -49,7 +49,7 @@ class IMailSchema(Interface):
                             default=u'SMTP port'),
                     description=_(u"help_smtp_port",
                                   default=u"The port of your local SMTP "
-                                  "(outgoing e-mail) server. Usually '25'."),
+                                  "(outgoing e-mail) server. Usually '587' or '25'."),
                     default=25,
                     required=True)
 
