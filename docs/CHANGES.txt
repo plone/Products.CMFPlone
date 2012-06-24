@@ -74,7 +74,7 @@ Changelog
   instead of the portal root.
   [patch by pydanny, applied by kleist]
 
-- Removed "localTimeFormat", "localLongTimeFormat", and "localTimeOnlyFormat"
+- Removed unused "localTimeFormat", "localLongTimeFormat", and "localTimeOnlyFormat"
   from "/portal_properties/site_properties".
   Fixes https://dev.plone.org/ticket/11171.
   [kleist]
