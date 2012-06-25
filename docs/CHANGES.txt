@@ -18,6 +18,9 @@ Changelog
   fails. This fixes http://dev.plone.org/ticket/12976.
   [timo]
 
+- Fix jquery.highlightsearchterms.js to not render arbitrary js.
+  [vangheem]
+
 
 4.2rc2 (2012-05-31)
 -------------------
