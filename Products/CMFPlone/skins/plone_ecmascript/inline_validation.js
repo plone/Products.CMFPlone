@@ -31,6 +31,30 @@ jQuery(function() {
   	});
   });
 
+  // formlib
+  var formlib_validate_field = function(input) {
+  	var $input = $(input);
+  	var $field = $input.closest('.field');
+  	var $form = $field.closest('form');
+  	var fname = $field.attr('data-fieldname');
+
+  	$form.ajaxSubmit({
+  		url: $form.attr('action') + '/@@formlib_validate_field',
+  		data: {fname: fname},
+  		iframe: false,
+  		success: function(data) {
+				render_error($field, data.errmsg);
+  		},
+  		dataType: 'json'
+    });
+  };
+  $('.formlibInlineValidation input[type="text"]').live('blur', function() { formlib_validate_field(this); });
+  $('.formlibInlineValidation input[type="password"]').live('blur', function() { formlib_validate_field(this); });
+  $('.formlibInlineValidation input[type="checkbox"]').live('blur', function() { formlib_validate_field(this); });
+  $('.formlibInlineValidation input[type="radio"]').live('blur', function() { formlib_validate_field(this); });
+  $('.formlibInlineValidation select').live('blur', function() { formlib_validate_field(this); });
+  $('.formlibInlineValidation textarea').live('blur', function() { formlib_validate_field(this); });  
+
   // z3c.form
   var z3cform_validate_field = function(input) {
   	var $input = $(input);
