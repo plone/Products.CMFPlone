@@ -8,6 +8,9 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Fixed javascript injections on jquery.highlightsearchterms.js
+  [gborelli]
+
 - Tweak rules for `sortable_title`. So far we took the first 70 chars and
   zero-padded numbers to six digits. Now we zero-pad to four digits and take
   the first 30 and the last 10 characters, thus saving space while still
@@ -65,9 +68,9 @@ Changelog
   PLIP http://dev.plone.org/ticket/10959
   [djay75]
 
-- Make redirection_view/attempt_redirect fall back to nothing in 
-  default_error_message template. If plone.app.redirector gets a URL with 
-  special characters, OOBTree.get raises a UnicodeDecodeError and the template 
+- Make redirection_view/attempt_redirect fall back to nothing in
+  default_error_message template. If plone.app.redirector gets a URL with
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template
   fails. This fixes http://dev.plone.org/ticket/12976.
 
 - Channel link in RSS feed now points to the un-syndicated content for the RSS feed,

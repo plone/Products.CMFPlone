@@ -49,8 +49,7 @@
             // Internet Explorer cannot create simple <span> tags without content
             // otherwise it'd be $('<span>').addClass(...).text(content)
             highlight = function(content) {
-                return $('<span class="' + self.highlightClass + '">' +
-                    content + '</span>');
+                return $('<span class="' + self.highlightClass + '">&nbsp;</span>').text(content);
             };
 
             ci = self.caseInsensitive;
