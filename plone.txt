@@ -1,5 +1,5 @@
 *** Settings ***
-Resource  library-settings.txt
+Library     Selenium2Library  timeout=0 seconds  implicit_wait=10 seconds
 
 *** Variables ***
 
