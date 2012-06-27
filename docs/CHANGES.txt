@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.1.6 (unreleased)
+4.1.6 (2012-06-27)
 ------------------
 
 - Add keyword 'latest' to metadata.xml's version tag, which then looks for
