@@ -337,8 +337,10 @@ class CatalogTool(PloneBaseTool, BaseTool):
         self.reindexObject(object, idxs)
 
     security.declareProtected(ManageZCatalogEntries, 'catalog_object')
-    def catalog_object(self, object, uid=None, idxs=[],
+    def catalog_object(self, object, uid=None, idxs=None,
                        update_metadata=1, pghandler=None):
+        if idxs is None:
+            idxs = []
         self._increment_counter()
 
         w = object
