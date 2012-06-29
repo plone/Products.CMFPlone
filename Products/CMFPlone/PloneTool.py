@@ -1152,7 +1152,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return result
 
     security.declarePublic('getUserFriendlyTypes')
-    def getUserFriendlyTypes(self, typesList=[]):
+    def getUserFriendlyTypes(self, typesList=None):
         """Get a list of types which are considered "user friendly" for search
         and selection purposes.
 
@@ -1162,6 +1162,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         If typesList is given, this is used as the base list; else all types
         from portal_types are used.
         """
+        if typesList is None:
+            typesList = []
         ptool = getToolByName(self, 'portal_properties')
         siteProperties = getattr(ptool, 'site_properties')
         blacklistedTypes = siteProperties.getProperty('types_not_searched', [])
