@@ -326,12 +326,14 @@ class CatalogTool(PloneBaseTool, BaseTool):
         return result
 
     security.declarePrivate('indexObject')
-    def indexObject(self, object, idxs=[]):
+    def indexObject(self, object, idxs=None):
         """Add object to catalog.
 
         The optional idxs argument is a list of specific indexes
         to populate (all of them by default).
         """
+        if idxs is None:
+            idxs = []
         self.reindexObject(object, idxs)
 
     security.declareProtected(ManageZCatalogEntries, 'catalog_object')
