@@ -278,7 +278,13 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         self.request.set('__ignore_group_roles__', False)
         return results
 
-    def manageUser(self, users=[], resetpassword=[], delete=[]):
+    def manageUser(self, users=None, resetpassword=None, delete=None):
+        if users is None:
+            users = []
+        if resetpassword is None:
+            resetpassword = []
+        if delete is None:
+            delete = []
         CheckAuthenticator(self.request)
 
         if users:
@@ -547,7 +553,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         self.request.set('__ignore_group_roles__', False)
         return sortedResults
 
-    def manageGroup(self, groups=[], delete=[]):
+    def manageGroup(self, groups=None, delete=None):
+        if groups is None:
+            groups = []
+        if delete is None:
+            delete = []
         CheckAuthenticator(self.request)
         context = aq_inner(self.context)
 
