@@ -181,7 +181,9 @@ class Renderer(base.Renderer):
         return getRootPath(self.context, currentFolderOnly, topLevel, self.data.root)
 
     @memoize
-    def getNavRoot(self, _marker=[]):
+    def getNavRoot(self, _marker=None):
+        if _marker is None:
+            _marker = []
         portal = self.urltool.getPortalObject()
         rootPath = self.getNavRootPath()
         if rootPath is None:
@@ -196,7 +198,9 @@ class Renderer(base.Renderer):
                 return portal
 
     @memoize
-    def getNavTree(self, _marker=[]):
+    def getNavTree(self, _marker=None):
+        if _marker is None:
+            _marker = []
         context = aq_inner(self.context)
         queryBuilder = getMultiAdapter((context, self.data), INavigationQueryBuilder)
         strategy = getMultiAdapter((context, self.data), INavtreeStrategy)
