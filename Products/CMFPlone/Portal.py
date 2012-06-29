@@ -99,8 +99,10 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
                                                             item)
 
     security.declareProtected(permissions.DeleteObjects, 'manage_delObjects')
-    def manage_delObjects(self, ids=[], REQUEST=None):
+    def manage_delObjects(self, ids=None, REQUEST=None):
         """We need to enforce security."""
+        if ids is None:
+            ids = []
         if isinstance(ids, basestring):
             ids = [ids]
         for id in ids:
@@ -145,7 +147,9 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     def unindexObject(self):
         pass
 
-    def reindexObject(self, idxs=[]):
+    def reindexObject(self, idxs=None):
+        if idxs is None:
+            idxs = []
         pass
 
     def reindexObjectSecurity(self, skip_self=False):
