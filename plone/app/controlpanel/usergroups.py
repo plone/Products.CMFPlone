@@ -100,9 +100,11 @@ class UsersGroupsControlPanelView(ControlPanelView):
     def makeQuery(self, **kw):
         return make_query(**kw)
 
-    def membershipSearch(self, searchString='', searchUsers=True, searchGroups=True, ignore=[]):
+    def membershipSearch(self, searchString='', searchUsers=True, searchGroups=True, ignore=None):
         """Search for users and/or groups, returning actual member and group items
            Replaces the now-deprecated prefs_user_groups_search.py script"""
+        if ignore is None:
+            ignore = []
         groupResults = userResults = []
 
         gtool = getToolByName(self, 'portal_groups')
