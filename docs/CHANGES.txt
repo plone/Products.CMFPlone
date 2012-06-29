@@ -5,8 +5,8 @@
 Changelog
 =========
 
-4.2rc3 (unreleased)
--------------------
+4.2 (2012-06-29)
+----------------
 
 - Add upgrade step to install the CMFEditions component registry bases
   modifier.
