@@ -85,7 +85,9 @@ class Renderer(base.Renderer):
         return self.membership.checkPermission('Mail forgotten password', self.context)
 
     @memoize
-    def auth(self, _marker=[]):
+    def auth(self, _marker=None):
+        if _marker is None:
+            _marker = []
         acl_users = getToolByName(self.context, 'acl_users')
         return getattr(acl_users, 'credentials_cookie_auth', None)
 
