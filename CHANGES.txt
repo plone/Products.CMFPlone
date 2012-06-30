@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.0 (unreleased)
+2.3a1 (2012-06-29)
 ------------------
 
 - Make it possible to create portlets using z3c.form.
