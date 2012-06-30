@@ -1,3 +1,8 @@
+# -*- encoding: utf-8 -*-
+#
+# CatalogTool tests
+#
+
 import unittest
 import zope.interface
 
@@ -398,6 +403,33 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # using OR
         results = self.catalog(SearchableText='aaa OR bbb')
         self.assertEqual(len(results), 2)
+    
+    def testSearchIgnoresAccents(self):
+        #plip 12110
+        self.folder.invokeFactory('Document', id='docwithaccents1', description='Econométrie')
+        self.folder.invokeFactory('Document', id='docwithaccents2', description='ECONOMETRIE')
+        self.folder.invokeFactory('Document', id='docwithaccents3', description='économétrie')
+        self.folder.invokeFactory('Document', id='docwithaccents4', description='ÉCONOMÉTRIE')
+
+        self.assertEqual(len(self.catalog(SearchableText='econometrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='économétrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='ÉCONOMÉTRIE')), 4)
+
+        self.assertEqual(len(self.catalog(SearchableText='econom?trie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='econometr*')), 4)
+
+        # non-regression with eastern language (use plone.i18n ja normalizer test)
+        self.folder.invokeFactory('Document', id='docwithjapanchars', description="テストページ")
+        self.assertEqual(len(self.catalog(SearchableText="テストページ")), 1)
+
+        # test with language specific char (fr)
+        self.folder.invokeFactory('Document', id='docwithfrenchlatinchar', description='œuf')
+        self.assertEqual(len(self.catalog(SearchableText='œuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='oeuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='Œuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='OEUF')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='uf')), 0)
 
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
         # After adding a group with access rights and containing user2,
@@ -438,7 +470,20 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.login(user2)
         self.assertFalse(self.catalog(SearchableText='bar'))
 
+    def testSearchIgnoreAccents(self):
+        """PLIP 12110
+        """
+        self.folder.invokeFactory('Document', id='docwithaccents-1', text='Econométrie', title='foo')
+        self.folder.invokeFactory('Document', id='docwithaccents-2', text='Économétrie')
+        self.folder.invokeFactory('Document', id='docwithout-accents', text='ECONOMETRIE')
 
+        self.assertEqual(len(self.catalog(SearchableText='Économétrie')), 3)
+        self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 3)
+        self.assertEqual(len(self.catalog(SearchableText='ECONOMETRIE')), 3)
+                
+                
+
+        
 class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
