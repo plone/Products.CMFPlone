@@ -162,7 +162,6 @@ For what's new in this release, see CHANGES.txt.
   http://dev.plone.org/ticket/7885
   [davisagli]
 
->>>>>>> 5b10572acb6abba90660903034039a3ee5de5124
 - Remove uneeded kss debugging code
   [jfroche]
 
