@@ -681,6 +681,26 @@ For what's new in this release, see CHANGES.txt.
   [hannosch]
 
 
+4.0.9 - 2011-07-19
+------------------
+
+- Release Plone 4.0.9
+  [esteele]
+
+4.0.8 - 2011-07-05
+------------------
+
+- Use ``transaction.savepoint`` instead of ``transaction.begin`` in
+  ``isLinked``; 
+  closes #7784;
+  does not reopen #6666 probably because we use fixed version of ZEO
+  [gotcha]
+
+- Optimized: Huge optimization of calendar_formfield.js under ie8 and lower.
+  Gain of 50% on js execution on a large page.
+  [thomasdesvenain]
+
+
 4.0.7 - 2011-06-02
 ------------------
 
