@@ -355,7 +355,8 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         try:
             host.send(mail_text, m_to, m_from, subject=subject,
                       charset=encoding, immediate=immediate)
-
+            # return the rendered template "mail_password_response.pt"
+            # (in Products.PasswordResetTool)
             return self.mail_password_response(self, REQUEST)
         except SMTPRecipientsRefused:
             # Don't disclose email address on failure

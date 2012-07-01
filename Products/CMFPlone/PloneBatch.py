@@ -36,8 +36,10 @@ class Batch(QuantumBatch):
         b_start = pagenumber * (self.pagesize - self.overlap) - self.pagesize
         return make_query(formvariables, {self.b_start_str: b_start})
 
-    def navurls(self, formvariables, navlist=[]):
+    def navurls(self, formvariables, navlist=None):
         """ Returns the page number and url for the navigation quick links """
+        if navlist is None:
+            navlist = []
         if not navlist:
             navlist = self.navlist
         return map(lambda x, formvariables=formvariables:

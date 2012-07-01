@@ -19,7 +19,7 @@ from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import setuphandlers
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.UnicodeSplitter import Splitter, CaseNormalizer
+from Products.CMFPlone.UnicodeSplitter import Splitter, I18NNormalizer
 from Products.GenericSetup.browser.manage import ExportStepsView
 from Products.GenericSetup.browser.manage import ImportStepsView
 
@@ -697,7 +697,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         pipeline = self.catalog.plone_lexicon._pipeline
         self.assertTrue(len(pipeline) >= 2)
         self.assertTrue(isinstance(pipeline[0], Splitter))
-        self.assertTrue(isinstance(pipeline[1], CaseNormalizer))
+        self.assertTrue(isinstance(pipeline[1], I18NNormalizer))
 
     def testMakeSnapshot(self):
         # GenericSetup snapshot should work
