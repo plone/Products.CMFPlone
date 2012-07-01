@@ -2,7 +2,7 @@ import re
 import random
 from hashlib import md5
 from email import message_from_string
-from smtplib import SMTPRecipientsRefused
+from smtplib import SMTPException, SMTPRecipientsRefused
 
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
@@ -203,7 +203,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             return None
         else:
             return err
- 
 
     security.declarePublic('testPropertiesValidity')
     def testPropertiesValidity(self, props, member=None):
@@ -307,7 +306,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return self.getPassword(length, salt)
 
     security.declarePublic('mailPassword')
-    def mailPassword(self, login, REQUEST):
+    def mailPassword(self, login, REQUEST, immediate=False):
         """ Wrapper around mailPassword """
         membership = getToolByName(self, 'portal_membership')
         if not membership.checkPermission('Mail forgotten password', self):
@@ -355,13 +354,15 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         host = getToolByName(self, 'MailHost')
         try:
             host.send(mail_text, m_to, m_from, subject=subject,
-                      charset=encoding)
+                      charset=encoding, immediate=immediate)
 
             return self.mail_password_response(self, REQUEST)
         except SMTPRecipientsRefused:
             # Don't disclose email address on failure
             raise SMTPRecipientsRefused(
                 _(u'Recipient address rejected by server.'))
+        except SMTPException as e:
+            raise(e)
 
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id):
