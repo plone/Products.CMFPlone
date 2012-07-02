@@ -360,8 +360,6 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     except SMTPException as e:
                         logger.exception(e)
                         users_failed_reset_passwords.append(user.id)
-                        # utils.addPortalMessage(_(u'Failed to send e-mail.'), type='error')
-                    # users_with_reset_passwords.append(user.id)
                     else:
                         users_with_reset_passwords.append(user.id)
 
