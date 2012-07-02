@@ -5,10 +5,11 @@
 Changelog
 =========
 
-4.2.1 (unreleased)
-------------------
+4.2.0.1 (unreleased)
+--------------------
 
-- Nothing changed yet.
+- Add docstring to SkinTool's method to allow them being called from the ZMI.
+  [erral]
 
 
 4.2 (2012-06-29)
