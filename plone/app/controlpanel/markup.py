@@ -147,7 +147,9 @@ class MarkupControlPanelAdapter(SchemaAdapterBase):
         portal_transforms = getToolByName(self.context, 'portal_transforms')
         return portal_transforms.listAvailableTextInputs()
 
-    def _get_forbidden_types(self, forbidden_contenttypes=[]):
+    def _get_forbidden_types(self, forbidden_contenttypes=None):
+        if forbidden_contenttypes is None:
+            forbidden_contenttypes = []
         portal_properties = getToolByName(self.context, 'portal_properties', None)
         if portal_properties is not None:
             site_properties = getattr(portal_properties, 'site_properties', None)

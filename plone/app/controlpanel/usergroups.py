@@ -1,4 +1,5 @@
 import logging
+from smtplib import SMTPException
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
@@ -100,9 +101,11 @@ class UsersGroupsControlPanelView(ControlPanelView):
     def makeQuery(self, **kw):
         return make_query(**kw)
 
-    def membershipSearch(self, searchString='', searchUsers=True, searchGroups=True, ignore=[]):
+    def membershipSearch(self, searchString='', searchUsers=True, searchGroups=True, ignore=None):
         """Search for users and/or groups, returning actual member and group items
            Replaces the now-deprecated prefs_user_groups_search.py script"""
+        if ignore is None:
+            ignore = []
         groupResults = userResults = []
 
         gtool = getToolByName(self, 'portal_groups')
@@ -169,6 +172,8 @@ class UsersGroupsControlPanelView(ControlPanelView):
 
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
+    mailhost_tool = None
+
     def __call__(self):
 
         form = self.request.form
@@ -193,6 +198,11 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             self.searchResults = self.doSearch(self.searchString)
 
         return self.index()
+
+    def get_mailhost(self):
+        if self.mailhost_tool is None:
+            self.mailhost_tool = getToolByName(self, 'MailHost')
+        return self.mailhost_tool
 
     def doSearch(self, searchString):
         acl = getToolByName(self, 'acl_users')
@@ -276,7 +286,14 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
         self.request.set('__ignore_group_roles__', False)
         return results
 
-    def manageUser(self, users=[], resetpassword=[], delete=[]):
+    def manageUser(self, users=None, resetpassword=None, delete=None):
+        if users is None:
+            users = []
+        if resetpassword is None:
+            resetpassword = []
+        if delete is None:
+            delete = []
+
         CheckAuthenticator(self.request)
 
         if users:
@@ -288,6 +305,7 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
             utils = getToolByName(context, 'plone_utils')
 
             users_with_reset_passwords = []
+            users_failed_reset_passwords = []
 
             for user in users:
                 # Don't bother if the user will be deleted anyway
@@ -296,6 +314,9 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
 
                 member = mtool.getMemberById(user.id)
                 current_roles = member.getRoles()
+
+                # TODO: is it still possible to change the e-mail address here?
+                #       isn't that done on @@user-information now?
                 # If email address was changed, set the new one
                 if hasattr(user, 'email'):
                     # If the email field was disabled (ie: non-writeable), the
@@ -320,14 +341,31 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                     if ('Manager' in roles) != ('Manager' in current_roles):
                         raise Forbidden
 
+                # Ideally, we would like to detect if any role assignment has
+                # actually changed, and only then issue "Changes applied".
                 acl_users.userFolderEditUser(user.id, pw, roles, member.getDomains(), REQUEST=context.REQUEST)
+
                 if pw:
                     context.REQUEST.form['new_password'] = pw
-                    regtool.mailPassword(user.id, context.REQUEST)
-                    users_with_reset_passwords.append(user.id)
+                    # [Comment copied from plone.app.contentrules.actions.mail.MailActionExecutor.__call__()]
+                    # XXX: We're using "immediate=True" because otherwise we won't
+                    # be able to catch SMTPException as the smtp connection is made
+                    # as part of the transaction apparatus.
+                    # AlecM thinks this wouldn't be a problem if mail queuing was
+                    # always on -- but it isn't. (stevem)
+                    # so we test if queue is not on to set immediate
+                    immediate = not self.get_mailhost().smtp_queue
+                    try:
+                        regtool.mailPassword(user.id, context.REQUEST, immediate=immediate)
+                    except SMTPException as e:
+                        logger.exception(e)
+                        users_failed_reset_passwords.append(user.id)
+                    else:
+                        users_with_reset_passwords.append(user.id)
 
             if delete:
                 self.deleteMembers(delete)
+
             if users_with_reset_passwords:
                 reset_passwords_message = _(
                     u"reset_passwords_msg",
@@ -337,6 +375,17 @@ class UsersOverviewControlPanel(UsersGroupsControlPanelView):
                         },
                     )
                 utils.addPortalMessage(reset_passwords_message)
+            if users_failed_reset_passwords:
+                failed_passwords_message = _(
+                    u'failed_passwords_msg',
+                    default=u'A password reset e-mail could not be sent to the following users: ${user_ids}',
+                    mapping={
+                        u'user_ids' : ', '.join(users_failed_reset_passwords),
+                        },
+                    )
+                utils.addPortalMessage(failed_passwords_message, type='error')
+
+            # TODO: issue message only if something actually has changed
             utils.addPortalMessage(_(u'Changes applied.'))
 
     def deleteMembers(self, member_ids):
@@ -545,7 +594,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         self.request.set('__ignore_group_roles__', False)
         return sortedResults
 
-    def manageGroup(self, groups=[], delete=[]):
+    def manageGroup(self, groups=None, delete=None):
+        if groups is None:
+            groups = []
+        if delete is None:
+            delete = []
         CheckAuthenticator(self.request)
         context = aq_inner(self.context)
 

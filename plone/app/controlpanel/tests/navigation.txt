@@ -34,7 +34,7 @@ Make some changes
     >>> self.browser.url.endswith('navigation-controlpanel')
     True
 
-    >>> self.browser.getControl('Automatically generate tabs').selected = False
+    >>> self.browser.getControl('Automatically generate tabs', index=0).selected = False
     >>> self.browser.getControl('Generate tabs for items other than folders').selected = False
     >>> self.browser.getControl('Show items normally excluded from navigation if viewing their children.').selected = False
     >>> self.browser.getControl('Collection', index=0).selected = False
