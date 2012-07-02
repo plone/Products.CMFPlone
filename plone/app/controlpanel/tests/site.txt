@@ -10,6 +10,9 @@ First some initial setup code:
 
     >>> ptool.site_properties.enable_sitemap
     False
+    
+    >>> ptool.site_properties.displayPublicationDateInByline
+    False
 
 Viewing the site control panel
 -----------------------------
@@ -38,6 +41,7 @@ Make some changes
 
     >>> self.browser.getControl(name='form.site_title').value = "Site"
     >>> self.browser.getControl(name='form.enable_sitemap').value = True
+    >>> self.browser.getControl(name='form.display_pub_date_in_byline').value = True
 
 Click the save button:
 
@@ -53,6 +57,8 @@ We should be informed that something has changed:
 Make sure the changes have been applied correctly to the tool:
 
     >>> ptool.site_properties.enable_sitemap
+    True
+    >>> ptool.site_properties.displayPublicationDateInByline
     True
 
 Test if the sitemaps does appear:
@@ -74,6 +80,7 @@ Make again some changes
     True
 
     >>> self.browser.getControl(name='form.enable_sitemap').value = False
+    >>> self.browser.getControl(name='form.display_pub_date_in_byline').value = False
 
 Click the save button:
 
@@ -89,6 +96,8 @@ We should be informed that something has changed:
 Make sure the changes have been applied correctly to the tool:
 
     >>> ptool.site_properties.enable_sitemap
+    False
+    >>> ptool.site_properties.displayPublicationDateInByline
     False
 
 Check the sitemap actually, should raise a 404:

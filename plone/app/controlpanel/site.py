@@ -38,6 +38,12 @@ class ISiteSchema(Interface):
                         default=False,
                         required=False)
 
+    display_pub_date_in_byline = Bool(
+        title=_(u"Display publication date in 'about' information"),
+        description=_(u"Displays content publication date on site pages."),
+        default=False,
+        required=False)
+
     enable_sitemap = Bool(title=_(u"Expose sitemap.xml.gz"),
                           description=_(u"Exposes your content as a file "
                               "according to the sitemaps.org standard. You "
@@ -104,6 +110,14 @@ class SiteControlPanelAdapter(SchemaAdapterBase):
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
     exposeDCMetaTags = ProxyFieldProperty(ISiteSchema['exposeDCMetaTags'])
 
+    def get_display_pub_date_in_byline(self):
+        return self.context.site_properties.displayPublicationDateInByline
+
+    def set_display_pub_date_in_byline(self, value):
+        self.context.site_properties.displayPublicationDateInByline = value
+
+    display_pub_date_in_byline = property(get_display_pub_date_in_byline,
+        set_display_pub_date_in_byline)
 
 class MiniTextAreaWidget(TextAreaWidget):
 

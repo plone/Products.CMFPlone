@@ -4,7 +4,7 @@ Changelog
 2.2.7 (unreleased)
 ------------------
 
-- Added 'display publication date in author byline' option to Security
+- Added 'display publication date in author byline' option to Site
   Settings control panel.
   [vipod]
 
