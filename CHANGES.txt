@@ -4,7 +4,9 @@ Changelog
 2.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added 'display publication date in author byline' option to Site
+  Settings control panel.
+  [vipod]
 
 
 2.2.6 (2012-06-29)
