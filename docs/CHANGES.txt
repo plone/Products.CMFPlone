@@ -89,3 +89,7 @@ Changelog
   from "/portal_properties/site_properties".
   Fixes https://dev.plone.org/ticket/11171.
   [kleist]
+
+- CatalogTool.py, PloneBatch.py, PloneFolder.py, PloneTool.py, Portal.py:
+  Don't use list as default parameter value.
+  [kleist]
