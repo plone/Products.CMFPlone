@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.7 (unreleased)
+2.3 (unreleased)
 ------------------
 
 - Change breadcrumb separator to / (slash character) for accessibility, and added SEO benefits. 
@@ -11,6 +11,10 @@ Changelog
 - Add language atribute to presentation.pt for WCAG 2.0 compliance. 
   See https://dev.plone.org/ticket/12902
   [rmatt, polyester]
+
+- Display publication date in author byline:
+  https://dev.plone.org/ticket/8699
+  [vipod]
 
 - Remove hard dependency on ATContentTypes.
   [davisagli]
