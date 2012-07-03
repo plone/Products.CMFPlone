@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<registry>
+    <record name="Products.CMFPlone.i18nl10n.localLongTimeFormat">
+        <field type="plone.registry.field.ASCIILine">
+            <title>localLongTimeFormat</title>
+            <description>Default value: %Y-%m-%d %H:%M (2038-01-19 03:14)</description>
+        </field>
+        <value>%Y-%m-%d %H:%M</value>
+    </record>
+    <record name="Products.CMFPlone.i18nl10n.localTimeOnlyFormat">
+        <field type="plone.registry.field.ASCIILine">
+            <title>localTimeOnlyFormat</title>
+            <description>Default value: %H:%M (03:14)</description>
+        </field>
+        <value>%H:%M</value>
+    </record>
+    <record name="Products.CMFPlone.i18nl10n.localTimeFormat">
+        <field type="plone.registry.field.ASCIILine">
+            <title>localTimeFormat</title>
+            <description>Default value: %Y-%m-%d (Example: 2038-01-19)</description>
+        </field>
+        <value>%Y-%m-%d</value>
+    </record>
+</registry>
