@@ -28,7 +28,7 @@
   </tal:creator>
 
   <tal:dates define="published view/pub_date;
-                     modified view/modified_date">
+                     modified context/ModificationDate">
   <span class="documentPublished"
         tal:condition="published">
     <span i18n:translate="box_published">

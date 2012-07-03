@@ -135,18 +135,6 @@ class DocumentBylineViewlet(ViewletBase):
         
         # finally fallback to publication date from review history
         return info.get('time', None)
-    
-    def modified_date(self):
-        """Return modification date if object was modified after it was
-        published, or if object is not published yet.
-        """
-        modified = DateTime(self.context.ModificationDate())
-        published = self.pub_date()
-        if modified is not None and published is not None and \
-           modified <= published:
-            return None
-        
-        return modified
 
     def _review_history(self):
         """Return review history using low level API to skip security checks
