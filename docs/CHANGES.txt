@@ -93,3 +93,6 @@ Changelog
 - CatalogTool.py, PloneBatch.py, PloneFolder.py, PloneTool.py, Portal.py:
   Don't use list as default parameter value.
   [kleist]
+
+- Use configuration registry to override translation of date format. Fixes http://dev.plone.org/ticket/11171
+  [kleist]
