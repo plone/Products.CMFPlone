@@ -94,8 +94,6 @@ class INavigationPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(INavigationPortlet)
 
-    title = _(u'Navigation')
-
     name = u""
     root = None
     currentFolderOnly = False
@@ -110,6 +108,15 @@ class Assignment(base.Assignment):
         self.includeTop = includeTop
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
+
+    @property
+    def title(self):
+        """
+        Display the name in portlet mngmt interface
+        """
+        if self.name:
+            return self.name
+        return _(u'Navigation')
 
 
 class Renderer(base.Renderer):
@@ -141,6 +148,22 @@ class Renderer(base.Renderer):
     def navigation_root(self):
         return self.getNavRoot()
 
+    def heading_link_target(self):
+        """
+        Get the href target where clicking the portlet header will take you.
+
+        If this is a customized portlet with a custom navigation root set,
+        we probably want to take the user to the navigation root instead
+        of the global sitemap.
+        """
+
+        if self.data.root:
+            # Go to the item we have chosen in
+            return self.getNavRoot().absolute_url()
+        else:
+            # The sitemap of current nav root
+            return self.getNavRoot().absolute_url() + "/sitemap"
+
     def root_type_name(self):
         root = self.getNavRoot()
         return queryUtility(IIDNormalizer).normalize(root.portal_type)
@@ -169,7 +192,12 @@ class Renderer(base.Renderer):
 
         bottomLevel = self.data.bottomLevel or self.properties.getProperty('bottomLevel', 0)
 
-        return self.recurse(children=data.get('children', []), level=1, bottomLevel=bottomLevel)
+        if bottomLevel < 0:
+            # Special case where navigation tree depth is negative
+            # meaning that the admin does not want the listing to be displayed
+            return self.recurse([], level=1, bottomLevel=bottomLevel)
+        else:
+            return self.recurse(children=data.get('children', []), level=1, bottomLevel=bottomLevel)
 
     # Cached lookups
 
@@ -269,7 +297,7 @@ class QueryBuilder(object):
         # nothing (since we explicitly start from the root always). Hence,
         # use a regular depth-1 query in this case.
 
-        if currentPath!=rootPath and not currentPath.startswith(rootPath + '/'):
+        if currentPath != rootPath and not currentPath.startswith(rootPath + '/'):
             query['path'] = {'query': rootPath, 'depth': 1}
         else:
             query['path'] = {'query': currentPath, 'navtree': 1}

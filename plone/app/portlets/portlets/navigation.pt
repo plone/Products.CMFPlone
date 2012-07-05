@@ -7,7 +7,7 @@
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
-           tal:attributes="href string:${root/absolute_url}/sitemap;"
+           tal:attributes="href string:${view/heading_link_target}"
            tal:content="view/title"
            i18n:translate="">Navigation</a>
         <span class="portletTopRight"></span>
