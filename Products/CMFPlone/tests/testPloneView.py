@@ -20,7 +20,10 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testToLocalizedTime(self):
         localdate = self.view.toLocalizedTime
         value = localdate('Mar 9, 1997 1:45pm', long_format=True)
-        self.assertEquals(value, 'Mar 09, 1997 01:45 PM')
+        # format string from configuration registry is disabled by default,
+        # and the translation machinery is (obviously) disabled during tests:
+        # fall back to ISO style
+        self.assertEquals(value, '1997-03-09 13:45')
 
     def testIsStructuralFolderWithNonFolder(self):
         i = dummy.Item()
