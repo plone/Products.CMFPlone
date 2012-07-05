@@ -172,7 +172,7 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
     formatstring = translate(msgid, domain, mapping, request)
 
     # 3. if both failed, fall back to hardcoded ISO style
-    if formatstring is None:
+    if formatstring == msgid:
         if msgid == 'date_format_long':
             formatstring = '%Y-%m-%d %H:%M' # 2038-01-19 03:14
         elif msgid == 'date_format_short':
