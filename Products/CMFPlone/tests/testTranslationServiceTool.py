@@ -41,27 +41,27 @@ class TestTranslationServiceTool(PloneTestCase.PloneTestCase):
                                          long_format=True,
                                          time_only=False,
                                          context=self.portal)
-        # TranslationServiceTool falls back to time formats in site properties
-        # because PTS isn't installed
-        self.assertEquals(value, 'Mar 09, 1997 01:45 PM')
+        # format string from configuration registry is disabled by default,
+        # and PTS isn't installed: fall back to ISO style
+        self.assertEquals(value, '1997-03-09 13:45')
 
     def testLocalized_time_only_none(self):
         value = self.tool.ulocalized_time('Mar 9, 1997 1:45pm',
                                          long_format=True,
                                          time_only=None,
                                          context=self.portal)
-        # TranslationServiceTool falls back to time formats in site properties
-        # because PTS isn't installed
-        self.assertEquals(value, 'Mar 09, 1997 01:45 PM')
+        # format string from configuration registry is disabled by default,
+        # and PTS isn't installed: fall back to ISO style
+        self.assertEquals(value, '1997-03-09 13:45')
 
     def testLocalized_time_only(self):
         value = self.tool.ulocalized_time('Mar 9, 1997 1:45pm',
                                          long_format=True,
                                          time_only=True,
                                          context=self.portal)
-        # TranslationServiceTool falls back to time formats in site properties
-        # because PTS isn't installed
-        self.assertEquals(value, '01:45 PM')
+        # format string from configuration registry is disabled by default,
+        # and PTS isn't installed: fall back to ISO style
+        self.assertEquals(value, '13:45')
 
     def test_ulocalized_time_fetch_error(self):
         # http://dev.plone.org/plone/ticket/4251
