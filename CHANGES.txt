@@ -4,7 +4,8 @@ Changelog
 1.2a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Unused field "Listed in searches" removed from Personal Preferences.
+  [kleist]
 
 
 1.2a1 (2012-06-29)
