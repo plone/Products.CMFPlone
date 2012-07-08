@@ -64,14 +64,6 @@ class IPersonalPreferences(Interface):
            'information if needed.'),
         )
 
-    listed = Bool(
-        title=_(u'label_listed_status', default=u'Listed in searches'),
-        description=_(u'help_listed_status',
-            default=u'Determines if your user name is listed in user '
-            'searches done on this site.'),
-        required=False
-        )
-
     language = Choice(
         title=_(u'label_language', default=u'Language'),
         description=_(u'help_preferred_language', u'Your preferred language.'),
@@ -102,14 +94,6 @@ class PersonalPreferencesPanelAdapter(AccountPanelSchemaAdapter):
         return self.context.setMemberProperties({'ext_editor': value})
 
     ext_editor = property(get_ext_editor, set_ext_editor)
-
-    def get_listed(self):
-        return self.context.getProperty('listed', '')
-
-    def set_listed(self, value):
-        return self.context.setMemberProperties({'listed': value})
-
-    listed = property(get_listed, set_listed)
 
     def get_visible_ids(self):
         return self.context.getProperty('visible_ids', '')

@@ -35,8 +35,6 @@ We have two controls, one for the start page and one for the language:
     ['']
     >>> self.browser.getControl(name='form.ext_editor').value
     False
-    >>> self.browser.getControl(name='form.listed').value
-    True
     >>> self.browser.getControl(name='form.language').value
     ['']
 
@@ -57,7 +55,6 @@ Modifying values
     >>> self.browser.open('http://nohost/plone/' + view_name)
     >>> self.browser.getControl(name='form.wysiwyg_editor').value = ['TinyMCE']
     >>> self.browser.getControl(name='form.ext_editor').value = True
-    >>> self.browser.getControl(name='form.listed').value = True
     >>> self.browser.getControl(name='form.language').value = ['en']
     >>> self.browser.getControl(name="form.actions.save").click()
     >>> 'Changes saved' in self.browser.contents
@@ -72,8 +69,6 @@ changed:
     'TinyMCE'
     >>> member.getProperty('ext_editor', object)
     True
-    >>> member.getProperty('listed', object)
-    True
     >>> member.getProperty('language', object)
     'en'
 
@@ -82,8 +77,6 @@ And that the form still has the according values:
     >>> self.browser.getControl(name='form.wysiwyg_editor').value
     ['TinyMCE']
     >>> self.browser.getControl(name='form.ext_editor').value
-    True
-    >>> self.browser.getControl(name='form.listed').value
     True
     >>> self.browser.getControl(name='form.language').value
     ['en']
@@ -97,7 +90,6 @@ Making an input empty should result in a stored empty string.
     >>> self.browser.open('http://nohost/plone/' + view_name)
     >>> self.browser.getControl(name='form.wysiwyg_editor').value = ['']
     >>> self.browser.getControl(name='form.ext_editor').value = False
-    >>> self.browser.getControl(name='form.listed').value = False
     >>> self.browser.getControl(name='form.language').value = ['']
     >>> self.browser.getControl(name="form.actions.save").click()
     >>> 'Changes saved' in self.browser.contents
@@ -112,8 +104,6 @@ changed:
     ''
     >>> member.getProperty('ext_editor', object)
     False
-    >>> member.getProperty('listed', object)
-    False
     >>> member.getProperty('language', object)
     ''
 
@@ -122,8 +112,6 @@ And that the form still has the according values:
     >>> self.browser.getControl(name='form.wysiwyg_editor').value
     ['']
     >>> self.browser.getControl(name='form.ext_editor').value
-    False
-    >>> self.browser.getControl(name='form.listed').value
     False
     >>> self.browser.getControl(name='form.language').value
     ['']
