@@ -178,7 +178,7 @@ class GlobalSectionsViewlet(ViewletBase):
             action_path = action['url'][plone_url_len:]
             if not action_path.startswith('/'):
                 action_path = '/' + action_path
-            if path.startswith(action_path + '/'):
+            if path.startswith(action_path + '/') or path == action_path:
                 # Make a list of the action ids, along with the path length
                 # for choosing the longest (most relevant) path.
                 valid_actions.append((len(action_path), action['id']))
