@@ -1,5 +1,4 @@
-<div metal:define-macro="portal_footer"
-     i18n:domain="plone"
+<div i18n:domain="plone"
      id="portal-footer">
           <p>
                <span i18n:translate="description_copyright" tal:omit-tag="">
