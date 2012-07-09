@@ -137,9 +137,13 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
+
         rootpath = self.getNavRootPath()
         if rootpath is None:
             return False
+
+        if self.data.bottomLevel < 0:
+            return True
 
         tree = self.getNavTree()
         return len(tree['children']) > 0
