@@ -560,10 +560,17 @@ class TestRenderer(PortletsTestCase):
         """
         See that heading link points to a global sitemap if no root item is set.
         """
-        view = self.renderer(self.portal.folder1, assignment=navigation.Assignment())
+
+        directlyProvides(self.portal.folder2, INavigationRoot)
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(topLevel=0))
         link = view.heading_link_target()
-        # folder1 is navigation root
-        self.assertEqual(link, 'http://nohost/plone/folder1/sitemap')
+        # The root is not given -> should render the sitemap in the navigation root
+        self.assertEqual(link, 'http://nohost/plone/folder2/sitemap')
+
+        view = self.renderer(self.portal.folder1, assignment=navigation.Assignment(topLevel=0))
+        link = view.heading_link_target()
+        # The root is not given -> should render the sitemap in the navigation root
+        self.assertEqual(link, 'http://nohost/plone/sitemap')
 
     def testHeadingLinkRooted(self):
         """
@@ -580,7 +587,7 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(topLevel=0, root="/plone/foobar"))
         link = view.heading_link_target()
         # Points to the site root if the item is gone
-        self.assertEqual(link, "http://nohost/plone")
+        self.assertEqual(link, "http://nohost/plone/sitemap")
 
 
 def test_suite():

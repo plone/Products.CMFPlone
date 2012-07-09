@@ -4,6 +4,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
 from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -15,6 +16,7 @@ from zope import schema
 
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDynamicViewFTI.interface import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
@@ -163,12 +165,12 @@ class Renderer(base.Renderer):
         if not nav_root:
             return None
 
-        if self.data.root:
+        if INavigationRoot.providedBy(nav_root) or ISiteRoot.providedBy(nav_root):
+            # For top level folders go to the sitemap
+            return nav_root.absolute_url() + "/sitemap"
+        else:
             # Go to the item we have chosen in
             return nav_root.absolute_url()
-        else:
-            # The sitemap of current nav root (points to portal)
-            return nav_root.absolute_url() + "/sitemap"
 
     def root_type_name(self):
         root = self.getNavRoot()
