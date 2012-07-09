@@ -556,6 +556,32 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(view.title(), "New navigation title")
         self.failUnless(view.hasName())
 
+    def testHeadingLinkRootless(self):
+        """
+        See that heading link points to a global sitemap if no root item is set.
+        """
+        view = self.renderer(self.portal.folder1, assignment=navigation.Assignment())
+        link = view.heading_link_target()
+        # folder1 is navigation root
+        self.assertEqual(link, 'http://nohost/plone/folder1/sitemap')
+
+    def testHeadingLinkRooted(self):
+        """
+        See that heading link points to a content item if root selected, otherwise sitemap.
+        """
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(topLevel=0, root="/folder2"))
+        link = view.heading_link_target()
+        self.assertEqual(link, 'http://nohost/plone/folder2')
+
+    def testHeadingLinkRootedItemGone(self):
+        """
+        See that heading link points to a content item which do not exist
+        """
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(topLevel=0, root="/plone/foobar"))
+        link = view.heading_link_target()
+        # Points to the site root if the item is gone
+        self.assertEqual(link, "http://nohost/plone")
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

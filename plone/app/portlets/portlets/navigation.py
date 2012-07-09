@@ -157,12 +157,18 @@ class Renderer(base.Renderer):
         of the global sitemap.
         """
 
+        nav_root = self.getNavRoot()
+
+        # Root content item gone away or similar issue
+        if not nav_root:
+            return None
+
         if self.data.root:
             # Go to the item we have chosen in
-            return self.getNavRoot().absolute_url()
+            return nav_root.absolute_url()
         else:
-            # The sitemap of current nav root
-            return self.getNavRoot().absolute_url() + "/sitemap"
+            # The sitemap of current nav root (points to portal)
+            return nav_root.absolute_url() + "/sitemap"
 
     def root_type_name(self):
         root = self.getNavRoot()
@@ -222,7 +228,9 @@ class Renderer(base.Renderer):
         else:
             try:
                 return portal.unrestrictedTraverse(rootPath)
-            except (AttributeError, KeyError):
+            except (AttributeError, KeyError, TypeError):
+                # TypeError: object is unsubscribtable might be
+                # risen in some cases
                 return portal
 
     @memoize
@@ -388,7 +396,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         contextPath = '/'.join(context.getPhysicalPath())
         if not contextPath.startswith(rootPath):
             return None
-        contextSubPathElements = contextPath[len(rootPath)+1:]
+        contextSubPathElements = contextPath[len(rootPath) + 1:]
         if contextSubPathElements:
             contextSubPathElements = contextSubPathElements.split('/')
             if len(contextSubPathElements) < topLevel:
