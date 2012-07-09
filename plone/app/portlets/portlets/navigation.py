@@ -154,10 +154,19 @@ class Renderer(base.Renderer):
         """
         Get the href target where clicking the portlet header will take you.
 
-        If this is a customized portlet with a custom navigation root set,
-        we probably want to take the user to the navigation root instead
-        of the global sitemap.
+        If this is a customized portlet with a custom root item set,
+        we probably want to take the user to the custom root item instead
+        of the sitemap of the navigation root.
+
+        Plone does not have subsection sitemaps so there is no point of
+        displaying /sitemap links for anything besides nav root.
         """
+
+        if not self.data.root:
+            # No particular root item assigned -> should get link to the
+            # navigation root sitemap of the current context acquisition chain
+            portal_state = getMultiAdapter((self.context, self.request), name="plone_portal_state")
+            return portal_state.navigation_root_url() + "/sitemap"
 
         nav_root = self.getNavRoot()
 
@@ -169,7 +178,7 @@ class Renderer(base.Renderer):
             # For top level folders go to the sitemap
             return nav_root.absolute_url() + "/sitemap"
         else:
-            # Go to the item we have chosen in
+            # Go to the item /view we have chosen as root item
             return nav_root.absolute_url()
 
     def root_type_name(self):

@@ -567,6 +567,13 @@ class TestRenderer(PortletsTestCase):
         # The root is not given -> should render the sitemap in the navigation root
         self.assertEqual(link, 'http://nohost/plone/folder2/sitemap')
 
+        # Even if the assignment contains no topLevel options and no self.root
+        # one should get link to the navigation root sitemap
+        view = self.renderer(self.portal.folder2.doc21, assignment=navigation.Assignment())
+        link = view.heading_link_target()
+        # The root is not given -> should render the sitemap in the navigation root
+        self.assertEqual(link, 'http://nohost/plone/folder2/sitemap')
+
         view = self.renderer(self.portal.folder1, assignment=navigation.Assignment(topLevel=0))
         link = view.heading_link_target()
         # The root is not given -> should render the sitemap in the navigation root
