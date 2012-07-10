@@ -43,10 +43,6 @@
   <property name="title">Site wide properties</property>
   <property name="allowAnonymousViewAbout" type="boolean">False</property>
   <property name="displayPublicationDateInByline" type="boolean">False</property>
-  <property name="localTimeFormat" type="string">%b %d, %Y</property>
-  <property name="localLongTimeFormat"
-     type="string">%b %d, %Y %I:%M %p</property>
-  <property name="localTimeOnlyFormat" type="string">%I:%M %p</property>
   <property name="default_language" type="string">en</property>
   <property name="default_charset" type="string">utf-8</property>
   <property name="ext_editor" type="boolean">False</property>

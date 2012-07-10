@@ -8,6 +8,24 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Searches ignore accents.
+  PLIP http://dev.plone.org/ticket/12110
+  [thomasdesvenain]
+
+- IE critical fix on toggle select and form submit helpers.
+  [thomasdesvenain]
+
+
+- Fixed javascript injections on jquery.highlightsearchterms.js
+  [gborelli]
+
+- Tweak rules for `sortable_title`. So far we took the first 70 chars and
+  zero-padded numbers to six digits. Now we zero-pad to four digits and take
+  the first 30 and the last 10 characters, thus saving space while still
+  distinguishing long titles which only differ at the end, like imported
+  file or image names.
+  [hannosch]
+
 - PEP 8 (ignoring W602, E203, E241, E301, E501 and E701).
   [pbdiode, hvelarde]
 
@@ -54,198 +72,33 @@ Changelog
   on the first column.
   [mj]
 
+- support a PAS plugin for validating passwords
+  PLIP http://dev.plone.org/ticket/10959
+  [djay75]
 
-4.2rc2 (unreleased)
--------------------
+- Make redirection_view/attempt_redirect fall back to nothing in
+  default_error_message template. If plone.app.redirector gets a URL with
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template
+  fails. This fixes http://dev.plone.org/ticket/12976.
 
-- Check the existence of a portal_type attribute before accessing it to construct
-  navigation URLs. This avoids an exception when constructing breadcrumb navigation
-  for search results if the result is a 'Discussion Item' as the parent Conversation
-  object does not have a portal_type attribute.
-  [gaudenz]
+- Channel link in RSS feed now points to the un-syndicated content for the RSS feed,
+  instead of the portal root.
+  [patch by pydanny, applied by kleist]
 
-- When adding, changing or removing skins, automatically recook all resource
-  registries, to keep theme bundles in-sync. This mirrors the event subscriber
-  support used in plone.app.registry for the same purpose.
-  [hannosch]
+- Removed unused "localTimeFormat", "localLongTimeFormat", and "localTimeOnlyFormat"
+  from "/portal_properties/site_properties".
+  Fixes https://dev.plone.org/ticket/11171.
+  [kleist]
 
-- Let the RR export/import steps depend on the skins tool and
-  plone.app.registry steps, as either of them might create new theme bundles
-  [hannosch]
+- CatalogTool.py, PloneBatch.py, PloneFolder.py, PloneTool.py, Portal.py:
+  Don't use list as default parameter value.
+  [kleist]
 
-- Hide Kupu base profile on Plone site creation screen.
-  [hannosch]
+- Use configuration registry to override translation of date format,
+  or fall back to ISO style as last resort. Fixes http://dev.plone.org/ticket/11171
+  [kleist]
 
-- Accessibility improvements for screen readers regarding "more" links, see
-  http://dev.plone.org/ticket/11982
-  [rmattb, applied by polyester]
+- skins/plone_templates/rss_template.pt: Removed CDATA section,
+  in HTML5 this is allowed only in SVG and MathML namespaces.
+  [kleist]
 
-
-4.2b3 (unreleased)
-------------------
-
-- Stop filtering folder_listing to the types from
-  @@plone_portal_state/friendly_types, since that excludes non-searchable
-  types rather than non-listable types.
-  [davisagli]
-
-- PloneControlPanel's enumConfiglets no longer returns invisible configlets.
-  [esteele]
-
-- Hide the (old) Collections control panel by default for new sites.
-  [esteele]
-
-- Apply duplicate-submit protection to inputs of type 'image' in addition
-  to type 'submit'.
-  [davisagli]
-
-- Use getId() instead of title_or_id() for displaying which items get deleted,
-  to avoid unicode error
-  Fixes https://dev.plone.org/ticket/12765
-  [spereverde]
-
-- Allow form tabbing to be used across different DOM documents.
-  [rossp]
-
-- Hide left column in prefs_main_template when user does not have access to
-  configlets.
-  Fixes https://dev.plone.org/ticket/12572
-  [gotcha]
-
-- Hide left column in prefs_main_template when user does not have access to
-  configlets.
-  Fixes https://dev.plone.org/ticket/12572
-  [gotcha]
-
-- Make MigrationTool.coreVersions() check for Pillow as well as PIL and
-  PILwoTK. Version will report as "PIL 1.7.6 (Pillow)". Closes
-  http://dev.plone.org/ticket/12158
-  [smcmahon]
-
-- Decode id and bad characters in check_id script with default_encoding to
-  prevent UnicodeDecodeError when bad characters contains non-ascii letters.
-  Fixes https://dev.plone.org/ticket/12525
-  [pingviini]
-
-- Add keyword 'latest' to metadata.xml's version tag, which then looks for
-  the highest numbered profile that is registered and pins that to the
-  upgrade step. This means that the version field in metadata.xml only
-  has to be set to 'latest' once and then it automatically searches for
-  the highest numbered profile.
-  [eleddy]
-
-4.2b2 (2012-02-09)
-------------------
-
-- Changed link from search to @@search for the "More" link in
-  livesearch_reply.
-  [vincentfretin]
-
-- Notify ObjectModifiedEvent when a content title is modified
-  through action > rename.
-  Fixes http://dev.plone.org/ticket/12460
-  [thomasdesvenain]
-
-- Fixed some mail tests in combination with five.pt.
-  [maurits]
-
-- Do not display the author contact form when the logged in user does
-  not have an email address.
-  Fixes http://dev.plone.org/ticket/12258
-  [maurits]
-
-
-4.2b1 (2011-12-05)
-------------------
-
-- Define a ZCML feature called `plone-42` in addition to the existing
-  `plone-4` and `plone-41` to be used in conditional ZCML registrations.
-  [vincentfretin]
-
-- Allow "Site Administrator to add keywords"
-  [kleist, suggested by keul]
-
-- IE critical fix on toggle select and form submit helpers.
-  [thomasdesvenain]
-
-- Fixed the two high priority scenarios (global sections viewlet and nav
-  portlet) of http://dev.plone.org/ticket/11189.
-  [fulv]
-
-- Call the view to unlock an item on unload synchronously, so that the
-  call succeeds on Webkit browsers. This closes
-  http://dev.plone.org/ticket/7885
-  [davisagli]
-
-- Remove uneeded kss debugging code
-  [jfroche]
-
-- Allow users with the Manage Users permission to change the login
-  name of other users; specifically this allows them to change the
-  email address when this is used as login name.
-  Fixes http://dev.plone.org/plone/ticket/11255
-  [maurits]
-
-- Removed the 'What' row in the event view that displayed the
-  keywords; this is already handled by the keywords viewlet.
-  Fixes http://dev.plone.org/plone/ticket/10818
-  [maurits]
-
-- Make control panel action GS export return actions alphabetically since
-  there is no other natural ordering.
-  [ggozad]
-
-- Fixed folder_listing template
-  so that listing macro can be used outside of folder_listing.
-  [thomasdesvenain]
-
-- Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
-  Owned.changeOwnership, but a plain User object only.
-  [stefan]
-
-- Fixed bug that treated ids of objects outside the portal, but on the
-  acquisition path, as reserved.
-  Fixeѕ https://dev.plone.org/ticket/10547
-  [rochecompaan]
-
-4.2a2 - 2011-08-25
-------------------
-
-- AuthenticatedUsers group is used for local roles etc, and is not the same as
-  Authenticated role. Thus, it can not be optimized away in catalog queries.
-  [tesdal]
-
-- getFolderContents only sets b_size if batching is true.
-  [do3cc]
-
-4.2a1 - 2011-08-08
-------------------
-
-- Added hidden year/month/day/hour/minute/ampm labels to calendar macros.
-  Part of a form accessibility cleanup.
-  [smcmahon]
-
-- Removed registration of the input-label.js from the portal_javascript tool.
-  Those with a desperate need to support the 'placeholder' text functionality
-  in the obsolete browsers are free to re-register the script in their own
-  instances.
-  [spliter]
-
-- Deprecated input-label.js — instead we are using the HTML5 'placeholder'
-  attribute on the input fields.
-  [spliter]
-
-- Deprecated IEFixes.css after we have introduced Modernizr and removed it's
-  GS registration. References http://dev.plone.org/plone/ticket/11300
-  [spliter]
-
-- Added Modernizr 2 library.
-  References http://dev.plone.org/plone/ticket/11300
-  [spliter]
-
-- Switch to HTML5 doctype. References http://dev.plone.org/plone/ticket/11300
-  [spliter]
-
-- Include plone.app.collection and related packages.
-  Refs http://dev.plone.org/plone/ticket/10902
-  [esteele]

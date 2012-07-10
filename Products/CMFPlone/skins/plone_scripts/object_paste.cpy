@@ -8,27 +8,35 @@
 ##parameters=
 ##title=Paste objects into the parent/this folder
 
-from Products.CMFPlone.utils import transaction_note
-from Products.CMFPlone import PloneMessageFactory as _
 from AccessControl import Unauthorized
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import transaction_note
 from ZODB.POSException import ConflictError
 
-msg = _(u'Copy or cut one or more items to paste.')
+if not context.cb_dataValid():
+    msg = _(u'Copy or cut one or more items to paste.')
+    context.plone_utils.addPortalMessage(msg, 'error')
+    return state.set(status='failure')
 
-if context.cb_dataValid():
-    try:
-        context.manage_pasteObjects(context.REQUEST['__cp'])
-        transaction_note('Pasted content to %s' % (context.absolute_url()))
-        context.plone_utils.addPortalMessage(_(u'Item(s) pasted.'))
-        return state
-    except ConflictError:
-        raise
-    except ValueError:
-        msg = _(u'Disallowed to paste item(s).')
-    except Unauthorized:
-        msg = _(u'Unauthorized to paste item(s).')
-    except:  # fallback
-        msg = _(u'Paste could not find clipboard content.')
+ok = True
 
-context.plone_utils.addPortalMessage(msg, 'error')
-return state.set(status='failure')
+try:
+    context.manage_pasteObjects(context.REQUEST['__cp'])
+except ConflictError:
+    raise
+except Unauthorized:
+    # avoid this unfriendly exception text:
+    # "You are not allowed to access 'manage_pasteObjects' in this context"
+    msg = _(u'You are not authorized to paste here.')
+    ok = False
+except Exception as e:
+    msg = e
+    ok = False
+
+if ok:
+    transaction_note('Pasted content to %s' % (context.absolute_url()))
+    context.plone_utils.addPortalMessage(_(u'Item(s) pasted.'))
+    return state.set(status='success')
+else:
+    context.plone_utils.addPortalMessage(msg, 'error')
+    return state.set(status='failure')

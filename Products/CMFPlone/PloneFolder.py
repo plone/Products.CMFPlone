@@ -168,8 +168,10 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
     manage_renameObject = PortalFolderBase.manage_renameObject
 
     security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
-    def manage_delObjects(self, ids=[], REQUEST=None):
+    def manage_delObjects(self, ids=None, REQUEST=None):
         """We need to enforce security."""
+        if ids is None:
+            ids = []
         mt = getToolByName(self, 'portal_membership')
         if isinstance(ids, basestring):
             ids = [ids]

@@ -2,7 +2,7 @@ import re
 import random
 from hashlib import md5
 from email import message_from_string
-from smtplib import SMTPRecipientsRefused
+from smtplib import SMTPException, SMTPRecipientsRefused
 
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
@@ -17,13 +17,18 @@ from Products.CMFCore.permissions import AddPortalMember
 
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
+from AccessControl.User import nobody
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.exceptions import EmailAddressInvalid
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFDefault.permissions import ManagePortal
 
+from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin, IPropertiesPlugin
 from Products.PluggableAuthService.interfaces.authservice \
         import IPluggableAuthService
+from Products.PluggableAuthService.PropertiedUser import PropertiedUser
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -144,6 +149,61 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         else:
             return 1
 
+    #
+    #   'portal_registration' interface
+    #
+    security.declarePublic( 'testPasswordValidity' )
+    def testPasswordValidity(self, password, confirm=None):
+
+        """ Verify that the password satisfies the portal's requirements.
+
+        o If the password is valid, return None.
+        o If not, return a string explaining why.
+        """
+        err = self.pasValidation('password', password)
+        if err is None:
+            return None
+        elif password == '':
+            return err
+        elif err != '' and not _checkPermission(ManagePortal, self):
+            return err
+
+        if confirm is not None and confirm != password:
+            return _(u'Your password and confirmation did not match. '
+                     u'Please try again.')
+
+        return None
+
+
+    def pasValidation(self, property, password):
+        """ @return None if no PAS password validators exist or a list of errors """
+        portal = getUtility(ISiteRoot)
+        pas_instance = portal.acl_users
+        validators = pas_instance.plugins.listPlugins(IValidationPlugin)
+        if not validators:
+            return None
+
+        err = u""
+        for validator_id, validator in validators:
+            user = None
+            set_id = ''
+            set_info = {property:password}
+            errors = validator.validateUserInfo( user, set_id, set_info )
+            # We will assume that the PASPlugin returns a list of error
+            # strings that have already been translated.
+            # We just need to join them in an i18n friendly way
+            for error in [info['error'] for info in errors if info['id'] == property ]:
+                if not err:
+                    err = error
+                else:
+                    msgid = _(u'${sentances}. ${sentance}',
+                            mapping={'sentances': err, 'sentance':error})
+                    err = self.translate(msgid)
+        if not err:
+            return None
+        else:
+            return err
+
     security.declarePublic('testPropertiesValidity')
     def testPropertiesValidity(self, props, member=None):
 
@@ -234,9 +294,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
 
     security.declarePublic('generatePassword')
     def generatePassword(self):
-        """Generates a password which is guaranteed to comply
-        with the password policy."""
-        return self.getPassword(6)
+        """Generate a strong default password. The user never gets sent
+        this so we can make it very long."""
+
+        return self.getPassword(56)
 
     security.declarePublic('generateResetCode')
     def generateResetCode(self, salt, length=14):
@@ -245,7 +306,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         return self.getPassword(length, salt)
 
     security.declarePublic('mailPassword')
-    def mailPassword(self, login, REQUEST):
+    def mailPassword(self, login, REQUEST, immediate=False):
         """ Wrapper around mailPassword """
         membership = getToolByName(self, 'portal_membership')
         if not membership.checkPermission('Mail forgotten password', self):
@@ -293,13 +354,16 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         host = getToolByName(self, 'MailHost')
         try:
             host.send(mail_text, m_to, m_from, subject=subject,
-                      charset=encoding)
-
-            return self.mail_password_response(self, REQUEST)
+                      charset=encoding, immediate=immediate)
         except SMTPRecipientsRefused:
             # Don't disclose email address on failure
             raise SMTPRecipientsRefused(
                 _(u'Recipient address rejected by server.'))
+        except SMTPException as e:
+            raise(e)
+        # return the rendered template "mail_password_response.pt"
+        # (in Products.PasswordResetTool)
+        return self.mail_password_response(self, REQUEST)
 
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id):

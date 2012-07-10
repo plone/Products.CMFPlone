@@ -8,11 +8,13 @@ Created by Mikio Hokari, CMScom and Manabu Terada, CMScom on 2009-09-30.
 import unicodedata
 
 from zope.interface import implements
+
 from Products.ZCTextIndex.ISplitter import ISplitter
 from Products.ZCTextIndex.PipelineFactory import element_factory
 
 from Products.CMFPlone.UnicodeSplitter.config import rx_U, rxGlob_U, \
             rx_L, rxGlob_L, rx_all, pattern, pattern_g
+from plone.i18n.normalizer.base import baseNormalize
 
 
 def bigram(u, limit=1):
@@ -177,11 +179,42 @@ class CaseNormalizer(object):
                 result.append(s.lower())
             else:
                 result.append(s.lower().encode(enc))
+
         return result
 
 try:
     element_factory.registerFactory('Case Normalizer',
         'Unicode Case Normalizer', CaseNormalizer)
+except ValueError:
+    # In case the normalizer is already registered, ValueError is raised
+    pass
+
+
+class I18NNormalizer(object):
+
+    def process(self, lst):
+        enc = 'utf-8'
+        result = []
+        for s in lst:
+            try:
+                if not isinstance(s, unicode):
+                    s = unicode(s, enc)
+            except (UnicodeDecodeError, TypeError):
+                pass
+
+            if 0x41 <= ord(s[0]) <= 0x24F:
+                # normalize latin words
+                # words beginning with a latin character
+                # are commonly latin words
+                s = baseNormalize(s).lower()
+
+            result.append(s.lower())
+
+        return result
+
+try:
+    element_factory.registerFactory('Case Normalizer',
+        'Unicode Ignoring Accents Case Normalizer', I18NNormalizer)
 except ValueError:
     # In case the normalizer is already registered, ValueError is raised
     pass

@@ -1,3 +1,8 @@
+# -*- encoding: utf-8 -*-
+#
+# CatalogTool tests
+#
+
 import unittest
 import zope.interface
 
@@ -388,6 +393,33 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # using OR
         results = self.catalog(SearchableText='aaa OR bbb')
         self.assertEqual(len(results), 2)
+    
+    def testSearchIgnoresAccents(self):
+        #plip 12110
+        self.folder.invokeFactory('Document', id='docwithaccents1', description='Econométrie')
+        self.folder.invokeFactory('Document', id='docwithaccents2', description='ECONOMETRIE')
+        self.folder.invokeFactory('Document', id='docwithaccents3', description='économétrie')
+        self.folder.invokeFactory('Document', id='docwithaccents4', description='ÉCONOMÉTRIE')
+
+        self.assertEqual(len(self.catalog(SearchableText='econometrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='économétrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='ÉCONOMÉTRIE')), 4)
+
+        self.assertEqual(len(self.catalog(SearchableText='econom?trie')), 4)
+        self.assertEqual(len(self.catalog(SearchableText='econometr*')), 4)
+
+        # non-regression with eastern language (use plone.i18n ja normalizer test)
+        self.folder.invokeFactory('Document', id='docwithjapanchars', description="テストページ")
+        self.assertEqual(len(self.catalog(SearchableText="テストページ")), 1)
+
+        # test with language specific char (fr)
+        self.folder.invokeFactory('Document', id='docwithfrenchlatinchar', description='œuf')
+        self.assertEqual(len(self.catalog(SearchableText='œuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='oeuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='Œuf')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='OEUF')), 1)
+        self.assertEqual(len(self.catalog(SearchableText='uf')), 0)
 
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
         # After adding a group with access rights and containing user2,
@@ -428,7 +460,20 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.login(user2)
         self.assertFalse(self.catalog(SearchableText='bar'))
 
+    def testSearchIgnoreAccents(self):
+        """PLIP 12110
+        """
+        self.folder.invokeFactory('Document', id='docwithaccents-1', text='Econométrie', title='foo')
+        self.folder.invokeFactory('Document', id='docwithaccents-2', text='Économétrie')
+        self.folder.invokeFactory('Document', id='docwithout-accents', text='ECONOMETRIE')
 
+        self.assertEqual(len(self.catalog(SearchableText='Économétrie')), 3)
+        self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 3)
+        self.assertEqual(len(self.catalog(SearchableText='ECONOMETRIE')), 3)
+                
+                
+
+        
 class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -472,7 +517,7 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         doc = self.folder.doc
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
 
-        self.assertEqual(wrapped.sortable_title, u'000012 document 000025')
+        self.assertEqual(wrapped.sortable_title, '0012 document 0025')
 
     def testSortableNonASCIITitles(self):
         #test a utf-8 encoded string gets properly unicode converted
@@ -483,18 +528,35 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title, 'la pena')
 
+    def testSortableDate(self):
+        title = '2012-06-01 foo document'
+        doc = self.folder.doc
+        doc.setTitle(title)
+        wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
+        self.assertEqual(wrapped.sortable_title,
+                         '2012-0006-0001 foo document')
+
     def testSortableLongNumberPrefix(self):
         title = '1.2.3 foo document'
         doc = self.folder.doc
         doc.setTitle(title)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title,
-                         u'000001.000002.000003 foo document')
+                         '0001.0002.0003 foo document')
         title = '1.2.3 foo program'
         doc.setTitle(title)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.sortable_title,
-                         u'000001.000002.000003 foo program')
+                         '0001.0002.0003 foo program')
+
+    def testSortableLongCommonPrefix(self):
+        title = 'some documents have too long a name and only differ at ' \
+            'the very end - like 1.jpeg'
+        doc = self.folder.doc
+        doc.setTitle(title)
+        wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
+        self.assertEqual(wrapped.sortable_title,
+                         'some documents have too lon... 0001.jpeg')
 
 
 class TestFolderCataloging(PloneTestCase.PloneTestCase):
@@ -671,6 +733,12 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
                                 sort_on='getObjPositionInParent')
         self.assertTrue(len(members_query))
         self.assertEqual(len(members_query), len(members_sorted))
+
+    def testGopipIndexer(self):
+        from Products.CMFPlone.CatalogTool import getObjPositionInParent
+        get_pos = getObjPositionInParent.callable
+        self.assertEqual(get_pos(self.folder.doc1), 0)
+        self.assertEqual(get_pos(self.folder.doc4), 3)
 
 
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
@@ -937,6 +1005,13 @@ class TestIndexers(PloneTestCase.PloneTestCase):
         iconname = doc.getIcon(relative_to_portal=1)
         wrapped = IndexableObjectWrapper(doc, self.portal.portal_catalog)
         self.assertEqual(wrapped.getIcon, iconname)
+
+    def test_getObjSize(self):
+        from Products.CMFPlone.CatalogTool import getObjSize
+        get_size = getObjSize.callable
+        self.doc.setText(u'a' * 1000)
+        self.doc.reindexObject()
+        self.assertEqual(get_size(self.doc), '1 kB')
 
     def test_uuid(self):
         alsoProvides(self.doc, IAttributeUUID)
