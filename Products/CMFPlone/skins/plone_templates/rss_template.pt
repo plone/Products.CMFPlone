@@ -68,7 +68,7 @@
     <description tal:content="obj_item/Description">Description</description>
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
         tal:condition="has_text"
-        tal:content="structure python:'&lt;![CDATA[' + text + ']]&gt;'">Content</content:encoded>
+        tal:content="structure text">Content</content:encoded>
     <dc:publisher tal:content="obj_item/Publisher">Publisher</dc:publisher>
     <dc:creator tal:condition="creator" tal:define="author python:getMemberInfo(creator)" tal:content="python:author and author['fullname'] or creator">Creator</dc:creator>
     <dc:rights tal:content="obj_item/Rights">Rights</dc:rights>
