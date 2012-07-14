@@ -8,6 +8,10 @@ Changelog
   Don't use list as default parameter value.
   [kleist]
 
+- refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
+  one tal:condition in ul tag.
+  [saily]
+
 2.3a1 (2012-06-29)
 ------------------
 
