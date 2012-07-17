@@ -152,12 +152,13 @@ class ISiteSyndicationSettings(Interface):
 
     enabled = schema.Bool(
         title=_(u'Enabled'),
-        description=_(u'Globally enabled for the site'),
+        description=_(u'Globally enabled syndication for collections '
+                      u'and folders'),
         default=True)
 
     search_rss_enabled = schema.Bool(
         title=_(u'Search RSS enabled'),
-        description=_(u'If the search_rss is enabled'),
+        description=_(u'Allows users to subscribe to feeds of search results'),
         default=True)
 
     show_author_info = schema.Bool(
@@ -205,7 +206,7 @@ class ISiteSyndicationSettings(Interface):
 
     allowed_feed_types = schema.Tuple(
         title=_(u'Allowed Feed Types'),
-        description=_(u'Seprate view name and title by "|"'),
+        description=_(u'Separate view name and title by "|"'),
         required=True,
         missing_value=None,
         default=(
