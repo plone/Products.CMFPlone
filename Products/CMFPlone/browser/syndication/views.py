@@ -6,6 +6,7 @@ from zope.publisher.interfaces import NotFound as pNotFound
 
 from Products.Five import BrowserView
 from zExceptions import NotFound
+from AccessControl import Unauthorized
 
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeed
@@ -98,5 +99,6 @@ class DownloadArchetypeFile(BrowserView):
 
         if field is None:
             raise pNotFound(self, self.fieldname, self.request)
-
+        if not field.checkPermission('r', context):
+            raise Unauthorized()
         return field.get(context)
