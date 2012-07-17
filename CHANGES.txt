@@ -25,6 +25,10 @@ Changelog
   Fixes http://dev.plone.org/ticket/11541.
   [kleist]
 
+- nextprevious/nextprevious.pt: Use "view/site_url" instead of deprecated "view/portal_url".
+  Closes http://dev.plone.org/ticket/12720.
+  [kleist]
+
 
 2.2.6 (2012-04-15)
 ------------------
