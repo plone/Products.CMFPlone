@@ -229,12 +229,13 @@ class ISiteSyndicationSettings(Interface):
 
     show_syndication_button = schema.Bool(
         title=_(u"Show Settings Button"),
-        description=_(u"To easily modify syndication settings on "
-                      u"folders an collections"))
+        description=_(u"Makes it possible to customize syndication settings "
+                      u"for particular folders and collections "))
 
     show_syndication_link = schema.Bool(
         title=_(u"Show Feed Link"),
-        description=_(u"Should the link to the feed be displayed."))
+        description=_(u"Enable RSS link document action on the syndication "
+                      u"content item."))
 
 
 class IFeedSettings(Interface):
