@@ -206,12 +206,12 @@ class BaseItem(BaseFeedData):
     guid = BaseFeedData.link
 
     @property
-    def hasEncolsure(self):
+    def has_enclosure(self):
         return IFileContent.providedBy(self.context)
 
     @property
     def file(self):
-        if self.hasEncolsure:
+        if self.has_enclosure:
             return self.context.getFile()
 
     @property

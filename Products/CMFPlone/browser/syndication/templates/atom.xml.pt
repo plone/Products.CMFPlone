@@ -32,7 +32,7 @@
                        modified item/modified;">
       <title tal:content="item/title"></title>
       <link rel="alternate" type="text/html" href="" tal:attributes="href item/link" />
-      <link tal:condition="item/hasEncolsure" rel="enclosure"
+      <link tal:condition="item/has_enclosure" rel="enclosure"
           tal:attributes="href item/file_url;
                           length item/file_length;
                           type item/file_type;" />

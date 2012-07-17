@@ -127,7 +127,7 @@ class IFeedItem(IFeedData):
         """
         """
 
-    def hasEncolsure():
+    def has_enclosure():
         """
         """
 
