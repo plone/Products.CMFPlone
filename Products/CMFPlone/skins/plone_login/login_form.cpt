@@ -20,7 +20,7 @@
 <body>
     <metal:main fill-slot="main">
 
-    <div id="content-core">
+    <div>
         <metal:login define-macro="login"
             tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
                         isURLInPortal nocall:context/portal_url/isURLInPortal;
