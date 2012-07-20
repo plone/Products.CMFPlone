@@ -49,9 +49,12 @@ class Renderer(base.Renderer):
 
     def full_review_link(self):
         context = aq_inner(self.context)
-        portal_state = getMultiAdapter((context, self.request),
-                                       name=u'plone_portal_state')
-        return '%s/full_review_list' % portal_state.portal_url()
+        mtool = getToolByName(context, 'portal_membership')
+        # check if user is allowed to Review Portal Content here
+        if mtool.checkPermission('Review portal content', context):
+            return '%s/full_review_list' % context.absolute_url()
+        else:
+            return None
 
     @memoize
     def _data(self):

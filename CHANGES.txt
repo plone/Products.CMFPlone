@@ -4,6 +4,10 @@ Changelog
 2.2.6 (unreleased)
 ------------------
 
+- Inside Review portlet display footer link only to Reviewers.
+  Closes ticket https://dev.plone.org/ticket/6629
+  [vipod]
+
 - Remove hard dependency on Archetypes.
   [davisagli]
 
