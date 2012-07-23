@@ -80,7 +80,8 @@ if (!window.beforeunload) {(function($) {
         // store hidden input's defaultValue to work around a moz bug
         $(form).find('input:hidden').each(function() {
             var value = this.defaultValue;
-            if (value!==undefined && value!==null) {
+            if (value!==undefined && value!==null &&
+                !$(this).attr('originalValue')) {
                 $(this).attr('originalValue', value.replace(/\r\n?/g,'\n'));
             }
         });
