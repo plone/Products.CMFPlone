@@ -5,6 +5,12 @@
 Changelog
 =========
 
+- Improve image view:
+    - Add a download button.
+    - Display View button only if image is a web format (jpeg, png, gif...)
+  [thomasdesvenain]
+
+
 4.2.1 (unreleased)
 ------------------
 
@@ -28,9 +34,9 @@ Changelog
   modifier.
   [rossp]
 
-- Make redirection_view/attempt_redirect fall back to nothing in 
-  default_error_message template. If plone.app.redirector gets a URL with 
-  special characters, OOBTree.get raises a UnicodeDecodeError and the template 
+- Make redirection_view/attempt_redirect fall back to nothing in
+  default_error_message template. If plone.app.redirector gets a URL with
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template
   fails. This fixes http://dev.plone.org/ticket/12976.
   [timo]
 
@@ -58,7 +64,7 @@ Changelog
   Fixed by incorporating zenwryly's patch, http://dev.plone.org/ticket/12029
   [smcmahon]
 
-- calculate the dynamic fontsize in s5_slides.js (Presentation Mode) in em, not px. This for WCAG 2.0 compliance. 
+- calculate the dynamic fontsize in s5_slides.js (Presentation Mode) in em, not px. This for WCAG 2.0 compliance.
   See http://dev.plone.org/ticket/12902
   [polyester]
 
@@ -92,8 +98,8 @@ Changelog
   Fixes http://dev.plone.org/ticket/12877
   [davidjb]
 
-- accessibility improvements for screen readers regarding "more" links, see http://dev.plone.org/ticket/11982 
-  [rmattb, applied by polyester]   
+- accessibility improvements for screen readers regarding "more" links, see http://dev.plone.org/ticket/11982
+  [rmattb, applied by polyester]
 
 4.2rc1 (2012-05-07)
 -------------------
@@ -112,7 +118,7 @@ Changelog
   on the first column.
   [mj]
 
-- Stop filtering folder_listing to the types from 
+- Stop filtering folder_listing to the types from
   @@plone_portal_state/friendly_types, since that excludes non-searchable
   types rather than non-listable types.
   [davisagli]
@@ -123,7 +129,7 @@ Changelog
 - Hide the (old) Collections control panel by default for new sites.
   [esteele]
 
-- Use getId() instead of title_or_id() for displaying which items get 
+- Use getId() instead of title_or_id() for displaying which items get
   deleted, to avoid unicode error
   Fixes http://dev.plone.org/ticket/12765
   [spereverde]
