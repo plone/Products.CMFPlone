@@ -8,6 +8,9 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Make sure the ResourceRegistries registry setting is created for new sites.
+  [davisagli]
+
 - Searches ignore accents.
   PLIP http://dev.plone.org/ticket/12110
   [thomasdesvenain]
