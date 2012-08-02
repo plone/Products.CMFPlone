@@ -4,6 +4,10 @@ Changelog
 1.1.4 (unreleased)
 ------------------
 
+- Ensure links on user preference panes adhere to navigation root.
+  Fixes https://dev.plone.org/ticket/11909.
+  [davidjb]
+
 - Avoid direct zope.app.form dependency.
   [hannosch]
 

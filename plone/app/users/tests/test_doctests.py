@@ -18,6 +18,7 @@ class DocTestCase(TestCase):
 
 def test_suite():
     tests = ['flexible_user_registration.txt',
+             'forms_navigationroot.txt',
              'registration_forms.txt',
              'userdata.txt',
              'userdata_prefs_user_details.txt',
