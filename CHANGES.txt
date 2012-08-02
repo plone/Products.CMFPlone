@@ -12,6 +12,10 @@ Changelog
   one tal:condition in ul tag.
   [saily]
 
+- Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
+  [toutpt]
+
+
 2.3a1 (2012-06-29)
 ------------------
 
