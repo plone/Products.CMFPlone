@@ -66,7 +66,7 @@ title="Locked" height="16" width="16" />'
         
         # now set publication date in workflow history manually
         published = DateTime('2012/03/14')
-        context.workflow_history['simple_publication_workflow'][-1]['time'] = \
+        context.workflow_history[wtool.getChainFor('Document')[0]][-1]['time'] = \
             published
         # purge instance memoize cache
         delattr(viewlet, Memojito.propname)
