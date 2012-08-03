@@ -38,9 +38,7 @@ class TestCommentsViewletView(ViewletsTestCase):
         viewlet = CommentsViewlet(context, request, None, None)
         viewlet.update()
         time = DateTime('2009/10/20 15:00')
-        # no translation machinery, disabled override in configuration registry:
-        #     fallback to ISO style
-        self.assertEqual(viewlet.format_time(time), '2009-10-20 15:00')
+        self.assertEqual(viewlet.format_time(time), 'Oct 20, 2009 03:00 PM')
 
     def test_viewing_uncommented_item_doesnt_create_talkback(self):
         # make sure we avoid creating unnecessary persistent talkbacks
