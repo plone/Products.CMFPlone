@@ -1,6 +1,7 @@
 from plone.memoize.instance import memoize
 from zope.component import getMultiAdapter
 from zope.interface import implements
+from zope.i18n import translate
 
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -63,7 +64,7 @@ class CatalogBrainContentIcon(BaseIcon):
         tt = getToolByName(context, 'portal_types')
         fti = tt.get(self.brain['portal_type'])
         if fti is not None:
-            return fti.Title()
+            return translate(fti.Title(), context=self.request)
         else:
             return self.brain['portal_type']
 
