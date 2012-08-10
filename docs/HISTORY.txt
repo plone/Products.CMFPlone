@@ -4,6 +4,12 @@ Historical release notes
 For what's new in this release, see CHANGES.txt.
 
 
+- Improve image view:
+  - Add a download button.
+  - Display View button only if image is a web format (jpeg, png, gif...)
+  [thomasdesvenain]
+
+
 4.2 (2012-06-29)
 ----------------
 
