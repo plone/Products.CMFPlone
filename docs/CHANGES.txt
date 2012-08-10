@@ -5,14 +5,18 @@
 Changelog
 =========
 
+
+4.2.1 (unreleased)
+------------------
+
+- Fix: do not display 'file content' on a file view if there is no file.
+  [thomasdesvenain]
+
 - Improve image view:
     - Add a download button.
     - Display View button only if image is a web format (jpeg, png, gif...)
   [thomasdesvenain]
 
-
-4.2.1 (unreleased)
-------------------
 
 - Remove content-core ID from login_form. This removes the duplicate ID
   that occurs on a page when using the login overlay.
