@@ -16,7 +16,7 @@
                 File
                 </metal:field>
             </p>
-            <div tal:condition="python: content_type.startswith('text')">
+            <div tal:condition="python: content_type.startswith('text') and context.get_size() > 0">
                 <h2 i18n:translate="heading_file_contents">File contents</h2>
                 <pre tal:content="context/get_data|context/data|nothing">
                 </pre>
