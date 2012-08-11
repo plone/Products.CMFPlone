@@ -6,7 +6,7 @@ Changelog
 =========
 
 
-4.2.1 (unreleased)
+4.2.1 (2012-08-11)
 ------------------
 
 - Fix: do not display 'file content' on a file view if there is no file.
