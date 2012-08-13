@@ -4,6 +4,10 @@ Changelog
 1.2a2 (unreleased)
 ------------------
 
+- Ensure links on user preference panes adhere to navigation root.
+  Fixes https://dev.plone.org/ticket/11909.
+  [davidjb]
+
 - Unused field "Listed in searches" removed from Personal Preferences.
   [kleist]
 

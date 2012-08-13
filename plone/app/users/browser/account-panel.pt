@@ -12,7 +12,8 @@
 
 <body>
     <div class="cell width-full position-0"
-         tal:define="getmacro nocall: context/account-macro;"
+         tal:define="getmacro nocall: context/account-macro;
+                     navigation_root_url context/@@plone_portal_state/navigation_root_url;"
          metal:fill-slot="content">
 
 
@@ -32,7 +33,7 @@
                     tal:condition="link|nothing"
                     tal:attributes="class python:selected and 'selected' or 'plain'">
                     <a href=""
-                       tal:attributes="href string:${context/portal_url}/${link}"
+                       tal:attributes="href string:${navigation_root_url}/${link}"
                        i18n:translate="title_personal_information_form">
                         Personal Information
                     </a>
@@ -44,7 +45,7 @@
                     tal:condition="link|nothing"
                     tal:attributes="class python:selected and 'selected' or 'plain'">
                     <a href=""
-                       tal:attributes="href string:${context/portal_url}/${link}"
+                       tal:attributes="href string:${navigation_root_url}/${link}"
                        i18n:translate="">
                         Personal Preferences
                     </a>
@@ -56,7 +57,7 @@
                     tal:condition="link|nothing"
                     tal:attributes="class python:selected and 'selected' or 'plain'">
                     <a href=""
-                       tal:attributes="href string:${context/portal_url}/${link}"
+                       tal:attributes="href string:${navigation_root_url}/${link}"
                        i18n:translate="label_password">
                         Password
                     </a>
