@@ -1,4 +1,5 @@
 from plone.memoize.instance import memoize
+from plone.memoize import view
 from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.i18n import translate
@@ -64,9 +65,28 @@ class CatalogBrainContentIcon(BaseIcon):
         tt = getToolByName(context, 'portal_types')
         fti = tt.get(self.brain['portal_type'])
         if fti is not None:
-            return translate(fti.Title(), context=self.request)
+            return "%s %s" % (translate(fti.Title(), context=self.request),
+                              self._mimetype(self.brain.getIcon))
         else:
             return self.brain['portal_type']
+
+    def _mimetype(self, path):
+        if not path:
+            return
+        mimetypes = self._mimetypes()
+        return mimetypes[path]
+
+    @view.memoize_contextless
+    def _mimetypes(self):
+        mtr = getToolByName(self.context, 'mimetypes_registry')
+        mimetypes = {}
+
+        for mt in mtr.mimetypes():
+            #we keep only the first one
+            if mt.icon_path not in mimetypes:
+                mimetypes[mt.icon_path] = mt.name()
+
+        return mimetypes
 
 
 class CMFContentIcon(BaseIcon):
