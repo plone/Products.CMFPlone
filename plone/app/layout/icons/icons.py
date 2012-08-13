@@ -66,28 +66,37 @@ class CatalogBrainContentIcon(BaseIcon):
         fti = tt.get(self.brain['portal_type'])
         if fti is not None:
             return "%s %s" % (translate(fti.Title(), context=self.request),
-                              self._mimetype(self.brain.getIcon))
+                              self._mimetype())
         else:
             return self.brain['portal_type']
 
-    def _mimetype(self, path):
-        if not path:
-            return
-        mimetypes = self._mimetypes()
-        return mimetypes[path]
+    def _mimetype(self):
+        extensions_mimetype = self.extensions_mimetype()
+        id = self.brain.getId
+        mimetype = ''
+        extlength = 0
+        for extension in extensions_mimetype.keys():
+            if id.endswith(extension):
+                #keep the longest extension
+                if len(extension) > extlength:
+                    mimetype = extensions_mimetype[extension]
+                    extlength = len(extension)
+
+        return mimetype
 
     @view.memoize_contextless
-    def _mimetypes(self):
+    def extensions_mimetype(self):
+        """Return a dict {'.pdf': 'PDF Document', '.ods': '
+        """
         mtr = getToolByName(self.context, 'mimetypes_registry')
-        mimetypes = {}
+        mimetypes = mtr.mimetypes()
+        extensions = {}
 
-        for mt in mtr.mimetypes():
-            #we keep only the first one
-            if mt.icon_path not in mimetypes:
-                mimetypes[mt.icon_path] = mt.name()
+        for mimetype in mimetypes:
+            for extension in mimetype.extensions:
+                extensions[extension] = mimetype.name()
 
-        return mimetypes
-
+        return extensions
 
 class CMFContentIcon(BaseIcon):
     implements(IContentIcon)
