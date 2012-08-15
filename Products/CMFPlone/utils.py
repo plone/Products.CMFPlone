@@ -10,6 +10,7 @@ from zope.interface import implementedBy
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
+from zope.deprecation import deprecated
 from zope.i18n import translate
 from zope.publisher.interfaces.browser import IBrowserRequest
 
@@ -176,32 +177,23 @@ def pretty_title_or_id(context, obj, empty_value=_marker):
 
 
 def getSiteEncoding(context):
-    default = 'utf-8'
-    pprop = getToolByName(context, 'portal_properties', None)
-    site_props = getToolByName(pprop, 'site_properties', None)
-    if site_props is None:
-        return default
-    return site_props.getProperty('default_charset', default)
+    return 'utf-8'
+deprecated('getSiteEncoding',
+           ('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
+            'currently. This method always returns "utf-8"'))
 
-
+# XXX portal_utf8 and utf8_portal probably can go away
 def portal_utf8(context, str, errors='strict'):
-    charset = getSiteEncoding(context)
-    if charset.lower() in ('utf-8', 'utf8'):
-        # Test
-        unicode(str, 'utf-8', errors)
-        return str
-    else:
-        return unicode(str, charset, errors).encode('utf-8', errors)
+    # Test
+    unicode(str, 'utf-8', errors)
+    return str
 
 
+# XXX this is the same method as above
 def utf8_portal(context, str, errors='strict'):
-    charset = getSiteEncoding(context)
-    if charset.lower() in ('utf-8', 'utf8'):
-        # Test
-        unicode(str, 'utf-8', errors)
-        return str
-    else:
-        return unicode(str, 'utf-8', errors).encode(charset, errors)
+    # Test
+    unicode(str, 'utf-8', errors)
+    return str
 
 
 def getEmptyTitle(context, translated=True):

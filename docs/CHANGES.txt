@@ -8,6 +8,9 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Deprecated getSiteEncoding and changed occurences to hardcoded `utf-8`
+  [tom_gross]
+
 - zope.globalrequest is a required dependency on tests.
   [hvelarde]
 
