@@ -181,7 +181,7 @@ class Plone(BrowserView):
             text += ellipsis
         if converted:
             # encode back from unicode
-            text = text.encode(encoding)
+            text = text.encode('utf-8')
         return text
 
     def site_encoding(self):
