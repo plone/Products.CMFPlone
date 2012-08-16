@@ -4,6 +4,14 @@ Changelog
 2.3a2 (unreleased)
 ------------------
 
+- Calendar portlet search URLs whitelist only Event portal_type in the
+  querystring, prevents non-event types from accidentally being
+  included in calendar results. [seanupton]
+
+- Navigation portlet template renders a non-site navigation root content
+  item with its apporpriate content icon, reserving the Plone site icon
+  CSS sprite for default use by a site only. [seanupton]
+
 - portlets/login.py, portlets/navigation.py:
   Don't use list as default parameter value.
   [kleist]
@@ -65,10 +73,6 @@ Changelog
 
 2.2.2 (2011-10-17)
 ------------------
-
-- Navigation portlet template renders a non-site navigation root content
-  item with its apporpriate content icon, reserving the Plone site icon
-  CSS sprite for default use by a site only. [seanupton]
 
 - Fixed issue where the events, news and recent portlet would fail
   with a setting of no items (zero) shown due to a catalog sorting
