@@ -138,5 +138,12 @@ setup(name='Products.CMFPlone',
           'zope.tal',
           'zope.tales',
           'zope.traversing',
+          # ensure these transient dependencies don't vanish in the 4.2
+          # series, just because some libraries get updated and nobody
+          # declares the dependency anymore
+          'zope.copypastemove',
+          'zope.app.component',
+          'zope.app.container',
+          'zope.app.publisher',
       ],
       )

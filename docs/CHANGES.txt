@@ -9,7 +9,12 @@ Changelog
 4.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Ensure some transient dependencies don't vanish in the 4.2 series,
+  just because some libraries get updated and nobody declares the
+  dependency anymore.  Same as in the Plone package:
+  zope.copypastemove, zope.app.component, zope.app.container,
+  zope.app.publisher.
+  [maurits]
 
 
 4.2.1 (2012-08-11)
