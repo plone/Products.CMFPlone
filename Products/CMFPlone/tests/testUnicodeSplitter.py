@@ -209,8 +209,7 @@ class TestQuery(PloneTestCase.PloneTestCase):
             self.catalog.indexObject(self.doc1)
             # Query by UTF-8
             brains = self.catalog(SearchableText='\303\204ffin')
-            # We get no results, but at least we don't break
-            self.assertEqual(len(brains), 0)
+            self.assertEqual(len(brains), 1)
         finally:
             _setlocale(saved)
 

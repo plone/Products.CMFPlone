@@ -6,6 +6,7 @@ import urlparse
 import transaction
 
 from zope.component import queryAdapter
+from zope.deprecation import deprecate
 from zope.interface import implements
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -121,15 +122,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         user.setProperties(**properties)
 
     security.declarePublic('getSiteEncoding')
+    @deprecate(('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
+                'currently. This method always returns "utf-8"'))
     def getSiteEncoding(self):
-        """ Get the default_charset or fallback to utf8.
+        """ Get the the site encoding, which is utf-8.
 
         >>> ptool = self.portal.plone_utils
 
         >>> ptool.getSiteEncoding()
         'utf-8'
         """
-        return utils.getSiteEncoding(self)
+        return 'utf-8'
 
     security.declarePublic('portal_utf8')
     def portal_utf8(self, str, errors='strict'):
@@ -137,7 +140,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool = self.portal.plone_utils
         >>> text = u'Eksempel \xe6\xf8\xe5'
-        >>> sitetext = text.encode(ptool.getSiteEncoding())
+        >>> sitetext = text.encode('utf-8')
 
         >>> ptool.portal_utf8(sitetext) == text.encode('utf-8')
         True
@@ -152,7 +155,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> text = u'Eksempel \xe6\xf8\xe5'
         >>> utf8text = text.encode('utf-8')
 
-        >>> ptool.utf8_portal(utf8text) == text.encode(ptool.getSiteEncoding())
+        >>> ptool.utf8_portal(utf8text) == text.encode('utf-8')
         True
         """
         return utils.utf8_portal(self, str, errors)
@@ -187,7 +190,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         message = message.encode(encoding)
         host.send(message, mto=send_to_address,
                   mfrom=envelope_from, subject=subject,
-                  charset=self.getSiteEncoding())
+                  charset='utf-8')
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
@@ -349,7 +352,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         #TODO Why not aq_parent()?
         relative_path = '/'.join(getToolByName(self, 'portal_url') \
                                     .getRelativeContentPath(obj)[:-1])
-        charset = self.getSiteEncoding()
         if not msg:
             msg = relative_path + '/' + obj.title_or_id() \
                     + ' has been modified.'
@@ -357,7 +359,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # Convert unicode to a regular string for the backend write IO.
             # UTF-8 is the only reasonable choice, as using unicode means
             # that Latin-1 is probably not enough.
-            msg = msg.encode(charset)
+            msg = msg.encode('utf-8')
         if not transaction.get().description:
             transaction_note(msg)
 

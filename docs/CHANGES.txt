@@ -8,9 +8,14 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
-- Base profile memberdata_properties.xml now includes timezone member
-  property.
-  [seanupton]
+- Deprecated getSiteEncoding and changed occurences to hardcoded `utf-8`
+  [tom_gross]
+
+- zope.globalrequest is a required dependency on tests.
+  [hvelarde]
+
+- Make sure the ResourceRegistries registry setting is created for new sites.
+  [davisagli]
 
 - Searches ignore accents.
   PLIP http://dev.plone.org/ticket/12110
@@ -18,7 +23,6 @@ Changelog
 
 - IE critical fix on toggle select and form submit helpers.
   [thomasdesvenain]
-
 
 - Fixed javascript injections on jquery.highlightsearchterms.js
   [gborelli]
@@ -101,8 +105,3 @@ Changelog
 - Use configuration registry to override translation of date format,
   or fall back to ISO style as last resort. Fixes http://dev.plone.org/ticket/11171
   [kleist]
-
-- skins/plone_templates/rss_template.pt: Removed CDATA section,
-  in HTML5 this is allowed only in SVG and MathML namespaces.
-  [kleist]
-

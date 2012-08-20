@@ -61,9 +61,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
             m = unicode(str(m), input_encoding, errors)
 
         if output_encoding is None:
-            # get output encoding from portal
-            plone_tool = getToolByName(self, 'plone_utils')
-            output_encoding = plone_tool.getSiteEncoding()
+            output_encoding = 'utf-8'
 
         # return as type string
         return m.encode(output_encoding, errors)
@@ -76,9 +74,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
             return m
 
         if input_encoding is None:
-            # get input encoding from portal
-            plone_tool = getToolByName(self, 'plone_utils')
-            input_encoding = plone_tool.getSiteEncoding()
+            input_encoding = 'utf-8'
 
         # return as type unicode
         return unicode(str(m), input_encoding, errors)

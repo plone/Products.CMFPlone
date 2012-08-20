@@ -13,6 +13,13 @@ Turn it into a distributed application system by installing ZEO.
 Plone shares some of the qualities of Livelink, Interwoven and Documentum. It
 aims to be *the* open source out-of-the-box publishing system.
 
+Installing Plone
+-----------------
+
+Plone is available on Microsoft Windows, Linux, OSX and BSD platforms.
+
+`Install Plone by downloading an installer from plone.org <http://plone.org/products>`_.
+
 What is Plone?
 --------------
 

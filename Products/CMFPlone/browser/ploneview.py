@@ -171,8 +171,7 @@ class Plone(BrowserView):
         """
         converted = False
         if not isinstance(text, unicode):
-            encoding = utils.getSiteEncoding(aq_inner(self.context))
-            text = unicode(text, encoding)
+            text = utils.safe_unicode(text)
             converted = True
         if len(text) > length:
             text = text[:length]
@@ -182,11 +181,11 @@ class Plone(BrowserView):
             text += ellipsis
         if converted:
             # encode back from unicode
-            text = text.encode(encoding)
+            text = text.encode('utf-8')
         return text
 
     def site_encoding(self):
-        return utils.getSiteEncoding(self.context)
+        return 'utf-8'
 
     # Deprecated in favour of @@plone_context_state and @@plone_portal_state
 

@@ -69,8 +69,6 @@ r = " AND ".join(r)
 r = quote_bad_chars(r) + '*'
 searchterms = url_quote_plus(r)
 
-site_encoding = context.plone_utils.getSiteEncoding()
-
 params = {'SearchableText': r,
           'portal_type': friendly_types,
           'sort_limit': limit + 1}
@@ -88,7 +86,7 @@ searchterm_query = '?searchterm=%s' % url_quote_plus(q)
 
 REQUEST = context.REQUEST
 RESPONSE = REQUEST.RESPONSE
-RESPONSE.setHeader('Content-Type', 'text/xml;charset=%s' % site_encoding)
+RESPONSE.setHeader('Content-Type', 'text/xml;charset=utf-8')
 
 # replace named entities with their numbered counterparts, in the xml the named
 # ones are not correct
@@ -183,4 +181,4 @@ else:
     write('''</div>''')
     write('''</fieldset>''')
 
-return '\n'.join(output).encode(site_encoding)
+return '\n'.join(output).encode('utf-8')

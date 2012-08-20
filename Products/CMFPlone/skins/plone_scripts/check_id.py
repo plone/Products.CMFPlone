@@ -75,10 +75,8 @@ plone_utils = getToolByName(container, 'plone_utils', None)
 if plone_utils is not None:
     bad_chars = plone_utils.bad_chars(id)
     if len(bad_chars) > 0:
-        pprop = getToolByName(context, 'portal_properties')
-        charset = getattr(pprop.site_properties, 'default_charset', 'utf-8')
-        bad_chars = ''.join(bad_chars).decode(charset)
-        decoded_id = id.decode(charset)
+        bad_chars = ''.join(bad_chars).decode('utf-8')
+        decoded_id = id.decode('utf-8')
         return xlate(
             _(u'${name} is not a legal name. The following characters are '
               u'invalid: ${characters}',
