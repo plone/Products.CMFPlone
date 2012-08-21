@@ -8,6 +8,9 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Define a ZCML feature called `plone-43` in addition to the existing ones.
+  [thet]
+
 - Deprecated getSiteEncoding and changed occurences to hardcoded `utf-8`
   [tom_gross]
 
