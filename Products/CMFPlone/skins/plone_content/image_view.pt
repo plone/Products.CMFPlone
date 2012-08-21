@@ -41,7 +41,7 @@
 	                <span class="visualNoPrint">
                     <img tal:attributes="src string:${portal_state/portal_url}/search_icon.png"
                          alt="View image" title="View image"
-                         i18n:attributes="alt title" />
+                         i18n:attributes="alt; title" />
                     <span i18n:translate="">View</span>
                 	</span>
 	            </a>
@@ -51,7 +51,7 @@
 	                <span class="visualNoPrint">
                     <img tal:attributes="src string:${portal_state/portal_url}/download_icon.png"
                          alt="Download image" title="Download image"
-                         i18n:attributes="alt title" />
+                         i18n:attributes="alt; title" />
                     <span i18n:translate="">Download</span>
                 	</span>
 	            </a>
