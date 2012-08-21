@@ -4,6 +4,10 @@ Changelog
 2.3a2 (unreleased)
 ------------------
 
+- Calendar portlet links to @@search (plone.app.search) view instead of
+  deprecated search.pt.
+  [seanupton]
+
 - Calendar portlet search URLs whitelist only Event portal_type in the
   querystring, prevents non-event types from accidentally being
   included in calendar results. [seanupton]
