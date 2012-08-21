@@ -139,9 +139,9 @@
                              tal:attributes="class python:'field'+(error and ' error' or '')">
 
                             <label tal:attributes="for widget/associateLabelWithInputControl|name"
-                                   i18n:translate=""
                                    tal:define="name widget/name">
-                                <span tal:replace="widget/label">Label</span>
+                                <span tal:replace="widget/label"
+                                      i18n:translate="">Label</span>
 
                                 <span class="fieldRequired"
                                       title="Required"
