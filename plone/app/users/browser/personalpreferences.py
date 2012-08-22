@@ -19,6 +19,8 @@ from plone.app.users.browser.account import AccountPanelForm
 from plone.app.users.browser.account import AccountPanelSchemaAdapter
 from plone.app.users.userdataschema import IUserDataSchemaProvider
 
+from plone.app.layout.navigation.interfaces import INavigationRoot
+
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFDefault.formlib.widgets import FileUploadWidget
 from Products.CMFPlone import PloneMessageFactory as _
@@ -399,7 +401,7 @@ class IPasswordSchema(Interface):
 
 class PasswordPanelAdapter(SchemaAdapterBase):
 
-    adapts(ISiteRoot)
+    adapts(INavigationRoot)
     implements(IPasswordSchema)
 
     def __init__(self, context):

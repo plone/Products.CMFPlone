@@ -15,6 +15,9 @@ Changelog
   parameter following registration.
   [davisagli]
 
+- Be consistent in using INavigationRoot.
+  [do3cc]
+
 
 1.1.3 (2012-01-04)
 ------------------
