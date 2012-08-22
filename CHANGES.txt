@@ -11,6 +11,9 @@ Changelog
 - Unused field "Listed in searches" removed from Personal Preferences.
   [kleist]
 
+- Be consistent in using INavigationRoot. (Backport from 1.1.4)
+  [do3cc]
+
 
 1.2a1 (2012-06-29)
 ------------------
