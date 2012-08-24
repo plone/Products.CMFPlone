@@ -28,6 +28,16 @@
         Return
       </a>
 
+    <tal:block tal:define="is_portal_root context/@@plone_context_state/is_portal_root;"
+               tal:condition="not:is_portal_root">
+    -
+    <a class="link-parent" tal:condition="plone_view/getParentObject|nothing"
+       tal:attributes="href python:plone_view.getParentObject().absolute_url()+'/@@manage-portlets'"
+       i18n:translate="">
+       Go to parent folder
+    </a>
+    </tal:block>
+
       <dl class="portalMessage info"
           tal:condition="ploneview/isDefaultPageInFolder|nothing">
         <dt i18n:translate="">
