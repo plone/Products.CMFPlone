@@ -6,7 +6,7 @@ Changelog
 =========
 
 
-4.2.2 (unreleased)
+4.2.1.1 (unreleased)
 ------------------
 
 - Fixed i18n of image view improvement introduced in 4.2.1.
