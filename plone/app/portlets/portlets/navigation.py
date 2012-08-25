@@ -4,6 +4,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
 from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
@@ -15,6 +16,7 @@ from zope import schema
 
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFDynamicViewFTI.interface import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
@@ -94,8 +96,6 @@ class INavigationPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(INavigationPortlet)
 
-    title = _(u'Navigation')
-
     name = u""
     root = None
     currentFolderOnly = False
@@ -110,6 +110,15 @@ class Assignment(base.Assignment):
         self.includeTop = includeTop
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
+
+    @property
+    def title(self):
+        """
+        Display the name in portlet mngmt interface
+        """
+        if self.name:
+            return self.name
+        return _(u'Navigation')
 
 
 class Renderer(base.Renderer):
@@ -128,9 +137,13 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
+
         rootpath = self.getNavRootPath()
         if rootpath is None:
             return False
+
+        if self.data.bottomLevel < 0:
+            return True
 
         tree = self.getNavTree()
         return len(tree['children']) > 0
@@ -140,6 +153,37 @@ class Renderer(base.Renderer):
 
     def navigation_root(self):
         return self.getNavRoot()
+
+    def heading_link_target(self):
+        """
+        Get the href target where clicking the portlet header will take you.
+
+        If this is a customized portlet with a custom root item set,
+        we probably want to take the user to the custom root item instead
+        of the sitemap of the navigation root.
+
+        Plone does not have subsection sitemaps so there is no point of
+        displaying /sitemap links for anything besides nav root.
+        """
+
+        if not self.data.root:
+            # No particular root item assigned -> should get link to the
+            # navigation root sitemap of the current context acquisition chain
+            portal_state = getMultiAdapter((self.context, self.request), name="plone_portal_state")
+            return portal_state.navigation_root_url() + "/sitemap"
+
+        nav_root = self.getNavRoot()
+
+        # Root content item gone away or similar issue
+        if not nav_root:
+            return None
+
+        if INavigationRoot.providedBy(nav_root) or ISiteRoot.providedBy(nav_root):
+            # For top level folders go to the sitemap
+            return nav_root.absolute_url() + "/sitemap"
+        else:
+            # Go to the item /view we have chosen as root item
+            return nav_root.absolute_url()
 
     def root_type_name(self):
         root = self.getNavRoot()
@@ -169,7 +213,12 @@ class Renderer(base.Renderer):
 
         bottomLevel = self.data.bottomLevel or self.properties.getProperty('bottomLevel', 0)
 
-        return self.recurse(children=data.get('children', []), level=1, bottomLevel=bottomLevel)
+        if bottomLevel < 0:
+            # Special case where navigation tree depth is negative
+            # meaning that the admin does not want the listing to be displayed
+            return self.recurse([], level=1, bottomLevel=bottomLevel)
+        else:
+            return self.recurse(children=data.get('children', []), level=1, bottomLevel=bottomLevel)
 
     # Cached lookups
 
@@ -194,7 +243,9 @@ class Renderer(base.Renderer):
         else:
             try:
                 return portal.unrestrictedTraverse(rootPath)
-            except (AttributeError, KeyError):
+            except (AttributeError, KeyError, TypeError):
+                # TypeError: object is unsubscribtable might be
+                # risen in some cases
                 return portal
 
     @memoize
@@ -269,7 +320,7 @@ class QueryBuilder(object):
         # nothing (since we explicitly start from the root always). Hence,
         # use a regular depth-1 query in this case.
 
-        if currentPath!=rootPath and not currentPath.startswith(rootPath + '/'):
+        if currentPath != rootPath and not currentPath.startswith(rootPath + '/'):
             query['path'] = {'query': rootPath, 'depth': 1}
         else:
             query['path'] = {'query': currentPath, 'navtree': 1}
@@ -360,7 +411,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         contextPath = '/'.join(context.getPhysicalPath())
         if not contextPath.startswith(rootPath):
             return None
-        contextSubPathElements = contextPath[len(rootPath)+1:]
+        contextSubPathElements = contextPath[len(rootPath) + 1:]
         if contextSubPathElements:
             contextSubPathElements = contextSubPathElements.split('/')
             if len(contextSubPathElements) < topLevel:

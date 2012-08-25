@@ -556,6 +556,46 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(view.title(), "New navigation title")
         self.failUnless(view.hasName())
 
+    def testHeadingLinkRootless(self):
+        """
+        See that heading link points to a global sitemap if no root item is set.
+        """
+
+        directlyProvides(self.portal.folder2, INavigationRoot)
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(topLevel=0))
+        link = view.heading_link_target()
+        # The root is not given -> should render the sitemap in the navigation root
+        self.assertEqual(link, 'http://nohost/plone/folder2/sitemap')
+
+        # Even if the assignment contains no topLevel options and no self.root
+        # one should get link to the navigation root sitemap
+        view = self.renderer(self.portal.folder2.doc21, assignment=navigation.Assignment())
+        link = view.heading_link_target()
+        # The root is not given -> should render the sitemap in the navigation root
+        self.assertEqual(link, 'http://nohost/plone/folder2/sitemap')
+
+        view = self.renderer(self.portal.folder1, assignment=navigation.Assignment(topLevel=0))
+        link = view.heading_link_target()
+        # The root is not given -> should render the sitemap in the navigation root
+        self.assertEqual(link, 'http://nohost/plone/sitemap')
+
+    def testHeadingLinkRooted(self):
+        """
+        See that heading link points to a content item if root selected, otherwise sitemap.
+        """
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(topLevel=0, root="/folder2"))
+        link = view.heading_link_target()
+        self.assertEqual(link, 'http://nohost/plone/folder2')
+
+    def testHeadingLinkRootedItemGone(self):
+        """
+        See that heading link points to a content item which do not exist
+        """
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(topLevel=0, root="/plone/foobar"))
+        link = view.heading_link_target()
+        # Points to the site root if the item is gone
+        self.assertEqual(link, "http://nohost/plone/sitemap")
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
