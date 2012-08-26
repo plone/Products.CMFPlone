@@ -4,6 +4,10 @@ Changelog
 1.2a2 (unreleased)
 ------------------
 
+- Fix to not break if passwords contain non-ASCII characters.
+  This closes https://dev.plone.org/ticket/13114
+  [davisagli]
+
 - Ensure links on user preference panes adhere to navigation root.
   Fixes https://dev.plone.org/ticket/11909.
   [davidjb]

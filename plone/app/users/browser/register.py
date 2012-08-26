@@ -407,6 +407,8 @@ class BaseRegistrationForm(PageForm):
 
         user_id = data['username']
         password = data.get('password') or registration.generatePassword()
+        if isinstance(password, unicode):
+            password = password.encode('utf8')
 
         try:
             registration.addMember(user_id, password, REQUEST=self.request)
