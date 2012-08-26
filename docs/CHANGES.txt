@@ -8,6 +8,10 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Hide 'plone.resource' and 'collective.z3cform.datetimewidget' from the
+  site factory screen. These are only useful as dependencies of other packages.
+  [optilude]
+
 - Define a ZCML feature called `plone-43` in addition to the existing ones.
   [thet]
 
