@@ -24,20 +24,21 @@
             tal:define="oddrow repeat/obj/odd;
                         item_icon python:getIcon(obj);
                         item_wf_state obj/review_state;
-                        item_wf_state_class python:'state-' + normalizeString(item_wf_state);"
+                        item_wf_state_class python:'state-' + normalizeString(item_wf_state);
+                        item_class python:'contenttype-' + normalizeString(obj.portal_type);"
             tal:attributes="class python:oddrow and  'portletItem even' or 'portletItem odd'">
             <a href=""
-               tal:attributes="href string:${obj/getURL}/view;
-                               title obj/Description;
-                               class string:$item_wf_state_class tile">
-                <img tal:replace="structure item_icon/html_tag" />
-                <tal:title content="obj/pretty_title_or_id">
-                    Title
-                </tal:title>
-                <span class="portletItemDetails"
-                      tal:content="python:toLocalizedTime(obj.ModificationDate)"
-                      >May 5</span>
-            </a>
+                tal:attributes="href string:${obj/getURL}/view;
+                                title obj/Description;
+                                class string:$item_wf_state_class tile $item_class">
+                 <img tal:replace="structure item_icon/html_tag" />
+                 <tal:title content="obj/pretty_title_or_id">
+                     Title
+                 </tal:title>
+                 <span class="portletItemDetails"
+                       tal:content="python:toLocalizedTime(obj.ModificationDate)"
+                       >May 5</span>
+             </a>
         </dd>
     </tal:items>
 
