@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.1 (unreleased)
+2.3.1 (2012-08-29)
 ------------------
 
 - Icons accessibility improvement. Append mimetype name to img alt attribute
