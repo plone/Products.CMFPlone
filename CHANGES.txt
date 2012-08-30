@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.3a2 (unreleased)
-------------------
+2.3 (2012-08-29)
+----------------
 
 - Calendar portlet search URLs whitelist only Event portal_type in the
   querystring, prevents non-event types from accidentally being
