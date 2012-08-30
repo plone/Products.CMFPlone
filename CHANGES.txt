@@ -1,11 +1,11 @@
 Changelog
 =========
 
-2.3.1 (unreleased)
-----------------
+2.3.1 (2012-08-29)
+------------------
 
-- Nothing changed yet.
-
+- Fix packaging error.
+  [esteele]
 
 2.3 (2012-08-29)
 ----------------
