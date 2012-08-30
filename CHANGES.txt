@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.1 (unreleased)
+2.3.1 (2012-08-29)
 ------------------
 
 - Fixed i18n regression in control-panel.pt
