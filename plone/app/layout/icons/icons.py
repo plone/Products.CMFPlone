@@ -65,8 +65,9 @@ class CatalogBrainContentIcon(BaseIcon):
         tt = getToolByName(context, 'portal_types')
         fti = tt.get(self.brain['portal_type'])
         if fti is not None:
-            return "%s %s" % (translate(fti.Title(), context=self.request),
-                              self._mimetype())
+            res = "%s %s" % (translate(fti.Title(), context=self.request),
+                             self._mimetype())
+            return res.strip()
         else:
             return self.brain['portal_type']
 
