@@ -15,7 +15,6 @@ from zope.component.zcml import utility
 from zope.component.interfaces import IFactory
 from zope.component.factory import Factory
 
-from Products.Five.metaclass import makeClass
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.Five.browser.metaconfigure import page
 
@@ -134,7 +133,7 @@ def portletRendererDirective(_context, portlet, class_=None, template=None,
                             "Perhaps the portlet has not been registered yet?" % portlet.__identifier__)
 
         # Generate a subclass with 'renderer' using this template
-        class_ = makeClass("PortletRenderer from %s" % template,
+        class_ = type("PortletRenderer from %s" % template,
                             (base_class, ), {'render': ViewPageTemplateFile(template)})
 
     adapter(_context, (class_, ), provides=IPortletRenderer,

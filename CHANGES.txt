@@ -4,8 +4,8 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Use ``type`` instead of ``makeClass`` for Zope 4 compatibility.
+  [elro]
 
 2.3.1 (2012-08-29)
 ------------------
