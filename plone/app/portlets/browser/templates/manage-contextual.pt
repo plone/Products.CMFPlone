@@ -29,7 +29,7 @@
       </a>
 
     <tal:block tal:define="is_portal_root context/@@plone_context_state/is_portal_root;"
-    tal:condition="not:is_portal_root">
+               tal:condition="not:is_portal_root">
     -
     <a class="link-parent" tal:condition="plone_view/getParentObject|nothing"
        tal:attributes="href python:plone_view.getParentObject().absolute_url()+'/@@manage-portlets'"

@@ -74,6 +74,12 @@ class TestRenderer(PortletsTestCase):
         self.portal.portal_membership.getMemberById('test_user_1_').setMemberProperties(
                                     {'fullname': 'Test user'})
 
+        # add Folder and assign Reviewer role to our Test user there
+        self.portal.invokeFactory('Folder', 'folder1')
+        self.folder1 = self.portal.folder1
+        self.folder1.manage_setLocalRoles('test_user_1_', ['Reviewer'])
+        self.folder1.reindexObjectSecurity()
+
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
         request = request or self.folder.REQUEST
@@ -95,6 +101,20 @@ class TestRenderer(PortletsTestCase):
     def test_full_news_link(self):
         r = self.renderer(assignment=review.Assignment())
         self.failUnless(r.full_review_link().endswith('/full_review_list'))
+
+    def test_full_news_link_local_reviewer(self):
+        # login as our test user
+        self.login('test_user_1_')
+        self.setRoles(['Member'])
+
+        # there should be no full news link on site root for our local reviewer
+        r = self.renderer(assignment=review.Assignment())
+        self.failIf(r.full_review_link())
+
+        # get renderer in context of our reviewer's folder
+        r = self.renderer(context=self.folder1, assignment=review.Assignment())
+        self.assertEqual(r.full_review_link(), '%s/full_review_list' %
+            self.folder1.absolute_url())
 
     def test_title(self):
         r = self.renderer(assignment=review.Assignment())

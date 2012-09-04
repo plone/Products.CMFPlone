@@ -9,7 +9,9 @@
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
-           tal:attributes="href view/full_review_link"
+           tal:define="full_review_link view/full_review_link"
+           tal:omit-tag="not:full_review_link"
+           tal:attributes="href full_review_link"
            i18n:translate=""
            tal:content="view/title" />
         <span class="portletTopRight"></span>
@@ -38,10 +40,12 @@
         </dd>
     </tal:items>
 
-    <dd class="portletFooter">
+    <dd class="portletFooter"
+        tal:define="full_review_link view/full_review_link"
+        tal:condition="full_review_link">
         <a href="#"
            class="tile"
-           tal:attributes="href view/full_review_link"
+           tal:attributes="href full_review_link"
            i18n:translate="box_full_review_list">Full review list&hellip;</a>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
