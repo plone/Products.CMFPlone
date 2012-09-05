@@ -40,9 +40,6 @@ class SyndicationTool(object):
         if isAllowed is not None:
             settings.enabled = isAllowed
 
-        if updateFrequency is not None:
-            settings.update_frequency = int(updateFrequency)
-
         if updateBase is not None:
             if isinstance(updateBase, basestring):
                 updateBase = DateTime(updateBase)

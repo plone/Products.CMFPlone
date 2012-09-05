@@ -166,15 +166,6 @@ class ISiteSyndicationSettings(Interface):
         description=_(u'Should feeds include author information'),
         default=True)
 
-    update_frequency = schema.Int(
-        title=_(u'label_syndication_update_frequency',
-                default=u'Update Frequency'),
-        description=_(u'help_syndication_update_frequency',
-                default=u"Controls the frequency of the updates. For example,"
-                        u"if you want it to update twice a week,"
-                        u'select "weekly" above, and "2" here.'),
-        default=1)
-
     update_base = schema.Datetime(
         title=_(u'label_syndication_update_base',
                 default=u'Update Base'),
@@ -244,15 +235,6 @@ class IFeedSettings(Interface):
                 default=u'If body text available for item, '
                         u'render it, otherwise use description.'),
         default=False)
-
-    update_frequency = schema.Int(
-        title=_(u'label_syndication_update_frequency',
-                default=u'Update Frequency'),
-        description=_(u'help_syndication_update_frequency',
-                default=u"Controls the frequency of the updates. For example,"
-                        u"if you want it to update twice a week,"
-                        u'select "weekly" above, and "2" here.'),
-        default=1)
 
     update_base = schema.Datetime(
         title=_(u'label_syndication_update_base',
