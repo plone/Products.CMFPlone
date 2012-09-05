@@ -86,7 +86,8 @@ class RSSViewlet(ViewletBase):
         for typ in settings.feed_types:
             term = vocabulary.getTerm(typ)
             urls.append({
-                'title': term.title,
+                'title': '%s - %s' % (
+                    obj.Title(), term.title),
                 'url': obj.absolute_url() + '/' + term.value})
         return urls
 
