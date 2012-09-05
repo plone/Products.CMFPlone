@@ -13,17 +13,30 @@ from Products.CMFPlone.interfaces.syndication import IFeedItem
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.ATContentTypes.interfaces.file import IFileContent
-
 from plone.uuid.interfaces import IUUID
 
 
 class BaseFeedData(object):
 
+    def __init__(self, context):
+        self.context = context
+        self.settings = IFeedSettings(context)
+        self.site = getSite()
+        if self.show_about:
+            self.pm = getToolByName(self.context, 'portal_membership')
+        pprops = getToolByName(self.context, 'portal_properties')
+        self.site_props = pprops.site_properties
+        self.view_action_types = self.site_props.getProperty(
+            'typesUseViewActionInListings', ('File', 'Image'))
+
+    @property
+    def show_about(self):
+        return self.settings.show_author_info
+
     @property
     def link(self):
-        # XXX check setting in portal_properties
         url = self.base_url
-        if self.context.portal_type in ('File', 'Image'):
+        if self.context.portal_type in self.view_action_types:
             url = url + '/view'
         return url
 
@@ -75,18 +88,6 @@ class BaseFeedData(object):
 
 class FolderFeed(BaseFeedData):
     implements(IFeed)
-
-    def __init__(self, context):
-        self.context = context
-        self.settings = IFeedSettings(context)
-        self.site = getSite()
-        if self.show_about:
-            self.pm = getToolByName(self.context, 'portal_membership')
-
-    @property
-    def show_about(self):
-        pprops = getToolByName(self.context, 'portal_properties')
-        return pprops.site_properties.allowAnonymousViewAbout
 
     @property
     def author(self):
@@ -182,13 +183,15 @@ class BaseItem(BaseFeedData):
 
     @property
     def author_name(self):
-        if self.author:
-            return self.author.getProperty('fullname')
+        author = self.author
+        if author and hasattr(author, 'getProperty'):
+            return author.getProperty('fullname')
 
     @property
     def author_email(self):
-        if self.author:
-            return self.author.getProperty('email')
+        author = self.author
+        if author and hasattr(author, 'getProperty'):
+            return author.getProperty('email')
 
     @property
     def body(self):
@@ -198,7 +201,14 @@ class BaseItem(BaseFeedData):
             return self.context.text
         return self.description
 
-    guid = BaseFeedData.link
+    @property
+    def link(self):
+        url = self.base_url
+        if self.context.portal_type in self.feed.view_action_types:
+            url = url + '/view'
+        return url
+
+    guid = link
 
     @property
     def has_enclosure(self):
