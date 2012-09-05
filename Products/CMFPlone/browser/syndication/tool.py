@@ -38,7 +38,7 @@ class SyndicationTool(object):
             raise Unauthorized
         settings = registry.forInterface(ISiteSyndicationSettings)
         if isAllowed is not None:
-            settings.enabled = isAllowed
+            settings.allowed = isAllowed
 
         if max_items is not None:
             settings.max_items = int(max_items)
@@ -56,7 +56,7 @@ class SyndicationTool(object):
         """
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSyndicationSettings)
-        return settings.enabled
+        return settings.allowed
 
     def isSyndicationAllowed(self, obj=None):
         """

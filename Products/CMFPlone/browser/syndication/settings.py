@@ -35,9 +35,10 @@ class FeedSettings(object):
 
     def __getattr__(self, name):
         default = None
-        if name not in ('enabled',) and \
-                name in ISiteSyndicationSettings.names():
+        if name in ISiteSyndicationSettings.names():
             default = getattr(self.site_settings, name)
+        elif name == 'enabled' and self.site_settings.default_enabled:
+            default = True
         elif name in IFeedSettings.names():
             default = IFeedSettings[name].default
 

@@ -56,7 +56,7 @@ class SyndicationUtil(BrowserView):
     def site_enabled(self):
         try:
             settings = self.site_settings
-            return settings.enabled
+            return settings.allowed
         except AttributeError:
             return True
 
@@ -81,7 +81,7 @@ class SyndicationUtil(BrowserView):
 
     def max_items(self):
         try:
-            settings = settings = self.site_settings
+            settings = self.site_settings
             return settings.max_items
         except AttributeError:
             return 15

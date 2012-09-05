@@ -146,11 +146,17 @@ class IFeedItem(IFeedData):
 
 class ISiteSyndicationSettings(Interface):
 
-    enabled = schema.Bool(
-        title=_(u'Enabled'),
-        description=_(u'Globally enabled syndication for collections '
-                      u'and folders'),
+    allowed = schema.Bool(
+        title=_(u'Allowed'),
+        description=_(u'Allow syndication for collections and folders '
+                      u'on site.'),
         default=True)
+
+    default_enabled = schema.Bool(
+        title=_(u'Enabled by default'),
+        description=_(u'If syndication should be enabled by default for all '
+                      u'folders and collections.'),
+        default=False)
 
     search_rss_enabled = schema.Bool(
         title=_(u'Search RSS enabled'),
