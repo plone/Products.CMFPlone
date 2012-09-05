@@ -15,8 +15,6 @@
   <title tal:content="feed/title">The title</title>
   <link tal:content="feed/link" />
   <description tal:content="feed/description" />
-  <syn:updatePeriod tal:content="feed/settings/update_period">hourly</syn:updatePeriod>
-  <syn:updateFrequency tal:content="feed/settings/update_frequency">2</syn:updateFrequency>
   <syn:updateBase tal:condition="feed/settings/update_base" tal:content="feed/update_base/HTML4" />
   <image tal:attributes="rdf:resource string:${context/portal_url}/logo.png" />
 

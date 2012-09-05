@@ -166,19 +166,6 @@ class ISiteSyndicationSettings(Interface):
         description=_(u'Should feeds include author information'),
         default=True)
 
-    update_period = schema.Choice(
-        title=_(u'label_syndication_updateperiod',
-                default=u'Update Period'),
-        description=_(u'help_syndication_update_period',
-                default=u'Controls how often the channel is updated.'),
-        vocabulary=SimpleVocabulary([
-            SimpleTerm(value='hourly', token='hourly', title=_(u'hourly')),
-            SimpleTerm(value='daily', token='daily', title=_(u'daily')),
-            SimpleTerm(value='weekly', token='weekly', title=_(u'weekly')),
-            SimpleTerm(value='monthly', token='monthly', title=_(u'monthly'))
-        ]),
-        default=u'hourly')
-
     update_frequency = schema.Int(
         title=_(u'label_syndication_update_frequency',
                 default=u'Update Frequency'),
@@ -257,19 +244,6 @@ class IFeedSettings(Interface):
                 default=u'If body text available for item, '
                         u'render it, otherwise use description.'),
         default=False)
-
-    update_period = schema.Choice(
-        title=_(u'label_syndication_updateperiod',
-                default=u'Update Period'),
-        description=_(u'help_syndication_update_period',
-                default=u'Controls how often the channel is updated.'),
-        vocabulary=SimpleVocabulary([
-            SimpleTerm(value='hourly', token='hourly', title=_(u'hourly')),
-            SimpleTerm(value='daily', token='daily', title=_(u'daily')),
-            SimpleTerm(value='weekly', token='weekly', title=_(u'weekly')),
-            SimpleTerm(value='monthly', token='monthly', title=_(u'monthly'))
-        ]),
-        default=u'hourly')
 
     update_frequency = schema.Int(
         title=_(u'label_syndication_update_frequency',
