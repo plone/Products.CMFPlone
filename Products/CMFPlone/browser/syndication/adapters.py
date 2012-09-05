@@ -141,11 +141,6 @@ class FolderFeed(BaseFeedData):
         return self.settings.max_items
 
     @property
-    def update_base(self):
-        if self.settings.update_base:
-            return DateTime(self.settings.update_base)
-
-    @property
     def language(self):
         langtool = getToolByName(self.context, 'portal_languages')
         return langtool.getDefaultLanguage()

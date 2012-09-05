@@ -101,10 +101,6 @@ class IFeed(IFeedData):
         """
         """
 
-    def update_base():
-        """
-        """
-
     def language(self):
         """
         """
@@ -166,15 +162,6 @@ class ISiteSyndicationSettings(Interface):
         description=_(u'Should feeds include author information'),
         default=True)
 
-    update_base = schema.Datetime(
-        title=_(u'label_syndication_update_base',
-                default=u'Update Base'),
-        description=_(u'help_syndication_update_base',
-                default=u'This is the date the updater starts counting from.'
-                        u'So if you want to update weekly every Tuesday,'
-                        u'make sure this starts on a Tuesday.'),
-        required=False)
-
     max_items = schema.Int(
         title=_(u'label_syndication_max_items',
                 default=u'Maximum Items'),
@@ -235,15 +222,6 @@ class IFeedSettings(Interface):
                 default=u'If body text available for item, '
                         u'render it, otherwise use description.'),
         default=False)
-
-    update_base = schema.Datetime(
-        title=_(u'label_syndication_update_base',
-                default=u'Update Base'),
-        description=_(u'help_syndication_update_base',
-                default=u'This is the date the updater starts counting from.'
-                        u'So if you want to update weekly every Tuesday,'
-                        u'make sure this starts on a Tuesday.'),
-        required=False)
 
     max_items = schema.Int(
         title=_(u'label_syndication_max_items',

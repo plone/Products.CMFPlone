@@ -40,11 +40,6 @@ class SyndicationTool(object):
         if isAllowed is not None:
             settings.enabled = isAllowed
 
-        if updateBase is not None:
-            if isinstance(updateBase, basestring):
-                updateBase = DateTime(updateBase)
-            settings.update_base = updateBase.asdatetime()
-
         if max_items is not None:
             settings.max_items = int(max_items)
 
