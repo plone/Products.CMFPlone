@@ -51,7 +51,7 @@
             <div class="portletHeader">
 
               <a tal:omit-tag="not:portlet/editview"
-                tal:attributes="href string:${portlet/editview}/?referer=${view/url_quote_referer}"
+                tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
                 tal:content="portlet/title" />
 
               <span class="portletBlockedMessage hiddenStructure"
@@ -102,7 +102,7 @@
             <div class="portletHeader">
 
               <a tal:omit-tag="not:portlet/editview"
-                tal:attributes="href string:${portlet/editview}/?referer=${view/url_quote_referer}"
+                tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
                 tal:content="portlet/title" />
 
               <span class="portletBlockedMessage hiddenStructure"
@@ -156,7 +156,7 @@
             tal:repeat="portlet portlets">
             <div class="portletHeader">
               <a tal:omit-tag="not:portlet/editview"
-                tal:attributes="href string:${portlet/editview}/?referer=${view/url_quote_referer}"
+                tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
                 tal:content="portlet/title" />
 
               <span class="portletBlockedMessage hiddenStructure"
