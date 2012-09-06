@@ -3,7 +3,7 @@
      tal:define="navigation_root_url view/navigation_root_url;
                  search_input_id view/search_input_id;">
 
-    <form name="searchform" id="searchGadget_form"
+    <form id="searchGadget_form"
           action="@@search"
           tal:attributes="action string:${navigation_root_url}/@@search;
                           id string:${search_input_id}_form;">
@@ -46,7 +46,7 @@
             </label>
         </div>
 
-        <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
+        <div class="LSResult" id="LSResult"><div class="LSShadow" id="LSShadow"></div></div>
         </div>
     </form>
 
