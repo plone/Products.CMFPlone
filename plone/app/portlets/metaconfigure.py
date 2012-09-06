@@ -133,7 +133,7 @@ def portletRendererDirective(_context, portlet, class_=None, template=None,
                             "Perhaps the portlet has not been registered yet?" % portlet.__identifier__)
 
         # Generate a subclass with 'renderer' using this template
-        class_ = type("PortletRenderer from %s" % template,
+        class_ = type("PortletRenderer from %s" % template.encode('UTF-8'),
                             (base_class, ), {'render': ViewPageTemplateFile(template)})
 
     adapter(_context, (class_, ), provides=IPortletRenderer,
