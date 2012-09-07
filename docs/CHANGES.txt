@@ -8,6 +8,11 @@ Changelog
 4.3a2 (unreleased)
 ------------------
 
+- Filter out non existing types in getUserFriendlyTypes.
+  This avoids an error on the search form when a no longer existing
+  portal_type is still in the catalog.
+  [maurits]
+
 - Declare Plone's dependency on Pillow.
   [davisagli]
 
