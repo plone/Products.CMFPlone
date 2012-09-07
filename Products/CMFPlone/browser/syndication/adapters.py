@@ -15,6 +15,24 @@ from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.ATContentTypes.interfaces.file import IFileContent
 from plone.uuid.interfaces import IUUID
 
+# this might be a little silly but it's possible to not use
+# Products.CMFPlone with dexterity content types
+try:
+    from plone.dexterity.interfaces import IDexterityContent
+except ImportError:
+    class IDexterityContent(Interface):
+        pass
+try:
+    from plone.rfc822.interfaces import IPrimaryFieldInfo
+except ImportError:
+    class IPrimaryFieldInfo(Interface):
+        pass
+try:
+    from plone.namedfile.interfaces import INamedField
+except ImportError:
+    class INamedField(Interface):
+        pass
+
 
 class BaseFeedData(object):
 
@@ -35,10 +53,7 @@ class BaseFeedData(object):
 
     @property
     def link(self):
-        url = self.base_url
-        if self.context.portal_type in self.view_action_types:
-            url = url + '/view'
-        return url
+        return self.base_url
 
     @property
     def base_url(self):
@@ -224,7 +239,9 @@ class BaseItem(BaseFeedData):
         url = self.base_url
         fi = self.file
         if fi is not None:
-            url += '/@@download/file/%s' + fi.getFilename()
+            filename = fi.getFilename()
+            if filename:
+                url += '/@@download/file/%s' + filename
         return url
 
     @property
@@ -234,3 +251,43 @@ class BaseItem(BaseFeedData):
     @property
     def file_type(self):
         return self.file.getContentType()
+
+
+class DexterityItem(BaseItem):
+    adapts(IDexterityContent, IFeed)
+
+    def __init__(self, context, feed):
+        super(DexterityItem, self).__init__(context, feed)
+        self.dexterity = IDexterityContent.providedBy(context)
+        self.primary = IPrimaryFieldInfo(self.context, None)
+
+    @property
+    def file_url(self):
+        url = self.base_url
+        fi = self.file
+        if fi is not None:
+            filename = fi.filename
+            if filename:
+                url += '/@@download/%s/%s' % (
+                    self.primary.field.__name__, filename)
+        return url
+
+    @property
+    def has_enclosure(self):
+        if self.primary:
+            return INamedField.providedBy(self.primary.field)
+        else:
+            return False
+
+    @property
+    def file(self):
+        if self.has_enclosure:
+            return self.primary.field.get(self.context)
+
+    @property
+    def file_length(self):
+        return self.file.getSize()
+
+    @property
+    def file_type(self):
+        return self.file.contentType
