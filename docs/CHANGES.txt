@@ -5,15 +5,30 @@
 Changelog
 =========
 
-4.3a2 (unreleased)
+
+4.3a1 (unreleased)
 ------------------
+
+- Filter out non existing types in getUserFriendlyTypes.
+  This avoids an error on the search form when a no longer existing
+  portal_type is still in the catalog.
+  [maurits]
+
+- Declare Plone's dependency on Pillow.
+  [davisagli]
 
 - Merge syndication plip 12908
   [vangheem]
 
-
-4.3a1 (unreleased)
+4.3a1 (2012-08-31)
 ------------------
+
+- Hide 'plone.resource' and 'collective.z3cform.datetimewidget' from the
+  site factory screen. These are only useful as dependencies of other packages.
+  [optilude]
+
+- Define a ZCML feature called `plone-43` in addition to the existing ones.
+  [thet]
 
 - Deprecated getSiteEncoding and changed occurences to hardcoded `utf-8`
   [tom_gross]

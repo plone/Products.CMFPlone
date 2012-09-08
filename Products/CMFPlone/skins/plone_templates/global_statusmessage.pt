@@ -9,7 +9,7 @@
 <tal:block i18n:domain="plone"
            metal:define-macro="portal_message">
 
-    <dl class="portalMessage info" id="kssPortalMessage" style="display:none">
+    <dl class="portalMessage info hiddenStructure" id="kssPortalMessage">
         <dt>Info</dt>
         <dd><tal:block replace="nothing">KSS portal message</tal:block></dd>
     </dl>

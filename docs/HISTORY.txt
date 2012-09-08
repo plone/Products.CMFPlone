@@ -3,11 +3,45 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
+4.2.1.1 (2012-08-23)
+------------------
+
+- Fixed i18n of image view improvement introduced in 4.2.1.
+  [vincentfretin]
+
+- Ensure some transient dependencies don't vanish in the 4.2 series,
+  just because some libraries get updated and nobody declares the
+  dependency anymore.  Same as in the Plone package:
+  zope.copypastemove, zope.app.component, zope.app.container,
+  zope.app.publisher.
+  [maurits]
+
+
+4.2.1 (2012-08-11)
+------------------
+
+- Fix: do not display 'file content' on a file view if there is no file.
+  [thomasdesvenain]
 
 - Improve image view:
-  - Add a download button.
-  - Display View button only if image is a web format (jpeg, png, gif...)
+    - Add a download button.
+    - Display View button only if image is a web format (jpeg, png, gif...)
   [thomasdesvenain]
+
+- zope.globalrequest is a required dependency on tests.
+  [hvelarde]
+
+- Remove content-core ID from login_form. This removes the duplicate ID
+  that occurs on a page when using the login overlay.
+  This fixes https://dev.plone.org/ticket/12439
+  [cwainwright]
+
+
+4.2.0.1 (2012-07-02)
+--------------------
+
+- Add docstring to SkinTool's method to allow them being called from the ZMI.
+  [erral]
 
 
 4.2 (2012-06-29)
@@ -17,9 +51,9 @@ For what's new in this release, see CHANGES.txt.
   modifier.
   [rossp]
 
-- Make redirection_view/attempt_redirect fall back to nothing in 
-  default_error_message template. If plone.app.redirector gets a URL with 
-  special characters, OOBTree.get raises a UnicodeDecodeError and the template 
+- Make redirection_view/attempt_redirect fall back to nothing in
+  default_error_message template. If plone.app.redirector gets a URL with
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template
   fails. This fixes http://dev.plone.org/ticket/12976.
   [timo]
 

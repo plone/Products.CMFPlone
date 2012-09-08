@@ -56,6 +56,8 @@ class HiddenProfiles(object):
                 u'plone.app.imaging:default',
                 u'plone.app.jquery:initial-upgrade',
                 u'plone.app.search:default',
+                u'plone.resource:default',
+                u'collective.z3cform.datetimewidget:default',
                 ]
 
 
