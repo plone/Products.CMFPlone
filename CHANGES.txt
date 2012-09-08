@@ -1,7 +1,16 @@
 Changelog
 =========
 
-2.3.1 (unreleased)
+2.3.2 (unreleased)
+------------------
+
+- Use context object's url to create the cache key instead of the portal_url.
+  [erral]
+
+- Avoid extra space at the end of icon alt attributes.
+  [davisagli]
+
+2.3.1 (2012-08-29)
 ------------------
 
 - Icons accessibility improvement. Append mimetype name to img alt attribute
