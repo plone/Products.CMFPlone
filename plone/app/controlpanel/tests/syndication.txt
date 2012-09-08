@@ -1,0 +1,51 @@
+Site control panel
+==================
+
+First some initial setup code:
+
+    >>> self.loginAsManager()
+    >>> syndication_configlet_url = 'http://nohost/plone/@@syndication-settings'
+
+Test Form
+---------
+
+Edit some settings and make sure they stick.
+
+    >>> self.browser.open(syndication_configlet_url)
+    >>> self.browser.getControl('Enabled').selected = False
+    >>> self.browser.getControl('Show author info').selected = False
+    >>> self.browser.getControl('Show Feed Link').selected = True
+    >>> self.browser.getControl('Save').click()
+
+We should be back on the Site Setup screen:
+
+    >>> 'plone_control_panel' in self.browser.url
+    True
+
+Navigate back to the syndication settings:
+    
+    >>> self.browser.getLink('Syndication').click()
+
+Check values:
+
+    >>> self.browser.getControl('Enabled').selected
+    False
+    >>> self.browser.getControl('Show author info').selected
+    False
+    >>> self.browser.getControl('Show Feed Link').selected
+    True
+
+Test enabling syndication settings button:
+
+    >>> self.browser.getControl('Enabled').selected = True
+    >>> self.browser.getControl('Show Settings Button').selected = True
+    >>> self.browser.getControl('Save').click()
+
+Create collection and check syndication settings button:
+
+    >>> self.browser.open('http://nohost/plone/createObject?type_name=Collection')
+    >>> self.browser.getControl(name="title").value = 'test-collection'
+    >>> self.browser.getControl('Save').click()
+
+    >>> '/synPropertiesForm' in self.browser.contents
+    True
