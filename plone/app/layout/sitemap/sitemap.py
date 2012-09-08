@@ -17,10 +17,10 @@ def _render_cachekey(fun, self):
     if not mtool.isAnonymousUser():
         raise ram.DontCache
 
-    url_tool = getToolByName(self.context, 'portal_url')
+    url = self.context.absolute_url()
     catalog = getToolByName(self.context, 'portal_catalog')
     counter = catalog.getCounter()
-    return '%s/%s/%s' % (url_tool(), self.filename, counter)
+    return '%s/%s/%s' % (url, self.filename, counter)
 
 
 class SiteMapView(BrowserView):

@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Use context object's url to create the cache key instead of the portal_url.
+  [erral]
+
 - Avoid extra space at the end of icon alt attributes.
   [davisagli]
 
