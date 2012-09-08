@@ -1171,7 +1171,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         blacklistedTypes = siteProperties.getProperty('types_not_searched', [])
 
         ttool = getToolByName(self, 'portal_types')
-        types = typesList or ttool.keys()
+        tool_types = ttool.keys()
+        if typesList:
+            types = [t for t in typesList if t in tool_types]
+        else:
+            types = tool_types
 
         friendlyTypes = set(types) - set(blacklistedTypes)
         return list(friendlyTypes)

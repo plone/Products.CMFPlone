@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.3a1dev'
+version = '4.3a2.dev0'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -37,6 +37,7 @@ setup(name='Products.CMFPlone',
           'Acquisition',
           'DateTime',
           'ExtensionClass',
+          'Pillow',
           'Products.Archetypes',
           'Products.ATContentTypes >= 2.1.3',
           'Products.CMFActionIcons',
