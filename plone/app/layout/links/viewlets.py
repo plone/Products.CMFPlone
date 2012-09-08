@@ -93,7 +93,7 @@ class RSSViewlet(ViewletBase):
 
     def update(self):
         super(RSSViewlet, self).update()
-        rsslinks = []
+        self.rsslinks = []
         util = getMultiAdapter((self.context, self.request),
                                name="syndication-util")
         context_state = getMultiAdapter((self.context, self.request),
@@ -101,15 +101,18 @@ class RSSViewlet(ViewletBase):
         if context_state.is_portal_root():
             if util.site_enabled():
                 registry = getUtility(IRegistry)
-                settings = registry.forInterface(ISiteSyndicationSettings)
+                try:
+                    settings = registry.forInterface(ISiteSyndicationSettings)
+                except KeyError:
+                    return
                 for uid in settings.site_rss_items:
                     obj = uuidToObject(uid)
                     if obj is not None:
-                        rsslinks.extend(self.getRssLinks(obj))
-                rsslinks.extend(self.getRssLinks(self.portal_state.portal()))
+                        self.rsslinks.extend(self.getRssLinks(obj))
+                self.rsslinks.extend(self.getRssLinks(
+                    self.portal_state.portal()))
         else:
             if util.context_enabled():
-                rsslinks.extend(self.getRssLinks(self.context))
-        self.rsslinks = rsslinks
+                self.rsslinks.extend(self.getRssLinks(self.context))
 
     index = ViewPageTemplateFile('rsslink.pt')
