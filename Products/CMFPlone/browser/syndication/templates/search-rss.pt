@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  tal:define="syn context/@@syndication-util;">
+
+<tal:synd tal:define="feed view/feed;
+                      objects python: [i for i in feed.items];">
+<channel rdf:about="" tal:attributes="rdf:about request/URL">
+  <title tal:content="context/pretty_title_or_id">The title</title>
+  <link tal:content="context/portal_url">http://url.to.portal</link>
+
+  <image tal:attributes="rdf:resource feed/logo" />
+
+  <items>
+    <rdf:Seq>
+      <tal:block repeat="obj_item python: objects">
+        <rdf:li rdf:resource=""
+                tal:attributes="rdf:resource obj_item/link" />
+      </tal:block>
+    </rdf:Seq>
+  </items>
+
+</channel>
+
+<tal:block repeat="item python: objects">
+  <item rdf:about="" tal:attributes="rdf:about item/link">
+    <title tal:content="item/title">Title</title>
+    <link tal:content="item/link">Identifier</link>
+    <description tal:content="item/description">Description</description>
+    <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
+        tal:content="structure python:'&lt;![CDATA[' + item.body + ']]&gt;'">Content</content:encoded>
+    <tal:about tal:condition="syn/show_author_info">
+      <dc:publisher tal:content="item/publisher" />
+      <dc:creator tal:content="item/author_name">Creator</dc:creator>
+    </tal:about>
+    <dc:rights tal:content="item/rights">Rights</dc:rights>
+    <tal:block tal:repeat="cat item/categories">
+      <dc:subject tal:content="cat">Item</dc:subject>
+    </tal:block>
+    <dc:date tal:content="item/published|item/modified">Published or last modified date if no published date</dc:date>
+    <dc:type tal:content="item/context/Type">Type</dc:type>
+  </item>
+</tal:block>
+
+</tal:synd>
+</rdf:RDF>

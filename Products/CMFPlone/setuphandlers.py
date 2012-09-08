@@ -431,7 +431,6 @@ def assignTitles(portal):
      'portal_registration': 'Handles registration of new users',
      'portal_setup': 'Add-on and configuration management',
      'portal_skins': 'Controls skin behaviour (search order etc)',
-     'portal_syndication': 'Generates RSS for folders',
      'portal_transforms': 'Handles data conversion between MIME types',
      'portal_types': 'Controls the available content types in your portal',
      'portal_undo': 'Defines actions and functionality related to undo',
@@ -457,10 +456,6 @@ def importFinalSteps(context):
         return
     site = context.getSite()
     setProfileVersion(site)
-
-    # Enable syndication
-    syn = getToolByName(site, 'portal_syndication')
-    syn.editProperties(isAllowed=True)
 
     # Install our dependencies
     st = getToolByName(site, "portal_setup")

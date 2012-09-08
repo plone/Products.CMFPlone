@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<rss version="2.0"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  tal:define="feed view/feed">
+  <channel>
+    <title tal:content="feed/title" />
+    <link tal:content="feed/link" />
+    <description tal:content="feed/description" />
+    
+    <language tal:content="feed/language" />
+    <copyright tal:content="feed/rights" />
+    <generator>Plone</generator>
+    <item tal:repeat="item feed/items">
+      <title tal:content="item/title" />
+      <description tal:content="item/description" />
+      <pubDate tal:content="item/published/HTML4|item/modified/HTML4" />
+      <guid tal:content="item/guid|nothing" />
+    </item>
+  </channel>
+</rss>

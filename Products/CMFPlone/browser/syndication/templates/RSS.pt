@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+<tal:block
+    tal:define="feed view/feed;
+                items python: [f for f in feed.items]">
+
+<channel rdf:about="" tal:attributes="rdf:about request/URL">
+  <title tal:content="feed/title">The title</title>
+  <link tal:content="feed/link" />
+  <description tal:content="feed/description" />
+  <image tal:attributes="rdf:resource string:${context/portal_url}/logo.png" />
+
+  <items>
+    <rdf:Seq>
+      <tal:block repeat="item python: items">
+        <rdf:li rdf:resource=""
+                tal:attributes="rdf:resource item/link" />
+      </tal:block>
+    </rdf:Seq>
+  </items>
+
+</channel>
+
+<tal:block repeat="item python: items">
+  <item rdf:about="" tal:attributes="rdf:about item/link">
+    <title tal:content="item/title" />
+    <link tal:content="item/link" />
+    <description tal:content="item/description" />
+    <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
+        tal:condition="feed/settings/render_body"
+        tal:content="structure python:'&lt;![CDATA[' + item.body + ']]&gt;'">Content</content:encoded>
+    <dc:publisher tal:content="item/publisher" />
+    <dc:creator tal:condition="feed/show_about" tal:content="item/author_name">Creator</dc:creator>
+    <dc:rights tal:content="item/rights">Rights</dc:rights>
+    <tal:block tal:repeat="item item/categories">
+      <dc:subject tal:content="item">Item</dc:subject>
+    </tal:block>
+    <dc:date tal:content="item/published/HTML4|item/modified/HTML4">Published or last modified date if no published date</dc:date>
+    <dc:type tal:content="item/context/portal_type">Type</dc:type>
+  </item>
+</tal:block>
+
+</tal:block>
+</rdf:RDF>

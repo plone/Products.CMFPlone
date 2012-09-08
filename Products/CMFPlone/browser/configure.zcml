@@ -91,4 +91,6 @@
       name="blank.html"
       />
 
+  <include package=".syndication" />
+
 </configure>

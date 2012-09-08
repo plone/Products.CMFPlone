@@ -1,3 +1,4 @@
+
 <?xml version="1.0"?>
 <registry>
     <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings" field="resourceBundlesForThemes">
@@ -37,4 +38,5 @@
         </field>
         <value>%H:%M</value>
     </record>
+    <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
 </registry>

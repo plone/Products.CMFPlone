@@ -136,7 +136,6 @@ def initialize(context):
     import URLTool
     import MetadataTool
     import RegistrationTool
-    import SyndicationTool
     import PropertiesTool
     import ActionsTool
     import TypesTool
@@ -163,7 +162,6 @@ def initialize(context):
              ActionsTool.ActionsTool,
              TypesTool.TypesTool,
              UndoTool.UndoTool,
-             SyndicationTool.SyndicationTool,
              CatalogTool.CatalogTool,
              SkinsTool.SkinsTool,
              DiscussionTool.DiscussionTool,
