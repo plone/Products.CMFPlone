@@ -275,3 +275,9 @@ class ISyndicationUtil(Interface):
         """
         Default max items to show on the site
         """
+
+    def rss_url():
+        """
+        Default rss url. Mainly to be used for the
+        rss portal_action link
+        """

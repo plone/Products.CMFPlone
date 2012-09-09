@@ -27,6 +27,15 @@ class SyndicationUtil(BrowserView):
             types.append(vocabulary.getTerm(typ))
         return [{'path': t.value, 'title': t.title} for t in types]
 
+    def rss_url(self):
+        settings = IFeedSettings(self.context)
+        types = settings.feed_types
+        url = self.context.absolute_url()
+        if len(types) == 0:
+            return url
+        _type = types[0]
+        return '%s/%s' % (url, _type)
+
     def context_allowed(self):
         if not ISyndicatable.providedBy(self.context):
             return False

@@ -9,7 +9,7 @@
   <object name="rss" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">RSS feed</property>
    <property name="description" i18n:translate=""></property>
-   <property name="url_expr">string:$object_url/RSS</property>
+   <property name="url_expr">object/@@syndication-util/rss_url</property>
    <property name="icon_expr">string:$portal_url/rss.png</property>
    <property
       name="available_expr">object/@@syndication-util/context_enabled</property>
