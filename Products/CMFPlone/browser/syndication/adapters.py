@@ -14,7 +14,7 @@ from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.ATContentTypes.interfaces.file import IFileContent
 from plone.uuid.interfaces import IUUID
-from zope.cachedescriptors.property import Lazy
+from zope.cachedescriptors.property import Lazy as lazy_property
 
 # this might be a little silly but it's possible to not use
 # Products.CMFPlone with dexterity content types
@@ -48,7 +48,7 @@ class BaseFeedData(object):
         self.view_action_types = self.site_props.getProperty(
             'typesUseViewActionInListings', ('File', 'Image'))
 
-    @Lazy
+    @lazy_property
     def show_about(self):
         return self.settings.show_author_info
 
@@ -56,7 +56,7 @@ class BaseFeedData(object):
     def link(self):
         return self.base_url
 
-    @Lazy
+    @lazy_property
     def base_url(self):
         return self.context.absolute_url()
 
@@ -105,7 +105,7 @@ class BaseFeedData(object):
 class FolderFeed(BaseFeedData):
     implements(IFeed)
 
-    @Lazy
+    @lazy_property
     def author(self):
         if self.show_about:
             creator = self.context.Creator()
@@ -190,7 +190,7 @@ class BaseItem(BaseFeedData):
         self.context = context
         self.feed = feed
 
-    @Lazy
+    @lazy_property
     def author(self):
         if self.feed.show_about:
             creator = self.context.Creator()
@@ -230,7 +230,7 @@ class BaseItem(BaseFeedData):
     def has_enclosure(self):
         return IFileContent.providedBy(self.context)
 
-    @Lazy
+    @lazy_property
     def file(self):
         if self.has_enclosure:
             return self.context.getFile()
@@ -280,7 +280,7 @@ class DexterityItem(BaseItem):
         else:
             return False
 
-    @Lazy
+    @lazy_property
     def file(self):
         if self.has_enclosure:
             return self.primary.field.get(self.context)
