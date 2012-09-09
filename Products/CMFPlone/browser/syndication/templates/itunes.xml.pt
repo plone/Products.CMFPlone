@@ -7,7 +7,6 @@
     <channel>
         <title tal:content="feed/title" />
         <link tal:content="feed/link" />
-        <!-- XXX get site language -->
         <language tal:content="feed/language" />
         <copyright tal:content="feed/rights" />
         <itunes:subtitle tal:content="feed/description" />

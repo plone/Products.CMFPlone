@@ -14,6 +14,7 @@ from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.ATContentTypes.interfaces.file import IFileContent
 from plone.uuid.interfaces import IUUID
+from plone.memoize.instance import memoize
 
 # this might be a little silly but it's possible to not use
 # Products.CMFPlone with dexterity content types
@@ -48,6 +49,7 @@ class BaseFeedData(object):
             'typesUseViewActionInListings', ('File', 'Image'))
 
     @property
+    @memoize
     def show_about(self):
         return self.settings.show_author_info
 
@@ -56,6 +58,7 @@ class BaseFeedData(object):
         return self.base_url
 
     @property
+    @memoize
     def base_url(self):
         return self.context.absolute_url()
 
@@ -105,6 +108,7 @@ class FolderFeed(BaseFeedData):
     implements(IFeed)
 
     @property
+    @memoize
     def author(self):
         if self.show_about:
             creator = self.context.Creator()
@@ -190,6 +194,7 @@ class BaseItem(BaseFeedData):
         self.feed = feed
 
     @property
+    @memoize
     def author(self):
         if self.feed.show_about:
             creator = self.context.Creator()
@@ -230,6 +235,7 @@ class BaseItem(BaseFeedData):
         return IFileContent.providedBy(self.context)
 
     @property
+    @memoize
     def file(self):
         if self.has_enclosure:
             return self.context.getFile()
@@ -280,6 +286,7 @@ class DexterityItem(BaseItem):
             return False
 
     @property
+    @memoize
     def file(self):
         if self.has_enclosure:
             return self.primary.field.get(self.context)
