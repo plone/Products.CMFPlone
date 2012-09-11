@@ -9,7 +9,9 @@
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
-           tal:attributes="href view/all_news_link"
+           tal:define="all_news_link view/all_news_link"
+           tal:omit-tag="not:all_news_link"
+           tal:attributes="href all_news_link"
            i18n:translate="box_news">News</a>
         <span class="portletTopRight"></span>
     </dt>
