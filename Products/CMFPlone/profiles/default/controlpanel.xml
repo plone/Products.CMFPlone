@@ -154,4 +154,11 @@
     i18n:attributes="title">
   <permission>Content rules: Manage rules</permission>
  </configlet>
+ <configlet title="Syndication" action_id="syndication" appId="Plone"
+    category="Plone" condition_expr=""
+    icon_expr="string:$portal_url/rss.png"
+    url_expr="string:${portal_url}/@@syndication-settings" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
 </object>

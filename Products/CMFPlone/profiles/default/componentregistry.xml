@@ -42,9 +42,6 @@
      interface="Products.CMFCore.interfaces.ISiteRoot"
      object=""/>
   <utility
-     interface="Products.CMFCore.interfaces.ISyndicationTool"
-     object="portal_syndication"/>
-  <utility
      interface="Products.CMFCore.interfaces.IUndoTool"
      object="portal_undo"/>
   <utility

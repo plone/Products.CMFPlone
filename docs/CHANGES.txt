@@ -5,7 +5,8 @@
 Changelog
 =========
 
-4.3a2 (unreleased)
+
+4.3a1 (unreleased)
 ------------------
 
 - Filter out non existing types in getUserFriendlyTypes.
@@ -16,6 +17,8 @@ Changelog
 - Declare Plone's dependency on Pillow.
   [davisagli]
 
+- Merge syndication plip 12908
+  [vangheem]
 
 4.3a1 (2012-08-31)
 ------------------

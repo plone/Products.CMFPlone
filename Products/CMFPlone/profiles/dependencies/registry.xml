@@ -37,4 +37,5 @@
         </field>
         <value>%H:%M</value>
     </record>
+    <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
 </registry>
