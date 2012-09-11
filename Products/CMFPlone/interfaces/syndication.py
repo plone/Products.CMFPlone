@@ -1,6 +1,5 @@
 from zope.interface import Interface
 from zope import schema
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from Products.CMFPlone import PloneMessageFactory as _
 
 
@@ -30,14 +29,17 @@ class IFeedData(Interface):
 
     def categories():
         """
+        List of tags
         """
 
     def published():
         """
+        publishing date
         """
 
     def modified():
         """
+        modification date
         """
 
     def uid():
@@ -101,7 +103,7 @@ class IFeed(IFeedData):
         """
         """
 
-    def language(self):
+    def language():
         """
         """
 
