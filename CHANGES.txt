@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Don't break TinyMCE on editing parent-portlets (fixes http://dev.plone.org/ticket/12899)
+  [pbauer]
+
 - Inside Review portlet display footer link only to Reviewers.
   Closes ticket https://dev.plone.org/ticket/6629
   [vipod]
