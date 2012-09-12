@@ -8,8 +8,10 @@
     <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href=""
-           tal:attributes="href view/all_events_link"
            class="tile"
+           tal:define="all_events_link view/all_events_link"
+           tal:omit-tag="not:all_events_link"
+           tal:attributes="href all_events_link"
            i18n:translate="box_events">
             Upcoming Events
         </a>
