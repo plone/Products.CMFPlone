@@ -105,4 +105,7 @@
         file="configure.zcml"
         />
 
+  <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
+              handler=".events.profileImportedEventHandler"/>
+
 </configure>
