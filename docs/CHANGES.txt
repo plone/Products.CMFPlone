@@ -20,6 +20,11 @@ Changelog
   Fixes https://dev.plone.org/ticket/12877
   [davidjb]
 
+- Add event to fix products installed with latest keyword 
+  activated by default. Event finds new products installed with 
+  the latest keyword and updates them to the last profile version.
+  [eleddy]
+
 4.2rc1 (2012-05-07)
 -------------------
 
