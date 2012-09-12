@@ -9,6 +9,12 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- prefs_main_template.pt omits left column when using ajax_load
+  parameter in request, or when disable_plone.leftcolumn is passed
+  a true value in request.  This makes it reasonable for add-on
+  authors to re-use control panels in overlays or iframes.
+  [seanupton]
+
 - Filter out non existing types in getUserFriendlyTypes.
   This avoids an error on the search form when a no longer existing
   portal_type is still in the catalog.

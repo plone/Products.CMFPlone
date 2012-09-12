@@ -6,7 +6,10 @@
             <tal:defines tal:define="dummy python:request.set('disable_border',1);
                                      controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                                      show_leftcolumn controlPanel/maySeeSomeConfiglets;
-                                     disable_column_one python:request.set('disable_plone.leftcolumn', not show_leftcolumn);
+                                     ajax_load request/ajax_load | nothing;
+                                     ajax_include_head request/ajax_include_head | nothing;
+                                     override_disable python:request.form.get('disable_plone.leftcolumn', None) or ajax_load;
+                                     disable_column_one python:override_disable is None and request.set('disable_plone.leftcolumn', not show_leftcolumn) or override_disable;
                                      disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
         </metal:override>
     </metal:block>
