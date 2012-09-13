@@ -4,6 +4,9 @@ Changelog
 2.3a2 (unreleased)
 ------------------
 
+- add contenttype class to the a tag, like navigation
+  [maartenkling]
+
 - Calendar portlet links to @@search (plone.app.search) view instead of
   deprecated search.pt.
   [seanupton]
@@ -29,10 +32,6 @@ Changelog
 - portlets/login.py, portlets/navigation.py:
   Don't use list as default parameter value.
   [kleist]
-
-- refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
-  one tal:condition in ul tag.
-  [saily]
 
 - Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
   [toutpt]
