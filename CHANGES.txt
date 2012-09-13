@@ -4,6 +4,10 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Add Language='all' as a keyword argument to avoid LinguaPlone deleting it when
+  it patches the catalog
+  [erral]
+
 - Use context object's url to create the cache key instead of the portal_url.
   [erral]
 

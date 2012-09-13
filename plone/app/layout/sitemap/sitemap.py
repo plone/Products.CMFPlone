@@ -39,7 +39,7 @@ class SiteMapView(BrowserView):
     def objects(self):
         """Returns the data to create the sitemap."""
         catalog = getToolByName(self.context, 'portal_catalog')
-        query = {'Language': 'all'}
+        query = {}
         utils = getToolByName(self.context, 'plone_utils')
         query['portal_type'] = utils.getUserFriendlyTypes()
         ptool = getToolByName(self, 'portal_properties')
@@ -54,7 +54,7 @@ class SiteMapView(BrowserView):
 
         query['is_default_page'] = True
         default_page_modified = OOBTree()
-        for item in catalog.searchResults(query):
+        for item in catalog.searchResults(query, Language='all'):
             key = item.getURL().rsplit('/', 1)[0]
             value = (item.modified.micros(), item.modified.ISO8601())
             default_page_modified[key] = value
@@ -77,7 +77,7 @@ class SiteMapView(BrowserView):
             }
 
         query['is_default_page'] = False
-        for item in catalog.searchResults(query):
+        for item in catalog.searchResults(query, Language='all'):
             loc = item.getURL()
             date = item.modified
             # Comparison must be on GMT value
