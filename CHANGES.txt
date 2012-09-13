@@ -1,11 +1,36 @@
 Changelog
 =========
 
-2.3a2 (unreleased)
+2.3.2 (unreleased)
 ------------------
 
+- reverted change: refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
+  one tal:condition in ul tag. 
+  [maartenkling]
+  
 - add contenttype class to the a tag, like navigation
   [maartenkling]
+  
+- Don't break TinyMCE on editing parent-portlets (fixes http://dev.plone.org/ticket/12899)
+  [pbauer]
+
+- Inside Review portlet display footer link only to Reviewers.
+  Closes ticket https://dev.plone.org/ticket/6629
+  [vipod]
+
+- Use ``type`` instead of ``makeClass`` for Zope 4 compatibility.
+  [elro]
+
+- Add safety check for portletHeader links [davilima6]
+
+2.3.1 (2012-08-29)
+------------------
+
+- Fix packaging error.
+  [esteele]
+
+2.3 (2012-08-29)
+----------------
 
 - Calendar portlet links to @@search (plone.app.search) view instead of
   deprecated search.pt.
@@ -32,6 +57,10 @@ Changelog
 - portlets/login.py, portlets/navigation.py:
   Don't use list as default parameter value.
   [kleist]
+
+- refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
+  one tal:condition in ul tag.
+  [saily]
 
 - Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
   [toutpt]
@@ -950,4 +979,3 @@ Changelog
 
 - Initial implementation.
   [optilude]
-
