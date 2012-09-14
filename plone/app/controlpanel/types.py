@@ -19,8 +19,17 @@ from plone.app.controlpanel.events import ConfigurationChangedEvent
 from plone.app.controlpanel.form import ControlPanelView
 
 
+def format_title(text, request=None):
+    ''' Format ans translate workflow title '''
+    if type(text) == str:
+        text = text.decode('utf-8')
+    return translate(text, domain='plone', context=request)
+
+
 def format_description(text, request=None):
     # We expect the workflow to be a text of '- ' divided bullet points.
+    if type(text) == str:
+        text = text.decode('utf-8')
     text = translate(text.strip(), domain='plone', context=request)
     return [s.strip() for s in text.split('- ') if s]
 
@@ -260,21 +269,25 @@ type_id=%s' % (context.absolute_url() , type_id))
             if chain:
                 wf_id = chain[0]
                 wf = getattr(portal_workflow, wf_id)
-                title = translate(wf.title, domain='plone', context=self.request)
-                return dict(id=wf.id, title=title, description=format_description(wf.description, self.request))
+                title = format_title(wf.title, request=self.request)
+                return dict(id=wf.id, title=title,
+                            description=format_description(wf.description,
+                                                           self.request))
             else:
                 return empty_workflow_dict
 
         if default_workflow == '[none]':
             return empty_workflow_dict
 
-        default_title = translate(default_workflow.title, domain='plone',
-                                  context=self.request)
+        default_title = format_title(default_workflow.title,
+                                     request=self.request)
+        default_description = format_description(default_workflow.description,
+                                                 request=self.request)
         return dict(id='(Default)',
                     title=_(u"label_default_workflow_title",
                         default=u"Default workflow (${title})",
                         mapping=dict(title=default_title)),
-                    description=format_description(default_workflow.description, self.request))
+                    description=default_description)
 
 
     def available_workflows(self):
