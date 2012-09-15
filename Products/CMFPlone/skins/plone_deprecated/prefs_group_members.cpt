@@ -22,7 +22,8 @@
                 grouptitle group/getGroupTitleOrName|groupname;
                 groupMembers python:[mtool.getMemberById(m) for m in gtool.getGroupMembers(groupname)];
                 isGroup nocall:gtool/isGroup;
-                mq python:modules['ZTUtils'].make_query;
+                ztu context/@@plone/ztu;
+                mq python:ztu.make_query;
                 groupquery python:mq(groupname=groupname);
                 groupkeyquery python:mq(key=groupname);
                 portal_url context/portal_url;">
