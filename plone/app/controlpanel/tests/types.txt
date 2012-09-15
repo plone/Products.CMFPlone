@@ -5,9 +5,17 @@ First some initial setup code:
 
     >>> from zope.component import getUtility
     >>> from Products.CMFCore.interfaces import IPropertiesTool
+    >>> from Products.CMFCore.utils import getToolByName
     >>> ptool = getUtility(IPropertiesTool)
     >>> self.loginAsManager()
     >>> types_configlet_url = 'http://nohost/plone/@@types-controlpanel'
+
+Then we change a workflow title, so we can test for UnicodeDecodeErrors
+
+    >>> wt = getToolByName(self.portal, 'portal_workflow')
+    >>> wf = wt['simple_publication_workflow']
+    >>> old_title = wf.title
+    >>> wf.title = u'Workflow de Noticias'.encode('utf-8')
 
 Viewing the types control panel
 -----------------------------
