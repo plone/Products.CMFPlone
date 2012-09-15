@@ -13,7 +13,8 @@
                  userid python:request.get('userid', member.getId());
                  account_page python:request.get('page', '@@personal-information');
                  dummy python:request.set(template.id, 1);
-                 mq python:modules['ZTUtils'].make_query;
+                 ztu context/@@plone/ztu;
+                 mq python:ztu.make_query;
                  userquery python:mq(userid=userid);
                  member python:context.portal_membership.getMemberById(userid);
                  errors options/state/getErrors;
