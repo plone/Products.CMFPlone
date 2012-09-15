@@ -10,7 +10,7 @@ First some initial setup code:
     >>> self.loginAsManager()
     >>> types_configlet_url = 'http://nohost/plone/@@types-controlpanel'
 
-Then we change a workflow title, so we can test for UnicodeDecodeErrors
+Then we change a workflow title, so we can test for UnicodeDecodeErrors:
 
     >>> wt = getToolByName(self.portal, 'portal_workflow')
     >>> wf = wt['simple_publication_workflow']
