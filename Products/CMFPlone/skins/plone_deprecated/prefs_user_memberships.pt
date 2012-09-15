@@ -19,7 +19,8 @@
                  errors python:request.get('errors', {});
                  searchonly string:groups;
                  takeaction string:prefs_user_membership_edit;
-                 mq python:modules['ZTUtils'].make_query;
+                 ztu context/@@plone/ztu;
+                 mq python:ztu.make_query;
                  userquery python:mq(userid=userid);
                  portal_url context/portal_url;">
 
