@@ -21,8 +21,7 @@
                       searchstring request/searchstring | nothing;
                       searchonly searchonly | nothing;
                       many_groups context/portal_properties/site_properties/many_groups;
-                      ztu context/@@plone/ztu;
-                      mq python:ztu.make_query;
+                      mq python:modules['ZTUtils'].make_query;
                       results python:(not many_groups and context.portal_groups.listGroups()) or (searchstring and context.prefs_user_group_search(searchstring, searchonly)) or None;
                       batch python:results and Batch(results, b_size, int(b_start), orphan=1) or None;">
 

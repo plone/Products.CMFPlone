@@ -144,8 +144,7 @@
                         <tal:block repeat="this_user batch">
                             <tr tal:define="oddrow repeat/this_user/odd;
                                             userid this_user/userid;
-                                            ztu context/@@plone/ztu;
-                                            mq python:ztu.make_query;
+                                            mq python:modules['ZTUtils'].make_query;
                                             userquery python:mq(userid=userid);
                                             user python:context.portal_membership.getMemberById(userid)"
                                 tal:condition="python:user is not None"

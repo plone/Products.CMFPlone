@@ -23,7 +23,7 @@
                 search_results python:test(showAll, search_view.searchGroups(), searchstring and search_view.searchGroups(id=searchstring) or None);
                 batch python:search_results and Batch(search_results, b_size, int(b_start), orphan=1) or None;
                 portal_url context/portal_url;
-                ztu context/@@plone/ztu;
+                ztu modules/ZTUtils;
                 checkPermission nocall: context/portal_membership/checkPermission;">
 
 
