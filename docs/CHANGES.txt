@@ -8,6 +8,10 @@ Changelog
 4.2.2 (unreleased)
 ------------------
 
+- Fix StringIO module security so it can still be imported from restricted
+  code in Zope 2.13.17+.
+  [davisagli]
+
 - Make sure the portal_registry setting for ResourceRegistries bundles
   gets installed.
   [davisagli]
