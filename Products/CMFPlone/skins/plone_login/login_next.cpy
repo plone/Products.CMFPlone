@@ -9,8 +9,7 @@
 ##title=Login next actions
 
 from Products.CMFPlone import PloneMessageFactory as _
-
-ZTUtils = context.restrictedTraverse('@@plone').ztu
+import ZTUtils
 
 REQUEST = context.REQUEST
 
