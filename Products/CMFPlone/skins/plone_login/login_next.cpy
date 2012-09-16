@@ -11,8 +11,8 @@
 
 from Products.CMFPlone import PloneMessageFactory as _
 from DateTime import DateTime
-#import ZTUtils
-ZTUtils = context.restrictedTraverse('@@plone').ztu
+import ZTUtils
+
 REQUEST = context.REQUEST
 
 util = context.plone_utils

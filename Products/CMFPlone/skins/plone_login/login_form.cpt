@@ -20,7 +20,7 @@
 <body>
     <metal:main fill-slot="main">
 
-    <div id="content-core">
+    <div>
         <metal:login define-macro="login"
             tal:define="auth nocall:context/acl_users/credentials_cookie_auth|context/cookie_authentication|nothing;
                         isURLInPortal nocall:context/portal_url/isURLInPortal;
@@ -53,7 +53,7 @@
                         use_external python:auth and external_login_url and not external_login_iframe;
                         target request/target|nothing;
                         target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
-                        ztu context/@@plone/ztu;">
+                        ztu modules/ZTUtils;">
 
             <dl class="portalMessage error"
                 id="enable_cookies_message"

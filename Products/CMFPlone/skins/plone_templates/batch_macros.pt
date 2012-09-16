@@ -15,8 +15,7 @@ template with a tal:define="batch_base_url YOUR_BASE_URL" tales expression.
                  batch batch|nothing;
                  batchformkeys batchformkeys|nothing;
                  batchlinkparams python:batchformkeys and dict([(key, request.form[key]) for key in batchformkeys if key in request]) or request.form;
-                 ztu context/@@plone/ztu;
-                 mq python:ztu.make_query;
+                 mq python:modules['ZTUtils'].make_query;
                  url batch_base_url | request/ACTUAL_URL;
                  currentpage batch/pagenumber;"
      tal:condition="python: batch.next or  batch.previous">
