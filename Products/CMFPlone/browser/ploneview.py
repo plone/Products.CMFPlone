@@ -1,4 +1,3 @@
-import ZTUtils
 from plone.app.content.browser.folderfactories import _allowedTypes
 from plone.memoize.view import memoize
 from zope.interface import implements
@@ -251,10 +250,6 @@ class Plone(BrowserView):
         context_state = getMultiAdapter(
             (aq_inner(self.context), self.request), name=u'plone_context_state')
         return context_state.view_template_id()
-
-    @property
-    def ztu(self):
-        return ZTUtils
 
     # Deprecated in favour of @@plone_layout
 
