@@ -1,5 +1,4 @@
 import ZTUtils
-from StringIO import StringIO
 from plone.app.content.browser.folderfactories import _allowedTypes
 from plone.memoize.view import memoize
 from zope.interface import implements
@@ -256,10 +255,6 @@ class Plone(BrowserView):
     @property
     def ztu(self):
         return ZTUtils
-
-    @property
-    def stio(self):
-        return StringIO
 
     # Deprecated in favour of @@plone_layout
 
