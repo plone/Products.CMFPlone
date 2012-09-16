@@ -15,8 +15,7 @@
                 searchonly request/searchonly | nothing;
                 searchstring request/searchstring | nothing;
                 searchfor request/searchonly | request/searching | nothing;
-                ztu context/@@plone/ztu;
-                mq python:ztu.make_query;">
+                mq python:modules['ZTUtils'].make_query;">
 
     <h1 class="documentFirstHeading"
         i18n:translate="heading_search_usersandgroups">Search for Users and Groups</h1>

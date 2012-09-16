@@ -11,8 +11,7 @@
 <metal:main fill-slot="prefs_configlet_content"
      tal:define="errors python:request.get('errors', {});
                  portal_roles python:context.portal_membership.getPortalRoles();
-                 ztu context/@@plone/ztu;
-                 mq python:ztu.make_query;
+                 mq python:modules['ZTUtils'].make_query;
                  groupname request/groupname | nothing;
                  groupquery python:mq(groupname=groupname);
                  groupkeyquery python:mq(key=groupname);
