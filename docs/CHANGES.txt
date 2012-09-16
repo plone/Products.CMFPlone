@@ -9,6 +9,10 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Fix StringIO module security so it can still be imported from restricted
+  code in Zope 2.13.17+.
+  [davisagli]
+
 - Filter out non existing types in getUserFriendlyTypes.
   This avoids an error on the search form when a no longer existing
   portal_type is still in the catalog.
