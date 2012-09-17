@@ -134,7 +134,10 @@ class MailControlPanelAdapter(SchemaAdapterBase):
     smtp_pass = property(get_smtp_pass, set_smtp_pass)
 
     def get_email_from_name(self):
-        return getUtility(ISiteRoot).email_from_name
+        email_from_name = getUtility(ISiteRoot).email_from_name
+        if type(email_from_name) == str:
+            email_from_name = email_from_name.decode('utf-8')
+        return email_from_name
 
     def set_email_from_name(self, value):
         getUtility(ISiteRoot).email_from_name = value
