@@ -9,6 +9,10 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- Fix prefs_install_product_readme so files with non-ascii characters are
+  rendered. This fixes https://dev.plone.org/ticket/12342
+  [ericof]
+
 - Fix StringIO module security so it can still be imported from restricted
   code in Zope 2.13.17+.
   [davisagli]
