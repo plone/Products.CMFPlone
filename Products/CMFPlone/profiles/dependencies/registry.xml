@@ -37,5 +37,13 @@
         </field>
         <value>%H:%M</value>
     </record>
+    <record name="plone.app.layout.globals.bodyClass.depth">
+        <field type="plone.registry.field.Int">
+            <title>Body class path depth</title>
+            <description>Depth relative the site root that body class are generated for.
+            </description>
+        </field>
+        <value>4</value>
+    </record>
     <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
 </registry>
