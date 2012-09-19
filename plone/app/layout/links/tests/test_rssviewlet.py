@@ -16,10 +16,10 @@ class TestRSSViewletView(ViewletsTestCase):
     def test_RSSViewlet(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSyndicationSettings)
-        if settings.enabled:
+        if settings.allowed:
             # make sure syndication is disabled
             self.loginAsPortalOwner()
-            settings.enabled = False
+            settings.allowed = False
             self.logout()
         request = self.app.REQUEST
         viewlet = RSSViewlet(self.portal, request, None, None)
@@ -27,7 +27,7 @@ class TestRSSViewletView(ViewletsTestCase):
         result = viewlet.render()
         self.assertEquals(result.strip(), '')
         self.loginAsPortalOwner()
-        settings.enabled = True
+        settings.allowed = True
         settings.site_rss_items = (self.portal.news.UID(),)
         self.logout()
         request = self.app.REQUEST
