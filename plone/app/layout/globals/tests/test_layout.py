@@ -1,3 +1,4 @@
+from plone.registry.interfaces import IRegistry
 from plone.portlets.interfaces import IPortletType
 from zope.component import getUtility
 import zope.interface
@@ -81,6 +82,21 @@ class TestLayoutView(GlobalsTestCase):
         body_class = view.bodyClass(template, view)
         assert 'folder2 folder2-folder3' in body_class
         assert ' folder2-folder3-page' in body_class
+
+    def testBodyClassWithEverySectionTurnedOff(self):
+        registry = getUtility(IRegistry)
+        registry['plone.app.layout.globals.bodyClass.depth'] = 0
+        members = self.portal['Members']
+        zope.interface.alsoProvides(members, INavigationRoot)
+        self.folder.invokeFactory('Folder', 'folder2')
+        self.folder.folder2.invokeFactory('Folder', 'folder3')
+        self.folder.folder2.folder3.invokeFactory('Document', 'page')
+        context = self.folder.folder2.folder3.page
+        view = context.restrictedTraverse('@@plone_layout')
+        template = context.document_view
+        body_class = view.bodyClass(template, view)
+        assert 'folder2 folder2-folder3' not in body_class
+        assert ' folder2-folder3-page' not in body_class
 
 
 def test_suite():
