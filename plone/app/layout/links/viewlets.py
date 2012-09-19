@@ -5,10 +5,15 @@ from plone.memoize.compress import xhtml_compress
 from zope.component import getMultiAdapter
 
 from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.viewlets import ViewletBase
+from plone.app.uuid.utils import uuidToObject
+from zope.schema.interfaces import IVocabularyFactory
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces.syndication import IFeedSettings
+from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 
 
 def get_language(context, request):
@@ -70,15 +75,44 @@ class AuthorViewlet(ViewletBase):
 
 class RSSViewlet(ViewletBase):
 
+    def getRssLinks(self, obj):
+        settings = IFeedSettings(obj, None)
+        if settings is None:
+            return []
+        factory = getUtility(IVocabularyFactory,
+            "plone.app.vocabularies.SyndicationFeedTypes")
+        vocabulary = factory(self.context)
+        urls = []
+        for typ in settings.feed_types:
+            term = vocabulary.getTerm(typ)
+            urls.append({
+                'title': '%s - %s' % (
+                    obj.Title(), term.title),
+                'url': obj.absolute_url() + '/' + term.value})
+        return urls
+
     def update(self):
         super(RSSViewlet, self).update()
-        syntool = getToolByName(self.context, 'portal_syndication')
-        if syntool.isSyndicationAllowed(self.context):
-            self.allowed = True
-            context_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_context_state')
-            self.url = '%s/RSS' % context_state.object_url()
+        self.rsslinks = []
+        util = getMultiAdapter((self.context, self.request),
+                               name="syndication-util")
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
+        if context_state.is_portal_root():
+            if util.site_enabled():
+                registry = getUtility(IRegistry)
+                try:
+                    settings = registry.forInterface(ISiteSyndicationSettings)
+                except KeyError:
+                    return
+                for uid in settings.site_rss_items:
+                    obj = uuidToObject(uid)
+                    if obj is not None:
+                        self.rsslinks.extend(self.getRssLinks(obj))
+                self.rsslinks.extend(self.getRssLinks(
+                    self.portal_state.portal()))
         else:
-            self.allowed = False
+            if util.context_enabled():
+                self.rsslinks.extend(self.getRssLinks(self.context))
 
     index = ViewPageTemplateFile('rsslink.pt')

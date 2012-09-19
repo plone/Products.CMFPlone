@@ -75,10 +75,6 @@ class ITools(Interface):
         """The portal_properties tool
         """
 
-    def syndication():
-        """The portal_syndication tool
-        """
-
     def types():
         """The portal_types tool
         """

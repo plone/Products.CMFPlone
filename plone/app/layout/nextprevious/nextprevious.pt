@@ -7,7 +7,7 @@
      tal:omit-tag=""
      i18n:domain="plone">
 
-    <tal:block define="portal_url view/portal_url;">
+    <tal:block define="portal_url view/site_url;">
 
         <div class="listingBar"
              tal:define="next view/next;

@@ -27,14 +27,28 @@
   </tal:name>
   </tal:creator>
 
-  <span class="documentModified">
+  <tal:dates define="published view/pub_date;
+                     modified context/ModificationDate">
+  <span class="documentPublished"
+        tal:condition="published">
+    <span i18n:translate="box_published">
+      published
+    </span>
+    <span tal:replace="python:view.toLocalizedTime(published,long_format=1)">
+      August 16, 2001 at 23:35:59
+    </span><tal:sep condition="modified">,</tal:sep>
+  </span>
+
+  <span class="documentModified"
+        tal:condition="modified">
     <span i18n:translate="box_last_modified">
       last modified
     </span>
-    <span tal:replace="python:view.toLocalizedTime(context.ModificationDate(),long_format=1)">
+    <span tal:replace="python:view.toLocalizedTime(modified,long_format=1)">
       August 16, 2001 at 23:35:59
     </span>
   </span>
+  </tal:dates>
 
   <tal:expired tal:condition="view/isExpired">
     —

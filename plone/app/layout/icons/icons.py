@@ -1,6 +1,8 @@
 from plone.memoize.instance import memoize
+from plone.memoize import view
 from zope.component import getMultiAdapter
 from zope.interface import implements
+from zope.i18n import translate
 
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -63,10 +65,39 @@ class CatalogBrainContentIcon(BaseIcon):
         tt = getToolByName(context, 'portal_types')
         fti = tt.get(self.brain['portal_type'])
         if fti is not None:
-            return fti.Title()
+            res = "%s %s" % (translate(fti.Title(), context=self.request),
+                             self._mimetype())
+            return res.strip()
         else:
             return self.brain['portal_type']
 
+    def _mimetype(self):
+        extensions_mimetype = self.extensions_mimetype()
+        id = self.brain.getId
+        mimetype = ''
+        extlength = 0
+        for extension in extensions_mimetype.keys():
+            if id.endswith(extension):
+                #keep the longest extension
+                if len(extension) > extlength:
+                    mimetype = extensions_mimetype[extension]
+                    extlength = len(extension)
+
+        return mimetype
+
+    @view.memoize_contextless
+    def extensions_mimetype(self):
+        """Return a dict {'.pdf': 'PDF Document', '.ods': '
+        """
+        mtr = getToolByName(self.context, 'mimetypes_registry')
+        mimetypes = mtr.mimetypes()
+        extensions = {}
+
+        for mimetype in mimetypes:
+            for extension in mimetype.extensions:
+                extensions[extension] = mimetype.name()
+
+        return extensions
 
 class CMFContentIcon(BaseIcon):
     implements(IContentIcon)

@@ -1,6 +1,5 @@
 <div class="reviewHistory"
      id="review-history"
-     metal:define-macro="review_history"
      i18n:domain="plone"
      tal:define="history view/workflowHistory;">
     <tal:history tal:condition="history">
