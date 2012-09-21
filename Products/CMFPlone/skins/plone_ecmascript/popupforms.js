@@ -45,7 +45,7 @@ jQuery.extend(jQuery.tools.overlay.conf,
                 }
                 return location;
             }
-        })
+        });
 })(jQuery);
 
 jQuery(function($){
@@ -63,6 +63,7 @@ jQuery(function($){
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: 'form#login_form',
+            cssclass: 'overlay-login',
             noform: function () {
                 if (location.href.search(/pwreset_finish$/) >= 0) {
                     return 'redirect';
@@ -86,6 +87,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-contact',
             formselector: 'form[name="feedback_form"]',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'close');}
         }
@@ -96,6 +98,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-comment',
             formselector: 'form:has(input[name="discussion_reply:method"])',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref
@@ -108,6 +111,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-default_view',
             formselector: 'form[name="default_page_form"]',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
             closeselector: '[name="form.button.Cancel"]',
@@ -123,6 +127,7 @@ jQuery(function($){
     //         subtype: 'ajax',
     //         filter: common_content_filter,
     //         formselector: 'form',
+    //         cssclass: 'overlay-workflow',
     //         noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
     //         closeselector: '[name="form.button.Cancel"]'
     //     }
@@ -134,6 +139,7 @@ jQuery(function($){
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: '#delete_confirmation',
+            cssclass: 'overlay-delete',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref,
             closeselector: '[name="form.button.Cancel"]',
@@ -146,6 +152,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-rename',
             closeselector: '[name="form.button.Cancel"]',
             width:'40%'
         }
@@ -156,6 +163,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-register',
             formselector: 'form.kssattr-formname-register'
         }
     );
@@ -165,6 +173,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-users',
             formselector: 'form.kssattr-formname-new-user, form[name="groups"]',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: function () {return location.href;}
@@ -175,6 +184,7 @@ jQuery(function($){
     $('#content-history a').prepOverlay({
        subtype: 'ajax', 
        filter: 'h2, #content-history',
+       cssclass: 'overlay-history',
        urlmatch: '@@historyview',
        urlreplace: '@@contenthistorypopup'
     });
