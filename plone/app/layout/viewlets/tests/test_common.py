@@ -35,6 +35,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('Document', 'test',
                                   title='Test default page')
+        self.folder.test.unmarkCreationFlag()
         self.folder.setTitle(u"Folder")
 
     def _invalidateRequestMemoizations(self):
@@ -91,7 +92,24 @@ class TestContentViewsViewlet(ViewletsTestCase):
         viewlet = TitleViewlet(self.folder.test, self.app.REQUEST, None)
         viewlet.update()
         self.assertEqual(viewlet.site_title,
-                          "Test default page &mdash; Folder")
+                         "Test default page &mdash; Folder")
+
+    def testTitleViewletInPortalfactory(self):
+        """Title viewlet renders navigation root title in portal factory
+        """
+        self._invalidateRequestMemoizations()
+        self.loginAsPortalOwner()
+
+        factory_folder = self.folder.portal_factory
+        factory_document = (factory_folder
+                            .restrictedTraverse('Document/document'))
+        self.app.REQUEST['ACTUAL_URL'] = factory_document.absolute_url()
+
+        directlyProvides(self.folder, INavigationRoot)
+        viewlet = TitleViewlet(factory_document, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertEqual(viewlet.site_title,
+                          "Add Page &mdash; Folder")
 
     def testLogoViewlet(self):
         """Logo links towards navigation root
@@ -104,7 +122,6 @@ class TestContentViewsViewlet(ViewletsTestCase):
         viewlet.update()
         self.assertEqual(viewlet.navigation_root_title, "Folder")
         self.assertTrue("http://nohost/plone/logo.png" in viewlet.logo_tag)
-
 
 def test_suite():
     from unittest import defaultTestLoader
