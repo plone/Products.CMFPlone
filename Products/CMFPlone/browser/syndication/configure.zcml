@@ -5,21 +5,6 @@
   xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="Products.CMFPlone">
 
-  <class class="Products.ATContentTypes.content.topic.ATTopic"
-      zcml:condition="installed Products.ATContentTypes">
-    <implements interface="Products.CMFPlone.interfaces.syndication.ISyndicatable" />
-  </class>
-    
-  <class class="Products.ATContentTypes.content.folder.ATFolder"
-      zcml:condition="installed Products.ATContentTypes">
-    <implements interface="Products.CMFPlone.interfaces.syndication.ISyndicatable" />
-  </class>
-
-  <class class="plone.app.collection.collection.Collection"
-      zcml:condition="installed plone.app.collection">
-    <implements interface="Products.CMFPlone.interfaces.syndication.ISyndicatable" />
-  </class>
-
   <class class="plone.dexterity.content.Container"
       zcml:condition="installed plone.dexterity">
     <implements interface="Products.CMFPlone.interfaces.syndication.ISyndicatable" />

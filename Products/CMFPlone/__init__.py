@@ -58,6 +58,7 @@ def initialize(context):
     # Make Batch available at module level
     this_module.Batch = Batch
 
+    ModuleSecurityInfo('StringIO').declarePublic('StringIO')
     from StringIO import StringIO
     allow_class(StringIO)
 
