@@ -10,6 +10,9 @@ from zope.viewlet.interfaces import IViewlet
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner
+
+from Products.Archetypes.utils import shasattr
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
@@ -36,7 +39,6 @@ class ViewletBase(BrowserView):
     def portal_url(self):
         return self.site_url
 
-
     def update(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_portal_state')
@@ -55,17 +57,42 @@ class ViewletBase(BrowserView):
 class TitleViewlet(ViewletBase):
     index = ViewPageTemplateFile('title.pt')
 
+    def check_creation_flag(self):
+        '''
+        Check if the context:
+         - has the method checkCreationFlag
+         - eventually returns its value
+        if not return False
+        '''
+        return (shasattr(self.context, 'checkCreationFlag') and
+                self.context.checkCreationFlag())
+
+    @property
+    @memoize
+    def page_title(self):
+        '''
+        Get the page title. If we are in the portal_factory we want use the
+        "Add $FTI_TITLE" form (see #12117).
+        '''
+        if not self.check_creation_flag():
+            # this was the default before the activity for #12117
+            context_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_context_state')
+            return escape(safe_unicode(context_state.object_title()))
+        # if we are in the portal_factory we want the page title to be
+        # "Untitled fti title"
+        portal_types = getToolByName(self.context, 'portal_types')
+        fti = portal_types.getTypeInfo(self.context)
+        return u"Add %s" % fti.Title()
+
     def update(self):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
-        context_state = getMultiAdapter((self.context, self.request),
-                                         name=u'plone_context_state')
-        page_title = escape(safe_unicode(context_state.object_title()))
         portal_title = escape(safe_unicode(portal_state.navigation_root_title()))
-        if page_title == portal_title:
+        if self.page_title == portal_title:
             self.site_title = portal_title
         else:
-            self.site_title = u"%s &mdash; %s" % (page_title, portal_title)
+            self.site_title = u"%s &mdash; %s" % (self.page_title, portal_title)
 
 
 class DublinCoreViewlet(ViewletBase):
