@@ -28,8 +28,8 @@ if siteProperties is not None:
 
 # SIMPLE CONFIGURATION
 USE_ICON = True
-MAX_TITLE = 29
-MAX_DESCRIPTION = 93
+MAX_TITLE = 50
+MAX_DESCRIPTION = 150
 
 # generate a result set for the query
 catalog = context.portal_catalog
