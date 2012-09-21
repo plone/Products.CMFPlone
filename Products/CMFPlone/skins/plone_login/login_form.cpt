@@ -291,9 +291,9 @@
 
             <div id="login-new-user"
                tal:condition="python:join_url and use_normal">
-                <h3 i18n:translate="heading_new_user">
+                <strong i18n:translate="heading_new_user">
                 New user?
-                </h3>
+                </strong>
 
                 <p i18n:translate="description_no_account">
                 If you do not have an account here, head over to the
