@@ -111,7 +111,7 @@ if not results:
     write('''<div class="LSIEFix">''')
     write('''<div id="LSNothingFound">%s</div>''' % ts.translate(label_no_results_found, context=REQUEST))
     write('''<div class="LSRow">''')
-    write('<a href="%s" style="font-weight:normal">%s</a>' %
+    write('<a href="%s" class="advancedsearchlink">%s</a>' %
          (portal_url + '/@@search',
           ts.translate(label_advanced_search, context=REQUEST)))
     write('''</div>''')
@@ -153,7 +153,7 @@ else:
         full_title, display_title, display_description = None, None, None
 
     write('''<li class="LSRow">''')
-    write('<a href="%s" style="font-weight:normal">%s</a>' %
+    write('<a href="%s" class="advancedsearchlink">%s</a>' %
          (portal_url + '/@@search',
           ts.translate(label_advanced_search, context=REQUEST)))
     write('''</li>''')
@@ -162,7 +162,7 @@ else:
         # add a more... row
         write('''<li class="LSRow">''')
         searchquery = '@@search?SearchableText=%s&path=%s' % (searchterms, params['path'])
-        write('<a href="%s" style="font-weight:normal">%s</a>' % (
+        write('<a href="%s" class="showalllink">%s</a>' % (
                              searchquery,
                              ts.translate(label_show_all, context=REQUEST)))
         write('''</li>''')
