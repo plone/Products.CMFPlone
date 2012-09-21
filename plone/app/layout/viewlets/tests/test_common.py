@@ -109,7 +109,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         viewlet = TitleViewlet(factory_document, self.app.REQUEST, None)
         viewlet.update()
         self.assertEqual(viewlet.site_title,
-                          "Add Page &mdash; Folder")
+                         u'heading_add_item &mdash; Folder')
 
     def testLogoViewlet(self):
         """Logo links towards navigation root

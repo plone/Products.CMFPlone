@@ -5,13 +5,12 @@ from urllib import unquote
 from plone.memoize.view import memoize
 from zope.component import getMultiAdapter
 from zope.deprecation.deprecation import deprecate
+from zope.i18n import translate
 from zope.interface import implements, alsoProvides
 from zope.viewlet.interfaces import IViewlet
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner
-
-from Products.Archetypes.utils import shasattr
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
@@ -64,7 +63,7 @@ class TitleViewlet(ViewletBase):
          - eventually returns its value
         if not return False
         '''
-        return (shasattr(self.context, 'checkCreationFlag') and
+        return (hasattr(aq_base(self.context), 'checkCreationFlag') and
                 self.context.checkCreationFlag())
 
     @property
@@ -88,7 +87,10 @@ class TitleViewlet(ViewletBase):
         # "Add fti title"
         portal_types = getToolByName(self.context, 'portal_types')
         fti = portal_types.getTypeInfo(self.context)
-        return u"Add %s" % fti.Title()
+        return translate('heading_add_item',
+                         'plone',
+                         mapping={'itemtype': fti.Title()},
+                         context=self.request)
 
     def update(self):
         portal_state = getMultiAdapter((self.context, self.request),
