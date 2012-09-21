@@ -4,6 +4,10 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
+- Changed the behaviour of the title viewlet for items in the portal_factory.
+  See https://dev.plone.org/ticket/12117
+  [alert]
+
 - Fix an edge case where getNavigationRootObject could loop infinitely.
   [davisagli]
 

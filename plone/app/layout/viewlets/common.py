@@ -73,6 +73,11 @@ class TitleViewlet(ViewletBase):
         '''
         Get the page title. If we are in the portal_factory we want use the
         "Add $FTI_TITLE" form (see #12117).
+
+        NOTE: other implementative options can be:
+         - to use "Untitled" instead of "Add" or
+         - to check the isTemporary method of the edit view instead of the
+           creation_flag
         '''
         if not self.check_creation_flag():
             # this was the default before the activity for #12117
@@ -80,19 +85,21 @@ class TitleViewlet(ViewletBase):
                                             name=u'plone_context_state')
             return escape(safe_unicode(context_state.object_title()))
         # if we are in the portal_factory we want the page title to be
-        # "Untitled fti title"
+        # "Add fti title"
         portal_types = getToolByName(self.context, 'portal_types')
         fti = portal_types.getTypeInfo(self.context)
         return u"Add %s" % fti.Title()
 
     def update(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
-        portal_title = escape(safe_unicode(portal_state.navigation_root_title()))
+                                       name=u'plone_portal_state')
+        portal_title = escape(safe_unicode(portal_state
+                                           .navigation_root_title()))
         if self.page_title == portal_title:
             self.site_title = portal_title
         else:
-            self.site_title = u"%s &mdash; %s" % (self.page_title, portal_title)
+            self.site_title = u"%s &mdash; %s" % (self.page_title,
+                                                  portal_title)
 
 
 class DublinCoreViewlet(ViewletBase):
