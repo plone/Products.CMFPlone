@@ -12,10 +12,10 @@ from Products.CMFPlone.utils import base_hasattr
 if obj is None:
     obj = context
 
-const = {'kB': 1024,
+const = {'KB': 1024,
          'MB': 1024 * 1024,
          'GB': 1024 * 1024 * 1024}
-order = ('GB', 'MB', 'kB')
+order = ('GB', 'MB', 'KB')
 smaller = order[-1]
 
 # allow arbitrary sizes to be passed through,

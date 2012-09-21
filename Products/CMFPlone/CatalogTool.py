@@ -195,8 +195,8 @@ def getObjPositionInParent(obj):
         return ordered.getObjectPosition(obj.getId())
     return 0
 
-SIZE_CONST = {'kB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
-SIZE_ORDER = ('GB', 'MB', 'kB')
+SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
+SIZE_ORDER = ('GB', 'MB', 'KB')
 
 
 @indexer(Interface)
