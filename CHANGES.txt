@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Fix ManagePortletsViewlet to work with Plone 4+.
+  [elro]
+
 - Fix 'This portlet display a'.
   [danjacka]
 

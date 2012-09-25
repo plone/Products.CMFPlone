@@ -1,5 +1,6 @@
 from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
+from zope.publisher.interfaces.browser import IBrowserView
 
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
@@ -321,8 +322,9 @@ class ManagePortletsViewlet(BrowserView):
 
     @memoize
     def ultimate_parent(self):
+        # Walk the __parent__ chain to find the principal view
         parent = self.__parent__
-        while parent is not None and hasattr(parent, '__parent__') and parent.__parent__ is not None:
+        while hasattr(parent, '__parent__') and IBrowserView.providedBy(parent.__parent__):
             parent = parent.__parent__
         return parent
 
