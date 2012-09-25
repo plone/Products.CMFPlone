@@ -314,6 +314,13 @@ class ManagePortletsViewlet(BrowserView):
     def key(self):
         return self.ultimate_parent().key
 
+    def __getattribute__(self, name):
+        # Products.Five.viewlet.viewlet.SimpleViewletClass redefines __name__
+        # so a simple property or attribute does not work
+        if name == '__name__':
+            return self.ultimate_parent().__name__
+        return super(ManagePortletsViewlet, self).__getattribute__(name)
+
     def getAssignmentMappingUrl(self, manager):
         return self.ultimate_parent().getAssignmentMappingUrl(manager)
 
