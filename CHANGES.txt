@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Fix 'This portlet display a'.
+  [danjacka]
+
 - reverted change: refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
   one tal:condition in ul tag. 
   [maartenkling]

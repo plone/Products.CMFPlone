@@ -272,7 +272,7 @@ class AddForm(base.AddForm):
     form_fields = form.Fields(INavigationPortlet)
     form_fields['root'].custom_widget = UberSelectionWidget
     label = _(u"Add Navigation Portlet")
-    description = _(u"This portlet display a navigation tree.")
+    description = _(u"This portlet displays a navigation tree.")
 
     def create(self, data):
         return Assignment(name=data.get('name', u""),
@@ -287,7 +287,7 @@ class EditForm(base.EditForm):
     form_fields = form.Fields(INavigationPortlet)
     form_fields['root'].custom_widget = UberSelectionWidget
     label = _(u"Edit Navigation Portlet")
-    description = _(u"This portlet display a navigation tree.")
+    description = _(u"This portlet displays a navigation tree.")
 
 
 class QueryBuilder(object):
