@@ -112,6 +112,7 @@ class AddPloneSite(BrowserView):
         'plonetheme.classic:default',
         'plonetheme.sunburst:default',
         'plone.app.event:default',
+        'plone.app.event:at',
         )
 
     def profiles(self):
