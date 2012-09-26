@@ -7,7 +7,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 TEMPLATE = """\
 var portal_url = '%(portal_url)s';
-var navigation_root_url = '%(navigation_root_url)s;
+var navigation_root_url = '%(navigation_root_url)s';
 var form_modified_message = '%(form_modified)s';
 var form_resubmit_message = '%(form_resubmit)s';
 var external_links_open_new_window = '%(open_links)s';

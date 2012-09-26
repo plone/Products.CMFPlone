@@ -9,6 +9,16 @@ Changelog
 4.3a1 (unreleased)
 ------------------
 
+- plone_javascript_variables.js view now includes navigation_root_url
+  global in addition to portal_url.
+  [seanupton]
+
+- prefs_main_template.pt omits left column when using ajax_load
+  parameter in request, or when disable_plone.leftcolumn is passed
+  a true value in request. This makes it reasonable for add-on
+  authors to re-use control panels in overlays or iframes.
+  [seanupton]
+
 - Fix prefs_install_product_readme so files with non-ascii characters are
   rendered. This fixes https://dev.plone.org/ticket/12342
   [ericof]
