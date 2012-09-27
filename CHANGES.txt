@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.2 (unreleased)
+2.3.3 (2012-09-27)
 ------------------
 
 - Portlets are now registered for IDefaultPortletManager by default to allow
