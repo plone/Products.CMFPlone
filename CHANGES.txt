@@ -1,8 +1,12 @@
 Changelog
 =========
 
-2.3.2 (unreleased)
+2.3.3 (unreleased)
 ------------------
+
+- Display the icon for a non-site root content item in the navigation
+  portlet with a CSS sprite, not an img tag.
+  [danjacka]
 
 2.3.2 (2012-09-26)
 ------------------
@@ -17,7 +21,7 @@ Changelog
   [danjacka]
 
 - reverted change: refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
-  one tal:condition in ul tag. 
+  one tal:condition in ul tag.
   [maartenkling]
 
 - add contenttype class to the a tag, like navigation
