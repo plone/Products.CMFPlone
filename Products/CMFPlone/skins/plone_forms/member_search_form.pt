@@ -14,7 +14,7 @@
     <h1 class="documentFirstHeading"
         i18n:translate="heading_member_search">Search for users</h1>
 
-    <div class="documentDescirption" i18n:translate="description_member_search">
+    <div class="documentDescription" i18n:translate="description_member_search">
         This search form enables you to find users by specifying one or more
         search criteria.
     </div>
