@@ -34,7 +34,12 @@ class IPortletPermissionChecker(Interface):
         """
 
 
-class IColumn(IPortletManager):
+class IDefaultPortletManager(IPortletManager):
+    """Default registration for portlets
+    """
+
+
+class IColumn(IDefaultPortletManager):
     """Common base class for left and right columns.
 
     Register a portlet for IColumn if it is applicable to regular columns
@@ -56,7 +61,7 @@ class IRightColumn(IColumn):
     """
 
 
-class IDashboard(IPlacelessPortletManager):
+class IDashboard(IDefaultPortletManager, IPlacelessPortletManager):
     """Common base class for dashboard columns
 
     Register a portlet for IDashboard if it is applicable to the dashboard

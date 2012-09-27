@@ -4,6 +4,10 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Portlets are now registered for IDefaultPortletManager by default to allow
+  for easier creation of custom portlet managers with restricted portlets.
+  [elro]
+
 2.3.2 (2012-09-26)
 ------------------
 
