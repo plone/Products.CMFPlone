@@ -21,12 +21,14 @@
                 tal:attributes="class string:navTreeItem navTreeTopNode${li_class}">
                 <div tal:define="rootIsPortal view/root_is_portal;
                                  normalizeString nocall:context/plone_utils/normalizeString;
+                                 root_icon view/root_icon;
                                  root_type root/portal_type;
                                  root_type_class python:'contenttype-' + normalizeString(root_type);
                                  root_class python:rootIsPortal and 'contenttype-plone-site' or root_type_class;">
                    <a tal:attributes="href root/absolute_url;
                                       title root/Description;
                                       class python:' '.join([root_class, selectedClass]).strip();">
+                   <img tal:replace="structure root_icon/html_tag" tal:condition="not:rootIsPortal" />
                    <span tal:omit-tag=""
                          tal:condition="rootIsPortal"
                          i18n:translate="tabs_home">Home</span>

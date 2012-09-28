@@ -4,8 +4,8 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
-- Display the icon for a non-site root content item in the navigation
-  portlet with a CSS sprite, not an img tag.
+- Allow for the root content item icon in the navigation portlet to be
+  displayed with CSS or an img tag.
   [danjacka]
 
 2.3.2 (2012-09-26)
