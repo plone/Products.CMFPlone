@@ -4,6 +4,9 @@ Changelog
 2.3.4 (unreleased)
 ------------------
 
+- Tweak z3c.form add/edit forms to disable edit bar and columns.
+  [elro]
+
 2.3.3 (2012-09-27)
 ------------------
 
