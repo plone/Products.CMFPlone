@@ -11,6 +11,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.form import named_template_adapter
+from plone.app.form.interfaces import IPlonePageForm
 from plone.app.form.validators import null_validator
 
 from plone.app.portlets import PloneMessageFactory as _
@@ -44,7 +45,7 @@ class AddForm(formbase.AddFormBase):
             return MyAssignment()
     """
 
-    implements(IPortletAddForm)
+    implements(IPortletAddForm, IPlonePageForm)
 
     form_name = _(u"Configure portlet")
 
@@ -116,7 +117,7 @@ class EditForm(formbase.EditFormBase):
     """An edit form for portlets.
     """
 
-    implements(IPortletEditForm)
+    implements(IPortletEditForm, IPlonePageForm)
 
     form_name = _(u"Modify portlet")
 

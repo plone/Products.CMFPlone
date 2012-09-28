@@ -1,6 +1,5 @@
 from zope.interface import Interface, Attribute
 from zope.browser.interfaces import IAdding
-from plone.app.form.interfaces import IPlonePageForm
 
 class IPortletAdding(IAdding):
     """Marker interface for the add view for portlet managers.
@@ -8,7 +7,7 @@ class IPortletAdding(IAdding):
     Portlet add views should be registered for this interface.
     """
 
-class IPortletForm(IPlonePageForm):
+class IPortletForm(Interface):
     """Generic marker for form views that are used to create or edit portlets.
     """
 

@@ -4,6 +4,9 @@ Changelog
 2.3.5 (unreleased)
 ------------------
 
+- Fix inheritance hierarchy of IPortletForm to reflect usage in z3cformhelper.
+  [elro]
+
 2.3.4 (2012-09-28)
 ------------------
 
