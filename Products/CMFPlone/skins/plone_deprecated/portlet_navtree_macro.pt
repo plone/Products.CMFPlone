@@ -19,9 +19,10 @@
                 isCurrent  node/currentItem;"
     tal:condition="python: bottomLevel &lt;= 0 or level &lt; bottomLevel-1">
 
-    <tal:level define="item_wf_state_class python: 'state-' + normalizeString(item.review_state);">
+    <tal:level define="item_wf_state_class python: 'state-' + normalizeString(item.review_state);
+                       item_type_class python:'contenttype-' + normalizeString(item.portal_type)">
 
-    <div tal:define="itemClass string:$item_wf_state_class;
+    <div tal:define="itemClass string:$item_wf_state_class $item_type_class;
                      itemClass python:test(isCurrent, itemClass + ' navTreeCurrentItem', itemClass);">
 
         <a tal:attributes="href python:test(linkRemote, item.getRemoteUrl, itemUrl);

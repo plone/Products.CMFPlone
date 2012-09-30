@@ -8,6 +8,9 @@ Changelog
 4.2.2 (unreleased)
 ------------------
 
+- Fix sitemap to show CSS content type icons.
+  [danjacka]
+
 - Fix prefs_install_product_readme so files with non-ascii characters are
   rendered. This fixes https://dev.plone.org/ticket/12342
   [ericof]
