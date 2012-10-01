@@ -64,6 +64,7 @@ from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletAssignmentSettings
 
+from plone.app.portlets.interfaces import IDefaultPortletManager
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.utils import assignment_mapping_from_key
 
@@ -403,9 +404,9 @@ class PortletsXMLAdapter(XMLAdapterBase):
         #manager interface names to the for_ list
         for_ = self._modifyForList(node, for_)
 
-        #Store the for_ attribute, with [Interface] as the default
+        #Store the for_ attribute, with [IDefaultPortletManager] as the default
         if for_ == []:
-            for_ = [Interface]
+            for_ = [IDefaultPortletManager]
         portlet.for_ = for_
 
         if purge:
@@ -637,7 +638,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         for_ = portletType.for_
         #BBB
 
-        if for_ and for_ != [Interface]:
+        # [Interface] is previous default value
+        if for_ and for_ not in ([IDefaultPortletManager], [Interface]):
             for i in for_:
                 subNode = self._doc.createElement('for')
                 subNode.setAttribute('interface', _getDottedName(i))

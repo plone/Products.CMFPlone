@@ -10,6 +10,7 @@ from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.vocabularies.catalog import SearchableTextSourceBinder
 from zope.component import adapts, getMultiAdapter, queryUtility
+from zExceptions import NotFound
 from zope.formlib import form
 from zope.interface import implements, Interface
 from zope import schema
@@ -243,7 +244,7 @@ class Renderer(base.Renderer):
         else:
             try:
                 return portal.unrestrictedTraverse(rootPath)
-            except (AttributeError, KeyError, TypeError):
+            except (AttributeError, KeyError, TypeError, NotFound):
                 # TypeError: object is unsubscribtable might be
                 # risen in some cases
                 return portal

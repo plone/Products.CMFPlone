@@ -18,6 +18,7 @@ from plone.portlets.manager import PortletManager
 from plone.app.portlets.exportimport.portlets import PortletsXMLAdapter
 from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IDashboard
+from plone.app.portlets.interfaces import IDefaultPortletManager
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.tests.utils import FooPortletManager
 
@@ -124,7 +125,7 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.importer._initPortletNode(node)
         portlet = queryUtility(IPortletType, name="portlets.New")
         self.failUnless(portlet is not None)
-        self.assertEqual([Interface], portlet.for_)
+        self.assertEqual([IDefaultPortletManager], portlet.for_)
 
     def test_initPortletNode_BBBInterface(self):
         node = parseString(_XML_BBB_INTERFACE).documentElement

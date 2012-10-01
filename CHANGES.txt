@@ -1,12 +1,31 @@
 Changelog
 =========
 
-2.3.3 (unreleased)
+2.3.6 (unreleased)
 ------------------
 
 - Allow for the root content item icon in the navigation portlet to be
   displayed with CSS or an img tag.
   [danjacka]
+
+2.3.5 (2012-09-28)
+------------------
+
+- Fix inheritance hierarchy of IPortletForm to reflect usage in z3cformhelper.
+  [elro]
+
+2.3.4 (2012-09-28)
+------------------
+
+- Tweak z3c.form add/edit forms to disable edit bar and columns.
+  [elro]
+
+2.3.3 (2012-09-27)
+------------------
+
+- Portlets are now registered for IDefaultPortletManager by default to allow
+  for easier creation of custom portlet managers with restricted portlets.
+  [elro]
 
 2.3.2 (2012-09-26)
 ------------------
