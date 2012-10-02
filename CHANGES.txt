@@ -4,6 +4,10 @@ Changelog
 2.3.6 (unreleased)
 ------------------
 
+- Allow for the root content item icon in the navigation portlet to be
+  displayed with CSS or an img tag.
+  [danjacka]
+
 2.3.5 (2012-09-28)
 ------------------
 
@@ -36,7 +40,7 @@ Changelog
   [danjacka]
 
 - reverted change: refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
-  one tal:condition in ul tag. 
+  one tal:condition in ul tag.
   [maartenkling]
 
 - add contenttype class to the a tag, like navigation

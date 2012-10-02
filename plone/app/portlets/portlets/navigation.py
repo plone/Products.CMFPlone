@@ -203,7 +203,7 @@ class Renderer(base.Renderer):
     def root_icon(self):
         ploneview = getMultiAdapter((self.context, self.request), name=u'plone')
         icon = ploneview.getIcon(self.getNavRoot())
-        return icon.url
+        return icon
 
     def root_is_portal(self):
         root = self.getNavRoot()
