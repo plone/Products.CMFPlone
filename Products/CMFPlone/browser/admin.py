@@ -111,8 +111,6 @@ class AddPloneSite(BrowserView):
     default_extension_profiles = (
         'plonetheme.classic:default',
         'plonetheme.sunburst:default',
-        'plone.app.event:default',
-        'plone.app.event:at',
         )
 
     def profiles(self):
@@ -125,6 +123,7 @@ class AddPloneSite(BrowserView):
             'kupu:default',
             'plonetheme.classic:uninstall',
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
+            'plone.app.event:default',
             'plone.app.registry:default',
             'plone.app.z3cform:default',
             'plone.app.collection:default',
