@@ -1,10 +1,10 @@
 Changelog
 =========
 
-2.3.6 (unreleased)
+2.4.0 (unreleased)
 ------------------
 
-- Add ability to render only single porltet code with view.
+- Add ability to render only single portlet code with view.
   Code basically copied from plone.app.kss
   [vangheem]
 
