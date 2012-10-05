@@ -72,7 +72,6 @@ class SkinsControlPanelAdapter(SchemaAdapterBase):
         self.context = getToolByName(context, 'portal_skins')
         self.jstool = getToolByName(context, 'portal_javascripts')
         self.csstool = getToolByName(context, 'portal_css')
-        self.ksstool = getToolByName(context, 'portal_kss')
         ptool = getToolByName(context, 'portal_properties')
         self.props = ptool.site_properties
         self.themeChanged = False
