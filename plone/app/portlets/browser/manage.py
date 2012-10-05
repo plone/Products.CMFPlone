@@ -73,6 +73,10 @@ class ManageContextualPortlets(BrowserView):
 
     # view @@set-portlet-blacklist-status
     def set_blacklist_status(self, manager, group_status, content_type_status, context_status):
+        authenticator = getMultiAdapter((self.context, self.request),
+                                        name=u"authenticator")
+        if not authenticator.verify():
+            raise Unauthorized
         portletManager = getUtility(IPortletManager, name=manager)
         assignable = getMultiAdapter((self.context, portletManager), ILocalPortletAssignmentManager)
         assignments = getMultiAdapter((self.context, portletManager), IPortletAssignmentMapping)

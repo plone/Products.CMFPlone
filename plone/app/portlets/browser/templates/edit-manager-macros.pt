@@ -41,34 +41,62 @@
         Portlets assigned here
     </h4>
 
-    <div tal:attributes="class string:kssattr-viewname-${view/view_name}">
+    <div>
         <tal:block repeat="portlet view/portlets">
             <div tal:define="hiddenPortletClass python:not portlet['visible'] and 'blockedPortlet' or ''"
-                tal:attributes="class string:managedPortlet portlet kssattr-portlethash-${portlet/hash} ${hiddenPortletClass}">
-                <div class="portletHeader">
+                tal:attributes="class string:managedPortlet portlet ${hiddenPortletClass};
+                                data-portlethash portlet/hash;
+                                data-viewname view/view_name;">
+                <div class="portletHeader" tal:define="authenticator context/@@authenticator/authenticator">
                     <span class="managedPortletActions">
-                    <a href="#" class="up"
-                       title="Move up"
-                       i18n:attributes="title"
-                       tal:condition="not:repeat/portlet/start"
-                       tal:attributes="href string:${portlet/up_url}&amp;referer=${view/url_quote_referer}">&#9650;</a>
-                    <a href="#" class="down"
-                       title="Move down"
-                       i18n:attributes="title"
-                       tal:condition="not:repeat/portlet/end"
-                       tal:attributes="href string:${portlet/down_url}&amp;referer=${view/url_quote_referer}">&#9660;</a>
-                    <a href="#" class="toggle-visibility"
-                       tal:condition="not: portlet/visible"
-                       i18n:translate="label_show_item"
-                       tal:attributes="href string:${portlet/show_url}&amp;referer=${view/url_quote_referer}">Show</a>
-                    <a href="#" class="toggle-visibility"
-                       tal:condition="portlet/visible"
-                       i18n:translate="label_hide_item"
-                       tal:attributes="href string:${portlet/hide_url}&amp;referer=${view/url_quote_referer}">Hide</a>
-                    <a href="#" class="delete"
-                       title="Remove"
-                       i18n:attributes="title"
-                       tal:attributes="href string:${portlet/delete_url}&amp;referer=${view/url_quote_referer}">&times;</a>
+                      <form class="portlet-action up" method="POST" tal:attributes="action portlet/up_url"
+                          tal:condition="not:repeat/portlet/start">
+                        <input type="hidden" name="referrer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="name" tal:attributes="value portlet/name" />
+                        <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
+                        <span tal:replace="structure authenticator"/>
+                        <button title="Move up" i18n:attributes="title" type="submit"
+                          tal:attributes="name string:${portlet/name}-up">&#9650;</button>
+                      </form>
+
+                      <form class="portlet-action down" method="POST" tal:attributes="action portlet/down_url"
+                          tal:condition="not:repeat/portlet/end">
+                        <input type="hidden" name="referrer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="name" tal:attributes="value portlet/name" />
+                        <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
+                        <span tal:replace="structure authenticator"/>
+                        <button title="Move down" i18n:attributes="title" type="submit"
+                          tal:attributes="name string:${portlet/name}-down">&#9660;</button>
+                      </form>
+
+                      <form class="portlet-action" method="POST" tal:attributes="action portlet/show_url"
+                          tal:condition="not: portlet/visible">
+                        <input type="hidden" name="referrer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="name" tal:attributes="value portlet/name" />
+                        <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
+                        <span tal:replace="structure authenticator"/>
+                        <button type="submit" i18n:translate="label_show_item"
+                          tal:attributes="name string:${portlet/name}-show">Show</button>
+                      </form>
+
+                      <form class="portlet-action" method="POST" tal:attributes="action portlet/hide_url"
+                          tal:condition="portlet/visible">
+                        <input type="hidden" name="referrer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="name" tal:attributes="value portlet/name" />
+                        <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
+                        <span tal:replace="structure authenticator"/>
+                        <button type="submit" i18n:translate="label_hide_item"
+                          tal:attributes="name string:${portlet/name}-hide">Hide</button>
+                      </form>
+
+                      <form class="portlet-action delete" method="POST" tal:attributes="action portlet/delete_url">
+                        <input type="hidden" name="referrer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="name" tal:attributes="value portlet/name" />
+                        <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
+                        <span tal:replace="structure authenticator"/>
+                        <button i18n:attributes="title" title="Remove" type="submit"
+                          tal:attributes="name string:${portlet/name}-remove">&times;</button>
+                      </form>
                     </span>
                     <a tal:omit-tag="not:portlet/editview"
                        tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"

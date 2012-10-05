@@ -4,6 +4,13 @@ Changelog
 2.3.6 (unreleased)
 ------------------
 
+- Add ability to render only single porltet code with view.
+  Code basically copied from plone.app.kss
+  [vangheem]
+
+- Remove kss
+  [vangheem]
+
 - Allow for the root content item icon in the navigation portlet to be
   displayed with CSS or an img tag.
   [danjacka]

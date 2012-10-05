@@ -18,7 +18,7 @@
     </h4>
 
     <form method="post" tal:attributes="action view/blacklist_status_action">
-
+      <span tal:replace="structure context/@@authenticator/authenticator" />
       <input type="hidden" name="manager" tal:attributes="value view/manager_name" />
 
       <div tal:define="status view/context_blacklist_status">

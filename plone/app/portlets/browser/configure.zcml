@@ -212,40 +212,18 @@
       provides="zope.formlib.namedtemplate.INamedTemplate"
       />
 
-    <!-- KSS actions -->
-    <browser:page
-        for="*"
-        name="inlineMovePortletUp"
-        class=".kss.PortletManagerKSS"
-        attribute="move_portlet_up"
-        permission="plone.app.portlets.ManageOwnPortlets"
-        />
-    <browser:page
-        for="*"
-        name="inlineMovePortletDown"
-        class=".kss.PortletManagerKSS"
-        attribute="move_portlet_down"
-        permission="plone.app.portlets.ManageOwnPortlets"
-        />
-    <browser:page
-        for="*"
-        name="inlineDeletePortlet"
-        class=".kss.PortletManagerKSS"
-        attribute="delete_portlet"
-        permission="plone.app.portlets.ManageOwnPortlets"
-        />
-    <browser:page
-        for="*"
-        name="togglePortletVisibility"
-        class=".kss.PortletManagerKSS"
-        attribute="toggle_visibility"
-        permission="plone.app.portlets.ManageOwnPortlets"
-        />
-
     <!-- Resources -->
     <browser:resource
-        name="manage-portlets.kss"
-        file="portlets.kss"
+        name="manage-portlets.js"
+        file="manage-portlets.js"
+        />
+
+    <browser:page
+        for="*"
+        name="render-portlet"
+        class=".utils.PortletUtilities"
+        attribute="render_portlet"
+        permission="zope2.View"
         />
 
 </configure>
