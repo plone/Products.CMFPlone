@@ -17,6 +17,9 @@ Changelog
 - Merge plip #12905 to provide more body classes
   [vangheem]
 
+- adding user roles to body class, eg: userrole-anonymous, ...
+  [garbas]
+
 
 2.3.1 (2012-08-29)
 ------------------
