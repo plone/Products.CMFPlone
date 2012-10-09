@@ -178,4 +178,13 @@ class LayoutPolicy(BrowserView):
         if self.icons_visible():
             body_class += ' icons-on'
 
+        # class for user roles
+        membership = getToolByName(context, "portal_membership")
+        if membership.isAnonymousUser():
+            body_class += ' userrole-anonymous'
+        else:
+            user = membership.getAuthenticatedMember()
+            for role in user.getRolesInContext(self.context):
+                body_class += ' userrole-' + role.lower()
+
         return body_class
