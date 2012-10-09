@@ -1,9 +1,5 @@
 (function($){
 
-function hideSpinner(){
-    $('#kss-spinner').hide();
-}
-
 function refreshPortlet(hash, _options){
     var options = {
         data: {},
@@ -18,11 +14,9 @@ function refreshPortlet(hash, _options){
         var container = $('[data-portlethash="' + hash + '"]');
         var portlet = $(data);
         container.html(portlet);
-        $('#kss-spinner').hide();
         options.success(data, portlet);
     }
     ajaxOptions.error = function(){
-        $('#kss-spinner').hide();
         options.error();
     }
     ajaxOptions.data = options.data;
@@ -31,7 +25,6 @@ function refreshPortlet(hash, _options){
 
 /* Calendar Portlet KSS Replacement */
 $('body').delegate('#calendar-next,#calendar-previous', 'click', function(){
-    $('#kss-spinner').show();
     var el = $(this);
     var container = el.parents('.portletWrapper');
     refreshPortlet(container.data('portlethash'), {
@@ -64,6 +57,12 @@ function applyPortletTimeout(portlet){
 
 /* dom loaded related actions */
 $(document).ready(function(){
+    /* Show animated spinner while AJAX is loading. */
+    var spinner = $('<div id="ajax-spinner"><img src="' + portal_url + '/spinner.gif" alt=""/></div>');
+    spinner.appendTo('body').hide();
+    $(document).ajaxStart(function() { spinner.show(); });
+    $(document).ajaxStop(function() { spinner.hide(); });
+
     /* Any portlets with the class kssPortletRefresh(deprecated)
        or refreshPortlet will automatically be refreshed with this.
        Data attribute timeout(data-timeout) will be used to override
@@ -84,7 +83,6 @@ $(document).ready(function(){
         $('.portalMessage').remove();
         $('#user-group-sharing').replaceWith(sharing);
         $('#content').prepend(messages);
-        $('#kss-spinner').hide();
     }
 
     /* sharing search form */
@@ -102,7 +100,6 @@ $(document).ready(function(){
     });
 
     $('#content-core').delegate('#sharing-search-button', 'click', function(){
-        $('#kss-spinner').show();
         $.ajax({
             url: $('base').attr('href') + '/@@updateSharingInfo',
             data: {
@@ -112,14 +109,12 @@ $(document).ready(function(){
             type: 'GET',
             dataType: 'json',
             success: updateSharing,
-            error: hideSpinner
         });
         return false;
     });
 
     /* Sharing save button */
     $('#content-core').delegate('#sharing-save-button', 'click', function(){
-        $('#kss-spinner').show();
         var btn = $(this);
         var form = btn.parents('form');
         var data = form.serializeArray();
@@ -130,7 +125,6 @@ $(document).ready(function(){
             type: 'POST',
             dataType: 'json',
             success: updateSharing,
-            error: hideSpinner
         });
         return false;
     });

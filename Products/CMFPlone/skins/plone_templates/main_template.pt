@@ -199,7 +199,6 @@
 
       <div class="visualClear"><!-- --></div>
     </div>
-<div id="kss-spinner" tal:condition="not:ajax_load"><img tal:attributes="src string:${portal_url}/spinner.gif" alt="" /></div>
 </body>
 </html>
 </metal:page>

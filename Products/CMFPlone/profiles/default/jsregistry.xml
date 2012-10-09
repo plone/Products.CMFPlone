@@ -24,6 +24,7 @@
  <javascript id="collapsibleformfields.js" />
  <javascript id="dropdown.js" />
  <javascript id="inline_validation.js" />
+ <javascript id="kss-bbb.js" />
 
  <!-- Only for logged-in users -->
  <javascript id="table_sorter.js" authenticated="True" />
@@ -31,7 +32,4 @@
  <javascript id="formUnload.js" authenticated="True" />
  <javascript id="formsubmithelpers.js" authenticated="True" />
  <javascript id="unlockOnFormUnload.js" authenticated="True" />
-
- <!-- KSS -->
- <javascript id="kss-bbb.js" />
 </object>
