@@ -1,0 +1,82 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup  Setup
+
+Suite teardown  Remove Pages and Folder
+
+*** Test cases ***
+
+
+Livesearch For pages
+    [Tags]  livesearch  justthis
+    Click Link  Home
+    Count Livesearch Items For  livesearch test page  4
+
+Livesearch For folder
+    [Tags]  livesearch
+    Click Link  Home
+    Count Livesearch Items For  livesearch test folder  2
+
+Livesearch Within folder
+    [Tags]  livesearch
+    Click Link  Home
+    Click Link  A livesearch test folder
+    Select Checkbox  css=input#searchbox_currentfolder_only
+    Count Livesearch Items For  livesearch test page  3
+
+
+*** Keywords ***
+
+Setup
+    Log in  admin  admin
+    Create Pages and Folder
+
+Create Pages and Folder
+    Go to homepage
+    Add Page  A livesearch test page
+    Go to homepage
+    Create Folder
+    Add Page  A livesearch test page 1
+    Go to  ${PLONE_URL}/a-livesearch-test-folder
+    Add Page  A livesearch test page 2
+
+Create Folder
+    Click Link  css=li#portaltab-index_html a
+    Click Link  Folder
+    Input Text  title  A livesearch test folder
+    Click Button  Save
+
+
+Remove Pages and Folder
+    Remove Content  a-livesearch-test-page
+    Remove Content  a-livesearch-test-folder
+
+Delete Document
+    Click Link  A livesearch test page
+    Element Should Not Be Visible  css=a#delete
+    Open Action Menu
+    Element Should Be Visible  css=a#delete
+    Click Overlay Link  link=Delete
+    Page Should Contain  Do you really want to delete this item?
+    Click Button  css=form#delete_confirmation input.destructive
+
+Delete Folder
+    Click Link  A livesearch test folder
+    Element Should Not Be Visible  css=a#delete
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
+    Element Should Be Visible  css=a#delete
+    Click Overlay Link  link=Delete
+    Page Should Contain  Do you really want to delete this folder and all its contents?
+    Click Button  css=form#delete_confirmation input.destructive
+
+Count Livesearch Items For
+    [Arguments]  ${string}  ${count}
+    Focus  css=input#searchGadget
+    Input Text  css=input#searchGadget  ${string}
+    Key Down  css=input#searchGadget  e
+    Key Up  css=input#searchGadget  e
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=div#LSResult
+    Wait until keyword succeeds  5s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
+    Focus  css=input#searchbox_currentfolder_only
+    Wait until keyword succeeds  5s  1s  Element Should Not Be Visible  css=div#LSResult
