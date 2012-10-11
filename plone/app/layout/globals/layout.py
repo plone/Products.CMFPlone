@@ -135,6 +135,7 @@ class LayoutPolicy(BrowserView):
         context = self.context
         portal_state = getMultiAdapter(
             (context, self.request), name=u'plone_portal_state')
+        normalizer = queryUtility(IIDNormalizer)
 
         # template class (required)
         name = ''
@@ -144,10 +145,10 @@ class LayoutPolicy(BrowserView):
             name = view.__name__
         else:
             name = template.getId()
+        name = normalizer.normalize(name)
         body_class = 'template-%s' % name
 
         # portal type class (optional)
-        normalizer = queryUtility(IIDNormalizer)
         portal_type = normalizer.normalize(context.portal_type)
         if portal_type:
             body_class += " portaltype-%s" % portal_type
