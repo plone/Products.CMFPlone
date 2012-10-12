@@ -25,16 +25,6 @@
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="kssregistry"
-      title="KSS registry"
-      description="Import KSS registry"
-      handler="Products.ResourceRegistries.exportimport.kssregistry.importKSSRegistry">
-    <depends name="skins"/>
-    <depends name="toolset"/>
-    <depends name="componentregistry"/>
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
       name="jsregistry"
       title="Javascript registry"
       description="Import javascript registry"
@@ -50,14 +40,6 @@
       description="Import viewlet settings"
       handler="plone.app.viewletmanager.exportimport.storage.importViewletSettingsStorage">
     <depends name="componentregistry"/>
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
-      name="kss_mimetype"
-      title="KSS setup / mimetype"
-      description="KSS (Kinetic Style Sheet) setup. Register kss mimetype."
-      handler="plone.app.kss.exportimport.setup.setupMimetype">
-    <depends name="mimetypes-registry-various"/>
   </genericsetup:importStep>
 
   <genericsetup:importStep
@@ -99,7 +81,6 @@
       handler="Products.CMFPlone.setuphandlers.importFinalSteps"
       title="Final Plone Config"
       description="Final Plone configuration.">
-   <depends name="kss_mimetype" />
    <depends name="portlets" />
    <depends name="rolemap" />
   </genericsetup:importStep>
@@ -146,13 +127,6 @@
       title="Stylesheet registry"
       description="Export stylesheet registry"
       handler="Products.ResourceRegistries.exportimport.cssregistry.exportCSSRegistry"
-      />
-
-  <genericsetup:exportStep
-      name="kssregistry"
-      title="KSS registry"
-      description="Export stylesheet registry"
-      handler="Products.ResourceRegistries.exportimport.kssregistry.exportKSSRegistry"
       />
 
   <genericsetup:exportStep

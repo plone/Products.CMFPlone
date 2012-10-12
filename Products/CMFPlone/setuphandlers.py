@@ -108,13 +108,6 @@ def addCacheForResourceRegistry(portal):
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
-    reg = getToolByName(portal, 'portal_kss', None)
-    if reg is not None \
-            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
-                is not None:
-        reg.ZCacheable_setManagerId(ram_cache_id)
-        reg.ZCacheable_setEnabled(1)
-
     reg = getToolByName(portal, 'portal_javascripts', None)
     if reg is not None \
             and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
@@ -419,7 +412,6 @@ def assignTitles(portal):
      'portal_groups': 'Handles group related functionality',
      'portal_interface': 'Allows to query object interfaces',
      'portal_javascripts': 'Registry of JavaScript files',
-     'portal_kss': 'Registry of Kinetic Style Sheets',
      'portal_languages': 'Language specific settings',
      'portal_membership': 'Handles membership policies',
      'portal_memberdata': 'Handles the available properties on members',

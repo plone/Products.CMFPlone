@@ -182,5 +182,26 @@ ploneDnDReorder.complete = function(xhr, textStatus) {
     ploneDnDReorder.dragging = null;
 };
 
-
 }(jQuery));
+
+
+function initializeDnDReorder(table_selector) {
+    var table = table_selector;
+    ploneDnDReorder.table = $(table);
+    if (!ploneDnDReorder.table.length)
+        return;
+    ploneDnDReorder.rows = $(table + " > tr," +
+                             table + " > tbody > tr");
+     $(table + " > tr > td.draggable," +
+       table + " > tbody > tr > td.draggable")
+       .not('.notDraggable')
+       .mousedown(ploneDnDReorder.doDown)
+       .mouseup(ploneDnDReorder.doUp)
+       .addClass("draggingHook")
+       .css("cursor","ns-resize")
+       .html('&#x28ff;');
+}
+
+$(document).ready(function() {
+    initializeDnDReorder('#listing-table');
+});

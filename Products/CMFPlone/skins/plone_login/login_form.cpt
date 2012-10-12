@@ -42,7 +42,7 @@
                         external_login_iframe site_properties/external_login_iframe|nothing;
                         mail_password python:test(checkPermission('Mail forgotten password', context), portal_url + '/mail_password_form', '');
                         mail_password_url request/mail_password_url|nothing;
-                        mail_password_url python:test(mail_password_url is not None and isURLInPortal(mail_password_url), mail_password_url, mail_password);
+                        mail_password_url python:test(mail_password_url and isURLInPortal(mail_password_url), mail_password_url, mail_password);
                         join_actions python:context.portal_actions.listActionInfos('user/join', object=context) or [{}];
                         join python:join_actions[0].get('url');
                         join python:test(join and checkPermission('Add portal member', context), join, '');
@@ -291,9 +291,9 @@
 
             <div id="login-new-user"
                tal:condition="python:join_url and use_normal">
-                <h3 i18n:translate="heading_new_user">
+                <strong i18n:translate="heading_new_user">
                 New user?
-                </h3>
+                </strong>
 
                 <p i18n:translate="description_no_account">
                 If you do not have an account here, head over to the

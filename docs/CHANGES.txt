@@ -5,13 +5,16 @@
 Changelog
 =========
 
-
-4.3a1 (unreleased)
+4.3a2 (unreleased)
 ------------------
 
-- Fix prefs_install_product_readme so files with non-ascii characters are
-  rendered. This fixes https://dev.plone.org/ticket/12342
-  [ericof]
+- Add an animated indicator of AJAX loading via Javascript.
+  It is now called #ajax-spinner and is no longer added in main_template.
+  [davisagli]
+
+- Remove Plone's dependency on KSS. plone.app.kss is now an optional add-on.
+  Functionality that used to be provided using KSS has been reimplemented.
+  [esteele, vangheem, cah190, davisagli]
 
 - Fix StringIO module security so it can still be imported from restricted
   code in Zope 2.13.17+.
@@ -34,6 +37,17 @@ Changelog
 - Check if an item is locked before attempting to delete. Refs #11188
   [eleddy]
 
+- We can safely move the MAX_TITLE to 50 and even move up MAX_DESCRIPTION 150 refs #11321
+  [maartenkling]
+
+- Remove inline styles, they do nothing, add class so someone can style it when they like refs #12438
+  [maartenkling]
+
+- Show forget password when entering wrong credentials refs #12463
+  [maartenkling]
+
+- Remove h3 to make consistent html refs #11344
+  [maartenkling]
 
 4.3a1 (2012-08-31)
 ------------------
