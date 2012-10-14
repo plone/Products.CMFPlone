@@ -11,6 +11,13 @@
 <metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone"
         tal:define="QI python:context.portal_url.getPortalObject().portal_quickinstaller;">
 
+    <a href=""
+       id="setup-link"
+       tal:attributes="href string:$portal_url/plone_control_panel"
+       i18n:translate="">
+        Site Setup
+    </a>
+
     <h1 class="documentFirstHeading"
         i18n:translate="">Add-ons</h1>
 
@@ -21,12 +28,6 @@
     </div>
 
     <div id="content-core">
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string:${context/portal_url}/plone_control_panel"
-           i18n:translate="label_up_to_plone_setup">
-          Up to Site Setup
-        </a>
 
         <p class="discreet" i18n:translate="">
           To make new add-ons show up here, add them to your buildout

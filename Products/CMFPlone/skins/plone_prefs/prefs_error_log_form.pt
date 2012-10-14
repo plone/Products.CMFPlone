@@ -10,6 +10,13 @@
 
 <metal:main fill-slot="prefs_configlet_main">
 
+    <a href=""
+       id="setup-link"
+       tal:attributes="href string:$portal_url/plone_control_panel"
+       i18n:translate="">
+        Site Setup
+    </a>
+
     <h1 class="documentFirstHeading"
         i18n:translate="heading_error_log">Error log</h1>
 
@@ -21,12 +28,6 @@
     </div>
 
     <div id="content-core">
-        <a href=""
-           class="link-parent"
-           tal:attributes="href string:${context/portal_url}/plone_control_panel"
-           i18n:translate="label_up_to_plone_setup">
-            Up to Site Setup
-        </a>
 
         <p>
             <a href="http://plone.org/documentation/error"
