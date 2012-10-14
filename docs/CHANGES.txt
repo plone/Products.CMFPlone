@@ -8,7 +8,6 @@ Changelog
 4.3a2 (unreleased)
 ------------------
 
-<<<<<<< HEAD
 - Add an animated indicator of AJAX loading via Javascript.
   It is now called #ajax-spinner and is no longer added in main_template.
   [davisagli]
@@ -16,7 +15,7 @@ Changelog
 - Remove Plone's dependency on KSS. plone.app.kss is now an optional add-on.
   Functionality that used to be provided using KSS has been reimplemented.
   [esteele, vangheem, cah190, davisagli]
-=======
+
 - Do not block right-side portlets in Members folder on site creation.
   This fixes https://dev.plone.org/ticket/10764
   [polyester]
@@ -24,7 +23,6 @@ Changelog
 - Fix prefs_install_product_readme so files with non-ascii characters are
   rendered. This fixes https://dev.plone.org/ticket/12342
   [ericof]
->>>>>>> 73351e5... Do not block right-column portlets on site creation. This fixes https://dev.plone.org/ticket/10764
 
 - Fix StringIO module security so it can still be imported from restricted
   code in Zope 2.13.17+.

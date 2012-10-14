@@ -786,7 +786,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEquals(len(left), 1)
         self.assertEquals(len(right), 2)
 
-<<<<<<< HEAD
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
@@ -794,8 +793,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                              ILocalPortletAssignmentManager)
         self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
 
-=======
->>>>>>> 73351e5... Do not block right-column portlets on site creation. This fixes https://dev.plone.org/ticket/10764
     def testAddablePortletsInColumns(self):
         for name in (u'plone.leftcolumn', u'plone.rightcolumn'):
             column = getUtility(IPortletManager, name=name)
