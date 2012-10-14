@@ -365,6 +365,7 @@ def setupPortalContent(p):
             index_html.write(member_indexhtml)
             index_html.ZPythonScript_setTitle('User Search')
 
+<<<<<<< HEAD
         # Block all right column portlets by default
         manager = queryUtility(IPortletManager, name='plone.rightcolumn')
         if manager is not None:
@@ -375,6 +376,8 @@ def setupPortalContent(p):
             assignable.setBlacklistStatus('group', True)
             assignable.setBlacklistStatus('content_type', True)
 
+=======
+>>>>>>> 73351e5... Do not block right-column portlets on site creation. This fixes https://dev.plone.org/ticket/10764
 
 def setProfileVersion(portal):
     """
