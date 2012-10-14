@@ -49,16 +49,18 @@
         </div>
 
         <div id="content">
+
+            <a href=""
+               id="setup-link"
+               tal:attributes="href string:$portal_url/plone_control_panel"
+               i18n:translate="">
+                Site Setup
+            </a>
+
             <h1 class="documentFirstHeading"
                 i18n:translate="heading_users_overview">Users Overview</h1>
 
             <div id="content-core">
-                <a href=""
-                   class="link-parent"
-                   tal:attributes="href string:$portal_url/plone_control_panel"
-                   i18n:translate="label_up_to_plone_setup">
-                  Up to Site Setup
-                </a>
                 <p i18n:translate="description_user_management">
                   Click the user's name to see and change the details of a
                   specific user. You can also add and remove users.

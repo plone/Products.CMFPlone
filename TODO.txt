@@ -1,0 +1,98 @@
+Unified the site setup html structure
+
+Change to unify the site setup html structure
+=============================================
+- Check for structure:
+
+  #portal-column-content
+    #content
+      .setup-link
+      .documentFirstHeading
+      .documentDescription
+      #content-core
+
+- Check for body template- class
+
+Related changes
+---------------
+Templates have also changed in:
+  plone.app.contentrules
+  plone.app.controlpanel
+  plone.app.discussion
+  plone.app.registry
+  plone.app.users
+  Products.CMFPlone
+
+Styles have been updated in plonetheme.sunburst
+
+
+x plone.app.contentrules
+  - Changed link structure. 
+
+plone.app.controlpanel
+  - Changed link structure for templates:
+    - control-panel.pt
+    - maintenance.pt 
+
+x plone.app.discussion
+  - Changed link structure.
+  - Changed id from layout-contents to content-core
+
+x plone.app.registry
+  - Changed name from view to configuration_registry for sensible template- 
+    body class.
+  - Changed link structure for templates:
+    - controlpanel_layout.pt
+    - records.pt
+  - Changed id from layout-contents to content-core
+
+x plone.app.users
+  - Changed link structure for template:
+    - memberregistration.pt
+
+x plonetheme.sunburst
+  - Changed #site-link styling to put > after the link with pseudo element
+    instead of hardcode.
+
+x Products.CMFPlone
+  - Changed link structure for templates:
+    - prefs_error_log_form.pt
+    - prefs_install_products_form.pt 
+
+
+Check and Fix
+=============
+Check for structure
+
+  #portal-column-content
+    #content
+      .setup-link
+      .documentFirstHeading
+      .documentDescription
+      #content-core
+
+Check for body template- class
+
+DONE
+====
+
+ [X] prefs_install_products_form
+ [X] @@calendar-controlpanel      
+ [X] portal_registry
+ [X] @@rules-controlpanel
+ [X] @@discussion-settings
+ [X] @@editing-controlpanel
+ [X] prefs_error_log_form
+ [X] @@filter-controlpanel
+ [X] @@imaging-controlpanel
+ [X] @@language-controlpanel
+ [X] @@mail-controlpanel
+ [X] @@maintenance-controlpanel
+ [X] @@markup-controlpanel
+ [X] @@navigation-controlpanel
+ [X] @@security-controlpanel
+ [X] @@syndication-settings
+ [X] @@skins-controlpanel
+ [X] @@tinymce-controlpanel
+ [X] @@types-controlpanel
+ [X] @@usergroup-userprefs

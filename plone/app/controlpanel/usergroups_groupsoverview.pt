@@ -54,16 +54,16 @@
         </div>
 
         <div id="content">
+            <a href=""
+               id="setup-link"
+               tal:attributes="href string:$portal_url/plone_control_panel"
+               i18n:translate="">
+              Site Setup
+            </a>
             <h1 class="documentFirstHeading"
                 i18n:translate="heading_groups_overview">Groups Overview</h1>
 
             <div id="content-core">
-                <a href=""
-                   class="link-parent"
-                   tal:attributes="href string:$portal_url/plone_control_panel"
-                   i18n:translate="label_up_to_plone_setup">
-                  Up to Site Setup
-                </a>
 
                 <p class="discreet">
                   <span tal:omit-tag=""
