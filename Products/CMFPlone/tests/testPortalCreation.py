@@ -735,12 +735,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEquals(len(left), 1)
         self.assertEquals(len(right), 2)
 
-    def testPortletBlockingForMembersFolder(self):
-        members = self.portal.Members
-        rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
-        portletAssignments = getMultiAdapter((members, rightColumn,), ILocalPortletAssignmentManager)
-        self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
-
     def testAddablePortletsInColumns(self):
         for name in (u'plone.leftcolumn', u'plone.rightcolumn'):
             column = getUtility(IPortletManager, name=name)
