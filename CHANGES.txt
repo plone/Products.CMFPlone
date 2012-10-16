@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.2 (unreleased)
+2.3.2 (2012-10-16)
 ------------------
 
 - Fixed issue with email_from_name set as string instead of unicode
