@@ -10,6 +10,12 @@
 	the date beforehand if possible and pass it to the calendar at constructor.
 
 	* calendar.js:
+4.3a3 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 4.3a2 (2012-10-18)
 
 	* calendar.js:
