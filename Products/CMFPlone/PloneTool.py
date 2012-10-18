@@ -1248,6 +1248,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if handle_errors:
                     sp.rollback()
                     failure[path] = e
+                    log_exc()
                 else:
                     raise
         transaction_note('Deleted %s' % (', '.join(success)))
