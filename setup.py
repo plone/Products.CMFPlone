@@ -28,6 +28,7 @@ setup(name='plone.app.users',
         test=[
             'zope.testing',
             'Products.PloneTestCase',
+            'Pillow',
         ],
       ),
       install_requires=[

@@ -111,8 +111,8 @@ Testing the flexible user registration
     Fill out the form.
     >>> browser.getControl('User Name').value = 'user2'
     >>> browser.getControl('E-mail').value = 'user2@example.com'
-    >>> browser.getControl('Password').value = 'secret'
-    >>> browser.getControl('Confirm password').value = 'secret'
+    >>> browser.getControl('Password').value = 'bigfïsh'
+    >>> browser.getControl('Confirm password').value = 'bigfïsh'
     >>> browser.getControl('Register').click()
     >>> browser.contents
     '...Welcome!...You have been registered...'

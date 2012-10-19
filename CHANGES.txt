@@ -31,7 +31,6 @@ Changelog
 
 - support a PAS plugin for validating passwords see http://dev.plone.org/ticket/10959
 
-
 1.1.3 (2012-01-04)
 ------------------
 
