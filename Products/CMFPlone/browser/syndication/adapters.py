@@ -1,6 +1,7 @@
 from zope.component.hooks import getSite
 from zope.component import adapts
 from zope.interface import implements
+from zope.interface import Interface
 from zope.component import queryMultiAdapter
 
 from DateTime import DateTime
