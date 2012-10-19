@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:tal="http://xml.zope.org/namespaces/tal"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<url tal:repeat="obj view/objects">
+  <loc tal:content="obj/loc">url</loc>
+  <lastmod tal:condition="obj/lastmod | nothing"
+          tal:content="obj/lastmod">date modified</lastmod>
+  <changefreq tal:condition="obj/changefreq | nothing"
+             tal:content="obj/changefreq">change frequency</changefreq>
+  <priority tal:condition="obj/priority | nothing"
+           tal:content="obj/priority">priority</priority>
+</url>
+</urlset>

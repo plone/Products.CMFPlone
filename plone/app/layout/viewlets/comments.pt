@@ -1,0 +1,100 @@
+<tal:block define="userHasReplyPermission view/can_reply;
+                   isDiscussionAllowed view/is_discussion_allowed;
+                   replies view/get_replies;
+                   isAnon view/is_anonymous"
+           i18n:domain="plone">
+    <div class="discussion"
+         tal:condition="python:replies or (userHasReplyPermission and isDiscussionAllowed) or (isAnon and not userHasReplyPermission and isDiscussionAllowed)">
+
+        <h2 i18n:translate="comments_header">
+            Comments (<span tal:content="python:len(replies)" i18n:name="comments"></span>)
+        </h2>
+
+        <form name="reply"
+              action=""
+              method="post"
+              tal:condition="python:userHasReplyPermission and isDiscussionAllowed"
+              tal:attributes="action string:${context/absolute_url}/discussion_reply_form">
+
+              <input class="standalone"
+                     style="margin-bottom: 1.25em;"
+                     type="submit"
+                     value="Add Comment"
+                     i18n:attributes="value label_add_comment;"
+                     />
+
+        </form>
+        <tal:login condition="python:isAnon and not userHasReplyPermission and isDiscussionAllowed">
+            <form action=""
+                  tal:define="login_url view/login_url"
+                  tal:condition="login_url"
+                  tal:attributes="action login_url">
+                <input type="submit" value="Log in to add comments"
+                       i18n:attributes="value label_login_to_add_comments;" />
+            </form>
+        </tal:login>
+
+        <tal:getreplies repeat="reply_dict replies">
+            <div class="comment" style=""
+                tal:define="indent python:reply_dict['depth']*2;
+                            reply python:reply_dict['object']"
+                tal:attributes="style string:margin-left:${indent}em;">
+
+                <a name="comments" tal:attributes="name reply/id"></a>
+                <div class="documentByLine"
+                     tal:define="creator reply/Creator;
+                                 anonymous_creator python:creator in ('Anonymous User', '');
+                                 mi python:not anonymous_creator and view.member_info(creator);
+                                 fullname python: mi and mi['fullname'] or creator;" >
+                        <tal:name content="fullname"
+                                  condition="not:anonymous_creator">Poster Name</tal:name>
+                        <tal:name i18n:translate="label_anonymous_user"
+                                  condition="anonymous_creator">Anonymous User</tal:name>
+                    <span class="commentTime" tal:content="python:view.format_time(reply.ModificationDate())">
+                        8/23/2001 12:40:44 PM
+                    </span>
+
+                </div>
+
+                <div class="commentBody">
+                    <!-- <h3 tal:content="reply/pretty_title_or_id">
+                        Comment title
+                    </h3> -->
+                     <div tal:replace="structure reply/CookedBody">
+                     This is the body text of the comment.
+                     </div>
+
+                    <div class="formControls">
+                    <form name="reply"
+                          action="discussion_reply_form"
+                          method="post"
+                          style="display: inline;"
+                          tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
+                          tal:condition="python:userHasReplyPermission and isDiscussionAllowed">
+                        <input type="hidden"
+                               name="subject"
+                               tal:attributes="value reply/pretty_title_or_id" />
+                        <input class="standalone"
+                               type="submit"
+                               value="Reply"
+                               i18n:attributes="value label_reply;"
+                               />
+                    </form>
+                    <form name="delete"
+                          action=""
+                          method="post"
+                          style="display: inline;"
+                          tal:condition="view/can_manage"
+                          tal:attributes="action string:${reply/absolute_url}/deleteDiscussion">
+                        <input class="destructive"
+                               type="submit"
+                               value="Remove"
+                               i18n:attributes="value label_remove;"
+                               />
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </tal:getreplies>
+    </div>
+</tal:block>

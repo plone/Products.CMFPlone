@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone">
+
+<body>
+    <div id="content">
+        <h2 i18n:translate="label_history">History</h2>
+
+        <div id="content-history" tal:content="structure here/@@contenthistory">Content History</div>
+    </div>
+</body>
+</html>

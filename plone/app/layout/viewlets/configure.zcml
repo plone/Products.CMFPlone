@@ -1,0 +1,347 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+    <include package="Products.CMFCore" file="permissions.zcml"/>
+
+    <!-- Register viewlet managers - used in plone's main_template -->
+
+    <browser:viewletManager
+        name="plone.htmlhead"
+        provides=".interfaces.IHtmlHead"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.htmlhead.links"
+        provides=".interfaces.IHtmlHeadLinks"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.portaltop"
+        provides=".interfaces.IPortalTop"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.portalheader"
+        provides=".interfaces.IPortalHeader"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.contentviews"
+        provides=".interfaces.IContentViews"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.abovecontent"
+        provides=".interfaces.IAboveContent"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.abovecontenttitle"
+        provides=".interfaces.IAboveContentTitle"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.documentactions"
+        provides=".interfaces.IDocumentActions"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.belowcontenttitle"
+        provides=".interfaces.IBelowContentTitle"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.abovecontentbody"
+        provides=".interfaces.IAboveContentBody"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.belowcontentbody"
+        provides=".interfaces.IBelowContentBody"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.belowcontent"
+        provides=".interfaces.IBelowContent"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.portalfooter"
+        provides=".interfaces.IPortalFooter"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <!-- Define some viewlets -->
+
+    <!-- The portal header -->
+    <browser:viewlet
+        name="plone.header"
+        manager=".interfaces.IPortalTop"
+        template="portal_header.pt"
+        permission="zope2.View"
+        />
+
+    <!-- The skip links for accessibility -->
+    <browser:viewlet
+        name="plone.skip_links"
+        manager=".interfaces.IPortalHeader"
+        class=".common.SkipLinksViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- The site actions -->
+    <browser:viewlet
+        name="plone.site_actions"
+        manager=".interfaces.IPortalFooter"
+        class=".common.SiteActionsViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- The search box -->
+    <browser:viewlet
+        name="plone.searchbox"
+        manager=".interfaces.IPortalHeader"
+        class=".common.SearchBoxViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- The logo -->
+    <browser:viewlet
+        name="plone.logo"
+        manager=".interfaces.IPortalHeader"
+        class=".common.LogoViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- The global sections -->
+    <browser:viewlet
+        name="plone.global_sections"
+        manager=".interfaces.IPortalHeader"
+        class=".common.GlobalSectionsViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- The personal bar -->
+    <browser:viewlet
+        name="plone.personal_bar"
+        manager=".interfaces.IPortalHeader"
+        class=".common.PersonalBarViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Content views (tabs) -->
+    <browser:viewlet
+        name="plone.contentviews"
+        manager=".interfaces.IContentViews"
+        class=".common.ContentViewsViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Content actions (menus)
+            The default version is a blank bar; the one with real menus is
+            registered for the main view + folder contents only.
+      -->
+    <browser:viewlet
+        name="plone.contentactions"
+        for="*"
+        manager=".interfaces.IContentViews"
+        template="contentactions_blank.pt"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.contentactions"
+        for="*"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        manager=".interfaces.IContentViews"
+        class=".common.ContentActionsViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.contentactions"
+        for="*"
+        view="plone.app.content.browser.interfaces.IFolderContentsView"
+        manager=".interfaces.IContentViews"
+        class=".common.ContentActionsViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Render the browser title -->
+    <browser:viewlet
+        name="plone.htmlhead.title"
+        manager=".interfaces.IHtmlHead"
+        class=".common.TitleViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Render the Dublin Core metadata -->
+    <browser:viewlet
+        name="plone.htmlhead.dublincore"
+        manager=".interfaces.IHtmlHead"
+        class=".common.DublinCoreViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- The related items -->
+    <browser:viewlet
+        name="plone.belowcontentbody.relateditems"
+        manager=".interfaces.IBelowContentBody"
+        class=".content.ContentRelatedItems"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        permission="zope2.View"
+        />
+
+    <!-- Render the workflow history viewlet;
+         BBB: this is the Plone < 4 viewlet
+    <browser:viewlet
+        name="plone.belowcontentbody.inlinecontenthistory"
+        manager=".interfaces.IBelowContentBody"
+        class=".content.ContentHistoryViewlet"
+        template="inline_content_history.pt"
+        permission="zope2.View"
+        />
+     -->
+
+    <!-- Render the workflow history as a view -->
+    <browser:view
+        for="*"
+        name="contenthistory"
+        class=".content.ContentHistoryView"
+        permission="zope2.View"
+        />
+
+    <!-- Render the workflow history for popup -->
+    <browser:page
+        for="*"
+        name="contenthistorypopup"
+        template="popup_content_history.pt"
+        permission="zope2.View"
+        />
+
+    <!-- Render the workflow history contents as a page-->
+    <browser:page
+        for="*"
+        name="historyview"
+        template="history_view.pt"
+        permission="zope2.View"
+        />
+
+    <!-- Render the document actions -->
+    <browser:viewlet
+        name="plone.abovecontenttitle.documentactions"
+        manager=".interfaces.IBelowContentBody"
+        class=".content.DocumentActionsViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Manage portlets Fallback link -->
+    <browser:viewlet
+        name="plone.manage_portlets_fallback"
+        for="plone.portlets.interfaces.ILocalPortletAssignable"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        manager=".interfaces.IBelowContent"
+        class=".common.ManagePortletsFallbackViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- The breadcrumbs -->
+    <browser:viewlet
+        name="plone.path_bar"
+        manager=".interfaces.IAboveContent"
+        class=".common.PathBarViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Render the document byline -->
+    <browser:viewlet
+        name="plone.belowcontenttitle.documentbyline"
+        manager=".interfaces.IBelowContentTitle"
+        class=".content.DocumentBylineViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Render the keywords -->
+    <browser:viewlet
+        name="plone.belowcontenttitle.keywords"
+        manager=".interfaces.IBelowContent"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        template="keywords.pt"
+        permission="zope2.View"
+        />
+
+    <!-- Render comments -->
+    <browser:viewlet
+        name="plone.comments"
+        for="Products.CMFCore.interfaces.IContentish"
+        manager=".interfaces.IBelowContent"
+        view="..globals.interfaces.IViewView"
+        class=".comments.CommentsViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Render lock info -->
+    <browser:viewlet
+        name="plone.lockinfo"
+        manager=".interfaces.IAboveContent"
+        class="plone.locking.browser.info.LockInfoViewlet"
+        permission="cmf.ModifyPortalContent"
+        for="plone.locking.interfaces.ITTWLockable"
+        />
+
+    <!-- Render table of contents -->
+    <browser:viewlet
+        zcml:condition="installed Products.ATContentTypes"
+        name="plone.tableofcontents"
+        for="Products.ATContentTypes.interface.IATDocument"
+        manager=".interfaces.IAboveContentBody"
+        class=".common.TableOfContentsViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Footer -->
+    <browser:viewlet
+        name="plone.footer"
+        for="*"
+        manager=".interfaces.IPortalFooter"
+        class=".common.FooterViewlet"
+        permission="zope.Public"
+        />
+
+    <!-- Colophon -->
+    <browser:viewlet
+        name="plone.colophon"
+        for="*"
+        manager=".interfaces.IPortalFooter"
+        template="colophon.pt"
+        permission="zope.Public"
+        />
+
+</configure>

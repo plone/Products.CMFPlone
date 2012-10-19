@@ -1,0 +1,8 @@
+<div tal:condition="view/available" class="row">
+    <a class="managePortletsFallback"
+        tal:attributes="href string:${view/object_url}/@@manage-portlets"
+        i18n:domain="plone"
+        i18n:translate="manage_portlets_link">
+        Manage portlets
+    </a>
+</div>

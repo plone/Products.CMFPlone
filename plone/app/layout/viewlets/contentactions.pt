@@ -1,0 +1,37 @@
+<div i18n:domain="plone"
+     class="contentActions"
+     tal:define="ploneview context/@@plone"
+     tal:condition="ploneview/showEditableBorder">
+
+    <tal:block define="content_actions view/object_actions;">
+
+        <h5 class="hiddenStructure"
+            tal:condition="content_actions | wf_state"
+            i18n:translate="heading_actions">Actions</h5>
+
+        <ul tal:condition="content_actions" class="actionItems">
+            <li tal:repeat="action content_actions"
+                tal:attributes="id string:contentaction-${action/id};">
+
+                <a class="" href=""
+                   tal:define="icon python:view.icon(action)"
+                   tal:attributes="href action/url;
+                                   target action/link_target|nothing;">
+
+                    <img alt="" src=""
+                         tal:condition="icon"
+                         tal:attributes="src icon; alt action/title;" />
+
+                    <tal:action tal:content="action/title" i18n:translate="">
+                        Action name
+                    </tal:action>
+                </a>
+
+            </li>
+        </ul>
+
+        <div tal:replace="structure provider:plone.contentmenu" />
+
+    </tal:block>
+
+</div>

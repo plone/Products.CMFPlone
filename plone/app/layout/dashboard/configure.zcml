@@ -1,0 +1,24 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <include package="plone.app.portlets" />
+
+    <browser:page
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        name="dashboard"
+        permission="plone.app.portlets.ViewDashboard"
+        class=".dashboard.DashboardView"
+        template="dashboard.pt"
+        />
+
+    <!-- this view provides a not-js fallback for the user dropdown menu.
+    It has been placed here to be near the personal bar code -->
+    <browser:page
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        name="useractions"
+        permission="plone.app.portlets.ViewDashboard"
+        class=".user_actions.UserActionsView"
+        template="user_actions.pt"
+        />
+</configure>

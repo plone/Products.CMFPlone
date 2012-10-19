@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <class class=".navtree.NavtreeStrategyBase">
+        <allow interface=".interfaces.INavtreeStrategy" />
+    </class>
+
+    <browser:page
+      for="*"
+      name="default_page"
+      class=".defaultpage.DefaultPage"
+      permission="zope.Public"
+      allowed_interface=".interfaces.IDefaultPage"
+      />
+
+</configure>

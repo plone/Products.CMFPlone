@@ -1,0 +1,8 @@
+<dl id="document-toc" class="portlet toc" style="display: none"
+    tal:condition="view/enabled"
+    i18n:domain="plone">
+  <dt class="portletHeader"
+      i18n:translate="label_tableofcontents">Contents</dt>
+  <dd class="portletItem">
+  </dd>
+</dl>

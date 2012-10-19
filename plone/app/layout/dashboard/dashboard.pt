@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+
+<body>
+
+<tal:comment replace="nothing">
+    Please note that this template fills the "content" slot instead of the
+    "main" slot, this is done so we can provide stuff like the content
+    tabs. This also means that we have to supply things that are normally
+    present from main_template.
+</tal:comment>
+
+<metal:main fill-slot="content">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="memberinfo context/portal_membership/getMemberInfo;
+                                member context/@@plone_portal_state/member;
+                                name python:memberinfo['fullname'] or member.getId() or member.getId();
+                                portal_url context/portal_url">
+
+
+
+        <div id="edit-bar" tal:condition="view/can_edit">
+            <h5 class="hiddenStructure">Views</h5>
+
+            <ul id="content-views"
+                class="contentViews">
+              <li class="selected">
+                <a href=""
+                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
+                   i18n:translate="label_dashboard">Dashboard</a>
+              </li>
+              <li>
+                <a href=""
+                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
+                   i18n:translate="label_edit">Edit</a>
+              </li>
+            </ul>
+
+            <div class="contentActions" tal:condition="view/can_edit">
+              &nbsp;
+            </div>
+        </div>
+
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+            Portal status message
+        </div>
+        <dl tal:condition="python:view.empty() and view.can_edit()"
+            class="portalMessage info visualClear" id="dashboard-info-message">
+            <dt i18n:translate="">Info</dt>
+            <dd i18n:translate="info_empty_dashboard">
+                Your dashboard is currently empty. Click the
+                <em>edit</em> tab to assign some personal
+                portlets.
+            </dd>
+        </dl>
+
+        <div id="content">
+
+            <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
+                <span tal:replace="name" i18n:name="user_name" />&#8217;s dashboard
+            </h1>
+
+            <div id="content-core">
+                <div id="dashboard">
+                    <div class="visualClear"><!-- --></div>
+                    <div id="dashboard-portlets1"
+                      tal:content="structure provider:plone.dashboard1" />
+                    <div id="dashboard-portlets2"
+                      tal:content="structure provider:plone.dashboard2" />
+                    <div id="dashboard-portlets3"
+                      tal:content="structure provider:plone.dashboard3" />
+                    <div id="dashboard-portlets4"
+                      tal:content="structure provider:plone.dashboard4" />
+                </div>
+                <div class="visualClear"><!-- --></div>
+            </div>
+        </div>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>

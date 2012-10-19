@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+    <metal:main fill-slot="main">
+        <h1 metal:use-macro="context/kss_generic_macros/macros/generic_title_view">
+            Generic KSS Title. Is rendered with class="documentFirstHeading".
+        </h1>
+
+        <div id="content-core">
+            <h2 i18n:translate="label_history">History</h2>
+            <div tal:replace="structure here/@@contenthistory">Content History</div>
+        </div>
+    </metal:main>
+
+</body>
+</html>

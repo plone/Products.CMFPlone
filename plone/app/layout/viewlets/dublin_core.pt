@@ -1,0 +1,2 @@
+<meta tal:repeat="keyval view/metatags"
+      tal:attributes="name python:keyval[0]; content python:keyval[1];" />

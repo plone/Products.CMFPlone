@@ -1,0 +1,67 @@
+<div i18n:domain="plone"
+     tal:define="history view/fullHistory;"
+     tal:omit-tag="">
+     <div tal:condition="not: history">—</div>
+     <tal:block condition="history" repeat="item history">
+         <div class="historyRecord"
+                tal:define="rhComments item/comments|nothing;
+                            actor item/actor;
+                            actor_name python:actor and actor.get('fullname','username') or item['actorid'];
+                            actor_home item/actor_home;
+                            action item/transition_title;
+                            action_id python:item['action'] or item['review_state'];
+                            effective item/effective_date|nothing;
+                            effectiveDate python:effective and view.toLocalizedTime(item['effective_date'],long_format=True);
+                            isVersion python:item['type']=='versioning'">
+             <div class="historyTools" tal:condition="isVersion">
+
+                 <ul>
+                     <li><form action="" method="post" tal:attributes="action item/revert_url">
+                        <input type="hidden" name="version_id" value="" tal:attributes="value item/version_id" />
+                        <input class="standalone" type="submit" i18n:attributes="value title_revert_revision"
+                               tal:condition="exists:item/diff_current_url"
+                               value="Revert to this revision" /></form></li>
+                 </ul>
+             </div>
+             <div class="historyByLine">
+                 <tal:action i18n:translate="history_action">
+                     <span class="historyAction" tal:content="action" i18n:translate="" i18n:name="action"
+                           tal:attributes="class string:historyAction state-${action_id}"/>
+                     —
+                     <tal:actor i18n:name="actor">
+                         <a href=""
+                            tal:condition="actor_home"
+                            tal:attributes="href actor_home"
+                            tal:content="actor_name"> runyaga </a>
+                         <span tal:condition="not: actor_home"
+                               tal:replace="actor_name"/>
+                     </tal:actor>
+                     on
+                     <span tal:replace="python:view.toLocalizedTime(item['time'],long_format=True)" i18n:name="time"/>
+                 </tal:action>
+                 <tal:effective tal:condition="effective|nothing">
+                     (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
+                     <span tal:replace="effectiveDate"/>)
+                 </tal:effective>
+
+             </div>
+             <div class="historyLinks" tal:condition="isVersion">
+                 <a href=""
+                    tal:attributes="href item/preview_url"
+                    i18n:translate="title_view_revision">View</a>
+                 <a href="" tal:attributes="href item/diff_current_url"
+                    tal:condition="exists:item/diff_current_url"
+                    i18n:translate="title_compare_revision">&middot; Compare to current</a>
+             </div>
+
+             <div i18n:translate="" tal:content="rhComments" tal:condition="rhComments" class="historyComment" />
+
+             <a class="historyComparePrevious" tal:condition="exists:item/diff_previous_url"
+                    tal:attributes="href item/diff_previous_url"
+                    title="Compare with previous revision"
+                    i18n:attributes="title title_compare_previous_revision">
+                    <span>&uarr; <span i18n:translate="label_compare" tal:omit-tag="">Compare</span> &darr;</span>
+             </a>
+         </div>
+     </tal:block>
+</div>

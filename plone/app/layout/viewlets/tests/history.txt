@@ -1,0 +1,60 @@
+.. -*-doctest-*-
+
+===============
+History Viewlet
+===============
+
+We use zope.testbrowser to simulate browser interaction in order to show how
+the history viewlet works.
+
+Open a browser logged in as a Manager.
+
+    >>> app = layer['app']
+    >>> from plone.testing.z2 import Browser
+    >>> browser = Browser(app)
+    >>> browser.handleErrors = False
+    >>> browser.addHeader('Authorization', 'Basic admin:secret')
+    >>> portal_url = 'http://nohost/plone'
+
+By default, only HTTP error codes (e.g. 500 Server Side Error) are shown when an 
+error occurs on the server. To see more details, set handleErrors to False:
+
+    >>> browser.handleErrors = False
+
+Create a public page without workflow.
+
+    >>> browser.open(portal_url)
+    >>> browser.getLink(id='document').click()
+    >>> browser.getControl(name='title').value = "Doc1"
+    >>> browser.getControl(name='form.button.save').click()
+    >>> urldoc1 = browser.url
+          
+Check that the form has been properly submitted
+
+    >>> browser.url
+    'http://nohost/plone/doc1'
+        
+The history viewlet gracefully handles content without workflow.
+
+    >>> browser.getLink('History').click()
+
+Create a public page with workflow.
+
+    >>> portal = layer['portal']    
+    >>> portal.portal_workflow.setDefaultChain('simple_publication_workflow')
+
+    >>> import transaction
+    >>> transaction.commit()
+
+    >>> browser.open(portal_url)
+    >>> browser.getLink(id='document').click()
+    >>> browser.getControl(name='title').value = "Doc2"
+    >>> browser.getControl(name='form.button.save').click()
+    >>> urldoc2 = browser.url
+        
+The history viewlet gracefully handles initial default workflow state.
+
+    >>> browser.getLink('History').click()
+    >>> print browser.contents
+    <...<span class="historyAction state-private">Create</span>...
+

@@ -1,0 +1,30 @@
+We need a view on the content.
+
+    >>> request = self.app.REQUEST
+    >>> from zope.publisher.browser import BrowserView
+    >>> view = BrowserView(self.portal, request)
+
+    >>> from plone.app.layout.viewlets.interfaces import IPortalFooter
+    >>> from Products.Five.viewlet.manager import ViewletManager
+    >>> Footer = ViewletManager('left', IPortalFooter)
+
+Now we can instantiate the manager.
+
+    >>> manager = Footer(self.portal, request, view)
+
+Set analytics (webstats_js) code through the controlpanel
+
+    >>> props = self.portal.portal_properties.site_properties
+    >>> props.webstats_js = u"<script>window.title='Hello'</script>"
+    >>> manager.update()
+    >>> text = manager.render()
+    >>> props.webstats_js in text
+    True
+
+Now enter some non-ascii text
+
+    >>> props.webstats_js = u"<script>window.title='C\xedsa\u0159'</script>"
+    >>> manager.update()
+    >>> text = manager.render()
+    >>> props.webstats_js in text
+    True

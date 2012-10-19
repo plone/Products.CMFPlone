@@ -1,0 +1,10 @@
+<div class="contentHistory"
+     id="content-history"
+     i18n:domain="plone">
+      <dl id="history" class="collapsible collapsedOnLoad">
+        <dt class="collapsibleHeader" i18n:translate="label_history">History</dt>
+        <dd class="collapsibleContent">
+            <div tal:replace ="structure here/@@contenthistory" />
+        </dd>
+      </dl>
+</div>

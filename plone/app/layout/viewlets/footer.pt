@@ -1,0 +1,25 @@
+<div i18n:domain="plone"
+     id="portal-footer">
+          <p>
+               <span i18n:translate="description_copyright" tal:omit-tag="">
+               The
+               <span i18n:name="plonecms" tal:omit-tag="">
+                    <a href="http://plone.org" i18n:translate="label_plone_cms">Plone<sup>&reg;</sup> Open Source CMS/WCM</a>
+               </span>
+               is
+               <abbr title="Copyright" i18n:name="copyright" i18n:attributes="title title_copyright;">&copy;</abbr>
+               2000-<tal:year i18n:name="current_year" tal:content="view/year" />
+               by the
+               <span i18n:name="plonefoundation" tal:omit-tag="">
+                    <a href="http://plone.org/foundation" i18n:translate="label_plone_foundation">Plone Foundation</a></span>
+               and friends.
+               </span>
+
+               <span i18n:translate="description_license" tal:omit-tag="">
+               Distributed under the
+                    <span i18n:name="license" tal:omit-tag="">
+                         <a href="http://creativecommons.org/licenses/GPL/2.0/" i18n:translate="label_gnu_gpl_licence">GNU GPL license</a></span>.
+               </span>
+          </p>
+
+</div>

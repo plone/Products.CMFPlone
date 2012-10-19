@@ -1,0 +1,12 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+      name="sitemap.xml.gz"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      class=".sitemap.SiteMapView"
+      permission="zope2.Public"
+     />
+
+</configure>

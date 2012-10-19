@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+
+<metal:block use-macro="here/global_defines/macros/defines" />
+<html xmlns="http://www.w3.org/1999/xhtml"
+      tal:define="portal_state context/@@plone_portal_state;
+                  lang portal_state/language;"
+      tal:attributes="lang lang;"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:define-macro="master">
+
+    <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+        Get the global cache headers located in global_cache_settings.
+    </metal:cache>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title tal:content="context/Title"></title>
+
+    <link rel="stylesheet" href="ui/default/base.css" type="text/css" media="all"
+        tal:attributes="href string:${context/portal_url}/base.css" />
+    <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj"
+        tal:attributes="href string:${context/portal_url}/s5_slides.css" />
+    <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle"
+        tal:attributes="href string:${context/portal_url}/s5_outline.css" />
+    <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint"
+        tal:attributes="href string:${context/portal_url}/s5_print.css" />
+    <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix"
+        tal:attributes="href string:${context/portal_url}/s5_opera.css" />
+
+    <script type="text/javascript" tal:content="structure string:var base_url=&quot;${here/absolute_url}&quot;;">
+      var base_url="/";
+    </script>
+    <script src="ui/default/slides.js" type="text/javascript"
+          tal:attributes="src string:${context/portal_url}/s5_slides.js" ></script>
+
+    <metal:baseslot define-slot="base">
+      <base tal:attributes="href context/@@plone/renderBase" /><!--[if lt IE 7]></base><![endif]-->
+    </metal:baseslot>
+
+</head>
+<body>
+
+<noscript>Note: The slideshow mode requires javascript.</noscript>
+
+<div class="layout">
+    <div id="controls"><!-- DO NOT EDIT --></div>
+    <div id="currentSlide"><!-- DO NOT EDIT --></div>
+    <div id="header"></div>
+    <div id="footer"></div>
+</div>
+
+<div class="presentation"
+     tal:define="enabled view/enabled">
+    <div class="slide"
+         tal:condition="not:enabled">
+        <h4 i18n:translate="text_presentation_disabled">
+           For Plone to show this page as a presentation to work, it must
+           find some headings in your document. The document will be split
+           into slides based upon those tags. Further you must have the
+           'Enable Presentation' setting turned on in the user interface
+           for this piece of content.
+        </h4>
+    </div>
+    <tal:presentation tal:condition="enabled">
+        <div class="slide">
+            <h1 tal:content="context/Title" />
+            <h2 tal:content="context/Description" />
+            <h3 tal:content="view/authorname" />
+        </div>
+        <tal:block content="structure view/content" />
+    </tal:presentation>
+</div>
+
+</body>
+</html>
