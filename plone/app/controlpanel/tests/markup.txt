@@ -1,0 +1,58 @@
+Markup control panel
+====================
+
+Viewing the markup control panel
+--------------------------------
+
+    >>> self.loginAsManager()
+    >>> self.browser.open('http://nohost/plone/@@markup-controlpanel')
+    >>> self.browser.url
+    'http://nohost/plone/@@markup-controlpanel'
+
+We have two controls, one for the default type and a multi selection for
+alternative formats:
+
+    >>> self.browser.getControl(name='form.default_type').value
+    ['text/html']
+    >>> self.browser.getControl(name='form.allowed_types').value
+    ['text/html', 'text/x-web-textile']
+
+Click the save button without making any changes:
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> self.browser.url.endswith('markup-controlpanel')
+    True
+
+We should get a status message:
+
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Now click the cancel button:
+
+    >>> self.browser.getControl(name="form.actions.cancel").click()
+    >>> self.browser.url.endswith('plone_control_panel')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
+Modifying values
+----------------
+
+    >>> self.browser.open('http://nohost/plone/@@markup-controlpanel')
+    >>> self.browser.getControl(name='form.default_type').value = ['text/x-web-textile',]
+    >>> self.browser.getControl(name='form.allowed_types').value = ['text/html', 'text/x-web-textile']
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Changes saved' in self.browser.contents
+    True
+
+Verify, that the settings have actually been changed:
+
+    >>> self.portal.portal_properties.site_properties.default_contenttype
+    'text/x-web-textile'
+    >>> forbidden_types = self.portal.portal_properties.site_properties.forbidden_contenttypes
+    >>> set(self.portal.portal_transforms.listAvailableTextInputs()) - set(forbidden_types)
+    set(['text/html', 'text/x-web-textile'])

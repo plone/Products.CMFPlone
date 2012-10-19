@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_content">
+
+  <div class="documentEditable">
+
+      <div id="edit-bar">
+          <ul class="contentViews" id="content-views">
+            <li>
+              <a href=""
+                 tal:attributes="href string:$portal_url/@@usergroup-userprefs"
+                 i18n:translate="label_users">Users</a>
+            </li>
+            <li>
+              <a href=""
+                 tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
+                 i18n:translate="label_groups">Groups</a>
+            </li>
+            <li class="selected">
+              <a href=""
+                 tal:attributes="href string:$portal_url/@@usergroup-controlpanel"
+                 i18n:translate="label_usergroup_settings">Settings</a>
+            </li>
+            <li>
+              <a href=""
+                 tal:attributes="href string:$portal_url/@@member-registration"
+                 i18n:translate="label_member_registration">Member Registration</a>
+            </li>
+          </ul>
+          <div class="contentActions">&nbsp;</div>
+      </div>
+
+      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        Portal status message
+      </div>
+
+      <div id="content">
+        <metal:block use-macro="view/base_template/macros/header" />
+
+        <a href=""
+           id="setup-link"
+           tal:attributes="href string:$portal_url/plone_control_panel"
+           i18n:translate="">
+            Site Setup
+        </a>
+
+        <h1 class="documentFirstHeading"
+            i18n:translate="heading_usergroup_settings">User/Groups Settings</h1>
+
+        <div id="content-core">
+            <metal:block use-macro="view/base_template/macros/master" />
+        </div>
+      </div>
+  </div>
+</metal:main>
+</body>
+</html>

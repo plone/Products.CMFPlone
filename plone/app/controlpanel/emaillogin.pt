@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+  <metal:main metal:fill-slot="prefs_configlet_content">
+    <h1 class="documentFirstHeading" i18n:translate="heading_migrate_email_login">
+      Migrate to or from email login
+    </h1>
+
+    <p i18n:translate="help_migrate_email_login">
+      The email login setting in the
+      <a i18n:name="link"
+         tal:attributes="href string:${context/portal_url}/@@security-controlpanel"
+         i18n:translate="">Security settings</a>
+      only affects new users. Existing users keep their current login
+      name until they change their email address. Here you can update
+      the login name of those users.
+    </p>
+
+    <div tal:condition="request/form/check|nothing">
+      <div tal:condition="view/duplicates">
+        <p i18n:translate="msg_email_duplicates_found">
+          The following email addresses are used by more than one account:
+        </p>
+        <ul>
+          <li tal:repeat="dup view/duplicates">
+            <span tal:content="python:dup[0]" />:
+            <span tal:repeat="account python:dup[1]" tal:content="account" />
+          </li>
+        </ul>
+      </div>
+      <div tal:condition="not:view/duplicates">
+        <p i18n:translate="msg_no_email_duplicates_found">
+          No email addresses found that are used by more than one account.
+        </p>
+      </div>
+    </div>
+
+    <div tal:condition="request/form/switch_to_email|nothing">
+      <p i18n:translate="msg_number_switched_to_email">
+        <span i18n:name="count" tal:content="view/switched_to_email" />
+        accounts were switched to using their email address as login name.
+      </p>
+    </div>
+
+    <div tal:condition="request/form/switch_to_userid|nothing">
+      <p i18n:translate="msg_number_switched_to_userid">
+        <span i18n:name="count" tal:content="view/switched_to_userid" />
+        accounts were switched back to using their user id as login name.
+      </p>
+    </div>
+
+    <p tal:condition="request/form/submitted|nothing"
+       i18n:translate="msg_see_log_for_details">
+      See the log file for details.
+    </p>
+
+    <form action=""
+          name="emaillogin-migrate"
+          method="post"
+          class="enableUnloadProtection enableAutoFocus">
+      <div class="formControls">
+        <input type="hidden" name="submitted" value="submitted" id="submitted" />
+        <input class="context"
+               type="submit"
+               name="check"
+               value="Check for duplicate emails"
+               i18n:attributes="value label_check_duplicate_emails" />
+        <br />
+        <input class="context"
+               type="submit"
+               name="switch_to_email"
+               value="Set email address as login name for all users"
+               i18n:attributes="value label_set_email_address_as_login_name" />
+        <br />
+        <input class="context"
+               type="submit"
+               name="switch_to_userid"
+               value="Switch login name of all users back to user id instead of email address"
+               i18n:attributes="value label_switch_back_to_user_id" />
+      </div>
+    </form>
+
+  </metal:main>
+</body>
+</html>

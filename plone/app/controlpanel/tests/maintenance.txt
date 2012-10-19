@@ -1,0 +1,51 @@
+Maintenance control panel
+=========================
+
+First some initial setup code:
+
+    >>> self.loginAsManager()
+
+Viewing the maintenance control panel
+-------------------------------------
+
+    >>> self.browser.open('http://nohost/plone/@@maintenance-controlpanel')
+    >>> self.browser.url.endswith('maintenance-controlpanel')
+    True
+
+While we have manage permisssions inside the site, we don't have them at the
+Zope root:
+
+    >>> 'You are not allowed to manage the Zope server' in self.browser.contents
+    True
+
+Let's create a manager at the Zope root:
+
+    >>> self.app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
+
+And log in as that user instead:
+
+    >>> self.browser.open('http://nohost/plone/')
+    >>> self.browser.getLink('Log out').click()
+    >>> self.loginAsManager(user='app')
+
+See if we can manage the server now:
+
+    >>> self.browser.open('http://nohost/plone/@@maintenance-controlpanel')
+    >>> self.browser.url.endswith('maintenance-controlpanel')
+    True
+
+    >>> 'Zope Database' in self.browser.contents
+    True
+
+While we cannot test the actual packaging during tests, we can skip the actual
+manage_pack method by providing a negative value for days:
+
+    >>> self.browser.getControl(name='form.days').value = '-1'
+    >>> self.browser.getControl(name="form.actions.pack").click()
+    >>> self.browser.url.endswith('maintenance-controlpanel')
+    True
+
+We should get a status message:
+
+    >>> 'Packed the database.' in self.browser.contents
+    True

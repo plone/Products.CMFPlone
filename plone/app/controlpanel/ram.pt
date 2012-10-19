@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="view/base_template/macros/controlpanel"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="extra_info">
+
+        <fieldset>
+            <legend i18n:translate="heading_ramcache_stats">
+                RAM cache statistics
+            </legend>
+
+            <table tal:define="stats view/getStatistics"
+                   class="listing" summary="RAM cache statistics"
+                   cellpadding="2" cellspacing="0"
+                   i18n:attributes="summary heading_ramcache_stats;">
+              <thead>
+                <th i18n:translate="label_cache_key">Key</th>
+                <th i18n:translate="label_cache_hits">Hits</th>
+                <th i18n:translate="label_cache_misses">Misses</th>
+                <th i18n:translate="label_cache_size_bytes">Size (bytes)</th>
+                <th i18n:translate="label_cache_entries">Entries</th>
+              </thead>
+              <tbody>
+                <tr tal:repeat="data stats">
+                  <td><span tal:content="data/path">&nbsp;</span></td>
+                  <td><span tal:content="data/hits">&nbsp;</span></td>
+                  <td><span tal:content="data/misses">&nbsp;</span></td>
+                  <td><span tal:content="data/size">&nbsp;</span></td>
+                  <td><span tal:content="data/entries">&nbsp;</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="formControls">
+                <span class="actionButtons">
+                    <input type="submit"
+                           id="form.actions.clearall"
+                           name="form.actions.clearall"
+                           value="Clear cache"
+                           i18n:attributes="value"
+                           class="standalone" />
+
+                </span>
+            </div>
+
+        </fieldset>
+
+</div>
+
+<div metal:fill-slot="bottom_buttons">
+
+    <input tal:repeat="action view/restricted_actions"
+           tal:replace="structure action/render" />
+
+</div>
+
+</body>
+</html>

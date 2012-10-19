@@ -1,0 +1,155 @@
+Skins control panel
+===================
+
+First some initial setup code:
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> stool = getToolByName(self.portal, 'portal_skins')
+    >>> self.loginAsManager()
+
+Fake a second available skin:
+
+    >>> stool.selections['TestSkin'] = 'test_path'
+
+Make sure we assume the right defaults
+--------------------------------------
+
+    >>> stool.default_skin
+    'Sunburst Theme'
+
+    >>> stool.getSkinSelections()
+    ['Plone Default', 'Sunburst Theme', 'TestSkin']
+
+Viewing the skins control panel
+-------------------------------
+
+    >>> self.browser.open('http://nohost/plone/@@skins-controlpanel')
+    >>> self.browser.url.endswith('skins-controlpanel')
+    True
+
+Click the cancel button:
+
+    >>> self.browser.getControl(name="form.actions.cancel").click()
+    >>> self.browser.url.endswith('plone_control_panel')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
+Make some changes
+-----------------
+
+    >>> self.browser.open('http://nohost/plone/@@skins-controlpanel')
+    >>> self.browser.url.endswith('skins-controlpanel')
+    True
+
+    >>> self.browser.getControl(name='form.theme').value = ('TestSkin', )
+
+Click the save button:
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> self.browser.url.endswith('skins-controlpanel')
+    True
+
+Make sure the changes have been applied correctly to the mailhost:
+
+    >>> stool.default_skin
+    'TestSkin'
+
+
+External link marking and windows settings are also controlled here
+-------------------------------------------------------------------
+
+We should be starting with mark_special_links.js disabled:
+
+    >>> jstool = getToolByName(self.portal, 'portal_javascripts')
+    >>> jstool.getResource('mark_special_links.js').getEnabled()
+    False
+   
+The mark_special_links and ext_links_open_new_window properties should also
+false:
+
+    >>> ptool = getToolByName(self.portal, 'portal_properties')
+    >>> site_props = ptool.site_properties
+    >>> site_props.external_links_open_new_window
+    'false'
+
+    >>> site_props.mark_special_links
+    'false'
+
+mark_special_links and ext_links_open_new_windowshould be initially unchecked 
+in the browser:
+
+    >>> self.browser.open('http://nohost/plone/@@skins-controlpanel')
+    >>> self.browser.getControl(name='form.mark_special_links').value
+    False
+
+    >>> self.browser.getControl(name='form.ext_links_open_new_window').value
+    False
+
+Checking mark_special_items should enable the js support and set the site prop:
+
+    >>> self.browser.getControl(name='form.mark_special_links').value = True
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> site_props.mark_special_links
+    'true'
+    
+    >>> jstool.getResource('mark_special_links.js').getEnabled()
+    True
+
+Checking ext_links_open_new_window should enable the js support and set the site prop:
+
+    >>> self.browser.getControl(name='form.ext_links_open_new_window').value = True
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> site_props.external_links_open_new_window
+    'true'
+
+    >>> jstool.getResource('mark_special_links.js').getEnabled()
+    True
+
+Unchecking mark_special_links while new_window is set should leave the js
+support in place since it's needed to support new_window:
+
+    >>> self.browser.getControl(name='form.mark_special_links').value = False
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> site_props.mark_special_links
+    'false'
+
+    >>> jstool.getResource('mark_special_links.js').getEnabled()
+    True
+
+Unchecking new_window should finally turn off the js support:
+
+    >>> self.browser.getControl(name='form.ext_links_open_new_window').value = False
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> site_props.external_links_open_new_window
+    'false'
+
+    >>> jstool.getResource('mark_special_links.js').getEnabled()
+    False
+
+
+Overlayed popup forms are also controlled here
+-------------------------------------------------------------------
+
+We should be starting with popupforms.js enabled:
+
+    >>> jstool = getToolByName(self.portal, 'portal_javascripts')
+    >>> jstool.getResource('popupforms.js').getEnabled()
+    True
+
+Unchecking use_popups should turn off the js support:
+
+    >>> self.browser.getControl(name='form.use_popups').value = False
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> jstool.getResource('popupforms.js').getEnabled()
+    False
+
+Checking use_popups should turn re-enable:
+
+    >>> self.browser.getControl(name='form.use_popups').value = True
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> jstool.getResource('popupforms.js').getEnabled()
+    True

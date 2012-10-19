@@ -1,0 +1,152 @@
+Security controlpanel: 
+Enable/disable user folder
+==========================
+
+First some initial setup code. We are logging as the 'root' user with 'Manager' permission:
+
+    >>> browser = self.browser
+    >>> self.loginAsManager()
+
+Lets ensure that we currently are the 'root' user:
+
+    >>> 'root' in browser.contents
+    True
+
+    >>> browser.getLink('root').click()
+    >>> browser.url
+    'http://nohost/plone/useractions'
+
+There shouldn't be a user folder in a default Plone:
+
+    >>> browser.open('http://nohost/plone/Members/root')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 404: Not Found
+
+Enable the user folder creation:
+
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl(name='form.enable_user_folders').value = True
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('security-controlpanel')
+    True
+
+The personal folder isn't created before the user explicitly are logged out
+and logged in again:
+
+    >>> browser.open('http://nohost/plone/Members/root')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 404: Not Found
+
+So the 'My Folder' shouldn't be visible:
+
+    >>> 'My Folder' in browser.contents
+    False
+
+Lets do a short cut for the root user and create the member area immediately:
+
+    >>> portal.portal_membership.createMemberArea('root')
+
+There should now be a user folder and the 'My Folder' action should be visible
+in the personal bar:
+
+    >>> browser.open('http://nohost/plone/Members/root')
+    >>> 'My Folder' in browser.contents
+    True
+
+Lets ensure 'My Folder' is click able and contains the member url link:
+
+    >>> browser.getLink('My Folder').click()
+    >>> browser.url
+    'http://nohost/plone/Members/root'
+
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+
+Test with a member with the 'Member' permission
+-----------------------------------------------
+
+Create a new member and log in as member:
+
+    >>> self.uf = self.portal.acl_users
+    >>> self.uf.userFolderAddUser('member', 'secret', ['Member'], [])
+    >>> browser.open('http://nohost/plone/')
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl('Login Name').value = 'member'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+Lets ensure that we currently are the 'member' user:
+
+    >>> 'member' in browser.contents
+    True
+
+    >>> browser.getLink('member').click()
+    >>> browser.url
+    'http://nohost/plone/useractions'
+ 
+There should be a user folder now and the 'My Folder' link should be visible
+in the personal bar:
+
+    >>> browser.open('http://nohost/plone/Members/member')
+    >>> browser.open('http://nohost/plone')
+    >>> 'My Folder' in browser.contents
+    True
+    
+    >>> browser.getLink('My Folder').click()    
+    >>> browser.url
+    'http://nohost/plone/Members/member'
+
+Log out as member:  
+
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+
+Log in as manager and disable user folder creation:
+
+    >>> self.loginAsManager()
+
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl(name='form.enable_user_folders').value = False
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('security-controlpanel')
+    True
+
+Log out as manager:  
+
+    >>> browser.getLink('Log out').click()
+    >>> 'You are now logged out' in browser.contents
+    True
+
+Create a new member and login as new member:
+
+    >>> self.uf = self.portal.acl_users
+    >>> self.uf.userFolderAddUser('newmember', 'secret', ['Member'], [])
+    >>> browser.open('http://nohost/plone/')
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl('Login Name').value = 'newmember'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+
+Lets ensure that we currently are the 'newmember' user:
+
+    >>> 'newmember' in browser.contents
+    True
+
+    >>> browser.getLink('newmember').click()
+    >>> browser.url
+    'http://nohost/plone/useractions'
+
+There shouldn't be a new member folder and no 'My Folder' link:
+
+    >>> browser.open('http://nohost/plone/Members/newmember')
+    Traceback (most recent call last):
+    ...
+    HTTPError: HTTP Error 404: Not Found    
+    
+    >>> browser.open('http://nohost/plone')
+    >>> 'My Folder' in browser.contents
+    False

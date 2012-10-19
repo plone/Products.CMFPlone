@@ -1,0 +1,223 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package="Products.CMFCore" />
+
+  <include file="permissions.zcml" />
+
+  <adapter factory=".calendar.CalendarControlPanelAdapter" />
+
+  <adapter for="*"
+           factory=".editing.EditingControlPanelAdapter" />
+
+  <adapter factory=".filter.FilterControlPanelAdapter" />
+
+  <adapter factory=".language.LanguageControlPanelAdapter" />
+
+  <adapter factory=".navigation.NavigationControlPanelAdapter" />
+
+  <adapter factory=".mail.MailControlPanelAdapter" />
+
+  <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
+
+  <adapter factory=".markup.MarkupControlPanelAdapter" />
+
+  <adapter factory=".ram.RAMCacheControlPanelAdapter" />
+
+  <adapter factory=".search.SearchControlPanelAdapter" />
+
+  <adapter factory=".security.SecurityControlPanelAdapter" />
+
+  <adapter factory=".site.SiteControlPanelAdapter" />
+
+  <adapter factory=".skins.SkinsControlPanelAdapter" />
+
+  <adapter factory=".usergroups.UserGroupsSettingsControlPanelAdapter" />
+
+  <browser:page
+      name="calendar-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".calendar.CalendarControlPanel"
+      permission="plone.app.controlpanel.Calendar"
+      />
+
+  <browser:page
+      name="editing-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".editing.EditingControlPanel"
+      permission="plone.app.controlpanel.Editing"
+      />
+
+  <browser:page
+      name="filter-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".filter.FilterControlPanel"
+      permission="plone.app.controlpanel.Filtering"
+      />
+
+  <browser:page
+      name="language-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".language.LanguageControlPanel"
+      permission="plone.app.controlpanel.Language"
+      />
+
+  <browser:page
+      name="mail-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".mail.MailControlPanel"
+      permission="plone.app.controlpanel.Mail"
+      />
+
+  <browser:page
+      name="markup-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".markup.MarkupControlPanel"
+      permission="plone.app.controlpanel.Markup"
+      />
+
+  <browser:page
+      name="maintenance-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".maintenance.MaintenanceControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="navigation-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".navigation.NavigationControlPanel"
+      permission="plone.app.controlpanel.Navigation"
+      />
+
+  <browser:page
+      name="overview-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".overview.OverviewControlPanel"
+      permission="plone.app.controlpanel.Overview"
+      />
+
+  <browser:page
+      name="ramcache-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".ram.RAMCacheControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="search-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".search.SearchControlPanel"
+      permission="plone.app.controlpanel.Search"
+      />
+
+  <browser:page
+      name="security-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".security.SecurityControlPanel"
+      permission="plone.app.controlpanel.Security"
+      />
+
+  <browser:page
+      name="site-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".site.SiteControlPanel"
+      permission="plone.app.controlpanel.Site"
+      />
+
+  <browser:page
+      name="skins-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".skins.SkinsControlPanel"
+      permission="plone.app.controlpanel.Themes"
+      />
+
+  <browser:page
+      name="types-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".types.TypesControlPanel"
+      permission="plone.app.controlpanel.Types"
+      />
+
+  <browser:page
+      name="usergroup-userprefs"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.UsersOverviewControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_usersoverview.pt"
+      />
+
+  <browser:page
+      name="usergroup-groupprefs"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.GroupsOverviewControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupsoverview.pt"
+      />
+
+  <browser:page
+      name="usergroup-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.UserGroupsSettingsControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      />
+
+  <browser:page
+      name="usergroup-groupmembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.GroupMembershipControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupmembership.pt"
+      />
+
+  <browser:page
+      name="usergroup-usermembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.UserMembershipControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_usermembership.pt"
+      />
+
+  <browser:page
+      name="usergroup-groupdetails"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups.GroupDetailsControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupdetails.pt"
+      />
+
+  <view
+      type="zope.publisher.interfaces.browser.IBrowserRequest"
+      for="zope.schema.interfaces.ITuple
+           zope.schema.interfaces.IVocabularyTokenized"
+      provides="zope.formlib.interfaces.IInputWidget"
+      factory=".widgets.MultiSelectTupleWidget"
+      permission="zope.Public"
+      />
+
+  <utility
+    component=".markup.WickedTypesVocabularyFactory"
+    name="plone.app.controlpanel.WickedPortalTypes"
+    />
+
+  <subscriber
+      handler=".events.handleConfigurationChangedEvent" />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="migrate-to-emaillogin"
+      class=".security.EmailLogin"
+      template="emaillogin.pt"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="syndication-settings"
+      class=".syndication.SyndicationControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
+</configure>

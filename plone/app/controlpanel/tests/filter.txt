@@ -1,0 +1,163 @@
+Filter control panel
+====================
+
+First some initial setup code:
+
+    >>> import sys
+    >>> from zope.component import getUtility
+    >>> from Products.PortalTransforms.interfaces import IPortalTransformsTool
+    >>> from Products.CMFCore.utils import getToolByName
+
+    >>> browser = self.browser
+    >>> safe_html = getUtility(IPortalTransformsTool).safe_html
+    >>> self.loginAsManager()
+
+Viewing the search control panel
+--------------------------------
+
+    >>> browser.open('http://nohost/plone/@@filter-controlpanel')
+    >>> browser.url.endswith('filter-controlpanel')
+    True
+
+Click the save button without making any changes:
+
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('filter-controlpanel')
+    True
+
+We should get a status message:
+
+    >>> 'Changes saved.' in browser.contents
+    True
+
+Now click the cancel button:
+
+    >>> browser.getControl(name="form.actions.cancel").click()
+    >>> browser.url.endswith('plone_control_panel')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in browser.contents
+    True
+
+Look at the defaults
+--------------------
+
+    >>> browser.open('http://nohost/plone/@@filter-controlpanel')
+
+    >>> def print_all_of(fieldname):
+    ...     for i in xrange(sys.maxint):
+    ...         key = 'form.%s.%s.' % (fieldname, i)
+    ...         try:
+    ...             print browser.getControl(name=key).value
+    ...         except LookupError, e:
+    ...             break
+
+    >>> print_all_of('nasty_tags')
+    applet
+    embed
+    meta
+    object
+    script
+    style
+
+    >>> print_all_of('stripped_tags')
+    button
+    fieldset
+    form
+    input
+    label
+    legend
+    link
+    noscript
+    object
+    optgroup
+    option
+    param
+    script
+    select
+    style
+    textarea
+
+    >>> print_all_of('custom_tags')
+    article
+    aside
+    audio
+    ...
+
+    >>> print_all_of('stripped_attributes')
+    lang
+    valign
+    halign
+    border
+    frame
+    rules
+    cellspacing
+    cellpadding
+    bgcolor
+
+    >>> print_all_of('stripped_combinations')
+    >>> print_all_of('style_whitelist')
+    text-align
+    list-style-type
+    float
+    padding-left
+    >>> print_all_of('class_whitelist')
+
+Changing some values
+--------------------
+
+Add a new nasty tag
+
+    >>> browser.getControl("Add Nasty tags").click()
+    >>> browser.getControl(name="form.nasty_tags.6.").value = "span"
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> print_all_of('nasty_tags')
+    applet
+    embed
+    meta
+    object
+    script
+    span
+    style
+
+    >>> print sorted(safe_html._config['nasty_tags'])
+    [u'applet', u'embed', u'meta', u'object', u'script', u'span', u'style']
+
+Adding span to nasty tags should have automatically removed it from the valid tags.
+
+Changing a permitted style:
+
+    >>> browser.getControl(name="form.style_whitelist.2.").value = "color"
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> print_all_of('style_whitelist')
+    text-align
+    list-style-type
+    color
+    padding-left
+
+Check that the filtering works
+------------------------------
+
+    >>> browser.open('http://nohost/plone/Members')
+    >>> browser.getLink('Add new').click()
+    >>> 'Add new item' in browser.contents
+    True
+    >>> browser.getControl('Page').click()
+    >>> browser.getControl('Add').click()
+    >>> browser.getControl('Body Text').value = \
+    ... '<p>Testing that<span> tag and its contents get stripped</span> works.</p>'
+    >>> browser.getControl('Title').value = 'My Page'
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved.' in browser.contents
+    True
+    >>> 'My Page' in browser.contents
+    True
+
+Must use print here to take advantage of whitespace folding
+(whitespace in the body text may vary depending on the tidy_html transform).
+
+    >>> print browser.contents
+    <!DOCTYPE...
+    <p>Testing that works.</p>...

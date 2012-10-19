@@ -1,0 +1,88 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope">
+
+  <permission id="plone.app.controlpanel.Overview"
+              title="Plone Site Setup: Overview">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Calendar"
+              title="Plone Site Setup: Calendar">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Editing"
+              title="Plone Site Setup: Editing">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Filtering"
+              title="Plone Site Setup: Filtering">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Language"
+              title="Plone Site Setup: Language">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Mail"
+              title="Plone Site Setup: Mail">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Markup"
+              title="Plone Site Setup: Markup">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Navigation"
+              title="Plone Site Setup: Navigation">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Search"
+              title="Plone Site Setup: Search">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Security"
+              title="Plone Site Setup: Security">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Site"
+              title="Plone Site Setup: Site">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Themes"
+              title="Plone Site Setup: Themes">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.Types"
+              title="Plone Site Setup: Types">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+  <permission id="plone.app.controlpanel.UsersAndGroups"
+              title="Plone Site Setup: Users and Groups">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
+</configure>

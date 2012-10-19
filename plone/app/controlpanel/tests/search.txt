@@ -1,0 +1,86 @@
+Search control panel
+====================
+
+First some initial setup code:
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> jstool = getToolByName(self.portal, 'portal_javascripts')
+    >>> self.loginAsManager()
+
+Viewing the search control panel
+--------------------------------
+
+    >>> self.browser.open('http://nohost/plone/@@search-controlpanel')
+    >>> self.browser.url.endswith('search-controlpanel')
+    True
+
+Click the save button without making any changes:
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> self.browser.url.endswith('search-controlpanel')
+    True
+
+We should get a status message:
+
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Now click the cancel button:
+
+    >>> self.browser.getControl(name="form.actions.cancel").click()
+    >>> self.browser.url.endswith('plone_control_panel')
+    True
+
+There should be still no changes:
+
+    >>> 'Changes canceled.' in self.browser.contents
+    True
+
+Make some changes
+-----------------
+
+    >>> self.browser.open('http://nohost/plone/@@search-controlpanel')
+    >>> self.browser.url.endswith('search-controlpanel')
+    True
+
+    >>> self.browser.getControl(name='form.enable_livesearch').value = False
+    >>> self.browser.getControl(name='form.types_not_searched').value = \
+    ...     ['Event', 'Document']
+    
+
+Click the save button:
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> self.browser.url.endswith('search-controlpanel')
+    True
+
+We should be informed that something has changed:
+
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Make sure the changes have been applied correctly to the tool:
+
+    >>> self.site_props.enable_livesearch
+    False
+
+    >>> jstool.getResource('livesearch.js').getEnabled()
+    False
+
+    >>> 'Event' not in self.site_props.types_not_searched
+    True
+
+    >>> 'Document' not in self.site_props.types_not_searched
+    True
+
+    >>> 'File' in self.site_props.types_not_searched
+    True
+
+So called 'bad types' are not listed in the search panel, but they
+should still be listed in the site_properties as not searchable:
+
+    >>> from plone.app.vocabularies.types import BAD_TYPES
+    >>> [bad for bad in BAD_TYPES if bad not in self.site_props.types_not_searched]
+    []
+
+
