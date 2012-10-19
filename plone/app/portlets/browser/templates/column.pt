@@ -1,0 +1,15 @@
+<tal:block repeat="portlet options/portlets">
+<div class="portletWrapper"
+    tal:attributes="id string:portletwrapper-${portlet/hash};
+                     data-portlethash portlet/hash"
+     tal:content="structure python:view.safe_render(portlet['renderer'])" />
+</tal:block>
+
+<div class="managePortletsLink" tal:condition="view/can_manage_portlets"
+      i18n:domain="plone">
+  <a title="View portlet management screen"
+     i18n:attributes="title"
+     i18n:translate="manage_portlets_link"
+     tal:attributes="href string:${view/base_url}/@@manage-portlets"
+     >Manage portlets</a>
+</div>

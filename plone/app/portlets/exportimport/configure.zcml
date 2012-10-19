@@ -1,0 +1,44 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone">
+
+    <adapter
+        factory=".portlets.PortletsXMLAdapter"
+        name="plone.portlets"
+        />
+
+    <adapter
+        factory=".portlets.PropertyPortletAssignmentExportImportHandler"
+        />
+
+    <!-- Register import and export steps -->
+    <genericsetup:importStep
+        name="portlets"
+        title="Portlets"
+        description="Import portlet managers, types, assignments and blacklistings"
+        handler=".portlets.importPortlets">
+        <depends name="componentregistry"/>
+        <depends name="content"/>
+    </genericsetup:importStep>
+
+    <genericsetup:exportStep
+        name="portlets"
+        title="Portlets"
+        description="Export portlet managers, types, assignments and blacklistings"
+        handler=".portlets.exportPortlets"
+        />
+
+    <configure
+        zcml:condition="not-installed Products.CMFCore.src">
+
+        <utility
+            factory=".portlets.Blacklist"
+            provides="Products.GenericSetup.interfaces.IComponentsHandlerBlacklist"
+            name="plone.app.portlets.exportimport"
+            />
+
+        </configure>
+
+</configure>

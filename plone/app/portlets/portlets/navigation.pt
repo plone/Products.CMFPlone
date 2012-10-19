@@ -1,0 +1,48 @@
+<tal:block i18n:domain="plone">
+<dl class="portlet portletNavigationTree"
+    tal:define="root view/navigation_root">
+
+    <dt class="portletHeader"
+        tal:attributes="class python:view.hasName() and 'portletHeader' or 'portletHeader hiddenStructure'">
+        <span class="portletTopLeft"></span>
+        <a href="#"
+           class="tile"
+           tal:attributes="href string:${view/heading_link_target}"
+           tal:content="view/title"
+           i18n:translate="">Navigation</a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem lastItem">
+        <ul class="navTree navTreeLevel0">
+            <li tal:define="selectedClass view/root_item_class;
+                            li_class python:selectedClass and ' navTreeCurrentNode' or '';"
+                tal:condition="view/include_top"
+                tal:attributes="class string:navTreeItem navTreeTopNode${li_class}">
+                <div tal:define="rootIsPortal view/root_is_portal;
+                                 normalizeString nocall:context/plone_utils/normalizeString;
+                                 root_icon view/root_icon;
+                                 root_type root/portal_type;
+                                 root_type_class python:'contenttype-' + normalizeString(root_type);
+                                 root_class python:rootIsPortal and 'contenttype-plone-site' or root_type_class;">
+                   <a tal:attributes="href root/absolute_url;
+                                      title root/Description;
+                                      class python:' '.join([root_class, selectedClass]).strip();">
+                   <img tal:replace="structure root_icon/html_tag" tal:condition="not:rootIsPortal" />
+                   <span tal:omit-tag=""
+                         tal:condition="rootIsPortal"
+                         i18n:translate="tabs_home">Home</span>
+                   <span tal:condition="not:rootIsPortal"
+                         tal:replace="root/Title">Root item title</span>
+                   </a>
+                </div>
+            </li>
+            <li tal:replace="structure view/createNavTree">
+                SUBTREE
+            </li>
+        </ul>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</tal:block>

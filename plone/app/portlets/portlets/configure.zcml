@@ -1,0 +1,103 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:plone="http://namespaces.plone.org/plone">
+
+    <plone:portlet
+        name="portlets.Calendar"
+        interface=".calendar.ICalendarPortlet"
+        assignment=".calendar.Assignment"
+        renderer=".calendar.Renderer"
+        addview=".calendar.AddForm"
+        />
+
+    <plone:portlet
+        name="portlets.Classic"
+        interface=".classic.IClassicPortlet"
+        assignment=".classic.Assignment"
+        renderer=".classic.Renderer"
+        addview=".classic.AddForm"
+        editview=".classic.EditForm"
+        />
+
+    <plone:portlet
+        name="portlets.News"
+        interface=".news.INewsPortlet"
+        assignment=".news.Assignment"
+        renderer=".news.Renderer"
+        addview=".news.AddForm"
+        editview=".news.EditForm"
+        />
+
+    <plone:portlet
+        name="portlets.Events"
+        interface=".events.IEventsPortlet"
+        assignment=".events.Assignment"
+        renderer=".events.Renderer"
+        addview=".events.AddForm"
+        editview=".events.EditForm"
+        />
+
+    <plone:portlet
+        name="portlets.Login"
+        interface=".login.ILoginPortlet"
+        assignment=".login.Assignment"
+        renderer=".login.Renderer"
+        addview=".login.AddForm"
+        />
+
+    <plone:portlet
+        name="portlets.Navigation"
+        interface=".navigation.INavigationPortlet"
+        assignment=".navigation.Assignment"
+        renderer=".navigation.Renderer"
+        addview=".navigation.AddForm"
+        editview=".navigation.EditForm"
+        />
+
+    <adapter factory=".navigation.QueryBuilder" />
+    <adapter factory=".navigation.NavtreeStrategy" />
+
+    <plone:portlet
+        name="portlets.Recent"
+        interface=".recent.IRecentPortlet"
+        assignment=".recent.Assignment"
+        renderer=".recent.Renderer"
+        addview=".recent.AddForm"
+        editview=".recent.EditForm"
+        />
+
+    <plone:portlet
+        name="portlets.Review"
+        interface=".review.IReviewPortlet"
+        assignment=".review.Assignment"
+        renderer=".review.Renderer"
+        addview=".review.AddForm"
+        />
+
+    <plone:portlet
+        name="portlets.rss"
+        interface=".rss.IRSSPortlet"
+        assignment=".rss.Assignment"
+        renderer=".rss.Renderer"
+        addview=".rss.AddForm"
+        editview=".rss.EditForm"
+        />
+
+    <plone:portlet
+        name="portlets.Search"
+        interface=".search.ISearchPortlet"
+        assignment=".search.Assignment"
+        renderer=".search.Renderer"
+        addview=".search.AddForm"
+        editview=".search.EditForm"
+        />
+
+    <plone:portlet
+        name="portlets.Language"
+        interface=".language.ILanguagePortlet"
+        assignment=".language.Assignment"
+        renderer=".language.Renderer"
+        addview=".language.AddForm"
+        />
+
+</configure>

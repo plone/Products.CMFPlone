@@ -1,0 +1,70 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+    <include package="plone.portlets" />
+    <include package="plone.app.vocabularies" />
+
+    <five:registerPackage package="." />
+
+    <include file="permissions.zcml" />
+
+    <include package=".browser" />
+    <include package=".exportimport" />
+    <include package=".portlets" />
+
+    <!-- Set up the portlet context -->
+    <adapter factory=".portletcontext.ContentContext" />
+    <adapter factory=".portletcontext.PortalRootContext" />
+
+    <!-- Make it possible to define a sane default dashboard -->
+    <subscriber
+        for="Products.PluggableAuthService.interfaces.authservice.IPropertiedUser
+            Products.PluggableAuthService.interfaces.events.IPrincipalCreatedEvent"
+        handler=".dashboard.new_user"
+        />
+
+    <adapter factory=".dashboard.DefaultDashboard" />
+
+    <!-- Make the site root and any ATContentType a possible portlet manager -->
+    <class class="Products.CMFPlone.Portal.PloneSite">
+        <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
+    </class>
+
+    <class zcml:condition="installed Products.ATContentTypes"
+           class="Products.ATContentTypes.content.base.ATCTMixin">
+        <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
+    </class>
+
+    <!-- Make a Zope 2 safe traversal adapter for assignment mappings -->
+    <adapter
+      factory=".storage.PortletAssignmentMappingTraverser"
+      provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+      />
+
+    <!-- Set up assignment mapping permissions -->
+    <class class=".storage.PortletAssignmentMapping">
+      <require
+        permission="zope2.View"
+        interface="zope.container.interfaces.IReadContainer"
+        />
+      <require
+        permission="plone.app.portlets.ManagePortlets"
+        interface="zope.container.interfaces.IWriteContainer"
+        />
+      <require
+        permission="plone.app.portlets.ManagePortlets"
+        attributes="updateOrder"
+        />
+    </class>
+
+    <!-- Register a name chooser -->
+    <adapter
+      provides="zope.container.interfaces.INameChooser"
+      for="plone.portlets.interfaces.IPortletAssignmentMapping"
+      factory=".storage.PortletsNameChooser"
+      />
+
+</configure>

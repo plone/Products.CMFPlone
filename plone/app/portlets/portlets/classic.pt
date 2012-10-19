@@ -1,0 +1,13 @@
+<metal:block use-macro="here/global_defines/macros/defines" />
+<tal:block tal:define="use_macro view/use_macro;
+                       path_expression view/path_expression">
+
+  <tal:block condition="use_macro">
+    <metal:block metal:use-macro="python:path(path_expression)" />
+  </tal:block>
+
+  <tal:block condition="not:use_macro">
+    <div tal:replace="structure python:path(path_expression)" />
+  </tal:block>
+
+</tal:block>

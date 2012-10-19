@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletCalendar"
+    i18n:domain="plone"
+    tal:define="navigation_root_url context/@@plone_portal_state/navigation_root_url;
+                query_string view/getQueryString;
+                url_quote_plus nocall:view/url_quote_plus;
+                showPrevMonth view/showPrevMonth;
+                showNextMonth view/showNextMonth;
+                year view/year;">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#" rel="nofollow"
+           title="Previous month"
+           class="calendarPrev"
+           tal:define="prevMonthMonth view/prevMonthMonth;
+                       prevMonthYear view/prevMonthYear"
+           tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
+                           href python:'%s?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (request['ACTUAL_URL'], query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string));
+                           data-year prevMonthYear;
+                           data-month prevMonthMonth;"
+           tal:condition="showPrevMonth"
+           i18n:attributes="title title_previous_month;">&laquo;</a>
+
+        <span i18n:translate="" tal:omit-tag="">
+            <span i18n:name="monthname" i18n:translate=""
+                  tal:content="view/monthName"
+                  tal:omit-tag="">monthname</span>
+            <span i18n:name="year" i18n:translate=""
+                  tal:content="year"
+                  tal:omit-tag="">year</span>
+        </span>
+
+        <a href="#" rel="nofollow"
+           title="Next month"
+           class="calendarNext"
+           tal:define="nextMonthMonth view/nextMonthMonth;
+                       nextMonthYear view/nextMonthYear"
+           tal:attributes="id python:showNextMonth and 'calendar-next' or '';
+                           href python:'%s?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (request['ACTUAL_URL'], query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));
+                           data-year nextMonthYear;
+                           data-month nextMonthMonth;"
+           tal:condition="showNextMonth"
+           i18n:attributes="title title_next_month;">&raquo;</a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem">
+        <table class="ploneCalendar"
+               summary="Calendar"
+               i18n:domain="plone"
+               i18n:attributes="summary summary_calendar;">
+            <caption class="hiddenStructure"
+                     tal:content="view/monthName">Month name</caption>
+            <thead>
+                <tr class="weekdays"
+                    ><tal:data tal:repeat="weekday view/getWeekdays"
+                        ><th scope="col"
+                             i18n:translate=""
+                             tal:content="weekday">Su</th
+                    ></tal:data>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:repeat="week view/getEventsForCalendar"
+                    ><tal:block repeat="day week"
+                        ><tal:day define="daynumber day/day;"
+                            ><tal:isday condition="daynumber"
+                                ><tal:block define="day_event day/event;
+                                                    is_today day/is_today"
+                                    ><td class="event"
+                                        tal:condition="day_event"
+                                        tal:attributes="class python:is_today and 'todayevent' or 'event'"
+                                       ><strong><a href=""
+                                           tal:attributes="href string:${navigation_root_url}/@@search?advanced_search=True&amp;${view/getReviewStateString}start.query:record:list:date=${day/date_string}+23%3A59%3A59&amp;start.range:record=max&amp;end.query:record:list:date=${day/date_string}+00%3A00%3A00&amp;end.range:record=min&amp;Type=Event;
+                                                           title day/eventstring;"
+                                           tal:content="daynumber">
+                                           31
+                                       </a
+                                    ></strong></td
+                                    ><tal:notdayevent tal:condition="not: day_event"
+                                        ><td tal:condition="python:is_today"
+                                             class="todaynoevent"><strong
+                                             tal:content="daynumber">31</strong></td
+                                        ><td tal:condition="python:not is_today"
+                                             tal:content="daynumber">31</td
+                                    ></tal:notdayevent
+                                ></tal:block
+                            ></tal:isday
+                            ><tal:notisday condition="not: daynumber"
+                                ><td></td
+                            ></tal:notisday
+                        ></tal:day
+                    ></tal:block>
+                </tr>
+            </tbody>
+
+        </table>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</html>

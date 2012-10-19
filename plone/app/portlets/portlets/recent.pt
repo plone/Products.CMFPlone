@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletRecent"
+    i18n:domain="plone">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#"
+            tal:attributes="href view/recently_modified_link"
+            i18n:translate=""
+            tal:content="view/title" />
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:items tal:define="plone_view context/@@plone;
+                           getIcon nocall:plone_view/getIcon;
+                           normalizeString nocall:plone_view/normalizeString;
+                           toLocalizedTime nocall:plone_view/toLocalizedTime;"
+               tal:repeat="obj view/recent_items">
+
+        <dd class="portletItem"
+            tal:define="oddrow repeat/obj/odd;
+                        item_icon python:getIcon(obj);
+                        item_wf_state obj/review_state;
+                        item_wf_state_class python:'state-' + normalizeString(item_wf_state);
+                        item_class python:'contenttype-' + normalizeString(obj.portal_type);"
+            tal:attributes="class python:oddrow and  'portletItem even' or 'portletItem odd'">
+            <a href=""
+                tal:attributes="href string:${obj/getURL}/view;
+                                title obj/Description;
+                                class string:$item_wf_state_class tile $item_class">
+                 <img tal:replace="structure item_icon/html_tag" />
+                 <tal:title content="obj/pretty_title_or_id">
+                     Title
+                 </tal:title>
+                 <span class="portletItemDetails"
+                       tal:content="python:toLocalizedTime(obj.ModificationDate)"
+                       >May 5</span>
+             </a>
+        </dd>
+    </tal:items>
+
+    <dd class="portletItem"
+        tal:condition="not: view/recent_items"
+        i18n:translate="box_recent_no_items">
+        No items changed yet.
+    </dd>
+
+    <dd class="portletFooter">
+        <a href="#"
+           class="tile"
+           tal:attributes="href view/recently_modified_link"
+           i18n:translate="box_more_recently_changed">
+           All recent changes&hellip;
+        </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>
+</html>

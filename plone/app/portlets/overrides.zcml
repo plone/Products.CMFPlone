@@ -1,0 +1,8 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+    <adapter factory=".assignable.localPortletAssignmentMappingAdapter" />
+
+    <adapter factory=".manager.PortletManagerRenderer"
+             provides="plone.portlets.interfaces.IPortletManagerRenderer"/>
+
+</configure>

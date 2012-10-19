@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletRss"
+    i18n:domain="plone"
+    tal:condition="view/enabled">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href=""
+           tal:attributes="href view/siteurl"
+           tal:content="view/title"
+           class="tile">
+            Tags
+        </a>
+        <span class="portletTopRight"></span>
+    </dt>
+    <tal:rss tal:condition="view/feedAvailable"
+                tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+                tal:repeat="item view/items">
+        <dd class="portletItem oddrow"
+            tal:define="oddrow repeat/item/odd"
+            tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+
+            <a href="#"
+                tal:attributes="href string:${item/url}"
+                class="tile">
+                <span tal:replace="item/title">
+                    Title
+                </span>
+                <span class="portletItemDetails"
+                      tal:condition="exists:item/updated">
+                      <span tal:omit-tag="" tal:content="python:toLocalizedTime(item['updated'])">19.02.2007</span>
+                </span>
+            </a>
+        </dd>
+    </tal:rss>
+    <dd class="portletFooter" tal:condition="view/feedAvailable">
+        <a href=""
+           tal:attributes="href view/siteurl">
+           <span class="hiddenStructure"><span tal:replace="view/title" /> - </span>
+           <span i18n:translate="box_morelink">More&hellip;</span>
+        </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</html>

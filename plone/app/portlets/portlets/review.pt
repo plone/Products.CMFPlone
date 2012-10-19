@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletWorkflowReview"
+    i18n:domain="plone">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#"
+           class="tile"
+           tal:define="full_review_link view/full_review_link"
+           tal:omit-tag="not:full_review_link"
+           tal:attributes="href full_review_link"
+           i18n:translate=""
+           tal:content="view/title" />
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:items tal:repeat="o view/review_items">
+        <dd class="portletItem"
+            tal:define="oddrow repeat/o/odd;
+                        review_state o/review_state;"
+            tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+
+            <a href="#"
+               tal:attributes="href string:${o/path}/view;
+                               title o/description;
+                               class string:${o/review_state_class}visualIconPadding tile">
+                <img tal:replace="structure o/icon" />
+                <span tal:replace="o/title">
+                    Title
+                </span>
+                <span class="portletItemDetails">
+                    <span tal:replace="o/creator">Jim Smith</span> &mdash;
+                    <span tal:replace="o/mod_date"> May 5</span>
+                </span>
+            </a>
+
+        </dd>
+    </tal:items>
+
+    <dd class="portletFooter"
+        tal:define="full_review_link view/full_review_link"
+        tal:condition="full_review_link">
+        <a href="#"
+           class="tile"
+           tal:attributes="href full_review_link"
+           i18n:translate="box_full_review_list">Full review list&hellip;</a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</html>

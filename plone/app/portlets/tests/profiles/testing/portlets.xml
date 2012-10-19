@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+
+    <portletmanager
+        name="test.testcolumn"
+        type="plone.app.portlets.tests.test_configuration.ITestColumn"
+        />
+
+    <portletmanager
+        name="test.testcolumn2"
+        type="plone.app.portlets.tests.test_configuration.ITestColumn"
+        />
+
+    <portlet
+        addview="portlets.test.Test"
+        title="Test portlet"
+        description="A test portlet"
+        i18n:attributes="title title_test_portlet;
+                         description description_test_portlet"
+        />
+
+    <!-- 'name' and 'insert-before' are optional -->
+
+    <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test"
+        name="test.portlet1">
+            <property name="test_text">Test pröp 1</property>
+            <property name="test_bool">False</property>
+            <property name="test_tuple">
+                <element>published</element>
+                <element>private</element>
+            </property>
+    </assignment>
+
+    <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test"
+        name="test.portlet2"
+        visible="0"
+        insert-before="test.portlet1">
+            <property name="test_text">Test prop 2</property>
+            <property name="test_bool">True</property>
+            <property name="test_tuple" />
+    </assignment>
+
+    <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test"
+        name="test.portlet3"
+        insert-before="*" />
+
+    <assignment
+        manager="test.testcolumn"
+        category="content_type"
+        key="Folder"
+        type="portlets.test.Test"
+        name="test.portlet4"
+        insert-before="test.portlet1"
+        />
+
+    <assignment
+        manager="test.testcolumn"
+        category="content_type"
+        key="Folder"
+        type="portlets.test.Test"
+        name="test.portlet5"
+        insert-before="test.portlet1"
+        />
+
+    <assignment
+        manager="test.testcolumn"
+        category="group"
+        key="Reviewers"
+        type="portlets.test.Test"
+        name="test.portlet6"
+        insert-before="test.portlet1"
+        />
+
+    <assignment
+        manager="test.testcolumn"
+        category="context"
+        key="/"
+        type="portlets.test.Test"
+        name="test.portlet7"
+        remove="" />
+
+    <assignment name="navigation"
+        category="context"
+        key="/"
+        manager="test.testcolumn2"
+        type="portlets.Navigation"
+        visible="True">
+        <property name="topLevel">1</property>
+        <property name="currentFolderOnly">False</property>
+        <property name="name"></property>
+        <property name="includeTop">False</property>
+        <property name="bottomLevel">0</property>
+        <property name="root"></property>
+    </assignment>
+
+    <blacklist
+        manager="test.testcolumn"
+        category="context"
+        location="/news"
+        status="block"
+        />
+    <blacklist
+        manager="test.testcolumn"
+        category="group"
+        location="/news"
+        status="show"
+        />
+    <blacklist
+        manager="test.testcolumn"
+        category="content_type"
+        location="/news"
+        status="acquire"
+        />
+
+    <blacklist
+        manager="test.testcolumn"
+        category="content_type"
+        location="/"
+        status="block"
+        />
+
+    <blacklist
+        manager="test.testcolumn"
+        category="group"
+        location="/"
+        status="show"
+        />
+
+    <blacklist
+        manager="test.testcolumn"
+        category="context"
+        location="/"
+        status="acquire"
+        />
+
+</portlets>

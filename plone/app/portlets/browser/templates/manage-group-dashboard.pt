@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+    <div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
+      <script type="text/javascript"
+        tal:attributes="src string:${context/absolute_url}/++resource++manage-portlets.js">
+      </script>
+    </div>
+</head>
+
+<body>
+<metal:main fill-slot="prefs_configlet_content"
+    tal:define="errors options/state/getErrors | nothing">
+    <tal:main-macro metal:define-macro="main">
+
+        <div id="edit-bar">
+            <ul id="content-views" class="contentViews">
+              <li>
+                <a href=""
+                   tal:attributes="href string:${context/absolute_url}/@@usergroup-groupmembership?groupname=${view/group}"
+                   i18n:translate="label_group_members">Group Members</a>
+              </li>
+              <li>
+                <a href=""
+                   tal:attributes="href string:${context/absolute_url}/@@usergroup-groupdetails?groupname=${view/group}"
+                   i18n:translate="label_group_properties">Group Properties</a>
+              </li>
+              <li>
+                <a href=""
+                   tal:attributes="href string:${portal_url}/@@manage-group-portlets?key=${request/key}"
+                   i18n:translate="label_group_portlets">Group Portlets</a>
+              </li>
+              <li class="selected">
+                <a href=""
+                   tal:attributes="href string:${portal_url}/@@manage-group-dashboard?key=${request/key}"
+                   i18n:translate="label_group_dashboard">Group Dashboard</a>
+              </li>
+            </ul>
+
+            <div class="contentActions">
+              &nbsp;
+            </div>
+        </div>
+
+        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+            Portal status message
+        </div>
+
+        <div id="content">
+
+            <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard_group">
+                Edit Dashboard Portlets for <span i18n:name="group" tal:content="view/group" />
+            </h1>
+
+            <div id="content-core">
+                <a href=""
+                   class="link-parent"
+                   tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
+                   i18n:translate="label_up_to_groups_overview">
+                    Up to Groups Overview
+                </a>
+
+                <div id="dashboard">
+                    <div id="dashboard-portlets1"
+                      tal:content="structure provider:plone.dashboard1" />
+                    <div id="dashboard-portlets2"
+                      tal:content="structure provider:plone.dashboard2" />
+                    <div id="dashboard-portlets3"
+                      tal:content="structure provider:plone.dashboard3" />
+                    <div id="dashboard-portlets4"
+                      tal:content="structure provider:plone.dashboard4" />
+                </div>
+
+                <div class="visualClear"><!-- --></div>
+            </div>
+
+        </div>
+
+    </tal:main-macro>
+
+</metal:main>
+
+</body>
+</html>

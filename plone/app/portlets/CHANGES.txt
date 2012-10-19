@@ -1,0 +1,1029 @@
+Changelog
+=========
+
+2.4.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.4.0 (2012-10-16)
+------------------
+
+- Add ability to render only single portlet code with view.
+  Code basically copied from plone.app.kss
+  [vangheem]
+
+- Remove kss
+  [vangheem]
+
+- Allow for the root content item icon in the navigation portlet to be
+  displayed with CSS or an img tag.
+  [danjacka]
+
+2.3.5 (2012-09-28)
+------------------
+
+- Fix inheritance hierarchy of IPortletForm to reflect usage in z3cformhelper.
+  [elro]
+
+2.3.4 (2012-09-28)
+------------------
+
+- Tweak z3c.form add/edit forms to disable edit bar and columns.
+  [elro]
+
+2.3.3 (2012-09-27)
+------------------
+
+- Portlets are now registered for IDefaultPortletManager by default to allow
+  for easier creation of custom portlet managers with restricted portlets.
+  [elro]
+
+2.3.2 (2012-09-26)
+------------------
+
+- Fix ManagePortletsViewlet to work with KSS.
+  [elro]
+
+- Fix ManagePortletsViewlet to work with Plone 4+.
+  [elro]
+
+- Fix 'This portlet display a'.
+  [danjacka]
+
+- reverted change: refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
+  one tal:condition in ul tag.
+  [maartenkling]
+
+- add contenttype class to the a tag, like navigation
+  [maartenkling]
+
+- Don't break TinyMCE on editing parent-portlets (fixes http://dev.plone.org/ticket/12899)
+  [pbauer]
+
+- Inside Review portlet display footer link only to Reviewers.
+  Closes ticket https://dev.plone.org/ticket/6629
+  [vipod]
+
+- Use ``type`` instead of ``makeClass`` for Zope 4 compatibility.
+  [elro]
+
+- Add safety check for portletHeader links [davilima6]
+
+2.3.1 (2012-08-29)
+------------------
+
+- Fix packaging error.
+  [esteele]
+
+2.3 (2012-08-29)
+----------------
+
+- Calendar portlet links to @@search (plone.app.search) view instead of
+  deprecated search.pt.
+  [seanupton]
+
+- When navigation portlet has an explicit custom root set, clicking the portlet heading
+  goes to this content item instead of the global sitemap.
+  (Plone doesn't support section sitemaps) [miohtama]
+
+- If navigation portlet bottom level is set to a negative value, don't query navigation items at all,
+  only display portlet header and footer [miohtama]
+
+- In the portlet management interface display the assigned name of the navigation portlet if it
+  has one [miohtama]
+
+- Calendar portlet search URLs whitelist only Event portal_type in the
+  querystring, prevents non-event types from accidentally being
+  included in calendar results. [seanupton]
+
+- Navigation portlet template renders a non-site navigation root content
+  item with its apporpriate content icon, reserving the Plone site icon
+  CSS sprite for default use by a site only. [seanupton]
+
+- portlets/login.py, portlets/navigation.py:
+  Don't use list as default parameter value.
+  [kleist]
+
+- refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
+  one tal:condition in ul tag.
+  [saily]
+
+- Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
+  [toutpt]
+
+2.3a1 (2012-06-29)
+------------------
+
+- Make it possible to create portlets using z3c.form.
+  [ggozad]
+
+2.2.6 (unreleased)
+------------------
+
+- Remove hard dependency on Archetypes.
+  [davisagli]
+
+- accessibility improvements for screen readers regarding "more" links, see https://dev.plone.org/ticket/11982
+  [rmattb, applied by polyester]
+
+2.2.5 (2012-05-07)
+------------------
+
+- Changed the permission for members to be able to add portlets
+  to their dashboards. ( https://dev.plone.org/ticket/11174 )
+  [credits to buchi and jstegle, applied and tests by frapell]
+
+
+2.2.4 (2012-04-15)
+------------------
+
+- Prevent buggy RSS feed to break page display.
+  [patch by dieter, applied by kleist]
+
+- Fix inherited local portlets for objects allowing locally-assigned
+  portlets which are contained by an object that does not. [mitchellrj]
+
+2.2.3 (2011-11-24)
+------------------
+
+- Do not display 'Manage portlets' when using portal_factory.
+  https://dev.plone.org/ticket/12376
+  [runyaga]
+
+- Fixed the two high priority scenarios (global sections viewlet and nav
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
+- Reverted commit 5cb41ffea to fix #12279 and added a test for it.
+  [zupo, jcerjak]
+
+
+2.2.2 (2011-10-17)
+------------------
+
+- Fixed issue where the events, news and recent portlet would fail
+  with a setting of no items (zero) shown due to a catalog sorting
+  assertion.
+  [malthe]
+
+- Avoid empty <ul> tag in navigation_recurse.pt if bottomLevel is set.
+  [gaudenzius]
+
+- Enable possibility to delete portlets with missing implementation
+  [do3cc]
+
+- Replace use of deprecated skin template prefs_group_details with
+  @@usergroup-groupdetails.
+  [stefan]
+
+
+2.2.1 - 2011-08-08
+------------------
+- Imporove tests readability. Merged from branches/2.1
+  [gotcha]
+
+- 'placeholder' attribute for the search portlet's field instead of the custom
+  JS handling of the same functionality.
+  [spliter]
+
+2.2 - 2011-07-19
+----------------
+
+- Updated 'Advanced Search' link and form's action of the search portlet to
+  link to updated search results view at @@search.
+  [spliter]
+
+2.1.5 - 2011-06-19
+------------------
+
+- Fixed i18n regression caused by the pep8 cleanup.
+  [vincentfretin]
+
+
+2.1.4 - 2011-05-11
+------------------
+
+- Fixed navigation portlet when include top activated
+  and no navigation root selected (bug appears behind apache).
+  [thomasdesvenain]
+
+- Sort exported portlet types and portlet manager registrations by name to
+  avoid intermittent test failures.
+  [davisagli]
+
+
+2.1.3 - 2011-04-21
+------------------
+
+- Let the portlets import step depend on the content import step
+  again.  Refs http://dev.plone.org/plone/ticket/8350
+  [maurits]
+
+- Add test ``testINavigationRootWithRelativeRootSet``.
+  Cfr. http://dev.plone.org/plone/ticket/8787
+  [anthonygerrard, WouterVH]
+
+- Add MANIFEST.in.
+  [WouterVH]
+
+- Fix circular dependency in import steps.
+  This partially fixes http://dev.plone.org/plone/ticket/8350
+  [kiorky]
+
+
+2.1.2 - 2011-02-10
+------------------
+
+- Enable managing portlets of default pages.
+  This fixes http://dev.plone.org/plone/ticket/10672
+  [fRiSi]
+
+- Be more graceful, when user doesn't belong to groups - e.g. when user is
+  defined in non-PAS based top-level acl_users folder.
+  Fixes http://dev.plone.org/plone/ticket/9929
+  [thet]
+
+
+2.1.1 - 2011-01-03
+------------------
+
+- Depend on ``Products.CMFPlone`` instead of ``Plone``.
+  [elro]
+
+
+2.0.2 - 2010-12-23
+------------------
+
+- Recover from parse error on ``updated`` date.
+  [malthe]
+
+- Display full creator name in review portlet.
+  [thomasdesvenain]
+
+- Do not display portlets add select list if it is empty.
+  [thomasdesvenain]
+
+- Recent items and Review list portlets title is got by a title attribute
+  on the renderer.
+  [thomasdesvenain]
+
+- Fix the IPortletDirective schema's default edit_permission to match
+  the default that is actually supplied by the directive's implementation.
+  [davisagli]
+
+- Fix RSS portlet edge case. The feedparser may not have a 'bozo' attribute
+  if libxml2 is not present on the system.
+  [stefan]
+
+- Fix #11409: use the TTW customized view name if any.
+  [kiorky]
+
+
+2.0.1 - 2010-09-09
+------------------
+
+- Proper checkup for navigation portlet's title - we don't show it
+  unless the title is explicitly specified.
+  [spliter]
+
+
+2.0 - 2010-07-18
+----------------
+
+- Update license to GPL version 2 only.
+  [hannosch]
+
+
+2.0b11 - 2010-06-13
+-------------------
+
+- Stop abusing traditional layers to do database changes.
+  [hannosch]
+
+- Avoid deprecation warnings under Zope 2.13.
+  [hannosch]
+
+- Avoid using the deprecated five:implements directive.
+  [hannosch]
+
+- Updated to use five.formlib.
+  [hannosch]
+
+
+2.0b10 - 2010-06-03
+-------------------
+
+- Fixed an issue with the portlet calendar cache not being invalidated
+  when adding a new event in the last day of the month. This closes
+  http://dev.plone.org/plone/ticket/10598.
+  [deo]
+
+- Moved condition for navigation portlet's title to DT element. We
+  don't need empty DT in case title is not provided for the portlet.
+  [spliter]
+
+- Fix GS export of portlets assignments
+  when property is a tuple or a list
+  http://dev.plone.org/plone/ticket/10530
+  [macadames]
+
+- Remove deprecated use of tabindex.
+  [edegoute]
+
+- Fix regressions in date handling in events portlet.
+  Fixes http://dev.plone.org/plone/ticket/10506.
+  [davisagli]
+
+
+2.0b9 - 2010-05-01
+------------------
+
+- Add notice (and link to container) when managing the portlets of the default
+  item in a container. This fixes http://dev.plone.org/plone/ticket/10456
+  [dunlapm]
+
+- Fix portlets not showing for "normal" users.
+  Fixes http://dev.plone.org/plone/ticket/10461
+  [zupo, dunlapm]
+
+- Not showing inherited portlets that are blocked at an upper level.
+  Fixes http://dev.plone.org/plone/ticket/10426
+  [igbun]
+
+- Improve styling of date + location in news + event portlets
+  [jonstahl]
+
+- Use unicode up/down arrows in the @@manage-portlet view.
+  [esteele]
+
+- Make the navigation portlet hide the portal header if title is left blank.
+  Refs http://dev.plone.org/plone/ticket/10432
+  [esteele]
+
+- Fix the calendar portlet to generate links that work on non-default views
+  when logged out. Closes http://dev.plone.org/plone/ticket/10045.
+  [davisagli]
+
+
+2.0b8 - 2010-04-10
+------------------
+
+- Fix the edit manager template to include the manager id again, so that
+  KSS can update the manager when actions take place. Closes
+  http://dev.plone.org/plone/ticket/10404.
+  [davisagli]
+
+- Catch KeyError in EditPortletManagerRenderer. Now the manage-portlets
+  doesn't break on invalid portlets any longer.
+  [tom_gross]
+
+
+2.0b7 - 2010-04-07
+------------------
+
+- Convert the root (site) node to use CSS sprites in the navigation portlet.
+  [limi]
+
+- Use CSS sprites instead of individual images for core content types in the
+  navigation portlet.
+  [limi]
+
+- Add test coverage for empty type icons in the navigation portlet.
+  [rossp]
+
+
+2.0b6 - 2010-03-05
+------------------
+
+- Added navtree-section-class to li. This closes
+  http://dev.plone.org/plone/ticket/10247.
+  [hpeteragitator]
+
+- Remove a label for attribute that points to nothing, invalid HTML.
+  [rossp]
+
+- Fix invalid HTML by moving the xmlns declarations into a tag that will
+  be omitted by TAL.
+  [rossp]
+
+- Avoid ConstraintNotSatisfied error when GS-importing the default
+  navigation portlet. Fixes http://dev.plone.org/plone/ticket/10232.
+  [WouterVH, hannosch]
+
+
+2.0b5 - 2010-02-18
+------------------
+
+- Updated portlets-pageform.pt to disable columns via REQUEST variable.
+  [spliter]
+
+
+2.0b4 - 2010-02-17
+------------------
+
+- Updated @@manage-group-dashboard to the recent markup conventions.
+  References http://dev.plone.org/plone/ticket/9981 and
+  http://dev.plone.org/plone/ticket/10231.
+  [spliter]
+
+- Updated manage-dashboard.pt and manage-group.pt to use the recent markup
+  conventions.
+  References http://dev.plone.org/old/plone/ticket/9981.
+  [spliter]
+
+- Removing redundant .documentContent markup.
+  This refs http://dev.plone.org/plone/ticket/10231.
+  [limi]
+
+- Changed "manage portlets"-related templates to use markup according
+  to the recent conventions.
+  References http://dev.plone.org/plone/ticket/9981.
+  [spliter]
+
+- Change language portlet to call update() on LanguageSelector.
+  [elro]
+
+- Navtree item_icon must be accessed nocall: for later item_icon/html_tag.
+  [elro]
+
+
+2.0b3 - 2010-01-28
+------------------
+- Change group portlets and group dashboard links to point to the new
+  @@usergroup-groupmembership view.
+  [esteele]
+
+
+2.0b2 - 2010-01-25
+------------------
+
+- Don't create persistent objects during module import -- it breaks test cases
+  that are sandboxed into different ZODBs and import this module (leads to
+  ConnectionStateErrors).
+  [davisagli]
+
+- Rework page templates for group prefs pages so that they match the rest of our
+  prefs pages. Add the group dashboard link to other group prefs pages. Closes
+  http://dev.plone.org/plone/ticket/9732.
+  [esteele]
+
+- Merged r30179 from branches/1.2 (this is the only fix since 1.2 that was
+  missing in trunk): Some XHTML fixes to be also XHTML Strict compliant. See
+  http://dev.plone.org/plone/ticket/4379 (fix by keul).
+  [maurits]
+
+- Merge r30771 from branches/1.2: Support for portal-relative paths in
+  portlets.xml keys. Fixes http://dev.plone.org/plone/ticket/9764.
+  [maurits]
+
+
+2.0b1 - 2010-01-03
+------------------
+
+- Fixed edge-case in portlet import handler when using the extend attribute.
+  [hannosch]
+
+- Removed unhelpful log messages which cluttered the log during upgrades.
+  [hannosch]
+
+
+2.0a4 - 2009-12-27
+------------------
+
+- Adjusted tests to fixed IIDNormalizer semantics.
+  [hannosch]
+
+- Added missing package dependencies.
+  [hannosch]
+
+
+2.0a3 - 2009-12-21
+------------------
+
+- Fix XML validation for RSS portlets
+  [matthewwilkes]
+
+- Support local navigation root (INavigationRoot) for the previous
+  events link in events portlet.
+  Fixes http://dev.plone.org/plone/ticket/9246
+  http://dev.plone.org/plone/ticket/9668
+  [pelle]
+
+
+2.0a2 - 2009-12-02
+------------------
+
+- Point to users to @@register instead of @@join_form.
+  [esteele]
+
+- Fix the rendering of classic portlets.
+  [davisagli]
+
+- Remove the BBB code for the old style for= attributes on import of
+  portlets pre-3.1.  This was deprecated for 4.0, it now raises an error.
+  [matthewwilkes]
+
+
+2.0a1 - 2009-11-15
+------------------
+
+- Don't include <q> tag in title_manage_contextual_portlets message.
+  [vincentfretin]
+
+- Various cleanups, use our own message factory to lighten the dependency on
+  the Plone distribution.
+  [hannosch]
+
+- Added translations for Show/Hide labels in @@manage-portlets view:
+  label_show_item and label_hide_item. These msgids are shared with
+  @@manage-viewlets view to show/hide viewlets. This closes
+  http://dev.plone.org/plone/ticket/9733
+  [naro]
+
+- Introduced a new msgid title_edit_dashboard_group to translate
+  "Edit Dashboard Portlets for $group". title_edit_dashboard msgid
+  was used twice for different messages.
+  [vincentfretin]
+
+- Optimize some portlets to avoid unnecessary instructions in their
+  ``__init__`` or available methods.
+  [hannosch]
+
+- Optimized join_action in the login portlet.
+  [hannosch]
+
+- Added support for showing/hiding of all portlets (PLIP 9286).
+  [igbun]
+
+- Add support for viewing blocked portlets in the management interface (PLIP
+  9285)
+  [igbun]
+
+- Login portlet: when use_email_as_login is true, make the label 'E-mail'
+  instead of 'Login Name', as per plip 9214 (Plone 4). Should still work in
+  earlier Plone versions as well. Refs http://dev.plone.org/plone/ticket/9214.
+  [maurits]
+
+- Added support for group dashboards.
+  [optilude]
+
+- Removed last zope.app dependencies.
+  [hannosch]
+
+- Specified package dependencies.
+  [hannosch]
+
+
+1.2.1 - unreleased
+-------------------
+
+- RSS portlet: accept the feedparser.CharacterEncodingOverride
+  exception when parsing the feed as it is just a warning: the parsed
+  entries will be there.
+  [maurits]
+
+- Added missing space to tooltip in the calendar portlet.
+  Fixes http://dev.plone.org/plone/ticket/9047
+  [lzdych]
+
+- Navigation(s) some time disappeared when dealing with multiple navigations
+  pointing to roots with common starting ids like: "abc", "abcde", "abcdefg".
+  Thanks to keul for patch.
+  Fixes http://dev.plone.org/plone/ticket/9405
+  [pelle]
+
+- Fixed base.Assignment - typo
+  Fixes http://dev.plone.org/plone/ticket/9350
+  [naro]
+
+- Support for portal-relative paths in portlets.xml keys.
+  Fixes http://dev.plone.org/plone/ticket/9437
+  [naro]
+
+- Some XHTML fixes to be also XHTML Strict compliant.
+  See http://dev.plone.org/plone/ticket/4379
+  [keul]
+
+
+1.2 - July 13, 2009
+-------------------
+
+- Fix ComponentLookupError on portlet management screen for special use cases
+  such as collective.portletpage, where not all content have the same
+  managers.
+  [optilude]
+
+- Template cleanup: add missing xmlns declarations and fix invalid markup.
+  [wichert]
+
+
+1.2rc3 - April 8, 2009
+----------------------
+
+- Correct import error in editmanager.py.
+  [optilude]
+
+- Correct case in the feedparser dependency.
+  [wichert]
+
+
+1.2rc1 - March 27, 2009
+-----------------------
+
+- Added a permission check to portlets' add view.
+  Fixes http://dev.plone.org/plone/ticket/8510
+  [optilude]
+
+
+1.2b1 - March 7, 2009
+---------------------
+
+- Fixed the various portlets to no longer use portal_url, but use the
+  navigation_root_url from the plone_portal_state view. Changed the
+  manage-dashboard view to be available on an INavigationRoot.
+  This implements http://plone.org/products/plone/roadmap/234
+  [calvinhp]
+
+- Removed portlets/feedparser.py.  Added FeedParser as external
+  requirement in setup.py instead of shipping with it.
+  (This is Plip 197: http://plone.org/products/plone/roadmap/197)
+  [maurits]
+
+- Added title option to the RSS portlet.
+  [davisagli]
+
+- Clean-up unnecessary variable declarations within navigation_recurse.pt.
+  Let the default view on the Link type decide what's best
+  [andrewb]
+
+
+1.1.7 (2011-05-19)
+------------------
+
+- Fixed exportimport to support xml CDATA, thanks to lucie
+  [calvinhp]
+
+
+1.1.6 - 2009-03-07
+------------------
+
+- Fixed new portlet template footer so it will validate, fixes
+  http://dev.plone.org/plone/ticket/8769 thanks to bandigarf
+  [calvinhp]
+
+- Made the test independent of default content created in a site. This
+  allows them to pass in both Plone 3.x and 4.x.
+  [hannosch]
+
+- Added inherited portlets to manage view. This implements
+  http://dev.plone.org/plone/ticket/8426.
+  [malthe]
+
+- Modified a macro call in portlets-pageform.pt for forwards
+  compatibility with Zope 2.12.
+  [davisagli]
+
+- Fixed SyntaxErrors in test_cache and test_configuration.
+  [hannosch]
+
+- Fixed Review List template that was making a bad call to
+  pretty_title_or_id. This closes http://dev.plone.org/plone/ticket/8401.
+  [dunlapm]
+
+
+1.1.5 (2008-08-18)
+------------------
+
+- Refactored the review portlet a bit and added the review state dependent
+  color coding to it. This closes http://dev.plone.org/plone/ticket/6957.
+  [hannosch]
+
+- Sort the addable portlets in the management screen by their title.
+  This closes http://dev.plone.org/plone/ticket/8227.
+  [hannosch]
+
+- Disabled two tests for a not yet implemented feature regarding better
+  i18n support.
+  [hannosch]
+
+
+1.1.3 (2008-07-07)
+------------------
+
+- Fix an accidental bug I introduced earlier: restore portletBottomLeft
+  and portletBottomLeft spans in the news portlets with a more-news
+  link.
+  [wichert]
+
+
+1.1.2 (2008-06-01)
+------------------
+
+- Fixed i18n markup.
+  Fixes http://dev.plone.org/plone/ticket/7068#comment:4
+  [naro]
+
+- The portletNavigationTree class was used for both the dl and the top
+  ul. This makes things inconsistent since other levels in the tree
+  used a navTree class for the ul, and uses the same class for two
+  semantically very different items. Fixed by using navTree for the top
+  ul as well.
+  [wichert]
+
+
+1.1.0 (2008-04-20)
+------------------
+
+- Added test for #7942. The fix is in plone.app.layout.
+  [optilude]
+
+- Fixed #8025 so that the named feeds now work to. Changed the package to
+  use a different field.
+  [mrtopf]
+
+- ViewPageTemplate is meant to be used as a class variable and only
+  works as instance variable by accident in current Zope. This fixes
+  errors in Philipp and Hanno's aq refactor branch of Zope2.
+  [wichert]
+
+- Add a test to demonstrate #6100 and #7860. This is fixed in
+  plone.portlets already.
+  [optilude]
+
+- Use the new GenericSetup.components blacklist feature when available.
+  This gives our exportimport code full control over all components
+  providing either IPortletType, IPortletManager or
+  IPortletManagerRenderer. This fixes
+  http://dev.plone.org/plone/ticket/7149.
+  [hannosch]
+
+- Fix invalid leading space in all 'Up to Site Setup' links.
+  [wichert]
+
+- Added tests for the (not yet implemented) i18n markup support in
+  portlets.xml.
+  [hannosch]
+
+- Added missing i18n markup to portlets.xml.
+  [hannosch]
+
+- label_group_members was used twice.  Renamed the second one to
+  label_group_portlets (which is in plone.pot already).
+  [maurits]
+
+- Removed last remains of caching for the navigation portlet.
+  This closes http://dev.plone.org/plone/ticket/7726.
+  [hannosch]
+
+- Added first day of week to calendar portlet cache key.
+  [hannosch]
+
+- Added option to purge all assignments specified by category and key.
+  [fschulze]
+
+- Added option to remove individual portal managers and purge global
+  portlet manager assignments as well as assignments to the site root
+  with GS profiles.
+  [fschulze]
+
+- Added option to purge portlet configuration in extension profiles.
+  [fschulze]
+
+
+1.1.0a1 (2008-03-09)
+--------------------
+
+- Fixed bug that caused includeTop not to be set when a navtree portlet
+  was first added.
+  http://dev.plone.org/plone/ticket/7798.
+  [optilude]
+
+- Made the language portlet's 'available' property work properly, avoiding
+  ugly blank columns.
+  [optilude]
+
+- Made sure the manage portlets div is not shown to anonymous users.
+  http://dev.plone.org/plone/ticket/7911.
+  [optilude]
+
+- Optimised the news portlet template.
+  http://dev.plone.org/plone/ticket/7760
+  [optilude]
+
+- Made the <plone:portletRenderer /> directive more forgiving.
+  http://dev.plone.org/plone/ticket/7703
+  [optilude]
+
+- Fixed a silly bug in the search portlet.
+  http://dev.plone.org/plone/ticket/7388.
+  [optilude]
+
+- Made it possible to remove single portlet assignments by using the
+  "remove" attribute.
+  [fschulze]
+
+- PLIP203: Add the ability to export and import portlet assignments and
+  blacklisting.
+  [optilude]
+
+- PLIPs 205 and 218: Allow registering portlet types to multiple portlet
+  manager interfaces, require portlet types to be explicitly registered
+  for portlet manager interfaces, enable modifying registrations through
+  GenericSetup, and restrict most default Plone portlet types to left/
+  right/dashboard columns.
+  [sirgarr]
+
+- PLIP207: Allow custom portlet managers, i.e., allow specifying an
+  alternative portlet manager class through GenericSetup.
+  [sirgarr]
+
+
+1.0.7 (UNRELEASED)
+------------------
+
+- Allow non-ASCII object paths while calculating cache key for
+  portlets.  This fixes http://dev.plone.org/plone/ticket/7086
+  [nouri]
+
+- Make the language portlet handle languages without a native name
+  correctly.
+  [wichert]
+
+- Do not link to news_listing from the news portlet: that template has
+  been removed from Plone. This fixes
+  http://dev.plone.org/plone/ticket/7872
+  [wichert]
+
+
+1.0.6
+-----
+
+- Sort the languages in the language portlet using their native name.
+  [wichert]
+
+- Fixed None value in query_string in calendar portlet. This closes
+  http://dev.plone.org/plone/ticket/7331.
+  [hannosch]
+
+- Fixed logic error in getRootPath in the last change.
+  [hannosch]
+
+- Only show the language portlet if more than one language is available.
+  This brings it in sync with the language selection viewlet.
+  [wichert]
+
+- Fix missing variable on the language portlet renderer. This fixes
+  NuPlone which relies on the language selector portlet.
+  [wichert]
+
+- Fixed undefined variable name introduced in the last change.
+  [hannosch]
+
+- Correct getRootPath to not add a trailing / to paths if there
+  are no context subelements. This was breaking webcouturier.dropdownmenu
+  in situations where one of the sections was a navigation root.
+  [wichert]
+
+
+1.0.5
+-----
+
+- Made absolute_url() work properly on the custom adding views. This is
+  necessary for the <base /> URL to be set correctly.
+  [optilude]
+
+- Handle RSS feed entries which do not have an update timestamp correctly.
+  This fixes http://dev.plone.org/plone/ticket/7515
+  [wichert]
+
+- Provide proper 'id' implementations for assignment mappings and
+  assignments. This makes absolute_url() work properly.
+  [optilude]
+
+
+1.0.2
+-----
+
+- Always try to refresh the RSS feed when rendering it instead of waiting
+  for KSS to do trigger an updated. This is needed for the very common
+  situation where most users are anonymous and the the feeds would expire
+  (or never be loaded) and never (re)loaded.
+  [wichert]
+
+- Add a language selection portlet.
+  [wichert]
+
+- Fixed i18n markup bug in manage-content-type.pt.
+  [hannosch]
+
+- Made prevMonth and nextMonth links in calendar portlet to work without
+  KSS. This closes http://dev.plone.org/plone/ticket/7052.
+  [hannosch]
+
+- Make render_cachekey include the manager and assignment names, otherwise
+  portlets that happen to have the same brains in their _data have the same
+  cachekey.
+  [ldr]
+
+
+1.0.1
+-----
+
+- Remove use of login javascript methods.
+  [ree]
+
+- Change event portlet to use getIcon. This fixes
+  http://dev.plone.org/plone/ticket/5075.
+  [limi]
+
+
+1.0
+---
+
+- Add footer CSS classes to the search portlet. This fixes
+  http://dev.plone.org/plone/ticket/6908.
+  [wichert]
+
+- Verified translation of month names on the calendar portlet. Found a bit
+  of missing i18n markup in the process. This closes
+  http://dev.plone.org/plone/ticket/6880.
+  [hannosch]
+
+- Wrapped cached render results with a xhtml_compress method taken from
+  plone.memoize. This allows you to plug in whitespace removal libraries.
+  [hannosch]
+
+- Refactored calendar portlet and moved all calculations to the update
+  method instead of doing it in its init.
+  [hannosch]
+
+- Use relative links on the calendar portlet for the previous and next
+  links, so the portlet can be cached independent of the context.
+  [hannosch]
+
+- Cleaned up some templates, added missing i18n markup. This closes
+  http://dev.plone.org/plone/ticket/6721.
+  [hannosch]
+
+- Fixed erroneous wording in add screen for classicportlet.
+  Fixes http://dev.plone.org/plone/ticket/6703
+  [elvix]
+
+- Extended the portlet migration machinery to exclude the deprecated
+  related and language portlets. This refs
+  http://dev.plone.org/plone/ticket/6545.
+  [hannosch]
+
+- Cleaned and speeded up calendar portlet. Extinguished some unneeded
+  uses of the DateTime module.
+  [hannosch]
+
+- Fixed tests to deal with the new default start_level of the navigation
+  portlet.
+  [hannosch]
+
+- Made the workflow state to show configurable for the news and events
+  portlets. This closes http://dev.plone.org/plone/ticket/1395.
+  [hannosch]
+
+- Changed the default navigation tree configuration to start at level 1,
+  thus there is no longer an overlap with the global navigation section at
+  the top. If you want the old behavior back, configure the portlet to
+  start at level 0.
+  [limi]
+
+- Updated migration code to handle more converted portlets.
+  [hannosch]
+
+- Do now show the login portlet if there is no login/password PAS
+  extractor configured.
+  [wichert]
+
+- Changed 'More news...' to 'More...' on RSS portlet as RSS feeds are not
+  always news related. This closes http://dev.plone.org/plone/ticket/6228.
+  [sparcd]
+
+- Added <thead> tags to calendar portlet because the <tbody> tags were
+  causing it to fail W3C validation.
+  [sparcd]
+
+- Duplicate classes in login.pt were causing this to fail W3C HTML checks.
+  Have merged the classes as this has a style="display:none" on it anyway.
+  This closes http://dev.plone.org/plone/ticket/6241.
+  [sparcd]
+
+- Replaced getToolByName with getUtility.
+  [hannosch]
+
+- Moved class name from a to li tag for Cornelius (NuPlone skin).
+  [jvloothuis]
+
+- Make URLs more ploneish, by removing .html at the end. .html really
+  should be reserved for when people create content that way, e.g. if
+  uploading from WebDAV. :)
+  [optilude]
+
+- Initial implementation.
+  [optilude]

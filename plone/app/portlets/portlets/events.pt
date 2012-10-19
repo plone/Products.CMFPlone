@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletEvents"
+    i18n:domain="plone">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href=""
+           class="tile"
+           tal:define="all_events_link view/all_events_link"
+           tal:omit-tag="not:all_events_link"
+           tal:attributes="href all_events_link"
+           i18n:translate="box_events">
+            Upcoming Events
+        </a>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:events tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                            DateTime python:modules['DateTime'].DateTime"
+                tal:repeat="obj view/published_events">
+    <dd class="portletItem"
+        tal:define="oddrow repeat/obj/odd;
+                    plone_view context/@@plone;
+                    getIcon nocall:plone_view/getIcon;
+                    item_icon python:getIcon(obj);
+                    item_startdate python:toLocalizedTime(obj.start);
+                    item_starttime python:toLocalizedTime(obj.start,time_only=1);
+                    item_enddate python:toLocalizedTime(obj.end);
+                    item_endtime python:toLocalizedTime(obj.end,time_only=1);
+                    item_sametime python: obj.start == obj.end;
+                    item_samedate python: obj.end - obj.start &lt; 1"
+        tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+        <a href="#"
+           class="tile"
+           tal:attributes="href obj/getURL;
+                           title obj/Description">
+            <img tal:replace="structure item_icon/html_tag" />
+            <span tal:replace="obj/pretty_title_or_id">
+             Some Event
+            </span>
+        </a>
+            <span class="portletItemDetails">
+                <span
+                 tal:condition="python: item_sametime"
+                 tal:content="string:${item_startdate} ${item_starttime}">
+                May 5
+                </span>
+                <span
+                 tal:condition="python: item_samedate and not item_sametime"
+                 tal:content="string:${item_startdate} ${item_starttime} - ${item_endtime}">
+                May 5
+                </span>
+                <span
+                 tal:condition="python: not item_sametime and not item_samedate"
+                 tal:content="string:${item_startdate} - ${item_enddate}">
+                May 5
+                </span>
+                <span tal:condition="obj/location"> &mdash;
+                    <tal:location content="obj/location">Location</tal:location>
+                </span>
+            </span>
+    </dd>
+    </tal:events>
+
+    <dd class="portletFooter"
+           tal:condition="view/prev_events_link">
+        <a href=""
+           tal:attributes="href view/prev_events_link"
+           class="tile">
+            <span i18n:translate="box_previous_events">
+                Previous events&hellip;
+            </span>
+        </a>
+    </dd>
+
+    <dd class="portletFooter">
+        <a href=""
+           class="tile"
+           tal:attributes="href view/all_events_link"
+           i18n:translate="box_upcoming_events">
+                Upcoming events&hellip;
+        </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</html>

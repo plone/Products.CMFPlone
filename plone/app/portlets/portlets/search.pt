@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag="">
+<dl class="portlet portletSearch"
+    i18n:domain="plone">
+
+  <dt class="portletHeader">
+      <span class="portletTopLeft"></span>
+      <a class="tile"
+         tal:attributes="href view/search_action"
+         i18n:translate="box_search">Search</a>
+      <span class="portletTopRight"></span>
+  </dt>
+
+    <dd class="portletItem">
+      <form id="searchform" action="search"
+            tal:define="livesearch view/enable_livesearch;"
+            tal:attributes="action view/search_action">
+        <div class="LSBox">
+          <input class="searchField"
+              name="SearchableText"
+              type="text"
+              size="15"
+              title="Search Site"
+              placeholder="Search Site"
+              i18n:attributes="title title_search_title;
+                               placeholder title_search_site"
+              tal:attributes="value request/SearchableText|nothing;
+                              class python:livesearch and 'searchField portlet-search-gadget' or 'searchField portlet-search-gadget-nols'"
+              />
+          <input class="searchButton"
+              type="submit"
+              value="Search"
+              i18n:attributes="value label_search;"/>
+
+          <div class="LSResult" style="" tal:condition="livesearch">
+            <div class="LSShadow"></div>
+          </div>
+        </div>
+      </form>
+      <div class="visualClear"><!-- --></div>
+    </dd>
+
+    <dd class="portletFooter">
+        <a href="#"
+         class="tile"
+         tal:attributes="href view/search_action"
+         i18n:translate="label_advanced_search">
+        Advanced Search&hellip;
+        </a>
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+</dl>
+</html>

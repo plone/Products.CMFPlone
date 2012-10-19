@@ -1,0 +1,39 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="plone.app.portlets">
+
+  <!-- Note: These permissions are also set up in the rolemap.xml GenericSetup
+             importer in CMFPlone.
+
+      Portlet add and edit forms, as well as move/delete operations are
+      actually protected by the less secure ManageOwnPortlets, with additional
+      checks in the view. This is annoying, but it becomes very hard to
+      manage security properly for the dashboard otherwise.
+
+      These checks are made using an IPortletPermissionChecker adapter.
+
+      A better way of doing this would probably be to use the Owner role
+      against the assignment mappings and let Manage portlets be controlled
+      by that, but managing those roles properly w.r.t. the namespace
+      traveral adapters and acquisition is not fun.
+     -->
+
+  <permission
+    id="plone.app.portlets.ManagePortlets"
+    title="Portlets: Manage portlets"
+    />
+
+  <permission
+    id="plone.app.portlets.ManageOwnPortlets"
+    title="Portlets: Manage own portlets"
+    />
+
+  <permission
+     id="plone.app.portlets.ViewDashboard"
+     title="Portlets: View dashboard"
+     />
+
+  <adapter factory=".checker.DefaultPortletPermissionChecker" />
+  <adapter factory=".checker.UserPortletPermissionChecker" />
+  <adapter factory=".checker.GroupDashboardPortletPermissionChecker" />
+
+</configure>

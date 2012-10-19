@@ -1,0 +1,229 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+    <!-- Some things do not make sense in the breadcrumbs. -->
+    <class class="..portlets.base.Assignment">
+      <implements interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs" />
+    </class>
+
+    <class class="..storage.PortletAssignmentMapping">
+      <implements interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs" />
+    </class>
+
+    <!-- Make a special renderer for the columns so we can control them
+      with a template
+    -->
+    <adapter
+      factory="..manager.ColumnPortletManagerRenderer"
+      provides="plone.portlets.interfaces.IPortletManagerRenderer"
+      />
+
+    <adapter
+      factory="..manager.DashboardPortletManagerRenderer"
+      provides="plone.portlets.interfaces.IPortletManagerRenderer"
+      />
+
+    <!-- Namespace traversal adapters for various types of portlets -->
+    <adapter
+        factory=".traversal.ContextPortletNamespace"
+        name="contextportlets"
+        />
+    <adapter
+        factory=".traversal.DashboardNamespace"
+        name="dashboard"
+        />
+    <adapter
+        factory=".traversal.GroupPortletNamespace"
+        name="groupportlets"
+        />
+    <adapter
+        factory=".traversal.GroupDashboardNamespace"
+        name="groupdashboard"
+        />
+    <adapter
+        factory=".traversal.ContentTypePortletNamespace"
+        name="contenttypeportlets"
+        />
+
+    <!-- Portlet management pages -->
+
+    <browser:page
+        for="*"
+        name="manage-portlets-macros"
+        class=".manage.ManageContextualPortlets"
+        template="templates/edit-manager-macros.pt"
+        permission="plone.app.portlets.ManageOwnPortlets"
+        />
+
+    <browser:pages
+      for="plone.portlets.interfaces.ILocalPortletAssignable"
+      class=".manage.ManageContextualPortlets"
+      permission="plone.app.portlets.ManagePortlets"
+      >
+
+      <browser:page
+        name="manage-portlets"
+        template="templates/manage-contextual.pt"
+        />
+
+      <browser:page
+        name="convert-legacy-portlets"
+        attribute="convert_legacy_portlets"
+        />
+
+      <browser:page
+        name="set-portlet-blacklist-status"
+        attribute="set_blacklist_status"
+        />
+
+    </browser:pages>
+
+    <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      class=".manage.ManageDashboardPortlets"
+      name="manage-dashboard"
+      template="templates/manage-dashboard.pt"
+      permission="plone.app.portlets.ManageOwnPortlets"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      class=".manage.ManageContentTypePortlets"
+      name="manage-content-type-portlets"
+      template="templates/manage-content-type.pt"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      class=".manage.ManageGroupPortlets"
+      name="manage-group-portlets"
+      template="templates/manage-group.pt"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+
+    <browser:page
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      class=".manage.ManageGroupDashboardPortlets"
+      name="manage-group-dashboard"
+      template="templates/manage-group-dashboard.pt"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+
+    <!-- Renderer for the columns in edit mode -->
+    <adapter
+        factory=".editmanager.EditPortletManagerRenderer"
+        provides="plone.portlets.interfaces.IPortletManagerRenderer"
+        />
+    <adapter
+        factory=".editmanager.ContextualEditPortletManagerRenderer"
+        provides="plone.portlets.interfaces.IPortletManagerRenderer"
+        />
+    <adapter
+        factory=".editmanager.DashboardEditPortletManagerRenderer"
+        provides="plone.portlets.interfaces.IPortletManagerRenderer"
+        />
+
+
+    <!-- Operations on portlets when in edit mode -->
+    <browser:pages
+      for="plone.portlets.interfaces.IPortletAssignmentMapping"
+      class=".editmanager.ManagePortletAssignments"
+      permission="plone.app.portlets.ManageOwnPortlets"
+      >
+
+      <browser:page
+        name="delete-portlet"
+        attribute="delete_portlet"
+        />
+
+      <browser:page
+        name="move-portlet-up"
+        attribute="move_portlet_up"
+        />
+
+      <browser:page
+        name="move-portlet-down"
+        attribute="move_portlet_down"
+        />
+
+      <browser:page
+        name="toggle-visibility"
+        attribute="toggle_visibility"
+        />
+
+    </browser:pages>
+
+    <!-- Adding view for portlet assignments -->
+    <browser:view
+      for="plone.portlets.interfaces.IPortletAssignmentMapping"
+      name="+"
+      class=".adding.PortletAdding"
+      allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+
+    <browser:view
+      for="plone.app.portlets.interfaces.IUserPortletAssignmentMapping"
+      name="+"
+      class="plone.app.portlets.browser.adding.PortletAdding"
+      allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
+      permission="plone.app.portlets.ManageOwnPortlets" />
+
+
+    <class class=".adding.PortletAdding">
+      <require
+        permission="plone.app.portlets.ManagePortlets"
+        interface=".interfaces.IPortletAdding" />
+    </class>
+
+    <!-- Get pretty templates on our add and edit pages -->
+    <configure package="Products.CMFDefault.skin">
+
+      <browser:page
+        name="five_template"
+        for="plone.portlets.interfaces.IPortletAssignment"
+        template="five_template.pt"
+        permission="zope2.View"
+        />
+
+      <browser:page
+        name="five_template"
+        for="plone.portlets.interfaces.IPortletAssignmentMapping"
+        template="five_template.pt"
+        permission="zope2.View"
+        />
+
+      <browser:page
+        name="five_template"
+        for="plone.app.portlets.browser.interfaces.IPortletAdding"
+        template="five_template.pt"
+        permission="zope2.View"
+        />
+
+    </configure>
+
+    <!-- Default page layout for portlet add/edit forms -->
+    <adapter
+      for=".interfaces.IPortletForm"
+      factory=".formhelper.portlets_named_template_adapter"
+      name="default"
+      provides="zope.formlib.namedtemplate.INamedTemplate"
+      />
+
+    <!-- Resources -->
+    <browser:resource
+        name="manage-portlets.js"
+        file="manage-portlets.js"
+        />
+
+    <browser:page
+        for="*"
+        name="render-portlet"
+        class=".utils.PortletUtilities"
+        attribute="render_portlet"
+        permission="zope2.View"
+        />
+
+</configure>
