@@ -32,7 +32,6 @@ setup(name='plone.app.layout',
       ]),
       install_requires=[
         'setuptools',
-        'plone.app.controlpanel',
         'plone.app.portlets',
         'plone.app.viewletmanager>=1.2',
         'plone.i18n',

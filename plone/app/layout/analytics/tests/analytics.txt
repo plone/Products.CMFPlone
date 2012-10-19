@@ -14,8 +14,7 @@ Now we can instantiate the manager.
 
 Set analytics (webstats_js) code through the controlpanel
 
-    >>> from plone.app.controlpanel.site import ISiteSchema
-    >>> props = ISiteSchema(self.portal)
+    >>> props = self.portal.portal_properties.site_properties
     >>> props.webstats_js = u"<script>window.title='Hello'</script>"
     >>> manager.update()
     >>> text = manager.render()
