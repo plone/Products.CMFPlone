@@ -1,0 +1,24 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="plone.app.users">
+
+    <include package="plone.app.controlpanel" />
+    <include package="Products.CMFCore" file="permissions.zcml" />
+
+    <utility provides=".userdataschema.IUserDataSchemaProvider"
+             factory=".userdataschema.UserDataSchemaProvider"/>
+
+    <include package=".browser" />
+
+    <browser:page
+      name="member-registration"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".registration.RegistrationControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      />
+
+    <adapter factory=".registration.RegistrationControlPanelAdapter"/>
+
+</configure>

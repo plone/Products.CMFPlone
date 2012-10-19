@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+
+<body>
+    <metal:body fill-slot="body">
+
+        <div id="content">
+            <tal:mailhost tal:condition="view/showForm">
+                <div metal:use-macro="context/base-pageform.html/form">
+                   <tal:came_from metal:fill-slot="extra_info">
+                     <input tal:define="came_from request/form/came_from|nothing"
+                            tal:condition="came_from"
+                            type="hidden"
+                            name="came_from"
+                            tal:attributes="value came_from" />
+                   </tal:came_from>
+                </div>
+            </tal:mailhost>
+
+            <tal:nomailhost tal:condition="not:view/showForm">
+
+                <h1 class="documentFirstHeading"
+                    i18n:translate=""
+                    tal:content="view/label" />
+
+                <div class="documentDescription">
+                    This site doesn't have a valid email setup, so you
+                    cannot register at this time.
+                </div>
+
+            </tal:nomailhost>
+        </div>
+
+    </metal:body>
+</body>
+</html>

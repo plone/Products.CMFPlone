@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1);
+                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+</head>
+
+<body>
+    <div metal:fill-slot="body" id="content">
+
+      <div metal:use-macro="context/base-pageform.html/form" />
+        <!--tal:nomailhost tal:condition="not:view/showForm">
+            <div metal:use-macro="context/base-pageform.html/form" >
+                <div metal:fill-slot="viewspace">
+                    <h1 class="documentFirstHeading"
+                        i18n:translate=""
+                        tal:content="view/label" />
+
+                    <p class="documentDescription"
+                       i18n:translate="help_cannot_add_new_user">
+                      In the
+                      <a i18n:name="security_link" i18n:translate=""
+                         tal:attributes="href string:${context/portal_url}/@@security-controlpanel">
+                      Security settings</a>
+                      you have requested to validate emails of new
+                      users.  But this site doesn't have a valid email
+                      setup, so you cannot register users at this
+                      time.  You can fix this in the
+                      <a i18n:name="mail_link" i18n:translate=""
+                         tal:attributes="href string:${context/portal_url}/@@mail-controlpanel">
+                      Mail settings</a>.
+                    </p>
+                </div>
+            </div>
+        </tal:nomailhost-->
+
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+
+</head>
+
+<body>
+    <div class="cell width-full position-0"
+         tal:define="getmacro nocall: context/account-macro;
+                     navigation_root_url context/@@plone_portal_state/navigation_root_url;"
+         metal:fill-slot="content">
+
+
+        <div id="edit-bar">
+
+            <h5 class="hiddenStructure"
+                i18n:translate="heading_views">Views</h5>
+
+            <ul class="contentViews"
+                id="content-views"
+                tal:define="view_name view/__name__"
+                i18n:domain="plone">
+
+                <li id="contentview-user_data-personal-information"
+                    tal:define="link view/getPersonalInfoLink;
+                                selected python:view_name=='personal-information'"
+                    tal:condition="link|nothing"
+                    tal:attributes="class python:selected and 'selected' or 'plain'">
+                    <a href=""
+                       tal:attributes="href string:${navigation_root_url}/${link}"
+                       i18n:translate="title_personal_information_form">
+                        Personal Information
+                    </a>
+                </li>
+
+                <li id="contentview-user_data-personal-preferences"
+                    tal:define="link view/getPersonalPrefsLink;
+                                selected python:view_name=='personal-preferences';"
+                    tal:condition="link|nothing"
+                    tal:attributes="class python:selected and 'selected' or 'plain'">
+                    <a href=""
+                       tal:attributes="href string:${navigation_root_url}/${link}"
+                       i18n:translate="">
+                        Personal Preferences
+                    </a>
+                </li>
+
+                <li id="contentview-user_data-change-password"
+                    tal:define="link view/getPasswordLink;
+                                selected python:view_name=='change-password';"
+                    tal:condition="link|nothing"
+                    tal:attributes="class python:selected and 'selected' or 'plain'">
+                    <a href=""
+                       tal:attributes="href string:${navigation_root_url}/${link}"
+                       i18n:translate="label_password">
+                        Password
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="contentActions">&nbsp;</div>
+        </div>
+
+       <metal:use_form use-macro="python: getmacro('main')"/>
+
+    </div>
+</body>
+</html>

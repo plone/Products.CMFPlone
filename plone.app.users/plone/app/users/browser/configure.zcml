@@ -1,0 +1,82 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="plone">
+
+    <!-- Join form definition -->
+    <browser:page
+      name="register"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      class=".register.RegistrationForm"
+      permission="cmf.AddPortalMember"
+      />
+
+    <browser:page
+      name="new-user"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      class=".register.AddUserForm"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      />
+
+    <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="change-password"
+      class=".personalpreferences.PasswordAccountPanel"
+      permission="cmf.SetOwnPassword"
+      />
+
+    <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="account-macro"
+      class=".account.AccountPanelView"
+      attribute="getMacro"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="personal-preferences"
+      class=".personalpreferences.PersonalPreferencesPanel"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="user-preferences"
+      class=".personalpreferences.PersonalPreferencesConfiglet"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      />
+
+    <browser:page
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="personal-information"
+      class=".personalpreferences.UserDataPanel"
+      permission="cmf.SetOwnProperties"
+      />
+
+    <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="user-information"
+      class=".personalpreferences.UserDataConfiglet"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      />
+
+    <utility provides="zope.schema.interfaces.IVocabularyFactory"
+             component=".register.getGroupIds"
+             name="Group Ids"/>
+
+    <adapter
+      provides=".personalpreferences.IPersonalPreferences"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      factory=".personalpreferences.PersonalPreferencesPanelAdapter"
+      />
+    <adapter
+      provides="..userdataschema.IUserDataSchema"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      factory=".personalpreferences.UserDataPanelAdapter"
+      />
+    <adapter factory=".personalpreferences.PasswordPanelAdapter" />
+
+
+</configure>

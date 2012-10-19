@@ -1,0 +1,97 @@
+Admin modifies personal preferences thru 'Users and groups'
+---------------------------------------------------------------------
+
+An admin can modify user preferences thru the @@user-preferences form in
+Users and Groups config page.
+
+
+So let's login as Plone admin:
+    >>> self.browser.open('http://nohost/plone/')
+    >>> self.browser.getLink('Log in').click()
+    >>> self.browser.getControl('Login Name').value = 'admin'
+    >>> self.browser.getControl('Password').value = 'secret'
+    >>> self.browser.getControl('Log in').click()
+
+Let's see if we can navigate to the user information form in Users and groups
+    >>> self.browser.getLink('Site Setup').click()
+    >>> self.browser.getLink('Users and Groups').click()
+    >>> self.browser.getLink('(test_user_1_)').click()
+    >>> self.browser.getLink('Personal Preferences').click()
+    >>> self.browser.url
+    'http://nohost/plone/@@user-preferences?userid=test_user_1_'
+
+We have these controls in the form:
+
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value
+    ['']
+    >>> self.browser.getControl(name='form.ext_editor').value
+    False
+    >>> self.browser.getControl(name='form.language').value
+    ['']
+
+
+Modifying values
+----------------
+
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value = ['TinyMCE']
+    >>> self.browser.getControl(name='form.ext_editor').value = True
+    >>> self.browser.getControl(name='form.language').value = ['en']
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Changes saved' in self.browser.contents
+    True
+
+Verify that the settings have actually been
+changed:
+
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> marker = object()
+    >>> member.getProperty('wysiwyg_editor', marker)
+    'TinyMCE'
+    >>> member.getProperty('ext_editor', marker)
+    True
+    >>> member.getProperty('language', marker)
+    'en'
+
+And that the form still has the according values:
+
+    >>> self.browser.open("http://nohost/plone/@@user-preferences?userid=test_user_1_")
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value
+    ['TinyMCE']
+    >>> self.browser.getControl(name='form.ext_editor').value
+    True
+    >>> self.browser.getControl(name='form.language').value
+    ['en']
+
+
+Clearing values
+---------------
+
+Check that empty or False values do get stored.
+
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value = ['']
+    >>> self.browser.getControl(name='form.ext_editor').value = False
+    >>> self.browser.getControl(name='form.language').value = ['']
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> 'Changes saved' in self.browser.contents
+    True
+
+Verify that the settings have actually been
+changed:
+
+    >>> member = self.membership.getMemberById('test_user_1_')
+    >>> member.getProperty('wysiwyg_editor', marker)
+    ''
+    >>> member.getProperty('ext_editor', marker)
+    False
+    >>> member.getProperty('language', marker)
+    ''
+
+And that the form still has the according values:
+
+    >>> self.browser.open("http://nohost/plone/@@user-preferences?userid=test_user_1_")
+    >>> self.browser.getControl(name='form.wysiwyg_editor').value
+    ['']
+    >>> self.browser.getControl(name='form.ext_editor').value
+    False
+    >>> self.browser.getControl(name='form.language').value
+    ['']

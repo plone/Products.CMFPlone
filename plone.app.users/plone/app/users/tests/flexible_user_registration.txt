@@ -1,0 +1,74 @@
+Testing the flexible user registration
+======================================
+
+    >>> browser = self.browser
+
+First things first... turn on self-registration so that we can see the
+@@register form. Also, let users select their own password so we don't
+depend on a mail server properly set-up:
+    >>> browser.open('http://nohost/plone/login_form')
+    >>> browser.getControl('Login Name').value = 'admin'
+    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Log in').click()
+    >>> browser.open('http://nohost/plone/@@security-controlpanel')
+    >>> browser.getControl('Enable self-registration').selected = True
+    >>> browser.getControl('Let users select their own passwords').selected = True
+    >>> browser.getControl('Save').click()
+    >>> 'Changes saved' in browser.contents
+    True
+
+Check that the site admin has a link to the configlet in the control panel.
+    >>> browser.open('http://nohost/plone/plone_control_panel')
+    >>> browser.getLink('Users and Groups').click()
+    >>> 'Member Registration' in browser.contents
+    True
+    >>> link = browser.getLink(url='http://nohost/plone/@@member-registration')
+    >>> link
+    <Link ...>
+    >>> link.click()
+    >>> 'Registration settings' in browser.contents
+    True
+
+"Location" and "Home page" are not in the form by default.
+    
+    >>> form = browser.getForm(action='http://nohost/plone/@@member-registration')
+    >>> user_registration_fields = form.getControl(name='form.user_registration_fields.to')
+    >>> 'location' in user_registration_fields.displayOptions
+    False
+    >>> 'home_page' in user_registration_fields.displayOptions
+    False
+
+Let's add home_page to the list of registration form fields.
+(Setting this by hand since add/remove widget doesn't work properly without javascript)
+    >>> portal.portal_properties.site_properties._updateProperty('user_registration_fields', ['fullname', 'username', 'email', 'password', 'home_page'])
+
+It should show up at the end of the form.
+    >>> browser.open('http://nohost/plone/@@register')
+    >>> browser.contents
+    '...User Name...Home page...'
+    
+Check that 'home_page' is now in the right box (enabled registration form fields).
+
+    >>> browser.open('http://nohost/plone/@@member-registration')
+    >>> form = browser.getForm(action='http://nohost/plone/@@member-registration')
+    >>> enabled_fields = form.getControl(name='form.user_registration_fields.to')
+    >>> 'home_page' in enabled_fields.displayOptions
+    True
+
+Log out. Assert that we now have the home_page in the join form.
+
+    >>> browser.getLink(url='http://nohost/plone/logout').click()
+    >>> 'Log in' in browser.contents
+    True
+    >>> browser.open('http://nohost/plone/@@register')
+    >>> 'Registration form' in browser.contents
+    True
+    >>> 'Home page' in browser.contents
+    True
+
+Rearrange the fields
+(Setting this by hand since add/remove widget doesn't work properly without javascript)
+    >>> portal.portal_properties.site_properties._updateProperty('user_registration_fields', ['fullname', 'username', 'password', 'home_page', 'email'])
+    >>> browser.open('http://nohost/plone/@@register')
+    >>> browser.contents
+    '...Home page...E-mail...'
