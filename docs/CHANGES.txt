@@ -16,6 +16,14 @@ Changelog
   Functionality that used to be provided using KSS has been reimplemented.
   [esteele, vangheem, cah190, davisagli]
 
+- Do not block right-side portlets in Members folder on site creation.
+  This fixes https://dev.plone.org/ticket/10764
+  [polyester]
+
+- Fix prefs_install_product_readme so files with non-ascii characters are
+  rendered. This fixes https://dev.plone.org/ticket/12342
+  [ericof]
+
 - Fix StringIO module security so it can still be imported from restricted
   code in Zope 2.13.17+.
   [davisagli]
