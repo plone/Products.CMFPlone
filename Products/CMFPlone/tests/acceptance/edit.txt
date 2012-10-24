@@ -1,0 +1,97 @@
+*** Settings ***
+Resource  plone.txt
+
+Suite setup  Setup
+
+Suite teardown  Remove Editing Pages
+
+*** Test cases ***
+
+Edit document
+    [Tags]  edit
+    Click Link  css=li#contentview-edit a
+    Element Should Be Visible  css=input#title
+    Element Should Be Visible  css=fieldset#fieldset-default
+    Element Should Not Be Visible  css=textarea#subject_keywords
+    Element Should Not Be Visible  css=fieldset#fieldset-dates
+    Element Should Not Be Visible  css=fieldset#fieldset-categorization
+
+Select categorization tab
+    [Tags]  edit
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-categorization
+    Element Should Not Be Visible  css=fieldset#fieldset-default
+    Element Should Be Visible  css=textarea#subject_keywords
+    Element Should Not Be Visible  css=fieldset#fieldset-dates
+    Element Should Be Visible  css=fieldset#fieldset-categorization
+
+Select settings tab
+    [Tags]  edit
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-settings
+    Element Should Not Be Visible  css=fieldset#fieldset-default
+    Element Should Not Be Visible  css=textarea#subject_keywords
+    Element Should Not Be Visible  css=fieldset#fieldset-dates
+    Element Should Be Visible  css=fieldset#fieldset-settings
+
+
+Test relationship
+    [Tags]  edit
+    Click Link  css=li#portaltab-an-edit-test-page a
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-categorization
+    Click Button  css=input.addreference
+    Wait Until Page Contains Element  css=input.insertreference
+    Click Element  css=input.insertreference
+    Wait until keyword succeeds  10s  1s  Xpath Should Match X Times  //ul[@id = 'ref_browser_relatedItems']/descendant::input  1
+    Click Element  css=div.close
+    Click Button  Save
+    Xpath Should Match X Times  //dl[@id = 'relatedItemBox']/dd  1
+
+Test DateTime widget
+    [Tags]  edit
+    Click Link  css=li#portaltab-an-edit-test-page a
+    Click Link  css=li#contentview-edit a
+    Click link  css=a#fieldsetlegend-dates
+    Select From List  css=select#edit_form_effectiveDate_0_year  2001
+    Select From List  css=select#edit_form_effectiveDate_0_month  January
+    Select From List  css=select#edit_form_effectiveDate_0_day  01
+    Select From List  css=select#edit_form_effectiveDate_0_hour  01
+    Select From List  css=select#edit_form_effectiveDate_0_minute  00
+    Select From List  css=select#edit_form_effectiveDate_0_ampm  AM
+    Click Element  css=span#edit_form_effectiveDate_0_popup
+    Element Should Be Visible  css=div.calendar
+    Element Text Should Be  css=div.calendar thead td.title  January, 2001
+    Mouse Down  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
+    Mouse Up  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
+    Wait until keyword succeeds  10s  1s  Element Text Should Be  css=div.calendar thead td.title  February, 2001
+    Mouse Down  xpath=//div[@class='calendar']/table/thead/tr[2]/td[5]/div
+    Mouse Up  xpath=//div[@class='calendar']/table/thead/tr[2]/td[5]/div
+    Element Text Should Be  css=div.calendar thead td.title  February, 2002
+    Click Button  Save
+    Click Link  css=span#content-history a.link-overlay
+    Wait until keyword succeeds  10s  1s  Click Link  xpath=//div/a[@class='historyComparePrevious']
+    Wait Until Page Contains  Show differences
+    Select Radio Button  diffstyle  code
+    Page Should Contain  2002/02/01 01:00:00
+
+
+*** Keywords ***
+Setup
+    Log in  admin  admin
+    Create Editing Pages
+
+Create Editing Pages
+
+    Go to homepage
+    Add Page  An edit test page
+    Go to homepage
+    Add Page  A related test page
+
+Remove Editing Pages
+
+    Remove Content  an-edit-test-page
+    Remove Content  a-related-test-page
+
+
+
