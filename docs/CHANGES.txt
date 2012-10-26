@@ -60,6 +60,9 @@ Changelog
 - fix 'Add New' on Users/Groups Overviews shows overlay when clicking anywhere in form #12201
   [maartenkling]
 
+- fix events_listing #12477
+  [maartenkling]
+
 4.3a1 (2012-08-31)
 ------------------
 
