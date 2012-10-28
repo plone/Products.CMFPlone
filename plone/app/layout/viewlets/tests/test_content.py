@@ -50,59 +50,29 @@ title="Locked" height="16" width="16" />'
         self.portal.invokeFactory('Document', 'd1')
         context = getattr(self.portal, 'd1')
         
-        # configure our portal and context to get publication date not None
+        # configure our portal to enable publication date on pages globally on
+        # the site
         properties = getToolByName(context, 'portal_properties')
         site_properties = getattr(properties, 'site_properties')
         site_properties.displayPublicationDateInByline = True
-        wtool = getToolByName(context, 'portal_workflow')
-        wtool.doActionFor(context, 'publish')
 
         self.login('Ano')
         viewlet = DocumentBylineViewlet(context, request, None, None)
         viewlet.update()
         
-        # publication date should be not None now
-        self.failIf(viewlet.pub_date() is None)
-        
-        # now set publication date in workflow history manually
-        published = DateTime('2012/03/14')
-        context.workflow_history[wtool.getChainFor('Document')[0]][-1]['time'] = \
-            published
-        # purge instance memoize cache
-        delattr(viewlet, Memojito.propname)
-        self.assertEqual(viewlet.pub_date(), published)
-        
-        # set Effective Date and check if it'll be used
-        effective = DateTime('2012/03/15')
-        context.setEffectiveDate(effective)
-        # purge instance memoize cache
-        delattr(viewlet, Memojito.propname)
-        self.assertEqual(viewlet.pub_date(),
-            DateTime(effective.toZone(_zone).ISO8601()))
-        
-        # now make document private and ensure publication date will return None
-        self.login('Alan')
-        wtool.doActionFor(context, 'retract')
-        self.login('Ano')
-        # purge instance memoize cache
-        delattr(viewlet, Memojito.propname)
-        self.assertEqual(viewlet.pub_date(), None)
-        
-        # move it back to public
-        self.login('Alan')
-        wtool.doActionFor(context, 'publish')
-        self.login('Ano')
-        # purge instance memoize cache
-        delattr(viewlet, Memojito.propname)
-        self.failIf(viewlet.pub_date() is None)
-        
-        # and finally check that our global site setting
-        # 'Display pub date in byline' works properly
-        # purge instance memoize cache
-        site_properties.displayPublicationDateInByline = False
-        delattr(viewlet, Memojito.propname)
+        # publication date should be None as there is not Effective date set for
+        # our document yet
         self.assertEqual(viewlet.pub_date(), None)
 
+        # now set effective date for our document
+        effective = DateTime()
+        context.setEffectiveDate(effective)
+        self.assertEqual(viewlet.pub_date(), DateTime(effective.ISO8601()))
+        
+        # now switch off publication date globally on the site and see if
+        # viewlet returns None for publication date
+        site_properties.displayPublicationDateInByline = False
+        self.assertEqual(viewlet.pub_date(), None)
 
 class TestRelatedItemsViewlet(ViewletsTestCase):
 

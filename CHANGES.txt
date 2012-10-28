@@ -4,7 +4,10 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Display publication date only if Effective date is set, regardless of object
+  state. Tickets:
+  https://dev.plone.org/ticket/13045 and https://dev.plone.org/ticket/13046
+  [vipod]
 
 
 2.3.2 (2012-10-17)
