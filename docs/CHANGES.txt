@@ -41,11 +41,15 @@ Changelog
 - Remove h3 to make consistent html refs #11344
   [maartenkling]
 
-- fix 'Add New' on Users/Groups Overviews shows overlay when clicking anywhere in form #12201
+- Fix 'Add New' on Users/Groups Overviews shows overlay when clicking anywhere in form #12201
   [maartenkling]
 
-- fix events_listing #12477
+- Fix events_listing #12477
   [maartenkling]
+
+- Fix form_tabbing, to stay on current tab on submitting form
+  [maartenkling]
+
 
 4.2.1.1 (2012-08-23)
 ------------------
