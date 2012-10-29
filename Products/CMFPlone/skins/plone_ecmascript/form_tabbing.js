@@ -64,8 +64,8 @@ ploneFormTabbing._buildTabs = function(container, legends) {
     if (threshold) {
         tabs = $('<select class="formTabs">'+tabs+'</select>');
         tabs.change(function(){
-        	var selected = $(this).attr('value');
-        	$(this).parent().find('option#'+selected).click();
+            var selected = $(this).attr('value');
+            $(this).parent().find('option#'+selected).click();
         })
     } else {
         tabs = $('<ul class="formTabs">'+tabs+'</ul>');
@@ -97,7 +97,7 @@ ploneFormTabbing.initializeForm = function() {
 
 
     // The fieldset.current hidden may change, but is not content
-    $(this).find('input[name="fieldset.current"]').addClass('noUnloadProtection');
+    $('input[name="fieldset.current"]').addClass('noUnloadProtection');
 
     $(this).find('.formPanel:has(div.field span.required)').each(function() {
         var id = this.id.replace(/^fieldset-/, "#fieldsetlegend-");
@@ -128,14 +128,14 @@ ploneFormTabbing.initializeForm = function() {
 
     // save selected tab on submit
     jqForm.submit(function() {
-    	var selected;
-    	if(ftabs.find('a.selected').length>=1){
-    		selected = ftabs.find('a.selected').attr('href').replace(/^#fieldsetlegend-/, "#fieldset-");
-    	}
-    	else{
-    		selected = ftabs.attr('value').replace(/^fieldsetlegend-/,'#fieldset-');
-    	}
-        var fsInput = jqForm.find('input[name="fieldset.current"]');
+        var selected;
+        if(ftabs.find('a.selected').length>=1){
+            selected = ftabs.find('a.selected').attr('href').replace(/^#fieldsetlegend-/, "#fieldset-");
+        }
+        else{
+            selected = ftabs.attr('value').replace(/^fieldsetlegend-/,'#fieldset-');
+        }
+        var fsInput = $('input[name="fieldset.current"]');
         if (selected && fsInput) {
             fsInput.val(selected);
         }
@@ -157,7 +157,7 @@ $.fn.ploneTabInit = function(pbo) {
         //Select tab if it's part of the URL or designated in a hidden input
         var targetPane = item.find('.enableFormTabbing input[name="fieldset.current"]').val() || window.location.hash;
         if (targetPane) {
-            item.find(".enableFormTabbing .formTab a[href='" +
+            item.find(".formTabs .formTab a[href='" +
              targetPane.replace("'", "").replace(/^#fieldset-/, "#fieldsetlegend-") +
              "']").click();
         }

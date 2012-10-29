@@ -25,8 +25,8 @@
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
                  portal_discussion nocall:context/portal_discussion;
-                 isDiscussionAllowedFor nocall:portal_discussion/isDiscussionAllowedFor;
-                 getDiscussionFor nocall:portal_discussion/getDiscussionFor;
+                 isDiscussionAllowedFor nocall:portal_discussion/isDiscussionAllowedFor|nothing;
+                 getDiscussionFor nocall:portal_discussion/getDiscussionFor|nothing;
                  home_url python:context.portal_membership.getHomeUrl;
                  isAnon context/@@plone_portal_state/anonymous;
                  portal context/@@plone_portal_state/portal;
@@ -88,7 +88,7 @@
                         </tal:about-info>
                     </ul>
 
-                    <ul class="newsFooter" tal:define="is_discussable python: isDiscussionAllowedFor(resultObject);">
+                    <ul class="newsFooter" tal:define="is_discussable python: isDiscussionAllowedFor and isDiscussionAllowedFor(resultObject) or False;">
                         <li>
                             <a href="/view" tal:attributes="href resulturl">
                                 <span class="hiddenStructure"><span tal:replace="result/pretty_title_or_id" /> - </span>
