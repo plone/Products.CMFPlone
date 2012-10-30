@@ -55,7 +55,10 @@ ploneFormTabbing._buildTabs = function(container, legends) {
         }
 
         tabs += tab;
-        $(legend).hide();
+        // don't use .hide() for ie6/7/8 support
+        $(legend).css({'visibility': 'hidden', 'font-size': '0',
+                       'padding': '0', 'height': '0',
+                       'width': '0', 'line-height': '0'});
     }
 
     tab_ids = tab_ids.join(',');
