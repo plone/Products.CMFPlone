@@ -8,6 +8,10 @@ Changelog
 4.2.2 (unreleased)
 ------------------
 
+- Fix form_tabbing.js so it stays on the same fieldset when an Archetypes
+  edit form is submitted and returns to itself.
+  [davisagli]
+
 - Use prefixed ids for popup overlays
   [maartenkling]
 
