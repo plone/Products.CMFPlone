@@ -55,10 +55,7 @@ ploneFormTabbing._buildTabs = function(container, legends) {
         }
 
         tabs += tab;
-        // don't use .hide() for ie6/7/8 support
-        $(legend).css({'visibility': 'hidden', 'font-size': '0',
-                       'padding': '0', 'height': '0',
-                       'width': '0', 'line-height': '0'});
+        $(legend).hide();
     }
 
     tab_ids = tab_ids.join(',');
@@ -99,8 +96,8 @@ ploneFormTabbing.initializeForm = function() {
     fieldsets.addClass("formPanel");
 
 
-    // The fieldset.current hidden may change, but is not content
-    $('input[name="fieldset.current"]').addClass('noUnloadProtection');
+    // The fieldset hidden may change, but is not content
+    $(this).find('input[name="fieldset"]').addClass('noUnloadProtection');
 
     $(this).find('.formPanel:has(div.field span.required)').each(function() {
         var id = this.id.replace(/^fieldset-/, "#fieldsetlegend-");
@@ -138,7 +135,7 @@ ploneFormTabbing.initializeForm = function() {
         else{
             selected = ftabs.attr('value').replace(/^fieldsetlegend-/,'#fieldset-');
         }
-        var fsInput = $('input[name="fieldset.current"]');
+        var fsInput = jqForm.find('input[name="fieldset"]');
         if (selected && fsInput) {
             fsInput.val(selected);
         }
@@ -158,11 +155,10 @@ $.fn.ploneTabInit = function(pbo) {
         item.find("dl.enableFormTabbing").each(ploneFormTabbing.initializeDL);
 
         //Select tab if it's part of the URL or designated in a hidden input
-        var targetPane = item.find('.enableFormTabbing input[name="fieldset.current"]').val() || window.location.hash;
+        var targetPane = item.find('.enableFormTabbing input[name="fieldset"]').val() || window.location.hash;
         if (targetPane) {
-            item.find(".formTabs .formTab a[href='" +
-             targetPane.replace("'", "").replace(/^#fieldset-/, "#fieldsetlegend-") +
-             "']").click();
+            item.find(".enableFormTabbing .formTabs " +
+             targetPane.replace("'", "").replace(/^#fieldset-/, "#fieldsetlegend-")).click();
         }
     });
 };

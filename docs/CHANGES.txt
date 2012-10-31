@@ -9,6 +9,10 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Fix form_tabbing.js so it stays on the same fieldset when an Archetypes
+  edit form is submitted and returns to itself.
+  [davisagli]
+
 - Use the 'OFS.ObjectManager.bad_id' pattern in 'PloneTool.BAD_CHARS'.
   This allows names containing '@' to pass 'check_id'.
   [elro]
@@ -20,10 +24,6 @@ Changelog
 
 4.3a2 (2012-10-18)
 ------------------
-
-- Pass minute_step to date_components_support_view.result(). See
-  https://dev.plone.org/ticket/11251
-  [gbastien]
 
 - Use prefixed ids for popup overlays
   [maartenkling]
