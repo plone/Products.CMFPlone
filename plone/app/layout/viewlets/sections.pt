@@ -1,7 +1,7 @@
 <tal:sections tal:define="portal_tabs view/portal_tabs"
      tal:condition="portal_tabs"
      i18n:domain="plone">
-    <p class="hiddenStructure" i18n:translate="heading_sections">Sections</p>
+    <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
 
     <ul id="portal-globalnav"
         tal:define="selected_tab python:view.selected_portal_tab"
