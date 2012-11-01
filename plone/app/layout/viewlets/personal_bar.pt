@@ -1,7 +1,7 @@
 <div id="portal-personaltools-wrapper"
      i18n:domain="plone">
 
-<div class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</div>
+<p class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</p>
 
 <dl class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="python:view.user_actions and not view.anonymous">

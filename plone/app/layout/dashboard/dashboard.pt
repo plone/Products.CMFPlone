@@ -32,7 +32,8 @@
 
 
         <div id="edit-bar" tal:condition="view/can_edit">
-            <h5 class="hiddenStructure">Views</h5>
+            <p class="hiddenStructure"
+                i18n:translate="heading_views">Views</p>
 
             <ul id="content-views"
                 class="contentViews">
