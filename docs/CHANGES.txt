@@ -5,8 +5,21 @@
 Changelog
 =========
 
-4.3a2 (unreleased)
+
+4.3a3 (unreleased)
 ------------------
+
+- Pass minute_step to date_components_support_view.result(). See
+  https://dev.plone.org/ticket/11251
+  [gbastien]
+
+
+4.3a2 (2012-10-18)
+------------------
+
+- Pass minute_step to date_components_support_view.result(). See
+  https://dev.plone.org/ticket/11251
+  [gbastien]
 
 - Use prefixed ids for popup overlays
   [maartenkling]
@@ -71,6 +84,7 @@ Changelog
 
 - Fix form_tabbing, to stay on current tab on submitting form
   [maartenkling]
+
 
 4.3a1 (2012-08-31)
 ------------------
