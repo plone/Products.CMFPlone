@@ -5,8 +5,13 @@
 Changelog
 =========
 
-4.2.2 (unreleased)
-------------------
+
+4.2.3 (unreleased)
+-----------------
+
+- Pass minute_step to date_components_support_view.result(). See
+  https://dev.plone.org/ticket/11251
+  [gbastien]
 
 - Fix form_tabbing.js so it stays on the same fieldset when an Archetypes
   edit form is submitted and returns to itself.
@@ -17,6 +22,10 @@ Changelog
 
 - Fix compatible hide fieldset legend for IE6/7/8 in form_tabbing.js
   [maartenkling]
+
+
+4.2.2 (2012-10-15)
+------------------
 
 - Do not block right-side portlets in Members folder on site creation.
   This fixes https://dev.plone.org/ticket/10764
