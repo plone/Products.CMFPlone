@@ -58,13 +58,34 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         self.assertTrue(pattern.match('MAURITS'))
 
     def testEmailMemberIdsAllowed(self):
+        props = getToolByName(self.portal, 'portal_properties').site_properties
+        props._updateProperty('use_email_as_login', True)
+        registration = getToolByName(self.portal, 'portal_registration')
         pattern = self.portal.portal_registration._ALLOWED_MEMBER_ID_PATTERN
+        # Normal user ids are still allowed, even when using the email
+        # address as login name.
+        self.assertTrue(pattern.match('joe'))
+        self.assertTrue(registration.isMemberIdAllowed('joe'))
+        # Some normal email addresses
         self.assertTrue(pattern.match('user@example.org'))
+        self.assertTrue(registration.isMemberIdAllowed('user@example.org'))
         self.assertTrue(pattern.match('user123@example.org'))
+        self.assertTrue(registration.isMemberIdAllowed('user123@example.org'))
         self.assertTrue(pattern.match('user.name@example.org'))
-        # PLIP9214: perhaps we should change the regexp so the next
-        # test passes as well?
-        #self.assertTrue(pattern.match('user+test@example.org'))
+        self.assertTrue(registration.isMemberIdAllowed('user.name@example.org'))
+        # Strange, but valid as id:
+        self.assertTrue(pattern.match('no.address@example'))
+        self.assertTrue(registration.isMemberIdAllowed('no.address@example'))
+        # http://dev.plone.org/ticket/11616 mentions some non-standard
+        # email addresses.
+        # A plus sign in the id gives problems in some parts of the
+        # UI, so we do not allow it.
+        self.assertFalse(pattern.match('user+test@example.org'))
+        self.assertFalse(registration.isMemberIdAllowed('user+test@example.org'))
+        # An apostrophe also sounds like a bad idea to use in an id,
+        # though this is a valid email address:
+        self.assertFalse(pattern.match("o'hara@example.org"))
+        self.assertFalse(registration.isMemberIdAllowed("o'hara@example.org"))
 
     def test_get_member_by_login_name(self):
         memship = self.portal.portal_membership
