@@ -169,7 +169,7 @@ class LayoutPolicy(BrowserView):
                 except KeyError:
                     depth = 4
                 if depth > 1:
-                    classes = [contentPath[1]]
+                    classes = ['subsection-%s' % contentPath[1]]
                     for section in contentPath[2:depth]:
                         classes.append('-'.join([classes[-1], section]))
                     body_class += " %s" % ' '.join(classes)

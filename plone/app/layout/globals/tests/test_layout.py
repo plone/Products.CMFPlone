@@ -80,8 +80,8 @@ class TestLayoutView(GlobalsTestCase):
         view = context.restrictedTraverse('@@plone_layout')
         template = context.document_view
         body_class = view.bodyClass(template, view)
-        assert 'folder2 folder2-folder3' in body_class
-        assert ' folder2-folder3-page' in body_class
+        assert 'subsection-folder2 subsection-folder2-folder3' in body_class
+        assert ' subsection-folder2-folder3-page' in body_class
 
     def testBodyClassWithEverySectionTurnedOff(self):
         registry = getUtility(IRegistry)
@@ -95,8 +95,8 @@ class TestLayoutView(GlobalsTestCase):
         view = context.restrictedTraverse('@@plone_layout')
         template = context.document_view
         body_class = view.bodyClass(template, view)
-        assert 'folder2 folder2-folder3' not in body_class
-        assert ' folder2-folder3-page' not in body_class
+        assert 'subsection-folder2 subsection-folder2-folder3' not in body_class
+        assert ' subsection-folder2-folder3-page' not in body_class
 
 
 def test_suite():

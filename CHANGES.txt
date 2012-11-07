@@ -4,6 +4,10 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
+- Add 'subsection' prefix to the all sections below to avoid classnames
+  that start with digits, which is not permitted by the CSS standard.
+  [erral]
+
 - Display publication date only if Effective date is set, regardless of object
   state. Tickets:
   https://dev.plone.org/ticket/13045 and https://dev.plone.org/ticket/13046
@@ -40,11 +44,11 @@ Changelog
 2.3 (2012-08-11)
 ----------------
 
-- Change breadcrumb separator to / (slash character) for accessibility, and added SEO benefits. 
+- Change breadcrumb separator to / (slash character) for accessibility, and added SEO benefits.
   see https://dev.plone.org/ticket/12904
   [polyester]
 
-- Add language atribute to presentation.pt for WCAG 2.0 compliance. 
+- Add language atribute to presentation.pt for WCAG 2.0 compliance.
   See https://dev.plone.org/ticket/12902
   [rmatt, polyester]
 
@@ -72,11 +76,11 @@ Changelog
 2.2.7 (2012-08-11)
 ------------------
 
-- Change breadcrumb separator to / (slash character) for accessibility, and added SEO benefits. 
+- Change breadcrumb separator to / (slash character) for accessibility, and added SEO benefits.
   see https://dev.plone.org/ticket/12904
   [polyester]
 
-- Add language atribute to presentation.pt for WCAG 2.0 compliance. 
+- Add language atribute to presentation.pt for WCAG 2.0 compliance.
   See https://dev.plone.org/ticket/12902
   [rmatt, polyester]
 
@@ -142,7 +146,7 @@ Changelog
   Fixes http://dev.plone.org/plone/ticket/11869
   [davisagli]
 
-- Fix bug where getNavigationRootObject goes into infinite loop if context is 
+- Fix bug where getNavigationRootObject goes into infinite loop if context is
   None.
   Fixes http://dev.plone.org/plone/ticket/12186
   [anthonygerrard]
@@ -185,7 +189,7 @@ Changelog
 
 - Set the search form to submit to @@search in order to use the new
   search results page.
-  [elvix] 
+  [elvix]
 
 - Updated the BaseIcon to return its html tag when called.
   [elvix]
@@ -204,7 +208,7 @@ Changelog
 - Switching 'Skip to navigation' to be linked to the global navigation instead
   of the navigation portlet.
   This fixes http://dev.plone.org/plone/ticket/11728
-  [spliter]  
+  [spliter]
 
 
 2.1.8 - 2011-07-04
