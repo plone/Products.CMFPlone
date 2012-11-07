@@ -11,35 +11,61 @@
         <metal:block define-macro="content-core"
                      tal:define="kssClassesView context/@@kss_field_decorator_view;
                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                                 size context/size">
+                                 size context/size;
+                                 portal_state context/@@plone_portal_state;
+                                 context_state context/@@plone_context_state;
+                                 tag python:context.tag(scale='preview');
+                                 webformatimage python:context.content_type in ('image/png', 'image/jpeg', 'image/gif');
+                                 fullscreenview python:webformatimage and 'image_view_fullscreen' or 'download'">
             <a href=""
-               class="discreet"
-               tal:attributes="href string:${context/@@plone_context_state/object_url}/image_view_fullscreen">
-                <tal:block condition="size" replace="structure python:context.tag(scale='preview')" />
+	           tal:attributes="href string:${context_state/object_url}/$fullscreenview">
+                <tal:block condition="size" replace="structure tag" />
                 <br />
-                <span class="visualNoPrint">
-                    <img src="" alt="" tal:replace="structure context/search_icon.png" />
-                    <span i18n:translate="label_click_to_view_full_image">Click to view full-size image&hellip;</span>
-                </span>
             </a>
 
-            <span class="discreet visualNoPrint">
-            &mdash;
-                <span i18n:translate="label_size">Size</span>:
+            <span class="discreet visualNoPrint"
+                  tal:define="objectsize python:context.getObjSize(here)">
 
-                <span tal:define="size python:context.getObjSize(here)"
-                      tal:content="size">
+              <span tal:condition="size"
+	                class="discreet">
+                <span i18n:translate="label_full_size">Full-size image:</span>
+
+                <span tal:condition="size"
+                      tal:content="objectsize">
                     File size
                 </span>
+				&#124;
+	            <a href=""
+	               tal:condition="webformatimage"
+	               tal:attributes="href string:${context_state/object_url}/$fullscreenview">
+	                <span class="visualNoPrint">
+                    <img tal:attributes="src string:${portal_state/portal_url}/search_icon.png"
+                         alt="View image" title="View image"
+                         i18n:attributes="alt; title" />
+                    <span i18n:translate="">View</span>
+                	</span>
+	            </a>
 
-                <span tal:condition="python:test(size, 0, 1)"
-                      i18n:translate="no_image_uploaded">
-                    (No image has been uploaded yet)
-                </span>
+	            <a href=""
+	               tal:attributes="href string:${context_state/object_url}/download">
+	                <span class="visualNoPrint">
+                    <img tal:attributes="src string:${portal_state/portal_url}/download_icon.png"
+                         alt="Download image" title="Download image"
+                         i18n:attributes="alt; title" />
+                    <span i18n:translate="">Download</span>
+                	</span>
+	            </a>
+
+		      </span>
+              <span tal:condition="not:size"
+                    i18n:translate="no_image_uploaded">
+                  (No image has been uploaded yet)
+              </span>
             </span>
         </metal:block>
     </metal:content-core>
 </body>
 
 </html>
+
 

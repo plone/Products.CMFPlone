@@ -1,8 +1,8 @@
 /******
     Set up standard Plone popups
-    
+
     Provides globals: common_content_filter
-    
+
     Extends jQuery.tools.overlay.conf to set up common Plone effects and
     visuals.
 ******/
@@ -10,7 +10,7 @@
 
 var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info';
 
-jQuery.extend(jQuery.tools.overlay.conf, 
+jQuery.extend(jQuery.tools.overlay.conf,
     {
         fixed:false,
         speed:'fast',
@@ -19,10 +19,10 @@ jQuery.extend(jQuery.tools.overlay.conf,
 
 
 (function($) {
-		
+
 	// static constructs
 	$.plonepopups = $.plonepopups || {};
-    
+
     $.extend($.plonepopups,
         {
             // method to show error message in a noform
@@ -45,7 +45,7 @@ jQuery.extend(jQuery.tools.overlay.conf,
                 }
                 return location;
             }
-        })
+        });
 })(jQuery);
 
 jQuery(function($){
@@ -56,12 +56,13 @@ jQuery(function($){
         // enhancement.
         return;
     }
-    
+
     // login form
     $('#portal-personaltools a[href$="/login"], #portal-personaltools a[href$="/login_form"], .discussion a[href$="/login"], .discussion a[href$="/login_form"]').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-login',
             formselector: 'form#login_form',
             noform: 'redirect',
             redirect: function (overlay, responseText) {
@@ -70,9 +71,9 @@ jQuery(function($){
                     return href.slice(0, href.length-14) + 'logged_in';
                 } else {
                     // look to see if there has been a server redirect
-                    var newTarget = $("<div>").html(responseText).find("base").attr("href"); 
-                    if ($.trim(newTarget) && newTarget !== location.href) { 
-                        return newTarget; 
+                    var newTarget = $("<div>").html(responseText).find("base").attr("href");
+                    if ($.trim(newTarget) && newTarget !== location.href) {
+                        return newTarget;
                     }
                     // if not, simply reload
                     return href;
@@ -86,6 +87,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-contact',
             formselector: 'form[name="feedback_form"]',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'close');}
         }
@@ -96,6 +98,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-comment',
             formselector: 'form:has(input[name="discussion_reply:method"])',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref
@@ -108,6 +111,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-default_view',
             formselector: 'form[name="default_page_form"]',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
             closeselector: '[name="form.button.Cancel"]',
@@ -122,6 +126,7 @@ jQuery(function($){
     //     {
     //         subtype: 'ajax',
     //         filter: common_content_filter,
+    //         cssclass: 'overlay-workflow',
     //         formselector: 'form',
     //         noform: function(el) {return $.plonepopups.noformerrorshow(el, 'reload');},
     //         closeselector: '[name="form.button.Cancel"]'
@@ -129,10 +134,11 @@ jQuery(function($){
     // );
 
     // Delete dialog
-    $('dl#plone-contentmenu-actions a#delete').prepOverlay(
+    $('dl#plone-contentmenu-actions a#plone-contentmenu-actions-delete').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-delete',
             formselector: '#delete_confirmation',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref,
@@ -142,10 +148,11 @@ jQuery(function($){
     );
 
     // Rename dialog
-    $('dl#plone-contentmenu-actions a#rename').prepOverlay(
+    $('dl#plone-contentmenu-actions a#plone-contentmenu-actions-rename').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-rename',
             closeselector: '[name="form.button.Cancel"]',
             width:'40%'
         }
@@ -156,6 +163,7 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-register',
             formselector: 'form.kssattr-formname-register'
         }
     );
@@ -165,19 +173,24 @@ jQuery(function($){
         {
             subtype: 'ajax',
             filter: common_content_filter,
+            cssclass: 'overlay-users',
             formselector: 'form.kssattr-formname-new-user, form[name="groups"]',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: function () {return location.href;}
         }
     );
 
+    // minify form width to button width
+    $('form[name="users_add"], form[name="groups_add"]').width($('input.add').outerWidth());
+    $('form[name="users_add"] input.add, form[name="groups_add"] input.add').css('cursor', 'pointer');
+
     // Content history popup
     $('#content-history a').prepOverlay({
-       subtype: 'ajax', 
+       subtype: 'ajax',
        filter: 'h2, #content-history',
+       cssclass: 'overlay-history',
        urlmatch: '@@historyview',
        urlreplace: '@@contenthistorypopup'
     });
 
 });
-

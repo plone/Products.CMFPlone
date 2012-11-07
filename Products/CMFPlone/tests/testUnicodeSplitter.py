@@ -4,6 +4,7 @@
 #
 
 import unittest
+import logging
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFPlone.UnicodeSplitter import Splitter
@@ -21,6 +22,8 @@ except ImportError:
 import locale
 LATIN1 = ('en_US.ISO-8859-1', 'en_US.ISO8859-15', 'en_GB.ISO8859-15',
           'de_DE@euro', 'fr_FR@euro', 'nl_NL@euro')
+
+logger = logging.getLogger(__name__)
 
 
 def _setlocale(*names):
@@ -93,6 +96,9 @@ class TestSplitter(unittest.TestCase):
 
         # May still fail if none of the locales is available
         saved = _setlocale(*LATIN1)
+        if not saved:
+            logger.warning("No LATIN1 locale available, one test skipped")
+            return
         try:
             # If this test is failing, you probably just don't have
             # the latin1 locales generated.  On Ubuntu, this worked:
@@ -131,6 +137,9 @@ class TestCaseNormalizer(unittest.TestCase):
 
         # May still fail if none of the locales is available
         saved = _setlocale(*LATIN1)
+        if not saved:
+            logger.warning("No LATIN1 locale available, one test skipped")
+            return
         try:
             self.assertEqual(self.process(input), output)
         finally:

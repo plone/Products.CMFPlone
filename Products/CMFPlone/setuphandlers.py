@@ -361,14 +361,6 @@ def setupPortalContent(p):
             index_html.write(member_indexhtml)
             index_html.ZPythonScript_setTitle('User Search')
 
-        # Block all right column portlets by default
-        manager = queryUtility(IPortletManager, name='plone.rightcolumn')
-        if manager is not None:
-            assignable = queryMultiAdapter((members, manager), ILocalPortletAssignmentManager)
-            assignable.setBlacklistStatus('context', True)
-            assignable.setBlacklistStatus('group', True)
-            assignable.setBlacklistStatus('content_type', True)
-
 
 def setProfileVersion(portal):
     """

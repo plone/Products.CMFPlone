@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.2'
+version = '4.2.3.dev0'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -29,6 +29,7 @@ setup(name='Products.CMFPlone',
       extras_require=dict(
         test=[
           'Products.PloneTestCase',
+          'zope.globalrequest',
           'zope.testing',
         ]),
       install_requires=[
@@ -137,5 +138,12 @@ setup(name='Products.CMFPlone',
           'zope.tal',
           'zope.tales',
           'zope.traversing',
+          # ensure these transient dependencies don't vanish in the 4.2
+          # series, just because some libraries get updated and nobody
+          # declares the dependency anymore
+          'zope.copypastemove',
+          'zope.app.component',
+          'zope.app.container',
+          'zope.app.publisher',
       ],
       )

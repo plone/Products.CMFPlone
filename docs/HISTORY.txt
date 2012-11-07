@@ -3,6 +3,124 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
+
+4.1.6 (2012-06-27)
+------------------
+
+- Add keyword 'latest' to metadata.xml's version tag, which then looks for
+  the highest numbered profile that is registered and pins that to the
+  upgrade step. This means that the version field in metadata.xml only
+  has to be set to 'latest' once and then it automatically searches for
+  the highest numbered profile.
+  [eleddy]
+
+- Accessibility:  added an id="Creator" for the <input> field by the same name
+  on the search form, so that the corresponding <label> can associate with it
+  in the case where showAuthors is None.
+
+- Make redirection_view/attempt_redirect fall back to nothing in 
+  default_error_message template. If plone.app.redirector gets a URL with 
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template 
+  fails. This fixes http://dev.plone.org/ticket/12976.
+  [timo]
+
+
+4.1.5 (2012-04-18)
+------------------
+
+- Stop filtering folder_listing to the types from 
+  @@plone_portal_state/friendly_types, since that excludes non-searchable
+  types rather than non-listable types.
+  [davisagli]
+
+- PloneControlPanel's enumConfiglets no longer returns invisible configlets.
+  [esteele]
+  
+- Use getId() instead of title_or_id() for displaying which items get 
+  deleted, to avoid unicode error
+  Fixes https://dev.plone.org/ticket/12765
+  [spereverde]
+
+- Hide left column in prefs_main_template when user does not have access to
+  configlets.
+  Fixes https://dev.plone.org/ticket/12572
+  [gotcha]
+
+- Re-apply PLIP 10901 to table_sort.js, fixing a bug with reversing sort
+  on the first column.
+  [mj]
+
+
+4.1.4 (2012-02-08)
+------------------
+- Catch KeyError on 'userid' that occurs when mail_password is
+  accessed directly (without 'userid' in the request). Return
+  mail_password_form.
+  [brayt]
+
+- Notify ObjectModifiedEvent when a content title is modified
+  through action > rename.
+  Fixes http://dev.plone.org/ticket/12460
+  [thomasdesvenain]
+
+- Fixed some mail tests in combination with five.pt.
+  [maurits]
+
+- Do not display the author contact form when the logged in user does
+  not have an email address.
+  Fixes http://dev.plone.org/ticket/12258
+  [maurits]
+
+
+4.1.3 (2011-11-28)
+------------------
+
+- IE critical fix on toggle select and form submit helpers.
+  [thomasdesvenain]
+
+
+4.1.2 (10/13/2011)
+------------------
+
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
+- Allow users with the Manage Users permission to change the login
+  name of other users; specifically this allows them to change the
+  email address when this is used as login name.
+  Fixes http://dev.plone.org/plone/ticket/11255
+  [maurits]
+
+- Re-enable the getObjPositionInParent index in the portal_atct tool.
+  Fixes http://dev.plone.org/plone/ticket/11151
+  [davisagli]
+
+- Removed the 'What' row in the event view that displayed the
+  keywords; this is already handled by the keywords viewlet.
+  Fixes http://dev.plone.org/plone/ticket/10818
+  [maurits]
+
+- Fix PloneTool.changeOwnershipOf to not pass MemberData to the underlying
+  Owned.changeOwnership, but a plain User object only.
+  [stefan]
+
+
+4.1.1 (2011-09-21)
+------------------
+
+- Fixed folder_listing template
+  so that listing macro can be used outside of folder_listing.
+  [thomasdesvenain]
+
+- AuthenticatedUsers group is used for local roles etc, and is not the same
+  as Authenticated role. Thus, it can not be optimized away in catalog queries.
+  [tesdal]
+
+- getFolderContents only sets b_size if batching is true.
+  [do3cc]
+
+
 4.1 - 2011-07-12
 ----------------
 
@@ -244,6 +362,7 @@ For what's new in this release, see CHANGES.txt.
   http://dev.plone.org/plone/ticket/11340
   [fRiSi]
 
+
 4.1a1 - 2011-01-18
 ------------------
 
@@ -327,6 +446,27 @@ For what's new in this release, see CHANGES.txt.
 
 - Updated to use Zope 2.13.
   [hannosch]
+
+
+4.0.9 - 2011-07-19
+------------------
+
+- Release Plone 4.0.9
+  [esteele]
+
+
+4.0.8 - 2011-07-05
+------------------
+
+- Use ``transaction.savepoint`` instead of ``transaction.begin`` in
+  ``isLinked``; 
+  closes #7784;
+  does not reopen #6666 probably because we use fixed version of ZEO
+  [gotcha]
+
+- Optimized: Huge optimization of calendar_formfield.js under ie8 and lower.
+  Gain of 50% on js execution on a large page.
+  [thomasdesvenain]
 
 
 4.0.7 - 2011-06-02

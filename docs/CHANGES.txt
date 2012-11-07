@@ -5,6 +5,103 @@
 Changelog
 =========
 
+4.2.2 (unreleased)
+------------------
+
+- Fix form_tabbing.js so it stays on the same fieldset when an Archetypes
+  edit form is submitted and returns to itself.
+  [davisagli]
+
+- Use prefixed ids for popup overlays
+  [maartenkling]
+
+- Fix compatible hide fieldset legend for IE6/7/8 in form_tabbing.js
+  [maartenkling]
+
+- Do not block right-side portlets in Members folder on site creation.
+  This fixes https://dev.plone.org/ticket/10764
+  [polyester]
+
+- Fix prefs_install_product_readme so files with non-ascii characters are
+  rendered. This fixes https://dev.plone.org/ticket/12342
+  [ericof]
+
+- Fix StringIO module security so it can still be imported from restricted
+  code in Zope 2.13.17+.
+  [davisagli]
+
+- Make sure the portal_registry setting for ResourceRegistries bundles
+  gets installed.
+  [davisagli]
+
+- Filter out non existing types in getUserFriendlyTypes.
+  This avoids an error on the search form when a no longer existing
+  portal_type is still in the catalog.
+  [maurits]
+
+- We can safely move the MAX_TITLE to 50 and even move up MAX_DESCRIPTION 150 refs #11321
+  [maartenkling]
+
+- Remove inline styles, they do nothing, add class so someone can style it when they like refs #12438
+  [maartenkling]
+
+- Show forget password when entering wrong credentials refs #12463
+  [maartenkling]
+
+- Remove h3 to make consistent html refs #11344
+  [maartenkling]
+
+- Fix 'Add New' on Users/Groups Overviews shows overlay when clicking anywhere in form #12201
+  [maartenkling]
+
+- Fix events_listing #12477
+  [maartenkling]
+
+- Fix form_tabbing, to stay on current tab on submitting form
+  [maartenkling]
+
+
+4.2.1.1 (2012-08-23)
+------------------
+
+- Fixed i18n of image view improvement introduced in 4.2.1.
+  [vincentfretin]
+
+- Ensure some transient dependencies don't vanish in the 4.2 series,
+  just because some libraries get updated and nobody declares the
+  dependency anymore.  Same as in the Plone package:
+  zope.copypastemove, zope.app.component, zope.app.container,
+  zope.app.publisher.
+  [maurits]
+
+
+4.2.1 (2012-08-11)
+------------------
+
+- Fix: do not display 'file content' on a file view if there is no file.
+  [thomasdesvenain]
+
+- Improve image view:
+    - Add a download button.
+    - Display View button only if image is a web format (jpeg, png, gif...)
+  [thomasdesvenain]
+
+- zope.globalrequest is a required dependency on tests.
+  [hvelarde]
+
+- Remove content-core ID from login_form. This removes the duplicate ID
+  that occurs on a page when using the login overlay.
+  This fixes https://dev.plone.org/ticket/12439
+  [cwainwright]
+
+
+4.2.0.1 (2012-07-02)
+--------------------
+
+- Add docstring to SkinTool's method to allow them being called from the ZMI.
+  [erral]
+
+
 4.2 (2012-06-29)
 ----------------
 
@@ -12,9 +109,9 @@ Changelog
   modifier.
   [rossp]
 
-- Make redirection_view/attempt_redirect fall back to nothing in 
-  default_error_message template. If plone.app.redirector gets a URL with 
-  special characters, OOBTree.get raises a UnicodeDecodeError and the template 
+- Make redirection_view/attempt_redirect fall back to nothing in
+  default_error_message template. If plone.app.redirector gets a URL with
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template
   fails. This fixes http://dev.plone.org/ticket/12976.
   [timo]
 
@@ -42,7 +139,7 @@ Changelog
   Fixed by incorporating zenwryly's patch, http://dev.plone.org/ticket/12029
   [smcmahon]
 
-- calculate the dynamic fontsize in s5_slides.js (Presentation Mode) in em, not px. This for WCAG 2.0 compliance. 
+- calculate the dynamic fontsize in s5_slides.js (Presentation Mode) in em, not px. This for WCAG 2.0 compliance.
   See http://dev.plone.org/ticket/12902
   [polyester]
 
@@ -76,8 +173,8 @@ Changelog
   Fixes http://dev.plone.org/ticket/12877
   [davidjb]
 
-- accessibility improvements for screen readers regarding "more" links, see http://dev.plone.org/ticket/11982 
-  [rmattb, applied by polyester]   
+- accessibility improvements for screen readers regarding "more" links, see http://dev.plone.org/ticket/11982
+  [rmattb, applied by polyester]
 
 4.2rc1 (2012-05-07)
 -------------------
@@ -96,7 +193,7 @@ Changelog
   on the first column.
   [mj]
 
-- Stop filtering folder_listing to the types from 
+- Stop filtering folder_listing to the types from
   @@plone_portal_state/friendly_types, since that excludes non-searchable
   types rather than non-listable types.
   [davisagli]
@@ -107,7 +204,7 @@ Changelog
 - Hide the (old) Collections control panel by default for new sites.
   [esteele]
 
-- Use getId() instead of title_or_id() for displaying which items get 
+- Use getId() instead of title_or_id() for displaying which items get
   deleted, to avoid unicode error
   Fixes http://dev.plone.org/ticket/12765
   [spereverde]

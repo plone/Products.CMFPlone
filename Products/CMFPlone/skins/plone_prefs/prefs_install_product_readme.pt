@@ -28,7 +28,9 @@
                             readme python:context.portal_quickinstaller.getProductFile(request['filereadme']);
                             converted python: transform is not None and transform.convertTo('text/html', readme, mimetype='text/x-rst')">
             <div tal:condition="converted"
-                 tal:content="structure converted" />
+                 tal:define="data converted/getData;
+                             data python:data.decode('utf-8')"
+                 tal:content="structure data" />
 
             <pre tal:condition="not:converted"
                      tal:content="readme" />
