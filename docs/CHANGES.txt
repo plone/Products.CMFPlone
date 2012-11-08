@@ -9,6 +9,10 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Use the 'OFS.ObjectManager.bad_id' pattern in 'PloneTool.BAD_CHARS'.
+  This allows names containing '@' to pass 'check_id'.
+  [elro]
+
 - Pass minute_step to date_components_support_view.result(). See
   https://dev.plone.org/ticket/11251
   [gbastien]
