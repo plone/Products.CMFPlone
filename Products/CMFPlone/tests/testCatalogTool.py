@@ -1021,7 +1021,7 @@ class TestIndexers(PloneTestCase.PloneTestCase):
         get_size = getObjSize.callable
         self.doc.setText(u'a' * 1000)
         self.doc.reindexObject()
-        self.assertEqual(get_size(self.doc), '1 kB')
+        self.assertEqual(get_size(self.doc), '1 KB')
 
     def test_uuid(self):
         alsoProvides(self.doc, IAttributeUUID)
