@@ -8,11 +8,14 @@
 ##parameters=
 ##title=Paste objects into a folder
 
-from Products.CMFPlone import PloneMessageFactory as _
 from AccessControl import Unauthorized
+from logging import getLogger
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
 msg = _(u'Copy or cut one or more items to paste.')
+
+logger = getLogger("Plone")
 
 if context.cb_dataValid:
     try:
@@ -27,8 +30,12 @@ if context.cb_dataValid:
         msg = _(u'Disallowed to paste item(s).')
     except Unauthorized:
         msg = _(u'Unauthorized to paste item(s).')
-    except:  # fallback
-        msg = _(u'Paste could not find clipboard content.')
+    except: # fallback
+        if '__cp' not in context.REQUEST:
+            msg = _(u'Paste could not find clipboard content.')
+        else:
+            logger.exception('Exception during pasting')
+            msg = _(u'Unknown error occured. Please check your logs')
 
 context.plone_utils.addPortalMessage(msg, 'error')
 return state.set(status='failure')
