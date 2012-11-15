@@ -23,6 +23,10 @@ Changelog
 - Fix compatible hide fieldset legend for IE6/7/8 in form_tabbing.js
   [maartenkling]
 
+- Improve error handling on paste action. If it is a real error, the
+  error gets shown and logged.
+  [do3cc]
+
 
 4.2.2 (2012-10-15)
 ------------------
