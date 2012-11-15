@@ -21,6 +21,10 @@ Changelog
   https://dev.plone.org/ticket/11251
   [gbastien]
 
+- Improve error handling on paste action. If it is a real error, the
+  error gets shown and logged.
+  [do3cc]
+
 
 4.3a2 (2012-10-18)
 ------------------
