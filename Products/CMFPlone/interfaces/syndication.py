@@ -221,7 +221,7 @@ class IFeedSettings(Interface):
         title=_(u'Feed Types'),
         required=True,
         missing_value=None,
-        default=("rss.xml", "atom.xml"),
+        default=("RSS", "rss.xml", "atom.xml"),
         value_type=schema.Choice(
             vocabulary="plone.app.vocabularies.SyndicationFeedTypes"
         ))

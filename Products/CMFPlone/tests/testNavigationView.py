@@ -458,22 +458,26 @@ class TestBaseSiteMap(PloneTestCase.PloneTestCase):
         self.assertEqual(subfolder221map['item'].getPath(), path(subfolder221))
         self.assertEqual(len(subfolder221map['children']), 0)
 
-    def testSitemapWithTopLevel(self):
+    def testSitemapUnchangedWithTopLevel(self):
+        # Test that setting topLevel does not alter the sitemap
         ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(topLevel=1)
-        view = self.view_class(self.portal, self.request)
-        sitemap = view.siteMap()
-        self.assertEqual(sitemap['children'][-1]['item'].getPath(),
-                         '/plone/folder2')
+        for topLevel in range(0, 5):
+            ntp.manage_changeProperties(topLevel=topLevel)
+            view = self.view_class(self.portal, self.request)
+            sitemap = view.siteMap()
+            self.assertEqual(sitemap['children'][-1]['item'].getPath(),
+                             '/plone/folder2')
 
-    def testSitemapWithBottomLevel(self):
+    def testSitemapUnchangedWithBottomLevel(self):
+        # Test that setting bottomLevel does not alter the sitemap
         ntp = self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(bottomLevel=1)
-        view = self.view_class(self.portal, self.request)
-        sitemap = view.siteMap()
-        self.assertEqual(sitemap['children'][-1]['item'].getPath(),
-                         '/plone/folder2')
-        self.assertTrue(len(sitemap['children'][-1]['children']) > 0)
+        for bottomLevel in range(0, 5):
+            ntp.manage_changeProperties(bottomLevel=bottomLevel)
+            view = self.view_class(self.portal, self.request)
+            sitemap = view.siteMap()
+            self.assertEqual(sitemap['children'][-1]['item'].getPath(),
+                             '/plone/folder2')
+            self.assertTrue(len(sitemap['children'][-1]['children']) > 0)
 
     def testSitemapWithNavigationRoot(self):
         ntp = self.portal.portal_properties.navtree_properties

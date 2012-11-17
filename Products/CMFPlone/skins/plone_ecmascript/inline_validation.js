@@ -25,8 +25,8 @@ jQuery(function() {
   	var uid = $field.attr('data-uid');
   	var fname = $field.attr('data-fieldname');
   	var value = $input.val();
-
-  	$.post('at_validate_field', {uid: uid, fname: fname, value: value}, function(data) {
+    
+  	$.post($('base').attr('href') + '/at_validate_field', {uid: uid, fname: fname, value: value}, function(data) {
   		render_error($field, data.errmsg);
   	});
   });

@@ -5,8 +5,35 @@
 Changelog
 =========
 
-4.3a2 (unreleased)
+
+4.3a3 (unreleased)
 ------------------
+
+- Fix form_tabbing.js so it stays on the same fieldset when an Archetypes
+  edit form is submitted and returns to itself.
+  [davisagli]
+
+- Use the 'OFS.ObjectManager.bad_id' pattern in 'PloneTool.BAD_CHARS'.
+  This allows names containing '@' to pass 'check_id'.
+  [elro]
+
+- Pass minute_step to date_components_support_view.result(). See
+  https://dev.plone.org/ticket/11251
+  [gbastien]
+
+- Improve error handling on paste action. If it is a real error, the
+  error gets shown and logged.
+  [do3cc]
+
+
+4.3a2 (2012-10-18)
+------------------
+
+- Use prefixed ids for popup overlays
+  [maartenkling]
+
+- Fix compatible hide fieldset legend for IE6/7/8 in form_tabbing.js
+  [maartenkling]
 
 - Add an animated indicator of AJAX loading via Javascript.
   It is now called #ajax-spinner and is no longer added in main_template.
@@ -56,6 +83,16 @@ Changelog
 
 - Remove h3 to make consistent html refs #11344
   [maartenkling]
+
+- Fix 'Add New' on Users/Groups Overviews shows overlay when clicking anywhere in form #12201
+  [maartenkling]
+
+- Fix events_listing #12477
+  [maartenkling]
+
+- Fix form_tabbing, to stay on current tab on submitting form
+  [maartenkling]
+
 
 4.3a1 (2012-08-31)
 ------------------

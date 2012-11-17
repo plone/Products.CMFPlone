@@ -1,8 +1,8 @@
 /******
     Set up standard Plone popups
-    
+
     Provides globals: common_content_filter
-    
+
     Extends jQuery.tools.overlay.conf to set up common Plone effects and
     visuals.
 ******/
@@ -10,7 +10,7 @@
 
 var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info';
 
-jQuery.extend(jQuery.tools.overlay.conf, 
+jQuery.extend(jQuery.tools.overlay.conf,
     {
         fixed:false,
         speed:'fast',
@@ -19,10 +19,10 @@ jQuery.extend(jQuery.tools.overlay.conf,
 
 
 (function($) {
-		
+
 	// static constructs
 	$.plonepopups = $.plonepopups || {};
-    
+
     $.extend($.plonepopups,
         {
             // method to show error message in a noform
@@ -56,7 +56,7 @@ jQuery(function($){
         // enhancement.
         return;
     }
-    
+
     // login form
     $('#portal-personaltools a[href$="/login"], #portal-personaltools a[href$="/login_form"], .discussion a[href$="/login"], .discussion a[href$="/login_form"]').prepOverlay(
         {
@@ -134,7 +134,7 @@ jQuery(function($){
     // );
 
     // Delete dialog
-    $('dl#plone-contentmenu-actions a#delete').prepOverlay(
+    $('dl#plone-contentmenu-actions a#plone-contentmenu-actions-delete').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -148,7 +148,7 @@ jQuery(function($){
     );
 
     // Rename dialog
-    $('dl#plone-contentmenu-actions a#rename').prepOverlay(
+    $('dl#plone-contentmenu-actions a#plone-contentmenu-actions-rename').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -180,9 +180,13 @@ jQuery(function($){
         }
     );
 
+    // minify form width to button width
+    $('form[name="users_add"], form[name="groups_add"]').width($('input.add').outerWidth());
+    $('form[name="users_add"] input.add, form[name="groups_add"] input.add').css('cursor', 'pointer');
+
     // Content history popup
     $('#content-history a').prepOverlay({
-       subtype: 'ajax', 
+       subtype: 'ajax',
        filter: 'h2, #content-history',
        cssclass: 'overlay-history',
        urlmatch: '@@historyview',
@@ -190,4 +194,3 @@ jQuery(function($){
     });
 
 });
-

@@ -18,10 +18,11 @@
          ending_year ending_year | nothing;
          future_years future_years | nothing;
          show_single_year show_single_year | python: 1;
+         minute_step minute_step | python: 5;
          show_jscal show_jscal | python: 1;
          input_id string:${formname}_${inputname}_${inputIndex};
          date_components_support_view context/@@date_components_support;
-         values python:date_components_support_view.result(inputvalue, 0, starting_year, ending_year, future_years);
+         values python:date_components_support_view.result(inputvalue, 0, starting_year, ending_year, future_years, minute_step);
          years values/years;
          months values/months;
          days values/days;

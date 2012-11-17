@@ -75,7 +75,7 @@
     />
 
   <browser:page
-    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    for="*"
     class=".views.SearchFeedView"
     name="search_rss"
     permission="zope2.View"
