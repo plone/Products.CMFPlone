@@ -9,6 +9,10 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Fix RegistrationTool testPasswordValidity method. See
+  https://dev.plone.org/ticket/13325
+  [vipod]
+
 - Fix form_tabbing.js so it stays on the same fieldset when an Archetypes
   edit form is submitted and returns to itself.
   [davisagli]
