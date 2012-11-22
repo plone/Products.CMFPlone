@@ -102,6 +102,7 @@
    <depends name="kss_mimetype" />
    <depends name="portlets" />
    <depends name="rolemap" />
+   <depends name="tinymce_settings" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
