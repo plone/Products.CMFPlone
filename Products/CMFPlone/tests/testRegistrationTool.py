@@ -86,6 +86,13 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertRaises(Unauthorized,
                           self.registration.restrictedTraverse, 'addMember')
 
+    def testTestPasswordValidityConfirm(self):
+        # https://dev.plone.org/ticket/13325
+        self.failUnless(self.registration.testPasswordValidity(
+            'validpassword', confirm=None) is None)
+        self.failIf(self.registration.testPasswordValidity(
+            'validpassword', confirm='anotherpassword') is None)
+
     def testNewIdAllowed(self):
         self.assertEqual(self.registration.isMemberIdAllowed('newuser'), 1)
 

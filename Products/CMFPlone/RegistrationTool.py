@@ -161,11 +161,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         o If not, return a string explaining why.
         """
         err = self.pasValidation('password', password)
-        if err is None:
-            return None
-        elif password == '':
-            return err
-        elif err != '' and not _checkPermission(ManagePortal, self):
+        if err and (password == '' or not _checkPermission(ManagePortal, self)):
             return err
 
         if confirm is not None and confirm != password:

@@ -23,6 +23,8 @@ from plone.app.layout.navigation.navtree import buildFolderTree
 
 
 def get_url(item):
+    if not item:
+        return None
     if hasattr(aq_base(item), 'getURL'):
         # Looks like a brain
         return item.getURL()
@@ -30,6 +32,8 @@ def get_url(item):
 
 
 def get_id(item):
+    if not item:
+        return None
     getId = getattr(item, 'getId')
     if not utils.safe_callable(getId):
         # Looks like a brain
