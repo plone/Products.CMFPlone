@@ -38,6 +38,10 @@ Changelog
   error gets shown and logged.
   [do3cc]
 
+- Fix sitemap rendering. No longer uses portlet_navtree_macro.pt from
+  the plone_deprecated skin, but a browser view template with much
+  simplified logic.
+  [danjacka]
 
 4.3a2 (2012-10-18)
 ------------------
