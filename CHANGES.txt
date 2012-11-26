@@ -4,6 +4,9 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
+- Fix an edge case where getNavigationRootObject could loop infinitely.
+  [davisagli]
+
 - Add 'subsection' prefix to the all sections below to avoid classnames
   that start with digits, which is not permitted by the CSS standard.
   [erral]

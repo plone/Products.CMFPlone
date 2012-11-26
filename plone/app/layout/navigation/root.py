@@ -1,9 +1,8 @@
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_parent, aq_inner
 
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import utils
 
 
 def getNavigationRoot(context, relativeRoot=None):
@@ -50,11 +49,11 @@ def getNavigationRoot(context, relativeRoot=None):
 
 
 def getNavigationRootObject(context, portal):
-    if context is None:
-        return None
-
     obj = context
     while (not INavigationRoot.providedBy(obj) and
             aq_base(obj) is not aq_base(portal)):
-        obj = utils.parent(obj)
+        parent = aq_parent(aq_inner(obj))
+        if parent is None:
+            return obj
+        obj = parent
     return obj
