@@ -9,6 +9,9 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Add various security fixes based on PloneHotfix20121106.
+  [davisagli]
+
 - Fix RegistrationTool testPasswordValidity method. See
   https://dev.plone.org/ticket/13325
   [vipod]

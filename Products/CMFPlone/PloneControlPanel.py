@@ -267,6 +267,7 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
             return self.manage_editActionsForm(
                 REQUEST, manage_tabs_message='Added.')
 
+    security.declareProtected(ManagePortal, 'registerConfiglet')
     registerConfiglet = addAction
 
     security.declareProtected(ManagePortal, 'manage_editActionsForm')

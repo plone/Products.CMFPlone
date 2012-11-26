@@ -19,6 +19,8 @@ response.setHeader('Cache-Control', 'no-cache')
 
 if id is None:
     id = context.generateUniqueId(type_name)
+else:
+    id = id.replace('$', '$$')
 
 if type_name is None:
     raise Exception('Type name not specified')
