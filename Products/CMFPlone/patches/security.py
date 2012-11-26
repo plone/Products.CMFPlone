@@ -59,6 +59,7 @@ def check_getToolByName(obj, name, default=_marker):
             IItem.providedBy(result) or \
             name in _tool_interface_registry or \
             (isinstance(result, FauxArchetypeTool)) or \
+            '.test' in result.__class__.__module__ or \
             result is _marker or \
             result is default:
         return result
