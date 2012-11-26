@@ -3,6 +3,10 @@
 
 # returns a list of lists of items
 
+from zExceptions import Forbidden
+if container.REQUEST.get('PUBLISHED') is script:
+    raise Forbidden('Script may not be published.')
+
 rows = []
 
 i = 0

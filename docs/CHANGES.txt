@@ -9,6 +9,9 @@ Changelog
 4.2.3 (unreleased)
 -----------------
 
+- Add various security fixes based on PloneHotfix20121106.
+  [davisagli]
+
 - Pass minute_step to date_components_support_view.result(). See
   https://dev.plone.org/ticket/11251
   [gbastien]

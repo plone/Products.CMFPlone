@@ -11,6 +11,7 @@ from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 
 from AccessControl import ClassSecurityInfo, Unauthorized
+from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -1301,6 +1302,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 change_title = new_title and title != new_title
                 changed = False
                 if change_title:
+                    getSecurityManager().validate(obj, obj, 'setTitle', obj.setTitle)
                     obj.setTitle(new_title)
                     notify(ObjectModifiedEvent(obj))
                     changed = True
