@@ -6,6 +6,10 @@
 ##bind subpath=traverse_subpath
 ##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None, escape_for_js=False
 
+from zExceptions import Forbidden
+if container.REQUEST.get('PUBLISHED') is script:
+    raise Forbidden('Script may not be published.')
+
 # handle the possible "nothing" condition in folder_contents.pt ln 21
 # gracefully
 if msgid == None:
