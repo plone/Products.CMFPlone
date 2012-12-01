@@ -9,6 +9,9 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Fix quoted atom.xml feed syndication content type to "html".
+  [elro]
+
 - Add various security fixes based on PloneHotfix20121106.
   [davisagli]
 
