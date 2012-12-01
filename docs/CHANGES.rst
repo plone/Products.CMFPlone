@@ -9,6 +9,9 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Generate valid atom feeds
+  [lentinj]
+
 - Fix quoted atom.xml feed syndication content type to "html".
   [elro]
 
