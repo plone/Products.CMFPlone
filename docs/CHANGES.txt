@@ -9,6 +9,9 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Generate valid atom feeds
+  [lentinj]
+
 - Add various security fixes based on PloneHotfix20121106.
   [davisagli]
 
