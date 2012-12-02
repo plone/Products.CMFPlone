@@ -9,6 +9,10 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Changes to dependencies when creating a new site (plone-final) to fix
+  #11997.
+  [keul]
+
 - Generate valid atom feeds
   [lentinj]
 
