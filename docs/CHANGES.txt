@@ -30,6 +30,10 @@ Changelog
   error gets shown and logged.
   [do3cc]
 
+- Changes to dependencies when creating a new site (plone-final) to fix
+  #11997.
+  [keul]
+
 
 4.2.2 (2012-10-15)
 ------------------
