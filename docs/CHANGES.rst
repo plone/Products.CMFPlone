@@ -9,6 +9,16 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Changes to dependencies when creating a new site (plone-final) to fix
+  #11997.
+  [keul]
+
+- Generate valid atom feeds
+  [lentinj]
+
+- Fix quoted atom.xml feed syndication content type to "html".
+  [elro]
+
 - Add various security fixes based on PloneHotfix20121106.
   [davisagli]
 
@@ -32,6 +42,10 @@ Changelog
   error gets shown and logged.
   [do3cc]
 
+- Fix sitemap rendering. No longer uses portlet_navtree_macro.pt from
+  the plone_deprecated skin, but a browser view template with much
+  simplified logic.
+  [danjacka]
 
 4.3a2 (2012-10-18)
 ------------------

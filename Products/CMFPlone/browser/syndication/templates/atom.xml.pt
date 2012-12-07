@@ -21,10 +21,10 @@
   <logo tal:content="feed/logo" />
   <icon tal:content="feed/icon" />
   <generator uri="http://www.plone.org" version="1.0">plone</generator>
-  <rights tal:content="feed/rights" />
+  <rights tal:content="feed/rights" tal:condition="feed/rights" />
   <author tal:condition="feed/show_about">
     <name tal:content="feed/author_name" />
-    <email tal:content="feed/author_email" />
+    <email tal:content="feed/author_email" tal:condition="feed/author_email" />
   </author>
 
   <tal:repeat repeat="item feed/items">
@@ -38,7 +38,7 @@
                           type item/file_type;" />
       <id tal:content="string:urn:syndication:${item/uid}">urn:syndication:12345678</id>
       <summary tal:condition="not: feed/settings/render_body" tal:content="item/description" />
-      <content type="xhtml" xml:base="" xml:lang="en-US" xml:space="preserve"
+      <content type="html" xml:base="" xml:lang="en-US" xml:space="preserve"
                tal:attributes="xml:base url; xml:lang feed/language;"
                tal:condition="feed/settings/render_body">
         <tal:block tal:replace="structure string:&lt;![CDATA["/>
@@ -48,7 +48,7 @@
 
       <author>
         <name tal:content="item/author_name" />
-        <email tal:content="item/author_email" />
+        <email tal:content="item/author_email" tal:condition="item/author_email" />
       </author>
 
       <published tal:content="python: published and published.ISO8601() or modified.ISO8601()"></published>
