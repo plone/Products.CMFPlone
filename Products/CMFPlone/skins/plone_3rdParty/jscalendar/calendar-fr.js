@@ -48,17 +48,17 @@ Calendar._SDN = new Array
 // full month names
 Calendar._MN = new Array
 ("Janvier",
- "Fï¿½vrier",
+ "Février",
  "Mars",
  "Avril",
  "Mai",
  "Juin",
  "Juillet",
- "Aoï¿½t",
+ "Août",
  "Septembre",
  "Octobre",
  "Novembre",
- "Dï¿½cembre");
+ "Décembre");
 
 // short month names
 Calendar._SMN = new Array
@@ -83,7 +83,7 @@ Calendar._TT["ABOUT"] =
 "DHTML Date/Heure Selecteur\n" +
 "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
 "Pour la derniere version visitez : http://www.dynarch.com/projects/calendar/\n" +
-"Distribuï¿½ par GNU LGPL.  Voir http://gnu.org/licenses/lgpl.html pour les details." +
+"Distribué par GNU LGPL.  Voir http://gnu.org/licenses/lgpl.html pour les details." +
 "\n\n" +
 "Selection de la date :\n" +
 "- Utiliser les bouttons \xab, \xbb  pour selectionner l\'annee\n" +
@@ -95,13 +95,13 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- ou Maj-clic pour decrementer\n" +
 "- ou clic et glisser-deplacer pour une selection plus rapide";
 
-Calendar._TT["PREV_YEAR"] = "Annï¿½e prï¿½c. (maintenir pour menu)";
-Calendar._TT["PREV_MONTH"] = "Mois prï¿½c. (maintenir pour menu)";
+Calendar._TT["PREV_YEAR"] = "Année préc. (maintenir pour menu)";
+Calendar._TT["PREV_MONTH"] = "Mois préc. (maintenir pour menu)";
 Calendar._TT["GO_TODAY"] = "Atteindre la date du jour";
 Calendar._TT["NEXT_MONTH"] = "Mois suiv. (maintenir pour menu)";
-Calendar._TT["NEXT_YEAR"] = "Annï¿½e suiv. (maintenir pour menu)";
-Calendar._TT["SEL_DATE"] = "Sï¿½lectionner une date";
-Calendar._TT["DRAG_TO_MOVE"] = "Dï¿½placer";
+Calendar._TT["NEXT_YEAR"] = "Année suiv. (maintenir pour menu)";
+Calendar._TT["SEL_DATE"] = "Sélectionner une date";
+Calendar._TT["DRAG_TO_MOVE"] = "Déplacer";
 Calendar._TT["PART_TODAY"] = " (Aujourd'hui)";
 
 // the following is to inform that "%s" is to be the first day of week
