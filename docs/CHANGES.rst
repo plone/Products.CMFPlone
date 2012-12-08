@@ -47,6 +47,9 @@ Changelog
   simplified logic.
   [danjacka]
 
+- Revealed hidden features for sorting folders (#11317).
+  [keul]
+
 4.3a2 (2012-10-18)
 ------------------
 
