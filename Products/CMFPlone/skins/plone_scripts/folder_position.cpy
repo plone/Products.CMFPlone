@@ -6,17 +6,18 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=position, id, template_id='folder_contents'
+##parameters=position, id, template_id='folder_contents', delta=1, reverse=None 
 ##
 
 from Products.CMFPlone import PloneMessageFactory as _
+delta = int(delta)
 
 position=position.lower()
 
-if   position=='up':
-    context.moveObjectsUp(id)
+if position=='up':
+    context.moveObjectsUp(id, delta=delta)
 elif position=='down':
-    context.moveObjectsDown(id)
+    context.moveObjectsDown(id, delta=delta)
 elif position=='top':
     context.moveObjectsToTop(id)
 elif position=='bottom':
@@ -24,7 +25,7 @@ elif position=='bottom':
 # order folder by field
 # id in this case is the field
 elif position=='ordered':
-    context.orderObjects(id)
+    context.orderObjects(id, reverse)
 
 context.plone_utils.reindexOnReorder(context)
 

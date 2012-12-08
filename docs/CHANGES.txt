@@ -34,6 +34,8 @@ Changelog
   #11997.
   [keul]
 
+- Revealed hidden features for sorting folders (#11317).
+  [keul]
 
 4.2.2 (2012-10-15)
 ------------------
