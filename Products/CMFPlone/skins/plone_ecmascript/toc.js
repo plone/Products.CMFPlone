@@ -44,10 +44,10 @@ jQuery(function($) {
     });
 
     if (stack.length) {
-        var oltoc = $(stack[0]);
+        oltoc = $(stack[0]);
         // first level is a level with at least two entries #11160
         var i = 1;
-        while(oltoc.children('li').length == 1){
+        while(oltoc.children('li').length === 1){
             oltoc = $(stack[i]);
             i += 1;
         }
@@ -65,8 +65,8 @@ jQuery(function($) {
         wlh = window.location.hash;
         if (wlh) {
             target = $(wlh);
-            target = target.length && target
-                || $('[name="' + wlh.slice(1) +'"]');
+            target = (target.length && target) || 
+                $('[name="' + wlh.slice(1) +'"]');
             targetOffset = target.offset();
             if (targetOffset) {
                 $('html,body').animate({scrollTop: targetOffset.top}, 0);
