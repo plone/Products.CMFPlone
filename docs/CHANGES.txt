@@ -9,6 +9,9 @@ Changelog
 4.2.3 (unreleased)
 -----------------
 
+- Cleaned javascripts from plone_ecmascript of jslint warnings
+  [ichimdav]
+
 - Add various security fixes based on PloneHotfix20121106.
   [davisagli]
 
