@@ -1,6 +1,6 @@
 
 function TestCaseRegistry() {
-    this._testcases = new Object();
+    this._testcases = {};
 
     this.registerTestCase = function(testcase, suite_name) {
         if (!testcase) {
@@ -11,10 +11,10 @@ function TestCaseRegistry() {
             suite_name = 'default';
         }
         if (!this._testcases[suite_name]) {
-            this._testcases[suite_name] = new Array();
+            this._testcases[suite_name] = [];
         }
         this._testcases[suite_name].push(testcase);
-    }
+    };
 
     this.setTestSuiteFilter = function(filter) {
         if (filter) {
@@ -22,7 +22,7 @@ function TestCaseRegistry() {
         } else {
             this.suite_filter = null;
         }
-    }
+    };
 
     this.setTestFilter = function(filter) {
         if (filter) {
@@ -30,10 +30,10 @@ function TestCaseRegistry() {
         } else {
             this.test_filter = null;
         }
-    }
+    };
 
     this.getFilteredTestCases = function() {
-        var testcases = new Array();
+        var testcases = [];
 
         var suites = this.getFilteredTestSuitNames();
         for (var suite_index=0; suite_index < suites.length; suite_index++) {
@@ -50,35 +50,49 @@ function TestCaseRegistry() {
         }
 
         return testcases;
-    }
+    };
 
     this.getFilteredTestSuitNames = function() {
-        var names = new Array();
+        var names = [];
 
         for (var suite_name in this._testcases) {
-            if (this.suite_filter) {
-                if (!this.suite_filter.test(suite_name)) {
-                    continue;
+            if (this._testcases.hasOwnProperty(suite_name)) {
+                if (this.suite_filter) {
+                    if (!this.suite_filter.test(suite_name)) {
+                        continue;
+                    }
                 }
+                names.push(suite_name);
             }
-            names.push(suite_name);
         }
 
         return names;
-    }
+    };
 
     this.getFilteredTestNames = function() {
-        var names = new Array();
+        var names = [];
 
         var testcases = this.getFilteredTestCases();
         for (var testcase_index in testcases) {
-            names.push(testcases[testcase_index].name);
+            if (testcases.hasOwnProperty(testcase_index)) {
+                names.push(testcases[testcase_index].name);
+            }
         }
 
         return names;
-    }
+    };
 }
 testcase_registry = new TestCaseRegistry();
+
+function createLink(link, desc, bName) {
+    var a = document.createElement("a");
+
+    a.setAttribute((bName?"name":"href"), link);
+    if(desc) {
+        a.appendChild(document.createTextNode(desc));
+    }
+    return a;
+}
 
 function runTestCase(testCase) {
     // append TOC entry
@@ -105,11 +119,11 @@ function runTestCase(testCase) {
     } catch(e) {
         var raw = e;
         if (e.name && e.message) { // Microsoft
-            e = e.name + ': ' + e.message;
+            raw = e.name + ': ' + e.message;
         }
-        placeHolder.appendChild(document.createTextNode(e));
+        placeHolder.appendChild(document.createTextNode(raw));
     }
-};
+}
 
 function runTestCases() {
     var suite_filter = document.getElementById('suite-filter').value;
@@ -125,11 +139,12 @@ function runTestCases() {
         // destroying the blank document. But only Mozilla needs that mode.
         if (_SARISSA_IS_MOZ) {
             try {
-                if (typeof(iframe.contentWindow.document.designMode) != 'undefined')
+                if (iframe.contentWindow.document.designMode) {
                     iframe.contentWindow.document.designMode = 'on';
-            } catch(e) {
+                }
+            } catch(e1) {
             }
-        };
+        }
     }
 
     for (var testcase_index=0; testcase_index < testcases.length; testcase_index++) {
@@ -139,12 +154,19 @@ function runTestCases() {
     if (iframe) {
         if (_SARISSA_IS_MOZ) {
             try {
-                if (typeof(iframe.contentWindow.document.designMode) != 'undefined')
+                if (iframe.contentWindow.document.designMode) {
                     iframe.contentWindow.document.designMode = 'off';
-            } catch(e) {
+                }
+            } catch(e2) {
             }
-        };
+        }
         iframe.style.display = 'none';
+    }
+}
+
+function clearChildNodes(oNode) {
+    while(oNode.hasChildNodes()) {
+        oNode.removeChild(oNode.firstChild);
     }
 }
 
@@ -152,6 +174,13 @@ function clearOutput() {
     clearChildNodes(document.getElementById("testResultsToc"));
     clearChildNodes(document.getElementById("testResultsPlaceHolder"));
     clearChildNodes(document.getElementById("testSandbox"));
+}
+
+function putTextInPlaceHolder(text) {
+    var msg = this.document.createTextNode(text);
+    var placeholder = document.getElementById("testResultsPlaceHolder");
+    clearChildNodes(placeholder);
+    placeholder.appendChild(msg);
 }
 
 function showFilteredTests() {
@@ -164,35 +193,12 @@ function showFilteredTests() {
 }
 
 function showMarkup() {
-    var text = document.getElementById('testResultsPlaceHolder').innerHTML
+    var text = document.getElementById('testResultsPlaceHolder').innerHTML;
     var msg = this.document.createTextNode(text);
     var sandbox = document.getElementById("testSandbox");
     clearChildNodes(sandbox);
     sandbox.appendChild(msg);
 }
-
-function putTextInPlaceHolder(text) {
-    var msg = this.document.createTextNode(text);
-    var placeholder = document.getElementById("testResultsPlaceHolder");
-    clearChildNodes(placeholder);
-    placeholder.appendChild(msg);
-}
-
-clearChildNodes = function(oNode) {
-    while(oNode.hasChildNodes()) {
-        oNode.removeChild(oNode.firstChild);
-    }
-}
-
-function createLink(link, desc, bName) {
-    var a = document.createElement("a");
-
-    a.setAttribute((bName?"name":"href"), link);
-    if(desc) 
-        a.appendChild(document.createTextNode(desc));
-    return a;
-}
-
 
 // from the kupu test runner
 var skipped_tests = [];
@@ -211,10 +217,10 @@ function opera_is_broken(self, fname) {
         } catch(e) {
             // The function threw an exception, which is what we
             // expect.
-            return
-        };
+            return;
+        }
         self.assert(false, 'expected test '+fname+' to fail, but it passed!');
-    };
+    }
     self[fname] = test;
     skipped_tests.push(fname);
 }
@@ -231,10 +237,10 @@ function ie_is_broken(self, fname) {
         } catch(e) {
             // The function threw an exception, which is what we
             // expect.
-            return
-        };
+            return;
+        }
         self.assert(false, 'expected test '+fname+' to fail, but it passed!');
-    };
+    }
     self[fname] = test;
     skipped_tests.push(fname);
 }
