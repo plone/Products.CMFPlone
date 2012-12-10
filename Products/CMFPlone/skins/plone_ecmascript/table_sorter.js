@@ -14,7 +14,7 @@ function sortabledataclass(cell){
     re = new RegExp("sortabledata-([^ ]*)","g");
 	matches = re.exec(cell.attr('class'));
 	if (matches) { return matches[1]; }
-    else { return null; }
+    return null;
 }
 
 function sortable(cell) {
@@ -29,6 +29,14 @@ function sortable(cell) {
         return parseFloat(text);
     }
     return text.toLowerCase();
+}
+
+function setoddeven() {
+    var tbody = $(this);
+    // jquery :odd and :even are 0 based
+    tbody.find('tr').removeClass('odd').removeClass('even')
+        .filter(':odd').addClass('even').end()
+        .filter(':even').addClass('odd');
 }
 
 function sort() {
@@ -46,8 +54,8 @@ function sort() {
     $(this).children('.sortdirection').html(
         reverse ? '&#x25b2;' : '&#x25bc;');
 
-    index = $(this).parent().children('th').index(this),
-    data = [],
+    index = $(this).parent().children('th').index(this);
+    data = [];
     usenumbers = true;
     tbody.find('tr').each(function() {
         var cells, sortableitem;
@@ -76,14 +84,6 @@ function sort() {
         // jquery :odd and :even are 0 based
         tbody.each(setoddeven);
     }
-}
-
-function setoddeven() {
-    var tbody = $(this);
-    // jquery :odd and :even are 0 based
-    tbody.find('tr').removeClass('odd').removeClass('even')
-        .filter(':odd').addClass('even').end()
-        .filter(':even').addClass('odd');
 }
 
 $(function() {
