@@ -50,6 +50,9 @@ Changelog
 - Revealed hidden features for sorting folders (#11317).
   [keul]
 
+- Don't swallow exceptins on object_paste and folder_paste (#9365).
+  [gaudenz]
+
 4.3a2 (2012-10-18)
 ------------------
 

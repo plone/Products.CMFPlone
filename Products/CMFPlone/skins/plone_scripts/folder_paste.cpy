@@ -37,5 +37,7 @@ if context.cb_dataValid:
             logger.exception('Exception during pasting')
             msg = _(u'Unknown error occured. Please check your logs')
 
-context.plone_utils.addPortalMessage(msg, 'error')
-return state.set(status='failure')
+# raise an Exception to abort the transaction. CMFFormController
+# does not do this for us and the objects are already pasted. Otherwise
+# we end up in an inconsistent state.
+raise Exception(msg)

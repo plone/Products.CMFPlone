@@ -1,9 +1,14 @@
+from urllib2 import HTTPError
+
 from Products.CMFPlone.tests import PloneTestCase
 
 from AccessControl import Unauthorized
 from OFS.CopySupport import CopyError
 from Acquisition import aq_base
 import transaction
+from zope.component import provideHandler, getGlobalSiteManager
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
+from Products.CMFCore.interfaces import IContentish
 
 
 class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
@@ -135,3 +140,65 @@ class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
             self.portal.manage_pasteObjects,
             self.folder.manage_copyObjects(ids=['doc'])
         )
+
+
+def failingEventHandler(obj, event):
+    raise Exception("Failing for Testing")
+
+
+class CutPasteFailureTests(PloneTestCase.FunctionalTestCase):
+    """See https://dev.plone.org/ticket/9365"""
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('Folder', id='source-folder')
+        self.folder.invokeFactory('Folder', id='destination-folder')
+        self.folder['source-folder'].invokeFactory('Document', id='doc')
+
+    def testObject_pasteUncommitOnException(self):
+        """Ensure that pasted objects aren't commited if an IObjectMovedEvent raises an exception.
+        See https://dev.plone.org/ticket/9365
+        """
+        # register event handler
+        provideHandler(failingEventHandler, [IContentish, IObjectMovedEvent])
+        try:
+            browser = self.getBrowser()
+            browser.open(self.folder['source-folder']['doc'].absolute_url())
+            browser.getLink('Cut').click()
+            browser.open(self.folder['destination-folder'].absolute_url())
+            try:
+                browser.getLink('Paste').click()
+            except HTTPError, msg:
+                # a HTTP 500 Server error is currently expected, unless we find a better way
+                # to abort the transaction.
+                pass
+
+            # test if document is not moved
+            self.assertTrue('doc' in self.folder['source-folder'])
+            self.assertFalse('doc' in self.folder['destination-folder'])
+
+        finally:
+            # unregister event handler
+            getGlobalSiteManager().unregisterHandler(failingEventHandler, [IContentish, IObjectMovedEvent])
+
+    def testFolder_pasteUncommitOnException(self):
+        # register event handler
+        provideHandler(failingEventHandler, [IContentish, IObjectMovedEvent])
+        try:
+            browser = self.getBrowser()
+            browser.open(self.folder['source-folder']['doc'].absolute_url())
+            browser.getLink('Cut').click()
+            browser.open(self.folder['destination-folder'].absolute_url() + '/folder_contents')
+            try:
+                browser.getControl(name='folder_paste:method').click()
+            except HTTPError, msg:
+                # a HTTP 500 Server error is currently expected, unless we find a better way
+                # to abort the transaction.
+                pass
+
+            # test if document is not moved
+            self.assertTrue('doc' in self.folder['source-folder'])
+            self.assertFalse('doc' in self.folder['destination-folder'])
+
+        finally:
+            # unregister event handler
+            getGlobalSiteManager().unregisterHandler(failingEventHandler, [IContentish, IObjectMovedEvent])
