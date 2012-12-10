@@ -27,10 +27,11 @@ var ploneFormTabbing = {
 (function($) {
 
 ploneFormTabbing._buildTabs = function(container, legends) {
-    var threshold = legends.length > 6;
-    var panel_ids, tab_ids = [], tabs = '';
+    var legends_length = legends.length;
+    var threshold = legends_length > 6;
+    var panel_ids, tab_ids = [], tabs = '', i;
 
-    for (var i=0; i < legends.length; i++) {
+    for (i=0; i < legends_length; i+= 1) {
         var className, tab, legend = legends[i], lid = legend.id;
         tab_ids[i] = '#' + lid;
 
@@ -38,7 +39,7 @@ ploneFormTabbing._buildTabs = function(container, legends) {
             case (0):
                 className = 'class="formTab firstFormTab"';
                 break;
-            case (legends.length-1):
+            case (legends_length-1):
                 className = 'class="formTab lastFormTab"';
                 break;
             default:
@@ -69,7 +70,7 @@ ploneFormTabbing._buildTabs = function(container, legends) {
         tabs.change(function(){
             var selected = $(this).attr('value');
             $(this).parent().find('option#'+selected).click();
-        })
+        });
     } else {
         tabs = $('<ul class="formTabs">'+tabs+'</ul>');
     }
@@ -112,7 +113,7 @@ ploneFormTabbing.initializeForm = function() {
     var count = 0;
     var found = false;
     $(this).find('.formPanel').each(function() {
-        if (!found && $(this).find('div.field.error').length!=0) {
+        if (!found && $(this).find('div.field.error').length !== 0 ) {
             initialIndex = count;
             found = true;
         }
