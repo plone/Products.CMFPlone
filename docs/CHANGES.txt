@@ -37,6 +37,9 @@ Changelog
 - Revealed hidden features for sorting folders (#11317).
   [keul]
 
+- Don't swallow exceptions on object_paste and folder_paste (#9365).
+  [gaudenz]
+
 4.2.2 (2012-10-15)
 ------------------
 
