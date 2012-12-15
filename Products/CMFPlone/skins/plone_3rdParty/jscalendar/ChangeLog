@@ -10,15 +10,6 @@
 	the date beforehand if possible and pass it to the calendar at constructor.
 
 	* calendar.js:
-4.2.3 (unreleased)
-------------------
-
-- Nothing changed yet.
-
-
-4.2.2 (2012-10-15)
-
-	* calendar.js:
 	fixed keyboard handling problems: now it works fine when "showsOtherMonths"
 	is passed; it also seems to be fine with disabled dates (won't normally
 	allow selection)--however this area is still likely to be buggy, i.e. in a
