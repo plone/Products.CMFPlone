@@ -8,7 +8,7 @@
 ##parameters=
 
 from Products.CMFPlone import PloneMessageFactory as pmf
-from zExceptions import Unauthorized
+from AccessControl import Unauthorized
 
 REQUEST = context.REQUEST
 try:
