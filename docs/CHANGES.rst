@@ -9,6 +9,10 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- removing ``plone_ecmascript/test_ecmascripts.pt`` since its not working and
+  since its not being ran by out test suite.
+  [garbas]
+
 - Changes to dependencies when creating a new site (plone-final) to fix
   #11997.
   [keul]
