@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.3 (unreleased)
+2.3.3 (2013-01-01)
 ------------------
 
 - Changed the behaviour of the title viewlet for items in the portal_factory.
