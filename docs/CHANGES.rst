@@ -9,6 +9,10 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- Call searchUsers with the 'name' argument instead of 'login'.
+  'name' is the officially supported way according to the PAS interface.
+  [maurits]
+
 - Changes to dependencies when creating a new site (plone-final) to fix
   #11997.
   [keul]
