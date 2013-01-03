@@ -8,7 +8,10 @@ Changelog
 4.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Call pas.searchUsers with the 'name' argument instead of 'login'.
+  'name' is the officially supported way according to the PAS
+  interface.
+  [maurits]
 
 
 4.2.3 (2012-12-15)
