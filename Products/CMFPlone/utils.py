@@ -2,6 +2,7 @@ import re
 from types import ClassType
 from os.path import join, abspath, split
 
+import pkg_resources
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from webdav.interfaces import IWriteLock
 
@@ -383,10 +384,9 @@ def versionTupleFromString(v_str):
 
 
 def getFSVersionTuple():
-    """Reads version.txt and returns version tuple"""
-    vfile = "%s/version.txt" % PACKAGE_HOME
-    v_str = open(vfile, 'r').read().lower()
-    return versionTupleFromString(v_str)
+    """Returns Products.CMFPlone version tuple"""
+    version = pkg_resources.get_distribution('Products.CMFPlone').version
+    return versionTupleFromString(version)
 
 
 def transaction_note(note):

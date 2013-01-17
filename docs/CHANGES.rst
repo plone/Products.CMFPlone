@@ -9,6 +9,14 @@ Changelog
 4.3a3 (unreleased)
 ------------------
 
+- removing ``plone_ecmascript/test_ecmascripts.pt`` since its not working and
+  since its not being ran by out test suite.
+  [garbas]
+
+- Call searchUsers with the 'name' argument instead of 'login'.
+  'name' is the officially supported way according to the PAS interface.
+  [maurits]
+
 - Changes to dependencies when creating a new site (plone-final) to fix
   #11997.
   [keul]
@@ -46,6 +54,12 @@ Changelog
   the plone_deprecated skin, but a browser view template with much
   simplified logic.
   [danjacka]
+
+- Revealed hidden features for sorting folders (#11317).
+  [keul]
+
+- Don't swallow exceptins on object_paste and folder_paste (#9365).
+  [gaudenz]
 
 4.3a2 (2012-10-18)
 ------------------
