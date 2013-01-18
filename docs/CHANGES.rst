@@ -5,8 +5,7 @@
 Changelog
 =========
 
-
-4.3a3 (unreleased)
+4.3b2 (Unreleased)
 ------------------
 
 - removing ``plone_ecmascript/test_ecmascripts.pt`` since its not working and
@@ -16,6 +15,10 @@ Changelog
 - Call searchUsers with the 'name' argument instead of 'login'.
   'name' is the officially supported way according to the PAS interface.
   [maurits]
+
+
+4.3b1 (2012-01-02)
+------------------
 
 - Changes to dependencies when creating a new site (plone-final) to fix
   #11997.
