@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3b2 (Unreleased)
+4.3b2 (2013-01-17)
 ------------------
 
 - removing ``plone_ecmascript/test_ecmascripts.pt`` since its not working and
