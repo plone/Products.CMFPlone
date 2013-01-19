@@ -8,7 +8,10 @@ Changelog
 4.3b3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add event to fix products installed with latest keyword
+  activated by default. Event finds new products installed with
+  the latest keyword and updates them to the last profile version.
+  [eleddy]
 
 
 4.3b2 (2013-01-17)
