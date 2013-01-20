@@ -13,6 +13,9 @@ Changelog
   the latest keyword and updates them to the last profile version.
   [eleddy]
 
+- Update text for changing force change password to reference site
+  title instead of Registry Settings. Fixes ticket #13367
+  [abutton]
 
 4.2.4 (2013-01-17)
 ------------------
