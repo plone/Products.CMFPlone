@@ -18,7 +18,10 @@ def profileImportedEventHandler(event):
     """
     profile_id = event.profile_id.replace('profile-', '')
     gs = event.tool
-    qi = getToolByName(gs, 'portal_quickinstaller')
+    qi = getToolByName(gs, 'portal_quickinstaller', None)
+    if qi is None:
+        # CMF-only site, or a test run.
+        return
     installed_version = gs.getLastVersionForProfile(profile_id)
     if installed_version == (u'latest',):
         actual_version = qi.getLatestUpgradeStep(profile_id)
