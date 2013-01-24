@@ -69,8 +69,9 @@
 
   <browser:page
       for="*"
-      name="sitemap_view"
+      name="sitemap"
       class=".sitemap.SitemapView"
+      template="templates/sitemap.pt"
       permission="zope.Public"
       allowed_interface=".interfaces.ISitemapView"
       />
