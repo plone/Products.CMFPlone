@@ -358,12 +358,12 @@ class TestCatalogNavTree(TestBaseNavTree):
         view_class = CatalogNavigationTree
 
 
-class TestBaseSiteMap(PloneTestCase.PloneTestCase):
+class TestSiteMap(PloneTestCase.PloneTestCase):
     """Tests for the sitemap view implementations. This base test is a little
         geared toward a catalog based implementation for now.
     """
 
-    view_class = None
+    view_class = CatalogSiteMap
 
     def afterSetUp(self):
         self.request = self.app.REQUEST
@@ -486,10 +486,6 @@ class TestBaseSiteMap(PloneTestCase.PloneTestCase):
         sitemap = view.siteMap()
         self.assertEqual(sitemap['children'][-1]['item'].getPath(),
                          '/plone/folder2/file21')
-
-
-class TestSiteMap(TestBaseSiteMap):
-        view_class = CatalogSiteMap
 
 
 class TestBasePortalTabs(PloneTestCase.PloneTestCase):
