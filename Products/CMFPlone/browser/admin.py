@@ -179,7 +179,7 @@ class AddPloneSite(BrowserView):
             pass
         else:
             values.append((_ATCONTENTTYPES_PROFILE,
-                           'Archetypes based content-types',
+                           'Archetypes',
                            False,))
         # Check for plone.app.content_types
         try:
@@ -188,7 +188,7 @@ class AddPloneSite(BrowserView):
             pass
         else:
             values.append((_PLONE_APP_CONTENTTYPES_PROFILE,
-                           'Dexterity based content-types',
+                           'Dexterity',
                            False,))
         return values
 

@@ -39,27 +39,6 @@
                     extension_profiles profiles/extensions;
                     advanced request/advanced|nothing;">
 
-      <div>
-        <ul>
-          <li>
-            <a href="#"
-               tal:condition="advanced"
-               tal:attributes="href string:${context/absolute_url}/@@plone-addsite?site_id=Plone"
-               i18n:translate="">
-               Default 
-             </a>
-           </li>
-          <li>
-            <a href="#"
-               tal:condition="not: advanced" 
-               tal:attributes="href string:${context/absolute_url}/@@plone-addsite?site_id=Plone&advanced=1"
-               i18n:translate="">
-               Advanced
-            </a>
-          </li>
-        </ul>
-      </div>
-
       <div class="field">
         <label for="site_id" i18n:translate="">
           Path identifier
@@ -106,22 +85,16 @@
         </select>
       </div>
 
-      <div class="field" tal:condition="python:advanced and len(view.available_content_frameworks)">
-        <label for="select_content_framework" i18n:translate="">Available content-type frameworks</label>
+      <div class="field" tal:condition="python:len(view.available_content_frameworks)">
+        <label for="select_content_framework" i18n:translate="">Which content-type framework should the default-types be based on?</label>
         <div class="formHelp" />
     	<dl>
 	       <dt tal:repeat="framework view/available_content_frameworks">
               <input type="radio" name="base_contenttypes"
                      tal:attributes="value python:framework[0];
-	               	                 checked python:repeat['framework'].start and 'checked' or ''" />
+	               	                   checked python:repeat['framework'].start and 'checked' or ''" />
                 <span i18n:translate="" tal:content="python:framework[1]" />
            </dt>
-           <dt>
-             <input type="radio" name="base_contenttypes"
-	                value="--no-value--"
-         	         />
-	            <span i18n:translate="">No base content-types</span>
-	       </dt>
 	    </dl>
       </div>
 
@@ -130,7 +103,7 @@
 
         <div class="formHelp" />
 
-        <input type="checkbox" name="setup_content:boolean" />
+        <input type="checkbox" name="setup_content:boolean" checked="checked" />
 
         <span i18n:translate="">
             Should the default example content be added to the site?
@@ -225,7 +198,7 @@
         <input type="submit" name="submit" value="Create Plone Site"
                i18n:attributes="value;" />
       </div>
-      
+
   </form>
   </body>
 </html>
