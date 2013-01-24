@@ -118,7 +118,7 @@ Calendar._TT["TODAY"] = "Aujourd'hui";
 Calendar._TT["TIME_PART"] = "(Maj-)Clic ou glisser pour modifier la valeur";
 
 // date formats
-Calendar._TT["DEF_DATE_FORMAT"] = "%d/%m/%Y";
+Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%a, %b %e";
 
 Calendar._TT["WK"] = "Sem.";

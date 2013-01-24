@@ -7,11 +7,10 @@
 ##bind subpath=traverse_subpath
 ##parameters=groupname, delete=[]
 ##title=Edit group members
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 
-REQUEST=context.REQUEST
+REQUEST = context.REQUEST
 tool = context.portal_groups
 
 for u in delete:

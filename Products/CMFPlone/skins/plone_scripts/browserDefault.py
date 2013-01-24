@@ -6,6 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Set Browser Default
-##
+
 # Deprecated script
 return context.plone_utils.browserDefault(context)

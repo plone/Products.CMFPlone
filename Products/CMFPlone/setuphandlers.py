@@ -17,8 +17,8 @@ from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.utils import bodyfinder
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
-from Products.StandardCacheManagers.AcceleratedHTTPCacheManager import \
-     AcceleratedHTTPCacheManager
+from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
+    import AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 
 from Products.CMFPlone.utils import _createObjectByType
@@ -59,6 +59,7 @@ class HiddenProducts(object):
             'borg.localrole',
             'plone.keyring',
             'plone.protect',
+            'plone.app.jquery'
             'plone.app.jquerytools',
             'plone.app.blob',
             'plone.app.discussion',
@@ -95,21 +96,21 @@ def addCacheForResourceRegistry(portal):
     if ram_cache_id in portal:
         cache = getattr(portal, ram_cache_id)
         settings = cache.getSettings()
-        settings['max_age'] = 24*3600 # keep for up to 24 hours
+        settings['max_age'] = 24 * 3600  # keep for up to 24 hours
         settings['request_vars'] = ('URL', )
-        cache.manage_editProps('Cache for saved ResourceRegistry files', settings)
+        cache.manage_editProps('Cache for saved ResourceRegistry files',
+                               settings)
     reg = getToolByName(portal, 'portal_css', None)
-    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
-        reg.ZCacheable_setManagerId(ram_cache_id)
-        reg.ZCacheable_setEnabled(1)
-
-    reg = getToolByName(portal, 'portal_kss', None)
-    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+    if reg is not None \
+            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
+                is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
     reg = getToolByName(portal, 'portal_javascripts', None)
-    if reg is not None and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) is not None:
+    if reg is not None \
+            and getattr(aq_base(reg), 'ZCacheable_setManagerId', None) \
+                is not None:
         reg.ZCacheable_setManagerId(ram_cache_id)
         reg.ZCacheable_setEnabled(1)
 
@@ -190,12 +191,15 @@ def setupPortalContent(p):
         if base_language != 'en':
             util = queryUtility(ITranslationDomain, 'plonefrontpage')
             if util is not None:
-                front_title = util.translate(u'front-title',
-                                   target_language=target_language,
-                                   default="Welcome to Plone")
-                front_desc = util.translate(u'front-description',
-                                   target_language=target_language,
-                                   default="Congratulations! You have successfully installed Plone.")
+                front_title = util.translate(
+                                    u'front-title',
+                                    target_language=target_language,
+                                    default="Welcome to Plone")
+                front_desc = util.translate(
+                    u'front-description',
+                    target_language=target_language,
+                    default="Congratulations! You have successfully installed "
+                            "Plone.")
                 translated_text = util.translate(u'front-text',
                                    target_language=target_language)
                 if translated_text != u'front-text':
@@ -237,7 +241,7 @@ def setupPortalContent(p):
 
         _createObjectByType('Folder', p, id='news',
                             title=news_title, description=news_desc)
-        _createObjectByType('Topic', p.news, id='aggregator',
+        _createObjectByType('Collection', p.news, id='aggregator',
                             title=news_title, description=news_desc)
 
         folder = p.news
@@ -254,12 +258,17 @@ def setupPortalContent(p):
 
         topic = p.news.aggregator
         topic.setLanguage(language)
-        type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
-        type_crit.setValue('News Item')
-        topic.addCriterion('created', 'ATSortCriterion')
-        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        topic.setSortCriterion('effective', True)
+
+        query = [{'i': 'portal_type',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['News Item']},
+                 {'i': 'review_state',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['published']}]
+        topic.setQuery(query)
+
+        topic.setSort_on('effective')
+        topic.setSort_reversed(True)
         topic.setLayout('folder_summary_view')
         topic.unmarkCreationFlag()
 
@@ -282,7 +291,7 @@ def setupPortalContent(p):
 
         _createObjectByType('Folder', p, id='events',
                             title=events_title, description=events_desc)
-        _createObjectByType('Topic', p.events, id='aggregator',
+        _createObjectByType('Collection', p.events, id='aggregator',
                             title=events_title, description=events_desc)
         folder = p.events
         folder.setOrdering('unordered')
@@ -299,17 +308,18 @@ def setupPortalContent(p):
         topic = folder.aggregator
         topic.unmarkCreationFlag()
         topic.setLanguage(language)
-        type_crit = topic.addCriterion('Type', 'ATPortalTypeCriterion')
-        type_crit.setValue('Event')
-        topic.addCriterion('start', 'ATSortCriterion')
-        state_crit = topic.addCriterion('review_state', 'ATSimpleStringCriterion')
-        state_crit.setValue('published')
-        date_crit = topic.addCriterion('start', 'ATFriendlyDateCriteria')
-        # Set date reference to now
-        date_crit.setValue(0)
-        # Only take events in the future
-        date_crit.setDateRange('+') # This is irrelevant when the date is now
-        date_crit.setOperation('more')
+
+        query = [{'i': 'portal_type',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['Event']},
+                 {'i': 'start',
+                  'o': 'plone.app.querystring.operation.date.afterToday',
+                  'v': ''},
+                 {'i': 'review_state',
+                  'o': 'plone.app.querystring.operation.selection.is',
+                  'v': ['published']}]
+        topic.setQuery(query)
+        topic.setSort_on('start')
     else:
         topic = p.events
 
@@ -347,7 +357,8 @@ def setupPortalContent(p):
 
         # add index_html to Members area
         if 'index_html' not in members.objectIds():
-            addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
+            addPy = members.manage_addProduct['PythonScripts'] \
+                        .manage_addPythonScript
             addPy('index_html')
             index_html = getattr(members, 'index_html')
             index_html.write(member_indexhtml)
@@ -356,7 +367,9 @@ def setupPortalContent(p):
         # Block all right column portlets by default
         manager = queryUtility(IPortletManager, name='plone.rightcolumn')
         if manager is not None:
-            assignable = queryMultiAdapter((members, manager), ILocalPortletAssignmentManager)
+            assignable = queryMultiAdapter(
+                            (members, manager),
+                            ILocalPortletAssignmentManager)
             assignable.setBlacklistStatus('context', True)
             assignable.setBlacklistStatus('group', True)
             assignable.setBlacklistStatus('content_type', True)
@@ -374,7 +387,7 @@ def setProfileVersion(portal):
 
 
 def assignTitles(portal):
-    titles={
+    titles = {
      'acl_users': 'User / Group storage and authentication settings',
      'archetype_tool': 'Archetypes specific settings',
      'caching_policy_manager': 'Settings related to proxy caching',
@@ -398,7 +411,6 @@ def assignTitles(portal):
      'portal_groups': 'Handles group related functionality',
      'portal_interface': 'Allows to query object interfaces',
      'portal_javascripts': 'Registry of JavaScript files',
-     'portal_kss': 'Registry of Kinetic Style Sheets',
      'portal_languages': 'Language specific settings',
      'portal_membership': 'Handles membership policies',
      'portal_memberdata': 'Handles the available properties on members',
@@ -410,7 +422,6 @@ def assignTitles(portal):
      'portal_registration': 'Handles registration of new users',
      'portal_setup': 'Add-on and configuration management',
      'portal_skins': 'Controls skin behaviour (search order etc)',
-     'portal_syndication': 'Generates RSS for folders',
      'portal_transforms': 'Handles data conversion between MIME types',
      'portal_types': 'Controls the available content types in your portal',
      'portal_undo': 'Defines actions and functionality related to undo',
@@ -436,10 +447,6 @@ def importFinalSteps(context):
         return
     site = context.getSite()
     setProfileVersion(site)
-
-    # Enable syndication
-    syn = getToolByName(site, 'portal_syndication')
-    syn.editProperties(isAllowed=True)
 
     # Install our dependencies
     st = getToolByName(site, "portal_setup")

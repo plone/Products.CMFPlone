@@ -4,7 +4,9 @@
     <metal:block fill-slot="top_slot">
         <metal:override define-slot="top_slot">
             <tal:defines tal:define="dummy python:request.set('disable_border',1);
-                                     disable_column_one python:request.set('disable_plone.leftcolumn',0);
+                                     controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
+                                     show_leftcolumn controlPanel/maySeeSomeConfiglets;
+                                     disable_column_one python:request.set('disable_plone.leftcolumn', not show_leftcolumn);
                                      disable_column_two python:request.set('disable_plone.rightcolumn',1);"/>
         </metal:override>
     </metal:block>

@@ -13,26 +13,35 @@
     <metal:main fill-slot="main"
          tal:define="useSelf python:context_state.is_structural_folder() and not context_state.is_default_page();
                      folder_warning python:useSelf and context.portal_type != 'Topic';
-                     number_of_objects_to_delete python:folder_warning and len(context.portal_catalog.searchResults(dict(path='/'.join(context.getPhysicalPath()), portal_type=context.plone_utils.getUserFriendlyTypes())))">
+                     number_of_objects_to_delete python:folder_warning and len(context.portal_catalog.searchResults(dict(path='/'.join(context.getPhysicalPath()), portal_type=context.plone_utils.getUserFriendlyTypes())));
+                     item_locked context/@@plone_lock_info/is_locked_for_current_user | nothing">
       <h1 class="documentFirstHeading"
-          tal:condition="folder_warning">
-          <span i18n:translate="alert_really_delete_folder">
-              Do you really want to delete this folder and all its contents?
-          </span>
-          <span i18n:translate="alert_deleting_x_number_of_items" tal:condition="python:number_of_objects_to_delete>1">
-              (This will delete a total of <span i18n:name="number_of_items_to_delete" tal:content="python:number_of_objects_to_delete">22</span> items.)
-          </span>
+          i18n:translate="alert_deleting_locked_item"
+           tal:condition="item_locked">
+           This item can not be deleted because it is currently locked by another user.
       </h1>
 
-      <h1 class="documentFirstHeading"
-          i18n:translate="alert_really_delete"
-          tal:condition="not:folder_warning">
-        Do you really want to delete this item?
-      </h1>
+      <tal:block condition="not:item_locked">
+        <h1 class="documentFirstHeading"
+            tal:condition="folder_warning">
+          <span i18n:translate="alert_really_delete_folder">
+            Do you really want to delete this folder and all its contents?
+          </span>
+          <span i18n:translate="alert_deleting_x_number_of_items" tal:condition="python:number_of_objects_to_delete>1">
+            (This will delete a total of <span i18n:name="number_of_items_to_delete" tal:content="python:number_of_objects_to_delete">22</span> items.)
+          </span>
+        </h1>
+
+        <h1 class="documentFirstHeading"
+            i18n:translate="alert_really_delete"
+            tal:condition="not:folder_warning">
+          Do you really want to delete this item?
+        </h1>
+      </tal:block>
 
       <div id="content-core">
           <ul>
-              <li tal:content="context/@@plone_context_state/object_title">The item title (ID)</li>
+            <li tal:content="context/@@plone_context_state/object_title">The item title (ID)</li>
           </ul>
 
           <form method="POST"
@@ -49,6 +58,7 @@
               <input class="destructive"
                      type="submit"
                      value="Delete"
+                     tal:condition="not:item_locked"
                      i18n:attributes="value;"
                      />
               <input class="standalone"

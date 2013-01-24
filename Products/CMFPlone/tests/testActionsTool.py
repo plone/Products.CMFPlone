@@ -1,7 +1,3 @@
-#
-# ActionsTool tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from traceback import format_exception
@@ -11,6 +7,7 @@ from Acquisition import Explicit
 from OFS.SimpleItem import Item
 from Products.CMFCore.ActionInformation import ActionInfo
 from Products.CMFCore.ActionInformation import Action
+
 
 class ExplicitItem(Item, Explicit):
     '''Item without implicit acquisition'''
@@ -51,7 +48,7 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(foo_action.category, 'foo_category')
 
     def testPortalTypesIsActionProvider(self):
-        self.failUnless('portal_types' in self.actions.listActionProviders())
+        self.assertTrue('portal_types' in self.actions.listActionProviders())
 
     def testMissingActionProvider(self):
         self.portal._delObject('portal_types')
@@ -87,44 +84,40 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
                                visible=1)
         actions = self.actions.listFilteredActionsFor(self.folder)
         match = [a for a in actions['document_actions'] if a['id'] == 'foo']
-        self.failUnless(match)
+        self.assertTrue(match)
         self.portal.portal_workflow.doActionFor(self.folder, 'hide')
         self.login('user1')
         actions = self.actions.listFilteredActionsFor(self.folder)
-        match = [a for a in actions.get('document_actions', []) if a['id'] == 'foo']
-        self.failIf(match)
+        match = [a for a in actions.get('document_actions', [])
+                    if a['id'] == 'foo']
+        self.assertFalse(match)
 
     def testActionNamespace(self):
-        self.actions.addAction(id='foo',
-                               name='foo_name',
-                               action='string:${globals_view/isStructuralFolder}',
-                               condition='',
-                               permission='View',
-                               category='folder',
-                               visible=1)
+        self.actions.addAction(
+                    id='foo',
+                    name='foo_name',
+                    action='string:${globals_view/isStructuralFolder}',
+                    condition='',
+                    permission='View',
+                    category='folder',
+                    visible=1)
 
         actions = self.actions.listFilteredActionsFor(self.folder)
-        url = actions['folder'][0]['url']
+        actions['folder'][0]['url']
 
     def testAllActionsAreRenderedAsMessages(self):
         actions = self.actions.listActions()
         for action in actions:
             info = ActionInfo(action, self.portal)
-            self.failUnless(isinstance(info['title'], Message))
-            self.failUnless(isinstance(info['description'], Message))
+            self.assertTrue(isinstance(info['title'], Message))
+            self.assertTrue(isinstance(info['description'], Message))
 
     def testListActionsSkipsItemsWithOldInterface(self):
-         # Ticket #10791
-         me = Action("not_action_category")
-         self.actions['not_a_category'] = me
-         try:
-             action_infos = self.actions.listActions()
-         except:
-             self.fail_tb('Should not fail if item exists w/o IActionCategory interface')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestActionsTool))
-    return suite
+        # Ticket #10791
+        me = Action("not_action_category")
+        self.actions['not_a_category'] = me
+        try:
+            self.actions.listActions()
+        except:
+            self.fail_tb('Should not fail if item exists w/o IActionCategory '
+                         'interface')

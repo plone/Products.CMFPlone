@@ -3,11 +3,7 @@ Adding, Editing, Moving and Deleting a Document
 
 Does what the title says, really.  Plus some assertions.
 
-    # BBB Zope 2.12
-    >>> try:
-    ...     from Testing.testbrowser import Browser
-    ... except ImportError:
-    ...     from Products.Five.testbrowser import Browser
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
     >>> browser.open('http://nohost/plone/login_form')
 

@@ -42,10 +42,7 @@
  <object name="site_properties" meta_type="Plone Property Sheet">
   <property name="title">Site wide properties</property>
   <property name="allowAnonymousViewAbout" type="boolean">False</property>
-  <property name="localTimeFormat" type="string">%b %d, %Y</property>
-  <property name="localLongTimeFormat"
-     type="string">%b %d, %Y %I:%M %p</property>
-  <property name="localTimeOnlyFormat" type="string">%I:%M %p</property>
+  <property name="displayPublicationDateInByline" type="boolean">False</property>
   <property name="default_language" type="string">en</property>
   <property name="default_charset" type="string">utf-8</property>
   <property name="ext_editor" type="boolean">False</property>
@@ -56,6 +53,7 @@
   <property name="default_editor" type="string">TinyMCE</property>
   <property name="allowRolesToAddKeywords" type="lines">
    <element value="Manager"/>
+   <element value="Site Administrator"/>
    <element value="Reviewer"/>
   </property>
   <property name="auth_cookie_length" type="int">0</property>

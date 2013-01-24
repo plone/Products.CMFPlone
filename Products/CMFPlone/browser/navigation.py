@@ -13,7 +13,8 @@ from Products.CMFPlone.browser.interfaces import INavigationTree
 from Products.CMFPlone.browser.interfaces import ISiteMap
 from Products.CMFPlone.interfaces import IHideFromBreadcrumbs
 
-from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder, SitemapQueryBuilder
+from Products.CMFPlone.browser.navtree \
+    import NavtreeQueryBuilder, SitemapQueryBuilder
 
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 
@@ -22,6 +23,8 @@ from plone.app.layout.navigation.navtree import buildFolderTree
 
 
 def get_url(item):
+    if not item:
+        return None
     if hasattr(aq_base(item), 'getURL'):
         # Looks like a brain
         return item.getURL()
@@ -29,6 +32,8 @@ def get_url(item):
 
 
 def get_id(item):
+    if not item:
+        return None
     getId = getattr(item, 'getId')
     if not utils.safe_callable(getId):
         # Looks like a brain
@@ -44,7 +49,7 @@ def get_view_url(context):
     item_url = get_url(context)
     name = get_id(context)
 
-    if context.portal_type in view_action_types:
+    if hasattr(context, 'portal_type') and context.portal_type in view_action_types:
         item_url += '/view'
         name += '/view'
 
@@ -61,7 +66,8 @@ class CatalogNavigationTree(BrowserView):
 
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
-        currentFolderOnlyInNavtree = navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
+        currentFolderOnlyInNavtree = \
+            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
         if currentFolderOnlyInNavtree:
             if context.restrictedTraverse('@@plone').isStructuralFolder():
                 return '/'.join(context.getPhysicalPath())
@@ -76,10 +82,12 @@ class CatalogNavigationTree(BrowserView):
             contextPath = '/'.join(context.getPhysicalPath())
             if not contextPath.startswith(rootPath):
                 return None
-            contextSubPathElements = contextPath[len(rootPath)+1:].split('/')
+            contextSubPathElements = contextPath[len(rootPath) + 1:].split('/')
             if len(contextSubPathElements) < topLevel:
                 return None
-            rootPath = rootPath + '/' + '/'.join(contextSubPathElements[:topLevel])
+            rootPath = rootPath \
+                        + '/' \
+                        + '/'.join(contextSubPathElements[:topLevel])
 
         return rootPath
 
@@ -91,7 +99,8 @@ class CatalogNavigationTree(BrowserView):
 
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
-        return buildFolderTree(context, obj=context, query=query, strategy=strategy)
+        return buildFolderTree(context, obj=context,
+                               query=query, strategy=strategy)
 
 
 class CatalogSiteMap(BrowserView):
@@ -105,7 +114,8 @@ class CatalogSiteMap(BrowserView):
 
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
-        return buildFolderTree(context, obj=context, query=query, strategy=strategy)
+        return buildFolderTree(context, obj=context,
+                               query=query, strategy=strategy)
 
 
 class CatalogNavigationTabs(BrowserView):
@@ -150,6 +160,9 @@ class CatalogNavigationTabs(BrowserView):
     def topLevelTabs(self, actions=None, category='portal_tabs'):
         context = aq_inner(self.context)
 
+        mtool = getToolByName(context, 'portal_membership')
+        member = mtool.getAuthenticatedMember().id
+
         portal_properties = getToolByName(context, 'portal_properties')
         self.navtree_properties = getattr(portal_properties,
                                           'navtree_properties')
@@ -179,11 +192,18 @@ class CatalogNavigationTabs(BrowserView):
 
         rawresult = self.portal_catalog.searchResults(query)
 
+        def get_link_url(item):
+            linkremote = item.getRemoteUrl and not member == item.Creator
+            if linkremote:
+                return (get_id(item), item.getRemoteUrl)
+            else:
+                return False
+
         # now add the content to results
         idsNotToList = self.navtree_properties.getProperty('idsNotToList', ())
         for item in rawresult:
             if not (item.getId in idsNotToList or item.exclude_from_nav):
-                id, item_url = get_view_url(item)
+                id, item_url = get_link_url(item) or get_view_url(item)
                 data = {'name': utils.pretty_title_or_id(context, item),
                         'id': item.getId,
                         'url': item_url,
@@ -263,8 +283,10 @@ class PhysicalNavigationBreadcrumbs(BrowserView):
         rootPath = getNavigationRoot(context)
         itemPath = '/'.join(context.getPhysicalPath())
 
-        # don't show default pages in breadcrumbs or pages above the navigation root
-        if not utils.isDefaultPage(context, request) and not rootPath.startswith(itemPath):
+        # don't show default pages in breadcrumbs or pages above the navigation
+        # root
+        if not utils.isDefaultPage(context, request) \
+                and not rootPath.startswith(itemPath):
             base += ({'absolute_url': item_url,
                       'Title': utils.pretty_title_or_id(context, context), },
                     )

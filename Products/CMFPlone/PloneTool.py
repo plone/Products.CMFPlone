@@ -6,9 +6,13 @@ import urlparse
 import transaction
 
 from zope.component import queryAdapter
+from zope.deprecation import deprecate
 from zope.interface import implements
+from zope.event import notify
+from zope.lifecycleevent import ObjectModifiedEvent
 
 from AccessControl import ClassSecurityInfo, Unauthorized
+from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -41,7 +45,8 @@ from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_hasattr
 from Products.statusmessages.interfaces import IStatusMessage
 from AccessControl.requestmethod import postonly
-from plone.app.linkintegrity.exceptions import LinkIntegrityNotificationException
+from plone.app.linkintegrity.exceptions \
+    import LinkIntegrityNotificationException
 
 # BBB Plone 4.0
 from zope.deprecation import __show__
@@ -61,7 +66,7 @@ _icons = {}
 
 CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
 FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
-BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
+BAD_CHARS = bad_id.__self__.findall
 
 EMAIL_RE = re.compile(r"^(\w&.%#$&'\*+-/=?^_`{}|~]+!)*[\w&.%#$&'\*+-/=?^_`{}|~]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
 # used to find double new line (in any variant)
@@ -95,6 +100,7 @@ METADATA_DCNAME = {
     }
 METADATA_DC_AUTHORFIELDS = ('Creator', 'Contributors', 'Publisher')
 
+
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Various utility methods."""
 
@@ -117,15 +123,17 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         user.setProperties(**properties)
 
     security.declarePublic('getSiteEncoding')
+    @deprecate(('`getSiteEncoding` is deprecated. Plone only supports UTF-8 '
+                'currently. This method always returns "utf-8"'))
     def getSiteEncoding(self):
-        """ Get the default_charset or fallback to utf8.
+        """ Get the the site encoding, which is utf-8.
 
         >>> ptool = self.portal.plone_utils
 
         >>> ptool.getSiteEncoding()
         'utf-8'
         """
-        return utils.getSiteEncoding(self)
+        return 'utf-8'
 
     security.declarePublic('portal_utf8')
     def portal_utf8(self, str, errors='strict'):
@@ -133,7 +141,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         >>> ptool = self.portal.plone_utils
         >>> text = u'Eksempel \xe6\xf8\xe5'
-        >>> sitetext = text.encode(ptool.getSiteEncoding())
+        >>> sitetext = text.encode('utf-8')
 
         >>> ptool.portal_utf8(sitetext) == text.encode('utf-8')
         True
@@ -148,7 +156,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> text = u'Eksempel \xe6\xf8\xe5'
         >>> utf8text = text.encode('utf-8')
 
-        >>> ptool.utf8_portal(utf8text) == text.encode(ptool.getSiteEncoding())
+        >>> ptool.utf8_portal(utf8text) == text.encode('utf-8')
         True
         """
         return utils.utf8_portal(self, str, errors)
@@ -183,7 +191,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         message = message.encode(encoding)
         host.send(message, mto=send_to_address,
                   mfrom=envelope_from, subject=subject,
-                  charset=self.getSiteEncoding())
+                  charset='utf-8')
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
@@ -193,7 +201,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(address, basestring):
             return False
 
-        sub = EMAIL_CUTOFF_RE.match(address);
+        sub = EMAIL_CUTOFF_RE.match(address)
         if sub != None:
             # Address contains two newlines (possible spammer relay attack)
             return False
@@ -210,7 +218,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(address, basestring):
             return False
 
-        sub = EMAIL_CUTOFF_RE.match(address);
+        sub = EMAIL_CUTOFF_RE.match(address)
         if sub != None:
             # Address contains two newlines (spammer attack using
             # "address\n\nSpam message")
@@ -221,7 +229,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
 
         # Validate the address
-        for name,addr in getaddresses([address]):
+        for name, addr in getaddresses([address]):
             if not self.validateSingleNormalizedEmailAddress(addr):
                 return False
         return True
@@ -234,32 +242,23 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not isinstance(addresses, basestring):
             return False
 
-        sub = EMAIL_CUTOFF_RE.match(addresses);
+        sub = EMAIL_CUTOFF_RE.match(addresses)
         if sub != None:
             # Addresses contains two newlines (spammer attack using
             # "To: list\n\nSpam message")
             return False
 
         # Validate each address
-        for name,addr in getaddresses([addresses]):
+        for name, addr in getaddresses([addresses]):
             if not self.validateSingleNormalizedEmailAddress(addr):
                 return False
         return True
 
     security.declarePublic('editMetadata')
-    def editMetadata(self
-                     , obj
-                     , allowDiscussion=None
-                     , title=None
-                     , subject=None
-                     , description=None
-                     , contributors=None
-                     , effective_date=None
-                     , expiration_date=None
-                     , format=None
-                     , language=None
-                     , rights=None
-                     ,  **kwargs):
+    def editMetadata(self, obj, allowDiscussion=None, title=None,
+                     subject=None, description=None, contributors=None,
+                     effective_date=None, expiration_date=None, format=None,
+                     language=None, rights=None, **kwargs):
         """Responsible for setting metadata on a content object.
 
         We assume the obj implements IDublinCoreMetadata.
@@ -307,7 +306,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 allowDiscussion = disc_tool.isDiscussionAllowedFor(obj)
                 if not safe_hasattr(obj, 'allow_discussion'):
                     allowDiscussion = None
-                allowDiscussion = REQUEST.get('allowDiscussion', allowDiscussion)
+                allowDiscussion = REQUEST.get('allowDiscussion',
+                                              allowDiscussion)
             if type(allowDiscussion) == StringType:
                 allowDiscussion = allowDiscussion.lower().strip()
             if allowDiscussion == 'default':
@@ -351,15 +351,16 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     def _makeTransactionNote(self, obj, msg=''):
         #TODO Why not aq_parent()?
-        relative_path = '/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
-        charset = self.getSiteEncoding()
+        relative_path = '/'.join(getToolByName(self, 'portal_url') \
+                                    .getRelativeContentPath(obj)[:-1])
         if not msg:
-            msg = relative_path + '/' + obj.title_or_id() + ' has been modified.'
+            msg = relative_path + '/' + obj.title_or_id() \
+                    + ' has been modified.'
         if isinstance(msg, UnicodeType):
             # Convert unicode to a regular string for the backend write IO.
             # UTF-8 is the only reasonable choice, as using unicode means
             # that Latin-1 is probably not enough.
-            msg = msg.encode(charset)
+            msg = msg.encode('utf-8')
         if not transaction.get().description:
             transaction_note(msg)
 
@@ -412,8 +413,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             actions = [ai for ai in tool.listActionInfos() if ai['id'] == id]
         else:
             tool = getToolByName(context, 'portal_actions')
-            actions = tool.listActionInfos(action_chain='%s/%s' % (category, id),
-                                           object=context)
+            actions = tool.listActionInfos(
+                        action_chain='%s/%s' % (category, id),
+                        object=context)
         if len(actions) > 0:
             icon = actions[0].get('icon', None)
             if icon:
@@ -471,8 +473,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if discussionContainer.portal_type == 'Discussion Item':
                 thread.append(discussionContainer)
         else:
-            if discussionContainer.id=='talkback':
-                thread=[discussionContainer._getDiscussable()]
+            if discussionContainer.id == 'talkback':
+                thread = [discussionContainer._getDiscussable()]
             else:
                 thread = [discussionContainer]
         return thread
@@ -488,7 +490,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # the Zope root, in which case this should find him:
             user = membership.getMemberById(userid)
             if user is None:
-                raise KeyError, 'Only retrievable users in this site can be made owners.'
+                raise KeyError(
+                    'Only retrievable users in this site can be made owners.')
             # Be careful not to pass MemberData to changeOwnership
             user = user.getUser()
         object.changeOwnership(user, recursive)
@@ -516,8 +519,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             catalog_tool = getToolByName(self, 'portal_catalog')
             purl = getToolByName(self, 'portal_url')
             _path = purl.getRelativeContentURL(object)
-            subobjects = [b.getObject() for b in \
-                         catalog_tool(path={'query':_path,'level':1})]
+            subobjects = [b.getObject() for b in
+                         catalog_tool(path={'query': _path, 'level': 1})]
             for obj in subobjects:
                 fixOwnerRole(obj, user.getId())
                 if base_hasattr(obj, 'reindexObject'):
@@ -658,7 +661,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     parent = aq_parent(parent)
 
         # Tuplize all inner roles
-        for pos in range(len(result)-1,-1,-1):
+        for pos in range(len(result) - 1, -1, -1):
             result[pos][1] = tuple(result[pos][1])
             result[pos] = tuple(result[pos])
 
@@ -732,7 +735,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                        the CSS class for the message. Predefined types are:
                        'info' - for informational messages
                        'warning' - for warning messages
-                       'error' - for messages about restricted access or errors.
+                       'error' - for messages about restricted access or
+                                 errors.
 
         Portal messages are by default rendered by the global_statusmessage.pt
         page template.
@@ -800,7 +804,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         8. If this is not found, raise an AttributeError
 
         If the returned path is an object, it is checked for ITranslatable. An
-        object which supports translation will then be translated before return.
+        object which supports translation will then be translated before
+        return.
         """
 
         # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
@@ -824,9 +829,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # For the purposes of determining a default page, we don't want to
         # use this index_html(), nor the ComputedAttribute which defines it.
 
-        if not isinstance(getattr(obj, 'index_html', None), ReplaceableWrapper):
+        if not isinstance(getattr(obj, 'index_html', None),
+                          ReplaceableWrapper):
             index_obj = getattr(aq_base(obj), 'index_html', None)
-            if index_obj is not None and not isinstance(index_obj, ComputedAttribute):
+            if index_obj is not None \
+                    and not isinstance(index_obj, ComputedAttribute):
                 return obj, ['index_html']
 
         #
@@ -861,7 +868,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             layout = browserDefault.getLayout()
             if layout is None:
                 raise AttributeError(
-                    "%s has no assigned layout, perhaps it needs an FTI"%obj)
+                    "%s has no assigned layout, perhaps it needs an FTI" % obj)
             else:
                 return obj, [layout]
 
@@ -902,7 +909,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # 8. If we can't find this either, raise an exception
         #
 
-        raise AttributeError, "Failed to get a default page or view_action for %s" % (obj.absolute_url(),)
+        raise AttributeError(
+                "Failed to get a default page or view_action for %s"
+                    % (obj.absolute_url(),))
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):
@@ -930,8 +939,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return True
 
     security.declarePublic('acquireLocalRoles')
-    def acquireLocalRoles(self, obj, status = 1, REQUEST=None):
-        """If status is 1, allow acquisition of local roles (regular behaviour).
+    def acquireLocalRoles(self, obj, status=1, REQUEST=None):
+        """If status is 1, allow acquisition of local roles (regular
+        behaviour).
 
         If it's 0, prohibit it (it will allow some kind of local role
         blacklisting).
@@ -1022,8 +1032,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ptool.normalizeString("one with !@#$!@#$ stuff in the middle")
         'one-with-stuff-in-the-middle'
 
-        the exception to all this is that if there is something that looks like a
-        filename with an extension at the end, it will preserve the last period.
+        the exception to all this is that if there is something that looks like
+        a filename with an extension at the end, it will preserve the last
+        period.
 
         >>> ptool.normalizeString("this is a file.gif")
         'this-is-a-file-gif'
@@ -1044,7 +1055,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getToolByName(self, 'portal_membership')
 
         use_all = site_props.getProperty('exposeDCMetaTags', None)
-        view_about = site_props.getProperty('allowAnonymousViewAbout', False) or not mt.isAnonymousUser()
+        view_about = site_props.getProperty('allowAnonymousViewAbout', False) \
+                     or not mt.isAnonymousUser()
 
         if not use_all:
             metadata_names = {'Description': METADATA_DCNAME['Description']}
@@ -1080,15 +1092,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # Check for fullnames
             if view_about and accessor in METADATA_DC_AUTHORFIELDS:
                 if not isinstance(value, (list, tuple)):
-                    value=[value]
-                tmp=[]
+                    value = [value]
+                tmp = []
                 for userid in value:
-                    member=mt.getMemberInfo(userid)
-                    name=userid
+                    member = mt.getMemberInfo(userid)
+                    name = userid
                     if member:
-                        name=member['fullname'] or userid
+                        name = member['fullname'] or userid
                     tmp.append(name)
-                value=tmp
+                value = tmp
 
             if isinstance(value, (list, tuple)):
                 # convert a list to a string
@@ -1143,7 +1155,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return result
 
     security.declarePublic('getUserFriendlyTypes')
-    def getUserFriendlyTypes(self, typesList=[]):
+    def getUserFriendlyTypes(self, typesList=None):
         """Get a list of types which are considered "user friendly" for search
         and selection purposes.
 
@@ -1153,12 +1165,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         If typesList is given, this is used as the base list; else all types
         from portal_types are used.
         """
+        if typesList is None:
+            typesList = []
         ptool = getToolByName(self, 'portal_properties')
         siteProperties = getattr(ptool, 'site_properties')
         blacklistedTypes = siteProperties.getProperty('types_not_searched', [])
 
         ttool = getToolByName(self, 'portal_types')
-        types = typesList or ttool.keys()
+        tool_types = ttool.keys()
+        if typesList:
+            types = [t for t in typesList if t in tool_types]
+        else:
+            types = tool_types
 
         friendlyTypes = set(types) - set(blacklistedTypes)
         return list(friendlyTypes)
@@ -1198,7 +1216,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         FTI. If there are no method aliases (i.e. this FTI doesn't support it),
         return None"""
         getMethodAliases = getattr(typeInfo, 'getMethodAliases', None)
-        if getMethodAliases is not None and utils.safe_callable(getMethodAliases):
+        if getMethodAliases is not None \
+                and utils.safe_callable(getMethodAliases):
             return getMethodAliases()
         else:
             return None
@@ -1221,7 +1240,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 obj = traverse(path)
                 obj_parent = aq_parent(aq_inner(obj))
                 obj_parent.manage_delObjects([obj.getId()])
-                success.append('%s (%s)' % (obj.title_or_id(), path))
+                success.append('%s (%s)' % (obj.getId(), path))
             except ConflictError:
                 raise
             except LinkIntegrityNotificationException:
@@ -1229,7 +1248,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             except Exception, e:
                 if handle_errors:
                     sp.rollback()
-                    failure[path]= e
+                    failure[path] = e
+                    log_exc()
                 else:
                     raise
         transaction_note('Deleted %s' % (', '.join(success)))
@@ -1261,7 +1281,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()
-                    failure[path]= e
+                    failure[path] = e
                 else:
                     raise
             if getattr(o, 'isPrincipiaFolderish', None) and include_children:
@@ -1293,7 +1313,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 change_title = new_title and title != new_title
                 changed = False
                 if change_title:
+                    getSecurityManager().validate(obj, obj, 'setTitle', obj.setTitle)
                     obj.setTitle(new_title)
+                    notify(ObjectModifiedEvent(obj))
                     changed = True
                 if new_id and obid != new_id:
                     parent = aq_parent(aq_inner(obj))
@@ -1303,14 +1325,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     # the rename will have already triggered a reindex
                     obj.reindexObject()
                 if changed:
-                    success[path]=(new_id,new_title)
+                    success[path] = (new_id, new_title)
             except ConflictError:
                 raise
             except Exception, e:
                 if handle_errors:
                     # skip this object but continue with sub-objects.
                     sp.rollback()
-                    failure[path]= e
+                    failure[path] = e
                 else:
                     raise
         transaction_note('Renamed %s' % str(success.keys()))

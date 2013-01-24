@@ -119,11 +119,11 @@
     i18n:attributes="title">
   <permission>Plone Site Setup: Language</permission>
  </configlet>
- <configlet title="Collections" action_id="portal_atct" appId="ATContentTypes"
+ <configlet title="Collections (old style)" action_id="portal_atct" appId="ATContentTypes"
     category="Plone" condition_expr=""
     icon_expr="string:$portal_url/topic_icon.png"
     url_expr="string:${portal_url}/portal_atct/atct_manageTopicIndex"
-    visible="True" i18n:attributes="title">
+    visible="False" i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
  <configlet title="Calendar" action_id="CalendarSettings" appId="Plone"
@@ -153,5 +153,12 @@
     url_expr="string:${portal_url}/@@rules-controlpanel" visible="True"
     i18n:attributes="title">
   <permission>Content rules: Manage rules</permission>
+ </configlet>
+ <configlet title="Syndication" action_id="syndication" appId="Plone"
+    category="Plone" condition_expr=""
+    icon_expr="string:$portal_url/rss.png"
+    url_expr="string:${portal_url}/@@syndication-settings" visible="True"
+    i18n:attributes="title">
+  <permission>Manage portal</permission>
  </configlet>
 </object>

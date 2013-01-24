@@ -8,11 +8,7 @@ unique across the site.
 
 Some bootstrapping::
 
-    # BBB Zope 2.12
-    >>> try:
-    ...     from Testing.testbrowser import Browser
-    ... except ImportError:
-    ...     from Products.Five.testbrowser import Browser
+    >>> from Testing.testbrowser import Browser
     >>> browser = Browser()
 
 First we login as admin.
@@ -106,18 +102,11 @@ logged it.  This test should be enough:
     >>> self.failIf('Log in' in browser.contents)
     >>> browser.open('http://nohost/plone/logout')
 
-The first registered user can still login with his non-email login name:
-
-    >>> browser.open('http://nohost/plone/login')
-    >>> browser.getControl('E-mail').value = 'username'
-    >>> browser.getControl('Password').value = default_password
-    >>> browser.getControl('Log in').click()
-    >>> browser.open('http://nohost/plone')
-    >>> self.failIf('Log in' in browser.contents)
-
-He cannot login with his email address though, as his account was
-created before the policy to use emails as logins was used.  This can
-be remedied by running the provided migration.
+The first registered user might still be able to login with his
+non-email login name, but cannot login with his email address, as his
+account was created before the policy to use emails as logins was
+used.  A future Plone version may solve that automatically.  For now,
+this can be remedied by running the provided migration.
 
     >>> from zope.component import getMultiAdapter
     >>> migrationView = getMultiAdapter((self.portal, self.portal.REQUEST), name='migrate-to-emaillogin')
@@ -227,6 +216,8 @@ then we extract the address that lets us reset our password:
 
 Now get the link:
 
+    >>> import quopri
+    >>> msg = quopri.decodestring(msg)
     >>> url_index = msg.index('http://nohost/plone/passwordreset/')
     >>> address = msg[url_index:].split()[0]
 
@@ -271,6 +262,7 @@ The email is sent to the correct email address:
 
 Now get the link:
 
+    >>> msg = quopri.decodestring(msg)
     >>> url_index = msg.index('http://nohost/plone/passwordreset/')
     >>> address = msg[url_index:].split()[0]
 

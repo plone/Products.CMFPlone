@@ -1,7 +1,3 @@
-#
-# PloneFolder tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -62,7 +58,7 @@ class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
     def testCheckIdAvailableCatchesBadRequest(self):
         # checkIdAvailable() should catch zExceptions.BadRequest
         self.folder._setObject('foo', dummy.Item())
-        self.failIf(self.folder.checkIdAvailable('foo'))
+        self.assertFalse(self.folder.checkIdAvailable('foo'))
 
 
 class TestFolderListing(PloneTestCase.PloneTestCase):
@@ -105,7 +101,8 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         # 3)
         self.login()
         self.folder.A.invokeFactory('Document', id='B')
-        self.folder.A.B.manage_permission('View', ['Manager', 'Reviewer'], acquire=0)
+        self.folder.A.B.manage_permission('View', ['Manager', 'Reviewer'],
+                                          acquire=0)
 
         self.logout()
         self.assertEqual(self._contentIds(self.folder.A), [])
@@ -113,11 +110,12 @@ class TestFolderListing(PloneTestCase.PloneTestCase):
         # 4)
         self.login()
         self.folder.A.invokeFactory('Folder', id='C')
-        self.folder.A.C.manage_permission('View', ['Manager', 'Reviewer'], acquire=0)
+        self.folder.A.C.manage_permission('View', ['Manager', 'Reviewer'],
+                                          acquire=0)
 
         # Here comes the reported bug:
         self.logout()
-        self.assertEqual(self._contentIds(self.folder.A), ['C']) # <--
+        self.assertEqual(self._contentIds(self.folder.A), ['C'])
 
         # 4a)
         # BUT: removing 'View' is simply not enough!
@@ -143,7 +141,7 @@ class TestManageDelObjects(PloneTestCase.PloneTestCase):
     def testManageDelObjects(self):
         # Should be able to delete sub1
         self.folder.manage_delObjects('sub1')
-        self.failIf('sub1' in self.folder.objectIds())
+        self.assertFalse('sub1' in self.folder.objectIds())
 
     def testManageDelObjectsIfSub1Denied(self):
         # Should NOT be able to delete sub1 due to permission checks in
@@ -156,7 +154,7 @@ class TestManageDelObjects(PloneTestCase.PloneTestCase):
         # -> the check is only 1 level deep!
         self.sub2.manage_permission(DeleteObjects, ['Manager'], acquire=0)
         self.folder.manage_delObjects('sub1')
-        self.failIf('sub1' in self.folder.objectIds())
+        self.assertFalse('sub1' in self.folder.objectIds())
 
 
 class TestManageDelObjectsInPortal(PloneTestCase.PloneTestCase):
@@ -168,21 +166,10 @@ class TestManageDelObjectsInPortal(PloneTestCase.PloneTestCase):
     def testManageDelObjects(self):
         # Should be able to delete sub1
         self.portal.manage_delObjects('sub1')
-        self.failIf('sub1' in self.portal.objectIds())
+        self.assertFalse('sub1' in self.portal.objectIds())
 
     def testManageDelObjectsIfSub1Denied(self):
         # Should be able to delete sub1 as the portal does not implement
         # additional permission checks.
         self.sub1.manage_permission(DeleteObjects, ['Manager'], acquire=0)
         self.assertRaises(Unauthorized, self.portal.manage_delObjects, 'sub1')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPloneFolder))
-    suite.addTest(makeSuite(TestCheckIdAvailable))
-    suite.addTest(makeSuite(TestFolderListing))
-    suite.addTest(makeSuite(TestManageDelObjects))
-    suite.addTest(makeSuite(TestManageDelObjectsInPortal))
-    return suite

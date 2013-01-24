@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=**kwargs
 ##title=Dispatches to relevant error view
-##
 
 ## by default we handle everything in 1 PageTemplate.
 #  you could easily check for the error_type and
@@ -21,27 +20,28 @@ try:
 except (Unauthorized, AttributeError):
     context = context.portal_url.getPortalObject()
 
-error_type=kwargs.get('error_type', None)
-error_message=kwargs.get('error_message', None)
-error_log_url=kwargs.get('error_log_url', None)
-error_tb=kwargs.get('error_tb', None)
-error_traceback=kwargs.get('error_traceback', None)
-error_value=kwargs.get('error_value', None)
+error_type = kwargs.get('error_type', None)
+error_message = kwargs.get('error_message', None)
+error_log_url = kwargs.get('error_log_url', None)
+error_tb = kwargs.get('error_tb', None)
+error_traceback = kwargs.get('error_traceback', None)
+error_value = kwargs.get('error_value', None)
 
 if error_log_url:
-    error_log_id=error_log_url.split('?id=')[1]
+    error_log_id = error_log_url.split('?id=')[1]
 else:
-    error_log_id=None
+    error_log_id = None
 
 
-no_actions = {'folder':[], 'user':[], 'global':[], 'workflow':[]}
-error_page=context.default_error_message(error_type=error_type,
-                                         error_message=error_message,
-                                         error_tb=error_tb,
-                                         error_value=error_value,
-                                         error_log_url=error_log_url,
-                                         error_log_id=error_log_id,
-                                         no_portlets=True,
-                                         actions=no_actions)
+no_actions = {'folder': [], 'user': [], 'global': [], 'workflow': []}
+error_page = context.default_error_message(
+                                error_type=error_type,
+                                error_message=error_message,
+                                error_tb=error_tb,
+                                error_value=error_value,
+                                error_log_url=error_log_url,
+                                error_log_id=error_log_id,
+                                no_portlets=True,
+                                actions=no_actions)
 
 return error_page

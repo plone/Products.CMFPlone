@@ -1,13 +1,11 @@
-#
 # Tests the security declarations Plone makes on resources
 # for access by restricted code (aka PythonScripts)
-#
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-from AccessControl import Unauthorized
+from zExceptions import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
@@ -96,15 +94,17 @@ class TestSecurityDeclarations(RestrictedPythonTest):
                    'print ObjectDeleted().getResult')
 
     def testImport_WorkflowException(self):
-        self.check('from Products.CMFCore.WorkflowCore import WorkflowException')
+        self.check(
+            'from Products.CMFCore.WorkflowCore import WorkflowException')
 
     def testAccess_WorkflowException(self):
         self.check('from Products.CMFCore import WorkflowCore;'
                    'print WorkflowCore.WorkflowException')
 
     def testUse_WorkflowException(self):
-        self.check('from Products.CMFCore.WorkflowCore import WorkflowException;'
-                   'print WorkflowException().args')
+        self.check(
+            'from Products.CMFCore.WorkflowCore import WorkflowException;'
+            'print WorkflowException().args')
 
     def testImport_Batch(self):
         self.check('from Products.CMFPlone import Batch')
@@ -184,7 +184,8 @@ except ConflictError: pass
                       (e.__class__.__name__, e, e.__module__))
 
     def testCatch_ConflictErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseConflictError', dummy.Raiser(ConflictError))
+        self.folder._setObject('raiseConflictError',
+                               dummy.Raiser(ConflictError))
         try:
             self.check('''
 from ZODB.POSException import ConflictError
@@ -224,7 +225,8 @@ except ParseError: pass
                    'print DateTime.interfaces.DateTimeError')
 
     def testCatch_DateTimeErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseDateTimeError', dummy.Raiser(self.DateTimeError))
+        self.folder._setObject('raiseDateTimeError',
+                               dummy.Raiser(self.DateTimeError))
         try:
             self.check('''
 from DateTime.interfaces import DateTimeError
@@ -245,7 +247,8 @@ except DateTimeError: pass
                    'print DateTime.interfaces.SyntaxError')
 
     def testCatch_SyntaxErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseSyntaxError', dummy.Raiser(self.SyntaxError))
+        self.folder._setObject('raiseSyntaxError',
+                               dummy.Raiser(self.SyntaxError))
         try:
             self.check('''
 from DateTime.interfaces import SyntaxError
@@ -280,8 +283,9 @@ except CopyError: pass
                    'import DiscussionNotAllowed')
 
     def testAccess_DiscussionNotAllowed(self):
-        self.check('import Products.CMFDefault.DiscussionTool;'
-                   'print Products.CMFDefault.DiscussionTool.DiscussionNotAllowed')
+        self.check(
+            'import Products.CMFDefault.DiscussionTool;'
+            'print Products.CMFDefault.DiscussionTool.DiscussionNotAllowed')
 
     def testCatch_DiscussionNotAllowedRaisedByPythonModule(self):
         self.folder._setObject('raiseDiscussionNotAllowed',
@@ -307,7 +311,7 @@ except DiscussionNotAllowed: pass
                                'print utils.getToolByName')
 
     def testUse_getToolByName(self):
-        self.app.manage_addFolder('portal_membership') # Fake a portal tool
+        self.app.manage_addFolder('portal_membership')  # Fake a portal tool
         self.check('from Products.CMFCore.utils import getToolByName;'
                    'print getToolByName(context, "portal_membership")')
 
@@ -334,7 +338,6 @@ except DiscussionNotAllowed: pass
 
     def testImport_mergeResults(self):
         self.check('from Products.ZCatalog.Catalog import mergeResults')
-
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):
@@ -369,13 +372,13 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         checkPermission = mtool.checkPermission
 
         # should be allowed as Member
-        self.failUnless(checkPermission(AllowSendto, portal))
+        self.assertTrue(checkPermission(AllowSendto, portal))
         # should be allowed as Manager
         self.setRoles(['Manager'])
-        self.failUnless(checkPermission(AllowSendto, portal))
+        self.assertTrue(checkPermission(AllowSendto, portal))
         # should be allowed as anonymous
         self.logout()
-        self.failUnless(checkPermission(AllowSendto, portal))
+        self.assertTrue(checkPermission(AllowSendto, portal))
 
     def test_allowsendto_changed(self):
         mtool = self.portal.portal_membership
@@ -386,7 +389,7 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
                                       acquire=False)
         self.setRoles(['Member'])
 
-        self.failIf(checkPermission(AllowSendto, self.portal))
+        self.assertFalse(checkPermission(AllowSendto, self.portal))
 
     def test_sendto_script_failes(self):
         # set permission to Manager only
@@ -400,7 +403,7 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         # contains the string
         msg = sendto()
         errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
-        self.failIf(str(msg).find(errormsg) != -1, str(msg))
+        self.assertFalse(str(msg).find(errormsg) != -1, str(msg))
 
 
 class TestSkinSecurity(PloneTestCase.PloneTestCase):
@@ -415,55 +418,43 @@ class TestSkinSecurity(PloneTestCase.PloneTestCase):
 class TestNavtreeSecurity(PloneTestCase.PloneTestCase, RestrictedPythonTest):
 
     def testNavtreeStrategyBase(self):
-        self.check('from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
-                    'n=NavtreeStrategyBase();'
-                    'n.nodeFilter({});'
-                    'n.subtreeFilter({});'
-                    'n.decoratorFactory({});')
-
-    def testNavtreeStrategyBase(self):
-        self.check('from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
-                    'n=NavtreeStrategyBase();'
-                    'n.nodeFilter({});'
-                    'n.subtreeFilter({});'
-                    'n.decoratorFactory({});')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import NavtreeStrategyBase;'
+            'n=NavtreeStrategyBase();'
+            'n.nodeFilter({});'
+            'n.subtreeFilter({});'
+            'n.decoratorFactory({});')
 
     def testSitemapNavtreeStrategy(self):
         # We don't test the decorator factory because that requres an
         # actual brain in item
-        self.check('from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy;'
-                    'n=SitemapNavtreeStrategy(context);'
-                    'n.nodeFilter({"item":1});'
-                    'n.subtreeFilter({"item":1});')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy;'
+            'n=SitemapNavtreeStrategy(context);'
+            'n.nodeFilter({"item":1});'
+            'n.subtreeFilter({"item":1});')
 
     def testDefaultNavtreeStrategy(self):
         # We don't test the decorator factory because that requres an
         # actual brain in item
-        self.check('from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy;'
-                    'n=DefaultNavtreeStrategy(context);'
-                    'n.nodeFilter({"item":1});'
-                    'n.subtreeFilter({"item":1});')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import DefaultNavtreeStrategy;'
+            'n=DefaultNavtreeStrategy(context);'
+            'n.nodeFilter({"item":1});'
+            'n.subtreeFilter({"item":1});')
 
     def testNavtreeQueryBuilder(self):
-        self.check('from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder;'
-                    'n=NavtreeQueryBuilder(context);'
-                    'n();')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder;'
+            'n=NavtreeQueryBuilder(context);'
+            'n();')
 
     def testSitemapQueryBuilder(self):
-        self.check('from Products.CMFPlone.browser.navtree import SitemapQueryBuilder;'
-                    'n=SitemapQueryBuilder(context);'
-                    'n();')
+        self.check(
+            'from Products.CMFPlone.browser.navtree import SitemapQueryBuilder;'
+            'n=SitemapQueryBuilder(context);'
+            'n();')
 
     def testGetNavigationRoot(self):
-        self.check('from Products.CMFPlone.browser.navtree import getNavigationRoot')
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestSecurityDeclarations))
-    suite.addTest(makeSuite(TestAcquisitionMethods))
-    suite.addTest(makeSuite(TestAllowSendtoSecurity))
-    suite.addTest(makeSuite(TestSkinSecurity))
-    suite.addTest(makeSuite(TestNavtreeSecurity))
-    return suite
+        self.check(
+            'from Products.CMFPlone.browser.navtree import getNavigationRoot')

@@ -6,9 +6,9 @@
 ##bind subpath=traverse_subpath
 ##parameters=userid
 ##title=Edit user's group membership
-##
-REQUEST=context.REQUEST
-RESPONSE=REQUEST.RESPONSE
+
+REQUEST = context.REQUEST
+RESPONSE = REQUEST.RESPONSE
 
 gtool = context.portal_groups
 
@@ -20,6 +20,7 @@ add = REQUEST.get('add', [])
 for groupname in add:
     gtool.addPrincipalToGroup(userid, groupname, REQUEST)
 
-return RESPONSE.redirect('%s?userid=%s' % (container.prefs_user_memberships.absolute_url(),
-                                           userid)
-                        )
+return RESPONSE.redirect(
+        '%s?userid=%s'
+            % (container.prefs_user_memberships.absolute_url(),
+               userid))

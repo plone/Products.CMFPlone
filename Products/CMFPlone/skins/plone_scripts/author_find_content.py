@@ -6,7 +6,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=author,limit_per_type=5,path=None
 ##title=Find content created by a specific author
-##
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.browser.navtree import getNavigationRoot
@@ -16,7 +15,7 @@ utils = getToolByName(context, 'plone_utils')
 
 friendly_types = utils.getUserFriendlyTypes()
 
-found   = {}
+found = {}
 if path is None:
     path = getNavigationRoot(context)
 
@@ -44,7 +43,6 @@ types.sort()
 results = []
 
 for t in types:
-    results.append({'portal_type' : t, 'content_items' : found[t]})
+    results.append({'portal_type': t, 'content_items': found[t]})
 
 return results
-

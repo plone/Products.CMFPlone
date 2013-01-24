@@ -11,8 +11,6 @@
     directory="Products.PasswordResetTool:skins/PasswordReset"/>
  <object name="mimetypes_icons" meta_type="Filesystem Directory View"
     directory="Products.MimetypesRegistry:skins/mimetypes_icons"/>
- <object name="plone_kss" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_kss"/>
  <object name="plone_3rdParty" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_3rdParty"/>
  <object name="plone_content" meta_type="Filesystem Directory View"
@@ -41,7 +39,6 @@
     directory="Products.CMFPlone:skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
   <layer name="custom"/>
-  <layer name="plone_kss"/>
   <layer name="mimetypes_icons"/>
   <layer name="PasswordReset"/>
   <layer name="LanguageTool"/>
@@ -56,7 +53,6 @@
   <layer name="plone_images"/>
   <layer name="plone_content"/>
   <layer name="plone_login"/>
-  <layer name="plone_deprecated"/>
   <layer name="plone_3rdParty"/>
   <layer name="cmf_legacy"/>
  </skin-path>

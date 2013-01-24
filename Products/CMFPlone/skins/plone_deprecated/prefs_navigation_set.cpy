@@ -7,29 +7,34 @@
 ##bind subpath=traverse_subpath
 ##parameters=generated_tabs=False, allparents=False, nonfolderish_tabs=False, portaltypes=[], enable_wf_state_filtering=False, wf_states_to_show=[], RESPONSE=None
 ##title=Set Navigation Prefs
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 
-REQUEST=context.REQUEST
-portal_properties=getToolByName(context, 'portal_properties')
-plone_utils=getToolByName(context, 'plone_utils')
+REQUEST = context.REQUEST
+portal_properties = getToolByName(context, 'portal_properties')
+plone_utils = getToolByName(context, 'plone_utils')
 
 if generated_tabs:
-  portal_properties.site_properties.manage_changeProperties(disable_folder_sections=False)
+    portal_properties.site_properties \
+        .manage_changeProperties(disable_folder_sections=False)
 else:
-  portal_properties.site_properties.manage_changeProperties(disable_folder_sections=True)
+    portal_properties.site_properties \
+        .manage_changeProperties(disable_folder_sections=True)
 
 if allparents:
-    portal_properties.navtree_properties.manage_changeProperties(showAllParents=True)
+    portal_properties.navtree_properties \
+        .manage_changeProperties(showAllParents=True)
 else:
-    portal_properties.navtree_properties.manage_changeProperties(showAllParents=False)
+    portal_properties.navtree_properties \
+        .manage_changeProperties(showAllParents=False)
 
 if nonfolderish_tabs:
-    portal_properties.site_properties.manage_changeProperties(disable_nonfolderish_sections=False)
+    portal_properties.site_properties \
+        .manage_changeProperties(disable_nonfolderish_sections=False)
 else:
-    portal_properties.site_properties.manage_changeProperties(disable_nonfolderish_sections=True)
+    portal_properties.site_properties \
+        .manage_changeProperties(disable_nonfolderish_sections=True)
 
 # The menu pretends to be a whitelist, but we are storing a blacklist so that
 # new types are searchable by default. Inverse the list.

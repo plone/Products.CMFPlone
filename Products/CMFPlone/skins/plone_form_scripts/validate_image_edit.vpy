@@ -7,7 +7,6 @@
 ##bind subpath=traverse_subpath
 ##parameters=id='',file=None
 ##title=Validates image_edit_form contents
-##
 
 from Products.CMFPlone import PloneMessageFactory as _
 
@@ -16,20 +15,20 @@ id_from_file = 0
 id = id.strip()
 
 if file is None:
-    filename=None
+    filename = None
 else:
-    filename=getattr(file, 'filename', None)
+    filename = getattr(file, 'filename', None)
 
 if hasattr(context, 'get_size'):  # make sure things work with portal_factory
-    size=context.get_size()
+    size = context.get_size()
 
 if not filename and not size:
     state.setError('file', _(u'You must upload a file'))
 
 if context.CreationDate() == context.ModificationDate() and filename:
-    alternative_id = filename[max( string.rfind(filename, '/')
-                       , string.rfind(filename, '\\')
-                       , string.rfind(filename, ':') )+1:].strip()
+    alternative_id = filename[max(string.rfind(filename, '/'),
+                                  string.rfind(filename, '\\'),
+                                  string.rfind(filename, ':')) + 1:].strip()
     if not id:
         id_from_file = 1
 else:
@@ -40,7 +39,8 @@ if id_err:
     state.setError(id_from_file and 'file' or 'id', id_err)
 
 if state.getErrors():
-    context.plone_utils.addPortalMessage(_(u'Please correct the indicated errors.'), 'error')
+    context.plone_utils.addPortalMessage(
+        _(u'Please correct the indicated errors.'), 'error')
     return state.set(status='failure')
 else:
     return state

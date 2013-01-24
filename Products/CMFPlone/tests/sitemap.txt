@@ -1,0 +1,132 @@
+Sitemap
+=======
+
+Let's test the sitemap HTML markup is as we expect. First we need a
+test browser::
+
+  # BBB Zope 2.12
+  >>> try:
+  ...     from Testing.testbrowser import Browser
+  ... except ImportError:
+  ...     from Products.Five.testbrowser import Browser
+  >>> browser = Browser()
+
+A utility method helps to test against nice, space-separated sitemap
+markup::
+
+  >>> def sitemap():
+  ...     browser.open('http://nohost/plone/sitemap')
+  ...     return ' '.join(browser.contents.split())
+
+Start with the sitemap of the default content::
+
+  >>> ('<ul id="portal-sitemap" class="navTreeLevel0 visualNoMarker"> '
+  ...    '<li class="navTreeItem visualNoMarker"> '
+  ...      '<div> '
+  ...        '<a href="http://nohost/plone/news" class="state-published contenttype-folder" title="Site News"> '
+  ...          '<span>News</span> '
+  ...        '</a> '
+  ...      '</div> '
+  ...    '</li> '
+  ...    '<li class="navTreeItem visualNoMarker"> '
+  ...      '<div> '
+  ...        '<a href="http://nohost/plone/events" class="state-published contenttype-folder" title="Site Events"> '
+  ...          '<span>Events</span> '
+  ...        '</a> '
+  ...      '</div> '
+  ...    '</li> '
+  ...    '<li class="navTreeItem visualNoMarker"> '
+  ...      '<div> '
+  ...        '<a href="http://nohost/plone/Members" class="state-published contenttype-folder" title="Site Users"> '
+  ...          '<span>Users</span> '
+  ...        '</a> '
+  ...      '</div> '
+  ...      '<ul class="navTree navTreeLevel2"> '
+  ...        '<li class="navTreeItem visualNoMarker"> '
+  ...          '<div> '
+  ...            '<a href="http://nohost/plone/Members/test_user_1_" class="state-visible contenttype-folder" title=""> '
+  ...              '<span>test_user_1_</span> '
+  ...            '</a> '
+  ...          '</div> '
+  ...        '</li> '
+  ...      '</ul> '
+  ...    '</li> '
+  ...  '</ul>') in sitemap()
+  True
+
+Let's change it to a deeper hierarchy of pages and folders::
+
+  >>> self.setRoles(['Manager'])
+  >>> del self.portal['events']
+  >>> del self.portal['news']
+  >>> del self.portal['Members']
+  >>> _ = self.portal.invokeFactory('Folder', 'folder1')
+  >>> _ = self.portal.invokeFactory('Document', 'doc1')
+  >>> _ = self.portal.invokeFactory('Folder', 'folder2')
+  >>> folder1 = getattr(self.portal, 'folder1')
+  >>> _ = folder1.invokeFactory('Document', 'doc11')
+  >>> _ = folder1.invokeFactory('Folder', 'folder11')
+  >>> folder2 = getattr(self.portal, 'folder2')
+  >>> _ = folder2.invokeFactory('Document', 'doc21')
+  >>> folder11 = getattr(folder1, 'folder11')
+  >>> _ = folder11.invokeFactory('Folder', 'folder111')
+  >>> self.setRoles(['Member'])
+
+  >>> ('<ul id="portal-sitemap" class="navTreeLevel0 visualNoMarker"> '
+  ...    '<li class="navTreeItem visualNoMarker"> '
+  ...      '<div> '
+  ...        '<a href="http://nohost/plone/folder1" class="state-visible contenttype-folder" title=""> '
+  ...          '<span>folder1</span> '
+  ...        '</a> '
+  ...      '</div> '
+  ...      '<ul class="navTree navTreeLevel2"> '
+  ...        '<li class="navTreeItem visualNoMarker"> '
+  ...          '<div> '
+  ...            '<a href="http://nohost/plone/folder1/doc11" class="state-visible contenttype-document" title=""> '
+  ...              '<span>doc11</span> '
+  ...            '</a> '
+  ...          '</div> '
+  ...        '</li> '
+  ...        '<li class="navTreeItem visualNoMarker"> '
+  ...          '<div> '
+  ...            '<a href="http://nohost/plone/folder1/folder11" class="state-visible contenttype-folder" title=""> '
+  ...              '<span>folder11</span> '
+  ...            '</a> '
+  ...          '</div> '
+  ...          '<ul class="navTree navTreeLevel3"> '
+  ...            '<li class="navTreeItem visualNoMarker"> '
+  ...              '<div> '
+  ...                '<a href="http://nohost/plone/folder1/folder11/folder111" class="state-visible contenttype-folder" title=""> '
+  ...                  '<span>folder111</span> '
+  ...                '</a> '
+  ...              '</div> '
+  ...            '</li> '
+  ...          '</ul> '
+  ...        '</li> '
+  ...      '</ul> '
+  ...    '</li> '
+  ...    '<li class="navTreeItem visualNoMarker"> '
+  ...      '<div> '
+  ...        '<a href="http://nohost/plone/doc1" class="state-visible contenttype-document" title=""> '
+  ...          '<span>doc1</span> '
+  ...        '</a> '
+  ...      '</div> '
+  ...    '</li> '
+  ...    '<li class="navTreeItem visualNoMarker"> '
+  ...      '<div> '
+  ...        '<a href="http://nohost/plone/folder2" class="state-visible contenttype-folder" title=""> '
+  ...          '<span>folder2</span> '
+  ...        '</a> '
+  ...      '</div> '
+  ...      '<ul class="navTree navTreeLevel2"> '
+  ...        '<li class="navTreeItem visualNoMarker"> '
+  ...          '<div> '
+  ...            '<a href="http://nohost/plone/folder2/doc21" class="state-visible contenttype-document" title=""> '
+  ...              '<span>doc21</span> '
+  ...            '</a> '
+  ...          '</div> '
+  ...        '</li> '
+  ...      '</ul> '
+  ...    '</li> '
+  ...  '</ul>') in sitemap()
+  True

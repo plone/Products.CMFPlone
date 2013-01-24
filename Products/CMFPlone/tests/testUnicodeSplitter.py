@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-#
-# Tests the UnicodeSplitter
-#
-
 import unittest
 from Products.CMFPlone.tests import PloneTestCase
 
@@ -12,15 +8,12 @@ from Products.CMFPlone.UnicodeSplitter import CaseNormalizer
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.tests.base.dummy import DummyContent
 
-# BBB Zope 2.12
-try:
-    from OFS.metaconfigure import setDeprecatedManageAddDelete
-except ImportError:
-    from Products.Five.eventconfigure import setDeprecatedManageAddDelete
+from OFS.metaconfigure import setDeprecatedManageAddDelete
 
 import locale
 LATIN1 = ('en_US.ISO-8859-1', 'en_US.ISO8859-15', 'en_GB.ISO8859-15',
           'de_DE@euro', 'fr_FR@euro', 'nl_NL@euro')
+
 
 def _setlocale(*names):
     saved = locale.setlocale(locale.LC_ALL)
@@ -216,8 +209,7 @@ class TestQuery(PloneTestCase.PloneTestCase):
             self.catalog.indexObject(self.doc1)
             # Query by UTF-8
             brains = self.catalog(SearchableText='\303\204ffin')
-            # We get no results, but at least we don't break
-            self.assertEqual(len(brains), 0)
+            self.assertEqual(len(brains), 1)
         finally:
             _setlocale(saved)
 
@@ -250,6 +242,7 @@ class TestQuery(PloneTestCase.PloneTestCase):
 from Products.CMFPlone.UnicodeSplitter \
      import process_str, process_str_post, process_str_glob,\
      process_unicode, process_unicode_glob
+
 
 class TestBigramFunctions(unittest.TestCase):
 
@@ -341,6 +334,7 @@ class TestSearchingJapanese(PloneTestCase.PloneTestCase):
         self.portal.manage_delObjects(['doc1'])
         items2 = catalog(SearchableText="予想")
         self.assertEqual(len(items2), 0)
+
 
 class TestSearchingUnicodeJapanese(PloneTestCase.PloneTestCase):
     """ Install Unicode Japanese test """

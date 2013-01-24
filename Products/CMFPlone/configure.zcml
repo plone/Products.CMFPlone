@@ -17,6 +17,7 @@
   <include package="plone.app.folder" />
   <include package="plone.app.form" />
   <include package="plone.app.i18n" />
+  <include package="plone.app.jquery" />
   <include package="plone.app.jquerytools" />
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
@@ -31,6 +32,7 @@
   <include package="plone.app.viewletmanager" />
   <include package="plone.app.vocabularies" />
   <include package="plone.app.workflow" />
+  <include package="plone.batching" />
   <include package="plone.memoize" />
   <include package="plone.session" />
   <include package="plone.protect" />
@@ -39,14 +41,6 @@
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
   <include package="plone.theme" />
-
-  <!-- kss -->
-  <include package="kss.core" />
-  <include package="plone.app.kss" />
-
-  <!-- Archetypes -->
-  <include zcml:condition="installed Products.ATContentTypes"
-           package="Products.ATContentTypes" />
 
   <!-- wicked -->
   <configure zcml:condition="installed wicked">
@@ -101,5 +95,8 @@
         package="plone"
         file="configure.zcml"
         />
+
+  <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
+              handler=".events.profileImportedEventHandler"/>
 
 </configure>

@@ -25,16 +25,19 @@ except ImportError:
     smh_module = None
 fake_module = ModuleProxy(smh_module or sys.modules[__name__])
 deferred = fake_module.__deferred_definitions__
-deferred['EMAIL_RE'] = DeferredAndDeprecated('EMAIL_RE',
-                     'Products.CMFPlone.PloneTool:EMAIL_RE',
-                     'EMAIL_RE has been moved from SecureMailHost, which is no '
-                     'longer shipped with Plone.  It can be imported from '
-                     'Products.CMFPlone.utils.EMAIL_RE')
-deferred['EMAIL_CUTOFF_RE'] = DeferredAndDeprecated('EMAIL_CUTOFF_RE',
+deferred['EMAIL_RE'] = DeferredAndDeprecated(
+                'EMAIL_RE',
+                'Products.CMFPlone.PloneTool:EMAIL_RE',
+                'EMAIL_RE has been moved from SecureMailHost, which is no '
+                'longer shipped with Plone.  It can be imported from '
+                'Products.CMFPlone.utils.EMAIL_RE')
+deferred['EMAIL_CUTOFF_RE'] = DeferredAndDeprecated(
+                     'EMAIL_CUTOFF_RE',
                      'Products.CMFPlone.PloneTool:EMAIL_CUTOFF_RE',
                      'EMAIL_CUTOFF_RE has been moved from SecureMailHost, '
                      'which is no longer shipped with Plone.  It can be '
                      'imported from Products.CMFPlone.utils.EMAIL_CUTOFF_RE')
+
 
 # We can't depend on SecureMailHost, so we have to reimplement
 # a couple methods for BBB
@@ -110,13 +113,13 @@ def applyPatches():
         pt = PloneTool.PloneTool
         MailHost.secureSend = secureSend
         MailHost.validateSingleNormalizedEmailAddress = deprecate(
-            msg%{'name': 'validateSingleNormalizedEmailAddress'})(
+            msg % {'name': 'validateSingleNormalizedEmailAddress'})(
             pt.validateSingleNormalizedEmailAddress.im_func)
         MailHost.validateSingleEmailAddress = deprecate(
-            msg%{'name': 'validateSingleEmailAddress'})(
+            msg % {'name': 'validateSingleEmailAddress'})(
             pt.validateSingleEmailAddress.im_func)
         MailHost.validateEmailAddresses = deprecate(
-            msg%{'name': 'validateEmailAddresses'})(
+            msg % {'name': 'validateEmailAddresses'})(
             pt.validateEmailAddresses.im_func)
         MailHost.emailListToString = deprecate(
             'The MailHost method emailListToString is deprecated and '

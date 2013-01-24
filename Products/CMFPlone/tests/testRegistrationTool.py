@@ -1,6 +1,3 @@
-#
-# Tests the registration tool
-#
 import unittest
 
 from email import message_from_string
@@ -26,22 +23,25 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
     def testJoinCreatesUser(self):
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id, 'email': 'foo@bar.com'})
+                          properties={'username': member_id,
+                                      'email': 'foo@bar.com'})
         user = self.portal.acl_users.getUserById(member_id)
-        self.failUnless(user, 'addMember failed to create user')
+        self.assertTrue(user, 'addMember failed to create user')
 
     def testCannotRegisterWithRootAdminUsername(self):
         root_user = self.portal.aq_parent.acl_users.users.listUserIds()[0]
         self.assertRaises(ValueError,
                           self.registration.addMember,
                           root_user, 'secret',
-                          properties={'username': root_user, 'email': 'foo@bar.com'})
+                          properties={'username': root_user,
+                                      'email': 'foo@bar.com'})
 
     def testJoinWithUppercaseEmailCreatesUser(self):
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id, 'email': 'FOO@BAR.COM'})
+                          properties={'username': member_id,
+                                      'email': 'FOO@BAR.COM'})
         user = self.portal.acl_users.getUserById(member_id)
-        self.failUnless(user, 'addMember failed to create user')
+        self.assertTrue(user, 'addMember failed to create user')
 
     def testJoinWithoutEmailRaisesValueError(self):
         self.assertRaises(ValueError,
@@ -53,13 +53,16 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertRaises(ValueError,
                           self.registration.addMember,
                           member_id, 'secret',
-                          properties={'username': member_id, 'email': 'foo@bar.com, fred@bedrock.com'})
+                          properties={
+                            'username': member_id,
+                            'email': 'foo@bar.com, fred@bedrock.com'})
 
     def testJoinAsExistingMemberRaisesValueError(self):
         self.assertRaises(ValueError,
                           self.registration.addMember,
                           PloneTestCase.default_user, 'secret',
-                          properties={'username': 'Dr FooBar', 'email': 'foo@bar.com'})
+                          properties={'username': 'Dr FooBar',
+                                      'email': 'foo@bar.com'})
 
     def testJoinAsExistingNonMemberUserRaisesValueError(self):
         # http://dev.plone.org/plone/ticket/3221
@@ -67,13 +70,15 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertRaises(ValueError,
                           self.registration.addMember,
                           member_id, 'secret',
-                          properties={'username': member_id, 'email': 'foo@bar.com'})
+                          properties={'username': member_id,
+                                      'email': 'foo@bar.com'})
 
     def testJoinWithPortalIdAsUsernameRaisesValueError(self):
         self.assertRaises(ValueError,
                           self.registration.addMember,
                           self.portal.getId(), 'secret',
-                          properties={'username': 'Dr FooBar', 'email': 'foo@bar.com'})
+                          properties={'username': 'Dr FooBar',
+                                      'email': 'foo@bar.com'})
 
     def testJoinWithoutPermissionRaisesUnauthorized(self):
         # http://dev.plone.org/plone/ticket/3000
@@ -81,20 +86,25 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertRaises(Unauthorized,
                           self.registration.restrictedTraverse, 'addMember')
 
+    def testTestPasswordValidityConfirm(self):
+        # https://dev.plone.org/ticket/13325
+        self.failUnless(self.registration.testPasswordValidity(
+            'validpassword', confirm=None) is None)
+        self.failIf(self.registration.testPasswordValidity(
+            'validpassword', confirm='anotherpassword') is None)
+
     def testNewIdAllowed(self):
         self.assertEqual(self.registration.isMemberIdAllowed('newuser'), 1)
 
-
     def testTakenUserId(self):
         self.assertEqual(self.registration.isMemberIdAllowed('userid'), 0)
-
 
     def testTakenGroupd(self):
         self.assertEqual(self.registration.isMemberIdAllowed('groupid'), 0)
 
     def testIsMemberIdAllowedIfSubstringOfExisting(self):
         # http://dev.plone.org/plone/ticket/6396
-        self.failUnless(self.registration.isMemberIdAllowed('useri'))
+        self.assertTrue(self.registration.isMemberIdAllowed('useri'))
 
     def testRegisteredNotify(self):
         # tests email sending on registration
@@ -105,7 +115,8 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.registerUtility(mails, IMailHost)
         # Register a user
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id, 'email': 'foo@bar.com'})
+                          properties={'username': member_id,
+                                      'email': 'foo@bar.com'})
         # Set the portal email info
         self.portal.setTitle('T\xc3\xa4st Portal')
         self.portal.email_from_name = 'T\xc3\xa4st Admin'
@@ -114,14 +125,15 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(mails.messages), 1)
         msg = message_from_string(mails.messages[0])
         # We get an encoded subject
-        self.assertEqual(msg['Subject'],
-                         '=?utf-8?q?User_Account_Information_for_T=C3=A4st_Portal?=')
+        self.assertEqual(
+            msg['Subject'],
+            '=?utf-8?q?User_Account_Information_for_T=C3=A4st_Portal?=')
         # Also a partially encoded from header
         self.assertEqual(msg['From'],
                          '=?utf-8?q?T=C3=A4st_Admin?= <bar@baz.com>')
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
         # And a Quoted Printable encoded body
-        self.failUnless('T=C3=A4st Admin' in msg.get_payload())
+        self.assertTrue('T=C3=A4st Admin' in msg.get_payload())
 
     def testMailPassword(self):
         # tests email sending for password emails
@@ -132,12 +144,14 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         sm.registerUtility(mails, IMailHost)
         # Register a user
         self.registration.addMember(member_id, 'secret',
-                          properties={'username': member_id, 'email': 'foo@bar.com'})
+                          properties={'username': member_id,
+                                      'email': 'foo@bar.com'})
         # Set the portal email info
         self.portal.setTitle('T\xc3\xa4st Portal')
         self.portal.email_from_name = 'T\xc3\xa4st Admin'
         self.portal.email_from_address = 'bar@baz.com'
-        self.registration.mailPassword(member_id, self.app['REQUEST'])
+        from zope.publisher.browser import TestRequest
+        self.registration.mailPassword(member_id, TestRequest())
         self.assertEqual(len(mails.messages), 1)
         msg = message_from_string(mails.messages[0])
         # We get an encoded subject
@@ -148,7 +162,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                          '=?utf-8?q?T=C3=A4st_Admin?= <bar@baz.com>')
         self.assertEqual(msg['Content-Type'], 'text/plain; charset="utf-8"')
         # And a Quoted Printable encoded body
-        self.failUnless('T=C3=A4st Porta' in msg.get_payload())
+        self.assertTrue('T=C3=A4st Porta' in msg.get_payload())
 
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
@@ -160,7 +174,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         # Verify that if the _v_md5base attribute is missing, things
         # fall back to the class attribute and its default value.
         self.registration._md5base()
-        self.failIfEqual(self.registration._v_md5base, None)
+        self.assertNotEqual(self.registration._v_md5base, None)
         delattr(self.registration, '_v_md5base')
         self.assertEqual(self.registration._v_md5base, None)
 
@@ -177,17 +191,19 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         self.assertEqual(pw, self.registration.getPassword(6, salt))
         self.assertEqual(pw, self.registration.getPassword(6, salt))
         # These should fail
-        self.failIfEqual(pw, self.registration.getPassword(7, salt))
-        self.failIfEqual(pw, self.registration.getPassword(6, salt+'x'))
+        self.assertNotEqual(pw, self.registration.getPassword(7, salt))
+        self.assertNotEqual(pw, self.registration.getPassword(6, salt + 'x'))
 
     def testGeneratePassword(self):
         pw = self.registration.generatePassword()
-        self.assertEqual(len(pw), 6)
+        # default password is now very long as it's never seen by the user
+        self.assertTrue(len(pw)>=20)
 
     def testGenerateResetCode(self):
         salt = 'foo'
         rc = self.registration.generateResetCode(salt)
         self.assertEqual(rc, self.registration.generateResetCode(salt))
+
 
 class TestEmailValidityChecker(unittest.TestCase):
 
@@ -209,15 +225,7 @@ class TestEmailValidityChecker(unittest.TestCase):
         result = self.check(u"webmaster@example.onion")
         self.assertTrue(*result)
 
+
 class TestRegistrationToolEmailValidityChecker(PloneTestCase.PloneTestCase):
 
     check = lambda _, email: _.portal.portal_registration.isValidEmail(email)
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestRegistrationTool))
-    suite.addTest(makeSuite(TestPasswordGeneration))
-    suite.addTest(makeSuite(TestEmailValidityChecker))
-    suite.addTest(makeSuite(TestRegistrationToolEmailValidityChecker))
-    return suite

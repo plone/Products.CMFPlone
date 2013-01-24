@@ -49,8 +49,10 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
                          default=default)
 
     security.declarePublic('encode')
-    def encode(self, m, input_encoding=None, output_encoding=None, errors='strict'):
-        # encode a give unicode type or string type to string type in encoding output_encoding
+    def encode(self, m, input_encoding=None, output_encoding=None,
+               errors='strict'):
+        # encode a give unicode type or string type to string type in encoding
+        # output_encoding
 
         # check if input is not type unicode
         if not isinstance(m, unicode):
@@ -59,9 +61,7 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
             m = unicode(str(m), input_encoding, errors)
 
         if output_encoding is None:
-            # get output encoding from portal
-            plone_tool = getToolByName(self, 'plone_utils')
-            output_encoding = plone_tool.getSiteEncoding()
+            output_encoding = 'utf-8'
 
         # return as type string
         return m.encode(output_encoding, errors)
@@ -74,25 +74,24 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
             return m
 
         if input_encoding is None:
-            # get input encoding from portal
-            plone_tool = getToolByName(self, 'plone_utils')
-            input_encoding = plone_tool.getSiteEncoding()
+            input_encoding = 'utf-8'
 
         # return as type unicode
         return unicode(str(m), input_encoding, errors)
 
     security.declarePublic('ulocalized_time')
-    def ulocalized_time(self, time, long_format=None, time_only = None, context=None,
-                        domain='plonelocales', request=None):
+    def ulocalized_time(self, time, long_format=None, time_only=None,
+                        context=None, domain='plonelocales', request=None):
         # get some context if none is passed
         if context is None:
             context = self
-        return ulocalized_time(time, long_format, time_only, context, domain, request)
+        return ulocalized_time(time, long_format, time_only,
+                               context, domain, request)
 
     security.declarePublic('day_msgid')
     def day_msgid(self, number, format=None):
-        """ Returns the msgid which can be passed to the translation service for
-        l10n of weekday names. Format is either None, 'a' or 's'.
+        """ Returns the msgid which can be passed to the translation service
+        for l10n of weekday names. Format is either None, 'a' or 's'.
 
         >>> ttool = TranslationServiceTool()
 
@@ -122,8 +121,9 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('month_msgid')
     def month_msgid(self, number, format=None):
-        """ Returns the msgid which can be passed to the translation service for
-        l10n of month names. Format is either '' or 'a' (long or abbreviation).
+        """ Returns the msgid which can be passed to the translation service
+        for l10n of month names. Format is either '' or 'a' (long or
+        abbreviation).
 
         >>> ttool = TranslationServiceTool()
 
@@ -136,7 +136,9 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> ttool.month_msgid(6, format='a')
         'month_jun_abbr'
         """
-        return 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
+        return 'a' == format \
+               and monthname_msgid_abbr(number) \
+               or monthname_msgid(number)
 
     security.declarePublic('month_english')
     def month_english(self, number, format=None):
@@ -160,13 +162,15 @@ class TranslationServiceTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         if default is None:
             default = monthname_english(number, format=format)
-        value = 'a' == format and monthname_msgid_abbr(number) or monthname_msgid(number)
+        value = 'a' == format \
+                and monthname_msgid_abbr(number) \
+                or monthname_msgid(number)
         return PLMF(value, default=default)
 
     security.declarePublic('weekday_english')
     def weekday_english(self, number, format=None):
-        """ Returns the english name of a week by number. Format is either None,
-        'a' or 'p'.
+        """ Returns the english name of a week by number. Format is
+        either None, 'a' or 'p'.
 
         >>> ttool = TranslationServiceTool()
 

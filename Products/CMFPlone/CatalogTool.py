@@ -40,6 +40,7 @@ from plone.i18n.normalizer.base import mapUnicode
 
 _marker = object()
 
+MAX_SORTABLE_TITLE = 40
 BLACKLISTED_INTERFACES = frozenset((
     'AccessControl.interfaces.IOwned',
     'AccessControl.interfaces.IPermissionMappingSupport',
@@ -156,7 +157,7 @@ def object_provides(obj):
 
 
 def zero_fill(matchobj):
-    return matchobj.group().zfill(6)
+    return matchobj.group().zfill(4)
 
 num_sort_regex = re.compile('\d+')
 
@@ -164,12 +165,6 @@ num_sort_regex = re.compile('\d+')
 @indexer(Interface)
 def sortable_title(obj):
     """ Helper method for to provide FieldIndex for Title.
-
-    >>> from Products.CMFPlone.CatalogTool import sortable_title
-
-    >>> self.folder.setTitle('Plone42 _foo')
-    >>> sortable_title(self.folder, self.portal)
-    'plone000042 _foo'
     """
     title = getattr(obj, 'Title', None)
     if title is not None:
@@ -181,21 +176,18 @@ def sortable_title(obj):
             sortabletitle = mapUnicode(safe_unicode(title)).lower().strip()
             # Replace numbers with zero filled numbers
             sortabletitle = num_sort_regex.sub(zero_fill, sortabletitle)
-            # Truncate to prevent bloat
-            sortabletitle = sortabletitle[:70].encode('utf-8')
-            return sortabletitle
-
+            # Truncate to prevent bloat, take bits from start and end
+            if len(sortabletitle) > MAX_SORTABLE_TITLE:
+                start = sortabletitle[:(MAX_SORTABLE_TITLE - 13)]
+                end = sortabletitle[-10:]
+                sortabletitle = start + '...' + end
+            return sortabletitle.encode('utf-8')
     return ''
 
 
 @indexer(Interface)
 def getObjPositionInParent(obj):
     """ Helper method for catalog based folder contents.
-
-    >>> from Products.CMFPlone.CatalogTool import getObjPositionInParent
-
-    >>> getObjPositionInParent(self.folder)
-    0
     """
     parent = aq_parent(aq_inner(obj))
     ordered = IOrderedContainer(parent, None)
@@ -203,18 +195,13 @@ def getObjPositionInParent(obj):
         return ordered.getObjectPosition(obj.getId())
     return 0
 
-SIZE_CONST = {'kB': 1024, 'MB': 1024*1024, 'GB': 1024*1024*1024}
-SIZE_ORDER = ('GB', 'MB', 'kB')
+SIZE_CONST = {'KB': 1024, 'MB': 1024 * 1024, 'GB': 1024 * 1024 * 1024}
+SIZE_ORDER = ('GB', 'MB', 'KB')
 
 
 @indexer(Interface)
 def getObjSize(obj):
     """ Helper method for catalog based folder contents.
-
-    >>> from Products.CMFPlone.CatalogTool import getObjSize
-
-    >>> getObjSize(self.folder)
-    '1 kB'
     """
     smaller = SIZE_ORDER[-1]
 
@@ -237,9 +224,9 @@ def getObjSize(obj):
         if size < SIZE_CONST[smaller]:
             return '1 %s' % smaller
         for c in SIZE_ORDER:
-            if size/SIZE_CONST[c] > 0:
+            if size / SIZE_CONST[c] > 0:
                 break
-        return '%.1f %s' % (float(size/float(SIZE_CONST[c])), c)
+        return '%.1f %s' % (float(size / float(SIZE_CONST[c])), c)
     return size
 
 
@@ -249,31 +236,6 @@ def is_folderish(obj):
 
     Checks isPrincipiaFolderish, as well as the INonStructuralFolder
     interfaces.
-
-      >>> from Products.CMFPlone.CatalogTool import is_folderish
-      >>> from Products.CMFPlone.interfaces import INonStructuralFolder
-      >>> from zope.interface import directlyProvidedBy, directlyProvides
-
-    A Folder is folderish generally::
-      >>> is_folderish(self.folder)
-      True
-
-    But if we make it an INonStructuralFolder it is not::
-      >>> base_implements = directlyProvidedBy(self.folder)
-      >>> directlyProvides(self.folder, INonStructuralFolder,
-      ...     directlyProvidedBy(self.folder))
-      >>> is_folderish(self.folder)
-      False
-
-    Now we revert our interface change and check to make sure that
-    PrincipiaFolderish is respected::
-      >>> directlyProvides(self.folder, base_implements)
-      >>> is_folderish(self.folder)
-      True
-      >>> self.folder.isPrincipiaFolderish = False
-      >>> is_folderish(self.folder)
-      False
-
     """
     # If the object explicitly states it doesn't want to be treated as a
     # structural folder, don't argue with it.
@@ -284,16 +246,6 @@ def is_folderish(obj):
         return False
     else:
         return folderish
-
-
-@indexer(Interface)
-def syndication_enabled(obj):
-    """Get state of syndication.
-    """
-    syn = getattr(aq_base(obj), 'syndication_information', _marker)
-    if syn is not _marker:
-        return True
-    return False
 
 
 @indexer(Interface)
@@ -358,22 +310,27 @@ class CatalogTool(PloneBaseTool, BaseTool):
             groups = ['user:%s' % x for x in user.getGroups()]
             if groups:
                 result = result + groups
+        # Order the arguments from small to large sets
+        result.insert(0, 'user:%s' % user.getId())
         result.append('Anonymous')
-        result.append('user:%s' % user.getId())
         return result
 
     security.declarePrivate('indexObject')
-    def indexObject(self, object, idxs=[]):
+    def indexObject(self, object, idxs=None):
         """Add object to catalog.
 
         The optional idxs argument is a list of specific indexes
         to populate (all of them by default).
         """
+        if idxs is None:
+            idxs = []
         self.reindexObject(object, idxs)
 
     security.declareProtected(ManageZCatalogEntries, 'catalog_object')
-    def catalog_object(self, object, uid=None, idxs=[],
+    def catalog_object(self, object, uid=None, idxs=None,
                        update_metadata=1, pghandler=None):
+        if idxs is None:
+            idxs = []
         self._increment_counter()
 
         w = object
@@ -467,6 +424,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
               URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
               urllib.quote('Catalog Rebuilt\n'
                            'Total time: %s\n'
-                           'Total CPU time: %s' % (`elapse`, `c_elapse`)))
+                           'Total CPU time: %s'
+                                % (repr(elapse), repr(c_elapse))))
 
 InitializeClass(CatalogTool)

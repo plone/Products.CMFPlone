@@ -1,7 +1,3 @@
-#
-# Test our OrderSupport implementation
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 import transaction
@@ -10,7 +6,6 @@ import transaction
 class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        membership = self.portal.portal_membership
         # Add a bunch of subobjects we can order later on
         self.folder.invokeFactory('Document', id='foo')
         self.folder.invokeFactory('Document', id='bar')
@@ -109,7 +104,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.manage_renameObjects(['bar'], ['barney'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('barney'), 1)
@@ -117,7 +112,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameFirstObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.manage_renameObjects(['foo'], ['flintstone'])
         self.assertEqual(self.folder.getObjectPosition('flintstone'), 0)
         self.assertEqual(self.folder.getObjectPosition('bar'), 1)
@@ -125,7 +120,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testRenameLastObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.folder.manage_renameObjects(['baz'], ['bedrock'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('bar'), 1)
@@ -160,7 +155,8 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def DISABLED_test_manage_move_objects_to_bottom(self):
         # Make sure ZMI method works
-        self.folder.manage_move_objects_to_bottom(self.app.REQUEST, ids=['bar'])
+        self.folder.manage_move_objects_to_bottom(self.app.REQUEST,
+                                                  ids=['bar'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
         self.assertEqual(self.folder.getObjectPosition('baz'), 1)
         self.assertEqual(self.folder.getObjectPosition('bar'), 2)
@@ -174,43 +170,17 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
     def testSkipObjectsNotInSubsetIds(self):
         self.folder.moveObjectsByDelta(['baz'], -1, ['foo', 'baz'])
         self.assertEqual(self.folder.getObjectPosition('baz'), 0)
-        self.assertEqual(self.folder.getObjectPosition('bar'), 1) # Did not move
+        # Did not move
+        self.assertEqual(self.folder.getObjectPosition('bar'), 1)
         self.assertEqual(self.folder.getObjectPosition('foo'), 2)
 
     def testIgnoreNonObjects(self):
-        #Fix for (http://dev.plone.org/plone/ticket/3959) non contentish objects
-        #cause errors, we should just ignore them
-        self.folder.moveObjectsByDelta(['bar','blah'], -1)
+        # Fix for (http://dev.plone.org/plone/ticket/3959) non contentish
+        # objects cause errors, we should just ignore them
+        self.folder.moveObjectsByDelta(['bar', 'blah'], -1)
         self.assertEqual(self.folder.getObjectPosition('bar'), 0)
         self.assertEqual(self.folder.getObjectPosition('foo'), 1)
         self.assertEqual(self.folder.getObjectPosition('baz'), 2)
-
-    # NOTE: These tests are disabled, as the new unified, BTree-based,
-    # ordered-by-adapter folder implementation doesn't support this. It's
-    # not used anywhere, causes the re-ordering to be needlessly slow and
-    # generally shouldn't be necessary.
-
-    def DISABLED_testMoveCMFObjectsOnly(self):
-        # Plone speciality
-        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
-        self.folder.moveObject('wilma', 2)
-        # Non-CMF object should keep position
-        self.folder.moveObjectToPosition('foo', 2)
-        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
-        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
-        self.assertEqual(self.folder.getObjectPosition('foo'), 3)
-
-    def DISABLED_testMoveUpCMFObjectsOnly(self):
-        # Plone speciality
-        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
-        self.folder.moveObject('wilma', 2)
-        # Non-CMF object should keep position
-        self.folder.moveObjectsUp(['baz'])
-        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
-        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
-        self.assertEqual(self.folder.getObjectPosition('bar'), 3)
 
 
 class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
@@ -228,16 +198,8 @@ class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
 
     def testRenameObject(self):
         # Renaming should not change position
-        transaction.savepoint(optimistic=True) # make rename work
+        transaction.savepoint(optimistic=True)  # make rename work
         self.portal.manage_renameObjects(['bar'], ['barney'])
         self.assertEqual(self.portal.getObjectPosition('foo'), 0)
         self.assertEqual(self.portal.getObjectPosition('barney'), 1)
         self.assertEqual(self.portal.getObjectPosition('baz'), 2)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestOrderSupport))
-    suite.addTest(makeSuite(TestOrderSupportInPortal))
-    return suite

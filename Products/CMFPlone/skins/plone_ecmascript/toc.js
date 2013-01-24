@@ -66,7 +66,7 @@ jQuery(function($) {
         if (wlh) {
             target = $(wlh);
             target = target.length && target
-                || $('[name=' + wlh.slice(1) +']');
+                || $('[name="' + wlh.slice(1) +'"]');
             targetOffset = target.offset();
             if (targetOffset) {
                 $('html,body').animate({scrollTop: targetOffset.top}, 0);

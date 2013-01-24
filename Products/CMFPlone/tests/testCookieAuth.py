@@ -1,7 +1,3 @@
-#
-# CookieAuth tests
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 
 import base64
@@ -28,8 +24,8 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 302)
 
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(self.portal_url))
-        self.failUnless(urlparse(location)[2].endswith('/require_login'))
+        self.assertTrue(location.startswith(self.portal_url))
+        self.assertTrue(urlparse(location)[2].endswith('/require_login'))
 
     def testInsufficientPrivileges(self):
         # Should send us to login_form
@@ -37,8 +33,8 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 302)
 
         location = response.getHeader('Location')
-        self.failUnless(location.startswith(self.portal_url))
-        self.failUnless(urlparse(location)[2].endswith('/require_login'))
+        self.assertTrue(location.startswith(self.portal_url))
+        self.assertTrue(urlparse(location)[2].endswith('/require_login'))
 
     def testSetSessionCookie(self):
         # The __ac cookie should be set for the session only
@@ -52,10 +48,3 @@ class TestCookieAuth(PloneTestCase.FunctionalTestCase):
         cookie = response.getCookie('__ac')
         self.assertEqual(cookie.get('path'), '/')
         self.assertEqual(cookie.get('expires'), None)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCookieAuth))
-    return suite

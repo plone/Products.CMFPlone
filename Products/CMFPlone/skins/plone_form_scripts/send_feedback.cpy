@@ -7,8 +7,8 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Send feedback to an author
-##
-REQUEST=context.REQUEST
+
+REQUEST = context.REQUEST
 
 from Products.CMFPlone.utils import transaction_note
 from Products.CMFCore.utils import getToolByName
@@ -28,7 +28,7 @@ portal = urltool.getPortalObject()
 referer = REQUEST.get('referer', 'unknown referer')
 subject = REQUEST.get('subject', '')
 message = REQUEST.get('message', '')
-author = REQUEST.get('author', None) # None means portal administrator
+author = REQUEST.get('author', None)  # None means portal administrator
 
 sender = mtool.getAuthenticatedMember()
 envelope_from = portal.getProperty('email_from_address')
@@ -40,20 +40,23 @@ else:
     state_success = "success_author"
     state_failure = "failure_author"
 
-state.set(status=state_success) ## until proven otherwise
+state.set(status=state_success)  # until proven otherwise
 
 send_from_address = sender.getProperty('email')
 
 if send_from_address == '':
     # happens if you don't exist as user in the portal (but at a higher level)
     # or if your memberdata is incomplete.
-    # Would be nicer to check in the feedback form, but that's hard to do securely
-    plone_utils.addPortalMessage(_(u'Could not find a valid email address'), 'error')
+    # Would be nicer to check in the feedback form, but that's hard to do
+    # securely
+    plone_utils.addPortalMessage(_(u'Could not find a valid email address'),
+                                 'error')
     return state.set(status=state_failure)
 
-sender_id = "%s (%s), %s" % (sender.getProperty('fullname'), sender.getId(), send_from_address)
+sender_id = "%s (%s), %s" % (sender.getProperty('fullname'), sender.getId(),
+                             send_from_address)
 
-host = context.MailHost # plone_utils.getMailHost() (is private)
+host = context.MailHost  # plone_utils.getMailHost() (is private)
 encoding = portal.getProperty('email_charset')
 
 ## TODO:
@@ -74,14 +77,14 @@ try:
                        subject=subject, charset=encoding)
 except ConflictError:
     raise
-except: # TODO Too many things could possibly go wrong. So we catch all.
+except:  # TODO Too many things could possibly go wrong. So we catch all.
     exception = plone_utils.exceptionString()
     message = _(u'Unable to send mail: ${exception}',
-                mapping={u'exception' : exception})
+                mapping={u'exception': exception})
     plone_utils.addPortalMessage(message, 'error')
     return state.set(status=state_failure)
 
-tmsg='Sent feedback from %s to %s' % ('x', 'y')
+tmsg = 'Sent feedback from %s to %s' % ('x', 'y')
 transaction_note(tmsg)
 
 ## clear request variables so form is cleared as well

@@ -10,7 +10,19 @@
 	the date beforehand if possible and pass it to the calendar at constructor.
 
 	* calendar.js:
-	avoid keyboard operation when 'multiple dates' is set (very buggy for now)
+4.3b2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+4.3b1 (2013-01-01)
+------------------
+
+- Nothing changed yet.
+
+
+4.3a2 (2012-10-18)
 
 	* calendar.js:
 	fixed keyboard handling problems: now it works fine when "showsOtherMonths"

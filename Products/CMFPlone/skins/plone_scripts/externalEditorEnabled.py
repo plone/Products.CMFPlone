@@ -6,8 +6,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Can an object be changed with the external editor and by the user
-##
-#
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import webdav_enabled
 
@@ -31,7 +30,8 @@ if not webdav_enabled(context, container):
     return False
 
 # Object not locked ?
-# note: you may comment out those two lines if you prefer to let the user to borrow the lock
+# note: you may comment out those two lines if you prefer to let the user to
+# borrow the lock
 if context.wl_isLocked():
     return False
 

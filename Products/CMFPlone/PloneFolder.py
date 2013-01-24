@@ -10,10 +10,8 @@ from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
 
 from OFS.Folder import Folder
-from OFS.interfaces import IOrderedContainer
 from OFS.ObjectManager import REPLACEABLE
 from OFS.OrderSupport import OrderSupport
-from DocumentTemplate.sequence import sort
 from webdav.NullResource import NullResource
 from webdav.interfaces import IWriteLock
 
@@ -27,7 +25,6 @@ from Products.CMFCore.permissions import AccessContentsInformation, \
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
 from zope.interface import implements
-from zope.container.contained import notifyContainerModified
 
 
 class ReplaceableWrapper:
@@ -65,7 +62,8 @@ class OrderedContainer(Folder, OrderSupport):
         """Get the ids of only cmf objects (used for moveObjectsByDelta)."""
         ttool = getToolByName(self, 'portal_types')
         cmf_meta_types = [ti.Metatype() for ti in ttool.listTypeInfo()]
-        return [obj['id'] for obj in objs if obj['meta_type'] in cmf_meta_types]
+        return [obj['id'] for obj in objs
+                    if obj['meta_type'] in cmf_meta_types]
 
     # BBB
     getCMFObjectsSubsetIds = getIdsSubset
@@ -75,7 +73,9 @@ class OrderedContainer(Folder, OrderSupport):
         try:
             pos = OrderSupport.getObjectPosition(self, id)
         except ValueError:
-            raise NotFound, 'Object %s was not found' % str(id)
+            raise NotFound('Object %s was not found' % str(id))
+
+        return pos
 
     def manage_renameObject(self, id, new_id, REQUEST=None):
         """Rename a particular sub-object."""
@@ -90,7 +90,8 @@ class OrderedContainer(Folder, OrderSupport):
 InitializeClass(OrderedContainer)
 
 
-class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFolderBase, DefaultDublinCoreImpl):
+class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager,
+                      PortalFolderBase, DefaultDublinCoreImpl):
     """Implements basic Plone folder functionality except ordering support.
     """
 
@@ -137,7 +138,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
     def index_html(self):
         """Acquire if not present."""
         request = getattr(self, 'REQUEST', None)
-        if request and request.has_key('REQUEST_METHOD'):
+        if request and 'REQUEST_METHOD' in request:
             if request.maybe_webdav_client:
                 method = request['REQUEST_METHOD']
                 if method in ('PUT', ):
@@ -147,7 +148,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
                     # Do nothing, let it go and acquire.
                     pass
                 else:
-                    raise AttributeError, 'index_html'
+                    raise AttributeError('index_html')
         # Acquire from parent
         _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
@@ -167,15 +168,17 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
     manage_renameObject = PortalFolderBase.manage_renameObject
 
     security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
-    def manage_delObjects(self, ids=[], REQUEST=None):
+    def manage_delObjects(self, ids=None, REQUEST=None):
         """We need to enforce security."""
+        if ids is None:
+            ids = []
         mt = getToolByName(self, 'portal_membership')
         if isinstance(ids, basestring):
             ids = [ids]
         for id in ids:
             item = self._getOb(id)
             if not mt.checkPermission(Permissions.delete_objects, item):
-                raise Unauthorized, (
+                raise Unauthorized(
                     "Do not have permissions to remove this object")
         return PortalFolderBase.manage_delObjects(self, ids, REQUEST=REQUEST)
 
@@ -206,10 +209,11 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
         contents = PortalFolderBase.listFolderContents(self,
                                                   contentFilter=contentFilter)
         if suppressHiddenFiles:
-            contents = [obj for obj in contents if obj.getId()[:1]!='.']
+            contents = [obj for obj in contents if obj.getId()[:1] != '.']
         return contents
 
-    security.declareProtected(AccessContentsInformation, 'folderlistingFolderContents')
+    security.declareProtected(AccessContentsInformation,
+                              'folderlistingFolderContents')
     def folderlistingFolderContents(self, contentFilter=None,
                                     suppressHiddenFiles=0):
         """Calls listFolderContents in protected only by ACI so that
@@ -227,7 +231,7 @@ class BasePloneFolder(CatalogAware, WorkflowAware, OpaqueItemManager, PortalFold
         myType = pt.getTypeInfo(self)
         if myType is not None:
             if not myType.allowType(type_name):
-                raise ValueError, 'Disallowed subobject type: %s' % type_name
+                raise ValueError('Disallowed subobject type: %s' % type_name)
         args = (type_name, self, id, RESPONSE) + args
         new_id = pt.constructContent(*args, **kw)
         if new_id is None or new_id == '':
@@ -250,8 +254,10 @@ InitializeClass(PloneFolder)
 
 
 def safe_cmp(x, y):
-    if callable(x): x=x()
-    if callable(y): y=y()
+    if callable(x):
+        x = x()
+    if callable(y):
+        y = y()
     return cmp(x, y)
 
 

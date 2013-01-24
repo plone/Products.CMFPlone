@@ -7,13 +7,15 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Paste objects into a folder
-##
 
-from Products.CMFPlone import PloneMessageFactory as _
 from AccessControl import Unauthorized
+from logging import getLogger
+from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
-msg=_(u'Copy or cut one or more items to paste.')
+msg = _(u'Copy or cut one or more items to paste.')
+
+logger = getLogger("Plone")
 
 if context.cb_dataValid:
     try:
@@ -25,12 +27,17 @@ if context.cb_dataValid:
     except ConflictError:
         raise
     except ValueError:
-        msg=_(u'Disallowed to paste item(s).')
+        msg = _(u'Disallowed to paste item(s).')
     except Unauthorized:
-        msg=_(u'Unauthorized to paste item(s).')
+        msg = _(u'Unauthorized to paste item(s).')
     except: # fallback
-        msg=_(u'Paste could not find clipboard content.')
+        if '__cp' not in context.REQUEST:
+            msg = _(u'Paste could not find clipboard content.')
+        else:
+            logger.exception('Exception during pasting')
+            msg = _(u'Unknown error occured. Please check your logs')
 
-context.plone_utils.addPortalMessage(msg, 'error')
-return state.set(status='failure')
-
+# raise an Exception to abort the transaction. CMFFormController
+# does not do this for us and the objects are already pasted. Otherwise
+# we end up in an inconsistent state.
+raise Exception(msg)

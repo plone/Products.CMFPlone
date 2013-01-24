@@ -19,8 +19,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
 
 # Strategy objects for the navtree creation code. You can subclass these
-# to expand the default navtree behaviour, and pass instances of your subclasses
-# to buildFolderTree().
+# to expand the default navtree behaviour, and pass instances of your
+# subclasses to buildFolderTree().
 
 
 class NavtreeQueryBuilder(object):
@@ -73,7 +73,8 @@ class NavtreeQueryBuilder(object):
 
         # Filter on workflow states, if enabled
         if navtree_properties.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = navtree_properties.getProperty('wf_states_to_show', ())
+            query['review_state'] = \
+                navtree_properties.getProperty('wf_states_to_show', ())
 
         self.query = query
 
@@ -113,10 +114,13 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         self.excludedIds = {}
         for id in navtree_properties.getProperty('idsNotToList', ()):
             self.excludedIds[id] = True
-        self.parentTypesNQ = navtree_properties.getProperty('parentMetaTypesNotToQuery', ())
-        self.viewActionTypes = site_properties.getProperty('typesUseViewActionInListings', ())
+        self.parentTypesNQ = \
+            navtree_properties.getProperty('parentMetaTypesNotToQuery', ())
+        self.viewActionTypes = \
+            site_properties.getProperty('typesUseViewActionInListings', ())
 
-        self.showAllParents = navtree_properties.getProperty('showAllParents', True)
+        self.showAllParents = \
+            navtree_properties.getProperty('showAllParents', True)
         self.rootPath = getNavigationRoot(context)
 
         membership = getToolByName(context, 'portal_membership')
@@ -150,9 +154,16 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         if portalType is not None and portalType in self.viewActionTypes:
             itemUrl += '/view'
 
+        useRemoteUrl = False
+        getRemoteUrl = getattr(item, 'getRemoteUrl', None)
+        isCreator = self.memberId == getattr(item, 'Creator', None)
+        if getRemoteUrl and not isCreator:
+            useRemoteUrl = True
+
         isFolderish = getattr(item, 'is_folderish', None)
         showChildren = False
-        if isFolderish and (portalType is None or portalType not in self.parentTypesNQ):
+        if isFolderish and \
+                (portalType is None or portalType not in self.parentTypesNQ):
             showChildren = True
 
         ploneview = getMultiAdapter((context, request), name=u'plone')
@@ -170,14 +181,17 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['review_state'] = getattr(item, 'review_state', None)
         newNode['Description'] = getattr(item, 'Description', None)
         newNode['show_children'] = showChildren
-        newNode['no_display'] = False # We sort this out with the nodeFilter
+        newNode['no_display'] = False  # We sort this out with the nodeFilter
         # BBB getRemoteUrl and link_remote are deprecated, remove in Plone 4
         newNode['getRemoteUrl'] = getattr(item, 'getRemoteUrl', None)
-        newNode['link_remote'] = newNode['getRemoteUrl'] and newNode['Creator'] != self.memberId
+        newNode['useRemoteUrl'] = useRemoteUrl
+        newNode['link_remote'] = newNode['getRemoteUrl'] \
+                                 and newNode['Creator'] != self.memberId
 
         idnormalizer = queryUtility(IIDNormalizer)
         newNode['normalized_portal_type'] = idnormalizer.normalize(portalType)
-        newNode['normalized_review_state'] = idnormalizer.normalize(newNode['review_state'])
+        newNode['normalized_review_state'] = \
+            idnormalizer.normalize(newNode['review_state'])
         newNode['normalized_id'] = idnormalizer.normalize(newNode['id'])
 
         return newNode
