@@ -11,8 +11,6 @@
     <include package=".links" />
     <include package=".sitemap" />
     <include package=".dashboard" />
-    <include zcml:condition="installed Products.ATContentTypes"
-             package=".presentation" />
     <include package=".analytics" />
 
 </configure>
