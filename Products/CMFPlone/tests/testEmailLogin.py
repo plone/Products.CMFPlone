@@ -39,7 +39,9 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         self.loginAsPortalOwner()
         member = memship.getAuthenticatedMember()
         # We are not allowed to change a user at the root zope level.
-        self.assertRaises(KeyError, set_own_login_name, member, 'vanrees')
+        # A KeyError is raised, or possibly in later Plone versions a
+        # ValueError, so we simply go for an Exception.
+        self.assertRaises(Exception, set_own_login_name, member, 'vanrees')
 
     def testNormalMemberIdsAllowed(self):
         pattern = self.portal.portal_registration._ALLOWED_MEMBER_ID_PATTERN
