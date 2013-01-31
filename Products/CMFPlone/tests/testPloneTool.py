@@ -2,6 +2,10 @@
 # Tests the PloneTool
 #
 
+from zope.component import getGlobalSiteManager
+from zope.interface import Interface
+
+from Products.CMFPlone.interfaces import IReorderedEvent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -172,6 +176,18 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.getUserFriendlyTypes(
             ['File', 'Non Existing Type']), ['File'])
 
+    def testReindexOnReorder(self):
+        gsm = getGlobalSiteManager()
+        reordered_parents = []
+        def my_handler(obj, event):
+            reordered_parents.append(obj)
+        gsm.registerHandler(my_handler, (Interface, IReorderedEvent))
+
+        try:
+            self.utils.reindexOnReorder("fake_context")
+        finally:
+            gsm.unregisterHandler(my_handler, (Interface, IReorderedEvent))
+        self.assertEquals(["fake_context"], reordered_parents)
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 

@@ -17,6 +17,10 @@ Changelog
   title instead of Registry Settings. Fixes ticket #13367
   [abutton]
 
+- Add event to trigger when a reordering is happening. Without this
+  collective.solr and maybe other alternative indexes are kind of lost
+  [do3cc]
+
 4.2.4 (2013-01-17)
 ------------------
 
