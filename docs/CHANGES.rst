@@ -13,6 +13,11 @@ Changelog
   the latest keyword and updates them to the last profile version.
   [eleddy]
 
+- Add event to trigger when a reordering is happening. Without this
+  collective.solr and maybe other alternative indexes are kind of lost.
+  Backport from 4.2.x
+  [do3cc]
+
 
 4.3b2 (2013-01-17)
 ------------------
