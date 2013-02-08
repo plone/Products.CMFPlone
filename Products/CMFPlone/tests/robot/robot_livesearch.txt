@@ -22,43 +22,40 @@ ${BROWSER} =  Firefox
 *** Test cases ***
 
 Scenario: Simple Livesearch
-    Given a site owner
-      and a document  Welcome to Plone
+    Given a document  Welcome to Plone
       and the livesearch
      When I search for  Welcome
      Then the livesearch results should contain  Welcome to Plone
-      and the number of livesearch results should be  2
+      and there should be '2' livesearch results
 
 Scenario: Livesearch for documents
-    Given a site owner
-      and a document  My document
+    Given a document  My document
       and the livesearch
      When I search for  My document
      Then the livesearch results should contain  My document
-      and the number of livesearch results should be  2
+      and there should be '2' livesearch results
 
 Scenario: Livesearch for folder
-    Given a site owner
-      and a folder  My folder
+    Given a folder  My folder
       and the livesearch
      When I search for  My folder
      Then the livesearch results should contain  My folder
-      and the number of livesearch results should be  2
+      and there should be '2' livesearch results
 
 Scenario: Livesearch in current folder only
-    Given a site owner
-      and a folder with a document  Inside Document
+    Given a folder 'folder' with a document 'Inside Document'
       and a document  Outside Document
      When I search the currentfolder only for  Inside Document
      Then the livesearch results should contain  Inside Document
       and the livesearch results should not contain  Outside Document
-      and the number of livesearch results should be  2
+      and there should be '2' livesearch results
 
 
 *** Keywords ***
 
 Suite Setup
     Open browser  ${PORTAL_URL}
+    Given a site owner
 
 Suite Teardown
     Close All Browsers
@@ -89,13 +86,12 @@ the livesearch results should not contain
 # Content
 # ----------------------------------------------------------------------------
 
-a folder with a document
-    [Arguments]  ${title}
+a folder '${foldername}' with a document '${documentname}'
     Go to  ${PORTAL_URL}/createObject?type_name=Folder
-    Input text  name=title  folder
+    Input text  name=title  ${foldername}
     Click Button  Save
     Go to  ${PORTAL_URL}/folder/edit
-    Input text  name=title  ${title}
+    Input text  name=title  ${documentname}
     Click Button  Save
 
 a document
@@ -110,9 +106,7 @@ a folder
     Input text  name=title  ${title}
     Click Button  Save
 
-
-the number of livesearch results should be
-    [Arguments]  ${count}
+there should be '${count}' livesearch results
     Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=div#LSResult
     Wait until keyword succeeds  5s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
 
@@ -140,7 +134,3 @@ a test user
 
 a site owner
     Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
-
-a test user with role
-    [Argument] ${role}
-
