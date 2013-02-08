@@ -1,0 +1,146 @@
+*** Settings ***
+
+Library  Selenium2Library  timeout=10  implicit_wait=0.5
+
+Variables  plone/app/testing/interfaces.py
+
+Suite Setup  Suite Setup
+Suite Teardown  Suite Teardown
+
+
+*** Variables ***
+
+${PORTAL_URL}  http://localhost:55001/plone
+${TEST_FOLDER}  http://localhost:55001/plone/acceptance-test-folder
+
+${PORT} =  55001
+${ZOPE_URL} =  http://localhost:${PORT}
+${PLONE_URL} =  ${ZOPE_URL}/plone
+${BROWSER} =  Firefox
+
+
+*** Test cases ***
+
+Scenario: Simple Livesearch
+    Given a site owner
+      and a document  Welcome to Plone
+      and the livesearch
+     When I search for  Welcome
+     Then the livesearch results should contain  Welcome to Plone
+      and the number of livesearch results should be  2
+
+Scenario: Livesearch for documents
+    Given a site owner
+      and a document  My document
+      and the livesearch
+     When I search for  My document
+     Then the livesearch results should contain  My document
+      and the number of livesearch results should be  2
+
+Scenario: Livesearch for folder
+    Given a site owner
+      and a folder  My folder
+      and the livesearch
+     When I search for  My folder
+     Then the livesearch results should contain  My folder
+      and the number of livesearch results should be  2
+
+Scenario: Livesearch in current folder only
+    Given a site owner
+      and a folder with a document  Inside Document
+      and a document  Outside Document
+     When I search the currentfolder only for  Inside Document
+     Then the livesearch results should contain  Inside Document
+      and the livesearch results should not contain  Outside Document
+      and the number of livesearch results should be  2
+
+
+*** Keywords ***
+
+Suite Setup
+    Open browser  ${PORTAL_URL}
+
+Suite Teardown
+    Close All Browsers
+
+the livesearch
+    Go to  ${PORTAL_URL}
+
+I search for
+    [Arguments]  ${searchtext}
+    Input text  css=input#searchGadget  ${searchtext}
+    Focus  css=input#searchGadget
+
+I search the currentfolder only for
+    [Arguments]  ${searchtext}
+    Select checkbox  id=searchbox_currentfolder_only
+    Input text  css=input#searchGadget  ${searchtext}
+    Focus  css=input#searchGadget
+
+the livesearch results should contain
+    [Arguments]  ${text}
+    Wait until keyword succeeds  5s  1s  Element should contain  css=#LSResult .LSRow a  ${text}
+
+the livesearch results should not contain
+    [Arguments]  ${text}
+    Wait until keyword succeeds  5s  1s  Page should not contain  css=#LSResult .LSRow a  ${text}
+
+# ----------------------------------------------------------------------------
+# Content
+# ----------------------------------------------------------------------------
+
+a folder with a document
+    [Arguments]  ${title}
+    Go to  ${PORTAL_URL}/createObject?type_name=Folder
+    Input text  name=title  folder
+    Click Button  Save
+    Go to  ${PORTAL_URL}/folder/edit
+    Input text  name=title  ${title}
+    Click Button  Save
+
+a document
+    [Arguments]  ${title}
+    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Input text  name=title  ${title}
+    Click Button  Save
+
+a folder
+    [Arguments]  ${title}
+    Go to  ${PORTAL_URL}/createObject?type_name=Folder
+    Input text  name=title  ${title}
+    Click Button  Save
+
+
+the number of livesearch results should be
+    [Arguments]  ${count}
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=div#LSResult
+    Wait until keyword succeeds  5s  1s  Xpath Should Match X Times  //div[@id = 'LSResult']/descendant::li  ${count}
+
+
+# ----------------------------------------------------------------------------
+# Login/Logout
+# ----------------------------------------------------------------------------
+
+Log in
+    [Arguments]  ${userid}  ${password}
+    Go to  ${PORTAL_URL}/login_form
+    Page should contain element  __ac_name
+    Page should contain element  __ac_password
+    Page should contain button  Log in
+    Input text  __ac_name  ${userid}
+    Input text  __ac_password  ${password}
+    Click Button  Log in
+
+Log out
+    Go to  ${PORTAL_URL}/logout
+    Page should contain  logged out
+
+a test user
+    Log in  ${TEST_USER_NAME}  ${TEST_USER_PASSWORD}
+
+a site owner
+    Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
+
+a test user with role
+    [Argument] ${role}
+

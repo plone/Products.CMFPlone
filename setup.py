@@ -31,6 +31,8 @@ setup(name='Products.CMFPlone',
           'Products.PloneTestCase',
           'zope.globalrequest',
           'zope.testing',
+          'robotsuite',
+          'robotframework-selenium2library',
         ]),
       install_requires=[
           'setuptools',
