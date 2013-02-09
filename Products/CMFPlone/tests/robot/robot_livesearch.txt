@@ -11,7 +11,7 @@ Suite Teardown  Suite Teardown
 *** Variables ***
 
 ${PORTAL_URL}  http://localhost:55001/plone
-${TEST_FOLDER}  http://localhost:55001/plone/acceptance-test-folder
+${TEST_FOLDER}  http://localhost:55001/plone/test-folder
 
 ${PORT} =  55001
 ${ZOPE_URL} =  http://localhost:${PORT}
@@ -23,21 +23,18 @@ ${BROWSER} =  Firefox
 
 Scenario: Simple Livesearch
     Given a document  Welcome to Plone
-      and the livesearch
      When I search for  Welcome
      Then the livesearch results should contain  Welcome to Plone
       and there should be '2' livesearch results
 
 Scenario: Livesearch for documents
     Given a document  My document
-      and the livesearch
      When I search for  My document
      Then the livesearch results should contain  My document
       and there should be '2' livesearch results
 
 Scenario: Livesearch for folder
     Given a folder  My folder
-      and the livesearch
      When I search for  My folder
      Then the livesearch results should contain  My folder
       and there should be '2' livesearch results
@@ -60,9 +57,6 @@ Suite Setup
 Suite Teardown
     Close All Browsers
 
-the livesearch
-    Go to  ${PORTAL_URL}
-
 I search for
     [Arguments]  ${searchtext}
     Input text  css=input#searchGadget  ${searchtext}
@@ -81,6 +75,7 @@ the livesearch results should contain
 the livesearch results should not contain
     [Arguments]  ${text}
     Wait until keyword succeeds  5s  1s  Page should not contain  css=#LSResult .LSRow a  ${text}
+
 
 # ----------------------------------------------------------------------------
 # Content
