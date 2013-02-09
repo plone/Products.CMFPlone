@@ -18,35 +18,47 @@ ${ZOPE_URL} =  http://localhost:${PORT}
 ${PLONE_URL} =  ${ZOPE_URL}/plone
 ${BROWSER} =  Firefox
 
+${TITLE} =  An actionsmenu page
+${PAGE_ID} =  an-actionsmenu-page
 
 *** Test cases ***
 
-Scenario: Content Menu
-	Given a document  Doc1
-	 Then delete button exists
-      and delete button is not visible
+# ---
+# 
+# ---
+
+Scenario: Action Menu rendered collapsed
+	Given an actionsmenu page
+	 Then delete link exists
+      and delete link should not be visible
+
+Scenario: Clicking expands action menu
+    Given an actionsmenu page
+     When menu link is clicked
+     Then content menu should be visible
+
+Scenario: Clicking again collapses action menu
+    Given an actionsmenu page
+     When menu link is clicked
+      and menu link is clicked
+     Then delete link should not be visible
+
+# ---
+# 
+# ---
 
 
 *** Keywords ***
 
-delete button exists
-     Page Should Contain Element  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
-
-delete button is not visible
-     Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
-
-a document
-    [Arguments]  ${title}
-    Go to  ${PORTAL_URL}/createObject?type_name=Document
-    Input text  name=title  ${title}
-    Click Button  Save
-
 Suite Setup
     Open browser  ${PORTAL_URL}
-    Given a site owner
+    Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
+    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Input text  name=title  ${TITLE}
+    Click Button  Save
 
 Suite Teardown
-    # Close All Browsers
+    Close All Browsers
 
 Log in
     [Arguments]  ${userid}  ${password}
@@ -58,8 +70,21 @@ Log in
     Input text  __ac_password  ${password}
     Click Button  Log in
 
-a site owner
-    Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
+an actionsmenu page
+    Go to  ${PORTAL_URL}/${PAGE_ID}
 
-viewing a page
-    Go to  ${TEST_FOLDER}
+delete link exists
+     Page Should Contain Element  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+
+delete link should not be visible
+     Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+
+menu link is clicked
+    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
+
+delete link should be visible
+    Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+
+content menu should be visible
+    Element Should Be Visible  xpath=//dl[@id='plone-contentmenu-actions']
+
