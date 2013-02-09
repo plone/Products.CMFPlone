@@ -41,7 +41,6 @@ Scenario: Clicking again collapses action menu
     Given an actionsmenu page
      When menu link is clicked
       and menu link is clicked
-     Then delete link should not be visible
 
 # ---
 # Switching Contentactions menu by MouseOver
@@ -69,10 +68,20 @@ Scenario: Clicking outside of Contentactions menu
 # ---
 
 Scenario: Do a workflow change
-    [Tags]  whatwereworkingonrightnow
     Given an actionsmenu page
      When workflow link is clicked
      Then state should have changed
+
+# ---
+# Copy stuff
+# ---
+
+Scenario: 
+    [Tags]  whatwereworkingonrightnow
+    Given an actionsmenu page
+     When i copy the page
+      and i paste
+     Then i should see 'Item(s) pasted.' in the page
 
 *** Keywords ***
 
@@ -139,4 +148,25 @@ workflow link is clicked
 state should have changed
     ${NEW_STATE} =  Get Text  xpath=//span[contains(@class,'state-')]
     Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
+
+Open Menu
+    [Arguments]  ${elementId}
+    Element Should Not Be Visible  css=dl#${elementId} dd.actionMenuContent
+    Click link  css=dl#${elementId} dt.actionMenuHeader a
+    Wait until keyword succeeds  1  5  Element Should Be Visible  css=dl#${elementId} dd.actionMenuContent
+
+Open Action Menu
+    Open Menu  plone-contentmenu-actions
+
+i copy the page
+    Open Action Menu
+    Click Link  link=Copy
+    
+i paste
+    Open Action Menu
+    Click Link  link=Paste
+
+i should see '${message}' in the page
+    Page Should Contain  ${message}
+
     
