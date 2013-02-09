@@ -59,11 +59,20 @@ Scenario: Hovering mouse from expanded menu on other menu shows that menu
 # ---
 
 Scenario: Clicking outside of Contentactions menu
-    [Tags]  whatwereworkingonrightnow
     Given an actionsmenu page
      When first menu link is clicked
       and i click outside of menu
      Then first menu should not be visible
+
+# ---
+# Workflow stuff
+# ---
+
+Scenario: Do a workflow change
+    [Tags]  whatwereworkingonrightnow
+    Given an actionsmenu page
+     When workflow link is clicked
+     Then state should have changed
 
 *** Keywords ***
 
@@ -119,3 +128,15 @@ first menu should not be visible
 
 i click outside of menu
     Mouse Down  xpath=//h1
+
+workflow link is clicked
+    # store current state 
+    ${OLD_STATE} =  Get Text  xpath=//span[contains(@class,'state-')]
+    Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
+    Click Link  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
+    Click Link  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
+
+state should have changed
+    ${NEW_STATE} =  Get Text  xpath=//span[contains(@class,'state-')]
+    Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
+    
