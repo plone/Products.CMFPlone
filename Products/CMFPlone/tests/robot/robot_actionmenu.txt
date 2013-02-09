@@ -54,6 +54,17 @@ Scenario: Hovering mouse from expanded menu on other menu shows that menu
      Then second menu should be visible 
       and first menu should not be visible
 
+# ---
+# Clicking outside of Contentactions menu
+# ---
+
+Scenario: Clicking outside of Contentactions menu
+    [Tags]  whatwereworkingonrightnow
+    Given an actionsmenu page
+     When first menu link is clicked
+      and i click outside of menu
+     Then first menu should not be visible 
+
 *** Keywords ***
 
 Suite Setup
@@ -105,3 +116,6 @@ second menu should be visible
 
 first menu should not be visible
     Element Should Not Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[1]//dd
+
+i click outside of menu
+    Mouse Down  xpath=//h1
