@@ -77,7 +77,6 @@ Scenario: Do a workflow change
 # ---
 
 Scenario: 
-    [Tags]  whatwereworkingonrightnow
     Given an actionsmenu page
      When i copy the page
       and i paste
@@ -93,7 +92,7 @@ Suite Setup
     Click Button  Save
 
 Suite Teardown
-    # Close All Browsers
+    Close All Browsers
 
 Log in
     [Arguments]  ${userid}  ${password}
@@ -168,5 +167,3 @@ i paste
 
 i should see '${message}' in the page
     Page Should Contain  ${message}
-
-    
