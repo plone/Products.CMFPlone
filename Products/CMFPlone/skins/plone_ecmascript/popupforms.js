@@ -93,19 +93,6 @@ jQuery(function($){
         }
     );
 
-    // comment form
-    $('form[name="reply"]').prepOverlay(
-        {
-            subtype: 'ajax',
-            filter: common_content_filter,
-            cssclass: 'overlay-comment',
-            formselector: 'form:has(input[name="discussion_reply:method"])',
-            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
-            redirect: $.plonepopups.redirectbasehref
-        }
-    );
-
-
     // display: select content item / change content item
     $('#contextSetDefaultPage, #folderChangeDefaultPage').prepOverlay(
         {

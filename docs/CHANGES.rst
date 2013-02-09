@@ -21,6 +21,10 @@ Changelog
 - Robot Framework based acceptance tests added.
   [timo]
 
+- Remove comment form overlay which was only used for the old
+  pre-plone.app.discussion reply form.
+  [timo]
+
 
 4.3b2 (2013-01-17)
 ------------------
