@@ -22,18 +22,31 @@ ${BROWSER} =  Firefox
 *** Test cases ***
 
 Scenario: Content Menu
-	Given a site owner
-	 When viewing the homepage
-	 Then Element Should Not Be Visible  css=a#delete
+	Given a document  Doc1
+	 Then delete button exists
+      and delete button is not visible
+
 
 *** Keywords ***
+
+delete button exists
+     Page Should Contain Element  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+
+delete button is not visible
+     Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+
+a document
+    [Arguments]  ${title}
+    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Input text  name=title  ${title}
+    Click Button  Save
 
 Suite Setup
     Open browser  ${PORTAL_URL}
     Given a site owner
 
 Suite Teardown
-    Close All Browsers
+    # Close All Browsers
 
 Log in
     [Arguments]  ${userid}  ${password}
@@ -48,5 +61,5 @@ Log in
 a site owner
     Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
 
-viewing the homepage
-    Go to  ${PORTAL_URL}
+viewing a page
+    Go to  ${TEST_FOLDER}
