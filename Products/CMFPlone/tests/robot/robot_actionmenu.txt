@@ -47,13 +47,12 @@ Scenario: Clicking again collapses action menu
 # Switching Contentactions menu by MouseOver
 # ---
 
-Scenario: Hovering mouse from expanded menu on other menu shows that menu 
-    [Tags]  justnow
+Scenario: Hovering mouse from expanded menu on other menu shows that menu
     Given an actionsmenu page
      When first menu link is clicked
       and mouse moves to second menu
      Then second menu should be visible 
-
+      and first menu should not be visible
 
 *** Keywords ***
 
@@ -93,7 +92,7 @@ delete link should be visible
     Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
 
 actions menu should be visible
-    Element Should Be Visible  xpath=//dl[@id='plone-contentmenu-actions']
+    Element Should Be Visible  xpath=//dl[@id='plone-contentmenu-actions']/dd
 
 first menu link is clicked
     Click Link  xpath=(//div[@class="contentActions"]//dt[contains(@class, 'actionMenuHeader')]/a)[1]
@@ -103,3 +102,6 @@ mouse moves to second menu
 
 second menu should be visible
     Element Should Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[2]
+
+first menu should not be visible
+    Element Should Not Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[1]//dd
