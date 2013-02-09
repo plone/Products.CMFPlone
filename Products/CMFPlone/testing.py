@@ -1,5 +1,4 @@
 from plone.app.testing import TEST_USER_ID
-from plone.app.testing import applyProfile
 from plone.app.testing import login
 from plone.app.testing import setRoles
 import doctest
@@ -35,7 +34,7 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
         setRoles(portal, TEST_USER_ID, ['Manager'])
         portal.invokeFactory(
             "Folder",
-            id="acceptance-test-folder",
+            id="test-folder",
             title=u"Test Folder"
         )
 
