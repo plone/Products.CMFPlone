@@ -38,6 +38,12 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
             title=u"Test Folder"
         )
 
+    def tearDownPloneSite(self, portal):
+        login(portal, 'admin')
+        setRoles(portal, TEST_USER_ID, ['Manager'])
+        portal.manage_delObjects(['test-folder'])
+
+
 PRODUCTS_CMFPLONE_FIXTURE = ProductsCMFPloneLayer()
 
 PRODUCTS_CMFPLONE_INTEGRATION_TESTING = IntegrationTesting(
