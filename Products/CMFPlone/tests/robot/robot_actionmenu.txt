@@ -24,10 +24,10 @@ ${PAGE_ID} =  an-actionsmenu-page
 *** Test cases ***
 
 # ---
-# 
+# Basic Contentactions menu
 # ---
 
-Scenario: Action Menu rendered collapsed
+Scenario: Actions Menu rendered collapsed
 	Given an actionsmenu page
 	 Then delete link exists
       and delete link should not be visible
@@ -35,7 +35,7 @@ Scenario: Action Menu rendered collapsed
 Scenario: Clicking expands action menu
     Given an actionsmenu page
      When menu link is clicked
-     Then content menu should be visible
+     Then actions menu should be visible
 
 Scenario: Clicking again collapses action menu
     Given an actionsmenu page
@@ -44,8 +44,15 @@ Scenario: Clicking again collapses action menu
      Then delete link should not be visible
 
 # ---
-# 
+# Switching Contentactions menu by MouseOver
 # ---
+
+Scenario: Hovering mouse from expanded menu on other menu shows that menu 
+    [Tags]  justnow
+    Given an actionsmenu page
+     When first menu link is clicked
+      and mouse moves to second menu
+     Then second menu should be visible 
 
 
 *** Keywords ***
@@ -58,7 +65,7 @@ Suite Setup
     Click Button  Save
 
 Suite Teardown
-    Close All Browsers
+    # Close All Browsers
 
 Log in
     [Arguments]  ${userid}  ${password}
@@ -85,6 +92,14 @@ menu link is clicked
 delete link should be visible
     Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
 
-content menu should be visible
+actions menu should be visible
     Element Should Be Visible  xpath=//dl[@id='plone-contentmenu-actions']
 
+first menu link is clicked
+    Click Link  xpath=(//div[@class="contentActions"]//dt[contains(@class, 'actionMenuHeader')]/a)[1]
+
+mouse moves to second menu
+    Click Link  xpath=(//div[@class="contentActions"]//dt[contains(@class, 'actionMenuHeader')]/a)[2]
+
+second menu should be visible
+    Element Should Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[2]
