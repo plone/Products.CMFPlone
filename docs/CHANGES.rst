@@ -18,6 +18,9 @@ Changelog
   Backport from 4.2.x
   [do3cc]
 
+- Robot Framework based acceptance tests added.
+  [timo]
+
 
 4.3b2 (2013-01-17)
 ------------------
