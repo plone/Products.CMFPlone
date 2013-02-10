@@ -64,7 +64,7 @@ Scenario: Form dropdowns follows DateTime widget values
 *** Keywords ***
 
 Suite Setup
-    Open browser  ${PORTAL_URL}
+    Open browser  ${PORTAL_URL}  browser=${BROWSER}
     Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
     Go to  ${PORTAL_URL}/createObject?type_name=Document
     Input text  name=title  ${TITLE}
