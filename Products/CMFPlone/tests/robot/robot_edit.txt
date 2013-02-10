@@ -10,11 +10,12 @@ Suite Teardown  Suite Teardown
 
 *** Variables ***
 
-${PORTAL_URL}  http://localhost:55001/plone
-${PORT} =  55001
-${ZOPE_URL} =  http://localhost:${PORT}
+${ZSERVER_PORT} =  55001
+${ZOPE_URL} =  http://localhost:${ZSERVER_PORT}
 ${PLONE_URL} =  ${ZOPE_URL}/plone
 ${BROWSER} =  Firefox
+${REMOTE_URL} =  
+${DESIRED_CAPABILITIES} =  
 
 ${TITLE} =  An edited page
 ${PAGE_ID} =  an-edited-page
@@ -64,9 +65,9 @@ Scenario: Form dropdowns follows DateTime widget values
 *** Keywords ***
 
 Suite Setup
-    Open browser  ${PORTAL_URL}
+    Open browser  ${PLONE_URL}  browser=${BROWSER}
     Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
-    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Go to  ${PLONE_URL}/createObject?type_name=Document
     Input text  name=title  ${TITLE}
     Click Button  Save
 
@@ -75,7 +76,7 @@ Suite Teardown
 
 Log in
     [Arguments]  ${userid}  ${password}
-    Go to  ${PORTAL_URL}/login_form
+    Go to  ${PLONE_URL}/login_form
     Page should contain element  __ac_name
     Page should contain element  __ac_password
     Page should contain button  Log in
@@ -84,7 +85,7 @@ Log in
     Click Button  Log in
 
 an edited page
-    Go to  ${PORTAL_URL}/${PAGE_ID}/edit
+    Go to  ${PLONE_URL}/${PAGE_ID}/edit
 
 i have the title input field
     Element Should Be Visible  xpath=//fieldset[@id='fieldset-default']
@@ -106,7 +107,7 @@ no other tab is shown
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
 
 at least one other item
-    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Go to  ${PLONE_URL}/createObject?type_name=Document
     Input text  name=title  ${TITLE}
     Click Button  Save
 
