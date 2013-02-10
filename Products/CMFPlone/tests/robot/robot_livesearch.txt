@@ -13,10 +13,11 @@ Suite Teardown  Suite Teardown
 
 ${PORT} =  55001
 ${ZOPE_URL} =  http://localhost:${PORT}
-${PORTAL_URL}  ${ZOPE_URL}/plone
-${TEST_FOLDER}  ${PORTAL_URL}/test-folder
+${PLONE_URL} =  ${ZOPE_URL}/plone
+${TEST_FOLDER} =  ${PLONE_URL}/test-folder
 ${BROWSER} =  Firefox
-
+${REMOTE_URL} =
+${DESIRED_CAPABILITIES} =
 
 *** Test cases ***
 
@@ -50,7 +51,7 @@ Scenario: Livesearch in current folder only
 *** Keywords ***
 
 Suite Setup
-    Open browser  ${TEST_FOLDER}
+    Open browser  ${TEST_FOLDER}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
     Given a site owner
 
 Suite Teardown
