@@ -19,10 +19,11 @@ Suite Teardown  Suite Teardown
 
 ${PORT} =  55001
 ${ZOPE_URL} =  http://localhost:${PORT}
-${PORTAL_URL}  ${ZOPE_URL}/plone
-${TEST_FOLDER}  ${PORTAL_URL}/test-folder
+${PLONE_URL}  ${ZOPE_URL}/plone
+${TEST_FOLDER}  ${PLONE_URL}/test-folder
 ${BROWSER} =  Firefox
-
+${REMOTE_URL} =
+${DESIRED_CAPABILITIES} =
 
 *** Test cases ***
 
@@ -190,19 +191,19 @@ Scenario: History overlay closes
 *** Keywords ***
 
 Suite Setup
-    Open browser  ${PORTAL_URL}  browser=${BROWSER}
+    Open browser  ${PLONE_URL}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
 
 Suite Teardown
     Close All Browsers
 
 the site root
-    Go to  ${PORTAL_URL}
+    Go to  ${PLONE_URL}
 
 the test folder
     Go to  ${TEST_FOLDER}
 
 the users and groups configlet
-    Go to  ${PORTAL_URL}/@@usergroup-userprefs
+    Go to  ${PLONE_URL}/@@usergroup-userprefs
 
 I click the '${link_name}' link
     Click Link  ${link_name}
@@ -229,6 +230,7 @@ overlay shows an error
     Wait Until Page Contains  Error
 
 I '${action}' the form
+    Wait until keyword succeeds  2  2  Element Should Be Visible  id=exposeMask
     Click Element  name=form.button.${action}
 
 I enter wrong credentials
@@ -283,4 +285,4 @@ I trigger the '${action}' action menu item of the test folder
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
-    Click Element  xpath=//form[@id='delete_confirmation']//input[@class='destructive']
+    Wait until keyword succeeds  2  2  Click Element  xpath=//form[@id='delete_confirmation']//input[@class='destructive']
