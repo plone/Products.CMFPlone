@@ -10,11 +10,12 @@ Suite Teardown  Suite Teardown
 
 *** Variables ***
 
-${PORTAL_URL}  http://localhost:55001/plone
 ${PORT} =  55001
 ${ZOPE_URL} =  http://localhost:${PORT}
 ${PLONE_URL} =  ${ZOPE_URL}/plone
 ${BROWSER} =  Firefox
+${REMOTE_URL} =  
+${DESIRED_CAPABILITIES} =  
 
 ${TITLE} =  An actionsmenu page
 ${PAGE_ID} =  an-actionsmenu-page
@@ -83,9 +84,9 @@ Scenario:
 *** Keywords ***
 
 Suite Setup
-    Open browser  ${PORTAL_URL}  browser=${BROWSER}
+    Open browser  ${PLONE_URL}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
     Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
-    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Go to  ${PLONE_URL}/createObject?type_name=Document
     Input text  name=title  ${TITLE}
     Click Button  Save
 
@@ -94,7 +95,7 @@ Suite Teardown
 
 Log in
     [Arguments]  ${userid}  ${password}
-    Go to  ${PORTAL_URL}/login_form
+    Go to  ${PLONE_URL}/login_form
     Page should contain element  __ac_name
     Page should contain element  __ac_password
     Page should contain button  Log in
@@ -103,7 +104,7 @@ Log in
     Click Button  Log in
 
 an actionsmenu page
-    Go to  ${PORTAL_URL}/${PAGE_ID}
+    Go to  ${PLONE_URL}/${PAGE_ID}
 
 delete link exists
      Page Should Contain Element  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
