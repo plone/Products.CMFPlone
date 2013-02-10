@@ -190,7 +190,7 @@ Scenario: History overlay closes
 *** Keywords ***
 
 Suite Setup
-    Open browser  ${PORTAL_URL}
+    Open browser  ${PORTAL_URL}  browser=${BROWSER}
 
 Suite Teardown
     Close All Browsers
