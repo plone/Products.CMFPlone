@@ -23,8 +23,14 @@ ${PAGE_ID} =  an-edited-page
 
 Scenario: A page is opened to edit
     Given an edited page
-    Then i have the title input field
-    and i can only see the default tab
+     Then i have the title input field
+      and i can only see the default tab
+
+Scenario: Switch tabs
+    Given an edited page
+     When i click categorization tab
+     Then the categorization tab is shown
+      and no other tab is shown
 
 *** Keywords ***
 
@@ -58,5 +64,16 @@ i can only see the default tab
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-dates']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-categorization']
+
+i click categorization tab
+    Click link  xpath=//a[@id='fieldsetlegend-categorization']
+
+the categorization tab is shown
+    Element Should Be Visible  xpath=//fieldset[@id='fieldset-categorization']
+
+no other tab is shown
+    Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-dates']
+    Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-default']
+    Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
 
 
