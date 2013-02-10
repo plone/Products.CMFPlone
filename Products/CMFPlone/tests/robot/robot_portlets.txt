@@ -11,13 +11,13 @@ Suite Teardown  Suite Teardown
 
 *** Variables ***
 
-${PORTAL_URL}  http://localhost:55001/plone
-${TEST_FOLDER}  http://localhost:55001/plone/acceptance-test-folder
-
-${PORT} =  55001
-${ZOPE_URL} =  http://localhost:${PORT}
+${ZSERVER_PORT} =  55001
+${ZOPE_URL} =  http://localhost:${ZSERVER_PORT}
 ${PLONE_URL} =  ${ZOPE_URL}/plone
+${TEST_FOLDER} =  ${PLONE_URL}/test-folder
 ${BROWSER} =  Firefox
+${REMOTE_URL} =
+${DESIRED_CAPABILITIES} =
 
 
 *** Test cases ***
@@ -37,14 +37,14 @@ Add Calendar Portlet
 *** Keywords ***
 
 Suite Setup
-    Open browser  ${PORTAL_URL}
+    Open browser  ${PLONE_URL}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
     Given a site owner
 
 Suite Teardown
     Close All Browsers
 
 a manage portlets view
-    Go to   ${PORTAL_URL}/@@manage-portlets
+    Go to   ${PLONE_URL}/@@manage-portlets
 
 I add a '${portletname}' portlet to the left column
     Select from list  xpath=//div[@id="portletmanager-plone-leftcolumn"]//select  ${portletname}
