@@ -28,23 +28,38 @@ Scenario: A page is opened to edit
 
 Scenario: Switch tabs
     Given an edited page
-     When i click categorization tab
+     When i click the categorization tab
      Then the categorization tab is shown
       and no other tab is shown
 
 Scenario: Adding a related item
-    [Tags]  doit
     # Order of the next two lines is important
     # First we're creating a new item and then editing the original page
     Given at least one other item
       and an edited page
-     When i click categorization tab
+     When i click the categorization tab
       and i click the add related item button
       and an overlay pops up
       and i select a related item
       and i close the overlay
       and i save the page
      Then the related item is shown in the page
+
+Scenario: DateTime widget follows form dropdowns values
+    Given an edited page
+     When i click the dates tab
+      and i select a date using the dropdowns
+      and i click the calendar icon
+     Then popup calendar should have the same date
+
+Scenario: Form dropdowns follows DateTime widget values
+    Given an edited page
+     When i click the dates tab
+     and i click the calendar icon
+     and i select a date using the widget
+    Then form dropdowns should not have the default values anymore
+
+
 
 *** Keywords ***
 
@@ -79,8 +94,8 @@ i can only see the default tab
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-dates']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-categorization']
 
-i click categorization tab
-    Click link  xpath=//a[@id='fieldsetlegend-categorization']
+i click the ${tabid} tab
+    Click link  xpath=//a[@id='fieldsetlegend-${tabid}']
 
 the categorization tab is shown
     Element Should Be Visible  xpath=//fieldset[@id='fieldset-categorization']
@@ -113,3 +128,33 @@ i save the page
 
 the related item is shown in the page
    Xpath Should Match X Times  //dl[@id = 'relatedItemBox']/dd  1
+
+i select a date using the dropdowns
+    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_year']  2001
+    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_month']  January
+    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_day']  01
+    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_hour']  01
+    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_minute']  00
+    Select From List  xpath=//select[@id='edit_form_effectiveDate_0_ampm']  AM
+
+i click the calendar icon
+
+    Click Element  xpath=//span[@id='edit_form_effectiveDate_0_popup']
+    Element Should Be Visible  xpath=//div[@class='calendar']
+
+popup calendar should have the same date
+    Element Text Should Be  xpath=//div[@class='calendar']//thead//td[@class='title']  January, 2001
+
+i select a date using the widget
+    Mouse Down  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
+    Mouse Up  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
+
+form dropdowns should not have the default values anymore
+    ${yearLabel} =  Get Selected List Label  xpath=//select[@id='edit_form_effectiveDate_0_year']
+    Should Not Be Equal  ${yearLabel}  --
+    ${monthLabel} =  Get Selected List Label  xpath=//select[@id='edit_form_effectiveDate_0_month']
+    Should Not Be Equal  ${monthLabel}  --
+    ${dayLabel} =  Get Selected List Label  xpath=//select[@id='edit_form_effectiveDate_0_day']
+    Should Not Be Equal  ${dayLabel}  --
+
+
