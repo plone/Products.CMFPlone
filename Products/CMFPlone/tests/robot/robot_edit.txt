@@ -32,6 +32,20 @@ Scenario: Switch tabs
      Then the categorization tab is shown
       and no other tab is shown
 
+Scenario: Adding a related item
+    [Tags]  doit
+    # Order of the next two lines is important
+    # First we're creating a new item and then editing the original page
+    Given at least one other item
+      and an edited page
+     When i click categorization tab
+      and i click the add related item button
+      and an overlay pops up
+      and i select a related item
+      and i close the overlay
+      and i save the page
+     Then the related item is shown in the page
+
 *** Keywords ***
 
 Suite Setup
@@ -76,4 +90,26 @@ no other tab is shown
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-default']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
 
+at least one other item
+    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Input text  name=title  ${TITLE}
+    Click Button  Save
 
+i click the add related item button
+    Click Button  xpath=//input[contains(@class, 'addreference')]
+
+an overlay pops up
+    Wait Until Page Contains Element  xpath=//div[contains(@class, 'overlay')]//input[@class='insertreference']
+
+i select a related item
+    Click Element  xpath=//div[contains(@class, 'overlay')]//input[@class='insertreference']
+    Wait until keyword succeeds  10s  1s  Xpath Should Match X Times  //ul[@id = 'ref_browser_items_relatedItems']/descendant::input  1
+
+i close the overlay
+   Click Element  xpath=//div[contains(@class, 'overlay')]//div[@class='close']
+
+i save the page
+   Click Button  Save
+
+the related item is shown in the page
+   Xpath Should Match X Times  //dl[@id = 'relatedItemBox']/dd  1
