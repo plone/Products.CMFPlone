@@ -11,8 +11,6 @@ Suite Teardown  Suite Teardown
 *** Variables ***
 
 ${PORTAL_URL}  http://localhost:55001/plone
-${TEST_FOLDER}  http://localhost:55001/plone/acceptance-test-folder
-
 ${PORT} =  55001
 ${ZOPE_URL} =  http://localhost:${PORT}
 ${PLONE_URL} =  ${ZOPE_URL}/plone
@@ -30,7 +28,7 @@ ${PAGE_ID} =  an-actionsmenu-page
 Scenario: Actions Menu rendered collapsed
 	Given an actionsmenu page
 	 Then delete link exists
-      and delete link should not be visible
+    and delete link should not be visible
 
 Scenario: Clicking expands action menu
     Given an actionsmenu page
@@ -50,7 +48,7 @@ Scenario: Hovering mouse from expanded menu on other menu shows that menu
     Given an actionsmenu page
      When first menu link is clicked
       and mouse moves to second menu
-     Then second menu should be visible 
+     Then second menu should be visible
       and first menu should not be visible
 
 # ---
@@ -76,7 +74,7 @@ Scenario: Do a workflow change
 # Copy stuff
 # ---
 
-Scenario: 
+Scenario:
     Given an actionsmenu page
      When i copy the page
       and i paste
@@ -138,7 +136,7 @@ i click outside of menu
     Mouse Down  xpath=//h1
 
 workflow link is clicked
-    # store current state 
+    # store current state
     ${OLD_STATE} =  Get Text  xpath=//span[contains(@class,'state-')]
     Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
     Click Link  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
@@ -160,7 +158,7 @@ Open Action Menu
 i copy the page
     Open Action Menu
     Click Link  link=Copy
-    
+
 i paste
     Open Action Menu
     Click Link  link=Paste
