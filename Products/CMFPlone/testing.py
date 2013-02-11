@@ -48,15 +48,15 @@ PRODUCTS_CMFPLONE_FIXTURE = ProductsCMFPloneLayer()
 
 PRODUCTS_CMFPLONE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PRODUCTS_CMFPLONE_FIXTURE,),
-    name="PloneAppCollectionLayer:Integration"
+    name="CMFPloneLayer:Integration"
 )
 PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PRODUCTS_CMFPLONE_FIXTURE,),
-    name="PloneAppCollectionLayer:Functional"
+    name="CMFPloneLayer:Functional"
 )
 PRODUCTS_CMFPLONE_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(PRODUCTS_CMFPLONE_FIXTURE, z2.ZSERVER_FIXTURE),
-    name="PloneAppCollectionLayer:Acceptance"
+    name="CMFPloneLayer:Acceptance"
 )
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)

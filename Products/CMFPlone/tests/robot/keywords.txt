@@ -5,22 +5,22 @@
 # ----------------------------------------------------------------------------
 
 a folder '${foldername}' with a document '${documentname}'
-    Go to  ${PORTAL_URL}/createObject?type_name=Folder
+    Go to  ${PLONE_URL}/createObject?type_name=Folder
     Input text  name=title  ${foldername}
     Click Button  Save
-    Go to  ${PORTAL_URL}/folder/edit
+    Go to  ${PLONE_URL}/folder/edit
     Input text  name=title  ${documentname}
     Click Button  Save
 
 a document
     [Arguments]  ${title}
-    Go to  ${PORTAL_URL}/createObject?type_name=Document
+    Go to  ${PLONE_URL}/createObject?type_name=Document
     Input text  name=title  ${title}
     Click Button  Save
 
 a folder
     [Arguments]  ${title}
-    Go to  ${PORTAL_URL}/createObject?type_name=Folder
+    Go to  ${PLONE_URL}/createObject?type_name=Folder
     Input text  name=title  ${title}
     Click Button  Save
 
@@ -35,7 +35,7 @@ there should be '${count}' livesearch results
 
 Log in
     [Arguments]  ${userid}  ${password}
-    Go to  ${PORTAL_URL}/login_form
+    Go to  ${PLONE_URL}/login_form
     Page should contain element  __ac_name
     Page should contain element  __ac_password
     Page should contain button  Log in
@@ -44,7 +44,7 @@ Log in
     Click Button  Log in
 
 Log out
-    Go to  ${PORTAL_URL}/logout
+    Go to  ${PLONE_URL}/logout
     Page should contain  logged out
 
 a test user
