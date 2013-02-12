@@ -12,7 +12,6 @@
       handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
       />
 
- 
   <genericsetup:upgradeStep
       source="2"
       destination="3"
@@ -30,6 +29,5 @@
       handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
       profile="Products.CMFPlone:testfixture"
       />
-
 
 </configure>

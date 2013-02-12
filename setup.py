@@ -31,6 +31,7 @@ setup(name='Products.CMFPlone',
           'Products.PloneTestCase',
           'zope.globalrequest',
           'zope.testing',
+          'plone.app.testing [robot]',
         ]),
       install_requires=[
           'setuptools',
