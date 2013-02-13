@@ -17,7 +17,7 @@ except ValueError, e:
         msg = pmf(str(e))
     except Unauthorized:
         # If we are not allowed to tell the user, what is wrong, he
-        # should get an nerror message and contact the admins
+        # should get an error message and contact the admins
         raise e
     context.plone_utils.addPortalMessage(msg)
     response = context.mail_password_form()
