@@ -14,14 +14,11 @@ try:
     response = context.portal_registration.mailPassword(REQUEST['userid'], REQUEST)
 except ValueError, e:
     try:
-        msg = pmf(e.message)
+        msg = pmf(str(e))
     except Unauthorized:
-        try:
-            msg = pmf(str(e))
-        except Unauthorized:
-            # If we are not allowed to tell the user, what is wrong, he
-            # should get an error message and contact the admins
-            raise e
+        # If we are not allowed to tell the user, what is wrong, he
+        # should get an nerror message and contact the admins
+        raise e
     context.plone_utils.addPortalMessage(msg)
     response = context.mail_password_form()
 return response
