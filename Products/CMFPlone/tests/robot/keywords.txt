@@ -15,18 +15,21 @@ a folder '${foldername}' with a document '${documentname}'
 a collection
     [Arguments]  ${title}
     Go to  ${TEST_FOLDER}/createObject?type_name=Collection
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#title
     Input text  name=title  ${title}
     Click Button  Save
 
 a document
     [Arguments]  ${title}
     Go to  ${TEST_FOLDER}/createObject?type_name=Document
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#title
     Input text  name=title  ${title}
     Click Button  Save
 
 a folder
     [Arguments]  ${title}
     Go to  ${TEST_FOLDER}/createObject?type_name=Folder
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#title
     Input text  name=title  ${title}
     Click Button  Save
 
