@@ -13,12 +13,12 @@ Suite Teardown  Suite Teardown
 
 *** Test cases ***
 
-Add Login Portlet
+Scenario: Add Login Portlet
     Given a manage portlets view
      When I add a 'Login' portlet to the left column
      Then I should see a 'Login' portlet in the left column
 
-Add Calendar Portlet
+Scenario: Add Calendar Portlet
     Given a manage portlets view
      When I add a 'Calendar' portlet to the left column
      Then I should see a 'Calendar' portlet in the left column
