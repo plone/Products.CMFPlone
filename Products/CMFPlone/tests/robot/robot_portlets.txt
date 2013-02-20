@@ -3,31 +3,22 @@
 Library  Selenium2Library  timeout=10  implicit_wait=0.5
 
 Resource  Products/CMFPlone/tests/robot/keywords.txt
+
 Variables  plone/app/testing/interfaces.py
+Variables  Products/CMFPlone/tests/robot/variables.py
 
 Suite Setup  Suite Setup
 Suite Teardown  Suite Teardown
 
 
-*** Variables ***
-
-${ZSERVER_PORT} =  55001
-${ZOPE_URL} =  http://localhost:${ZSERVER_PORT}
-${PLONE_URL} =  ${ZOPE_URL}/plone
-${TEST_FOLDER} =  ${PLONE_URL}/test-folder
-${BROWSER} =  Firefox
-${REMOTE_URL} =
-${DESIRED_CAPABILITIES} =
-
-
 *** Test cases ***
 
-Add Login Portlet
+Scenario: Add Login Portlet
     Given a manage portlets view
      When I add a 'Login' portlet to the left column
      Then I should see a 'Login' portlet in the left column
 
-Add Calendar Portlet
+Scenario: Add Calendar Portlet
     Given a manage portlets view
      When I add a 'Calendar' portlet to the left column
      Then I should see a 'Calendar' portlet in the left column

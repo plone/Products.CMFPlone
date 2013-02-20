@@ -4,21 +4,13 @@ Library  Selenium2Library  timeout=10  implicit_wait=0.5
 Library  Products.CMFPlone.tests.robot.robot_setup.Keywords
 
 Resource  Products/CMFPlone/tests/robot/keywords.txt
+
 Variables  plone/app/testing/interfaces.py
+Variables  Products/CMFPlone/tests/robot/variables.py
 
 Suite Setup  Suite Setup
 Suite Teardown  Suite Teardown
 
-
-*** Variables ***
-
-${ZSERVER_PORT} =  55001
-${ZOPE_URL} =  http://localhost:${ZSERVER_PORT}
-${PLONE_URL} =  ${ZOPE_URL}/plone
-${TEST_FOLDER} =  ${PLONE_URL}/test-folder
-${BROWSER} =  Firefox
-${REMOTE_URL} =
-${DESIRED_CAPABILITIES} =
 
 *** Test cases ***
 
@@ -31,23 +23,24 @@ Scenario: Select All items
       And the informative string appears
       And the clear selection link appears
 
-Scenario: Clear selection
-    Given a site owner
-      And four dummy pages on test folder
-      And the folder contents view
-      And I select all the elements
-     When I clear the selection
-     Then no elements should be selected
+#Scenario: Clear selection
+#    Given a site owner
+#      And four dummy pages on test folder
+#      And the folder contents view
+#      And I select all the elements
+#     When I clear the selection
+#     Then no elements should be selected
 
-# This scenario only works on Firefox. In Chrome fails to do the Mouse Up and
-# Mouse Down correctly.
-Scenario: Reorder Folder Contents
-    Given a site owner
-      And four dummy pages on test folder
-     When the folder contents view
-     Then the order should be 1 > 2 > 3 > 4
-     When I reorder the elements
-     Then the new order should be 4 > 3 > 2 > 1
+# XXX: This scenario only works on Firefox. In Chrome fails to do the Mouse Up
+# and Mouse Down correctly.
+#Scenario: Reorder Folder Contents
+#    Given a site owner
+#      And four dummy pages on test folder
+#     When the folder contents view
+#     Then the order should be 1 > 2 > 3 > 4
+#     When I reorder the elements
+#     Then the new order should be 4 > 3 > 2 > 1
+
 
 *** Keywords ***
 
