@@ -5,8 +5,11 @@
 Changelog
 =========
 
-4.3b3 (unreleased)
-------------------
+4.3rc1 (unreleased)
+-------------------
+
+- bump profile version
+  [vangheem]
 
 - Add event to fix products installed with latest keyword
   activated by default. Event finds new products installed with
