@@ -323,6 +323,11 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         pwrt = getToolByName(self, 'portal_password_reset')
         reset = pwrt.requestReset(new_member_id)
 
+        self._send_registration_email(reset, member, email)
+
+        return self.mail_password_response(self, self.REQUEST)
+
+    def _send_registration_email(self, reset, member, email):
         # Rather than have the template try to use the mailhost, we will
         # render the message ourselves and send it from here (where we
         # don't need to worry about 'UseMailHost' permissions).
@@ -341,8 +346,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         host = getToolByName(self, 'MailHost')
         host.send(mail_text, m_to, m_from, subject=subject, charset=encoding,
                   immediate=True)
-
-        return self.mail_password_response(self, self.REQUEST)
 
 
 RegistrationTool.__doc__ = BaseTool.__doc__
