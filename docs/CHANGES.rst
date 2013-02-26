@@ -8,6 +8,10 @@ Changelog
 4.3rc1 (unreleased)
 -------------------
 
+- Extract RegistrationTool's sending of registration emails so that it can be
+  more easily overridden.
+  [esteele]
+
 - bump profile version
   [vangheem]
 
