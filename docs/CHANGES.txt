@@ -9,7 +9,7 @@ Changelog
 ------------------
 
 - Extract RegistrationTool's sending of registration emails so that
-  it can be more easily overriden. 
+  it can be more easily overridden. 
   [esteele]
   
 - Fix an error during password reset introduced by changes in
