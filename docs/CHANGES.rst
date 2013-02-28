@@ -8,6 +8,9 @@ Changelog
 4.3rc1 (unreleased)
 -------------------
 
+- Allow the Content-Type header to be set in registered_notify_template.pt
+  [esteele]
+
 - Extract RegistrationTool's sending of registration emails so that it can be
   more easily overridden.
   [esteele]

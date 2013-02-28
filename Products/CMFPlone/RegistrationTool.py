@@ -398,9 +398,10 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         subject = message_obj['Subject']
         m_to = message_obj['To']
         m_from = message_obj['From']
+        msg_type = message_obj.get('Content-Type', 'text/plain')
         host = getToolByName(self, 'MailHost')
         host.send(mail_text, m_to, m_from, subject=subject, charset=encoding,
-                  immediate=True)
+                  msg_type=msg_type, immediate=True)
 
         return self.mail_password_response(self, self.REQUEST)
 
