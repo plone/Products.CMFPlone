@@ -92,8 +92,11 @@
 	       <dt tal:repeat="framework view/available_content_frameworks">
               <input type="radio" name="base_contenttypes"
                      tal:attributes="value python:framework[0];
-	               	                   checked python:repeat['framework'].start and 'checked' or ''" />
-                <span i18n:translate="" tal:content="python:framework[1]" />
+	               	                 checked python:repeat['framework'].start and 'checked' or '';
+                  	                 id python:'field-%s' % framework[1].lower()" />
+                <label tal:attributes="for python:'field-%s' % framework[1].lower()"
+                       i18n:translate="" 
+                       tal:content="python:framework[1]" />
            </dt>
 	    </dl>
       </div>
