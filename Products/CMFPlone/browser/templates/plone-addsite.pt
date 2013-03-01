@@ -95,7 +95,7 @@
 	               	                 checked python:repeat['framework'].start and 'checked' or '';
                   	                 id python:'field-%s' % framework[1].lower()" />
                 <label tal:attributes="for python:'field-%s' % framework[1].lower()"
-                       i18n:translate="" 
+                       i18n:translate=""
                        tal:content="python:framework[1]" />
            </dt>
 	    </dl>
