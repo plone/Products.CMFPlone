@@ -13,6 +13,7 @@
   <title i18n:translate="">Create a Plone site</title>
 
   <link rel="stylesheet" type="text/css"
+        tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css"
         href="/++resource++plone-admin-ui.css" />
 
   <script type="text/javascript">
@@ -26,7 +27,8 @@
 </head>
 <body>
 
-  <img src="/++resource++plone-logo.png" width="215" height="56" />
+  <img src="/++resource++plone-logo.png" width="215" height="56"
+    tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png" />
 
   <h1 i18n:translate="">Create a Plone site</h1>
 

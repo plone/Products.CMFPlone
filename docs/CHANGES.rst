@@ -8,6 +8,11 @@ Changelog
 4.3rc1 (unreleased)
 -------------------
 
+- update add site, overview and upgrade templates to use absolute urls
+  to reference css and image resources so it works with virtual hosted
+  sites to sub-folders fixes #11153
+  [vangheem]
+
 - Allow the Content-Type header to be set in registered_notify_template.pt
   [esteele]
 
