@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.4 (unreleased)
+2.3.4 (2013-03-05)
 ------------------
 
 - handle missing feed type so it doesn't throw an error
