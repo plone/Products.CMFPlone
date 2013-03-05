@@ -36,7 +36,7 @@
                  use_view_action site_properties/typesUseViewActionInListings|python:();
                  portal_url context/portal_url;
                  is_advanced_search request/form/advanced_search|nothing;
-                 advanced_search_url string:${context/@@plone_portal_state/navigation_root_url}/search_form;
+                 advanced_search_url string:${context/@@plone_portal_state/navigation_root_url}/@@search;
                  searchterm request/SearchableText|nothing;">
 
     <div id="content-core">
@@ -220,4 +220,3 @@
 </metal:main>
 </body>
 </html>
-
