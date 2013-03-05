@@ -8,6 +8,9 @@ Changelog
 4.3rc1 (unreleased)
 -------------------
 
+- add overlay for folder default page folder factories link
+  [vangheem]
+
 - add sitemap.xml.gz to robots.txt fixes https://dev.plone.org/ticket/13319
   [vangheem]
 
