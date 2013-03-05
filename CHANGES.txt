@@ -4,6 +4,9 @@ Changelog
 2.3.4 (unreleased)
 ------------------
 
+- handle missing feed type so it doesn't throw an error
+  [vangheem]
+
 - handle absense of ACTUAL_URL on request.
   Fixes https://dev.plone.org/ticket/13173
   [vangheem]

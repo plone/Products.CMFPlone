@@ -84,7 +84,10 @@ class RSSViewlet(ViewletBase):
         vocabulary = factory(self.context)
         urls = []
         for typ in settings.feed_types:
-            term = vocabulary.getTerm(typ)
+            try:
+                term = vocabulary.getTerm(typ)
+            except LookupError:
+                continue
             urls.append({
                 'title': '%s - %s' % (
                     obj.Title(), term.title),
