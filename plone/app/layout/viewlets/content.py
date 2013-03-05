@@ -17,6 +17,7 @@ from Products.CMFPlone.utils import log
 
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.viewlets import ViewletBase
+from plone.app.content.browser.interfaces import IFolderContentsView
 
 
 class DocumentActionsViewlet(ViewletBase):
@@ -52,6 +53,8 @@ class DocumentBylineViewlet(ViewletBase):
         if not _checkPermission('CMFEditions: Access previous versions', self.context):
             return False
         if IViewView.providedBy(self.__parent__):
+            return True
+        if IFolderContentsView.providedBy(self.__parent__):
             return True
         return False
 

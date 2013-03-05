@@ -4,7 +4,8 @@ Changelog
 2.3.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Also show history on the folder contents view
+  [vangheem]
 
 
 2.3.3 (2013-01-01)
