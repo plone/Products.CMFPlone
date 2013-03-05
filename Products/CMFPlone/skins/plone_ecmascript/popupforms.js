@@ -145,6 +145,18 @@ jQuery(function($){
         }
     );
 
+    // Add item to folderish default page
+    $('dl#plone-contentmenu-factories a#plone-contentmenu-add-to-default-page').prepOverlay(
+        {
+            subtype: 'ajax',
+            filter: common_content_filter,
+            cssclass: 'overlay-folder-factories',
+            closeselector: '[name="form.button.Cancel"]',
+            width:'40%'
+        }
+    );
+
+
     // registration
     $('#portal-personaltools a[href$="/@@register"]').prepOverlay(
         {
