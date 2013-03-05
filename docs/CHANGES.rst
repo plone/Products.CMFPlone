@@ -8,6 +8,9 @@ Changelog
 4.3rc1 (unreleased)
 -------------------
 
+- add sitemap.xml.gz to robots.txt fixes https://dev.plone.org/ticket/13319
+  [vangheem]
+
 - update add site, overview and upgrade templates to use absolute urls
   to reference css and image resources so it works with virtual hosted
   sites to sub-folders fixes #11153
