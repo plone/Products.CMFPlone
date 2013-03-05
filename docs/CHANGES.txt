@@ -8,13 +8,17 @@ Changelog
 4.2.5 (unreleased)
 ------------------
 
+- Link advanced search form in depraceted search.pt to new @@search,
+  fixes #13451
+  [maartenkling]
+
 - Allow the Content-Type header to be set in registered_notify_template.pt
   [esteele]
 
 - Extract RegistrationTool's sending of registration emails so that
-  it can be more easily overridden. 
+  it can be more easily overridden.
   [esteele]
-  
+
 - Fix an error during password reset introduced by changes in
   PloneHotfix20121106.
   [esteele]
@@ -237,8 +241,8 @@ Changelog
   Fixes http://dev.plone.org/ticket/12877
   [davidjb]
 
-- Add event to fix products installed with latest keyword 
-  activated by default. Event finds new products installed with 
+- Add event to fix products installed with latest keyword
+  activated by default. Event finds new products installed with
   the latest keyword and updates them to the last profile version.
   [eleddy]
 
