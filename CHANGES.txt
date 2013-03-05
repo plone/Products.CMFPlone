@@ -4,6 +4,10 @@ Changelog
 2.3.4 (unreleased)
 ------------------
 
+- handle absense of ACTUAL_URL on request.
+  Fixes https://dev.plone.org/ticket/13173
+  [vangheem]
+
 - Also show history on the folder contents view
   [vangheem]
 

@@ -285,7 +285,11 @@ class ContentViewsViewlet(ViewletBase):
         found_selected = False
         fallback_action = None
 
-        request_url = self.request['ACTUAL_URL']
+        try:
+            request_url = self.request['ACTUAL_URL']
+        except KeyError:
+            # not a real request, could be a test. Let's not fail.
+            request_url = context_url
         request_url_path = request_url[len(context_url):]
 
         if request_url_path.startswith('/'):
