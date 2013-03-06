@@ -29,10 +29,6 @@ class FeedView(BrowserView):
             return self.index()
 
 
-class NewsMLView(FeedView):
-    pass
-
-
 class SearchFeedView(FeedView):
     def feed(self):
         return getAdapter(self.context, ISearchFeed)
