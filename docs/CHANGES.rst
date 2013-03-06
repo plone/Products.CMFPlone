@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3rc1 (unreleased)
+4.3rc1 (2013-03-05)
 -------------------
 
 - add newsml feed type
