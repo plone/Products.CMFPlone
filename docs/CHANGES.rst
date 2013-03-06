@@ -8,6 +8,9 @@ Changelog
 4.3rc1 (unreleased)
 -------------------
 
+- add newsml feed type
+  [vangheem]
+
 - add overlay for folder default page folder factories link
   [vangheem]
 
