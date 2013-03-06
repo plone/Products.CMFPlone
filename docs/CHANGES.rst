@@ -5,6 +5,12 @@
 Changelog
 =========
 
+4.3rc2 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 4.3rc1 (2013-03-05)
 -------------------
 
