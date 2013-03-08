@@ -5,8 +5,8 @@
 Changelog
 =========
 
-4.3rc2 (unreleased)
--------------------
+4.4a1 (unreleased)
+------------------
 
 - Nothing changed yet.
 
