@@ -136,7 +136,7 @@ Changelog
 
 
 4.2.1.1 (2012-08-23)
-------------------
+--------------------
 
 - Fixed i18n of image view improvement introduced in 4.2.1.
   [vincentfretin]
@@ -156,8 +156,10 @@ Changelog
   [thomasdesvenain]
 
 - Improve image view:
-    - Add a download button.
-    - Display View button only if image is a web format (jpeg, png, gif...)
+
+  - Add a download button.
+  - Display View button only if image is a web format (jpeg, png, gif...)
+
   [thomasdesvenain]
 
 - zope.globalrequest is a required dependency on tests.
