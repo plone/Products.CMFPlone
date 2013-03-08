@@ -6,7 +6,7 @@ version = '4.2.6.dev0'
 setup(name='Products.CMFPlone',
       version=version,
       description="The Plone Content Management System (core)",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("docs", "CHANGES.txt")).read(),
       classifiers=[
         "Environment :: Web Environment",
