@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>3.1</version>
+  <version>3.2</version>
   <dependencies>
     <dependency>profile-Products.Archetypes:Archetypes</dependency>
     <dependency>profile-Products.CMFEditions:CMFEditions</dependency>

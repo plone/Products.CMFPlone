@@ -123,6 +123,7 @@ class AddPloneSite(BrowserView):
             'kupu:default',
             'plonetheme.classic:uninstall',
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
+            'plone.app.event:default',
             'plone.app.registry:default',
             'plone.app.z3cform:default',
             'plone.app.collection:default',
