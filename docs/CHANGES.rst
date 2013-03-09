@@ -8,7 +8,9 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Merged PLIP #13270: Move presentation mode out of core.
+  If the feature is still desired, use the plone.app.s5slideshow add-on.
+  [davisagli]
 
 
 4.3rc1 (2013-03-05)
