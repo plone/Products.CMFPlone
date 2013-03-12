@@ -48,9 +48,6 @@
         <tal:comment replace="nothing"> A slot where you can insert CSS in the header from a template </tal:comment>
         <metal:styleslot define-slot="style_slot" />
 
-        <tal:comment replace="nothing"> This is deprecated, please use style_slot instead. </tal:comment>
-        <metal:cssslot define-slot="css_slot" />
-
         <tal:comment replace="nothing"> A slot where you can insert javascript in the header from a template </tal:comment>
         <metal:javascriptslot define-slot="javascript_head_slot" />
     </tal:notajax>
