@@ -84,9 +84,6 @@
                     tal:condition="show_border"
                     tal:content="structure provider:plone.contentviews" />
 
-                <span id="contentTopLeft"></span>
-                <span id="contentTopRight"></span>
-
                 <div metal:use-macro="context/global_statusmessage/macros/portal_message">
                   Portal status message
                 </div>
@@ -138,9 +135,6 @@
                     This slot is here for backwards-compatibility only.
                     Don't copy it in custom templates.
                 </metal:sub>
-
-                <span id="contentBottomLeft"></span>
-                <span id="contentBottomRight"></span>
 
             </div>
           </metal:block>
