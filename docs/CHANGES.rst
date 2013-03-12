@@ -12,6 +12,13 @@ Changelog
   If the feature is still desired, use the plone.app.s5slideshow add-on.
   [davisagli]
 
+- PLIP #13358: Changed table in main_template.pt to div structure
+  - Removed xml:lang on html tag
+  - Changed charset to html5
+  - Removed deprecated css-slot
+  - Removed old-style corner constructs
+  [TH-code]
+
 
 4.3rc1 (2013-03-05)
 -------------------
