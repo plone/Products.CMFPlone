@@ -19,6 +19,16 @@ Changelog
   - Removed old-style corner constructs
   [TH-code]
 
+- Base profile memberdata_properties.xml now includes timezone member
+  property.
+  [seanupton]
+
+- Merged PLIP #10886: plone.app.event.
+  Don't install p.a.event by default, so one can explicitly choose to install
+  the Archetypes profile "plone.app.event.at" or the Dexterity profile 
+  "plone.app.event.dx". PAE integration Cleanup.
+  [thet]
+
 
 4.3rc1 (2013-03-05)
 -------------------
