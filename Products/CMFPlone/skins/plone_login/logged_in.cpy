@@ -30,9 +30,12 @@ if membership_tool.isAnonymousUser():
             'error')
     return state.set(status='failure')
 
+from DateTime import DateTime
 member = membership_tool.getAuthenticatedMember()
 login_time = member.getProperty('login_time', '2000/01/01')
-initial_login = int(str(login_time) == '2000/01/01')
+if not isinstance(login_time, DateTime):
+    login_time = DateTime(login_time)
+initial_login = int(login_time == DateTime('2000/01/01'))
 state.set(initial_login=initial_login)
 
 must_change_password = member.getProperty('must_change_password', 0)
