@@ -57,7 +57,26 @@ class TestLogin(PloneTestCase.PloneTestCase):
         self.portal.logged_in()
         # login_time did change
         member = self.membership.getAuthenticatedMember()
-        self.assertTrue(DateTime(member.getProperty('login_time')) > login_time)
+        self.assertTrue(
+			DateTime(member.getProperty('login_time')) > login_time)
+
+    def testInitialLoginTimeWithString(self):
+        member = self.membership.getAuthenticatedMember()
+        # Realize the login_time is not string but DateTime
+        self.assertIsInstance(member.getProperty('login_time'), DateTime)
+        self.assertEqual(member.getProperty('login_time').Date(), '2000/01/01')
+
+        # Update login_time into string
+        today = DateTime().Date()
+        member.setProperties(login_time=today)
+        self.assertIsInstance(member.getProperty('login_time'), str)
+        self.assertEqual(member.getProperty('login_time'), today)
+
+        # Loggin in set login_time with DateTime
+        self.portal.logged_in()
+        member = self.membership.getAuthenticatedMember()
+        self.assertIsInstance(member.getProperty('login_time'), DateTime)
+        self.assertTrue(member.getProperty('login_time') > DateTime(today))
 
 
 def test_suite():
