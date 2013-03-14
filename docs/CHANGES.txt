@@ -8,8 +8,8 @@ Changelog
 4.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fixed unrecognized first time log in.
+  [taito]
 
 4.2.5 (2013-03-05)
 ------------------
