@@ -6,12 +6,15 @@ Changelog
 =========
 
 4.3rc2 (unreleased)
+--------------------
 
 - Prevent js inline validation call to /at_validate_field for .blurrable
   inputs that do not have AT field data validation attributes. This
   avoids cluttering the error logs with useless at_validate_field
   errors for fields that just happen to have .blurrable class.
   [mcmahon]
+
+- Test for #7627 (https://dev.plone.org/ticket/7627)
 
 4.3rc1 (released)
 -------------------
