@@ -6,14 +6,8 @@ Changelog
 =========
 4.4a1 (unreleased)
 ------------------
-=======
-
->>>>>>> ad8c813... testcase for AT selection fields, this refs  #7627
-
 - Forward port inline validation fix from 4.3rc2.
   [mcmahon]
-
-<<<<<<< HEAD
 - Merged PLIP #13270: Move presentation mode out of core.
   If the feature is still desired, use the plone.app.s5slideshow add-on.
   [davisagli]
@@ -35,10 +29,9 @@ Changelog
   "plone.app.event.dx". PAE integration Cleanup.
   [thet]
 
+- Test for #7627 (https://dev.plone.org/ticket/7627) (backport from 4.3)
+  [kiorky] 
 
-4.3rc2 (unreleased)
---------------------
-- Test for #7627 (https://dev.plone.org/ticket/7627)
 
 4.3rc1 (released)
 -------------------
