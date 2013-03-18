@@ -8,6 +8,9 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Forward port inline validation fix from 4.3rc2.
+  [mcmahon]
+
 - Merged PLIP #13270: Move presentation mode out of core.
   If the feature is still desired, use the plone.app.s5slideshow add-on.
   [davisagli]
@@ -25,7 +28,7 @@ Changelog
 
 - Merged PLIP #10886: plone.app.event.
   Don't install p.a.event by default, so one can explicitly choose to install
-  the Archetypes profile "plone.app.event.at" or the Dexterity profile 
+  the Archetypes profile "plone.app.event.at" or the Dexterity profile
   "plone.app.event.dx". PAE integration Cleanup.
   [thet]
 
