@@ -5,7 +5,15 @@
 Changelog
 =========
 
-4.3rc1 (unreleased)
+4.3rc2 (unreleased)
+
+- Prevent js inline validation call to /at_validate_field for .blurrable
+  inputs that do not have AT field data validation attributes. This
+  avoids cluttering the error logs with useless at_validate_field
+  errors for fields that just happen to have .blurrable class.
+  [mcmahon]
+
+4.3rc1 (released)
 -------------------
 
 - add overlay for folder default page folder factories link
