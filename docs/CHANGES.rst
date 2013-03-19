@@ -8,6 +8,9 @@ Changelog
 4.3rc2 (unreleased)
 --------------------
 
+- Fix rss 2.0 not providing actual link
+  [vangheem]
+
 - Prevent js inline validation call to /at_validate_field for .blurrable
   inputs that do not have AT field data validation attributes. This
   avoids cluttering the error logs with useless at_validate_field
