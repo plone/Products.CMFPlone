@@ -6,8 +6,13 @@ Changelog
 =========
 4.4a1 (unreleased)
 ------------------
+
+- Fix rss 2.0 not providing actual link
+  [vangheem]
+
 - Forward port inline validation fix from 4.3rc2.
   [mcmahon]
+
 - Merged PLIP #13270: Move presentation mode out of core.
   If the feature is still desired, use the plone.app.s5slideshow add-on.
   [davisagli]
