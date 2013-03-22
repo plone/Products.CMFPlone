@@ -7,6 +7,9 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Add indexer for location so metadata is included in catalog
+  [vangheem]
+
 - Fix rss 2.0 not providing actual link
   [vangheem]
 

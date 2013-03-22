@@ -1023,6 +1023,18 @@ class TestIndexers(PloneTestCase.PloneTestCase):
         self.assertTrue(uuid == wrapped.UID)
 
 
+class TestMetadata(PloneTestCase.PloneTestCase):
+    """
+    """
+
+    def testLocationAddedToMetdata(self):
+        self.folder.invokeFactory('Document', 'doc', title='document', location="foobar")
+        doc = self.folder.doc
+        catalog = self.portal.portal_catalog
+        brain = catalog(UID=doc.UID())[0]
+        self.assertEquals(brain.location, doc.getLocation())
+
+
 class TestObjectProvidedIndexExtender(unittest.TestCase):
 
     def _index(self, object):
