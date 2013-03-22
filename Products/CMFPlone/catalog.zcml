@@ -18,5 +18,7 @@
     <adapter factory=".CatalogTool.syndication_enabled"    name="syndication_enabled" />
     <adapter factory=".CatalogTool.is_default_page"        name="is_default_page" />
     <adapter factory=".CatalogTool.getIcon"                name="getIcon" />
+    <adapter factory=".CatalogTool.location"               name="location" />
+
 
 </configure>

@@ -957,6 +957,18 @@ class TestObjectProvidedIndexExtender(unittest.TestCase):
             ('Products.CMFPlone.tests.testCatalogTool.IDummy', ))
 
 
+class TestMetadata(PloneTestCase.PloneTestCase):
+    """
+    """
+
+    def testLocationAddedToMetdata(self):
+        self.folder.invokeFactory('Document', 'doc', title='document', location="foobar")
+        doc = self.folder.doc
+        catalog = self.portal.portal_catalog
+        brain = catalog(UID=doc.UID())[0]
+        self.assertEquals(brain.location, doc.getLocation())
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -971,4 +983,5 @@ def test_suite():
     suite.addTest(makeSuite(TestIndexers))
     suite.addTest(makeSuite(TestCatalogSorting))
     suite.addTest(makeSuite(TestObjectProvidedIndexExtender))
+    suite.addTest(makeSuite(TestMetadata))
     return suite

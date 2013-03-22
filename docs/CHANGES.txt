@@ -8,7 +8,8 @@ Changelog
 4.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add indexer for location so metadata is included in catalog
+  [vangheem]
 
 
 4.2.5 (2013-03-05)
