@@ -8,6 +8,9 @@ Changelog
 4.3rc2 (unreleased)
 --------------------
 
+- Add indexer for location so metadata is included in catalog
+  [vangheem]
+
 - Fix rss 2.0 not providing actual link
   [vangheem]
 
