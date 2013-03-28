@@ -36,7 +36,7 @@ function scanforlinks() {
 
     if (elonw) {
         // all http links (without the link-plain class), not within this site
-        jQuery('a[href^=http]:not(.link-plain):not([href^=' + url + '])')
+        jQuery('a[href^="http"]:not(.link-plain):not([href^="' + url + '"])')
             .attr('target', '_blank');
     }
 
@@ -47,12 +47,12 @@ function scanforlinks() {
       // All links with an http href (without the link-plain class), not within this site,
       // and no img children should be wrapped in a link-external span
       contentarea.find(
-          'a[href^=http]:not(.link-plain):not([href^=' + url + ']):not(:has(img))')
+          'a[href^="http"]:not(.link-plain):not([href^="' + url + '"]):not(:has(img))')
           .wrap('<span></span>').parent().addClass('link-external');
       // All links without an http href (without the link-plain class), not within this site,
       // and no img children should be wrapped in a link-[protocol] span
       contentarea.find(
-          'a[href]:not([href^=http]):not(.link-plain):not([href^=' + url + ']):not(:has(img))')
+          'a[href]:not([href^="http"]):not(.link-plain):not([href^="' + url + '"]):not(:has(img))')
           .each(function() {
               // those without a http link may have another interesting protocol
               // wrap these in a link-[protocol] span

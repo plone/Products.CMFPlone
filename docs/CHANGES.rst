@@ -8,6 +8,9 @@ Changelog
 4.3rc2 (unreleased)
 --------------------
 
+- Fix attribute values in selector expressions of  mark_special_links.js.
+  [mathias.leimgruber]
+
 - Add indexer for location so metadata is included in catalog
   [vangheem]
 
