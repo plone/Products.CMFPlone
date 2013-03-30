@@ -70,7 +70,7 @@ jQuery(function ($) {
             data: {fname: fname, fset: fset},
             iframe: false,
             success: function (data) {
-                if (data !== null && "errmsg" in obj) {
+                if (data !== null && data.hasOwnProperty('errmsg')) {
                     render_error($field, data.errmsg);
                 }
             },
