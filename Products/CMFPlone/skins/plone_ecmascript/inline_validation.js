@@ -70,7 +70,9 @@ jQuery(function ($) {
             data: {fname: fname, fset: fset},
             iframe: false,
             success: function (data) {
-                render_error($field, data.errmsg);
+                if (data !== null && "errmsg" in obj) {
+                    render_error($field, data.errmsg);
+                }
             },
             dataType: 'json'
         });

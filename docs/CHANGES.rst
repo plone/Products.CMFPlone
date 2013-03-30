@@ -7,6 +7,10 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- check json response from z3c.form before attempting to render
+  error message.
+  [gborelli]
+
 - Add indexer for location so metadata is included in catalog
   [vangheem]
 
@@ -38,7 +42,7 @@ Changelog
   [thet]
 
 - Test for #7627 (https://dev.plone.org/ticket/7627) (backport from 4.3)
-  [kiorky] 
+  [kiorky]
 
 
 4.3rc1 (released)
