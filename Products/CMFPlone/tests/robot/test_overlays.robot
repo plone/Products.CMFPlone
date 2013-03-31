@@ -204,7 +204,7 @@ the '${link_name}' overlay
     Click Link  ${link_name}
 
 overlay should open
-    Wait until keyword succeeds  2  2  Element Should Be Visible  id=exposeMask
+    Wait until page contains Element  id=exposeMask
     Element should be visible  css=div.overlay
     Element should be visible  css=div.overlay div.close
 
