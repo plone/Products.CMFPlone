@@ -1,9 +1,11 @@
 *** Settings ***
 
-Library  Selenium2Library  timeout=10  implicit_wait=0.5
-
 Variables  plone/app/testing/interfaces.py
-Variables  Products/CMFPlone/tests/robot/variables.py
+Variables  variables.py
+
+Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
+
+Resource  keywords.txt
 
 Suite Setup  Suite Setup
 Suite Teardown  Suite Teardown
