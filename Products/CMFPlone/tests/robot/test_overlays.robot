@@ -246,6 +246,7 @@ I enter valid register user data
     Input text  form.email          my@email.eu
 
 I send the register form
+    Wait until page contains element  name=form.actions.register
     Click Element  name=form.actions.register
 
 I trigger the add a new user action
