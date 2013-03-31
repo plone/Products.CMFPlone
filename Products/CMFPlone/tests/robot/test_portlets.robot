@@ -24,15 +24,7 @@ Scenario: Add Calendar Portlet
      Then I should see a 'Calendar' portlet in the left column
 
 
-
 *** Keywords ***
-
-Suite Setup
-    Open browser  ${PLONE_URL}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
-    Given a site owner
-
-Suite Teardown
-    Close All Browsers
 
 a manage portlets view
     Go to   ${PLONE_URL}/@@manage-portlets
@@ -52,9 +44,11 @@ when I delete the '${portlet}' portlet from the right column
     Wait until keyword succeeds  1s  10s  Flex Element Should not exist  xpath=//div[@id="portal-column-two"]//div[@class="portletHeader" and contains(.,"${portlet}")]
 
 I should see a '${portletname}' portlet in the left column
+    Wait until page contains  ${portletname}
     Element should contain  portal-column-one  ${portletname}
 
 I should see a '${portletname}' portlet in the right column
+    Wait until page contains  ${portletname}
     Element should contain  portal-column-two  ${portletname}
 
 I should not see '${text}' in the left column
