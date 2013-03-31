@@ -12,7 +12,7 @@ def test_suite():
     robot_dir = os.path.join(current_dir, 'robot')
     robot_tests = [
         os.path.join('robot', doc) for doc in os.listdir(robot_dir)
-        if doc.endswith('.txt') and doc.startswith('robot_')
+        if doc.endswith('.robot') and doc.startswith('test_')
     ]
     for test in robot_tests:
         suite.addTests([
