@@ -1,12 +1,11 @@
 *** Settings ***
 
-Library  Selenium2Library  timeout=10  implicit_wait=0.5
-Library  Products.CMFPlone.tests.robot.robot_setup.Keywords
-
-Resource  Products/CMFPlone/tests/robot/keywords.txt
-
 Variables  plone/app/testing/interfaces.py
-Variables  Products/CMFPlone/tests/robot/variables.py
+Variables  variables.py
+
+Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
+
+Resource  keywords.txt
 
 Suite Setup  Suite Setup
 Suite Teardown  Suite Teardown
@@ -43,12 +42,6 @@ Scenario: Select All items
 
 
 *** Keywords ***
-
-Suite Setup
-    Open browser  ${PLONE_URL}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
-
-Suite Teardown
-    Close All Browsers
 
 the site root
     Go to  ${PLONE_URL}
