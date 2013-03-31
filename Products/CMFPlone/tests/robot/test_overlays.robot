@@ -5,13 +5,13 @@
 
 *** Settings ***
 
-Library  Selenium2Library  timeout=10  implicit_wait=0.5
+Variables  plone/app/testing/interfaces.py
+Variables  variables.py
+
+Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
 Library  Products.CMFPlone.tests.robot.robot_setup.Keywords
 
-Resource  Products/CMFPlone/tests/robot/keywords.txt
-
-Variables  plone/app/testing/interfaces.py
-Variables  Products/CMFPlone/tests/robot/variables.py
+Resource  keywords.txt
 
 Suite Setup  Suite Setup
 Suite Teardown  Suite Teardown
@@ -222,7 +222,7 @@ overlay shows an error
     Wait Until Page Contains  Error
 
 I '${action}' the form
-    Wait until keyword succeeds  2  2  Element Should Be Visible  id=exposeMask
+    Wait until page contains element  id=exposeMask
     Click Element  name=form.button.${action}
 
 I enter wrong credentials
