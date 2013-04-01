@@ -236,12 +236,14 @@ I enter valid credentials
     Click Button  Log in
 
 I enter valid user data
+    Wait until page contains element  name=form.username
     Input text  form.username       myuser
     Input text  form.email          my@email.eu
     Input text  form.password       123123
     Input text  form.password_ctl   123123
 
 I enter valid register user data
+    Wait until page contains element  name=form.username
     Input text  form.username       myuser
     Input text  form.email          my@email.eu
 
