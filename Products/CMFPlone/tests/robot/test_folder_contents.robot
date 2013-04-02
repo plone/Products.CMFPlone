@@ -18,8 +18,8 @@ Scenario: Select All items
       And four dummy pages on test folder
       And the folder contents view
      When I select all the elements
-     Then the four elements got selected
-      And the informative string appears
+     Then the informative string appears
+      And the four elements got selected
       And the clear selection link appears
 
 #Scenario: Clear selection
@@ -78,6 +78,7 @@ the four elements got selected
 the informative string appears
     # The response contained a newline and Selenium was unable to recognize the
     # full message correctly. So we are forced to check for it only partially.
+    Wait until page contains  All 4 items in this folder
     Page Should Contain  All 4 items in this folder
 
 the clear selection link appears
