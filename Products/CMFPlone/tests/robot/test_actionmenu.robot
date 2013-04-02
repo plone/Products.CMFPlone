@@ -141,6 +141,7 @@ workflow link is clicked
     Click Link  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
 
 state should have changed
+    Wait until page contains  Item state changed
     ${NEW_STATE} =  Get Text  xpath=//span[contains(@class,'state-')]
     Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
 
