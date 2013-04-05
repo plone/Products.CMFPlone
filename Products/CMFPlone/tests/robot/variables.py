@@ -13,7 +13,7 @@ ZOPE_HOST = os.environ.get('ZOPE_HOST', "localhost")
 ZOPE_URL = os.environ.get('ZOPE_URL', "http://%s:%s" % (ZOPE_HOST, PORT))
 PLONE_SITE_ID = os.environ.get('PLONE_SITE_ID', PLONE_SITE_ID)
 PLONE_URL = os.environ.get('PLONE_URL', "%s/%s" % (ZOPE_URL, PLONE_SITE_ID))
-BROWSER = os.environ.get('BROWSER', "Chrome")
+BROWSER = os.environ.get('BROWSER', "Firefox")
 REMOTE_URL = os.environ.get('REMOTE_URL', "")
 DESIRED_CAPABILITIES = os.environ.get('DESIRED_CAPABILITIES', "")
 
