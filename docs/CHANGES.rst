@@ -5,8 +5,8 @@
 Changelog
 =========
 
-4.3rc2 (unreleased)
---------------------
+4.3 (2013-04-06)
+----------------
 
 - Fix attribute values in selector expressions of  mark_special_links.js.
   [mathias.leimgruber]
