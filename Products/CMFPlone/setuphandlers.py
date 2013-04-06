@@ -217,7 +217,8 @@ def setupPortalContent(p):
         fp.setText(front_text, mimetype='text/html')
 
         # Show off presentation mode
-        fp.setPresentation(True)
+        if hasattr(fp, 'setPresentation'):
+            fp.setPresentation(True)
 
         # Mark as fully created
         fp.unmarkCreationFlag()

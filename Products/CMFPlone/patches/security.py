@@ -68,6 +68,11 @@ def check_getToolByName(obj, name, default=_marker):
     return result
 """
 from Products.CMFCore import utils
+if '_marker' not in utils.getToolByName.func_globals:
+    raise Exception("This Version of Products.CMFPlone is not compatible "
+                    "with Products.PloneHotfix20121106, the fixes are "
+                    "included already in Products.CMFPlone, please remove "
+                    "the hotfix")
 exec code in utils.getToolByName.func_globals
 utils._getToolByName.func_code = utils.getToolByName.func_code
 utils.getToolByName.func_code = utils.check_getToolByName.func_code

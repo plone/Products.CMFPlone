@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os.path
 
-version = '4.3b3.dev0'
+version = '4.3rc2.dev0'
 
 setup(name='Products.CMFPlone',
       version=version,
@@ -34,6 +34,7 @@ setup(name='Products.CMFPlone',
           'Products.PloneTestCase',
           'zope.globalrequest',
           'zope.testing',
+          'plone.app.testing [robot]',
         ]),
       install_requires=[
           'setuptools',

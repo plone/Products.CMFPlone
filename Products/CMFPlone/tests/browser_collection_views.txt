@@ -1,8 +1,8 @@
 Collection (Topic) views
 ------------------------
 
-Ensure Title, description and text are actually shown at the various views for 
-a Collection - #10226: 
+Ensure Title, description and text are actually shown at the various views for
+a Collection - #10226:
 
 folder_listing (Standard view)
 folder_summary_view (Summary view)
@@ -16,7 +16,7 @@ First create a folder and a demo collection:
     >>> _ = self.portal.invokeFactory('Folder', 'folder')
     >>> folder = self.portal.folder
     >>> folder.setTitle('Folder title')
-    >>> folder.setDescription('Folder description')    
+    >>> folder.setDescription('Folder description')
     >>> _ = folder.invokeFactory('Collection', 'collection')
     >>> collection = folder.collection
     >>> collection_title = 'Title. Lorem ipsum dolor sit amet'
@@ -83,8 +83,8 @@ Lets check the folder_tabular_view (Tabular view):
     True
 
 
-Lets ensure that the text field is not requested on a folder. We 
-are pragmatic here and only test on the default view of a folder 
+Lets ensure that the text field is not requested on a folder. We
+are pragmatic here and only test on the default view of a folder
 - folder_contents:
 
     >>> browser.open('http://nohost/plone/folder')

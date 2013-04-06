@@ -1,3 +1,5 @@
+Sitemap: /sitemap.xml.gz
+
 # Define access-restrictions for robots/spiders
 # http://www.robotstxt.org/wc/norobots.html
 

@@ -13,11 +13,13 @@
   <title i18n:translate="">Logout</title>
 
   <link rel="stylesheet" type="text/css"
-        href="/++resource++plone-admin-ui.css" />
+        href="/++resource++plone-admin-ui.css"
+        tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css" />
 
 </head>
 <body>
-  <img src="/++resource++plone-logo.png" width="215" height="56" />
+  <img src="/++resource++plone-logo.png" width="215" height="56"
+    tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"/>
 
   <h1 i18n:translate="">
       You have been logged out.

@@ -3,7 +3,6 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
 
- 
   <genericsetup:upgradeStep
       source="apples"
       destination="banana"
@@ -21,6 +20,5 @@
       handler="Products.CMFPlone.tests.testQuickInstallerTool.dummy_handler"
       profile="Products.CMFPlone:testfixture"
       />
-
 
 </configure>

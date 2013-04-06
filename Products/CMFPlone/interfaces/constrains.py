@@ -1,6 +1,12 @@
 from zope.interface import Interface
 
 
+ACQUIRE = -1  # acquire locallyAllowedTypes from parent (default)
+DISABLED = 0  # use default behavior of PortalFolder,
+              # which uses the FTI information
+ENABLED = 1  # allow types from locallyAllowedTypes only
+
+
 class IConstrainTypes(Interface):
     """
     Interface for folderish content types supporting restricting addable types

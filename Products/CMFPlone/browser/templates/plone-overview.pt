@@ -13,7 +13,8 @@
   <title>Plone</title>
 
   <link rel="stylesheet" type="text/css"
-        href="/++resource++plone-admin-ui.css" />
+        href="/++resource++plone-admin-ui.css"
+        tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css" />
 
 </head>
 
@@ -21,6 +22,7 @@
 <body tal:define="sites view/sites">
 <div id="box">
     <img src="/++resource++plone-logo.png" width="215" height="56"
+         tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"
          alt="Plone Logo"/>
     <div id="text">
         <h1 i18n:translate="">

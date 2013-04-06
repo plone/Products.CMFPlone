@@ -13,13 +13,15 @@
   <title i18n:translate="">Upgrade this site</title>
 
   <link rel="stylesheet" type="text/css"
-        href="/++resource++plone-admin-ui.css" />
+        href="/++resource++plone-admin-ui.css" 
+        tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css"/>
 
 </head>
 <body id="plone-upgrade-screen"
       tal:define="versions view/versions; report options/report|nothing;">
 
-  <img src="/++resource++plone-logo.png" width="215" height="56" />
+  <img src="/++resource++plone-logo.png" width="215" height="56"
+       tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"/>
 
   <h1 i18n:translate="">
     Upgrade this site
