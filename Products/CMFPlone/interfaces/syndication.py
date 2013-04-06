@@ -179,7 +179,7 @@ class ISiteSyndicationSettings(Interface):
 
     allowed_feed_types = schema.Tuple(
         title=_(u'Allowed Feed Types'),
-        description=_(u'Separate view name and title by "|"'),
+        description=_(u"Separate view name and title by '|'"),
         required=True,
         missing_value=None,
         default=(
