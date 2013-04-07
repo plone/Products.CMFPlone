@@ -8,6 +8,9 @@ Changelog
   the plone.app.s5slideshow add-on.
   [davisagli]
 
+- Add Dexterity support for the related items viewlet.
+  [pabo]
+
 
 2.3.4 (2013-03-05)
 ------------------
