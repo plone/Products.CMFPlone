@@ -18,7 +18,12 @@ from Products.CMFPlone.utils import log
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.layout.viewlets import ViewletBase
 from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.relationfield.behavior import IRelatedItems
+
+try:
+    from plone.app.relationfield.behavior import IRelatedItems
+    has_relationfield_installed = True
+except:
+    pass
 
 
 class DocumentActionsViewlet(ViewletBase):
@@ -150,11 +155,12 @@ class ContentRelatedItems(ViewletBase):
                 res.sort(key=_key)
 
         # Dexterity
-        if IRelatedItems.providedBy(context):
-            related = context.relatedItems
-            if not related:
-                return ()
-            res = [self.rel2brain(rel) for rel in related]
+        if has_relationfield_installed:
+            if IRelatedItems.providedBy(context):
+                related = context.relatedItems
+                if not related:
+                    return ()
+                res = [self.rel2brain(rel) for rel in related]
 
         return res
 
