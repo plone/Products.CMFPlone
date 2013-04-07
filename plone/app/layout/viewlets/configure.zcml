@@ -326,6 +326,16 @@
         permission="zope2.View"
         />
 
+    <!-- Render table of contents for DX -->
+    <browser:viewlet
+        zcml:condition="installed plone.app.contenttypes"
+        name="plone.tableofcontents"
+        for="plone.app.contenttypes.behaviors.tableofcontents.ITableOfContents"
+        manager=".interfaces.IAboveContentBody"
+        class=".common.TableOfContentsViewlet"
+        permission="zope2.View"
+        />
+
     <!-- Footer -->
     <browser:viewlet
         name="plone.footer"

@@ -119,6 +119,10 @@ class TableOfContentsViewlet(ViewletBase):
             except KeyError:
                 # schema not updated yet
                 self.enabled = False
+        # handle dexterity-behavior
+        toc = getattr(obj, 'table_of_contents', None)
+        if toc is not None:
+            self.enabled = toc
 
 
 class SkipLinksViewlet(ViewletBase):
