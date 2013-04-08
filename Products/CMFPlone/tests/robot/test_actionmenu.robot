@@ -56,7 +56,7 @@ Scenario: Hovering mouse from expanded menu on other menu shows that menu
 Scenario: Clicking outside of Contentactions menu
     Given an actionsmenu page
      When first menu link is clicked
-      and i click outside of menu
+      and I click outside of menu
      Then first menu should not be visible
 
 # ---
@@ -74,9 +74,9 @@ Scenario: Do a workflow change
 
 Scenario:
     Given an actionsmenu page
-     When i copy the page
-      and i paste
-     Then i should see 'Item(s) pasted.' in the page
+     When I copy the page
+      and I paste
+     Then I should see 'Item(s) pasted.' in the page
 
 *** Keywords ***
 
@@ -130,7 +130,7 @@ second menu should be visible
 first menu should not be visible
     Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[1]//dd
 
-i click outside of menu
+I click outside of menu
     Mouse Down  xpath=//h1
 
 workflow link is clicked
@@ -154,13 +154,14 @@ Open Menu
 Open Action Menu
     Open Menu  plone-contentmenu-actions
 
-i copy the page
+I copy the page
     Open Action Menu
     Click Link  link=Copy
 
-i paste
+I paste
     Open Action Menu
     Click Link  link=Paste
 
-i should see '${message}' in the page
-    Page Should Contain  ${message}
+I should see '${message}' in the page
+    Wait until page contains  ${message}
+    Page should contain  ${message}
