@@ -232,6 +232,7 @@ I enter wrong credentials
     Click Button  Log in
 
 I enter valid credentials
+    Wait until page contains element  name=__ac_name
     Input text  __ac_name  ${SITE_OWNER_NAME}
     Input text  __ac_password  ${SITE_OWNER_PASSWORD}
     Click Button  Log in
