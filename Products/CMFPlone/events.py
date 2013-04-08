@@ -21,7 +21,10 @@ def profileImportedEventHandler(event):
     When a profile is imported with the keyword "latest", it needs to
     be reconfigured with the actual number.
     """
-    profile_id = event.profile_id.replace('profile-', '')
+    profile_id = event.profile_id
+    if profile_id is None:
+        return
+    profile_id = profile_id.replace('profile-', '')
     gs = event.tool
     qi = getToolByName(gs, 'portal_quickinstaller', None)
     if qi is None:
