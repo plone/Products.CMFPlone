@@ -202,6 +202,7 @@ I click the '${link_name}' link
 
 the '${link_name}' overlay
     Click Link  ${link_name}
+    Wait until page contains Element  id=exposeMask
 
 overlay should open
     Wait until page contains Element  id=exposeMask
