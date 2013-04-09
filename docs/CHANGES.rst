@@ -38,7 +38,15 @@ Changelog
   [thet]
 
 - Test for #7627 (https://dev.plone.org/ticket/7627) (backport from 4.3)
-  [kiorky] 
+  [kiorky]
+
+
+4.3rc2 (unreleased)
+-------------------
+
+- Applied petschki's patch which fixes javascript error on enabled
+  'mark special links' option, fixes #12440
+  [saily]
 
 
 4.3rc1 (released)
