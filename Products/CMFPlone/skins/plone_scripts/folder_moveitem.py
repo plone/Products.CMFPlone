@@ -21,4 +21,5 @@ except ValueError as e:
     return str(e)
 
 context.plone_utils.reindexOnReorder(context)
+context.portal_catalog.reindexIndex(['getObjPositionInParent'], None)
 return "<done />"
