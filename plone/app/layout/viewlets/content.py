@@ -23,7 +23,7 @@ try:
     from plone.app.relationfield.behavior import IRelatedItems
     has_relationfield_installed = True
 except:
-    pass
+    has_relationfield_installed = False
 
 
 class DocumentActionsViewlet(ViewletBase):
