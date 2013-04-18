@@ -13,8 +13,10 @@ class CommentsViewlet(ViewletBase):
 
     def update(self):
         super(CommentsViewlet, self).update()
-        self.portal_discussion = getToolByName(self.context, 'portal_discussion', None)
-        self.portal_membership = getToolByName(self.context, 'portal_membership', None)
+        self.portal_discussion = getToolByName(
+            self.context, 'portal_discussion', None)
+        self.portal_membership = getToolByName(
+            self.context, 'portal_membership', None)
 
     def can_reply(self):
         return getSecurityManager().checkPermission('Reply to item', aq_inner(self.context))
@@ -41,7 +43,7 @@ class CommentsViewlet(ViewletBase):
             if len(rs) > 0:
                 rs.sort(lambda x, y: cmp(x.modified(), y.modified()))
                 for r in rs:
-                    replies.append({'depth':counter, 'object':r})
+                    replies.append({'depth': counter, 'object': r})
                     getRs(r, replies, counter=counter + 1)
 
         try:

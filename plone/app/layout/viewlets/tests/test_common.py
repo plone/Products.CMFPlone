@@ -59,7 +59,8 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url()
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
-        self.assertEqual(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEqual(0, len([t for t in tabs if t[
+                         'id'] == 'folderContents']))
         self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
 
     def testPrepareObjectTabsNonStructuralFolder(self):
@@ -70,16 +71,19 @@ class TestContentViewsViewlet(ViewletsTestCase):
         view = ContentViewsViewlet(self.folder, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
         noLongerProvides(self.folder, INonStructuralFolder)
-        self.assertEqual(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEqual(0, len([t for t in tabs if t[
+                         'id'] == 'folderContents']))
         self.assertEqual(['view'], [t['id'] for t in tabs if t['selected']])
 
     def testPrepareObjectTabsDefaultView(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.test.absolute_url() + '/edit'
+        self.app.REQUEST[
+            'ACTUAL_URL'] = self.folder.test.absolute_url() + '/edit'
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
-        self.assertEqual(0, len([t for t in tabs if t['id'] == 'folderContents']))
+        self.assertEqual(0, len([t for t in tabs if t[
+                         'id'] == 'folderContents']))
         self.assertEqual(['edit'], [t['id'] for t in tabs if t['selected']])
 
     def testTitleViewlet(self):
@@ -122,6 +126,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         viewlet.update()
         self.assertEqual(viewlet.navigation_root_title, "Folder")
         self.assertTrue("http://nohost/plone/logo.png" in viewlet.logo_tag)
+
 
 def test_suite():
     from unittest import defaultTestLoader

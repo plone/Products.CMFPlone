@@ -76,7 +76,8 @@ class DocumentBylineViewlet(ViewletBase):
             locked = lock_info.is_locked()
         else:
             context = aq_inner(self.context)
-            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
+            lockable = getattr(
+                context.aq_explicit, 'wl_isLocked', None) is not None
             locked = lockable and context.wl_isLocked()
 
         if not locked:
@@ -102,7 +103,7 @@ class DocumentBylineViewlet(ViewletBase):
             return self.context.expires().isPast()
         return False
 
-    def toLocalizedTime(self, time, long_format=None, time_only = None):
+    def toLocalizedTime(self, time, long_format=None, time_only=None):
         """Convert time to localized time
         """
         util = getToolByName(self.context, 'translation_service')
@@ -128,6 +129,7 @@ class DocumentBylineViewlet(ViewletBase):
             return None
 
         return DateTime(date)
+
 
 class ContentRelatedItems(ViewletBase):
 
@@ -182,7 +184,7 @@ class WorkflowHistoryViewlet(ViewletBase):
         context = aq_inner(self.context)
         # check if the current user has the proper permissions
         if not (_checkPermission('Request review', context) or
-            _checkPermission('Review portal content', context)):
+                _checkPermission('Review portal content', context)):
             return []
 
         workflow = getToolByName(context, 'portal_workflow')
@@ -218,7 +220,8 @@ class WorkflowHistoryViewlet(ViewletBase):
                 else:
                     r['actor'] = membership.getMemberInfo(actorid)
                     if r['actor'] is not None:
-                        r['actor_home'] = self.navigation_root_url + '/author/' + actorid
+                        r['actor_home'] = self.navigation_root_url + \
+                            '/author/' + actorid
                     else:
                         # member info is not available
                         # the user was probably deleted
@@ -240,13 +243,13 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
     @memoize
     def getUserInfo(self, userid):
         mt = getToolByName(self.context, 'portal_membership')
-        info=mt.getMemberInfo(userid)
+        info = mt.getMemberInfo(userid)
         if info is None:
             return dict(actor_home="",
                         actor=dict(fullname=userid))
 
         if not info.get("fullname", None):
-            info["fullname"]=userid
+            info["fullname"] = userid
 
         return dict(actor=info,
                     actor_home="%s/author/%s" % (self.site_url, userid))
@@ -261,7 +264,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
             return []
 
         context_url = context.absolute_url()
-        history=rt.getHistoryMetadata(context);
+        history = rt.getHistoryMetadata(context)
         portal_diff = getToolByName(context, "portal_diff", None)
         can_diff = portal_diff is not None \
             and len(portal_diff.getDiffForPortalType(context.portal_type)) > 0
@@ -269,24 +272,24 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         def morphVersionDataToHistoryFormat(vdata, version_id):
             meta = vdata["metadata"]["sys_metadata"]
             userid = meta["principal"]
-            info=dict(type='versioning',
-                      action=_(u"Edited"),
-                      transition_title=_(u"Edited"),
-                      actorid=userid,
-                      time=meta["timestamp"],
-                      comments=meta['comment'],
-                      version_id=version_id,
-                      preview_url="%s/versions_history_form?version_id=%s#version_preview" %
-                                  (context_url, version_id),
-                      revert_url="%s/revertversion" % context_url,
-                      )
+            info = dict(type='versioning',
+                        action=_(u"Edited"),
+                        transition_title=_(u"Edited"),
+                        actorid=userid,
+                        time=meta["timestamp"],
+                        comments=meta['comment'],
+                        version_id=version_id,
+                        preview_url="%s/versions_history_form?version_id=%s#version_preview" %
+                       (context_url, version_id),
+                        revert_url="%s/revertversion" % context_url,
+                        )
             if can_diff:
-                if version_id>0:
-                    info["diff_previous_url"]=("%s/@@history?one=%s&two=%s" %
-                            (context_url, version_id, version_id-1))
+                if version_id > 0:
+                    info["diff_previous_url"] = ("%s/@@history?one=%s&two=%s" %
+                                                (context_url, version_id, version_id-1))
                 if not rt.isUpToDate(context, version_id):
-                    info["diff_current_url"]=("%s/@@history?one=current&two=%s" %
-                                              (context_url, version_id))
+                    info["diff_current_url"] = ("%s/@@history?one=current&two=%s" %
+                                               (context_url, version_id))
             info.update(self.getUserInfo(userid))
             return info
 
@@ -317,7 +320,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         """
         util = getToolByName(self.context, 'translation_service')
         return util.ulocalized_time(time, long_format, time_only, self.context,
-                                        domain='plonelocales')
+                                    domain='plonelocales')
 
 
 class ContentHistoryView(ContentHistoryViewlet):

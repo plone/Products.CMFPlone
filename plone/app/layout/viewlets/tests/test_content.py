@@ -43,13 +43,13 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
         lockIconUrl = '<img src="http://nohost/plone/lock_icon.png" alt="" \
 title="Locked" height="16" width="16" />'
         self.assertEqual(viewlet.locked_icon(), lockIconUrl)
-    
+
     def test_pub_date(self):
         request = self.app.REQUEST
         self.login('Alan')
         self.portal.invokeFactory('Document', 'd1')
         context = getattr(self.portal, 'd1')
-        
+
         # configure our portal to enable publication date on pages globally on
         # the site
         properties = getToolByName(context, 'portal_properties')
@@ -59,7 +59,7 @@ title="Locked" height="16" width="16" />'
         self.login('Ano')
         viewlet = DocumentBylineViewlet(context, request, None, None)
         viewlet.update()
-        
+
         # publication date should be None as there is not Effective date set for
         # our document yet
         self.assertEqual(viewlet.pub_date(), None)
@@ -68,11 +68,12 @@ title="Locked" height="16" width="16" />'
         effective = DateTime()
         context.setEffectiveDate(effective)
         self.assertEqual(viewlet.pub_date(), DateTime(effective.ISO8601()))
-        
+
         # now switch off publication date globally on the site and see if
         # viewlet returns None for publication date
         site_properties.displayPublicationDateInByline = False
         self.assertEqual(viewlet.pub_date(), None)
+
 
 class TestRelatedItemsViewlet(ViewletsTestCase):
 
@@ -87,7 +88,8 @@ class TestRelatedItemsViewlet(ViewletsTestCase):
         viewlet = ContentRelatedItems(self.folder.doc1, request, None, None)
         viewlet.update()
         related = viewlet.related_items()
-        self.assertEqual([x.Title for x in related], ['Document 2', 'Document 3'])
+        self.assertEqual([x.Title for x in related], [
+                         'Document 2', 'Document 3'])
 
 
 def test_suite():

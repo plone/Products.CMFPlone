@@ -15,17 +15,20 @@ class TestCommentsViewletView(ViewletsTestCase):
         self.logout()
 
     def _comment_login_url(self):
-        viewlet = CommentsViewlet(self.portal.document, self.app.REQUEST, None, None)
+        viewlet = CommentsViewlet(
+            self.portal.document, self.app.REQUEST, None, None)
         viewlet.update()
         return viewlet.login_url()
 
     def test_existent_login_url(self):
         """Make sure login_url() works when there is a login action defined."""
-        self.assertEqual(self._comment_login_url(), 'http://nohost/plone/login')
+        self.assertEqual(
+            self._comment_login_url(), 'http://nohost/plone/login')
 
     def test_anonexistent_login_url(self):
         """Make sure login_url() works when there is no login action defined."""
-        getToolByName(self.portal.document, 'portal_actions').user.manage_delObjects(['login'])
+        getToolByName(self.portal.document,
+                      'portal_actions').user.manage_delObjects(['login'])
         self.assertEqual(self._comment_login_url(), None)
 
     def test_time_render(self):
@@ -33,7 +36,8 @@ class TestCommentsViewletView(ViewletsTestCase):
         context = self.portal.document
         dtool = getToolByName(context, 'portal_discussion')
         tb = dtool.getDiscussionFor(context)
-        reply_id = tb.createReply(title='Subject', text='Reply text', Creator='tester')
+        reply_id = tb.createReply(
+            title='Subject', text='Reply text', Creator='tester')
 
         viewlet = CommentsViewlet(context, request, None, None)
         viewlet.update()
@@ -43,10 +47,12 @@ class TestCommentsViewletView(ViewletsTestCase):
     def test_viewing_uncommented_item_doesnt_create_talkback(self):
         # make sure we avoid creating unnecessary persistent talkbacks
         self.assertFalse(hasattr(self.portal.document, 'talkback'))
-        viewlet = CommentsViewlet(self.portal.document, self.app.REQUEST, None, None)
+        viewlet = CommentsViewlet(
+            self.portal.document, self.app.REQUEST, None, None)
         viewlet.update()
         viewlet.render()
         self.assertFalse(hasattr(self.portal.document, 'talkback'))
+
 
 def test_suite():
     from unittest import defaultTestLoader
