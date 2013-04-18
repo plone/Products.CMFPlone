@@ -8,7 +8,8 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add id for image details
+  [cedricmessiant]
 
 
 4.3 (2013-04-06)
