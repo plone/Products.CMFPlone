@@ -1,6 +1,7 @@
 from Products.Five.browser import BrowserView
 from zope.component import getMultiAdapter
 
+
 class UserActionsView(BrowserView):
     """Power the useraction fallback page
     """

@@ -22,7 +22,7 @@ class DashboardView(BrowserView):
     @memoize
     def empty(self):
         dashboards = [getUtility(IPortletManager, name=name) for name in
-                        ['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4']]
+                      ['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4']]
 
         portal_membership = getToolByName(self.context, 'portal_membership')
         member = portal_membership.getAuthenticatedMember()
@@ -30,7 +30,9 @@ class DashboardView(BrowserView):
 
         num_portlets = 0
         for dashboard in dashboards:
-            num_portlets += len(dashboard.get(USER_CATEGORY, {}).get(userid, {}))
+            num_portlets += len(dashboard.get(
+                USER_CATEGORY, {}).get(userid, {}))
             for groupid in member.getGroups():
-                num_portlets += len(dashboard.get(GROUP_CATEGORY, {}).get(groupid, {}))
+                num_portlets += len(dashboard.get(
+                    GROUP_CATEGORY, {}).get(groupid, {}))
         return num_portlets == 0

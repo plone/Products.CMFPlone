@@ -156,11 +156,13 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
                 navtreeLevel = pathQuery.get('navtree_start', 1)
                 if navtreeLevel > 1:
                     navtreeContextPath = pathQuery['query']
-                    navtreeContextPathElements = navtreeContextPath[len(portalPath)+1:].split('/')
+                    navtreeContextPathElements = navtreeContextPath[
+                        len(portalPath)+1:].split('/')
                     # Short-circuit if we won't be able to find this path
                     if len(navtreeContextPathElements) < (navtreeLevel - 1):
                         return {'children': []}
-                    rootPath = portalPath + '/' + '/'.join(navtreeContextPathElements[:navtreeLevel-1])
+                    rootPath = portalPath + '/' + '/'.join(
+                        navtreeContextPathElements[:navtreeLevel-1])
                 else:
                     rootPath = portalPath
             else:
@@ -213,7 +215,8 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
         block the insertion of a node.
         """
         itemPath = item.getPath()
-        itemInserted = (itemPaths.get(itemPath, {}).get('item', None) is not None)
+        itemInserted = (itemPaths.get(
+            itemPath, {}).get('item', None) is not None)
 
         # Short-circuit if we already added this item. Don't short-circuit
         # if we're forcing the insert, because we may have inserted but
@@ -223,7 +226,8 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
 
         itemPhysicalPath = itemPath.split('/')
         parentPath = '/'.join(itemPhysicalPath[:-1])
-        parentPruned = (itemPaths.get(parentPath, {}).get('_pruneSubtree', False))
+        parentPruned = (itemPaths.get(
+            parentPath, {}).get('_pruneSubtree', False))
 
         # Short-circuit if we know we're pruning this item's parent
 
@@ -279,9 +283,11 @@ def buildFolderTree(context, obj=None, query={}, strategy=NavtreeStrategyBase())
             else:
                 itemPaths[parentPath] = {'children': [newNode]}
 
-            # Ask the subtree filter (if any), if we should be expanding this node
+            # Ask the subtree filter (if any), if we should be expanding this
+            # node
             if strategy.showAllParents and isCurrentParent:
-                # If we will be expanding this later, we can't prune off children now
+                # If we will be expanding this later, we can't prune off
+                # children now
                 expand = True
             else:
                 expand = getattr(item, 'is_folderish', True)

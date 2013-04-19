@@ -27,7 +27,8 @@ class BaseIcon(object):
         if not self.url:
             return None
 
-        tag = '<img width="%s" height="%s" src="%s"' % (self.width, self.height, self.url)
+        tag = '<img width="%s" height="%s" src="%s"' % (
+            self.width, self.height, self.url)
         if self.title:
             tag += ' title="%s"' % self.title
         if self.description:
@@ -78,7 +79,7 @@ class CatalogBrainContentIcon(BaseIcon):
         extlength = 0
         for extension in extensions_mimetype.keys():
             if id.endswith(extension):
-                #keep the longest extension
+                # keep the longest extension
                 if len(extension) > extlength:
                     mimetype = extensions_mimetype[extension]
                     extlength = len(extension)
@@ -98,6 +99,7 @@ class CatalogBrainContentIcon(BaseIcon):
                 extensions[extension] = mimetype.name()
 
         return extensions
+
 
 class CMFContentIcon(BaseIcon):
     implements(IContentIcon)
@@ -177,7 +179,7 @@ class PloneSiteContentIcon(BaseIcon):
     def url(self):
         portal_url = getToolByName(self.context, 'portal_url')()
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         if portal_state.is_rtl():
             return "%s/rtl-site_icon.png" % portal_url
         else:

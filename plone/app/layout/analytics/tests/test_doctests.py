@@ -11,4 +11,4 @@ def test_suite():
             'tests/analytics.txt', package='plone.app.layout.analytics',
             test_class=base.AnalyticsFunctionalTestCase,
             optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
-        ))
+    ))

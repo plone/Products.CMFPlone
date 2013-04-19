@@ -64,7 +64,8 @@ class AuthorViewlet(ViewletBase):
         properties = self.tools.properties()
         site_properties = getattr(properties, 'site_properties')
         anonymous = self.portal_state.anonymous()
-        allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)
+        allowAnonymousViewAbout = site_properties.getProperty(
+            'allowAnonymousViewAbout', True)
         return not anonymous or allowAnonymousViewAbout
 
     def render(self):
@@ -80,7 +81,7 @@ class RSSViewlet(ViewletBase):
         if settings is None:
             return []
         factory = getUtility(IVocabularyFactory,
-            "plone.app.vocabularies.SyndicationFeedTypes")
+                             "plone.app.vocabularies.SyndicationFeedTypes")
         vocabulary = factory(self.context)
         urls = []
         for typ in settings.feed_types:

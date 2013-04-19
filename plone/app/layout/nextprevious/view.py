@@ -36,7 +36,8 @@ class NextPreviousView(BrowserView):
         return INextPreviousProvider(aq_parent(aq_inner(self.context)), None)
 
     def isViewTemplate(self):
-        plone = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
+        plone = getMultiAdapter((
+            self.context, self.request), name=u'plone_context_state')
         return plone.is_view_template()
 
 

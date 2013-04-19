@@ -1,8 +1,10 @@
 from zope.interface import Interface, Attribute
 
+
 class INavigationRoot(Interface):
     """A marker interface for signaling the navigation root.
     """
+
 
 class IDefaultPage(Interface):
     """Interface for a view that can determine if its context is the
@@ -18,6 +20,7 @@ class IDefaultPage(Interface):
         """Returns the id of the default page for the adapted object.
         """
 
+
 class INavigationQueryBuilder(Interface):
     """An object which returns a catalog query when called, used to
     construct a navigation tree.
@@ -28,14 +31,17 @@ class INavigationQueryBuilder(Interface):
            navigation structure.
         """
 
+
 class INavtreeStrategy(Interface):
     """An object that is used by buildFolderTree() to determine how to
     construct a navigation tree.
     """
 
-    rootPath = Attribute("The path to the root of the navtree (None means use portal root)")
+    rootPath = Attribute(
+        "The path to the root of the navtree (None means use portal root)")
 
-    showAllParents = Attribute("Whether or not to show all parents of the current context always")
+    showAllParents = Attribute(
+        "Whether or not to show all parents of the current context always")
 
     def nodeFilter(node):
         """Return True or False to determine whether to include the given node
