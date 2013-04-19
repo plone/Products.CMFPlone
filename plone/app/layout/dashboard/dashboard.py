@@ -17,12 +17,22 @@ class DashboardView(BrowserView):
 
     @memoize
     def can_edit(self):
-        return bool(getSecurityManager().checkPermission('Portlets: Manage own portlets', self.context))
+        return bool(getSecurityManager().checkPermission(
+            'Portlets: Manage own portlets',
+            self.context
+        ))
 
     @memoize
     def empty(self):
-        dashboards = [getUtility(IPortletManager, name=name) for name in
-                      ['plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4']]
+        dashboards = [
+            getUtility(IPortletManager, name=name) for name in
+            [
+                'plone.dashboard1',
+                'plone.dashboard2',
+                'plone.dashboard3',
+                'plone.dashboard4'
+            ]
+        ]
 
         portal_membership = getToolByName(self.context, 'portal_membership')
         member = portal_membership.getAuthenticatedMember()

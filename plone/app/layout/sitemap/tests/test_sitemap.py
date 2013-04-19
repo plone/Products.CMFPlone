@@ -124,8 +124,8 @@ class SiteMapTestCase(PloneTestCase):
 
     def test_changed_catalog(self):
         '''
-        The sitemap is generated from the catalog. If the catalog changes, a new
-        sitemap has to be generated.
+        The sitemap is generated from the catalog. If the catalog changes, a
+        new sitemap has to be generated.
         '''
 
         xml = self.uncompress(self.sitemap())
