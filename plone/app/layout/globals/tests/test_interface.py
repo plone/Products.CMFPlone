@@ -23,7 +23,8 @@ class NotAnInterface(object):
 def test_interface_view(self):
     """Information about the interfaces of an object
 
-    >>> from zope.interface import Interface, implements, directlyProvides, classProvides
+    >>> from zope.interface import Interface, implements
+    >>> from zope.interface import directlyProvides, classProvides
     >>> from zope.component import provideAdapter, getMultiAdapter
     >>> from zope.publisher.interfaces.browser import IBrowserRequest
     >>> from zope.publisher.browser import TestRequest
@@ -39,7 +40,11 @@ def test_interface_view(self):
     ...     classProvides(ITwo)
 
     >>> from plone.app.layout.globals.interface import InterfaceInformation
-    >>> provideAdapter(InterfaceInformation, (Interface, IBrowserRequest), Interface, u'plone_interface_info')
+    >>> provideAdapter(
+    ...    InterfaceInformation,
+    ...    (Interface, IBrowserRequest),
+    ...    Interface, u'plone_interface_info'
+    ... )
 
     >>> obj = One()
     >>> request = TestRequest()
@@ -51,19 +56,25 @@ def test_interface_view(self):
     True
     >>> view.provides('plone.app.layout.globals.tests.test_interface.ITwo')
     False
-    >>> view.provides('plone.app.layout.globals.tests.test_interface.NotAnInterface')
+    >>> view.provides(
+    ...     'plone.app.layout.globals.tests.test_interface.NotAnInterface')
     Traceback (most recent call last):
     ...
-    ValueError: 'plone.app.layout.globals.tests.test_interface.NotAnInterface' is not a valid Interface.
+    ValueError: 'plone.app.layout.globals.tests.test_interface.NotAnInterface'
+    is not a valid Interface.
 
-    >>> view.class_provides('plone.app.layout.globals.tests.test_interface.IOne')
+    >>> view.class_provides(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne')
     False
-    >>> view.class_provides('plone.app.layout.globals.tests.test_interface.ITwo')
+    >>> view.class_provides(
+    ...     'plone.app.layout.globals.tests.test_interface.ITwo')
     True
-    >>> view.class_provides('plone.app.layout.globals.tests.test_interface.NotAnInterface')
+    >>> view.class_provides(
+    ...     'plone.app.layout.globals.tests.test_interface.NotAnInterface')
     Traceback (most recent call last):
     ...
-    ValueError: 'plone.app.layout.globals.tests.test_interface.NotAnInterface' is not a valid Interface.
+    ValueError: 'plone.app.layout.globals.tests.test_interface.NotAnInterface'
+    is not a valid Interface.
     """
 
 

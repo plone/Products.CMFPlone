@@ -15,7 +15,9 @@ from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile as ZopeViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import (
+    ViewPageTemplateFile as ZopeViewPageTemplateFile
+)
 
 from plone.app.layout.globals.interfaces import ILayoutPolicy
 from plone.app.layout.globals.interfaces import IViewView
@@ -53,8 +55,8 @@ class LayoutPolicy(BrowserView):
         return "visualColumnHideNone"
 
     def have_portlets(self, manager_name, view=None):
-        """Determine whether a column should be shown. The left column is called
-        plone.leftcolumn; the right column is called plone.rightcolumn.
+        """Determine whether a column should be shown. The left column is
+        called plone.leftcolumn; the right column is called plone.rightcolumn.
         """
         force_disable = self.request.get('disable_' + manager_name, None)
         if force_disable is not None:
@@ -85,12 +87,13 @@ class LayoutPolicy(BrowserView):
         properties = getToolByName(context, "portal_properties")
 
         site_properties = getattr(properties, 'site_properties')
+        anon = membership.isAnonymousUser()
         icon_visibility = site_properties.getProperty(
             'icon_visibility', 'enabled')
 
         if icon_visibility == 'enabled':
             return True
-        elif icon_visibility == 'authenticated' and not membership.isAnonymousUser():
+        elif icon_visibility == 'authenticated' and not anon:
             return True
         else:
             return False
@@ -142,8 +145,10 @@ class LayoutPolicy(BrowserView):
 
         # template class (required)
         name = ''
-        if isinstance(template, ViewPageTemplateFile) or \
-           isinstance(template, ZopeViewPageTemplateFile):
+        is_view_template = \
+            isinstance(template, ViewPageTemplateFile) or \
+            isinstance(template, ZopeViewPageTemplateFile)
+        if is_view_template:
             # Browser view
             name = view.__name__
         else:

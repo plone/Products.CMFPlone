@@ -30,8 +30,8 @@ class ILayoutPolicy(Interface):
         """
 
     def have_portlets(manager_name, view=None):
-        """Determine whether a column should be shown. The left column is called
-        plone.leftcolumn; the right column is called plone.rightcolumn.
+        """Determine whether a column should be shown. The left column is
+        called plone.leftcolumn; the right column is called plone.rightcolumn.
         """
 
     def icons_visible():

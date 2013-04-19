@@ -99,7 +99,8 @@ class TestLayoutView(GlobalsTestCase):
         view = context.restrictedTraverse('@@plone_layout')
         template = context.document_view
         body_class = view.bodyClass(template, view)
-        assert 'subsection-folder2 subsection-folder2-folder3' not in body_class
+        assert 'subsection-folder2 subsection-folder2-folder3' \
+            not in body_class
         assert ' subsection-folder2-folder3-page' not in body_class
 
 
