@@ -38,21 +38,21 @@ class SiteMapTestCase(PloneTestCase):
             self.portal, 'portal_properties').site_properties
         self.site_properties.manage_changeProperties(enable_sitemap=True)
 
-        #setup private content that isn't accessible for anonymous
+        # setup private content that isn't accessible for anonymous
         self.loginAsPortalOwner()
         self.portal.invokeFactory(id='private', type_name='Document')
         private = self.portal.private
         self.assertTrue('private' == self.wftool.getInfoFor(private,
                                                             'review_state'))
 
-        #setup published content that is accessible for anonymous
+        # setup published content that is accessible for anonymous
         self.portal.invokeFactory(id='published', type_name='Document')
         published = self.portal.published
         self.wftool.doActionFor(published, 'publish')
         self.assertTrue('published' == self.wftool.getInfoFor(published,
                                                               'review_state'))
 
-        #setup pending content that isn't accessible for anonymous
+        # setup pending content that isn't accessible for anonymous
         self.portal.invokeFactory(id='pending', type_name='Document')
         pending = self.portal.pending
         self.wftool.doActionFor(pending, 'submit')
@@ -140,7 +140,7 @@ class SiteMapTestCase(PloneTestCase):
         xml = self.uncompress(self.sitemap())
         self.assertTrue('<loc>http://nohost/plone/pending</loc>' in xml)
 
-        #removing content
+        # removing content
         self.loginAsPortalOwner()
         self.portal.manage_delObjects(['published', ])
         self.logout()
@@ -152,25 +152,28 @@ class SiteMapTestCase(PloneTestCase):
         '''
         Sitemap generated from an INavigationRoot
         '''
-        #setup navroot content that is accessible for anonymous
+        # setup navroot content that is accessible for anonymous
         self.loginAsPortalOwner()
         self.portal.invokeFactory(id='navroot', type_name='Folder')
         navroot = self.portal.navroot
         self.wftool.doActionFor(navroot, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(navroot, 'review_state'))
+        self.assertTrue('published' == self.wftool.getInfoFor(
+            navroot, 'review_state'))
         alsoProvides(navroot, INavigationRoot)
         navroot.invokeFactory(id='published', type_name='Document')
         published = navroot.published
         self.wftool.doActionFor(published, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(published, 'review_state'))
+        self.assertTrue('published' == self.wftool.getInfoFor(
+            published, 'review_state'))
         self.logout()
 
         sitemap = getMultiAdapter((self.portal.navroot, self.portal.REQUEST),
-                                       name='sitemap.xml.gz')
+                                  name='sitemap.xml.gz')
         xml = self.uncompress(sitemap())
         self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
         self.assertTrue('<loc>http://nohost/plone/navroot</loc>' in xml)
-        self.assertTrue('<loc>http://nohost/plone/navroot/published</loc>' in xml)
+        self.assertTrue(
+            '<loc>http://nohost/plone/navroot/published</loc>' in xml)
 
     def test_types_not_searched(self):
         '''
@@ -181,8 +184,10 @@ class SiteMapTestCase(PloneTestCase):
         self.portal.invokeFactory(id='newsitem', type_name='News Item')
         newsitem = self.portal.newsitem
         self.wftool.doActionFor(newsitem, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(newsitem, 'review_state'))
-        self.site_properties.manage_changeProperties(types_not_searched=['News Item'])
+        self.assertTrue('published' == self.wftool.getInfoFor(
+            newsitem, 'review_state'))
+        self.site_properties.manage_changeProperties(
+            types_not_searched=['News Item'])
         self.logout()
 
         xml = self.uncompress(self.sitemap())
@@ -197,8 +202,10 @@ class SiteMapTestCase(PloneTestCase):
         self.portal.invokeFactory(id='newsitem', type_name='News Item')
         newsitem = self.portal.newsitem
         self.wftool.doActionFor(newsitem, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(newsitem, 'review_state'))
-        self.site_properties.manage_changeProperties(typesUseViewActionInListings=['News Item'])
+        self.assertTrue('published' == self.wftool.getInfoFor(
+            newsitem, 'review_state'))
+        self.site_properties.manage_changeProperties(
+            typesUseViewActionInListings=['News Item'])
         self.logout()
 
         xml = self.uncompress(self.sitemap())
@@ -215,12 +222,14 @@ class SiteMapTestCase(PloneTestCase):
         folder = self.portal.folder
         folder.default_page = "default"
         self.wftool.doActionFor(folder, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(folder, 'review_state'))
+        self.assertTrue('published' == self.wftool.getInfoFor(
+            folder, 'review_state'))
 
         folder.invokeFactory(id='default', type_name='Document')
         default = folder.default
         self.wftool.doActionFor(default, 'publish')
-        self.assertTrue('published' == self.wftool.getInfoFor(default, 'review_state'))
+        self.assertTrue('published' == self.wftool.getInfoFor(
+            default, 'review_state'))
         self.assertTrue(self.portal.plone_utils.isDefaultPage(default))
 
         default.modification_date = DateTime("2001-01-01")
@@ -232,11 +241,13 @@ class SiteMapTestCase(PloneTestCase):
         self.logout()
 
         xml = self.uncompress(self.sitemap())
-        self.assertFalse('<loc>http://nohost/plone/folder/default</loc>' in xml)
+        self.assertFalse(
+            '<loc>http://nohost/plone/folder/default</loc>' in xml)
         self.assertTrue('<loc>http://nohost/plone/folder</loc>' in xml)
         self.assertTrue('<lastmod>2001-01-01T' in xml)
         self.assertTrue('<loc>http://nohost/plone</loc>' in xml)
         self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
+
 
 def test_suite():
     from unittest import defaultTestLoader

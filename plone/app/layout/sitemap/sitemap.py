@@ -46,7 +46,7 @@ class SiteMapView(BrowserView):
         siteProperties = getattr(ptool, 'site_properties')
         typesUseViewActionInListings = frozenset(
             siteProperties.getProperty('typesUseViewActionInListings', [])
-            )
+        )
 
         is_plone_site_root = IPloneSiteRoot.providedBy(self.context)
         if not is_plone_site_root:
