@@ -68,9 +68,11 @@ class LayoutPolicy(BrowserView):
         if manager is None:
             return False
 
-        renderer = queryMultiAdapter((context, self.request, view, manager), IPortletManagerRenderer)
+        renderer = queryMultiAdapter((
+            context, self.request, view, manager), IPortletManagerRenderer)
         if renderer is None:
-            renderer = getMultiAdapter((context, self.request, self, manager), IPortletManagerRenderer)
+            renderer = getMultiAdapter((
+                context, self.request, self, manager), IPortletManagerRenderer)
 
         return renderer.visible
 
@@ -83,7 +85,8 @@ class LayoutPolicy(BrowserView):
         properties = getToolByName(context, "portal_properties")
 
         site_properties = getattr(properties, 'site_properties')
-        icon_visibility = site_properties.getProperty('icon_visibility', 'enabled')
+        icon_visibility = site_properties.getProperty(
+            'icon_visibility', 'enabled')
 
         if icon_visibility == 'enabled':
             return True

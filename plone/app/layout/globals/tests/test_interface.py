@@ -7,14 +7,18 @@ optionflags = doctest.REPORT_ONLY_FIRST_FAILURE | doctest.ELLIPSIS
 
 from zope.interface import Interface
 
+
 class IOne(Interface):
     pass
+
 
 class ITwo(Interface):
     pass
 
+
 class NotAnInterface(object):
     pass
+
 
 def test_interface_view(self):
     """Information about the interfaces of an object
@@ -61,6 +65,7 @@ def test_interface_view(self):
     ...
     ValueError: 'plone.app.layout.globals.tests.test_interface.NotAnInterface' is not a valid Interface.
     """
+
 
 def test_suite():
     suite = unittest.TestSuite()

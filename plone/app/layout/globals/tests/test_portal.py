@@ -35,7 +35,8 @@ class TestPortalStateView(GlobalsTestCase):
 
     def test_navigation_root_path(self):
         self.assertEquals(self.view.navigation_root_path(), '/plone')
-        self.assertEquals(self.view.navigation_root_path(), getNavigationRoot(self.folder))
+        self.assertEquals(
+            self.view.navigation_root_path(), getNavigationRoot(self.folder))
 
         # mark a folder "between" self.folder and self.portal with
         # INavigationRoot
@@ -43,8 +44,9 @@ class TestPortalStateView(GlobalsTestCase):
         zope.interface.alsoProvides(members, INavigationRoot)
         view = members.restrictedTraverse('@@plone_portal_state')
         self.assertEquals(view.navigation_root_path(),
-                         '/plone/Members')
-        self.assertEquals(view.navigation_root_path(), getNavigationRoot(self.folder))
+                          '/plone/Members')
+        self.assertEquals(
+            view.navigation_root_path(), getNavigationRoot(self.folder))
 
     def test_navigation_root_title(self):
         self.portal.Title = "Portal title"
@@ -58,8 +60,10 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEquals(view.navigation_root_title(), members.Title())
 
     def test_navigation_root_url(self):
-        url = self.app.REQUEST.physicalPathToURL(getNavigationRoot(self.folder))
-        self.assertEquals(self.view.navigation_root_url(), 'http://nohost/plone')
+        url = self.app.REQUEST.physicalPathToURL(
+            getNavigationRoot(self.folder))
+        self.assertEquals(
+            self.view.navigation_root_url(), 'http://nohost/plone')
         self.assertEquals(self.view.navigation_root_url(), url)
 
         # mark a folder "between" self.folder and self.portal with
@@ -96,7 +100,8 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEquals(self.view.is_rtl(), True)
 
     def test_member(self):
-        self.assertEquals(self.view.member(), self.portal.portal_membership.getAuthenticatedMember())
+        self.assertEquals(
+            self.view.member(), self.portal.portal_membership.getAuthenticatedMember())
 
     def test_anonymous(self):
         self.assertEquals(self.view.anonymous(), False)
@@ -105,7 +110,8 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEquals(self.view.anonymous(), True)
 
     def test_friendly_types(self):
-        self.portal.portal_properties.site_properties.types_not_searched = ('Document', )
+        self.portal.portal_properties.site_properties.types_not_searched = (
+            'Document', )
         self.failIf('Document' in self.view.friendly_types())
 
 

@@ -8,11 +8,13 @@ from Products.Five.browser import BrowserView
 
 from interfaces import IInterfaceInformation
 
+
 def resolveInterface(dotted_name):
     klass = resolve(dotted_name)
     if not issubclass(klass, Interface):
-        raise ValueError, '%r is not a valid Interface.' % dotted_name
+        raise ValueError('%r is not a valid Interface.' % dotted_name)
     return klass
+
 
 class InterfaceInformation(BrowserView):
     implements(IInterfaceInformation)

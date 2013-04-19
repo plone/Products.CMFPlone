@@ -41,10 +41,16 @@ class ContextState(BrowserView):
 
     @memoize
     def current_base_url(self):
-        return self.request.get('ACTUAL_URL',
-                 self.request.get('VIRTUAL_URL',
-                   self.request.get('URL',
-                     self.context.absolute_url())))
+        return self.request.get(
+            'ACTUAL_URL',
+            self.request.get(
+                'VIRTUAL_URL',
+                self.request.get(
+                    'URL',
+                    self.context.absolute_url()
+                )
+            )
+        )
 
     @memoize
     def canonical_object(self):
@@ -66,12 +72,15 @@ class ContextState(BrowserView):
         called, instead of with /view appended.  We want to avoid that.
         """
         view_url = self.object_url()
-        portal_properties = getToolByName(self.context, 'portal_properties', None)
+        portal_properties = getToolByName(
+            self.context, 'portal_properties', None)
         if portal_properties is not None:
-            site_properties = getattr(portal_properties, 'site_properties', None)
+            site_properties = getattr(
+                portal_properties, 'site_properties', None)
             portal_type = getattr(aq_base(self.context), 'portal_type', None)
             if site_properties is not None and portal_type is not None:
-                use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
+                use_view_action = site_properties.getProperty(
+                    'typesUseViewActionInListings', ())
                 if portal_type in use_view_action:
                     view_url = view_url + '/view'
         return view_url
@@ -163,7 +172,11 @@ class ContextState(BrowserView):
 
     @memoize
     def is_folderish(self):
-        return bool(getattr(aq_base(aq_inner(self.context)), 'isPrincipiaFolderish', False))
+        return bool(getattr(
+            aq_base(aq_inner(self.context)),
+            'isPrincipiaFolderish',
+            False
+        ))
 
     @memoize
     def is_structural_folder(self):
@@ -196,18 +209,23 @@ class ContextState(BrowserView):
     @memoize
     def is_editable(self):
         tool = getToolByName(self.context, "portal_membership")
-        return bool(tool.checkPermission('Modify portal content', aq_inner(self.context)))
+        return bool(tool.checkPermission(
+            'Modify portal content',
+            aq_inner(self.context)
+        ))
 
     @memoize
     def is_locked(self):
         # plone_lock_info is registered on marker interface ITTWLockable, since
         # not everything may want to parttake in its lock-stealing ways.
-        lock_info = queryMultiAdapter((self.context, self.request), name='plone_lock_info')
+        lock_info = queryMultiAdapter((
+            self.context, self.request), name='plone_lock_info')
         if lock_info is not None:
             return lock_info.is_locked_for_current_user()
         else:
             context = aq_inner(self.context)
-            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
+            lockable = getattr(
+                context.aq_explicit, 'wl_isLocked', None) is not None
             return lockable and context.wl_isLocked()
 
     @memoize
@@ -216,10 +234,12 @@ class ContextState(BrowserView):
         atool = getToolByName(context, "portal_actions")
         ttool = getToolByName(context, "portal_types")
         if category is None:
-            warnings.warn("The actions method of the context state view was "
+            warnings.warn(
+                "The actions method of the context state view was "
                 "called without a category argument. This is deprecated and "
                 "won't be supported anymore in Plone 5.",
-                DeprecationWarning, 3)
+                DeprecationWarning, 3
+            )
             actions = atool.listFilteredActionsFor(
                 context,
                 ignore_providers=BLACKLISTED_PROVIDERS,
@@ -258,11 +278,12 @@ class ContextState(BrowserView):
             # (Default) action
             action = '(Default)'
         else:
-            # XXX: This isn't quite right since it assumes the action starts with ${object_url}
+            # XXX: This isn't quite right since it assumes the action starts
+            # with ${object_url}
             action = url.split('/')[-1]
 
         # Try resolving method aliases because we need a real template_id here
-        action = fti.queryMethodID(action, default = action, context = context)
+        action = fti.queryMethodID(action, default=action, context=context)
 
         # Strip off leading /
         if action and action[0] == '/':

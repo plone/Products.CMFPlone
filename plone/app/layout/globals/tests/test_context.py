@@ -43,8 +43,10 @@ class TestContextStateView(GlobalsTestCase):
         self.assertEquals(self.dview.canonical_object(), self.folder)
 
     def test_canonical_object_url(self):
-        self.assertEquals(self.fview.canonical_object_url(), self.folder.absolute_url())
-        self.assertEquals(self.dview.canonical_object_url(), self.folder.absolute_url())
+        self.assertEquals(
+            self.fview.canonical_object_url(), self.folder.absolute_url())
+        self.assertEquals(
+            self.dview.canonical_object_url(), self.folder.absolute_url())
 
     def test_view_url(self):
         self.assertEquals(self.fview.view_url(),
@@ -52,7 +54,8 @@ class TestContextStateView(GlobalsTestCase):
         self.assertEquals(self.dview.view_url(),
                           self.folder.d1.absolute_url())
         self.folder.invokeFactory('File', 'file1')
-        self.fileview = self.folder.file1.restrictedTraverse('@@plone_context_state')
+        self.fileview = self.folder.file1.restrictedTraverse(
+            '@@plone_context_state')
         self.assertEquals(self.fileview.view_url(),
                           self.folder.file1.absolute_url() + '/view')
 
@@ -119,13 +122,15 @@ class TestContextStateView(GlobalsTestCase):
 
     def test_is_view_template_template(self):
         self.folder.setLayout('foo_view')
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/foo_view'
+        self.app.REQUEST[
+            'ACTUAL_URL'] = self.folder.absolute_url() + '/foo_view'
         self.assertEquals(self.fview.is_view_template(), True)
         self.assertEquals(self.dview.is_view_template(), False)
 
     def test_is_view_template_template_z3view(self):
         self.folder.setLayout('foo_view')
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/@@foo_view'
+        self.app.REQUEST[
+            'ACTUAL_URL'] = self.folder.absolute_url() + '/@@foo_view'
         self.assertEquals(self.fview.is_view_template(), True)
         self.assertEquals(self.dview.is_view_template(), False)
 
@@ -137,7 +142,8 @@ class TestContextStateView(GlobalsTestCase):
 
     def test_is_view_template_other(self):
         self.folder.setLayout('foo_view')
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/bar_view'
+        self.app.REQUEST[
+            'ACTUAL_URL'] = self.folder.absolute_url() + '/bar_view'
         self.assertEquals(self.fview.is_view_template(), False)
         self.assertEquals(self.dview.is_view_template(), False)
 
@@ -152,20 +158,23 @@ class TestContextStateView(GlobalsTestCase):
         aliases = fti.getMethodAliases()
         aliases['foo_alias'] = '(Default)'
         fti.setMethodAliases(aliases)
-        self.app.REQUEST['ACTUAL_URL'] = self.folder.absolute_url() + '/foo_alias'
+        self.app.REQUEST[
+            'ACTUAL_URL'] = self.folder.absolute_url() + '/foo_alias'
         self.assertEquals(self.fview.is_view_template(), True)
         self.assertEquals(self.dview.is_view_template(), False)
 
     def test_object_url(self):
         self.assertEquals(self.fview.object_url(), self.folder.absolute_url())
-        self.assertEquals(self.dview.object_url(), self.folder.d1.absolute_url())
+        self.assertEquals(
+            self.dview.object_url(), self.folder.d1.absolute_url())
 
     def test_object_title(self):
         self.folder.d1.setTitle('My title')
         self.assertEquals(self.dview.object_title(), 'My title')
 
     def test_workflow_state(self):
-        wfstate = self.portal.portal_workflow.getInfoFor(self.folder.d1, 'review_state')
+        wfstate = self.portal.portal_workflow.getInfoFor(
+            self.folder.d1, 'review_state')
         self.assertEquals(self.dview.workflow_state(), wfstate)
 
     def test_parent(self):
@@ -207,7 +216,9 @@ class TestContextStateView(GlobalsTestCase):
     def test_is_locked(self):
         self.assertEquals(self.dview.is_locked(), False)
         ILockable(self.folder.d1).lock()
-        self.logout() # The object is not "locked" if it was locked by the current user
+        self.logout()
+                    # The object is not "locked" if it was locked by the
+                    # current user
         del self.app.REQUEST.__annotations__
         self.assertEquals(self.dview.is_locked(), True)
 

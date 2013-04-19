@@ -60,12 +60,13 @@ class PortalState(BrowserView):
     @memoize_contextless
     def default_language(self):
         context = aq_inner(self.context)
-        site_properties = getToolByName(context, "portal_properties").site_properties
+        site_properties = getToolByName(
+            context, "portal_properties").site_properties
         return site_properties.getProperty('default_language', None)
 
     def language(self):
         return self.request.get('LANGUAGE', None) or \
-                aq_inner(self.context).Language() or self.default_language()
+            aq_inner(self.context).Language() or self.default_language()
 
     def locale(self):
         return self.request.locale
@@ -93,7 +94,8 @@ class PortalState(BrowserView):
     @memoize_contextless
     def friendly_types(self):
         context = aq_inner(self.context)
-        site_properties = getToolByName(context, "portal_properties").site_properties
+        site_properties = getToolByName(
+            context, "portal_properties").site_properties
         not_searched = site_properties.getProperty('types_not_searched', [])
 
         types = getToolByName(context, "portal_types").listContentTypes()
