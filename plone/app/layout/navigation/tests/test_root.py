@@ -11,6 +11,10 @@ class NavigationRootTestCase(PloneTestCase):
 
     def test_getNavigationRootObject_no_context(self):
         '''
-        If you don't know the context then you also don't know what the navigation root is.
+        If you don't know the context then you also don't know what the
+        navigation root is.
         '''
-        self.assertEquals(None, getNavigationRootObject(None, self.portal))
+        self.assertEqual(
+            None,
+            getNavigationRootObject(None, self.portal)
+        )

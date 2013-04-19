@@ -25,7 +25,7 @@ class TestRSSViewletView(ViewletsTestCase):
         viewlet = RSSViewlet(self.portal, request, None, None)
         viewlet.update()
         result = viewlet.render()
-        self.assertEquals(result.strip(), '')
+        self.assertEqual(result.strip(), '')
         self.loginAsPortalOwner()
         settings.allowed = True
         settings.site_rss_items = (self.portal.news.UID(),)

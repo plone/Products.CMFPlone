@@ -10,31 +10,31 @@ class TestToolsView(GlobalsTestCase):
         self.view = self.folder.restrictedTraverse('@@plone_tools')
 
     def test_actions(self):
-        self.assertEquals(self.view.actions(), getToolByName(
+        self.assertEqual(self.view.actions(), getToolByName(
             self.folder, 'portal_actions'))
 
     def test_catalog(self):
-        self.assertEquals(self.view.catalog(), getToolByName(
+        self.assertEqual(self.view.catalog(), getToolByName(
             self.folder, 'portal_catalog'))
 
     def test_membership(self):
-        self.assertEquals(self.view.membership(), getToolByName(
+        self.assertEqual(self.view.membership(), getToolByName(
             self.folder, 'portal_membership'))
 
     def test_properties(self):
-        self.assertEquals(self.view.properties(), getToolByName(
+        self.assertEqual(self.view.properties(), getToolByName(
             self.folder, 'portal_properties'))
 
     def test_types(self):
-        self.assertEquals(self.view.types(), getToolByName(
+        self.assertEqual(self.view.types(), getToolByName(
             self.folder, 'portal_types'))
 
     def test_url(self):
-        self.assertEquals(self.view.url(), getToolByName(
+        self.assertEqual(self.view.url(), getToolByName(
             self.folder, 'portal_url'))
 
     def test_workflow(self):
-        self.assertEquals(self.view.workflow(), getToolByName(
+        self.assertEqual(self.view.workflow(), getToolByName(
             self.folder, 'portal_workflow'))
 
 
