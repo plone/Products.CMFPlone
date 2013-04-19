@@ -26,7 +26,8 @@ class TestCommentsViewletView(ViewletsTestCase):
             self._comment_login_url(), 'http://nohost/plone/login')
 
     def test_anonexistent_login_url(self):
-        """Make sure login_url() works when there is no login action defined."""
+        """Make sure login_url() works when there is no login action
+        defined."""
         getToolByName(self.portal.document,
                       'portal_actions').user.manage_delObjects(['login'])
         self.assertEqual(self._comment_login_url(), None)
@@ -36,7 +37,7 @@ class TestCommentsViewletView(ViewletsTestCase):
         context = self.portal.document
         dtool = getToolByName(context, 'portal_discussion')
         tb = dtool.getDiscussionFor(context)
-        reply_id = tb.createReply(
+        tb.createReply(
             title='Subject', text='Reply text', Creator='tester')
 
         viewlet = CommentsViewlet(context, request, None, None)
