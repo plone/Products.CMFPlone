@@ -1,1 +1,1 @@
-from common import ViewletBase
+from common import ViewletBase  # noqa

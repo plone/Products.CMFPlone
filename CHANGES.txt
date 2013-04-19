@@ -15,6 +15,9 @@ Changelog
 - Add Dexterity support for the related items viewlet.
   [pabo]
 
+- PEP8 cleanup.
+  [timo]
+
 
 2.3.4 (2013-03-05)
 ------------------

@@ -16,7 +16,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.app.layout.globals.interfaces import IViewView
 
@@ -35,7 +34,8 @@ class ViewletBase(BrowserView):
         self.manager = manager
 
     @property
-    @deprecate("Use site_url instead. ViewletBase.portal_url will be removed in Plone 4")
+    @deprecate("Use site_url instead. " +
+               "ViewletBase.portal_url will be removed in Plone 4")
     def portal_url(self):
         return self.site_url
 
@@ -270,7 +270,8 @@ class ContentViewsViewlet(ViewletBase):
     index = ViewPageTemplateFile('contentviews.pt')
 
     @memoize
-    def prepareObjectTabs(self, default_tab='view', sort_first=['folderContents']):
+    def prepareObjectTabs(self, default_tab='view',
+                          sort_first=['folderContents']):
         """Prepare the object tabs by determining their order and working
         out which tab is selected. Used in global_contentviews.pt
         """
@@ -365,7 +366,11 @@ class ManagePortletsFallbackViewlet(ViewletBase):
 
     def available(self):
         secman = getSecurityManager()
-        if not secman.checkPermission('Portlets: Manage portlets', self.context):
+        has_manage_portlets_permission = secman.checkPermission(
+            'Portlets: Manage portlets',
+            self.context
+        )
+        if not has_manage_portlets_permission:
             return False
         elif not self.sl and not self.sr and self.portlet_assignable:
             return True

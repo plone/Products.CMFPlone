@@ -19,13 +19,15 @@ class CommentsViewlet(ViewletBase):
             self.context, 'portal_membership', None)
 
     def can_reply(self):
-        return getSecurityManager().checkPermission('Reply to item', aq_inner(self.context))
+        return getSecurityManager().checkPermission(
+            'Reply to item', aq_inner(self.context))
 
     def is_discussion_allowed(self):
         if self.portal_discussion is None:
             return False
         else:
-            return self.portal_discussion.isDiscussionAllowedFor(aq_inner(self.context))
+            return self.portal_discussion.isDiscussionAllowedFor(
+                aq_inner(self.context))
 
     def get_replies(self):
         replies = []
@@ -58,7 +60,8 @@ class CommentsViewlet(ViewletBase):
         return self.portal_state.anonymous()
 
     def login_url(self):
-        """Return the URL of the 'login' portal_action if there is one. Otherwise, return None."""
+        """Return the URL of the 'login' portal_action if there is one.
+        Otherwise, return None."""
         context = aq_inner(self.context)
         context_state = getMultiAdapter((context, self.request),
                                         name=u'plone_context_state')
@@ -67,7 +70,8 @@ class CommentsViewlet(ViewletBase):
                 return action.get('url')
 
     def can_manage(self):
-        return getSecurityManager().checkPermission('Manage portal', aq_inner(self.context))
+        return getSecurityManager().checkPermission(
+            'Manage portal', aq_inner(self.context))
 
     def member_info(self, creator):
         if self.portal_membership is None:
@@ -78,4 +82,10 @@ class CommentsViewlet(ViewletBase):
     def format_time(self, time):
         context = aq_inner(self.context)
         util = getToolByName(context, 'translation_service')
-        return util.ulocalized_time(time, long_format=1, time_only=None, context=context, domain='plonelocales')
+        return util.ulocalized_time(
+            time,
+            long_format=1,
+            time_only=None,
+            context=context,
+            domain='plonelocales'
+        )

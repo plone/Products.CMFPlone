@@ -95,8 +95,10 @@ class TestContentHistoryViewlet(ViewletsTestCase):
         repo_tool.save(context, comment='Second Revision')
         viewlet.update()
         history = viewlet.revisionHistory()
-        self.assertEqual(history[0][
-                         'diff_previous_url'], 'http://nohost/plone/Members/test_user_1_/d1/@@history?one=1&two=0')
+        self.assertEqual(
+            history[0]['diff_previous_url'],
+            'http://nohost/plone/Members/test_user_1_/d1/@@history?one=1&two=0'
+        )
 
         # check diff link does not appear if content is not diffable
         diff_tool = self.portal.portal_diff

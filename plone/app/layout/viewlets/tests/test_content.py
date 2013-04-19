@@ -3,11 +3,9 @@ from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import ContentRelatedItems
 from plone.locking.tests import addMember
 from plone.locking.interfaces import ILockable
-from plone.memoize.instance import Memojito
 
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
-from Products.Archetypes.ExtensibleMetadata import _zone
 
 
 class TestDocumentBylineViewletView(ViewletsTestCase):
@@ -60,8 +58,8 @@ title="Locked" height="16" width="16" />'
         viewlet = DocumentBylineViewlet(context, request, None, None)
         viewlet.update()
 
-        # publication date should be None as there is not Effective date set for
-        # our document yet
+        # publication date should be None as there is not Effective date set
+        # for our document yet
         self.assertEqual(viewlet.pub_date(), None)
 
         # now set effective date for our document

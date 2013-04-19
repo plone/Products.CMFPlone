@@ -56,7 +56,11 @@ class DocumentBylineViewlet(ViewletBase):
         return not self.anonymous or allowAnonymousViewAbout
 
     def show_history(self):
-        if not _checkPermission('CMFEditions: Access previous versions', self.context):
+        has_access_preview_versions_permission = _checkPermission(
+            'CMFEditions: Access previous versions',
+            self.context
+        )
+        if not has_access_preview_versions_permission:
             return False
         if IViewView.providedBy(self.__parent__):
             return True
@@ -272,24 +276,33 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         def morphVersionDataToHistoryFormat(vdata, version_id):
             meta = vdata["metadata"]["sys_metadata"]
             userid = meta["principal"]
-            info = dict(type='versioning',
-                        action=_(u"Edited"),
-                        transition_title=_(u"Edited"),
-                        actorid=userid,
-                        time=meta["timestamp"],
-                        comments=meta['comment'],
-                        version_id=version_id,
-                        preview_url="%s/versions_history_form?version_id=%s#version_preview" %
-                       (context_url, version_id),
-                        revert_url="%s/revertversion" % context_url,
-                        )
+            preview_url = \
+                "%s/versions_history_form?version_id=%s#version_preview" % (
+                    context_url,
+                    version_id
+                )
+            info = dict(
+                type='versioning',
+                action=_(u"Edited"),
+                transition_title=_(u"Edited"),
+                actorid=userid,
+                time=meta["timestamp"],
+                comments=meta['comment'],
+                version_id=version_id,
+                preview_url=preview_url,
+                revert_url="%s/revertversion" % context_url,
+            )
             if can_diff:
                 if version_id > 0:
-                    info["diff_previous_url"] = ("%s/@@history?one=%s&two=%s" %
-                                                (context_url, version_id, version_id-1))
+                    info["diff_previous_url"] = (
+                        "%s/@@history?one=%s&two=%s" %
+                        (context_url, version_id, version_id-1)
+                    )
                 if not rt.isUpToDate(context, version_id):
-                    info["diff_current_url"] = ("%s/@@history?one=current&two=%s" %
-                                               (context_url, version_id))
+                    info["diff_current_url"] = (
+                        "%s/@@history?one=current&two=%s" %
+                        (context_url, version_id)
+                    )
             info.update(self.getUserInfo(userid))
             return info
 
