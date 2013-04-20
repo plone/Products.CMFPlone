@@ -60,7 +60,9 @@ def test_interface_view(self):
     ...     'plone.app.layout.globals.tests.test_interface.NotAnInterface')
     Traceback (most recent call last):
     ...
-    ValueError: 'plone.app.layout.globals.tests.test_interface.NotAnInterface' is not a valid Interface.
+    ValueError: \
+'plone.app.layout.globals.tests.test_interface.NotAnInterface' \
+is not a valid Interface.
 
     >>> view.class_provides(
     ...     'plone.app.layout.globals.tests.test_interface.IOne')
@@ -72,7 +74,9 @@ def test_interface_view(self):
     ...     'plone.app.layout.globals.tests.test_interface.NotAnInterface')
     Traceback (most recent call last):
     ...
-    ValueError: 'plone.app.layout.globals.tests.test_interface.NotAnInterface' is not a valid Interface.
+    ValueError: \
+'plone.app.layout.globals.tests.test_interface.NotAnInterface' \
+is not a valid Interface.
     """
 
 
