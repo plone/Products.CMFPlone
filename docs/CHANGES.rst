@@ -7,6 +7,13 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Add missing dependency on zope.cachedescriptors.
+  [thet]
+
+- Remove plone.app.event from here and move it to the "Plone" distribution
+  package.
+  [thet]
+
 - Add indexer for location so metadata is included in catalog
   [vangheem]
 
@@ -31,10 +38,7 @@ Changelog
   property.
   [seanupton]
 
-- Merged PLIP #10886: plone.app.event.
-  Don't install p.a.event by default, so one can explicitly choose to install
-  the Archetypes profile "plone.app.event.at" or the Dexterity profile
-  "plone.app.event.dx". PAE integration Cleanup.
+- Merged PLIP #10886: plone.app.event Integration.
   [thet]
 
 - Test for #7627 (https://dev.plone.org/ticket/7627) (backport from 4.3)
