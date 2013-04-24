@@ -8,7 +8,8 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
-- Add id for image details
+- Add distinct classes for live search links
+  Add id for image details
   [cedricmessiant]
 
 
