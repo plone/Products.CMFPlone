@@ -23,7 +23,7 @@
                 <br />
             </a>
 
-            <span class="discreet visualNoPrint"
+            <span id="plone-image-details" class="discreet visualNoPrint"
                   tal:define="objectsize python:context.getObjSize(here)">
 
               <span tal:condition="size"
