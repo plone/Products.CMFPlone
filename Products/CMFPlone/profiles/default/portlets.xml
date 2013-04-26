@@ -35,17 +35,6 @@
  <!-- Portlet type registrations -->
 
  <portlet
-   addview="portlets.Calendar"
-   title="Calendar portlet"
-   description="A portlet which can render a calendar."
-   i18n:attributes="title;
-                    description"
-   >
-   <for interface="plone.app.portlets.interfaces.IColumn" />
-   <for interface="plone.app.portlets.interfaces.IDashboard" />
- </portlet>
-
- <portlet
    addview="portlets.Classic"
    title="Classic portlet"
    description="A portlet which can render a classic template-based portlet"
@@ -60,17 +49,6 @@
    addview="portlets.News"
    title="News"
    description="A portlet which can render a listing of recent news"
-   i18n:attributes="title;
-                    description"
-   >
-   <for interface="plone.app.portlets.interfaces.IColumn" />
-   <for interface="plone.app.portlets.interfaces.IDashboard" />
- </portlet>
-
- <portlet
-   addview="portlets.Events"
-   title="Events"
-   description="A portlet which can render a listing of recent events"
    i18n:attributes="title;
                     description"
    >

@@ -17,12 +17,4 @@
      name="news"
      />
 
- <assignment
-     manager="plone.rightcolumn"
-     category="context"
-     key="/"
-     type="portlets.Events"
-     name="events"
-     />
-
 </portlets>

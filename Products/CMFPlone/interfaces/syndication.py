@@ -186,7 +186,8 @@ class ISiteSyndicationSettings(Interface):
             "RSS|RSS 1.0",
             "rss.xml|RSS 2.0",
             "atom.xml|Atom",
-            "itunes.xml|iTunes"),
+            "itunes.xml|iTunes",
+            "newsml.xml|NewsML 1.2"),
         value_type=schema.TextLine()
     )
 

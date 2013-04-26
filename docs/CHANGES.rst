@@ -4,12 +4,15 @@
 
 Changelog
 =========
+4.4a1 (unreleased)
+------------------
 
-4.3rc2 (unreleased)
---------------------
+- Add missing dependency on zope.cachedescriptors.
+  [thet]
 
-- Fix attribute values in selector expressions of  mark_special_links.js.
-  [mathias.leimgruber]
+- Remove plone.app.event from here and move it to the "Plone" distribution
+  package.
+  [thet]
 
 - Add indexer for location so metadata is included in catalog
   [vangheem]
@@ -17,16 +20,51 @@ Changelog
 - Fix rss 2.0 not providing actual link
   [vangheem]
 
-- Prevent js inline validation call to /at_validate_field for .blurrable
-  inputs that do not have AT field data validation attributes. This
-  avoids cluttering the error logs with useless at_validate_field
-  errors for fields that just happen to have .blurrable class.
+- Forward port inline validation fix from 4.3rc2.
   [mcmahon]
 
-- Test for #7627 (https://dev.plone.org/ticket/7627)
+- Merged PLIP #13270: Move presentation mode out of core.
+  If the feature is still desired, use the plone.app.s5slideshow add-on.
+  [davisagli]
+
+- PLIP #13358: Changed table in main_template.pt to div structure
+  - Removed xml:lang on html tag
+  - Changed charset to html5
+  - Removed deprecated css-slot
+  - Removed old-style corner constructs
+  [TH-code]
+
+- Base profile memberdata_properties.xml now includes timezone member
+  property.
+  [seanupton]
+
+- Merged PLIP #10886: plone.app.event Integration.
+  [thet]
+
+- Test for #7627 (https://dev.plone.org/ticket/7627) (backport from 4.3)
+  [kiorky]
+
+
+4.3.1 (unreleased)
+------------------
+
+- Add distinct classes for live search links.
+  Add id for image details.
+  [cedricmessiant]
+
+4.3rc2 (unreleased)
+-------------------
+
+- Applied petschki's patch which fixes javascript error on enabled
+  'mark special links' option, fixes #12440
+  [saily]
+
 
 4.3rc1 (released)
 -------------------
+
+- add newsml feed type
+  [vangheem]
 
 - add overlay for folder default page folder factories link
   [vangheem]

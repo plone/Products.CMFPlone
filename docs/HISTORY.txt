@@ -3,6 +3,130 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
+4.2.5 (2013-03-05)
+------------------
+
+- Link advanced search form in depraceted search.pt to new @@search,
+  fixes #13451
+  [maartenkling]
+
+- Allow the Content-Type header to be set in registered_notify_template.pt
+  [esteele]
+
+- Extract RegistrationTool's sending of registration emails so that
+  it can be more easily overridden.
+  [esteele]
+
+- Fix an error during password reset introduced by changes in
+  PloneHotfix20121106.
+  [esteele]
+
+- Add event to fix products installed with latest keyword
+  activated by default. Event finds new products installed with
+  the latest keyword and updates them to the last profile version.
+  [eleddy]
+
+- Update text for changing force change password to reference site
+  title instead of Registry Settings. Fixes ticket #13367
+  [abutton]
+
+- Add event to trigger when a reordering is happening. Without this
+  collective.solr and maybe other alternative indexes are kind of lost
+  [do3cc]
+
+4.2.4 (2013-01-17)
+------------------
+
+- Call pas.searchUsers with the 'name' argument instead of 'login'.
+  'name' is the officially supported way according to the PAS
+  interface.
+  [maurits]
+
+
+4.2.3 (2012-12-15)
+------------------
+
+- Cleaned javascripts from plone_ecmascript of jslint warnings
+  [ichimdav]
+
+- Add various security fixes based on PloneHotfix20121106.
+  [davisagli]
+
+- Pass minute_step to date_components_support_view.result(). See
+  https://dev.plone.org/ticket/11251
+  [gbastien]
+
+- Fix form_tabbing.js so it stays on the same fieldset when an Archetypes
+  edit form is submitted and returns to itself.
+  [davisagli]
+
+- Use prefixed ids for popup overlays
+  [maartenkling]
+
+- Fix compatible hide fieldset legend for IE6/7/8 in form_tabbing.js
+  [maartenkling]
+
+- Improve error handling on paste action. If it is a real error, the
+  error gets shown and logged.
+  [do3cc]
+
+- Changes to dependencies when creating a new site (plone-final) to fix
+  #11997.
+  [keul]
+
+- Revealed hidden features for sorting folders (#11317).
+  [keul]
+
+- Don't swallow exceptions on object_paste and folder_paste (#9365).
+  [gaudenz]
+
+
+4.2.2 (2012-10-15)
+------------------
+
+- Do not block right-side portlets in Members folder on site creation.
+  This fixes https://dev.plone.org/ticket/10764
+  [polyester]
+
+- Fix prefs_install_product_readme so files with non-ascii characters are
+  rendered. This fixes https://dev.plone.org/ticket/12342
+  [ericof]
+
+- Fix StringIO module security so it can still be imported from restricted
+  code in Zope 2.13.17+.
+  [davisagli]
+
+- Make sure the portal_registry setting for ResourceRegistries bundles
+  gets installed.
+  [davisagli]
+
+- Filter out non existing types in getUserFriendlyTypes.
+  This avoids an error on the search form when a no longer existing
+  portal_type is still in the catalog.
+  [maurits]
+
+- We can safely move the MAX_TITLE to 50 and even move up MAX_DESCRIPTION 150 refs #11321
+  [maartenkling]
+
+- Remove inline styles, they do nothing, add class so someone can style it when they like refs #12438
+  [maartenkling]
+
+- Show forget password when entering wrong credentials refs #12463
+  [maartenkling]
+
+- Remove h3 to make consistent html refs #11344
+  [maartenkling]
+
+- Fix 'Add New' on Users/Groups Overviews shows overlay when clicking anywhere in form #12201
+  [maartenkling]
+
+- Fix events_listing #12477
+  [maartenkling]
+
+- Fix form_tabbing, to stay on current tab on submitting form
+  [maartenkling]
+
+
 4.2.1.1 (2012-08-23)
 ------------------
 

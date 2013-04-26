@@ -192,6 +192,13 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             gsm.unregisterHandler(my_handler, (Interface, IReorderedEvent))
         self.assertEquals(["fake_context"], reordered_parents)
 
+    def testSetMemberProperties(self):
+        mtool = getToolByName(self.portal, 'portal_membership')
+        member = mtool.getMemberById('test_user_1_')
+        self.utils.setMemberProperties(member, email='email@example.com')
+        member = mtool.getMemberById('test_user_1_')
+        self.assertEqual(member.getProperty('email'), 'email@example.com')
+
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):

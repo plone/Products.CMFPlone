@@ -138,8 +138,7 @@ def allowedRolesAndUsers(obj):
     localroles = {}
     try:
         acl_users = getToolByName(obj, 'acl_users', None)
-        if acl_users is not None:
-            localroles = acl_users._getAllLocalRoles(obj)
+        localroles = acl_users._getAllLocalRoles(obj)
     except AttributeError:
         localroles = _mergedLocalRoles(obj)
     for user, roles in localroles.items():
@@ -268,7 +267,6 @@ def getIcon(obj):
 @indexer(IExtensibleMetadata)
 def location(obj):
     return obj.getField('location').get(obj)
-
 
 
 

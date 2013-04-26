@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<NewsML xmlns:tal="http://xml.zope.org/namespaces/tal"
+        tal:define="feed view/feed;
+                    date python:feed.published or feed.current_date;
+                    published_iso python:date.asdatetime().strftime('%Y%m%dT%H%M%S%z');
+                    logo feed/logo;
+                    base_domain feed/site/absolute_url;">
+                    
+    <tal:comment replace="nothing">
+        <!--
+        This NewsML implementation is done to be used by MSN to provide news feeds.
+        Some things are missing from the full specification because then it will
+        not validate against MSN service (http://feedverificationtool.msn.com/)
+        For more information, check the provided PDF in the docs folder.
+        -->
+    </tal:comment>
+
+  <Catalog Href="http://www.iptc.org/IPTC/catalog/catalog.IptcMasterCatalog.xml"/>
+
+  <NewsEnvelope>
+    <DateAndTime tal:content="published_iso"></DateAndTime>
+    <NewsService FormalName="Thumbnail" tal:content="logo"></NewsService>
+  </NewsEnvelope>
+
+  <tal:repeat repeat="item feed/items">
+    <NewsItem xmlns:tal="http://xml.zope.org/namespaces/tal"
+            LinkType="normal"
+            tal:define="date python:item.published or item.modified;
+                        date_id python:date.strftime('%Y%m%d');
+                        news_item_id item/uid;
+                        published_iso python:date.asdatetime().strftime('%Y%m%dT%H%M%S%z');
+                        date_created python:item.created.asdatetime().strftime('%Y%m%dT%H%M%S%z');
+                        ob_title item/title;
+                        ob_description item/description;
+                        author item/author;
+                        body item/friendly_body|nothing;
+                        has_image item/has_image;
+                        image_url item/image_url;
+                        image_mime_type item/image_mime_type | nothing;
+                        image_caption item/image_caption;">
+      <Identification>
+        <NewsIdentifier>
+        <ProviderId tal:content="base_domain"></ProviderId>
+        <DateId tal:content="date_id"></DateId>
+        <NewsItemId tal:content="news_item_id"></NewsItemId>
+        <RevisionId PreviousRevision="0" Update="N">1</RevisionId>
+        <PublicIdentifier tal:content="string:urn:newsml:${base_domain}:${date_id}:${news_item_id}:1"></PublicIdentifier>
+        </NewsIdentifier>
+      </Identification>
+
+      <NewsManagement>
+        <NewsItemType FormalName="News"/>
+        <FirstCreated tal:content="date_created"></FirstCreated>
+        <ThisRevisionCreated tal:content="date_created"></ThisRevisionCreated>
+        <Status FormalName="Usable"/>
+      </NewsManagement>
+
+      <NewsComponent tal:attributes="Duid python:item.duid(1)" Essential="no" EquivalentsList="no">
+        <NewsComponent tal:attributes="Duid python:item.duid(2)">
+          <NewsComponent>
+            <Role FormalName="Main" />
+            <NewsLines>
+            <HeadLine tal:content="ob_title"></HeadLine>
+            <SlugLine tal:content="ob_description"></SlugLine>
+            <tal:comment replace="nothing">
+                <!-- This is part of the standard, but apparently MSN, doesn't like it -->
+                <DateLine tal:content="date_id"></DateLine>
+                <ByLine tal:content="author" tal:condition="item/show_about"></ByLine>
+            </tal:comment>
+            </NewsLines>
+            <ContentItem>
+            <MediaType FormalName="ComplexData" />
+            <MimeType FormalName="text/vnd.IPTC.NITF" />
+            <DataContent>
+                <nitf>
+                <body>
+                    <body.head>
+                    <hedline>
+                        <hl1 tal:content="ob_title"></hl1>
+                    </hedline>
+                    </body.head>
+                    <body.content>
+                        <media media-type="image"
+                            tal:condition="has_image">
+                        <media-reference tal:attributes="mime-type image_mime_type;
+                                                        source image_url;
+                                                        alternate-text ob_title">
+                        </media-reference>
+                        <media-caption tal:content="image_caption"></media-caption>
+                        </media>
+                        <tal:content tal:replace="structure body" />
+                    </body.content>
+                </body>
+                </nitf>
+            </DataContent>
+            </ContentItem>
+          </NewsComponent>
+        </NewsComponent>
+      </NewsComponent>
+    </NewsItem>
+  </tal:repeat>
+</NewsML>

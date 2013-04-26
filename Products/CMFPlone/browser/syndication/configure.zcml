@@ -75,6 +75,14 @@
     />
 
   <browser:page
+    for="Products.CMFPlone.interfaces.syndication.ISyndicatable"
+    class=".views.FeedView"
+    name="newsml.xml"
+    permission="zope2.View"
+    template="templates/newsml.xml.pt"
+    />
+
+  <browser:page
     for="*"
     class=".views.SearchFeedView"
     name="search_rss"
