@@ -4,8 +4,12 @@
 
 Changelog
 =========
+
 4.4a1 (unreleased)
 ------------------
+
+- Merged PLIP #12344: plone.app.contenttypes.
+  [thet]
 
 - Add missing dependency on zope.cachedescriptors.
   [thet]
