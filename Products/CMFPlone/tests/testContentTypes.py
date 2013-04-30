@@ -63,17 +63,6 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.doc.Format(), 'text/html')
         self.assertEqual(self.folder.doc.Title(), 'Foo')
 
-    def testEventEdit(self):
-        self.folder.invokeFactory('Event', id='event')
-        self.folder.event.edit(title='Foo',
-                               start_date='2003-09-18',
-                               end_date='2003-09-19')
-        self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.assertTrue(self.folder.event.start().ISO8601() \
-                            .startswith('2003-09-18T00:00:00'))
-        self.assertTrue(self.folder.event.end().ISO8601() \
-                            .startswith('2003-09-19T00:00:00'))
-
     def testFileEdit(self):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.edit(file=dummy.File())
