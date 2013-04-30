@@ -10,8 +10,10 @@ Changelog
 - Add missing dependency on zope.cachedescriptors.
   [thet]
 
-- Remove plone.app.event from here and move it to the "Plone" distribution
-  package.
+- plone.app.event integration work:
+  - Remove hard dependency on plone.app.event from here and move it to the
+    "Plone" distribution package.
+  - Move more Event related tests to plone.app.event.
   [thet]
 
 - Add indexer for location so metadata is included in catalog

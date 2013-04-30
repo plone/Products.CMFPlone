@@ -57,28 +57,6 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.doc.Format(), 'text/html')
         self.assertEqual(self.folder.doc.Title(), 'Foo')
 
-    def testEventCreate(self):
-        self.folder.invokeFactory('Event', id='event',
-                                  title='Foo',
-                                  start_date='2003-09-18',
-                                  end_date='2003-09-19')
-        self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.assertTrue(self.folder.event.start().ISO8601() \
-                            .startswith('2003-09-18T00:00:00'))
-        self.assertTrue(self.folder.event.end().ISO8601() \
-                            .startswith('2003-09-19T00:00:00'))
-
-    def testEventEdit(self):
-        self.folder.invokeFactory('Event', id='event')
-        self.folder.event.event_edit(title='Foo',
-                                     start_date='2003-09-18',
-                                     end_date='2003-09-19')
-        self.assertEqual(self.folder.event.Title(), 'Foo')
-        self.assertTrue(self.folder.event.start().ISO8601() \
-                            .startswith('2003-09-18T00:00:00'))
-        self.assertTrue(self.folder.event.end().ISO8601() \
-                            .startswith('2003-09-19T00:00:00'))
-
     def testFileCreate(self):
         self.folder.invokeFactory('File', id='file', file=dummy.File())
         self.assertEqual(str(self.folder.file), dummy.TEXT)
