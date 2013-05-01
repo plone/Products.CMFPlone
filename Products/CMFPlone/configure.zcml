@@ -38,6 +38,10 @@
   <include package="plone.protect" />
   <include package="plone.indexer" />
 
+  <include
+      zcml:condition="installed plone.app.event"
+      package="plone.app.event" />
+
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
   <include package="plone.theme" />
