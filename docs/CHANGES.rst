@@ -8,6 +8,9 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
+- Fail nicely when userid is not provided to mail_password script.
+  [esteele]
+
 - Do not display text file content if it is empty.
   [thomasdesvenain]
 
