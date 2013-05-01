@@ -31,6 +31,7 @@ setup(name='Products.CMFPlone',
           'Products.ATContentTypes',
         ],
         test=[
+          'Products.CMFPlone [archetypes]',
           'Products.PloneTestCase',
           'zope.globalrequest',
           'zope.testing',
