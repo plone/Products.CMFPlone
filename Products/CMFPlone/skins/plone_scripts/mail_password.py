@@ -13,7 +13,7 @@ from AccessControl import Unauthorized
 REQUEST = context.REQUEST
 try:
     response = context.portal_registration.mailPassword(
-                    REQUEST['userid'], REQUEST)
+                    REQUEST.get('userid'), REQUEST)
 except ValueError, e:
     try:
         msg = pmf(str(e))
