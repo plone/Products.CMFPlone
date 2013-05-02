@@ -397,11 +397,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testExtEditorMemberdataProperty(self):
         # portal_memberdata should have a location property
         self.assertEqual(self.memberdata.getProperty('ext_editor'), 0)
-    
+
     def testTimezoneMemberdataProperty(self):
         # portal_memberdata should have a timezone property
-        self.assertEqual(self.memberdata.getProperty('timezone'), 0)
-    
+        self.assertTrue(self.memberdata.hasProperty('timezone'))
+
     def testChangeStateIsLastFolderButton(self):
         # Change state button should be the last
         actions = self.actions['folder_buttons']
@@ -596,9 +596,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.folder.cb_dataValid = True
         acts = self.actions.listFilteredActionsFor(self.folder)
         buttons = acts['object_buttons']
-        self.assertEqual(len(buttons), 5)
+
+        self.assertEqual(len(buttons), 6)
         ids = [(a['id']) for a in buttons]
-        self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', ])
+        self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename',
+                               'ical_import_enable'])
 
     def testPlone3rdPartyLayerInDefault(self):
         # plone_3rdParty layer should exist
@@ -788,7 +790,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                 IPortletAssignmentMapping)
 
         self.assertEquals(len(left), 1)
-        self.assertEquals(len(right), 2)
+        self.assertTrue('navigation' in left)
+
+        self.assertEquals(len(right), 3)
+        self.assertTrue('calendar' in right)
+        self.assertTrue('events' in right)
+        self.assertTrue('news' in right)
 
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members
