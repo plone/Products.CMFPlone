@@ -39,7 +39,8 @@ def isDefaultPage(container, obj):
     with the default_page property, or using IBrowserDefault.
     """
     parentDefaultPage = getDefaultPage(container)
-    if parentDefaultPage is None or '/' in parentDefaultPage:
+    if (parentDefaultPage is None or '/' in parentDefaultPage
+            or not hasattr(obj, 'getId')):
         return False
     return (parentDefaultPage == obj.getId())
 
@@ -67,7 +68,7 @@ def getDefaultPage(context):
     # For BTreeFolders we just use the has_key, otherwise build a dict
     if hasattr(aq_base(context), 'has_key'):
         ids = context
-    else:
+    elif hasattr(aq_base(context), 'objectIds'):
         for id in context.objectIds():
             ids[id] = 1
 

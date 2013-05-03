@@ -4,6 +4,10 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Fixed AttributeError for FilesystemResourceDirectory
+  See https://dev.plone.org/ticket/13506
+  [kroman0]
+
 - Use tableofcontents-viewlet for plone.app.contenttypes
   Fixes https://github.com/plone/plone.app.contenttypes/issues/34
   [pbauer]
