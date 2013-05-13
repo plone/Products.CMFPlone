@@ -7,6 +7,9 @@ Changelog
 
 4.3.1 (unreleased)
 ------------------
+
+- Fix commas in kss-bbb.js since IE7/8 is sensative [vangheem]
+
 - Reenable forgotten tests [kiorky]
 
 - Fail nicely when userid is not provided to mail_password script.
