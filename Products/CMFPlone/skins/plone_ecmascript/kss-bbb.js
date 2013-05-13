@@ -108,7 +108,7 @@ $(document).ready(function(){
             },
             type: 'GET',
             dataType: 'json',
-            success: updateSharing,
+            success: updateSharing
         });
         return false;
     });
@@ -124,7 +124,7 @@ $(document).ready(function(){
             data: data,
             type: 'POST',
             dataType: 'json',
-            success: updateSharing,
+            success: updateSharing
         });
         return false;
     });

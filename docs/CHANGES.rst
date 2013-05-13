@@ -8,6 +8,8 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- fix commas in kss-bbb.js for IE7/8 [vangheem]
+
 - Reenable forgotten tests [kiorky]
 
 - Merged PLIP #12344: plone.app.contenttypes.
