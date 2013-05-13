@@ -241,5 +241,5 @@ This should fail graciously, that is:
     'http://nohost/plone/Members/test_user_1_/my-folder/folder_contents'
     >>> 'Traceback' not in browser.contents
     True
-    >>> 'The item may have been moved or deleted after you copied it.' in browser.contents
+    >>> 'may have been moved or deleted after you copied' in browser.contents
     True
