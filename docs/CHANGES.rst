@@ -8,6 +8,8 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Reenable forgotten tests [kiorky]
+
 - Merged PLIP #12344: plone.app.contenttypes.
   [thet]
 

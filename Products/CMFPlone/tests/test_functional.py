@@ -15,7 +15,7 @@ from Products.GenericSetup import EXTENSION, profile_registry
 
 from Products.CMFCore.utils import getToolByName
 
-at_root = pkg_resources.resource_filename('Products.Archetypes', '') 
+at_root = pkg_resources.resource_filename('Products.Archetypes', '')
 
 
 class PloneAtTestCase(PloneTestCase.FunctionalTestCase):
@@ -42,19 +42,20 @@ def list_doctests():
             glob.glob(os.path.sep.join([os.path.dirname(__file__), '*.txt']))
             if os.path.basename(filename) not in UNITTESTS]
 
+
 def test_suite():
     filenames = list_doctests()
-
     suites = [Suite(os.path.basename(filename),
                optionflags=OPTIONFLAGS,
                package='Products.CMFPlone.tests',
                test_class=PloneTestCase.FunctionalTestCase)
               for filename in filenames]
-    suites = [Suite(os.path.basename(filename),
-                    optionflags=OPTIONFLAGS,
-                    package='Products.CMFPlone.tests',
-                    test_class=PloneAtTestCase)
-              for filename in ['translate.txt']]
+    suites.extend(
+        Suite(os.path.basename(filename),
+              optionflags=OPTIONFLAGS,
+              package='Products.CMFPlone.tests',
+              test_class=PloneAtTestCase)
+        for filename in ['translate.txt'])
     return unittest.TestSuite(suites)
 
 
