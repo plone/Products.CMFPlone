@@ -51,11 +51,11 @@ def test_suite():
                test_class=PloneTestCase.FunctionalTestCase)
               for filename in filenames]
     suites.extend(
-        Suite(os.path.basename(filename),
-              optionflags=OPTIONFLAGS,
-              package='Products.CMFPlone.tests',
-              test_class=PloneAtTestCase)
-        for filename in ['translate.txt'])
+        [Suite(os.path.basename(filename),
+               optionflags=OPTIONFLAGS,
+               package='Products.CMFPlone.tests',
+               test_class=PloneAtTestCase)
+         for filename in ['translate.txt']])
     return unittest.TestSuite(suites)
 
 
