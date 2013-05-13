@@ -7,6 +7,7 @@ Changelog
 
 4.3.1 (unreleased)
 ------------------
+- Reenable forgotten tests [kiorky]
 
 - Fail nicely when userid is not provided to mail_password script.
   [esteele]
