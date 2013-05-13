@@ -8,6 +8,10 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
+- jquery-integration.js gets disabled during the upgrade to Plone 4.3. Make sure
+  we do so for new sites as well.
+  [esteele]
+
 - Fix commas in kss-bbb.js since IE7/8 is sensative [vangheem]
 
 - Reenable forgotten tests [kiorky]
