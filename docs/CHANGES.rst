@@ -8,6 +8,9 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
+- register search_rss only for site root
+  [vangheem]
+
 - jquery-integration.js gets disabled during the upgrade to Plone 4.3. Make sure
   we do so for new sites as well.
   [esteele]
