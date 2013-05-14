@@ -28,7 +28,6 @@ setup(name='Products.CMFPlone',
       zip_safe=False,
       extras_require=dict(
         archetypes=[
-          'plone.app.blob',
           'Products.ATContentTypes',
         ],
         test=[

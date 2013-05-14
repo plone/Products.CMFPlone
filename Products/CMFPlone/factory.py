@@ -104,12 +104,6 @@ def addPloneSite(context, site_id, title='Plone site', description='',
         if setup_content:
             if base_contenttypes_profile == _ATCONTENTTYPES_PROFILE:
                 content_profile = _AT_CONTENT_PROFILE
-                try:
-                    # Conditionally import plone.app.collection, if available
-                    import plone.app.collection
-                    setup_tool.runAllImportStepsFromProfile('profile-plone.app.collection:default')
-                except ImportError:
-                    pass
             else:
                 content_profile = _DEX_CONTENT_PROFILE
             setup_tool.runAllImportStepsFromProfile('profile-%s' % content_profile)
