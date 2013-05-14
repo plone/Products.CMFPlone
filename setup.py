@@ -28,6 +28,7 @@ setup(name='Products.CMFPlone',
       zip_safe=False,
       extras_require=dict(
         archetypes=[
+          'plone.app.blob',
           'Products.ATContentTypes',
         ],
         test=[
@@ -73,7 +74,6 @@ setup(name='Products.CMFPlone',
           'borg.localrole',
           'five.customerize',
           'five.localsitemanager',
-          'plone.app.blob',
           'plone.app.content',
           'plone.app.contentlisting',
           'plone.app.contentmenu >= 1.1.6dev-r22380',

@@ -12,6 +12,9 @@ Changelog
   tabs displayed before the script uses a dropdown instead.
   [esteele]
 
+- register search_rss only for site root
+  [vangheem]
+
 - fix commas in kss-bbb.js for IE7/8 [vangheem]
 
 - Reenable forgotten tests [kiorky]

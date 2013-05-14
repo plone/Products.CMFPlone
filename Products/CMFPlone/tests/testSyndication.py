@@ -144,6 +144,11 @@ class TestSyndicationViews(BaseSyndicationTest):
         self.assertRaises(NotFound,
             self.portal.restrictedTraverse('@@search_rss'))
 
+    def test_search_feed_view_raises_404_not_site_root(self):
+        self.site_settings.search_rss_enabled = True
+        self.assertRaises(NotFound,
+            self.folder.restrictedTraverse('@@search_rss'))
+
 
 class TestSyndicationFeedAdapter(BaseSyndicationTest):
 

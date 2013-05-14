@@ -1,4 +1,4 @@
-from zope.component import getAdapter
+from zope.component import queryAdapter
 from zope.component import getMultiAdapter
 from Products.Five import BrowserView
 from zExceptions import NotFound
@@ -15,7 +15,10 @@ from plone.app.z3cform.layout import wrap_form
 class FeedView(BrowserView):
 
     def feed(self):
-        return getAdapter(self.context, IFeed)
+        f = queryAdapter(self.context, IFeed)
+        if f is None:
+            raise NotFound
+        return f
 
     def __call__(self):
         util = getMultiAdapter((self.context, self.request),
@@ -30,8 +33,12 @@ class FeedView(BrowserView):
 
 
 class SearchFeedView(FeedView):
+
     def feed(self):
-        return getAdapter(self.context, ISearchFeed)
+        f = queryAdapter(self.context, ISearchFeed)
+        if f is None:
+            raise NotFound
+        return f
 
     def __call__(self):
         util = getMultiAdapter((self.context, self.request),
