@@ -107,6 +107,26 @@ class TestContentHistoryViewlet(ViewletsTestCase):
         history = viewlet.revisionHistory()
         self.assertFalse('diff_previous_url' in history[0])
 
+    def test_revertAbility(self):
+        # check revert URL is generated only if the user has the appropriate permission
+        repo_tool = self.portal.portal_repository
+        request = self.app.REQUEST
+        context = getattr(self.folder, 'd1')
+        self.loginAsPortalOwner()
+        repo_tool.save(context, comment='Initial Revision')
+        repo_tool.save(context, comment='Second Revision')
+
+        viewlet = ContentHistoryViewlet(context, request, None, None)
+
+        viewlet.update()
+        history = viewlet.revisionHistory()
+        self.assertEqual(history[0]['revert_url'], 'http://nohost/plone/Members/test_user_1_/d1/revertversion')
+
+        self.portal.manage_permission('CMFEditions: Revert to previous versions', [], False)
+
+        viewlet.update()
+        history = viewlet.revisionHistory()
+        self.assertEqual(history[0]['revert_url'], None)
 
 def test_suite():
     from unittest import defaultTestLoader

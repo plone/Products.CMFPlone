@@ -272,6 +272,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         portal_diff = getToolByName(context, "portal_diff", None)
         can_diff = portal_diff is not None \
             and len(portal_diff.getDiffForPortalType(context.portal_type)) > 0
+        can_revert = _checkPermission('CMFEditions: Revert to previous versions', context)
 
         def morphVersionDataToHistoryFormat(vdata, version_id):
             meta = vdata["metadata"]["sys_metadata"]
@@ -290,7 +291,6 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                 comments=meta['comment'],
                 version_id=version_id,
                 preview_url=preview_url,
-                revert_url="%s/revertversion" % context_url,
             )
             if can_diff:
                 if version_id > 0:
@@ -303,6 +303,10 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                         "%s/@@history?one=current&two=%s" %
                         (context_url, version_id)
                     )
+            if can_revert:
+                info["revert_url"] = "%s/revertversion" % context_url
+            else:
+                info["revert_url"] = None
             info.update(self.getUserInfo(userid))
             return info
 

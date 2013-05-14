@@ -8,6 +8,9 @@ Changelog
   See https://dev.plone.org/ticket/13506
   [kroman0]
 
+- Check appropriate permission for 'Revert to this revision' button.
+  [danjacka]
+
 - Use tableofcontents-viewlet for plone.app.contenttypes
   Fixes https://github.com/plone/plone.app.contenttypes/issues/34
   [pbauer]

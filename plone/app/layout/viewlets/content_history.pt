@@ -15,7 +15,7 @@
                             isVersion python:item['type']=='versioning'">
              <div class="historyTools" tal:condition="isVersion">
 
-                 <ul>
+                 <ul tal:condition="item/revert_url">
                      <li><form action="" method="post" tal:attributes="action item/revert_url">
                         <input type="hidden" name="version_id" value="" tal:attributes="value item/version_id" />
                         <input class="standalone" type="submit" i18n:attributes="value title_revert_revision"
