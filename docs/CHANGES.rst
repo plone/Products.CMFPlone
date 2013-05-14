@@ -8,6 +8,10 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
+- Add a 'max_tabs' option to form-tabbing.js to allow changes to the number of
+  tabs displayed before the script uses a dropdown instead.
+  [esteele]
+
 - jquery-integration.js gets disabled during the upgrade to Plone 4.3. Make sure
   we do so for new sites as well.
   [esteele]
