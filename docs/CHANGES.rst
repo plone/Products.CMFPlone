@@ -12,6 +12,9 @@ Changelog
   tabs displayed before the script uses a dropdown instead.
   [esteele]
 
+- register search_rss only for site root
+  [vangheem]
+
 - jquery-integration.js gets disabled during the upgrade to Plone 4.3. Make sure
   we do so for new sites as well.
   [esteele]
