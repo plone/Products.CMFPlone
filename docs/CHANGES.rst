@@ -8,6 +8,10 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Add a 'max_tabs' option to form-tabbing.js to allow changes to the number of
+  tabs displayed before the script uses a dropdown instead.
+  [esteele]
+
 - fix commas in kss-bbb.js for IE7/8 [vangheem]
 
 - Reenable forgotten tests [kiorky]

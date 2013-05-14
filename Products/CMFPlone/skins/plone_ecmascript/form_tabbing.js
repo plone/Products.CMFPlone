@@ -20,14 +20,15 @@
 
 var ploneFormTabbing = {
         // standard jQueryTools configuration options for all form tabs
-        jqtConfig:{current:'selected'}
+        jqtConfig:{current:'selected'},
+        max_tabs: 6
     };
 
 
 (function($) {
 
 ploneFormTabbing._buildTabs = function(container, legends) {
-    var threshold = legends.length > 6;
+    var threshold = legends.length > ploneFormTabbing.max_tabs;
     var panel_ids, tab_ids = [], tabs = '';
 
     for (var i=0; i < legends.length; i++) {
