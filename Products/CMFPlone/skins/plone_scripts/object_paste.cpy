@@ -10,6 +10,7 @@
 
 from AccessControl import Unauthorized
 from logging import getLogger
+from OFS.CopySupport import CopyError
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import transaction_note
 from ZODB.POSException import ConflictError
@@ -32,6 +33,16 @@ except Unauthorized:
     # "You are not allowed to access 'manage_pasteObjects' in this context"
     msg = _(u'You are not authorized to paste here.')
     ok = False
+except CopyError as e:
+    error_string = str(e)
+    if 'Item Not Found' in error_string:
+        context.plone_utils.addPortalMessage(
+            _(u'The item you are trying to paste could not be found. '
+               'It may have been moved or deleted after you copied or cut it. '),
+            'error',
+        )
+        return state.set(status='failure')
+    raise
 except Exception as e:
     if '__cp' in context.REQUEST:
         logger.exception('Exception during pasting')

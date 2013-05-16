@@ -65,6 +65,9 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
+- Fail nicely when pasting a deleted item (https://dev.plone.org/ticket/13337)
+  [khink]
+
 - Add distinct classes for live search links.
   Add id for image details.
   [cedricmessiant]
