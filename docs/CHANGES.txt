@@ -8,6 +8,9 @@ Changelog
 4.2.6 (unreleased)
 ------------------
 
+- Fail nicely when pasting a deleted item (https://dev.plone.org/ticket/13337)
+  [khink]
+
 - Fail nicely when userid is not provided to mail_password script.
   [esteele]
 
