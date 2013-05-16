@@ -8,6 +8,9 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
+- Fail nicely when pasting a deleted item (https://dev.plone.org/ticket/13337)
+  [khink]
+
 - Add a 'max_tabs' option to form-tabbing.js to allow changes to the number of
   tabs displayed before the script uses a dropdown instead.
   [esteele]
