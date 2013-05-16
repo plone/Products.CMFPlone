@@ -20,7 +20,7 @@ We need to allow multiple languages to see the result of our changes:
 Add Document
 ------------
 
-What we do next is we 
+What we do next is we
 
   - go to our home folder,
   - add a new page,
@@ -88,8 +88,8 @@ If we click the Edit link twice and then Cancel, we end at the
 canonical view of the document:
 
     >>> browser.getLink('Edit').click()
-    >>> browser.getLink('Edit').click()    
-    >>> browser.getControl('Cancel').click() 
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl('Cancel').click()
     >>> browser.url
     'http://nohost/plone/Members/test_user_1_/my-page/view'
 
@@ -182,4 +182,64 @@ I'm sure:
     >>> browser.getControl('Ons Bier').click()
     >>> browser.getControl('Delete').click()
     >>> 'Item(s) deleted.' in browser.contents
+    True
+
+Paste deleted document
+----------------------
+
+When the document has been moved or deleted by someone else in the time
+between cut and paste, the page should say so and not give a stacktrace.
+(https://dev.plone.org/ticket/13577)
+
+    >>> browser.open('http://nohost/plone/Members/test_user_1_')
+    >>> browser.getLink('Add new').click()
+    >>> browser.getControl('Page').click()
+    >>> browser.getControl('Add').click()
+    >>> browser.getControl('Body Text').value = ''
+    >>> browser.getControl('Title').value = 'Op een dag'
+    >>> browser.getControl('Save').click()
+    >>> 'Op een dag' in browser.contents
+    True
+
+We go now to the document absolute url:
+
+    >>> browser.open('http://nohost/plone/Members/test_user_1_/op-een-dag')
+
+We'll first cut our Document.
+
+    >>> browser.getLink('Actions').click()
+    >>> browser.getControl('Op een dag').click()
+    >>> browser.getControl('Cut').click()
+
+Login another user:
+
+    >>> browser2 = Browser()
+    >>> browser2.open('http://nohost/plone/login_form')
+    >>> browser2.getControl('Login Name').value = 'test_user_1_'
+    >>> browser2.getControl('Password').value = 'secret'
+    >>> browser2.getControl('Log in').click()
+
+Other user removes document:
+(It's good enough to log in as the same user on a different Browser,
+the main thing is that Plone's session is unable to remove the cut content
+from its clipboard.)
+
+    >>> browser2.open('http://nohost/plone/Members/test_user_1_/op-een-dag')
+    >>> browser2.getLink('Actions').click()
+    >>> browser2.getControl('Op een dag').click()
+    >>> browser2.getControl('Delete').click()
+
+This should fail graciously, that is:
+- Not give a server error
+- Not give a traceback
+- Show a message that says what's wrong
+
+    >>> browser.open('http://nohost/plone/Members/test_user_1_/my-folder')
+    >>> browser.getLink('Actions').click()
+    >>> browser.getControl('Paste').click()
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/my-folder/folder_contents'
+    >>> 'Traceback' not in browser.contents
+    True
+    >>> 'may have been moved or deleted after you copied' in browser.contents
     True

@@ -10,6 +10,7 @@
 
 from AccessControl import Unauthorized
 from logging import getLogger
+from OFS.CopySupport import CopyError
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 
@@ -30,6 +31,16 @@ if context.cb_dataValid:
         msg = _(u'Disallowed to paste item(s).')
     except Unauthorized:
         msg = _(u'Unauthorized to paste item(s).')
+    except CopyError as e:
+        error_string = str(e)
+        if 'Item Not Found' in error_string:
+            context.plone_utils.addPortalMessage(
+                _(u'The item you are trying to paste could not be found. '
+                   'It may have been moved or deleted after you copied or cut it. '),
+                'error',
+            )
+            return state.set(status='failure')
+        raise
     except: # fallback
         if '__cp' not in context.REQUEST:
             msg = _(u'Paste could not find clipboard content.')
