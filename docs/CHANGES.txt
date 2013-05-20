@@ -8,6 +8,10 @@ Changelog
 4.2.6 (unreleased)
 ------------------
 
+- Remove reference to unimplemented 'make_private' transition in
+  simple_publication_workflow.
+  [danjacka]
+
 - Fail nicely when pasting a deleted item (https://dev.plone.org/ticket/13337)
   [khink]
 
