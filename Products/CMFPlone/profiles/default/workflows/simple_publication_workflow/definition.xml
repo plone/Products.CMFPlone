@@ -20,7 +20,6 @@
   <description i18n:translate="">
     Waiting to be reviewed, not editable by the owner.
   </description>
-  <exit-transition transition_id="make_private"/>
   <exit-transition transition_id="publish"/>
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="retract"/>

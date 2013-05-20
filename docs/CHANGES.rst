@@ -8,6 +8,10 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Remove reference to unimplemented 'make_private' transition in
+  simple_publication_workflow.
+  [danjacka]
+
 - Add a 'max_tabs' option to form-tabbing.js to allow changes to the number of
   tabs displayed before the script uses a dropdown instead.
   [esteele]
