@@ -139,7 +139,7 @@
   </guard>
  </transition>
  <transition transition_id="reject"  new_state="private"
-             title="Reviewer send content back for re-drafting"
+             title="Reviewer sends content back for re-drafting"
              trigger="USER"
              before_script="" after_script=""
              i18n:attributes="title">
