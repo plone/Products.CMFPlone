@@ -49,6 +49,7 @@
     predicate_type="major_minor">
   <argument value="text"/>
   <argument value="csv"/>
+ </predicate>
  <predicate name="tsv" content_type_name="File"
     predicate_type="major_minor">
   <argument value="text"/>
