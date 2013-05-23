@@ -8,6 +8,9 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
+- Some text/* mime types should be Files, not Documents.
+  [rpatterson]
+
 - Remove reference to unimplemented 'make_private' transition in
   simple_publication_workflow.
   [danjacka]
