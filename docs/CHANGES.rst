@@ -40,6 +40,8 @@ Changelog
   Add id for image details.
   [cedricmessiant]
 
+- update registerPloneFunction call in login.js (depreacted)
+  [toutpt]
 
 4.3 (2013-04-06)
 ----------------
