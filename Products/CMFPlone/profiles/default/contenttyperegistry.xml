@@ -35,6 +35,26 @@
   <argument value="message"/>
   <argument value="rfc822"/>
  </predicate>
+ <predicate name="xml" content_type_name="File"
+    predicate_type="major_minor">
+  <argument value="text"/>
+  <argument value="xml"/>
+ </predicate>
+ <predicate name="css" content_type_name="File"
+    predicate_type="major_minor">
+  <argument value="text"/>
+  <argument value="css"/>
+ </predicate>
+ <predicate name="csv" content_type_name="File"
+    predicate_type="major_minor">
+  <argument value="text"/>
+  <argument value="csv"/>
+ </predicate>
+ <predicate name="tsv" content_type_name="File"
+    predicate_type="major_minor">
+  <argument value="text"/>
+  <argument value="tsv"/>
+ </predicate>
  <predicate name="text" content_type_name="Document"
     predicate_type="major_minor">
   <argument value="text"/>
