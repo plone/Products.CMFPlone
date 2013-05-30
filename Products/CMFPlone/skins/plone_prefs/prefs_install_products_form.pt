@@ -34,8 +34,8 @@
           configuration, run buildout, and restart the server process.
           For detailed instructions see
           <span i18n:name="third_party_product">
-          <a i18n:translate="" href="http://plone.org/documentation/tutorial/buildout/installing-a-third-party-product">
-            Installing a third party add-on
+          <a i18n:translate="" href="http://plone.org/documentation/kb/installing-add-ons-quick-how-to">
+            Installing Plone add-ons
           </a>
           </span>.
         </p>
