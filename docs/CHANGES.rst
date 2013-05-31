@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3.1 (unreleased)
+4.3.1 (2013-05-30)
 ------------------
 
 - Some text/* mime types should be Files, not Documents.
