@@ -55,6 +55,10 @@
   <argument value="text"/>
   <argument value="tsv"/>
  </predicate>
+ <predicate name="sha1" content_type_name="File"
+    predicate_type="extension">
+  <argument value="sha1"/>
+ </predicate>
  <predicate name="text" content_type_name="Document"
     predicate_type="major_minor">
   <argument value="text"/>
