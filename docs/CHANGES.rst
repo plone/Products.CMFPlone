@@ -8,8 +8,8 @@ Changelog
 4.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Stop unload-protection from popping up needlessly if tinyMCE is used on tabbed forms
+  [href]
 
 4.3.1 (2013-05-30)
 ------------------
