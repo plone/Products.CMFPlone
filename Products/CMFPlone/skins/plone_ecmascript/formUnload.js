@@ -115,8 +115,15 @@ if (!window.beforeunload) {(function($) {
     c.checkbox = c.radio = function(ele) {
         return ele.checked !== ele.defaultChecked;
     };
-    c.file = c.password = c.textarea = c.text = function(ele) {
+    c.file = c.password = function(ele) {
         return ele.value !== ele.defaultValue;
+    };
+    c.text = c.textarea = function(ele) {
+        if ($(ele).hasClass('mce_editable') && typeof(tinyMCE) != "undefined") {
+            return tinyMCE.get(ele.id).getContent() != ele.defaultValue;
+        } else {
+            return ele.value !== ele.defaultValue;
+        }
     };
     // hidden: cannot tell on Mozilla without special treatment
     c.hidden = function(ele) {
