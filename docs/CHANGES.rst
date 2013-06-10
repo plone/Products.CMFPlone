@@ -67,6 +67,9 @@ Changelog
 
 - Test for #7627 (https://dev.plone.org/ticket/7627) (backport from 4.3)
   [kiorky]
+  
+- Stop unload-protection from popping up needlessly if tinyMCE is used on tabbed forms
+  [href]
 
 
 4.3.1 (unreleased)
