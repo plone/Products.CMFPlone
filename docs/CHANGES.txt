@@ -8,6 +8,10 @@ Changelog
 4.2.6 (unreleased)
 ------------------
 
+- Applied petschki's patch which fixes javascript error on enabled
+  'mark special links' option, fixes #12440
+  [vangheem]
+
 - Remove reference to unimplemented 'make_private' transition in
   simple_publication_workflow.
   [danjacka]
