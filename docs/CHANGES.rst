@@ -8,6 +8,9 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- remove bbb-kss.css from css registry registration
+  [vangheem]
+
 - Some text/* mime types should be Files, not Documents.
   [rpatterson]
 
