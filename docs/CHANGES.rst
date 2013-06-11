@@ -8,6 +8,9 @@ Changelog
 4.3.2 (unreleased)
 ------------------
 
+- remove bbb-kss.css from css registry registration
+  [vangheem]
+
 - Stop unload-protection from popping up needlessly if tinyMCE is used on tabbed forms
   [href]
 
