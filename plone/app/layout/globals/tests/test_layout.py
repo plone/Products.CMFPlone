@@ -19,16 +19,20 @@ class TestLayoutView(GlobalsTestCase):
         # We have a Calendar portlet on the right in Plone 4.4.
         self.assertEqual(True, have_portlets('plone.rightcolumn'))
 
-    def testDisableColumns(self):
-        self.setRoles(('Manager', ))
-
+    def testEnableColumns(self):
         # Make sure we can force a column to appear even if there are no
         # portlets
         self.app.REQUEST.set('disable_plone.leftcolumn', 0)
         self.assertEqual(True, self.view.have_portlets('plone.leftcolumn'))
 
-        # Now add some portlets to be sure we have columns
-        portlet = getUtility(IPortletType, name='portlets.Calendar')
+    def testDisableColumns(self):
+        self.setRoles(('Manager', ))
+
+        # Now add some portlets to be sure we have columns.  For
+        # simplicity we want a portlet that has no add form.  Note
+        # that apparently the Calender had no add form until Plone
+        # 4.3, but since 4.4 it does, so it is not fit to use here.
+        portlet = getUtility(IPortletType, name='portlets.Login')
         mapping_left = self.portal.restrictedTraverse(
             '++contextportlets++plone.leftcolumn')
         mapping_right = self.portal.restrictedTraverse(
@@ -45,6 +49,15 @@ class TestLayoutView(GlobalsTestCase):
         # This is a NullAddForm - calling it does the work
         addview_left()
         addview_right()
+
+        # Logout, otherwise the login portlet will never show.
+        self.logout()
+
+        # Check that we do not explicitly disable the columns.  This
+        # may happen if we change the request in this method or if the
+        # addviews return an add-form after all.
+        self.assertTrue('disable_plone.leftcolumn' not in self.app.REQUEST)
+        self.assertTrue('disable_plone.rightcolumn' not in self.app.REQUEST)
 
         self.assertEqual(True, self.view.have_portlets('plone.leftcolumn'))
         self.app.REQUEST.set('disable_plone.leftcolumn', 1)
