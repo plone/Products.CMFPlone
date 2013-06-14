@@ -16,7 +16,8 @@ class TestLayoutView(GlobalsTestCase):
     def testHavePortlets(self):
         have_portlets = self.view.have_portlets
         self.assertEqual(False, have_portlets('plone.leftcolumn'))
-        self.assertEqual(False, have_portlets('plone.rightcolumn'))
+        # We have a Calendar portlet on the right in Plone 4.4.
+        self.assertEqual(True, have_portlets('plone.rightcolumn'))
 
     def testDisableColumns(self):
         self.setRoles(('Manager', ))
