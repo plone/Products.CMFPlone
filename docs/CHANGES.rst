@@ -8,6 +8,9 @@ Changelog
 4.3.2 (unreleased)
 ------------------
 
+- Fix dependency ordering problem with plone-final import step.
+  [davisagli]
+
 - remove bbb-kss.css from css registry registration
   [vangheem]
 
