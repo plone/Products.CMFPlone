@@ -84,6 +84,11 @@
    <depends name="portlets" />
    <depends name="rolemap" />
    <depends name="tinymce_settings" />
+   <depends name="cssregistry" />
+   <depends name="jsregistry" />
+   <depends name="viewlets" />
+   <depends name="controlpanel" />
+   <depends name="propertiestool" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
