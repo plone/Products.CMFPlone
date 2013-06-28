@@ -8,6 +8,9 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Get ``portal_discussion`` properly with ``getToolByName``.
+  [maurits]
+
 - Fix dependency ordering problem with plone-final import step.
   [davisagli]
 
