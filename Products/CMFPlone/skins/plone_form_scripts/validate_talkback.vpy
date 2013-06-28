@@ -9,8 +9,9 @@
 ##title=validates a discussion entry
 
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFCore.utils import getToolByName
 
-dtool = context.portal_discussion
+dtool = getToolByName(context, 'portal_discussion')
 try:
     content = context.parentsInThread()[0]
 except AttributeError:

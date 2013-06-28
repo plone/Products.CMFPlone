@@ -15,7 +15,9 @@ if obj is None:
 
 parent = obj.inReplyTo()
 if parent is not None:
-    talkback = context.portal_discussion.getDiscussionFor(parent)
+    from Products.CMFCore.utils import getToolByName
+    dtool = getToolByName(context, 'portal_discussion')
+    talkback = dtool.getDiscussionFor(parent)
 else:
     talkback = parent = obj.aq_parent
 
