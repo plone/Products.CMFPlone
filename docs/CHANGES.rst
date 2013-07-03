@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Merged PLIP #13270: Move presentation mode out of core.
+  If the feature is still desired, use the plone.app.s5slideshow add-on.
+  [davisagli]
+
 - Add "plone-5" ZCML feature. Add-ons can register
   ZCML for Plone 5 only using zcml:condition="have plone-5"
   [davisagli]
