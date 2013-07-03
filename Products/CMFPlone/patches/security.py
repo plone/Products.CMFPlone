@@ -71,3 +71,8 @@ from Products.CMFCore import utils
 exec code in utils.getToolByName.func_globals
 utils._getToolByName.func_code = utils.getToolByName.func_code
 utils.getToolByName.func_code = utils.check_getToolByName.func_code
+
+# 6. Protect some methods in ZCatalog
+from Products.ZCatalog.ZCatalog import ZCatalog
+ZCatalog.resolve_path__roles__ = ()
+ZCatalog.resolve_url__roles__ = ()
