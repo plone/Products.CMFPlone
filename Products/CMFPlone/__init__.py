@@ -23,6 +23,11 @@ def initialize(context):
     from AccessControl import ModuleSecurityInfo
     from AccessControl import allow_module, allow_class
 
+    # protect OFS.ObjectManager
+    ModuleSecurityInfo('OFS.ObjectManager').setDefaultAccess(0)
+    ModuleSecurityInfo('OFS.ObjectManager').declareObjectPrivate()
+    ModuleSecurityInfo('OFS.ObjectManager').declarePublic('BeforeDeleteException')
+
     # allow logging
     ModuleSecurityInfo('logging').declarePublic('getLogger')
     from logging import Logger
