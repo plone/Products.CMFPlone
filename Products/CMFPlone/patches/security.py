@@ -7,9 +7,9 @@ from zope.traversing import namespace
 from zope.traversing.interfaces import TraversalError
 old_traverse = namespace.view.traverse
 def traverse(self, name, ignored):
-	if not name:
-		raise TraversalError(self.context, name)
-	return old_traverse(self, name, ignored)
+    if not name:
+        raise TraversalError(self.context, name)
+    return old_traverse(self, name, ignored)
 namespace.view.traverse = traverse
 
 # 3. be sure to check Access contents information permission for FTP users
