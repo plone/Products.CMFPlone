@@ -11,6 +11,7 @@ Changelog
 - Applied security fixes from PloneHotfix20130618:
 
   - Protected methods on the ZCatalog.
+  - Added missing module security declarations.
 
   [davisagli]
 

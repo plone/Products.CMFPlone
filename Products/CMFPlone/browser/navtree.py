@@ -14,6 +14,7 @@ from plone.app.layout.navigation.root import getNavigationRoot
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
+from AccessControl import ModuleSecurityInfo
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import utils
@@ -22,6 +23,9 @@ from Products.CMFPlone import utils
 # to expand the default navtree behaviour, and pass instances of your
 # subclasses to buildFolderTree().
 
+security = ModuleSecurityInfo()
+security.declarePrivate('plone')
+security.declarePrivate('utils')
 
 class NavtreeQueryBuilder(object):
     """Build a navtree query based on the settings in navtree_properties
