@@ -5,6 +5,14 @@
 Changelog
 =========
 
+5.0a1 (unreleased)
+------------------
+
+- Add "plone-5" ZCML feature. Add-ons can register
+  ZCML for Plone 5 only using zcml:condition="have plone-5"
+  [davisagli]
+
+
 4.3.2 (unreleased)
 ------------------
 

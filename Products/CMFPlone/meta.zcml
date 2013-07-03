@@ -5,15 +5,16 @@
 
     <!-- Register a feature; once this is in place, you can do
 
-            zcml:condition="have plone-4"
+            zcml:condition="have plone-5"
 
-         to register Plone 4-specific configuration
+         to register Plone 5-specific configuration
       -->
 
     <meta:provides feature="plone-4" />
     <meta:provides feature="plone-41" />
     <meta:provides feature="plone-42" />
     <meta:provides feature="plone-43" />
+    <meta:provides feature="plone-5" />
 
     <!-- Exclude directives need to be executed before the ZCML file would
          be loaded. Doing this during the meta.zcml phase ensures this.
