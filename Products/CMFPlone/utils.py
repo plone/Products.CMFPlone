@@ -15,6 +15,7 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 import OFS
 from AccessControl import getSecurityManager, Unauthorized
+from AccessControl import ModuleSecurityInfo
 from Acquisition import aq_get
 from Acquisition import aq_base, aq_inner, aq_parent
 from App.Common import package_home
@@ -29,9 +30,23 @@ from Products.PlonePAS.interfaces.plugins import IUserManagement
 
 import transaction
 
+security = ModuleSecurityInfo()
+security.declarePrivate('abspath')
+security.declarePrivate('re')
+security.declarePrivate('OFS')
+security.declarePrivate('aq_get')
+security.declarePrivate('package_home')
+security.declarePrivate('ImageFile')
+security.declarePrivate('CMFCoreToolInit')
+security.declarePrivate('transaction')
+security.declarePrivate('zope')
+
+
 # Canonical way to get at CMFPlone directory
 PACKAGE_HOME = package_home(globals())
+security.declarePrivate('PACKAGE_HOME')
 WWW_DIR = join(PACKAGE_HOME, 'www')
+security.declarePrivate('WWW_DIR')
 
 # Log methods
 from log import log
@@ -248,6 +263,7 @@ class RealIndexIterator(object):
         return result
 
 
+security.declarePrivate('ToolInit')
 class ToolInit(CMFCoreToolInit):
 
     def getProductContext(self, context):
@@ -528,6 +544,7 @@ from OFS.CopySupport import eNotSupported
 from cgi import escape
 import sys
 
+security.declarePrivate('sys')
 
 def _unrestricted_rename(container, id, new_id):
     """Rename a particular sub-object
@@ -572,6 +589,7 @@ def _unrestricted_rename(container, id, new_id):
 # Copied '_getSecurity' from Archetypes.utils to avoid a dependency.
 
 from AccessControl import ClassSecurityInfo
+security.declarePrivate('ClassSecurityInfo')
 
 
 def _getSecurity(klass, create=True):
