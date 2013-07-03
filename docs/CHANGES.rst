@@ -8,6 +8,12 @@ Changelog
 4.3.2 (unreleased)
 ------------------
 
+- Applied security fixes from PloneHotfix20130618:
+
+  - Protected methods on the ZCatalog.
+
+  [davisagli]
+
 - Get ``portal_discussion`` properly with ``getToolByName``.
   [maurits]
 
