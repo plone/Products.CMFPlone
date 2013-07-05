@@ -161,7 +161,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
     
     def test_resolve_url(self):
         res = self.publish("/plone/uid_catalog/resolve_url?path=/evil")
-        self.assertEqual(302, res.status)
+        self.assertEqual(404, res.status)
         self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
 
     def test_at_download(self):
