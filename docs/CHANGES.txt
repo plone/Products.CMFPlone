@@ -13,6 +13,7 @@ Changelog
   - Protected methods on the ZCatalog.
   - Added missing module security declarations.
   - Sanitize url in isURLInPortal.
+  - Check 'Set own password' permission in mailPassword.
 
   [davisagli]
 
