@@ -173,7 +173,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declareProtected(AllowSendto, 'sendto')
     def sendto(self, send_to_address, send_from_address, comment,
                subject='Plone', **kwargs):
-        """Sends a link of a page to someone."""
+        # Sends a link of a page to someone.
         host = self.getMailHost()
         template = getattr(self, 'sendto_template')
         portal = getToolByName(self, 'portal_url').getPortalObject()
