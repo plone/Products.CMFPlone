@@ -18,8 +18,8 @@ from Products.CMFCore.permissions import AddPortalMember
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
 from AccessControl import getSecurityManager
-from AccessControl import newSecurityManager
-from AccessControl import setSecurityManager
+from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import setSecurityManager
 from AccessControl.User import nobody
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
