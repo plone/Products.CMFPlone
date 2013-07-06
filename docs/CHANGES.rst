@@ -12,6 +12,7 @@ Changelog
 
   - Protected methods on the ZCatalog.
   - Added missing module security declarations.
+  - Sanitize url in isURLInPortal.
 
   [davisagli]
 

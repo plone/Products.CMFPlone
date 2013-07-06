@@ -6,6 +6,7 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 from posixpath import normpath
 from urlparse import urlparse, urljoin
+import re
 
 
 class URLTool(PloneBaseTool, BaseTool):
@@ -27,6 +28,9 @@ class URLTool(PloneBaseTool, BaseTool):
             site_properties are also considered within the portal to allow for
             single sign on.
         """
+        # sanitize url
+        url = re.sub('^[\x00-\x20]+', '', url).strip()
+
         p_url = self()
 
         _, u_host, u_path, _, _, _ = urlparse(url)
