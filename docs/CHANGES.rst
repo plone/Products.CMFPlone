@@ -20,6 +20,18 @@ Changelog
 4.3.2 (unreleased)
 ------------------
 
+- Applied security fixes from PloneHotfix20130618:
+
+  - Protected methods on the ZCatalog.
+  - Added missing module security declarations.
+  - Sanitize url in isURLInPortal.
+  - Check 'Set own password' permission in mailPassword.
+  - Prevent the Zope request from being traversed.
+  - Protected sendto method.
+  - Sanitize input to spamProtect script.
+
+  [davisagli]
+
 - Get ``portal_discussion`` properly with ``getToolByName``.
   [maurits]
 

@@ -17,6 +17,9 @@ from Products.CMFCore.permissions import AddPortalMember
 
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo, Unauthorized
+from AccessControl import getSecurityManager
+from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import setSecurityManager
 from AccessControl.User import nobody
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 from Products.CMFPlone.PloneTool import EMAIL_RE
@@ -24,6 +27,7 @@ from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFDefault.permissions import ManagePortal
+from Products.PluggableAuthService.permissions import SetOwnPassword
 
 from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin, IPropertiesPlugin
 from Products.PluggableAuthService.interfaces.authservice \
@@ -315,6 +319,20 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         if member is None:
             raise ValueError(
                 _(u'The username you entered could not be found.'))
+
+        # Make sure the user is allowed to set the password.
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        acl_users = getToolByName(portal, 'acl_users')
+        user = acl_users.getUserById(member.getId())
+        orig_sm = getSecurityManager()
+        try:
+            newSecurityManager(REQUEST or self.REQUEST, user)
+            tmp_sm = getSecurityManager()
+            if not tmp_sm.checkPermission(SetOwnPassword, portal):
+                raise Unauthorized(
+                    _(u"Mailing forgotten passwords has been disabled."))
+        finally:
+            setSecurityManager(orig_sm)
 
         # assert that we can actually get an email address, otherwise
         # the template will be made with a blank To:, this is bad

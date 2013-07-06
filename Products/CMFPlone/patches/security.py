@@ -7,9 +7,9 @@ from zope.traversing import namespace
 from zope.traversing.interfaces import TraversalError
 old_traverse = namespace.view.traverse
 def traverse(self, name, ignored):
-	if not name:
-		raise TraversalError(self.context, name)
-	return old_traverse(self, name, ignored)
+    if not name:
+        raise TraversalError(self.context, name)
+    return old_traverse(self, name, ignored)
 namespace.view.traverse = traverse
 
 # 3. be sure to check Access contents information permission for FTP users
@@ -76,3 +76,20 @@ if '_marker' not in utils.getToolByName.func_globals:
 exec code in utils.getToolByName.func_globals
 utils._getToolByName.func_code = utils.getToolByName.func_code
 utils.getToolByName.func_code = utils.check_getToolByName.func_code
+
+# 6. Protect some methods in ZCatalog
+from Products.ZCatalog.ZCatalog import ZCatalog
+ZCatalog.resolve_path__roles__ = ()
+ZCatalog.resolve_url__roles__ = ()
+
+# 7. Prevent publish traversal of the request
+from ZPublisher.BaseRequest import BaseRequest
+from ZPublisher.HTTPRequest import HTTPRequest
+from zope.publisher.base import BaseRequest as ZPBaseRequest
+from zope.publisher.ftp import FTPRequest
+from zope.publisher.http import HTTPRequest as ZPHTTPRequest
+for c in [BaseRequest, HTTPRequest, ZPBaseRequest, FTPRequest, ZPHTTPRequest]:
+    try:
+        del c.__doc__
+    except:
+        pass
