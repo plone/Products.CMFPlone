@@ -14,6 +14,7 @@ Changelog
   - Added missing module security declarations.
   - Sanitize url in isURLInPortal.
   - Check 'Set own password' permission in mailPassword.
+  - Prevent the Zope request from being traversed.
 
   [davisagli]
 
