@@ -81,3 +81,15 @@ utils.getToolByName.func_code = utils.check_getToolByName.func_code
 from Products.ZCatalog.ZCatalog import ZCatalog
 ZCatalog.resolve_path__roles__ = ()
 ZCatalog.resolve_url__roles__ = ()
+
+# 7. Prevent publish traversal of the request
+from ZPublisher.BaseRequest import BaseRequest
+from ZPublisher.HTTPRequest import HTTPRequest
+from zope.publisher.base import BaseRequest as ZPBaseRequest
+from zope.publisher.ftp import FTPRequest
+from zope.publisher.http import HTTPRequest as ZPHTTPRequest
+for c in [BaseRequest, HTTPRequest, ZPBaseRequest, FTPRequest, ZPHTTPRequest]:
+    try:
+        del c.__doc__
+    except:
+        pass
