@@ -6,6 +6,17 @@
 ##bind subpath=traverse_subpath
 ##parameters=mailaddress=None, mailname=None, cssclass=None, cssid=None
 ##title=Returns a spam-protected mail address tag
+##
+
+def escape(s):
+	if s is not None:
+		s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+	return s
+
+mailaddress = escape(mailaddress)
+mailname = escape(mailname)
+cssclass = escape(cssclass)
+cssid = escape(cssid)
 
 email = mailaddress.replace('@', '&#0064;').replace(':', '&#0058;')
 

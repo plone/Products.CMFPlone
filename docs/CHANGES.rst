@@ -16,6 +16,7 @@ Changelog
   - Check 'Set own password' permission in mailPassword.
   - Prevent the Zope request from being traversed.
   - Protected sendto method.
+  - Sanitize input to spamProtect script.
 
   [davisagli]
 
