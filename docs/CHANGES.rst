@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- fix wrong download url for podcast syndication
+  [Rudd-O]
+
 - Merged PLIP #12344: Use Dexterity-based core content types.
 
   * Avoid including ATContentTypes and Archetypes as a dependency.
