@@ -8,6 +8,9 @@ Changelog
 4.3.2 (unreleased)
 ------------------
 
+- fix wrong download url for podcast syndication
+  [Rudd-O]
+
 - Applied security fixes from PloneHotfix20130618:
 
   - Protected methods on the ZCatalog.

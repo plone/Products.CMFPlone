@@ -243,7 +243,7 @@ class BaseItem(BaseFeedData):
         if fi is not None:
             filename = fi.getFilename()
             if filename:
-                url += '/@@download/file/%s' + filename
+                url += '/@@download/file/%s' % filename
         return url
 
     @property
