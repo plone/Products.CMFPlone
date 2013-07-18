@@ -15,6 +15,23 @@ function toggleSelect(selectbutton, id, initialState, formName) {
      * optional formName: name of the form in which the boxes reside, use this if there are more
      * forms on the page with boxes with the same name
      */
+
+    /* If this browser is an IE8 or older AND this event handler has been registered on a
+     * change event AND this IS a change event, do nothing.
+     * Change events are broken in IE <= 8:
+     * http://www.quirksmode.org/dom/events/change.html
+     * jQuery tries to fix this:
+     * http://api.jquery.com/change/
+     * jquery creates simulated change event handlers which arrive here as click events.
+     * (Interesting side note, this can result in change and click event handlers
+     *  for the same object to be triggered in different orders, depending on the browser)
+     * As such, we can ignore the change events, also because they get triggered when they
+     * shouldn't, like, when clicking on some random thing AFTER clicking on a select all
+     * checkbox.
+     */
+    if (/MSIE [5-8]\./.test(navigator.userAgent) && event.type === "change" && /toggleSelect\(/.test(selectbutton.onchange.toString())){
+        return;
+    }
     var fid, state, base;
 
     fid = id || 'ids:list';  // defaults to ids:list, this is the most common usage
