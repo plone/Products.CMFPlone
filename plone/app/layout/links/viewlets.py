@@ -1,6 +1,7 @@
 from StringIO import StringIO
 
 from plone.memoize import ram
+from plone.memoize import view
 from plone.memoize.compress import xhtml_compress
 from zope.component import getMultiAdapter
 
@@ -80,8 +81,8 @@ class RSSViewlet(ViewletBase):
         settings = IFeedSettings(obj, None)
         if settings is None:
             return []
-        factory = getUtility(IVocabularyFactory,
-                             "plone.app.vocabularies.SyndicationFeedTypes")
+        factory = getUtility(
+            IVocabularyFactory, "plone.app.vocabularies.SyndicationFeedTypes")
         vocabulary = factory(self.context)
         urls = []
         for typ in settings.feed_types:
@@ -120,3 +121,19 @@ class RSSViewlet(ViewletBase):
                 self.rsslinks.extend(self.getRssLinks(self.context))
 
     index = ViewPageTemplateFile('rsslink.pt')
+
+
+class CanonicalURL(ViewletBase):
+    """Defines a canonical link relation viewlet to be displayed across the
+    site. A canonical page is the preferred version of a set of pages with
+    highly similar content. For more information, see:
+    https://tools.ietf.org/html/rfc6596
+    https://support.google.com/webmasters/answer/139394?hl=en
+    """
+
+    @view.memoize
+    def render(self):
+        context_state = getMultiAdapter(
+            (self.context, self.request), name=u'plone_context_state')
+        canonical_url = context_state.canonical_object_url()
+        return u'    <link rel="canonical" href="%s" />' % canonical_url
