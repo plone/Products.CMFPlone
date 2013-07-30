@@ -4,16 +4,6 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
-- Personal bar viewlet home link simply links to the user actions list.
-  [danjacka]
-
-- Fixed AttributeError for FilesystemResourceDirectory
-  See https://dev.plone.org/ticket/13506
-  [kroman0]
-
-- Check appropriate permission for 'Revert to this revision' button.
-  [danjacka]
-
 - Use tableofcontents-viewlet for plone.app.contenttypes
   Fixes https://github.com/plone/plone.app.contenttypes/issues/34
   [pbauer]
@@ -22,11 +12,29 @@ Changelog
   the plone.app.s5slideshow add-on.
   [davisagli]
 
+- PEP8 cleanup.
+  [timo]
+
+
+2.3.6 (unreleased)
+------------------
+
 - Add Dexterity support for the related items viewlet.
   [pabo]
 
-- PEP8 cleanup.
-  [timo]
+- Personal bar viewlet home link simply links to the user actions list.
+  [danjacka]
+
+
+2.3.5 (2013-05-23)
+------------------
+
+- Fixed AttributeError for FilesystemResourceDirectory
+  See https://dev.plone.org/ticket/13506
+  [kroman0]
+
+- Check appropriate permission for 'Revert to this revision' button.
+  [danjacka]
 
 
 2.3.4 (2013-03-05)
