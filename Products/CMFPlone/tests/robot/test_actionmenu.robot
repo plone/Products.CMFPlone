@@ -1,21 +1,17 @@
 *** Settings ***
 
-Variables  plone/app/testing/interfaces.py
-Variables  variables.py
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/saucelabs.robot
 
-Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
+Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  keywords.txt
-
-Suite Setup  Suite Setup
-Suite Teardown  Suite Teardown
-
+Test Setup  Run keywords  Open SauceLabs test browser  Background
+Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Variables ***
 
-${TITLE} =  An actionsmenu page
-${PAGE_ID} =  an-actionsmenu-page
-
+${TITLE}  An actionsmenu page
+${PAGE_ID}  an-actionsmenu-page
 
 *** Test cases ***
 
@@ -24,9 +20,9 @@ ${PAGE_ID} =  an-actionsmenu-page
 # ---
 
 Scenario: Actions Menu rendered collapsed
-	Given an actionsmenu page
-	 Then delete link exists
-    and delete link should not be visible
+    Given an actionsmenu page
+     Then delete link exists
+      and delete link should not be visible
 
 Scenario: Clicking expands action menu
     Given an actionsmenu page
@@ -80,25 +76,17 @@ Scenario:
 
 *** Keywords ***
 
-Suite Setup
-    Open browser  ${PLONE_URL}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
-    Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
+Background
+    Given a site owner
+      and a test document
+
+a site owner
+    Enable autologin as  Site Administrator
+
+a test document
     Go to  ${PLONE_URL}/createObject?type_name=Document
     Input text  name=title  ${TITLE}
     Click Button  Save
-
-Suite Teardown
-    Close All Browsers
-
-Log in
-    [Arguments]  ${userid}  ${password}
-    Go to  ${PLONE_URL}/login_form
-    Page should contain element  __ac_name
-    Page should contain element  __ac_password
-    Page should contain button  Log in
-    Input text  __ac_name  ${userid}
-    Input text  __ac_password  ${password}
-    Click Button  Log in
 
 an actionsmenu page
     Go to  ${PLONE_URL}/${PAGE_ID}
@@ -131,7 +119,7 @@ first menu should not be visible
     Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[1]//dd
 
 I click outside of menu
-    Mouse Down  xpath=//h1
+    Click Element  xpath=//h1
 
 workflow link is clicked
     # store current state
@@ -139,6 +127,23 @@ workflow link is clicked
     Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
     Click Link  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
     Click Link  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
+    # FIXME: The above 'Click Link' fails on Internet Explorer, but the
+    # following keywords 'workflow link is clicked softly' passes. Until we
+    # know why, we check if the above worked and if not, we try the other
+    # approach.
+    @{value} =  Run Keyword And Ignore Error
+    ...         Page Should Contain  Item state changed.
+    Run Keyword If  '@{value}[0]' == 'FAIL'
+    ...         workflow link is clicked softly
+
+workflow link is clicked softly
+    [Documentation]  This works on Internet Explorer, but not on Firefox...
+    Mouse Over  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
+    Click Link  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
+    Mouse Over  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
+    Mouse Down  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
+    Mouse Up  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
+    Wait until page contains  Item state changed.
 
 state should have changed
     Wait until page contains  Item state changed
@@ -157,8 +162,10 @@ Open Action Menu
 I copy the page
     Open Action Menu
     Click Link  link=Copy
+    Page should contain  copied
 
 I paste
+    Go to  ${PLONE_URL}
     Open Action Menu
     Click Link  link=Paste
 
