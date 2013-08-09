@@ -5,6 +5,8 @@ Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
+Resource  common.robot
+
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
 
@@ -23,9 +25,6 @@ Scenario: Add Calendar Portlet
      Then I should see a 'Calendar' portlet in the left column
 
 *** Keywords ***
-
-a site owner
-    Enable autologin as  Site Administrator
 
 a manage portlets view
     Go to   ${PLONE_URL}/@@manage-portlets

@@ -5,6 +5,8 @@ Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
+Resource  common.robot
+
 Test Setup  Run keywords  Open SauceLabs test browser  Background
 Test Teardown  Run keywords  Report test status  Close all browsers
 
@@ -79,9 +81,6 @@ Scenario:
 Background
     Given a site owner
       and a test document
-
-a site owner
-    Enable autologin as  Site Administrator
 
 a test document
     Go to  ${PLONE_URL}/createObject?type_name=Document

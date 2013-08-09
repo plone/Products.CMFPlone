@@ -5,12 +5,10 @@ Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
+Resource  common.robot
+
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
-
-*** Variables ***
-
-${TEST_FOLDER}  test-folder
 
 *** Test cases ***
 
@@ -42,21 +40,7 @@ Scenario: Select All items
 #     When I reorder the elements
 #     Then the new order should be 4 > 3 > 2 > 1
 
-
 *** Keywords ***
-
-a site owner
-    Enable autologin as  Site Administrator
-
-a test folder
-    Go to homepage
-    Add folder  ${TEST_FOLDER}
-
-the site root
-    Go to  ${PLONE_URL}
-
-the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}
 
 the folder contents view
     Go to  ${PLONE_URL}/${TEST_FOLDER}/folder_contents
