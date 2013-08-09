@@ -130,8 +130,7 @@ popup calendar should have the same date
     Element Text Should Be  xpath=//div[@class='calendar']//thead//td[@class='title']  January, 2001
 
 i select a date using the widget
-    Mouse Down  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
-    Mouse Up  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
+    Click Element  xpath=//div[@class='calendar']/table/thead/tr[2]/td[4]/div
 
 form dropdowns should not have the default values anymore
     ${yearLabel} =  Get Selected List Label  xpath=//select[@id='edit_form_effectiveDate_0_year']
