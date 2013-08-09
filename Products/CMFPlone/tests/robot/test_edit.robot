@@ -1,21 +1,17 @@
 *** Settings ***
 
-Variables  plone/app/testing/interfaces.py
-Variables  variables.py
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/saucelabs.robot
 
-Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
+Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  keywords.txt
-
-Suite Setup  Suite Setup
-Suite Teardown  Suite Teardown
-
+Test Setup  Run keywords  Open SauceLabs test browser  Background
+Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Variables ***
 
-${TITLE} =  An edited page
-${PAGE_ID} =  an-edited-page
-
+${TITLE}  An edited page
+${PAGE_ID}  an-edited-page
 
 *** Test cases ***
 
@@ -57,29 +53,19 @@ Scenario: Form dropdowns follows DateTime widget values
      and i select a date using the widget
     Then form dropdowns should not have the default values anymore
 
-
-
 *** Keywords ***
 
-Suite Setup
-    Open browser  ${PLONE_URL}  browser=${BROWSER}
-    Log in  ${SITE_OWNER_NAME}  ${SITE_OWNER_PASSWORD}
+Background
+    Given a site owner
+      and a test document
+
+a site owner
+    Enable autologin as  Site Administrator
+
+a test document
     Go to  ${PLONE_URL}/createObject?type_name=Document
     Input text  name=title  ${TITLE}
     Click Button  Save
-
-Suite Teardown
-    Close All Browsers
-
-Log in
-    [Arguments]  ${userid}  ${password}
-    Go to  ${PLONE_URL}/login_form
-    Page should contain element  __ac_name
-    Page should contain element  __ac_password
-    Page should contain button  Log in
-    Input text  __ac_name  ${userid}
-    Input text  __ac_password  ${password}
-    Click Button  Log in
 
 an edited page
     Go to  ${PLONE_URL}/${PAGE_ID}/edit
@@ -153,5 +139,3 @@ form dropdowns should not have the default values anymore
     Should Not Be Equal  ${monthLabel}  --
     ${dayLabel} =  Get Selected List Label  xpath=//select[@id='edit_form_effectiveDate_0_day']
     Should Not Be Equal  ${dayLabel}  --
-
-
