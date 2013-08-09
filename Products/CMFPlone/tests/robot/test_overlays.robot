@@ -1,21 +1,22 @@
-# Note: These tests are just testing the overlay behavior not the
-# functionality of each form. This is supposed to be tested in functional tests
-# somewhere. At some point in the future the functional tests can be transferred
-# to robot tests into each scenario test case.
-
 *** Settings ***
 
-Variables  plone/app/testing/interfaces.py
-Variables  variables.py
+Documentation  These tests are just testing the overlay behavior not the
+...            functionality of each form. This is supposed to be tested in
+...            functional tests somewhere. At some point in the future the
+...            functional tests can be transferred to robot tests into each
+...            scenario test case.
 
-Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
-Library  Products.CMFPlone.tests.robot.robot_setup.Keywords
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/saucelabs.robot
 
-Resource  keywords.txt
+Library  Remote  ${PLONE_URL}/RobotRemote
 
-Suite Setup  Suite Setup
-Suite Teardown  Suite Teardown
+Test Setup  Run keywords  Open SauceLabs test browser  Background
+Test Teardown  Run keywords  Report test status  Close all browsers
 
+*** Variables ***
+
+${TEST_FOLDER}  test-folder
 
 *** Test cases ***
 
@@ -182,17 +183,24 @@ Scenario: History overlay closes
 
 *** Keywords ***
 
-Suite Setup
-    Open browser  ${PLONE_URL}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
+Background
+    Given a site owner
+      and a test folder
+    Disable autologin
+    Go to homepage
 
-Suite Teardown
-    Close All Browsers
+a test folder
+    Go to homepage
+    Add folder  ${TEST_FOLDER}
+
+a site owner
+    Enable autologin as  Site Administrator
 
 the site root
     Go to  ${PLONE_URL}
 
 the test folder
-    Go to  ${TEST_FOLDER}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}
 
 the users and groups configlet
     Go to  ${PLONE_URL}/@@usergroup-userprefs
@@ -202,10 +210,10 @@ I click the '${link_name}' link
 
 the '${link_name}' overlay
     Click Link  ${link_name}
-    Wait until page contains Element  id=exposeMask
+    Wait until keyword succeeds  30  1  Page should contain element  id=exposeMask
 
 overlay should open
-    Wait until page contains Element  id=exposeMask
+    Wait until keyword succeeds  30  1  Element Should Be Visible  id=exposeMask
     Element should be visible  css=div.overlay
     Element should be visible  css=div.overlay div.close
 
@@ -216,14 +224,14 @@ I close the overlay
     Click Element  css=div.overlay div.close
 
 overlay should close
-    Wait until keyword succeeds  30  1  Element Should Not Be Visible  id=exposeMask
+    Element should not remain visible  id=exposeMask
     Wait until keyword succeeds  30  1  Page should not contain element  css=div.overlay
 
 overlay shows an error
     Wait Until Page Contains  Error
 
 I '${action}' the form
-    Wait until page contains element  id=exposeMask
+    Wait until keyword succeeds  30  1  Element Should Be Visible  id=exposeMask
     Click Element  name=form.button.${action}
 
 I enter wrong credentials
@@ -257,26 +265,26 @@ I trigger the add a new user action
     Click Element  name=users_add
 
 a document '${title}' in the test folder
-    Go to  ${TEST_FOLDER}/createObject?type_name=Document
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Document
     Input text  name=title  ${title}
     Click Button  Save
 
 I set the default content view of the test folder
-    Go to  ${TEST_FOLDER}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//dl[@id='plone-contentmenu-display']/dt/a
     Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
     a document 'doc' in the test folder
-    Go to  ${TEST_FOLDER}/select_default_page?form.submitted=1&objectId=doc
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/select_default_page?form.submitted=1&objectId=doc
 
 I change the default content view of the test folder
-    Go to  ${TEST_FOLDER}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//dl[@id='plone-contentmenu-display']/dt/a
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
-    Go to  ${TEST_FOLDER}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//dl[@id='plone-contentmenu-actions']/dt/a
     Click link  id=plone-contentmenu-actions-${action}
     Wait until page contains Element  id=exposeMask

@@ -7,11 +7,15 @@ from zope.configuration import xmlconfig
 
 from plone.testing import z2
 
+from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
 
-from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
+from plone.app.robotframework import RemoteLibraryLayer
+from plone.app.robotframework import AutoLogin
+
+from Products.CMFPlone.tests.robot.robot_setup import CMFPloneRemoteKeywords
 
 
 class ProductsCMFPloneLayer(PloneSandboxLayer):
@@ -56,9 +60,16 @@ PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PRODUCTS_CMFPLONE_FIXTURE,),
     name="CMFPloneLayer:Functional"
 )
+
+PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE = RemoteLibraryLayer(
+    bases=(PLONE_FIXTURE,),
+    libraries=(AutoLogin, CMFPloneRemoteKeywords),
+    name="CMFPloneRobotRemoteLibrary:RobotRemote"
+)
+
 PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
     bases=(PRODUCTS_CMFPLONE_FIXTURE,
-           AUTOLOGIN_LIBRARY_FIXTURE,
+           PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
            z2.ZSERVER_FIXTURE),
     name="CMFPloneLayer:Acceptance"
 )
