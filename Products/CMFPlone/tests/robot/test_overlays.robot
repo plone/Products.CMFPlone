@@ -11,12 +11,10 @@ Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
+Resource  common.robot
+
 Test Setup  Run keywords  Open SauceLabs test browser  Background
 Test Teardown  Run keywords  Report test status  Close all browsers
-
-*** Variables ***
-
-${TEST_FOLDER}  test-folder
 
 *** Test cases ***
 
@@ -188,19 +186,6 @@ Background
       and a test folder
     Disable autologin
     Go to homepage
-
-a test folder
-    Go to homepage
-    Add folder  ${TEST_FOLDER}
-
-a site owner
-    Enable autologin as  Site Administrator
-
-the site root
-    Go to  ${PLONE_URL}
-
-the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}
 
 the users and groups configlet
     Go to  ${PLONE_URL}/@@usergroup-userprefs
