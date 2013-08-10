@@ -19,6 +19,11 @@ Changelog
 2.3.6 (unreleased)
 ------------------
 
+- Safer, more defensive, template/view name lookup for body class
+  using duck typing.  Fixes conflict with <body> class attribute
+  improvement in TinyMCE.
+  [rpatterson]
+
 - Implement a canonical link relation viewlet to be displayed by
   IHtmlHeadLinks viewlet manager; this will prevent web indexers from indexing
   the same object more than once, improving also the way these indexers deal
