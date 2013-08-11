@@ -1,13 +1,13 @@
-# Additional setup support Python based Keywords
+# -*- coding: utf-8 -*-
+from plone.app.robotframework.remote import RemoteLibrary
 
 from zope.component.hooks import getSite
 from Products.CMFCore.utils import getToolByName
 
-import transaction
 
-
-class Keywords(object):
-    """Robot Framework keyword library"""
+class CMFPloneRemoteKeywords(RemoteLibrary):
+    """Robot Framework remote keywords library
+    """
 
     def the_mail_setup_configured(self):
         portal = getSite()
@@ -15,7 +15,6 @@ class Keywords(object):
         mailhost.smtp_host = 'localhost'
         portal.email_from_address = 'dummyme@dummy.com'
         portal.email_from_name = 'me'
-        transaction.commit()
 
     def the_self_registration_enabled(self):
         portal = getSite()
@@ -27,5 +26,5 @@ class Keywords(object):
 
         reg_roles.append('Anonymous')
 
-        portal.manage_permission('Add portal member', roles=reg_roles, acquire=0)
-        transaction.commit()
+        portal.manage_permission(
+            'Add portal member', roles=reg_roles, acquire=0)

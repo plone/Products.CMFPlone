@@ -1,15 +1,14 @@
 *** Settings ***
 
-Variables  plone/app/testing/interfaces.py
-Variables  variables.py
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/saucelabs.robot
 
-Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
+Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  keywords.txt
+Resource  common.robot
 
-Suite Setup  Suite Setup
-Suite Teardown  Suite Teardown
-
+Test Setup  Run keywords  Open SauceLabs test browser  Background
+Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test cases ***
 
@@ -42,12 +41,9 @@ Scenario: Livesearch in current folder only
 
 *** Keywords ***
 
-Suite Setup
-    Open browser  ${TEST_FOLDER}  browser=${BROWSER}  remote_url=${REMOTE_URL}  desired_capabilities=${DESIRED_CAPABILITIES}
+Background
     Given a site owner
-
-Suite Teardown
-    Close All Browsers
+      and a test folder
 
 I search for
     [Arguments]  ${searchtext}

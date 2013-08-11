@@ -1,20 +1,20 @@
 *** Settings ***
 
-Variables  plone/app/testing/interfaces.py
-Variables  variables.py
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/saucelabs.robot
 
-Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
+Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  keywords.txt
+Resource  common.robot
 
-Suite Setup  Suite Setup
-Suite Teardown  Suite Teardown
-
+Test Setup  Open SauceLabs test browser
+Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test cases ***
 
 Scenario: Select All items
     Given a site owner
+      And a test folder
       And four dummy pages on test folder
       And the folder contents view
      When I select all the elements
@@ -40,17 +40,10 @@ Scenario: Select All items
 #     When I reorder the elements
 #     Then the new order should be 4 > 3 > 2 > 1
 
-
 *** Keywords ***
 
-the site root
-    Go to  ${PLONE_URL}
-
-the test folder
-    Go to  ${TEST_FOLDER}
-
 the folder contents view
-    Go to  ${TEST_FOLDER}/folder_contents
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/folder_contents
 
 I click the '${link_name}' link
     Click Link  ${link_name}
@@ -62,7 +55,7 @@ four dummy pages on test folder
     a document 'doc4' in the test folder
 
 a document '${title}' in the test folder
-    Go to  ${TEST_FOLDER}/createObject?type_name=Document
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Document
     Input text  name=title  ${title}
     Click Button  Save
 
