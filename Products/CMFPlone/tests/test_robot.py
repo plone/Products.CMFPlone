@@ -3,7 +3,7 @@ import unittest
 import robotsuite
 from plone.testing import layered
 
-from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_ACCEPTANCE_TESTING
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_ROBOT_TESTING
 
 
 def test_suite():
@@ -18,7 +18,7 @@ def test_suite():
         suite.addTests([
             layered(
                 robotsuite.RobotTestSuite(test),
-                layer=PRODUCTS_CMFPLONE_ACCEPTANCE_TESTING
+                layer=PRODUCTS_CMFPLONE_ROBOT_TESTING
             ),
         ])
     return suite

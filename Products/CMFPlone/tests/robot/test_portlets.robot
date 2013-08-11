@@ -1,28 +1,28 @@
 *** Settings ***
 
-Variables  plone/app/testing/interfaces.py
-Variables  variables.py
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/saucelabs.robot
 
-Library  Selenium2Library  timeout=${SELENIUM_TIMEOUT}  implicit_wait=${SELENIUM_IMPLICIT_WAIT}
+Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  keywords.txt
+Resource  common.robot
 
-Suite Setup  Suite Setup
-Suite Teardown  Suite Teardown
-
+Test Setup  Open SauceLabs test browser
+Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test cases ***
 
 Scenario: Add Login Portlet
-    Given a manage portlets view
+    Given a site owner
+      and a manage portlets view
      When I add a 'Login' portlet to the left column
      Then I should see a 'Login' portlet in the left column
 
 Scenario: Add Calendar Portlet
-    Given a manage portlets view
+    Given a site owner
+      and a manage portlets view
      When I add a 'Calendar' portlet to the left column
      Then I should see a 'Calendar' portlet in the left column
-
 
 *** Keywords ***
 
@@ -56,5 +56,3 @@ I should not see '${text}' in the left column
 
 I should not see '${text}' in the right column
     Flex Element should not exist  xpath=//div[@id="portal-column-two" and contains(.,"${text}")]
-
-
