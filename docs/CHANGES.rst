@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3.2 (unreleased)
+4.3.2 (2013-08-14)
 ------------------
 
 - fix wrong download url for podcast syndication
