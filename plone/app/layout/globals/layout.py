@@ -18,6 +18,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.browserpage.viewpagetemplatefile import (
     ViewPageTemplateFile as ZopeViewPageTemplateFile
 )
+from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 
 from plone.app.layout.globals.interfaces import ILayoutPolicy
 from plone.app.layout.globals.interfaces import IViewView
@@ -142,15 +143,18 @@ class LayoutPolicy(BrowserView):
         portal_state = getMultiAdapter(
             (context, self.request), name=u'plone_portal_state')
         normalizer = queryUtility(IIDNormalizer)
-        body_class = ''
 
         # template class (required)
-        name = getattr(view, '__name__', None)
-        if name is None and hasattr(template, 'getId'):
+        name = ''
+        if isinstance(template, ViewPageTemplateFile) or \
+           isinstance(template, ZopeViewPageTemplateFile) or \
+           isinstance(template, ViewMixinForTemplates):
+            # Browser view
+            name = view.__name__
+        else:
             name = template.getId()
-        if name:
-            name = normalizer.normalize(name)
-            body_class += 'template-%s' % name
+        name = normalizer.normalize(name)
+        body_class = 'template-%s' % name
 
         # portal type class (optional)
         portal_type = normalizer.normalize(context.portal_type)

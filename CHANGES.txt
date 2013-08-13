@@ -19,9 +19,7 @@ Changelog
 2.3.6 (unreleased)
 ------------------
 
-- Safer, more defensive, template/view name lookup for body class
-  using duck typing.  Fixes conflict with <body> class attribute
-  improvement in TinyMCE.
+- Fix conflict with <body> class attribute improvement in TinyMCE.
   [rpatterson]
 
 - Implement a canonical link relation viewlet to be displayed by
