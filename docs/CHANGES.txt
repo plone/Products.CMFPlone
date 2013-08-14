@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.2.6 (unreleased)
+4.2.6 (2013-08-14)
 ------------------
 
 - Applied security fixes from PloneHotfix20130618:
