@@ -108,55 +108,6 @@ class FrontPage(BrowserView):
 
 class AddPloneSite(BrowserView):
 
-    default_extension_profiles = (
-        'plonetheme.classic:default',
-        'plonetheme.sunburst:default',
-        )
-
-    def profiles(self):
-        base_profiles = []
-        extension_profiles = []
-
-        # profiles available for install/uninstall, but hidden at the time
-        # the Plone site is created
-        not_installable = [
-            'kupu:default',
-            'plonetheme.classic:uninstall',
-            'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
-            'plone.app.registry:default',
-            'plone.app.z3cform:default',
-        ]
-        utils = getAllUtilitiesRegisteredFor(INonInstallable)
-        for util in utils:
-            not_installable.extend(util.getNonInstallableProfiles())
-
-        for info in profile_registry.listProfileInfo():
-            if info.get('type') == EXTENSION and \
-               info.get('for') in (IPloneSiteRoot, None):
-                profile_id = info.get('id')
-                if profile_id not in not_installable:
-                    if profile_id in self.default_extension_profiles:
-                        info['selected'] = 'selected'
-                    extension_profiles.append(info)
-
-        def _key(v):
-            # Make sure implicitly selected items come first
-            selected = v.get('selected') and 'automatic' or 'manual'
-            return '%s-%s' % (selected, v.get('title', ''))
-        extension_profiles.sort(key=_key)
-
-        for info in profile_registry.listProfileInfo():
-            if info.get('type') == BASE and \
-               info.get('for') in (IPloneSiteRoot, None) and \
-               info.get('id') != u'Products.kupu:default':
-                base_profiles.append(info)
-
-        return dict(
-            base=tuple(base_profiles),
-            default=_DEFAULT_PROFILE,
-            extensions=tuple(extension_profiles),
-        )
-
     def browser_language(self):
         language = 'en'
         pl = IUserPreferredLanguages(self.request)
