@@ -43,6 +43,7 @@ class FeedSettings(object):
             self.__dict__[name] = value
         else:
             self._metadata[name] = value
+            self._set()
 
     def __getattr__(self, name):
         default = None

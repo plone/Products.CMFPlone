@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- enable syndication on plone.app.contenttypes collection
+  [vangheem]
+
 - fix syndication settings to not write on read
   [vangheem]
 
