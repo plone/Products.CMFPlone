@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- fix syndication settings to not write on read
+  [vangheem]
+
 - fix wrong download url for podcast syndication
   [Rudd-O]
 
