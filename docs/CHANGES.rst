@@ -58,6 +58,8 @@ Changelog
 - Release Plone 4.3.6 to correct some version incompatibilities in 4.3.5. No upgrades to run.
   [esteele]
 
+- fix syndication settings to not write on read
+  [vangheem]
 
 4.3.5 (2015-05-13)
 ------------------
