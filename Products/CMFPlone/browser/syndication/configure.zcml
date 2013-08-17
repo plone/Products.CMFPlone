@@ -17,7 +17,7 @@
     for="plone.app.collection.interfaces.ICollection"
     zcml:condition="installed plone.app.collection" />
   <adapter factory=".adapters.CollectionFeed"
-    tor="plone.app.contenttypes.interfaces.ICollection"
+    for="plone.app.contenttypes.interfaces.ICollection"
     zcml:condition="installed plone.app.contenttypes" />
   <adapter factory=".adapters.CollectionFeed"
     for="Products.ATContentTypes.interfaces.topic.IATTopic"
