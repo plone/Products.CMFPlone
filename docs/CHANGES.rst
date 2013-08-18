@@ -7,6 +7,8 @@ Changelog
 
 5.0a1 (unreleased)
 ------------------
+- Removed the profile selection from the Plonesite add view.
+  [jaroel]
 
 - enable syndication on plone.app.contenttypes collection
   [vangheem]
