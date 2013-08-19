@@ -35,7 +35,11 @@
   <form action="#"
         method="post"
         tal:attributes="action string:${context/absolute_url}/@@plone-addsite"
-        tal:define="advanced request/advanced|nothing;">
+        tal:define="profiles view/profiles;
+                    base_profiles profiles/base;
+                    default_profile profiles/default;
+                    extension_profiles profiles/extensions;
+                    advanced request/advanced|nothing;">
 
       <div class="field">
         <label for="site_id" i18n:translate="">
@@ -98,6 +102,84 @@
       <tal:content tal:condition="not:advanced">
         <input type="hidden" name="setup_content:boolean" value="true" />
       </tal:content>
+
+
+
+      <tal:baseprofile condition="python: len(base_profiles) > 1">
+        <div class="field">
+          <label for="profile_id" i18n:translate="">
+            Base configuration
+          </label>
+
+          <div class="formHelp" i18n:translate="">
+            You normally don't need to change anything here unless you have
+            specific reasons and know what you are doing.
+          </div>
+
+          <dl>
+            <tal:bases tal:repeat="info base_profiles">
+              <dt>
+                <input type="radio"
+                       name="profile_id:string"
+                       value="profile"
+                       tal:attributes="id info/id;
+                                       value info/id;
+                                       checked python: default_profile==info['id'] and 'checked' or nothing"
+                       />
+                <label tal:attributes="for info/id"
+                       tal:content="info/title">
+                    Profile title
+                </label>
+              </dt>
+              <dd tal:content="info/description">
+                Profile description
+              </dd>
+            </tal:bases>
+          </dl>
+        </div>
+      </tal:baseprofile>
+
+      <tal:extensionprofiles condition="python: advanced and extension_profiles">
+        <fieldset id="add-on-list">
+          <legend i18n:translate="">
+            Add-ons
+          </legend>
+
+          <div class="formHelp" i18n:translate="">
+              Select any add-ons you want to activate immediately. You can
+              also activate add-ons after the site has been created using the
+              Add-ons control panel.
+          </div>
+
+          <dl id="extension_ids">
+            <tal:addons tal:repeat="info extension_profiles">
+              <tal:info tal:define="selected info/selected|nothing">
+                <tal:normal tal:condition="python: not selected or advanced">
+                  <dt>
+                    <input type="checkbox" name="extension_ids:list" value=""
+                           tal:attributes="value info/id;
+                                           id info/id;
+                                           checked info/selected|nothing;" />
+                    <label
+                        tal:attributes="for info/id"
+                        tal:content="info/title">
+                      profile title
+                    </label>
+                  </dt>
+                  <dd tal:content="info/description">
+                    profile description
+                  </dd>
+                </tal:normal>
+                <tal:hidden tal:condition="python: selected and not advanced">
+                  <input type="hidden" name="extension_ids:list" value=""
+                         tal:attributes="value info/id;
+                                         checked info/selected|nothing;" />
+                </tal:hidden>
+              </tal:info>
+            </tal:addons>
+          </dl>
+        </fieldset>
+      </tal:extensionprofiles>
 
       <div class="formControls">
         <input type="hidden" name="form.submitted:boolean" value="True" />
