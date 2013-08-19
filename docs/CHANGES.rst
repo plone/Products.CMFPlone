@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- make extensionprofiles selection part of 'advanced' in plone-addsite
+  [jaroel]
+
 - enable syndication on plone.app.contenttypes collection
   [vangheem]
 
