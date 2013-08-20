@@ -8,9 +8,7 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
-- Return a 404 instead of "AttributeError: (dynamic view)" if a user attempts to
-  view a still-temporary PortalFactory item.
-  [esteele]
+- Nothing changed yet.
 
 
 4.3.2 (2013-08-14)
