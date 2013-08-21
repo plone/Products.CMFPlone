@@ -8,7 +8,9 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Catch missing userid on mail_password form, and treat is as
+  an empty userid. That way the user gets a helpfull message
+  [do3cc]
 
 
 4.3.2 (2013-08-14)
