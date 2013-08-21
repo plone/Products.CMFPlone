@@ -35,6 +35,10 @@ Changelog
   ZCML for Plone 5 only using zcml:condition="have plone-5"
   [davisagli]
 
+- Catch missing userid on mail_password form, and treat is as
+  an empty userid. That way the user gets a helpfull message
+  [do3cc]
+
 
 4.3.2 (unreleased)
 ------------------
