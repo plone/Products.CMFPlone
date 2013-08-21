@@ -9,6 +9,7 @@ from Acquisition import aq_parent, aq_base, aq_inner, aq_get
 from App.class_init import InitializeClass
 from App.Common import package_home
 from OFS.SimpleItem import SimpleItem
+from zExceptions import NotFound
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from ZPublisher.mapply import mapply
 from Products.CMFPlone import cmfplone_globals
@@ -458,7 +459,10 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         temp_obj = tempFolder.__getitem__(id)
         stack = stack[2:]
         if stack:
-            obj = temp_obj.restrictedTraverse('/'.join(stack))
+            try:
+                obj = temp_obj.restrictedTraverse('/'.join(stack))
+            except AttributeError:
+                raise NotFound
 
             # Mimic URL traversal, sort of
             if getattr(aq_base(obj), 'index_html', None):
