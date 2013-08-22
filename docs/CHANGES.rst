@@ -35,8 +35,16 @@ Changelog
   ZCML for Plone 5 only using zcml:condition="have plone-5"
   [davisagli]
 
+
+4.3.3 (unreleased)
+------------------
+
+- Fix issue with the search js in sharing page where the user needed to check
+  twice a checkbox to assign a role after a search.
+  [vincentfretin]
+
 - Catch missing userid on mail_password form, and treat is as
-  an empty userid. That way the user gets a helpfull message
+  an empty userid. That way the user gets a helpful message.
   [do3cc]
 
 
