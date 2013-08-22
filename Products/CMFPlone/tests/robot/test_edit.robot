@@ -62,8 +62,8 @@ Background
       and a test document
 
 a test document
-    Go to  ${PLONE_URL}/createObject?type_name=Document
-    Input text  name=title  ${TITLE}
+    Go to  ${PLONE_URL}/++add++Document
+    Input text  name=form.widgets.IDublinCore.title  ${TITLE}
     Click Button  Save
 
 an edited page
@@ -89,8 +89,8 @@ no other tab is shown
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-settings']
 
 at least one other item
-    Go to  ${PLONE_URL}/createObject?type_name=Document
-    Input text  name=title  ${TITLE}
+    Go to  ${PLONE_URL}/++add++Document
+    Input text  name=form.widgets.IDublinCore.title  ${TITLE}
     Click Button  Save
 
 I click the add related item button
