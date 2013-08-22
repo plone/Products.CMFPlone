@@ -9,7 +9,7 @@ Changelog
 ------------------
 
 - Catch missing userid on mail_password form, and treat is as
-  an empty userid. That way the user gets a helpfull message
+  an empty userid. That way the user gets a helpful message.
   [do3cc]
 
 
