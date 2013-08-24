@@ -79,8 +79,9 @@ def zmi_constructor(context):
 def addPloneSite(context, site_id, title='Plone site', description='',
                  create_userfolder=True, email_from_address='',
                  email_from_name='', validate_email=True,
-                 profile_id=_DEFAULT_PROFILE, snapshot=False,
-                 extension_ids=(), setup_content=True, default_language='en'):
+                 profile_id=_DEFAULT_PROFILE, content_profile_id=_CONTENT_PROFILE,
+                 snapshot=False, extension_ids=(), setup_content=True,
+                 default_language='en'):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
@@ -96,7 +97,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     setup_tool.runAllImportStepsFromProfile('profile-%s' % profile_id)
     if setup_content:
         setup_tool.runAllImportStepsFromProfile(
-            'profile-%s' % _CONTENT_PROFILE)
+            'profile-%s' % content_profile_id)
 
     props = dict(
         title=title,
