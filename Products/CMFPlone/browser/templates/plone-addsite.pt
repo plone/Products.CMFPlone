@@ -139,7 +139,7 @@
         </div>
       </tal:baseprofile>
 
-      <tal:extensionprofiles condition="extension_profiles">
+      <tal:extensionprofiles condition="python: advanced and extension_profiles">
         <fieldset id="add-on-list">
           <legend i18n:translate="">
             Add-ons

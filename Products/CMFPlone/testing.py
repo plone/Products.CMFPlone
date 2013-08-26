@@ -1,24 +1,22 @@
-from plone.app.testing import TEST_USER_ID
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
+from plone.app.robotframework import AutoLogin
+from plone.app.robotframework import RemoteLibraryLayer
 from plone.app.testing import login
-from plone.app.testing import setRoles
-import doctest
-
-from zope.configuration import xmlconfig
-
-from plone.testing import z2
-
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
-
-from plone.app.robotframework import RemoteLibraryLayer
-from plone.app.robotframework import AutoLogin
-
+from plone.testing import z2
 from Products.CMFPlone.tests.robot.robot_setup import CMFPloneRemoteKeywords
+from zope.configuration import xmlconfig
+import doctest
 
 
 class ProductsCMFPloneLayer(PloneSandboxLayer):
+
+    defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         import Products.CMFPlone

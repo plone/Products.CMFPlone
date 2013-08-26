@@ -250,8 +250,8 @@ I trigger the add a new user action
     Click Element  name=users_add
 
 a document '${title}' in the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Document
-    Input text  name=title  ${title}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
+    Input text  name=form.widgets.IDublinCore.title  ${title}
     Click Button  Save
 
 I set the default content view of the test folder

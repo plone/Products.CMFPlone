@@ -12,31 +12,31 @@ ${TEST_FOLDER}  test-folder
 
 a document
     [Arguments]  ${title}
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Document
-    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#title
-    Input text  name=title  ${title}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#form-widgets-IDublinCore-title
+    Input text  name=form.widgets.IDublinCore.title  ${title}
     Click Button  Save
 
 a folder
     [Arguments]  ${title}
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Folder
-    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#title
-    Input text  name=title  ${title}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Folder
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#form-widgets-IDublinCore-title
+    Input text  name=form.widgets.IDublinCore.title  ${title}
     Click Button  Save
 
 a folder '${foldername}' with a document '${documentname}'
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Folder
-    Input text  name=title  ${foldername}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Folder
+    Input text  name=form.widgets.IDublinCore.title  ${foldername}
     Click Button  Save
     Go to  ${PLONE_URL}/${TEST_FOLDER}/folder/edit
-    Input text  name=title  ${documentname}
+    Input text  name=form.widgets.IDublinCore.title  ${documentname}
     Click Button  Save
 
 a collection
     [Arguments]  ${title}
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Collection
-    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#title
-    Input text  name=title  ${title}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Collection
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#form-widgets-IDublinCore-title
+    Input text  name=form.widgets.IDublinCore.title  ${title}
     Click Button  Save
 
 a site owner

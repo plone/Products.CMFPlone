@@ -55,8 +55,8 @@ four dummy pages on test folder
     a document 'doc4' in the test folder
 
 a document '${title}' in the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/createObject?type_name=Document
-    Input text  name=title  ${title}
+    Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
+    Input text  name=form.widgets.IDublinCore.title  ${title}
     Click Button  Save
 
 I select all the elements

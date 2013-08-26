@@ -87,7 +87,7 @@ $(document).ready(function(){
 
     /* sharing search form */
     var search_timeout = null;
-    $('#content-core').delegate('#sharing-user-group-search', 'change input', function(){
+    $('#content-core').delegate('#sharing-user-group-search', 'input', function(){
         var text = $(this);
         if(search_timeout != null){
             clearTimeout(search_timeout);
