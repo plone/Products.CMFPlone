@@ -8,6 +8,10 @@ Changelog
 4.4a1 (unreleased)
 ------------------
 
+- Ensure ``object_rename`` script has ``_`` message factory available
+  to prevent error when unauthorized.
+  [davidjb]
+
 - Get ``portal_discussion`` properly with ``getToolByName``.
   [maurits]
 
