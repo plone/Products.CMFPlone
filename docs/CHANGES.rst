@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Ensure ``object_rename`` script has ``_`` message factory available
+  to prevent error when unauthorized.
+  [davidjb]
+
 - Fix issue with the search js in sharing page where the user needed to check
   twice a checkbox to assign a role after a search.
   [vincentfretin]

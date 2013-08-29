@@ -8,6 +8,7 @@
 ##title=Show the rename form for an object
 
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 from AccessControl import Unauthorized
 from Products.PythonScripts.standard import url_quote_plus
