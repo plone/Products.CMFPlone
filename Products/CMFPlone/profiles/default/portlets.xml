@@ -120,4 +120,12 @@
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
 
+ <assignment
+     manager="plone.leftcolumn"
+     category="context"
+     key="/"
+     type="portlets.Navigation"
+     name="navigation"
+     />
+
 </portlets>

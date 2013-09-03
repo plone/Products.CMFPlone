@@ -10,7 +10,6 @@ from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.traversing.interfaces import BeforeTraverseEvent
 from plone.browserlayer.utils import register_layer, unregister_layer
-from plonetheme.sunburst.browser.interfaces import IThemeSpecific
 
 
 class IAdditiveLayer(Interface):
@@ -31,12 +30,3 @@ class TestBrowserLayerPrecedence(PloneTestCase.FunctionalTestCase):
         unregister_layer('Plone.testlayer')
 
         self.assertTrue(iro.index(IAdditiveLayer) < iro.index(IDefaultBrowserLayer))
-
-    def testThemeSpecificLayerTakesHighestPrecedence(self):
-        register_layer(IAdditiveLayer, 'Plone.testlayer')
-        iro = self._get_request_interfaces()
-        unregister_layer('Plone.testlayer')
-
-        self.assertTrue(iro.index(IThemeSpecific) < iro.index(IAdditiveLayer),
-            'Theme-specific browser layers should take precedence over other '
-            'browser layers.')

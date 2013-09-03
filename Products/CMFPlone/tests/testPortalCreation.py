@@ -803,9 +803,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.assertEqual([
                 'plone.portlet.collection.Collection',
                 'plone.portlet.static.Static',
-                'portlets.Calendar',
                 'portlets.Classic',
-                'portlets.Events',
                 'portlets.Login',
                 'portlets.Navigation',
                 'portlets.News',
@@ -825,9 +823,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.assertEqual([
               'plone.portlet.collection.Collection',
               'plone.portlet.static.Static',
-              'portlets.Calendar',
               'portlets.Classic',
-              'portlets.Events',
               'portlets.News',
               'portlets.Recent',
               'portlets.Review',

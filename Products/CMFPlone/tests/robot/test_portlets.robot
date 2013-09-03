@@ -18,12 +18,6 @@ Scenario: Add Login Portlet
      When I add a 'Login' portlet to the left column
      Then I should see a 'Login' portlet in the left column
 
-Scenario: Add Calendar Portlet
-    Given a site owner
-      and a manage portlets view
-     When I add a 'Calendar' portlet to the left column
-     Then I should see a 'Calendar' portlet in the left column
-
 *** Keywords ***
 
 a manage portlets view
