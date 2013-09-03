@@ -46,8 +46,10 @@ the site root
     Go to  ${PLONE_URL}
 
 a test folder
-    Go to homepage
-    Add folder  ${TEST_FOLDER}
+    Go to  ${PLONE_URL}/++add++Folder
+    Wait until keyword succeeds  5s  1s  Element Should Be Visible  css=input#form-widgets-IDublinCore-title
+    Input text  name=form.widgets.IDublinCore.title  Test Folder
+    Click Button  Save
 
 the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
