@@ -125,7 +125,8 @@ class TestContentViewsViewlet(ViewletsTestCase):
         viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
         viewlet.update()
         self.assertEqual(viewlet.navigation_root_title, "Folder")
-        self.assertTrue("http://nohost/plone/logo.png" in viewlet.logo_tag)
+        # there is no theme yet in Plone 5, so we see the old jpg logo
+        self.assertTrue("http://nohost/plone/logo.jpg" in viewlet.logo_tag)
 
 
 def test_suite():
