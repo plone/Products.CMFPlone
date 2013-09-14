@@ -884,35 +884,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testNonFolderishTabsProperty(self):
         self.assertEquals(False, self.properties.site_properties.disable_nonfolderish_sections)
 
-    def testPortalContentLanguage(self):
-        from zope.component import provideUtility
-        from zope.i18n.interfaces import ITranslationDomain
-        from zope.i18n.simpletranslationdomain import SimpleTranslationDomain
-
-        # Let's fake the news title translations
-        messages = {
-            ('de', u'news-title'): u'Foo',
-            ('pt_BR', u'news-title'): u'Bar',
-        }
-        pfp = SimpleTranslationDomain('plonefrontpage', messages)
-        provideUtility(pfp, ITranslationDomain, name='plonefrontpage')
-
-        # Setup the new placeholder folders
-        self.folder.invokeFactory('Folder', 'brazilian')
-        self.folder.invokeFactory('Folder', 'german')
-
-        # Check if the content is being created in German
-        self.folder.german.setLanguage('de')
-        self.loginAsPortalOwner()
-        setuphandlers.setupPortalContent(self.folder.german)
-        self.assertEqual(self.folder.german.news.Title(), 'Foo')
-
-        # Check if the content is being created in a composite
-        # language code, in this case Brazilian Portuguese
-        self.folder.brazilian.setLanguage('pt-br')
-        setuphandlers.setupPortalContent(self.folder.brazilian)
-        self.assertEqual(self.folder.brazilian.news.Title(), 'Bar')
-
     def testNoDoubleGenericSetupImportSteps(self):
         view = ImportStepsView(self.setup, None)
         self.assertEqual([i['id'] for i in view.doubleSteps()], [])
