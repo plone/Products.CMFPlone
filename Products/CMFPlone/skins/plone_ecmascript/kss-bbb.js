@@ -23,18 +23,6 @@ function refreshPortlet(hash, _options){
     $.ajax(ajaxOptions);
 }
 
-/* Calendar Portlet KSS Replacement */
-$('body').delegate('#calendar-next,#calendar-previous', 'click', function(){
-    var el = $(this);
-    var container = el.parents('.portletWrapper');
-    refreshPortlet(container.data('portlethash'), {
-        data: {
-            month: el.data('month'),
-            year: el.data('year')
-        }
-    });
-    return false;
-});
 
 /* apply a refresh timeout to a portlet */
 function applyPortletTimeout(portlet){
@@ -62,6 +50,20 @@ $(document).ready(function(){
     spinner.appendTo('body').hide();
     $(document).ajaxStart(function() { spinner.show(); });
     $(document).ajaxStop(function() { spinner.hide(); });
+
+    /* Calendar Portlet KSS Replacement */
+    $('body').delegate('#calendar-next,#calendar-previous', 'click', function(e){
+        e.preventDefault();
+        var el = $(this);
+        var container = el.parents('.portletWrapper');
+        refreshPortlet(container.data('portlethash'), {
+            data: {
+                month: el.data('month'),
+                year: el.data('year')
+            }
+        });
+        return false;
+    });
 
     /* Any portlets with the class kssPortletRefresh(deprecated)
        or refreshPortlet will automatically be refreshed with this.

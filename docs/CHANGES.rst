@@ -8,6 +8,9 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Fix calendar ajax next and prev buttons
+  [vangheem]
+
 - Ensure ``object_rename`` script has ``_`` message factory available
   to prevent error when unauthorized.
   [davidjb]
