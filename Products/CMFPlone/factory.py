@@ -13,7 +13,7 @@ _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
 
 # A little hint for PloneTestCase
-_IMREALLYPLONE4 = True
+_IMREALLYPLONE5 = True
 
 
 class HiddenProfiles(object):
