@@ -474,7 +474,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.setRoles(['Manager', 'Member'])
         atool = self.actions
         self.assertFalse(atool.getActionInfo('user/plone_setup') is None)
-        self.assertFalse(atool.getActionInfo('site_actions/plone_setup') is None)
 
     def testTypesHaveSelectedLayoutViewAction(self):
         # Should add method aliases to the Plone Site FTI
@@ -784,7 +783,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                 IPortletAssignmentMapping)
 
         self.assertEquals(len(left), 1)
-        self.assertEquals(len(right), 2)
+        self.assertEquals(len(right), 0)
 
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members

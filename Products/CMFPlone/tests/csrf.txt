@@ -77,7 +77,7 @@ Now let's say with some social engineering the user who logged in above is
 lured to take a look at the "important" information and unsuspectingly even
 clicks the button presented:
 
-  >>> browser.getLink('Home').click()
+  >>> browser.open(folder.absolute_url())
   >>> browser.getLink('some important news!').click()
   >>> browser.getControl('Click me!').click()
   Traceback (most recent call last):

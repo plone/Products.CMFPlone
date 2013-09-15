@@ -91,18 +91,6 @@
    </property>
    <property name="visible">True</property>
   </object>
-  <object name="plone_setup" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Site Setup</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${portal_url}/@@overview-controlpanel</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr"></property>
-   <property name="permissions">
-    <element value="Plone Site Setup: Overview"/>
-   </property>
-   <property name="visible">True</property>
-  </object>
  </object>
  <object name="folder_buttons" meta_type="CMF Action Category">
   <property name="title"></property>
@@ -345,6 +333,18 @@
     <element value="List undoable changes"/>
    </property>
    <property name="visible">False</property>
+  </object>
+  <object name="plone_setup" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Site Setup</property>
+   <property name="description" i18n:translate=""></property>
+   <property
+      name="url_expr">string:${portal_url}/@@overview-controlpanel</property>
+   <property name="icon_expr"></property>
+   <property name="available_expr"></property>
+   <property name="permissions">
+    <element value="Plone Site Setup: Overview"/>
+   </property>
+   <property name="visible">True</property>
   </object>
   <object name="logout" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Log out</property>
