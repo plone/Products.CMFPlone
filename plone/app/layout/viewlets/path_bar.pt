@@ -14,8 +14,8 @@ are here:</span>
         </span>
     </span>
     <span tal:repeat="crumb breadcrumbs"
-          tal:attributes="dir python:is_rtl and 'rtl' or 'ltr';
-                          id string:breadcrumbs-${repeat/crumb/number}">
+          tal:attributes="id string:breadcrumbs-${repeat/crumb/number};
+                          dir python:is_rtl and 'rtl' or 'ltr';">
         <tal:item tal:define="is_last repeat/crumb/end;
                               url crumb/absolute_url;
                               title crumb/Title">
