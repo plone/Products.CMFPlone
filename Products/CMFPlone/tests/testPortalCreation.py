@@ -117,11 +117,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(res[0].getId, 'Members')
         self.assertEqual(res[0].Title, 'Users')
 
-    def testMembersFolderOrdering(self):
-        # Members folder should not have explicit ordering
-        members = self.membership.getMembersFolder()
-        self.assertEqual(members._ordering, 'unordered')
-
     def testMailHost(self):
         # MailHost should be of the standard variety
         mailhost = self.portal.MailHost
@@ -281,7 +276,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue('news' in self.portal.objectIds())
         folder = getattr(self.portal, 'news')
         self.assertEqual(folder.portal_type, 'Folder')
-        self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.getRawLocallyAllowedTypes(), ('News Item',))
         self.assertEqual(folder.getRawImmediatelyAddableTypes(),
@@ -292,7 +286,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue('events' in self.portal.objectIds())
         folder = getattr(self.portal, 'events')
         self.assertEqual(folder.portal_type, 'Folder')
-        self.assertEqual(folder._ordering, 'unordered')
         self.assertEqual(folder.getDefaultPage(), 'aggregator')
         self.assertEqual(folder.getRawLocallyAllowedTypes(), ('Event',))
         self.assertEqual(folder.getRawImmediatelyAddableTypes(), ('Event',))
