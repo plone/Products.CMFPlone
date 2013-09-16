@@ -8,6 +8,9 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- No longer set news, events and member folder to be unordered
+  [vangheem]
+
 - Fix calendar ajax next and prev buttons
   [vangheem]
 
