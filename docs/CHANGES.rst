@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Ensure that initial_login is set to True when a user first logs in.
+  [taito]
+
 - Merged PLIP #12198: Depend on Chameleon (five.pt) as a faster page template
   engine.
   [davisagli]
