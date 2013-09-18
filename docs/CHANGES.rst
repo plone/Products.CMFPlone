@@ -8,6 +8,9 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Ensure that initial_login is set to True when a user first logs in.
+  [taito]
+
 - No longer set news, events and member folder to be unordered
   [vangheem]
 
