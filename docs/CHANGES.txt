@@ -8,7 +8,8 @@ Changelog
 4.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Ensure that initial_login is set to True when a user first logs in.
+  [taito]
 
 
 4.2.6 (2013-08-14)
