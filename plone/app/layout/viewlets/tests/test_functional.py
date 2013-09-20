@@ -8,7 +8,7 @@ import doctest
 import unittest2 as unittest
 
 from plone.testing import layered
-from plone.app import testing
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 normal_testfiles = [
@@ -22,7 +22,7 @@ def test_suite():
         layered(doctest.DocFileSuite(test,
                                      optionflags=optionflags,
                                      ),
-                layer=testing.PLONE_FUNCTIONAL_TESTING)
+                layer=PLONE_APP_CONTENTTYPES_FUNCTIONAL_TESTING)
         for test in normal_testfiles])
     return suite
 
