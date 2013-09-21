@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Inline validation JavaScript for z3c.form only sends request when
+  field name can be obtained from DOM for a widget (#13741).
+  [seanupton]
+
 - Add use_uuid_as_userid site property.
   Part of PLIP 13419.
   [maurits]
