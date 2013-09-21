@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Inline validation JavaScript for z3c.form only sends request when
+  field name can be obtained from DOM for a widget (#13741).
+  [seanupton]
+
 - Fix problem generating feeds including Dexterity items with no primary field.
   [bloodbare]
 
