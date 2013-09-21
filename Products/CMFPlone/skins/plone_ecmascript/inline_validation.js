@@ -65,15 +65,17 @@ jQuery(function ($) {
             fset = $input.closest('fieldset').attr('data-fieldset'),
             fname = $field.attr('data-fieldname');
 
-        $form.ajaxSubmit({
-            url: $form.attr('action') + '/@@z3cform_validate_field',
-            data: {fname: fname, fset: fset},
-            iframe: false,
-            success: function (data) {
-                render_error($field, data.errmsg);
-            },
-            dataType: 'json'
-        });
+        if (fname) {
+            $form.ajaxSubmit({
+                url: $form.attr('action') + '/@@z3cform_validate_field',
+                data: {fname: fname, fset: fset},
+                iframe: false,
+                success: function (data) {
+                    render_error($field, data.errmsg);
+                },
+                dataType: 'json'
+            });
+        }
     };
     $('.z3cformInlineValidation input[type="text"]').live('blur', function () { z3cform_validate_field(this); });
     $('.z3cformInlineValidation input[type="password"]').live('blur', function () { z3cform_validate_field(this); });
