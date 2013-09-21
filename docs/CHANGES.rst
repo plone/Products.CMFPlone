@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Inline validation JavaScript for z3c.form only sends request when
+  field name can be obtained from DOM for a widget (#13741).
+  [seanupton]
+
 - Return a 404 instead of "AttributeError: (dynamic view)" if a user attempts to
   view a still-temporary PortalFactory item.
   [esteele]
