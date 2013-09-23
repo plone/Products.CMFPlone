@@ -1,17 +1,8 @@
-#
-# Exportimport adapter tests
-#
-
-from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
-
-from five.localsitemanager import make_objectmanager_site
-from zope.site.hooks import setHooks, setSite
-from zope.component import getSiteManager
-
 from OFS.Folder import Folder
-from Products.CMFCore.interfaces import ITypesTool
+from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
+from zope.component import provideUtility
+from zope.component import provideAdapter
 
-from Products.CMFPlone.FactoryTool import FactoryTool
 
 _FACTORYTOOL_XML = """\
 <?xml version="1.0"?>
@@ -37,20 +28,23 @@ class PortalFactoryXMLAdapterTests(BodyAdapterTestCase):
 
     def _getTargetClass(self):
         from Products.CMFPlone.exportimport.factorytool \
-                    import PortalFactoryXMLAdapter
+            import PortalFactoryXMLAdapter
         return PortalFactoryXMLAdapter
 
     def _populate(self, obj):
         obj.manage_setPortalFactoryTypes(listOfTypeIds=('Folder', 'Document'))
 
     def setUp(self):
-        setHooks()
+        from Products.CMFCore.interfaces import ITypesTool
+        from Products.CMFPlone.FactoryTool import FactoryTool
+        from Products.CMFPlone.interfaces import IFactoryTool
+        from Products.GenericSetup.interfaces import ISetupEnviron
+        from Products.GenericSetup.interfaces import IBody
+
         self.site = Folder('site')
-        make_objectmanager_site(self.site)
-        setSite(self.site)
-        sm = getSiteManager()
         self.site.portal_types = DummyTypesTool()
-        sm.registerUtility(self.site.portal_types, ITypesTool)
+        provideUtility(self.site.portal_types, ITypesTool)
+        provideAdapter(self._getTargetClass(), (IFactoryTool, ISetupEnviron), IBody)
         self.site.portal_factory = FactoryTool()
 
         self._obj = self.site.portal_factory

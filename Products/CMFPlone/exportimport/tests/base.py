@@ -1,30 +1,14 @@
-import unittest
-
+from plone.testing.zca import UNIT_TESTING
 from Products.GenericSetup.testing import BodyAdapterTestCase
 from Products.GenericSetup.testing import NodeAdapterTestCase
-from Products.PloneTestCase import layer
-from Products.PloneTestCase import setup
+import unittest
 
 
 class BodyAdapterTestCase(BodyAdapterTestCase, unittest.TestCase):
 
-    if setup.USELAYER:
-        layer = layer.ZCML
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    layer = UNIT_TESTING
 
 
 class NodeAdapterTestCase(NodeAdapterTestCase, unittest.TestCase):
 
-    if setup.USELAYER:
-        layer = layer.ZCML
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    layer = UNIT_TESTING

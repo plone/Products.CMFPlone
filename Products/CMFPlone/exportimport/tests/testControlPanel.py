@@ -1,17 +1,9 @@
-#
-# Exportimport adapter tests
-#
-
-from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
-
-from five.localsitemanager import make_objectmanager_site
-from zope.site.hooks import setHooks, setSite
-from zope.component import getSiteManager
-
 from OFS.Folder import Folder
-
+from Products.CMFPlone.exportimport.tests.base import BodyAdapterTestCase
 from Products.CMFPlone.interfaces import IControlPanel
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel
+from zope.component import provideUtility
+from zope.component import provideAdapter
 
 _CONTROLPANEL_XML = """\
 <?xml version="1.0"?>
@@ -31,7 +23,7 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
 
     def _getTargetClass(self):
         from Products.CMFPlone.exportimport.controlpanel \
-                    import ControlPanelXMLAdapter
+            import ControlPanelXMLAdapter
         return ControlPanelXMLAdapter
 
     def _populate(self, obj):
@@ -47,14 +39,12 @@ class ControlPanelXMLAdapterTests(BodyAdapterTestCase):
           )
 
     def setUp(self):
-        setHooks()
+        from Products.GenericSetup.interfaces import ISetupEnviron
+        from Products.GenericSetup.interfaces import IBody
         self.site = Folder('site')
-        make_objectmanager_site(self.site)
-        setSite(self.site)
-        sm = getSiteManager()
         self.site.portal_control_panel = PloneControlPanel()
-        sm.registerUtility(self.site.portal_control_panel, IControlPanel)
-
+        provideUtility(self.site.portal_control_panel, IControlPanel)
+        provideAdapter(self._getTargetClass(), (IControlPanel, ISetupEnviron), IBody)
         self._obj = self.site.portal_control_panel
         self._BODY = _CONTROLPANEL_XML
 
