@@ -3,12 +3,13 @@ Test for https://dev.plone.org/ticket/7627
 Goal is to have values from selection widgets translated in /base_view
 ::
 
-    >>> from Products.Five.testbrowser import Browser
+    >>> from plone.testing.z2 import Browser
     >>> from zope.i18n import ITranslationDomain
     >>> from zope.interface import implements  
     >>> from Products.Archetypes.tests.utils import makeContent
     >>> def browser(url):
-    ...     br = Browser()
+    ...     import transaction; transaction.commit()
+    ...     br = Browser(app)
     ...     br.handleErrors = False
     ...     br.addHeader('Authorization','Basic %s:%s'%(portal_owner, 'secret'))
     ...     br.open(url)

@@ -1,14 +1,13 @@
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Forbidden
 from cStringIO import StringIO
-
 from DateTime import DateTime
 
-default_user = PloneTestCase.default_user
-default_password = PloneTestCase.default_password
 
-
-class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
+class TestNoGETControlPanel(PloneTestCase):
 
     def afterSetUp(self):
         self.folder_path = '/' + self.folder.absolute_url(1)
@@ -36,7 +35,7 @@ class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
 
     def test_changeOwnership(self):
         path = self.folder_path + '/change_ownership'
-        qstring = 'userid=%s' % default_user
+        qstring = 'userid=%s' % TEST_USER_ID
         self._onlyPOST(path, qstring, success=302)
 
     def test_loginChangePassword(self):
@@ -45,7 +44,7 @@ class TestNoGETControlPanel(PloneTestCase.FunctionalTestCase):
         self._onlyPOST(path, qstring)
 
 
-class TestPrefsUserManage(PloneTestCase.PloneTestCase):
+class TestPrefsUserManage(PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
@@ -61,25 +60,25 @@ class TestPrefsUserManage(PloneTestCase.PloneTestCase):
                         'last_login_time': DateTime(last_login_time), })
 
     def test_ploneChangePasswordPostOnly(self):
-        self.login(default_user)
+        self.login(TEST_USER_NAME)
         self.setRequestMethod('GET')
         self.assertRaises(Forbidden, self.portal.plone_change_password,
-                          current=default_password, password=default_password,
-                          password_confirm=default_password)
+                          current=TEST_USER_PASSWORD, password=TEST_USER_PASSWORD,
+                          password_confirm=TEST_USER_PASSWORD)
 
 
-class TestAccessControlPanelScripts(PloneTestCase.FunctionalTestCase):
+class TestAccessControlPanelScripts(PloneTestCase):
     '''Yipee, functional tests'''
 
     def afterSetUp(self):
         self.portal_path = self.portal.absolute_url(1)
-        self.basic_auth = '%s:%s' % (default_user, default_password)
+        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
 
     def testUserInformation(self):
         '''Test access to user details.'''
         self.setRoles(['Manager'])
         response = self.publish('%s/@@user-information?userid=%s' %
-                                (self.portal_path, default_user),
+                                (self.portal_path, TEST_USER_ID),
                                 self.basic_auth)
 
         self.assertEquals(response.getStatus(), 200)
@@ -88,7 +87,7 @@ class TestAccessControlPanelScripts(PloneTestCase.FunctionalTestCase):
         '''Test access to user details.'''
         self.setRoles(['Manager'])
         response = self.publish('%s/@@user-preferences?userid=%s' %
-                                (self.portal_path, default_user),
+                                (self.portal_path, TEST_USER_ID),
                                 self.basic_auth)
 
         self.assertEquals(response.getStatus(), 200)

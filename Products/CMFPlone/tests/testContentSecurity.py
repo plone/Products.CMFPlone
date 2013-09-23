@@ -1,10 +1,9 @@
-from Products.CMFPlone.tests import PloneTestCase
-
 from AccessControl import Unauthorized
 from Acquisition import aq_base
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 
 
-class TestContentSecurity(PloneTestCase.PloneTestCase):
+class TestContentSecurity(PloneTestCase):
 
     def afterSetUp(self):
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])

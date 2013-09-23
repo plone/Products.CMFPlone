@@ -10,7 +10,7 @@
 
 from Products.CMFPlone.tests import PloneTestCase
 
-PloneTestCase.installProduct('PythonScripts')
+#PloneTestCase.installProduct('PythonScripts')
 
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo

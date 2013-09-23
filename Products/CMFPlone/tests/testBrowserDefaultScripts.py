@@ -1,11 +1,7 @@
-#
-# Test methods used to make browser-default-mixin enabled display menu work
-#
-
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 
 
-class TestBrowserDefaultScripts(PloneTestCase.PloneTestCase):
+class TestBrowserDefaultScripts(PloneTestCase):
     """Tests the browser default and folder-default page scripts"""
 
     def testNoIndexHtml(self):

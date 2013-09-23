@@ -2,7 +2,7 @@
 # plone.theme) take precedence over views assigned to layers from other
 # add-on products (a la plone.browserlayer).
 
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 from zope.publisher.browser import TestRequest
 
 from zope.event import notify
@@ -16,7 +16,7 @@ class IAdditiveLayer(Interface):
     pass
 
 
-class TestBrowserLayerPrecedence(PloneTestCase.FunctionalTestCase):
+class TestBrowserLayerPrecedence(PloneTestCase):
 
     def _get_request_interfaces(self):
         request = TestRequest()

@@ -10,7 +10,7 @@ from Products.CMFPlone.tests.dummy import Item, ICantBeDeleted, \
                                           disallow_delete_handler
 import transaction
 
-PloneTestCase.installProduct('SiteAccess', quiet=1)
+#PloneTestCase.installProduct('SiteAccess', quiet=1)
 
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
