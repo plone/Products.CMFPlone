@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- recently_modified and recently_published respects allow anonymous to view
+  about setting
+  [vangheem]
+
 - Return a 404 instead of "AttributeError: (dynamic view)" if a user attempts to
   view a still-temporary PortalFactory item.
   [esteele]
