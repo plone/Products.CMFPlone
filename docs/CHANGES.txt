@@ -8,6 +8,10 @@ Changelog
 4.2.7 (unreleased)
 ------------------
 
+- recently_modified and recently_published respects allow anonymous to view
+  about setting
+  [vangheem]
+
 - Ensure that initial_login is set to True when a user first logs in.
   [taito]
 
