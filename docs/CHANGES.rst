@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- remove recently_modified and recently_published templates
+  [vangheem]
+
 - Return a 404 instead of "AttributeError: (dynamic view)" if a user attempts to
   view a still-temporary PortalFactory item.
   [esteele]
