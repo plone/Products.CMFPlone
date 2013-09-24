@@ -27,7 +27,10 @@
         All published items, latest first.
     </div>
 
-    <div id="content-core">
+    <div id="content-core"
+         tal:define="site_properties context/portal_properties/site_properties;
+                     isAnon context/@@plone_portal_state/anonymous;
+                     show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
         <form name="searchresults" action="" method="post" tal:condition="results"
                           tal:define="batch python:Batch(results, 20, int(b_start), orphan=1)">
 
@@ -45,7 +48,7 @@
                         Title
                         </a>
 
-                        <span class="discreet" i18n:translate="text_creator_date">
+                        <span class="discreet" i18n:translate="text_creator_date" tal:condition="show_about">
                             by
                             <span tal:define="creator result/Creator;
                                               author python:context.portal_membership.getMemberInfo(creator)"
