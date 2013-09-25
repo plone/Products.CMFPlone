@@ -19,7 +19,33 @@ Changelog
   [timo]
 
 
-2.3.6 (unreleased)
+2.3.9 (2013-09-25)
+------------------
+
+- Removed hard dependency on plone.app.relationfield.
+  [pabo, marcosfromero]
+
+
+2.3.8 (2013-09-16)
+------------------
+
+- Fix 'table of contents' for Dexterity types.
+  [pabo, pbauer, timo]
+
+- Use safe_unicode to decode the title of the object when retrieving the rss
+  links from the RSSViewlet.
+  [ichim-david]
+
+
+2.3.7 (2013-08-14)
+------------------
+
+- Don't try to getId() for the template-name body when there is no template.
+  Corrects an issue with the Dexterity schema editor.
+  [esteele]
+
+
+2.3.6 (2013-08-13)
 ------------------
 
 - Fix conflict with <body> class attribute improvement in TinyMCE.
