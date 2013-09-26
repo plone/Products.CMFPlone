@@ -296,7 +296,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
                 if version_id > 0:
                     info["diff_previous_url"] = (
                         "%s/@@history?one=%s&two=%s" %
-                        (context_url, version_id, version_id-1)
+                        (context_url, version_id, version_id - 1)
                     )
                 if not rt.isUpToDate(context, version_id):
                     info["diff_current_url"] = (
@@ -318,7 +318,7 @@ class ContentHistoryViewlet(WorkflowHistoryViewlet):
         retrieve = history.retrieve
         getId = history.getVersionId
         # Count backwards from most recent to least recent
-        for i in xrange(history.getLength(countPurged=False)-1, -1, -1):
+        for i in xrange(history.getLength(countPurged=False) - 1, -1, -1):
             version_history.append(
                 morphVersionDataToHistoryFormat(retrieve(i, countPurged=False),
                                                 getId(i, countPurged=False)))
