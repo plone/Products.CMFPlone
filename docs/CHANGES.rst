@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Let set_own_login_name use the update(Own)LoginName method from PAS.
+  Part of PLIP 13419.
+  [maurits]
+
 - recently_modified and recently_published respects allow anonymous to view
   about setting
   [vangheem]
