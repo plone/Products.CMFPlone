@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Add use_uuid_as_userid site property.
+  Part of PLIP 13419.
+  [maurits]
+
 - Let set_own_login_name use the update(Own)LoginName method from PAS.
   Part of PLIP 13419.
   [maurits]
