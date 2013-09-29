@@ -31,6 +31,10 @@ Changelog
 - Add CSRF authenticator in createObject script
   [ebrehault]
 
+- Let set_own_login_name use the update(Own)LoginName method from PAS.
+  Part of PLIP 13419.
+  [maurits]
+
 4.3.7 (2015-09-27)
 ------------------
 
