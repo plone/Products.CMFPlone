@@ -1,3 +1,7 @@
+from z3c.relationfield import RelationValue
+from zope.component import getUtility
+from zope.interface import Interface
+from zope.intid.interfaces import IIntIds
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
 from plone.app.layout.viewlets.content import DocumentBylineViewlet
 from plone.app.layout.viewlets.content import ContentRelatedItems
@@ -6,6 +10,19 @@ from plone.locking.interfaces import ILockable
 
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
+
+try:
+    import pkg_resources
+    pkg_resources.get_distribution('plone.app.relationfield')
+except pkg_resources.DistributionNotFound:
+    HAS_DEXTERITY = False
+    pass
+else:
+    HAS_DEXTERITY = True
+    from plone.dexterity.fti import DexterityFTI
+    class IMyDexterityItem(Interface):
+        """ Dexterity test type
+        """
 
 
 class TestDocumentBylineViewletView(ViewletsTestCase):
@@ -88,6 +105,54 @@ class TestRelatedItemsViewlet(ViewletsTestCase):
         related = viewlet.related_items()
         self.assertEqual([x.Title for x in related], [
                          'Document 2', 'Document 3'])
+
+
+class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
+
+    def afterSetUp(self):
+        """ create some sample content to test with """
+        if not HAS_DEXTERITY:
+            return
+        self.setRoles(('Manager',))
+        fti = DexterityFTI('Dexterity Item with relatedItems behavior')
+        self.portal.portal_types._setObject('Dexterity Item with relatedItems behavior', fti)
+        fti.klass = 'plone.dexterity.content.Item'
+        fti.schema = 'plone.app.layout.viewlets.tests.test_content.IMyDexterityItem'
+        fti.behaviors = ('plone.app.relationfield.behavior.IRelatedItems',)
+        fti = DexterityFTI('Dexterity Item without relatedItems behavior')
+        self.portal.portal_types._setObject('Dexterity Item without relatedItems behavior', fti)
+        fti.klass = 'plone.dexterity.content.Item'
+        fti.schema = 'plone.app.layout.viewlets.tests.test_content.IMyDexterityItem'
+        self.folder.invokeFactory('Document', 'doc1', title='Document 1')
+        self.folder.invokeFactory('Document', 'doc2', title='Document 2')
+        self.folder.invokeFactory('Dexterity Item with relatedItems behavior', 'dex1')
+        self.folder.invokeFactory('Dexterity Item with relatedItems behavior', 'dex2')
+        self.folder.invokeFactory('Dexterity Item without relatedItems behavior', 'dex3')
+        self.portal.portal_quickinstaller.installProduct('plone.app.intid')
+        intids = getUtility(IIntIds)
+        self.folder.dex1.relatedItems = [RelationValue(intids.getId(self.folder.doc1)),
+                                         RelationValue(intids.getId(self.folder.doc2))]
+
+    def testDexterityRelatedItems(self):
+        request = self.app.REQUEST
+        viewlet = ContentRelatedItems(self.folder.dex1, request, None, None)
+        viewlet.update()
+        related = viewlet.related_items()
+        self.assertEqual([x.id for x in related], ['doc1', 'doc2'])
+
+    def testDexterityEmptyRelatedItems(self):
+        request = self.app.REQUEST
+        viewlet = ContentRelatedItems(self.folder.dex2, request, None, None)
+        viewlet.update()
+        related = viewlet.related_items()
+        self.assertEqual(len(related), 0)
+
+    def testDexterityWithoutRelatedItemsBehavior(self):
+        request = self.app.REQUEST
+        viewlet = ContentRelatedItems(self.folder.dex2, request, None, None)
+        viewlet.update()
+        related = viewlet.related_items()
+        self.assertEqual(len(related), 0)
 
 
 def test_suite():

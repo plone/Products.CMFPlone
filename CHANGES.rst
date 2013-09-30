@@ -4,6 +4,9 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Add plone.app.relationfield to test dependencies,
+  needed to test dexterity support. [jpgimenez]
+
 - Don't break if None is passed as the template to bodyClass.
   [davisagli]
 

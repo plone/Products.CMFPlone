@@ -30,6 +30,8 @@ setup(name='plone.app.layout',
           test=[
               'Products.PloneTestCase',
               'unittest2',
+              'plone.app.intid',
+              'plone.app.relationfield',
               'plone.app.testing',
           ]
       ),
