@@ -16,6 +16,13 @@
 
   <adapter for="*
                 zope.publisher.interfaces.browser.IBrowserRequest
+                plone.dexterity.interfaces.IDexterityContent"
+           factory=".icons.DefaultContentIcon"
+           provides=".interfaces.IContentIcon" />
+
+
+  <adapter for="*
+                zope.publisher.interfaces.browser.IBrowserRequest
                 Products.CMFCore.TypesTool.FactoryTypeInformation"
            factory=".icons.FTIContentIcon"
            provides=".interfaces.IContentIcon" />
