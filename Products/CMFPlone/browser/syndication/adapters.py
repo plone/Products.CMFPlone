@@ -266,7 +266,10 @@ class DexterityItem(BaseItem):
     def __init__(self, context, feed):
         super(DexterityItem, self).__init__(context, feed)
         self.dexterity = IDexterityContent.providedBy(context)
-        self.primary = IPrimaryFieldInfo(self.context, None)
+        try:
+            self.primary = IPrimaryFieldInfo(self.context, None)
+        except TypeError:
+            self.primary = None
 
     @property
     def file_url(self):
