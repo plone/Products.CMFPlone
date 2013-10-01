@@ -1184,7 +1184,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('reindexOnReorder')
     def reindexOnReorder(self, parent):
-        """ reindexing of "gopip" isn't needed any longer, 
+        """ reindexing of "gopip" isn't needed any longer,
         but some extensions might need the info anyway :("""
         notify(ReorderedEvent(parent))
 
@@ -1323,6 +1323,18 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     parent = aq_parent(aq_inner(obj))
                     parent.manage_renameObjects((obid,), (new_id,))
                     changed = True
+
+                    #Don't forget default page.
+                    if hasattr(parent, 'getDefaultPage'):
+                        default_page = parent.getDefaultPage()
+
+                        #Plone site has a default_page but return value is None
+                        if not default_page:
+                            default_page = parent.getProperty('default_page', '')
+
+                        if default_page == obid:
+                            parent.setDefaultPage(new_id)
+
                 elif change_title:
                     # the rename will have already triggered a reindex
                     obj.reindexObject()
