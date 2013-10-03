@@ -1,5 +1,3 @@
-# Tests the navigationParent script
-
 from Products.CMFPlone.tests import PloneTestCase
 
 

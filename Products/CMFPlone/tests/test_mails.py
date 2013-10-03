@@ -8,6 +8,7 @@ from Products.MailHost.interfaces import IMailHost
 from Testing.ZopeTestCase import ZopeDocFileSuite
 
 from Products.CMFPlone.tests.utils import MockMailHost
+import transaction
 
 OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
@@ -20,6 +21,7 @@ class MockMailHostTestCase(PloneTestCase):
         sm = getSiteManager(context=self.portal)
         sm.unregisterUtility(provided=IMailHost)
         sm.registerUtility(mailhost, provided=IMailHost)
+        transaction.commit()
 
     def beforeTearDown(self):
         self.portal.MailHost = self.portal._original_MailHost

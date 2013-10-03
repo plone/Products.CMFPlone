@@ -1,7 +1,6 @@
 # Tests the security declarations Plone makes on resources
 # for access by restricted code (aka PythonScripts)
 
-from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -9,11 +8,19 @@ from zExceptions import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
+from plone.testing.z2 import ZSERVER
 from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
 from Products.CMFPlone.PloneTool import AllowSendto
+from unittest import TestCase
 
 
-class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
+class RestrictedPythonTest(TestCase):
+
+    layer = ZSERVER
+
+    def setUp(self):
+        self.app = self.layer['app']
+        self.folder = self.app
 
     def addPS(self, id, params='', body=''):
         factory = self.folder.manage_addProduct['PythonScripts']
@@ -184,7 +191,7 @@ except ConflictError: pass
                       (e.__class__.__name__, e, e.__module__))
 
     def testCatch_ConflictErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseConflictError',
+        self.app._setObject('raiseConflictError',
                                dummy.Raiser(ConflictError))
         try:
             self.check('''
@@ -311,7 +318,7 @@ except DiscussionNotAllowed: pass
                                'print utils.getToolByName')
 
     def testUse_getToolByName(self):
-        self.app.manage_addFolder('portal_membership')  # Fake a portal tool
+        self.layer['app'].manage_addFolder('portal_membership')  # Fake a portal tool
         self.check('from Products.CMFCore.utils import getToolByName;'
                    'print getToolByName(context, "portal_membership")')
 

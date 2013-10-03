@@ -1,7 +1,3 @@
-#
-# Test the getObjSize script
-#
-
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 

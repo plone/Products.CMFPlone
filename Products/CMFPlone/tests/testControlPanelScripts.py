@@ -1,6 +1,8 @@
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Forbidden
 from cStringIO import StringIO
@@ -72,11 +74,10 @@ class TestAccessControlPanelScripts(PloneTestCase):
 
     def afterSetUp(self):
         self.portal_path = self.portal.absolute_url(1)
-        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
+        self.basic_auth = '%s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
 
     def testUserInformation(self):
         '''Test access to user details.'''
-        self.setRoles(['Manager'])
         response = self.publish('%s/@@user-information?userid=%s' %
                                 (self.portal_path, TEST_USER_ID),
                                 self.basic_auth)
@@ -85,7 +86,6 @@ class TestAccessControlPanelScripts(PloneTestCase):
 
     def testUserPreferences(self):
         '''Test access to user details.'''
-        self.setRoles(['Manager'])
         response = self.publish('%s/@@user-preferences?userid=%s' %
                                 (self.portal_path, TEST_USER_ID),
                                 self.basic_auth)

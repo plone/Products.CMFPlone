@@ -1,4 +1,4 @@
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 
 from DateTime import DateTime
 
@@ -9,7 +9,7 @@ def sortTuple(t):
     return tuple(l)
 
 
-class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
+class TestDateComponentsSupport(PloneTestCase):
 
     def afterSetUp(self):
         date = DateTime(2002, 8, 1, 17, 42, 0)
@@ -165,7 +165,7 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(ampm, [])
 
 
-class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
+class TestDateComponentsSupportDefault(PloneTestCase):
 
     def afterSetUp(self):
         self.d = self.portal.date_components_support(None)
@@ -315,7 +315,7 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
         self.assertEqual(ampm, [])
 
 
-class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
+class TestDateComponentsSupportAMPM(PloneTestCase):
 
     def afterSetUp(self):
         date = DateTime(2002, 8, 1, 17, 42, 0)
@@ -372,7 +372,7 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
             self.assertEqual(ampm[i], data[i])
 
 
-class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
+class TestDateComponentsSupportAMPMDefault(PloneTestCase):
 
     def afterSetUp(self):
         self.d = self.portal.date_components_support(None, use_ampm=1)
@@ -414,7 +414,7 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
             self.assertEqual(ampm[i], data[i])
 
 
-class TestDateComponentsSupportMinuteStepDefault(PloneTestCase.PloneTestCase):
+class TestDateComponentsSupportMinuteStepDefault(PloneTestCase):
 
     def testMinutesStep1(self):
         data = [
@@ -443,7 +443,7 @@ class TestDateComponentsSupportMinuteStepDefault(PloneTestCase.PloneTestCase):
             self.assertEqual(minutes[i], data[i])
 
 
-class TestSpecialCases(PloneTestCase.PloneTestCase):
+class TestSpecialCases(PloneTestCase):
 
     def testNoneUsesDefault(self):
         d = self.portal.date_components_support(None)

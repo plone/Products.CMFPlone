@@ -5,12 +5,6 @@ from plone.app.testing import TEST_USER_ID as default_user
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD as default_password
 
-# Make the test fixture extension profile active
-# from zope.interface import classImplements
-# from Products.CMFPlone.Portal import PloneSite
-# from Products.CMFPlone.interfaces import ITestCasePloneSiteRoot
-# classImplements(PloneSite, ITestCasePloneSiteRoot)
-
 from plone.protect.authenticator import AuthenticatorView
 from re import match
 import transaction

@@ -1,14 +1,14 @@
-import urlparse
-from Products.CMFPlone.tests import PloneTestCase
-
-from Products.CMFCore.permissions import AddPortalContent
-from Products.CMFCore.permissions import ModifyPortalContent
-from Products.PluggableAuthService.interfaces.plugins import IChallengePlugin
-
 from AccessControl import Permissions
 from AccessControl import getSecurityManager
-default_user = PloneTestCase.default_user
-default_password = PloneTestCase.default_password
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
+from Products.CMFCore.permissions import AddPortalContent
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFPlone.tests import PloneTestCase
+from Products.PluggableAuthService.interfaces.plugins import IChallengePlugin
+import urlparse
+
 
 
 def sortTuple(t):
@@ -146,7 +146,7 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
             self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         foo = temp_object.portal_factory.doCreate(temp_object, 'foo')
         self.assertTrue('foo' in self.folder)
-        self.assertEqual(foo.get_local_roles_for_userid(default_user),
+        self.assertEqual(foo.get_local_roles_for_userid(TEST_USER_ID),
                          ('Owner',))
 
     def testUnauthorizedToCreateObjectByDoCreate(self):
@@ -167,7 +167,7 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         self.assertTrue('foo' in self.folder)
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         self.assertEqual(
-                self.folder.foo.get_local_roles_for_userid(default_user),
+                self.folder.foo.get_local_roles_for_userid(TEST_USER_ID),
                 ('Owner',))
 
     def testUnauthorizedToCreateObjectByDocumentEdit(self):
@@ -214,7 +214,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
     def afterSetUp(self):
         self.folder_url = self.folder.absolute_url()
         self.folder_path = '/%s' % self.folder.absolute_url(1)
-        self.basic_auth = '%s:%s' % (default_user, default_password)
+        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
         # We want 401 responses, not redirects to a login page
         plugins = self.portal.acl_users.plugins
         plugins.deactivatePlugin(IChallengePlugin, 'credentials_cookie_auth')
@@ -304,7 +304,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         self.assertTrue('foo' in self.folder)
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         self.assertEqual(
-                self.folder.foo.get_local_roles_for_userid(default_user),
+                self.folder.foo.get_local_roles_for_userid(TEST_USER_ID),
                 ('Owner',))
 
     def testUnauthorizedToCreateObjectByDocumentEdit(self):
@@ -322,7 +322,7 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
     def afterSetUp(self):
         self.folder_url = self.folder.absolute_url()
         self.folder_path = '/%s' % self.folder.absolute_url(1)
-        self.basic_auth = '%s:%s' % (default_user, default_password)
+        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
         # We want 401 responses, not redirects to a login page
         plugins = self.portal.acl_users.plugins
         plugins.deactivatePlugin(IChallengePlugin, 'credentials_cookie_auth')

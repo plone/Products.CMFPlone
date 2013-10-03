@@ -735,34 +735,42 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testUtilityRegistration(self):
         gsm = getGlobalSiteManager()
-        global_util = dummy.DummyUtility()
+        # Work around five.localsitemanger assuming the global site manager
+        # has no bases, which is not true in the test layer.
+        old_bases = gsm.__bases__
+        gsm.__bases__ = ()
 
-        # Register a global utility and see if we can get it
-        gsm.registerUtility(global_util, dummy.IDummyUtility)
-        getutil = getUtility(dummy.IDummyUtility)
-        self.assertEquals(getutil, global_util)
+        try:
+            global_util = dummy.DummyUtility()
 
-        # Register a local utility and see if we can get it
-        sm = getSiteManager()
-        local_util = dummy.DummyUtility()
+            # Register a global utility and see if we can get it
+            gsm.registerUtility(global_util, dummy.IDummyUtility)
+            getutil = getUtility(dummy.IDummyUtility)
+            self.assertEquals(getutil, global_util)
 
-        sm.registerUtility(local_util, dummy.IDummyUtility)
-        getutil = getUtility(dummy.IDummyUtility)
-        self.assertEquals(getutil, local_util)
-        # Clean up the site again
-        clearSite()
+            # Register a local utility and see if we can get it
+            sm = getSiteManager()
+            local_util = dummy.DummyUtility()
 
-        # Without a site we get the global utility
-        getutil = getUtility(dummy.IDummyUtility)
-        self.assertEquals(getutil, global_util)
+            sm.registerUtility(local_util, dummy.IDummyUtility)
+            getutil = getUtility(dummy.IDummyUtility)
+            self.assertEquals(getutil, local_util)
+            # Clean up the site again
+            clearSite()
 
-        # Clean up again and unregister the utilites
-        gsm.unregisterUtility(provided=dummy.IDummyUtility)
-        sm.unregisterUtility(provided=dummy.IDummyUtility)
+            # Without a site we get the global utility
+            getutil = getUtility(dummy.IDummyUtility)
+            self.assertEquals(getutil, global_util)
 
-        # Make sure unregistration was successful
-        util = queryUtility(dummy.IDummyUtility)
-        self.assertTrue(util is None)
+            # Clean up again and unregister the utilites
+            gsm.unregisterUtility(provided=dummy.IDummyUtility)
+            sm.unregisterUtility(provided=dummy.IDummyUtility)
+
+            # Make sure unregistration was successful
+            util = queryUtility(dummy.IDummyUtility)
+            self.assertTrue(util is None)
+        finally:
+            gsm.__bases__ = old_bases
 
     def testPortletManagersInstalled(self):
         sm = getSiteManager(self.portal)
