@@ -12,7 +12,8 @@
             ><a href=""
                tal:content="tab/name"
                tal:attributes="href tab/url;
-                               title tab/description|nothing;">
+                               title tab/description|nothing;
+                               target tab/link_target|nothing;">
             Tab Name
             </a></li></tal:tabs></ul>
 </tal:sections>
