@@ -8,6 +8,9 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Fix problem generating feeds including Dexterity items with no primary field.
+  [bloodbare]
+
 - recently_modified and recently_published respects allow anonymous to view
   about setting
   [vangheem]
