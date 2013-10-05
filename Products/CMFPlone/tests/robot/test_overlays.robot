@@ -232,10 +232,10 @@ I enter valid credentials
 
 I enter valid user data
     Wait until page contains element  name=form.password_ctl
-    Input text  form.username       myuser
-    Input text  form.email          my@email.eu
-    Input text  form.password       123123
-    Input text  form.password_ctl   123123
+    Input text for sure form.username       myuser
+    Input text for sure form.email          my@email.eu
+    Input text for sure form.password       123123
+    Input text for sure form.password_ctl   123123
 
 I enter valid register user data
     Wait until page contains element  name=form.username
