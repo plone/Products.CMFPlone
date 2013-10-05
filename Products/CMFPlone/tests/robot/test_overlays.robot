@@ -231,7 +231,7 @@ I enter valid credentials
     Click Button  Log in
 
 I enter valid user data
-    Wait until page contains element  name=form.username
+    Wait until page contains element  name=form.password_ctl
     Input text  form.username       myuser
     Input text  form.email          my@email.eu
     Input text  form.password       123123
