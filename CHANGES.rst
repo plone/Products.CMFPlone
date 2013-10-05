@@ -21,6 +21,10 @@ Changelog
 - PEP8 cleanup.
   [timo]
 
+- modified sections.pt for adding link target.
+  Fixed that portal_actions: 'Link Target' on
+  portal_actions/portal_tabs doesn't work.
+  [terapyon]
 
 2.3.9 (2013-09-25)
 ------------------
