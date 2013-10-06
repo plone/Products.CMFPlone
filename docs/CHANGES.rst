@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Add a dependency on plone.app.theming. Install by default.
+  [esteele]
+
 - Drop dependency on plonetheme.classic.
   [esteele]
 

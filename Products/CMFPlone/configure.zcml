@@ -28,6 +28,7 @@
   <include package="plone.app.redirector" />
   <include package="plone.app.search" />
   <include package="plone.app.registry" />
+  <include package="plone.app.theming" />
   <include zcml:condition="installed plone.app.upgrade" package="plone.app.upgrade" />
   <include package="plone.app.users" />
   <include package="plone.app.uuid" />
