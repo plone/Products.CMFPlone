@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Drop dependency on plonetheme.classic.
+  [esteele]
+
 - Remove old logo.jpg. Use logo.png from Sunburst.
   [esteele]
 
