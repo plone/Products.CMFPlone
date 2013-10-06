@@ -3,7 +3,7 @@
    tal:define="url view/current_page_url">
   <a accesskey="2"
      tal:attributes="href string:${url}#content"
-     i18n:translate="label_skiptocontent">Skip to content.</a> |
+     i18n:translate="label_skiptocontent">Skip to content</a> |
 
   <a accesskey="6"
      tal:attributes="href string:${url}#portal-globalnav"
