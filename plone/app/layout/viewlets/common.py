@@ -176,7 +176,7 @@ class LogoViewlet(ViewletBase):
         if bprops is not None:
             logoName = bprops.logoName
         else:
-            logoName = 'logo.jpg'
+            logoName = 'logo.png'
 
         logoTitle = self.portal_state.portal_title()
         self.logo_tag = portal.restrictedTraverse(

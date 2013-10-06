@@ -5,5 +5,5 @@
                    title view/navigation_root_title"
    i18n:domain="plone"
    i18n:attributes="title">
-    <img src="logo.jpg" alt=""
+    <img src="logo.png" alt=""
          tal:replace="structure view/logo_tag" /></a>

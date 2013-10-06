@@ -4,6 +4,9 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Use logo.png instead of logo.jpg
+  [esteele]
+
 - Add plone.app.relationfield to test dependencies,
   needed to test dexterity support. [jpgimenez]
 
