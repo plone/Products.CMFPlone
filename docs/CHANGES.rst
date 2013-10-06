@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove old logo.jpg. Use logo.png from Sunburst.
+  [esteele]
+
 - Inline validation JavaScript for z3c.form only sends request when
   field name can be obtained from DOM for a widget (#13741).
   [seanupton]

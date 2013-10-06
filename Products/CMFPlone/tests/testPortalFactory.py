@@ -344,7 +344,7 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
         self.tmp_obj_path = path.replace('/edit', '')
 
     def testFSImage(self):
-        path = "%s/logo.jpg" % self.tmp_obj_path
+        path = "%s/logo.png" % self.tmp_obj_path
         data = self.publish(path)
         self.assertEqual(data.getHeader('Content-Type'), 'image/jpeg')
 
