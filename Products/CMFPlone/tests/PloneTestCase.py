@@ -37,4 +37,6 @@ class PloneTestCase(PloneTestCase):
             browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
         return browser
 
-FunctionalTestCase = PloneTestCase
+
+class FunctionalTestCase(PloneTestCase):
+    pass

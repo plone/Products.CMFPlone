@@ -4,7 +4,8 @@ import glob
 import unittest
 
 import pkg_resources
-from plone.app.testing.bbb import PloneTestCase
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Testing.ZopeTestCase import ZopeDocFileSuite
 
 
@@ -46,7 +47,7 @@ def test_suite():
               os.path.basename(filename),
               optionflags=OPTIONFLAGS,
               package='Products.CMFPlone.tests',
-              test_class=PloneTestCase)
+              test_class=FunctionalTestCase)
               for filename in filenames]
     suites.extend(
         [ZopeDocFileSuite(

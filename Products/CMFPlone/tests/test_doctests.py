@@ -1,5 +1,5 @@
 from doctest import DocTestSuite, DocFileSuite
-from plone.app.testing.bbb import PloneTestCase
+from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from Testing.ZopeTestCase import ZopeDocTestSuite
 from unittest import TestSuite
 
@@ -10,7 +10,7 @@ def test_suite():
         DocTestSuite('Products.CMFPlone.CalendarTool'),
         DocTestSuite('Products.CMFPlone.i18nl10n'),
         ZopeDocTestSuite('Products.CMFPlone.PloneTool',
-                         test_class=PloneTestCase),
+                         test_class=FunctionalTestCase),
         DocTestSuite('Products.CMFPlone.TranslationServiceTool'),
         DocTestSuite('Products.CMFPlone.utils'),
         DocTestSuite('Products.CMFPlone.workflow'),

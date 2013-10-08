@@ -226,8 +226,8 @@ I enter wrong credentials
 
 I enter valid credentials
     Wait until page contains element  name=__ac_name
-    Input text  __ac_name  ${SITE_OWNER_NAME}
-    Input text  __ac_password  ${SITE_OWNER_PASSWORD}
+    Input text for sure  __ac_name  ${SITE_OWNER_NAME}
+    Input text for sure  __ac_password  ${SITE_OWNER_PASSWORD}
     Click Button  Log in
 
 I enter valid user data
