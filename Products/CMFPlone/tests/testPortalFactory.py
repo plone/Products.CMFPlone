@@ -346,7 +346,7 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
     def testFSImage(self):
         path = "%s/logo.png" % self.tmp_obj_path
         data = self.publish(path)
-        self.assertEqual(data.getHeader('Content-Type'), 'image/jpeg')
+        self.assertEqual(data.getHeader('Content-Type'), 'image/png')
 
     def testBrowserResource(self):
         path = "%s/++resource++plone-logo.png" % self.tmp_obj_path
