@@ -180,6 +180,10 @@ class ISitemapView(Interface):
         """Create the site map data structure"""
 
 
+class IMainTemplate(Interface):
+    """Interface to the view that generated the main_template"""
+
+
 class IPlone(Interface):
     """ """
 
