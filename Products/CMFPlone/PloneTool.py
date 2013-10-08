@@ -1321,19 +1321,15 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     changed = True
                 if new_id and obid != new_id:
                     parent = aq_parent(aq_inner(obj))
-                    parent.manage_renameObjects((obid,), (new_id,))
-                    changed = True
 
                     #Don't forget default page.
                     if hasattr(parent, 'getDefaultPage'):
                         default_page = parent.getDefaultPage()
-
-                        #Plone site has a default_page but return value is None
-                        if not default_page:
-                            default_page = parent.getProperty('default_page', '')
-
                         if default_page == obid:
                             parent.setDefaultPage(new_id)
+
+                    parent.manage_renameObjects((obid,), (new_id,))
+                    changed = True
 
                 elif change_title:
                     # the rename will have already triggered a reindex
