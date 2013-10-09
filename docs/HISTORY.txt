@@ -22,7 +22,6 @@ For what's new in this release, see CHANGES.txt.
   item.body is an AcquisitionWrapper.
   [alecghica]
 
-
 4.3.2 (unreleased)
 ------------------
 
