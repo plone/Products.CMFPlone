@@ -16,8 +16,8 @@ sure the authenticator view exists:
 
 The same can be checked again from a testbrowser:
 
-  >>> from Testing.testbrowser import Browser
-  >>> browser = Browser()
+  >>> from plone.testing.z2 import Browser
+  >>> browser = Browser(app)
   >>> browser.open('http://nohost/plone/@@authenticator')
   >>> browser.contents
   '<Products.Five.metaclass.AuthenticatorView object at ...>'
@@ -38,10 +38,13 @@ framework actually works.
 So first we need a logged in user with manager rights:
 
   >>> self.setRoles(('Manager',))
-  >>> from Products.PloneTestCase import PloneTestCase as ptc
+  >>> import transaction; transaction.commit()
+  >>> from plone.app.testing import TEST_USER_ID
+  >>> from plone.app.testing import TEST_USER_NAME
+  >>> from plone.app.testing import TEST_USER_PASSWORD
   >>> browser.open('http://nohost/plone/login_form')
-  >>> browser.getControl(name='__ac_name').value = ptc.default_user
-  >>> browser.getControl(name='__ac_password').value = ptc.default_password
+  >>> browser.getControl(name='__ac_name').value = TEST_USER_NAME
+  >>> browser.getControl(name='__ac_password').value = TEST_USER_PASSWORD
   >>> browser.getControl('Log in').click()
   >>> browser.getLink('Site Setup')
   <Link text='Site Setup' url='http://nohost/plone/@@overview-controlpanel'>
@@ -72,6 +75,7 @@ outgoing mails would have to be handled making things unnecessarily
 complicated:
 
   >>> self.portal.validate_email = False
+  >>> transaction.commit()
 
 Now let's say with some social engineering the user who logged in above is
 lured to take a look at the "important" information and unsuspectingly even
@@ -135,7 +139,7 @@ Next up is the password form.  Well, technically an attacker would need to
 know the current passwort to exploit this, but we'll check nevertheless:
 
   >>> browser.open('http://nohost/plone/password_form')
-  >>> browser.getControl('Current password').value = ptc.default_password
+  >>> browser.getControl('Current password').value = TEST_USER_PASSWORD
   >>> browser.getControl('New password').value = 'y0d4Wg'
   >>> browser.getControl('Confirm password').value = 'y0d4Wg'
   >>> browser.getControl('Change Password').click()
@@ -155,7 +159,7 @@ know the current passwort to exploit this, but we'll check nevertheless:
 On the admin side of things there's also the user preferences:
 
   >>> self.setRoles(('Manager'),)
-  >>> browser.open('http://nohost/plone/@@user-information?userid=%s' % ptc.default_user)
+  >>> browser.open('http://nohost/plone/@@user-information?userid=%s' % TEST_USER_ID)
   >>> browser.getControl('Full Name').value = 'John Doe'
   >>> browser.getControl('E-mail').value = 'john@foo-security.com'
   >>> browser.getControl('Save').click()
@@ -497,8 +501,10 @@ configlets, which are tested separately.  The former isn't linked from the
 The "Maintenance" configlet has some special security limitations, which is
 why we need to log in as the portal owner first:
 
-  >>> credentials = ptc.portal_owner, ptc.default_password
-  >>> browser = Browser()
+  >>> from plone.app.testing import SITE_OWNER_NAME
+  >>> from plone.app.testing import SITE_OWNER_PASSWORD
+  >>> credentials = SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+  >>> browser = Browser(app)
   >>> browser.addHeader('Authorization', 'Basic %s:%s' % credentials)
   >>> browser.open('http://nohost/plone/plone_control_panel')
   >>> browser.getLink('Maintenance').click()

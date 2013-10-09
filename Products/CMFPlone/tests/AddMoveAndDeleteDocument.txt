@@ -3,19 +3,22 @@ Adding, Editing, Moving and Deleting a Document
 
 Does what the title says, really.  Plus some assertions.
 
-    >>> from Testing.testbrowser import Browser
-    >>> browser = Browser()
+    >>> from plone.testing.z2 import Browser
+    >>> from plone.app.testing import TEST_USER_NAME
+    >>> from plone.app.testing import TEST_USER_PASSWORD
+    >>> browser = Browser(app)
     >>> browser.open('http://nohost/plone/login_form')
 
 First, we need to log in.
 
-    >>> browser.getControl('Login Name').value = 'test_user_1_'
-    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
 
 We need to allow multiple languages to see the result of our changes:
 
     >>> self.portal.portal_languages.supported_langs = ['de', 'en']
+    >>> import transaction; transaction.commit()
 
 Add Document
 ------------
@@ -213,10 +216,10 @@ We'll first cut our Document.
 
 Login another user:
 
-    >>> browser2 = Browser()
+    >>> browser2 = Browser(app)
     >>> browser2.open('http://nohost/plone/login_form')
-    >>> browser2.getControl('Login Name').value = 'test_user_1_'
-    >>> browser2.getControl('Password').value = 'secret'
+    >>> browser2.getControl('Login Name').value = TEST_USER_NAME
+    >>> browser2.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser2.getControl('Log in').click()
 
 Other user removes document:

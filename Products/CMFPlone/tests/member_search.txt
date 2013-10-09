@@ -17,12 +17,13 @@ Check the member's properties
     >>> props = membership.getMemberInfo(username)
     >>> props.get('fullname') == fullname
     True
+    >>> import transaction; transaction.commit()
 
 
 Now we test the members' search form
 
-    >>> from Testing.testbrowser import Browser
-    >>> browser = Browser()
+    >>> from plone.testing.z2 import Browser
+    >>> browser = Browser(app)
     >>> portal_url = self.portal.absolute_url()
     >>> self.portal.error_log._ignored_exceptions = ()
 
@@ -47,10 +48,10 @@ We are not allowed to list members
     True
 
 Now we login in the portal and retry
-    >>> from Products.PloneTestCase.setup import portal_owner
-    >>> from Products.PloneTestCase.setup import default_password
+    >>> from plone.app.testing import SITE_OWNER_NAME
+    >>> from plone.app.testing import SITE_OWNER_PASSWORD
     >>> browser.addHeader('Authorization',
-    ...                   'Basic %s:%s' % (portal_owner, default_password))
+    ...                   'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
     >>> browser.open(portal_url + '/Members')
 
 and we perform another search

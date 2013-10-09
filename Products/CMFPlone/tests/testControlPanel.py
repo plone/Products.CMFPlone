@@ -1,11 +1,10 @@
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 
 
-class TestControlPanel(PloneTestCase.PloneTestCase):
+class TestControlPanel(PloneTestCase):
 
     def afterSetUp(self):
-        self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
+        self.controlpanel = self.portal.portal_controlpanel
 
         # get the expected default groups and configlets
         self.groups = ['Plone', 'Products']

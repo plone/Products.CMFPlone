@@ -1,7 +1,6 @@
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone import tests
-from Products.Five import zcml
-from Products.Five import fiveconfigure
+from zope.configuration import xmlconfig
 
 
 class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
@@ -34,7 +33,7 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         self.assertFalse('plone.app.upgrade.v30' in self._available())
 
     def testLatestUpgradeProfiles(self):
-        self._load_zcml('test_upgrades1.zcml')
+        xmlconfig.file('test_upgrades1.zcml', package=tests, context=self.layer['configurationContext'])
         latest = self.qi.getLatestUpgradeStep('Products.CMFPlone:testfixture')
         self.assertTrue(latest == '3')
 
@@ -42,14 +41,9 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         # make sure strings don't break things
         # note that pkg_resources interprets 1 as
         # ''00000001', which is > 'banana'
-        self._load_zcml('test_upgrades2.zcml')
+        xmlconfig.file('test_upgrades2.zcml', package=tests, context=self.layer['configurationContext'])
         latest = self.qi.getLatestUpgradeStep('Products.CMFPlone:testfixture')
         self.assertTrue(latest == '3')
-
-    def _load_zcml(self, filename):
-        fiveconfigure.debug_mode = True
-        zcml.load_config(filename, package=tests)
-        fiveconfigure.debug_mode = False
 
 
 def dummy_handler():

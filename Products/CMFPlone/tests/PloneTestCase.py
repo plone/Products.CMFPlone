@@ -1,22 +1,13 @@
-#
-# PloneTestCase
-#
-
-from Products.PloneTestCase.ptc import *
-from Testing.testbrowser import Browser
-
-# Make the test fixture extension profile active
-from zope.interface import classImplements
-from Products.CMFPlone.Portal import PloneSite
-from Products.CMFPlone.interfaces import ITestCasePloneSiteRoot
-classImplements(PloneSite, ITestCasePloneSiteRoot)
-
-TEST_PROFILE = 'Products.CMFPlone:testfixture'
+from plone.testing.z2 import Browser
+from plone.app.testing.bbb import PloneTestCase
+from plone.app.testing import PLONE_SITE_ID as portal_name
+from plone.app.testing import TEST_USER_ID as default_user
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD as default_password
 
 from plone.protect.authenticator import AuthenticatorView
 from re import match
-
-setupPloneSite(extension_profiles=[TEST_PROFILE])
+import transaction
 
 
 class PloneTestCase(PloneTestCase):
@@ -37,17 +28,15 @@ class PloneTestCase(PloneTestCase):
         name, token = self.getAuthenticator()
         self.app.REQUEST.form[name] = token
 
-
-class FunctionalTestCase(Functional, PloneTestCase):
-    """This is a stub now, but in case you want to try
-       something fancy on Your Branch (tm), put it here.
-    """
-
     def getBrowser(self, loggedIn=True):
-        """ instantiate and return a testbrowser for convenience """
-        browser = Browser()
+        transaction.commit()
+        browser = Browser(self.app)
         if loggedIn:
-            user = default_user
+            user = TEST_USER_NAME
             pwd = default_password
             browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
         return browser
+
+
+class FunctionalTestCase(PloneTestCase):
+    pass

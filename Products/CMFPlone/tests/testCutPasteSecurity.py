@@ -1,17 +1,15 @@
-from urllib2 import HTTPError
-
-from Products.CMFPlone.tests import PloneTestCase
-
 from AccessControl import Unauthorized
-from OFS.CopySupport import CopyError
 from Acquisition import aq_base
-import transaction
+from OFS.CopySupport import CopyError
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from Products.CMFCore.interfaces import IContentish
+from urllib2 import HTTPError
 from zope.component import provideHandler, getGlobalSiteManager
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
-from Products.CMFCore.interfaces import IContentish
+import transaction
 
 
-class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
+class TestCutPasteSecurity(PloneTestCase):
 
     def afterSetUp(self):
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
@@ -146,7 +144,7 @@ def failingEventHandler(obj, event):
     raise Exception("Failing for Testing")
 
 
-class CutPasteFailureTests(PloneTestCase.FunctionalTestCase):
+class CutPasteFailureTests(PloneTestCase):
     """See https://dev.plone.org/ticket/9365"""
 
     def afterSetUp(self):

@@ -1,8 +1,5 @@
-# Example PloneTestCase
-
-from Products.CMFPlone.tests import PloneTestCase
-
 from Acquisition import aq_base
+from Products.CMFPlone.tests import PloneTestCase
 
 
 class TestPloneTestCase(PloneTestCase.PloneTestCase):

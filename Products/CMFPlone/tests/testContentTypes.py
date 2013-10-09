@@ -1,9 +1,7 @@
-from Products.CMFPlone.tests import PloneTestCase
-from Products.CMFPlone.tests import dummy
-
-from zope.i18nmessageid.message import Message
-
+from plone.app.testing.bbb import PloneTestCase
 from Products.ATContentTypes.interfaces import IATContentType
+from Products.CMFPlone.tests import dummy
+from zope.i18nmessageid.message import Message
 
 AddPortalTopics = 'Add portal topics'
 
@@ -12,7 +10,7 @@ atct_types = ('Document', 'Event', 'File', 'Folder',
              )
 
 
-class TestATContentTypes(PloneTestCase.PloneTestCase):
+class TestATContentTypes(PloneTestCase):
 
     def afterSetUp(self):
         perms = self.getPermissionsOfRole('Member')
@@ -44,7 +42,7 @@ class TestATContentTypes(PloneTestCase.PloneTestCase):
             self.assertTrue(IATContentType.providedBy(ob))
 
 
-class TestContentTypes(PloneTestCase.PloneTestCase):
+class TestContentTypes(PloneTestCase):
     # This test mirrors TestContentTypeScripts but calls the API and
     # not the skin scripts.
 
@@ -114,7 +112,7 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.topic.Title(), 'Foo')
 
 
-class TestContentTypeInformation(PloneTestCase.PloneTestCase):
+class TestContentTypeInformation(PloneTestCase):
 
     def afterSetUp(self):
         self.types = self.portal.portal_types

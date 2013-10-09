@@ -1,4 +1,4 @@
-from Testing import ZopeTestCase
+from unittest import TestCase
 
 from types import TupleType, TypeType, ClassType
 from zope.interface.interface import InterfaceClass
@@ -50,7 +50,7 @@ def dottedName(klass):
 tests = []
 
 
-class InterfaceTest(ZopeTestCase.ZopeTestCase):
+class InterfaceTest(TestCase):
     """general interface testing class
 
     klass - the class object to test
@@ -155,7 +155,7 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
                 self.interfaceImplementedBy(self.instance, iface)
 
 
-class zope_interface_test(ZopeTestCase.ZopeTestCase):
+class zope_interface_test(TestCase):
     """general zope.interface testing class
 
     klass - the class object to test

@@ -3,14 +3,12 @@ from zExceptions import Forbidden
 from zope.interface import directlyProvides
 from zope import component
 from zope.container.interfaces import IObjectRemovedEvent
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFPlone.tests import PloneTestCase
-from Products.PloneTestCase.setup import default_user
-from Products.PloneTestCase.setup import default_password
 from Products.CMFPlone.tests.dummy import Item, ICantBeDeleted, \
                                           disallow_delete_handler
 import transaction
-
-PloneTestCase.installProduct('SiteAccess', quiet=1)
 
 
 class TestFolderRename(PloneTestCase.PloneTestCase):
@@ -298,7 +296,7 @@ class TestFolderCutCopy(PloneTestCase.PloneTestCase):
 class TestObjectActions(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
-        self.basic_auth = '%s:%s' % (default_user, default_password)
+        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
 
     def assertStatusEqual(self, a, b, msg=''):
         if a != b:

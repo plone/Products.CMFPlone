@@ -1,8 +1,8 @@
 from DateTime import DateTime
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 
 
-class TestCalendarTool(PloneTestCase.PloneTestCase):
+class TestCalendarTool(PloneTestCase):
 
     def afterSetUp(self):
         self.calendar = self.portal.portal_calendar

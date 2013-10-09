@@ -4,12 +4,8 @@ Sitemap
 Let's test the sitemap HTML markup is as we expect. First we need a
 test browser::
 
-  # BBB Zope 2.12
-  >>> try:
-  ...     from Testing.testbrowser import Browser
-  ... except ImportError:
-  ...     from Products.Five.testbrowser import Browser
-  >>> browser = Browser()
+  >>> from plone.testing.z2 import Browser
+  >>> browser = Browser(app)
 
 A utility method helps to test against nice, space-separated sitemap
 markup::
@@ -71,6 +67,7 @@ Let's change it to a deeper hierarchy of pages and folders::
   >>> folder11 = getattr(folder1, 'folder11')
   >>> _ = folder11.invokeFactory('Folder', 'folder111')
   >>> self.setRoles(['Member'])
+  >>> import transaction; transaction.commit()
 
   >>> ('<ul id="portal-sitemap" class="navTreeLevel0 visualNoMarker"> '
   ...    '<li class="navTreeItem visualNoMarker"> '

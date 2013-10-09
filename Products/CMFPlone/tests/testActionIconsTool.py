@@ -1,11 +1,10 @@
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 
 
-class TestActionIconsTool(PloneTestCase.PloneTestCase):
+class TestActionIconsTool(PloneTestCase):
 
     def afterSetUp(self):
         self.actionicons = self.portal.portal_actionicons
-        self._refreshSkinData()
 
     def testAddActionIcon(self):
         length = len(self.actionicons.listActionIcons())

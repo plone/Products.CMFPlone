@@ -1,5 +1,3 @@
-# logged_in.cpy tests
-
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.permissions import SetOwnProperties

@@ -978,9 +978,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Returns the userid of the owner of an object.
 
         >>> ptool = self.portal.plone_utils
-        >>> from Products.PloneTestCase.PloneTestCase import default_user
+        >>> from plone.app.testing import TEST_USER_ID
 
-        >>> ptool.getOwnerName(self.folder) == default_user
+        >>> ptool.getOwnerName(self.folder) == TEST_USER_ID
         True
         """
         mt = getToolByName(self, 'portal_membership')

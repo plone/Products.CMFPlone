@@ -1,13 +1,14 @@
-from Products.PloneTestCase import PloneTestCase as ptc
-
-from zope.component import queryUtility
-from StringIO import StringIO
-
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
+from plone.app.testing.bbb import PloneTestCase
 from plone.keyring.interfaces import IKeyManager
 from plone.protect.authenticator import AuthenticatorView
+from StringIO import StringIO
+from zope.component import queryUtility
 
 
-class AuthenticatorTestCase(ptc.FunctionalTestCase):
+class AuthenticatorTestCase(PloneTestCase):
 
     def afterSetUp(self):
         self.setRoles(('Manager',))
@@ -16,7 +17,7 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
         self.assertTrue(queryUtility(IKeyManager), 'key manager not found')
 
     def checkAuthenticator(self, path, query='', status=200):
-        credentials = '%s:%s' % (ptc.default_user, ptc.default_password)
+        credentials = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
         path = '/' + self.portal.absolute_url(relative=True) + path
         data = StringIO(query)
         # without authenticator...
@@ -33,26 +34,27 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
 
     def test_PloneTool_changeOwnershipOf(self):
         self.assertNotEqual(self.portal.getOwner().getUserName(),
-                            ptc.default_user)
+                            TEST_USER_NAME)
         self.checkAuthenticator('/change_ownership',
-            'userid=%s' % ptc.default_user, status=302)
+            'userid=%s' % TEST_USER_ID, status=302)
         self.assertEqual(self.portal.getOwner().getUserName(),
-                         ptc.default_user)
+                         TEST_USER_NAME)
 
     def test_PloneTool_deleteObjectsByPaths(self):
         self.assertTrue(self.portal.get('news', None))
-        self.checkAuthenticator('/plone_utils/deleteObjectsByPaths',
+        self.checkAuthenticator(
+            '/plone_utils/deleteObjectsByPaths',
             'paths:list=news')
         self.assertFalse(self.portal.get('news', None))
 
     def test_PloneTool_transitionObjectsByPaths(self):
         infoFor = self.portal.portal_workflow.getInfoFor
         frontpage = self.portal['front-page']
-        self.assertEqual(infoFor(frontpage, 'review_state'), 'visible')
+        self.assertEqual(infoFor(frontpage, 'review_state'), 'published')
         self.checkAuthenticator(
             '/plone_utils/transitionObjectsByPaths',
-            'workflow_action=publish&paths:list=front-page', status=302)
-        self.assertEqual(infoFor(frontpage, 'review_state'), 'published')
+            'workflow_action=retract&paths:list=front-page', status=302)
+        self.assertEqual(infoFor(frontpage, 'review_state'), 'visible')
 
     def test_PloneTool_renameObjectsByPaths(self):
         self.assertFalse(self.portal.get('foo', None))
@@ -70,7 +72,7 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
         self.checkAuthenticator(
             '/portal_registration/editMember',
             'member_id=%s&password=y0d4Wg&properties.foo:record='
-                    % ptc.default_user)
+                    % TEST_USER_ID)
 
     def test_MembershipTool_setPassword(self):
         self.checkAuthenticator(
@@ -80,12 +82,12 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
     def test_MembershipTool_deleteMemberArea(self):
         self.checkAuthenticator(
             '/portal_membership/deleteMemberArea',
-            'member_id=%s' % ptc.default_user)
+            'member_id=%s' % TEST_USER_ID)
 
     def test_MembershipTool_deleteMembers(self):
         self.checkAuthenticator(
             '/portal_membership/deleteMembers',
-            'member_ids:list=%s' % ptc.default_user)
+            'member_ids:list=%s' % TEST_USER_ID)
 
     def test_userFolderAddUser(self):
         self.checkAuthenticator(
@@ -96,9 +98,9 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
         self.checkAuthenticator(
             '/acl_users/userFolderEditUser',
             'principal_id=%s&password=bar&domains=&roles:list=Manager'
-                % ptc.default_user)
+                % TEST_USER_ID)
 
     def test_userFolderDelUsers(self):
         self.checkAuthenticator(
             '/acl_users/userFolderDelUsers',
-            'names:list=%s' % ptc.default_user)
+            'names:list=%s' % TEST_USER_ID)

@@ -1,9 +1,7 @@
-#
 # Tests security of content publishing operations
 # code inspired by Ween
-#
 
-from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 
 text = """I lick my brain in silence
 Rather squeeze my head instead
@@ -37,7 +35,7 @@ props = {'description': 'song by ween',
          'subject': ['psychedelic', 'pop', '13th floor elevators']}
 
 
-class TestContentPublishing(PloneTestCase.PloneTestCase):
+class TestContentPublishing(PloneTestCase):
     """ The instant publishing drop down UI.
         !NOTE! CMFDefault.Document overrides setFormat and Format
         so it acts strangely.  This is also hardcoded to work with Document.

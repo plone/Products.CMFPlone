@@ -1,4 +1,4 @@
-from Products.CMFPlone.tests import PloneTestCase
+from plone.app.testing.bbb import PloneTestCase
 
 from traceback import format_exception
 from zope.i18nmessageid.message import Message
@@ -15,7 +15,7 @@ class ExplicitItem(Item, Explicit):
     meta_type = 'Dummy Item'
 
 
-class TestActionsTool(PloneTestCase.PloneTestCase):
+class TestActionsTool(PloneTestCase):
 
     def afterSetUp(self):
         self.actions = self.portal.portal_actions
@@ -89,18 +89,18 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.login('user1')
         actions = self.actions.listFilteredActionsFor(self.folder)
         match = [a for a in actions.get('document_actions', [])
-                    if a['id'] == 'foo']
+                 if a['id'] == 'foo']
         self.assertFalse(match)
 
     def testActionNamespace(self):
         self.actions.addAction(
-                    id='foo',
-                    name='foo_name',
-                    action='string:${globals_view/isStructuralFolder}',
-                    condition='',
-                    permission='View',
-                    category='folder',
-                    visible=1)
+            id='foo',
+            name='foo_name',
+            action='string:${globals_view/isStructuralFolder}',
+            condition='',
+            permission='View',
+            category='folder',
+            visible=1)
 
         actions = self.actions.listFilteredActionsFor(self.folder)
         actions['folder'][0]['url']
