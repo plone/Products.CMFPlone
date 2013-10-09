@@ -36,6 +36,7 @@ setup(name='Products.CMFPlone',
           'zope.testing',
           'plone.app.testing',
           'plone.app.robotframework',
+          'plonetheme.classic',
         ]),
       install_requires=[
           'setuptools',

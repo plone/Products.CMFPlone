@@ -408,14 +408,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue(self.properties.site_properties.hasProperty(
                             'typesUseViewActionInListings'))
 
-    def testSiteSetupAction(self):
-        # There should be a Site Setup action
-        for action in self.actions.listActions():
-            if action.getId() == 'plone_setup':
-                self.assertEqual(action.title, 'Site Setup')
-                break
-        else:
-            self.fail("Actions tool has no 'sitemap' action")
+    def testSiteSetupActionIsPresent(self):
+        actions = self.actions.listActions()
+        self.assertEqual(
+            [x.title for x in actions if x.title == 'Site Setup'],
+            [u'Site Setup']
+        )
 
     def testFolderlistingAction(self):
         # Make sure the folderlisting action of a Folder is /view, to ensure
