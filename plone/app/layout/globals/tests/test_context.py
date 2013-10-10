@@ -230,7 +230,7 @@ class TestContextStateView(GlobalsTestCase):
 
     def test_actions(self):
         actions = self.fview.actions('user')
-        self.failUnless(actions[0]['category'] == 'user')
+        self.assertTrue(actions[0]['category'] == 'user')
 
 
 def test_suite():

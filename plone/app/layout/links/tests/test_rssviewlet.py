@@ -34,9 +34,9 @@ class TestRSSViewletView(ViewletsTestCase):
         viewlet = RSSViewlet(self.portal, request, None, None)
         viewlet.update()
         result = viewlet.render()
-        self.failIf("<link" not in result)
-        self.failIf("http://nohost/plone/atom.xml" not in result)
-        self.failIf("http://nohost/plone/news/atom.xml" not in result)
+        self.assertFalse("<link" not in result)
+        self.assertFalse("http://nohost/plone/atom.xml" not in result)
+        self.assertFalse("http://nohost/plone/news/atom.xml" not in result)
 
 
 def test_suite():

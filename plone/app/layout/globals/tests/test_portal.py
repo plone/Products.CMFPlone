@@ -118,7 +118,7 @@ class TestPortalStateView(GlobalsTestCase):
     def test_friendly_types(self):
         self.portal.portal_properties.site_properties.types_not_searched = (
             'Document', )
-        self.failIf('Document' in self.view.friendly_types())
+        self.assertFalse('Document' in self.view.friendly_types())
 
 
 def test_suite():
