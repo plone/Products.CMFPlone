@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Move docs/CHANGES.txt to CHANGES.rst.
+  [timo]
+
 - Replace deprecated test assert statements.
   [timo]
 

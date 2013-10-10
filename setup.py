@@ -7,7 +7,7 @@ setup(name='Products.CMFPlone',
       version=version,
       description="The Plone Content Management System (core)",
       long_description=open("README.rst").read() + "\n" +
-                       open(os.path.join("docs", "CHANGES.rst")).read(),
+                       open("CHANGES.rst").read(),
       classifiers=[
         "Environment :: Web Environment",
         "Framework :: Plone",
