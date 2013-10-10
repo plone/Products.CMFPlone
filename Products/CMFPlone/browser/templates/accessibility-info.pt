@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:noborder fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+<metal:main fill-slot="main">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_accessibility_info">Accessibility</h1>
+
+    <div id="content-core">
+        <p i18n:translate="text_size">Text size:</p> <noscript i18n:translate="">(Requires JavaScript)</noscript>
+
+        <ul>
+            <li><a href="javascript:setBaseFontSize('largeText', 1);"
+                                              title="Large Text"
+                                              i18n:attributes="title title_large_text;"
+                                              i18n:translate="large_text">Large</a></li>
+            <li><a href="javascript:setBaseFontSize('',1);"
+                                               title="Normal Text"
+                                               i18n:attributes="title title_normal_text;"
+                                               i18n:translate="normal_text">Normal</a></li>
+            <li><a href="javascript:setBaseFontSize('smallText',1);"
+                                              title="Small Text"
+                                              i18n:attributes="title title_small_text;"
+                                              i18n:translate="small_text">Small</a></li>
+        </ul>
+
+        <p i18n:translate="description_accessibility_info">
+            This site uses the <a href="http://plone.org" i18n:name="plone">Open Source Content Management System Plone</a>
+            and has been designed to be completely accessible and usable, working in
+            accordance with the Web Content Accessibility Guidelines
+            (<acronym i18n:name="wcag"
+                      title="Web Content Accessibility Guidelines"
+                      i18n:attributes="title title_wcag;">WCAG</acronym> v1.0).
+            If there is anything on this site &mdash; accessibility or validation related &mdash;
+            that is not according to the standard, please contact the <span i18n:name="site_admin">
+            <a href="#"
+               i18n:translate="label_site_admin"
+               tal:attributes="href string:${context/portal_url}/contact-info">Site Administration</a></span>,
+            and not the Plone Team.
+        </p>
+
+        <h2 i18n:translate="heading_access_keys">Access keys</h2>
+
+        <p i18n:translate="description_access_keys">
+            Access keys are a navigation device enabling you to get around this web
+            site using your keyboard.
+        </p>
+
+        <h3 i18n:translate="heading_available_access_keys">Available access keys</h3>
+
+        <p i18n:translate="description_available_access_keys">This site uses a setup that closely matches most international
+        recommendations on access keys. These are:
+        </p>
+
+        <ul>
+            <li i18n:translate="accesskey_home_page"><code>1</code> &mdash; Home Page</li>
+            <li i18n:translate="accesskey_skip_to_content"><code>2</code> &mdash; Skip to content</li>
+            <li i18n:translate="accesskey_sitemap"><code>3</code> &mdash; Site Map</li>
+            <li i18n:translate="accesskey_search_field"><code>4</code> &mdash; Search field focus</li>
+            <li i18n:translate="accesskey_advanced_search"><code>5</code> &mdash; Advanced Search</li>
+            <li i18n:translate="accesskey_navigation"><code>6</code> &mdash; Site navigation tree</li>
+            <li i18n:translate="accesskey_contact"><code>9</code> &mdash; Contact information</li>
+            <li i18n:translate="accesskey_accesskey_details"><code>0</code> &mdash; Access Key details</li>
+        </ul>
+
+        <h2 i18n:translate="heading_accessibility_statement">Accessibility Statement</h2>
+
+        <p i18n:translate="description_accessibility_statement">
+        We have undertaken to use our knowledge and understanding of the ways in which
+        different people access the Internet, to develop a web site that is clear and
+        simple for everybody to use.
+        </p>
+
+        <h3 i18n:translate="heading_validation">Validation</h3>
+
+        <p i18n:translate="description_validation">
+        We have used
+        <acronym i18n:name="xhtml"
+                 title="eXtensible Hyper Text Markup Language"
+                 i18n:attributes="title title_xhtml;">XHTML</acronym> 1.0
+        and <acronym i18n:name="css"
+                     title="Cascading Style Sheets"
+                     i18n:attributes="title title_css;">CSS</acronym> that conforms to
+        specification, as laid out by the
+        <acronym i18n:name="w3c"
+                 title="World Wide Web Consortium"
+                 i18n:attributes="title title_w3c;">W3C</acronym> because we believe
+        that usability and accessibility must have a solid foundation.
+        If anything on this web site does not validate correctly, please contact the
+        <span i18n:name="site_admin"><a href="/contact-info"
+              tal:attributes="href string:${context/portal_url}/contact-info"
+              i18n:translate="label_site_admin">Site Administration</a></span>,
+        and not the Plone Team.
+        </p>
+
+        <p i18n:translate="description_wcag_aa_rating">
+        We have also endeavoured to achieve AA accessibility as measured against
+        version 1.0 of the
+        <acronym i18n:name="wcag"
+                 title="Web Content Accessibility Guidelines"
+                 i18n:attributes="title title_wcag;">WCAG</acronym>.
+        We are aware however, that a number of the checkpoints of the
+        <acronym i18n:name="wcag2"
+                 title="Web Content Accessibility Guidelines"
+                 i18n:attributes="title title_wcag;">WCAG</acronym> are
+        subjective &mdash; and although we are sure that we have met them squarely,
+        there may be instances where interpretation may vary.
+        </p>
+    </div>
+
+</metal:main>
+</body>
+</html>
