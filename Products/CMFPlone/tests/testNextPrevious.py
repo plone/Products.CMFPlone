@@ -64,12 +64,12 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
 
         # test the next method
         next = view.next()
-        self.assertEquals(next['url'],
+        self.assertEqual(next['url'],
                           self.portal.folder1.doc13.absolute_url())
 
         # test the previous method
         previous = view.previous()
-        self.assertEquals(previous['url'],
+        self.assertEqual(previous['url'],
                           self.portal.folder1.doc11.absolute_url())
 
     def testAdapterOnPortal(self):
@@ -77,8 +77,8 @@ class TestNextPrevious(PloneTestCase.PloneTestCase):
                                                    None)
         self.assertTrue(view)
         self.assertFalse(view.enabled())
-        self.assertEquals(None, view.next())
-        self.assertEquals(None, view.previous())
+        self.assertEqual(None, view.next())
+        self.assertEqual(None, view.previous())
 
     def testNextPreviousItems(self):
         self.folder.invokeFactory('Folder', 'case3')

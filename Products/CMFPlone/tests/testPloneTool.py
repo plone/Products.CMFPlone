@@ -185,7 +185,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             self.utils.reindexOnReorder("fake_context")
         finally:
             gsm.unregisterHandler(my_handler, (Interface, IReorderedEvent))
-        self.assertEquals(["fake_context"], reordered_parents)
+        self.assertEqual(["fake_context"], reordered_parents)
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 

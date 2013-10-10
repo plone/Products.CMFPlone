@@ -25,7 +25,7 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
         default = psets['webdav']
         items = dict(default.propertyItems())
         self.assertTrue('displayname' in items.keys())
-        self.assertEquals(items['displayname'], ptool.title)
+        self.assertEqual(items['displayname'], ptool.title)
 
 
 class TestPUTObjects(PloneTestCase.PloneTestCase):

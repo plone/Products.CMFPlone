@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Replace deprecated test assert statements.
+  [timo]
+
 - Add a dependency on plone.app.theming. Install by default.
   [esteele]
 

@@ -82,7 +82,7 @@ class TestAccessControlPanelScripts(PloneTestCase):
                                 (self.portal_path, TEST_USER_ID),
                                 self.basic_auth)
 
-        self.assertEquals(response.getStatus(), 200)
+        self.assertEqual(response.getStatus(), 200)
 
     def testUserPreferences(self):
         '''Test access to user details.'''
@@ -90,4 +90,4 @@ class TestAccessControlPanelScripts(PloneTestCase):
                                 (self.portal_path, TEST_USER_ID),
                                 self.basic_auth)
 
-        self.assertEquals(response.getStatus(), 200)
+        self.assertEqual(response.getStatus(), 200)

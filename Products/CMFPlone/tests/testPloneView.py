@@ -20,7 +20,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
     def testToLocalizedTime(self):
         localdate = self.view.toLocalizedTime
         value = localdate('Mar 9, 1997 1:45pm', long_format=True)
-        self.assertEquals(value, 'Mar 09, 1997 01:45 PM')
+        self.assertEqual(value, 'Mar 09, 1997 01:45 PM')
 
     def testIsStructuralFolderWithNonFolder(self):
         i = dummy.Item()

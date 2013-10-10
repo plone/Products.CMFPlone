@@ -325,8 +325,8 @@ class TestCatalogIndexing(PloneTestCase):
         self.catalog.indexObject(self.folder.doc)
         self.folder.doc.setModificationDate(DateTime(0))
         self.catalog.clearFindAndRebuild()
-        self.assertEquals(self.folder.doc.modified(), DateTime(0))
-        self.assertEquals(len(self.catalog(modified=DateTime(0))), 1)
+        self.assertEqual(self.folder.doc.modified(), DateTime(0))
+        self.assertEqual(len(self.catalog(modified=DateTime(0))), 1)
 
 
 class TestCatalogSearching(PloneTestCase):
@@ -393,7 +393,7 @@ class TestCatalogSearching(PloneTestCase):
         # using OR
         results = self.catalog(SearchableText='aaa OR bbb')
         self.assertEqual(len(results), 2)
-    
+
     def testSearchIgnoresAccents(self):
         #plip 12110
         self.folder.invokeFactory('Document', id='docwithaccents1', description='Econométrie')
@@ -1028,7 +1028,7 @@ class TestMetadata(PloneTestCase):
         doc = self.folder.doc
         catalog = self.portal.portal_catalog
         brain = catalog(UID=doc.UID())[0]
-        self.assertEquals(brain.location, doc.getLocation())
+        self.assertEqual(brain.location, doc.getLocation())
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):

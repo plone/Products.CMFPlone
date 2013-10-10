@@ -51,24 +51,24 @@ class TestGetObjSizedItem(PloneTestCase.PloneTestCase):
 
     def testZero(self):
         self.ob.set_size(0)
-        self.assertEquals(self.portal.getObjSize(self.ob), '0 KB')
+        self.assertEqual(self.portal.getObjSize(self.ob), '0 KB')
 
     def testBInt(self):
         self.ob.set_size(884)
-        self.assertEquals(self.portal.getObjSize(self.ob), '1 KB')
+        self.assertEqual(self.portal.getObjSize(self.ob), '1 KB')
 
     def testKBInt(self):
         self.ob.set_size(1348)
-        self.assertEquals(self.portal.getObjSize(self.ob), '1.3 KB')
+        self.assertEqual(self.portal.getObjSize(self.ob), '1.3 KB')
 
     def testMBInt(self):
         self.ob.set_size(1024 * 1024 + 1024 * 687)
-        self.assertEquals(self.portal.getObjSize(self.ob), '1.7 MB')
+        self.assertEqual(self.portal.getObjSize(self.ob), '1.7 MB')
 
     def testGBInt(self):
         self.ob.set_size(1024 * 1024 * 1024 + 1024 * 1024 * 107)
-        self.assertEquals(self.portal.getObjSize(self.ob), '1.1 GB')
+        self.assertEqual(self.portal.getObjSize(self.ob), '1.1 GB')
 
     def testGBFloat(self):
         self.ob.set_size(float(1024 * 1024 * 1024 + 1024 * 1024 * 107))
-        self.assertEquals(self.portal.getObjSize(self.ob), '1.1 GB')
+        self.assertEqual(self.portal.getObjSize(self.ob), '1.1 GB')

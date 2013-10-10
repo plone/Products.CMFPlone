@@ -88,9 +88,9 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
 
     def testTestPasswordValidityConfirm(self):
         # https://dev.plone.org/ticket/13325
-        self.failUnless(self.registration.testPasswordValidity(
+        self.assertTrue(self.registration.testPasswordValidity(
             'validpassword', confirm=None) is None)
-        self.failIf(self.registration.testPasswordValidity(
+        self.assertFalse(self.registration.testPasswordValidity(
             'validpassword', confirm='anotherpassword') is None)
 
     def testNewIdAllowed(self):

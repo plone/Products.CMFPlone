@@ -87,7 +87,7 @@ clicks the button presented:
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
-  >>> self.failIf(portal.acl_users.getUser('john'), 'user found?')
+  >>> self.assertFalse(portal.acl_users.getUser('john'), 'user found?')
 
 So, he was protected from the attack — phew.  But of course, he should still
 be able to add new users himself if he wishes so:
@@ -104,7 +104,7 @@ be able to add new users himself if he wishes so:
   >>> browser.getControl('Register').click()
   >>> browser.contents
   '...Welcome!...You have been registered...'
-  >>> self.failUnless(portal.acl_users.getUser('john'), 'user not found?')
+  >>> self.assertTrue(portal.acl_users.getUser('john'), 'user not found?')
 
 
 More tests: User Preferences

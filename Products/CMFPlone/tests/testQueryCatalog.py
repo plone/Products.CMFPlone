@@ -106,12 +106,12 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         ntp = self.portal.portal_properties.navtree_properties
         ntp.root = '/'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
-        self.assertEquals('/'.join(self.portal.getPhysicalPath()), qry['path'])
+        self.assertEqual('/'.join(self.portal.getPhysicalPath()), qry['path'])
         self.setRoles(('Manager',))
         self.portal.invokeFactory('Folder', 'foo')
         ntp.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
-        self.assertEquals('/'.join(self.portal.foo.getPhysicalPath()),
+        self.assertEqual('/'.join(self.portal.foo.getPhysicalPath()),
                           qry['path'])
 
     def testNavigationRootDoesNotOverrideExplicitPath(self):
@@ -121,7 +121,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Folder', 'foo')
         ntp.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
-        self.assertEquals('/yyy/zzz', qry['path'])
+        self.assertEqual('/yyy/zzz', qry['path'])
 
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
