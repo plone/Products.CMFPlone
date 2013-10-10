@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove plonetheme.classic from the package dependencies and the default
+  extension profile, since it will not ship with Plone 5.
+  [timo]
+
 - Move docs/CHANGES.txt to CHANGES.rst.
   [timo]
 
