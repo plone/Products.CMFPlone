@@ -4,6 +4,9 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Remove outdated and unused discussion code and tests.
+  [timo]
+
 - Use logo.png instead of logo.jpg
   [esteele]
 

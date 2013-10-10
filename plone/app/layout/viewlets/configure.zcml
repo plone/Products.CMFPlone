@@ -297,16 +297,6 @@
         permission="zope2.View"
         />
 
-    <!-- Render comments -->
-    <browser:viewlet
-        name="plone.comments"
-        for="Products.CMFCore.interfaces.IContentish"
-        manager=".interfaces.IBelowContent"
-        view="..globals.interfaces.IViewView"
-        class=".comments.CommentsViewlet"
-        permission="zope2.View"
-        />
-
     <!-- Render lock info -->
     <browser:viewlet
         name="plone.lockinfo"
