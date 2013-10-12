@@ -6,6 +6,11 @@ For what's new in this release, see CHANGES.txt.
 4.3.3 (unreleased)
 ------------------
 
+- Move propertysheet imaging_properties and the corresponding
+  utilities from plone.app.imaging to Products.CMFPlone.
+  https://github.com/plone/plone.app.contenttypes/issues/82
+  [pbauer]
+
 - Ensure ``object_rename`` script has ``_`` message factory available
   to prevent error when unauthorized.
   [davidjb]
