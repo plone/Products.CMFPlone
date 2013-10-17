@@ -8,6 +8,11 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Remove plone_deprecated/sitemap.pt to avoid sitemap traceback because we
+  don't have a @@sitemap_view view anymore when you enable back
+  the plone_deprecated skin layer.
+  [vincentfretin]
+
 - Inline validation JavaScript for z3c.form only sends request when
   field name can be obtained from DOM for a widget (#13741).
   [seanupton]
