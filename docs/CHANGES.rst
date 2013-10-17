@@ -8,6 +8,11 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Added a method toLocalizedString to @@plone view,
+  on the model of toLocalizedTime,
+  to get a localized string rendering a size from an integer.
+  [thomasdesvenain]
+
 - Remove plone_deprecated/sitemap.pt to avoid sitemap traceback because we
   don't have a @@sitemap_view view anymore when you enable back
   the plone_deprecated skin layer.
