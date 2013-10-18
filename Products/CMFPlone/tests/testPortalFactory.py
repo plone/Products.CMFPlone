@@ -158,27 +158,6 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         self.assertRaises(ValueError, temp_object.portal_factory.doCreate,
                           temp_object, 'foo')
 
-    def testCreateObjectByDocumentEdit(self):
-        # document_edit should create the real object
-        temp_object = \
-            self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        temp_object.document_edit(id='foo', title='Foo', text_format='plain',
-                                  text='')
-        self.assertTrue('foo' in self.folder)
-        self.assertEqual(self.folder.foo.Title(), 'Foo')
-        self.assertEqual(
-                self.folder.foo.get_local_roles_for_userid(TEST_USER_ID),
-                ('Owner',))
-
-    def testUnauthorizedToCreateObjectByDocumentEdit(self):
-        # Anonymous should not be able to create the (real) object
-        # Note that Anonymous used to be able to create the temp object...
-        temp_object = \
-            self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.logout()
-        self.assertRaises(ValueError, temp_object.document_edit,
-                          id='foo', title='Foo', text_format='plain', text='')
-
     def testCopyPermission(self):
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Folder', id='folder_to_copy')
@@ -229,7 +208,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 '/createObject?type_name=Document',
                                 self.basic_auth)
 
-        # Redirect to document_edit_form
+        # Redirect to document edit form
         self.assertEqual(response.getStatus(), 302)
 
         # The redirect URL should contain the factory parts
@@ -252,7 +231,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 '/createObject?type_name=Document',
                                 self.basic_auth)
 
-        # Redirect to document_edit_form
+        # Redirect to document edit form
         self.assertEqual(response.getStatus(), 302)
 
         # The redirect URL should contain the factory parts
@@ -267,7 +246,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         self.assertEqual(response.getStatus(), 200)  # OK
 
     def testUnauthorizedToViewEditForm(self):
-        # Anonymous should not be able to see document_edit_form
+        # Anonymous should not be able to see document edit form
         response = self.publish(self.folder_path +
                                 '/createObject?type_name=Document',
                                 )  # No basic out info
@@ -287,33 +266,6 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 )  # No basic out info
 
         self.assertEqual(response.getStatus(), 401)  # Unauthorized
-
-    def testCreateObjectByDocumentEdit(self):
-        # document_edit should create the real object
-        response = self.publish(self.folder_path +
-            '/portal_factory/Document/tmp_id/document_edit?id=foo&title=Foo&text_format=plain&text=',
-            self.basic_auth)
-
-        # Redirect to document_view
-        self.assertEqual(response.getStatus(), 302)
-        viewAction = self.portal.portal_types['Document'].getActionInfo(
-                                'object/view',
-                                self.folder.foo)['url']
-        self.assertTrue(response.getHeader('Location').startswith(viewAction))
-
-        self.assertTrue('foo' in self.folder)
-        self.assertEqual(self.folder.foo.Title(), 'Foo')
-        self.assertEqual(
-                self.folder.foo.get_local_roles_for_userid(TEST_USER_ID),
-                ('Owner',))
-
-    def testUnauthorizedToCreateObjectByDocumentEdit(self):
-        # Anonymous should not be able to create the real object
-        response = self.publish(self.folder_path +
-            '/portal_factory/Document/tmp_id/document_edit?id=foo&title=Foo&text_format=plain&text=',
-            )  # No basic auth info
-
-        self.assertEqual(response.getStatus(), 500)  # ValueError
 
 
 class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
