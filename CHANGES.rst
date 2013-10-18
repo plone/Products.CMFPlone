@@ -8,6 +8,12 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Convert author_feedback_template and accessibility_info to browser views.
+  [bloodbare]
+
+- Move calendar_macros and jscalendar to Products.Archetypes.
+  [bloodbare]
+
 - Remove plonetheme.classic from the package dependencies and the default
   extension profile, since it will not ship with Plone 5.
   [timo]
