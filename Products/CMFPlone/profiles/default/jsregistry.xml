@@ -28,7 +28,6 @@
 
  <!-- Only for logged-in users -->
  <javascript id="table_sorter.js" authenticated="True" />
- <javascript id="calendar_formfield.js" authenticated="True" />
  <javascript id="formUnload.js" authenticated="True" />
  <javascript id="formsubmithelpers.js" authenticated="True" />
  <javascript id="unlockOnFormUnload.js" authenticated="True" />

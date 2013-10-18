@@ -76,6 +76,20 @@
       allowed_interface=".interfaces.ISitemapView"
       />
 
+  <browser:page
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      name="accessibility-info"
+      template="templates/accessibility-info.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="author-feedback-template"
+      template="templates/author_feedback_template.pt"
+      permission="zope.Public"
+      />
+
    <adapter for="*
                 .interfaces.INavigationTree"
             factory=".navtree.DefaultNavtreeStrategy"
