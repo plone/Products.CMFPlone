@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove ownership_form and change_ownership script, which were not used.
+  [davisagli]
+
 - Convert author_feedback_template and accessibility_info to browser views.
   [bloodbare]
 

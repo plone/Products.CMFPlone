@@ -35,11 +35,6 @@ class TestNoGETControlPanel(PloneTestCase):
                                 stdin=data)
         self.assertEqual(response.getStatus(), success)
 
-    def test_changeOwnership(self):
-        path = self.folder_path + '/change_ownership'
-        qstring = 'userid=%s' % TEST_USER_ID
-        self._onlyPOST(path, qstring, success=302)
-
     def test_loginChangePassword(self):
         path = self.folder_path + '/login_change_password'
         qstring = 'password=foo'

@@ -341,25 +341,6 @@ And finally removing the item again:
   >>> browser.contents
   '...Info...a folder has been deleted...'
 
-Changing ownership is also protected.  Using the `ownership_form` to do so
-seems to be deprecated as it's not linked anywhere.  Let's try it anyway:
-
-  >>> browser.open('http://nohost/plone/ownership_form')
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
-  >>> browser.getControl('New owner').displayValue = ['johnny']
-  >>> browser.getControl('Save').click()
-  Traceback (most recent call last):
-  ...
-  HTTPError: HTTP Error 403: Forbidden
-
-  >>> browser.goBack()
-  >>> browser.getControl('New owner').displayValue = ['johnny']
-  >>> browser.getControl('Save').click()
-  >>> browser.url
-  'http://nohost/plone'
-  >>> browser.contents
-  '...Info...Ownership has been changed...'
-
 
 More tests: Folder contents
 ---------------------------

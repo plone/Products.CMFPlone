@@ -32,14 +32,6 @@ class AuthenticatorTestCase(PloneTestCase):
                                 request_method='POST', stdin=data)
         self.assertEqual(response.getStatus(), status)
 
-    def test_PloneTool_changeOwnershipOf(self):
-        self.assertNotEqual(self.portal.getOwner().getUserName(),
-                            TEST_USER_NAME)
-        self.checkAuthenticator('/change_ownership',
-            'userid=%s' % TEST_USER_ID, status=302)
-        self.assertEqual(self.portal.getOwner().getUserName(),
-                         TEST_USER_NAME)
-
     def test_PloneTool_deleteObjectsByPaths(self):
         self.assertTrue(self.portal.get('news', None))
         self.checkAuthenticator(
