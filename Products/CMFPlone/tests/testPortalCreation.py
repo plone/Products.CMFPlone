@@ -593,11 +593,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         ids = [(a['id']) for a in buttons]
         self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', ])
 
-    def testPlone3rdPartyLayerInDefault(self):
-        # plone_3rdParty layer should exist
-        path = self.skins.getSkinPath('Plone Default')
-        self.assertTrue('plone_3rdParty' in path)
-
     def testPloneLoginLayerInDefault(self):
         # plone_login layer should exist
         path = self.skins.getSkinPath('Plone Default')
