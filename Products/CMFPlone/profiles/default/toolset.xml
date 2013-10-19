@@ -24,8 +24,6 @@
            class="Products.CMFPlone.PloneControlPanel.PloneControlPanel"/>
  <required tool_id="portal_css"
            class="Products.ResourceRegistries.tools.CSSRegistry.CSSRegistryTool"/>
- <required tool_id="portal_discussion"
-           class="Products.CMFPlone.DiscussionTool.DiscussionTool"/>
  <required tool_id="portal_factory"
            class="Products.CMFPlone.FactoryTool.FactoryTool"/>
  <required tool_id="portal_groupdata"
@@ -64,8 +62,6 @@
            class="Products.CMFUid.UniqueIdHandlerTool.UniqueIdHandlerTool"/>
  <required tool_id="portal_diff"
            class="Products.CMFDiffTool.CMFDiffTool.CMFDiffTool"/>
- <required tool_id="portal_undo"
-           class="Products.CMFPlone.UndoTool.UndoTool"/>
  <required tool_id="portal_url"
            class="Products.CMFPlone.URLTool.URLTool"/>
  <required tool_id="portal_view_customizations"

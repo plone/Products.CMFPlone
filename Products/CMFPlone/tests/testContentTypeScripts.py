@@ -1,5 +1,4 @@
 from AccessControl import Unauthorized
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
@@ -11,7 +10,6 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         perms = self.getPermissionsOfRole('Member')
         self.setPermissions(perms + [AddPortalTopics], 'Member')
-        self.discussion = getToolByName(self.portal, 'portal_discussion')
         self.request = self.app.REQUEST
 
     def getPermissionsOfRole(self, role):

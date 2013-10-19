@@ -140,7 +140,6 @@ def initialize(context):
     import PropertiesTool
     import ActionsTool
     import TypesTool
-    import UndoTool
     import CatalogTool
     import SkinsTool
     import DiscussionTool
@@ -162,7 +161,6 @@ def initialize(context):
              MetadataTool.MetadataTool,
              ActionsTool.ActionsTool,
              TypesTool.TypesTool,
-             UndoTool.UndoTool,
              CatalogTool.CatalogTool,
              SkinsTool.SkinsTool,
              DiscussionTool.DiscussionTool,

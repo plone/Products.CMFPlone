@@ -27,9 +27,6 @@
      interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
      object="portal_actionicons"/>
   <utility
-     interface="Products.CMFCore.interfaces.IDiscussionTool"
-     object="portal_discussion"/>
-  <utility
      interface="Products.CMFCore.interfaces.IMetadataTool"
      object="portal_metadata"/>
   <utility
@@ -38,9 +35,6 @@
   <utility
      interface="Products.CMFCore.interfaces.ISiteRoot"
      object=""/>
-  <utility
-     interface="Products.CMFCore.interfaces.IUndoTool"
-     object="portal_undo"/>
   <utility
      interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
      object="portal_uidannotation"/>
