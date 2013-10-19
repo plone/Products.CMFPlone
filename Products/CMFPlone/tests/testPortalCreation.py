@@ -42,7 +42,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.types = self.portal.portal_types
         self.cp = self.portal.portal_controlpanel
         self.actions = self.portal.portal_actions
-        self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog

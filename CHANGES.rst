@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove the portal_actionicons tool.
+  [davisagli]
+
 - Remove ownership_form and change_ownership script, which were not used.
   [davisagli]
 

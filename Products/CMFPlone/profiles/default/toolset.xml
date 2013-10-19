@@ -10,8 +10,6 @@
            class="Products.SiteErrorLog.SiteErrorLog.SiteErrorLog"/>
  <required tool_id="plone_utils"
            class="Products.CMFPlone.PloneTool.PloneTool"/>
- <required tool_id="portal_actionicons"
-           class="Products.CMFPlone.ActionIconsTool.ActionIconsTool"/>
  <required tool_id="portal_actions"
            class="Products.CMFPlone.ActionsTool.ActionsTool"/>
  <required tool_id="portal_atct"
