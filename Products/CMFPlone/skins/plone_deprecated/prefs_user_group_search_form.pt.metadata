@@ -1,5 +1,0 @@
-[default]
-title=User and Groups Search
-
-[security]
-View = 0:Authenticated
