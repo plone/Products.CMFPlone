@@ -11,8 +11,6 @@
     directory="Products.MimetypesRegistry:skins/mimetypes_icons"/>
  <object name="plone_content" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_content"/>
- <object name="plone_deprecated" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_deprecated"/>
  <object name="plone_ecmascript" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_ecmascript"/>
  <object name="plone_form_scripts" meta_type="Filesystem Directory View"
