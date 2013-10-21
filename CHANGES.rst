@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove the plone_deprecated skin layer.
+  [gforcada, davisagli]
+
 - Remove the portal_actionicons tool.
   [davisagli]
 
