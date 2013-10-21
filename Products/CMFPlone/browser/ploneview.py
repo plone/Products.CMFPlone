@@ -2,6 +2,8 @@ from plone.app.content.browser.folderfactories import _allowedTypes
 from plone.memoize.view import memoize
 from zope.interface import implements
 from zope.component import getMultiAdapter
+from zope.i18n import translate
+from zope.size import byteDisplay
 
 from Acquisition import aq_inner
 from Products.CMFCore.permissions import AddPortalContent
@@ -37,6 +39,11 @@ class Plone(BrowserView):
         return util.ulocalized_time(time, long_format, time_only,
                                     context=context, domain='plonelocales',
                                     request=self.request)
+
+    def toLocalizedSize(self, size):
+        """Convert an integer to a localized size string
+        """
+        return translate(byteDisplay(size), context=self.request)
 
     @memoize
     def visibleIdsEnabled(self):

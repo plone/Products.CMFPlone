@@ -200,6 +200,11 @@ class IPlone(Interface):
             string.
         """
 
+    def toLocalizedSize(size):
+        """ Convert an integer to a localized size string
+        3322 -> 3KB in english, 3Ko in french
+        """
+
     def normalizeString(text):
         """Normalizes a title to an id.
         """
