@@ -80,9 +80,7 @@
       for="*"
       name="main_template"
       class=".main_template.MainTemplate"
-      template="templates/main_template.pt"
       permission="zope.Public"
-      allowed_interface=".interfaces.ISitemapView"
       />
 
    <adapter for="*

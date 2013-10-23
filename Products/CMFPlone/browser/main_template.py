@@ -11,25 +11,12 @@ from Products.CMFPlone.browser.interfaces import IMainTemplate
 class MainTemplate(BrowserView):
     implements(IMainTemplate)
 
-    # item_template = ViewPageTemplateFile('templates/sitemap-item.pt')
+    ajax_template = ViewPageTemplateFile('templates/ajax_main_template.pt')
 
-    # def createSiteMap(self):
-    #     context = aq_inner(self.context)
-    #     view = getMultiAdapter((context, self.request),
-    #                            name='sitemap_builder_view')
-    #     data = view.siteMap()
-    #     return self._renderLevel(children=data.get('children', []))
+    main_template = ViewPageTemplateFile('templates/main_template.pt')
 
-    # def _renderLevel(self, children=[], level=2):
-    #     output = ''
-    #     for node in children:
-    #         output += '<li class="navTreeItem visualNoMarker">\n'
-    #         output += self.item_template(node=node)
-    #         children = node.get('children', [])
-    #         if len(children):
-    #             output += \
-    #                 '<ul class="navTree navTreeLevel%d">\n%s\n</ul>\n' % (
-    #                     level, self._renderLevel(children, level+1))
-    #         output += '</li>\n'
-
-    #     return output
+    def __call__(self):
+        if 'ajax_load' in self.request:
+            return self.ajax_template()
+        else:
+            return self.main_template()
