@@ -21,8 +21,8 @@ Scenario: Add Login Portlet
 Scenario: Add Calendar Portlet
     Given a site owner
       and a manage portlets view
-     When I add a 'Calendar' portlet to the left column
-     Then I should see a 'Calendar' portlet in the left column
+     When I add a 'Calendar portlet' portlet to the left column
+     Then I should see a 'Calendar portlet' portlet in the left column
 
 *** Keywords ***
 
