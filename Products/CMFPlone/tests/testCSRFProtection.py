@@ -41,8 +41,9 @@ class AuthenticatorTestCase(ptc.FunctionalTestCase):
 
     def test_PloneTool_deleteObjectsByPaths(self):
         self.assertTrue(self.portal.get('news', None))
+        news = self.portal.get('news', None)
         self.checkAuthenticator('/plone_utils/deleteObjectsByPaths',
-            'paths:list=news')
+            'paths:list='+news.absolute_url_path())
         self.assertFalse(self.portal.get('news', None))
 
     def test_PloneTool_transitionObjectsByPaths(self):

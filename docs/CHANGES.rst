@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Fix issue where a user could delete unintended object through 
+  acquisition magic. See https://dev.plone.org/ticket/13603.
+  [gotcha]
+
 - Added a method toLocalizedString to @@plone view,
   on the model of toLocalizedTime,
   to get a localized string rendering a size from an integer.

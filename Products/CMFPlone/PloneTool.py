@@ -1184,7 +1184,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('reindexOnReorder')
     def reindexOnReorder(self, parent):
-        """ reindexing of "gopip" isn't needed any longer, 
+        """ reindexing of "gopip" isn't needed any longer,
         but some extensions might need the info anyway :("""
         notify(ReorderedEvent(parent))
 
@@ -1239,7 +1239,23 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if handle_errors:
                 sp = transaction.savepoint(optimistic=True)
             try:
+                # To avoid issues with the check for acquisition,
+                # relative paths should not be part of the API anymore.
+                # Plone core itself does not use relative paths.
+                if not path.startswith(portal.absolute_url_path()):
+                    msg = (
+                        'Path {} does not start '
+                        'with path to portal'.format(path)
+                    )
+                    raise ValueError(msg)
                 obj = traverse(path)
+                if list(obj.getPhysicalPath()) <> path.split('/'):
+                    msg = (
+                        'Path {} does not match '
+                        'traversed object physical path. '
+                        'This is likely an acquisition issue.'.format(path)
+                    )
+                    raise ValueError(msg)
                 obj_parent = aq_parent(aq_inner(obj))
                 obj_parent.manage_delObjects([obj.getId()])
                 success.append('%s (%s)' % (obj.getId(), path))
