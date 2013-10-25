@@ -29,6 +29,7 @@ setup(name='Products.CMFPlone',
       extras_require=dict(
         test=[
           'Products.PloneTestCase',
+          'Products.CMFTestCase',
           'zope.globalrequest',
           'zope.testing',
           'plone.app.testing',
