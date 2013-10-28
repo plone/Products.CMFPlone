@@ -1,5 +1,3 @@
-from Acquisition import aq_inner
-from zope.component import getMultiAdapter
 from zope.interface import implements
 
 from Products.Five import BrowserView
@@ -12,11 +10,18 @@ class MainTemplate(BrowserView):
     implements(IMainTemplate)
 
     ajax_template = ViewPageTemplateFile('templates/ajax_main_template.pt')
-
     main_template = ViewPageTemplateFile('templates/main_template.pt')
 
     def __call__(self):
+        return self.template()
+
+    @property
+    def template(self):
         if 'ajax_load' in self.request:
-            return self.ajax_template()
+            return self.ajax_template
         else:
-            return self.main_template()
+            return self.main_template
+
+    @property
+    def macros(self):
+        return self.template.macros

@@ -57,25 +57,21 @@
         <div tal:replace="structure provider:plone.portaltop" />
     </header>
 
-    <nav id="portal-navigation" i18n:domain="plone">
-        <div tal:replace="structure provider:plone.portalnavigation" />
-    </nav>
-
-    <section id="global_statusmessage">
+    <aside id="global_statusmessage">
         <div metal:use-macro="context/global_statusmessage/macros/portal_message">
            Status message
         </div>
-    </section>
+    </aside>
 
     <article id="portal-column-content">
 
-        <div id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />
+        <section id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />
 
         <metal:block define-slot="content">
 
             <div metal:define-macro="content">
 
-                <div id="edit-bar"
+                <section id="edit-bar"
                     tal:content="structure provider:plone.contentviews" />
 
                 <metal:slot define-slot="body">
@@ -124,8 +120,9 @@
                 </metal:sub> -->
             </div>
         </metal:block>
-
+        <footer>
         <div id="viewlet-below-content" tal:content="structure provider:plone.belowcontent" />
+        </footer>
     </article>
 
 
