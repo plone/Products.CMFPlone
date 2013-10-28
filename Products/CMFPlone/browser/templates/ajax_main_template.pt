@@ -63,9 +63,6 @@
                                  If you write a custom title always use
                                  <h1 class="documentFirstHeading"></h1> for it
                              </metal:comment>
-                             <h1 metal:use-macro="context/kss_generic_macros/macros/generic_title_view">
-                                 Generic KSS Title. Is rendered with class="documentFirstHeading".
-                             </h1>
                          </metal:title>
 
                          <metal:description define-slot="content-description">
@@ -73,9 +70,6 @@
                                  If you write a custom description always use
                                  <div class="documentDescription"></div> for it
                              </metal:comment>
-                             <div metal:use-macro="context/kss_generic_macros/macros/generic_description_view">
-                                 Generic KSS Description. Is rendered with class="documentDescription".
-                             </div>
                          </metal:description>
                         </header>
 
