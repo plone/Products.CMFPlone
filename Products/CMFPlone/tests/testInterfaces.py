@@ -6,7 +6,6 @@ from ExtensionClass import ExtensionClass
 
 from zope.interface import implementedBy, providedBy
 
-from Products.CMFPlone.ActionIconsTool import ActionIconsTool
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.CalendarTool import CalendarTool
 from Products.CMFPlone.CatalogTool import CatalogTool
@@ -263,7 +262,6 @@ class zope_interface_test(TestCase):
 
 # format: (class object, (list interface objects))
 testClasses = [
-    (ActionIconsTool, ()),
     (ActionsTool, ()),
     (CalendarTool, ()),
     (CatalogTool, ()),
