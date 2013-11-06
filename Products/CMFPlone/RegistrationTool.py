@@ -7,7 +7,7 @@ from smtplib import SMTPException, SMTPRecipientsRefused
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 
-from Acquisition import aq_base, aq_chain
+from Acquisition import aq_base, aq_chain, aq_parent
 from Products.CMFCore.interfaces import ISiteRoot
 
 from Products.CMFCore.utils import getToolByName
@@ -354,7 +354,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         reset = reset_tool.requestReset(member.getId())
 
         encoding = getUtility(ISiteRoot).getProperty('email_charset', 'utf-8')
-        mail_text = self.mail_password_template(
+        mail_text = aq_parent(self).mail_password_template(
             self, REQUEST, member=member, reset=reset,
             password=member.getPassword(), charset=encoding)
         # The mail headers are not properly encoded we need to extract
@@ -377,7 +377,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
             raise(e)
         # return the rendered template "mail_password_response.pt"
         # (in Products.PasswordResetTool)
-        return self.mail_password_response(self, REQUEST)
+        return aq_parent(self).mail_password_response(self, REQUEST)
 
     security.declarePublic('registeredNotify')
     def registeredNotify(self, new_member_id):
