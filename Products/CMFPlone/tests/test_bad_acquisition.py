@@ -14,6 +14,7 @@ class TestBadAcquisition(unittest.TestCase):
         self.app = self.layer['app']
 
     def test_not_found_when_acquired_content(self):
+        "browsing to acquired content should trigger a 404"
         self.portal.invokeFactory('Document', 'a_page')
         self.assertTrue('a_page' in self.portal.objectIds())
         self.portal.invokeFactory('Folder', 'a_folder')
