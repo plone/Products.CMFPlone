@@ -9,7 +9,6 @@ from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
 from plone.testing.z2 import ZSERVER
-from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
 from Products.CMFPlone.PloneTool import AllowSendto
 from unittest import TestCase
 
@@ -280,28 +279,6 @@ except SyntaxError: pass
 from OFS.CopySupport import CopyError
 try: context.raiseCopyError()
 except CopyError: pass
-''')
-        except Exception, e:
-            self.fail('Failed to catch: %s %s (module %s)' %
-                      (e.__class__.__name__, e, e.__module__))
-
-    def testImport_DiscussionNotAllowed(self):
-        self.check('from Products.CMFDefault.DiscussionTool '
-                   'import DiscussionNotAllowed')
-
-    def testAccess_DiscussionNotAllowed(self):
-        self.check(
-            'import Products.CMFDefault.DiscussionTool;'
-            'print Products.CMFDefault.DiscussionTool.DiscussionNotAllowed')
-
-    def testCatch_DiscussionNotAllowedRaisedByPythonModule(self):
-        self.folder._setObject('raiseDiscussionNotAllowed',
-                               dummy.Raiser(DiscussionNotAllowed))
-        try:
-            self.check('''
-from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
-try: context.raiseDiscussionNotAllowed()
-except DiscussionNotAllowed: pass
 ''')
         except Exception, e:
             self.fail('Failed to catch: %s %s (module %s)' %

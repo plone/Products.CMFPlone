@@ -29,7 +29,6 @@ from Products.CMFCore import permissions
 from Products.CMFCore.permissions import AccessContentsInformation, \
                         ManagePortal, ManageUsers, ModifyPortalContent, View
 from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
-from Products.CMFCore.interfaces import IDiscussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
@@ -300,25 +299,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if expiration_date == '':
                 expiration_date = 'None'
 
-        if IDiscussable.providedBy(obj) or \
-            getattr(obj, '_isDiscussable', None):
-            disc_tool = getToolByName(self, 'portal_discussion')
-            if allowDiscussion is None:
-                allowDiscussion = disc_tool.isDiscussionAllowedFor(obj)
-                if not safe_hasattr(obj, 'allow_discussion'):
-                    allowDiscussion = None
-                allowDiscussion = REQUEST.get('allowDiscussion',
-                                              allowDiscussion)
-            if type(allowDiscussion) == StringType:
-                allowDiscussion = allowDiscussion.lower().strip()
-            if allowDiscussion == 'default':
-                allowDiscussion = None
-            elif allowDiscussion == 'off':
-                allowDiscussion = 0
-            elif allowDiscussion == 'on':
-                allowDiscussion = 1
-            disc_tool.overrideDiscussionFor(obj, allowDiscussion)
-
         if IMutableDublinCore.providedBy(obj):
             if title is not None:
                 obj.setTitle(title)
@@ -452,22 +432,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if objstate in w.states:
                     return w.states[objstate].title or objstate
         return None
-
-    security.declareProtected(View, 'getDiscussionThread')
-    def getDiscussionThread(self, discussionContainer):
-        """Given a discussionContainer, return the thread it is in, upwards,
-        including the parent object that is being discussed.
-        """
-        if safe_hasattr(discussionContainer, 'parentsInThread'):
-            thread = discussionContainer.parentsInThread()
-            if discussionContainer.portal_type == 'Discussion Item':
-                thread.append(discussionContainer)
-        else:
-            if discussionContainer.id == 'talkback':
-                thread = [discussionContainer._getDiscussable()]
-            else:
-                thread = [discussionContainer]
-        return thread
 
     security.declareProtected(ManagePortal, 'changeOwnershipOf')
     def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):

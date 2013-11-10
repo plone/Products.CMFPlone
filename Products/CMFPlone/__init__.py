@@ -86,10 +86,6 @@ def initialize(context):
     # Make CopyError importable TTW
     ModuleSecurityInfo('OFS.CopySupport').declarePublic('CopyError')
 
-    # Make DiscussionNotAllowed importable TTW
-    ModuleSecurityInfo('Products.CMFDefault.DiscussionTool') \
-        .declarePublic('DiscussionNotAllowed')
-
     # Make AllowSendto importable TTW
     ModuleSecurityInfo('Products.CMFPlone.PloneTool') \
         .declarePublic('AllowSendto')
@@ -142,7 +138,6 @@ def initialize(context):
     import TypesTool
     import CatalogTool
     import SkinsTool
-    import DiscussionTool
     import CalendarTool
     import QuickInstallerTool
     import TranslationServiceTool
@@ -162,7 +157,6 @@ def initialize(context):
              TypesTool.TypesTool,
              CatalogTool.CatalogTool,
              SkinsTool.SkinsTool,
-             DiscussionTool.DiscussionTool,
              CalendarTool.CalendarTool,
              QuickInstallerTool.QuickInstallerTool,
              TranslationServiceTool.TranslationServiceTool,

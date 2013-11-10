@@ -16,28 +16,6 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         perms = self.portal.permissionsOfRole(role)
         return [p['name'] for p in perms if p['selected']]
 
-    def testDiscussionReply(self):
-        from zope.component import createObject, queryUtility
-        from plone.registry.interfaces import IRegistry
-        from plone.app.discussion.interfaces import IDiscussionSettings
-        from plone.app.discussion.interfaces import IConversation
-        self.folder.invokeFactory('Document', id='doc', title="Document")
-        # Enable discussion
-        registry = queryUtility(IRegistry)
-        settings = registry.forInterface(IDiscussionSettings)
-        settings.globally_enabled = True
-        # Create the conversation object
-        conversation = IConversation(self.folder.doc)
-        # Add a comment
-        comment = createObject('plone.Comment')
-        comment.text = 'Comment text'
-        conversation.addComment(comment)
-        # Test the comment
-        self.assertEqual(len(list(conversation.getComments())), 1)
-        reply = conversation.getComments().next()
-        self.assertEqual(reply.Title(), u'Anonymous on Document')
-        self.assertEqual(reply.text, 'Comment text')
-
     def testDocumentCreate(self):
         self.folder.invokeFactory('Document', id='doc', text='data')
         self.assertEqual(self.folder.doc.EditableBody(), 'data')

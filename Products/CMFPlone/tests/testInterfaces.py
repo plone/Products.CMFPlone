@@ -9,7 +9,6 @@ from zope.interface import implementedBy, providedBy
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.CalendarTool import CalendarTool
 from Products.CMFPlone.CatalogTool import CatalogTool
-from Products.CMFPlone.DiscussionTool import DiscussionTool
 from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
 from Products.CMFPlone.InterfaceTool import InterfaceTool
 from Products.CMFPlone.MetadataTool import MetadataTool
@@ -265,7 +264,6 @@ testClasses = [
     (ActionsTool, ()),
     (CalendarTool, ()),
     (CatalogTool, ()),
-    (DiscussionTool, ()),
     (FactoryTool, ()), (TempFolder, ()),
     (InterfaceTool, ()),
     (MetadataTool, ()),
