@@ -48,15 +48,6 @@ from AccessControl.requestmethod import postonly
 from plone.app.linkintegrity.exceptions \
     import LinkIntegrityNotificationException
 
-# BBB Plone 4.0
-from zope.deprecation import __show__
-__show__.off()
-try:
-    from Products.LinguaPlone.interfaces import ITranslatable
-except ImportError:
-    from Products.CMFPlone.interfaces.Translatable import ITranslatable
-__show__.on()
-
 
 AllowSendto = 'Allow sendto'
 permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager', ))
@@ -756,10 +747,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             is typically hidden)
         7. If nothing else is found, fall back on the object's 'view' action.
         8. If this is not found, raise an AttributeError
-
-        If the returned path is an object, it is checked for ITranslatable. An
-        object which supports translation will then be translated before
-        return.
         """
 
         # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
@@ -866,11 +853,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         raise AttributeError(
                 "Failed to get a default page or view_action for %s"
                     % (obj.absolute_url(),))
-
-    security.declarePublic('isTranslatable')
-    def isTranslatable(self, obj):
-        """Checks if a given object implements the ITranslatable interface."""
-        return ITranslatable.providedBy(obj)
 
     security.declarePublic('isStructuralFolder')
     def isStructuralFolder(self, obj):
