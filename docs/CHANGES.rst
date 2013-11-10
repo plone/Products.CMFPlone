@@ -8,10 +8,6 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
-- Fix issue where a user could access an unintended object through 
-  acquisition magic. See https://dev.plone.org/ticket/13793.
-  [gotcha]
-
 - Password reset emails will now be sent from the navigation root instead
   the portal, enabling support for multilingual sites and other subsites
   to keep the correct language, title, menus and designs.

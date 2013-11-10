@@ -104,6 +104,4 @@
   <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
               handler=".events.profileImportedEventHandler"/>
 
-  <subscriber handler=".events.avoid_acquired_content" />
-
 </configure>
