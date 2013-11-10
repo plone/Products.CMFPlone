@@ -1,8 +1,3 @@
-""" CMFPlone tool interfaces.
-
-$Id: _tools.py 38762 2005-10-05 10:44:00Z yuppie $
-"""
-
 from zope.interface import Interface
 from zope.interface import Attribute
 
