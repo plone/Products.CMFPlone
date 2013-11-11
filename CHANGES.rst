@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.5a1 (unreleased)
+------------------
+
+- Switch enable_sitemap setting from site_properties to p.a.registry.
+  [timo]
+
+
 2.4a1 (unreleased)
 ------------------
 

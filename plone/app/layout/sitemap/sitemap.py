@@ -5,6 +5,10 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from plone.app.controlpanel.interfaces import ISiteSchema
+
 from gzip import GzipFile
 from cStringIO import StringIO
 
@@ -111,8 +115,9 @@ class SiteMapView(BrowserView):
 
     def __call__(self):
         """Checks if the sitemap feature is enable and returns it."""
-        sp = getToolByName(self.context, 'portal_properties').site_properties
-        if not sp.enable_sitemap:
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema)
+        if not settings.enable_sitemap:
             raise NotFound(self.context, self.filename, self.request)
 
         self.request.response.setHeader('Content-Type',
