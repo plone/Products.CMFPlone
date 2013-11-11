@@ -77,11 +77,6 @@
                 <metal:slot define-slot="body">
                     <div id="content">
 
-                        <!-- XXX : What is used for ? -->
-                        <metal:header define-slot="header" tal:content="nothing">
-                        Visual Header
-                        </metal:header>
-
                         <metal:bodytext define-slot="main">
 
                         <header>
