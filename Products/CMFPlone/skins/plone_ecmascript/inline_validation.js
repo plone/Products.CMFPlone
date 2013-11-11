@@ -18,6 +18,19 @@ jQuery(function ($) {
         }
     };
 
+    // Add '/extra' on to the end of the URL, respecting querystring
+    var append_url_path = function (url, extra) {
+        var i, ret, urlParts = url.split(/\?/);
+
+        ret = urlParts[0];
+        if (ret[ret.length - 1] !== '/') { ret += '/'; }
+        ret += extra;
+        for (i = 1; i < urlParts.length; i++) {
+            ret += '?' + urlParts[i];
+        }
+        return ret;
+    };
+
     // Archetypes
     $('.field input.blurrable,.field select.blurrable,.field textarea.blurrable').live('blur', function () {
         var $input = $(this),
@@ -41,7 +54,7 @@ jQuery(function ($) {
             fname = $field.attr('data-fieldname');
 
         $form.ajaxSubmit({
-            url: $form.attr('action') + '/@@formlib_validate_field',
+            url: append_url_path($form.attr('action'), '@@formlib_validate_field'),
             data: {fname: fname},
             iframe: false,
             success: function (data) {
@@ -67,7 +80,7 @@ jQuery(function ($) {
 
         if (fname) {
             $form.ajaxSubmit({
-                url: $form.attr('action') + '/@@z3cform_validate_field',
+                url: append_url_path($form.attr('action'), '@@z3cform_validate_field'),
                 data: {fname: fname, fset: fset},
                 iframe: false,
                 success: function (data) {
