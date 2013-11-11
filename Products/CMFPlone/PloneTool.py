@@ -5,7 +5,11 @@ from types import UnicodeType, StringType
 import urlparse
 import transaction
 
+from plone.registry.interfaces import IRegistry
+from plone.app.controlpanel.interfaces import ISiteSchema
+
 from zope.component import queryAdapter
+from zope.component import getUtility
 from zope.deprecation import deprecate
 from zope.interface import implements
 from zope.event import notify
@@ -990,7 +994,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         site_props = getToolByName(self, 'portal_properties').site_properties
         mt = getToolByName(self, 'portal_membership')
 
-        use_all = site_props.getProperty('exposeDCMetaTags', None)
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema)
+        use_all = settings.exposeDCMetaTags
         view_about = site_props.getProperty('allowAnonymousViewAbout', False) \
                      or not mt.isAnonymousUser()
 
@@ -1119,7 +1125,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('reindexOnReorder')
     def reindexOnReorder(self, parent):
-        """ reindexing of "gopip" isn't needed any longer, 
+        """ reindexing of "gopip" isn't needed any longer,
         but some extensions might need the info anyway :("""
         notify(ReorderedEvent(parent))
 

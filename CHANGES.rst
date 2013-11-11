@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Make Plone tool read the exposeDCMetaTags from p.a.registry instead of
+  of the site properties.
+  [timo]
+
 - Moved the member search form to plone.app.users
   [pabo3000]
 
