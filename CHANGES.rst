@@ -4,6 +4,9 @@ Changelog
 2.5.2 (unreleased)
 ------------------
 
+- Switch enable_sitemap setting from site_properties to p.a.registry.
+  [timo]
+
 - Fix related items viewlet listing dexterity related folder's descendants.
   [rpatterson]
 
@@ -31,7 +34,6 @@ Changelog
 
 - Switch enable_sitemap setting from site_properties to p.a.registry.
   (PLIP #10359: http://dev.plone.org/ticket/10359)
-  [timo]
 
 
 2.4a1 (unreleased)
