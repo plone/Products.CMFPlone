@@ -50,10 +50,6 @@
                 <metal:slot define-slot="body">
                     <div id="content">
 
-                        <metal:header define-slot="header" tal:content="nothing">
-                        Visual Header
-                        </metal:header>
-
                         <metal:bodytext define-slot="main">
 
 
