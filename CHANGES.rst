@@ -4,6 +4,9 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Remove deprecated portal_interface tool (PLIP #13770).
+  [ale-rt]
+
 - Remove outdated and unused discussion code and tests.
   [timo]
 
