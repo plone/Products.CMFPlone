@@ -35,7 +35,7 @@
                     class="enableAutoFocus"
                     action="folder_rename"
                     method="post"
-                    tal:attributes="action template/getId"
+                    tal:attributes="action string:${context/absolute_url}/${template/getId}"
                     tal:condition="items">
 
                 <input type="hidden" name="form.submitted" value="1" />
