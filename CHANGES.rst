@@ -11,6 +11,11 @@ Changelog
 - Remove the plone_deprecated skin layer.
   [gforcada, davisagli]
 
+
+- Move title assignment import step for archetypes tool
+  from Products.CMFPlone to Products.ATContentTypes (PLIP #13770)
+  [ale-rt]
+
 - Remove the portal_interface tool.
   [ale-rt]
 
