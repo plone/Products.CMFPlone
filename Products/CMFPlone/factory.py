@@ -64,7 +64,6 @@ class HiddenProfiles(object):
                 u'plone.formwidget.querystring:default',
                 u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',
-                u'collective.z3cform.datetimewidget:default',
                 ]
 
 
