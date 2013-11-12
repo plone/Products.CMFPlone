@@ -1,8 +1,11 @@
+from plone.registry.interfaces import IRegistry
+from plone.app.controlpanel.interfaces import ISiteSchema
 from plone.app.layout.globals.tests.base import GlobalsTestCase
-
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
 from zope.i18n.locales import locales
+from zope.component import getUtility
+
 import zope.interface
 
 
@@ -17,7 +20,9 @@ class TestPortalStateView(GlobalsTestCase):
         self.assertEqual(self.view.portal(), self.portal)
 
     def test_portal_title(self):
-        self.portal.title = 'My title'
+        registry = getUtility(IRegistry)
+        self.site_settings = registry.forInterface(ISiteSchema)
+        self.site_settings.site_title = u'My title'
         self.assertEqual(self.view.portal_title(), 'My title')
 
     def test_portal_url(self):

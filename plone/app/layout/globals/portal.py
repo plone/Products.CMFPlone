@@ -1,5 +1,7 @@
 from zope.interface import implements
-
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from plone.app.controlpanel.interfaces import ISiteSchema
 from plone.memoize.view import memoize_contextless
 from plone.memoize.view import memoize
 
@@ -28,7 +30,9 @@ class PortalState(BrowserView):
 
     @memoize_contextless
     def portal_title(self):
-        return self.portal().Title()
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema)
+        return settings.site_title
 
     @memoize_contextless
     def portal_url(self):

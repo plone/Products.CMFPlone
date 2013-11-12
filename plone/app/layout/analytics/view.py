@@ -1,3 +1,7 @@
+from plone.app.controlpanel.interfaces import ISiteSchema
+from plone.registry.interfaces import IRegistry
+
+from zope.component import getUtility
 from zope.interface import implements
 from zope.viewlet.interfaces import IViewlet
 
@@ -22,6 +26,8 @@ class AnalyticsViewlet(BrowserView):
 
     def render(self):
         """render the webstats snippet"""
-        ptool = getToolByName(self.context, "portal_properties")
-        snippet = safe_unicode(ptool.site_properties.webstats_js)
-        return snippet
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(ISiteSchema)
+        if site_settings.webstats_js:
+            return site_settings.webstats_js
+        return ''

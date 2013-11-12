@@ -1,3 +1,7 @@
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
+from plone.app.controlpanel.interfaces import ISiteSchema
+
 from gzip import GzipFile
 from StringIO import StringIO
 
@@ -18,6 +22,9 @@ class SiteMapTestCase(PloneTestCase):
 
     def afterSetUp(self):
         super(SiteMapTestCase, self).afterSetUp()
+        registry = getUtility(IRegistry)
+        self.site_settings = registry.forInterface(ISiteSchema)
+        self.site_settings.enable_sitemap = True
         self.sitemap = getMultiAdapter((self.portal, self.portal.REQUEST),
                                        name='sitemap.xml.gz')
         self.wftool = getToolByName(self.portal, 'portal_workflow')
@@ -68,7 +75,7 @@ class SiteMapTestCase(PloneTestCase):
         '''
         If the sitemap is disabled throws a 404 error.
         '''
-        self.site_properties.manage_changeProperties(enable_sitemap=False)
+        self.site_settings.enable_sitemap = False
         try:
             self.sitemap()
         except Exception, e:

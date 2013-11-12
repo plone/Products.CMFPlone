@@ -14,17 +14,21 @@ Now we can instantiate the manager.
 
 Set analytics (webstats_js) code through the controlpanel
 
-    >>> props = self.portal.portal_properties.site_properties
-    >>> props.webstats_js = u"<script>window.title='Hello'</script>"
+    >>> from plone.registry.interfaces import IRegistry
+    >>> from zope.component import getUtility
+    >>> from plone.app.controlpanel.interfaces import ISiteSchema
+    >>> registry = getUtility(IRegistry)
+    >>> site_settings = registry.forInterface(ISiteSchema)
+    >>> site_settings.webstats_js = u"<script>window.title='Hello'</script>"
     >>> manager.update()
     >>> text = manager.render()
-    >>> props.webstats_js in text
+    >>> site_settings.webstats_js in text
     True
 
 Now enter some non-ascii text
 
-    >>> props.webstats_js = u"<script>window.title='C\xedsa\u0159'</script>"
+    >>> site_settings.webstats_js = u"<script>window.title='C\xedsa\u0159'</script>"
     >>> manager.update()
     >>> text = manager.render()
-    >>> props.webstats_js in text
+    >>> site_settings.webstats_js in text
     True

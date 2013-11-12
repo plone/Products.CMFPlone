@@ -4,6 +4,9 @@ Changelog
 2.5a1 (unreleased)
 ------------------
 
+- Switch webstats_js setting from site_properties to p.a.registry.
+  [timo]
+
 - Switch enable_sitemap setting from site_properties to p.a.registry.
   [timo]
 
