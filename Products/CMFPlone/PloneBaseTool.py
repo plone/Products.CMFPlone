@@ -24,7 +24,7 @@ def initializeTFC():
     """
     global TempFolderClass
     if TempFolderClass is None:
-        from Products.CMFPlone.FactoryTool import TempFolder
+        from Products.CMFPlone.TempFolder import TempFolder
         TempFolderClass = TempFolder
 
 
