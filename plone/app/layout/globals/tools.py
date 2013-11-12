@@ -22,10 +22,6 @@ class Tools(BrowserView):
         return getToolByName(self.context, 'portal_catalog')
 
     @memoize_contextless
-    def interface(self):
-        return getToolByName(self.context, 'portal_interface')
-
-    @memoize_contextless
     def membership(self):
         return getToolByName(self.context, 'portal_membership')
 
