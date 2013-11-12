@@ -1,0 +1,152 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+    <!-- ajax view for querying action info for context -->
+    <browser:page
+        for="*"
+        name="bda.plone.finder.actioninfo"
+        class=".actions.Actions"
+        attribute="actionInfo"
+        layer="bda.plone.finder.interfaces.IFinderLayer"
+        permission="zope2.View"
+    />
+
+    <!-- ajax view for performing actions -->
+    <browser:page
+        for="*"
+        name="bda.plone.finder.execute"
+        class=".actions.Actions"
+        attribute="execute"
+        layer="bda.plone.finder.interfaces.IFinderLayer"
+        permission="zope2.View"
+    />
+
+    <!-- action view -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_view"
+        factory=".actions.ViewAction"
+    />
+
+    <!-- action edit -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_edit"
+        factory=".actions.EditAction"
+    />
+
+    <!-- action change state -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_change_state"
+        factory=".actions.ChangeStateAction"
+    />
+
+    <!-- action add item -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_add_item"
+        factory=".actions.AddItemAction"
+    />
+
+    <!-- action cut object -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_cut"
+        factory=".actions.CutAction"
+    />
+
+    <adapter
+        zcml:condition="installed Products.Archetypes"
+        for="Products.Archetypes.interfaces.IBaseObject
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_cut"
+        factory=".actions.OFSCutAction"
+    />
+
+    <adapter
+        zcml:condition="installed plone.dexterity"
+        for="plone.dexterity.interfaces.IDexterityContent
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_cut"
+        factory=".actions.OFSCutAction"
+    />
+
+    <!-- action copy object -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_copy"
+        factory=".actions.CopyAction"
+    />
+
+    <adapter
+        zcml:condition="installed Products.Archetypes"
+        for="Products.Archetypes.interfaces.IBaseObject
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_copy"
+        factory=".actions.OFSCopyAction"
+    />
+
+    <adapter
+        zcml:condition="installed plone.dexterity"
+        for="plone.dexterity.interfaces.IDexterityContent
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_copy"
+        factory=".actions.OFSCopyAction"
+    />
+
+    <!-- action paste object -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_paste"
+        factory=".actions.PasteAction"
+    />
+
+    <adapter
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_paste"
+        factory=".actions.PloneRootPasteAction"
+    />
+
+    <adapter
+        zcml:condition="installed Products.Archetypes"
+        for="Products.Archetypes.interfaces.IBaseObject
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_paste"
+        factory=".actions.OFSPasteAction"
+    />
+
+    <adapter
+        zcml:condition="installed plone.dexterity"
+        for="plone.dexterity.interfaces.IDexterityContent
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_paste"
+        factory=".actions.OFSPasteAction"
+    />
+
+    <!-- action delete object -->
+    <adapter
+        for="* zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_delete"
+        factory=".actions.DeleteAction"
+    />
+
+    <adapter
+        zcml:condition="installed Products.Archetypes"
+        for="Products.Archetypes.interfaces.IBaseObject
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_delete"
+        factory=".actions.OFSDeleteAction"
+    />
+
+    <adapter
+        zcml:condition="installed plone.dexterity"
+        for="plone.dexterity.interfaces.IDexterityContent
+             zope.publisher.interfaces.http.IHTTPRequest"
+        name="action_delete"
+        factory=".actions.OFSDeleteAction"
+    />
+
+</configure>
