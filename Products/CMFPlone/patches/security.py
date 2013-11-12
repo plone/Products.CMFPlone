@@ -52,26 +52,26 @@ except pkg_resources.DistributionNotFound:
     pass
 else:
     code = """
-    from persistent.interfaces import IPersistent
-    from OFS.interfaces import IItem
-    from Products.ATContentTypes.tool.factory import FauxArchetypeTool
+from persistent.interfaces import IPersistent
+from OFS.interfaces import IItem
+from Products.ATContentTypes.tool.factory import FauxArchetypeTool
 
-    def _getToolByName(self, name, default=_marker):
-        pass
+def _getToolByName(self, name, default=_marker):
+    pass
 
-    def check_getToolByName(obj, name, default=_marker):
-        result = _getToolByName(obj, name, default)
-        if IPersistent.providedBy(result) or \
-                IItem.providedBy(result) or \
-                name in _tool_interface_registry or \
-                (isinstance(result, FauxArchetypeTool)) or \
-                '.test' in result.__class__.__module__ or \
-                result is _marker or \
-                result is default:
-            return result
-        else:
-            raise TypeError("Object found is not a portal tool (%s)" % (name,))
+def check_getToolByName(obj, name, default=_marker):
+    result = _getToolByName(obj, name, default)
+    if IPersistent.providedBy(result) or \
+            IItem.providedBy(result) or \
+            name in _tool_interface_registry or \
+            (isinstance(result, FauxArchetypeTool)) or \
+            '.test' in result.__class__.__module__ or \
+            result is _marker or \
+            result is default:
         return result
+    else:
+        raise TypeError("Object found is not a portal tool (%s)" % (name,))
+    return result
     """
     from Products.CMFCore import utils
     if '_marker' not in utils.getToolByName.func_globals:
