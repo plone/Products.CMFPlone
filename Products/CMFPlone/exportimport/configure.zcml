@@ -52,15 +52,6 @@
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="factorytool"
-      handler="Products.CMFPlone.exportimport.factorytool.importFactoryTool"
-      title="Portal Factory Tool"
-      description="Import type registration for the portal factory tool.">
-   <depends name="componentregistry" />
-   <depends name="typeinfo" />
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
       name="memberdata-properties"
       handler="Products.CMFPlone.exportimport.memberdata_properties.importMemberDataProperties"
       title="MemberData Properties"
@@ -128,13 +119,6 @@
       />
 
   <genericsetup:exportStep
-      name="factorytool"
-      title="Portal Factory Tool"
-      description="Export type registration for the portal factory tool."
-      handler="Products.CMFPlone.exportimport.factorytool.exportFactoryTool"
-      />
-
-  <genericsetup:exportStep
       name="jsregistry"
       title="Javascript registry"
       description="Export javascript registry"
@@ -161,13 +145,6 @@
       description="Export viewlet settings"
       handler="plone.app.viewletmanager.exportimport.storage.exportViewletSettingsStorage"
       />
-
-  <adapter
-     factory=".factorytool.PortalFactoryXMLAdapter"
-     provides="Products.GenericSetup.interfaces.IBody"
-     for="Products.CMFPlone.interfaces.IFactoryTool
-          Products.GenericSetup.interfaces.ISetupEnviron"
-     />
 
   <adapter
      factory=".propertiestool.PlonePropertiesToolXMLAdapter"

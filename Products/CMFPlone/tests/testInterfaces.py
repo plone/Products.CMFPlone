@@ -9,9 +9,6 @@ from zope.interface import implementedBy, providedBy
 from Products.CMFPlone.ActionsTool import ActionsTool
 from Products.CMFPlone.CalendarTool import CalendarTool
 from Products.CMFPlone.CatalogTool import CatalogTool
-from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
-from Products.CMFPlone.InterfaceTool import InterfaceTool
-from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
 from Products.CMFPlone.PloneControlPanel \
     import PloneControlPanel, PloneConfiglet
@@ -264,9 +261,6 @@ testClasses = [
     (ActionsTool, ()),
     (CalendarTool, ()),
     (CatalogTool, ()),
-    (FactoryTool, ()), (TempFolder, ()),
-    (InterfaceTool, ()),
-    (MetadataTool, ()),
     (MigrationTool, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
