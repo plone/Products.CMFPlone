@@ -49,6 +49,20 @@ So first we need a logged in user with manager rights:
   >>> browser.getLink('Site Setup')
   <Link text='Site Setup' url='http://nohost/plone/@@overview-controlpanel'>
 
+Coincidentally the portal happens to be configured for users to get to pick
+their own passwords.  Again, this is only relevant for this test as otherwise
+outgoing mails would have to be handled making things unnecessarily
+complicated:
+
+  >>> self.portal.validate_email = False
+  >>> transaction.commit()
+
+We need to know what the register button is called, it might vary with form
+frameworks:
+
+  >>> browser.open('http://nohost/plone/@@register')
+  >>> buttonName = browser.getControl('Register').name
+
 Also, the form used for the attack needs to be created.  Normally this would
 happen on another domain, but for the purposes of this test it will happen on
 the same site, since it is the only one the testbrowser knows about:
@@ -63,18 +77,11 @@ the same site, since it is the only one the testbrowser knows about:
   ... <input type="hidden" name="password" value="johnnyrulez" /> \
   ... <input type="hidden" name="password_confirm" value="johnnyrulez" /> \
   ... <input type="hidden" name="form.submitted" value="1" /> \
-  ... <input type="submit" name="form.actions.register" value="Click me!" /> \
+  ... <input type="submit" name="' + buttonName + '" value="Click me!" /> \
   ... </form> \
   ... ', mimetype='text/html')
   >>> folder.important.getField('text').default_output_type = 'text/html'
   >>> portal.portal_workflow.doActionFor(folder.important, 'publish')
-
-Coincidentally the portal happens to be configured for users to get to pick
-their own passwords.  Again, this is only relevant for this test as otherwise
-outgoing mails would have to be handled making things unnecessarily
-complicated:
-
-  >>> self.portal.validate_email = False
   >>> transaction.commit()
 
 Now let's say with some social engineering the user who logged in above is
