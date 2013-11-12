@@ -6,8 +6,6 @@ from zope.interface import implements
 from zope.viewlet.interfaces import IViewlet
 
 from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
 
 
 class AnalyticsViewlet(BrowserView):

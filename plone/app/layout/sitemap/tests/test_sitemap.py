@@ -41,7 +41,6 @@ class SiteMapTestCase(PloneTestCase):
 
         self.site_properties = getToolByName(
             self.portal, 'portal_properties').site_properties
-        self.site_properties.manage_changeProperties(enable_sitemap=True)
 
         # setup private content that isn't accessible for anonymous
         self.loginAsPortalOwner()
