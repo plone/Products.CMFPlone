@@ -7,7 +7,6 @@ from unittest import TestSuite
 def test_suite():
     suites = (
         DocFileSuite('messages.txt', package='Products.CMFPlone.tests'),
-        DocTestSuite('Products.CMFPlone.CalendarTool'),
         DocTestSuite('Products.CMFPlone.i18nl10n'),
         ZopeDocTestSuite('Products.CMFPlone.PloneTool',
                          test_class=FunctionalTestCase),
