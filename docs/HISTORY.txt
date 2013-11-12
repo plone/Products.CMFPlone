@@ -3,6 +3,12 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
+5.0.0 (unreleased)
+------------------
+
+- Removed portal_interface tool (PLIP #13770)
+  [ale-rt]
+
 4.3.3 (unreleased)
 ------------------
 

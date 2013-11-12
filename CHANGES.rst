@@ -11,6 +11,9 @@ Changelog
 - Remove the plone_deprecated skin layer.
   [gforcada, davisagli]
 
+- Remove the portal_interface tool.
+  [ale-rt]
+
 - Remove the portal_actionicons tool.
   [davisagli]
 
