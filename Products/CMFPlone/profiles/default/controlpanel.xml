@@ -126,13 +126,6 @@
     visible="False" i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
- <configlet title="Calendar" action_id="CalendarSettings" appId="Plone"
-    category="Plone" condition_expr=""
-    icon_expr="string:$portal_url/event_icon.png"
-    url_expr="string:${portal_url}/@@calendar-controlpanel" visible="True"
-    i18n:attributes="title">
-  <permission>Plone Site Setup: Calendar</permission>
- </configlet>
  <configlet title="HTML Filtering" action_id="HtmlFilter" appId="HtmlFilter"
     category="Plone" condition_expr=""
     icon_expr="string:$portal_url/htmlfilter_icon.png"

@@ -137,7 +137,6 @@ def initialize(context):
     import TypesTool
     import CatalogTool
     import SkinsTool
-    import CalendarTool
     import QuickInstallerTool
     import TranslationServiceTool
 
@@ -155,7 +154,6 @@ def initialize(context):
              TypesTool.TypesTool,
              CatalogTool.CatalogTool,
              SkinsTool.SkinsTool,
-             CalendarTool.CalendarTool,
              QuickInstallerTool.QuickInstallerTool,
              TranslationServiceTool.TranslationServiceTool,
             )

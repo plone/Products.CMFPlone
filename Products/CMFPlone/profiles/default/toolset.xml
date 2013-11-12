@@ -14,8 +14,6 @@
            class="Products.CMFPlone.ActionsTool.ActionsTool"/>
  <required tool_id="portal_atct"
            class="Products.ATContentTypes.tool.atct.ATCTTool"/>
- <required tool_id="portal_calendar"
-           class="Products.CMFPlone.CalendarTool.CalendarTool"/>
  <required tool_id="portal_catalog"
            class="Products.CMFPlone.CatalogTool.CatalogTool"/>
  <required tool_id="portal_controlpanel"
