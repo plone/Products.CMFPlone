@@ -4,6 +4,7 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Migrate portal_interface tool methods to plone_interface_info (PLIP #13770).
 - Remove deprecated portal_interface tool (PLIP #13770).
   [ale-rt]
 

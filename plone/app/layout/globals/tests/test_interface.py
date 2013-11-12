@@ -5,14 +5,26 @@ optionflags = doctest.REPORT_ONLY_FIRST_FAILURE | doctest.ELLIPSIS
 
 # Used in tests
 
-from zope.interface import Interface
+from zope.interface import Attribute, Interface
 
 
-class IOne(Interface):
-    pass
+class IZero(Interface):
+    ''' Test interface zero
+    '''
+
+
+class IOne(IZero):
+    ''' Test interface one
+    '''
+    one_name = Attribute('One name for IOne')
+
+    def one_function():
+        '''One function for IOne'''
 
 
 class ITwo(Interface):
+    ''' Test interface two
+    '''
     pass
 
 
@@ -77,6 +89,37 @@ is not a valid Interface.
     ValueError: \
 'plone.app.layout.globals.tests.test_interface.NotAnInterface' \
 is not a valid Interface.
+
+    >>> view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne')[0]
+    ('one_function', 'One function for IOne')
+    >>> view.names_and_descriptions(
+    ...     'plone.app.layout.globals.tests.test_interface.IOne')[1]
+    ('one_name', 'One name for IOne')
+
+    >>> view.get_base_interface()
+    []
+    >>> iface_info = view.get_interface_informations(IOne)
+    >>> iface_info['dotted_name']
+    'plone.app.layout.globals.tests.test_interface.IOne'
+    >>> iface_info['name']
+    'IOne'
+    >>> iface_info['doc']
+    'One name for IOne'
+    >>> iface_info['bases']
+    [<InterfaceClass plone.app.layout.globals.tests.test_interface.IZero>]
+    >>> iface_info['base_names']
+    ['plone.app.layout.globals.tests.test_interface.IOne']
+    >>> iface_info['attributes'][0]['doc']
+    'One name for IOne'
+    >>> iface_info['attributes'][0]['name']
+    'one_name'
+    >>> iface_info['methods'][0]['doc']
+    'One function for IOne'
+    >>> iface_info['methods'][0]['name']
+    'one_function'
+    >>> iface_info['methods'][0]['signature']
+    '()'
     """
 
 
