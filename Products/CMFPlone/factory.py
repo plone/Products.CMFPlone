@@ -47,7 +47,6 @@ class HiddenProfiles(object):
                 u'plone.portlet.static:default',
                 u'plone.portlet.collection:default',
                 u'plone.protect:default',
-                u'plonetheme.sunburst:uninstall',
                 u'plone.app.blob:default',
                 u'plone.app.blob:file-replacement',
                 u'plone.app.blob:image-replacement',
