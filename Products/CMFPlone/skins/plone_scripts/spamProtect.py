@@ -9,9 +9,9 @@
 ##
 
 def escape(s):
-	if s is not None:
-		s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
-	return s
+    if s is not None:
+        s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+    return s
 
 mailaddress = escape(mailaddress)
 mailname = escape(mailname)
@@ -32,4 +32,4 @@ else:
     cssclass = ' class="%s"' % cssclass
 
 return '<a href="&#0109;ailto&#0058;' + email + '"' + cssclass \
-        + cssid + '>' + mailname + '</a>'
+       + cssid + '>' + mailname + '</a>'
