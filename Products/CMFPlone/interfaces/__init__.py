@@ -19,4 +19,4 @@ from translationservice import ITranslationServiceTool
 from breadcrumbs import IHideFromBreadcrumbs
 from workflow import IWorkflowChain
 # BBB remove me!
-from Products.ATContentTypes.interfaces import IFactoryTool
+#from Products.ATContentTypes.interfaces import IFactoryTool
