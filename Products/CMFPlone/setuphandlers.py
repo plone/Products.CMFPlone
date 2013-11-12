@@ -133,7 +133,6 @@ def assignTitles(portal):
      'portal_form_controller': 'Registration of form and validation chains',
      'portal_groupdata': 'Handles properties on groups',
      'portal_groups': 'Handles group related functionality',
-     'portal_interface': 'Allows to query object interfaces',
      'portal_javascripts': 'Registry of JavaScript files',
      'portal_languages': 'Language specific settings',
      'portal_membership': 'Handles membership policies',
