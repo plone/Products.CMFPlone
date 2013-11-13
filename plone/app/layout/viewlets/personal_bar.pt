@@ -8,10 +8,10 @@
   <tal:block condition="not: view/anonymous">
   <li class="actionMenuHeader dropdown">
     <a id="user-name"
-       data-toggle="dropdown"
-       tal:attributes="href view/homelink_url"
-       tal:content="view/user_name">
-        John
+      data-toggle="dropdown"
+      tal:attributes="href view/homelink_url">
+      <span tal:content="view/user_name">John</span>
+      <span class="arrowDownAlternative">&#9660;</span>
     </a>
     <ul class="actionMenuContent dropdown-menu">
         <li tal:repeat="action view/user_actions"
