@@ -114,6 +114,14 @@
 
     <!-- Define some viewlets -->
 
+    <!-- HTTPHeaders -->
+    <browser:viewlet
+        name="plone.httpcachingheaders"
+        manager=".interfaces.IHTTPHeaders"
+        class=".httpheaders.HTTPCachingHeaders"
+        permission="zope.Public"
+        />
+
     <!-- The portal header -->
     <browser:viewlet
         name="plone.header"
