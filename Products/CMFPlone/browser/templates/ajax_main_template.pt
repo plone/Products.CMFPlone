@@ -14,9 +14,7 @@
         dummy python:request.RESPONSE.setHeader('X-UA-Compatible', 'IE=edge,chrome=1');"
     tal:attributes="lang lang;">
 
-    <metal:cache use-macro="context/global_cache_settings/macros/cacheheaders">
-    Get the global cache headers located in global_cache_settings.
-    </metal:cache>
+    <metal:cache tal:replace="structure provider:plone.httpheaders" />
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
