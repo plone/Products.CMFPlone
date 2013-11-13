@@ -240,6 +240,14 @@
         permission="zope2.View"
         />
 
+    <!-- Render the viewport -->
+    <browser:viewlet
+        name="plone.htmlhead.viewport"
+        manager=".interfaces.IHtmlHead"
+        template="viewport.pt"
+        permission="zope2.View"
+        />
+
     <!-- The related items -->
     <browser:viewlet
         name="plone.belowcontentbody.relateditems"
