@@ -1,16 +1,16 @@
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from Testing.makerequest import makerequest
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
-from plone.testing.z2 import Browser
-from urllib import urlencode
-from zExceptions import Unauthorized
 import re
 import unittest
+from urllib import urlencode
+from Testing.makerequest import makerequest
+from plone.testing.z2 import Browser
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from zExceptions import Unauthorized
 
 
 class TestAttackVectorsUnit(unittest.TestCase):
-
+    
     def test_gtbn_funcglobals(self):
         from Products.CMFPlone.utils import getToolByName
         try:
@@ -140,6 +140,16 @@ class TestAttackVectorsFunctional(PloneTestCase):
         self.portal.plone_utils.renameObjectsByPaths(paths=['/plone/news'], new_ids=['news'], new_titles=['EVIL'])
         self.assertEqual('News', self.portal.news.Title())
 
+    def test_gtbn_faux_archetypes_tool(self):
+        try:
+            pkg_resources.get_distribution('Products.ATContentTypes')
+        except pkg_resources.DistributionNotFound:
+            return
+        from Products.ATContentTypes.tool.factory import FauxArchetypeTool
+        from Products.CMFPlone.utils import getToolByName
+        self.portal.portal_factory.archetype_tool = FauxArchetypeTool(self.portal.archetype_tool)
+        self.assertEqual(self.portal.portal_factory.archetype_tool, getToolByName(self.portal.portal_factory, 'archetype_tool'))
+
     def test_searchForMembers(self):
         res = self.publish('/plone/portal_membership/searchForMembers')
         self.assertEqual(302, res.status)
@@ -202,6 +212,11 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_utranslate(self):
         res = self.publish('/plone/utranslate?msgid=foo')
         self.assertEqual(403, res.status)
+
+    def test_createObject(self):
+        res = self.publish('/plone/createObject?type_name=File&id=${foo}')
+        self.assertEqual(302, res.status)
+        self.assertEqual('http://nohost/plone/portal_factory/File/${foo}/edit', res.headers['location'])
 
     def test_formatColumns(self):
         res = self.publish('/plone/formatColumns?items:list=')
