@@ -23,9 +23,10 @@ class IPortalHeader(IViewletManager):
     """
 
 
-class IContentViews(IViewletManager):
+class IToolbar(IViewletManager):
     """A viewlet manager that sits above all content, normally used to hold
-    the content views (tabs) and associated actions.
+    the toolbar containing content views (tabs), associated actions and the
+    personal tools.
     """
 
 

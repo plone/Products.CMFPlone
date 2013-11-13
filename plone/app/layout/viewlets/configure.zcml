@@ -36,8 +36,8 @@
         />
 
     <browser:viewletManager
-        name="plone.contentviews"
-        provides=".interfaces.IContentViews"
+        name="plone.toolbar"
+        provides=".interfaces.IToolbar"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
@@ -151,7 +151,7 @@
     <!-- The personal bar -->
     <browser:viewlet
         name="plone.personal_bar"
-        manager=".interfaces.IPortalHeader"
+        manager=".interfaces.IToolbar"
         class=".common.PersonalBarViewlet"
         permission="zope2.View"
         />
@@ -159,7 +159,7 @@
     <!-- Content views (tabs) -->
     <browser:viewlet
         name="plone.contentviews"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         class=".common.ContentViewsViewlet"
         permission="zope2.View"
         />
@@ -171,7 +171,7 @@
     <browser:viewlet
         name="plone.contentactions"
         for="*"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         template="contentactions_blank.pt"
         permission="zope2.View"
         />
@@ -180,7 +180,7 @@
         name="plone.contentactions"
         for="*"
         view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         class=".common.ContentActionsViewlet"
         permission="zope2.View"
         />
@@ -189,7 +189,7 @@
         name="plone.contentactions"
         for="*"
         view="plone.app.content.browser.interfaces.IFolderContentsView"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         class=".common.ContentActionsViewlet"
         permission="zope2.View"
         />
