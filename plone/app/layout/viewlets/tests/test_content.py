@@ -140,6 +140,10 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
         related = viewlet.related_items()
         self.assertEqual([x.id for x in related], ['doc1', 'doc2'])
 
+        # TODO: we should test with non-published objects and anonymous
+        #       users but current workflow has no transition to make an
+        #       item private
+
     def testDexterityEmptyRelatedItems(self):
         request = self.app.REQUEST
         viewlet = ContentRelatedItems(self.folder.dex2, request, None, None)

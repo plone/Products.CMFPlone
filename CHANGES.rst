@@ -4,6 +4,11 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Fix 'plone.belowcontentbody.relateditems' viewlet to avoid trying to
+  display items if the user has no permission to view them (like content
+  in Private state).
+  [hvelarde]
+
 - Migrate portal_interface tool methods to plone_interface_info (PLIP #13770).
 - Remove deprecated portal_interface tool (PLIP #13770).
   [ale-rt]
