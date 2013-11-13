@@ -1,6 +1,12 @@
 from zope.viewlet.interfaces import IViewletManager
 
 
+class IHTTPHeaders(IViewletManager):
+    """ A viewlet manager that sits before <head> to set headers to the
+        request.
+    """
+
+
 class IHtmlHead(IViewletManager):
     """A viewlet manager that sits in the <head> of the rendered page
     """
@@ -15,6 +21,12 @@ class IHtmlHeadLinks(IViewletManager):
 
 class IPortalTop(IViewletManager):
     """A viewlet manager that sits at the very top of the rendered page
+    """
+
+
+class IGlobalStatusMessage(IViewletManager):
+    """ A viewlet manager that is aside the content to render messages for
+        the user.
     """
 
 

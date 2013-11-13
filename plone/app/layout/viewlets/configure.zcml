@@ -8,6 +8,13 @@
     <!-- Register viewlet managers - used in plone's main_template -->
 
     <browser:viewletManager
+        name="plone.httpheaders"
+        provides=".interfaces.IHTTPHeaders"
+        permission="zope.Public"
+        class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+        />
+
+    <browser:viewletManager
         name="plone.htmlhead"
         provides=".interfaces.IHtmlHead"
         permission="zope2.View"
@@ -24,6 +31,13 @@
     <browser:viewletManager
         name="plone.portaltop"
         provides=".interfaces.IPortalTop"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
+        name="plone.globalstatusmessage"
+        provides=".interfaces.IGlobalStatusMessage"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
