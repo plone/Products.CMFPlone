@@ -23,7 +23,6 @@ class HiddenProducts(object):
             'ATContentTypes', 'Products.ATContentTypes',
             'ATReferenceBrowserWidget', 'Products.ATReferenceBrowserWidget',
             'archetypes.referencebrowserwidget',
-            'CMFCalendar', 'Products.CMFCalendar',
             'CMFDefault', 'Products.CMFDefault',
             'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
             'CMFTopic', 'Products.CMFTopic',
@@ -55,7 +54,6 @@ class HiddenProducts(object):
             'plone.app.registry',
             'plone.app.search',
             'plone.app.z3cform',
-
             ]
 
 

@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove the portal_calendar tool and the dependency on CMFCalendar.
+  [davisagli]
+
 - Remove the plone_deprecated skin layer.
   [gforcada, davisagli]
 
