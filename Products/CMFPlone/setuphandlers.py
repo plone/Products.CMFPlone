@@ -20,7 +20,6 @@ class HiddenProducts(object):
     def getNonInstallableProducts(self):
         return [
             'Archetypes', 'Products.Archetypes',
-            'ATContentTypes', 'Products.ATContentTypes',
             'ATReferenceBrowserWidget', 'Products.ATReferenceBrowserWidget',
             'archetypes.referencebrowserwidget',
             'CMFDefault', 'Products.CMFDefault',
