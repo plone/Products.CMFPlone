@@ -61,8 +61,9 @@
       </div>
     </aside>
 
+    <section id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />
+
     <article id="portal-column-content">
-      <section id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />
 
       <metal:block define-slot="content">
 
@@ -77,19 +78,25 @@
 
           <header>
             <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" />
-            <metal:title define-slot="content-title">
-              <metal:comment tal:content="nothing">
-                If you write a custom title always use
-                <h1 class="documentFirstHeading"></h1> for it
-              </metal:comment>
-            </metal:title>
+              <metal:title define-slot="content-title">
+               <metal:comment tal:content="nothing">
+                   If you write a custom title always use
+                   <h1 class="documentFirstHeading"></h1> for it
+               </metal:comment>
+               <h1 metal:use-macro="context/kss_generic_macros/macros/generic_title_view">
+                   Generic KSS Title. Is rendered with class="documentFirstHeading".
+               </h1>
+              </metal:title>
             <div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" />
 
             <metal:description define-slot="content-description">
-              <metal:comment tal:content="nothing">
-                If you write a custom description always use
-                <div class="documentDescription"></div> for it
-              </metal:comment>
+               <metal:comment tal:content="nothing">
+                   If you write a custom description always use
+                   <div class="documentDescription"></div> for it
+               </metal:comment>
+               <div metal:use-macro="context/kss_generic_macros/macros/generic_description_view">
+                   Generic KSS Description. Is rendered with class="documentDescription".
+               </div>
             </metal:description>
           </header>
 
