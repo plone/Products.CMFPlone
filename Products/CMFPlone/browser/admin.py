@@ -110,7 +110,8 @@ class AddPloneSite(BrowserView):
 
     default_extension_profiles = (
         'plonetheme.classic:default',
-        'plonetheme.sunburst:default',
+        'plone.app.theming:default',
+        'plonetheme.barceloneta:default',
         )
 
     def profiles(self):
