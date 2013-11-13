@@ -141,6 +141,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
         self.assertEqual('News', self.portal.news.Title())
 
     def test_gtbn_faux_archetypes_tool(self):
+        import pkg_resources
         try:
             pkg_resources.get_distribution('Products.ATContentTypes')
         except pkg_resources.DistributionNotFound:
