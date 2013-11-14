@@ -36,8 +36,8 @@
         />
 
     <browser:viewletManager
-        name="plone.globalstatusmessages"
-        provides=".interfaces.IGlobalStatusMessages"
+        name="plone.globalstatusmessage"
+        provides=".interfaces.IGlobalStatusMessage"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
