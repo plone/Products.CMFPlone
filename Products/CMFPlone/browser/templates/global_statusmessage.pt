@@ -7,25 +7,7 @@
 <body>
 
 <tal:block i18n:domain="plone" metal:define-macro="portal_message">
-
-    <tal:statusmsg tal:define="messages python:context.plone_utils.showPortalMessages()"
-                   tal:repeat="message messages">
-
-        <dl class="portalMessage info"
-            tal:define="mtype message/type | nothing;"
-            tal:attributes="class string:portalMessage ${mtype};">
-            <dt tal:content="python:mtype.capitalize()"
-                i18n:translate="">
-                Info
-            </dt>
-            <dd tal:content="message/message | nothing"
-                i18n:translate="">
-                The status message.
-            </dd>
-        </dl>
-
-    </tal:statusmsg>
-
+  <tal:message tal:content="provider:plone.globalstatusmessage"/>
 </tal:block>
 
 </body>
