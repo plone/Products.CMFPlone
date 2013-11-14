@@ -4,8 +4,12 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Remove dependency on unittest2 as we are not going to test against
+  Python 2.6 anymore on Plone 5.0.
+  [hvelarde]
+
 - Update package dependencies and clearly specify this branch is for
-  Plone >=5.0 only.
+  Plone >=4.3 only (in fact, should be 5.0).
   [hvelarde]
 
 - Fix 'plone.belowcontentbody.relateditems' viewlet to avoid trying to

@@ -37,8 +37,3 @@ class TestRSSViewletView(ViewletsTestCase):
         self.assertFalse("<link" not in result)
         self.assertFalse("http://nohost/plone/atom.xml" not in result)
         self.assertFalse("http://nohost/plone/news/atom.xml" not in result)
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

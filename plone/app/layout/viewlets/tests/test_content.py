@@ -20,6 +20,7 @@ except pkg_resources.DistributionNotFound:
 else:
     HAS_DEXTERITY = True
     from plone.dexterity.fti import DexterityFTI
+
     class IMyDexterityItem(Interface):
         """ Dexterity test type
         """
@@ -157,8 +158,3 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
         viewlet.update()
         related = viewlet.related_items()
         self.assertEqual(len(related), 0)
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

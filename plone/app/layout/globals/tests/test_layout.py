@@ -116,8 +116,3 @@ class TestLayoutView(GlobalsTestCase):
         assert 'subsection-folder2 subsection-folder2-folder3' \
             not in body_class
         assert ' subsection-folder2-folder3-page' not in body_class
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

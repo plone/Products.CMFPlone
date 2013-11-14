@@ -127,7 +127,3 @@ class TestContentHistoryViewlet(ViewletsTestCase):
         viewlet.update()
         history = viewlet.revisionHistory()
         self.assertEqual(history[0]['revert_url'], None)
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

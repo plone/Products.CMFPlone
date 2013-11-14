@@ -61,7 +61,6 @@ setup(name='plone.app.layout',
               'plone.locking',
               'plone.testing',
               'Products.PloneTestCase',
-              'unittest2',
               'z3c.relationfield',
               'zope.annotation',
           ]
