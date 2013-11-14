@@ -6,13 +6,7 @@
 
 <body>
 
-<tal:block i18n:domain="plone"
-           metal:define-macro="portal_message">
-
-    <dl class="portalMessage info" id="kssPortalMessage" style="display:none">
-        <dt>Info</dt>
-        <dd><tal:block replace="nothing">KSS portal message</tal:block></dd>
-    </dl>
+<tal:block i18n:domain="plone" metal:define-macro="portal_message">
 
     <tal:statusmsg tal:define="messages python:context.plone_utils.showPortalMessages()"
                    tal:repeat="message messages">
@@ -31,6 +25,16 @@
         </dl>
 
     </tal:statusmsg>
+
+        <dl class="portalMessage info">
+            <dt i18n:translate="">
+                Info
+            </dt>
+            <dd i18n:translate="">
+                The status message.
+            </dd>
+        </dl>
+
 </tal:block>
 
 </body>

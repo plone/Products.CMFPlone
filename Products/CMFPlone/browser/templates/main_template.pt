@@ -48,8 +48,7 @@
         tal:attributes="class body_class;
                         dir python:isRTL and 'rtl' or 'ltr'">
 
-    <section id="edit-bar"
-             tal:content="structure provider:plone.toolbar" />
+    <section id="edit-bar" tal:content="structure provider:plone.toolbar" />
 
     <header id="portal-top" i18n:domain="plone">
       <div tal:replace="structure provider:plone.portaltop" />

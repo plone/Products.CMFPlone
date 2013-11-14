@@ -184,6 +184,10 @@ class IMainTemplate(Interface):
     """Interface to the view that generated the main_template"""
 
 
+class IGlobalStatusMessage(Interface):
+    """Interface to the view that generated the main_template"""
+
+
 class IPlone(Interface):
     """ """
 

@@ -83,6 +83,13 @@
       permission="zope.Public"
       />
 
+  <browser:page
+      for="*"
+      name="global_statusmessage"
+      class=".global_statusmessage.GlobalStatusMessage"
+      permission="zope.Public"
+      />
+
    <adapter for="*
                 .interfaces.INavigationTree"
             factory=".navtree.DefaultNavtreeStrategy"
