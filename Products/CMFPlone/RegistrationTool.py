@@ -26,7 +26,7 @@ from Products.CMFPlone.PloneTool import EMAIL_RE
 from Products.CMFDefault.utils import checkEmailAddress
 from Products.CMFDefault.exceptions import EmailAddressInvalid
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFDefault.permissions import ManagePortal
+from Products.CMFCore.permissions import ManagePortal
 from Products.PluggableAuthService.permissions import SetOwnPassword
 
 from Products.PluggableAuthService.interfaces.plugins import IValidationPlugin, IPropertiesPlugin
