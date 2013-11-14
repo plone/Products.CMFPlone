@@ -238,7 +238,23 @@ class PersonalBarViewlet(ViewletBase):
         context_state = getMultiAdapter((context, self.request),
                                         name=u'plone_context_state')
 
-        self.user_actions = context_state.actions('user')
+        user_actions = context_state.actions('user')
+        self.user_actions = []
+        for action in user_actions:
+
+            self.user_actions.append({
+                'title': action['title'],
+                'url': action['url'],
+                'href': "%s%s" % (action['url'], '?ajax_load'),
+                'id': 'personaltools-{}'.format(action['id']),
+                'target': 'link_target' in action and action['link_target'] or None,
+                'class': 'pat-modal',
+                'data-pat-modal':
+                    {'title': action['title'],
+                     'prependContent': '.portalMessage'
+                    }
+                })
+
         self.anonymous = self.portal_state.anonymous()
 
         if not self.anonymous:
