@@ -47,6 +47,11 @@ class IAboveContent(IViewletManager):
     """
 
 
+class IGlobalStatusMessages(IViewletManager):
+    """A viewlet manager that sits above the content area
+    """
+
+
 class IAboveContentTitle(IViewletManager):
     """A viewlet manager that sits above the content title in view templates
     """

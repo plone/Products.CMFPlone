@@ -36,8 +36,8 @@
         />
 
     <browser:viewletManager
-        name="plone.globalstatusmessage"
-        provides=".interfaces.IGlobalStatusMessage"
+        name="plone.globalstatusmessages"
+        provides=".interfaces.IGlobalStatusMessages"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
@@ -315,6 +315,13 @@
         name="plone.path_bar"
         manager=".interfaces.IAboveContent"
         class=".common.PathBarViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.globalstatusmessage"
+        manager=".interfaces.IGlobalStatusMessages"
+        class=".globalstatusmessage.GlobalStatusMessage"
         permission="zope2.View"
         />
 
