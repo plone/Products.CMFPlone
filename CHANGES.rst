@@ -4,6 +4,10 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Update package dependencies and clearly specify this branch is for
+  Plone >=5.0 only.
+  [hvelarde]
+
 - Fix 'plone.belowcontentbody.relateditems' viewlet to avoid trying to
   display items if the user has no permission to view them (like content
   in Private state).
