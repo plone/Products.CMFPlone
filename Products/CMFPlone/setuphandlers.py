@@ -21,7 +21,7 @@ class HiddenProducts(object):
         return [
             'Archetypes', 'Products.Archetypes',
             'ATContentTypes', 'Products.ATContentTypes',
-            'archetypes.referencebrowserwidget',
+            'CMFCalendar', 'Products.CMFCalendar',
             'CMFDefault', 'Products.CMFDefault',
             'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
             'CMFTopic', 'Products.CMFTopic',
