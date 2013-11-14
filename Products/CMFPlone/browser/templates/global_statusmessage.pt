@@ -26,15 +26,6 @@
 
     </tal:statusmsg>
 
-        <dl class="portalMessage info">
-            <dt i18n:translate="">
-                Info
-            </dt>
-            <dd i18n:translate="">
-                The status message.
-            </dd>
-        </dl>
-
 </tal:block>
 
 </body>
