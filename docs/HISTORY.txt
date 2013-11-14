@@ -9,6 +9,9 @@ For what's new in this release, see CHANGES.txt.
 - Removed portal_interface tool (PLIP #13770)
   [ale-rt]
 
+- Removed kss_field_decorator_view support
+  [maurits, jaroel]
+
 4.3.3 (unreleased)
 ------------------
 
