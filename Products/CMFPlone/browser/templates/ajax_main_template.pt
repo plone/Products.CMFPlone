@@ -32,11 +32,8 @@
                     dir python:isRTL and 'rtl' or 'ltr'">
 
     <aside id="global_statusmessage">
-      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-       Status message
-      </div>
+      <tal:message tal:content="provider:plone.globalstatusmessage"/>
     </aside>
-
 
     <article id="portal-column-content">
 
@@ -48,7 +45,6 @@
                     <div id="content">
 
                         <metal:bodytext define-slot="main">
-
 
                         <header>
                          <metal:title define-slot="content-title">
