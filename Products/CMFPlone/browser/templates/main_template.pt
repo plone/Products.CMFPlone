@@ -56,6 +56,11 @@
 
     <aside id="global_statusmessage">
       <tal:message tal:content="provider:plone.globalstatusmessage"/>
+      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+        Status message alert
+      </div>
+      <div metal:define-slot="global_statusmessage">
+      </div>
     </aside>
 
     <section id="viewlet-above-content" tal:content="structure provider:plone.abovecontent" />

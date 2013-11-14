@@ -97,25 +97,25 @@ delete link should not be visible
      Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
 
 menu link is clicked
-    Click Link  css=dl#plone-contentmenu-actions dt.actionMenuHeader a
+    Click Link  css=li#plone-contentmenu-actions a.actionMenuHeader
 
 delete link should be visible
     Element Should Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
 
 actions menu should be visible
-    Element Should Be Visible  xpath=//dl[@id='plone-contentmenu-actions']/dd
+    Element Should Be Visible  xpath=//li[@id='plone-contentmenu-actions']/a
 
 first menu link is clicked
-    Click Link  xpath=(//div[@class="contentActions"]//dt[contains(@class, 'actionMenuHeader')]/a)[1]
+    Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[1]
 
 mouse moves to second menu
-    Click Link  xpath=(//div[@class="contentActions"]//dt[contains(@class, 'actionMenuHeader')]/a)[2]
+    Click Link  xpath=(//div[@class="contentActions"]//a[contains(@class, 'actionMenuHeader')])[2]
 
 second menu should be visible
-    Element Should Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[2]
+    Element Should Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[2]
 
 first menu should not be visible
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//dl[contains(@class, 'actionMenu')])[1]//dd
+    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//dd
 
 I click outside of menu
     Click Element  xpath=//h1
@@ -124,8 +124,8 @@ workflow link is clicked
     # store current state
     ${OLD_STATE} =  Get Text  xpath=//span[contains(@class,'state-')]
     Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
-    Click Link  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
-    Click Link  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
+    Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
+    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/dd//a)[1]
     # FIXME: The above 'Click Link' fails on Internet Explorer, but the
     # following keywords 'workflow link is clicked softly' passes. Until we
     # know why, we check if the above worked and if not, we try the other
@@ -137,11 +137,11 @@ workflow link is clicked
 
 workflow link is clicked softly
     [Documentation]  This works on Internet Explorer, but not on Firefox...
-    Mouse Over  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
-    Click Link  xpath=//dl[@id='plone-contentmenu-workflow']/dt/a
-    Mouse Over  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
-    Mouse Down  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
-    Mouse Up  xpath=(//dl[@id='plone-contentmenu-workflow']/dd//a)[1]
+    Mouse Over  xpath=//*[@id='plone-contentmenu-workflow']/a
+    Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
+    Mouse Over  xpath=(//li[@id='plone-contentmenu-workflow']//a)[1]
+    Mouse Down  xpath=(//li[@id='plone-contentmenu-workflow']//a)[1]
+    Mouse Up  xpath=(//li[@id='plone-contentmenu-workflow']//a)[1]
     Wait until page contains  Item state changed.
 
 state should have changed
@@ -151,8 +151,8 @@ state should have changed
 
 Open Menu
     [Arguments]  ${elementId}
-    Element Should Not Be Visible  css=dl#${elementId} dd.actionMenuContent
-    Click link  css=dl#${elementId} dt.actionMenuHeader a
+    Element Should Not Be Visible  css=dl#${elementId} ul.actionMenuContent
+    Click link  css=li#${elementId} a.actionMenuHeader
     Wait until keyword succeeds  1  5  Element Should Be Visible  css=dl#${elementId} dd.actionMenuContent
 
 Open Action Menu

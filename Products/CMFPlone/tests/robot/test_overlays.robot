@@ -256,7 +256,7 @@ a document '${title}' in the test folder
 
 I set the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//dl[@id='plone-contentmenu-display']/dt/a
+    Click link  xpath=//li[@id='plone-contentmenu-display']/a
     Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
@@ -265,12 +265,12 @@ a document as the default view of the test folder
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//dl[@id='plone-contentmenu-display']/dt/a
+    Click link  xpath=//li[@id='plone-contentmenu-display']/a
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//dl[@id='plone-contentmenu-actions']/dt/a
+    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
     Click link  id=plone-contentmenu-actions-${action}
     Wait until page contains Element  id=exposeMask
 
