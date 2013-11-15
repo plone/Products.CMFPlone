@@ -1,4 +1,3 @@
-from zope.interface import Interface
 from properties import IPropertiesTool
 from properties import ISimpleItemWithProperties
 from basetool import IPloneBaseTool
