@@ -18,7 +18,11 @@ from Products.CMFCore.utils import getToolByName
 plone_utils = getToolByName(context, 'plone_utils')
 contentEditSuccess = 0
 plone_log = context.plone_log
-new_context = context.portal_factory.doCreate(context)
+portal_factory = getattr(context, 'portal_factory', None)
+if portal_factory is not None:
+    new_context = context.portal_factory.doCreate(context)
+else:
+    new_context = context
 portal_workflow = new_context.portal_workflow
 transitions = portal_workflow.getTransitionsFor(new_context)
 transition_ids = [t['id'] for t in transitions]
