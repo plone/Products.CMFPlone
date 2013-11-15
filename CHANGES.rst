@@ -14,6 +14,10 @@ Changelog
 - Remove the plone_deprecated skin layer.
   [gforcada, davisagli]
 
+- Moved portal_factory and portal_metadata from Products.CMFPlone to
+  Products.ATContentTypes (PLIP #13770)
+  [ale-rt]
+
 - Remove the portal_interface tool.
   [ale-rt]
 
