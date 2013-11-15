@@ -9,5 +9,6 @@ class GlobalStatusMessage(ViewletBase):
     index = ViewPageTemplateFile('globalstatusmessage.pt')
 
     def update(self):
+        super(GlobalStatusMessage, self).update()
         self.status = IStatusMessage(self.request)
         self.messages = self.status.show()

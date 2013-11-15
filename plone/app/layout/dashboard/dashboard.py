@@ -1,4 +1,5 @@
 from zope.component import getUtility
+from zope import interface
 
 from AccessControl import getSecurityManager
 from Products.Five.browser import BrowserView
@@ -9,11 +10,27 @@ from plone.portlets.constants import USER_CATEGORY, GROUP_CATEGORY
 from plone.memoize.instance import memoize
 
 from Products.CMFCore.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
+from Products.CMFPlone import PloneMessageFactory as _
+
+
+class IDashboard(interface.Interface):
+    """the dashboard display columns of portlet to the loggedin user"""
 
 
 class DashboardView(BrowserView):
     """Power the dashboard
     """
+    interface.implements(IDashboard)
+
+    def __call__(self):
+        self.request.set('disable_border',1)
+        self.request.set('disable_plone.leftcolumn',1)
+        self.request.set('disable_plone.rightcolumn',1)
+        if self.can_edit() and self.empty():
+            message = _(u"info_empty_dashboard")
+            IStatusMessage(self.request).add(message)
+        return self.index()
 
     @memoize
     def can_edit(self):

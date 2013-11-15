@@ -320,7 +320,7 @@
 
     <browser:viewlet
         name="plone.globalstatusmessage"
-        manager=".interfaces.IGlobalStatusMessages"
+        manager=".interfaces.IGlobalStatusMessage"
         class=".globalstatusmessage.GlobalStatusMessage"
         permission="zope2.View"
         />
