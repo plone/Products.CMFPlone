@@ -18,6 +18,7 @@ For what's new in this release, see CHANGES.txt.
 - Added a method toLocalizedString to @@plone view,
   on the model of toLocalizedTime,
   to get a localized string rendering a size from an integer.
+  Use it on image view.
   [thomasdesvenain]
 
 - Move propertysheet imaging_properties and the corresponding
