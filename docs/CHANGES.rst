@@ -17,9 +17,10 @@ Changelog
   acquisition magic. See https://dev.plone.org/ticket/13603.
   [gotcha]
 
-- Added a method toLocalizedString to @@plone view,
+- Added a method toLocalizedSize to @@plone view,
   on the model of toLocalizedTime,
   to get a localized string rendering a size from an integer.
+  Use it on image view.
   [thomasdesvenain]
 
 - Remove plone_deprecated/sitemap.pt to avoid sitemap traceback because we

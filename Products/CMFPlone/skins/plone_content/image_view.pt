@@ -23,15 +23,15 @@
                 <br />
             </a>
 
-            <span id="plone-image-details" class="discreet visualNoPrint"
-                  tal:define="objectsize python:context.getObjSize(here)">
+            <span id="plone-image-details" class="discreet visualNoPrint">
 
               <span tal:condition="size"
 	                class="discreet">
                 <span i18n:translate="label_full_size">Full-size image:</span>
 
                 <span tal:condition="size"
-                      tal:content="objectsize">
+                      tal:define="toLocalizedSize nocall:context/@@plone/toLocalizedSize"
+                      tal:content="python:toLocalizedSize(size)">
                     File size
                 </span>
 				&#124;
