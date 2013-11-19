@@ -272,7 +272,7 @@ I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//li[@id='plone-contentmenu-actions']/a
     Click link  id=plone-contentmenu-actions-${action}
-    Wait until page contains Element  id=exposeMask
+    Wait until page contains Element  class=backdrop
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
