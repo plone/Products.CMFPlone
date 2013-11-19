@@ -24,23 +24,11 @@
      interface="plone.app.viewletmanager.interfaces.IViewletSettingsStorage"
      factory="plone.app.viewletmanager.storage.ViewletSettingsStorage"/>
   <utility
-     interface="Products.CMFActionIcons.interfaces.IActionIconsTool"
-     object="portal_actionicons"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IDiscussionTool"
-     object="portal_discussion"/>
-  <utility
-     interface="Products.CMFCore.interfaces.IMetadataTool"
-     object="portal_metadata"/>
-  <utility
      interface="Products.CMFCore.interfaces.IPropertiesTool"
      object="portal_properties"/>
   <utility
      interface="Products.CMFCore.interfaces.ISiteRoot"
      object=""/>
-  <utility
-     interface="Products.CMFCore.interfaces.IUndoTool"
-     object="portal_undo"/>
   <utility
      interface="Products.CMFUid.interfaces.IUniqueIdAnnotationManagement"
      object="portal_uidannotation"/>
@@ -53,9 +41,6 @@
   <utility
      interface="Products.CMFPlone.interfaces.IPloneSiteRoot"
      object=""/>
-  <utility
-     interface="Products.CMFPlone.interfaces.IInterfaceTool"
-     object="portal_interface"/>
   <utility
      interface="Products.CMFPlone.interfaces.IMigrationTool"
      object="portal_migration"/>

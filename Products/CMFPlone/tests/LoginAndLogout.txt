@@ -4,8 +4,12 @@ Logging in and out
 A very simple and underdocumented testbrowser test.  This is all about
 logging in and out.
 
-    >>> from Testing.testbrowser import Browser
-    >>> browser = Browser()
+    >>> from plone.testing.z2 import Browser
+    >>> from plone.app.testing import TEST_USER_ID
+    >>> from plone.app.testing import TEST_USER_NAME
+    >>> from plone.app.testing import TEST_USER_PASSWORD
+    >>> import transaction
+    >>> browser = Browser(app)
 
 Using the Login Form
 --------------------
@@ -16,7 +20,7 @@ First we try to log in with bad credentials:
     >>> browser.getLink('Log in').click()
     >>> browser.url
     'http://nohost/plone/login'
-    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
     >>> browser.getControl('Password').value = 'wrongpassword'
     >>> browser.getControl('Log in').click()
     >>> "Login failed" in browser.contents
@@ -30,8 +34,8 @@ And then we try again with the right credentials:
     >>> browser.getLink('Log in').click()
     >>> browser.url
     'http://nohost/plone/login'
-    >>> browser.getControl('Login Name').value = 'test_user_1_'
-    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> "You are now logged in" in browser.contents
     True
@@ -55,13 +59,14 @@ Let's first add the login portlet
     >>> addview()
     ''
     >>> self.logout()
+    >>> transaction.commit()
     
 First we try to log in with bad credentials:
 
     >>> browser.getLink('Home').click()
     >>> browser.url
     'http://nohost/plone'
-    >>> browser.getControl('Login Name').value = 'test_user_1_'
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
     >>> browser.getControl('Password').value = 'wrongpassword'
     >>> browser.getControl('Log in').click()
     >>> "Login failed" in browser.contents
@@ -74,8 +79,8 @@ And then we try again with the right credentials:
     >>> browser.getLink('Home').click()
     >>> browser.url
     'http://nohost/plone'
-    >>> browser.getControl('Login Name').value = 'test_user_1_'
-    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
 
 Verify that we are given a status message saying we've logged in:
@@ -103,6 +108,7 @@ the site:
 
     >>> browser.getLink('Home').click()
     >>> self.app.acl_users.userFolderAddUser('rootuser', 'secret', [], [])
+    >>> transaction.commit()
     >>> browser.open('http://nohost/plone/login_form')
     >>> browser.getControl('Login Name').value = 'rootuser'
     >>> browser.getControl('Password').value = 'secret'
@@ -122,8 +128,8 @@ of test_user_1_:
     >>> 'require_login' in browser.url
     True
 
-    >>> browser.getControl('Login Name').value = 'test_user_1_'
-    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.url
     'http://nohost/plone/Members/test_user_1_/...edit'
@@ -137,19 +143,17 @@ method aliases and updates the request.
 
 Test must_change_password 
 -------------------------
-
-    >>> from Products.PloneTestCase import PloneTestCase as PTC
     
 Start with a fresh testbrowser 
 
-    >>> browser = Browser()
+    >>> browser = Browser(app)
     >>> browser.open('http://nohost/plone/')
     
 Configure must_change_password (not enabled by default).
 
     >>> memberdata = self.portal.portal_memberdata
     >>> memberdata.manage_addProperty('must_change_password', True, 'boolean')
-    >>> member = self.portal.portal_membership.getMemberById(PTC.default_user)
+    >>> member = self.portal.portal_membership.getMemberById(TEST_USER_ID)
 
 We want to make sure that the property "must_change_password" was properly
 configured.
@@ -160,11 +164,12 @@ configured.
     
 Try to login.  
 
+    >>> transaction.commit()
     >>> browser.getLink('Log in').click()
     >>> browser.url
     'http://nohost/plone/login'
-    >>> browser.getControl('Login Name').value = PTC.default_user
-    >>> browser.getControl('Password').value = PTC.default_password
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> "You are now logged in" in browser.contents
     False

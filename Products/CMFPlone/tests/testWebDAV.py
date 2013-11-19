@@ -1,12 +1,12 @@
-from Products.CMFPlone.tests import PloneTestCase
-
-from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.tests.PloneTestCase import default_user
-from Products.CMFPlone.tests.PloneTestCase import default_password
-
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.utils import getToolByName
-
+from Products.CMFPlone.tests import dummy
+from Products.CMFPlone.tests import PloneTestCase
 from StringIO import StringIO
+
 
 html = """\
 <html>
@@ -25,44 +25,15 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
         default = psets['webdav']
         items = dict(default.propertyItems())
         self.assertTrue('displayname' in items.keys())
-        self.assertEquals(items['displayname'], ptool.title)
+        self.assertEqual(items['displayname'], ptool.title)
 
 
-class TestDAVMetadata(PloneTestCase.FunctionalTestCase):
-    # Confirms fix for http://dev.plone.org/plone/ticket/3217
-    # The fix itself is in CMFDefault.Document, not Plone.
-
-    def afterSetUp(self):
-        self.basic_auth = '%s:%s' % (default_user, default_password)
-        self.folder_path = self.folder.absolute_url(1)
-
-    def testDocumentMetadata(self):
-        response = self.publish(self.folder_path + '/doc',
-                                env={'CONTENT_TYPE': 'text/html'},
-                                request_method='PUT',
-                                stdin=StringIO(html),
-                                basic=self.basic_auth)
-        self.assertEqual(response.getStatus(), 201)
-        doc = self.folder.doc
-        self.assertEqual(doc.Title(), 'Foo')
-        self.assertEqual(doc.EditableBody(), 'Bar')
-        self.assertEqual(doc.Format(), 'text/html')
-        # Remaining elements should contain the defaults
-        self.assertEqual(doc.Description(), '')
-        self.assertEqual(doc.Subject(), ())
-        self.assertEqual(doc.Contributors(), ())
-        self.assertEqual(doc.EffectiveDate(), 'None')
-        self.assertEqual(doc.ExpirationDate(), 'None')
-        self.assertEqual(doc.Language(), '')
-        self.assertEqual(doc.Rights(), '')
-
-
-class TestPUTObjects(PloneTestCase.FunctionalTestCase):
+class TestPUTObjects(PloneTestCase.PloneTestCase):
     # PUT objects into Plone including special cases like index_html.
     # Confirms fix for http://dev.plone.org/plone/ticket/1375
 
     def afterSetUp(self):
-        self.basic_auth = '%s:%s' % (default_user, default_password)
+        self.basic_auth = '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
 
@@ -292,8 +263,8 @@ class TestDAVOperations(PloneTestCase.FunctionalTestCase):
 
     def afterSetUp(self):
         self.loginAsPortalOwner()
-        self.basic_auth = '%s:%s' % (PloneTestCase.portal_owner,
-                                     PloneTestCase.default_password)
+        self.basic_auth = '%s:%s' % (SITE_OWNER_NAME,
+                                     SITE_OWNER_PASSWORD)
         self.portal_path = self.portal.absolute_url(1)
         self.folder_path = self.folder.absolute_url(1)
 
@@ -422,8 +393,6 @@ def test_suite():
 
     suite = TestSuite()
     suite.addTest(makeSuite(TestDAVProperties))
-    # DISABLED the metadata test, this is not yet implemented in ATCT
-    ##suite.addTest(makeSuite(TestDAVMetadata))
     suite.addTest(makeSuite(TestPUTObjects))
     suite.addTest(makeSuite(TestDAVOperations))
     return suite

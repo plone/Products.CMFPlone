@@ -1,10 +1,9 @@
-from Products.CMFPlone.tests import PloneTestCase
-
+from plone.app.testing.bbb import PloneTestCase
 from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
 from Products.CMFCore.utils import getToolByName
 
 
-class TestCSSRegistry(PloneTestCase.PloneTestCase):
+class TestCSSRegistry(PloneTestCase):
 
     def afterSetUp(self):
         self.tool = getToolByName(self.portal, CSSTOOLNAME)
@@ -46,7 +45,7 @@ class TestCSSRegistry(PloneTestCase.PloneTestCase):
                             cb)
 
 
-class TestJSRegistry(PloneTestCase.PloneTestCase):
+class TestJSRegistry(PloneTestCase):
 
     def afterSetUp(self):
         self.tool = getToolByName(self.portal, JSTOOLNAME)
@@ -57,26 +56,25 @@ class TestJSRegistry(PloneTestCase.PloneTestCase):
     def testDefaultJSIsInstalled(self):
         installedScriptIds = self.tool.getResourceIds()
         expected = [
-             'calendar_formfield.js',
-             'collapsiblesections.js',
-             'first_input_focus.js',
-             'jquery.highlightsearchterms.js',
-             'mark_special_links.js',
-             'select_all.js',
-             'styleswitcher.js',
-             'livesearch.js',
-             'table_sorter.js',
-             'dropdown.js',
-             'dragdropreorder.js',
-             'cookie_functions.js',
-             'nodeutilities.js',
-             'plone_javascript_variables.js',
-             'register_function.js',
-             'modernizr.js',
-             'formUnload.js',
-             'formsubmithelpers.js',
-             'form_tabbing.js',
-             'popupforms.js']
+            'collapsiblesections.js',
+            'first_input_focus.js',
+            'jquery.highlightsearchterms.js',
+            'mark_special_links.js',
+            'select_all.js',
+            'styleswitcher.js',
+            'livesearch.js',
+            'table_sorter.js',
+            'dropdown.js',
+            'dragdropreorder.js',
+            'cookie_functions.js',
+            'nodeutilities.js',
+            'plone_javascript_variables.js',
+            'register_function.js',
+            'modernizr.js',
+            'formUnload.js',
+            'formsubmithelpers.js',
+            'form_tabbing.js',
+            'popupforms.js']
         for e in expected:
             self.assertTrue(e in installedScriptIds, e)
 

@@ -106,4 +106,16 @@
   <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
               handler=".events.profileImportedEventHandler"/>
 
+  <!-- configure sizes lookup for `plone.namedfile` -->
+  <utility
+      component=".utils.getAllowedSizes"
+      provides="plone.namedfile.interfaces.IAvailableSizes"
+      />
+
+  <!-- quality lookup for IScaledImageQuality -->
+  <utility
+      component=".utils.getQuality"
+      provides="plone.scale.interfaces.IScaledImageQuality"
+      />
+
 </configure>

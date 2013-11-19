@@ -86,10 +86,6 @@ def initialize(context):
     # Make CopyError importable TTW
     ModuleSecurityInfo('OFS.CopySupport').declarePublic('CopyError')
 
-    # Make DiscussionNotAllowed importable TTW
-    ModuleSecurityInfo('Products.CMFDefault.DiscussionTool') \
-        .declarePublic('DiscussionNotAllowed')
-
     # Make AllowSendto importable TTW
     ModuleSecurityInfo('Products.CMFPlone.PloneTool') \
         .declarePublic('AllowSendto')
@@ -129,45 +125,31 @@ def initialize(context):
 
     # Plone tools
     import PloneTool
-    import FactoryTool
-    import InterfaceTool
     import MigrationTool
     import PloneControlPanel
     import WorkflowTool
     import URLTool
-    import MetadataTool
     import RegistrationTool
     import PropertiesTool
     import ActionsTool
     import TypesTool
-    import UndoTool
     import CatalogTool
     import SkinsTool
-    import DiscussionTool
-    import CalendarTool
-    import ActionIconsTool
     import QuickInstallerTool
     import TranslationServiceTool
 
     tools = (PloneTool.PloneTool,
              WorkflowTool.WorkflowTool,
              CachingPolicyManager.CachingPolicyManager,
-             FactoryTool.FactoryTool,
              PropertiesTool.PropertiesTool,
              MigrationTool.MigrationTool,
-             InterfaceTool.InterfaceTool,
              PloneControlPanel.PloneControlPanel,
              RegistrationTool.RegistrationTool,
              URLTool.URLTool,
-             MetadataTool.MetadataTool,
              ActionsTool.ActionsTool,
              TypesTool.TypesTool,
-             UndoTool.UndoTool,
              CatalogTool.CatalogTool,
              SkinsTool.SkinsTool,
-             DiscussionTool.DiscussionTool,
-             ActionIconsTool.ActionIconsTool,
-             CalendarTool.CalendarTool,
              QuickInstallerTool.QuickInstallerTool,
              TranslationServiceTool.TranslationServiceTool,
             )

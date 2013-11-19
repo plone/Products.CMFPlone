@@ -25,15 +25,17 @@ First create a folder and a demo collection:
     >>> collection.setDescription(collection_description)
     >>> collection_text = '<p>Text. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
     >>> collection.setText(collection_text, mimetype='text/html')
-
+    >>> import transaction; transaction.commit()
 
 Now let's login and visit the collection in the test browser:
 
-    >>> from Testing.testbrowser import Browser
-    >>> browser = Browser()
+    >>> from plone.testing.z2 import Browser
+    >>> from plone.app.testing import TEST_USER_NAME
+    >>> from plone.app.testing import TEST_USER_PASSWORD
+    >>> browser = Browser(app)
     >>> browser.open('http://nohost/plone/login_form')
-    >>> browser.getControl('Login Name').value = 'test_user_1_'
-    >>> browser.getControl('Password').value = 'secret'
+    >>> browser.getControl('Login Name').value = TEST_USER_NAME
+    >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/folder/collection')
 

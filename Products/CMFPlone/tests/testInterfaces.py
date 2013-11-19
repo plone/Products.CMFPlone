@@ -1,4 +1,4 @@
-from Testing import ZopeTestCase
+from unittest import TestCase
 
 from types import TupleType, TypeType, ClassType
 from zope.interface.interface import InterfaceClass
@@ -6,14 +6,8 @@ from ExtensionClass import ExtensionClass
 
 from zope.interface import implementedBy, providedBy
 
-from Products.CMFPlone.ActionIconsTool import ActionIconsTool
 from Products.CMFPlone.ActionsTool import ActionsTool
-from Products.CMFPlone.CalendarTool import CalendarTool
 from Products.CMFPlone.CatalogTool import CatalogTool
-from Products.CMFPlone.DiscussionTool import DiscussionTool
-from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
-from Products.CMFPlone.InterfaceTool import InterfaceTool
-from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
 from Products.CMFPlone.PloneControlPanel \
     import PloneControlPanel, PloneConfiglet
@@ -26,9 +20,7 @@ from Products.CMFPlone.PropertiesTool \
 from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
-from Products.CMFPlone.SyndicationTool import SyndicationTool
 from Products.CMFPlone.TypesTool import TypesTool
-from Products.CMFPlone.UndoTool import UndoTool
 from Products.CMFPlone.URLTool import URLTool
 from Products.CMFPlone.WorkflowTool import WorkflowTool
 
@@ -50,7 +42,7 @@ def dottedName(klass):
 tests = []
 
 
-class InterfaceTest(ZopeTestCase.ZopeTestCase):
+class InterfaceTest(TestCase):
     """general interface testing class
 
     klass - the class object to test
@@ -155,7 +147,7 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
                 self.interfaceImplementedBy(self.instance, iface)
 
 
-class zope_interface_test(ZopeTestCase.ZopeTestCase):
+class zope_interface_test(TestCase):
     """general zope.interface testing class
 
     klass - the class object to test
@@ -263,14 +255,8 @@ class zope_interface_test(ZopeTestCase.ZopeTestCase):
 
 # format: (class object, (list interface objects))
 testClasses = [
-    (ActionIconsTool, ()),
     (ActionsTool, ()),
-    (CalendarTool, ()),
     (CatalogTool, ()),
-    (DiscussionTool, ()),
-    (FactoryTool, ()), (TempFolder, ()),
-    (InterfaceTool, ()),
-    (MetadataTool, ()),
     (MigrationTool, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
@@ -280,9 +266,7 @@ testClasses = [
     (QuickInstallerTool, ()),
     (RegistrationTool, ()),
     (SkinsTool, ()),
-    (SyndicationTool, ()),
     (TypesTool, ()),
-    (UndoTool, ()),
     (URLTool, ()),
     (WorkflowTool, ()),
 ]

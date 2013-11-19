@@ -9,9 +9,7 @@
 
 <metal:content-core fill-slot="content-core">
     <metal:content-core define-macro="content-core"
-                        tal:define="kssClassesView context/@@kss_field_decorator_view;
-                                    getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                                    templateId template/getId;
+                        tal:define="templateId template/getId;
                                     toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
 
         <div class="eventDetails vcard">
@@ -27,10 +25,8 @@
                                               i18n:translate="event_when_differentday">
                                 <abbr i18n:name="startdate"
                                       metal:define-macro="startdate-field-view"
-                                      tal:define="kss_class python:getKssClasses('startDate',
-                                                  templateId=templateId, macro='startdate-field-view');"
                                       id="parent-fieldname-startDate"
-                                      tal:attributes="class string:$kss_class dtstart;
+                                      tal:attributes="class string:$dtstart;
                                                       title python:context.start().ISO8601()">
                                   <span metal:define-slot="inside" class="explain">
                                     <span tal:replace="python:toLocalizedTime(context.start())">Start Date</span>
@@ -42,10 +38,8 @@
                                 <br i18n:name="linebreak" />
                                 <abbr i18n:name="enddate"
                                       metal:define-macro="enddate-field-view"
-                                      tal:define="kss_class python:getKssClasses('endDate',
-                                                  templateId=templateId, macro='enddate-field-view');"
                                       id="parent-fieldname-endDate"
-                                      tal:attributes="class string:$kss_class dtend;
+                                      tal:attributes="class string:$dtend;
                                                       title python:context.end().ISO8601()">
                                    <span metal:define-slot="inside" class="explain">
                                      <span tal:replace="python:toLocalizedTime(context.end())">End Date</span>
@@ -63,10 +57,8 @@
                                 <br i18n:name="linebreak" />
                                 from
                                 <abbr metal:define-macro="startdatesame-field-view"
-                                      tal:define="kss_class python:getKssClasses('startDate',
-                                                  templateId=templateId, macro='startdatesame-field-view');"
                                       id="parent-fieldname-startDate"
-                                      tal:attributes="class string:$kss_class dtstart;
+                                      tal:attributes="class string:$dtstart;
                                                       title python:context.start().ISO8601()"
                                       i18n:name="starttime">
                                       <span metal:define-slot="inside"
@@ -74,10 +66,8 @@
                                             tal:content="python:toLocalizedTime(context.start(), time_only=1)">Start Time</span>
                                 </abbr> to
                                 <abbr metal:define-macro="enddatesame-field-view"
-                                      tal:define="kss_class python:getKssClasses('endDate',
-                                                  templateId=templateId, macro='enddatesame-field-view');"
                                       id="parent-fieldname-endDate"
-                                      tal:attributes="class string:$kss_class dtend;
+                                      tal:attributes="class string:$dtend;
                                                       title python:context.end().ISO8601()"
                                       i18n:name="endtime">
                                       <span metal:define-slot="inside"

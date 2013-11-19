@@ -9,7 +9,6 @@
 # may produce false positives when run in the GMT time zone!
 
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
-from Products.CMFPlone.tests.PloneTestCase import FunctionalTestCase
 from DateTime import DateTime
 from time import localtime
 
@@ -56,7 +55,7 @@ class DateTimeTests(PloneTestCase):
         self.assertTrue(date.equalTo(expired), (date, expired))
 
 
-class DateTimeFunctionalTests(FunctionalTestCase):
+class DateTimeFunctionalTests(PloneTestCase):
 
     def testNonDSTPublicationDateRemainsUnchangedThroughEdit(self):
         # this test is for a date when daylight savings time is not in effect

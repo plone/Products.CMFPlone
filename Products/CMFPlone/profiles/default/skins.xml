@@ -4,19 +4,13 @@
    request_varname="plone_skin">
  <object name="LanguageTool" meta_type="Filesystem Directory View"
     directory="Products.PloneLanguageTool:skins/LanguageTool"/>
- <object name="cmf_legacy" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/cmf_legacy"/>
  <object name="custom" meta_type="Folder"/>
  <object name="PasswordReset" meta_type="Filesystem Directory View"
     directory="Products.PasswordResetTool:skins/PasswordReset"/>
  <object name="mimetypes_icons" meta_type="Filesystem Directory View"
     directory="Products.MimetypesRegistry:skins/mimetypes_icons"/>
- <object name="plone_3rdParty" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_3rdParty"/>
  <object name="plone_content" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_content"/>
- <object name="plone_deprecated" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_deprecated"/>
  <object name="plone_ecmascript" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_ecmascript"/>
  <object name="plone_form_scripts" meta_type="Filesystem Directory View"
@@ -53,7 +47,5 @@
   <layer name="plone_images"/>
   <layer name="plone_content"/>
   <layer name="plone_login"/>
-  <layer name="plone_3rdParty"/>
-  <layer name="cmf_legacy"/>
  </skin-path>
 </object>

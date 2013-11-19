@@ -1,8 +1,5 @@
-# Example PloneTestCase
-
-from Products.CMFPlone.tests import PloneTestCase
-
 from Acquisition import aq_base
+from Products.CMFPlone.tests import PloneTestCase
 
 
 class TestPloneTestCase(PloneTestCase.PloneTestCase):
@@ -44,14 +41,4 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='new')
         self.assertEqual(self.folder.new.EditableBody(), '')
         self.folder.new.edit('plain', 'data', file='', safety_belt='')
-        self.assertEqual(self.folder.new.EditableBody(), 'data')
-
-    def testGetterSkinScript(self):
-        self.folder.invokeFactory('Document', id='new', title='Foo')
-        self.assertEqual(self.folder.new.TitleOrId(), 'Foo')
-
-    def testSetterSkinScript(self):
-        self.folder.invokeFactory('Document', id='new')
-        self.assertEqual(self.folder.new.EditableBody(), '')
-        self.folder.new.document_edit('plain', 'data', title='Foo')
         self.assertEqual(self.folder.new.EditableBody(), 'data')

@@ -42,7 +42,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.types = self.portal.portal_types
         self.cp = self.portal.portal_controlpanel
         self.actions = self.portal.portal_actions
-        self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
         self.catalog = self.portal.portal_catalog
@@ -408,14 +407,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertTrue(self.properties.site_properties.hasProperty(
                             'typesUseViewActionInListings'))
 
-    def testSiteSetupAction(self):
-        # There should be a Site Setup action
-        for action in self.actions.listActions():
-            if action.getId() == 'plone_setup':
-                self.assertEqual(action.title, 'Site Setup')
-                break
-        else:
-            self.fail("Actions tool has no 'sitemap' action")
+    def testSiteSetupActionIsPresent(self):
+        actions = self.actions.listActions()
+        self.assertEqual(
+            [x.title for x in actions if x.title == 'Site Setup'],
+            [u'Site Setup']
+        )
 
     def testFolderlistingAction(self):
         # Make sure the folderlisting action of a Folder is /view, to ensure
@@ -434,7 +431,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testRedirectLinksProperty(self):
         self.assertTrue(self.properties.site_properties \
             .hasProperty('redirect_links'))
-        self.assertEquals(True, self.properties.site_properties.redirect_links)
+        self.assertEqual(True, self.properties.site_properties.redirect_links)
 
     def testLinkDefaultView(self):
         self.assertEqual(self.types.Link.default_view, 'link_redirect_view')
@@ -442,7 +439,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testTTWLockableProperty(self):
         self.assertTrue(self.properties.site_properties \
             .hasProperty('lock_on_ttw_edit'))
-        self.assertEquals(True,
+        self.assertEqual(True,
                           self.properties.site_properties.lock_on_ttw_edit)
 
     def testPortalFTIIsDynamicFTI(self):
@@ -541,7 +538,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.setRoles(['Manager', 'Member'])
         acts = self.actions.listFilteredActionsFor(self.portal)
         buttons = acts.get('object_buttons', [])
-        self.assertEquals(0, len(buttons))
+        self.assertEqual(0, len(buttons))
 
     def testObjectButtonActionsInvisibleOnPortalDefaultDocument(self):
         # only a manager would have proper permissions
@@ -549,7 +546,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.portal.invokeFactory('Document', 'index_html')
         acts = self.actions.listFilteredActionsFor(self.portal.index_html)
         buttons = acts.get('object_buttons', [])
-        self.assertEquals(0, len(buttons))
+        self.assertEqual(0, len(buttons))
 
     def testObjectButtonActionsOnDefaultDocumentDoNotApplyToParent(self):
         # only a manager would have proper permissions
@@ -595,21 +592,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         ids = [(a['id']) for a in buttons]
         self.assertEqual(ids, ['cut', 'copy', 'paste', 'delete', 'rename', ])
 
-    def testPlone3rdPartyLayerInDefault(self):
-        # plone_3rdParty layer should exist
-        path = self.skins.getSkinPath('Plone Default')
-        self.assertTrue('plone_3rdParty' in path)
-
     def testPloneLoginLayerInDefault(self):
         # plone_login layer should exist
         path = self.skins.getSkinPath('Plone Default')
         self.assertTrue('plone_login' in path)
-
-    def testCMFLegacySkinComesLastInDefault(self):
-        # cmf_legacy should be the last skin layer
-        path = self.skins.getSkinPath('Plone Default')
-        path = [x.strip() for x in path.split(',')]
-        self.assertEqual(path[-1], 'cmf_legacy')
 
     def testCustomSkinFolderExists(self):
         # the custom skin needs to be created
@@ -693,7 +679,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
     def testHomeActionUsesView(self):
         actions = self.actions.listActions()
         homeAction = [x for x in actions if x.id == 'index_html'][0]
-        self.assertEquals(homeAction.getInfoData()[0]['url'].text,
+        self.assertEqual(homeAction.getInfoData()[0]['url'].text,
                           'string:${globals_view/navigationRootUrl}')
 
     def testPloneLexicon(self):
@@ -735,40 +721,48 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
 
     def testUtilityRegistration(self):
         gsm = getGlobalSiteManager()
-        global_util = dummy.DummyUtility()
+        # Work around five.localsitemanger assuming the global site manager
+        # has no bases, which is not true in the test layer.
+        old_bases = gsm.__bases__
+        gsm.__bases__ = ()
 
-        # Register a global utility and see if we can get it
-        gsm.registerUtility(global_util, dummy.IDummyUtility)
-        getutil = getUtility(dummy.IDummyUtility)
-        self.assertEquals(getutil, global_util)
+        try:
+            global_util = dummy.DummyUtility()
 
-        # Register a local utility and see if we can get it
-        sm = getSiteManager()
-        local_util = dummy.DummyUtility()
+            # Register a global utility and see if we can get it
+            gsm.registerUtility(global_util, dummy.IDummyUtility)
+            getutil = getUtility(dummy.IDummyUtility)
+            self.assertEqual(getutil, global_util)
 
-        sm.registerUtility(local_util, dummy.IDummyUtility)
-        getutil = getUtility(dummy.IDummyUtility)
-        self.assertEquals(getutil, local_util)
-        # Clean up the site again
-        clearSite()
+            # Register a local utility and see if we can get it
+            sm = getSiteManager()
+            local_util = dummy.DummyUtility()
 
-        # Without a site we get the global utility
-        getutil = getUtility(dummy.IDummyUtility)
-        self.assertEquals(getutil, global_util)
+            sm.registerUtility(local_util, dummy.IDummyUtility)
+            getutil = getUtility(dummy.IDummyUtility)
+            self.assertEqual(getutil, local_util)
+            # Clean up the site again
+            clearSite()
 
-        # Clean up again and unregister the utilites
-        gsm.unregisterUtility(provided=dummy.IDummyUtility)
-        sm.unregisterUtility(provided=dummy.IDummyUtility)
+            # Without a site we get the global utility
+            getutil = getUtility(dummy.IDummyUtility)
+            self.assertEqual(getutil, global_util)
 
-        # Make sure unregistration was successful
-        util = queryUtility(dummy.IDummyUtility)
-        self.assertTrue(util is None)
+            # Clean up again and unregister the utilites
+            gsm.unregisterUtility(provided=dummy.IDummyUtility)
+            sm.unregisterUtility(provided=dummy.IDummyUtility)
+
+            # Make sure unregistration was successful
+            util = queryUtility(dummy.IDummyUtility)
+            self.assertTrue(util is None)
+        finally:
+            gsm.__bases__ = old_bases
 
     def testPortletManagersInstalled(self):
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredUtilities()
                             if IPortletManager == r.provided]
-        self.assertEquals(['plone.dashboard1', 'plone.dashboard2',
+        self.assertEqual(['plone.dashboard1', 'plone.dashboard2',
                            'plone.dashboard3', 'plone.dashboard4',
                            'plone.leftcolumn', 'plone.rightcolumn'],
                            sorted(registrations))
@@ -782,15 +776,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         right = getMultiAdapter((self.portal, rightColumn,),
                                 IPortletAssignmentMapping)
 
-        self.assertEquals(len(left), 1)
-        self.assertEquals(len(right), 0)
+        self.assertEqual(len(left), 1)
+        self.assertEqual(len(right), 0)
 
     def testPortletBlockingForMembersFolder(self):
         members = self.portal.Members
         rightColumn = getUtility(IPortletManager, name=u'plone.rightcolumn')
         portletAssignments = getMultiAdapter((members, rightColumn,),
                                              ILocalPortletAssignmentManager)
-        self.assertEquals(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
+        self.assertEqual(True, portletAssignments.getBlacklistStatus(CONTEXT_PORTLETS))
 
     def testAddablePortletsInColumns(self):
         for name in (u'plone.leftcolumn', u'plone.rightcolumn'):
@@ -881,7 +875,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                                 if r['selected']])
 
     def testNonFolderishTabsProperty(self):
-        self.assertEquals(False, self.properties.site_properties.disable_nonfolderish_sections)
+        self.assertEqual(False, self.properties.site_properties.disable_nonfolderish_sections)
 
     def testNoDoubleGenericSetupImportSteps(self):
         view = ImportStepsView(self.setup, None)

@@ -11,12 +11,15 @@ First create a demo link::
   >>> _ = self.portal.invokeFactory('Link', 'link')
   >>> link = self.portal.link
   >>> link.setRemoteUrl('http://nohost/plone')
+  >>> import transaction; transaction.commit()
 
 Now let's visit the link in the test browser.  Nothing should happen, because
 the 'redirect_links' property is on by default::
 
-  >>> from Testing.testbrowser import Browser
-  >>> browser = Browser()
+  >>> from plone.testing.z2 import Browser
+  >>> from plone.app.testing import TEST_USER_NAME
+  >>> from plone.app.testing import TEST_USER_PASSWORD
+  >>> browser = Browser(app)
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
   'http://nohost/plone'
@@ -27,6 +30,7 @@ But if we turn off 'redirect_links', visiting the link should redirect us to
 plone.org::
 
   >>> self.portal.portal_properties.site_properties.redirect_links = False
+  >>> transaction.commit()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
   'http://nohost/plone/link'
@@ -35,9 +39,10 @@ Now let's log in as someone who is allowed to edit the link.  They won't get
 redirected, even though 'redirect_links' is re-enabled::
 
   >>> self.portal.portal_properties.site_properties.redirect_links = True
+  >>> transaction.commit()
   >>> browser.open('http://nohost/plone/login')
-  >>> browser.getControl('Login Name').value = 'test_user_1_'
-  >>> browser.getControl('Password').value = 'secret'
+  >>> browser.getControl('Login Name').value = TEST_USER_NAME
+  >>> browser.getControl('Password').value = TEST_USER_PASSWORD
   >>> browser.getControl('Log in').click()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
@@ -52,6 +57,7 @@ for anonymous users::
 If we turn redirect_links back off, that message should not be present::
 
   >>> self.portal.portal_properties.site_properties.redirect_links = False
+  >>> transaction.commit()
   >>> browser.open('http://nohost/plone/link')
   >>> browser.url
   'http://nohost/plone/link'
@@ -75,7 +81,8 @@ Therefore we change the location of the link and set it as default view for the 
 We turn on the redirect_link option again and create a browser for anonymous users:
 
   >>> self.portal.portal_properties.site_properties.redirect_links = True
-  >>> anon = Browser()
+  >>> transaction.commit()
+  >>> anon = Browser(app)
   >>> anon.handleErrors = False
 
 Now opening the portal, will redirect to the `news` section

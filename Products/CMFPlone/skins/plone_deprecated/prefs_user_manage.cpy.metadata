@@ -1,7 +1,0 @@
-[validators]
-validators = 
-
-[actions]
-action.success = redirect_to:string:prefs_users_overview
-action.failure = traverse_to:string:prefs_users_overview
-

@@ -3,8 +3,28 @@ Historical release notes
 
 For what's new in this release, see CHANGES.txt.
 
+5.0.0 (unreleased)
+------------------
+
+- Removed portal_interface tool (PLIP #13770)
+  [ale-rt]
+
+- Removed kss_field_decorator_view support
+  [maurits, jaroel]
+
 4.3.3 (unreleased)
 ------------------
+
+- Added a method toLocalizedString to @@plone view,
+  on the model of toLocalizedTime,
+  to get a localized string rendering a size from an integer.
+  Use it on image view.
+  [thomasdesvenain]
+
+- Move propertysheet imaging_properties and the corresponding
+  utilities from plone.app.imaging to Products.CMFPlone.
+  https://github.com/plone/plone.app.contenttypes/issues/82
+  [pbauer]
 
 - Ensure ``object_rename`` script has ``_`` message factory available
   to prevent error when unauthorized.
@@ -18,6 +38,9 @@ For what's new in this release, see CHANGES.txt.
   an empty userid. That way the user gets a helpful message.
   [do3cc]
 
+- Fixed item.body call in search-rss.pt so now works even when
+  item.body is an AcquisitionWrapper.
+  [alecghica]
 
 4.3.2 (unreleased)
 ------------------
@@ -443,7 +466,7 @@ For what's new in this release, see CHANGES.txt.
 - Fix jquery.highlightsearchterms.js to not render arbitrary js.
   [vangheem]
 
-  
+
 4.2rc2 (2012-05-31)
 -------------------
 
@@ -675,9 +698,9 @@ For what's new in this release, see CHANGES.txt.
   on the search form, so that the corresponding <label> can associate with it
   in the case where showAuthors is None.
 
-- Make redirection_view/attempt_redirect fall back to nothing in 
-  default_error_message template. If plone.app.redirector gets a URL with 
-  special characters, OOBTree.get raises a UnicodeDecodeError and the template 
+- Make redirection_view/attempt_redirect fall back to nothing in
+  default_error_message template. If plone.app.redirector gets a URL with
+  special characters, OOBTree.get raises a UnicodeDecodeError and the template
   fails. This fixes http://dev.plone.org/ticket/12976.
   [timo]
 
@@ -685,15 +708,15 @@ For what's new in this release, see CHANGES.txt.
 4.1.5 (2012-04-18)
 ------------------
 
-- Stop filtering folder_listing to the types from 
+- Stop filtering folder_listing to the types from
   @@plone_portal_state/friendly_types, since that excludes non-searchable
   types rather than non-listable types.
   [davisagli]
 
 - PloneControlPanel's enumConfiglets no longer returns invisible configlets.
   [esteele]
-  
-- Use getId() instead of title_or_id() for displaying which items get 
+
+- Use getId() instead of title_or_id() for displaying which items get
   deleted, to avoid unicode error
   Fixes https://dev.plone.org/ticket/12765
   [spereverde]
@@ -739,7 +762,7 @@ For what's new in this release, see CHANGES.txt.
 4.1.2 (10/13/2011)
 ------------------
 
-- Fixed the two high priority scenarios (global sections viewlet and nav 
+- Fixed the two high priority scenarios (global sections viewlet and nav
   portlet) of http://dev.plone.org/ticket/11189.
   [fulv]
 
@@ -1113,7 +1136,7 @@ For what's new in this release, see CHANGES.txt.
 ------------------
 
 - Use ``transaction.savepoint`` instead of ``transaction.begin`` in
-  ``isLinked``; 
+  ``isLinked``;
   closes #7784;
   does not reopen #6666 probably because we use fixed version of ZEO
   [gotcha]

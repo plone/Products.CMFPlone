@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Products.CMFPlone.factory import addPloneSite
 
 
-class TestFactoryPloneSite(PloneTestCase.PloneTestCase):
+class TestFactoryPloneSite(PloneTestCase):
 
     def testPlonesiteWithUnicodeTitle(self):
         TITLE = 'Ploné'
-        ploneSite = addPloneSite(self.app, 'ploneFoo', title=TITLE,
-                     setup_content=False)
+        ploneSite = addPloneSite(
+            self.app, 'ploneFoo', title=TITLE, setup_content=False)
         ploneSiteTitleProperty = ploneSite.getProperty('title')
         # CMF stores title as string only so Plone should keep the same track
         self.assertTrue(isinstance(ploneSiteTitleProperty, str))
@@ -19,8 +19,8 @@ class TestFactoryPloneSite(PloneTestCase.PloneTestCase):
 
     def testPlonesiteWithoutUnicodeTitle(self):
         TITLE = 'Plone'
-        ploneSite = addPloneSite(self.app, 'ploneFoo', title=TITLE,
-                     setup_content=False)
+        ploneSite = addPloneSite(
+            self.app, 'ploneFoo', title=TITLE, setup_content=False)
         ploneSiteTitleProperty = ploneSite.getProperty('title')
         # CMF stores title as string only so Plone should keep the same track
         self.assertTrue(isinstance(ploneSiteTitleProperty, str))

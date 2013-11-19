@@ -24,9 +24,6 @@
                  results python:[r for r in results if r.getObject()];
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
-                 portal_discussion nocall:context/portal_discussion;
-                 isDiscussionAllowedFor nocall:portal_discussion/isDiscussionAllowedFor|nothing;
-                 getDiscussionFor nocall:portal_discussion/getDiscussionFor|nothing;
                  home_url python:context.portal_membership.getHomeUrl;
                  isAnon context/@@plone_portal_state/anonymous;
                  portal context/@@plone_portal_state/portal;
@@ -88,7 +85,7 @@
                         </tal:about-info>
                     </ul>
 
-                    <ul class="newsFooter" tal:define="is_discussable python: isDiscussionAllowedFor and isDiscussionAllowedFor(resultObject) or False;">
+                    <ul class="newsFooter">
                         <li>
                             <a href="/view" tal:attributes="href resulturl">
                                 <span class="hiddenStructure"><span tal:replace="result/pretty_title_or_id" /> - </span>
@@ -96,17 +93,6 @@
                             </a>
                         </li>
 
-                        <tal:discussable condition="is_discussable">
-                        <li tal:attributes="class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
-                            tal:define="talkback python: getDiscussionFor(resultObject);
-                                        has_replies python: talkback.hasReplies(resultObject);">
-                            <a href=""
-                               tal:define="reply_count python:talkback.replyCount(resultObject)"
-                               tal:condition="reply_count"
-                               tal:attributes="href string:${resulturl}#comments;">
-                               (<span tal:replace="python: reply_count" />)</a>
-                        </li>
-                        </tal:discussable>
                     </ul>
 
                 </div>
@@ -125,7 +111,6 @@
 
     <div tal:define="contentTypes context/getAllowedTypes" tal:omit-tag="python:1"
          tal:condition="python:'events' in portal.contentIds() and context==portal.events">
-        <!--tal:add_button metal:use-macro="context/folder_contents/macros/add_button"/-->
     </div>
 
   </div>

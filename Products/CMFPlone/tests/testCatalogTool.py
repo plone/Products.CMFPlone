@@ -1,42 +1,32 @@
 # -*- encoding: utf-8 -*-
-#
-# CatalogTool tests
-#
-
-import unittest
-import zope.interface
-
-from Products.CMFPlone.tests import PloneTestCase
-
 from Acquisition import aq_base
 from DateTime import DateTime
 from OFS.ObjectManager import REPLACEABLE
-from Products.CMFCore.permissions import AccessInactivePortalContent
-import transaction
-
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.indexer.wrapper import IndexableObjectWrapper
+from plone.uuid.interfaces import IAttributeUUID
+from plone.uuid.interfaces import IUUID
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFPlone.CatalogTool import CatalogTool
-
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
-from plone.uuid.interfaces import IUUID
-from plone.uuid.interfaces import IAttributeUUID
-
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zope.event import notify
-from zope.lifecycleevent import ObjectCreatedEvent
 from zope.interface.declarations import alsoProvides
-
-portal_name = PloneTestCase.portal_name
-default_user = PloneTestCase.default_user
+from zope.lifecycleevent import ObjectCreatedEvent
+import transaction
+import unittest
+import zope.interface
 
 user2 = 'u2'
 group2 = 'g2'
 
 base_content = ['Members', 'aggregator', 'aggregator',
-                'events', 'news', default_user, 'front-page', 'doc']
+                'events', 'news', TEST_USER_ID, 'front-page', 'doc']
 
 
-class TestCatalogSetup(PloneTestCase.PloneTestCase):
+class TestCatalogSetup(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -154,7 +144,7 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
              'BooleanIndex')
 
 
-class TestCatalogIndexing(PloneTestCase.PloneTestCase):
+class TestCatalogIndexing(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -335,11 +325,11 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.catalog.indexObject(self.folder.doc)
         self.folder.doc.setModificationDate(DateTime(0))
         self.catalog.clearFindAndRebuild()
-        self.assertEquals(self.folder.doc.modified(), DateTime(0))
-        self.assertEquals(len(self.catalog(modified=DateTime(0))), 1)
+        self.assertEqual(self.folder.doc.modified(), DateTime(0))
+        self.assertEqual(len(self.catalog(modified=DateTime(0))), 1)
 
 
-class TestCatalogSearching(PloneTestCase.PloneTestCase):
+class TestCatalogSearching(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -368,7 +358,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         group = self.groups.getGroupById(group2)
         self.loginAsPortalOwner()  # GRUF 3.52
         group.addMember(user2)
-        self.login(default_user)  # Back to normal
+        self.login(TEST_USER_NAME)  # Back to normal
         return group2
 
     def testListAllowedRolesAndUsers(self):
@@ -403,7 +393,7 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         # using OR
         results = self.catalog(SearchableText='aaa OR bbb')
         self.assertEqual(len(results), 2)
-    
+
     def testSearchIgnoresAccents(self):
         #plip 12110
         self.folder.invokeFactory('Document', id='docwithaccents1', description='Econométrie')
@@ -480,11 +470,9 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.catalog(SearchableText='Économétrie')), 3)
         self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 3)
         self.assertEqual(len(self.catalog(SearchableText='ECONOMETRIE')), 3)
-                
-                
 
-        
-class TestCatalogSorting(PloneTestCase.PloneTestCase):
+
+class TestCatalogSorting(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -569,7 +557,7 @@ class TestCatalogSorting(PloneTestCase.PloneTestCase):
                          'some documents have too lon... 0001.jpeg')
 
 
-class TestFolderCataloging(PloneTestCase.PloneTestCase):
+class TestFolderCataloging(PloneTestCase):
     # Tests for http://dev.plone.org/plone/ticket/2876
     # folder_rename must recatalog.
 
@@ -614,7 +602,7 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.assertFalse(self.catalog(Title='Snooze'))
 
 
-class TestCatalogOrdering(PloneTestCase.PloneTestCase):
+class TestCatalogOrdering(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -751,7 +739,7 @@ class TestCatalogOrdering(PloneTestCase.PloneTestCase):
         self.assertEqual(get_pos(self.folder.doc4), 3)
 
 
-class TestCatalogBugs(PloneTestCase.PloneTestCase):
+class TestCatalogBugs(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -782,7 +770,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         self.assertTrue(hasattr(aq_base(cat), 'plaintext_lexicon'))
 
 
-class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
+class TestCatalogUnindexing(PloneTestCase):
     # Tests for http://dev.plone.org/plone/ticket/3547
     # Published objects are not unindexed on delete?
 
@@ -863,7 +851,7 @@ class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
         self.assertFalse(self.catalog(getId='doc'))
 
 
-class TestCatalogExpirationFiltering(PloneTestCase.PloneTestCase):
+class TestCatalogExpirationFiltering(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -974,7 +962,7 @@ def dummyMethod(obj, **kwargs):
     return 'a dummy'
 
 
-class TestIndexers(PloneTestCase.PloneTestCase):
+class TestIndexers(PloneTestCase):
     """Tests for IIndexer adapters
     """
 
@@ -1033,16 +1021,14 @@ class TestIndexers(PloneTestCase.PloneTestCase):
         self.assertTrue(uuid == wrapped.UID)
 
 
-class TestMetadata(PloneTestCase.PloneTestCase):
-    """
-    """
+class TestMetadata(PloneTestCase):
 
     def testLocationAddedToMetdata(self):
         self.folder.invokeFactory('Document', 'doc', title='document', location="foobar")
         doc = self.folder.doc
         catalog = self.portal.portal_catalog
         brain = catalog(UID=doc.UID())[0]
-        self.assertEquals(brain.location, doc.getLocation())
+        self.assertEqual(brain.location, doc.getLocation())
 
 
 class TestObjectProvidedIndexExtender(unittest.TestCase):

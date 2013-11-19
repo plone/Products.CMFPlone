@@ -112,7 +112,7 @@ class AddPloneSite(BrowserView):
         'plonetheme.classic:default',
         'plone.app.theming:default',
         'plonetheme.barceloneta:default',
-        )
+    )
 
     def profiles(self):
         base_profiles = []

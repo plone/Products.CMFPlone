@@ -1,16 +1,11 @@
-#
-# Tests the PloneTool
-#
-
-from zope.component import getGlobalSiteManager
-from zope.interface import Interface
-
+from Acquisition import Implicit
+from plone.app.testing import SITE_OWNER_NAME
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IReorderedEvent
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-
-from Products.CMFCore.utils import getToolByName
-from Acquisition import Implicit
+from zope.component import getGlobalSiteManager
+from zope.interface import Interface
 
 default_user = PloneTestCase.default_user
 portal_name = PloneTestCase.portal_name
@@ -190,7 +185,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             self.utils.reindexOnReorder("fake_context")
         finally:
             gsm.unregisterHandler(my_handler, (Interface, IReorderedEvent))
-        self.assertEquals(["fake_context"], reordered_parents)
+        self.assertEqual(["fake_context"], reordered_parents)
 
 class TestOwnershipStuff(PloneTestCase.PloneTestCase):
 
@@ -233,11 +228,11 @@ class TestOwnershipStuff(PloneTestCase.PloneTestCase):
     def testChangeOwnershipOfWithTopAclUsers(self):
         # Should be able to give ownership to a user in the top level
         # acl_users folder (even if this is not offered TTW).
-        self.utils.changeOwnershipOf(self.folder1, 'portal_owner')
+        self.utils.changeOwnershipOf(self.folder1, SITE_OWNER_NAME)
         self.assertEqual(self.folder1.getOwnerTuple()[0], ['acl_users'])
-        self.assertEqual(self.folder1.getOwnerTuple()[1], 'portal_owner')
+        self.assertEqual(self.folder1.getOwnerTuple()[1], SITE_OWNER_NAME)
         self.assertList(
-            self.folder1.get_local_roles_for_userid('portal_owner'),
+            self.folder1.get_local_roles_for_userid(SITE_OWNER_NAME),
             ['Owner'])
 
         # Initial creator no longer has Owner role.

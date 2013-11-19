@@ -77,9 +77,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
 
     security.declareProtected(ManagePortal, 'registerConfiglets')
     def registerConfiglets(self, configlets):
-        """ ATTENTION: must be called AFTER portal_actionicons
-        is installed
-        """
         for conf in configlets:
             self.registerConfiglet(**conf)
 
@@ -146,25 +143,11 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
         selection = [actids.index(a) for a in actids if a == id]
         self.deleteActions(selection)
 
-        # BBB
-        actionicons = getToolByName(self, 'portal_actionicons', None)
-        if actionicons is not None:
-            if actionicons.queryActionInfo('controlpanel', id, None):
-                actionicons.removeActionIcon('controlpanel', id)
-
     security.declareProtected(ManagePortal, 'unregisterApplication')
     def unregisterApplication(self, appId):
         acts = list(self.listActions())
         selection = [acts.index(a) for a in acts if a.appId == appId]
         self.deleteActions(selection)
-
-        # BBB
-        actionicons = getToolByName(self, 'portal_actionicons', None)
-        if actionicons is not None:
-            for a in acts:
-                if (a.appId == appId and
-                    actionicons.queryActionInfo('controlpanel', a.id, None)):
-                    actionicons.removeActionIcon('controlpanel', a.id)
 
     def _extractAction(self, properties, index):
         """ Extract an ActionInformation from the funky form properties.
@@ -223,7 +206,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
                   category='Plone',
                   visible=1,
                   appId=None,
-                  imageUrl=None,
                   icon_expr='',
                   description='',
                   REQUEST=None,
@@ -238,13 +220,6 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
 
         if type(permission) != type(()):
             permission = permission and (str(permission), ) or ()
-
-        if imageUrl:
-            log_deprecated("The imageUrl parameter of the control panel "
-                           "tool's addAction/registerConfiglet method has "
-                           "been deprecated and will be removed in Plone 5. "
-                           "Please use the icon_expr parameter instead.")
-            icon_expr = 'string:${portal_url}/%s' % imageUrl
 
         new_actions = self._cloneActions()
 

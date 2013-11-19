@@ -23,7 +23,6 @@ class HiddenProfiles(object):
         return [_DEFAULT_PROFILE,
                 _CONTENT_PROFILE,
                 u'Products.Archetypes:Archetypes',
-                u'Products.ATContentTypes:default',
                 u'Products.CMFDiffTool:CMFDiffTool',
                 u'Products.CMFEditions:CMFEditions',
                 u'Products.CMFFormController:CMFFormController',
@@ -47,7 +46,6 @@ class HiddenProfiles(object):
                 u'plone.portlet.static:default',
                 u'plone.portlet.collection:default',
                 u'plone.protect:default',
-                u'plonetheme.sunburst:uninstall',
                 u'plone.app.blob:default',
                 u'plone.app.blob:file-replacement',
                 u'plone.app.blob:image-replacement',
@@ -65,7 +63,6 @@ class HiddenProfiles(object):
                 u'plone.formwidget.querystring:default',
                 u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',
-                u'collective.z3cform.datetimewidget:default',
                 ]
 
 

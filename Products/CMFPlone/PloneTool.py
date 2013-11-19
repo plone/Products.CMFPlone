@@ -29,7 +29,6 @@ from Products.CMFCore import permissions
 from Products.CMFCore.permissions import AccessContentsInformation, \
                         ManagePortal, ManageUsers, ModifyPortalContent, View
 from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
-from Products.CMFCore.interfaces import IDiscussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
@@ -48,15 +47,6 @@ from Products.statusmessages.interfaces import IStatusMessage
 from AccessControl.requestmethod import postonly
 from plone.app.linkintegrity.exceptions \
     import LinkIntegrityNotificationException
-
-# BBB Plone 4.0
-from zope.deprecation import __show__
-__show__.off()
-try:
-    from Products.LinguaPlone.interfaces import ITranslatable
-except ImportError:
-    from Products.CMFPlone.interfaces.Translatable import ITranslatable
-__show__.on()
 
 
 AllowSendto = 'Allow sendto'
@@ -300,25 +290,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if expiration_date == '':
                 expiration_date = 'None'
 
-        if IDiscussable.providedBy(obj) or \
-            getattr(obj, '_isDiscussable', None):
-            disc_tool = getToolByName(self, 'portal_discussion')
-            if allowDiscussion is None:
-                allowDiscussion = disc_tool.isDiscussionAllowedFor(obj)
-                if not safe_hasattr(obj, 'allow_discussion'):
-                    allowDiscussion = None
-                allowDiscussion = REQUEST.get('allowDiscussion',
-                                              allowDiscussion)
-            if type(allowDiscussion) == StringType:
-                allowDiscussion = allowDiscussion.lower().strip()
-            if allowDiscussion == 'default':
-                allowDiscussion = None
-            elif allowDiscussion == 'off':
-                allowDiscussion = 0
-            elif allowDiscussion == 'on':
-                allowDiscussion = 1
-            disc_tool.overrideDiscussionFor(obj, allowDiscussion)
-
         if IMutableDublinCore.providedBy(obj):
             if title is not None:
                 obj.setTitle(title)
@@ -403,39 +374,28 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(View, 'getIconFor')
     def getIconFor(self, category, id, default=_marker, context=None):
-        """Get an icon for an action. Prefer the icon_expr on the action
-        itself and if not specified fall back to the icon from the
-        action icons tool.
+        """Get an icon for an action, from its icon_expr.
         """
         if context is None:
             context = aq_parent(self)
+        action_chain = '%s/%s' % (category, id)
         if category == 'controlpanel':
             tool = getToolByName(context, 'portal_controlpanel')
             actions = [ai for ai in tool.listActionInfos() if ai['id'] == id]
         else:
             tool = getToolByName(context, 'portal_actions')
             actions = tool.listActionInfos(
-                        action_chain='%s/%s' % (category, id),
-                        object=context)
+                action_chain=action_chain, object=context)
         if len(actions) > 0:
             icon = actions[0].get('icon', None)
             if icon:
                 return icon
-
-        # Short circuit the lookup
-        if (category, id) in _icons.keys():
-            return _icons[(category, id)]
-        try:
-            # BBB icon lookup on action icons tool
-            actionicons = getToolByName(context, 'portal_actionicons')
-            iconinfo = actionicons.getActionIcon(category, id)
-            icon = _icons.setdefault((category, id), iconinfo)
-        except KeyError:
+        else:
             if default is not _marker:
                 icon = default
             else:
-                raise
-        # We want to return the actual object
+                raise KeyError(action_chain)
+
         return icon
 
     security.declareProtected(View, 'getReviewStateTitleFor')
@@ -463,22 +423,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 if objstate in w.states:
                     return w.states[objstate].title or objstate
         return None
-
-    security.declareProtected(View, 'getDiscussionThread')
-    def getDiscussionThread(self, discussionContainer):
-        """Given a discussionContainer, return the thread it is in, upwards,
-        including the parent object that is being discussed.
-        """
-        if safe_hasattr(discussionContainer, 'parentsInThread'):
-            thread = discussionContainer.parentsInThread()
-            if discussionContainer.portal_type == 'Discussion Item':
-                thread.append(discussionContainer)
-        else:
-            if discussionContainer.id == 'talkback':
-                thread = [discussionContainer._getDiscussable()]
-            else:
-                thread = [discussionContainer]
-        return thread
 
     security.declareProtected(ManagePortal, 'changeOwnershipOf')
     def changeOwnershipOf(self, object, userid, recursive=0, REQUEST=None):
@@ -803,10 +747,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             is typically hidden)
         7. If nothing else is found, fall back on the object's 'view' action.
         8. If this is not found, raise an AttributeError
-
-        If the returned path is an object, it is checked for ITranslatable. An
-        object which supports translation will then be translated before
-        return.
         """
 
         # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
@@ -914,11 +854,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 "Failed to get a default page or view_action for %s"
                     % (obj.absolute_url(),))
 
-    security.declarePublic('isTranslatable')
-    def isTranslatable(self, obj):
-        """Checks if a given object implements the ITranslatable interface."""
-        return ITranslatable.providedBy(obj)
-
     security.declarePublic('isStructuralFolder')
     def isStructuralFolder(self, obj):
         """Checks if a given object is a "structural folder".
@@ -978,9 +913,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ Returns the userid of the owner of an object.
 
         >>> ptool = self.portal.plone_utils
-        >>> from Products.PloneTestCase.PloneTestCase import default_user
+        >>> from plone.app.testing import TEST_USER_ID
 
-        >>> ptool.getOwnerName(self.folder) == default_user
+        >>> ptool.getOwnerName(self.folder) == TEST_USER_ID
         True
         """
         mt = getToolByName(self, 'portal_membership')

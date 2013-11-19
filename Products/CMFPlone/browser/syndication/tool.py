@@ -9,8 +9,8 @@ from zope.component import getUtility
 from Products.CMFCore.interfaces import ISyndicationTool
 from Products.CMFCore.utils import registerToolInterface
 from Products.CMFCore.utils import _checkPermission
-from Products.CMFDefault.permissions import ModifyPortalContent
-from Products.CMFDefault.permissions import ManagePortal
+from Products.CMFCore.permissions import ModifyPortalContent
+from Products.CMFCore.permissions import ManagePortal
 
 from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings

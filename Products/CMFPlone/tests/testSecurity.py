@@ -2,11 +2,11 @@ import re
 import unittest
 from urllib import urlencode
 from Testing.makerequest import makerequest
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.Five.testbrowser import Browser
+from plone.testing.z2 import Browser
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Unauthorized
-
-ptc.setupPloneSite()
 
 
 class TestAttackVectorsUnit(unittest.TestCase):
@@ -59,7 +59,7 @@ allow_module('os')
         self.assertFalse(hasattr(App.Undo.UndoSupport, 'get_request_var_or_attr'))
 
 
-class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
+class TestAttackVectorsFunctional(PloneTestCase):
     
     def test_widget_traversal_1(self):
         res = self.publish('/plone/@@discussion-settings/++widget++moderator_email')
@@ -101,7 +101,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
             'orig_template': 'view',
         }
 
-        browser = Browser()
+        browser = Browser(self.app)
         csrf_token = self._get_authenticator()
 
         PAYLOAD['_authenticator'] = csrf_token
@@ -123,7 +123,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
         self.publish('/plone/evil', extra={'_authenticator': csrf_token}, request_method='POST')
         self.assertEqual('News', self.portal.news.Title())
 
-        owner_basic = ptc.portal_owner + ':' + ptc.default_password
+        owner_basic = SITE_OWNER_NAME + ':' + SITE_OWNER_PASSWORD
         csrf_token = self._get_authenticator(owner_basic)
         self.publish('/plone/evil', extra={'_authenticator': csrf_token}, basic=owner_basic)
         self.assertEqual('News', self.portal.news.Title())
@@ -141,7 +141,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
         self.assertEqual('News', self.portal.news.Title())
 
     def test_gtbn_faux_archetypes_tool(self):
-        from Products.CMFPlone.FactoryTool import FauxArchetypeTool
+        from Products.CMFCore.utils import FauxArchetypeTool
         from Products.CMFPlone.utils import getToolByName
         self.portal.portal_factory.archetype_tool = FauxArchetypeTool(self.portal.archetype_tool)
         self.assertEqual(self.portal.portal_factory.archetype_tool, getToolByName(self.portal.portal_factory, 'archetype_tool'))
@@ -193,7 +193,7 @@ class TestAttackVectorsFunctional(ptc.FunctionalTestCase):
 
     def test_go_back(self):
         res = self.publish('/plone/front-page/go_back?last_referer=http://${request}',
-            basic=ptc.portal_owner + ':' + ptc.default_password)
+            basic=SITE_OWNER_NAME + ':' + SITE_OWNER_PASSWORD)
         self.assertEqual(302, res.status)
         self.assertEqual('http://${request}', res.headers['location'][:17])
 

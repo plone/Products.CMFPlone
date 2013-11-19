@@ -1,4 +1,5 @@
 from AccessControl import Unauthorized
+from plone.app.testing import SITE_OWNER_NAME
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.utils import set_own_login_name
@@ -17,7 +18,7 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
         users = self.portal.acl_users.source_users
         member = memship.getAuthenticatedMember()
         self.assertEqual(users.getLoginForUserId(PloneTestCase.default_user),
-                         PloneTestCase.default_user)
+                         'test-user')
         set_own_login_name(member, 'maurits')
         self.assertEqual(users.getLoginForUserId(PloneTestCase.default_user),
                          'maurits')
@@ -103,6 +104,6 @@ class TestEmailLogin(PloneTestCase.PloneTestCase):
 
         # Demonstrate that we can find other members than just the
         # default user:
-        found = get_member_by_login_name(context, 'portal_owner')
-        member = memship.getMemberById('portal_owner')
+        found = get_member_by_login_name(context, SITE_OWNER_NAME)
+        member = memship.getMemberById(SITE_OWNER_NAME)
         self.assertEqual(member, found)
