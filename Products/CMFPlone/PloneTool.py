@@ -1249,7 +1249,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     )
                     raise ValueError(msg)
                 obj = traverse(path)
-                if list(obj.getPhysicalPath()) <> path.split('/'):
+                if list(obj.getPhysicalPath()) != path.split('/'):
                     msg = (
                         'Path {} does not match '
                         'traversed object physical path. '
