@@ -20,8 +20,6 @@ class HiddenProducts(object):
     def getNonInstallableProducts(self):
         return [
             'Archetypes', 'Products.Archetypes',
-            'ATReferenceBrowserWidget', 'Products.ATReferenceBrowserWidget',
-            'archetypes.referencebrowserwidget',
             'CMFDefault', 'Products.CMFDefault',
             'CMFPlone', 'Products.CMFPlone', 'Products.CMFPlone.migrations',
             'CMFTopic', 'Products.CMFTopic',

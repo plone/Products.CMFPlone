@@ -35,7 +35,6 @@ class HiddenProfiles(object):
                 u'Products.PortalTransforms:PortalTransforms',
                 u'Products.PloneLanguageTool:PloneLanguageTool',
                 u'Products.PlonePAS:PlonePAS',
-                u'archetypes.referencebrowserwidget:default',
                 u'borg.localrole:default',
                 u'Products.TinyMCE:TinyMCE',
                 u'Products.TinyMCE:upgrade_10_to_11',
@@ -60,7 +59,6 @@ class HiddenProfiles(object):
                 u'plone.app.imaging:default',
                 u'plone.app.jquery:initial-upgrade',
                 u'plone.app.search:default',
-                u'plone.formwidget.querystring:default',
                 u'plone.formwidget.recurrence:default',
                 u'plone.resource:default',
                 ]
