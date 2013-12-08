@@ -4,6 +4,9 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Fix body class attribute errors when the user role contains space.
+  [Jian Aijun]
+
 - Remove dependency on unittest2 as we are not going to test against
   Python 2.6 anymore on Plone 5.0.
   [hvelarde]
