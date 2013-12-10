@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.2.7 (unreleased)
+4.2.8 (unreleased)
 ------------------
 
 - recently_modified and recently_published respects allow anonymous to view
@@ -14,6 +14,14 @@ Changelog
 
 - Ensure that initial_login is set to True when a user first logs in.
   [taito]
+
+
+4.2.7 (2013-12-10)
+------------------
+
+- Release Plone 4.2.7 to fix some regressions before the December 2013
+  hotfix release.
+  [esteele]
 
 
 4.2.6 (2013-08-14)
