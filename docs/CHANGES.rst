@@ -8,6 +8,9 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Fix handling of URL fragments in form_tabbing.js.
+  [davisagli]
+
 - Password reset emails will now be sent from the navigation root instead
   the portal, enabling support for multilingual sites and other subsites
   to keep the correct language, title, menus and designs.

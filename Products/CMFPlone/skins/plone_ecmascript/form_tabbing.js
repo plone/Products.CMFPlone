@@ -161,9 +161,10 @@ $.fn.ploneTabInit = function(pbo) {
         //Select tab if it's part of the URL or designated in a hidden input
         var targetPane = item.find('.enableFormTabbing input[name="fieldset"]').val() || window.location.hash;
         if (targetPane) {
-            item.find(".enableFormTabbing .formTabs " +
-             targetPane.replace("'", "").replace(/^#fieldset-/, "#fieldsetlegend-")).click();
+            item.find('.enableFormTabbing .formTabs [id="' +
+             targetPane.replace('#','').replace('"', '').replace(/^fieldset-/, "fieldsetlegend-") + '"]').click();
         }
+
     });
 };
 
