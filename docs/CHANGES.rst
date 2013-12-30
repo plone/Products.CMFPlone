@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- FolderFeed adapter now takes into account the limit property when displaying
+  the RSS feed just like the other adapters do
+  [ichim-david]
+
 - Fix handling of URL fragments in form_tabbing.js.
   [davisagli]
 

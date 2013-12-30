@@ -146,7 +146,7 @@ class FolderFeed(BaseFeedData):
 
     @property
     def items(self):
-        for item in self._items():
+        for item in self._items()[:self.limit]:
             # look for custom adapter
             # otherwise, just use default
             adapter = queryMultiAdapter((item, self), IFeedItem)
