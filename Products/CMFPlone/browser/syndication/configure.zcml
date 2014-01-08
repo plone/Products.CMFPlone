@@ -5,6 +5,8 @@
   xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="Products.CMFPlone">
 
+  <include file="newsml.zcml" />
+
   <class class="plone.dexterity.content.Container"
       zcml:condition="installed plone.dexterity">
     <implements interface="Products.CMFPlone.interfaces.syndication.ISyndicatable" />

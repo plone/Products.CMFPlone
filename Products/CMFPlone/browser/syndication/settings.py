@@ -2,6 +2,7 @@ from zope.component import adapts
 from zope.interface import implements
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
 from Products.CMFPlone.interfaces.syndication import ISyndicatable
+from Products.CMFPlone.interfaces.syndication import INewsMLSyndicatable
 from zope.annotation.interfaces import IAnnotations
 from persistent.dict import PersistentDict
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
@@ -43,3 +44,8 @@ class FeedSettings(object):
             default = IFeedSettings[name].default
 
         return self._metadata.get(name, default)
+
+
+class NewsMLFeedSettings(FeedSettings):
+    implements(IFeedSettings)
+    adapts(INewsMLSyndicatable)
