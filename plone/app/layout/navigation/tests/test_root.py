@@ -1,9 +1,6 @@
 from plone.app.layout.navigation.root import getNavigationRootObject
 
-from Products.PloneTestCase.PloneTestCase import PloneTestCase
-from Products.PloneTestCase.PloneTestCase import setupPloneSite
-
-setupPloneSite()
+from plone.app.testing.bbb import PloneTestCase
 
 
 class NavigationRootTestCase(PloneTestCase):

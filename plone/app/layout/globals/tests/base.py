@@ -1,10 +1,9 @@
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from plone.app.testing.bbb import PloneTestCase
 
 
-class GlobalsTestCase(PloneTestCase.PloneTestCase):
-    pass
+class GlobalsTestCase(PloneTestCase):
+    """ Base testing class for globals tests """
 
 
-class GlobalsFunctionalTestCase(PloneTestCase.FunctionalTestCase):
-    pass
+class GlobalsFunctionalTestCase(PloneTestCase):
+    """ Base testing class for globals functional tests """

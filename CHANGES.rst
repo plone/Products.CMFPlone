@@ -52,6 +52,9 @@ Changelog
   portal_actions/portal_tabs doesn't work.
   [terapyon]
 
+- Ported tests to plone.app.testing
+  [tomgross]
+
 2.3.9 (2013-09-25)
 ------------------
 
