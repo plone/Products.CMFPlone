@@ -1,13 +1,15 @@
-from zope.component import getAdapter
+from DateTime import DateTime
+from uuid import uuid3
+from uuid import NAMESPACE_OID
 from zope.component import queryAdapter
 from zope.component import getMultiAdapter
+from zope.cachedescriptors.property import Lazy as lazy_property
 from Products.Five import BrowserView
 from zExceptions import NotFound
 
 from Products.CMFPlone.interfaces.syndication import ISearchFeed
 from Products.CMFPlone.interfaces.syndication import IFeed
 from Products.CMFPlone.interfaces.syndication import IFeedSettings
-from Products.CMFPlone.interfaces.syndication import INewsMLFeed
 from Products.CMFPlone import PloneMessageFactory as _
 
 from z3c.form import form, button, field
@@ -50,10 +52,7 @@ class SearchFeedView(FeedView):
             return self.index()
 
 
-class NewsMLFeedView(BrowserView):
-
-    def feed(self):
-        return getAdapter(self.context, INewsMLFeed)
+class NewsMLFeedView(FeedView):
 
     def context_enabled(self):
         settings = IFeedSettings(self.context, None)
@@ -61,6 +60,23 @@ class NewsMLFeedView(BrowserView):
             raise NotFound
         else:
             return True
+
+    @lazy_property
+    def current_date(self):
+        return DateTime()
+
+    def duid(self, item, value):
+        uid = uuid3(NAMESPACE_OID, item.uid + str(value))
+        return uid.hex
+
+    def get_image(self, item):
+        scales = item.context.restrictedTraverse('@@images')
+        if scales:
+            try:
+                return scales.scale('image')
+            except AttributeError:
+                pass
+        return None
 
     def __call__(self):
         util = getMultiAdapter((self.context, self.request),
