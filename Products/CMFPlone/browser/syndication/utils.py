@@ -53,24 +53,6 @@ class SyndicationUtil(BrowserView):
         else:
             return True
 
-    def newsml_allowed(self):
-        if not self.site_enabled():
-            return False
-        elif ISyndicatable.providedBy(self.context):
-            settings = IFeedSettings(self.context, None)
-            if settings.enabled:
-                return True
-        return False
-
-    def newsml_enabled(self, raise404=False):
-        if not self.newsml_allowed():
-            if raise404:
-                raise NotFound
-            else:
-                return False
-        else:
-            return True
-
     @property
     @memoize
     def site_settings(self):
