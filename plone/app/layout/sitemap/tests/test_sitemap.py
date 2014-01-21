@@ -10,10 +10,7 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.PloneTestCase.PloneTestCase import PloneTestCase
-from Products.PloneTestCase.PloneTestCase import setupPloneSite
-
-setupPloneSite()
+from plone.app.testing.bbb import PloneTestCase
 
 
 class SiteMapTestCase(PloneTestCase):

@@ -1,6 +1,5 @@
-from Products.PloneTestCase import PloneTestCase
-PloneTestCase.setupPloneSite()
+from plone.app.testing.bbb import PloneTestCase
 
 
-class ViewletsTestCase(PloneTestCase.PloneTestCase):
-    pass
+class ViewletsTestCase(PloneTestCase):
+    """ Base testing class for viewlets tests """
