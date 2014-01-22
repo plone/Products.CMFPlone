@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- handle plone.app.textfield RichTextValue objects in syndication. Should
+  fix syndication with plone.app.contenttypes.
+  [vangheem]
+
 - FolderFeed adapter now takes into account the limit property when displaying
   the RSS feed just like the other adapters do
   [ichim-david]
