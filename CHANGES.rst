@@ -4,6 +4,9 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Make the link to plone.org open in a new tab/window.
+  [Toni Mueller]
+
 - Fix body class attribute errors when the user role contains space.
   [Jian Aijun]
 
