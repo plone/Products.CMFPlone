@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- merge hotfixes from 20131210
+  [vangheem]
+
 - handle plone.app.textfield RichTextValue objects in syndication. Should
   fix syndication with plone.app.contenttypes.
   [vangheem]
