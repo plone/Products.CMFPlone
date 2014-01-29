@@ -1,4 +1,5 @@
 import urlparse
+import os
 from Products.CMFPlone.tests import PloneTestCase
 
 from Products.CMFCore.permissions import AddPortalContent
@@ -352,3 +353,10 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
         path = "%s/++resource++plone-logo.png" % self.tmp_obj_path
         data = self.publish(path)
         self.assertEqual(data.getHeader('Content-Type'), 'image/png')
+
+    def testFactoryToolDocsFileNotPublishable(self):
+        import Products.CMFPlone
+        res = self.publish('/plone/portal_factory/f')
+        plone_code = os.path.dirname(Products.CMFPlone.__file__)
+
+        self.assertNotIn(plone_code, res.getBody())

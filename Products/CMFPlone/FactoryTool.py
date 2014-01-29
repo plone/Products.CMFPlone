@@ -272,6 +272,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     f = open(os.path.join(wwwpath, 'portal_factory_docs.stx'), 'r')
     _docs = f.read()
     f.close()
+    del f
     _docs = stx2html(_docs)
 
     security.declarePublic('docs')

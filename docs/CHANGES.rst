@@ -8,6 +8,9 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- merge hotfixes from https://pypi.python.org/pypi/Products.PloneHotfix20131210
+  [vangheem]
+
 - handle plone.app.textfield RichTextValue objects in syndication. Should
   fix syndication with plone.app.contenttypes.
   [vangheem]

@@ -480,10 +480,17 @@ class TestCatalogSearching(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.catalog(SearchableText='Économétrie')), 3)
         self.assertEqual(len(self.catalog(SearchableText='Econométrie')), 3)
         self.assertEqual(len(self.catalog(SearchableText='ECONOMETRIE')), 3)
-                
-                
 
-        
+    def testSearchIsProtected(self):
+        self.login()
+        self.folder.invokeFactory("Document", "sekretz")
+        self.logout()
+        catalog = self.portal.portal_catalog
+        bogus = catalog.search({'portal_type': 'Document'})
+        real = catalog.portal_catalog.searchResults(portal_type='Document')
+        self.assertEqual(len(bogus), len(real))
+
+
 class TestCatalogSorting(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
