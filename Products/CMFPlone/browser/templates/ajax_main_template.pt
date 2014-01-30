@@ -10,7 +10,8 @@
         dummy python: plone_view.mark_view(view);
         portal_url portal_state/portal_url;
         checkPermission nocall: context/portal_membership/checkPermission;
-        site_properties context/portal_properties/site_properties;"
+        site_properties context/portal_properties/site_properties;
+        ajax_load python:True;"
     tal:attributes="lang lang;">
 
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
