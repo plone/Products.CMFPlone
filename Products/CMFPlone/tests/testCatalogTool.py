@@ -481,7 +481,7 @@ class TestCatalogSearching(PloneTestCase):
         self.assertEqual(len(bogus), len(real))
 
 
-class TestCatalogSorting(PloneTestCase.PloneTestCase):
+class TestCatalogSorting(PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
