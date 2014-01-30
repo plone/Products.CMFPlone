@@ -359,4 +359,4 @@ class TestPortalFactoryTraverseByURL(PloneTestCase.FunctionalTestCase):
         res = self.publish('/plone/portal_factory/f')
         plone_code = os.path.dirname(Products.CMFPlone.__file__)
 
-        self.assertNotIn(plone_code, res.getBody())
+        self.assertFalse(plone_code in res.getBody())
