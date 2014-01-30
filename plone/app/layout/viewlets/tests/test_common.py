@@ -127,8 +127,3 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.navigation_root_title, "Folder")
         # there is no theme yet in Plone 5, so we see the old png logo
         self.assertTrue("http://nohost/plone/logo.png" in viewlet.logo_tag)
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

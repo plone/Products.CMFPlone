@@ -119,8 +119,3 @@ class TestPortalStateView(GlobalsTestCase):
         self.portal.portal_properties.site_properties.types_not_searched = (
             'Document', )
         self.assertFalse('Document' in self.view.friendly_types())
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

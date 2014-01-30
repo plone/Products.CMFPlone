@@ -10,10 +10,7 @@ from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.PloneTestCase.PloneTestCase import PloneTestCase
-from Products.PloneTestCase.PloneTestCase import setupPloneSite
-
-setupPloneSite()
+from plone.app.testing.bbb import PloneTestCase
 
 
 class SiteMapTestCase(PloneTestCase):
@@ -247,8 +244,3 @@ class SiteMapTestCase(PloneTestCase):
         self.assertTrue('<lastmod>2001-01-01T' in xml)
         self.assertTrue('<loc>http://nohost/plone</loc>' in xml)
         self.assertFalse('<loc>http://nohost/plone/published</loc>' in xml)
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

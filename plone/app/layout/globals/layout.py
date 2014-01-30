@@ -197,6 +197,6 @@ class LayoutPolicy(BrowserView):
         else:
             user = membership.getAuthenticatedMember()
             for role in user.getRolesInContext(self.context):
-                body_class += ' userrole-' + role.lower()
+                body_class += ' userrole-' + role.lower().replace(' ', '-')
 
         return body_class

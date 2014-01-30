@@ -36,8 +36,3 @@ class TestToolsView(GlobalsTestCase):
     def test_workflow(self):
         self.assertEqual(self.view.workflow(), getToolByName(
             self.folder, 'portal_workflow'))
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

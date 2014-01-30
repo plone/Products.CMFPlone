@@ -1,10 +1,10 @@
 from plone.app.layout.globals.tests.base import GlobalsTestCase
+from plone.app.testing import TEST_USER_ID
 
 from zope.interface import directlyProvides
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.utils import _createObjectByType
-from Products.PloneTestCase import PloneTestCase
 
 from plone.locking.interfaces import ILockable
 
@@ -88,7 +88,7 @@ class TestContextStateView(GlobalsTestCase):
         view_action.setActionExpression('foobar')
 
         tf = _createObjectByType('TempFolder', self.folder, 'tf')
-        tf.manage_addLocalRoles(PloneTestCase.default_user, ('Manager', ))
+        tf.manage_addLocalRoles(TEST_USER_ID, ('Manager', ))
         tfview = tf.restrictedTraverse('@@plone_context_state')
         self.assertEqual(tfview.view_template_id(), 'foobar')
 
@@ -108,7 +108,7 @@ class TestContextStateView(GlobalsTestCase):
         view_action.edit(permissions=(u'Modify Portal Content', ))
 
         tf = _createObjectByType('TempFolder', self.folder, 'tf')
-        tf.manage_addLocalRoles(PloneTestCase.default_user, ('Manager', ))
+        tf.manage_addLocalRoles(TEST_USER_ID, ('Manager', ))
         tfview = tf.restrictedTraverse('@@plone_context_state')
         self.assertEqual(tfview.view_template_id(), 'index_html')
 
@@ -231,8 +231,3 @@ class TestContextStateView(GlobalsTestCase):
     def test_actions(self):
         actions = self.fview.actions('user')
         self.assertTrue(actions[0]['category'] == 'user')
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

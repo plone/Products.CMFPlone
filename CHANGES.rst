@@ -4,6 +4,25 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- Make the link to plone.org open in a new tab/window.
+  [Toni Mueller]
+
+- Fix body class attribute errors when the user role contains space.
+  [Jian Aijun]
+
+- Remove dependency on unittest2 as we are not going to test against
+  Python 2.6 anymore on Plone 5.0.
+  [hvelarde]
+
+- Update package dependencies and clearly specify this branch is for
+  Plone >=4.3 only (in fact, should be 5.0).
+  [hvelarde]
+
+- Fix 'plone.belowcontentbody.relateditems' viewlet to avoid trying to
+  display items if the user has no permission to view them (like content
+  in Private state).
+  [hvelarde]
+
 - Migrate portal_interface tool methods to plone_interface_info (PLIP #13770).
 - Remove deprecated portal_interface tool (PLIP #13770).
   [ale-rt]
@@ -35,6 +54,9 @@ Changelog
   Fixed that portal_actions: 'Link Target' on
   portal_actions/portal_tabs doesn't work.
   [terapyon]
+
+- Ported tests to plone.app.testing
+  [tomgross]
 
 2.3.9 (2013-09-25)
 ------------------

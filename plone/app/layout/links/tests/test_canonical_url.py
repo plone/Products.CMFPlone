@@ -3,7 +3,7 @@
 from plone.app.layout.testing import INTEGRATION_TESTING
 from plone.testing.z2 import Browser
 
-import unittest2 as unittest
+import unittest
 
 
 class ViewletTestCase(unittest.TestCase):
