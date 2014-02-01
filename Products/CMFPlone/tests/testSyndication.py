@@ -169,6 +169,11 @@ class TestSyndicationFeedAdapter(BaseSyndicationTest):
         self.assertEqual(len(self.feed._brains()), 3)
         self.assertEqual(len([i for i in self.feed.items]), 3)
 
+    def test_max_items(self):
+        self.feed.settings.max_items = 2
+        self.assertEqual(len([i for i in self.feed.items][:self.feed.limit]),
+                                                                           2)
+
     def test_has_enclosure(self):
         self.assertEqual(self.feeddatadoc.has_enclosure, False)
         self.assertEqual(self.feeddatafile.has_enclosure, True)

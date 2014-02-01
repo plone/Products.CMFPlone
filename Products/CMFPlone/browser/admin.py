@@ -109,8 +109,7 @@ class FrontPage(BrowserView):
 class AddPloneSite(BrowserView):
 
     default_extension_profiles = (
-        'plonetheme.sunburst:default',
-        )
+    )
 
     def profiles(self):
         base_profiles = []

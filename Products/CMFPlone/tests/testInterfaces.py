@@ -7,11 +7,7 @@ from ExtensionClass import ExtensionClass
 from zope.interface import implementedBy, providedBy
 
 from Products.CMFPlone.ActionsTool import ActionsTool
-from Products.CMFPlone.CalendarTool import CalendarTool
 from Products.CMFPlone.CatalogTool import CatalogTool
-from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
-from Products.CMFPlone.InterfaceTool import InterfaceTool
-from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
 from Products.CMFPlone.PloneControlPanel \
     import PloneControlPanel, PloneConfiglet
@@ -24,9 +20,7 @@ from Products.CMFPlone.PropertiesTool \
 from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
-from Products.CMFPlone.SyndicationTool import SyndicationTool
 from Products.CMFPlone.TypesTool import TypesTool
-from Products.CMFPlone.UndoTool import UndoTool
 from Products.CMFPlone.URLTool import URLTool
 from Products.CMFPlone.WorkflowTool import WorkflowTool
 
@@ -262,11 +256,7 @@ class zope_interface_test(TestCase):
 # format: (class object, (list interface objects))
 testClasses = [
     (ActionsTool, ()),
-    (CalendarTool, ()),
     (CatalogTool, ()),
-    (FactoryTool, ()), (TempFolder, ()),
-    (InterfaceTool, ()),
-    (MetadataTool, ()),
     (MigrationTool, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
     (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
@@ -276,9 +266,7 @@ testClasses = [
     (QuickInstallerTool, ()),
     (RegistrationTool, ()),
     (SkinsTool, ()),
-    (SyndicationTool, ()),
     (TypesTool, ()),
-    (UndoTool, ()),
     (URLTool, ()),
     (WorkflowTool, ()),
 ]

@@ -15,7 +15,6 @@ from siteroot import ITestCasePloneSiteRoot
 from constrains import IConstrainTypes
 from constrains import ISelectableConstrainTypes
 from structure import INonStructuralFolder
-from factory import IFactoryTool
 from translationservice import ITranslationServiceTool
 from breadcrumbs import IHideFromBreadcrumbs
 from workflow import IWorkflowChain
