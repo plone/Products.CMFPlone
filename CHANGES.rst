@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- PLIP #13705: Remove <base> tag.
+  [frapell]
+
 - merge hotfixes from 20131210
   [vangheem]
 
