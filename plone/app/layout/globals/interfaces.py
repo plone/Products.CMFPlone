@@ -72,10 +72,6 @@ class ILayoutPolicy(Interface):
         in site_properties.
         """
 
-    def renderBase():
-        """Returns the current URL to be used in the base tag.
-        """
-
     def bodyClass(template, view):
         """Returns the CSS class to be used on the body tag.
         """

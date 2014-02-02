@@ -4,6 +4,9 @@ Changelog
 2.4a1 (unreleased)
 ------------------
 
+- PLIP #13705: Remove <base> tag.
+  [frapell]
+
 - Make the link to plone.org open in a new tab/window.
   [Toni Mueller]
 
