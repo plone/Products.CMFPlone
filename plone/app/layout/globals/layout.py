@@ -113,18 +113,6 @@ class LayoutPolicy(BrowserView):
             icon = getMultiAdapter((context, self.request, item), IContentIcon)
         return icon
 
-    def renderBase(self):
-        """Returns the current URL to be used in the base tag.
-        """
-        context = self.context
-        # when accessing via WEBDAV you're not allowed to access aq_base
-        try:
-            if getattr(aq_base(context), 'isPrincipiaFolderish', False):
-                return context.absolute_url() + '/'
-        except Unauthorized:
-            pass
-        return context.absolute_url()
-
     def bodyClass(self, template, view):
         """
         Returns the CSS class to be used on the body tag.
