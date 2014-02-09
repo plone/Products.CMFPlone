@@ -26,12 +26,15 @@ class HTTPCachingHeaders(HeaderViewlet):
         self.context.enableHTTPCompression(request=request, enable=1)
 
     def getHeaders(self):
-        self.lang = getattr(self.context, 'Language', None)
-        self.lang = self.lang or self.portal_state.default_language()
+        lang = getattr(self.context, 'Language', None)
+        if callable(lang):
+            lang = lang()
+        if not lang:
+            lang = self.portal_state.default_language()
         return [
-            ('Content-Type', 'text/html;;charset=utf-8'),
+            ('Content-Type', 'text/html;charset=utf-8'),
             ('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT'),
-            ('Content-Language', self.lang)
+            ('Content-Language', lang)
         ]
 
 
