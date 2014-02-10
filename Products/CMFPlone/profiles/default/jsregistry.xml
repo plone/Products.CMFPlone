@@ -2,7 +2,6 @@
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
  <javascript id="jquery-integration.js" enabled="False" />
- <javascript id="event-registration.js" enabled="False" />
  <javascript id="register_function.js" />
  <javascript id="plone_javascript_variables.js" />
  <javascript id="nodeutilities.js" />
