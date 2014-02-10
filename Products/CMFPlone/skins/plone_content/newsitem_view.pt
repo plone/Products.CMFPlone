@@ -9,9 +9,7 @@
 
 <metal:content-core fill-slot="content-core">
     <metal:block define-macro="content-core"
-          tal:define="kssClassesView context/@@kss_field_decorator_view;
-                      getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                      templateId template/getId;
+          tal:define="templateId template/getId;
                       text python:context.CookedBody(stx_level=2);
                       len_text python:len(text.strip())">
 
@@ -39,12 +37,10 @@
 
         <div metal:define-macro="text-field-view"
              id="parent-fieldname-text" class="stx"
-             tal:define="kss_class python:getKssClasses('text',
-                         templateId=templateId, macro='text-field-view');
-                         text text|context/getText|nothing"
+             tal:define="text text|context/getText|nothing"
              tal:condition="text"
              tal:attributes="class python:test(context.Format() in ('text/structured',
-                                                   'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+                                                   'text/x-rst', ), 'stx', 'plain')">
             <div metal:define-slot="inside" tal:replace="structure text">The body</div>
         </div>
     </metal:block>

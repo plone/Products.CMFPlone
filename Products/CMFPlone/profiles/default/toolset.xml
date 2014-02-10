@@ -12,16 +12,12 @@
            class="Products.CMFPlone.PloneTool.PloneTool"/>
  <required tool_id="portal_actions"
            class="Products.CMFPlone.ActionsTool.ActionsTool"/>
- <required tool_id="portal_atct"
-           class="Products.ATContentTypes.tool.atct.ATCTTool"/>
  <required tool_id="portal_catalog"
            class="Products.CMFPlone.CatalogTool.CatalogTool"/>
  <required tool_id="portal_controlpanel"
            class="Products.CMFPlone.PloneControlPanel.PloneControlPanel"/>
  <required tool_id="portal_css"
            class="Products.ResourceRegistries.tools.CSSRegistry.CSSRegistryTool"/>
- <required tool_id="portal_factory"
-           class="Products.CMFPlone.FactoryTool.FactoryTool"/>
  <required tool_id="portal_groupdata"
            class="Products.PlonePAS.tools.groupdata.GroupDataTool"/>
  <required tool_id="portal_groups"
@@ -32,8 +28,6 @@
            class="Products.PlonePAS.tools.memberdata.MemberDataTool"/>
  <required tool_id="portal_membership"
            class="Products.PlonePAS.tools.membership.MembershipTool"/>
- <required tool_id="portal_metadata"
-           class="Products.CMFPlone.MetadataTool.MetadataTool"/>
  <required tool_id="portal_migration"
            class="Products.CMFPlone.MigrationTool.MigrationTool"/>
  <required tool_id="portal_password_reset"
