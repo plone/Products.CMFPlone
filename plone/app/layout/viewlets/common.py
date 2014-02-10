@@ -245,7 +245,7 @@ class PersonalBarViewlet(ViewletBase):
             self.user_actions.append({
                 'title': action['title'],
                 'url': action['url'],
-                'href': "%s%s" % (action['url'], '?ajax_load'),
+                'href': action['url'],
                 'id': 'personaltools-{}'.format(action['id']),
                 'target': 'link_target' in action and action['link_target'] or None,
                 'class': 'pat-modal',
