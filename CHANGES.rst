@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove DL's from portal message templates.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  [khink]
+
 - Remove the portal_calendar tool and the dependency on CMFCalendar.
   [davisagli]
 

@@ -91,15 +91,15 @@ Headlines
 
 <pre>Example document rendering</pre>
 
-<dl class="portalMessage info">
-    <dt>
+<div class="portalMessage info">
+    <strong>
         Info
-    </dt>
-    <dd>
+    </strong>
+    <span tal:omit-tag="">
         The portalMessage class, can also contain <a href="#">links</a> - used to
         give the user temporary status messages.
-    </dd>
-</dl>
+    </span>
+</div>
 
 <h1 class="documentFirstHeading">Document Headline</h1>
 
