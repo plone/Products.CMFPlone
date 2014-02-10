@@ -47,7 +47,8 @@
                     sr python:plone_view.have_portlets('plone.rightcolumn', view);
                     body_class python:plone_view.bodyClass(template, view)"
         tal:attributes="class body_class;
-                        dir python:isRTL and 'rtl' or 'ltr'">
+                        dir python:isRTL and 'rtl' or 'ltr'"
+        id="visual-portal-wrapper">
 
     <section id="edit-bar" tal:content="structure provider:plone.toolbar" />
 
