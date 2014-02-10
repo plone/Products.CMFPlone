@@ -17,7 +17,7 @@ class MainTemplate(BrowserView):
 
     @property
     def template(self):
-        if 'ajax_load' in self.request:
+        if self.request.form.get('ajax_load'):
             return self.ajax_template
         else:
             return self.main_template
