@@ -6,6 +6,11 @@ For what's new in this release, see CHANGES.txt.
 5.0.0 (unreleased)
 ------------------
 
+- Plone's javascript is now developed as part of the Plone mockup
+  (http://github.com/plone/mockup) and is included as a compiled
+  bundle.
+  [davisagli]
+
 - Removed portal_interface tool (PLIP #13770)
   [ale-rt]
 
