@@ -45,16 +45,17 @@
                     Click the button to log in immediately.
                 </p>
 
-                <dl class="portalMessage error"
+                <div class="portalMessage error"
                     id="enable_cookies_message"
                     style="display:none">
-                    <dt i18n:translate="">
+                    <strong i18n:translate="">
                         Error
-                    </dt>
-                    <dd i18n:translate="enable_cookies_message_before_login">
+                    </strong>
+                    <span tal:omit-tag=""
+                        i18n:translate="enable_cookies_message_before_login">
                         Cookies are not enabled. You must enable cookies before you can log in.
-                    </dd>
-                </dl>
+                    </span>
+                </div>
 
 
                 <form action=""
