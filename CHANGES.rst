@@ -4,6 +4,10 @@ Changelog
 2.5.1 (unreleased)
 ------------------
 
+- Remove DL, DT and DD elements
+  https://github.com/plone/Products.CMFPlone/issues/153
+  [khink, mrtango]
+
 - for contentview urls, add csrf token automatically
   [vangheem]
 

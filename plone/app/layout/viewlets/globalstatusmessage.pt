@@ -1,12 +1,14 @@
 <tal:statusmsg tal:define="messages view/messages"
     tal:repeat="message messages">
 
-    <dl tal:define="mtype message/type | nothing;"
+    <div tal:define="mtype message/type | nothing;"
         tal:attributes="class string:portalMessage ${mtype};">
-        <dt i18n:translate="" tal:content="python:mtype.capitalize()">Info</dt>
-        <dd tal:content="message/message | nothing" i18n:translate="">
+        <strong
+            i18n:translate="" tal:content="python:mtype.capitalize()">Info</strong>
+        <span class="content"
+            tal:replace="message/message | nothing" i18n:translate="">
             The status message.
-        </dd>
-    </dl>
+        </span>
+    </div>
 
 </tal:statusmsg>
