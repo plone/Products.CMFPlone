@@ -29,7 +29,6 @@ class HiddenProducts(object):
             'PlonePAS', 'Products.PlonePAS',
             'wicked.at',
             'PloneLanguageTool', 'Products.PloneLanguageTool',
-            'TinyMCE', 'Products.TinyMCE',
             'CMFFormController', 'Products.CMFFormController',
             'MimetypesRegistry', 'Products.MimetypesRegistry',
             'PortalTransforms', 'Products.PortalTransforms',
