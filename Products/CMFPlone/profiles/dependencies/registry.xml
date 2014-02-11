@@ -45,5 +45,18 @@
         </field>
         <value>4</value>
     </record>
+    <record name="plone.app.portlets.PortletManagerBlacklist">
+        <field type="plone.registry.field.List">
+          <title>Toolbar Portlet Manager Blacklist</title>
+          <description>A list of portlet manager names that will not be shown in the toolbar dropdown</description>
+          <value_type type="plone.registry.field.TextLine" />
+        </field>
+        <value purge="false">
+            <element>plone.dashboard1</element>
+            <element>plone.dashboard2</element>
+            <element>plone.dashboard3</element>
+            <element>plone.dashboard4</element>
+        </value>
+    </record>
     <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
 </registry>

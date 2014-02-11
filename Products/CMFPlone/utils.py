@@ -702,3 +702,10 @@ def getQuality():
             if quality:
                 return quality
     return QUALITY_DEFAULT
+
+
+def ajax_load_url(url):
+    if url and not 'ajax_load' in url:
+        sep = '?' in url and '&' or '?'  # url parameter seperator
+        url = '%s%sajax_load=1' % (url, sep)
+    return url
