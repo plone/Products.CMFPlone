@@ -3,8 +3,7 @@
          tal:define="breadcrumbs view/breadcrumbs">
 
   <span id="breadcrumbs-you-are-here"
-        i18n:translate="you_are_here"
-        class="hiddenStructure">You are here:</span>
+        i18n:translate="you_are_here">You are here:</span>
   <ol>
     <li id="breadcrumbs-home">
       <a i18n:translate="tabs_home"
