@@ -15,7 +15,7 @@ class ViewletTestCase(unittest.TestCase):
 
     def test_canonical_url_viewlet(self):
         portal_url = self.portal.absolute_url()
-        canonical_link = u'<link rel="canonical" href="%s"' % portal_url
+        canonical_link = '<link rel="canonical" href="%s"' % portal_url
         browser = Browser(self.layer['app'])
         # the page must contain the canonical URL link
         browser.open(portal_url)
