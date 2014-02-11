@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove DL's from portlet templates.
+  https://github.com/plone/Products.CMFPlone/issues/163
+  [khink]
+
 - Remove DL's from portal message templates.
   https://github.com/plone/Products.CMFPlone/issues/153
   [khink]
