@@ -19,7 +19,6 @@
   <include package="plone.app.folder" />
   <include package="plone.app.form" />
   <include package="plone.app.i18n" />
-  <include package="plone.app.jquery" />
   <include package="plone.app.jquerytools" />
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
@@ -75,6 +74,27 @@
       directory="skins"
       recursive="True"
       />
+
+  <configure zcml:condition="installed mockup">
+    <browser:resource
+        name="plone.js"
+        file="static/plone.js"
+        />
+    <browser:resource
+        name="plone.css"
+        file="static/plone.css"
+        />
+  </configure>
+  <configure zcml:condition="not-installed mockup">
+    <browser:resource
+        name="plone.js"
+        file="static/plone.min.js"
+        />`
+    <browser:resource
+        name="plone.css"
+        file="static/plone.min.css"
+        />
+  </configure>
 
   <class class="Products.PluggableAuthService.PluggableAuthService.PluggableAuthService">
     <implements interface=".interfaces.IHideFromBreadcrumbs" />

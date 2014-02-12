@@ -3,7 +3,10 @@
 
     <stylesheet
         cacheable="False" compression="none" cookable="True" enabled="True"
-        id="++resource++plone.app.widgets.css"
+        id="++resource++plone.css"
         />
+
+    <stylesheet id="RTL.css"
+                expression="python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()" />
 
 </object>

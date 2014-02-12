@@ -34,6 +34,9 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         # make sure the test request gets marked with the default theme layer
         notify(BeforeTraverseEvent(self.portal, self.layer['app'].REQUEST))
 
+        # disable diazo theming
+        self.portal.portal_registry['plone.app.theming.interfaces.IThemeSettings.enabled'] = False
+
         _createObjectByType('Folder', self.portal, 'folder')
         _createObjectByType('Document', self.portal, 'document')
         _createObjectByType('File', self.portal, 'file')
