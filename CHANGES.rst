@@ -8,12 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
-- Remove DL's from portlet templates.
-  https://github.com/plone/Products.CMFPlone/issues/163
-  [khink]
-
-- Remove DL's from portal message templates.
+- Remove DL/DT/DD's from portal messages, portlet templates and others.
   https://github.com/plone/Products.CMFPlone/issues/153
+  https://github.com/plone/Products.CMFPlone/issues/163
   [khink]
 
 - Remove the portal_calendar tool and the dependency on CMFCalendar.
