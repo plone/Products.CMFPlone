@@ -8,9 +8,6 @@
  <javascript id="select_all.js" />
  <javascript id="dragdropreorder.js" />
  <javascript id="mark_special_links.js" enabled="False" />
- <javascript id="collapsiblesections.js" compression="full" />
- <javascript id="form_tabbing.js" />
- <javascript id="popupforms.js" />
  <javascript id="jquery.highlightsearchterms.js" />
  <javascript id="styleswitcher.js" />
  <javascript id="collapsibleformfields.js" />

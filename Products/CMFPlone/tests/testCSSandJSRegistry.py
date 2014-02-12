@@ -47,12 +47,9 @@ class TestJSRegistry(PloneTestCase):
             'select_all.js',
             'styleswitcher.js',
             'table_sorter.js',
-            'dropdown.js',
             'dragdropreorder.js',
             'cookie_functions.js',
-            'plone_javascript_variables.js',
-            'form_tabbing.js',
-            'popupforms.js']
+            'plone_javascript_variables.js']
         for e in expected:
             self.assertTrue(e in installedScriptIds, e)
 
