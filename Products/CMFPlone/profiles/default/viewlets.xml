@@ -32,4 +32,8 @@
     <viewlet name="plone.colophon" />
     <viewlet name="plone.site_actions" />
   </order>
+  <hidden manager="plone.portalfooter" skinname="Plone Default">
+    <viewlet name="plone.colophon" />
+    <viewlet name="plone.site_actions" />
+  </hidden>
 </object>
