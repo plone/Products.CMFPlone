@@ -69,15 +69,15 @@
 
                         <h3 i18n:translate="heading_not_found_suggestions">You might have been looking for&hellip;</h3>
 
-                        <dl>
+                        <div>
 
                         <tal:firstparent condition="first_parent/absolute_url | nothing">
-                            <tal:entry define="result_url first_parent/absolute_url;
+                            <article tal:define="result_url first_parent/absolute_url;
                                                result_type python:hasattr(first_parent, 'getTypeInfo') and first_parent.getTypeInfo().getId();
                                                item_icon python:plone_view.getIcon(first_parent);
                                                url python:test(result_type in use_view_action, result_url+'/view', result_url);"
                                        tal:condition="result_type">
-                                <dt tal:define="item_wf_state_class python:'state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
+                                <header tal:define="item_wf_state_class python:'state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
                                     tal:attributes="class python:'contenttype-' + normalizeString(result_type)">
                                   <img tal:replace="structure item_icon/html_tag" />
                                    <a
@@ -92,19 +92,19 @@
                                     <span tal:omit-tag="" tal:content="python:toLocalizedTime(first_parent.ModificationDate(), long_format=1)" i18n:name="date">Modification Date</span>
                                     </span>
 
-                                </dt>
+                                </header>
 
                                 <dd tal:content="python:plone_view.cropText(first_parent.Description(), desc_length, desc_ellipsis)"> Description </dd>
 
-                            </tal:entry>
+                            </article>
                         </tal:firstparent>
 
                         <tal:similar repeat="similar similar_items">
-                            <tal:entry define="result_url similar/getURL;
+                            <article tal:define="result_url similar/getURL;
                                                result_type similar/portal_type;
                                                item_icon python:plone_view.getIcon(similar);
                                                url python:test(result_type in use_view_action, result_url+'/view', result_url);">
-                                <dt tal:define="item_wf_state_class string:state-${similar/review_state};"
+                                <header tal:define="item_wf_state_class string:state-${similar/review_state};"
                                     tal:attributes="class python:'contenttype-' + normalizeString(result_type)">
                                   <img tal:replace="structure item_icon/html_tag" />
                                    <a
@@ -119,14 +119,14 @@
                                     <span tal:omit-tag="" tal:content="python:toLocalizedTime(similar.ModificationDate, long_format=1)" i18n:name="date">Modification Date</span>
                                     </span>
 
-                                </dt>
+                                </header>
 
-                                <dd tal:content="python:plone_view.cropText(similar.Description or '', desc_length, desc_ellipsis)"> Description </dd>
+                                <p tal:content="python:plone_view.cropText(similar.Description or '', desc_length, desc_ellipsis)"> Description </p>
 
-                            </tal:entry>
+                            </article>
                         </tal:similar>
 
-                        </dl>
+                        </div>
 
                     </tal:suggestions>
                 </div>
