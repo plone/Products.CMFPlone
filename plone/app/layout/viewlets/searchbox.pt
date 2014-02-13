@@ -5,6 +5,7 @@
 
     <form id="searchGadget_form"
           action="@@search"
+          role="search"
           tal:attributes="action string:${navigation_root_url}/@@search;
                           id string:${search_input_id}_form;">
 
