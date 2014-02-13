@@ -159,17 +159,6 @@
      manager="plone.footerportlets"
      category="context"
      key="/"
-     type="portlets.Classic"
-     name="colophon"
-     >
-    <property name="template">colophon</property>
-    <property name="macro">portlet</property>
- </assignment>
-
- <assignment
-     manager="plone.footerportlets"
-     category="context"
-     key="/"
      type="portlets.Actions"
      name="actions"
      >
@@ -177,6 +166,17 @@
     <property name="show_title">False</property>
     <property name="category">site_actions</property>
     <property name="show_icons">False</property>
+ </assignment>
+
+ <assignment
+     manager="plone.footerportlets"
+     category="context"
+     key="/"
+     type="portlets.Classic"
+     name="colophon"
+     >
+    <property name="template">colophon</property>
+    <property name="macro">portlet</property>
  </assignment>
 
 </portlets>
