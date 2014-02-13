@@ -8,11 +8,29 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- PLIP #13705: Remove <base> tag.
+  [frapell]
+
+- merge hotfixes from 20131210
+  [vangheem]
+
+- handle plone.app.textfield RichTextValue objects in syndication. Should
+  fix syndication with plone.app.contenttypes.
+  [vangheem]
+
+- FolderFeed adapter now takes into account the limit property when displaying
+  the RSS feed just like the other adapters do
+  [ichim-david]
+
 - Remove the portal_calendar tool and the dependency on CMFCalendar.
   [davisagli]
 
 - Remove the plone_deprecated skin layer.
   [gforcada, davisagli]
+
+- Moved portal_factory and portal_metadata from Products.CMFPlone to
+  Products.ATContentTypes (PLIP #13770)
+  [ale-rt]
 
 - Remove the portal_interface tool.
   [ale-rt]

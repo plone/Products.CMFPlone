@@ -231,20 +231,20 @@ I enter valid credentials
     Click Button  Log in
 
 I enter valid user data
-    Wait until page contains element  name=form.password_ctl
-    Input text for sure  form.username       myuser
-    Input text for sure  form.email          my@email.eu
-    Input text for sure  form.password       123123
-    Input text for sure  form.password_ctl   123123
+    Wait until page contains element  name=form.widgets.password_ctl
+    Input text for sure  form.widgets.username       myuser
+    Input text for sure  form.widgets.email          my@email.eu
+    Input text for sure  form.widgets.password       123123
+    Input text for sure  form.widgets.password_ctl   123123
 
 I enter valid register user data
-    Wait until page contains element  name=form.username
-    Input text  form.username       myuser
-    Input text  form.email          my@email.eu
+    Wait until page contains element  name=form.widgets.username
+    Input text  form.widgets.username       myuser
+    Input text  form.widgets.email          my@email.eu
 
 I send the register form
-    Wait until page contains element  name=form.actions.register
-    Click Element  name=form.actions.register
+    Wait until page contains element  name=form.buttons.register
+    Click Element  name=form.buttons.register
 
 I trigger the add a new user action
     Click Element  name=users_add
