@@ -195,29 +195,26 @@ I click the '${link_name}' link
 
 the '${link_name}' overlay
     Click Link  ${link_name}
-    Wait until keyword succeeds  30  1  Page should contain element  id=exposeMask
+    Wait until keyword succeeds  30  1  Page should contain element  css=div.modal-dialog
 
 overlay should open
-    Wait until keyword succeeds  30  1  Element Should Be Visible  id=exposeMask
-    Element should be visible  css=div.overlay
-    Element should be visible  css=div.overlay div.close
+    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-dialog
 
 overlay should remain open
-    Element should be visible  css=div.overlay
+    Element should be visible  css=div.modal-dialog
 
 I close the overlay
-    Click Element  css=div.overlay div.close
+    Click Element  css=div.modal-header a.close
 
 overlay should close
-    Element should not remain visible  id=exposeMask
-    Wait until keyword succeeds  30  1  Page should not contain element  css=div.overlay
+    Wait until keyword succeeds  30  1  Page should not contain element  css=div.modal-dialog
 
 overlay shows an error
     Wait Until Page Contains  Error
 
 I '${action}' the form
-    Wait until keyword succeeds  30  1  Element Should Be Visible  id=exposeMask
-    Click Element  name=form.button.${action}
+    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer input[name="form.button.${action}"]
+    Click Element  css=div.modal-footer input[name="form.button.${action}"]
 
 I enter wrong credentials
     Input text  __ac_name  wrong
@@ -272,7 +269,7 @@ I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//li[@id='plone-contentmenu-actions']/a
     Click link  id=plone-contentmenu-actions-${action}
-    Wait until page contains Element  class=backdrop
+    Wait until page contains Element  css=div.modal-dialog
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute

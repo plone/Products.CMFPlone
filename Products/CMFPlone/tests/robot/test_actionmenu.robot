@@ -115,7 +115,7 @@ second menu should be visible
     Element Should Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[2]
 
 first menu should not be visible
-    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//dd
+    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//li
 
 I click outside of menu
     Click Element  xpath=//h1
@@ -125,7 +125,7 @@ workflow link is clicked
     ${OLD_STATE} =  Get Text  xpath=//span[contains(@class,'state-')]
     Set Suite Variable  ${OLD_STATE}  ${OLD_STATE}
     Click Link  xpath=//li[@id='plone-contentmenu-workflow']/a
-    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/dd//a)[1]
+    Click Link  xpath=(//li[@id='plone-contentmenu-workflow']/ul/li/a)[1]
     # FIXME: The above 'Click Link' fails on Internet Explorer, but the
     # following keywords 'workflow link is clicked softly' passes. Until we
     # know why, we check if the above worked and if not, we try the other
@@ -151,9 +151,9 @@ state should have changed
 
 Open Menu
     [Arguments]  ${elementId}
-    Element Should Not Be Visible  css=dl#${elementId} ul.actionMenuContent
-    Click link  css=li#${elementId} a.actionMenuHeader
-    Wait until keyword succeeds  1  5  Element Should Be Visible  css=dl#${elementId} dd.actionMenuContent
+    Element Should Not Be Visible  css=#${elementId} ul.actionMenuContent
+    Click link  css=#${elementId} a.actionMenuHeader
+    Wait until keyword succeeds  1  5  Element Should Be Visible  css=#${elementId} .actionMenuContent
 
 Open Action Menu
     Open Menu  plone-contentmenu-actions
