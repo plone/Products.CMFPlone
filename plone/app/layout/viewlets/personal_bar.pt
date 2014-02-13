@@ -10,10 +10,14 @@
     <a id="user-name"
       data-toggle="dropdown"
       tal:attributes="href view/homelink_url">
-      <span tal:content="view/user_name">John</span>
-      <span class="arrowDownAlternative">&#9660;</span>
+      <span class="icon-user" aria-hidden="true"></span>
+      <span tal:content="view/user_name" class="text-toolbar">John</span>
+      <span class="caret"></span>
     </a>
     <ul class="actionMenuContent dropdown-menu">
+        <li class="dropdown-header">
+          <span tal:content="view/user_name">John</span>
+        </li>
         <li tal:repeat="action view/user_actions"
             tal:attributes="id string:personaltools-${action/id}">
             <a href=""
