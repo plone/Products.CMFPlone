@@ -151,7 +151,7 @@ class FolderFeed(BaseFeedData):
 
     @property
     def items(self):
-        for item in self._items()[:self.limit]:
+        for item in self._items():
             # look for custom adapter
             # otherwise, just use default
             adapter = queryMultiAdapter((item, self), IFeedItem)
@@ -184,8 +184,7 @@ class SearchFeed(FolderFeed):
         end = int(request.get('b_end', start + max_items))
         request.set('sort_order', 'reverse')
         request.set('sort_on', request.get('sort_on', 'effective'))
-        return self.context.queryCatalog(
-            show_all=1, use_types_blacklist=True,
+        return self.context.queryCatalog(show_all=1, use_types_blacklist=True,
             use_navigation_root=True)[start:end]
 
 
@@ -219,16 +218,10 @@ class BaseItem(BaseFeedData):
     @property
     def body(self):
         if hasattr(self.context, 'getText'):
-            value = self.context.getText()
+            return self.context.getText()
         elif hasattr(self.context, 'text'):
-            value = self.context.text
-        else:
-            value = self.description
-        if not isinstance(value, basestring):
-            if hasattr(value, 'output'):
-                # could be RichTextValue object, needs transform
-                value = value.output
-        return value
+            return self.context.text
+        return self.description
 
     @property
     def link(self):

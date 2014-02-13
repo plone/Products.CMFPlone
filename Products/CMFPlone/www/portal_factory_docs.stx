@@ -1,0 +1,66 @@
+Using portal_factory
+
+   The portal_factory tool allows users to initiate the creation objects in a
+   such a way that if they do not complete an edit form, no object is created in
+   the ZODB.  The tool works by creating a temporary object in the request; when
+   the request terminates, the object will be garbage collected.
+
+   Configuring portal_factory
+
+      Use the portal_factory's Factory Types ZMI tab to specify the types that
+      should be created using portal_factory.  Types must be portal_factory 
+      aware for this to work.  In Plone 2.0, the stock CMFDefault types (Document,
+      News Item, Event, etc) are all portal_factory aware.  Most types in
+      Archetypes should also be portal_factory aware.
+
+   Making Types portal_factory aware
+
+      portal_factory creates a temporary object in the REQUEST.  When the 
+      request ends, the object is garbage collected.  If you want to modify an 
+      object, you must first instantiate it in the ZODB.  portal_factory 
+      provides a utility method that tests an object to see if it is temporary
+      and, if so, instantiates it in the proper place in the ZODB.  You can
+      invoke this method via::
+
+         portal_factory.doCreate(object, id)
+      
+      Typically this method will be invoked in the object's edit script via
+      code that looks like the following::
+
+         Non-portal_factory-aware code:
+
+         # parameters=id, param1, param2
+         context.edit(param1, param2)
+         context.plone_utils.contentEdit(context, id=id)
+         ...
+
+         portal_factory-aware code:
+
+         # parameters=id, param1, param2
+         new_context = portal_factory.doCreate(context, id)
+         new_context.edit(param1, param2)
+         new_context.plone_utils.contentEdit(new_context, id=id)
+         ...
+
+   Working with temporary objects
+
+      You can manipulate temporary objects by using a URL of the form::
+
+         http://myportal/myfolder/portal_factory/TYPE_NAME/OBJECT_ID
+
+      For example, the following URL points to a temporary Document with id foo::
+
+         http://myportal/myfolder/portal_factory/Document/foo
+
+Gotchas 
+
+      If you rename/move your object more than once when saving (move 
+      from tempfolder and generate id based on title afterwards) you 
+      have to commit a subtransaction to be able to do the second 
+      move/rename. Otherwise you will get an error about not being able 
+      to copy/move. 
+
+      You commit a subtransaction by doing:: 
+
+         import transaction
+         transaction.savepoint(optimistic=True)

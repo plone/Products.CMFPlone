@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<atcttool
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <topic_indexes i18n:domain="plone">
+  <index name="allowedRolesAndUsers"
+     description="The roles and users with View permission on an item"
+     enabled="False" friendlyName="Internal Security"
+     i18n:attributes="description; friendlyName" />
+  <index name="created" description="The time and date an item was created"
+     enabled="True" friendlyName="Creation Date"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+  </index>
+  <index name="Creator" description="" enabled="True" friendlyName="Creator"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSelectionCriterion</criteria>
+   <criteria>ATCurrentAuthorCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+  </index>
+  <index name="Date"
+     description="The time and date an item was last modified"
+     enabled="False" friendlyName="Modification Date"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+  </index>
+  <index name="Description" description="" enabled="True" friendlyName="Description"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSimpleStringCriterion</criteria>
+  </index>
+  <index name="effective"
+     description="The time and date an item becomes publicly available"
+     enabled="True" friendlyName="Effective Date"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+  </index>
+  <index name="effectiveRange"
+     description="All items publicly available on a certain date"
+     enabled="False" friendlyName="Effective Range"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+  </index>
+  <index name="end" description="The end date and time of an event"
+     enabled="True" friendlyName="End Date"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+  </index>
+  <index name="expires"
+     description="The time and date an item is no longer publicly available"
+     enabled="True" friendlyName="Expiration Date"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+  </index>
+  <index name="getId"
+     description="The short name of an item (used in the url)" enabled="True"
+     friendlyName="Short Name"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+  </index>
+  <index name="getObjPositionInParent"
+     description="The order of an item in its parent folder" enabled="True"
+     friendlyName="Order in folder"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSimpleIntCriterion</criteria>
+  </index>
+  <index name="getRawRelatedItems"
+     description="Find items related to the selected items" enabled="True"
+     friendlyName="Related To"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATReferenceCriterion</criteria>
+  </index>
+  <index name="id" description="The short name of an item (used in the url)"
+     enabled="False" friendlyName="Short Name"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+  </index>
+  <index name="in_reply_to" description="" enabled="False" friendlyName=""/>
+  <index name="is_default_page"
+     description="Find items that are the default view for their containing folder."
+     enabled="False" friendlyName="Default Page"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATBooleanCriterion</criteria>
+  </index>
+  <index name="is_folderish"
+     description="Find items that can contain other objects" enabled="False"
+     friendlyName="Folder-like"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATBooleanCriterion</criteria>
+  </index>
+  <index name="meta_type" description="" enabled="False" friendlyName=""/>
+  <index name="modified"
+     description="The time and date an item was last modified" enabled="True"
+     friendlyName="Modification Date"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+  </index>
+  <index name="path" description="The location of an item in the site (path)"
+     enabled="True" friendlyName="Location"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATPathCriterion</criteria>
+   <criteria>ATRelativePathCriterion</criteria>
+  </index>
+  <index name="portal_type" description="" enabled="False"
+     friendlyName="Item Type (internal)"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATPortalTypeCriterion</criteria>
+  </index>
+  <index name="review_state"
+     description="An item's workflow state (e.g.published)" enabled="True"
+     friendlyName="State"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSelectionCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+  </index>
+  <index name="SearchableText" description="Text search of an item's contents"
+     enabled="True" friendlyName="Search Text"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSimpleStringCriterion</criteria>
+  </index>
+  <index name="sortable_title"
+     description="An item's title transformed for sorting" enabled="True"
+     friendlyName="Sortable Title" i18n:attributes="description; friendlyName" />
+  <index name="start" description="The start date and time of an event"
+     enabled="True" friendlyName="Start Date"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATFriendlyDateCriteria</criteria>
+   <criteria>ATDateRangeCriterion</criteria>
+  </index>
+  <index name="Subject" description="Tags are used for ad-hoc organization of content"
+     enabled="True" friendlyName="Tags"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSelectionCriterion</criteria>
+   <criteria>ATSimpleStringCriterion</criteria>
+   <criteria>ATListCriterion</criteria>
+  </index>
+  <index name="Title" description="Text search of an item's title"
+     enabled="True" friendlyName="Title"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATSimpleStringCriterion</criteria>
+  </index>
+  <index name="Type" description="An item's type (e.g. Event)" enabled="True"
+     friendlyName="Item Type"
+     i18n:attributes="description; friendlyName">
+   <criteria>ATPortalTypeCriterion</criteria>
+  </index>
+ </topic_indexes>
+ <topic_metadata i18n:domain="plone">
+  <metadata name="created"
+     description="The time and date an item was created"
+     enabled="False" friendlyName="Creation Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="CreationDate"
+     description="The time and date an item was created" enabled="True"
+     friendlyName="Creation Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="Creator" description="" enabled="True" friendlyName=""/>
+  <metadata name="Date" description="" enabled="False" friendlyName=""/>
+  <metadata name="Description" description="" enabled="True" friendlyName=""/>
+  <metadata name="effective"
+     description="The time and date an item becomes publicly available"
+     enabled="False" friendlyName="Effective Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="EffectiveDate"
+     description="The time and date an item becomes publicly available"
+     enabled="True" friendlyName="Effective Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="end" description="The end date and time of an event"
+     enabled="True" friendlyName="End Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="exclude_from_nav"
+     description="Is this item visible in the site navigation" enabled="False"
+     friendlyName="Exclude from navigation"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="ExpirationDate"
+     description="The time and date an item is no longer publicly available"
+     enabled="True" friendlyName="Expiration Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="expires"
+     description="The time and date an item is no longer publicly available"
+     enabled="False" friendlyName="Expiration Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="getIcon" description="The icon for an item" enabled="False"
+     friendlyName="Icon" i18n:attributes="description; friendlyName" />
+  <metadata name="getId"
+     description="The short name of an item (used in the url)" enabled="True"
+     friendlyName="Short Name" i18n:attributes="description; friendlyName" />
+  <metadata name="getObjSize" description="The size of an item" enabled="True"
+     friendlyName="Size" i18n:attributes="description; friendlyName" />
+  <metadata name="getRemoteUrl" description="The url of a Link item"
+     enabled="False" friendlyName="Remote Url"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="id" description="" enabled="False"
+     friendlyName="Short Name" i18n:attributes="description; friendlyName" />
+  <metadata name="is_folderish"
+     description="Find items that can contain other objects" enabled="False"
+     friendlyName="Folder-like" i18n:attributes="description; friendlyName" />
+  <metadata name="listCreators" description="" enabled="False"
+     friendlyName=""/>
+  <metadata name="location" description="" enabled="True"
+     friendlyName="Location" i18n:attributes="description; friendlyName" />
+  <metadata name="meta_type" description="" enabled="False" friendlyName=""/>
+  <metadata name="ModificationDate"
+     description="The time and date an item was last modified" enabled="True"
+     friendlyName="Modification Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="modified"
+     description="The time and date an item was last modified"
+     enabled="False" friendlyName="Modification Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="portal_type" description="" enabled="False"
+     friendlyName="Item Type (internal)"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="review_state"
+     description="An item's workflow state (e.g.published)" enabled="True"
+     friendlyName="State" i18n:attributes="description; friendlyName" />
+  <metadata name="start" description="The start date and time of an event"
+     enabled="True" friendlyName="Start Date"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="Subject" description="Tags are used for ad-hoc organization of content"
+     enabled="True" friendlyName="Tags"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="Title" description="" enabled="True" friendlyName="Title"
+     i18n:attributes="description; friendlyName" />
+  <metadata name="Type" description="An item's type (e.g. Event)"
+     enabled="True" friendlyName="Item Type"
+     i18n:attributes="description; friendlyName" />
+ </topic_metadata>
+ <property name="title">ATContentTypes Tool</property>
+ <property name="image_types">
+  <element value="Image"/>
+  <element value="News Item"/>
+ </property>
+ <property name="folder_types">
+  <element value="Image"/>
+ </property>
+ <property name="album_batch_size">30</property>
+ <property name="album_image_scale">thumb</property>
+ <property name="single_image_scale">preview</property>
+</atcttool>

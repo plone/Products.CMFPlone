@@ -8,7 +8,7 @@ class TestControlPanel(PloneTestCase):
 
         # get the expected default groups and configlets
         self.groups = ['Plone', 'Products']
-        self.configlets = ['QuickInstaller', 'MailHost',
+        self.configlets = ['QuickInstaller', 'portal_atct', 'MailHost',
                            'UsersGroups', 'MemberPrefs', 'PortalSkin',
                            'MemberPassword', 'ZMI', 'SecuritySettings',
                            'NavigationSettings', 'SearchSettings',
@@ -23,5 +23,5 @@ class TestControlPanel(PloneTestCase):
     def testDefaultConfiglets(self):
         for title in self.configlets:
             self.assertTrue(title in [a.getAction(self)['id']
-                            for a in self.controlpanel.listActions()],
+                                   for a in self.controlpanel.listActions()],
                             "Missing configlet with id '%s'" % title)

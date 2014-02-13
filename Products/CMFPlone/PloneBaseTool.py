@@ -24,14 +24,8 @@ def initializeTFC():
     """
     global TempFolderClass
     if TempFolderClass is None:
-        import pkg_resources
-        try:
-            pkg_resources.get_distribution('Products.ATContentTypes')
-        except pkg_resources.DistributionNotFound:
-            pass
-        else:
-            from Products.ATContentTypes.tool.factory import TempFolder
-            TempFolderClass = TempFolder
+        from Products.CMFPlone.FactoryTool import TempFolder
+        TempFolderClass = TempFolder
 
 
 def getOAI(context, object=None):

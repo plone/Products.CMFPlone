@@ -48,10 +48,7 @@ ClassDirective.require = require
 code = """
 from persistent.interfaces import IPersistent
 from OFS.interfaces import IItem
-try:
-    from Products.ATContentTypes.tool.factory import FauxArchetypeTool
-except ImportError:
-    FauxArchetypeTool = type('FauxArchetypeTool')
+from Products.CMFPlone.FactoryTool import FauxArchetypeTool
 
 def _getToolByName(self, name, default=_marker):
     pass

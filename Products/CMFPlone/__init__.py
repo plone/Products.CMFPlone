@@ -125,10 +125,12 @@ def initialize(context):
 
     # Plone tools
     import PloneTool
+    import FactoryTool
     import MigrationTool
     import PloneControlPanel
     import WorkflowTool
     import URLTool
+    import MetadataTool
     import RegistrationTool
     import PropertiesTool
     import ActionsTool
@@ -141,11 +143,13 @@ def initialize(context):
     tools = (PloneTool.PloneTool,
              WorkflowTool.WorkflowTool,
              CachingPolicyManager.CachingPolicyManager,
+             FactoryTool.FactoryTool,
              PropertiesTool.PropertiesTool,
              MigrationTool.MigrationTool,
              PloneControlPanel.PloneControlPanel,
              RegistrationTool.RegistrationTool,
              URLTool.URLTool,
+             MetadataTool.MetadataTool,
              ActionsTool.ActionsTool,
              TypesTool.TypesTool,
              CatalogTool.CatalogTool,

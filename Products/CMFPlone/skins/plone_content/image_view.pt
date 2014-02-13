@@ -9,7 +9,9 @@
 <body>
     <metal:content-core fill-slot="content-core">
         <metal:block define-macro="content-core"
-                     tal:define="size context/size;
+                     tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                 getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                 size context/size;
                                  portal_state context/@@plone_portal_state;
                                  context_state context/@@plone_context_state;
                                  tag python:context.tag(scale='preview');
@@ -21,15 +23,15 @@
                 <br />
             </a>
 
-            <span id="plone-image-details" class="discreet visualNoPrint">
+            <span id="plone-image-details" class="discreet visualNoPrint"
+                  tal:define="objectsize python:context.getObjSize(here)">
 
               <span tal:condition="size"
 	                class="discreet">
                 <span i18n:translate="label_full_size">Full-size image:</span>
 
                 <span tal:condition="size"
-                      tal:define="toLocalizedSize nocall:context/@@plone/toLocalizedSize"
-                      tal:content="python:toLocalizedSize(size)">
+                      tal:content="objectsize">
                     File size
                 </span>
 				&#124;
