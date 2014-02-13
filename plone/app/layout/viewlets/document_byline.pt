@@ -60,6 +60,7 @@
         tal:condition="view/show_history">
     —
     <a href="#"
+       class="pat-modal"
        tal:attributes="href string:${here/absolute_url}/@@historyview"
        i18n:translate="label_history">History</a>
   </span>
