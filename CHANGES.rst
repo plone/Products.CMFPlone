@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Remove obsolete JS for dropdowns, form tabbing and collapsibles.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  [khink]
+
 - Remove the portal_calendar tool and the dependency on CMFCalendar.
   [davisagli]
 
