@@ -219,13 +219,13 @@ I '${action}' the form
 I enter wrong credentials
     Input text  __ac_name  wrong
     Input text  __ac_password  user
-    Click Button  Log in
+    Click Button  css=div.modal-footer input
 
 I enter valid credentials
     Wait until page contains element  name=__ac_name
     Input text for sure  __ac_name  ${SITE_OWNER_NAME}
     Input text for sure  __ac_password  ${SITE_OWNER_PASSWORD}
-    Click Button  Log in
+    Click Button  css=div.modal-footer input
 
 I enter valid user data
     Wait until page contains element  name=form.password_ctl
@@ -240,8 +240,8 @@ I enter valid register user data
     Input text  form.email          my@email.eu
 
 I send the register form
-    Wait until page contains element  name=form.actions.register
-    Click Element  name=form.actions.register
+    Wait until page contains element  id=form-buttons-register
+    Click Element  id=form-buttons-register
 
 I trigger the add a new user action
     Click Element  name=users_add
@@ -273,4 +273,4 @@ I trigger the '${action}' action menu item of the test folder
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
-    Wait until keyword succeeds  2  2  Click Element  xpath=//form[@id='delete_confirmation']//input[@class='destructive']
+    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer input[class="destructive"]
