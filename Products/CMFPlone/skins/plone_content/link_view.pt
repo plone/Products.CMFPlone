@@ -8,7 +8,7 @@
 
 <body>
 
-    <metal:header fill-slot="header">
+    <metal:header fill-slot="global_statusmessage">
         <dl class="portalMessage info"
             tal:define="redirect_links context/portal_properties/site_properties/redirect_links|nothing"
             tal:condition="python: redirect_links and checkPermission('Modify portal content', context)">
