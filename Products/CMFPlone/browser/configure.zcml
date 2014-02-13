@@ -18,7 +18,7 @@
 
   <browser:page
       for="*"
-      name="sendto"
+      name="sendto_form"
       class=".sendto.SendToForm"
       permission="Products.CMFPlone.AllowSendto"
       />
