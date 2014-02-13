@@ -17,7 +17,14 @@ class PatternsSettings(BrowserView):
     implements(IPatternsSettingsRenderer)
 
     def __call__(self):
-        result = {}
+        modal_options = {
+            'actionOptions': {
+                'displayInModal': False,
+            }
+        }
+        result = {
+            'data-pat-modal': json.dumps(modal_options)
+        }
         adapters = getAdapters((self.context, self.request), IPatternsSettings)
         [result.update(x[1]()) for x in adapters]
         return result
