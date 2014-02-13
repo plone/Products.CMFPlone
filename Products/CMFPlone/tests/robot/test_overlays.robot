@@ -228,23 +228,23 @@ I enter valid credentials
     Click Button  css=div.modal-footer input
 
 I enter valid user data
-    Wait until page contains element  name=form.password_ctl
-    Input text for sure  form.username       myuser
-    Input text for sure  form.email          my@email.eu
-    Input text for sure  form.password       123123
-    Input text for sure  form.password_ctl   123123
+    Wait until page contains element  name=form.widgets.password
+    Input text for sure  form.widgets.username       myuser
+    Input text for sure  form.widgets.email          my@email.eu
+    Input text for sure  form.widgets.password       123123
+    Input text for sure  form.widgets.password_ctl   123123
 
 I enter valid register user data
-    Wait until page contains element  name=form.username
-    Input text  form.username       myuser
-    Input text  form.email          my@email.eu
+    Wait until page contains element  name=form.widgets.username
+    Input text  form.widgets.username       myuser
+    Input text  form.widgets.email          my@email.eu
 
 I send the register form
-    Wait until page contains element  id=form-buttons-register
-    Click Element  id=form-buttons-register
+    Wait until page contains element  css=div.modal-footer #form-buttons-register
+    Click Element  css=div.modal-footer #form-buttons-register
 
 I trigger the add a new user action
-    Click Element  name=users_add
+    Click Element  id=add-user
 
 a document '${title}' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
@@ -253,7 +253,7 @@ a document '${title}' in the test folder
 
 I set the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//li[@id='plone-contentmenu-display']/a
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
@@ -262,12 +262,12 @@ a document as the default view of the test folder
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//li[@id='plone-contentmenu-display']/a
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=plone-contentmenu-actions-${action}
     Wait until page contains Element  css=div.modal-dialog
 
