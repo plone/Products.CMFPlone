@@ -1,0 +1,30 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     i18n:domain="plone"
+     tal:omit-tag=""
+     tal:define="utool nocall:context/portal_url;
+                 charset context/email_charset|string:utf-8;
+                 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)"
+><div i18n:translate="sendto_mailtemplate_body" tal:omit-tag="">
+This link is sent to you from <span i18n:name="portal_url" tal:omit-tag="" tal:replace="structure utool" />
+
+You are receiving this mail because someone read a page at
+<span i18n:name="portal_title" tal:omit-tag="" tal:replace="structure utool/Title" />
+and thought it might interest you.
+
+It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:replace="structure options/send_from_address"
+/> with the following comment:
+"<span i18n:name="comment" tal:omit-tag="" tal:replace="structure options/comment | nothing" />"
+
+<span i18n:name="document_title" tal:omit-tag="" tal:replace="structure options/title | context/Title" />
+
+<span i18n:name="document_description" tal:omit-tag="" tal:replace="structure options/description | context/Description" />
+
+<span i18n:name="document_url" tal:omit-tag="" tal:replace="structure options/url | context/absolute_url" />
+</div>
+--
+<span tal:replace="structure context/email_from_name" />
+
+</div>

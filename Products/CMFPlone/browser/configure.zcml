@@ -12,6 +12,17 @@
       <allow interface="plone.app.layout.navigation.interfaces.INavigationQueryBuilder" />
   </class>
 
+  <permission
+    id="Products.CMFPlone.AllowSendto"
+    title="Allow sendto" />
+
+  <browser:page
+      for="*"
+      name="sendto"
+      class=".sendto.SendToForm"
+      permission="Products.CMFPlone.AllowSendto"
+      />
+
   <browser:page
       for="*"
       name="breadcrumbs_view"
