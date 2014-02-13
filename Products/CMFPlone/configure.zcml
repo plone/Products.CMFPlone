@@ -125,6 +125,9 @@
 
   <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
               handler=".events.profileImportedEventHandler"/>
+              
+  <subscriber for="ZPublisher.interfaces.IPubAfterTraversal"
+              handler=".events.removeBase"/>
 
   <!-- configure sizes lookup for `plone.namedfile` -->
   <utility

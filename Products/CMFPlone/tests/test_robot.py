@@ -1,13 +1,9 @@
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_ROBOT_TESTING
+from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
 import os
 import unittest
 import robotsuite
-
-UNIT_TEST_LEVEL = 1
-INTEGRATION_TEST_LEVEL = 2
-FUNCTIONAL_TEST_LEVEL = 3
-ROBOT_TEST_LEVEL = 5
 
 
 def test_suite():

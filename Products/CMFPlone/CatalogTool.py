@@ -391,6 +391,27 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     __call__ = searchResults
 
+    def search(self, *args, **kw):
+        # Wrap search() the same way that searchResults() is
+        query = {}
+
+        if args:
+            query = args[0]
+        elif 'query_request' in kw:
+            query = kw.get['query_request']
+
+        kw['query_request'] = query.copy()
+
+        user = _getAuthenticatedUser(self)
+        query['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
+
+        if not _checkPermission(AccessInactivePortalContent, self):
+            query['effectiveRange'] = DateTime()
+
+        kw['query_request'] = query
+
+        return super(CatalogTool, self).search(**kw)
+
     security.declareProtected(ManageZCatalogEntries, 'clearFindAndRebuild')
     def clearFindAndRebuild(self):
         """Empties catalog, then finds all contentish objects (i.e. objects

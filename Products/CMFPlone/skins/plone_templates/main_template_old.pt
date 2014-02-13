@@ -34,10 +34,6 @@
 
     <meta name="generator" content="Plone - http://plone.org" />
 
-    <metal:baseslot define-slot="base">
-      <base tal:attributes="href plone_view/renderBase" /><!--[if lt IE 7]></base><![endif]-->
-    </metal:baseslot>
-
     <tal:notajax tal:condition="python:not ajax_load or ajax_include_head">
         <div tal:replace="structure provider:plone.htmlhead" />
 
