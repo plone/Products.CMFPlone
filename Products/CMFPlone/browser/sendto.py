@@ -18,6 +18,10 @@ from z3c.form import button
 
 from interfaces import ISendToForm
 
+import logging
+
+logger = logging.getLogger("Plone")
+
 
 class SendToForm(form.Form):
     label = _(u'heading_send_page_to',
@@ -40,6 +44,14 @@ class SendToForm(form.Form):
     @button.buttonAndHandler(_(u'label_send', default='Send'),
                              name='send')
     def handle_send(self, action):
+        data, errors = self.extractData()
+        if errors:
+            IStatusMessage(self.request).addStatusMessage(
+                self.formErrorsMessage,
+                type=u'error'
+            )
+            return
+
         portal_state = getMultiAdapter(
             (self.context, self.request),
             name=u'plone_portal_state'
@@ -48,16 +60,16 @@ class SendToForm(form.Form):
 
         context_state = getMultiAdapter(
             (self.context, self.request),
-            "plone_context_state"
+            name=u'plone_context_state'
         )
         url = context_state.view_url()
 
-        send_from_address = self.request.get('send_from_address')
-        send_to_address = self.request.get('send_to_address')
-        subject = pretty_title_or_id(self.context)
-        title = pretty_title_or_id(self.context)
+        send_from_address = data.get('send_from_address')
+        send_to_address = data.get('send_to_address')
+        subject = pretty_title_or_id(self, self.context)
+        title = pretty_title_or_id(self, self.context)
         description = self.context.Description()
-        comment = self.request.get('comment', None)
+        comment = data.get('comment', None)
         envelope_from = site.getProperty('email_from_address', None)
 
         try:
@@ -69,7 +81,7 @@ class SendToForm(form.Form):
                 envelope_from = send_from_address
 
             # Cook from template
-            message = self.template(
+            message = self.mail_template(
                 self,
                 send_to_address=send_to_address,
                 send_from_address=send_from_address,
@@ -91,8 +103,9 @@ class SendToForm(form.Form):
 
         except ConflictError:
             raise
-        except:
+        except Exception as e:
             # TODO To many things could possibly go wrong. So we catch all.
+            logger.info("Unable to send mail: " + str(e))
             IStatusMessage(self.request).addStatusMessage(
                 _(u'Unable to send mail.'),
                 type=u'error'
@@ -103,7 +116,7 @@ class SendToForm(form.Form):
             'Sent page %s to %s' % (url, send_to_address)
         )
 
-        IStatusMessage(self.request).addPortalMessage(
+        IStatusMessage(self.request).addStatusMessage(
             _(u'Mail sent.'),
             type=u'info'
         )
