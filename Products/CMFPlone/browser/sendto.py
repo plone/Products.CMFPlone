@@ -1,6 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import pretty_title_or_id
-from Products.CMFPlone.utils import transaction_note
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MailHost.interfaces import IMailHost
 from Products.statusmessages.interfaces import IStatusMessage
@@ -111,10 +110,6 @@ class SendToForm(form.Form):
                 type=u'error'
             )
             return
-
-        transaction_note(
-            'Sent page %s to %s' % (url, send_to_address)
-        )
 
         IStatusMessage(self.request).addStatusMessage(
             _(u'Mail sent.'),
