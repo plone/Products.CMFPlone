@@ -36,6 +36,7 @@ setup(name='Products.CMFPlone',
           'zope.testing',
           'plone.app.testing',
           'plone.app.robotframework',
+          'lxml',
         ]),
       install_requires=[
           'setuptools',
