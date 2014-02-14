@@ -81,5 +81,3 @@ class AuthorView(BrowserView):
             raise Unauthorized()
 
         return self.template()
-
-
