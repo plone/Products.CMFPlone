@@ -113,13 +113,7 @@
       name="author"
       class=".author.AuthorView"
       permission="zope.Public"
-      />
 
-  <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      name="author-feedback-template"
-      template="templates/author_feedback_template.pt"
-      permission="zope.Public"
       />
 
   <browser:page
