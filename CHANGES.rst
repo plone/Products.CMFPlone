@@ -13,6 +13,20 @@ Changelog
   https://github.com/plone/Products.CMFPlone/issues/163
   [khink]
 
+- PLIP #13705: Remove <base> tag.
+  [frapell]
+
+- merge hotfixes from 20131210
+  [vangheem]
+
+- handle plone.app.textfield RichTextValue objects in syndication. Should
+  fix syndication with plone.app.contenttypes.
+  [vangheem]
+
+- FolderFeed adapter now takes into account the limit property when displaying
+  the RSS feed just like the other adapters do
+  [ichim-david]
+
 - Remove the portal_calendar tool and the dependency on CMFCalendar.
   [davisagli]
 

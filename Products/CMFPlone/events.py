@@ -34,3 +34,10 @@ def profileImportedEventHandler(event):
     if installed_version == (u'latest',):
         actual_version = qi.getLatestUpgradeStep(profile_id)
         gs.setLastVersionForProfile(profile_id, actual_version)
+
+
+def removeBase(event):
+    """ Make Zope not to inject a <base> tag into the returned HTML
+    https://dev.plone.org/ticket/13705
+    """
+    event.request.response.base = None

@@ -219,32 +219,32 @@ I '${action}' the form
 I enter wrong credentials
     Input text  __ac_name  wrong
     Input text  __ac_password  user
-    Click Button  Log in
+    Click Button  css=div.modal-footer input
 
 I enter valid credentials
     Wait until page contains element  name=__ac_name
     Input text for sure  __ac_name  ${SITE_OWNER_NAME}
     Input text for sure  __ac_password  ${SITE_OWNER_PASSWORD}
-    Click Button  Log in
+    Click Button  css=div.modal-footer input
 
 I enter valid user data
-    Wait until page contains element  name=form.password_ctl
-    Input text for sure  form.username       myuser
-    Input text for sure  form.email          my@email.eu
-    Input text for sure  form.password       123123
-    Input text for sure  form.password_ctl   123123
+    Wait until page contains element  name=form.widgets.password_ctl
+    Input text for sure  form.widgets.username       myuser
+    Input text for sure  form.widgets.email          my@email.eu
+    Input text for sure  form.widgets.password       123123
+    Input text for sure  form.widgets.password_ctl   123123
 
 I enter valid register user data
-    Wait until page contains element  name=form.username
-    Input text  form.username       myuser
-    Input text  form.email          my@email.eu
+    Wait until page contains element  name=form.widgets.username
+    Input text  form.widgets.username       myuser
+    Input text  form.widgets.email          my@email.eu
 
 I send the register form
-    Wait until page contains element  name=form.actions.register
-    Click Element  name=form.actions.register
+    Wait until page contains element  css=div.modal-footer #form-buttons-register
+    Click Element  css=div.modal-footer #form-buttons-register
 
 I trigger the add a new user action
-    Click Element  name=users_add
+    Click Element  id=add-user
 
 a document '${title}' in the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}/++add++Document
@@ -253,7 +253,7 @@ a document '${title}' in the test folder
 
 I set the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//li[@id='plone-contentmenu-display']/a
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=contextSetDefaultPage
 
 a document as the default view of the test folder
@@ -262,15 +262,15 @@ a document as the default view of the test folder
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//li[@id='plone-contentmenu-display']/a
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
-    Click link  xpath=//li[@id='plone-contentmenu-actions']/a
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=plone-contentmenu-actions-${action}
     Wait until page contains Element  css=div.modal-dialog
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
-    Wait until keyword succeeds  2  2  Click Element  xpath=//form[@id='delete_confirmation']//input[@class='destructive']
+    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer input[class="destructive"]

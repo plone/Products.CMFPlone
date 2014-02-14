@@ -316,13 +316,6 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.have_portlets(manager_name, view=view)
 
-    def renderBase(self):
-        """Returns the current URL to be used in the base tag.
-        """
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        return layout.renderBase()
-
     def bodyClass(self, template, view):
         """Returns the CSS class to be used on the body tag.
         """
