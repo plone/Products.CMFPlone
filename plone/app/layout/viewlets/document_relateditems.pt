@@ -3,7 +3,7 @@
      tal:define="related view/related_items"
      tal:condition="related">
     <div class="visualClear" id="clear-space-before-relatedItemBox"><!-- --></div>
-    <dl id="relatedItemBox"
+    <div id="relatedItemBox"
               tal:define="ploneview nocall:context/@@plone;
                           normalizeString nocall:ploneview/normalizeString;
                           tools nocall:context/@@plone_tools;
@@ -11,9 +11,10 @@
                           getInfoFor python:wf_tool.getInfoFor;
                           site_properties context/portal_properties/site_properties;
                           use_view_action site_properties/typesUseViewActionInListings|python:();">
-        <dt i18n:translate="label_related_items">Related content</dt>
-        <tal:related repeat="item related">
-            <dd tal:define="
+        <header i18n:translate="label_related_items">Related content</header>
+        <ul>
+        <li repeat="item related"
+            tal:define="
                     desc                item/Description;
                     item_icon           python:ploneview.getIcon(item);
                     item_type           item/portal_type;
@@ -32,7 +33,7 @@
                         Related Item
                     </a>
                 </span>
-            </dd>
-        </tal:related>
-    </dl>
+        </li>
+        </ul>
+    </div>
 </div>
