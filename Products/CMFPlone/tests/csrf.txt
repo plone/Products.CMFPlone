@@ -196,7 +196,7 @@ anymore (which at the same time tests the security control panel):
   >>> browser.getControl('Save').click()
 
   >>> browser.getLink('Users and Groups').click()
-  >>> browser.getControl('Add New User').click()
+  >>> browser.getLink('Add New User').click()
   >>> browser.getControl('User Name').value = 'johnny'
   >>> browser.getControl('E-mail').value = 'john@foo-security.com'
   >>> browser.getControl('Password').value = 'y0d4Wg!'
