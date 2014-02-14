@@ -1,6 +1,10 @@
+from zope import schema
 from zope.interface import Interface
 
 import zope.deferredimport
+
+from Products.CMFPlone import PloneMessageFactory as _
+
 
 # This is used as a persistent marker interface, we need to provide an upgrade
 # step to update the class reference before removing it.
@@ -308,3 +312,17 @@ class IPlone(Interface):
         """ returns template or view name to mark body tag with
             template-${template_id} CSS class
         """
+
+
+class IAuthorFeedbackForm(Interface):
+    """ Interface describing the author feedback form """
+
+    subject = schema.TextLine(
+        title=_('label_subject', default=u'Subject'),
+        required=True
+    )
+
+    text = schema.Text(
+        title=_('label_message', default=u'Message'),
+        required=True
+    )

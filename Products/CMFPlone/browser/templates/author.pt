@@ -186,72 +186,12 @@
                                 below.
                             </p>
 
-                            <form name="feedback_form"
-                                  action=""
-                                  method="post"
-                                  tal:attributes="action string:$here_url/${template/getId}">
 
-                            <fieldset>
+                            <tal:with-form-as-view define="form nocall:view/feedback_form;
+                                                           view nocall:form">
+                              <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+                            </tal:with-form-as-view>
 
-                            <legend i18n:translate="legend_feedback_for_author">Feedback for author</legend>
-
-                            <div class="field"
-                              tal:define="error errors/subject|nothing"
-                              tal:attributes="class python:error and 'field error' or 'field'">
-                              <label for="subject" i18n:translate="label_subject">
-                                Subject
-                              </label>
-
-                              <span class="fieldRequired" title="Required"
-                                      i18n:attributes="title title_required;"
-                                      i18n:translate="label_required">(Required)</span>
-
-                              <br />
-                              <input type="text"
-                                     id="subject"
-                                     name="subject"
-                                     size="25"
-                                     value=""
-                                     tal:attributes="value request/subject|nothing"
-                                     />
-                            </div>
-                            <div class="field"
-                              tal:define="error errors/message|nothing"
-                              tal:attributes="class python:error and 'field error' or 'field'">
-                              <label for="message" i18n:translate="label_message">
-                                Message
-                              </label>
-
-                              <span class="fieldRequired" title="Required"
-                                      i18n:attributes="title title_required;"
-                                      i18n:translate="label_required">(Required)</span>
-
-                              <textarea name="message"
-                                        id="message"
-                                        rows="5"
-                                        cols="25"
-                                        tal:content="request/message|nothing"
-                                        ></textarea>
-                            </div>
-
-                            <div class="formControls">
-
-                                <input class="context"
-                                       type="submit"
-                                       name="form.button.Send"
-                                       value="Send"
-                                       i18n:attributes="value label_send;" />
-
-                            </div>
-
-                            </fieldset>
-
-                            <input type="hidden" name="author" value="" tal:attributes="value username" />
-                            <input type="hidden" name="referer" value=""
-                              tal:attributes="value python:request.get('referer', request.get('HTTP_REFERER', 'unknown url') )" />
-                            <input type="hidden" name="form.submitted" value="1" />
-
-                            </form>
                         </tal:owner>
                     </tal:mailsetup>
 
