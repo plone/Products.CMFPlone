@@ -393,7 +393,11 @@ class IAuthorFeedbackForm(Interface):
         required=True
     )
 
-    text = schema.Text(
+    message = schema.Text(
         title=_('label_message', default=u'Message'),
         required=True
     )
+
+    author = schema.TextLine()
+    referer = schema.TextLine(required=False)
+
