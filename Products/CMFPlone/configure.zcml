@@ -44,6 +44,8 @@
   <include package="plone.browserlayer" />
   <include package="plone.theme" />
 
+  <include package=".controlpanel" />
+
   <!-- Archetypes -->
   <include zcml:condition="installed Products.ATContentTypes"
            package="Products.ATContentTypes" />
@@ -125,6 +127,9 @@
 
   <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
               handler=".events.profileImportedEventHandler"/>
+
+  <subscriber for="ZPublisher.interfaces.IPubAfterTraversal"
+              handler=".events.removeBase"/>
 
   <!-- configure sizes lookup for `plone.namedfile` -->
   <utility

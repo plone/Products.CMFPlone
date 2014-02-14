@@ -18,7 +18,7 @@ Scenario: Select All items
       And four dummy pages on test folder
       And the folder contents view
      When I select all the elements
-     Then the informative string appears
+     Then the selection count appears
       And the four elements got selected
       And the clear selection link appears
 
@@ -60,36 +60,35 @@ a document '${title}' in the test folder
     Click Button  Save
 
 I select all the elements
-    Click Element  id=foldercontents-selectall
+    Click Element  css=.pat-structure .select-all
 
 the four elements got selected
-    Checkbox Should Be Selected  id=cb_doc1
-    Checkbox Should Be Selected  id=cb_doc2
-    Checkbox Should Be Selected  id=cb_doc3
-    Checkbox Should Be Selected  id=cb_doc4
+    Checkbox Should Be Selected  css=tr[data-id="doc1"] input
+    Checkbox Should Be Selected  css=tr[data-id="doc2"] input
+    Checkbox Should Be Selected  css=tr[data-id="doc3"] input
+    Checkbox Should Be Selected  css=tr[data-id="doc4"] input
 
-the informative string appears
-    # The response contained a newline and Selenium was unable to recognize the
-    # full message correctly. So we are forced to check for it only partially.
-    Wait until page contains  All 4 items in this folder
-    Page Should Contain  All 4 items in this folder
+the selection count appears
+    Wait until page contains element  css=#selected .label-success
+    Element Should Contain  css=#selected .label-success  4
 
 the clear selection link appears
-    Page Should Contain Element  id=foldercontents-clearselection
+    Page Should Contain Element  css=a.remove-all
 
 I clear the selection
-    Click link  Clear selection
+    Click link  id=selected
+    Click link  css=a.remove-all
 
 no elements should be selected
-    Checkbox Should Not Be Selected  id=cb_doc1
-    Checkbox Should Not Be Selected  id=cb_doc2
-    Checkbox Should Not Be Selected  id=cb_doc3
-    Checkbox Should Not Be Selected  id=cb_doc4
+    Checkbox Should Not Be Selected  css=tr[data-id="doc1"] input
+    Checkbox Should Not Be Selected  css=tr[data-id="doc2"] input
+    Checkbox Should Not Be Selected  css=tr[data-id="doc3"] input
+    Checkbox Should Not Be Selected  css=tr[data-id="doc4"] input
 
 the order should be 1 > 2 > 3 > 4
-    Should be above  css=tr#folder-contents-item-doc1  css=tr#folder-contents-item-doc2
-    Should be above  css=tr#folder-contents-item-doc2  css=tr#folder-contents-item-doc3
-    Should be above  css=tr#folder-contents-item-doc3  css=tr#folder-contents-item-doc4
+    Should be above  css=tr[data-id="doc1"]  css=tr[data-id="doc2"]
+    Should be above  css=tr[data-id="doc2"]  css=tr[data-id="doc3"]
+    Should be above  css=tr[data-id="doc3"]  css=tr[data-id="doc4"]
 
 I reorder the elements
     # Moving items could fail on a fast computer

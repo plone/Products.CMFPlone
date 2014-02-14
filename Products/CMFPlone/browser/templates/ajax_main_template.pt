@@ -19,10 +19,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <metal:baseslot define-slot="base">
-        <base tal:attributes="href plone_view/renderBase" /><!--[if lt IE 7]></base><![endif]-->
-    </metal:baseslot>
-
 </head>
 
 <body tal:define="isRTL portal_state/is_rtl;

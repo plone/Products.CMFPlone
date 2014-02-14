@@ -29,7 +29,6 @@ class HiddenProducts(object):
             'PlonePAS', 'Products.PlonePAS',
             'wicked.at',
             'PloneLanguageTool', 'Products.PloneLanguageTool',
-            'TinyMCE', 'Products.TinyMCE',
             'CMFFormController', 'Products.CMFFormController',
             'MimetypesRegistry', 'Products.MimetypesRegistry',
             'PortalTransforms', 'Products.PortalTransforms',
@@ -48,7 +47,6 @@ class HiddenProducts(object):
             'plone.app.folder',
             'plone.app.imaging',
             'plone.outputfilters',
-            'plone.app.registry',
             'plone.app.search',
             'plone.app.z3cform',
             ]

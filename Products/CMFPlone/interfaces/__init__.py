@@ -4,6 +4,7 @@ from basetool import IPloneBaseTool
 from basetool import IPloneTool
 from basetool import IPloneCatalogTool
 from controlpanel import IControlPanel
+from controlpanel import ISearchSchema
 from events import ISiteManagerCreatedEvent
 from events import IReorderedEvent
 from interface import IInterfaceTool
