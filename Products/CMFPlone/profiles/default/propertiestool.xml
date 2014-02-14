@@ -142,7 +142,7 @@
   <property name="webstats_js" type="text"></property>
   <property name="external_links_open_new_window"
      type="string">false</property>
-  <property name="icon_visibility" type="string">enabled</property>
+  <property name="icon_visibility" type="string">false</property>
   <property name="mark_special_links" type="string">false</property>
   <property name="redirect_links" type="boolean">True</property>
   <property name="use_email_as_login" type="boolean">False</property>
