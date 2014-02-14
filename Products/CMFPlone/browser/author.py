@@ -3,13 +3,13 @@ from AccessControl import Unauthorized
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFPlone.utils import getToolByName
+from Products.CMFPlone.utils import getToolByName, pretty_title_or_id
 
 from zope.component import getUtility, getMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 
-from urllib import unquote_plus
+from urllib import quote_plus
 
 
 @implementer(IPublishTraverse)
@@ -21,7 +21,14 @@ class AuthorView(BrowserView):
         super(AuthorView, self).__init__(context, request)
 
         self.username = None
-        self.portal_properties = getUtility(IPropertiesTool)
+
+        self.portal_properties = getUtility(
+            IPropertiesTool
+        )
+
+        self.portal_catalog = getToolByName(
+            self.context, 'portal_catalog'
+        )
 
         # XXX: getUtility call does not work.
         self.membership_tool = getToolByName(
@@ -66,6 +73,41 @@ class AuthorView(BrowserView):
             'info': authorinfo,
             'portrait': portrait
         }
+
+    @property
+    def member_info(self):
+        current_member = self.portal_state.member()
+        return {
+            'url': quote_plus(current_member.getId()),
+            'email': current_member.getProperty('email')
+        }
+
+    @property
+    def author_content(self):
+        results = []
+
+        plone_view = self.context.restrictedTraverse(
+            '@@plone'
+        )
+
+        brains = self.portal_catalog.searchResults(
+            Creator=self.username,
+            sort_on='created',
+            sort_order='reverse'
+        )
+
+        for brain in brains[:10]:
+            results.append({
+                'title': pretty_title_or_id(
+                    self, brain
+                ),
+                'date': plone_view.toLocalizedTime(
+                    brain.Date
+                ),
+                'url': brain.getURL()
+            })
+
+        return results
 
     def home_folder(self, username):
         membership_tool = self.membership_tool

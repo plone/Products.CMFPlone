@@ -24,11 +24,8 @@
 
 <metal:main fill-slot="content">
     <tal:main-macro metal:define-macro="main"
-                    tal:define="
-                                
-                                portal_url context/@@plone_portal_state/navigation_root_url;
+                    tal:define="portal_url context/@@plone_portal_state/navigation_root_url;
                                 here_url context/@@plone_context_state/object_url;
-                                member context/@@plone_portal_state/member;
                                 portal context/@@plone_portal_state/portal;
                                 email_from_address portal/email_from_address;
                                 author view/author;
@@ -53,7 +50,8 @@
             tal:define="isOwner view/is_owner;
                         isAnon view/is_anonymous;
                         authorinfo author/info | nothing;
-                        portrait author/portrait | nothing">
+                        portrait author/portrait | nothing;
+                        member_info view/member_info">
 
             <div id="edit-bar" tal:condition="isOwner">
                 <h5 class="hiddenStructure">Views</h5>
@@ -61,9 +59,8 @@
                     class="contentViews">
                   <li class="selected">
                     <a href=""
-                        tal:define="url_quote_plus python:modules['Products.PythonScripts.standard'].url_quote_plus;
-                                    memberurl python:url_quote_plus(member.getId())"
-                       tal:attributes="href string:${portal_url}/author/${memberurl}"
+                       tal:define="member_url view/member_info/url"
+                       tal:attributes="href string:${portal_url}/author/${member_url}"
                        i18n:translate="label_view">View</a>
                   </li>
                   <li>
@@ -124,7 +121,7 @@
                     <div class="visualClear"><!-- --></div>
 
                     <p tal:condition="python:view.home_folder(username)">
-                    <a href="#" tal:attributes="href python:mtool.getHomeFolder(id=username).absolute_url()"
+                    <a href="#" tal:attributes="href python:view.home_folder(username).absolute_url()"
                        i18n:translate="label_author_internal_home_page">Author's home page in this site&hellip;</a>
                     </p>
 
@@ -143,7 +140,7 @@
                         </p>
                     </tal:noemailsetup>
 
-                    <tal:noemail tal:condition="python:not isAnon and not member.getProperty('email')">
+                    <tal:noemail tal:condition="python:not isAnon and not member_info.get('email', None)">
                         <p class="discreet"
                            i18n:translate="text_no_member_email">
                             You do not have an email address, so you
@@ -156,7 +153,6 @@
 
                         <div class="formControls" tal:condition="isAnon">
                         <form
-                          tal:define="pss modules/Products/PythonScripts/standard"
                           tal:attributes="action string:$portal_url/login">
                            <input class="standalone"
                                type="submit"
@@ -169,7 +165,7 @@
                         <!-- feedback form -->
 
 
-                        <tal:owner tal:condition="python: not isOwner and not isAnon and member.getProperty('email')">
+                        <tal:owner tal:condition="python: not isOwner and not isAnon and member_info.get('email', None)">
                             <p class="discreet"
                                i18n:translate="description_author_feedback">
                                 If you want to contact this author, fill in the form
@@ -187,7 +183,7 @@
 
                             <div class="field"
                               tal:define="error errors/subject|nothing"
-                              tal:attributes="class python:test(error, 'field error', 'field')">
+                              tal:attributes="class python:error and 'field error' or 'field'">
                               <label for="subject" i18n:translate="label_subject">
                                 Subject
                               </label>
@@ -207,7 +203,7 @@
                             </div>
                             <div class="field"
                               tal:define="error errors/message|nothing"
-                              tal:attributes="class python:test(error, 'field error', 'field')">
+                              tal:attributes="class python:error and 'field error' or 'field'">
                               <label for="message" i18n:translate="label_message">
                                 Message
                               </label>
@@ -246,8 +242,9 @@
                     </tal:mailsetup>
 
                     <!-- listing of content created by this user -->
-                    <tal:authorContent define="author_content python:context.portal_catalog.searchResults(dict(Creator=username, sort_on='created', sort_order='reverse'))[:10];"
-                                       condition="author_content">
+                    <tal:authorContent
+                        define="author_content view/author_content;"
+                        condition="author_content">
 
                         <h2 i18n:translate="heading_author_content">
                             Latest content created by this user
@@ -259,14 +256,14 @@
                                i18n:attributes="summary summary_author_content_list;">
                             <tal:repeat repeat="item author_content">
                                 <tr>
-                                    <th tal:define="toLocalizedTime nocall: context/@@plone/toLocalizedTime;"
-                                        tal:content="python:toLocalizedTime(item.Date)"
+                                    <th tal:content="item/date"
                                         style="white-space: nowrap">
                                         Date
                                     </th>
                                     <td>
-                                        <a href="" tal:attributes="href item/getURL"
-                                           tal:content="item/pretty_title_or_id">title</a>
+                                      <a href=""
+                                         tal:attributes="href item/url"
+                                         tal:content="item/title">title</a>
                                     </td>
                                 </tr>
                             </tal:repeat>
