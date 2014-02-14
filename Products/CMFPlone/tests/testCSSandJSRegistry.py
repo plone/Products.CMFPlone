@@ -41,7 +41,6 @@ class TestJSRegistry(PloneTestCase):
         installedScriptIds = self.tool.getResourceIds()
         expected = [
             '++resource++plone.js',
-            'collapsiblesections.js',
             'jquery.highlightsearchterms.js',
             'mark_special_links.js',
             'select_all.js',
