@@ -3,13 +3,37 @@ from AccessControl import Unauthorized
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import getToolByName, pretty_title_or_id
+from Products.statusmessages.interfaces import IStatusMessage
+
+from z3c.form import form, field, button
 
 from zope.component import getUtility, getMultiAdapter
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 
 from urllib import quote_plus
+
+from interfaces import IAuthorFeedbackForm
+
+
+class AuthorFeedbackForm(form.Form):
+
+    fields = field.Fields(IAuthorFeedbackForm)
+    ignoreContext = True
+
+    @button.buttonAndHandler(_(u'label_send', default='Send'),
+                             name='send')
+    def handle_send(self, action):
+        data, errors = self.extractData()
+        if errors:
+            IStatusMessage(self.request).addStatusMessage(
+                self.formErrorsMessage,
+                type=u'error'
+            )
+
+            return
 
 
 @implementer(IPublishTraverse)
@@ -39,6 +63,11 @@ class AuthorView(BrowserView):
             (self.context, self.request),
             name=u'plone_portal_state'
         )
+
+        self.feedback_form = AuthorFeedbackForm(
+            self.context, self.request
+        )
+        self.feedback_form.update()
 
     def publishTraverse(self, request, name):
         request['TraversalRequestNameStack'] = []
