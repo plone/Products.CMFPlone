@@ -191,10 +191,10 @@ the users and groups configlet
     Go to  ${PLONE_URL}/@@usergroup-userprefs
 
 I click the '${link_name}' link
-    Click Link  ${link_name}
+    Click Link  xpath=//a[.//*[contains(text(), '${link_name}')]]
 
 the '${link_name}' overlay
-    Click Link  ${link_name}
+    Click Link  xpath=//a[.//*[contains(text(), '${link_name}')]]
     Wait until keyword succeeds  30  1  Page should contain element  css=div.modal-dialog
 
 overlay should open
