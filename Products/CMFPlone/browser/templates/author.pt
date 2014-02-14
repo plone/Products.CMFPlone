@@ -80,15 +80,20 @@
 
             <div id="content">
                 <!-- Author information -->
-                <h1 class="documentFirstHeading" tal:condition="authorinfo/fullname" tal:content="authorinfo/fullname">
+                <h1 class="documentFirstHeading"
+                    tal:condition="authorinfo/fullname"
+                    tal:content="authorinfo/fullname">
                     Author name
                 </h1>
 
-                <h1 class="documentFirstHeading" tal:condition="not: authorinfo/fullname" tal:content="username">
+                <h1 class="documentFirstHeading"
+                    tal:condition="not: authorinfo/fullname"
+                    tal:content="username">
                     Author ID
                 </h1>
 
-                <div class="documentDescription" tal:content="authorinfo/description">
+                <div class="documentDescription"
+                     tal:content="authorinfo/description">
                     Author description.
                 </div>
 
@@ -106,8 +111,12 @@
 
                         <tal:language condition="authorinfo/language">
                         &mdash;
-                        <span i18n:translate="label_main_language">Main Language:</span>
-                        <span tal:replace="authorinfo/language">Some language</span>
+                        <span i18n:translate="label_main_language">
+                            Main Language:
+                        </span>
+                        <span tal:replace="authorinfo/language">
+                          Some language
+                        </span>
                         </tal:language>
                     </div>
 
@@ -121,15 +130,20 @@
                     <div class="visualClear"><!-- --></div>
 
                     <p tal:condition="python:view.home_folder(username)">
-                    <a href="#" tal:attributes="href python:view.home_folder(username).absolute_url()"
-                       i18n:translate="label_author_internal_home_page">Author's home page in this site&hellip;</a>
+                      <a href="#"
+                         tal:attributes="href python:view.home_folder(username).absolute_url()"
+                         i18n:translate="label_author_internal_home_page">
+                        Author's home page in this site&hellip;
+                      </a>
                     </p>
 
                     <p tal:condition="python: not view.home_folder(username) and authorinfo['home_page']">
-                    <a href="#"
-                       rel="nofollow"
-                       tal:attributes="href authorinfo/home_page"
-                       i18n:translate="label_author_external_home_page">Author's external home page&hellip;</a>
+                      <a href="#"
+                         rel="nofollow"
+                         tal:attributes="href authorinfo/home_page"
+                         i18n:translate="label_author_external_home_page">
+                        Author's external home page&hellip;
+                      </a>
                     </p>
 
                     <tal:noemailsetup tal:condition="python:not (email_from_address or isAnon)">
