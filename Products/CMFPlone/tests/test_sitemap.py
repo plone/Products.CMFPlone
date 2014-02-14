@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest2 as unittest
+import transaction
 import lxml
 
 from plone.app.contenttypes.testing import (
@@ -35,7 +36,7 @@ class ProductsCMFPloneSetupTest(unittest.TestCase):
         self.portal.invokeFactory('Document', 'doc1', title="Document 1")
         self.portal.invokeFactory('Document', 'doc2', title="Document 2")
         self.portal.invokeFactory('Document', 'doc3', title="Document 3")
-        import transaction; transaction.commit()
+        transaction.commit()
         self.browser.open(self.portal_url + '/sitemap')
         output = lxml.html.fromstring(self.browser.contents)
         sitemap = output.xpath("//ul[@id='portal-sitemap']")[0].text_content()
@@ -50,7 +51,7 @@ class ProductsCMFPloneSetupTest(unittest.TestCase):
         self.portal.invokeFactory('Folder', 'folder2', title='Folder 2')
         self.portal.folder1.invokeFactory(
             'Document', 'doc12', title='Document 12')
-        import transaction; transaction.commit()
+        transaction.commit()
 
         self.browser.open(self.portal_url + '/sitemap')
         output = lxml.html.fromstring(self.browser.contents)
