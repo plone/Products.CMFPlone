@@ -152,7 +152,7 @@
      name="footer"
      >
     <property name="template">footer</property>
-    <property name="macro">portlet</property>
+    <property name="macro"></property>
  </assignment>
 
  <assignment
@@ -176,7 +176,7 @@
      name="colophon"
      >
     <property name="template">colophon</property>
-    <property name="macro">portlet</property>
+    <property name="macro"></property>
  </assignment>
 
 </portlets>
