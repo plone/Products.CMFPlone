@@ -344,6 +344,12 @@ class ContentViewsViewlet(ViewletBase):
             if current_id == default_tab:
                 fallback_action = item
 
+            modal = item.get('modal', None)
+            item['cssClass'] = ''
+            if modal:
+                item['cssClass'] += ' pat-modal'
+                item['url'] += '?ajax_load=1'
+
             tabs.append(item)
 
         if not found_selected and fallback_action is not None:
@@ -419,6 +425,10 @@ class ContentActionsViewlet(ViewletBase):
 
     def icon(self, action):
         return action.get('icon', None)
+
+
+class TinyLogoViewlet(ViewletBase):
+    index = ViewPageTemplateFile('tiny_logo.pt')
 
 
 class FooterViewlet(ViewletBase):

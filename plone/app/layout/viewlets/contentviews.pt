@@ -19,7 +19,8 @@
                                     class python:selected and 'selected' or 'plain'">
                   <a href=""
                      tal:attributes="href action/url;
-                                     target action/link_target|nothing;"
+                                     target action/link_target|nothing;
+                                     class action/cssClass|nothing;"
                      i18n:translate="">
                      <span class="" tal:attributes="class string:icon-${action/id}" aria-hidden="true"></span>
                      <span class="text-toolbar" tal:content="action/title">View name</span>
