@@ -308,7 +308,7 @@ Now rename
 
   >>> browser.getLink('Sharing').click()
   >>> browser.url
-  'http://nohost/plone/folder/@@sharing'
+  'http://nohost/plone/folder/@@sharing?ajax_load=1'
   >>> browser.getControl(name='entries.role_Editor:records').value
   []
 
