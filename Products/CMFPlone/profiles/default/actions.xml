@@ -320,6 +320,7 @@
     <element value="View"/>
    </property>
    <property name="visible">True</property>
+   <property name="modal" type="text">{"actionOptions": {"displayInModal": true}, "prependContent": ".portalMessage"}</property>
   </object>
   <object name="join" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Register</property>
@@ -331,7 +332,7 @@
     <element value="Add portal member"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{"actionOptions": {"displayInModal": true}, "buttons": ".actionButtons > input[type='submit']"}</property>
+   <property name="modal" type="text">{"actionOptions": {"displayInModal": true}, "buttons": ".actionButtons > input[type='submit']", "prependContent": ".portalMessage"}</property>
   </object>
   <object name="undo" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Undo</property>
