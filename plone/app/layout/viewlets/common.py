@@ -241,19 +241,18 @@ class PersonalBarViewlet(ViewletBase):
         user_actions = context_state.actions('user')
         self.user_actions = []
         for action in user_actions:
-
-            self.user_actions.append({
+            info = {
                 'title': action['title'],
                 'url': action['url'],
                 'href': action['url'],
                 'id': 'personaltools-{}'.format(action['id']),
                 'target': 'link_target' in action and action['link_target'] or None,
-                'class': 'pat-modal',
-                'data-pat-modal':
-                    {'title': action['title'],
-                     'prependContent': '.portalMessage'
-                    }
-                })
+                }
+            modal = action.get('modal')
+            if modal:
+                info['class'] = 'pat-modal'
+                info['data-pat-modal'] = modal
+            self.user_actions.append(info)
 
         self.anonymous = self.portal_state.anonymous()
 
