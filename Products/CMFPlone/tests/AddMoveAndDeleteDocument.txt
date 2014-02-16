@@ -147,10 +147,10 @@ Before doing the actual paste, we create a folder to paste into.
 The Folder has been created, now we can paste the Document in our copy
 buffer here:
 
-    >>> browser.getLink('Contents').click()
+    >>> browser.getLink('View').click()
     >>> browser.getLink('Paste').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-folder/folder_contents'
+    'http://nohost/plone/Members/test_user_1_/my-folder/'
     >>> 'Item(s) pasted.' in browser.contents
     True
     >>> browser.getLink('View').click()
