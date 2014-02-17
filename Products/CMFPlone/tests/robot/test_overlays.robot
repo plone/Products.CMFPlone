@@ -201,7 +201,7 @@ overlay should open
     Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-dialog
 
 overlay should remain open
-    Element should be visible  css=div.modal-dialog
+    Wait until keyword succeeds  10  1  Element should be visible  css=div.modal-dialog
 
 I close the overlay
     Click Element  css=div.modal-header a.close
