@@ -39,9 +39,9 @@
                           member context/@@plone_portal_state/member;
                           portal_visible_ids context/portal_properties/site_properties/visible_ids|nothing;
                           member_visible_ids python:member.getProperty('visible_ids', context.portal_memberdata.getProperty('visible_ids'))">
-                <dl>
-                    <tal:item repeat="item items">
-                        <dt tal:define="normalized_type python:ploneview.normalizeString(item.portal_type);
+                <div>
+                    <article tal:repeat="item items">
+                        <header tal:define="normalized_type python:ploneview.normalizeString(item.portal_type);
                                         item_icon python:ploneview.getIcon(item);
                                         item_id python:'(%s)' % item.getId if (portal_visible_ids and member_visible_ids) else ''">
                             <input type="radio" name="objectId" value=""
@@ -55,13 +55,13 @@
                                    tal:content="string:${item/pretty_title_or_id} $item_id">
                                 Item title
                             </label>
-                        </dt>
-                        <dd tal:content="item/Description">
+                        </header>
+                        <p tal:content="item/Description">
                             Item Description
-                        </dd>
-                    </tal:item>
+                        </p>
+                    </article>
 
-                </dl>
+                </div>
 
               <div class="formControls">
                 <input class="context"

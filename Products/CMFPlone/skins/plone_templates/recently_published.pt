@@ -36,8 +36,8 @@
 
             <tal:results tal:repeat="result batch">
 
-                <dl>
-                    <dt>
+                <article>
+                    <header>
                         <img src="" alt="" style="border: 0"
                              tal:attributes="src result/getIcon;
                                              alt result/Type" />
@@ -60,16 +60,16 @@
                                   tal:omit-tag=""
                                   i18n:name="date">date</span>
                         </span>
-                    </dt>
+                    </header>
 
-                    <dd class="link">
+                    <p class="link">
                         <a href="/view"
                            tal:content="result/Description"
                            tal:attributes="href result/getURL">
                         Description
                         </a>
-                    </dd>
-                </dl>
+                    </p>
+                </article>
 
             </tal:results>
 
