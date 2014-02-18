@@ -243,7 +243,6 @@ class PersonalBarViewlet(ViewletBase):
         for action in user_actions:
             info = {
                 'title': action['title'],
-                'url': action['url'],
                 'href': action['url'],
                 'id': 'personaltools-{}'.format(action['id']),
                 'target': 'link_target' in action and action['link_target'] or None,
