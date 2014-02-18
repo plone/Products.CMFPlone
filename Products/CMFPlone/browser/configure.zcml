@@ -77,6 +77,20 @@
       />
 
   <browser:page
+      for="*"
+      name="main_template"
+      class=".main_template.MainTemplate"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="global_statusmessage"
+      class=".global_statusmessage.GlobalStatusMessage"
+      permission="zope.Public"
+      />
+
+  <browser:page
       for="plone.app.layout.navigation.interfaces.INavigationRoot"
       name="accessibility-info"
       template="templates/accessibility-info.pt"

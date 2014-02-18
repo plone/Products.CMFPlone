@@ -185,9 +185,9 @@ class CutPasteFailureTests(PloneTestCase):
             browser = self.getBrowser()
             browser.open(self.folder['source-folder']['doc'].absolute_url())
             browser.getLink('Cut').click()
-            browser.open(self.folder['destination-folder'].absolute_url() + '/folder_contents')
+            browser.open(self.folder['destination-folder'].absolute_url())
             try:
-                browser.getControl(name='folder_paste:method').click()
+                browser.getLink('Paste').click()
             except HTTPError, msg:
                 # a HTTP 500 Server error is currently expected, unless we find a better way
                 # to abort the transaction.

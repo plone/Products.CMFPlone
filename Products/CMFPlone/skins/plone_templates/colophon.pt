@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      tal:omit-tag=""
+      i18n:domain="plone">
+
+  <section class="portlet portletClassic" id="portal-colophon" metal:define-macro="portlet">
+    <div class="portletContent">
+      <a href="http://plone.org" target="_blank"
+         title="This site was built using the Plone Open Source CMS/WCM."
+         i18n:attributes="title title_built_with_plone;"
+         i18n:translate="label_powered_by_plone">
+        Powered by Plone &amp; Python</a>
+    </div>
+  </section>
+</html>

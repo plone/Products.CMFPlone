@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package="plone.app.registry" />
+
+  <!-- Search Control Panel -->
+  <browser:page
+      name="search-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".search.SearchControlPanel"
+      permission="plone.app.controlpanel.Search"
+      />
+
+</configure>

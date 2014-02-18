@@ -66,7 +66,7 @@
       description="Final Plone configuration.">
    <depends name="portlets" />
    <depends name="rolemap" />
-   <depends name="tinymce_settings" />
+   <depends name="catalog" />
    <depends name="cssregistry" />
    <depends name="jsregistry" />
    <depends name="viewlets" />

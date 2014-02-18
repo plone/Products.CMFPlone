@@ -764,6 +764,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                             if IPortletManager == r.provided]
         self.assertEqual(['plone.dashboard1', 'plone.dashboard2',
                            'plone.dashboard3', 'plone.dashboard4',
+                           'plone.footerportlets',
                            'plone.leftcolumn', 'plone.rightcolumn'],
                            sorted(registrations))
 
@@ -796,6 +797,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.assertEqual([
                 'plone.portlet.collection.Collection',
                 'plone.portlet.static.Static',
+                'portlets.Actions',
                 'portlets.Classic',
                 'portlets.Login',
                 'portlets.Navigation',
@@ -816,6 +818,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.assertEqual([
               'plone.portlet.collection.Collection',
               'plone.portlet.static.Static',
+              'portlets.Actions',
               'portlets.Classic',
               'portlets.News',
               'portlets.Recent',

@@ -1,25 +1,15 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
- <javascript id="jquery-integration.js" enabled="False" />
- <javascript id="register_function.js" />
+ <javascript id="++resource++plone.js" />
  <javascript id="plone_javascript_variables.js" />
- <javascript id="nodeutilities.js" />
  <javascript id="cookie_functions.js" />
- <javascript id="modernizr.js" />
- <javascript id="livesearch.js" compression="full" />
  <javascript id="fullscreenmode.js" enabled="False" />
  <javascript id="select_all.js" />
  <javascript id="dragdropreorder.js" />
  <javascript id="mark_special_links.js" enabled="False" />
- <javascript id="collapsiblesections.js" compression="full" />
- <javascript id="form_tabbing.js" />
- <javascript id="popupforms.js" />
  <javascript id="jquery.highlightsearchterms.js" />
- <javascript id="first_input_focus.js" />
- <javascript id="accessibility.js" compression="full" />
  <javascript id="styleswitcher.js" />
- <javascript id="toc.js" />
  <javascript id="collapsibleformfields.js" />
  <javascript id="dropdown.js" />
  <javascript id="inline_validation.js" />
@@ -27,7 +17,5 @@
 
  <!-- Only for logged-in users -->
  <javascript id="table_sorter.js" authenticated="True" />
- <javascript id="formUnload.js" authenticated="True" />
- <javascript id="formsubmithelpers.js" authenticated="True" />
  <javascript id="unlockOnFormUnload.js" authenticated="True" />
 </object>

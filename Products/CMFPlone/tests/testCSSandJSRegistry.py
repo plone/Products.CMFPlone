@@ -13,33 +13,17 @@ class TestCSSRegistry(PloneTestCase):
 
     def testDefaultCssIsInstalled(self):
         installedStylesheetIds = self.tool.getResourceIds()
-        expected = ['ploneCustom.css',
-                    'authoring.css',
-                    'public.css',
-                    'base.css',
-                    'portlets.css',
-                    'deprecated.css',
-                    'member.css',
-                    'print.css',
-                    'RTL.css',
-                    'mobile.css', ]
+        expected = [
+            '++resource++plone.css',
+            'RTL.css',
+            ]
         for e in expected:
             self.assertTrue(e in installedStylesheetIds, e)
 
     def testRTLShouldHaveHigherPrecedence(self):
         installedStylesheetIds = self.tool.getResourceIds()
         indexRTLStylesheet = self.tool.getResourcePosition('RTL.css')
-        comes_before = ['base.css',
-                        'public.css',
-                        'columns.css',
-                        'authoring.css',
-                        'portlets.css',
-                        'controlpanel.css',
-                        'print.css',
-                        'mobile.css',
-                        'deprecated.css',
-                        'invisibles.css',
-                        'forms.css', ]
+        comes_before = ['++resource++plone.css']
         for cb in comes_before:
             self.assertTrue(cb in installedStylesheetIds[:indexRTLStylesheet],
                             cb)
@@ -56,25 +40,15 @@ class TestJSRegistry(PloneTestCase):
     def testDefaultJSIsInstalled(self):
         installedScriptIds = self.tool.getResourceIds()
         expected = [
-            'collapsiblesections.js',
-            'first_input_focus.js',
+            '++resource++plone.js',
             'jquery.highlightsearchterms.js',
             'mark_special_links.js',
             'select_all.js',
             'styleswitcher.js',
-            'livesearch.js',
             'table_sorter.js',
-            'dropdown.js',
             'dragdropreorder.js',
             'cookie_functions.js',
-            'nodeutilities.js',
-            'plone_javascript_variables.js',
-            'register_function.js',
-            'modernizr.js',
-            'formUnload.js',
-            'formsubmithelpers.js',
-            'form_tabbing.js',
-            'popupforms.js']
+            'plone_javascript_variables.js']
         for e in expected:
             self.assertTrue(e in installedScriptIds, e)
 
