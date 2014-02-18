@@ -8,6 +8,13 @@
     <!-- Register viewlet managers - used in plone's main_template -->
 
     <browser:viewletManager
+        name="plone.httpheaders"
+        provides=".interfaces.IHTTPHeaders"
+        permission="zope.Public"
+        class="plone.app.viewletmanager.manager.BaseOrderedViewletManager"
+        />
+
+    <browser:viewletManager
         name="plone.htmlhead"
         provides=".interfaces.IHtmlHead"
         permission="zope2.View"
@@ -29,6 +36,13 @@
         />
 
     <browser:viewletManager
+        name="plone.globalstatusmessage"
+        provides=".interfaces.IGlobalStatusMessage"
+        permission="zope2.View"
+        class="plone.app.viewletmanager.manager.OrderedViewletManager"
+        />
+
+    <browser:viewletManager
         name="plone.portalheader"
         provides=".interfaces.IPortalHeader"
         permission="zope2.View"
@@ -36,8 +50,8 @@
         />
 
     <browser:viewletManager
-        name="plone.contentviews"
-        provides=".interfaces.IContentViews"
+        name="plone.toolbar"
+        provides=".interfaces.IToolbar"
         permission="zope2.View"
         class="plone.app.viewletmanager.manager.OrderedViewletManager"
         />
@@ -100,6 +114,22 @@
 
     <!-- Define some viewlets -->
 
+    <!-- HTTPHeaders -->
+    <browser:viewlet
+        name="plone.httpcachingheaders"
+        manager=".interfaces.IHTTPHeaders"
+        class=".httpheaders.HTTPCachingHeaders"
+        permission="zope.Public"
+        />
+
+    <!-- X-UA-Compatible -->
+    <browser:viewlet
+        name="plone.xuacompatible"
+        manager=".interfaces.IHTTPHeaders"
+        class=".httpheaders.XUACompatible"
+        permission="zope.Public"
+        />
+
     <!-- The portal header -->
     <browser:viewlet
         name="plone.header"
@@ -148,10 +178,18 @@
         permission="zope2.View"
         />
 
+    <!-- The tiny logo -->
+    <browser:viewlet
+        name="plone.tiny_logo"
+        manager=".interfaces.IToolbar"
+        class=".common.TinyLogoViewlet"
+        permission="zope2.View"
+        />
+
     <!-- The personal bar -->
     <browser:viewlet
         name="plone.personal_bar"
-        manager=".interfaces.IPortalHeader"
+        manager=".interfaces.IToolbar"
         class=".common.PersonalBarViewlet"
         permission="zope2.View"
         />
@@ -159,7 +197,7 @@
     <!-- Content views (tabs) -->
     <browser:viewlet
         name="plone.contentviews"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         class=".common.ContentViewsViewlet"
         permission="zope2.View"
         />
@@ -171,7 +209,7 @@
     <browser:viewlet
         name="plone.contentactions"
         for="*"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         template="contentactions_blank.pt"
         permission="zope2.View"
         />
@@ -180,7 +218,7 @@
         name="plone.contentactions"
         for="*"
         view="plone.app.layout.globals.interfaces.IViewView"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         class=".common.ContentActionsViewlet"
         permission="zope2.View"
         />
@@ -189,7 +227,7 @@
         name="plone.contentactions"
         for="*"
         view="plone.app.content.browser.interfaces.IFolderContentsView"
-        manager=".interfaces.IContentViews"
+        manager=".interfaces.IToolbar"
         class=".common.ContentActionsViewlet"
         permission="zope2.View"
         />
@@ -207,6 +245,14 @@
         name="plone.htmlhead.dublincore"
         manager=".interfaces.IHtmlHead"
         class=".common.DublinCoreViewlet"
+        permission="zope2.View"
+        />
+
+    <!-- Render the viewport -->
+    <browser:viewlet
+        name="plone.htmlhead.viewport"
+        manager=".interfaces.IHtmlHead"
+        template="viewport.pt"
         permission="zope2.View"
         />
 
@@ -277,6 +323,13 @@
         name="plone.path_bar"
         manager=".interfaces.IAboveContent"
         class=".common.PathBarViewlet"
+        permission="zope2.View"
+        />
+
+    <browser:viewlet
+        name="plone.globalstatusmessage"
+        manager=".interfaces.IGlobalStatusMessage"
+        class=".globalstatusmessage.GlobalStatusMessage"
         permission="zope2.View"
         />
 

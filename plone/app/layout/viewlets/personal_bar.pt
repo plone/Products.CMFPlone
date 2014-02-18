@@ -3,41 +3,40 @@
 
 <p class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</p>
 
-<dl class="actionMenu deactivated" id="portal-personaltools"
+<ul class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="python:view.user_actions and not view.anonymous">
   <tal:block condition="not: view/anonymous">
-  <dt class="actionMenuHeader">
+  <li class="actionMenuHeader dropdown">
     <a id="user-name"
-       tal:attributes="href view/homelink_url"
-       tal:content="view/user_name">
-        John
+      data-toggle="dropdown"
+      tal:attributes="href view/homelink_url">
+      <span class="icon-user" aria-hidden="true"></span>
+      <span tal:content="view/user_name" class="text-toolbar">John</span>
+      <span class="caret"></span>
     </a>
-  </dt>
-  <dd class="actionMenuContent">
-    <ul>
+    <ul class="actionMenuContent dropdown-menu">
+        <li class="dropdown-header">
+          <span tal:content="view/user_name">John</span>
+        </li>
         <li tal:repeat="action view/user_actions"
             tal:attributes="id string:personaltools-${action/id}">
             <a href=""
-               tal:attributes="href action/url;
-                               target action/link_target|nothing"
+               tal:attributes="action"
                tal:content="action/title"
                i18n:translate="">
                 action title
             </a>
         </li>
     </ul>
-  </dd>
   </tal:block>
-</dl>
+</ul>
 
 <ul class="actionMenu deactivated" id="portal-personaltools"
     tal:condition="python:view.user_actions and view.anonymous">
   <li id="anon-personalbar">
     <tal:actions repeat="action view/user_actions">
         <a href=""
-           tal:attributes="href action/url;
-                           id string:personaltools-${action/id};
-                           target action/link_target|nothing;"
+           tal:attributes="action"
            tal:content="action/title"
            i18n:translate="">
             action title

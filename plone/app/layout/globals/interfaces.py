@@ -271,3 +271,13 @@ class IViewView(Interface):
     """Marker interface which specifies that the current view is, in fact,
     a canonical "view" of the object, e.g. what may go on the "view" tab.
     """
+
+
+class IPatternsSettings(Interface):
+    """ Interface to register global pattern settings adapters
+    """
+
+
+class IPatternsSettingsRenderer(Interface):
+    """ Interface for the adapter that renders the settings for patterns
+    """

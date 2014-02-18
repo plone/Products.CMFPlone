@@ -6,21 +6,7 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
-<head>
-    <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border',1);
-                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
-                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
-</head>
-
 <body>
-
-<tal:comment replace="nothing">
-    Please note that this template fills the "content" slot instead of the
-    "main" slot, this is done so we can provide stuff like the content
-    tabs. This also means that we have to supply things that are normally
-    present from main_template.
-</tal:comment>
 
 <metal:main fill-slot="content">
     <tal:main-macro metal:define-macro="main"
@@ -28,8 +14,6 @@
                                 member context/@@plone_portal_state/member;
                                 name python:memberinfo['fullname'] or member.getId() or member.getId();
                                 portal_url context/portal_url">
-
-
 
         <div id="edit-bar" tal:condition="view/can_edit">
             <p class="hiddenStructure"
@@ -53,19 +37,6 @@
               &nbsp;
             </div>
         </div>
-
-        <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-            Portal status message
-        </div>
-        <dl tal:condition="python:view.empty() and view.can_edit()"
-            class="portalMessage info visualClear" id="dashboard-info-message">
-            <dt i18n:translate="">Info</dt>
-            <dd i18n:translate="info_empty_dashboard">
-                Your dashboard is currently empty. Click the
-                <em>edit</em> tab to assign some personal
-                portlets.
-            </dd>
-        </dl>
 
         <div id="content">
 

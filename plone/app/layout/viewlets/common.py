@@ -238,7 +238,21 @@ class PersonalBarViewlet(ViewletBase):
         context_state = getMultiAdapter((context, self.request),
                                         name=u'plone_context_state')
 
-        self.user_actions = context_state.actions('user')
+        user_actions = context_state.actions('user')
+        self.user_actions = []
+        for action in user_actions:
+            info = {
+                'title': action['title'],
+                'href': action['url'],
+                'id': 'personaltools-{}'.format(action['id']),
+                'target': 'link_target' in action and action['link_target'] or None,
+                }
+            modal = action.get('modal')
+            if modal:
+                info['class'] = 'pat-modal'
+                info['data-pat-modal'] = modal
+            self.user_actions.append(info)
+
         self.anonymous = self.portal_state.anonymous()
 
         if not self.anonymous:
@@ -328,6 +342,12 @@ class ContentViewsViewlet(ViewletBase):
             if current_id == default_tab:
                 fallback_action = item
 
+            modal = item.get('modal', None)
+            item['cssClass'] = ''
+            if modal:
+                item['cssClass'] += ' pat-modal'
+                item['url'] += '?ajax_load=1'
+
             tabs.append(item)
 
         if not found_selected and fallback_action is not None:
@@ -403,6 +423,10 @@ class ContentActionsViewlet(ViewletBase):
 
     def icon(self, action):
         return action.get('icon', None)
+
+
+class TinyLogoViewlet(ViewletBase):
+    index = ViewPageTemplateFile('tiny_logo.pt')
 
 
 class FooterViewlet(ViewletBase):
