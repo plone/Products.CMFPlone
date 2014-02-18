@@ -5,18 +5,19 @@
   </order>
   <order manager="plone.portalheader" skinname="Plone Default">
     <viewlet name="plone.skip_links" />
-    <viewlet name="plone.personal_bar" />
-    <viewlet name="plone.app.i18n.locales.languageselector" />
-    <viewlet name="plone.searchbox" />
     <viewlet name="plone.logo" />
+    <viewlet name="plone.searchbox" />
+    <viewlet name="plone.app.i18n.locales.languageselector" />
     <viewlet name="plone.global_sections" />
   </order>
   <order manager="plone.abovecontent" skinname="Plone Default">
     <viewlet name="plone.path_bar" />
   </order>
-  <order manager="plone.contentviews" skinname="Plone Default">
+  <order manager="plone.toolbar" skinname="Plone Default">
+    <viewlet name="plone.tiny_logo" />
     <viewlet name="plone.contentviews" />
     <viewlet name="plone.contentactions" />
+    <viewlet name="plone.personal_bar" />
   </order>
   <order manager="plone.belowcontentbody" skinname="Plone Default">
     <viewlet name="plone.belowcontentbody.relateditems" />
@@ -32,4 +33,8 @@
     <viewlet name="plone.colophon" />
     <viewlet name="plone.site_actions" />
   </order>
+  <hidden manager="plone.portalfooter" skinname="Plone Default">
+    <viewlet name="plone.colophon" />
+    <viewlet name="plone.site_actions" />
+  </hidden>
 </object>

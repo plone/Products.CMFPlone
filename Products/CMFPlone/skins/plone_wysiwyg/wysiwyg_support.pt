@@ -9,6 +9,7 @@
 <div metal:define-macro="wysiwygEditorBox">
   <textarea name="description"
             rows="25"
+            class="pat-tinymce"
             tal:content="inputvalue"
             tal:attributes="name inputname;
                             id inputname;"></textarea>

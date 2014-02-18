@@ -196,7 +196,7 @@ anymore (which at the same time tests the security control panel):
   >>> browser.getControl('Save').click()
 
   >>> browser.getLink('Users and Groups').click()
-  >>> browser.getControl('Add New User').click()
+  >>> browser.getLink('Add New User').click()
   >>> browser.getControl('User Name').value = 'johnny'
   >>> browser.getControl('E-mail').value = 'john@foo-security.com'
   >>> browser.getControl('Password').value = 'y0d4Wg!'
@@ -308,7 +308,7 @@ Now rename
 
   >>> browser.getLink('Sharing').click()
   >>> browser.url
-  'http://nohost/plone/folder/@@sharing'
+  'http://nohost/plone/folder/@@sharing?ajax_load=1'
   >>> browser.getControl(name='entries.role_Editor:records').value
   []
 
@@ -349,36 +349,6 @@ And finally removing the item again:
   '...Info...a folder has been deleted...'
 
 
-More tests: Folder contents
----------------------------
-
-The "folder contents" view needs to contain the authenticator token in order
-to check the removal of its content.  To check if everything's in place, we
-simply create an object and then delete it again via the "folder contents":
-
-  >>> browser.open('http://nohost/plone/')
-  >>> browser.getLink(url='createObject?type_name=Document').click()
-  >>> browser.getControl('Title').value = 'a document'
-  >>> browser.getControl('Save').click()
-  >>> browser.url
-  'http://nohost/plone/a-document'
-
-  >>> browser.getLink('Home').click()
-  >>> browser.getLink('Contents').click()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
-  >>> browser.getControl('a document').selected = True
-  >>> browser.getControl('Delete').click()
-  Traceback (most recent call last):
-  ...
-  HTTPError: HTTP Error 403: Forbidden
-
-  >>> browser.goBack()
-  >>> browser.getControl('a document').selected = True
-  >>> browser.getControl('Delete').click()
-  >>> browser.contents
-  '...Info...Item(s) deleted...'
-
-
 More tests: Managing Workflow State
 -----------------------------------
 
@@ -413,33 +383,6 @@ publishing process can be protected, though, so let's try this instead:
   >>> browser.getLink('Advanced...').click()
   >>> browser.getControl(name='_authenticator').value = 'invalid!'
   >>> browser.getControl('Retract').selected = True
-  >>> browser.getControl('Save').click()
-  Traceback (most recent call last):
-  ...
-  HTTPError: HTTP Error 403: Forbidden
-
-Again, there's an alternative way of accomplishing this, namely using the
-"Change State" button of the "folder contents" view:
-
-  >>> browser.open('http://nohost/plone/')
-  >>> browser.getLink('Contents').click()
-  >>> form = browser.getForm(name='folderContentsForm')
-  >>> form.getControl(name='paths:list').getControl(value='/plone/another-folder').selected = True
-  >>> url = browser.url                                     # remember url...
-  >>> browser.getControl('Change State').click()
-  >>> browser.getControl(name='orig_template').value = url  # gives 404 otherwise
-  >>> browser.getControl('Retract').selected = True
-  >>> browser.getControl('Save').click()
-  >>> browser.contents
-  '...Info...Item state changed...'
-
-  >>> form = browser.getForm(name='folderContentsForm')
-  >>> form.getControl(name='paths:list').getControl(value='/plone/another-folder').selected = True
-  >>> url = browser.url                                     # remember url...
-  >>> browser.getControl('Change State').click()
-  >>> browser.getControl(name='orig_template').value = url  # gives 404 otherwise
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
-  >>> browser.getControl('Publish').selected = True
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
   ...

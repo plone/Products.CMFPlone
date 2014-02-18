@@ -36,11 +36,7 @@ looks like because we're navigating the page with a JavaScript- less
 browser.
 
     >>> browser.open('http://nohost/plone/Members/test_user_1_')
-    >>> browser.getLink('Add new').click()
-    >>> 'Add new item' in browser.contents
-    True
-    >>> browser.getControl('Page').click()
-    >>> browser.getControl('Add').click()
+    >>> browser.getLink('Page').click()
     >>> #'Edit Page' in browser.contents # ouch, Plone has <span> around 'Page'
     >>> browser.url
     'http://nohost/plone/Members/test_user_1_/portal_factory/Document/.../edit'
@@ -135,24 +131,14 @@ Cut and paste Document
 ----------------------
 
 We'll first cut our Document. Then we'll create folder where we paste
-the Document into.
+the Document into. First off, we'll cut our document:
 
-    >>> browser.getLink('Actions').click()
-
-First off, we'll cut our document:
-
-    >>> browser.getControl('Ons Bier').click()
-    >>> browser.getControl('Cut').click()
+    >>> browser.getLink('Cut').click()
 
 Before doing the actual paste, we create a folder to paste into.
 
-    >>> browser.getLink('Add new').click()
-    >>> 'Add new item' in browser.contents
-    True
-    >>> browser.getControl('Folder').click()
-    >>> browser.getControl('Add').click()
-    >>> #'Edit Folder' in browser.contents # empty <span> again
-    True
+    >>> browser.open('http://nohost/plone/Members/test_user_1_')
+    >>> browser.getLink('Folder').click()
     >>> browser.getControl('Title').value = 'My Folder'
     >>> browser.getControl('Save').click()
     >>> 'Changes saved.' in browser.contents
@@ -161,30 +147,27 @@ Before doing the actual paste, we create a folder to paste into.
 The Folder has been created, now we can paste the Document in our copy
 buffer here:
 
-    >>> browser.getLink('Actions').click()
-    >>> browser.getControl('Paste').click()
+    >>> browser.getLink('View').click()
+    >>> browser.getLink('Paste').click()
+    >>> browser.url
+    'http://nohost/plone/Members/test_user_1_/my-folder/'
     >>> 'Item(s) pasted.' in browser.contents
     True
+    >>> browser.getLink('View').click()
     >>> 'Ons Bier' in browser.contents
     True
 
 Delete Document
 ---------------
 
-Again, also deleting a Document without JavaScript involves visiting
-the ``folder_contents`` page and clicking a checkbox.
+Delete the document.
 
-    >>> browser.open('http://nohost/plone/Members/test_user_1_/my-folder/')
-    >>> browser.getLink('Actions').click()
-    >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-folder/folder_contents'
-
-This is how we click the checkbox.  There's a nicer way to do this,
-I'm sure:
-
-    >>> browser.getControl('Ons Bier').click()
+    >>> browser.open('http://nohost/plone/Members/test_user_1_/my-folder/my-page')
+    >>> browser.getLink('Edit').click()
+    >>> browser.getControl('Cancel').click()
+    >>> browser.getLink('Delete').click()
     >>> browser.getControl('Delete').click()
-    >>> 'Item(s) deleted.' in browser.contents
+    >>> 'Ons Bier has been deleted.' in browser.contents
     True
 
 Paste deleted document
@@ -195,9 +178,7 @@ between cut and paste, the page should say so and not give a stacktrace.
 (https://dev.plone.org/ticket/13577)
 
     >>> browser.open('http://nohost/plone/Members/test_user_1_')
-    >>> browser.getLink('Add new').click()
-    >>> browser.getControl('Page').click()
-    >>> browser.getControl('Add').click()
+    >>> browser.getLink('Page').click()
     >>> browser.getControl('Body Text').value = ''
     >>> browser.getControl('Title').value = 'Op een dag'
     >>> browser.getControl('Save').click()
@@ -210,9 +191,7 @@ We go now to the document absolute url:
 
 We'll first cut our Document.
 
-    >>> browser.getLink('Actions').click()
-    >>> browser.getControl('Op een dag').click()
-    >>> browser.getControl('Cut').click()
+    >>> browser.getLink('Cut').click()
 
 Login another user:
 
@@ -228,9 +207,10 @@ the main thing is that Plone's session is unable to remove the cut content
 from its clipboard.)
 
     >>> browser2.open('http://nohost/plone/Members/test_user_1_/op-een-dag')
-    >>> browser2.getLink('Actions').click()
-    >>> browser2.getControl('Op een dag').click()
+    >>> browser2.getLink('Delete').click()
     >>> browser2.getControl('Delete').click()
+    >>> 'Op een dag has been deleted.' in browser2.contents
+    True
 
 This should fail graciously, that is:
 - Not give a server error
@@ -238,10 +218,9 @@ This should fail graciously, that is:
 - Show a message that says what's wrong
 
     >>> browser.open('http://nohost/plone/Members/test_user_1_/my-folder')
-    >>> browser.getLink('Actions').click()
-    >>> browser.getControl('Paste').click()
+    >>> browser.getLink('Paste').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-folder/folder_contents'
+    'http://nohost/plone/Members/test_user_1_/my-folder'
     >>> 'Traceback' not in browser.contents
     True
     >>> 'may have been moved or deleted after you copied' in browser.contents

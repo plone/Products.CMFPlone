@@ -9,7 +9,6 @@
     <dependency>profile-Products.PloneLanguageTool:PloneLanguageTool</dependency>
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
-    <dependency>profile-plone.app.jquery:default</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.search:default</dependency>

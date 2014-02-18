@@ -139,13 +139,13 @@
         </div>
       </tal:baseprofile>
 
-      <tal:extensionprofiles condition="python: advanced and extension_profiles">
-        <fieldset id="add-on-list">
-          <legend i18n:translate="">
+      <tal:extensionprofiles condition="python: extension_profiles">
+        <fieldset id="add-on-list" tal:omit-tag="python: not advanced">
+          <legend i18n:translate="" tal:condition="python: advanced">
             Add-ons
           </legend>
 
-          <div class="formHelp" i18n:translate="">
+          <div class="formHelp" i18n:translate="" tal:condition="python: advanced">
               Select any add-ons you want to activate immediately. You can
               also activate add-ons after the site has been created using the
               Add-ons control panel.
@@ -155,7 +155,7 @@
             <tal:addons tal:repeat="info extension_profiles">
               <tal:info tal:define="selected info/selected|nothing">
                 <tal:normal tal:condition="python: not selected or advanced">
-                  <dt>
+                  <dt tal:condition="python: advanced">
                     <input type="checkbox" name="extension_ids:list" value=""
                            tal:attributes="value info/id;
                                            id info/id;
@@ -166,7 +166,7 @@
                       profile title
                     </label>
                   </dt>
-                  <dd tal:content="info/description">
+                  <dd tal:content="info/description" tal:condition="python: advanced">
                     profile description
                   </dd>
                 </tal:normal>

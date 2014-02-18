@@ -109,6 +109,10 @@ class FrontPage(BrowserView):
 class AddPloneSite(BrowserView):
 
     default_extension_profiles = (
+        'plone.app.registry:default',
+        'plonetheme.classic:default',
+        'plone.app.theming:default',
+        'plonetheme.barceloneta:default',
     )
 
     def profiles(self):
@@ -121,7 +125,6 @@ class AddPloneSite(BrowserView):
             'kupu:default',
             'plonetheme.classic:uninstall',
             'Products.CMFPlacefulWorkflow:CMFPlacefulWorkflow',
-            'plone.app.registry:default',
             'plone.app.z3cform:default',
         ]
         utils = getAllUtilitiesRegisteredFor(INonInstallable)
