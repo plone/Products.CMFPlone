@@ -1,6 +1,8 @@
 from zope import schema
 from zope.interface import Interface
 
+from plone.schema.field import Email
+
 import zope.deferredimport
 
 from Products.CMFPlone import PloneMessageFactory as _
@@ -325,7 +327,7 @@ class IPlone(Interface):
 class ISendToForm(Interface):
     """ Interface for describing the 'sendto' form """
 
-    send_to_address = schema.TextLine(
+    send_to_address = Email(
         title=_(u'label_send_to_mail',
                 default=u'Send to'),
         description=_(u'help_send_to_mail',
@@ -333,7 +335,7 @@ class ISendToForm(Interface):
         required=True
     )
 
-    send_from_address = schema.TextLine(
+    send_from_address = Email(
         title=_(u'label_send_from',
                 default=u'From'),
         description=_(u'help_send_from',
