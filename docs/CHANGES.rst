@@ -8,6 +8,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Change default permission for sendto_form to Authenticated instead of
+  Anonymous
+  [vangheem]
+
 - merge hotfixes from https://pypi.python.org/pypi/Products.PloneHotfix20131210
   [vangheem]
 

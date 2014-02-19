@@ -376,9 +376,9 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         # should be allowed as Manager
         self.setRoles(['Manager'])
         self.assertTrue(checkPermission(AllowSendto, portal))
-        # should be allowed as anonymous
+        # anonymous no longer allowed by default to use
         self.logout()
-        self.assertTrue(checkPermission(AllowSendto, portal))
+        self.assertFalse(checkPermission(AllowSendto, portal))
 
     def test_allowsendto_changed(self):
         mtool = self.portal.portal_membership

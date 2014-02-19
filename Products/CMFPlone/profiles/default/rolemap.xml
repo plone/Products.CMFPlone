@@ -83,7 +83,7 @@
       <role name="Contributor"/>
     </permission>
     <permission name="Allow sendto" acquire="True">
-      <role name="Anonymous"/>
+      <role name="Authenticated"/>
       <role name="Manager"/>
       <role name="Site Administrator"/>
       <role name="Member"/>
