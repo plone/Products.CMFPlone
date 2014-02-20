@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3.3 (unreleased)
+4.3.3 (2014-02-19)
 ------------------
 
 - Change default permission for sendto_form to Authenticated instead of
