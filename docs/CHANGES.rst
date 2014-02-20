@@ -8,7 +8,9 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- In plone-overview view, we can now see Plone sites which are contained into 
+  Zope folder.
+  [bsuttor]
 
 
 4.3.3 (2014-02-19)
