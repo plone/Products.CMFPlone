@@ -48,7 +48,9 @@ class Overview(BrowserView):
         result = []
         secman = getSecurityManager()
         for obj in root.values():
-            if IPloneSiteRoot.providedBy(obj):
+            if obj.meta_type is 'Folder':
+                result = result + self.sites(obj)
+            elif IPloneSiteRoot.providedBy(obj):
                 if secman.checkPermission(View, obj):
                     result.append(obj)
             elif obj.getId() in getattr(root, '_mount_points', {}):

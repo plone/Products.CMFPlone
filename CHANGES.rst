@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- In plone-overview view, we can now see Plone sites which are contained into
+  Zope folder. 
+  [bsuttor]
+
 - Make Plone tool read the exposeDCMetaTags from p.a.registry instead of
   of the site properties.
   [timo]
