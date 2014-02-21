@@ -9,7 +9,6 @@ from Products.CMFPlone.testing import \
 from plone.app.testing import TEST_USER_ID, setRoles
 
 from plone.registry import Registry
-from plone.registry.interfaces import IRegistry
 
 from zope.component import getMultiAdapter
 
@@ -50,8 +49,8 @@ class ProductsCMFPloneSetupTest(unittest.TestCase):
     def test_plone_app_registry_in_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
         self.assertTrue(
-            'plone.app.registry' in [a.getAction(self)['id']
-            for a in self.controlpanel.listActions()]
+            'plone.app.registry' in
+            [a.getAction(self)['id'] for a in self.controlpanel.listActions()]
         )
 
     def test_controlpanel_registry_is_available(self):
