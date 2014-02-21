@@ -11,7 +11,7 @@ can be looked up like this::
   >>> from Products.CMFPlone.interfaces import ISearchSchema
   >>> search_settings = registry.forInterface(ISearchSchema)
 
-  >>> site_settings.enable_livesearch
+  >>> search_settings.enable_livesearch
   True
 
 If you want to change the settings, just change the attribute::
