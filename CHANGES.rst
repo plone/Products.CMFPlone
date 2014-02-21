@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Moved the member search form to plone.app.users
+  [pabo3000]
+
 - PLIP #13705: Remove <base> tag.
   [frapell]
 
