@@ -23,11 +23,6 @@ from plone.i18n.locales.interfaces import IMetadataLanguageAvailability
 from zope.interface import implements
 from zope.component import queryUtility
 
-member_indexhtml = """\
-member_search=context.restrictedTraverse('member_search_form')
-return member_search()
-"""
-
 
 class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     """Make PloneSite subclass CMFSite and add some methods."""
