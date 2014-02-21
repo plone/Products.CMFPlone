@@ -122,7 +122,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         self.assertEqual(members._ordering, 'unordered')
 
     def testMembersFolderDefaultView(self):
-        members = self.members
+        members = self.membership.getMembersFolder()
         self.assertEqual(members.layout, '@@member-search')
 
     def testMailHost(self):
@@ -905,7 +905,6 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-        self.members = self.membership.getMembersFolder()
         self.catalog = self.portal.portal_catalog
         self.setupAuthenticator()
 
