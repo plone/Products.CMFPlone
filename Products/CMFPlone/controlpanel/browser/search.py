@@ -11,6 +11,7 @@ class SearchControlPanelForm(controlpanel.RegistryEditForm):
     id = "SearchControlPanel"
     label = _(u"Search settings")
     schema = ISearchSchema
+    schema_prefix = "plone"
 
     def updateFields(self):
         super(SearchControlPanelForm, self).updateFields()

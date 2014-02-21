@@ -55,7 +55,7 @@ class ProductsCMFPloneSetupTest(unittest.TestCase):
 
     def test_controlpanel_registry_is_available(self):
         self.registry = Registry()
-        self.registry.registerInterface(ISearchSchema)
+        self.registry.registerInterface(ISearchSchema, prefix="plone")
 
     def test_enable_livesearch_setting(self):
         self.assertTrue('enable_livesearch' in ISearchSchema.names())

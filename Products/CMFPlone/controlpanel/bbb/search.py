@@ -17,7 +17,8 @@ class SearchControlPanelAdapter(object):
         self.portal = getSite()
         self.jstool = getToolByName(context, 'portal_javascripts')
         registry = getUtility(IRegistry)
-        self.search_settings = registry.forInterface(ISearchSchema)
+        self.search_settings = registry.forInterface(
+            ISearchSchema, prefix="plone")
 
     def get_enable_livesearch(self):
         return self.search_settings.enable_livesearch

@@ -19,7 +19,8 @@ class SearchControlPanelAdapterTest(unittest.TestCase):
         self.request = self.layer['request']
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         registry = getUtility(IRegistry)
-        self.search_settings = registry.forInterface(ISearchSchema)
+        self.search_settings = registry.forInterface(
+            ISearchSchema, prefix="plone")
 
     def test_adapter_lookup(self):
         self.assertTrue(getAdapter(self.portal, ISearchSchema))
