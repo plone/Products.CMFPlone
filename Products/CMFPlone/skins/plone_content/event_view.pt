@@ -92,9 +92,10 @@
                         <th i18n:translate="contact_name">Contact Name</th>
                         <td>
                             <a id="parent-fieldname-contactEmail"
+                               class="email fn"
                                tal:condition="contact_email"
-                               tal:replace="structure python: context.spamProtect(mailaddress=contact_email, mailname=contact_name, cssclass='email fn')"
-                               />
+                               tal:attributes="href string:mailto:${contact_email}"
+                               tal:content="contact_name" />
                             <span class="fn"
                                   tal:condition="not: contact_email"
                                   tal:content="contact_name" />

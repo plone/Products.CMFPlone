@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Removed spamProtect.py script, since it doesn't offer real protection.
+  [davisagli]
+
 - Moved the member search form to plone.app.users
   [pabo3000]
 
