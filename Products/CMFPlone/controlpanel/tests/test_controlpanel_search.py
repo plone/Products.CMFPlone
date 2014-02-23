@@ -24,13 +24,6 @@ class ProductsCMFPloneSetupTest(unittest.TestCase):
         self.types = self.portal.portal_types
         self.qi_tool = getToolByName(self.portal, 'portal_quickinstaller')
 
-    def test_plone_app_registry_installed(self):
-        pid = 'plone.app.registry'
-        installed = [p['id'] for p in self.qi_tool.listInstalledProducts()]
-        self.assertTrue(
-            pid in installed,
-            'Package %s appears not to have been installed' % pid)
-
     def test_plone_app_registry_is_listed_in_the_controlpanel(self):
         self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
         self.assertTrue(
