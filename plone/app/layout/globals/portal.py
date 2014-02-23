@@ -1,7 +1,7 @@
 from zope.interface import implements
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from plone.app.controlpanel.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from plone.memoize.view import memoize_contextless
 from plone.memoize.view import memoize
 

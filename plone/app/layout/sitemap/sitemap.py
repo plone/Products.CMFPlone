@@ -7,7 +7,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from plone.app.controlpanel.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces import ISiteSchema
 
 from gzip import GzipFile
 from cStringIO import StringIO

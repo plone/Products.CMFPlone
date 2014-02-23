@@ -1,6 +1,6 @@
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-from plone.app.controlpanel.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces import ISiteSchema
 
 from gzip import GzipFile
 from StringIO import StringIO

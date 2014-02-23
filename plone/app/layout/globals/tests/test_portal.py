@@ -1,5 +1,5 @@
 from plone.registry.interfaces import IRegistry
-from plone.app.controlpanel.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from plone.app.layout.globals.tests.base import GlobalsTestCase
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
