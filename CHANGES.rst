@@ -8,17 +8,15 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
-<<<<<<< HEAD
 - Make Plone tool read the exposeDCMetaTags from p.a.registry instead of
   of the site properties.
   [timo]
-=======
+
 - Hide plone.app.registry install profile in the add-ons control panel.
   [esteele]
 
 - Removed spamProtect.py script, since it doesn't offer real protection.
   [davisagli]
->>>>>>> 8674a5a8485ee7753ca49775b9f59d3af6f56342
 
 - Moved the member search form to plone.app.users
   [pabo3000]
