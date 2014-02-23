@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-import unittest2 as unittest
-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
 from plone.app.testing import TEST_USER_ID, setRoles
-
 from plone.registry import Registry
 
-from zope.component import getMultiAdapter
+import unittest2 as unittest
 
 
 class ProductsCMFPloneSetupTest(unittest.TestCase):
@@ -23,28 +20,6 @@ class ProductsCMFPloneSetupTest(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.types = self.portal.portal_types
         self.qi_tool = getToolByName(self.portal, 'portal_quickinstaller')
-
-    def test_plone_app_registry_is_listed_in_the_controlpanel(self):
-        self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue(
-            'plone.app.registry' in [
-                a.getAction(self)['id']
-                for a in self.controlpanel.listActions()
-            ]
-        )
-
-    def test_search_controlpanel_view(self):
-        view = getMultiAdapter((self.portal, self.portal.REQUEST),
-                               name="search-controlpanel")
-        view = view.__of__(self.portal)
-        self.assertTrue(view())
-
-    def test_plone_app_registry_in_controlpanel(self):
-        self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
-        self.assertTrue(
-            'plone.app.registry' in
-            [a.getAction(self)['id'] for a in self.controlpanel.listActions()]
-        )
 
     def test_controlpanel_registry_is_available(self):
         self.registry = Registry()

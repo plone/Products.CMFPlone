@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-import unittest2 as unittest
-
-from plone.testing.z2 import Browser
-from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISearchSchema
-
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+
+from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+from plone.registry.interfaces import IRegistry
+from plone.testing.z2 import Browser
+
+from zope.component import getUtility
+from zope.component import getMultiAdapter
+
+import unittest2 as unittest
 
 
 class SearchControlPanelFunctionalTest(unittest.TestCase):
@@ -47,6 +48,12 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(
             self.browser.url,
             'http://nohost/plone/@@overview-controlpanel')
+
+    def test_search_controlpanel_view(self):
+        view = getMultiAdapter((self.portal, self.portal.REQUEST),
+                               name="search-controlpanel")
+        view = view.__of__(self.portal)
+        self.assertTrue(view())
 
     def test_enable_livesearch(self):
         self.browser.open(

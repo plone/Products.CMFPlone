@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
-import unittest2 as unittest
-
-from plone.testing.z2 import Browser
-from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import ISiteSchema
-
-from zope.component import getMultiAdapter
-
-
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+
+from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+from plone.registry.interfaces import IRegistry
+from plone.testing.z2 import Browser
+
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+
+import unittest2 as unittest
 
 
 class SiteControlPanelFunctionalTest(unittest.TestCase):
@@ -52,6 +50,12 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
             self.browser.url,
             'http://nohost/plone/@@overview-controlpanel')
 
+    def test_site_controlpanel_view(self):
+        view = getMultiAdapter((self.portal, self.portal.REQUEST),
+                               name="site-controlpanel")
+        view = view.__of__(self.portal)
+        self.assertTrue(view())
+
     def test_site_title_is_stored_in_registry(self):
         self.browser.open(
             "%s/@@site-controlpanel" % self.portal_url)
@@ -83,21 +87,6 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertEqual(self.portal.title, u'My Site')
         self.assertEqual(self.portal.Title(), u'My Site')
-
-    @unittest.skip("XXX: TODO! Not implemented yet.")
-    def test_site_description_can_be_looked_up_by_plone_portal_state(self):
-        self.browser.open(
-            "%s/@@site-controlpanel" % self.portal_url)
-        self.browser.getControl('Site description').value = \
-            u"This is a Plone site."
-        self.browser.getControl('Save').click()
-
-        portal_state = getMultiAdapter(
-            (self.portal, self.request),
-            name=u'plone_portal_state'
-        )
-        self.assertEqual(
-            portal_state.portal_description(), u'This is a Plone site.')
 
     def test_exposeDCMetaTags(self):
         self.browser.open(
@@ -176,4 +165,3 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
         self.browser.open(self.portal_url)
 
         self.assertTrue("<script>a=1</script>" in self.browser.contents)
-
