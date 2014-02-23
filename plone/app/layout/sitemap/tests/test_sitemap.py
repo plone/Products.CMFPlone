@@ -23,7 +23,7 @@ class SiteMapTestCase(PloneTestCase):
     def afterSetUp(self):
         super(SiteMapTestCase, self).afterSetUp()
         registry = getUtility(IRegistry)
-        self.site_settings = registry.forInterface(ISiteSchema)
+        self.site_settings = registry.forInterface(ISiteSchema, prefix="plone")
         self.site_settings.enable_sitemap = True
         self.sitemap = getMultiAdapter((self.portal, self.portal.REQUEST),
                                        name='sitemap.xml.gz')

@@ -116,7 +116,7 @@ class SiteMapView(BrowserView):
     def __call__(self):
         """Checks if the sitemap feature is enable and returns it."""
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema)
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
         if not settings.enable_sitemap:
             raise NotFound(self.context, self.filename, self.request)
 

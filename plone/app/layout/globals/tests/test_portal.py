@@ -21,7 +21,7 @@ class TestPortalStateView(GlobalsTestCase):
 
     def test_portal_title(self):
         registry = getUtility(IRegistry)
-        self.site_settings = registry.forInterface(ISiteSchema)
+        self.site_settings = registry.forInterface(ISiteSchema, prefix="plone")
         self.site_settings.site_title = u'My title'
         self.assertEqual(self.view.portal_title(), 'My title')
 

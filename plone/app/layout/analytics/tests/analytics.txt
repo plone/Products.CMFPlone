@@ -18,7 +18,7 @@ Set analytics (webstats_js) code through the controlpanel
     >>> from zope.component import getUtility
     >>> from Products.CMFPlone.interfaces import ISiteSchema
     >>> registry = getUtility(IRegistry)
-    >>> site_settings = registry.forInterface(ISiteSchema)
+    >>> site_settings = registry.forInterface(ISiteSchema, prefix="plone")
     >>> site_settings.webstats_js = u"<script>window.title='Hello'</script>"
     >>> manager.update()
     >>> text = manager.render()
