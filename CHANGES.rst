@@ -5,9 +5,11 @@ Changelog
 ------------------
 
 - Switch webstats_js setting from site_properties to p.a.registry.
+  (PLIP #10359: http://dev.plone.org/ticket/10359)
   [timo]
 
 - Switch enable_sitemap setting from site_properties to p.a.registry.
+  (PLIP #10359: http://dev.plone.org/ticket/10359)
   [timo]
 
 
