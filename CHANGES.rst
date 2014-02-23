@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Hide plone.app.registry install profile in the add-ons control panel.
+  [esteele]
+
 - Removed spamProtect.py script, since it doesn't offer real protection.
   [davisagli]
 
