@@ -6,7 +6,6 @@ import urlparse
 import transaction
 
 from plone.registry.interfaces import IRegistry
-from plone.app.controlpanel.interfaces import ISiteSchema
 
 from zope.component import queryAdapter
 from zope.component import getUtility
@@ -36,6 +35,7 @@ from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.events import ReorderedEvent
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -995,7 +995,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mt = getToolByName(self, 'portal_membership')
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISiteSchema)
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
         use_all = settings.exposeDCMetaTags
         view_about = site_props.getProperty('allowAnonymousViewAbout', False) \
                      or not mt.isAnonymousUser()

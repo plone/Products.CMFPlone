@@ -2,6 +2,8 @@
 <registry>
   <records interface="Products.CMFPlone.interfaces.ISearchSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISiteSchema"
+           prefix="plone" />
   <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings" field="resourceBundlesForThemes">
     <value purge="false">
       <element key="(default)">

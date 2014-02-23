@@ -4,5 +4,6 @@
     xmlns:browser="http://namespaces.zope.org/browser">
 
   <adapter factory=".search.SearchControlPanelAdapter" />
+  <adapter factory=".site.SiteControlPanelAdapter" />
 
 </configure>

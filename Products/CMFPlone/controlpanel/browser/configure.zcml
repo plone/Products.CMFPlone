@@ -11,4 +11,12 @@
     permission="plone.app.controlpanel.Search"
     />
 
+  <!-- Site Control Panel -->
+  <browser:page
+    name="site-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".site.SiteControlPanel"
+    permission="plone.app.controlpanel.Site"
+    />
+
 </configure>
