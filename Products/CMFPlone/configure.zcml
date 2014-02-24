@@ -36,6 +36,7 @@
   <include package="plone.app.workflow" />
   <include package="plone.batching" />
   <include package="plone.memoize" />
+  <include package="plone.outputfilters" />
   <include package="plone.session" />
   <include package="plone.protect" />
   <include package="plone.indexer" />
