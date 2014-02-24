@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Update the front-page links.
+  [esteele]
+
 - In plone-overview view, we can now see Plone sites which are contained into
   Zope folder. 
   [bsuttor]
