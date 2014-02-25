@@ -27,8 +27,6 @@
     directory="Products.CMFPlone:skins/plone_scripts"/>
  <object name="plone_templates" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_templates"/>
- <object name="plone_styles" meta_type="Filesystem Directory View"
-    directory="Products.CMFPlone:skins/plone_styles"/>
  <object name="plone_wysiwyg" meta_type="Filesystem Directory View"
     directory="Products.CMFPlone:skins/plone_wysiwyg"/>
  <skin-path name="Plone Default">
@@ -40,7 +38,6 @@
   <layer name="plone_wysiwyg"/>
   <layer name="plone_prefs"/>
   <layer name="plone_templates"/>
-  <layer name="plone_styles"/>
   <layer name="plone_form_scripts"/>
   <layer name="plone_scripts"/>
   <layer name="plone_forms"/>
