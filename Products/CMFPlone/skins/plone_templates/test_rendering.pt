@@ -101,6 +101,26 @@ Headlines
     </dd>
 </dl>
 
+<dl class="portalMessage error">
+    <dt>
+        Error
+    </dt>
+    <dd>
+        The portalMessage 'error' class, can also contain <a href="#">links</a> - used to
+        give the user temporary status messages.
+    </dd>
+</dl>
+
+<dl class="portalMessage warning">
+    <dt>
+        Warning
+    </dt>
+    <dd>
+        The portalMessage 'warning' class, can also contain <a href="#">links</a> - used to
+        give the user temporary status messages.
+    </dd>
+</dl>
+
 <h1 class="documentFirstHeading">Document Headline</h1>
 
 <div id="plone-document-byline" class="documentByLine">

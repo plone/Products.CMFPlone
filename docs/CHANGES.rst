@@ -8,7 +8,11 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
-- In plone-overview view, we can now see Plone sites which are contained into 
+- Add 'warning' and 'error' status message types to the test_rendering
+  view.
+  [esteele]
+
+- In plone-overview view, we can now see Plone sites which are contained into
   Zope folder.
   [bsuttor]
 
@@ -39,7 +43,7 @@ Changelog
   to keep the correct language, title, menus and designs.
   [regebro]
 
-- Fix issue where a user could delete unintended object through 
+- Fix issue where a user could delete unintended object through
   acquisition magic. See https://dev.plone.org/ticket/13603.
   [gotcha]
 
