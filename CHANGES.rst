@@ -8,11 +8,15 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Add 'warning' and 'error' status message types to the test_rendering
+  view.
+  [esteele]
+
 - Update the front-page links.
   [esteele]
 
 - In plone-overview view, we can now see Plone sites which are contained into
-  Zope folder. 
+  Zope folder.
   [bsuttor]
 
 - Make Plone tool read the exposeDCMetaTags from p.a.registry instead of
