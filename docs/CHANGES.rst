@@ -20,6 +20,10 @@ Changelog
   by not updating metadata.
   [thepjot]
 
+- Override _recursiveUpdateRoleMappings of CMFCore WorkflowTool to enhance performance
+  by not updating metadata.
+  [thepjot]
+
 4.3.3 (2014-02-19)
 ------------------
 
