@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5a1 (unreleased)
+2.5.0 (2014-03-02)
 ------------------
 
 - Switch webstats_js setting from site_properties to p.a.registry.
