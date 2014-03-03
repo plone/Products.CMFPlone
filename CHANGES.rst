@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0a1 (unreleased)
+5.0a1 (2014-03-02)
 ------------------
 
 - Add 'warning' and 'error' status message types to the test_rendering
