@@ -1242,7 +1242,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 # To avoid issues with the check for acquisition,
                 # relative paths should not be part of the API anymore.
                 # Plone core itself does not use relative paths.
-                if not path.startswith(portal.absolute_url_path()):
+                #if not path.startswith(portal.absolute_url_path()):
+                if not path.startswith("/".join(portal.getPhysicalPath())):
                     msg = (
                         'Path {} does not start '
                         'with path to portal'.format(path)
