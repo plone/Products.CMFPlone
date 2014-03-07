@@ -16,6 +16,9 @@ Changelog
   Zope folder.
   [bsuttor]
 
+- Fixed plone.css and plone.session integration. Do not break when not found
+  resources are registered in the portal_css tool
+  [keul]
 
 4.3.3 (2014-02-19)
 ------------------
