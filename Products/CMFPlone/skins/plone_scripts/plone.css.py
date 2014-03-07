@@ -7,12 +7,17 @@
 ##parameters=
 ##title=Rendered version of the Plone CSS for use from external tools
 
+from zExceptions import NotFound
+
 portal_css = context.portal_css
 stylesheets = portal_css.getEvaluatedResources(context)
 
 for stylesheet in stylesheets:
     if stylesheet.getRendering() in ['import', 'inline', 'link']:
-        print portal_css.getInlineResource(stylesheet.getId(), context)
+        try:
+            print portal_css.getInlineResource(stylesheet.getId(), context)
+        except NotFound:
+            pass
 
 duration = 1
 seconds = float(duration) * 24.0 * 3600.0
