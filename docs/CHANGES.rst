@@ -8,6 +8,11 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Don't rename content when the new id has leading or trailing spaces.
+  See https://dev.plone.org/ticket/12998, https://dev.plone.org/ticket/12989,
+  https://dev.plone.org/ticket/9370, https://dev.plone.org/ticket/8338
+  [pbauer]
+
 - Add 'warning' and 'error' status message types to the test_rendering
   view.
   [esteele]

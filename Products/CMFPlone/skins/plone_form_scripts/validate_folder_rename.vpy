@@ -44,6 +44,12 @@ for x in range(0, len(new_ids)):
         if error:
             state.setError(id, error)
 
+for i in new_ids:
+    if i != i.strip():
+        context.plone_utils.addPortalMessage(
+            _(u'The id "%s" has leading or trailing spaces.' % i), 'error')
+        return state.set(status='failure')
+
 if state.getErrors():
     context.plone_utils.addPortalMessage(
         _(u'Please correct the indicated errors.'), 'error')
