@@ -110,8 +110,8 @@ class TestPortalStateView(GlobalsTestCase):
 
     def test_member(self):
         self.assertEqual(
-            self.view.member(),
-            self.portal.portal_membership.getAuthenticatedMember()
+            self.view.member().id,
+            self.portal.portal_membership.getAuthenticatedMember().id
         )
 
     def test_anonymous(self):

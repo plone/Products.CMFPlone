@@ -11,6 +11,8 @@ from plone.app.layout.viewlets.common import (
 from plone.app.layout.viewlets.common import ContentViewsViewlet
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
+from plone.protect import authenticator as auth
+
 
 class TestViewletBase(ViewletsTestCase):
     """Test the base class for the viewlets.
@@ -78,8 +80,10 @@ class TestContentViewsViewlet(ViewletsTestCase):
     def testPrepareObjectTabsDefaultView(self):
         self._invalidateRequestMemoizations()
         self.loginAsPortalOwner()
-        self.app.REQUEST[
-            'ACTUAL_URL'] = self.folder.test.absolute_url() + '/edit'
+        self.app.REQUEST['ACTUAL_URL'] = '%s/edit?_authenticator=%s' % (
+            self.folder.test.absolute_url(),
+            auth.createToken()
+        )
         view = ContentViewsViewlet(self.folder.test, self.app.REQUEST, None)
         tabs = view.prepareObjectTabs()
         self.assertEqual(0, len([t for t in tabs if t[

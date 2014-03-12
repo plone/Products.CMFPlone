@@ -28,7 +28,7 @@
               </li>
               <li>
                 <a href=""
-                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard"
+                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
                    i18n:translate="label_edit">Edit</a>
               </li>
             </ul>

@@ -18,6 +18,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.globals.interfaces import IViewView
+from plone.protect.utils import addTokenToUrl
 
 
 class ViewletBase(BrowserView):
@@ -321,8 +322,9 @@ class ContentViewsViewlet(ViewletBase):
                 item['url'] = action_url
             else:
                 item['url'] = '%s/%s' % (context_url, action_url)
+            item['url'] = addTokenToUrl(item['url'], self.request)
 
-            action_method = item['url'].split('/')[-1]
+            action_method = item['url'].split('/')[-1].split('?')[0]
 
             # Action method may be a method alias:
             # Attempt to resolve to a template.
@@ -330,7 +332,7 @@ class ContentViewsViewlet(ViewletBase):
                 action_method, default=action_method
             )
             if action_method:
-                request_action = unquote(request_url_path)
+                request_action = unquote(request_url_path).split('?')[0]
                 request_action = context_fti.queryMethodID(
                     request_action, default=request_action
                 )

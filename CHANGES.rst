@@ -4,7 +4,8 @@ Changelog
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- for contentview urls, add csrf token automatically
+  [vangheem]
 
 
 2.5.0 (2014-03-02)

@@ -12,6 +12,7 @@ from plone.memoize.instance import memoize
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.CMFPlone import PloneMessageFactory as _
+from plone.protect.authenticator import createToken
 
 
 class IDashboard(interface.Interface):
@@ -31,6 +32,10 @@ class DashboardView(BrowserView):
             message = _(u"info_empty_dashboard")
             IStatusMessage(self.request).add(message)
         return self.index()
+
+    @property
+    def auth_token(self):
+        return createToken()
 
     @memoize
     def can_edit(self):
