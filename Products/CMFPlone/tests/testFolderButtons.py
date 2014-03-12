@@ -58,6 +58,18 @@ class TestFolderRename(PloneTestCase.PloneTestCase):
         self.assertTrue(getattr(self.folder.foo, 'baz', None) is not None)
         self.assertEqual(self.folder.foo.baz.Title(), title)
 
+    def testWhitespacesAreStrippedOnFolderRename(self):
+        # Make sure renaming removes leading and trailing whitespaces
+        new_title = ' Test Folder - Snooze!  '
+        new_id = ' baz '
+        transaction.savepoint(optimistic=True)  # make rename work
+        doc_path = '/'.join(self.folder.foo.doc1.getPhysicalPath())
+        self.folder.folder_rename(paths=[doc_path], new_ids=[new_id],
+                                  new_titles=[new_title])
+        self.assertEqual(getattr(self.folder.foo, 'doc1', None), None)
+        self.assertNotEqual(getattr(self.folder.foo, 'baz', None), None)
+        self.assertEqual(self.folder.foo.baz.Title(), 'Test Folder - Snooze!')
+
     def testCatalogTitleAndIdAreUpdatedOnFolderRename(self):
         # Make sure catalog updates title on rename
         title = 'Test Folder - Snooze!'

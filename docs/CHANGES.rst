@@ -11,7 +11,7 @@ Changelog
 - Fix for https://dev.plone.org/ticket/13603 would break with VHM.
   [spereverde, jakke, jfroche]
 
-- Don't rename content when the new id has leading or trailing spaces.
+- Strip leading & trailing spaces from id and title in rename-form.
   See https://dev.plone.org/ticket/12998, https://dev.plone.org/ticket/12989,
   https://dev.plone.org/ticket/9370, https://dev.plone.org/ticket/8338
   [pbauer]

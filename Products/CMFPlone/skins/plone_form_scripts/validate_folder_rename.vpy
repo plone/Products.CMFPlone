@@ -11,8 +11,8 @@
 from Products.CMFPlone import PloneMessageFactory as _
 
 paths = [path for path in paths if path]
-new_ids = [id for id in new_ids if id]
-new_titles = [title for title in new_titles]
+new_ids = [id.strip() for id in new_ids if id]
+new_titles = [title.strip() for title in new_titles]
 portal = context.portal_url.getPortalObject()
 check_id = context.check_id
 
@@ -43,12 +43,6 @@ for x in range(0, len(new_ids)):
         error = check_id(newid, required=True, contained_by=parent)
         if error:
             state.setError(id, error)
-
-for i in new_ids:
-    if i != i.strip():
-        context.plone_utils.addPortalMessage(
-            _(u'The id "%s" has leading or trailing spaces.' % i), 'error')
-        return state.set(status='failure')
 
 if state.getErrors():
     context.plone_utils.addPortalMessage(

@@ -17,6 +17,9 @@ request = context.REQUEST
 message = None
 putils = context.plone_utils
 
+new_ids = [i.strip() for i in new_ids]
+new_titles = [i.strip() for i in new_titles]
+
 orig_template = request.get('orig_template', None)
 change_template = paths and orig_template is not None
 if change_template:
