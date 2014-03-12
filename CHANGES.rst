@@ -14,6 +14,10 @@ Changelog
 5.0a1 (2014-03-02)
 ------------------
 
+- remove quickinstall control panel form since a new one was moved to
+  plone.app.controlpanel
+  [vangheem]
+
 - Add 'warning' and 'error' status message types to the test_rendering
   view.
   [esteele]

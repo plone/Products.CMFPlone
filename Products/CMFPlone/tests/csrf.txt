@@ -64,33 +64,20 @@ frameworks:
   >>> buttonName = browser.getControl('Register').name
 
 Also, the form used for the attack needs to be created.  Normally this would
-happen on another domain, but for the purposes of this test it will happen on
-the same site, since it is the only one the testbrowser knows about:
+happen on another domain, but for the purposes of this test it will just
+be a fake form submit. Now let's say with some social engineering the user who
+logged in above is lured to take a look at the "important" information and
+unsuspectingly even clicks the button presented:
 
-  >>> folder.invokeFactory('News Item', id='important', title='some important news!')
-  'important'
-  >>> folder.important.setText(' \
-  ... <form action="/plone/@@register" method="post"> \
-  ... <input type="hidden" name="fullname" value="John Doe" /> \
-  ... <input type="hidden" name="username" value="john" /> \
-  ... <input type="hidden" name="email" value="john@spam-factory.com" /> \
-  ... <input type="hidden" name="password" value="johnnyrulez" /> \
-  ... <input type="hidden" name="password_confirm" value="johnnyrulez" /> \
-  ... <input type="hidden" name="form.submitted" value="1" /> \
-  ... <input type="submit" name="' + buttonName + '" value="Click me!" /> \
-  ... </form> \
-  ... ', mimetype='text/html')
-  >>> folder.important.getField('text').default_output_type = 'text/html'
-  >>> portal.portal_workflow.doActionFor(folder.important, 'publish')
-  >>> transaction.commit()
-
-Now let's say with some social engineering the user who logged in above is
-lured to take a look at the "important" information and unsuspectingly even
-clicks the button presented:
-
-  >>> browser.open(folder.absolute_url())
-  >>> browser.getLink('some important news!').click()
-  >>> browser.getControl('Click me!').click()
+  >>> data = '&'.join([
+  ...     'form.widgets.fullname=John Doe',
+  ...     'form.widgets.username=john',
+  ...     'form.widgets.email=john@spam-factory.com',
+  ...     'form.widgets.password=johnnyrulez',
+  ...     'form.widgets.password_ctl=johnnyrulez',
+  ...     'form.buttons.register=Register',
+  ...     'form.submitted=1'])
+  >>> browser.open('http://nohost/plone/@@register', data)
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
@@ -100,7 +87,7 @@ So, he was protected from the attack — phew.  But of course, he should still
 be able to add new users himself if he wishes so:
 
   >>> browser.open('http://nohost/plone/@@register')
-  >>> browser.getControl(name='_authenticator')
+  >>> browser.getControl(name='_authenticator', index=0)
   <Control name='_authenticator' type='hidden'>
 
   >>> browser.getControl('Full Name').value = 'John Doe'
@@ -134,7 +121,7 @@ authenticator token as well.  The easiest way is to render the already
 existing invalid, in which case submitting should yield an error:
 
   >>> browser.goBack()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Full Name').value = 'John Doe'
   >>> browser.getControl('E-mail').value = 'john@foo-security.com'
   >>> browser.getControl('Save').click()
@@ -154,7 +141,7 @@ know the current passwort to exploit this, but we'll check nevertheless:
   '...Info...Password changed...'
 
   >>> browser.goBack()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Current password').value = 'y0d4Wg'
   >>> browser.getControl('New password').value = 'y0d4Wg!'
   >>> browser.getControl('Confirm password').value = 'y0d4Wg!'
@@ -174,7 +161,7 @@ On the admin side of things there's also the user preferences:
   '...Info...Changes saved...'
 
   >>> browser.goBack()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Full Name').value = 'John Doe'
   >>> browser.getControl('E-mail').value = 'john.doe@foo-security.net'
   >>> browser.getControl('Save').click()
@@ -213,7 +200,7 @@ anymore (which at the same time tests the security control panel):
   '...Info...Changes applied...'
 
   >>> browser.goBack()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl(name='users.roles:list:records').value = ['Manager'] * 3
   >>> browser.getControl('Apply Changes').click()
   Traceback (most recent call last):
@@ -261,7 +248,7 @@ Members" tab:
    ...Remove selected groups / users...'
 
   >>> browser.getControl('Show all').click()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl(name='add:list').getControl(value='john').selected = True
   >>> browser.getControl('Add selected groups and users to this group').click()
   Traceback (most recent call last):
@@ -289,7 +276,7 @@ Reopen URL to clean up HTTP_REFERRER
 Now rename
 
   >>> browser.getLink('Rename').click()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('New Short Name').value = 'folder'
   >>> browser.getControl('Rename All').click()
   Traceback (most recent call last):
@@ -308,11 +295,11 @@ Now rename
 
   >>> browser.getLink('Sharing').click()
   >>> browser.url
-  'http://nohost/plone/folder/@@sharing?ajax_load=1'
+  'http://nohost/plone/folder/@@sharing?_auth...'
   >>> browser.getControl(name='entries.role_Editor:records').value
   []
 
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl(name='entries.role_Editor:records').value = ['True']
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
@@ -334,8 +321,8 @@ And finally removing the item again:
   >>> browser.getLink('View').click()
   >>> browser.getLink('Delete').click()
   >>> browser.url
-  'http://nohost/plone/folder/delete_confirmation'
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  'http://nohost/plone/folder/delete_confirmation?_auth...'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Delete').click()
   Traceback (most recent call last):
   ...
@@ -381,7 +368,7 @@ publishing process can be protected, though, so let's try this instead:
   '...Info...Item state changed...'
 
   >>> browser.getLink('Advanced...').click()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Retract').selected = True
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
@@ -406,7 +393,7 @@ so testing one of them already makes sure the protection works in most cases:
   '...Info...Changes saved...'
 
   >>> browser.getLink('Security').click()
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl(name='form.enable_self_reg').value = False
   >>> browser.getControl('Save').click()
   Traceback (most recent call last):
@@ -423,7 +410,7 @@ configlets, which are tested separately.  The former isn't linked from the
   '...Info...Cleared the cache...'
 
   >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
-  >>> browser.getControl(name='_authenticator').value = 'invalid!'
+  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('Clear cache').click()
   Traceback (most recent call last):
   ...

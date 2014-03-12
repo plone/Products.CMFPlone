@@ -15,10 +15,12 @@ import difflib
 import re
 import transaction
 import unittest2 as unittest
+from lxml.html import fromstring, tostring
 
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav"')
 RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav".*?</ul>', re.S)
+RE_REMOVE_AUTH = re.compile('\?_authenticator\=.*\"', re.S)
 
 
 class TestPloneToolBrowserDefault(unittest.TestCase):
@@ -64,14 +66,19 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
         resolved = RE_REMOVE_SKIPNAV.sub('', resolved)
         resolved = RE_REMOVE_TABS.sub('', resolved)
+        resolved = RE_REMOVE_AUTH.sub('"', resolved)
 
         body = RE_REMOVE_DOCCONT.sub('', body)
         body = RE_REMOVE_SKIPNAV.sub('', body)
         body = RE_REMOVE_TABS.sub('', body)
+        body = RE_REMOVE_AUTH.sub('"', body)
 
         if not body:
             self.fail('No body in response')
 
+        # normalize html
+        body = tostring(fromstring(body))
+        resolved = tostring(fromstring(resolved))
         if not body == resolved:
             diff = difflib.unified_diff(body.split("\n"),
                                         resolved.split("\n"))

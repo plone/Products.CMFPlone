@@ -124,15 +124,17 @@ of test_user_1_:
 
     >>> browser.reload()
     >>> browser.getLink('Log out').click()
-    >>> browser.open('%s/edit' % folder.absolute_url())
+    >>> browser.open(folder.absolute_url() + '/edit')
     >>> 'require_login' in browser.url
     True
 
     >>> browser.getControl('Login Name').value = TEST_USER_NAME
     >>> browser.getControl('Password').value = TEST_USER_PASSWORD
     >>> browser.getControl('Log in').click()
+    >>> browser.open(folder.absolute_url())
+    >>> browser.getLink('Edit').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/...edit'
+    'http://nohost/plone/Members/test_user_1_/...edit...'
 
 We were automatically redirected to the page that triggered the
 login request.

@@ -1,9 +1,10 @@
 from borg.localrole.utils import replace_local_role_manager
 
 from zope.component import queryUtility
+from zope.component import getSiteManager
 from zope.interface import implements
 
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
@@ -12,6 +13,9 @@ from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
 
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IMigrationTool
+
+from plone.keyring.interfaces import IKeyManager
+from plone.keyring.keymanager import KeyManager
 
 
 class HiddenProducts(object):
@@ -167,6 +171,14 @@ def importFinalSteps(context):
     replace_local_role_manager(site)
     addCacheHandlers(site)
     addCacheForResourceRegistry(site)
+
+    # check if zope root has keyring installed for CSRF protection
+    app = aq_parent(site)
+    sm = getSiteManager(app)
+
+    if sm.queryUtility(IKeyManager) is None:
+        obj = KeyManager()
+        sm.registerUtility(aq_base(obj), IKeyManager, '')
 
 
 def updateWorkflowRoleMappings(context):

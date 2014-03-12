@@ -81,7 +81,7 @@ Editing the document and clicking the Cancel button doesn't modify it:
 We are now at the document absolute url:
 
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-page'
+    'http://nohost/plone/Members/test_user_1_/my-page...'
 
 If we click the Edit link twice and then Cancel, we end at the
 canonical view of the document:
@@ -90,7 +90,7 @@ canonical view of the document:
     >>> browser.getLink('Edit').click()
     >>> browser.getControl('Cancel').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-page/view'
+    'http://nohost/plone/Members/test_user_1_/my-page/view...'
 
 
 Editing Properties
@@ -100,7 +100,7 @@ We edit the document properties:
 
     >>> browser.getLink('Edit').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-page/edit'
+    'http://nohost/plone/Members/test_user_1_/my-page/edit...'
 
 We make sure the language is English at the beginning:
 
@@ -150,7 +150,7 @@ buffer here:
     >>> browser.getLink('View').click()
     >>> browser.getLink('Paste').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-folder/'
+    'http://nohost/plone/Members/test_user_1_/my-folder/...'
     >>> 'Item(s) pasted.' in browser.contents
     True
     >>> browser.getLink('View').click()
@@ -220,7 +220,7 @@ This should fail graciously, that is:
     >>> browser.open('http://nohost/plone/Members/test_user_1_/my-folder')
     >>> browser.getLink('Paste').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-folder'
+    'http://nohost/plone/Members/test_user_1_/my-folder...'
     >>> 'Traceback' not in browser.contents
     True
     >>> 'may have been moved or deleted after you copied' in browser.contents

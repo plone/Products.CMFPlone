@@ -1,6 +1,9 @@
 from operator import itemgetter
 
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
+from plone.keyring.interfaces import IKeyManager
+from plone.protect.interfaces import IDisableCSRFProtection
+from plone.protect.authenticator import check as checkCSRF
 from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import queryMultiAdapter
@@ -8,6 +11,7 @@ from zope.component import queryUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
 from zope.interface import Interface
+from zope.interface import alsoProvides
 from zope.publisher.interfaces import IRequest
 from zope.publisher.browser import BrowserView
 
@@ -25,6 +29,9 @@ from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.factory import addPloneSite
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+
+import logging
+LOGGER = logging.getLogger('Products.CMFPlone')
 
 
 class AppTraverser(DefaultPublishTraverse):
@@ -199,6 +206,19 @@ class AddPloneSite(BrowserView):
         submitted = form.get('form.submitted', False)
         if submitted:
             site_id = form.get('site_id', 'Plone')
+
+            # CSRF protect. DO NOT use auto CSRF protection for adding a site
+            alsoProvides(self.request, IDisableCSRFProtection)
+
+            # check if keyring is installed on root, disable CSRF protection
+            # if it is because it is not installed until a plone site
+            # is created
+            if queryUtility(IKeyManager) is None:
+                LOGGER.info('CSRF protection disabled on initial site '
+                            'creation')
+            else:
+                # we have a keymanager, check csrf protection manually now
+                checkCSRF(self.request)
             site = addPloneSite(
                 context, site_id,
                 title=form.get('title', ''),
