@@ -8,6 +8,11 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Strip leading & trailing spaces from id and title in rename-form.
+  See https://dev.plone.org/ticket/12998, https://dev.plone.org/ticket/12989,
+  https://dev.plone.org/ticket/9370, https://dev.plone.org/ticket/8338
+  [pbauer]
+
 - remove quickinstall control panel form since a new one was moved to
   plone.app.controlpanel
   [vangheem]
