@@ -264,6 +264,7 @@ a document as the default view of the test folder
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Wait until element is visible  id=folderChangeDefaultPage
     Click link  id=folderChangeDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
