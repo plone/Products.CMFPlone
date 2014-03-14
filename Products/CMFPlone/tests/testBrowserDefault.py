@@ -20,7 +20,7 @@ from lxml.html import fromstring, tostring
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav"')
 RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav".*?</ul>', re.S)
-RE_REMOVE_AUTH = re.compile('\?_authenticator\=.*?\"', re.S)
+RE_REMOVE_AUTH = re.compile('_authenticator=[\d\w]+', re.S)
 
 
 class TestPloneToolBrowserDefault(unittest.TestCase):
@@ -80,8 +80,8 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         body = tostring(fromstring(body))
         resolved = tostring(fromstring(resolved))
         if not body == resolved:
-            diff = difflib.unified_diff(body.split("\n"),
-                                        resolved.split("\n"))
+            diff = difflib.unified_diff([l.strip() for l in body.split("\n")],
+                                        [l.strip() for l in resolved.split("\n")])
             self.fail("\n".join([line for line in diff]))
 
     def compareLayoutVsCall(self, obj):
