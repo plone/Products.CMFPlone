@@ -259,7 +259,12 @@ I set the default content view of the test folder
 
 a document as the default view of the test folder
     a document 'doc' in the test folder
-    Go to  ${PLONE_URL}/${TEST_FOLDER}/select_default_page?form.submitted=1&objectId=doc
+    Go to  ${PLONE_URL}/${TEST_FOLDER}
+    Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Wait until element is visible  id=contextSetDefaultPage
+    Click link  id=contextSetDefaultPage
+    Click element  id=doc
+    Click element  css=div.modal-footer input[name="form.button.Save"]
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
