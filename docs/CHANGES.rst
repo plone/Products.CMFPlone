@@ -44,6 +44,9 @@ Changelog
   ZCML for Plone 5 only using zcml:condition="have plone-5"
   [davisagli]
 
+- Override _recursiveUpdateRoleMappings of CMFCore WorkflowTool to enhance performance
+  by not updating metadata.
+  [thepjot]
 
 4.3.3 (unreleased)
 ------------------
