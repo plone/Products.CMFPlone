@@ -15,6 +15,16 @@ Changelog
 
 - remove quickinstall control panel form since a new one was moved to
   plone.app.controlpanel
+
+- Override _recursiveUpdateRoleMappings of CMFCore WorkflowTool to enhance performance
+  by not updating metadata.
+  [thepjot]
+
+4.3.3 (2014-02-19)
+------------------
+
+- Change default permission for sendto_form to Authenticated instead of
+  Anonymous
   [vangheem]
 
 - make extensionprofiles selection part of 'advanced' in plone-addsite
