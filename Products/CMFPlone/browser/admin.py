@@ -255,6 +255,9 @@ class Upgrade(BrowserView):
         form = self.request.form
         submitted = form.get('form.submitted', False)
         if submitted:
+            # CSRF protect. DO NOT use auto CSRF protection for upgrading a site
+            alsoProvides(self.request, IDisableCSRFProtection)
+
             pm = getattr(self.context, 'portal_migration')
             report = pm.upgrade(
                 REQUEST=self.request,
