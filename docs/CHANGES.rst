@@ -30,6 +30,9 @@ Changelog
 
 4.3.3 (2014-02-19)
 ------------------
+- Fix incorrect use of dict get method in CatalogTool.search, introduced by
+  PloneHotfix20131210 (issue 195)
+  [fulv]
 
 - Change default permission for sendto_form to Authenticated instead of
   Anonymous
