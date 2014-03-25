@@ -401,7 +401,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         if args:
             query = args[0]
         elif 'query_request' in kw:
-            query = kw.get['query_request']
+            query = kw.get('query_request')
 
         kw['query_request'] = query.copy()
 
