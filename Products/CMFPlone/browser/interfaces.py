@@ -1,7 +1,7 @@
 from zope import schema
 from zope.interface import Interface
 
-from plone.schema.field import Email
+from plone.schema import Email
 
 import zope.deferredimport
 
