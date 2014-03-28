@@ -36,10 +36,6 @@ class SendToForm(form.Form):
 
     mail_template = ViewPageTemplateFile('templates/sendto_template.pt')
 
-    # XXX: Add validation, but the plan is the fields should be
-    # changed to the Email field that is to be provided by
-    # plone schema
-
     @button.buttonAndHandler(_(u'label_send', default='Send'),
                              name='send')
     def handle_send(self, action):
