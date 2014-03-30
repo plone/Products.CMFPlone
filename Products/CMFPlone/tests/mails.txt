@@ -31,13 +31,18 @@ Now fill in the form:
 And submit it:
 
   >>> form.submit()
-  
+
+We expect to return to the same page.
+
   >>> browser.url
-  'http://nohost/plone/contact-info'
+  'http://nohost/plone/@@send-feedback-confirm'
 
   >>> 'Mail sent' in browser.contents
   True
-  
+
+  >>> 'A mail has now been sent to the site administrator regarding your' in browser.contents
+  True
+
 As part of our test setup, we replaced the original MailHost with our
 own version.  Our version doesn't mail messages, it just collects them
 in a list called ``messages``:

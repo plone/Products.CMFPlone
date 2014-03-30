@@ -41,14 +41,12 @@
         <div id="content-core">
             <form name="feedback_form"
                 class="enableAutoFocus"
-                action=""
-                method="post"
-                tal:define="errors options/state/getErrors"
-                tal:attributes="action string:$portal_url/${template/getId}">
+                action="@@contact-info"
+                method="post">
 
             <tal:defs define="member context/@@plone_portal_state/member;
-                                  fullname python:request.get('fullname', not isAnon and member.getProperty('fullname', '') or None);
-                                  email python:request.get('email', not isAnon and member.getProperty('email','') or None);">
+                              fullname python:request.get('fullname', not isAnon and member.getProperty('fullname', '') or None);
+                              email python:request.get('email', not isAnon and member.getProperty('email','') or None);">
 
                 <input type="hidden" name="sender_fullname" value="fullname"
                        tal:attributes="value fullname"
@@ -57,7 +55,7 @@
                 <div class="field"
                      tal:condition="not:fullname"
                      tal:define="error errors/sender_fullname|nothing"
-                     tal:attributes="class python:test(error, 'field error', 'field')">
+                     tal:attributes="class python:error and 'field error' or 'field';">
                     <label for="sender_fullname" i18n:translate="label_sender_fullname">
                         Name
                     </label>
@@ -83,7 +81,7 @@
                 <div class="field"
                      tal:condition="not:email"
                      tal:define="error errors/sender_from_address|nothing"
-                     tal:attributes="class python:test(error, 'field error', 'field')">
+                     tal:attributes="class python:error and 'field error' or 'field';">
 
                     <label for="sender_from_address" i18n:translate="label_sender_from_address">
                         E-Mail
@@ -111,7 +109,7 @@
 
                 <div class="field"
                      tal:define="error errors/subject|nothing"
-                     tal:attributes="class python:test(error, 'field error', 'field')">
+                     tal:attributes="class python:error and 'field error' or 'field';">
 
                     <label for="subject" i18n:translate="label_subject">
                         Subject
@@ -138,7 +136,7 @@
 
                 <div class="field"
                      tal:define="error errors/message|nothing"
-                     tal:attributes="class python:test(error, 'field error', 'field')">
+                     tal:attributes="class python: error and 'field error' or 'field';">
 
                     <label for="message" i18n:translate="label_message">
                         Message

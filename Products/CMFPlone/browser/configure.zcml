@@ -115,6 +115,28 @@
       permission="zope.Public"
       />
 
+  <browser:page
+      for="*"
+      name="contact-info"
+      class=".contact_info.ContactInfoView"
+      template="templates/contact-info.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="send-feedback-confirm"
+      template="templates/send_feedback_confirm.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="site-feedback-template"
+      template="templates/site_feedback_template.pt"
+      permission="zope.Public"
+      />
+
    <adapter for="*
                 .interfaces.INavigationTree"
             factory=".navtree.DefaultNavtreeStrategy"
