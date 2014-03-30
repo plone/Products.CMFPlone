@@ -1,16 +1,15 @@
-import re
-import unittest
-from urllib import urlencode
+from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from Testing.makerequest import makerequest
-from plone.testing.z2 import Browser
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
 from zExceptions import Unauthorized
+
+import re
+import unittest
 
 
 class TestAttackVectorsUnit(unittest.TestCase):
-    
+
     def test_gtbn_funcglobals(self):
         from Products.CMFPlone.utils import getToolByName
         try:
@@ -42,7 +41,7 @@ Products.PlacelessTranslationService.allow_module('os')
         script._filepath = 'script'
         script.write(src)
         self.assertRaises((ImportError, Unauthorized), script)
-    
+
     def test_PT_allow_module_not_available_in_RestrictedPython_2(self):
         src = '''
 from Products.PlacelessTranslationService import allow_module
@@ -60,7 +59,7 @@ allow_module('os')
 
 
 class TestAttackVectorsFunctional(PloneTestCase):
-    
+
     def test_widget_traversal_1(self):
         res = self.publish('/plone/@@discussion-settings/++widget++moderator_email')
         self.assertEqual(302, res.status)
@@ -70,12 +69,12 @@ class TestAttackVectorsFunctional(PloneTestCase):
         res = self.publish('/plone/@@discussion-settings/++widget++captcha/terms/field/interface/setTaggedValue?tag=cake&value=lovely')
         self.assertEqual(302, res.status)
         self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
-    
+
     def test_registerConfiglet_1(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         res = self.publish(VECTOR)
         self.assertTrue(res.headers['location'].startswith('http://nohost/plone/acl_users/credentials_cookie_auth/require_login'))
-    
+
     def test_registerConfiglet_2(self):
         VECTOR = "/plone/portal_controlpanel/registerConfiglet?id=cake&name=Cakey&action=woo&permission=View&icon_expr="
         self.publish(VECTOR)
@@ -89,56 +88,6 @@ class TestAttackVectorsFunctional(PloneTestCase):
         if m:
             return m.group(1)
         return ''
-    
-    def test_renameObjectsByPaths(self):
-        PAYLOAD = {
-            'paths:list': '/plone/news',
-            # id must stay the same
-            'new_ids:list': 'news',
-            'new_titles:list': 'EVIL',
-            # Set orig_template to 'view'. Otherwise folder_rename "success" redirects
-            # to folder_contents, which will raise Unauthorized.
-            'orig_template': 'view',
-        }
-
-        browser = Browser(self.app)
-        csrf_token = self._get_authenticator()
-
-        PAYLOAD['_authenticator'] = csrf_token
-        # Call folder_rename anywhere
-        browser.open('http://nohost/plone/folder_rename',
-            urlencode(PAYLOAD))
-        self.assertTrue('The following item(s) could not be renamed: /plone/news.' in browser.contents)
-        self.assertEqual('News', self.portal.news.Title())
-
-    def test_renameObjectByPaths_postonly(self):
-        from Products.PythonScripts.PythonScript import PythonScript
-        script = PythonScript('script')
-        script._filepath = 'script'
-        src = """context.plone_utils.renameObjectsByPaths(paths=['/plone/news'], new_ids=['news'], new_titles=['EVIL'], REQUEST=context.REQUEST)"""
-        script.write(src)
-        self.portal.evil = script
-        csrf_token = self._get_authenticator()
-
-        self.publish('/plone/evil', extra={'_authenticator': csrf_token}, request_method='POST')
-        self.assertEqual('News', self.portal.news.Title())
-
-        owner_basic = SITE_OWNER_NAME + ':' + SITE_OWNER_PASSWORD
-        csrf_token = self._get_authenticator(owner_basic)
-        self.publish('/plone/evil', extra={'_authenticator': csrf_token}, basic=owner_basic)
-        self.assertEqual('News', self.portal.news.Title())
-        self.publish('/plone/evil', request_method='POST', extra={'_authenticator': csrf_token}, basic=owner_basic)
-        self.assertEqual('EVIL', self.portal.news.Title())
-
-        self.setRoles(['Manager'])
-        self.portal.news.setTitle('News')
-        self.portal.plone_utils.renameObjectsByPaths(paths=['/plone/news'], new_ids=['news'], new_titles=['EVIL'])
-        self.assertEqual('EVIL', self.portal.news.Title())
-        self.portal.news.setTitle('News')
-        
-        self.setRoles(['Member'])
-        self.portal.plone_utils.renameObjectsByPaths(paths=['/plone/news'], new_ids=['news'], new_titles=['EVIL'])
-        self.assertEqual('News', self.portal.news.Title())
 
     def test_gtbn_faux_archetypes_tool(self):
         from Products.CMFCore.utils import FauxArchetypeTool
@@ -158,7 +107,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
     def test_queryCatalog(self):
         res = self.publish('/plone/news/aggregator/queryCatalog')
         self.assertEqual(404, res.status)
-    
+
     def test_resolve_url(self):
         res = self.publish("/plone/uid_catalog/resolve_url?path=/evil")
         self.assertEqual(404, res.status)

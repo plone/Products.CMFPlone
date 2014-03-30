@@ -13,11 +13,12 @@ Changelog
   https://github.com/plone/Products.CMFPlone/issues/163
   [khink]
 
--  PLIP 13260 remove templates and form scripts for
-   ``select_default_page`` and ``select_default_view`` because they got
-   migrated to browser views. see:
-   https://github.com/plone/Products.CMFPlone/issues/90
-   [saily]
+- PLIP 13260 remove templates and form scripts for
+  ``select_default_page`` and ``select_default_view`` because they got
+  migrated to browser views. Fix tests for that and remove legacy tests.
+  See: https://github.com/plone/Products.CMFPlone/issues/90
+  [saily]
+
 
 
 5.0a1 (2014-03-02)
