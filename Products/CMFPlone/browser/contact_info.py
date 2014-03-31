@@ -1,23 +1,21 @@
-import logging
-from smtplib import SMTPException
-
-from zope.site.hooks import getSite
+# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.statusmessages.interfaces import IStatusMessage
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone.browser.interfaces import IContactForm
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.statusmessages.interfaces import IStatusMessage
+from smtplib import SMTPException
 from z3c.form import form, field, button
+from zope.site.hooks import getSite
+
+import logging
 
 log = logging.getLogger(__name__)
 
 
 class ContactForm(form.Form):
 
-    template = ViewPageTemplateFile(
-        'templates/contact-info.pt'
-    )
-
+    template = ViewPageTemplateFile('templates/contact-info.pt')
     fields = field.Fields(IContactForm)
     ignoreContext = True
 
@@ -34,11 +32,8 @@ class ContactForm(form.Form):
 
         self.send_message(data)
         self.send_feedback()
-        return
 
     def send_message(self, data):
-        context = self.context
-
         sender_from_address = data.get('sender_from_address')
         sender_fullname = data.get('sender_fullname')
         subject = data.get('subject')
@@ -50,36 +45,36 @@ class ContactForm(form.Form):
         encoding = portal.getProperty('email_charset')
         host = getToolByName(self.context, 'MailHost')
 
-        url = portal.absolute_url()
-
         variables = {
             'sender_from_address': sender_from_address,
             'sender_fullname': sender_fullname,
-            'url': url,
+            'url': portal.absolute_url(),
             'subject': subject,
             'message': message,
         }
 
         try:
-            message = context.restrictedTraverse('@@contact-info-email')(
-                context, **variables)
-            message = message.encode(encoding)
-            host.send(message, send_to_address, from_address, subject=subject,
-                      charset=encoding)
+            template = self.context.restrictedTraverse('@@contact-info-email')
+            message = template(self.context, **variables).encode(encoding)
+
+            # This actually sends out the mail
+            host.send(
+                message,
+                send_to_address,
+                from_address,
+                subject=subject,
+                charset=encoding
+            )
         except (SMTPException, RuntimeError), e:
             log.error(e)
-            plone_utils = getToolByName(context, 'plone_utils')
+            plone_utils = getToolByName(portal, 'plone_utils')
             exception = plone_utils.exceptionString()
             message = _(u'Unable to send mail: ${exception}',
                         mapping={u'exception': exception})
             IStatusMessage(self.request).add(message, type=u'error')
-            return
-
-        return
 
     def send_feedback(self):
         IStatusMessage(self.request).add(
             _(u'A mail has now been sent to the site administrator '
-              'regarding your questions and/or comments.')
+              u'regarding your questions and/or comments.')
         )
-        return
