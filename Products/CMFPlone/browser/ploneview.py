@@ -324,17 +324,6 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.have_portlets(manager_name, view=view)
 
-<<<<<<< HEAD
-    def renderBase(self):
-        """Returns the current URL to be used in the base tag.
-        """
-        log_deprecated("@@plone_view/renderBase as been deprecated, you should use @@plone_layout/renderBase")
-        context = aq_inner(self.context)
-        layout = getMultiAdapter((context, self.request), name=u'plone_layout')
-        return layout.renderBase()
-
-=======
->>>>>>> master
     def bodyClass(self, template, view):
         """Returns the CSS class to be used on the body tag.
         """
