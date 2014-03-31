@@ -20,6 +20,10 @@ Changelog
   [saily]
 
 
+- PLIP 13260: Migration contact-info to z3c.form and make it highly
+  customizeable.
+  [timitos, saily]
+
 
 5.0a1 (2014-03-02)
 ------------------
