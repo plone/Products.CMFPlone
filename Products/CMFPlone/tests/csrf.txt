@@ -278,14 +278,14 @@ Now rename
   >>> browser.getLink('Rename').click()
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
   >>> browser.getControl('New Short Name').value = 'folder'
-  >>> browser.getControl(name='form.widgets.Rename').click()
+  >>> browser.getControl(name='form.buttons.Rename').click()
   Traceback (most recent call last):
   ...
   HTTPError: HTTP Error 403: Forbidden
 
   >>> browser.goBack()
   >>> browser.getControl('New Short Name').value = 'folder'
-  >>> browser.getControl(name='form.widgets.Rename').click()
+  >>> browser.getControl(name='form.buttons.Rename').click()
   >>> browser.url.strip()
   'http://nohost/plone/folder'
   >>> open('/Users/daniel/Desktop/test.html', 'w').write(browser.contents)
