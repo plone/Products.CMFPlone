@@ -288,7 +288,6 @@ Now rename
   >>> browser.getControl(name='form.buttons.Rename').click()
   >>> browser.url.strip()
   'http://nohost/plone/folder'
-  >>> open('/Users/daniel/Desktop/test.html', 'w').write(browser.contents)
   >>> browser.contents
   '...Info...Renamed...a-folder...to...folder...'
 
