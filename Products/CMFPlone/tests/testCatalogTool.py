@@ -601,7 +601,7 @@ class TestFolderCataloging(PloneTestCase):
         form.update()
 
         self.loginAsPortalOwner()
-        button = form.buttons['rename']
+        button = form.buttons['Rename']
         form.handlers.getHandler(button)(form, button)
 
         results = self.catalog(Title='Snooze')
@@ -621,7 +621,7 @@ class TestFolderCataloging(PloneTestCase):
         form.update()
 
         self.loginAsPortalOwner()
-        button = form.buttons['rename']
+        button = form.buttons['Rename']
         form.handlers.getHandler(button)(form, button)
 
         results = self.catalog(Title='Snooze')
