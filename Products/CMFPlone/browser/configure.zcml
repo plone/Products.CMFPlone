@@ -118,22 +118,14 @@
   <browser:page
       for="*"
       name="contact-info"
-      class=".contact_info.ContactInfoView"
-      template="templates/contact-info.pt"
+      class=".contact_info.ContactForm"
       permission="zope.Public"
       />
 
   <browser:page
       for="*"
-      name="send-feedback-confirm"
-      template="templates/send_feedback_confirm.pt"
-      permission="zope.Public"
-      />
-
-  <browser:page
-      for="*"
-      name="site-feedback-template"
-      template="templates/site_feedback_template.pt"
+      name="contact-info-email"
+      template="templates/contact-info-email.pt"
       permission="zope.Public"
       />
 
