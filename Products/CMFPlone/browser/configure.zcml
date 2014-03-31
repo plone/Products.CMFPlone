@@ -115,6 +115,20 @@
       permission="zope.Public"
       />
 
+  <browser:page
+      for="*"
+      name="contact-info"
+      class=".contact_info.ContactForm"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="contact-info-email"
+      template="templates/contact-info-email.pt"
+      permission="zope.Public"
+      />
+
    <adapter for="*
                 .interfaces.INavigationTree"
             factory=".navtree.DefaultNavtreeStrategy"
