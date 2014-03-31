@@ -1,27 +1,24 @@
-from borg.localrole.utils import replace_local_role_manager
-
-from zope.component import getUtility
-from zope.component import queryUtility
-from zope.component import getSiteManager
-from zope.component.hooks import getSite
-from zope.interface import implements
-from zope.i18n.locales import locales
-from zope.i18n.locales import LoadLocaleError
-
 from Acquisition import aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.interfaces import IDateAndTimeSchema
+from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
     import AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
-
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.interfaces import IDateAndTimeSchema
-from Products.CMFPlone.interfaces import IMigrationTool
-
-from plone.registry.interfaces import IRegistry
+from borg.localrole.utils import replace_local_role_manager
 from plone.keyring.interfaces import IKeyManager
 from plone.keyring.keymanager import KeyManager
+from plone.registry.interfaces import IRegistry
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.component.hooks import getSite
+from zope.i18n.locales import LoadLocaleError
+from zope.i18n.locales import locales
+from zope.interface import implements
+
 
 class HiddenProducts(object):
     implements(INonInstallable)
