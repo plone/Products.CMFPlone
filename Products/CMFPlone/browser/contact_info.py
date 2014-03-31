@@ -16,6 +16,8 @@ log = logging.getLogger(__name__)
 class ContactForm(form.Form):
 
     template = ViewPageTemplateFile('templates/contact-info.pt')
+    template_mailview = '@@contact-info-email'
+
     fields = field.Fields(IContactForm)
     ignoreContext = True
 
@@ -33,11 +35,12 @@ class ContactForm(form.Form):
         self.send_message(data)
         self.send_feedback()
 
+    def generate_mail(self, variables, encoding='utf-8'):
+        template = self.context.restrictedTraverse(self.template_mailview)
+        return template(self.context, **variables).encode(encoding)
+
     def send_message(self, data):
-        sender_from_address = data.get('sender_from_address')
-        sender_fullname = data.get('sender_fullname')
         subject = data.get('subject')
-        message = data.get('message')
 
         portal = getSite()
         send_to_address = portal.getProperty('email_from_address')
@@ -45,21 +48,12 @@ class ContactForm(form.Form):
         encoding = portal.getProperty('email_charset')
         host = getToolByName(self.context, 'MailHost')
 
-        variables = {
-            'sender_from_address': sender_from_address,
-            'sender_fullname': sender_fullname,
-            'url': portal.absolute_url(),
-            'subject': subject,
-            'message': message,
-        }
+        data['url'] = portal.absolute_url()
 
         try:
-            template = self.context.restrictedTraverse('@@contact-info-email')
-            message = template(self.context, **variables).encode(encoding)
-
             # This actually sends out the mail
             host.send(
-                message,
+                self.generate_mail(data, encoding),
                 send_to_address,
                 from_address,
                 subject=subject,
