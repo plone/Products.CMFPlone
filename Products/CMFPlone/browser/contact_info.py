@@ -25,7 +25,7 @@ class ContactForm(form.Form):
     def handle_send(self, action):
         data, errors = self.extractData()
         if errors:
-            IStatusMessage(self.request).addStatusMessage(
+            IStatusMessage(self.request).add(
                 self.formErrorsMessage,
                 type=u'error'
             )
@@ -50,8 +50,7 @@ class ContactForm(form.Form):
         encoding = portal.getProperty('email_charset')
         host = getToolByName(self.context, 'MailHost')
 
-        url_tool = getToolByName(context, 'portal_url')
-        url = url_tool()
+        url = portal.absolute_url()
 
         variables = {
             'sender_from_address': sender_from_address,
