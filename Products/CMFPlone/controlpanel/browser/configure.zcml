@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <!-- Search Control Panel -->
+  <browser:page
+    name="search-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".search.SearchControlPanel"
+    permission="plone.app.controlpanel.Search"
+    />
+
+  <!-- Site Control Panel -->
+  <browser:page
+    name="site-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".site.SiteControlPanel"
+    permission="plone.app.controlpanel.Site"
+    />
+
+</configure>

@@ -16,6 +16,11 @@
    />
 
  <portletmanager
+   name="plone.footerportlets"
+   type="plone.app.portlets.interfaces.IFooter"
+   />
+
+ <portletmanager
    name="plone.dashboard1"
    type="plone.app.portlets.interfaces.IDashboard"
    />
@@ -120,6 +125,17 @@
    <for interface="plone.app.portlets.interfaces.IDashboard" />
  </portlet>
 
+ <portlet
+   addview="portlets.Actions"
+   title="Actions"
+   description="A portlet that provides links of an action category"
+   i18n:attributes="title;
+                    description"
+   >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
  <assignment
      manager="plone.leftcolumn"
      category="context"
@@ -127,5 +143,40 @@
      type="portlets.Navigation"
      name="navigation"
      />
+
+ <assignment
+     manager="plone.footerportlets"
+     category="context"
+     key="/"
+     type="portlets.Classic"
+     name="footer"
+     >
+    <property name="template">footer</property>
+    <property name="macro"></property>
+ </assignment>
+
+ <assignment
+     manager="plone.footerportlets"
+     category="context"
+     key="/"
+     type="portlets.Actions"
+     name="actions"
+     >
+    <property name="ptitle">site_actions</property>
+    <property name="show_title">False</property>
+    <property name="category">site_actions</property>
+    <property name="show_icons">False</property>
+ </assignment>
+
+ <assignment
+     manager="plone.footerportlets"
+     category="context"
+     key="/"
+     type="portlets.Classic"
+     name="colophon"
+     >
+    <property name="template">colophon</property>
+    <property name="macro"></property>
+ </assignment>
 
 </portlets>

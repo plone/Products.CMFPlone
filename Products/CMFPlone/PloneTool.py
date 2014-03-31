@@ -5,7 +5,10 @@ from types import UnicodeType, StringType
 import urlparse
 import transaction
 
+from plone.registry.interfaces import IRegistry
+
 from zope.component import queryAdapter
+from zope.component import getUtility
 from zope.deprecation import deprecate
 from zope.interface import implements
 from zope.event import notify
@@ -32,6 +35,7 @@ from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.events import ReorderedEvent
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.CMFPlone.interfaces import INonStructuralFolder
@@ -48,9 +52,6 @@ from AccessControl.requestmethod import postonly
 from plone.app.linkintegrity.exceptions \
     import LinkIntegrityNotificationException
 
-
-AllowSendto = 'Allow sendto'
-permissions.setDefaultRoles(AllowSendto, ('Anonymous', 'Manager', ))
 
 _marker = utils._marker
 _icons = {}
@@ -162,27 +163,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         <MailHost ...>
         """
         return getattr(aq_parent(self), 'MailHost')
-
-    security.declareProtected(AllowSendto, 'sendto')
-    def sendto(self, send_to_address, send_from_address, comment,
-               subject='Plone', **kwargs):
-        # Sends a link of a page to someone.
-        host = self.getMailHost()
-        template = getattr(self, 'sendto_template')
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        encoding = portal.getProperty('email_charset')
-        if 'envelope_from' in kwargs:
-            envelope_from = kwargs['envelope_from']
-        else:
-            envelope_from = send_from_address
-        # Cook from template
-        message = template(self, send_to_address=send_to_address,
-                           send_from_address=send_from_address,
-                           comment=comment, subject=subject, **kwargs)
-        message = message.encode(encoding)
-        host.send(message, mto=send_to_address,
-                  mfrom=envelope_from, subject=subject,
-                  charset='utf-8')
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
@@ -990,7 +970,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         site_props = getToolByName(self, 'portal_properties').site_properties
         mt = getToolByName(self, 'portal_membership')
 
-        use_all = site_props.getProperty('exposeDCMetaTags', None)
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        use_all = settings.exposeDCMetaTags
         view_about = site_props.getProperty('allowAnonymousViewAbout', False) \
                      or not mt.isAnonymousUser()
 
@@ -1119,7 +1101,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('reindexOnReorder')
     def reindexOnReorder(self, parent):
-        """ reindexing of "gopip" isn't needed any longer, 
+        """ reindexing of "gopip" isn't needed any longer,
         but some extensions might need the info anyway :("""
         notify(ReorderedEvent(parent))
 

@@ -10,19 +10,15 @@
 
 <metal:content-core fill-slot="content-core">
 <metal:block define-macro="content-core"
-                    tal:define="kssClassesView context/@@kss_field_decorator_view;
-                                getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
-                                templateId template/getId">
+                    tal:define="templateId template/getId">
 
     <div metal:define-macro="text-field-view"
          id="parent-fieldname-text" class="stx"
-         tal:define="kss_class python:getKssClasses('text',
-                     templateId=templateId, macro='text-field-view');
-                     has_text exists:context/aq_explicit/getText;
+         tal:define="has_text exists:context/aq_explicit/getText;
                      text python:has_text and here.getText() or ''"
          tal:condition="text"
          tal:attributes="class python:test(context.Format() in ('text/structured',
-                                               'text/x-rst', ), 'stx' + kss_class, 'plain' + kss_class)">
+                                               'text/x-rst', ), 'stx', 'plain')">
         <div metal:define-slot="inside" tal:replace="structure text">The body</div>
     </div>
 
@@ -48,8 +44,8 @@
                         plone_view context/@@plone;">
     <tal:listing condition="batch">
 
-        <dl metal:define-slot="entries">
-            <tal:entry tal:repeat="item batch" metal:define-macro="entries">
+        <div metal:define-slot="entries">
+            <article tal:repeat="item batch" metal:define-macro="entries">
             <tal:block tal:define="item_url item/getURL|item/absolute_url;
                                    item_id item/getId|item/id;
                                    item_title_or_id item/pretty_title_or_id;
@@ -68,7 +64,7 @@
                                    item_sametime python: item_start == item_end;
                                    item_samedate python: (item_end - item_start &lt; 1) if item_type == 'Event' else False">
                 <metal:block define-slot="entry">
-                <dt metal:define-macro="listitem"
+                <header metal:define-macro="listitem"
                     tal:attributes="class python:test(item_type == 'Event', 'vevent', '')">
 
                     <span class="summary">
@@ -162,18 +158,18 @@
                         </tal:byline>
                     </span>
 
-                </dt>
+                </header>
 
-                <dd tal:condition="item_description">
+                <p tal:condition="item_description">
                     <span class="description"
                            tal:content="item_description">
                         description
                     </span>
-                </dd>
+                </p>
             </metal:block>
             </tal:block>
-            </tal:entry>
-        </dl>
+            </article>
+        </div>
 
         <div metal:use-macro="context/batch_macros/macros/navigation" />
 

@@ -31,9 +31,6 @@
       <role name="Owner"/>
       <role name="Contributor"/>
     </permission>
-    <permission name="Add portal events" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
     <permission name="Add portal folders" acquire="True">
       <role name="Manager"/>
       <role name="Site Administrator"/>
@@ -41,15 +38,11 @@
       <role name="Contributor"/>
     </permission>
     <permission name="Allow sendto" acquire="True">
-      <role name="Anonymous"/>
       <role name="Manager"/>
       <role name="Site Administrator"/>
       <role name="Member"/>
     </permission>
     <permission name="Change local roles" acquire="True">
-      <role name="Site Administrator"/>
-    </permission>
-    <permission name="Change portal events" acquire="True">
       <role name="Site Administrator"/>
     </permission>
     <permission name="Copy or Move" acquire="True">

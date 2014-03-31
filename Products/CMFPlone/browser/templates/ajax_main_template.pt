@@ -1,0 +1,88 @@
+<metal:page define-macro="master">
+<tal:doctype tal:replace="structure string:&lt;!DOCTYPE html&gt;" />
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    tal:define="portal_state context/@@plone_portal_state;
+        context_state context/@@plone_context_state;
+        plone_view context/@@plone;
+        lang portal_state/language;
+        view nocall:view | nocall: plone_view;
+        dummy python: plone_view.mark_view(view);
+        portal_url portal_state/portal_url;
+        checkPermission nocall: context/portal_membership/checkPermission;
+        site_properties context/portal_properties/site_properties;
+        ajax_load python:True;"
+    tal:attributes="lang lang;">
+
+    <metal:cache tal:replace="structure provider:plone.httpheaders" />
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</head>
+
+<body tal:define="isRTL portal_state/is_rtl;
+                  sl python:plone_view.have_portlets('plone.leftcolumn', view);
+                  sr python:plone_view.have_portlets('plone.rightcolumn', view);
+                  body_class python:plone_view.bodyClass(template, view);"
+    tal:attributes="class string: ${body_class} ajax_load;
+                    dir python:isRTL and 'rtl' or 'ltr'">
+
+    <aside id="global_statusmessage">
+      <tal:message tal:content="provider:plone.globalstatusmessage"/>
+      <div metal:define-slot="global_statusmessage">
+      </div>
+    </aside>
+
+    <article id="portal-column-content">
+
+        <metal:block define-slot="content">
+            <div metal:define-macro="content">
+
+
+                <metal:slot define-slot="body">
+                    <div id="content">
+
+                        <metal:bodytext define-slot="main">
+
+                        <header>
+                         <metal:title define-slot="content-title">
+                             <metal:comment tal:content="nothing">
+                                 If you write a custom title always use
+                                 <h1 class="documentFirstHeading"></h1> for it
+                             </metal:comment>
+                             <h1 metal:use-macro="context/kss_generic_macros/macros/generic_title_view">
+                                 Generic KSS Title. Is rendered with class="documentFirstHeading".
+                             </h1>
+                         </metal:title>
+
+                         <metal:description define-slot="content-description">
+                             <metal:comment tal:content="nothing">
+                                 If you write a custom description always use
+                                 <div class="documentDescription"></div> for it
+                             </metal:comment>
+                           <div metal:use-macro="context/kss_generic_macros/macros/generic_description_view">
+                               Generic KSS Description. Is rendered with class="documentDescription".
+                           </div>
+                         </metal:description>
+                        </header>
+
+                         <section id="content-core">
+                             <metal:text define-slot="content-core" tal:content="nothing">
+                                 Page body text
+                             </metal:text>
+                         </section>
+
+                        </metal:bodytext>
+                    </div>
+                </metal:slot>
+
+            </div>
+        </metal:block>
+
+    </article>
+
+</body>
+</html>
+
+</metal:page>

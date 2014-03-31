@@ -9,11 +9,11 @@
     <dependency>profile-Products.PloneLanguageTool:PloneLanguageTool</dependency>
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
-    <dependency>profile-plone.app.jquery:default</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-plone.app.search:default</dependency>
     <dependency>profile-plone.app.theming:default</dependency>
+    <dependency>profile-plone.outputfilters:default</dependency>
     <dependency>profile-plone.portlet.collection:default</dependency>
     <dependency>profile-plone.portlet.static:default</dependency>
     <dependency>profile-plone.protect:default</dependency>

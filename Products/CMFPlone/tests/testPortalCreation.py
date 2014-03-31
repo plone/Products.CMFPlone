@@ -121,6 +121,10 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         members = self.membership.getMembersFolder()
         self.assertEqual(members._ordering, 'unordered')
 
+    def testMembersFolderDefaultView(self):
+        members = self.membership.getMembersFolder()
+        self.assertEqual(members.layout, '@@member-search')
+
     def testMailHost(self):
         # MailHost should be of the standard variety
         mailhost = self.portal.MailHost
@@ -764,6 +768,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
                             if IPortletManager == r.provided]
         self.assertEqual(['plone.dashboard1', 'plone.dashboard2',
                            'plone.dashboard3', 'plone.dashboard4',
+                           'plone.footerportlets',
                            'plone.leftcolumn', 'plone.rightcolumn'],
                            sorted(registrations))
 
@@ -796,6 +801,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.assertEqual([
                 'plone.portlet.collection.Collection',
                 'plone.portlet.static.Static',
+                'portlets.Actions',
                 'portlets.Classic',
                 'portlets.Login',
                 'portlets.Navigation',
@@ -816,6 +822,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
             self.assertEqual([
               'plone.portlet.collection.Collection',
               'plone.portlet.static.Static',
+              'portlets.Actions',
               'portlets.Classic',
               'portlets.News',
               'portlets.Recent',
@@ -898,39 +905,8 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-        self.members = self.membership.getMembersFolder()
         self.catalog = self.portal.portal_catalog
-        self.mem_index_type = "Script (Python)"
         self.setupAuthenticator()
-
-    def testMembersIndexHtml(self):
-        # index_html for Members folder should be a Page Template
-        members = self.members
-        self.assertEqual(aq_base(members).meta_type, 'ATFolder')
-        self.assertTrue(hasattr(aq_base(members), 'index_html'))
-        # getitem works
-        self.assertEqual(aq_base(members)['index_html'].meta_type,
-                         self.mem_index_type)
-        self.assertEqual(members['index_html'].meta_type, self.mem_index_type)
-        # _getOb works
-        self.assertEqual(aq_base(members)._getOb('index_html').meta_type,
-                         self.mem_index_type)
-        self.assertEqual(members._getOb('index_html').meta_type,
-                         self.mem_index_type)
-        # getattr works when called explicitly
-        self.assertEqual(aq_base(members).__getattr__('index_html').meta_type,
-                         self.mem_index_type)
-        self.assertEqual(members.__getattr__('index_html').meta_type,
-                         self.mem_index_type)
-
-    def testLargePloneFolderHickup(self):
-        # Attribute access for 'index_html' acquired the Document from the
-        # portal instead of returning the local Page Template. This was due to
-        # special treatment of 'index_html' in the PloneFolder base class and
-        # got fixed by hazmat.
-        members = self.members
-        self.assertEqual(aq_base(members).meta_type, 'ATFolder')
-        self.assertEqual(members.index_html.meta_type, self.mem_index_type)
 
     def testSubsequentProfileImportSucceeds(self):
         # Subsequent profile imports fail (#5439)

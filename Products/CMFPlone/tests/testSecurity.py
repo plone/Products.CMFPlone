@@ -141,7 +141,7 @@ class TestAttackVectorsFunctional(PloneTestCase):
         self.assertEqual('News', self.portal.news.Title())
 
     def test_gtbn_faux_archetypes_tool(self):
-        from Products.CMFPlone.FactoryTool import FauxArchetypeTool
+        from Products.CMFCore.utils import FauxArchetypeTool
         from Products.CMFPlone.utils import getToolByName
         self.portal.portal_factory.archetype_tool = FauxArchetypeTool(self.portal.archetype_tool)
         self.assertEqual(self.portal.portal_factory.archetype_tool, getToolByName(self.portal.portal_factory, 'archetype_tool'))

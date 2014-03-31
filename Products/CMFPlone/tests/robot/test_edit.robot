@@ -24,8 +24,8 @@ Scenario: A page is opened to edit
 
 Scenario: Switch tabs
     Given an edited page
-     When i click the categorization tab
-     Then the categorization tab is shown
+     When i click the Categorization tab
+     Then the Categorization tab is shown
       and no other tab is shown
 
 Scenario: Adding a related item
@@ -34,7 +34,7 @@ Scenario: Adding a related item
     # First we're creating a new item and then editing the original page
     Given at least one other item
       and an edited page
-     When i click the categorization tab
+     When i click the Categorization tab
       and i click the add related item button
       and an overlay pops up
       and i select a related item
@@ -45,7 +45,7 @@ Scenario: Adding a related item
 Scenario: DateTime widget follows form dropdowns values
     Pass Execution  Disabled until plone.app.widgets is merged
     Given an edited page
-     When i click the dates tab
+     When i click the Dates tab
       and i select a date using the dropdowns
       and i click the calendar icon
      Then popup calendar should have the same date
@@ -53,7 +53,7 @@ Scenario: DateTime widget follows form dropdowns values
 Scenario: Form dropdowns follows DateTime widget values
     Pass Execution  Disabled until plone.app.widgets is merged
     Given an edited page
-     When i click the dates tab
+     When i click the Dates tab
      and i click the calendar icon
      and i select a date using the widget
     Then form dropdowns should not have the default values anymore
@@ -80,8 +80,8 @@ I can only see the default tab
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-dates']
     Element Should Not Be Visible  xpath=//fieldset[@id='fieldset-categorization']
 
-I click the ${tabid} tab
-    Click link  xpath=//a[@id='fieldsetlegend-${tabid}']
+I click the ${tab} tab
+    Click link  ${tab}
 
 the categorization tab is shown
     Element Should Be Visible  xpath=//fieldset[@id='fieldset-categorization']

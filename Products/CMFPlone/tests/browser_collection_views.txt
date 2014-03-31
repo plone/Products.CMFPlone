@@ -39,7 +39,6 @@ Now let's login and visit the collection in the test browser:
     >>> browser.getControl('Log in').click()
     >>> browser.open('http://nohost/plone/folder/collection')
 
-
 Lets check the folder_listing (Standard view):
 
     >>> browser.getLink('Standard view').click()

@@ -5,11 +5,78 @@
 Changelog
 =========
 
-5.0a1 (unreleased)
+5.0a2 (unreleased)
 ------------------
+
+- Remove DL/DT/DD's from portal messages, portlet templates and others.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  https://github.com/plone/Products.CMFPlone/issues/163
+  [khink]
+
+-  PLIP 13260 remove templates and form scripts for
+   ``select_default_page`` and ``select_default_view`` because they got
+   migrated to browser views. see:
+   https://github.com/plone/Products.CMFPlone/issues/90
+   [saily]
+
+
+5.0a1 (2014-03-02)
+------------------
+
+- remove quickinstall control panel form since a new one was moved to
+  plone.app.controlpanel
+  [vangheem]
+
+- Add 'warning' and 'error' status message types to the test_rendering
+  view.
+  [esteele]
+
+- Update the front-page links.
+  [esteele]
+
+- In plone-overview view, we can now see Plone sites which are contained into
+  Zope folder.
+  [bsuttor]
+
+- Make Plone tool read the exposeDCMetaTags from p.a.registry instead of
+  of the site properties.
+  [timo]
+
+- Hide plone.app.registry install profile in the add-ons control panel.
+  [esteele]
+
+- Removed spamProtect.py script, since it doesn't offer real protection.
+  [davisagli]
+
+- Moved the member search form to plone.app.users
+  [pabo3000]
+
+- PLIP #13705: Remove <base> tag.
+  [frapell]
+
+- merge hotfixes from 20131210
+  [vangheem]
+
+- handle plone.app.textfield RichTextValue objects in syndication. Should
+  fix syndication with plone.app.contenttypes.
+  [vangheem]
+
+- FolderFeed adapter now takes into account the limit property when displaying
+  the RSS feed just like the other adapters do
+  [ichim-david]
+
+- Remove the portal_calendar tool and the dependency on CMFCalendar.
+  [davisagli]
 
 - Remove the plone_deprecated skin layer.
   [gforcada, davisagli]
+
+- Moved portal_factory and portal_metadata from Products.CMFPlone to
+  Products.ATContentTypes (PLIP #13770)
+  [ale-rt]
+
+- Remove the portal_interface tool.
+  [ale-rt]
 
 - Remove the portal_actionicons tool.
   [davisagli]

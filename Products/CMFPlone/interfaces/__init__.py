@@ -4,6 +4,8 @@ from basetool import IPloneBaseTool
 from basetool import IPloneTool
 from basetool import IPloneCatalogTool
 from controlpanel import IControlPanel
+from controlpanel import ISearchSchema
+from controlpanel import ISiteSchema
 from events import ISiteManagerCreatedEvent
 from events import IReorderedEvent
 from interface import IInterfaceTool
@@ -15,7 +17,6 @@ from siteroot import ITestCasePloneSiteRoot
 from constrains import IConstrainTypes
 from constrains import ISelectableConstrainTypes
 from structure import INonStructuralFolder
-from factory import IFactoryTool
 from translationservice import ITranslationServiceTool
 from breadcrumbs import IHideFromBreadcrumbs
 from workflow import IWorkflowChain

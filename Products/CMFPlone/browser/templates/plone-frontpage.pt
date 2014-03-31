@@ -33,7 +33,7 @@ Before you start exploring your newly created Plone site, please do the followin
 <ul>
     <li>Find out <a class="link-plain" href="http://plone.org/products/plone/features/" target="_blank">What's new in Plone</a>.</li>
     <li>Read the <a class="link-plain" href="http://plone.org/documentation" target="_blank">documentation</a>, especially the
-        <a class="link-plain" href="http://plone.org/documentation/phc_topic_area?topic=Basic+Use" target="_blank">Documentation for content editors</a>
+        <a class="link-plain" href="http://plone.org/documentation/manual/plone-4-user-manual" target="_blank">Documentation for content editors</a>
         and
         <a class="link-plain" href="http://plone.org/documentation/faq/server-recommendations" target="_blank">Server setup recommendations</a>.
     </li>
@@ -86,13 +86,13 @@ solutions?
 
 <ul>
     <li>Add your sites to the <a class="link-plain"
-        href="http://plone.net/sites" target="_blank">Plone site listing</a>.
+        href="http://plone.org/support/sites" target="_blank">Plone site listing</a>.
         <span class="discreet">(Or see what sites are already out there!)</span>
     </li>
     <li>Add your company as a <a class="link-plain"
-        href="http://plone.net/providers" target="_blank">Plone provider</a>.</li>
+        href="http://plone.org/support/providers" target="_blank">Plone provider</a>.</li>
     <li>Add a <a class="link-plain"
-        href="http://plone.net/case-studies" target="_blank">case study</a> describing your
+        href="http://plone.org/support/case-studies" target="_blank">case study</a> describing your
         deployed project and customer.</li>
 </ul>
 

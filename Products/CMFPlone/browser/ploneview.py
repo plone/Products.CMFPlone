@@ -19,6 +19,9 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.browser.interfaces import IPlone
 from Products.CMFPlone.log import log_deprecated
 
+from plone.app.layout.globals.interfaces import IPatternsSettingsRenderer
+
+
 _marker = []
 
 
@@ -321,6 +324,7 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.have_portlets(manager_name, view=view)
 
+<<<<<<< HEAD
     def renderBase(self):
         """Returns the current URL to be used in the base tag.
         """
@@ -329,6 +333,8 @@ class Plone(BrowserView):
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.renderBase()
 
+=======
+>>>>>>> master
     def bodyClass(self, template, view):
         """Returns the CSS class to be used on the body tag.
         """
@@ -336,3 +342,10 @@ class Plone(BrowserView):
         context = aq_inner(self.context)
         layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         return layout.bodyClass(template, view)
+
+    @memoize
+    def patterns_settings(self):
+        context = aq_inner(self.context)
+        return getMultiAdapter(
+            (context, self.request),
+            name=u'plone_patterns_settings')()

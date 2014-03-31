@@ -19,6 +19,7 @@ import unittest2 as unittest
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav"')
 RE_REMOVE_TABS = re.compile('<ul id="portal-globalnav".*?</ul>', re.S)
+RE_REMOVE_AUTH = re.compile('\_authenticator\=.*?\"', re.S)
 
 
 class TestPloneToolBrowserDefault(unittest.TestCase):
@@ -34,6 +35,15 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         # make sure the test request gets marked with the default theme layer
         notify(BeforeTraverseEvent(self.portal, self.layer['app'].REQUEST))
 
+        # disable diazo theming
+        self.portal.portal_registry[
+            'plone.app.theming.interfaces.IThemeSettings.enabled'
+        ] = False
+
+        # disable auto-CSRF
+        from plone.protect import auto
+        auto.CSRF_DISABLED = True
+
         _createObjectByType('Folder', self.portal, 'folder')
         _createObjectByType('Document', self.portal, 'document')
         _createObjectByType('File', self.portal, 'file')
@@ -42,14 +52,25 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
 
         self.putils = getToolByName(self.portal, "plone_utils")
         self.browser = Browser(self.layer['app'])
-        self.browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+        self.browser.addHeader(
+            'Authorization', 'Basic %s:%s' % (
+                TEST_USER_NAME,
+                TEST_USER_PASSWORD,
+            )
+        )
+
+    def tearDown(self):
+        from plone.protect import auto
+        auto.CSRF_DISABLED = False
 
     def compareLayoutVsView(self, obj, path="", viewaction=None):
         if viewaction is None:
             if hasattr(aq_base(obj), 'getLayout'):
                 viewaction = obj.getLayout()
             else:
-                viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
+                viewaction = obj.getTypeInfo().getActionInfo(
+                    'object/view'
+                )['url'].split('/')[-1]
 
         self.layer['app'].REQUEST['ACTUAL_URL'] = obj.absolute_url()
         resolved = obj.restrictedTraverse(viewaction)()
@@ -61,10 +82,12 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         resolved = RE_REMOVE_DOCCONT.sub('', resolved)
         resolved = RE_REMOVE_SKIPNAV.sub('', resolved)
         resolved = RE_REMOVE_TABS.sub('', resolved)
+        resolved = RE_REMOVE_AUTH.sub('"', resolved)
 
         body = RE_REMOVE_DOCCONT.sub('', body)
         body = RE_REMOVE_SKIPNAV.sub('', body)
         body = RE_REMOVE_TABS.sub('', body)
+        body = RE_REMOVE_AUTH.sub('"', body)
 
         if not body:
             self.fail('No body in response')
@@ -78,7 +101,8 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         if hasattr(aq_base(obj), 'getLayout'):
             viewaction = obj.getLayout()
         else:
-            viewaction = obj.getTypeInfo().getActionInfo('object/view')['url'].split('/')[-1]
+            viewaction = obj.getTypeInfo().getActionInfo(
+                'object/view')['url'].split('/')[-1]
 
         viewed = obj.restrictedTraverse(viewaction)()
         called = obj()
@@ -142,8 +166,10 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         self.portal.folder.invokeFactory('Document', 'index_html')
         self.portal.folder.invokeFactory('Folder', 'subfolder')
         layout = self.portal.folder.getLayout()
-        self.assertEqual(self.putils.browserDefault(self.portal.folder.subfolder),
-                         (self.portal.folder.subfolder, [layout]))
+        self.assertEqual(
+            self.putils.browserDefault(self.portal.folder.subfolder),
+            (self.portal.folder.subfolder, [layout])
+        )
 
     def testIndexHtmlReplaceableWrapper(self):
         self.portal.document.index_html = ReplaceableWrapper(None)
@@ -228,8 +254,9 @@ class TestPortalBrowserDefault(unittest.TestCase):
 
         # Also make sure we have folder_listing as a template
         self.portal.getTypeInfo().manage_changeProperties(
-                                    view_methods=['folder_listing'],
-                                    default_view='folder_listing')
+            view_methods=['folder_listing'],
+            default_view='folder_listing'
+        )
 
     def assertFalseDiff(self, text1, text2):
         """
@@ -354,14 +381,18 @@ class TestPortalBrowserDefault(unittest.TestCase):
                          (self.portal, ['folder_listing', ]))
 
     def testTemplateTitles(self):
-        views = [v for v in self.portal.getAvailableLayouts()
-                    if v[0] == 'folder_listing']
+        views = [
+            v for v in self.portal.getAvailableLayouts()
+            if v[0] == 'folder_listing'
+        ]
         self.assertEqual(views[0][1], 'Standard view')
         try:
             folderListing = self.portal.unrestrictedTraverse('folder_listing')
             folderListing.title = 'foo'
-            views = [v for v in self.portal.getAvailableLayouts()
-                        if v[0] == 'folder_listing']
+            views = [
+                v for v in self.portal.getAvailableLayouts()
+                if v[0] == 'folder_listing'
+            ]
             self.assertEqual(views[0][1], 'foo')
         finally:
             # Restore title to avoid side-effects

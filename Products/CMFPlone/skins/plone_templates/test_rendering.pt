@@ -91,12 +91,32 @@ Headlines
 
 <pre>Example document rendering</pre>
 
-<dl class="portalMessage info">
-    <dt>
+<div class="portalMessage info">
+    <strong>
         Info
+    </strong>
+    <span tal:omit-tag="">
+        The portalMessage class, can also contain <a href="#">links</a> - used to
+        give the user temporary status messages.
+    </span>
+</div>
+
+<dl class="portalMessage error">
+    <dt>
+        Error
     </dt>
     <dd>
-        The portalMessage class, can also contain <a href="#">links</a> - used to
+        The portalMessage 'error' class, can also contain <a href="#">links</a> - used to
+        give the user temporary status messages.
+    </dd>
+</dl>
+
+<dl class="portalMessage warning">
+    <dt>
+        Warning
+    </dt>
+    <dd>
+        The portalMessage 'warning' class, can also contain <a href="#">links</a> - used to
         give the user temporary status messages.
     </dd>
 </dl>
@@ -168,6 +188,69 @@ example <a href="irc://some.network/#channel">IRC link</a>.
     <dd>Another Definition List description, Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque odio sem, aliquam ut, suscipit at, aliquet non, justo.
     </dd>
 </dl>
+
+<h3>Definition List deprecation</h3>
+
+As of Plone 5, we try to get rid of Definition Lists where they don't act as
+definition lists. We replace them in the following manners.
+
+<h4>in portlets</h4>
+
+<div style="width: 300px"> <!-- just to make these look like portlets -->
+
+<section class="portlet">
+  <header class="portletHeader">Portlet header</header>
+  <ul class="portletContent">
+    <li class="portletItem">Item one</li>
+    <li class="portletItem">Item two</li>
+  </ul>
+  <footer class="portletFooter">Portlet footer</footer>
+</section>
+
+If a portlet has only one item:
+
+<section class="portlet">
+  <header class="portletHeader">Portlet header</header>
+  <div class="portletContent">
+    There might be a login form here.
+    <form>
+      <input type="text" value="login" /> <br />
+      <input type="password" value="password" /> <br />
+      <input type="submit" />
+    </form>
+  </div>
+  <footer class="portletFooter">Portlet footer</footer>
+</section>
+
+</div>
+
+<h4>in portal messages</h4>
+
+<div class="portalMessage info">
+  <strong>Not important</strong>
+  This message is here to tell you something went just as you expected.
+</div>
+<div class="portalMessage warning">
+  <strong>You might run into problems</strong>
+  Please check your settings, be sure what you're doing is right.
+</div>
+<div class="portalMessage error">
+  <strong>Something went wrong</strong>
+  This is bad, you must notice this.
+</div>
+
+<h4>in listings</h4>
+
+<div>
+  <article>
+    <heading><a href="">Item one</a></heading>
+    <p>Description</p>
+  </article>
+  <article>
+    <heading><a href="">Item two</a></heading>
+    <p>Description</p>
+  </article>
+</div>
 
 <h2>
 Table of class <code>listing</code>

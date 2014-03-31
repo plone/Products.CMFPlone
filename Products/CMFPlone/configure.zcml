@@ -19,7 +19,6 @@
   <include package="plone.app.folder" />
   <include package="plone.app.form" />
   <include package="plone.app.i18n" />
-  <include package="plone.app.jquery" />
   <include package="plone.app.jquerytools" />
   <include package="plone.app.layout" />
   <include package="plone.app.linkintegrity" />
@@ -37,6 +36,7 @@
   <include package="plone.app.workflow" />
   <include package="plone.batching" />
   <include package="plone.memoize" />
+  <include package="plone.outputfilters" />
   <include package="plone.session" />
   <include package="plone.protect" />
   <include package="plone.indexer" />
@@ -44,6 +44,8 @@
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
   <include package="plone.theme" />
+
+  <include package=".controlpanel" />
 
   <!-- Archetypes -->
   <include zcml:condition="installed Products.ATContentTypes"
@@ -76,6 +78,104 @@
       recursive="True"
       />
 
+  <browser:resource
+    name="plone-bootstrap-glyphicons-halflings-regular.eot"
+    file="static/plone-bootstrap-glyphicons-halflings-regular.eot"
+    />
+  <browser:resource
+    name="plone-bootstrap-glyphicons-halflings-regular.svg"
+    file="static/plone-bootstrap-glyphicons-halflings-regular.svg"
+    />
+  <browser:resource
+    name="plone-bootstrap-glyphicons-halflings-regular.ttf"
+    file="static/plone-bootstrap-glyphicons-halflings-regular.ttf"
+    />
+  <browser:resource
+    name="plone-bootstrap-glyphicons-halflings-regular.woff"
+    file="static/plone-bootstrap-glyphicons-halflings-regular.woff"
+    />
+  <browser:resource
+    name="plone-dropzone-spritemap@2x.png"
+    file="static/plone-dropzone-spritemap@2x.png"
+    />
+  <browser:resource
+    name="plone-dropzone-spritemap.png"
+    file="static/plone-dropzone-spritemap.png"
+    />
+  <browser:resource
+    name="plone-fontello.eot"
+    file="static/plone-fontello.eot"
+    />
+  <browser:resource
+    name="plone-fontello.svg"
+    file="static/plone-fontello.svg"
+    />
+  <browser:resource
+    name="plone-fontello.ttf"
+    file="static/plone-fontello.ttf"
+    />
+  <browser:resource
+    name="plone-fontello.woff"
+    file="static/plone-fontello.woff"
+    />
+  <browser:resource
+    name="plone-jqtree-jqtree-circle.png"
+    file="static/plone-jqtree-jqtree-circle.png"
+    />
+  <browser:resource
+    name="plone-select2-select2.png"
+    file="static/plone-select2-select2.png"
+    />
+  <browser:resource
+    name="plone-select2-select2-spinner.gif"
+    file="static/plone-select2-select2-spinner.gif"
+    />
+  <browser:resource
+    name="plone-select2-select2x2.png"
+    file="static/plone-select2-select2x2.png"
+    />
+  <browser:resource
+    name="plone-tinymce-icomoon.eot"
+    file="static/plone-tinymce-icomoon.eot"
+    />
+  <browser:resource
+    name="plone-tinymce-icomoon.svg"
+    file="static/plone-tinymce-icomoon.svg"
+    />
+  <browser:resource
+    name="plone-tinymce-icomoon.ttf"
+    file="static/plone-tinymce-icomoon.ttf"
+    />
+  <browser:resource
+    name="plone-tinymce-icomoon.woff"
+    file="static/plone-tinymce-icomoon.woff"
+    />
+  <browser:resource
+    name="plone-tinymce-loader.gif"
+    file="static/plone-tinymce-loader.gif"
+    />
+
+  <configure zcml:condition="installed mockup">
+    <browser:resource
+        name="plone.js"
+        file="static/plone.js"
+        />
+    <browser:resource
+        name="plone.css"
+        file="static/plone.css"
+        />
+  </configure>
+  <configure zcml:condition="not-installed mockup">
+    <browser:resource
+        name="plone.js"
+        file="static/plone.min.js"
+        />`
+    <browser:resource
+        name="plone.css"
+        file="static/plone.min.css"
+        />
+  </configure>
+
   <class class="Products.PluggableAuthService.PluggableAuthService.PluggableAuthService">
     <implements interface=".interfaces.IHideFromBreadcrumbs" />
   </class>
@@ -105,6 +205,9 @@
 
   <subscriber for="Products.GenericSetup.events.ProfileImportedEvent"
               handler=".events.profileImportedEventHandler"/>
+
+  <subscriber for="ZPublisher.interfaces.IPubAfterTraversal"
+              handler=".events.removeBase"/>
 
   <!-- configure sizes lookup for `plone.namedfile` -->
   <utility
