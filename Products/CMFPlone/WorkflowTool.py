@@ -350,6 +350,45 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                     actions.extend(a)
         return actions
 
+    security.declarePrivate( '_recursiveUpdateRoleMappings' )
+    def _recursiveUpdateRoleMappings(self, ob, wfs):
+
+        """ Update roles-permission mappings recursively, and
+            reindex special index.
+        """
+        # Returns a count of updated objects.
+        count = 0
+        wf_ids = self.getChainFor(ob)
+        if wf_ids:
+            changed = 0
+            for wf_id in wf_ids:
+                wf = wfs.get(wf_id, None)
+                if wf is not None:
+                    did = wf.updateRoleMappingsFor(ob)
+                    if did:
+                        changed = 1
+            if changed:
+                count = count + 1
+                if hasattr(aq_base(ob), 'reindexObject'):
+                    # Reindex security-related indexes
+                    try:
+                        ob.reindexObject(
+                            idxs=['allowedRolesAndUsers'], 
+                            update_metadata=0
+                        )
+                    except TypeError:
+                        # Catch attempts to reindex portal_catalog.
+                        pass
+        if hasattr(aq_base(ob), 'objectItems'):
+            obs = ob.objectItems()
+            if obs:
+                for k, v in obs:
+                    changed = getattr(v, '_p_changed', 0)
+                    count = count + self._recursiveUpdateRoleMappings(v, wfs)
+                    if changed is None:
+                        # Re-ghostify.
+                        v._p_deactivate()
+        return count
 
 WorkflowTool.__doc__ = BaseTool.__doc__
 
