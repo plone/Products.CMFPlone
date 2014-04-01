@@ -96,11 +96,9 @@ def addPloneSite(context, site_id, title='Plone site', description='',
         setup_tool.runAllImportStepsFromProfile(
             'profile-%s' % content_profile_id)
 
-    reg = queryUtility(IRegistry, context=site, default=None)
-    event_reg = reg.forInterface(
-        IEventSettings, prefix="plone.app.event", check=False)
-    event_reg.portal_timezone = portal_timezone
-
+    reg = queryUtility(IRegistry, context=site)
+    reg['plone.portal_timezone'] = portal_timezone
+    reg['plone.available_timezones'] = [portal_timezone]
 
     props = dict(
         title=title,

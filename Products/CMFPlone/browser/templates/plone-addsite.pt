@@ -94,8 +94,8 @@
 
         <div class="formHelp" i18n:translate="">
           The default timezone setting of the portal. Users will be able to set
-          their own timezone, if available timezones are defined in the advanced
-          event setting.
+          their own timezone, if available timezones are defined in the date and
+          time settings.
         </div>
 
         <select name="portal_timezone"

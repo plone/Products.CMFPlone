@@ -8,12 +8,14 @@ from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
+from zope.component import getUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
 from zope.interface import Interface
 from zope.interface import alsoProvides
 from zope.publisher.interfaces import IRequest
 from zope.publisher.browser import BrowserView
+from zope.schema.interfaces import IVocabularyFactory
 
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view as View
@@ -201,8 +203,11 @@ class AddPloneSite(BrowserView):
         return languages
 
     def timezones(self):
-        rpl_keys = pae_base.replacement_zones.keys()
-        tz_list = [it for it in pytz.all_timezones if it not in rpl_keys]
+        tz_vocab = getUtility(
+            IVocabularyFactory,
+            'plone.app.vocabularies.CommonTimezones'
+        )(self.context)
+        tz_list = [it.value for it in tz_vocab]
         return tz_list
 
     def __call__(self):
