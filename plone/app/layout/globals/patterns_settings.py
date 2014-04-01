@@ -23,7 +23,8 @@ class PatternsSettings(BrowserView):
             }
         }
         result = {
-            'data-pat-modal': json.dumps(modal_options)
+            'data-pat-modal': json.dumps(modal_options),
+            'data-base-url': self.context.absolute_url(),
         }
         adapters = getAdapters((self.context, self.request), IPatternsSettings)
         [result.update(x[1]()) for x in adapters]

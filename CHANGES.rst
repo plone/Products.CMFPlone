@@ -11,6 +11,9 @@ Changelog
 - for contentview urls, add csrf token automatically
   [vangheem]
 
+- Add content url to document as data-base-url
+  [do3cc]
+
 
 2.5.0 (2014-03-02)
 ------------------
