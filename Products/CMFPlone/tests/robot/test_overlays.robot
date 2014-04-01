@@ -277,4 +277,5 @@ I trigger the '${action}' action menu item of the test folder
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
-    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer input[class="destructive"]
+    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer input#form-buttons-Delete
+
