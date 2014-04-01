@@ -211,8 +211,8 @@ overlay shows an error
     Wait Until Page Contains  Error
 
 I '${action}' the form
-    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer input[name="form.button.${action}"]
-    Click Element  css=div.modal-footer input[name="form.button.${action}"]
+    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer input[name="form.buttons.${action}"]
+    Click Element  css=div.modal-footer input[name="form.buttons.${action}"]
 
 I enter wrong credentials
     Input text  __ac_name  wrong
@@ -261,13 +261,14 @@ a document as the default view of the test folder
     Wait until element is visible  id=contextSetDefaultPage
     Click link  id=contextSetDefaultPage
     Click element  id=doc
-    Click element  css=div.modal-footer input[name="form.button.Save"]
+    Click element  css=div.modal-footer input[name="form.buttons.Save"]
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
-    Wait until element is visible  id=folderChangeDefaultPage
-    Click link  id=folderChangeDefaultPage
+    Debug
+    Wait until element is visible  id=contextSetDefaultPage
+    Click link  id=contextSetDefaultPage
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
