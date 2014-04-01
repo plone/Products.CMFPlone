@@ -183,6 +183,7 @@ def importFinalSteps(context):
         sm.registerUtility(aq_base(obj), IKeyManager, '')
 
     first_weekday_setup(context)
+    timezone_setup(context)
 
 
 def updateWorkflowRoleMappings(context):
@@ -203,7 +204,7 @@ def first_weekday_setup(context):
     """Set the first day of the week based on the portal's locale.
     """
     reg = getUtility(IRegistry)
-    if "plone.first_weekday" in reg and reg["plone.first_weekday"] is not None:
+    if "plone.first_weekday" in reg:
         # don't overwrite if it's already set
         return
 
@@ -225,3 +226,16 @@ def first_weekday_setup(context):
 
     # save setting
     reg['plone.first_weekday'] = first
+
+def timezone_setup(context):
+    """Set the timezone from server locale
+    """
+    timezone = 'UTC'
+    # TODO: get a /sane/ locale from the server to use.
+    # this is not high priority
+    # see plone.event.utils
+    reg = getUtility(IRegistry)
+    if not reg["plone.portal_timezone"]:
+        reg['plone.portal_timezone'] = timezone
+    if not reg['plone.available_timezones']:
+        reg['plone.available_timezones'] = [timezone]
