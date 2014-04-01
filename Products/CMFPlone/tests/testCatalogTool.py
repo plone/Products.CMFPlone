@@ -861,14 +861,12 @@ class TestCatalogUnindexing(PloneTestCase):
         self.assertTrue(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexed(self):
-        # Works here!
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.folder._delObject('doc')
         self.assertFalse(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedIfOwnerDeletes(self):
-        # Works here!
         self.setRoles(['Manager'])
         self.workflow.doActionFor(self.folder.doc, 'publish')
         self.setRoles(['Member'])
@@ -876,16 +874,12 @@ class TestCatalogUnindexing(PloneTestCase):
         self.assertFalse(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedByFolderDeleteScript(self):
-        # Works here too!
+        doc = self.folder.doc
         self.setRoles(['Manager'])
-        self.workflow.doActionFor(self.folder.doc, 'publish')
+        self.workflow.doActionFor(doc, 'publish')
         self.setRoles(['Member'])
-        doc_path = '/'.join(self.folder.doc.getPhysicalPath())
-        self.app.REQUEST.set('paths', [doc_path])
-        # folder_delete requires a non-GET request
-        self.setRequestMethod('POST')
-        self.folder.folder_delete()
-        self.setRequestMethod('GET')
+        alsoProvides(doc.REQUEST, IFormLayer)
+        doc.restrictedTraverse('@@object_delete')()
         self.assertFalse(self.catalog(getId='doc'))
 
     def testPublishedIsUnindexedWhenDeletingParentFolder(self):
