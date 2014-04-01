@@ -150,7 +150,7 @@ buffer here:
     >>> browser.getLink('View').click()
     >>> browser.getLink('Paste').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-folder/...'
+    'http://nohost/plone/Members/test_user_1_/my-folder...'
     >>> 'Item(s) pasted.' in browser.contents
     True
     >>> browser.getLink('View').click()
@@ -217,6 +217,7 @@ This should fail graciously, that is:
 - Not give a traceback
 - Show a message that says what's wrong
 
+    >>> from interlude import interact; interact(locals())
     >>> browser.open('http://nohost/plone/Members/test_user_1_/my-folder')
     >>> browser.getLink('Paste').click()
     >>> browser.url
