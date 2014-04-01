@@ -372,7 +372,10 @@ class WorkflowTool(PloneBaseTool, BaseTool):
                 if hasattr(aq_base(ob), 'reindexObject'):
                     # Reindex security-related indexes
                     try:
-                        ob.reindexObject(idxs=['allowedRolesAndUsers'], update_metadata=0)
+                        ob.reindexObject(
+                            idxs=['allowedRolesAndUsers'], 
+                            update_metadata=0
+                        )
                     except TypeError:
                         # Catch attempts to reindex portal_catalog.
                         pass
