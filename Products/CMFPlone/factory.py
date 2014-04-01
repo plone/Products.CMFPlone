@@ -8,6 +8,10 @@ from Products.CMFPlone.events import SiteManagerCreatedEvent
 from Products.CMFPlone.interfaces import INonInstallable
 from Products.CMFPlone.Portal import PloneSite
 
+from plone.app.event.interfaces import IEventSettings
+from plone.registry.interfaces import IRegistry
+from zope.component import queryUtility
+
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
 _CONTENT_PROFILE = 'plone.app.contenttypes:plone-content'
@@ -74,7 +78,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                  email_from_name='', validate_email=True,
                  profile_id=_DEFAULT_PROFILE, content_profile_id=_CONTENT_PROFILE,
                  snapshot=False, extension_ids=(), setup_content=True,
-                 default_language='en'):
+                 default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
@@ -91,6 +95,12 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     if setup_content:
         setup_tool.runAllImportStepsFromProfile(
             'profile-%s' % content_profile_id)
+
+    reg = queryUtility(IRegistry, context=site, default=None)
+    event_reg = reg.forInterface(
+        IEventSettings, prefix="plone.app.event", check=False)
+    event_reg.portal_timezone = portal_timezone
+
 
     props = dict(
         title=title,

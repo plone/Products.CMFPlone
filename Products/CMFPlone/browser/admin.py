@@ -200,6 +200,11 @@ class AddPloneSite(BrowserView):
         languages.sort(key=itemgetter(1))
         return languages
 
+    def timezones(self):
+        rpl_keys = pae_base.replacement_zones.keys()
+        tz_list = [it for it in pytz.all_timezones if it not in rpl_keys]
+        return tz_list
+
     def __call__(self):
         context = self.context
         form = self.request.form
@@ -226,6 +231,7 @@ class AddPloneSite(BrowserView):
                 extension_ids=form.get('extension_ids', ()),
                 setup_content=form.get('setup_content', False),
                 default_language=form.get('default_language', 'en'),
+                portal_timezone=form.get('portal_timezone', 'UTC')
                 )
             self.request.response.redirect(site.absolute_url())
 
