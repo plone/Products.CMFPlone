@@ -104,9 +104,6 @@ Scenario: Rename content action overlay closes
      When I trigger the 'rename' action menu item of the test folder
       And I close the overlay
      Then overlay should close
-     When I trigger the 'rename' action menu item of the test folder
-      And I 'RenameAll' the form
-     Then overlay should close
 
 Scenario: Register user overlay opens
     Given the mail setup configured
