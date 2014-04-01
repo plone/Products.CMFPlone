@@ -9,7 +9,6 @@ from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
 from OFS.CopySupport import CopyError
 from plone.testing.z2 import ZSERVER
-from Products.CMFPlone.PloneTool import AllowSendto
 from unittest import TestCase
 
 
@@ -308,16 +307,6 @@ except CopyError: pass
         self.checkUnauthorized('import transaction;'
                                'transaction.get()')
 
-    # allow sendto
-
-    def testImport_AllowSendto(self):
-        self.check('from Products.CMFPlone.PloneTool import AllowSendto')
-
-    def testAccess_AllowSendto(self):
-        # TODO: Note that this is NOT allowed!
-        self.checkUnauthorized('from Products.CMFPlone import PloneTool;'
-                               'print PloneTool.AllowSendto')
-
     # ZCatalog
 
     def testImport_mergeResults(self):
@@ -356,38 +345,38 @@ class TestAllowSendtoSecurity(PloneTestCase.PloneTestCase):
         checkPermission = mtool.checkPermission
 
         # should be allowed as Member
-        self.assertTrue(checkPermission(AllowSendto, portal))
+        self.assertTrue(checkPermission('Allow sendto', portal))
         # should be allowed as Manager
         self.setRoles(['Manager'])
-        self.assertTrue(checkPermission(AllowSendto, portal))
-        # should be allowed as anonymous
+        self.assertTrue(checkPermission('Allow sendto', portal))
+        # should NOT be allowed as anonymous
         self.logout()
-        self.assertTrue(checkPermission(AllowSendto, portal))
+        self.assertFalse(checkPermission('Allow sendto', portal))
 
     def test_allowsendto_changed(self):
         mtool = self.portal.portal_membership
         checkPermission = mtool.checkPermission
 
         self.setRoles(['Manager'])
-        self.portal.manage_permission(AllowSendto, roles=('Manager',),
+        self.portal.manage_permission('Allow sendto', roles=('Manager',),
                                       acquire=False)
         self.setRoles(['Member'])
 
-        self.assertFalse(checkPermission(AllowSendto, self.portal))
+        self.assertFalse(checkPermission('Allow sendto', self.portal))
 
     def test_sendto_script_failes(self):
         # set permission to Manager only
         self.setRoles(['Manager'])
-        self.portal.manage_permission(AllowSendto, roles=('Manager',),
+        self.portal.manage_permission('Allow sendto', roles=('Manager',),
                                       acquire=False)
         self.setRoles(['Member'])
-        # get sendto script in context of folder
-        sendto = self.folder.sendto
-        # should faile with the not allowed msg check if the msg
-        # contains the string
-        msg = sendto()
-        errormsg = "You%20are%20not%20allowed%20to%20send%20this%20link"
-        self.assertFalse(str(msg).find(errormsg) != -1, str(msg))
+        # get sendto browser view in context of folder
+        try:
+            sendto = self.folder.restrictedTraverse('@@sendto_form')
+            msg = sendto()
+            self.fail("Sendto did not throw unauthorized")
+        except Unauthorized:
+            pass
 
 
 class TestSkinSecurity(PloneTestCase.PloneTestCase):

@@ -38,8 +38,8 @@
 
             <tal:results tal:repeat="result batch">
 
-                <dl tal:define="description result/Description">
-                    <dt tal:define="item_icon python:plone_view.getIcon(result);
+                <div tal:define="description result/Description">
+                    <header tal:define="item_icon python:plone_view.getIcon(result);
                                     item_wf_state result/review_state;
                                     item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
                         <span tal:attributes="class python:'contenttype-' + normalizeString(result.portal_type)">
@@ -64,17 +64,14 @@
                                   tal:omit-tag=""
                                   i18n:name="date">date</span>
                         </span>
-                    </dt>
+                    </header>
 
-                    <dd tal:condition="description"
+                    <p tal:condition="description"
                         tal:content="description">
                         Description
-                    </dd>
+                    </p>
 
-                    <dd tal:condition="not:description">
-                        &nbsp;
-                    </dd>
-                </dl>
+                </div>
 
             </tal:results>
 

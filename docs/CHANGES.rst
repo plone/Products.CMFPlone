@@ -51,6 +51,10 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
+- Fix incorrect use of dict get method in CatalogTool.search, introduced
+  by PloneHotfix20131210 (issue 195)
+  [fulv]
+
 - Fix issue with the search js in sharing page where the user needed to check
   twice a checkbox to assign a role after a search.
   [vincentfretin]

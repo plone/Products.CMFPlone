@@ -12,6 +12,17 @@
       <allow interface="plone.app.layout.navigation.interfaces.INavigationQueryBuilder" />
   </class>
 
+  <permission
+    id="Products.CMFPlone.AllowSendto"
+    title="Allow sendto" />
+
+  <browser:page
+      for="*"
+      name="sendto_form"
+      class=".sendto.SendToForm"
+      permission="Products.CMFPlone.AllowSendto"
+      />
+
   <browser:page
       for="*"
       name="breadcrumbs_view"
@@ -101,6 +112,20 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       name="author-feedback-template"
       template="templates/author_feedback_template.pt"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="contact-info"
+      class=".contact_info.ContactForm"
+      permission="zope.Public"
+      />
+
+  <browser:page
+      for="*"
+      name="contact-info-email"
+      template="templates/contact-info-email.pt"
       permission="zope.Public"
       />
 

@@ -9,18 +9,19 @@
                groups python:controlPanel.getGroups('site');
                portal_url context/portal_url;">
 
-<dl class="portlet"
+<section class="portlet"
     id="portlet-prefs"
     tal:condition="controlPanel/maySeeSomeConfiglets">
-    <dt class="portletHeader">
+  <header class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href=""
            tal:attributes="href string:${portal_url}/plone_control_panel"
            i18n:translate="">Site Setup</a>
         <span class="portletTopRight"></span>
-    </dt>
+  </header>
 
-    <dd class="portletItem"
+  <ul class="portletContent">
+    <li class="portletItem"
         tal:repeat="group groups">
 
         <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
@@ -49,9 +50,10 @@
         </tal:block>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </dd>
+    </li>
+  </ul>
 
-</dl>
+</section>
 
 </metal:portlet>
 </body>

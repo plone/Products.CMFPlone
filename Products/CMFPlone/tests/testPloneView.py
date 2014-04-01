@@ -43,7 +43,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         view = Plone(self.folder.test, self.app.REQUEST)
         self.assertFalse(view.isDefaultPageInFolder())
         self.assertTrue(self.folder.canSelectDefaultPage())
-        self.folder.saveDefaultPage('test')
+        self.folder.setDefaultPage('test')
         # re-create the view, because the old value is cached
         self._invalidateRequestMemoizations()
         view = Plone(self.folder.test, self.app.REQUEST)
@@ -75,7 +75,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         view = Plone(self.folder.test, self.app.REQUEST)
         self.assertFalse(view.isFolderOrFolderDefaultPage())
         # Unless we make it the default view
-        self.folder.saveDefaultPage('test')
+        self.folder.setDefaultPage('test')
         self._invalidateRequestMemoizations()
         view = Plone(self.folder.test, self.app.REQUEST)
         self.assertTrue(view.isFolderOrFolderDefaultPage())
@@ -98,7 +98,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
         view = Plone(self.portal.portal_test, self.app.REQUEST)
         self.assertFalse(view.isPortalOrPortalDefaultPage())
         # Unless we make it the default view
-        self.portal.saveDefaultPage('portal_test')
+        self.portal.setDefaultPage('portal_test')
         self._invalidateRequestMemoizations()
         view = Plone(self.portal.portal_test, self.app.REQUEST)
         self.assertTrue(view.isPortalOrPortalDefaultPage())
@@ -129,7 +129,7 @@ class TestPloneView(PloneTestCase.PloneTestCase):
 
         # And even a structural folder that is used as a default page
         # returns its parent
-        self.folder.saveDefaultPage('ns_folder')
+        self.folder.setDefaultPage('ns_folder')
         self._invalidateRequestMemoizations()
         view = Plone(self.folder.ns_folder, self.app.REQUEST)
         self.assertEqual(view.getCurrentFolder(), self.folder)

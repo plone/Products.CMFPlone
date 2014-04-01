@@ -21,23 +21,25 @@ Let's go to the contact form:
 
 Now fill in the form:
 
-  >>> form = browser.getForm(name='feedback_form')
+  >>> form = browser.getForm(id='form')
 
-  >>> form.getControl(name='sender_fullname').value = 'T\xc3\xa4st user'
-  >>> form.getControl(name='sender_from_address').value = 'test@plone.test'
-  >>> form.getControl(name='subject').value = 'Some t\xc3\xa4st subject.'
-  >>> form.getControl(name='message').value = 'Another t\xc3\xa4st message.'
+  >>> form.getControl(name='form.widgets.sender_fullname').value = 'T\xc3\xa4st user'
+  >>> form.getControl(name='form.widgets.sender_from_address').value = 'test@plone.test'
+  >>> form.getControl(name='form.widgets.subject').value = 'Some t\xc3\xa4st subject.'
+  >>> form.getControl(name='form.widgets.message').value = 'Another t\xc3\xa4st message.'
 
 And submit it:
 
-  >>> form.submit()
-  
+  >>> form.getControl(name='form.buttons.send').click()
+
+We expect to return to the same page.
+
   >>> browser.url
   'http://nohost/plone/contact-info'
 
-  >>> 'Mail sent' in browser.contents
+  >>> 'A mail has now been sent' in browser.contents
   True
-  
+
 As part of our test setup, we replaced the original MailHost with our
 own version.  Our version doesn't mail messages, it just collects them
 in a list called ``messages``:

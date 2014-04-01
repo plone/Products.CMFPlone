@@ -8,7 +8,20 @@ Changelog
 5.0a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove DL/DT/DD's from portal messages, portlet templates and others.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  https://github.com/plone/Products.CMFPlone/issues/163
+  [khink]
+
+-  PLIP 13260 remove templates and form scripts for
+   ``select_default_page`` and ``select_default_view`` because they got
+   migrated to browser views. see:
+   https://github.com/plone/Products.CMFPlone/issues/90
+   [saily]
+
+- PLIP 13260: Migration contact-info to z3c.form and make it highly
+  customizeable.
+  [timitos, saily]
 
 
 5.0a1 (2014-03-02)
