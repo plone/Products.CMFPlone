@@ -350,3 +350,37 @@ class ISendToForm(Interface):
                       default=u'A comment about this link.'),
         required=False
     )
+
+
+class IContactForm(Interface):
+    """ Interface for describing the contact info form """
+
+    sender_fullname = schema.TextLine(
+        title=_(u'label_sender_fullname',
+                default=u'Name'),
+        description=_(u'help_sender_fullname',
+                      default=u'Please enter your full name.'),
+        required=True
+    )
+
+    sender_from_address = Email(
+        title=_(u'label_sender_from_address',
+                default=u'From'),
+        description=_(u'help_sender_from_address',
+                      default=u'Please enter your e-mail address.'),
+        required=True
+    )
+
+    subject = schema.TextLine(
+        title=_(u'label_subject',
+                default=u'Subject'),
+        required=True
+    )
+
+    message = schema.Text(
+        title=_(u'label_message',
+                default=u'Message'),
+        description=_(u'help_message',
+                      default=u'Please enter the message you want to send.'),
+        required=False
+    )
