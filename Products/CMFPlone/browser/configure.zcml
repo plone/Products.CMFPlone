@@ -113,7 +113,6 @@
       name="author"
       class=".author.AuthorView"
       permission="zope.Public"
-
       />
 
   <browser:page

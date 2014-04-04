@@ -385,6 +385,7 @@ class IContactForm(Interface):
         required=False
     )
 
+
 class IAuthorFeedbackForm(Interface):
     """ Interface describing the author feedback form """
 
