@@ -28,10 +28,6 @@ logger = logging.getLogger("Plone")
 
 class AuthorFeedbackForm(form.Form):
 
-    feedback_template = ViewPageTemplateFile(
-        'templates/author_feedback_template.pt'
-    )
-
     fields = field.Fields(IAuthorFeedbackForm)
     ignoreContext = True
 
@@ -46,6 +42,10 @@ class AuthorFeedbackForm(form.Form):
         self.portal = self.portal_state.portal()
         self.membership_tool = getToolByName(
             self.context, 'portal_membership'
+        )
+
+        self.feedback_template = self.context.restrictedTraverse(
+            '@@author-feedback-template'
         )
 
         data, errors = self.extractData()
@@ -126,8 +126,6 @@ class AuthorFeedbackForm(form.Form):
 
 @implementer(IPublishTraverse)
 class AuthorView(BrowserView):
-
-    template = ViewPageTemplateFile('templates/author.pt')
 
     def __init__(self, context, request):
         super(AuthorView, self).__init__(context, request)
@@ -248,4 +246,4 @@ class AuthorView(BrowserView):
         if self.is_anonymous and not allow_anonymous_view_about:
             raise Unauthorized()
 
-        return self.template()
+        return self.index()
