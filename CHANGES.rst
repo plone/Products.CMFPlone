@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.1 (unreleased)
+2.5.1 (2014-04-05)
 ------------------
 
 - Remove DL, DT and DD elements
