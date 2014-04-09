@@ -8,6 +8,10 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Improve event_view - do not show time when user specifies the same start and 
+  end time for an event.
+  [spereverde]
+
 - Fix for https://dev.plone.org/ticket/13603 would break with VHM.
   [spereverde, jakke, jfroche]
 
