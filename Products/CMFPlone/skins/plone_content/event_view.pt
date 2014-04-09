@@ -55,11 +55,15 @@
                                 </abbr>
                             </tal:differentday>
 
-                            <tal:sameday tal:condition="python:context.start().Date() == context.end().Date()"
-                                         i18n:translate="event_when_sameday">
+                            <tal:sameday tal:condition="python:context.start().Date() == context.end().Date()">
+                                <tal:date i18n:translate="event_when_sameday">
                                 <span tal:replace="python:toLocalizedTime(context.start())"
                                       i18n:name="date">
                                     Start Date Time</span>
+                                </tal:date>
+
+                              <tal:notsametime tal:condition="python:context.start().Time() != context.end().Time()"
+                                               i18n:translate="event_when_notsametime">
                                 <br i18n:name="linebreak" />
                                 from
                                 <abbr metal:define-macro="startdatesame-field-view"
@@ -84,6 +88,8 @@
                                             class="explain"
                                             tal:content="python:toLocalizedTime(context.end(), time_only=1)">End Time</span>
                                 </abbr>
+                              </tal:notsametime>
+
                             </tal:sameday>
                         </td>
                     </tr>
