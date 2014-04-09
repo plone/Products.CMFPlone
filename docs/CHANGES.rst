@@ -8,6 +8,9 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Fix for https://dev.plone.org/ticket/11573 - fix traversal in private state.
+  [spereverde, jfroche, gotcha]
+
 - Fix for https://dev.plone.org/ticket/13603 would break with VHM.
   [spereverde, jakke, jfroche]
 
