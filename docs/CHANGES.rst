@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Advertise the migration of content to dexterity after a successful
+  upgrade to Plone 5.
+  [pbauer]
+
 - Strip leading & trailing spaces from id and title in rename-form.
   See https://dev.plone.org/ticket/12998, https://dev.plone.org/ticket/12989,
   https://dev.plone.org/ticket/9370, https://dev.plone.org/ticket/8338

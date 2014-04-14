@@ -226,7 +226,7 @@ class AddPloneSite(BrowserView):
                 extension_ids=form.get('extension_ids', ()),
                 setup_content=form.get('setup_content', False),
                 default_language=form.get('default_language', 'en'),
-                )
+            )
             self.request.response.redirect(site.absolute_url())
 
         return self.index()
@@ -262,7 +262,15 @@ class Upgrade(BrowserView):
             report = pm.upgrade(
                 REQUEST=self.request,
                 dry_run=form.get('dry_run', False),
-                )
-            return self.index(report=report)
+            )
+            qi = getattr(self.context, 'portal_quickinstaller')
+            pac_installed = qi.isProductInstalled('plone.app.contenttypes')
+            pac_installable = qi.isProductInstallable('plone.app.contenttypes')
+            advertise_dx_migration = pac_installable and not pac_installed
+
+            return self.index(
+                report=report,
+                advertise_dx_migration=advertise_dx_migration
+            )
 
         return self.index()
