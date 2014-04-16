@@ -227,6 +227,7 @@ def first_weekday_setup(context):
     # save setting
     reg['plone.first_weekday'] = first
 
+
 def timezone_setup(context):
     """Set the timezone from server locale
     """

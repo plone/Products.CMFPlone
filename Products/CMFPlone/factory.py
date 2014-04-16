@@ -1,16 +1,13 @@
+from Products.CMFPlone.Portal import PloneSite
+from Products.CMFPlone.events import SiteManagerCreatedEvent
+from Products.CMFPlone.interfaces import INonInstallable
+from Products.GenericSetup.tool import SetupTool
+from plone.registry.interfaces import IRegistry
+from zope.component import queryUtility
 from zope.event import notify
 from zope.interface import implements
 from zope.site.hooks import setSite
 
-from Products.GenericSetup.tool import SetupTool
-
-from Products.CMFPlone.events import SiteManagerCreatedEvent
-from Products.CMFPlone.interfaces import INonInstallable
-from Products.CMFPlone.Portal import PloneSite
-
-from plone.app.event.interfaces import IEventSettings
-from plone.registry.interfaces import IRegistry
-from zope.component import queryUtility
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
