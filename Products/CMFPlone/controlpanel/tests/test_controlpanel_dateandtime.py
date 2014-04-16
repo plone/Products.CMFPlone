@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import IDateAndTimeSchema
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from plone.app.testing import applyProfile
 from plone.app.testing import TEST_USER_ID, setRoles
 
 import unittest2 as unittest
@@ -34,7 +32,7 @@ class DateAndTimeRegistryIntegrationTest(unittest.TestCase):
         portal = self.portal
         old_language = portal.language
         portal.language = 'de'
-        from plone.app.event.setuphandlers import first_weekday_setup
+        from Products.CMFPlone.setuphandlers import first_weekday_setup
         first_weekday_setup(portal)
         first_weekday = self.portal.portal_registry['plone.first_weekday']
         self.assertEqual(first_weekday, 6)

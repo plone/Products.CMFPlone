@@ -204,7 +204,7 @@ def first_weekday_setup(context):
     """Set the first day of the week based on the portal's locale.
     """
     reg = getUtility(IRegistry)
-    if "plone.first_weekday" in reg:
+    if reg.get('plone.first_weekday') is not None:
         # don't overwrite if it's already set
         return
 
