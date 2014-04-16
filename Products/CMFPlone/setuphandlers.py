@@ -1,21 +1,23 @@
-from borg.localrole.utils import replace_local_role_manager
-
-from zope.component import queryUtility
-from zope.component import getSiteManager
-from zope.interface import implements
-
 from Acquisition import aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.interfaces import IDateAndTimeSchema
+from Products.CMFPlone.interfaces import IMigrationTool
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
     import AcceleratedHTTPCacheManager
 from Products.StandardCacheManagers.RAMCacheManager import RAMCacheManager
-
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.interfaces import IMigrationTool
-
+from borg.localrole.utils import replace_local_role_manager
 from plone.keyring.interfaces import IKeyManager
 from plone.keyring.keymanager import KeyManager
+from plone.registry.interfaces import IRegistry
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.component.hooks import getSite
+from zope.i18n.locales import LoadLocaleError
+from zope.i18n.locales import locales
+from zope.interface import implements
 
 
 class HiddenProducts(object):
@@ -180,6 +182,9 @@ def importFinalSteps(context):
         obj = KeyManager()
         sm.registerUtility(aq_base(obj), IKeyManager, '')
 
+    first_weekday_setup(context)
+    timezone_setup(context)
+
 
 def updateWorkflowRoleMappings(context):
     """
@@ -193,3 +198,45 @@ def updateWorkflowRoleMappings(context):
     site = context.getSite()
     portal_workflow = getToolByName(site, 'portal_workflow')
     portal_workflow.updateRoleMappings()
+
+
+def first_weekday_setup(context):
+    """Set the first day of the week based on the portal's locale.
+    """
+    reg = getUtility(IRegistry)
+    if reg.get('plone.first_weekday') is not None:
+        # don't overwrite if it's already set
+        return
+
+    first = 6
+    try:
+        site = getSite()
+        # find the locale implied by the portal's language
+        language = site.Language()
+        parts = (language.split('-') + [None, None])[:3]
+        locale = locales.getLocale(*parts)
+        # look up first day of week
+        gregorian_calendar = locale.dates.calendars.get(u'gregorian', None)
+        if gregorian_calendar is not None:
+            day = gregorian_calendar.week.get('firstDay', 7)
+            first = 6 if day == 0 else day - 1
+    except LoadLocaleError:
+        # If we cannot get the locale, just Sunday as first weekday
+        pass
+
+    # save setting
+    reg['plone.first_weekday'] = first
+
+
+def timezone_setup(context):
+    """Set the timezone from server locale
+    """
+    timezone = 'UTC'
+    # TODO: get a /sane/ locale from the server to use.
+    # this is not high priority
+    # see plone.event.utils
+    reg = getUtility(IRegistry)
+    if not reg["plone.portal_timezone"]:
+        reg['plone.portal_timezone'] = timezone
+    if not reg['plone.available_timezones']:
+        reg['plone.available_timezones'] = [timezone]
