@@ -139,7 +139,8 @@ class IDateAndTimeSchema(Interface):
                     u"portal. Can be set for users and events"),
         required=False,
         default=[],
-        value_type=schema.Choice(vocabulary="plone.app.vocabularies.Timezones"))
+        value_type=schema.Choice(
+            vocabulary="plone.app.vocabularies.Timezones"))
 
     first_weekday = schema.Choice(
         title=_(u'label_first_weekday', default=u'First Weekday'),
