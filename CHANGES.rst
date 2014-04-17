@@ -12,7 +12,7 @@ Changelog
   [pysailor, yenzenz]
 
 - Added date date and time controlpanel (moved over from plone.app.event).
-  [yenzenz. thetet]
+  [yenzenz. thet]
 
 - Remove DL/DT/DD's from portal messages, portlet templates and others.
   https://github.com/plone/Products.CMFPlone/issues/153
