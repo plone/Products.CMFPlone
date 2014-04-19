@@ -135,24 +135,52 @@
     file="static/plone-select2-select2x2.png"
     />
   <browser:resource
-    name="plone-tinymce-icomoon.eot"
-    file="static/plone-tinymce-icomoon.eot"
+    name="plone-tinymce-content.css"
+    file="static/plone-tinymce-content.min.css"
     />
   <browser:resource
-    name="plone-tinymce-icomoon.svg"
-    file="static/plone-tinymce-icomoon.svg"
+    name="plone-tinymce-font-tinymce-small.eot"
+    file="static/plone-tinymce-font-tinymce-small.eot"
     />
   <browser:resource
-    name="plone-tinymce-icomoon.ttf"
-    file="static/plone-tinymce-icomoon.ttf"
+    name="plone-tinymce-font-tinymce-small.svg"
+    file="static/plone-tinymce-font-tinymce-small.svg"
     />
   <browser:resource
-    name="plone-tinymce-icomoon.woff"
-    file="static/plone-tinymce-icomoon.woff"
+    name="plone-tinymce-font-tinymce-small.ttf"
+    file="static/plone-tinymce-font-tinymce-small.ttf"
     />
   <browser:resource
-    name="plone-tinymce-loader.gif"
-    file="static/plone-tinymce-loader.gif"
+    name="plone-tinymce-font-tinymce-small.woff"
+    file="static/plone-tinymce-font-tinymce-small.woff"
+    />
+  <browser:resource
+    name="plone-tinymce-font-tinymce.eot"
+    file="static/plone-tinymce-font-tinymce.eot"
+    />
+  <browser:resource
+    name="plone-tinymce-font-tinymce.svg"
+    file="static/plone-tinymce-font-tinymce.svg"
+    />
+  <browser:resource
+    name="plone-tinymce-font-tinymce.ttf"
+    file="static/plone-tinymce-font-tinymce.ttf"
+    />
+  <browser:resource
+    name="plone-tinymce-font-tinymce.woff"
+    file="static/plone-tinymce-font-tinymce.woff"
+    />
+  <browser:resource
+    name="plone-tinymce-img-anchor.gif"
+    file="static/plone-tinymce-img-anchor.gif"
+    />
+  <browser:resource
+    name="plone-tinymce-img-loader.gif"
+    file="static/plone-tinymce-img-loader.gif"
+    />
+  <browser:resource
+    name="plone-tinymce-img-object.gif"
+    file="static/plone-tinymce-img-object.gif"
     />
 
   <configure zcml:condition="installed mockup">
