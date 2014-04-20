@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0a2 (unreleased)
+5.0a2 (2014-04-20)
 ------------------
 
 - Added timezone selection to add site page
