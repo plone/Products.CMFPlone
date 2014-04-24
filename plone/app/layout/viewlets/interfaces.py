@@ -24,6 +24,11 @@ class IPortalTop(IViewletManager):
     """
 
 
+class IMainNavigation(IViewletManager):
+    """A viewlet manager that holds the main navigation viewlet
+    """
+
+
 class IGlobalStatusMessage(IViewletManager):
     """ A viewlet manager that is aside the content to render messages for
         the user.
