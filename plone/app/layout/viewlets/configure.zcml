@@ -336,7 +336,7 @@
     <!-- Render the document byline -->
     <browser:viewlet
         name="plone.belowcontenttitle.documentbyline"
-        manager=".interfaces.IBelowContentTitle"
+        manager=".interfaces.IToolbar"
         class=".content.DocumentBylineViewlet"
         permission="zope2.View"
         />
