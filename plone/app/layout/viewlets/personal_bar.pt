@@ -28,6 +28,7 @@
             </a>
         </li>
     </ul>
+  </li>
   </tal:block>
 </ul>
 
