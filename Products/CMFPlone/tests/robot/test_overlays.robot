@@ -169,13 +169,15 @@ Scenario: New user overlay closes on valid data
 Scenario: History overlay opens
     Given a site owner
       And the test folder
-     When I click the 'History' link
+     When I click the 'Content Info' link
+      And I click the 'History' link
      Then overlay should open
 
 Scenario: History overlay closes
     Given a site owner
       And the test folder
-      And the 'History' overlay
+      When I click the 'Content Info' link
+      And I click the 'History' link
      When I close the overlay
      Then overlay should close
 
