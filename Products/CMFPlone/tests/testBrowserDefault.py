@@ -18,7 +18,7 @@ import unittest2 as unittest
 
 RE_REMOVE_DOCCONT = re.compile('\s*href="http://.*?#content"')
 RE_REMOVE_SKIPNAV = re.compile('\s*href="http://.*?#portal-globalnav-wrapper"')
-RE_REMOVE_TABS = re.compile('<nav class="navbar" id="portal-globalnav-wrapper".*?</nav>', re.S)
+RE_REMOVE_TABS = re.compile('<div id="portal-header".*?</nav>', re.S)
 RE_REMOVE_AUTH = re.compile('\_authenticator\=.*?\"', re.S)
 
 
@@ -93,6 +93,7 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
             self.fail('No body in response')
 
         if not body == resolved:
+            import pdb; pdb.set_trace()
             diff = difflib.unified_diff(body.split("\n"),
                                         resolved.split("\n"))
             self.fail("\n".join([line for line in diff]))
