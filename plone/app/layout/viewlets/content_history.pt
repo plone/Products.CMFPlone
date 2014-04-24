@@ -2,7 +2,7 @@
      tal:define="history view/fullHistory;"
      tal:omit-tag="">
      <div tal:condition="not: history">—</div>
-     <ol condition="history">
+     <ol id="history-list" tal:condition="history">
          <li tal:repeat="item history" class="historyRecord">
              <tal:historyItem 
                     define="rhComments item/comments|nothing;
