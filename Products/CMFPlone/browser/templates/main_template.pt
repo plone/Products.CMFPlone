@@ -63,9 +63,9 @@
       <div tal:replace="structure provider:plone.portaltop" />
     </header>
 
-    <nav tal:content="structure provider:plone.mainnavigation">
+    <div id="portal-mainnavigation" tal:content="structure provider:plone.mainnavigation">
       The main navigation
-    </nav>
+    </div>
 
     <aside id="global_statusmessage">
       <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
