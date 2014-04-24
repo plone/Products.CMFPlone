@@ -14,7 +14,7 @@
         </h1>
 
         <div id="content-core">
-            <h2 i18n:translate="label_history">History</h2>
+            <h3 i18n:translate="label_history">History</h3>
             <div tal:replace="structure here/@@contenthistory">Content History</div>
         </div>
     </metal:main>

@@ -7,7 +7,7 @@
 
 <body>
     <div id="content">
-        <h2 i18n:translate="label_history">History</h2>
+        <h3 i18n:translate="label_history">History</h3>
 
         <div id="content-history" tal:content="structure here/@@contenthistory">Content History</div>
     </div>
