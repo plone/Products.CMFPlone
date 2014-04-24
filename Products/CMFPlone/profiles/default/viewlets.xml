@@ -8,6 +8,8 @@
     <viewlet name="plone.logo" />
     <viewlet name="plone.searchbox" />
     <viewlet name="plone.app.i18n.locales.languageselector" />
+  </order>
+  <order manager="plone.mainnavigation" skinname="Plone Default">
     <viewlet name="plone.global_sections" />
   </order>
   <order manager="plone.abovecontent" skinname="Plone Default">

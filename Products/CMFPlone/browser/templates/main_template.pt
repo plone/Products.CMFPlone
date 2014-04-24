@@ -1,4 +1,4 @@
-<metal:page define-macro="master">  
+<metal:page define-macro="master">
 <tal:doctype tal:replace="structure string:&lt;!DOCTYPE html&gt;" />
 
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -62,6 +62,10 @@
     <header id="portal-top" i18n:domain="plone">
       <div tal:replace="structure provider:plone.portaltop" />
     </header>
+
+    <nav tal:content="structure provider:plone.mainnavigation">
+      The main navigation
+    </nav>
 
     <aside id="global_statusmessage">
       <tal:message tal:content="structure provider:plone.globalstatusmessage"/>
