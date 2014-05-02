@@ -93,7 +93,6 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
             self.fail('No body in response')
 
         if not body == resolved:
-            import pdb; pdb.set_trace()
             diff = difflib.unified_diff(body.split("\n"),
                                         resolved.split("\n"))
             self.fail("\n".join([line for line in diff]))
