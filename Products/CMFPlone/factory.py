@@ -1,12 +1,13 @@
+from Products.CMFPlone.Portal import PloneSite
+from Products.CMFPlone.events import SiteManagerCreatedEvent
+from Products.CMFPlone.interfaces import INonInstallable
+from Products.GenericSetup.tool import SetupTool
+from plone.registry.interfaces import IRegistry
+from zope.component import queryUtility
 from zope.event import notify
 from zope.interface import implements
 from zope.site.hooks import setSite
 
-from Products.GenericSetup.tool import SetupTool
-
-from Products.CMFPlone.events import SiteManagerCreatedEvent
-from Products.CMFPlone.interfaces import INonInstallable
-from Products.CMFPlone.Portal import PloneSite
 
 _TOOL_ID = 'portal_setup'
 _DEFAULT_PROFILE = 'Products.CMFPlone:plone'
@@ -74,7 +75,7 @@ def addPloneSite(context, site_id, title='Plone site', description='',
                  email_from_name='', validate_email=True,
                  profile_id=_DEFAULT_PROFILE, content_profile_id=_CONTENT_PROFILE,
                  snapshot=False, extension_ids=(), setup_content=True,
-                 default_language='en'):
+                 default_language='en', portal_timezone='UTC'):
     """Add a PloneSite to the context."""
     context._setObject(site_id, PloneSite(site_id))
     site = context._getOb(site_id)
@@ -91,6 +92,10 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     if setup_content:
         setup_tool.runAllImportStepsFromProfile(
             'profile-%s' % content_profile_id)
+
+    reg = queryUtility(IRegistry, context=site)
+    reg['plone.portal_timezone'] = portal_timezone
+    reg['plone.available_timezones'] = [portal_timezone]
 
     props = dict(
         title=title,

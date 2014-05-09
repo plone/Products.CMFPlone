@@ -87,6 +87,28 @@
         </select>
       </div>
 
+      <div class="field">
+        <label for="portal_timezone" i18n:translate="Default timezone">
+          Default timezone
+        </label>
+
+        <div class="formHelp" i18n:translate="">
+          The default timezone setting of the portal. Users will be able to set
+          their own timezone, if available timezones are defined in the date and
+          time settings.
+        </div>
+
+        <select name="portal_timezone"
+          tal:define="tz_list view/timezones">
+          <option value="UTC"
+                  tal:repeat="tz tz_list"
+                  tal:attributes="value tz"
+                  tal:content="tz">
+              UTC
+          </option>
+        </select>
+      </div>
+
       <div class="field" tal:condition="advanced">
         <label for="setup_content" i18n:translate="">Example content</label>
 

@@ -13,7 +13,7 @@
   <title i18n:translate="">Upgrade this site</title>
 
   <link rel="stylesheet" type="text/css"
-        href="/++resource++plone-admin-ui.css" 
+        href="/++resource++plone-admin-ui.css"
         tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css"/>
 
 </head>
@@ -54,6 +54,23 @@
       <img src="confirm_icon.png" />
       <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
     </p>
+
+    <tal:optional tal:condition="options/advertise_dx_migration|nothing">
+
+      <h2 i18n:translate="">Optional Migration Steps</h2>
+
+      <p>
+        <a href="@@pac_installer"
+           target="_parent"
+           tal:define="pac_installed options/pac_installed|nothing"
+           tal:attributes="href string:${context/absolute_url}/@@pac_installer"
+           i18n:translate="">
+           Upgrade your existing content to use Dexterity.
+        </a>
+        <span i18n:translate="">This will install plone.app.contenttypes and redirect you to a form where migrate your content.</span>
+      </p>
+
+    </tal:optional>
 
   </tal:current>
 

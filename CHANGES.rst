@@ -5,8 +5,20 @@
 Changelog
 =========
 
-5.0a2 (unreleased)
+5.0a3 (unreleased)
 ------------------
+
+- Nothing changed yet.
+
+
+5.0a2 (2014-04-20)
+------------------
+
+- Added timezone selection to add site page
+  [pysailor, yenzenz]
+
+- Added date date and time controlpanel (moved over from plone.app.event).
+  [yenzenz. thet]
 
 - Remove DL/DT/DD's from portal messages, portlet templates and others.
   https://github.com/plone/Products.CMFPlone/issues/153

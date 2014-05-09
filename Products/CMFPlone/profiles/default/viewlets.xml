@@ -8,6 +8,8 @@
     <viewlet name="plone.logo" />
     <viewlet name="plone.searchbox" />
     <viewlet name="plone.app.i18n.locales.languageselector" />
+  </order>
+  <order manager="plone.mainnavigation" skinname="Plone Default">
     <viewlet name="plone.global_sections" />
   </order>
   <order manager="plone.abovecontent" skinname="Plone Default">
@@ -18,6 +20,7 @@
     <viewlet name="plone.contentviews" />
     <viewlet name="plone.contentactions" />
     <viewlet name="plone.personal_bar" />
+    <viewlet name="plone.documentbyline" />
   </order>
   <order manager="plone.belowcontentbody" skinname="Plone Default">
     <viewlet name="plone.belowcontentbody.relateditems" />
@@ -26,7 +29,6 @@
   <order manager="plone.belowcontent" skinname="Plone Default">
     <viewlet name="plone.belowcontenttitle.keywords" />
     <viewlet name="plone.nextprevious" />
-    <viewlet name="plone.manage_portlets_fallback" />
   </order>
   <order manager="plone.portalfooter" skinname="Plone Default">
     <viewlet name="plone.footer" />
@@ -36,5 +38,8 @@
   <hidden manager="plone.portalfooter" skinname="Plone Default">
     <viewlet name="plone.colophon" />
     <viewlet name="plone.site_actions" />
+  </hidden>
+  <hidden manager="plone.belowcontent" skinname="Plone Default">
+    <viewlet name="plone.manage_portlets_fallback"/>
   </hidden>
 </object>

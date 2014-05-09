@@ -1,34 +1,33 @@
+from AccessControl import getSecurityManager
+from AccessControl.Permissions import view as View
+from OFS.interfaces import IApplication
+from Products.CMFCore.permissions import ManagePortal
+from Products.CMFPlone.factory import _DEFAULT_PROFILE
+from Products.CMFPlone.factory import addPloneSite
+from Products.CMFPlone.interfaces import INonInstallable
+from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.GenericSetup import BASE, EXTENSION
+from Products.GenericSetup import profile_registry
+from Products.GenericSetup.upgrade import normalize_version
+from ZPublisher.BaseRequest import DefaultPublishTraverse
 from operator import itemgetter
-
 from plone.i18n.locales.interfaces import IContentLanguageAvailability
 from plone.keyring.interfaces import IKeyManager
-from plone.protect.interfaces import IDisableCSRFProtection
 from plone.protect.authenticator import check as checkCSRF
+from plone.protect.interfaces import IDisableCSRFProtection
 from zope.component import adapts
 from zope.component import getAllUtilitiesRegisteredFor
+from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.i18n.interfaces import IUserPreferredLanguages
 from zope.i18n.locales import locales, LoadLocaleError
 from zope.interface import Interface
 from zope.interface import alsoProvides
-from zope.publisher.interfaces import IRequest
 from zope.publisher.browser import BrowserView
-
-from AccessControl import getSecurityManager
-from AccessControl.Permissions import view as View
-from OFS.interfaces import IApplication
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.GenericSetup import profile_registry
-from Products.GenericSetup import BASE, EXTENSION
-from Products.GenericSetup.upgrade import normalize_version
-from ZPublisher.BaseRequest import DefaultPublishTraverse
-
-from Products.CMFCore.permissions import ManagePortal
-from Products.CMFPlone.factory import _DEFAULT_PROFILE
-from Products.CMFPlone.factory import addPloneSite
-from Products.CMFPlone.interfaces import INonInstallable
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from zope.publisher.interfaces import IRequest
+from zope.schema.interfaces import IVocabularyFactory
 
 import logging
 LOGGER = logging.getLogger('Products.CMFPlone')
@@ -39,8 +38,8 @@ class AppTraverser(DefaultPublishTraverse):
 
     def publishTraverse(self, request, name):
         if name == 'index_html':
-            view = queryMultiAdapter((self.context, request),
-                        Interface, 'plone-overview')
+            view = queryMultiAdapter(
+                (self.context, request), Interface, 'plone-overview')
             if view is not None:
                 return view
         return DefaultPublishTraverse.publishTraverse(self, request, name)
@@ -200,6 +199,14 @@ class AddPloneSite(BrowserView):
         languages.sort(key=itemgetter(1))
         return languages
 
+    def timezones(self):
+        tz_vocab = getUtility(
+            IVocabularyFactory,
+            'plone.app.vocabularies.CommonTimezones'
+        )(self.context)
+        tz_list = [it.value for it in tz_vocab]
+        return tz_list
+
     def __call__(self):
         context = self.context
         form = self.request.form
@@ -226,7 +233,8 @@ class AddPloneSite(BrowserView):
                 extension_ids=form.get('extension_ids', ()),
                 setup_content=form.get('setup_content', False),
                 default_language=form.get('default_language', 'en'),
-                )
+                portal_timezone=form.get('portal_timezone', 'UTC')
+            )
             self.request.response.redirect(site.absolute_url())
 
         return self.index()
@@ -255,14 +263,22 @@ class Upgrade(BrowserView):
         form = self.request.form
         submitted = form.get('form.submitted', False)
         if submitted:
-            # CSRF protect. DO NOT use auto CSRF protection for upgrading a site
+            # CSRF protect. DO NOT use auto CSRF protection for upgrading sites
             alsoProvides(self.request, IDisableCSRFProtection)
 
             pm = getattr(self.context, 'portal_migration')
             report = pm.upgrade(
                 REQUEST=self.request,
                 dry_run=form.get('dry_run', False),
-                )
-            return self.index(report=report)
+            )
+            qi = getattr(self.context, 'portal_quickinstaller')
+            pac_installed = qi.isProductInstalled('plone.app.contenttypes')
+            pac_installable = qi.isProductInstallable('plone.app.contenttypes')
+            advertise_dx_migration = pac_installable and not pac_installed
+
+            return self.index(
+                report=report,
+                advertise_dx_migration=advertise_dx_migration
+            )
 
         return self.index()

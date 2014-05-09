@@ -6,7 +6,7 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-  <section class="portlet portletClassic" id="portal-footer" metal:define-macro="portlet">
+  <section class="portlet portletClassic" id="portal-footer-signature" metal:define-macro="portlet">
     <div class="portletContent">
       <span i18n:translate="description_copyright" tal:omit-tag="">
       The
