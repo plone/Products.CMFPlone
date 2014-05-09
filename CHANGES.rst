@@ -8,7 +8,8 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PLIP 13260: Migration cut, copy and paste into browser views.
+  [saily]
 
 
 5.0a2 (2014-04-20)
@@ -34,9 +35,6 @@ Changelog
 - PLIP 13260: Migration contact-info to ``z3c.form`` and make it highly
   customizeable.
   [timitos, saily]
-
-- PLIP 13260: Migration cut, copy and paste into browser views.
-  [saily]
 
 
 5.0a1 (2014-03-02)
