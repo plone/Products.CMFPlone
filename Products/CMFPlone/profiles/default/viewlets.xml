@@ -17,9 +17,9 @@
   </order>
   <order manager="plone.toolbar" skinname="Plone Default">
     <viewlet name="plone.tiny_logo" />
+    <viewlet name="plone.personal_bar" />
     <viewlet name="plone.contentviews" />
     <viewlet name="plone.contentactions" />
-    <viewlet name="plone.personal_bar" />
     <viewlet name="plone.documentbyline" />
   </order>
   <order manager="plone.belowcontentbody" skinname="Plone Default">
