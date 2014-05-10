@@ -182,6 +182,14 @@
     name="plone-tinymce-img-object.gif"
     file="static/plone-tinymce-img-object.gif"
     />
+  <browser:resource
+    name="plone-toolbarlogo.svg"
+    file="static/plone-toolbarlogo.svg"
+    />
+  <browser:resource
+    name="plone-toolbarlogo.png"
+    file="static/plone-toolbarlogo.png"
+    />
 
   <configure zcml:condition="installed mockup">
     <browser:resource
