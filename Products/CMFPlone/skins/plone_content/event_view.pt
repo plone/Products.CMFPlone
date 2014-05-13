@@ -12,7 +12,9 @@
                         tal:define="kssClassesView context/@@kss_field_decorator_view;
                                     getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
                                     templateId template/getId;
-                                    toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
+                                    toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                    same_time python:context.start().Time() == context.end().Time();
+                                    same_day python:context.start().Date() == context.end().Date();">
 
         <div class="eventDetails vcard">
             <table class="vertical listing"
@@ -55,15 +57,18 @@
                                 </abbr>
                             </tal:differentday>
 
-                            <tal:sameday tal:condition="python:context.start().Date() == context.end().Date()">
-                                <tal:date i18n:translate="event_when_sameday">
+                            <tal:sametime tal:condition="python:same_day and same_time"
+                                          i18n:translate="event_when_sameday_sametime">
                                 <span tal:replace="python:toLocalizedTime(context.start())"
                                       i18n:name="date">
                                     Start Date Time</span>
-                                </tal:date>
+                            </tal:sametime>
+                            <tal:sameday tal:condition="python:same_day and not same_time"
+                                         i18n:translate="event_when_sameday">
+                                <span tal:replace="python:toLocalizedTime(context.start())"
+                                      i18n:name="date">
+                                    Start Date Time</span>
 
-                              <tal:notsametime tal:condition="python:context.start().Time() != context.end().Time()"
-                                               i18n:translate="event_when_notsametime">
                                 <br i18n:name="linebreak" />
                                 from
                                 <abbr metal:define-macro="startdatesame-field-view"
@@ -88,7 +93,6 @@
                                             class="explain"
                                             tal:content="python:toLocalizedTime(context.end(), time_only=1)">End Time</span>
                                 </abbr>
-                              </tal:notsametime>
 
                             </tal:sameday>
                         </td>
