@@ -19,7 +19,7 @@ jQuery(function ($) {
     };
 
     // Archetypes
-    $('.field input.blurrable,.field select.blurrable,.field textarea.blurrable').live('blur', function () {
+    $(document).on('blur', '.field input.blurrable, .field select.blurrable, .field textarea.blurrable', function () {
         var $input = $(this),
             $field = $input.closest('.field'),
             uid = $field.attr('data-uid'),
@@ -50,12 +50,15 @@ jQuery(function ($) {
             dataType: 'json'
         });
     };
-    $('.formlibInlineValidation input[type="text"]').live('blur', function () { formlib_validate_field(this); });
-    $('.formlibInlineValidation input[type="password"]').live('blur', function () { formlib_validate_field(this); });
-    $('.formlibInlineValidation input[type="checkbox"]').live('blur', function () { formlib_validate_field(this); });
-    $('.formlibInlineValidation input[type="radio"]').live('blur', function () { formlib_validate_field(this); });
-    $('.formlibInlineValidation select').live('blur', function () { formlib_validate_field(this); });
-    $('.formlibInlineValidation textarea').live('blur', function () { formlib_validate_field(this); });
+    $(document).on(
+        'blur',
+        '.formlibInlineValidation input[type="text"], ' +
+        '.formlibInlineValidation input[type="password"], ' +
+        '.formlibInlineValidation input[type="checkbox"], ' +
+        '.formlibInlineValidation input[type="radio"], ' +
+        '.formlibInlineValidation select, ' +
+        '.formlibInlineValidation textarea',
+        function () { formlib_validate_field(this); });
 
     // z3c.form
     var z3cform_validate_field = function (input) {
@@ -77,11 +80,14 @@ jQuery(function ($) {
             });
         }
     };
-    $('.z3cformInlineValidation input[type="text"]').live('blur', function () { z3cform_validate_field(this); });
-    $('.z3cformInlineValidation input[type="password"]').live('blur', function () { z3cform_validate_field(this); });
-    $('.z3cformInlineValidation input[type="checkbox"]').live('blur', function () { z3cform_validate_field(this); });
-    $('.z3cformInlineValidation input[type="radio"]').live('blur', function () { z3cform_validate_field(this); });
-    $('.z3cformInlineValidation select').live('blur', function () { z3cform_validate_field(this); });
-    $('.z3cformInlineValidation textarea').live('blur', function () { z3cform_validate_field(this); });
+    $(document).on(
+        'blur',
+        '.z3cformInlineValidation input[type="text"], ' +
+        '.z3cformInlineValidation input[type="password"], ' +
+        '.z3cformInlineValidation input[type="checkbox"], ' +
+        '.z3cformInlineValidation input[type="radio"], ' +
+        '.z3cformInlineValidation select, ' +
+        '.z3cformInlineValidation textarea',
+        function () { z3cform_validate_field(this); });
 
 });
