@@ -8,6 +8,9 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Fix JavaScript to work with recent jQuery (>= 1.9) versions.
+  [thet]
+
 - Improve event_view - do not show time when user specifies the same start and 
   end time for an event.
   [spereverde]

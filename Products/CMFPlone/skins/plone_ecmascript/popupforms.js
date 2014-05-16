@@ -8,6 +8,21 @@
 ******/
 
 
+function msieversion() {
+    // Detect MSIE browser version
+    // http://support.microsoft.com/kb/167820
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+
+    if (msie > 0) {
+        // If Internet Explorer, return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+    } else {
+        // If another browser, return 0
+        return 0;
+    }
+}
+
 var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info';
 
 jQuery.extend(jQuery.tools.overlay.conf,
@@ -50,7 +65,7 @@ jQuery.extend(jQuery.tools.overlay.conf,
 
 jQuery(function($){
 
-    if (jQuery.browser.msie && parseInt(jQuery.browser.version, 10) < 7) {
+    if (msieversion() > 0 && msieversion() < 7) {
         // it's not realistic to think we can deal with all the bugs
         // of IE 6 and lower. Fortunately, all this is just progressive
         // enhancement.
