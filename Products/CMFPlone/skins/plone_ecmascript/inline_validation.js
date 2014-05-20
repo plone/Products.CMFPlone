@@ -19,9 +19,7 @@ jQuery(function ($) {
     };
 
     // Archetypes
-    $('.field input.blurrable, ' +
-            '.field select.blurrable, ' +
-            '.field textarea.blurrable').on('blur', function () {
+    $(document).on('blur', '.field input.blurrable, .field select.blurrable, .field textarea.blurrable', function () {
         var $input = $(this),
             $field = $input.closest('.field'),
             uid = $field.attr('data-uid'),
@@ -52,13 +50,14 @@ jQuery(function ($) {
             dataType: 'json'
         });
     };
-    $('.formlibInlineValidation input[type="text"], ' +
-            '.formlibInlineValidation input[type="password"], ' +
-            '.formlibInlineValidation input[type="checkbox"], ' +
-            '.formlibInlineValidation input[type="radio"], ' +
-            '.formlibInlineValidation select, ' +
-            '.formlibInlineValidation textarea').on(
+    $(document).on(
         'blur',
+        '.formlibInlineValidation input[type="text"], ' +
+        '.formlibInlineValidation input[type="password"], ' +
+        '.formlibInlineValidation input[type="checkbox"], ' +
+        '.formlibInlineValidation input[type="radio"], ' +
+        '.formlibInlineValidation select, ' +
+        '.formlibInlineValidation textarea',
         function () { formlib_validate_field(this); });
 
     // z3c.form
@@ -81,13 +80,14 @@ jQuery(function ($) {
             });
         }
     };
-    $('.z3cformInlineValidation input[type="text"], ' +
-            '.z3cformInlineValidation input[type="password"], ' +
-            '.z3cformInlineValidation input[type="checkbox"], ' +
-            '.z3cformInlineValidation input[type="radio"], ' +
-            '.z3cformInlineValidation select, ' +
-            '.z3cformInlineValidation textarea').on(
+    $(document).on(
         'blur',
+        '.z3cformInlineValidation input[type="text"], ' +
+        '.z3cformInlineValidation input[type="password"], ' +
+        '.z3cformInlineValidation input[type="checkbox"], ' +
+        '.z3cformInlineValidation input[type="radio"], ' +
+        '.z3cformInlineValidation select, ' +
+        '.z3cformInlineValidation textarea',
         function () { z3cform_validate_field(this); });
 
 });
