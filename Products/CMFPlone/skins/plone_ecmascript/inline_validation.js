@@ -32,7 +32,12 @@ jQuery(function ($) {
     };
 
     // Archetypes
-    $(document).on('blur', '.field input.blurrable, .field select.blurrable, .field textarea.blurrable', function () {
+    $(document).on(
+            'blur',
+            '.field input.blurrable, ' +
+            '.field select.blurrable, ' +
+            '.field textarea.blurrable',
+            function () {
         var $input = $(this),
             $field = $input.closest('.field'),
             uid = $field.attr('data-uid'),
