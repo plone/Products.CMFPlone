@@ -14,9 +14,9 @@ ploneDnDReorder.table = null;
 ploneDnDReorder.rows = null;
 ploneDnDReorder.locked = false;
 
-(function($) {
+(function ($) {
 
-    ploneDnDReorder.doDown = function(e) {
+    ploneDnDReorder.doDown = function (e) {
         var dragging = ploneDnDReorder.dragging,
             body;
         // Waiting for a server operation to complete or following an error
@@ -47,19 +47,19 @@ ploneDnDReorder.locked = false;
         // Find the original subset ids. This must be in the current order.
         dragging.data('ploneDnDReorder.subset_ids', $.map(
             ploneDnDReorder.table.find('tr.draggable'),
-            function(elem) {
+            function (elem) {
                 return $(elem).attr('id').substr('folder-contents-item-'.length);
             }));
 
         return false;
     };
 
-    ploneDnDReorder.getPos = function(node) {
+    ploneDnDReorder.getPos = function (node) {
         var pos = node.parent().children('.draggable').index(node[0]);
         return pos === -1 ? null : pos;
     };
 
-    ploneDnDReorder.doDrag = function(e) {
+    ploneDnDReorder.doDrag = function (e) {
         var dragging = ploneDnDReorder.dragging,
             target = this;
 
@@ -76,7 +76,7 @@ ploneDnDReorder.locked = false;
         return false;
     };
 
-    ploneDnDReorder.swapElements = function(child1, child2) {
+    ploneDnDReorder.swapElements = function (child1, child2) {
         var parent = child1.parent(),
             items = parent.children('[id]'),
             t;
@@ -103,7 +103,7 @@ ploneDnDReorder.locked = false;
         parent.children('[id]:even').addClass('odd');
     };
 
-    ploneDnDReorder.doUp = function(e) {
+    ploneDnDReorder.doUp = function (e) {
         var dragging = ploneDnDReorder.dragging,
             body = $('body');
         if (!dragging) {
@@ -121,7 +121,7 @@ ploneDnDReorder.locked = false;
         return false;
     };
 
-    ploneDnDReorder.doCancel = function(e) {
+    ploneDnDReorder.doCancel = function (e) {
         var dragging = ploneDnDReorder.dragging,
             body = $('body');
         if (!dragging) {
@@ -146,7 +146,7 @@ ploneDnDReorder.locked = false;
         return false;
     };
 
-    ploneDnDReorder.updatePositionOnServer = function() {
+    ploneDnDReorder.updatePositionOnServer = function () {
         var dragging = ploneDnDReorder.dragging,
             delta,
             args,
@@ -182,7 +182,7 @@ ploneDnDReorder.locked = false;
         ploneDnDReorder.locked = true;
     };
 
-    ploneDnDReorder.complete = function(xhr, textStatus) {
+    ploneDnDReorder.complete = function (xhr, textStatus) {
         var dragging = ploneDnDReorder.dragging;
         dragging.removeClass("dragging");
         // Need to remove the indicator as well, important in the
@@ -216,6 +216,6 @@ function initializeDnDReorder(table_selector) {
         .html('&#x28ff;');
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     initializeDnDReorder('#listing-table');
 });
