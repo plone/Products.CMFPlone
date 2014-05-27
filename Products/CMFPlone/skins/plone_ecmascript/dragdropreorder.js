@@ -201,12 +201,12 @@ ploneDnDReorder.locked = false;
 
 function initializeDnDReorder(table_selector) {
     var table = table_selector;
-    ploneDnDReorder.table = $(table);
+    ploneDnDReorder.table = jQuery(table);
     if (!ploneDnDReorder.table.length)
         return;
-    ploneDnDReorder.rows = $(table + " > tr," +
+    ploneDnDReorder.rows = jQuery(table + " > tr," +
         table + " > tbody > tr");
-    $(table + " > tr > td.draggable," +
+    jQuery(table + " > tr > td.draggable," +
         table + " > tbody > tr > td.draggable")
         .not('.notDraggable')
         .mousedown(ploneDnDReorder.doDown)
