@@ -158,3 +158,20 @@ class TestDexterityRelatedItemsViewlet(ViewletsTestCase):
         viewlet.update()
         related = viewlet.related_items()
         self.assertEqual(len(related), 0)
+
+    def testDexterityFolderRelatedItems(self):
+        """
+        Related items viewlet doesn't include related folder's descendants.
+        """
+        self.assertTrue(
+            self.folder.contentValues(), 'Folder is missing descendants')
+
+        intids = getUtility(IIntIds)
+        self.folder.dex1.relatedItems = [
+            RelationValue(intids.getId(self.folder))]
+
+        request = self.app.REQUEST
+        viewlet = ContentRelatedItems(self.folder.dex1, request, None, None)
+        viewlet.update()
+        related = viewlet.related_items()
+        self.assertEqual(len(related), 1)

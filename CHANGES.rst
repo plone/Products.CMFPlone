@@ -4,7 +4,8 @@ Changelog
 2.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix related items viewlet listing dexterity related folder's descendants.
+  [rpatterson]
 
 
 2.5.1 (2014-04-05)

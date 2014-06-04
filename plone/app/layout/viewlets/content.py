@@ -187,7 +187,7 @@ class ContentRelatedItems(ViewletBase):
             path = r.to_path
             # the query will return an empty list if the user
             # has no permission to see the target object
-            brains.extend(catalog(path={'query': path}))
+            brains.extend(catalog(path=dict(query=path, depth=0)))
         return brains
 
 
