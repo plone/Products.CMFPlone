@@ -8,7 +8,9 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Abstract the search form and livesearch action URLs making it easier to
+  extend the search portlet with custom views or other actions.
+  [rpatterson]
 
 
 5.0a2 (2014-04-20)
