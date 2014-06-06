@@ -8,6 +8,10 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Abstract the search form and livesearch action URLs making it easier to
+  extend the search portlet with custom views or other actions.
+  [rpatterson]
+
 - Improve event_view - do not show time when user specifies the same start and 
   end time for an event.
   [spereverde]
