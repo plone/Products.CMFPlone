@@ -71,8 +71,9 @@ searchterms = url_quote_plus(r)
 
 REQUEST = context.REQUEST
 params = {'SearchableText': r,
-          'portal_type': friendly_types,
           'sort_limit': limit + 1}
+if 'portal_type' not in REQUEST:
+    params['portal_type'] = friendly_types
 
 if path is None:
     # useful for subsides
