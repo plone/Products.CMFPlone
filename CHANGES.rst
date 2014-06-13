@@ -12,9 +12,6 @@ Changelog
   extend the search portlet with custom views or other actions.
   [rpatterson]
 
-- Declare minimum plone.app.jquery dependency (1.7.2) in setup.py.
-  [thet]
-
 - Fix JavaScript to work with recent jQuery (>= 1.9) versions.
   [thet]
 
