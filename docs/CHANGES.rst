@@ -8,6 +8,10 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Abstract the search form and livesearch action URLs making it easier to
+  extend the search portlet with custom views or other actions.
+  [rpatterson]
+
 - Declare minimum plone.app.jquery dependency (1.7.2) in setup.py.
   [thet]
 
