@@ -104,9 +104,6 @@ Scenario: Rename content action overlay closes
      When I trigger the 'rename' action menu item of the test folder
       And I close the overlay
      Then overlay should close
-     When I trigger the 'rename' action menu item of the test folder
-      And I 'RenameAll' the form
-     Then overlay should close
 
 Scenario: Register user overlay opens
     Given the mail setup configured
@@ -216,8 +213,8 @@ overlay shows an error
     Wait Until Page Contains  Error
 
 I '${action}' the form
-    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer input[name="form.button.${action}"]
-    Click Element  css=div.modal-footer input[name="form.button.${action}"]
+    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer input[name="form.buttons.${action}"]
+    Click Element  css=div.modal-footer input[name="form.buttons.${action}"]
 
 I enter wrong credentials
     Input text  __ac_name  wrong
@@ -266,7 +263,7 @@ a document as the default view of the test folder
     Wait until element is visible  id=contextSetDefaultPage
     Click link  id=contextSetDefaultPage
     Click element  id=doc
-    Click element  css=div.modal-footer input[name="form.button.Save"]
+    Click element  css=div.modal-footer input[name="form.buttons.Save"]
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
@@ -282,4 +279,5 @@ I trigger the '${action}' action menu item of the test folder
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
-    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer input[class="destructive"]
+    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer input#form-buttons-Delete
+

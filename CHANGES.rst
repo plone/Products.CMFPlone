@@ -8,6 +8,9 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- PLIP 13260: Migration cut, copy and paste into browser views.
+  [saily]
+
 - Abstract the search form and livesearch action URLs making it easier to
   extend the search portlet with custom views or other actions.
   [rpatterson]
@@ -30,13 +33,13 @@ Changelog
   https://github.com/plone/Products.CMFPlone/issues/163
   [khink]
 
--  PLIP 13260 remove templates and form scripts for
-   ``select_default_page`` and ``select_default_view`` because they got
-   migrated to browser views. see:
-   https://github.com/plone/Products.CMFPlone/issues/90
-   [saily]
+- PLIP 13260 remove templates and form scripts for
+  ``select_default_page`` and ``select_default_view`` because they got
+  migrated to browser views. Fix tests for that and remove legacy tests.
+  See: https://github.com/plone/Products.CMFPlone/issues/90
+  [saily]
 
-- PLIP 13260: Migration contact-info to z3c.form and make it highly
+- PLIP 13260: Migration contact-info to ``z3c.form`` and make it highly
   customizeable.
   [timitos, saily]
 

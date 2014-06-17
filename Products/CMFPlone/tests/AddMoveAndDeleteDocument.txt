@@ -150,7 +150,7 @@ buffer here:
     >>> browser.getLink('View').click()
     >>> browser.getLink('Paste').click()
     >>> browser.url
-    'http://nohost/plone/Members/test_user_1_/my-folder/...'
+    'http://nohost/plone/Members/test_user_1_/my-folder...'
     >>> 'Item(s) pasted.' in browser.contents
     True
     >>> browser.getLink('View').click()

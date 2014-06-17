@@ -27,7 +27,7 @@ setup(name='Products.CMFPlone',
       include_package_data=True,
       zip_safe=False,
       extras_require=dict(
-        archetypes = [
+        archetypes=[
           'Products.ATContentTypes',
         ],
         test=[

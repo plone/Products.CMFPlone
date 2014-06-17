@@ -7,8 +7,6 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from AccessControl.Permissions import copy_or_move
 from AccessControl.Permissions import delete_objects
 
-import transaction
-
 
 # XXX: This is done in the PloneView now, and perhaps these tests should be
 # moved there.  We will leave the script around for a while, so we still test
@@ -24,16 +22,10 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.parent = self.folder.aq_parent
         self.folder.invokeFactory('Folder', id='foo')
-        self.folder.foo.invokeFactory('Document', id='doc1')
-        self.folder.foo.invokeFactory('Folder', id='folder1')
-        folder_path = '/'.join(self.folder.foo.folder1.getPhysicalPath())
-        transaction.savepoint(optimistic=True)  # make rename work
-        # Make the folder the default page
+        self.folder.foo.invokeFactory('Folder', id='index_html')
+        self.folder.foo.invokeFactory(
+            'Document', id='doc1', title='Default Folderish Document')
         self.setupAuthenticator()
-        self.setRequestMethod('POST')
-        self.folder.folder_rename(paths=[folder_path], new_ids=['index_html'],
-                                  new_titles=['Default Folderish Document'])
-        self.setRequestMethod('GET')
 
     def getModificationPermissions(self):
         return [ModifyPortalContent,
