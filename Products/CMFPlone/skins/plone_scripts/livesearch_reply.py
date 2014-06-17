@@ -69,9 +69,11 @@ r = " AND ".join(r)
 r = quote_bad_chars(r) + '*'
 searchterms = url_quote_plus(r)
 
+REQUEST = context.REQUEST
 params = {'SearchableText': r,
-          'portal_type': friendly_types,
           'sort_limit': limit + 1}
+if 'portal_type' not in REQUEST:
+    params['portal_type'] = friendly_types
 
 if path is None:
     # useful for subsides
@@ -80,11 +82,10 @@ else:
     params['path'] = path
 
 # search limit+1 results to know if limit is exceeded
-results = catalog(**params)
+results = catalog(REQUEST, **params)
 
 searchterm_query = '?searchterm=%s' % url_quote_plus(q)
 
-REQUEST = context.REQUEST
 RESPONSE = REQUEST.RESPONSE
 RESPONSE.setHeader('Content-Type', 'text/xml;charset=utf-8')
 

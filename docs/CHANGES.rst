@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Fix JavaScript to work with recent jQuery (>= 1.9) versions.
+  [thet]
+
 - Advertise the migration of content to dexterity after a successful
   upgrade to Plone 5.
   [pbauer]

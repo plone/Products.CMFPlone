@@ -29,8 +29,10 @@ var livesearch = (function () {
         var $lastsearch = null,
             $request = null,
             $cache = {},
-            $querytarget = $form.attr('action').replace(/@@search$/g,"") + "livesearch_reply",
             $$result = $form.find('div.LSResult'),
+            $querytarget = $form.attr('action').replace(
+                $form.data('action') || '@@search',
+                $$result.data('livesearch') || 'livesearch_reply'),
             $shadow = $form.find('div.LSShadow'),
             $path = $form.find('input[name="path"]');
 

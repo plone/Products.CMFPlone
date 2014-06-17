@@ -11,6 +11,13 @@ Changelog
 - PLIP 13260: Migration cut, copy and paste into browser views.
   [saily]
 
+- Abstract the search form and livesearch action URLs making it easier to
+  extend the search portlet with custom views or other actions.
+  [rpatterson]
+
+- Fix JavaScript to work with recent jQuery (>= 1.9) versions.
+  [thet]
+
 
 5.0a2 (2014-04-20)
 ------------------
