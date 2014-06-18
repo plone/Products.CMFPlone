@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Backbone.js pagination</title>
+		<link rel="stylesheet" href="../css/bootstrap.min.css">
+	</head>
+
+	<body>
+
+		<div class="container">
+
+		  <p>&nbsp;</p>
+		  <div class="page-header">
+		    <h1>Paginator.requestPager() <small>Infinite Pagination</small></h1>
+		  </div>
+
+			<h3>GitHub issues for Twitter Bootstrap</h3>
+			<ul id="content">
+			</ul>
+
+			<div id="pagination">
+			</div>
+	
+		</div>
+
+	
+		<!--sample template for result item-->
+		<script type="text/html" id="resultItemTemplate">
+			<div class="result row">
+        <div class="title">
+        <h4>#<%= number %> <%= title %></h4>
+        <div class="meta"><strong>Meta-data:</strong> Reported by: <%= user.login %>, Comments: <%= comments %></span>
+        </div>
+			</div>
+		</script>
+
+		<!-- sample template for pagination UI -->
+		<script type="text/html" id="tmpServerPagination">
+			<div class="breadcrumb">
+
+					<% if (currentPage < totalPages) { %>
+						<a href="#" class="btn long servernext">Show More</a>
+					<% } %>
+
+			  </div>
+		  </script>
+
+
+		
+		<!-- scripts-->
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore.js"></script>
+	    <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.js"></script>
+	    <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+
+		<script src="app.js"></script>
+
+		<!--Backbone.Paginator-->
+		<script src="../../lib/backbone.paginator.js"></script>
+
+		<!--Models/Collections-->
+		<script src="models/Item.js"></script>
+		<script src="collections/PaginatedCollection.js"></script>
+
+		<!--Views-->
+		<script src="views/ResultView.js"></script>
+		<script src="views/PaginationView.js"></script>
+		<script src="views/AppView.js"></script>
+
+
+	</body>
+</html>

@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - 0.10
+env:
+  global:
+    - secure: "AfyaqEddoOzyQS2lx22xRN9OR3FN4BYLXXfISUvyJjObTD4dG08ZHydWTQcvnKMhN0V92vybt2gKOxsTXMHuy5gclMHnDLeclabgHZA6h6kOJLRyyHyj8/fDDkOAuA0dCki4/TQGENoyFl9+ei1oWvQI0ZfVCNote7zj9987gp0="
+    - secure: "XBLWX9U+XotKYK5/w7DeKpaB4YtG1w3XaJH2upap+S1KgV+Nr/NHGcvHkD0ucuEkcySL6KofRXDmfyC4tNjW0jKuPs2dBxKPYL1xD0DDCYKlkX3diP9OmBAcwwqchw9U9eeN3R9UhiRCG/dnXwiuEoqy6DytbRB7UB4XSwyGQRA="
+    - SAUCE_CONNECT_READY_FILE=/tmp/sauce-connect-ready
+  matrix:
+    - BROWSERS="SL_Chrome,SL_Firefox"
+    - BROWSERS="SL_IE_8,SL_IE_9"
+    - BROWSERS="SL_IE_10,SL_IE_11"
+    - BROWSERS="SL_Opera,SL_Safari"
+    - BROWSERS="SL_IPhone"
+    - BROWSERS="SL_IPad"
+    - BROWSERS="SL_Android"
+install:
+  - travis_retry make bootstrap
+script:
+  - make test-once
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then make test-ci; fi
+after_success:
+  - if [ "$BROWSERS" == "SL_Chrome,SL_Firefox" ]; then ./node_modules/.bin/lcov-result-merger "coverage/**/lcov.info" | ./node_modules/.bin/coveralls; fi
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: BROWSERS="SL_IPhone"
+    - env: BROWSERS="SL_IPad"
+    - env: BROWSERS="SL_Android"
+branches:
+  only:
+    - master

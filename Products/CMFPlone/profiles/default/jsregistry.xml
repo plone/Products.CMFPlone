@@ -1,7 +1,202 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
+ <javascript id="++resource++plonejs/requirejs/require.js"/>
+
+ <javascript id="++resource++plonejs/jquery/jquery.js" 
+    requirejs="jquery"/>
+
+ <javascript id="++resource++plonejs/mockup-core/js/registry.js" 
+    requirejs="mockup-registry"/>
+
+ <javascript id="++resource++plonejs/mockup-core/js/pattern.js" 
+    requirejs="mockup-patterns-base"/>
+
+
+ <!-- Libraries -->
+ <javascript id="++resource++plonejs/react/JSXTransformer.js" 
+    requirejs="JSXTransformer" 
+    exports="window.JSXTransformer"/>
+
+ <javascript id="++resource++plonejs/backbone/backbone.js" 
+    requirejs="backbone" 
+    exports="window.Backbone" 
+    deps="underscore, jquery"/>
+
+ <javascript id="++resource++plonejs/backbone.paginator/lib/backbone.paginator.js" 
+    requirejs="backbone.paginator" 
+    exports="window.Backbone.Paginator" 
+    deps="backbone"/>
+
+ <javascript id="++resource++plonejs/bootstrap/js/alert.js" 
+    requirejs="bootstrap-alert"
+    deps="jquery"/>
+
+ <javascript id="++resource++plonejs/bootstrap/js/dropdown.js" 
+    requirejs="bootstrap-dropdown"
+    deps="jquery"/>
+
+ <javascript id="++resource++plonejs/bootstrap/js/collapse.js" 
+    requirejs="bootstrap-collapse"
+    exports="window.jQuery.fn.collapse.Constructor"
+    deps="jquery"/>
+
+ <javascript id="++resource++plonejs/bootstrap/js/tooltip.js" 
+    requirejs="bootstrap-tooltip"
+    deps="jquery"/>
+
+ <javascript id="++resource++plonejs/bootstrap/js/transition.js" 
+    requirejs="bootstrap-transition"
+    exports="window.jQuery.support.transition"
+    deps="jquery"/>
+
+ <javascript id="++resource++plonejs/domready/ready.js" 
+    requirejs="domready"/>
+
+ <javascript id="++resource++plonejs/dropzone/downloads/dropzone-amd-module.js" 
+    requirejs="dropzone"/>
+
+ <javascript id="++resource++plonejs/expect/index.js"
+    requirejs="expect" 
+    exports="window.expect"/>
+
+ <javascript id="++resource++plonejs/jqtree/tree.jquery.js" 
+    requirejs="jqtree"
+    deps="jquery"/>
+
+ <javascript id="++resource++plonejs/jquery.cookie/jquery.cookie.js" 
+    requirejs="jquery.cookie"
+    deps="jquery"/>
+
+ <javascript id="++resource++plonejs/jquery-form/jquery.form.js" 
+    requirejs="jquery.form"/>
+
+ <javascript id="++resource++plonejs/marked/lib/marked.js" 
+    requirejs="marked"/>
+
+ <javascript id="++resource++plonejs/moment/moment.js" 
+    requirejs="moment"/>
+
+ <javascript id="++resource++plonejs/pickadate/lib/picker.js" 
+    requirejs="picker"/>
+
+ <javascript id="++resource++plonejs/pickadate/lib/picker.date.js" 
+    requirejs="picker.date"
+    deps="picker"/>
+
+ <javascript id="++resource++plonejs/pickadate/lib/picker.time.js" 
+    requirejs="picker.time"
+    deps="picker"/>
+
+ <javascript id="++resource++plonejs/react/react.js" 
+    requirejs="react"/>
+
+ <javascript id="++resource++plonejs/select2/select2.js" 
+    requirejs="select2"/>
+
+ <javascript id="++resource++plonejs/sinonjs/sinon.js" 
+    requirejs="sinon"
+    exports="window.sinon"/>
+
+ <javascript id="++resource++plonejs/requirejs-text/text.js" 
+    requirejs="sinon"/>
+
+ <javascript id="++resource++plonejs/lodash/dist/lodash.underscore.js" 
+    requirejs="underscore"
+    exports="window._"/>
+
+ <javascript id="++resource++mockup/lib/jquery.event.drag.js" 
+    requirejs="jquery.event.drag"
+    deps="jquery"/>
+
+ <javascript id="++resource++mockup/lib/jquery.event.drop.js" 
+    requirejs="jquery.event.drop"
+    exports="$.drop"
+    deps="jquery"/>
+
+ <javascript id="++resource++mockup/lib/tinymce/tinymce.min.js" 
+    requirejs="tinymce"
+    exports="window.tinyMCE"
+    init="function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }"/>
+
+ <javascript id="++resource++mockup/js/router.js" 
+    requirejs="mockup-router"/>
+
+ <javascript id="++resource++mockup/js/utils.js" 
+    requirejs="mockup-utils"/>
+
+
+ <!-- Patterns -->
+ <javascript id="++resource++mockup/js/patterns/modal.js" 
+    requirejs="mockup-patterns-modal"/>
+
+ <javascript id="++resource++mockup/js/patterns/select2.js" 
+    requirejs="mockup-patterns-select2"/>
+
+ <javascript id="++resource++mockup/js/patterns/accessibility.js" 
+    requirejs="mockup-patterns-accessibility"/>
+
+ <javascript id="++resource++mockup/js/patterns/autotoc.js" 
+    requirejs="mockup-patterns-autotoc"/>
+
+ <javascript id="++resource++mockup/js/patterns/backdrop.js" 
+    requirejs="mockup-patterns-backdrop"/>
+
+ <javascript id="++resource++mockup/js/patterns/sortable.js" 
+    requirejs="mockup-patterns-sortable"/>
+
+ <javascript id="++resource++mockup/js/patterns/dropzone.js" 
+    requirejs="mockup-patterns-dropzone"/>
+
+ <javascript id="++resource++mockup/js/patterns/formautofocus.js" 
+    requirejs="mockup-patterns-formautofocus"/>
+
+ <javascript id="++resource++mockup/js/patterns/formunloadalert.js" 
+    requirejs="mockup-patterns-formunloadalert"/>
+
+ <javascript id="++resource++mockup/js/patterns/modal.js" 
+    requirejs="mockup-patterns-modal"/>
+
+ <javascript id="++resource++mockup/js/patterns/moment.js" 
+    requirejs="mockup-patterns-moment"/>
+
+ <javascript id="++resource++mockup/js/patterns/pickadate.js" 
+    requirejs="mockup-patterns-pickadate"/>
+
+ <javascript id="++resource++mockup/js/patterns/preventdoublesubmit.js" 
+    requirejs="mockup-patterns-preventdoublesubmit"/>
+
+ <javascript id="++resource++mockup/js/patterns/querystring.js" 
+    requirejs="mockup-patterns-querystring"/>
+
+ <javascript id="++resource++mockup/js/patterns/relateditems.js" 
+    requirejs="mockup-patterns-relateditems"/>
+
+ <javascript id="++resource++mockup/js/patterns/select2.js" 
+    requirejs="mockup-patterns-select2"/>
+
+ <javascript id="++resource++mockup/js/patterns/structure/pattern.js" 
+    requirejs="mockup-patterns-structure"/>
+
+ <javascript id="++resource++mockup/js/patterns/tablesorter.js" 
+    requirejs="mockup-patterns-tablesorter"/>
+
+ <javascript id="++resource++mockup/js/patterns/tinymce/pattern.js" 
+    requirejs="mockup-patterns-tinymce"/>
+
+ <javascript id="++resource++mockup/js/patterns/toggle.js" 
+    requirejs="mockup-patterns-toggle"/>
+
+ <javascript id="++resource++mockup/js/patterns/tooltip.js" 
+    requirejs="mockup-patterns-tooltip"/>
+
+ <javascript id="++resource++mockup/js/patterns/tree.js" 
+    requirejs="mockup-patterns-tree"/>
+
+ <!-- Plone main js -->
  <javascript id="++resource++plone.js" />
+
+ <!-- Old needs to be moved -->
  <javascript id="plone_javascript_variables.js" />
  <javascript id="cookie_functions.js" />
  <javascript id="fullscreenmode.js" enabled="False" />

@@ -1,0 +1,31 @@
+{
+   "bitwise": true,
+   "curly": true,
+   "eqeqeq": true,
+   "immed": true,
+   "latedef": true,
+   "newcap": true,
+   "noarg": true,
+   "noempty": true,
+   "nonew": true,
+   "plusplus": true,
+   "undef": true,
+   "strict": true,
+   "trailing": true,
+   "browser": true,
+   "evil": true,
+   "globals": {
+      "afterEach": true,
+      "beforeEach": true,
+      "console": true,
+      "define": false,
+      "describe": true,
+      "document": false,
+      "it": true,
+      "module": true,
+      "require": false,
+      "requirejs": true,
+      "tinymce": true,
+      "window": false
+   }
+}
