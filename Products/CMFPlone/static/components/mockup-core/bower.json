@@ -1,0 +1,24 @@
+{
+  "name": "mockup-core",
+  "version": "1.2.4",
+  "description": "Mockup Core",
+  "dependencies": {
+    "backbone": "1.1.2",
+    "bootstrap": "3.1.1",
+    "console-polyfill": "0.1.1",
+    "es5-shim": "2.3.0",
+    "selectivizr": "1.0.2",
+    "jquery": "1.8.3",
+    "lodash": "2.4.1",
+    "marked": "0.3.2",
+    "react": "0.10.0",
+    "requirejs-text": "2.0.10"
+  },
+  "devDependencies": {
+    "expect": "0.3.1",
+    "sinonjs": "1.9.0"
+  },
+  "resolutions": {
+    "jquery": "1.8.3"
+  }
+}

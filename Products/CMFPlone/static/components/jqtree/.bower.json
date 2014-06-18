@@ -1,0 +1,22 @@
+{
+  "name": "jqTree",
+  "version": "0.20.0",
+  "main": [
+    "jqtree.css",
+    "jqtree-circle.png",
+    "tree.jquery.js"
+  ],
+  "dependencies": {
+    "jquery": ">=1.5"
+  },
+  "homepage": "https://github.com/mbraak/jqTree",
+  "_release": "0.20.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.20.0",
+    "commit": "d6ec8f0a0641cf9df9d33aa94fb36d16d1f3b304"
+  },
+  "_source": "git://github.com/mbraak/jqTree.git",
+  "_target": "0.20.0",
+  "_originalSource": "jqtree"
+}
