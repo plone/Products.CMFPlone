@@ -247,7 +247,14 @@
  <!-- Plone main js -->
  <javascript id="++resource++plone.js" requirejs="bundle-plone" main="True"/>
 
+ <!-- BBB Plone main js -->
  <javascript id="bbbplone.js" requirejs="bundle-plone-bbb" main="True"/>
+
+ <!-- Less on dev -->
+ <javascript id="++resource++plonejs/less/dist/less-1.7.0.min.js" requirejs="less"/>
+
+ <!-- Dev mode plone js -->
+ <javascript id="++resource++plone-dev.js" requirejs="bundle-plone-dev" dev="True" main="True"/>
 
  <!-- Only for logged-in users -->
  <javascript id="table_sorter.js" authenticated="True" />
