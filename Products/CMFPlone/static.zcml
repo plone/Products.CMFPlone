@@ -11,20 +11,25 @@
     />
 
   <browser:resource
-    name="fonts/plone-fontello.eot"
+    name="plone-fontello.eot"
     file="static/fonts/plone-fontello.eot"
     />
   <browser:resource
-    name="fonts/plone-fontello.svg"
+    name="plone-fontello.svg"
     file="static/fonts/plone-fontello.svg"
     />
   <browser:resource
-    name="fonts/plone-fontello.ttf"
+    name="plone-fontello.ttf"
     file="static/fonts/plone-fontello.ttf"
     />
   <browser:resource
-    name="fonts/plone-fontello.woff"
+    name="plone-fontello.woff"
     file="static/fonts/plone-fontello.woff"
+    />
+
+  <browser:resource
+    name="plone-dev.js"
+    file="static/plone-dev.js"
     />
 
   <browser:resource
@@ -36,5 +41,11 @@
     name="plone.css"
     file="static/plone.css"
     />
+
+  <browser:resource
+    name="plone.less"
+    file="static/plone.less"
+    />
+
 
 </configure>

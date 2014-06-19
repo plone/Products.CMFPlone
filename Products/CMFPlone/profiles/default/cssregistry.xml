@@ -6,6 +6,16 @@
         id="++resource++plone.css"
         />
 
+    <stylesheet
+        cacheable="False" compression="none" cookable="True" enabled="True" dev="True"
+        id="++resource++mockup/less/widgets.less" rel="stylesheet/less"
+        />
+
+    <stylesheet
+        cacheable="False" compression="none" cookable="True" enabled="True" dev="True"
+        id="++resource++plone.less" rel="stylesheet/less"
+        />
+
     <stylesheet id="RTL.css"
                 expression="python:portal.restrictedTraverse('@@plone_portal_state').is_rtl()" />
 

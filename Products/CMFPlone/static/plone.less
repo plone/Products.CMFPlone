@@ -1,29 +1,31 @@
-// @import "mixins.less";
+@pathPrefix: '++resource++plonejs/';
+@fontsPrefix: '++resource++';
+@import "plone-mixins.less";
 // @import "widgets.less";
 // @import "pattern.autotoc.less";
 // @import "pattern.modal.less";
 // @import "pattern.structure.less";
 // @import "plonelogo.less";
-@pathPrefix: './';
 
-@import "./components/bootstrap/less/variables.less";
-@import "./components/bootstrap/less/mixins.less";
-@import "./components/bootstrap/less/utilities.less";
-@import "./components/bootstrap/less/forms.less";
-@import "./components/bootstrap/less/scaffolding.less";
-@import "./components/bootstrap/less/dropdowns.less";
-@import "./components/bootstrap/less/navs.less";
-@import "./components/bootstrap/less/navbar.less";
-@icon-font-path: "@{pathPrefix}../components/bootstrap/dist/fonts/";
+
+@import "@{pathPrefix}bootstrap/less/variables.less";
+@import "@{pathPrefix}bootstrap/less/mixins.less";
+@import "@{pathPrefix}bootstrap/less/utilities.less";
+@import "@{pathPrefix}bootstrap/less/forms.less";
+@import "@{pathPrefix}bootstrap/less/scaffolding.less";
+@import "@{pathPrefix}bootstrap/less/dropdowns.less";
+@import "@{pathPrefix}bootstrap/less/navs.less";
+@import "@{pathPrefix}bootstrap/less/navbar.less";
+@icon-font-path: "@{pathPrefix}bootstrap/dist/fonts/";
 
 
 @font-face {
   font-family: 'fontello';
-  src: url('@{pathPrefix}fonts/plone-fontello.eot?44831494');
-  src: url('@{pathPrefix}fonts/plone-fontello.eot?44831494#iefix') format('embedded-opentype'),
-       url('@{pathPrefix}fonts/plone-fontello.woff?44831494') format('woff'),
-       url('@{pathPrefix}fonts/plone-fontello.ttf?44831494') format('truetype'),
-       url('@{pathPrefix}fonts/plone-fontello.svg?44831494#fontello') format('svg');
+  src: url('@{fontsPrefix}plone-fontello.eot?44831494');
+  src: url('@{fontsPrefix}plone-fontello.eot?44831494#iefix') format('embedded-opentype'),
+       url('@{fontsPrefix}plone-fontello.woff?44831494') format('woff'),
+       url('@{fontsPrefix}plone-fontello.ttf?44831494') format('truetype'),
+       url('@{fontsPrefix}plone-fontello.svg?44831494#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }

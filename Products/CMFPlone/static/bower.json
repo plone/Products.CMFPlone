@@ -23,9 +23,7 @@
     "requirejs-text": "2.0.10",
     "respond": "1.4.2",
     "select2": "3.4.5",
-    "less": "1.7.0",
-    "mockup-core": "",
-    "mockup": ""
+    "less": "1.7.0"
   },
   "devDependencies": {
     "expect": "0.3.1",
