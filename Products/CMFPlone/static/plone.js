@@ -21,7 +21,7 @@
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-define([
+require([
   'jquery',
   'mockup-registry',
   'mockup-patterns-base',
@@ -45,16 +45,6 @@ define([
 ], function($, Registry, Base) {
   'use strict';
 
-  // BBB: we need to hook pattern to classes which plone was using until now
-  var Plone = Base.extend({
-    name: 'plone',
-    init: function() {
-      var self = this;
-
-    }
-
-  });
-
   // initialize only if we are in top frame
   if (window.parent === window) {
     $(document).ready(function() {
@@ -63,5 +53,4 @@ define([
     });
   }
 
-  return Plone;
 });
