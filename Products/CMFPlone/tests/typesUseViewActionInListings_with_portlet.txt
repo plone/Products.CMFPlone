@@ -1,0 +1,28 @@
+Portlets defined for content types with '/view'
+=====================================
+
+There is a problem with adding first portlet to content types added to 'typesUseViewActionInListings' site property.
+To confirm that problem is resolved we add 'Document' to the list::
+
+  >>> portal.portal_properties.site_properties.manage_changeProperties(typesUseViewActionInListings=('File', 'Document'))
+  
+
+Let's start with adding a page::
+
+  >>> self.loginAsPortalOwner()
+  >>> portal.invokeFactory('Document', 'testpage', title=u"Test document")
+  'testpage'
+
+
+Now add new portlet::
+
+    >>> testpage = self.portal.testpage
+    >>> from zope.component import getUtility
+    >>> from plone.portlets.interfaces import IPortletType
+    >>> portlet = getUtility(IPortletType, name='plone.portlet.static.Static')
+    >>> mapping = testpage.restrictedTraverse('++contextportlets++plone.leftcolumn')
+    >>> addview = mapping.restrictedTraverse('+/' + portlet.addview)
+    >>> output = addview()
+
+
+If bug is resolved that test will pass.
