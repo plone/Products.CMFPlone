@@ -8,6 +8,12 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- folder_position script: make position and id optional.  Default
+  position to 'ordered' and id to None, which means: do nothing.
+  plone.folder 1.0.5 allows this, making it possible to simply reverse
+  the current sort order by using reverse=False.
+  [maurits]
+
 - Fix JavaScript to work with recent jQuery (>= 1.9) versions.
   [thet]
 
