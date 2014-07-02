@@ -8,12 +8,6 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
-- folder_position script: make position and id optional.  Default
-  position to 'ordered' and id to None, which means: do nothing.
-  plone.folder 1.0.5 allows this, making it possible to simply reverse
-  the current sort order by using reverse=False.
-  [maurits]
-
 - Abstract the search form and livesearch action URLs making it easier to
   extend the search portlet with custom views or other actions.
   [rpatterson]
