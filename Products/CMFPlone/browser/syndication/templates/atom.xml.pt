@@ -10,7 +10,7 @@
       tal:define="feed view/feed;
                   url feed/link;"
       tal:attributes="xml:base url; xml:lang feed/language"
-      i18n:domain="collective.syndication">
+      i18n:domain="Products.CMFPlone">
   <link rel="self"
         href=""
         type="application/atom+xml"
