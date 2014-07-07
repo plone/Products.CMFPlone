@@ -1,5 +1,4 @@
 from Acquisition import aq_parent
-from DateTime import DateTime
 from AccessControl import Unauthorized
 
 from zope.component import getAdapter

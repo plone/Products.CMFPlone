@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<NewsML xmlns:tal="http://xml.zope.org/namespaces/tal"
+        tal:define="feed view/feed;
+                    date python:feed.published or view.current_date;
+                    published_iso python:date.asdatetime().strftime('%Y%m%dT%H%M%S%z');
+                    logo feed/logo;">
+                    
+    <tal:comment replace="nothing">
+        <!--
+        This NewsML implementation is done to be used by MSN to provide news feeds.
+        Some things are missing from the full specification because then it will
+        not validate against MSN service (http://feedverificationtool.msn.com/)
+        For more information, check the provided PDF in the docs folder.
+        -->
+    </tal:comment>
+
+  <Catalog Href="http://www.iptc.org/IPTC/catalog/catalog.IptcMasterCatalog.xml"/>
+
+  <NewsEnvelope>
+    <DateAndTime tal:content="published_iso"></DateAndTime>
+    <NewsService FormalName="Thumbnail" tal:content="logo"></NewsService>
+  </NewsEnvelope>
+
+  <tal:repeat repeat="item feed/items">
+    <NewsItem xmlns:tal="http://xml.zope.org/namespaces/tal"
+            LinkType="normal"
+            tal:define="portal context/@@plone_portal_state/portal;
+                        base_domain portal/absolute_url;
+                        date python:item.published or item.modified;
+                        date_id python:date.strftime('%Y%m%d');
+                        news_item_id item/uid;
+                        published_iso python:date.asdatetime().strftime('%Y%m%dT%H%M%S%z');
+                        date_created python:item.context.created().asdatetime().strftime('%Y%m%dT%H%M%S%z');
+                        ob_title item/title;
+                        ob_description item/description;
+                        author item/author;
+                        body item/body;">
+      <Identification>
+        <NewsIdentifier>
+        <ProviderId tal:content="base_domain"></ProviderId>
+        <DateId tal:content="date_id"></DateId>
+        <NewsItemId tal:content="news_item_id"></NewsItemId>
+        <RevisionId PreviousRevision="0" Update="N">1</RevisionId>
+        <PublicIdentifier tal:content="string:urn:newsml:${base_domain}:${date_id}:${news_item_id}:1"></PublicIdentifier>
+        </NewsIdentifier>
+      </Identification>
+
+      <NewsManagement>
+        <NewsItemType FormalName="News"/>
+        <FirstCreated tal:content="date_created"></FirstCreated>
+        <ThisRevisionCreated tal:content="date_created"></ThisRevisionCreated>
+        <Status FormalName="Usable"/>
+      </NewsManagement>
+
+      <NewsComponent tal:attributes="Duid python:view.duid(item, 1)" Essential="no" EquivalentsList="no">
+        <NewsComponent tal:attributes="Duid python:view.duid(item, 2)">
+          <NewsComponent>
+            <Role FormalName="Main" />
+            <NewsLines>
+            <HeadLine tal:content="ob_title"></HeadLine>
+            <SlugLine tal:content="ob_description"></SlugLine>
+            <tal:comment replace="nothing">
+                <!-- This is part of the standard, but apparently MSN, doesn't like it -->
+                <DateLine tal:content="date_id"></DateLine>
+                <ByLine tal:content="author"></ByLine>
+            </tal:comment>
+            </NewsLines>
+            <ContentItem>
+            <MediaType FormalName="ComplexData" />
+            <MimeType FormalName="text/vnd.IPTC.NITF" />
+            <DataContent>
+                <nitf>
+                <body>
+                    <body.head>
+                    <hedline>
+                        <hl1 tal:content="ob_title"></hl1>
+                    </hedline>
+                    </body.head>
+                    <body.content>
+                        <media media-type="image"
+                            tal:define="thumbnail python:view.get_image(item);"
+                            tal:condition="thumbnail">
+                        <media-reference tal:attributes="mime-type thumbnail/content_type;
+                                                        source string:${item/base_url}/@@images/image_large;
+                                                        alternate-text ob_title">
+                        </media-reference>
+                        <media-caption tal:content="item/context/imageCaption|nothing"></media-caption>
+                        </media>
+                        <tal:block tal:replace="structure item/render_content_core"/>          
+                    </body.content>
+                </body>
+                </nitf>
+            </DataContent>
+            </ContentItem>
+          </NewsComponent>
+        </NewsComponent>
+      </NewsComponent>
+    </NewsItem>
+  </tal:repeat>
+</NewsML>

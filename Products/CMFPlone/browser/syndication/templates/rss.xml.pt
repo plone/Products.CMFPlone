@@ -2,20 +2,29 @@
 <rss version="2.0"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:atom="http://www.w3.org/2005/Atom"
   tal:define="feed view/feed">
   <channel>
+    <atom:link rel="self" 
+               type="application/rss+xml"
+               tal:attributes="href request/ACTUAL_URL" />
     <title tal:content="feed/title" />
     <link tal:content="feed/link" />
     <description tal:content="feed/description" />
-    
+
     <language tal:content="feed/language" />
     <copyright tal:content="feed/rights" />
     <generator>Plone</generator>
     <item tal:repeat="item feed/items">
       <title tal:content="item/title" />
-      <link tal:content="item/link" />
       <description tal:content="item/description" />
-      <pubDate tal:content="item/published/HTML4|item/modified/HTML4" />
+      <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/"
+          tal:condition="feed/settings/render_body">
+          <tal:opencdata tal:replace="structure python:'&lt;![CDATA['" />
+          <tal:block tal:replace="structure item/render_content_core"/>          
+          <tal:closecdata tal:replace="structure python:']]&gt;'" />
+      </content:encoded>
+      <pubDate tal:content="item/published/rfc822|item/modified/rfc822" />
       <guid tal:content="item/guid|nothing" />
     </item>
   </channel>
