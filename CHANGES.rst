@@ -8,6 +8,9 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- Increased version number in metadata.xml to sync with p.a.upgrade.
+  [ida]
+
 - PLIP 13260: Migration cut, copy and paste into browser views.
   [saily]
 
