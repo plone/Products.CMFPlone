@@ -8,6 +8,9 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Fix link to the mail_password_form on the login_form for sites using VHM
+  [fRiSi]
+
 - folder_position script: make position and id optional.  Default
   position to 'ordered' and id to None, which means: do nothing.
   plone.folder 1.0.5 allows this, making it possible to simply reverse
@@ -24,7 +27,7 @@ Changelog
 - Fix JavaScript to work with recent jQuery (>= 1.9) versions.
   [thet]
 
-- Improve event_view - do not show time when user specifies the same start and 
+- Improve event_view - do not show time when user specifies the same start and
   end time for an event.
   [spereverde]
 
@@ -221,7 +224,7 @@ Changelog
 - Test for #7627 (https://dev.plone.org/ticket/7627)
 
 4.3rc1 (released)
--------------------
+-----------------
 
 - add overlay for folder default page folder factories link
   [vangheem]
