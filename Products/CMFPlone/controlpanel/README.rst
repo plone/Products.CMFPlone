@@ -19,14 +19,28 @@ If you want to change the settings, just change the attribute::
   >>> search_settings.enable_livesearch = False
 
 
+Navigation Control Panel
+------------------------
+
+  >>> from Products.CMFPlone.interfaces import INavigationSchema
+  >>> navigation_settings = registry.forInterface(INavigationSchema, prefix='plone')
+
+  >>> navigation_settings.generate_tabs = True
+  >>> navigation_settings.nonfolderish_tabs = True
+  >>> navigation_settings.displayed_types = ('Document', 'Folder')
+  >>> navigation_settings.filter_on_workflow = False
+  >>> navigation_settings.workflow_states_to_show = ()
+  >>> navigation_settings.show_excluded_items = True
+
+
 Search Control Panel
 --------------------
 
   >>> from Products.CMFPlone.interfaces import ISearchSchema
-  >>> site_settings = registry.forInterface(ISearchSchema, prefix='plone')
+  >>> search_settings = registry.forInterface(ISearchSchema, prefix='plone')
 
-  >>> site_settings.enable_livesearch = True
-  >>> site_settings.types_not_searched = ('Discussion Item', 'Folder')
+  >>> search_settings.enable_livesearch = True
+  >>> search_settings.types_not_searched = ('Discussion Item', 'Folder')
 
 
 Site Control Panel

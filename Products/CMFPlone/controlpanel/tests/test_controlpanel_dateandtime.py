@@ -1,7 +1,7 @@
 from Products.CMFPlone.interfaces import IDateAndTimeSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-from plone.app.testing import applyProfile
-from plone.app.testing import TEST_USER_ID, setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 
 import unittest2 as unittest
 

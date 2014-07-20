@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.site.hooks import getSite
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from zope.component import adapts

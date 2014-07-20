@@ -3,6 +3,14 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
+  <!-- Navigation Control Panel -->
+  <browser:page
+    name="navigation-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".navigation.NavigationControlPanel"
+    permission="plone.app.controlpanel.Navigation"
+    />
+
   <!-- Search Control Panel -->
   <browser:page
     name="search-controlpanel"
@@ -18,13 +26,13 @@
     class=".site.SiteControlPanel"
     permission="plone.app.controlpanel.Site"
     />
-    
+
   <!-- Date and Time Control panel -->
   <browser:page
     name="dateandtime-controlpanel"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".dateandtime.DateAndTimeControlPanel"
     permission="plone.app.controlpanel.Site"
-    />    
+    />
 
 </configure>

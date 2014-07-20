@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
