@@ -35,10 +35,10 @@
                      show_about python:not isAnon or site_properties.allowAnonymousViewAbout;">
         <form name="searchresults" action="" method="post" tal:condition="results"
                           tal:define="batch python:Batch(results, 20, int(b_start), orphan=1)">
-
+            <ul>
             <tal:results tal:repeat="result batch">
-
-                <div tal:define="description result/Description">
+              
+                <li tal:define="description result/Description">
                     <header tal:define="item_icon python:plone_view.getIcon(result);
                                     item_wf_state result/review_state;
                                     item_wf_state_class python:'state-' + normalizeString(item_wf_state);">
@@ -71,14 +71,10 @@
                         Description
                     </p>
 
-                </div>
-
+                </li>
+              
             </tal:results>
-
-            <div class="spacer">
-                &nbsp;
-            </div>
-
+            </ul>
             <div metal:use-macro="context/batch_macros/macros/navigation" />
 
         </form>

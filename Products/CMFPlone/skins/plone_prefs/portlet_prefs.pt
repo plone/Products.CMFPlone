@@ -9,49 +9,47 @@
                groups python:controlPanel.getGroups('site');
                portal_url context/portal_url;">
 
-<section class="portlet"
+<section class="portlet" role="section"
     id="portlet-prefs"
     tal:condition="controlPanel/maySeeSomeConfiglets">
   <header class="portletHeader">
-        <span class="portletTopLeft"></span>
         <a href=""
            tal:attributes="href string:${portal_url}/plone_control_panel"
            i18n:translate="">Site Setup</a>
-        <span class="portletTopRight"></span>
   </header>
 
-  <ul class="portletContent">
-    <li class="portletItem"
-        tal:repeat="group groups">
+  <section class="portletContent">
+    <ul>
+      <li class="portletItem"
+          tal:repeat="group groups">
 
-        <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
-                   tal:condition="configlets">
-            <strong tal:content="group/title"
-                    i18n:translate="">Plone Configlet Group Title</strong>
-            <ul class="configlets">
-                <tal:configlets tal:repeat="configlet configlets">
-                <li tal:condition="configlet/visible">
-                    <a href=""
-                       tal:define="icon configlet/icon|nothing"
-                       tal:attributes="href configlet/url">
-                        <img src="" alt=""
-                             tal:condition="not:icon"
-                             tal:attributes="src string:${portal_url}/maintenance_icon.png" />
-                        <img src="" alt="" tal:attributes="src icon;
-                                             alt configlet/description"
-                             tal:condition="icon"
-                             i18n:attributes="alt" />
-                    <tal:configletname tal:content="configlet/title"
-                                       i18n:translate=""></tal:configletname>
-                    </a>
-                </li>
-                </tal:configlets>
-            </ul>
-        </tal:block>
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
-    </li>
-  </ul>
+          <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
+                     tal:condition="configlets">
+              <strong tal:content="group/title"
+                      i18n:translate="">Plone Configlet Group Title</strong>
+              <ul class="configlets">
+                  <tal:configlets tal:repeat="configlet configlets">
+                  <li tal:condition="configlet/visible">
+                      <a href=""
+                         tal:define="icon configlet/icon|nothing"
+                         tal:attributes="href configlet/url">
+                          <img src="" alt=""
+                               tal:condition="not:icon"
+                               tal:attributes="src string:${portal_url}/maintenance_icon.png" />
+                          <img src="" alt="" tal:attributes="src icon;
+                                               alt configlet/description"
+                               tal:condition="icon"
+                               i18n:attributes="alt" />
+                      <tal:configletname tal:content="configlet/title"
+                                         i18n:translate=""></tal:configletname>
+                      </a>
+                  </li>
+                  </tal:configlets>
+              </ul>
+          </tal:block>
+      </li>
+    </ul>
+  </section>
 
 </section>
 

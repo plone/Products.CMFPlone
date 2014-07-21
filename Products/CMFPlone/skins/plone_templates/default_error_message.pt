@@ -39,12 +39,12 @@
                 </h1>
 
                 <div id="content-core">
-                    <p i18n:translate="description_site_error">
+                    <p i18n:translate="description_site_error" class="description">
  	                    We apologize for the inconvenience, but the page you were trying to access is not at this address.
                         You can use the links below to help you find what you are looking for.
                      </p>
 
-                    <p i18n:translate="description_site_error_mail_site_admin">
+                    <p i18n:translate="description_site_error_mail_site_admin" class="discreet">
                         If you are certain you have the correct web address but are encountering an error, please
                         contact the <span i18n:name="site_admin">
                         <a href="#"
@@ -67,51 +67,48 @@
                                              normalizeString nocall:plone_view/normalizeString;"
                                      condition="python:first_parent is not None or similar_items">
 
-                        <h3 i18n:translate="heading_not_found_suggestions">You might have been looking for&hellip;</h3>
-
-                        <div>
+                        <h2 i18n:translate="heading_not_found_suggestions">You might have been looking for&hellip;</h2>
+                        <nav>
+                        <ul id="page-not-found-list">
 
                         <tal:firstparent condition="first_parent/absolute_url | nothing">
-                            <article tal:define="result_url first_parent/absolute_url;
+                            <li tal:define="result_url first_parent/absolute_url;
                                                result_type python:hasattr(first_parent, 'getTypeInfo') and first_parent.getTypeInfo().getId();
                                                item_icon python:plone_view.getIcon(first_parent);
                                                url python:test(result_type in use_view_action, result_url+'/view', result_url);"
                                        tal:condition="result_type">
-                                <header tal:define="item_wf_state_class python:'state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
-                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type)">
-                                  <img tal:replace="structure item_icon/html_tag" />
-                                   <a
-                                     href="#"
+                                <a tal:define="item_wf_state_class python:'state-' + context.portal_workflow.getInfoFor(first_parent, 'review_state', '');"
+                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type)"
+                                    href="#"
                                      tal:attributes="href url;
                                                      class string:$item_wf_state_class"
-                                     tal:content="first_parent/Title" />
-
+                                     tal:content="first_parent/Title">
+                                  <img tal:replace="structure item_icon/html_tag" />
                                     <span class="discreet" i18n:translate="results_by_author"
                                       tal:condition="python: not isAnon or site_properties.allowAnonymousViewAbout">
                                     by <span tal:omit-tag="" tal:content="first_parent/Creator" i18n:name="author">Author</span>,
                                     <span tal:omit-tag="" tal:content="python:toLocalizedTime(first_parent.ModificationDate(), long_format=1)" i18n:name="date">Modification Date</span>
                                     </span>
 
-                                </header>
+                                </a>
 
-                                <dd tal:content="python:plone_view.cropText(first_parent.Description(), desc_length, desc_ellipsis)"> Description </dd>
+                                <span tal:content="python:plone_view.cropText(first_parent.Description(), desc_length, desc_ellipsis)" class="discreet"> Description </span>
 
-                            </article>
+                            </li>
                         </tal:firstparent>
 
                         <tal:similar repeat="similar similar_items">
-                            <article tal:define="result_url similar/getURL;
+                            <li tal:define="result_url similar/getURL;
                                                result_type similar/portal_type;
                                                item_icon python:plone_view.getIcon(similar);
                                                url python:test(result_type in use_view_action, result_url+'/view', result_url);">
-                                <header tal:define="item_wf_state_class string:state-${similar/review_state};"
-                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type)">
-                                  <img tal:replace="structure item_icon/html_tag" />
-                                   <a
-                                     href="#"
+                                <a tal:define="item_wf_state_class string:state-${similar/review_state};"
+                                    tal:attributes="class python:'contenttype-' + normalizeString(result_type)"
+                                    href="#"
                                      tal:attributes="href url;
                                                      class string:$item_wf_state_class"
-                                     tal:content="similar/pretty_title_or_id" />
+                                     tal:content="similar/pretty_title_or_id">
+                                  <img tal:replace="structure item_icon/html_tag" />
 
                                     <span class="discreet" i18n:translate="results_by_author"
                                       tal:condition="python: not isAnon or site_properties.allowAnonymousViewAbout">
@@ -119,14 +116,15 @@
                                     <span tal:omit-tag="" tal:content="python:toLocalizedTime(similar.ModificationDate, long_format=1)" i18n:name="date">Modification Date</span>
                                     </span>
 
-                                </header>
+                                </a>
 
-                                <p tal:content="python:plone_view.cropText(similar.Description or '', desc_length, desc_ellipsis)"> Description </p>
+                                <span tal:content="python:plone_view.cropText(similar.Description or '', desc_length, desc_ellipsis)" class="discreet"> Description </span>
 
-                            </article>
+                            </li>
                         </tal:similar>
 
-                        </div>
+                        </ul>
+                        </nav>
 
                     </tal:suggestions>
                 </div>
