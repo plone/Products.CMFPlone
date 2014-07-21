@@ -19,6 +19,15 @@ If you want to change the settings, just change the attribute::
   >>> search_settings.enable_livesearch = False
 
 
+Maintenance Control Panel
+-------------------------
+
+  >>> from Products.CMFPlone.interfaces import IMaintenanceSchema
+  >>> maintenance_settings = registry.forInterface(IMaintenanceSchema, prefix='plone')
+
+  >>> maintenance_settings.days = 7
+
+
 Navigation Control Panel
 ------------------------
 

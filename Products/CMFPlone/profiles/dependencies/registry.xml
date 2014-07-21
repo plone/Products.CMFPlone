@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <registry>
+  <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.INavigationSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISearchSchema"

@@ -1,0 +1,178 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en" lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<metal:main fill-slot="prefs_configlet_main">
+
+    <metal:form define-macro="form" tal:condition="view/available">
+
+         <metal:block define-macro="header">
+
+             <dl tal:define="status view/status"
+                  tal:condition="status"
+                  class="portalMessage info">
+                 <dt i18n:translate="">
+                     Info
+                 </dt>
+                 <dd tal:content="view/status" />
+             </dl>
+
+         </metal:block>
+
+         <a href=""
+            id="setup-link"
+            tal:attributes="href string:$portal_url/plone_control_panel"
+            i18n:translate="">
+             Site Setup
+         </a>
+
+         <h1 class="documentFirstHeading"
+             i18n:translate=""
+             tal:condition="view/label"
+             tal:content="view/label"
+             metal:define-slot="heading">
+             Do something
+         </h1>
+
+         <div class="documentDescription" i18n:translate=""
+            tal:condition="view/description"
+            tal:content="view/description">
+             Description
+         </div>
+
+        <div id="content-core">
+
+            <form action="."
+                  tal:attributes="action request/URL"
+                  method="post"
+                  class="edit-form"
+                  enctype="multipart/form-data">
+
+                <fieldset>
+                    <legend i18n:translate="heading_zope_server">
+                        Zope Server
+                    </legend>
+
+                    <p i18n:translate="text_zope_server_uptime">
+                        Zope Server uptime: <span i18n:name="time" tal:replace="view/processTime" />
+                    </p>
+
+                    <div id="actionsView" class="formControls">
+                        <span class="actionButtons">
+                            <input type="submit"
+                                   id="form.buttons.shutdown"
+                                   name="form.buttons.shutdown"
+                                   value="Shut down"
+                                   i18n:attributes="value"
+                                   class="standalone" />
+
+                            <input tal:condition="view/isRestartable"
+                                   type="submit"
+                                   id="form.buttons.restart"
+                                   name="form.buttons.restart"
+                                   value="Restart"
+                                   i18n:attributes="value"
+                                   class="standalone" />
+
+                        </span>
+                    </div>
+
+                </fieldset>
+
+                <input tal:replace="structure context/@@authenticator/authenticator" />
+
+            </form>
+
+            <form action="."
+                  metal:define-macro="master"
+                  tal:attributes="action request/URL"
+                  method="post"
+                  class="edit-form"
+                  enctype="multipart/form-data"
+                  id="zc.page.browser_form">
+
+                <div metal:define-slot="extra_info" tal:replace="nothing">
+                </div>
+
+                <fieldset>
+                    <legend tal:define="form_name view/form_name|nothing"
+                            tal:condition="form_name"
+                            tal:content="form_name">Form name</legend>
+
+                    <p i18n:translate="text_zope_database_size">
+                        <strong>Current database size:</strong> <span i18n:name="size" tal:replace="view/dbSize" />
+                    </p>
+
+                    <metal:define define-macro="widget_rendering">
+                        <tal:widgets repeat="widget view/widgets/values">
+                            <metal:field-slot define-slot="field">
+                                <metal:field define-macro="field">
+                                    <tal:widget tal:replace="structure widget/@@ploneform-render-widget"/>
+                                </metal:field>
+                            </metal:field-slot>
+                        </tal:widgets>
+                    </metal:define>
+
+                    <metal:block define-slot="above_buttons" />
+
+                    <div class="visualClear"><!-- --></div>
+
+                    <div id="actionsView" class="formControls">
+                        <span class="actionButtons">
+                            <input type="submit"
+                                   id="form.buttons.pack"
+                                   name="form.buttons.pack"
+                                   value="Pack"
+                                   i18n:attributes="value"
+                                   class="standalone" />
+                        </span>
+                    </div>
+
+                </fieldset>
+
+                <input tal:replace="structure context/@@authenticator/authenticator" />
+
+            </form>
+
+            <script type="text/javascript"
+                tal:define="extra_script view/extra_script | nothing"
+                tal:condition="extra_script"
+                tal:content="structure extra_script">
+            </script>
+        </div>
+
+    </metal:form>
+
+    <metal:block tal:condition="not: view/available">
+         <h1 class="documentFirstHeading"
+             i18n:translate=""
+             tal:condition="view/label"
+             tal:content="view/label">
+             Do something
+         </h1>
+
+         <div class="documentDescription" i18n:translate="text_not_allowed_manage_server"
+            tal:condition="view/description">
+             You are not allowed to manage the Zope server.
+         </div>
+
+         <div id="content-core">
+             <a href=""
+                class="link-parent"
+                tal:attributes="href string:$portal_url/plone_control_panel"
+                i18n:translate="label_up_to_plone_setup">
+                 Up to Site Setup
+             </a>
+         </div>
+    </metal:block>
+
+
+</metal:main>
+</body>
+</html>
