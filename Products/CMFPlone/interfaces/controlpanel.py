@@ -30,22 +30,6 @@ class IControlPanel(IPloneBaseTool):
             calling .getAction() on each of them """
 
 
-class IMaintenanceSchema(Interface):
-
-    days = schema.Int(
-        title=_(u"Days of object history to keep after packing"),
-        description=_(
-            u"You should pack your database regularly. This number "
-            u"indicates how many days of undo history you want to "
-            u"keep. It is unrelated to versioning, so even if you "
-            u"pack the database, the history of the content changes "
-            u"will be kept. Recommended value is 7 days."
-        ),
-        default=7,
-        required=True
-    )
-
-
 class INavigationSchema(Interface):
 
     generate_tabs = schema.Bool(

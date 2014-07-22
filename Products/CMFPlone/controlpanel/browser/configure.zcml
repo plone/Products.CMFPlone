@@ -3,14 +3,6 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-  <!-- Maintenance Control Panel -->
-  <browser:page
-    name="maintenance-controlpanel"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".maintenance.MaintenanceControlPanel"
-    permission="cmf.ManagePortal"
-    />
-
   <!-- Navigation Control Panel -->
   <browser:page
     name="navigation-controlpanel"
