@@ -419,23 +419,20 @@ configlets, which are tested separately.  The former isn't linked from the
 The "Maintenance" configlet has some special security limitations, which is
 why we need to log in as the portal owner first:
 
-  >>> from plone.app.testing import SITE_OWNER_NAME
-  >>> from plone.app.testing import SITE_OWNER_PASSWORD
-  >>> credentials = SITE_OWNER_NAME, SITE_OWNER_PASSWORD
-  >>> browser = Browser(app)
-  >>> browser.addHeader('Authorization', 'Basic %s:%s' % credentials)
-  >>> browser.open('http://nohost/plone/plone_control_panel')
-  >>> browser.getLink('Maintenance').click()
-  >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
-  >>> browser.getControl(name='_authenticator', index=1).value = 'invalid!'
-  >>> browser.getControl('Shut down').click()
+  >>> app_browser = Browser(self.app)
+  >>> app_browser.handleErrors = False
+  >>> app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
+  >>> from plone.testing import z2
+  >>> z2.logout()
+  >>> z2.login(app['acl_users'], 'app')
+  >>> import transaction; transaction.commit()
+  >>> app_browser.addHeader('Authorization', 'Basic app:secret')
+  >>> app_browser.open('http://nohost/plone/plone_control_panel')
+  >>> app_browser.getLink('Maintenance').click()
+  >>> app_browser.getControl(name='_authenticator', index=0).value = 'invalid!'
+  >>> app_browser.getControl(name='_authenticator', index=1).value = 'invalid!'
+  >>> app_browser.getControl('Shut down').click()
   Traceback (most recent call last):
   ...
-  HTTPError: HTTP Error 403: Forbidden
-
-  >>> browser.open('http://nohost/plone/plone_control_panel')
-  >>> browser.getLink('Maintenance').click()
-  >>> browser.getControl('Shut down').click()
-  >>> browser.contents
-  '...Zope is shutting down...'
+  Forbidden: Form authenticator is invalid.
 

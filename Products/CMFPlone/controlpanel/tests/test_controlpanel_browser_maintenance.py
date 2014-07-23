@@ -34,14 +34,24 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         self.portal_url = self.portal.absolute_url()
         self.browser = Browser(self.app)
         self.browser.handleErrors = False
-        self.browser.addHeader('Authorization',
-                'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
-            )
+        # we have to create a user on the zope root. this just does not work
+        # with plone.app.testing and TEST_USER or SITE_OWNER
+        self.app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
+        from plone.testing import z2
+        z2.login(self.app['acl_users'], 'app')
+
+        import transaction; transaction.commit()
+        self.browser.addHeader(
+            'Authorization',
+            'Basic %s:%s' % ('app', 'secret')
+        )
+
         self.site_administrator_browser = Browser(self.app)
         self.site_administrator_browser.handleErrors = False
-        self.site_administrator_browser.addHeader('Authorization',
-                'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,)
-            )
+        self.site_administrator_browser.addHeader(
+            'Authorization',
+            'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,)
+        )
 
     def test_maintenance_control_panel_link(self):
         self.browser.open(
@@ -68,7 +78,6 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
             'You are not allowed to manage the Zope server.'
             in self.site_administrator_browser.contents)
 
-    @unittest.skip('Not working yet.')
     def test_maintenance_pack_database(self):
         """While we cannot test the actual packaging during tests, we can skip
            the actual manage_pack method by providing a negative value for
