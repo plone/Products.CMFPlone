@@ -9,7 +9,7 @@
                groups python:controlPanel.getGroups('site');
                portal_url context/portal_url;">
 
-<section class="portlet" role="section"
+<section class="portlet portletNavigationTree portletSiteSetup" role="section"
     id="portlet-prefs"
     tal:condition="controlPanel/maySeeSomeConfiglets">
   <header class="portletHeader">
@@ -18,9 +18,9 @@
            i18n:translate="">Site Setup</a>
   </header>
 
-  <section class="portletContent">
-    <ul>
-      <li class="portletItem"
+  <nav class="portletContent">
+    <ul class="configlets">
+      <li><tal:group
           tal:repeat="group groups">
 
           <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
@@ -47,9 +47,9 @@
                   </tal:configlets>
               </ul>
           </tal:block>
-      </li>
+      </tal:group></li>
     </ul>
-  </section>
+  </nav>
 
 </section>
 
