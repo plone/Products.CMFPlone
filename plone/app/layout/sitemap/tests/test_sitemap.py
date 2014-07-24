@@ -1,6 +1,7 @@
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces import ISearchSchema
 
 from gzip import GzipFile
 from StringIO import StringIO
@@ -190,8 +191,9 @@ class SiteMapTestCase(PloneTestCase):
         self.wftool.doActionFor(newsitem, 'publish')
         self.assertTrue('published' == self.wftool.getInfoFor(
             newsitem, 'review_state'))
-        self.site_properties.manage_changeProperties(
-            types_not_searched=['News Item'])
+        registry = getUtility(IRegistry)
+        search_settings = registry.forInterface(ISearchSchema, prefix="plone")
+        search_settings.types_not_searched = ('News Item',)
         self.logout()
 
         xml = self.uncompress(self.sitemap())
