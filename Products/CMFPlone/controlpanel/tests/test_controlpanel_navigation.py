@@ -1,4 +1,14 @@
 # -*- coding: utf-8 -*-
+from plone.registry import Registry
+from Products.CMFPlone.interfaces import IEditingSchema
+import unittest2 as unittest
+
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+
+from Products.CMFCore.utils import getToolByName
+
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING
@@ -13,20 +23,40 @@ class NavigationRegistryIntegrationTest(unittest.TestCase):
 
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
-    def test_generate_tabs(self):
-        self.assertTrue('generate_tabs' in INavigationSchema.names())
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+        registry = getUtility(IRegistry)
+        self.settings = registry.forInterface(
+            INavigationSchema, prefix="plone")
 
-    def test_nonfolderish_tabs(self):
-        self.assertTrue('nonfolderish_tabs' in INavigationSchema.names())
+    def test_navigation_controlpanel_view(self):
+        view = getMultiAdapter((self.portal, self.portal.REQUEST),
+                               name="navigation-controlpanel")
+        view = view.__of__(self.portal)
+        self.assertTrue(view())
 
-    def test_displayed_types(self):
-        self.assertTrue('displayed_types' in INavigationSchema.names())
+    def test_navigation_in_controlpanel(self):
+        self.controlpanel = getToolByName(self.portal, "portal_controlpanel")
+        self.assertTrue('NavigationSettings' in [
+            a.getAction(self)['id']
+            for a in self.controlpanel.listActions()
+        ])
 
-    def test_filter_on_workflow(self):
-        self.assertTrue('filter_on_workflow' in INavigationSchema.names())
+    def test_generate_tabs_attribute_exists(self):
+        self.assertTrue(hasattr(self.settings, 'generate_tabs'))
 
-    def test_workflow_states_to_show(self):
-        self.assertTrue('workflow_states_to_show' in INavigationSchema.names())
+    def test_nonfolderish_tabs_attribute_exists(self):
+        self.assertTrue(hasattr(self.settings, 'nonfolderish_tabs'))
 
-    def test_show_excluded_items(self):
-        self.assertTrue('show_excluded_items' in INavigationSchema.names())
+    def test_displayed_types_attribute_exists(self):
+        self.assertTrue(hasattr(self.settings, 'displayed_types'))
+
+    def test_filter_on_workflow_attribute_exists(self):
+        self.assertTrue(hasattr(self.settings, 'filter_on_workflow'))
+
+    def test_workflow_states_to_show_attribute_exists(self):
+        self.assertTrue(hasattr(self.settings, 'workflow_states_to_show'))
+
+    def test_show_excluded_items_attribute_exists(self):
+        self.assertTrue(hasattr(self.settings, 'show_excluded_items'))

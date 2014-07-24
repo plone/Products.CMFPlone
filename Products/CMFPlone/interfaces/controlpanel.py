@@ -30,6 +30,61 @@ class IControlPanel(IPloneBaseTool):
             calling .getAction() on each of them """
 
 
+class IEditingSchema(Interface):
+
+    visible_ids = schema.Bool(
+        title=_(u"Show 'Short Name' on content?"),
+        description=_(
+            u"Display and allow users to edit the "
+            u"'Short name' content identifiers, which form the "
+            u"URL part of a content item's address. Once "
+            u"enabled, users will then be able to enable this "
+            u"option in their preferences."),
+        default=False,
+        required=False)
+
+    default_editor = schema.Choice(
+        title=_(u'Default editor'),
+        description=_(
+            u"Select the default wysiwyg "
+            u"editor. Users will be able to choose their "
+            u"own or select to use the site default."),
+        default=u'TinyMCE',
+        missing_value=set(),
+        vocabulary="plone.app.vocabularies.AvailableEditors",
+        required=True)
+
+    ext_editor = schema.Bool(
+        title=_(u'Enable External Editor feature'),
+        description=_(
+            u"Determines if the external editor "
+            u"feature is enabled. This feature requires a "
+            u"special client-side application installed. The "
+            u"users also have to enable this in their "
+            u"preferences."),
+        default=False,
+        required=False)
+
+    enable_link_integrity_checks = schema.Bool(
+        title=_(u"Enable link integrity checks"),
+        description=_(
+            u"Determines if the users should get "
+            u"warnings when they delete or move content that "
+            u"is linked from inside the site."),
+        default=True,
+        required=False)
+
+    lock_on_ttw_edit = schema.Bool(
+        title=_(u"Enable locking for through-the-web edits"),
+        description=_(
+            u"Disabling locking here will only "
+            u"affect users editing content through the "
+            u"Plone web UI.  Content edited via WebDAV "
+            u"clients will still be subject to locking."),
+        default=True,
+        required=False)
+
+
 class IMaintenanceSchema(Interface):
 
     days = schema.Int(
