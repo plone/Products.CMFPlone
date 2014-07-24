@@ -9,6 +9,7 @@ from plone.registry.interfaces import IRegistry
 
 from zope.component import queryAdapter
 from zope.component import getUtility
+
 from zope.deprecation import deprecate
 from zope.interface import implements
 from zope.event import notify
@@ -35,6 +36,7 @@ from Products.CMFCore.interfaces import IDublinCore, IMutableDublinCore
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.events import ReorderedEvent
 from Products.CMFPlone.interfaces import IPloneTool
@@ -1085,9 +1087,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """
         if typesList is None:
             typesList = []
-        ptool = getToolByName(self, 'portal_properties')
-        siteProperties = getattr(ptool, 'site_properties')
-        blacklistedTypes = siteProperties.getProperty('types_not_searched', [])
+        registry = getUtility(IRegistry)
+        search_settings = registry.forInterface(ISearchSchema, prefix="plone")
+        blacklistedTypes = search_settings.types_not_searched
 
         ttool = getToolByName(self, 'portal_types')
         tool_types = ttool.keys()

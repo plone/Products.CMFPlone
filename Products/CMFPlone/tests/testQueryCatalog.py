@@ -2,7 +2,7 @@
 
 from zope.component import getMultiAdapter
 from Products.CMFPlone.tests import PloneTestCase
-
+from Products.CMFPlone.interfaces import ISearchSchema
 from Products.ZCTextIndex.ParseTree import ParseError
 from Products.CMFPlone.interfaces.syndication import ISiteSyndicationSettings
 from plone.registry.interfaces import IRegistry
@@ -49,18 +49,24 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def testRealIndex(self):
         request = {'SearchableText': 'bar'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
-                            {'SearchableText': 'bar'})
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)),
+            {'SearchableText': 'bar'}
+        )
 
     def testTwoIndexes(self):
         request = {'SearchableText': 'bar', 'foo': 'bar'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
-                            {'SearchableText': 'bar'})
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)),
+            {'SearchableText': 'bar'}
+        )
 
     def testRealIndexes(self):
         request = {'SearchableText': 'bar', 'Subject': 'bar'}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
-                            request)
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)),
+            request
+        )
 
     def testOnlySort(self):
         # if we only sort, we shouldn't actually call the catalog
@@ -82,21 +88,26 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
     def testRealWithUsage(self):
         request = {'modified': '2004-01-01', 'modified_usage': 'range:min'}
         expected = {'modified': {'query': '2004-01-01', 'range': 'min'}}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
-                            expected)
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)),
+            expected
+        )
 
     def testSortLimit(self):
         # the script ignored 'sort_limit'; test to show it no longer does.
         request = {'SearchableText': 'bar',
                    'sort_on': 'foozle',
                    'sort_limit': 50}
-        self.assertEqual(self.stripStuff(self.folder.queryCatalog(request)),
-                            request)
+        self.assertEqual(
+            self.stripStuff(self.folder.queryCatalog(request)),
+            request
+        )
 
     def testBlacklistedTypes(self):
         request = {'SearchableText': 'a*'}
-        siteProps = self.portal.portal_properties.site_properties
-        siteProps.types_not_searched = ['Event', 'Unknown Type']
+        registry = getUtility(IRegistry)
+        search_settings = registry.forInterface(ISearchSchema, prefix="plone")
+        search_settings.types_not_searched = ('Event',)
         qry = self.folder.queryCatalog(request, use_types_blacklist=True)
         self.assertTrue('Document' in qry['portal_type'])
         self.assertTrue('Event' not in qry['portal_type'])
@@ -111,8 +122,10 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         self.portal.invokeFactory('Folder', 'foo')
         ntp.root = '/foo'
         qry = self.folder.queryCatalog(request, use_navigation_root=True)
-        self.assertEqual('/'.join(self.portal.foo.getPhysicalPath()),
-                          qry['path'])
+        self.assertEqual(
+            '/'.join(self.portal.foo.getPhysicalPath()),
+            qry['path']
+        )
 
     def testNavigationRootDoesNotOverrideExplicitPath(self):
         request = {'SearchableText': 'a*', 'path': '/yyy/zzz'}

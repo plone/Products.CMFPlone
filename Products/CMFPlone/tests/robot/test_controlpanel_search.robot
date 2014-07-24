@@ -20,6 +20,13 @@ Scenario: Enable Livesearch in the Search Control Panel
    When I enable livesearch
    Then then searching for 'My Document' will show a live search
 
+Scenario: Exclude Content Types from Search
+  Given a logged-in site administrator
+    and a document 'My Document'
+    and the search control panel
+   When I exclude the 'Document' type from search
+   Then searching for 'My Document' will not return any results
+
 
 *** Keywords *****************************************************************
 
@@ -42,6 +49,11 @@ I enable livesearch
   Click Button  Save
   Wait until page contains  Changes saved
 
+I exclude the '${portal_type}' type from search
+  Unselect Checkbox  xpath=//input[@name='form.widgets.types_not_searched:list' and @value='${portal_type}']
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
 
@@ -50,3 +62,13 @@ then searching for 'My Document' will show a live search
   Wait until page contains element  xpath=//input[@name='SearchableText']
   Input Text  name=SearchableText  My
   # XXX: The Live Search should be visible !!!
+
+searching for '${search_term}' will not return any results
+  Go to  ${PLONE_URL}/@@search
+  Wait until page contains  No results were found
+  Input Text  xpath=//form[@id='searchform']//input[@name='SearchableText']  ${search_term}
+  Submit Form  name=searchform
+  Wait until page contains  items matching your search terms
+  XPath Should Match X Times  //strong[@id='search-results-number' and contains(.,'0')]  1
+
+
