@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from plone.registry import Registry
 from Products.CMFPlone.interfaces import IEditingSchema
 import unittest2 as unittest
 
