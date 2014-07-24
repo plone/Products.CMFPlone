@@ -1,6 +1,8 @@
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework import AutoLogin
+from plone.app.robotframework import Content
 from plone.app.robotframework import RemoteLibraryLayer
+from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
 from plone.app.testing import login
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
@@ -60,15 +62,19 @@ PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING = FunctionalTesting(
 )
 
 PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE = RemoteLibraryLayer(
-    bases=(PLONE_FIXTURE,),
-    libraries=(AutoLogin, CMFPloneRemoteKeywords),
+    bases=(
+        PLONE_FIXTURE,
+    ),
+    libraries=(AutoLogin, Content, CMFPloneRemoteKeywords),
     name="CMFPloneRobotRemoteLibrary:RobotRemote"
 )
 
 PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
-    bases=(PRODUCTS_CMFPLONE_FIXTURE,
-           PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
-           z2.ZSERVER_FIXTURE),
+    bases=(
+        PRODUCTS_CMFPLONE_FIXTURE,
+        PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
+        z2.ZSERVER_FIXTURE
+    ),
     name="CMFPloneLayer:Acceptance"
 )
 
