@@ -18,7 +18,8 @@ Scenario: Enable Livesearch in the Search Control Panel
     and a document 'My Document'
     and the search control panel
    When I enable livesearch
-   Then then searching for 'My Document' will show a live search
+#   Then then searching for 'My Document' will show a live search
+# XXX: Not implemented yet. See https://github.com/plone/Products.CMFPlone/issues/176 for details
 
 Scenario: Exclude Content Types from Search
   Given a logged-in site administrator
@@ -58,10 +59,10 @@ I exclude the '${portal_type}' type from search
 # --- THEN -------------------------------------------------------------------
 
 then searching for 'My Document' will show a live search
+  # XXX: Not implemented yet.
   Go to  ${PLONE_URL}
   Wait until page contains element  xpath=//input[@name='SearchableText']
   Input Text  name=SearchableText  My
-  # XXX: The Live Search should be visible !!!
 
 searching for '${search_term}' will not return any results
   Go to  ${PLONE_URL}/@@search
