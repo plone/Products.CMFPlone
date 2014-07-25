@@ -1,23 +1,12 @@
 # -*- coding: utf-8 -*-
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
-from plone.app.testing import SITE_OWNER_NAME
 from plone.testing.z2 import Browser
-from plone.registry import Registry
-
-import unittest2 as unittest
-
-from zope.component import getMultiAdapter
-
-from Products.CMFCore.utils import getToolByName
-
-from plone.app.testing import TEST_USER_ID, setRoles
 
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+
+import unittest2 as unittest
 
 
 class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
@@ -40,7 +29,8 @@ class MaintenanceControlPanelFunctionalTest(unittest.TestCase):
         from plone.testing import z2
         z2.login(self.app['acl_users'], 'app')
 
-        import transaction; transaction.commit()
+        import transaction
+        transaction.commit()
         self.browser.addHeader(
             'Authorization',
             'Basic %s:%s' % ('app', 'secret')
