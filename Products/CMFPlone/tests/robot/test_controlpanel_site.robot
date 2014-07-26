@@ -35,6 +35,12 @@ Scenario: Enable Sitemap in the Site Control Panel
    When I enable the sitemap
    Then then I can see a sitemap
 
+Scenario: Add Webstats Javascript in the Site Control Panel
+  Given a logged-in site administrator
+    and the site control panel
+   When I add a Javascript snippet to the webstats javascript
+   Then the Javascript snippet shows up on the site
+
 
 *** Keywords *****************************************************************
 
@@ -65,6 +71,11 @@ I enable dublin core metadata
   Click Button  Save
   Wait until page contains  Changes saved
 
+I add a Javascript snippet to the webstats javascript
+  Input Text  name=form.widgets.webstats_js  <script id="webstats_snippet"></script>
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
 
@@ -87,3 +98,7 @@ the dublin core metadata shows up on the site
   Page should contain element  xpath=//html/head/meta[@name='DC.date.created']
   Page should contain element  xpath=//html/head/meta[@name='DC.language']
 
+the Javascript snippet shows up on the site
+  Go to  ${PLONE_URL}
+  Wait until page contains  Powered by Plone
+  Page should contain element  id=webstats_snippet
