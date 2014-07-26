@@ -82,3 +82,8 @@ the dublin core metadata shows up on the site
   Go to  ${PLONE_URL}
   Wait until page contains  Powered by Plone
   Page should contain element  xpath=//html/head/meta[@name='DC.date.modified']
+  Page should contain element  xpath=//html/head/meta[@name='DC.format']
+  Page should contain element  xpath=//html/head/meta[@name='DC.type']
+  Page should contain element  xpath=//html/head/meta[@name='DC.date.created']
+  Page should contain element  xpath=//html/head/meta[@name='DC.language']
+
