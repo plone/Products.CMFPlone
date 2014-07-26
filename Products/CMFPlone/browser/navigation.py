@@ -1,6 +1,10 @@
 from Acquisition import aq_inner
 from zope.interface import implements
 from zope.component import getMultiAdapter
+from zope.component import getUtility
+
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import INavigationSchema
 
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
@@ -185,7 +189,10 @@ class CatalogNavigationTabs(BrowserView):
                 result.append(data)
 
         # check whether we only want actions
-        if self.site_properties.getProperty('disable_folder_sections', False):
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema, prefix="plone")
+        if not navigation_settings.generate_tabs:
             return result
 
         query = self._getNavQuery()
