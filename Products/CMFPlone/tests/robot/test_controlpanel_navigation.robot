@@ -43,4 +43,3 @@ the document '${title}' does not show up in the navigation
   Go to  ${PLONE_URL}
   Wait until page contains  Powered by Plone
   XPath Should Match X Times  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  0  message=The global navigation should not have contained the item '${title}'
-  Debug
