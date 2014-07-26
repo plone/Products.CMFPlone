@@ -4,6 +4,9 @@ Changelog
 2.5.2 (unreleased)
 ------------------
 
+- Switch site_title setting from root property to p.a.registry.
+  [timo]
+
 - Switch webstats_js setting from site_properties to p.a.registry.
   [timo]
 

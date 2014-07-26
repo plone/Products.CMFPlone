@@ -7,6 +7,7 @@ from plone.memoize.view import memoize
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser import BrowserView
 
 from plone.app.layout.navigation.root import getNavigationRoot

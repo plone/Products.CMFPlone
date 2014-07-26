@@ -2,8 +2,11 @@ from cgi import escape
 from datetime import date
 from urllib import unquote
 
+from plone.registry.interfaces import IRegistry
+
 from plone.memoize.view import memoize
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.deprecation.deprecation import deprecate
 from zope.i18n import translate
 from zope.interface import implements, alsoProvides
@@ -13,7 +16,9 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner
 
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -82,6 +87,12 @@ class TitleViewlet(ViewletBase):
                              mapping={'itemtype': fti.Title()},
                              context=self.request,
                              default='Add ${itemtype}')
+
+        # If we are on portal root, look up the portal title from registry
+        if IPloneSiteRoot.providedBy(self.context):
+            registry = getUtility(IRegistry)
+            site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+            return site_settings.site_title
 
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
