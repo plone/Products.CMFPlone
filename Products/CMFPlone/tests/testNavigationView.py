@@ -1,4 +1,7 @@
+from zope.component import getUtility
 from zope.interface import directlyProvides
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import INavigationSchema
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
@@ -587,8 +590,12 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
     def testDisableFolderTabs(self):
         # Setting the site_property disable_folder_sections should remove
         # all folder based tabs
-        props = self.portal.portal_properties.site_properties
-        props.manage_changeProperties(disable_folder_sections=True)
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone"
+        )
+        navigation_settings.generate_tabs = False
         view = self.view_class(self.portal, self.request)
         tabs = view.topLevelTabs(actions=[])
         self.assertEqual(tabs, [])
