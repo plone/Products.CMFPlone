@@ -191,7 +191,10 @@ class CatalogNavigationTabs(BrowserView):
         # check whether we only want actions
         registry = getUtility(IRegistry)
         navigation_settings = registry.forInterface(
-            INavigationSchema, prefix="plone")
+            INavigationSchema,
+            prefix="plone",
+            check=False
+        )
         if not navigation_settings.generate_tabs:
             return result
 
