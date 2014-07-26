@@ -1,15 +1,15 @@
-#[Documentation]
-# bin/robot-server Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
-# bin/robot test_controlpanel_site.robot
+Documentation
+...            $ bin/robot-server Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
+...            $ bin/robot test_controlpanel_site.robot
 
-*** Settings ***
+*** Settings *****************************************************************
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
-Resource  common.robot
+Resource  keywords.robot
 
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
@@ -45,9 +45,6 @@ Scenario: Add Webstats Javascript in the Site Control Panel
 *** Keywords *****************************************************************
 
 # --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
 
 the site control panel
   Go to  ${PLONE_URL}/@@site-controlpanel
