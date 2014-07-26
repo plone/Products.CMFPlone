@@ -66,6 +66,13 @@ class TitleViewlet(ViewletBase):
 
     @property
     @memoize
+    def site_title_setting(self):
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+        return site_settings.site_title
+
+    @property
+    @memoize
     def page_title(self):
         '''
         Get the page title. If we are in the portal_factory we want use the
@@ -90,15 +97,16 @@ class TitleViewlet(ViewletBase):
 
         # If we are on portal root, look up the portal title from registry
         if IPloneSiteRoot.providedBy(self.context):
-            registry = getUtility(IRegistry)
-            site_settings = registry.forInterface(ISiteSchema, prefix="plone")
-            return site_settings.site_title
+            return self.site_title_setting
 
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
         return escape(safe_unicode(context_state.object_title()))
 
     def update(self):
+        if IPloneSiteRoot.providedBy(self.context):
+            self.site_title = self.site_title_setting
+            return
         portal_state = getMultiAdapter((self.context, self.request),
                                        name=u'plone_portal_state')
         portal_title = escape(safe_unicode(portal_state
