@@ -20,6 +20,13 @@ Scenario: Disable Generate Tabs in the Navigation Control Panel
    When I disable generate tabs
    Then the document 'My Document' does not show up in the navigation
 
+Scenario: Enable Folderish Tabs in the Navigation Control Panel
+  Given a logged-in site administrator
+    and a document 'My Document'
+    and the navigation control panel
+   When I disable non-folderish tabs
+   Then the document 'My Document' does not show up in the navigation
+
 
 *** Keywords *****************************************************************
 
@@ -33,6 +40,11 @@ the navigation control panel
 
 I disable generate tabs
   Unselect Checkbox  form.widgets.generate_tabs:list
+  Click Button  Save
+  Wait until page contains  Changes saved
+
+I disable non-folderish tabs
+  Unselect Checkbox  xpath=//input[@value='Document']
   Click Button  Save
   Wait until page contains  Changes saved
 

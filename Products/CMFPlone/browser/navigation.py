@@ -138,9 +138,14 @@ class CatalogNavigationTabs(BrowserView):
         rootPath = getNavigationRoot(context)
         query['path'] = {'query': rootPath, 'depth': 1}
 
-        blacklist = navtree_properties.getProperty('metaTypesNotToList', ())
-        all_types = self.portal_catalog.uniqueValuesFor('portal_type')
-        query['portal_type'] = [t for t in all_types if t not in blacklist]
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone",
+            check=False
+        )
+        displayed_types = navigation_settings.displayed_types
+        query['portal_type'] = [t for t in displayed_types]
 
         sortAttribute = navtree_properties.getProperty('sortAttribute', None)
         if sortAttribute is not None:

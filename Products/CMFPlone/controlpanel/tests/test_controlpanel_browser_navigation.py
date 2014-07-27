@@ -81,7 +81,8 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
             self.browser.getControl('Automatically generate tabs').selected,
             True
             )
-        self.browser.getControl('Generate tabs for items other than folders').selected = False
+        self.browser.getControl(
+            'Generate tabs for items other than folders').selected = False
         self.browser.getControl('Save').click()
 
         self.assertEqual(settings.nonfolderish_tabs, False)
@@ -91,7 +92,6 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(INavigationSchema, prefix='plone')
         self.browser.open(
             "%s/@@navigation-controlpanel" % self.portal_url)
-        self.assertEqual(settings.displayed_types, ())
         self.browser.getControl('Collection', index=0).selected = True
         self.browser.getControl('Comment').selected = True
         self.browser.getControl('Event').selected = True
@@ -118,7 +118,6 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(INavigationSchema, prefix='plone')
         self.browser.open(
             "%s/@@navigation-controlpanel" % self.portal_url)
-        #self.assertEqual(settings.displayed_types, [])
 
         self.browser.getControl('Filter on workflow state').selected = True
         self.browser.getControl('Externally visible [external]').selected = True
@@ -148,7 +147,6 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         settings = registry.forInterface(INavigationSchema, prefix='plone')
         self.browser.open(
             "%s/@@navigation-controlpanel" % self.portal_url)
-        self.assertEqual(settings.displayed_types, ())
 
         self.browser.getControl(
             'Show items normally excluded from navigation if viewing their children.').selected = False

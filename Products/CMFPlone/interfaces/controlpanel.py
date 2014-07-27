@@ -129,7 +129,7 @@ class INavigationSchema(Interface):
             u"The content types that should be shown in the navigation and " +
             u"site map."),
         required=False,
-        default=(),
+        default=('Image', 'File', 'Link', 'News Item', 'Folder', 'Document', 'Event'),
         value_type=schema.Choice(
             source="plone.app.vocabularies.ReallyUserFriendlyTypes"
         ))

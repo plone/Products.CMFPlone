@@ -71,10 +71,6 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
         )
 
     def test_get_displayed_types(self):
-        self.assertEqual(
-            getAdapter(self.portal, INavigationSchema).displayed_types,
-            ()
-        )
         self.navigation_settings.displayed_types = ('Folder',)
         self.assertEqual(
             getAdapter(self.portal, INavigationSchema).displayed_types,
@@ -82,10 +78,6 @@ class NavigationControlPanelAdapterTest(unittest.TestCase):
         )
 
     def test_set_displayed_types(self):
-        self.assertEqual(
-            self.navigation_settings.displayed_types,
-            ()
-        )
         getAdapter(
             self.portal,
             INavigationSchema
