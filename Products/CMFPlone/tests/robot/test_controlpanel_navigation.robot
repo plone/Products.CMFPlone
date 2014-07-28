@@ -27,6 +27,13 @@ Scenario: Enable Folderish Tabs in the Navigation Control Panel
    When I disable non-folderish tabs
    Then the document 'My Document' does not show up in the navigation
 
+Scenario: Add Document to the Displayed Types in the Navigation Control Panel
+  Given a logged-in site administrator
+    and a document 'My Document'
+    and the navigation control panel
+   When I remove 'Document' from the displayed types list
+   Then the document 'My Document' does not show up in the navigation
+
 
 *** Keywords *****************************************************************
 
@@ -44,6 +51,11 @@ I disable generate tabs
   Wait until page contains  Changes saved
 
 I disable non-folderish tabs
+  Unselect Checkbox  xpath=//input[@value='Document']
+  Click Button  Save
+  Wait until page contains  Changes saved
+
+I remove '${portal_type}' from the displayed types list
   Unselect Checkbox  xpath=//input[@value='Document']
   Click Button  Save
   Wait until page contains  Changes saved
