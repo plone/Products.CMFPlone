@@ -27,12 +27,23 @@ Scenario: Enable Folderish Tabs in the Navigation Control Panel
    When I disable non-folderish tabs
    Then the document 'My Document' does not show up in the navigation
 
-Scenario: Add Document to the Displayed Types in the Navigation Control Panel
+Scenario: Filter Navigation By Displayed Types in the Navigation Control Panel
   Given a logged-in site administrator
     and a document 'My Document'
     and the navigation control panel
    When I remove 'Document' from the displayed types list
    Then the document 'My Document' does not show up in the navigation
+
+Scenario: Filter Navigation By Workflow States in the Navigation Control Panel
+  Given a logged-in site administrator
+    and a published document 'My Document'
+    and a private document 'My Internal Document'
+    and the navigation control panel
+   When I enable filtering by workflow states
+    and I choose to show 'published' items
+    and I choose to not show 'private' items
+   Then the document 'My Document' shows up in the navigation
+    and the document 'My Internal Document' does not show up in the navigation
 
 
 *** Keywords *****************************************************************
@@ -41,6 +52,14 @@ Scenario: Add Document to the Displayed Types in the Navigation Control Panel
 
 the navigation control panel
   Go to  ${PLONE_URL}/@@navigation-controlpanel
+
+a published document '${title}'
+  ${uid}=  a document '${title}'
+  Debug
+  Fire transition  ${uid}  publish
+
+a private document '${title}'
+  a document '${title}'
 
 
 # --- WHEN -------------------------------------------------------------------
@@ -60,8 +79,28 @@ I remove '${portal_type}' from the displayed types list
   Click Button  Save
   Wait until page contains  Changes saved
 
+I enable filtering by workflow states
+  Select Checkbox  name=form.widgets.filter_on_workflow:list
+  Click Button  Save
+  Wait until page contains  Changes saved
+
+I choose to show '${workflow_state}' items
+  Select Checkbox  xpath=//input[@value='${workflow_state}']
+  Click Button  Save
+  Wait until page contains  Changes saved
+
+I choose to not show '${workflow_state}' items
+  Unselect Checkbox  xpath=//input[@value='${workflow_state}']
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
+
+the document '${title}' shows up in the navigation
+  Go to  ${PLONE_URL}
+  Wait until page contains  Powered by Plone
+  XPath Should Match X Times  //ul[@id='portal-globalnav']/li/a[contains(text(), '${title}')]  1  message=The global navigation should have contained the item '${title}'
 
 the document '${title}' does not show up in the navigation
   Go to  ${PLONE_URL}

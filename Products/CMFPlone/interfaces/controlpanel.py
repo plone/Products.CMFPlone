@@ -672,6 +672,35 @@ class ITinyMCESchema(
     """TinyMCE Schema"""
 
 
+class ILanguageSchema(Interface):
+
+    use_combined_language_codes = schema.Bool(
+        title=_(
+            u'label_allow_combined_language_codes',
+            default=u"Show country-specific language variants"
+        ),
+        description=_(
+            u"help_allow_combined_language_codes",
+            default=u"Examples: pt-br (Brazilian Portuguese), "
+                    u"en-us (American English) etc."
+        ),
+        default=False,
+        required=False
+    )
+
+    default_language = schema.Choice(
+        title=_(u"heading_site_language",
+                default=u"Site language"),
+        description=_(
+            u"description_site_language",
+            default=u"The language used for the content and the UI "
+                    u"of this site."),
+        default='en',
+        required=True,
+        vocabulary="plone.app.vocabularies.AvailableContentLanguages"
+    )
+
+
 class IMaintenanceSchema(Interface):
 
     days = schema.Int(
