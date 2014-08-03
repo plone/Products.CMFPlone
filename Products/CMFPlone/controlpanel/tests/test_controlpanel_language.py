@@ -73,3 +73,9 @@ class LanguageRegistryIntegrationTest(unittest.TestCase):
 
     def test_use_request_negotiation(self):
         self.assertTrue(hasattr(self.settings, 'use_request_negotiation'))
+
+    def test_use_combined_language_codes_exists(self):
+        self.assertTrue(hasattr(self.settings, 'use_combined_language_codes'))
+
+    def test_default_language_exists(self):
+        self.assertTrue(hasattr(self.settings, 'default_language'))
