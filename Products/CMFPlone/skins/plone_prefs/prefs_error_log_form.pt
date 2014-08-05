@@ -45,7 +45,7 @@
 
                 <div class="field">
                     <label for="search_entry"
-                           i18n:translate="label_search_entry">Search for an error log entry (such as "1257962690.640.49636048561")</label>
+                           i18n:translate="label_search_entry">Search for an error log entry <span class="formHelp"> (such as "1257962690.640.49636048561")</span></label>
 
                     <input type="text"
                            name="search_entry"
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="formControls">
-                    <input class="standalone"
+                    <input class="context"
                            type="submit"
                            name="form.button.search"
                            value="Search"
