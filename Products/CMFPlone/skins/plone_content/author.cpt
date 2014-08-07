@@ -96,6 +96,11 @@
                     Author ID
                 </h1>
 
+                <img src=""
+                         alt="User portrait picture"
+                         class="portraitPhoto"
+                         tal:attributes="src portrait/absolute_url" />
+
                 <div class="documentDescription" tal:content="authorinfo/description">
                     Author description.
                 </div>
@@ -118,15 +123,6 @@
                         <span tal:replace="authorinfo/language">Some language</span>
                         </tal:language>
                     </div>
-
-                    <img src=""
-                         alt=""
-                         class="portraitPhoto"
-                         width="75"
-                         style="float: left; margin: 1em;"
-                         tal:attributes="src portrait/absolute_url" />
-
-                    <div class="visualClear"><!-- --></div>
 
                     <p tal:condition="python:mtool.getHomeFolder(id=author)">
                     <a href="#" tal:attributes="href python:mtool.getHomeFolder(id=author).absolute_url()"
@@ -262,6 +258,12 @@
                         <table class="vertical listing"
                                summary="Lists content written by an author grouped by content type"
                                i18n:attributes="summary summary_author_content_list;">
+                            <thead>
+                              <tr>
+                                  <th>Date</th>
+                                  <th>Content</th>
+                              </tr>
+                            </thead>
                             <tal:repeat repeat="item author_content">
                                 <tr>
                                     <th tal:define="toLocalizedTime nocall: context/@@plone/toLocalizedTime;"
