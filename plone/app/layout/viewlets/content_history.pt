@@ -43,18 +43,18 @@
                         i18n:translate="title_view_revision">View</a>
                      <a class="context" href="" tal:attributes="href item/diff_current_url"
                         tal:condition="exists:item/diff_current_url"
-                        i18n:translate="title_compare_revision">&middot; Compare to current</a>
+                        i18n:translate="title_compare_revision">Compare to current</a>
                  </span>
-                 <a class="historyComparePrevious context" tal:condition="exists:item/diff_previous_url"
+                 <a class="historyComparePrevious standalone" tal:condition="exists:item/diff_previous_url"
                         tal:attributes="href item/diff_previous_url"
                         title="Compare with previous revision"
                         i18n:attributes="title title_compare_previous_revision">
-                        <span>&uarr; <span i18n:translate="label_compare" tal:omit-tag="">Compare</span> &darr;</span>
+                        <span>&udarr;  <span i18n:translate="label_compare" tal:omit-tag="">Compare</span></span>
                  </a>
                  <span class="historyTools" tal:condition="isVersion">
                     <form action="" method="post" tal:condition="item/revert_url" tal:attributes="action item/revert_url">
                         <input type="hidden" name="version_id" value="" tal:attributes="value item/version_id" />
-                        <input class="standalone" type="submit" i18n:attributes="value title_revert_revision"
+                        <input class="destructive" type="submit" i18n:attributes="value title_revert_revision"
                                 tal:condition="exists:item/diff_current_url"
                                 value="Revert to this revision" />
                     </form>
