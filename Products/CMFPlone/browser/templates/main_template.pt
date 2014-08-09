@@ -85,7 +85,7 @@
 
         <metal:slot define-slot="body">
 
-        <div id="content">
+        <article id="content">
 
           <metal:bodytext define-slot="main">
 
@@ -118,7 +118,7 @@
           <section id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" />
 
           </metal:bodytext>
-        </div>
+        </article>
 
         </metal:slot>
 
