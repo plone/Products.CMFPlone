@@ -5,38 +5,38 @@
      tal:define="portal_tabs view/portal_tabs"
      tal:condition="portal_tabs"
      i18n:domain="plone">
-     
+
   <p class="hiddenStructure" i18n:translate="heading_sections">Navigation</p>
   <nav class="navbar" id="portal-globalnav-wrapper" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#portal-globalnav-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
 
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#portal-globalnav-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-
-
-    <div class="collapse navbar-collapse" id="portal-globalnav-collapse">
-      <ul class="nav navbar-nav" 
-          id="portal-globalnav" 
-          tal:define="selected_tab python:view.selected_portal_tab">
-          <tal:tabs tal:repeat="tab portal_tabs">
-            <li tal:define="tid tab/id"
-                tal:attributes="id string:portaltab-${tid};
-                                class python:selected_tab==tid and 'selected' or nothing">
-                <a href=""
-                   tal:content="tab/name"
-                   tal:attributes="href tab/url;
-                                   title tab/description|nothing;
-                                   target tab/link_target|nothing;">
-                  Tab Name
-                </a>
-            </li>
-          </tal:tabs>
-      </ul>
+      <div class="collapse navbar-collapse" id="portal-globalnav-collapse">
+        <ul class="nav navbar-nav"
+            id="portal-globalnav"
+            tal:define="selected_tab python:view.selected_portal_tab">
+            <tal:tabs tal:repeat="tab portal_tabs">
+              <li tal:define="tid tab/id"
+                  tal:attributes="id string:portaltab-${tid};
+                                  class python:selected_tab==tid and 'selected' or nothing">
+                  <a href=""
+                     tal:content="tab/name"
+                     tal:attributes="href tab/url;
+                                     title tab/description|nothing;
+                                     target tab/link_target|nothing;">
+                    Tab Name
+                  </a>
+              </li>
+            </tal:tabs>
+        </ul>
+      </div>
     </div>
   </nav>
 
