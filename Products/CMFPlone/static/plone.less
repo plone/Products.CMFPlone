@@ -1,23 +1,15 @@
-@pathPrefix: '++resource++plonejs/';
-@fontsPrefix: '++resource++';
+@pathPrefix: './components/';
+@fontsPrefix: './fonts/';
 @import "plone-mixins.less";
-// @import "widgets.less";
-// @import "pattern.autotoc.less";
-// @import "pattern.modal.less";
-// @import "pattern.structure.less";
-// @import "plonelogo.less";
 
-
-@import "@{pathPrefix}bootstrap/less/variables.less";
-@import "@{pathPrefix}bootstrap/less/mixins.less";
-@import "@{pathPrefix}bootstrap/less/utilities.less";
-@import "@{pathPrefix}bootstrap/less/forms.less";
-@import "@{pathPrefix}bootstrap/less/scaffolding.less";
-@import "@{pathPrefix}bootstrap/less/dropdowns.less";
-@import "@{pathPrefix}bootstrap/less/navs.less";
-@import "@{pathPrefix}bootstrap/less/navbar.less";
-@icon-font-path: "@{pathPrefix}bootstrap/dist/fonts/";
-
+@import (reference) "@{pathPrefix}bootstrap/less/variables.less";
+@import (reference) "@{pathPrefix}bootstrap/less/mixins.less";
+@import (reference) "@{pathPrefix}bootstrap/less/utilities.less";
+@import (reference) "@{pathPrefix}bootstrap/less/forms.less";
+@import (reference) "@{pathPrefix}bootstrap/less/scaffolding.less";
+@import (reference) "@{pathPrefix}bootstrap/less/dropdowns.less";
+@import (reference) "@{pathPrefix}bootstrap/less/navs.less";
+@import (reference) "@{pathPrefix}bootstrap/less/navbar.less";
 
 @font-face {
   font-family: 'fontello';
