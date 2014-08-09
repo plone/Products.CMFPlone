@@ -17,7 +17,14 @@ Scenario: Enable Visible IDs in the Editing Control Panel
   Given a logged-in site administrator
     and the editing control panel
    When I enable visible ids
-   Then I can see an id field when I create a document
+   Then I can see an id field in the settings tab when I create a document
+
+Scenario: Disable Standard Editor in the Editing Control Panel
+  Given a logged-in site administrator
+    and the editing control panel
+   When I disable the standard editor
+# XXX: This currently fails.
+#   Then I do not see the standard editor when I create a document
 
 
 *** Keywords *****************************************************************
@@ -41,10 +48,15 @@ I enable visible ids
   Click Button  Save
   Wait until page contains  Changes saved
 
+I disable the standard editor
+  Select from list by label  name=form.widgets.default_editor:list  None
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
 
-I can see an id field when I create a document
+I can see an id field in the settings tab when I create a document
   Go To  ${PLONE_URL}/++add++Document
   Wait until page contains  Add Page
   Input Text  name=form.widgets.IDublinCore.title  My Document
@@ -54,3 +66,9 @@ I can see an id field when I create a document
   Click Button  Save
   Wait until page contains  Item created
   Location should be  ${PLONE_URL}/this-is-my-custom-short-name/view
+
+I do not see the standard editor when I create a document
+  Go To  ${PLONE_URL}/++add++Document
+  Wait until page contains  Add Page
+  Page should not contain element  css=.mce-tinymce
+
