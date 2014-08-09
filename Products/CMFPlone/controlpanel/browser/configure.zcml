@@ -51,4 +51,12 @@
     permission="plone.app.controlpanel.Site"
     />
 
+  <!-- Types Control panel -->
+  <browser:page
+    name="types-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".types.TypesControlPanel"
+    permission="plone.app.controlpanel.Types"
+    />
+
 </configure>

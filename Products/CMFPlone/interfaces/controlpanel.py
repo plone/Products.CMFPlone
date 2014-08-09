@@ -1,6 +1,7 @@
 from Products.CMFPlone import PloneMessageFactory as _
 from basetool import IPloneBaseTool
 from plone.locking.interfaces import ILockSettings
+from zope.interface import Attribute
 from zope.interface import Interface
 from zope import schema
 
@@ -280,3 +281,8 @@ class IDateAndTimeSchema(Interface):
         required=True,
         default=None,
         vocabulary="plone.app.vocabularies.Weekdays")
+
+
+class ITypesSchema(Interface):
+    """
+    """
