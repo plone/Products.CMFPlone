@@ -16,6 +16,9 @@ Changelog
 - Fix related items viewlet listing dexterity related folder's descendants.
   [rpatterson]
 
+- Add more data attributes to body tag
+  [vangheem]
+
 
 2.5.1 (2014-04-05)
 ------------------

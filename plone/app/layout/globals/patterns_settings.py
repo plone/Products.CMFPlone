@@ -3,6 +3,7 @@
 from zope.interface import implements
 from zope.component import getAdapters
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.publisher.browser import BrowserView
 
 from plone.registry.interfaces import IRegistry
@@ -22,9 +23,12 @@ class PatternsSettings(BrowserView):
                 'displayInModal': False,
             }
         }
+        base_url = getSite().absolute_url()
         result = {
             'data-pat-modal': json.dumps(modal_options),
             'data-base-url': self.context.absolute_url(),
+            'data-portal-url': base_url,
+            'data-i18ncatalogurl': base_url + '/plonejsi18n'
         }
         adapters = getAdapters((self.context, self.request), IPatternsSettings)
         [result.update(x[1]()) for x in adapters]
