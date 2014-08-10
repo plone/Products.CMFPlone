@@ -56,8 +56,18 @@ class IPatternRegistry(zope.interface.Interface):
         description=_(u"In case its a bundle we can have a condition to render it"),
         required=False)
 
+    skin_name = schema.List(
+        title=_(u"Skins where is it rendered"),
+        description=_(u"Empty means all skin name"),
+        value_type=schema.Choice(
+            title=_(u"Choose one skin name"),
+            vocabulary='plone.app.vocabularies.Skins'
+        ),
+        required=False)
+
     enabled = schema.Bool(
         title=_(u"It's enabled?"),
+        default=True,
         required=False)
 
 class IPatternRegistryField(zope.interface.Interface):
