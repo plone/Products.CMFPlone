@@ -8,15 +8,13 @@ from plone.registry.interfaces import IRegistry
 from plone.registry import Registry
 from Products.CMFPlone.interfaces import IMarkupSchema
 
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, getUtility
 
 from Products.CMFCore.utils import getToolByName
 
 from plone.app.testing import TEST_USER_ID, setRoles
 
-from Products.CMFPlone.testing import (
-        PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-)
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
 
 class MarkupRegistryIntegrationTest(unittest.TestCase):
@@ -28,11 +26,11 @@ class MarkupRegistryIntegrationTest(unittest.TestCase):
     def setUp(self):
         self.portal = self.layer['portal']
         self.request = self.layer['request']
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+#        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
-        self.registry = Registry()
-        self.registry.registerInterface(IMarkupSchema)
-        self.settings = self.registry.forInterface(
+        registry = getUtility(IRegistry)
+#        self.registry.registerInterface(IMarkupSchema)
+        self.settings = registry.forInterface(
             IMarkupSchema, prefix="plone")
 
     def test_markup_controlpanel_view(self):
@@ -53,15 +51,13 @@ class MarkupRegistryIntegrationTest(unittest.TestCase):
     def test_default_type_setting(self):
         self.assertTrue('default_type' in IMarkupSchema.names())
         self.assertEqual(
-            self.settings['Products.CMFPlone.interfaces.' +
-                          'IMarkupSchema.default_type'],
+            self.settings.default_type,
             'text/html'
         )
 
     def test_allowed_types_setting(self):
         self.assertTrue('allowed_types' in IMarkupSchema.names())
         self.assertEqual(
-            self.settings['Products.CMFPlone.interfaces.' +
-                          'IMarkupSchema.allowed_types'],
+            self.settings.allowed_types,
             ('text/html', 'text/x-web-textile')
         )

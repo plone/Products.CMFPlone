@@ -76,3 +76,12 @@ Site Control Panel
   >>> site_settings.exposeDCMetaTags = True
   >>> site_settings.enable_sitemap = True
   >>> site_settings.webstats_js = u'<script>a=1</script>'
+
+Markup Control Panel
+------------------------
+
+  >>> from Products.CMFPlone.interfaces import IMarkupSchema
+  >>> markup_settings = registry.forInterface(IMarkupSchema, prefix='plone')
+
+  >>> markup_settings.default_type = True
+  >>> markup_settings.allowed_types = True
