@@ -1,5 +1,6 @@
 from z3c.relationfield import RelationValue
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.interface import Interface
 from zope.intid.interfaces import IIntIds
 from plone.app.layout.viewlets.tests.base import ViewletsTestCase
@@ -31,8 +32,9 @@ class TestDocumentBylineViewletView(ViewletsTestCase):
     Test the document by line viewlet
     """
     def afterSetUp(self):
-        addMember(self, 'Alan', roles=('Member', 'Manager'))
-        addMember(self, 'Ano', roles=())
+        portal = getSite()
+        addMember(portal, 'Alan', roles=('Member', 'Manager'))
+        addMember(portal, 'Ano', roles=())
 
     def test_anonymous_locked_icon(self):
         request = self.app.REQUEST
