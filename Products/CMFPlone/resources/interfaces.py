@@ -58,7 +58,7 @@ class IResourceRegistry(zope.interface.Interface):
         description=_(u"Filled automatic"),
         required=False)
 
-    conditional_comment = schema.ASCIILine(
+    conditionalcomment = schema.ASCIILine(
         title=_(u"Conditional comment"),
         description=_(u"In case you want to render this resource on conditional comment"),
         required=False)

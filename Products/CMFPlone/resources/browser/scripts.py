@@ -70,7 +70,7 @@ class ScriptsView(ViewletBase):
                 else:
                     src = "%s" % (script.js)
 
-            data = {'conditionalcomment' : script.getConditionalcomment(),
+            data = {'conditionalcomment' : script.conditionalcomment,
                     'src': src}
             result.append(data)
         return result
