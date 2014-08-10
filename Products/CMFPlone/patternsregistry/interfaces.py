@@ -8,7 +8,7 @@ from plone.registry.field import DisallowedProperty, StubbornProperty, Interface
 
 from Products.CMFPlone import PloneMessageFactory as _
 
-class IWebComponent(zope.interface.Interface):
+class IPatternRegistry(zope.interface.Interface):
 
     name = schema.ASCIILine(
         title=_(u"Component name"),
@@ -34,7 +34,7 @@ class IWebComponent(zope.interface.Interface):
 
     deps = schema.ASCIILine(
         title=_(u"Dependencies for shim"),
-        description=_(u"Coma separated values of webcomponents for shim"),
+        description=_(u"Coma separated values of pattern for shim"),
         required=False)
 
     export = schema.ASCIILine(
@@ -60,30 +60,30 @@ class IWebComponent(zope.interface.Interface):
         title=_(u"It's enabled?"),
         required=False)
 
-class IWebComponentField(zope.interface.Interface):
+class IPatternRegistryField(zope.interface.Interface):
     pass
 
-@zope.interface.implementer(IWebComponentField)
-class WebComponentField(schema.Object):
+@zope.interface.implementer(IPatternRegistryField)
+class PatternRegistryField(schema.Object):
     pass
 
-@zope.interface.implementer(IWebComponent)
-class WebComponent(PersistentField, WebComponentField):
+@zope.interface.implementer(IPatternRegistry)
+class PatternRegistry(PersistentField, PatternRegistryField):
 
-    url = FieldProperty(IWebComponent['url'])
-    js = FieldProperty(IWebComponent['js'])
-    css = FieldProperty(IWebComponent['css'])
-    init = FieldProperty(IWebComponent['init'])
-    deps = FieldProperty(IWebComponent['deps'])
-    export = FieldProperty(IWebComponent['export'])
-    conf = FieldProperty(IWebComponent['conf'])
-    bundle = FieldProperty(IWebComponent['bundle'])
-    condition = FieldProperty(IWebComponent['condition'])
-    enabled = FieldProperty(IWebComponent['enabled'])
-    name = FieldProperty(IWebComponent['name'])
+    url = FieldProperty(IPatternRegistry['url'])
+    js = FieldProperty(IPatternRegistry['js'])
+    css = FieldProperty(IPatternRegistry['css'])
+    init = FieldProperty(IPatternRegistry['init'])
+    deps = FieldProperty(IPatternRegistry['deps'])
+    export = FieldProperty(IPatternRegistry['export'])
+    conf = FieldProperty(IPatternRegistry['conf'])
+    bundle = FieldProperty(IPatternRegistry['bundle'])
+    condition = FieldProperty(IPatternRegistry['condition'])
+    enabled = FieldProperty(IPatternRegistry['enabled'])
+    name = FieldProperty(IPatternRegistry['name'])
 
 
-class IWebComponentsSettings(zope.interface.Interface):
+class IPatternsRegistrySettings(zope.interface.Interface):
     """
         Each web component may have :
             - url
@@ -100,16 +100,16 @@ class IWebComponentsSettings(zope.interface.Interface):
     """
 
 
-    registry = schema.List(title=_(u"Web components registry"),
-        value_type=WebComponentField(title=_(u"Web component"), schema=IWebComponent)
+    registry = schema.List(title=_(u"Patterns registry"),
+        value_type=PatternRegistryField(title=_(u"Pattern"), schema=IPatternRegistry)
     )
 
 
 @zope.interface.implementer(IPersistentField)
-@zope.component.adapter(IWebComponentField)
+@zope.component.adapter(IPatternRegistryField)
 def persistentFieldAdapter(context):
     class_name = context.__class__.__name__
-    persistent_class = WebComponent
+    persistent_class = PatternRegistry
     if not issubclass(persistent_class, context.__class__):
         __traceback_info__ = "Can only clone a field of an equivalent type."
         return None
