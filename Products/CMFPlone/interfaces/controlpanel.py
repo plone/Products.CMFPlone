@@ -206,7 +206,6 @@ class ISearchSchema(Interface):
     )
 
 
-# XXX: Why does ISiteSchema inherit from ILockSettings here ???
 class ISiteSchema(ILockSettings):
 
     site_title = schema.TextLine(

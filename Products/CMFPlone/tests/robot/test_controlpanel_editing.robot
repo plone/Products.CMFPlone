@@ -35,6 +35,13 @@ Scenario: Enable Link Integrity Check in the Editing Control Panel
 # See https://github.com/plone/Products.CMFPlone/issues/255 for details.
 #   Then I will be warned if I remove a linked document
 
+Scenario: Enable Lock on Through The Web in the Editing Control Panel
+  Given a logged-in site administrator
+    and the editing control panel
+   When I enable lock on through the web
+# XXX: This test is not finished yet.
+#   Then I will see a warning if a document is edited by another user
+
 
 *** Keywords *****************************************************************
 
@@ -67,6 +74,11 @@ I enable link integrity checks
   Click Button  Save
   Wait until page contains  Changes saved
 
+I enable lock on through the web
+  Select Checkbox  name=form.widgets.lock_on_ttw_edit:list
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
 
@@ -90,3 +102,6 @@ I will be warned if I remove a linked document
   ${doc1_uid}=  Create content  id=doc1  type=Document
   ${doc2_uid}=  Create content  id=doc2  type=Document
   Set field value  ${doc1_uid}  text  <p><a href='resolveuid/${doc2_uid}' data-val='${doc2_uid}' data-linktype='internal'>link</a></p>  text/html
+
+I will see a warning if a document is edited by another user
+  ${doc1_uid}=  Create content  id=doc1  type=Document
