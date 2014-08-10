@@ -18,6 +18,7 @@ from controlpanel import ITinyMCELibrariesSchema
 from controlpanel import ITinyMCEResourceTypesSchema
 from controlpanel import ITypesSchema
 from events import IConfigurationChangedEvent
+from controlpanel import IMarkupSchema
 from events import ISiteManagerCreatedEvent
 from events import IReorderedEvent
 from interface import IInterfaceTool
