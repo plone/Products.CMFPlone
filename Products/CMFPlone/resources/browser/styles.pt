@@ -1,5 +1,4 @@
-<tal:styles define="view context/@@resourceregistries_styles_view"
-            repeat="style view/styles"
+<tal:styles repeat="style view/styles"
   ><tal:block define="rendering style/rendering;
                      condcomment style/conditionalcomment"
     ><tal:wcondcomment tal:condition="condcomment">
