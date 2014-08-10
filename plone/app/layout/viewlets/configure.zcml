@@ -192,14 +192,6 @@
         permission="zope2.View"
         />
 
-    <!-- The tiny logo -->
-    <browser:viewlet
-        name="plone.tiny_logo"
-        manager=".interfaces.IToolbar"
-        class=".common.TinyLogoViewlet"
-        permission="zope2.View"
-        />
-
     <!-- The personal bar -->
     <browser:viewlet
         name="plone.personal_bar"
