@@ -51,4 +51,13 @@
     permission="plone.app.controlpanel.Site"
     />
 
+  <!-- Markup Control Panel -->
+  <browser:page
+    name="markup-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".markup.MarkupControlPanel"
+    permission="plone.app.controlpanel.Markup"
+    />
+
+
 </configure>
