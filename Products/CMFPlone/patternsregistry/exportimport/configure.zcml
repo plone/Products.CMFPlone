@@ -1,0 +1,21 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="plone"
+    >
+
+  <adapter
+      factory=".jsregistry.JSRegistryNodeAdapter"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="Products.ResourceRegistries.interfaces.IJSRegistry
+           Products.GenericSetup.interfaces.ISetupEnviron"
+      />
+
+  <adapter
+      factory=".cssregistry.CSSRegistryNodeAdapter"
+      provides="Products.GenericSetup.interfaces.IBody"
+      for="Products.ResourceRegistries.interfaces.ICSSRegistry
+           Products.GenericSetup.interfaces.ISetupEnviron"
+      />
+
+</configure>

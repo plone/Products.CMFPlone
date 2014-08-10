@@ -14,13 +14,12 @@
     <depends name="typeinfo"/>
   </genericsetup:importStep>
 
-  <genericsetup:importStep
+<!--   <genericsetup:importStep
       name="cssregistry"
       title="Stylesheet registry"
       description="Import stylesheet registry"
-      handler="Products.ResourceRegistries.exportimport.cssregistry.importCSSRegistry">
+      handler="Products.CMFPlone.patternsregistry.exportimport.cssregistry.importCSSRegistry">
     <depends name="skins"/>
-    <depends name="toolset"/>
     <depends name="componentregistry"/>
   </genericsetup:importStep>
 
@@ -28,11 +27,10 @@
       name="jsregistry"
       title="Javascript registry"
       description="Import javascript registry"
-      handler="Products.ResourceRegistries.exportimport.jsregistry.importJSRegistry">
+      handler="Products.CMFPlone.patternsregistry..exportimport.jsregistry.importJSRegistry">
     <depends name="skins"/>
-    <depends name="toolset"/>
     <depends name="componentregistry"/>
-  </genericsetup:importStep>
+  </genericsetup:importStep> -->
 
   <genericsetup:importStep
       name="viewlets"
@@ -111,19 +109,19 @@
       handler="Products.CMFPlone.exportimport.controlpanel.exportControlPanel"
       />
 
-  <genericsetup:exportStep
+<!--   <genericsetup:exportStep
       name="cssregistry"
       title="Stylesheet registry"
       description="Export stylesheet registry"
-      handler="Products.ResourceRegistries.exportimport.cssregistry.exportCSSRegistry"
+      handler="Products.CMFPlone.patternsregistry.exportimport.cssregistry.exportCSSRegistry"
       />
 
   <genericsetup:exportStep
       name="jsregistry"
       title="Javascript registry"
       description="Export javascript registry"
-      handler="Products.ResourceRegistries.exportimport.jsregistry.exportJSRegistry"
-      />
+      handler="Products.CMFPlone.patternsregistry.exportimport.jsregistry.exportJSRegistry"
+      /> -->
 
   <genericsetup:exportStep
       name="memberdata-properties"
