@@ -49,13 +49,17 @@
         id="visual-portal-wrapper">
 
     <section id="edit-bar" role="toolbar">
-      <div class="navbar navbar-fixed-left navbar-inverse" id="edit-zone" role="navigation">
-        <div class="container">
-          <header>
-
-            <div tal:content="structure provider:plone.toolbar">
-            </div>
-          </header>
+      <div id="edit-zone" role="toolbar" class="plone-toolbar-left">
+        <div class="plone-toolbar-container">
+          <a class="plone-toolbar-logo">
+            <img alt="Plone Toolbar" src="++resource++plone-toolbarlogo.svg" />
+          </a>
+          <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
+          <nav role="navigation">
+            <ul>
+              <div tal:replace="structure provider:plone.toolbar">
+              </div>
+            </ul>
         </div>
       </div>
     </section>
