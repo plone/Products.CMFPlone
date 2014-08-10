@@ -10,6 +10,8 @@ from controlpanel import IMaintenanceSchema
 from controlpanel import INavigationSchema
 from controlpanel import ISearchSchema
 from controlpanel import ISiteSchema
+from controlpanel import ITypesSchema
+from events import IConfigurationChangedEvent
 from events import ISiteManagerCreatedEvent
 from events import IReorderedEvent
 from interface import IInterfaceTool
