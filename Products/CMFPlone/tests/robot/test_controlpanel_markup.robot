@@ -16,13 +16,13 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 Scenario: Change Default Markup Types in the Markup Control Panel
   Given a logged-in site administrator
     and the markup control panel
-   When I set allowed types to "text/html"
-   Then I can see only "text/html" when editing a document
+   When I set allowed types to "text/restructured"
+   Then I do not see the standard editor when I create a document
 
 Scenario: Set Default Markup to be Restructured Text
   Given a logged-in site administrator
-    and the editing control panel
-   When I set the default type to "text/rst"
+    and the markup control panel
+   When I set the default type to "text/restructured"
    Then I do not see the standard editor when I create a document
 
 
@@ -36,16 +36,19 @@ a logged-in site administrator
 a document '${title}'
   Create content  type=Document  id=doc  title=${title}
 
-the editing control panel
-  Go to  ${PLONE_URL}/@@editing-controlpanel
+the markup control panel
+  Go to  ${PLONE_URL}/@@markup-controlpanel
 
 
 # --- WHEN -------------------------------------------------------------------
 
-I enable visible ids
-  Select Checkbox  form.widgets.visible_ids:list
+I set allowed types to "${type}"
+  with the label  text/html  UnSelect Checkbox
+  with the label  text/x-web-textile  UnSelect Checkbox
+  with the label  ${type}   Select Checkbox
   Click Button  Save
   Wait until page contains  Changes saved
+
 
 I disable the standard editor
   Select from list by label  name=form.widgets.default_editor:list  None
@@ -55,10 +58,10 @@ I disable the standard editor
 
 # --- THEN -------------------------------------------------------------------
 
-I can see an id field in the settings tab when I create a document
+Then I can see only "${type}" when creating a document
   Go To  ${PLONE_URL}/++add++Document
   Wait until page contains  Add Page
-  Input Text  name=form.widgets.IDublinCore.title  My Document
+  with the label  Title   Input Text    My Document
   Click Link  Settings
   Page should contain element  name=form.widgets.IShortName.id
   Input Text  name=form.widgets.IShortName.id  this-is-my-custom-short-name
@@ -71,3 +74,17 @@ I do not see the standard editor when I create a document
   Wait until page contains  Add Page
   Page should not contain element  css=.mce-tinymce
 
+# --- Helpers -----------------------------------------------------------------
+
+With the label
+    [arguments]  ${title}    ${extra_keyword}   @{list}
+    ${for}=  label "${title}"
+    Run Keyword     ${extra_keyword}  id=${for}   @{list}
+
+label "${title}"
+    [Return]  ${for}
+    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]@for
+
+label2 "${title}"
+    [Return]  ${for}
+    ${for}=  Get Element Attribute  xpath=//label[contains(., "${title}")]//input
