@@ -90,7 +90,9 @@
             </metal:entries>
         </metal:block>
 
+<!--
         <metal:subtopics use-macro="context/atct_topic_view/macros/folderlisting_macro" />
+-->
 
     </metal:content-core>
 
