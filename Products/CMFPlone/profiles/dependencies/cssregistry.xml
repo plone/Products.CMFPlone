@@ -3,9 +3,9 @@
 
     <!-- Reset / normalizer / main and toolbar -->
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
         enabled="True"
         dev="True"
         main="True"
@@ -21,20 +21,20 @@
 
     <!-- Pick a date -->
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
         id="++plone++static/components/pickadate/lib/themes/classic.css"
         component="picker"
         />
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
         id="++plone++static/components/pickadate/lib/themes/classic.date.css"
         component="picker_date"
@@ -49,15 +49,15 @@
         id="++plone++static/components/pickadate/lib/themes/classic.time.css"
         component="picker_time"
         />
-    
+
     <!-- pickadate pattern -->
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++resource++mockup/pickadate/pattern.pickadate.less" 
+        id="++resource++mockup/pickadate/pattern.pickadate.less"
         rel="stylesheet/less"
         component="mockup-patterns-pickadate"
         compile="True"
@@ -65,111 +65,124 @@
         />
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++plone++static/components/bootstrap/dist/css/bootstrap.css" 
+        id="++plone++static/components/bootstrap/dist/css/bootstrap.css"
         rel="stylesheet/css"
         component="boostrap"
         />
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++resource++mockup/autotoc/pattern.autotoc.less" 
+        id="++resource++mockup/autotoc/pattern.autotoc.less"
         rel="stylesheet/less"
         component="mockup-patterns-autotoc"
         compile="True"
         />
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++plone++static/components/dropzone/downloads/css/dropzone.css" 
+        id="++plone++static/components/dropzone/downloads/css/dropzone.css"
         rel="stylesheet/css"
         component="dropzone"
         />
 
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++resource++mockup/upload/less/pattern.upload.less" 
+        id="++resource++mockup/upload/less/pattern.upload.less"
         rel="stylesheet/less"
         component="mockup-patterns-upload"
         compile="True"
         />
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++resource++mockup/modal/pattern.modal.less" 
+        id="++resource++mockup/modal/pattern.modal.less"
         rel="stylesheet/less"
         component="mockup-patterns-modal"
         compile="True"
         />
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++plone++static/components/tinymce/skins/lightgray/skin.min.css" 
+        id="++plone++static/components/tinymce/skins/lightgray/skin.min.css"
         rel="stylesheet/css"
         component="tinymce"
         />
 
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++plone++static/components/tinymce/skins/lightgray/content.inline.min.css" 
+        id="++plone++static/components/tinymce/skins/lightgray/content.inline.min.css"
         rel="stylesheet/css"
         component="tinymce-content"
         />
 
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++plone++static/components/tinymce/plugins/visualblocks/css/visualblocks.css" 
+        id="++plone++static/components/tinymce/plugins/visualblocks/css/visualblocks.css"
         rel="stylesheet/css"
         component="tinymce-visualblocks"
         />
 
 
     <stylesheet
-        cacheable="False" 
-        compression="none" 
-        cookable="True" 
-        enabled="True" 
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
         dev="True"
-        id="++resource++mockup/tinymce/less/pattern.tinymce.less" 
+        id="++resource++mockup/tinymce/less/pattern.tinymce.less"
         rel="stylesheet/less"
         component="mockup-patterns-tinymce"
         compile="True"
         deps="tinymce"
+        />
+
+    <!-- plone-patterns-toolbar pattern-->
+    <stylesheet
+        cacheable="False"
+        compression="none"
+        cookable="True"
+        enabled="True"
+        dev="True"
+        rel="stylesheet/less"
+        id="++plone++static/patterns/toolbar/src/css/toolbar.plone.less"
+        component="plone-patterns-toolbar"
+        compile="True"
         />
 
 
