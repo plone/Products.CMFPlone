@@ -2,7 +2,7 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
 
-<!--     <browser:viewlet  
+    <browser:viewlet  
         name="plone.resourceregistries.scripts" 
         manager="plone.app.layout.viewlets.interfaces.IScripts"
         class="Products.CMFPlone.patternsregistry.browser.scripts.ScriptsView"
@@ -16,7 +16,7 @@
         class="Products.CMFPlone.patternsregistry.browser.styles.StylesView"
         template="styles.pt"
         permission="zope2.View" 
-        /> -->
+        />
 
     <browser:page
         for="*"

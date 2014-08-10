@@ -5,7 +5,6 @@
     <include package=".browser" />
     <!-- <include package=".exportimport" /> -->
 
-    <adapter factory=".interfaces.persistentFieldAdapter" />
     
 
 </configure>
