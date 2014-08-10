@@ -10,6 +10,7 @@ class MarkupControlPanelForm(controlpanel.RegistryEditForm):
     id = "MarkupControlPanel"
     label = _(u"Markup settings")
     schema = IMarkupSchema
+    schema_prefix = "plone"
 
     def updateFields(self):
         super(MarkupControlPanelForm, self).updateFields()

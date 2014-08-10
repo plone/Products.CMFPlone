@@ -4,7 +4,6 @@ import unittest2 as unittest
 from plone.testing.z2 import Browser
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 
-from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from plone.registry import Registry
 from Products.CMFPlone.interfaces import IMarkupSchema
@@ -33,6 +32,8 @@ class MarkupRegistryIntegrationTest(unittest.TestCase):
 
         self.registry = Registry()
         self.registry.registerInterface(IMarkupSchema)
+        self.settings = self.registry.forInterface(
+            IMarkupSchema, prefix="plone")
 
     def test_markup_controlpanel_view(self):
         view = getMultiAdapter(
@@ -52,7 +53,7 @@ class MarkupRegistryIntegrationTest(unittest.TestCase):
     def test_default_type_setting(self):
         self.assertTrue('default_type' in IMarkupSchema.names())
         self.assertEqual(
-            self.registry['plone.app.controlpanel.interfaces.' +
+            self.settings['Products.CMFPlone.interfaces.' +
                           'IMarkupSchema.default_type'],
             'text/html'
         )
@@ -60,7 +61,7 @@ class MarkupRegistryIntegrationTest(unittest.TestCase):
     def test_allowed_types_setting(self):
         self.assertTrue('allowed_types' in IMarkupSchema.names())
         self.assertEqual(
-            self.registry['plone.app.controlpanel.interfaces.' +
+            self.settings['Products.CMFPlone.interfaces.' +
                           'IMarkupSchema.allowed_types'],
             ('text/html', 'text/x-web-textile')
         )
