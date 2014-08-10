@@ -77,5 +77,6 @@
       <element key="linkAttribute">UID</element>
       <element key="prependToScalePart">/@@images/image/</element>
     </value>
-  </record>     
+  </record>  
+  <records interface="Products.CMFPlone.webcomponents.interfaces.IWebComponentsSettings" />   
 </registry>

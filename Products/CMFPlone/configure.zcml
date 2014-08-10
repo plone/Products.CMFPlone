@@ -46,6 +46,7 @@
   <include package="plone.theme" />
 
   <include package=".controlpanel" />
+  <include package=".webcomponents" />
 
   <!-- Archetypes -->
   <include zcml:condition="installed Products.ATContentTypes"
