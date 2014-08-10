@@ -1,0 +1,79 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:viewlet  
+        name="plone.resourceregistries.scripts" 
+        manager="plone.app.layout.viewlets.interfaces.IScripts"
+        class="Products.CMFPlone.patternsregistry.browser.scripts.ScriptsView"
+        template="scripts.pt"
+        permission="zope2.View" 
+        />
+
+    <browser:viewlet  
+        name="plone.resourceregistries.styles" 
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+        class="Products.CMFPlone.patternsregistry.browser.styles.StylesView"
+        template="styles.pt"
+        permission="zope2.View" 
+        />
+
+    <browser:page
+        for="*"
+        name="resourceregistries_scripts_view"
+        class=".scripts.ScriptsView"
+        permission="zope.Public"
+        allowed_interface=".interfaces.IScriptsView"
+        />
+
+    <browser:page
+        for="*"
+        name="resourceregistries_styles_view"
+        class=".styles.StylesView"
+        permission="zope.Public"
+        allowed_interface=".interfaces.IStylesView"
+        />
+
+    <browser:page
+        for="*"
+        name="config.js"
+        class=".configjs.ConfigJsView"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        for="*"
+        name="bbbplone.js"
+        class=".configjs.BBBConfigJsView"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        for="*"
+        name="plone-mixins.less"
+        class=".mixins.LessMixinsWeb"
+        permission="zope.Public"
+        />
+
+
+    <browser:page
+        for="*"
+        name="optimize_js"
+        class=".configjs.OptimizeJS"
+        template="optimize.pt"
+        permission="zope.Public"
+        />
+
+    <browser:resource
+        name="r.js"
+        file="r.js"
+        />
+
+    <browser:page
+        for="*"
+        name="compile_less"
+        class=".compile_less.CompileLess"
+        permission="zope.Public"
+        />        
+
+</configure>
