@@ -23,8 +23,17 @@ Scenario: Disable Standard Editor in the Editing Control Panel
   Given a logged-in site administrator
     and the editing control panel
    When I disable the standard editor
-# XXX: This currently fails.
+# XXX: This test fails because the TinyMCE 4 widget ignores both the old and
+# the new setting.
 #   Then I do not see the standard editor when I create a document
+
+Scenario: Enable Link Integrity Check in the Editing Control Panel
+  Given a logged-in site administrator
+    and the editing control panel
+   When I enable link integrity checks
+# XXX: This test fails because linkintegrity in Plone 5 is broken.
+# See https://github.com/plone/Products.CMFPlone/issues/255 for details.
+#   Then I will be warned if I remove a linked document
 
 
 *** Keywords *****************************************************************
@@ -53,6 +62,11 @@ I disable the standard editor
   Click Button  Save
   Wait until page contains  Changes saved
 
+I enable link integrity checks
+  Select Checkbox  name=form.widgets.enable_link_integrity_checks:list
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
 
@@ -72,3 +86,7 @@ I do not see the standard editor when I create a document
   Wait until page contains  Add Page
   Page should not contain element  css=.mce-tinymce
 
+I will be warned if I remove a linked document
+  ${doc1_uid}=  Create content  id=doc1  type=Document
+  ${doc2_uid}=  Create content  id=doc2  type=Document
+  Set field value  ${doc1_uid}  text  <p><a href='resolveuid/${doc2_uid}' data-val='${doc2_uid}' data-linktype='internal'>link</a></p>  text/html
