@@ -57,11 +57,119 @@
         cookable="True" 
         enabled="True" 
         dev="True"
-        id="++resource++mockup/less/patterns/pickadate.less" 
+        id="++resource++mockup/pickadate/pattern.pickadate.less" 
         rel="stylesheet/less"
         component="mockup-patterns-pickadate"
         compile="True"
         deps="picker_time, picker, picker_date"
+        />
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++plone++static/components/bootstrap/dist/css/bootstrap.css" 
+        rel="stylesheet/css"
+        component="boostrap"
+        />
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++resource++mockup/autotoc/pattern.autotoc.less" 
+        rel="stylesheet/less"
+        component="mockup-patterns-autotoc"
+        compile="True"
+        />
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++plone++static/components/dropzone/downloads/css/dropzone.css" 
+        rel="stylesheet/css"
+        component="dropzone"
+        />
+
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++resource++mockup/upload/less/pattern.upload.less" 
+        rel="stylesheet/less"
+        component="mockup-patterns-upload"
+        compile="True"
+        />
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++resource++mockup/modal/pattern.modal.less" 
+        rel="stylesheet/less"
+        component="mockup-patterns-modal"
+        compile="True"
+        />
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++plone++static/components/tinymce/skins/lightgray/skin.min.css" 
+        rel="stylesheet/css"
+        component="tinymce"
+        />
+
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++plone++static/components/tinymce/skins/lightgray/content.inline.min.css" 
+        rel="stylesheet/css"
+        component="tinymce-content"
+        />
+
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++plone++static/components/tinymce/plugins/visualblocks/css/visualblocks.css" 
+        rel="stylesheet/css"
+        component="tinymce-visualblocks"
+        />
+
+
+    <stylesheet
+        cacheable="False" 
+        compression="none" 
+        cookable="True" 
+        enabled="True" 
+        dev="True"
+        id="++resource++mockup/tinymce/less/pattern.tinymce.less" 
+        rel="stylesheet/less"
+        component="mockup-patterns-tinymce"
+        compile="True"
+        deps="tinymce"
         />
 
 

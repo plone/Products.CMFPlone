@@ -84,4 +84,5 @@
       <element key="prependToScalePart">/@@images/image/</element>
     </value>
   </record>
+  <records interface="Products.CMFPlone.webcomponents.interfaces.IWebComponentsSettings" />
 </registry>
