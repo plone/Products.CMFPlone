@@ -1,7 +1,7 @@
 from Products.ResourceRegistries.interfaces import IJSRegistry
 
 from resourceregistry import ResourceRegistryNodeAdapter, \
-     importResRegistry, exportResRegistry
+     importResRegistry
 
 _FILENAME = 'jsregistry.xml'
 _REG_ID = 'portal_javascripts'
@@ -12,12 +12,6 @@ def importJSRegistry(context):
     Import javascript registry.
     """
     return importResRegistry(context, _REG_ID, _REG_TITLE, _FILENAME)
-
-def exportJSRegistry(context):
-    """
-    Export javascript registry.
-    """
-    return exportResRegistry(context, _REG_ID, _REG_TITLE, _FILENAME)
 
 
 class JSRegistryNodeAdapter(ResourceRegistryNodeAdapter):
