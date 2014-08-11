@@ -1,0 +1,80 @@
+*** Settings *****************************************************************
+
+Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/saucelabs.robot
+
+Library  Remote  ${PLONE_URL}/RobotRemote
+
+Resource  keywords.robot
+
+Test Setup  Open SauceLabs test browser
+Test Teardown  Run keywords  Report test status  Close all browsers
+
+
+*** Test Cases ***************************************************************
+
+Scenario: Allow comments for Link Type
+  Given a logged-in manager
+    and Globaly enabled comments
+    and the types control panel
+   When I select 'Link' in types dropdown
+    and Allow discussion
+   Then Wait until page contains  Type Settings
+   When I add new Link 'my_link'
+    Then Link 'my_link' should have comments enabled
+
+Scenarion: Change default workflow
+  Given a logged-in site administrator
+    and the types control panel
+   When I select 'Single State Workflow' workflow
+   Then Wait until page contains  Type Settings
+   When I add new Link 'my_link'
+    Then Link 'my_link' should have Single State Workflow enabled
+
+
+*** Keywords *****************************************************************
+
+# --- GIVEN ------------------------------------------------------------------
+
+a logged-in manager
+  Enable autologin as  Manager
+
+the types control panel
+  Go to  ${PLONE_URL}/@@types-controlpanel
+
+Globaly enabled comments
+  Go to  ${PLONE_URL}/@@discussion-settings
+  Select checkbox  name=form.widgets.globally_enabled:list
+  Click button  Save
+
+
+
+# --- WHEN -------------------------------------------------------------------
+
+I select '${content_type}' in types dropdown
+  Select from list  name=type_id  ${content_type}
+  Wait until page contains  Globally addable
+
+Allow discussion
+  Select checkbox  name=allow_discussion:boolean
+  Click Button  Apply Changes
+
+I select '${workflow}' workflow
+  Select from list  name=new_workflow  ${workflow}
+  Click Button  Apply Changes
+
+I add new Link '${id}'
+  Go to  ${PLONE_URL}
+  Create content  type=Link  id=${id}  title=${id}
+
+
+# --- THEN -------------------------------------------------------------------
+
+Link '${id}' should have comments enabled
+  Go to  ${PLONE_URL}/${id}
+  Page should contain element  xpath=//div[@id="commenting"]
+
+Link '${id}' should have Single State Workflow enabled
+  Go to  ${PLONE_URL}/${id}
+  # We check that single state worklow is used, publish button is not present
+  Page should not contain element  xpath=//a[@id="workflow-transition-publish"]

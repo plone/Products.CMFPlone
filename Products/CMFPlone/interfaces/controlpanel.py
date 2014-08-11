@@ -1,6 +1,7 @@
 from Products.CMFPlone import PloneMessageFactory as _
 from basetool import IPloneBaseTool
 from plone.locking.interfaces import ILockSettings
+from zope.interface import Attribute
 from zope.interface import Interface
 from zope import schema
 
@@ -206,7 +207,6 @@ class ISearchSchema(Interface):
     )
 
 
-# XXX: Why does ISiteSchema inherit from ILockSettings here ???
 class ISiteSchema(ILockSettings):
 
     site_title = schema.TextLine(
@@ -309,3 +309,7 @@ class IMarkupSchema(Interface):
             vocabulary="plone.app.vocabularies.AllowableContentTypes"
         )
     )
+
+class ITypesSchema(Interface):
+    """
+    """
