@@ -1,27 +1,12 @@
 <tal:styles repeat="style view/styles"
-  ><tal:block define="rendering style/rendering;
-                     condcomment style/conditionalcomment"
+  ><tal:block define="condcomment style/conditionalcomment"
     ><tal:wcondcomment tal:condition="condcomment">
         <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />    
     </tal:wcondcomment
-    ><tal:rendering-link condition="python: rendering == 'link'">
-    <link rel="style"
+    ><link rel="style"
           type="text/css"
           tal:attributes="href style/src;
-                          media style/media;
-                          rel style/rel;
-                          title style/title" /></tal:rendering-link
-    ><tal:rendering-import condition="python: rendering == 'import'">
-    <style type="text/css"
-           tal:attributes="media style/media"
-           tal:content="structure string:@import url(${style/src});">
-    </style></tal:rendering-import
-    ><tal:rendering-inline condition="python: rendering == 'inline'">
-    <style type="text/css"
-           tal:attributes="media style/media"
-           tal:content="structure style/content">
-    </style></tal:rendering-inline
-    ><tal:wcondcomment tal:condition="condcomment">
+                          rel style/rel;" /><tal:wcondcomment tal:condition="condcomment">
         <tal:closecc tal:replace="structure string:&lt;![endif]--&gt;" />
     </tal:wcondcomment
   ></tal:block

@@ -43,9 +43,25 @@ class IResourceRegistry(zope.interface.Interface):
         description=_(u"Should be accessible on @@getWCconfig?id=name"),
         required=False)
 
-    bundle = schema.Bool(
-        title=_(u"Is it a bundle?"),
-        description=_(u"In case it is a bundle it's going to be deployed on the js viewlet"),
+    force = schema.Bool(
+        title=_(u"Force to load it at the end"),
+        description=_(u"This if intended to be used with legacy js"),
+        required=False)
+
+
+class IBundleRegistry(zope.interface.Interface):
+
+    jscompilation = schema.ASCIILine(
+        title=_(u"URL of the last js compilation"),
+        required=False)
+
+    csscompilation = schema.ASCIILine(
+        title=_(u"URL of the last css compilation"),
+        required=False)
+
+    last_compilation = schema.Datetime(
+        title=_(u"Last compiled date"),
+        description=_(u"Date time of the last compilation of this bundle"),
         required=False)
 
     expression = schema.ASCIILine(
@@ -63,13 +79,9 @@ class IResourceRegistry(zope.interface.Interface):
         description=_(u"In case you want to render this resource on conditional comment"),
         required=False)
 
-    skin_name = schema.List(
-        title=_(u"Skins where is it rendered"),
-        description=_(u"Empty means all skin name"),
-        value_type=schema.Choice(
-            title=_(u"Choose one skin name"),
-            vocabulary='plone.app.vocabularies.Skins'
-        ),
+    resource = schema.ASCIILine(
+        title=_(u"Main resource"),
+        description=_(u"The resource that is going to be loaded on this bundle"),
         required=False)
 
     enabled = schema.Bool(
@@ -77,4 +89,7 @@ class IResourceRegistry(zope.interface.Interface):
         default=True,
         required=False)
 
-
+    depends = schema.ASCIILine(
+        title=_(u"Depends on another bundle"),
+        description=_(u"In case you want to be the last: *, in case its the first should be empty"),
+        required=False)

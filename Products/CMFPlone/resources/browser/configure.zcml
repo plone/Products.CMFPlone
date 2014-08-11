@@ -5,15 +5,15 @@
     <browser:viewlet  
         name="plone.resourceregistries.scripts" 
         manager="plone.app.layout.viewlets.interfaces.IScripts"
-        class="Products.CMFPlone.patternsregistry.browser.scripts.ScriptsView"
+        class="Products.CMFPlone.resources.browser.scripts.ScriptsView"
         template="scripts.pt"
         permission="zope2.View" 
         />
 
     <browser:viewlet  
         name="plone.resourceregistries.styles" 
-        manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
-        class="Products.CMFPlone.patternsregistry.browser.styles.StylesView"
+        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+        class="Products.CMFPlone.resources.browser.styles.StylesView"
         template="styles.pt"
         permission="zope2.View" 
         />
