@@ -50,9 +50,9 @@
                     No user by that name.
                 </span>
             </div>
-            <div id="content">
+            <article id="content">
                 &nbsp;
-            </div>
+            </article>
         </tal:noAuthor>
 
 
@@ -86,7 +86,7 @@
                 Portal status message
             </div>
 
-            <div id="content">
+            <article id="content">
                 <!-- Author information -->
                 <h1 class="documentFirstHeading" tal:condition="authorinfo/fullname" tal:content="authorinfo/fullname">
                     Author name
@@ -291,7 +291,7 @@
 
                     </tal:authorContent>
                 </div>
-            </div>
+            </article>
 
 
 
