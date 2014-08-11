@@ -44,7 +44,7 @@ class IResourceRegistry(zope.interface.Interface):
         required=False)
 
     force = schema.Bool(
-        title=_(u"Force to load it at the end"),
+        title=_(u"Force to load it at the end without a bundle"),
         description=_(u"This if intended to be used with legacy js"),
         required=False)
 

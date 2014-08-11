@@ -80,7 +80,7 @@
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
     </field>
-    <value>True</value>
+    <value>true</value>
   </record>
   <record name="Products.CMFPlone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
@@ -580,66 +580,72 @@
 
   <!-- legacy js -->
 
-  <records prefix="Products.CMFPlone.resources/plone-javascript-variables.js"
+  <records prefix="Products.CMFPlone.resources/plone-javascript-variables"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">plone-javascript-variables.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/cookie-functions.js"
+  <records prefix="Products.CMFPlone.resources/cookie-functions"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">cookie-functions.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/select-all.js"
+  <records prefix="Products.CMFPlone.resources/select-all"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">select_all.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/dragdropreorder.js"
+  <records prefix="Products.CMFPlone.resources/dragdropreorder"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">dragdropreorder.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/jquery.highlightsearchterms.js"
+  <records prefix="Products.CMFPlone.resources/jquery-highlightsearchterms"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">jquery.highlightsearchterms.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/styleswitcher.js"
+  <records prefix="Products.CMFPlone.resources/styleswitcher"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">styleswitcher.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/collapsibleformfields.js"
+  <records prefix="Products.CMFPlone.resources/collapsibleformfields"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">collapsibleformfields.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/dropdown.js"
+  <records prefix="Products.CMFPlone.resources/dropdown"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">dropdown.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/inline-validation.js"
+  <records prefix="Products.CMFPlone.resources/inline-validation"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">inline_validation.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/collapsibleformfields.js"
+  <records prefix="Products.CMFPlone.resources/collapsibleformfields"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">kss-bbb.js</value>
-      <value key="force">True</value>
+      <value key="force">true</value>
   </records>
 
-  <javascript id="table_sorter.js" authenticated="True" />
-  <javascript id="unlockOnFormUnload.js" authenticated="True" />
+  <records prefix="Products.CMFPlone.resources/table_sorter"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">table_sorter.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/unlockOnFormUnload"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">unlockOnFormUnload.js</value>
+  </records>
 
   <!-- disabled -->
-  <records prefix="Products.CMFPlone.resources/mark_special_links.js"
+  <records prefix="Products.CMFPlone.resources/mark_special_links"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">mark_special_links.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/fullscreenmode.js"
+  <records prefix="Products.CMFPlone.resources/fullscreenmode"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">fullscreenmode.js</value>
   </records>
