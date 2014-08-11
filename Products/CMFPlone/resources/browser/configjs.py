@@ -3,7 +3,11 @@ from Products.PythonScripts.standard import url_quote
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceRegistry
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
+from urlparse import urlparse
 import re
 
 
@@ -23,50 +27,32 @@ class RequireJsView(BrowserView):
         self.registry = getUtility(IRegistry)
         return self.registry.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
 
-        return getToolByName(aq_inner(self.context), 'portal_javascripts')
+    def base_url(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                name=u'plone_portal_state')
+        site_url = portal_state.portal_url()
+        return site_url
 
-    def skinname(self):
-        return aq_inner(self.context).getCurrentSkinName()
+
+
+
+class ConfigJsView(RequireJsView):
+    """ config.js for requirejs for script rendering. """
 
     def get_config(self):
         registry = self.registry()
-        registry_url = registry.absolute_url()
-        base_url = registry_url
-        context = aq_inner(self.context)
-        skinname = url_quote(self.skinname())
 
-        theme = registry.getCurrentSkinName()
-        bundlesForThemes = registry.getBundlesForThemes()
-        bundles = bundlesForThemes.get(theme, ['default'])
-        if theme not in bundlesForThemes or theme not in registry.cookedResourcesByTheme:
-            portal_skins = getToolByName(registry, 'portal_skins')
-            theme = portal_skins.getDefaultSkin()
-
-        results = [r.copy() for r in registry.getResources() \
-                if r.getEnabled() and (not r.getBundle() or r.getBundle() in bundles)]
-
-        scripts = [item for item in results if registry.evaluate(item, context)]
-
-        # skinname = url_quote(self.skinname())
         paths = {}
         shims = {}
         mains = []
         norequire = []
-        for script in scripts:
-            requirejs = script.getComponent()
-            if requirejs is '' and not bool(script.getDev()):
-                norequire.append("%s/%s/%s" % (registry_url, skinname, script.getId()))
-                continue
-
-            inline = bool(script.getInline())
-
-            if not inline and not script.isExternalResource() and requirejs != '':
-                src = re.sub(r"\.js$", "", script.getId())
+        for requirejs, script in registry.items():
+            if script.js:
+                src = re.sub(r"\.js$", "", script.js)
                 paths[requirejs] = src
-                exports = script.getExports()
-                deps = script.getDeps()
-                inits = script.getInit()
-                main = script.getDataMain()
+                exports = script.exports
+                deps = script.deps
+                inits = script.init
                 if exports != '' or deps != '' or inits != '':
                     shims[requirejs] = {}
                     if exports != '':
@@ -75,18 +61,12 @@ class RequireJsView(BrowserView):
                         shims[requirejs]['deps'] = deps.split(',')
                     if inits != '':
                         shims[requirejs]['init'] = script.getInit()
-                if bool(main):
-                    mains.append(script.getId())
 
         shims_str = str(shims).replace('\'deps\'', 'deps').replace('\'exports\'', 'exports').replace('\'init\': \'', 'init: ').replace('}\'}', '}}')
-        return (base_url, str(paths), shims_str, str(mains), str(norequire))
-
-
-class ConfigJsView(RequireJsView):
-    """ config.js for requirejs for script rendering. """
+        return (self.base_url(), str(paths), shims_str)
 
     def __call__(self):
-        (baseUrl, paths, shims, mains, norequire) = self.get_config()
+        (baseUrl, paths, shims) = self.get_config()
         self.request.response.setHeader("Content-Type", "application/javascript")
         return configjs % (baseUrl, paths, shims)
 
@@ -111,8 +91,22 @@ bbbplone = """require([
 class BBBConfigJsView(RequireJsView):
     """ bbbplone.js for non-requirejs code """
 
+    def get_config(self):
+        norequire = []
+        registry = self.registry()
+        for key, script in registry.items():
+            if script.force:
+                url = urlparse(script.js)
+                if url.netloc == '':
+                    # Local
+                    src = "%s/%s" % (self.base_url(), script.js)
+                else:
+                    src = "%s" % (script.js)
+                norequire.append(src)
+                continue
+
     def __call__(self):
-        (baseUrl, paths, shims, mains, norequire) = self.get_config()
+        norequire = self.get_config()
         self.request.response.setHeader("Content-Type", "application/javascript")
         return bbbplone % (norequire)
 
@@ -132,10 +126,19 @@ optimize = """requirejs.optimize({
 """
 
 
-class OptimizeJS(RequireJsView):
+class OptimizeJS(ConfigJsView):
+
+    def get_bundles(self):
+        bundles = self.registry.collectionOfInterface(IBundleRegistry, prefix="Products.CMFPlone.bundles")
+        mains = []
+        for key, bundle in bundles.items():
+            mains.append(key)
+        return mains
+
 
     def optimize(self):
-        (baseUrl, paths, shims, mains, norequire) = self.get_config()
+        (baseUrl, paths, shims) = self.get_config()
+        mains = self.get_bundles()
         return optimize % (baseUrl, paths, shims, mains)
 
 
