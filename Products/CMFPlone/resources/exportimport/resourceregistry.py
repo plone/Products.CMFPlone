@@ -67,13 +67,13 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                     except ValueError:
                         data[key] = str(value)
 
-#            if add:
-#                collection = self.registry.collectionOfInterface(
-#                                 IResourceRegistry,
-#                                 prefix="Products.CMFPlone.resources")
-#                proxy = collection.setdefault(res_id)
-#                if self.resource_type == 'javascript':
-#                    proxy.js = data['url']
-#                if self.resource_type == 'stylesheet':
-#                    proxy.css = [data['url']]
-                #proxy.force = True
+            if add:
+                collection = self.registry.collectionOfInterface(
+                                 IResourceRegistry,
+                                 prefix="Products.CMFPlone.resources")
+                proxy = collection.setdefault(res_id)
+                if self.resource_type == 'javascript':
+                    proxy.js = data['url']
+                if self.resource_type == 'stylesheet':
+                    proxy.css = [data['url']]
+                proxy.force = True
