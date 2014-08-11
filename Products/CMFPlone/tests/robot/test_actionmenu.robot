@@ -92,7 +92,7 @@ an actionsmenu page
     Go to  ${PLONE_URL}/${PAGE_ID}
 
 delete link exists
-     Page Should Contain Element  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
+     Page Should Contain Element  xpath=//a[@id='plone-contentmenu-actions-delete']
 
 delete link should not be visible
      Element Should Not Be Visible  xpath=//div[@class='contentActions']//a[@id='plone-contentmenu-actions-delete']
