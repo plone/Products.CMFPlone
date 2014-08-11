@@ -2,6 +2,8 @@ from Acquisition import aq_inner
 from Products.PythonScripts.standard import url_quote
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
+from plone.registry.interfaces import IRegistry
+
 import re
 
 
@@ -18,6 +20,9 @@ configjs = """requirejs.config({
 
 class RequireJsView(BrowserView):
     def registry(self):
+        self.registry = getUtility(IRegistry)
+        return self.registry.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
+
         return getToolByName(aq_inner(self.context), 'portal_javascripts')
 
     def skinname(self):
