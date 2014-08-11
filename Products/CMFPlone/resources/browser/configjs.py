@@ -50,17 +50,17 @@ class ConfigJsView(RequireJsView):
             if script.js:
                 src = re.sub(r"\.js$", "", script.js)
                 paths[requirejs] = src
-                exports = script.exports
+                exports = script.export
                 deps = script.deps
                 inits = script.init
                 if exports != '' or deps != '' or inits != '':
                     shims[requirejs] = {}
-                    if exports != '':
+                    if exports != '' and exports is not None:
                         shims[requirejs]['exports'] = exports
-                    if deps != '':
+                    if deps != '' and deps is not None:
                         shims[requirejs]['deps'] = deps.split(',')
-                    if inits != '':
-                        shims[requirejs]['init'] = script.getInit()
+                    if inits != '' and inits is not None:
+                        shims[requirejs]['init'] = inits
 
         shims_str = str(shims).replace('\'deps\'', 'deps').replace('\'exports\'', 'exports').replace('\'init\': \'', 'init: ').replace('}\'}', '}}')
         return (self.base_url(), str(paths), shims_str)

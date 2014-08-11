@@ -33,11 +33,18 @@ class ScriptsView(ResourceView):
         if self.development():
             # We need to add require.js and config.js
             result.append({
-                'src':self.registry.records['Products.CMFPlone.resources.requirejs'].value,
+                'src':'%s/%s' % (
+                    self.portal_url, 
+                    self.registry.records['Products.CMFPlone.resources.requirejs'].value)
+                ,
+
                 'conditionalcomment': None
             })
             result.append({
-                'src':self.registry.records['Products.CMFPlone.resources.configjs'].value,
+                'src':'%s/%s' % (
+                    self.portal_url, 
+                    self.registry.records['Products.CMFPlone.resources.configjs'].value)
+                ,
                 'conditionalcomment': None
             })
         result.extend(self.ordered_result())
