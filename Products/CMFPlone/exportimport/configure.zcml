@@ -14,23 +14,27 @@
     <depends name="typeinfo"/>
   </genericsetup:importStep>
 
-<!--   <genericsetup:importStep
+  <genericsetup:importStep
       name="cssregistry"
       title="Stylesheet registry"
       description="Import stylesheet registry"
-      handler="Products.CMFPlone.patternsregistry.exportimport.cssregistry.importCSSRegistry">
+      handler="Products.CMFPlone.resources.exportimport.cssregistry.importCSSRegistry">
     <depends name="skins"/>
     <depends name="componentregistry"/>
+    <depends name="plone.app.registry"/>
+    <depends name="toolset"/>
   </genericsetup:importStep>
 
   <genericsetup:importStep
       name="jsregistry"
       title="Javascript registry"
       description="Import javascript registry"
-      handler="Products.CMFPlone.patternsregistry..exportimport.jsregistry.importJSRegistry">
+      handler="Products.CMFPlone.resources.exportimport.jsregistry.importJSRegistry">
     <depends name="skins"/>
     <depends name="componentregistry"/>
-  </genericsetup:importStep> -->
+    <depends name="plone.app.registry"/>
+    <depends name="toolset"/>
+  </genericsetup:importStep>
 
   <genericsetup:importStep
       name="viewlets"
@@ -108,20 +112,6 @@
       description="Export Plone control panel actions."
       handler="Products.CMFPlone.exportimport.controlpanel.exportControlPanel"
       />
-
-<!--   <genericsetup:exportStep
-      name="cssregistry"
-      title="Stylesheet registry"
-      description="Export stylesheet registry"
-      handler="Products.CMFPlone.patternsregistry.exportimport.cssregistry.exportCSSRegistry"
-      />
-
-  <genericsetup:exportStep
-      name="jsregistry"
-      title="Javascript registry"
-      description="Export javascript registry"
-      handler="Products.CMFPlone.patternsregistry.exportimport.jsregistry.exportJSRegistry"
-      /> -->
 
   <genericsetup:exportStep
       name="memberdata-properties"
