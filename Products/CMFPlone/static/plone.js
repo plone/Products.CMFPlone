@@ -32,7 +32,6 @@ require([
   'mockup-patterns-querystring',
   'mockup-patterns-tinymce',
   'plone-patterns-toolbar',
-
   'mockup-patterns-accessibility',
   'mockup-patterns-autotoc',
   'mockup-patterns-formunloadalert',

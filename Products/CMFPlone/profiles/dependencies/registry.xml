@@ -414,6 +414,9 @@
   <records prefix="Products.CMFPlone.resources/tinymce-visualblocks"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/visualblocks/plugin.js</value>
+      <value key="css">
+        <element>++plone++static/components/tinymce/plugins/visualblocks/css/visualblocks.css</element>
+      </value>
   </records>
   <records prefix="Products.CMFPlone.resources/tinymce-visualchars"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
@@ -453,6 +456,14 @@
 
 
  <!-- Patterns -->
+
+  <records prefix="Products.CMFPlone.resources/plone-patterns-toolbar"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/patterns/toolbar/src/toolbar.js</value>
+      <value key="css">
+        <element>++plone++static/patterns/toolbar/src/css/toolbar.plone.less</element>
+      </value>
+  </records>
 
   <records prefix="Products.CMFPlone.resources/mockup-patterns-select2"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
@@ -537,6 +548,9 @@
   <records prefix="Products.CMFPlone.resources/mockup-patterns-structure"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/structure/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/structure/less/pattern.structure.less</element>
+      </value>
   </records>
 
   <records prefix="Products.CMFPlone.resources/mockup-patterns-upload-url"
@@ -547,6 +561,9 @@
   <records prefix="Products.CMFPlone.resources/mockup-patterns-upload"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/upload/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/upload/less/pattern.upload.less</element>
+      </value>
   </records>
 
   <records prefix="Products.CMFPlone.resources/mockup-patterns-tablesorter"
@@ -562,6 +579,9 @@
   <records prefix="Products.CMFPlone.resources/mockup-patterns-tinymce"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tinymce/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/tinymce/less/pattern.tinymce.less</element>
+      </value>
   </records>
 
   <records prefix="Products.CMFPlone.resources/mockup-patterns-toggle"
@@ -572,11 +592,17 @@
   <records prefix="Products.CMFPlone.resources/mockup-patterns-tooltip"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tooltip/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/tooltip/pattern.tooltip.less</element>
+      </value>
   </records>
 
   <records prefix="Products.CMFPlone.resources/mockup-patterns-tree"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tree/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/tree/pattern.tree.less</element>
+      </value>
   </records>
 
   <records prefix="Products.CMFPlone.resources/mockup-ui-url"
