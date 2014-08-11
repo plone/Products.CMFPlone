@@ -1,7 +1,7 @@
 from Products.ResourceRegistries.interfaces import ICSSRegistry
 
 from resourceregistry import ResourceRegistryNodeAdapter, \
-     importResRegistry, exportResRegistry
+     importResRegistry
 
 _FILENAME = 'cssregistry.xml'
 _REG_ID = 'portal_css'
@@ -12,12 +12,6 @@ def importCSSRegistry(context):
     Import CSS registry.
     """
     return importResRegistry(context, _REG_ID, _REG_TITLE, _FILENAME)
-
-def exportCSSRegistry(context):
-    """
-    Export CSS registry.
-    """
-    return exportResRegistry(context, _REG_ID, _REG_TITLE, _FILENAME)
 
 
 class CSSRegistryNodeAdapter(ResourceRegistryNodeAdapter):
