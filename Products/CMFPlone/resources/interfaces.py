@@ -6,6 +6,43 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 OVERRIDE_RESOURCE_DIRECTORY_NAME = 'resource_overrides'
 
+class IManualResource(zope.interface.Interface):
+
+    expression = schema.ASCIILine(
+        title=_(u"Expression to render"),
+        description=_(u"In case its a bundle we can have a condition to render it"),
+        default='',
+        required=False)
+
+    cooked_expression = schema.ASCIILine(
+        title=_(u"Coocked expression to render"),
+        description=_(u"Filled automatic"),
+        default='',
+        required=False)
+
+    conditionalcomment = schema.ASCIILine(
+        title=_(u"Conditional comment"),
+        description=_(u"In case you want to render this resource on conditional comment"),
+        required=False)
+
+    enabled = schema.Bool(
+        title=_(u"It's enabled?"),
+        default=True,
+        required=False)
+
+
+class ICSSManualResource(IManualResource):
+
+    url = schema.ASCIILine(
+        title=_(u"Main css file"),
+        required=False)
+
+
+class IJSManualResource(IManualResource):
+
+    url = schema.ASCIILine(
+        title=_(u"Main js file"),
+        required=False)
 
 class IResourceRegistry(zope.interface.Interface):
 
@@ -21,11 +58,6 @@ class IResourceRegistry(zope.interface.Interface):
         title=_(u"CSS/LESS files"),
         value_type=schema.ASCIILine(title=_(u"URL")),
         default=[],
-        required=False)
-
-    css_deps = schema.ASCIILine(
-        title=_(u"CSS dependencies"),
-        description=_(u"Coma separated values of resources to load their CSS before this one"),
         required=False)
 
     init = schema.ASCIILine(
@@ -45,12 +77,6 @@ class IResourceRegistry(zope.interface.Interface):
         title=_(u"Configuration in JSON for the widget"),
         description=_(u"Should be accessible on @@getWCconfig?id=name"),
         required=False)
-
-    force = schema.Bool(
-        title=_(u"Force to load it at the end without a bundle"),
-        description=_(u"This if intended to be used with legacy js"),
-        required=False)
-
 
 class IBundleRegistry(zope.interface.Interface):
 

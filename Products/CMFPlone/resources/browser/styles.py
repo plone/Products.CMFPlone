@@ -5,6 +5,7 @@ from Products.CMFPlone.resources.browser.resource import ResourceView
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.interfaces import IResourceRegistry
+from Products.CMFPlone.resources.interfaces import IJSManualResource, ICSSManualResource
 from urlparse import urlparse
 
 from Products.CMFCore.Expression import Expression
@@ -16,6 +17,9 @@ from Products.CMFCore.Expression import createExprContext
 class StylesView(ResourceView):
     """ Information for style rendering. """
 
+    def get_manual_resources(self):
+        return self.registry.collectionOfInterface(ICSSManualResource, prefix="Products.CMFPlone.manualcss")
+
     def get_urls(self, style, bundle):
         for css in style.css:
             url = urlparse(css)
@@ -26,30 +30,61 @@ class StylesView(ResourceView):
                 src = "%s" % (css)
 
             extension = url.path.split('.')[-1]
+            rel = 'stylesheet'
             if extension != '' and extension != 'css':
-                src = "%s/@@compile_%s?url=%s" % (self.portal_url, extension, url_quote(src))
+                rel = "stylesheet/%s" % extension
 
-            data = {'rel': 'stylesheet',
-                    'conditionalcomment' : bundle.conditionalcomment,
+            data = {'rel': rel,
+                    'conditionalcomment' : bundle.conditionalcomment if bundle else '',
                     'src': src}
             yield data
 
-    def get_css_deps(self, style, result, bundle):
-        if style.css_deps:
-            self.get_css_deps(style, result, bundle)
+    def get_data(self, bundle, result):
+        """ 
+        Gets the needed information for the bundle
+        and stores it on the result list
+        """
+        self.resources = self.get_resources()
+        # The bundle resources
+        if bundle.resource in self.resources:        
+            style = self.resources[bundle.resource]
             for data in self.get_urls(style, bundle):
                 result.append(data)
-        else:
-            for data in self.get_urls(style, bundle):
-                result.append(data)            
-
-    def get_data(self, bundle, result):
-        resources = self.get_resources()
-        if bundle.resource in resources:        
-            style = resources[bundle.resource]
-            self.get_css_deps(style, result, bundle)
+        # The forced resources
 
     def styles(self):
-        self.inserted_css = []
-        return self.ordered_result()
+        """
+        Get all the styles
+        """
+        # result = []
+        result =  self.ordered_result()
+
+        # Manual code
+        for key, resource in self.get_manual_resources().items():
+            if resource.enabled:
+                if resource.expression:
+                        if resource.cooked_expression:
+                            expr = Expression(resource.expression)
+                            resource.cooked_expression = expr
+                        if self.evaluateExpression(resource.cooked_expression, context):
+                            continue
+                url = urlparse(resource.url)
+                if url.netloc == '':
+                    # Local
+                    src = "%s/%s" % (self.portal_url, resource.url)
+                else:
+                    src = "%s" % (resource.url)
+
+                extension = url.path.split('.')[-1]
+                rel = 'stylesheet'
+                if extension != '' and extension != 'css':
+                    rel = "stylesheet/%s" % extension
+
+                data = {'rel': rel,
+                        'conditionalcomment' : resource.conditionalcomment if bundle else '',
+                        'src': src}
+                result.append(data)
+
+        return result
+
 

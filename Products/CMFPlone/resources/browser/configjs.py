@@ -3,7 +3,7 @@ from Products.PythonScripts.standard import url_quote
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceRegistry
+from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceRegistry, IJSManualResource
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
@@ -24,8 +24,8 @@ configjs = """requirejs.config({
 
 class RequireJsView(BrowserView):
     def registry(self):
-        self.registry = getUtility(IRegistry)
-        return self.registry.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
+        registryUtility = getUtility(IRegistry)
+        return registryUtility.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
 
     def base_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
@@ -73,7 +73,7 @@ class ConfigJsView(RequireJsView):
 
 bbbplone = """require([
   'jquery',
-  'bundle-plone'
+  'plone'
 ], function($, Plone) {
   'use strict';
 
@@ -91,19 +91,29 @@ bbbplone = """require([
 class BBBConfigJsView(RequireJsView):
     """ bbbplone.js for non-requirejs code """
 
+    def get_bbb_scripts(self):
+        registryUtility = getUtility(IRegistry)
+        return registryUtility.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.manualjs")
+
     def get_config(self):
         norequire = []
-        registry = self.registry()
-        for key, script in registry.items():
-            if script.force:
-                url = urlparse(script.js)
+        for key, script in self.get_bbb_scripts().items():
+            if script.enabled:
+                if script.expression:
+                        if script.cooked_expression:
+                            expr = Expression(script.expression)
+                            script.cooked_expression = expr
+                        if self.evaluateExpression(script.cooked_expression, context):
+                            continue
+                url = urlparse(script.url)
                 if url.netloc == '':
                     # Local
-                    src = "%s/%s" % (self.base_url(), script.js)
+                    src = "%s/%s" % (self.base_url(), script.url)
                 else:
-                    src = "%s" % (script.js)
+                    src = "%s" % (script.url)
+
                 norequire.append(src)
-                continue
+        return norequire
 
     def __call__(self):
         norequire = self.get_config()

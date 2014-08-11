@@ -88,25 +88,25 @@ class ResourceView(ViewletBase):
                 self.get_data(bundle, result)
                 inserted.append(key)
             else: 
-                for dependency in bundle.depends:
-                    name = dependency.strip()
-                    if name in depends_on:
-                        depends_on[name].append(bundle)
-                    else:
-                        depends_on[name] = [bundle]
+                name = bundle.depends.strip()
+                if name in depends_on:
+                    depends_on[name].append(bundle)
+                else:
+                    depends_on[name] = [bundle]
 
         while len(depends_on)>0:
             found = False
-            for already_inserted in inserted:
-                if already_inserted in depends_on:
+            for key, bundles_to_add in depends_on.items():
+                if key in inserted:
                     found = True
-                    for bundle in depends_on[already_inserted]:
+                    for bundle in bundles_to_add:
                         self.get_data(bundle, result)
                         inserted.append(key)
-                    del depends_on[already_inserted]
+                    del depends_on[key]
             if not found:
                 continue
 
+        # THe ones that does not get the dependencies
         for bundle in depends_on.values():
             self.get_data(bundle, result)
 

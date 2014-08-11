@@ -18,21 +18,6 @@
         permission="zope2.View" 
         />
 
-    <browser:page
-        for="*"
-        name="resourceregistries_scripts_view"
-        class=".scripts.ScriptsView"
-        permission="zope.Public"
-        allowed_interface=".interfaces.IScriptsView"
-        />
-
-    <browser:page
-        for="*"
-        name="resourceregistries_styles_view"
-        class=".styles.StylesView"
-        permission="zope.Public"
-        allowed_interface=".interfaces.IStylesView"
-        />
 
     <browser:page
         for="*"

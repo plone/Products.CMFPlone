@@ -35,6 +35,14 @@ class ScriptsView(ResourceView):
             result.append({
                 'src':'%s/%s' % (
                     self.portal_url, 
+                    self.registry.records['Products.CMFPlone.resources.lessc'].value)
+                ,
+
+                'conditionalcomment': None
+            })
+            result.append({
+                'src':'%s/%s' % (
+                    self.portal_url, 
                     self.registry.records['Products.CMFPlone.resources.requirejs'].value)
                 ,
 
