@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div id="content">
+        <article id="content">
 
             <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
                 <span tal:replace="name" i18n:name="user_name" />&#8217;s dashboard
@@ -58,7 +58,7 @@
                 </div>
                 <div class="visualClear"><!-- --></div>
             </div>
-        </div>
+        </article>
 
     </tal:main-macro>
 </metal:main>

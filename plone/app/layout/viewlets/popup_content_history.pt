@@ -6,10 +6,10 @@
       i18n:domain="plone">
 
 <body>
-    <div id="content">
+    <article id="content">
         <h3 i18n:translate="label_history">History</h3>
 
         <div id="content-history" tal:content="structure here/@@contenthistory">Content History</div>
-    </div>
+    </article>
 </body>
 </html>
