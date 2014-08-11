@@ -59,4 +59,12 @@
     permission="plone.app.controlpanel.Types"
     />
 
+  <browser:page
+    name="resourceregistry-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".resourceregistry.ResourceRegistryControlPanelView"
+    permission="plone.app.controlpanel.Site"
+    template="resourceregistry.pt"
+    />
+
 </configure>
