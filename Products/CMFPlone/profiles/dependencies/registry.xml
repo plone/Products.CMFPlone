@@ -94,11 +94,11 @@
     </field>
     <value>config.js</value>
   </record>
-  <records prefix="Products.CMFPlone.resources/mockup_registry"
+  <records prefix="Products.CMFPlone.resources/mockup-registry"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/mockup_pattern_base"
+  <records prefix="Products.CMFPlone.resources/mockup-pattern-base"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/pattern.js</value>
   </records>
@@ -129,32 +129,32 @@
       <value key="deps">backbone</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/bootstrap_alert"
+  <records prefix="Products.CMFPlone.resources/bootstrap-alert"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/bootstrap/js/alert.js</value>
       <value key="deps">jquery</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/bootstrap_dropdown"
+  <records prefix="Products.CMFPlone.resources/bootstrap-dropdown"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/bootstrap/js/dropdown.js</value>
       <value key="deps">jquery</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/bootstrap_collapse"
+  <records prefix="Products.CMFPlone.resources/bootstrap-collapse"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/bootstrap/js/collapse.js</value>
       <value key="deps">jquery</value>
       <value key="export">window.jQuery.fn.collapse.Constructor</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/bootstrap_tooltip"
+  <records prefix="Products.CMFPlone.resources/bootstrap-tooltip"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/bootstrap/js/tooltip.js</value>
       <value key="deps">jquery</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/bootstrap_transition"
+  <records prefix="Products.CMFPlone.resources/bootstrap-transition"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/bootstrap/js/transition.js</value>
       <value key="deps">jquery</value>
@@ -255,169 +255,169 @@
       <value key="export">$.drop</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/tinymce_advlist"
+  <records prefix="Products.CMFPlone.resources/tinymce-advlist"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/advlist/plugin.js</value>
   </records>
 
 
-  <records prefix="Products.CMFPlone.resources/tinymce_anchor"
+  <records prefix="Products.CMFPlone.resources/tinymce-anchor"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/anchor/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_autolink"
+  <records prefix="Products.CMFPlone.resources/tinymce-autolink"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/autolink/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_autoresize"
+  <records prefix="Products.CMFPlone.resources/tinymce-autoresize"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/autoresize/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_autosave"
+  <records prefix="Products.CMFPlone.resources/tinymce-autosave"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/autosave/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_bbcode"
+  <records prefix="Products.CMFPlone.resources/tinymce-bbcode"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/bbcode/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_charmap"
+  <records prefix="Products.CMFPlone.resources/tinymce-charmap"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/charmap/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_code"
+  <records prefix="Products.CMFPlone.resources/tinymce-code"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/code/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_colorpicker"
+  <records prefix="Products.CMFPlone.resources/tinymce-colorpicker"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/colorpicker/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_contextmenu"
+  <records prefix="Products.CMFPlone.resources/tinymce-contextmenu"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/contextmenu/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_directionality"
+  <records prefix="Products.CMFPlone.resources/tinymce-directionality"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/directionality/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_emoticons"
+  <records prefix="Products.CMFPlone.resources/tinymce-emoticons"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/emoticons/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_fullpage"
+  <records prefix="Products.CMFPlone.resources/tinymce-fullpage"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/fullpage/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_fullscreen"
+  <records prefix="Products.CMFPlone.resources/tinymce-fullscreen"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/fullscreen/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_hr"
+  <records prefix="Products.CMFPlone.resources/tinymce-hr"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/hr/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_image"
+  <records prefix="Products.CMFPlone.resources/tinymce-image"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/image/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_importcss"
+  <records prefix="Products.CMFPlone.resources/tinymce-importcss"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/importcss/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_insertdatetime"
+  <records prefix="Products.CMFPlone.resources/tinymce-insertdatetime"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/insertdatetime/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_layer"
+  <records prefix="Products.CMFPlone.resources/tinymce-layer"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/layer/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_legacyoutput"
+  <records prefix="Products.CMFPlone.resources/tinymce-legacyoutput"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/legacyoutput/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_link"
+  <records prefix="Products.CMFPlone.resources/tinymce-link"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/link/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_lists"
+  <records prefix="Products.CMFPlone.resources/tinymce-lists"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/lists/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_media"
+  <records prefix="Products.CMFPlone.resources/tinymce-media"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/media/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_nonbreaking"
+  <records prefix="Products.CMFPlone.resources/tinymce-nonbreaking"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/nonbreaking/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_noneditable"
+  <records prefix="Products.CMFPlone.resources/tinymce-noneditable"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/noneditable/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_pagebreak"
+  <records prefix="Products.CMFPlone.resources/tinymce-pagebreak"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/pagebreak/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_paste"
+  <records prefix="Products.CMFPlone.resources/tinymce-paste"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/paste/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_preview"
+  <records prefix="Products.CMFPlone.resources/tinymce-preview"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/preview/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_print"
+  <records prefix="Products.CMFPlone.resources/tinymce-print"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/print/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_save"
+  <records prefix="Products.CMFPlone.resources/tinymce-save"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/save/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_searchreplace"
+  <records prefix="Products.CMFPlone.resources/tinymce-searchreplace"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/searchreplace/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_spellchecker"
+  <records prefix="Products.CMFPlone.resources/tinymce-spellchecker"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/spellchecker/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_tabfocus"
+  <records prefix="Products.CMFPlone.resources/tinymce-tabfocus"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/tabfocus/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_table"
+  <records prefix="Products.CMFPlone.resources/tinymce-table"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/table/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_template"
+  <records prefix="Products.CMFPlone.resources/tinymce-template"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/template/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_textcolor"
+  <records prefix="Products.CMFPlone.resources/tinymce-textcolor"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/textcolor/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_textpattern"
+  <records prefix="Products.CMFPlone.resources/tinymce-textpattern"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/textpattern/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_visualblocks"
+  <records prefix="Products.CMFPlone.resources/tinymce-visualblocks"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/visualblocks/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_visualchars"
+  <records prefix="Products.CMFPlone.resources/tinymce-visualchars"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/visualchars/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_wordcount"
+  <records prefix="Products.CMFPlone.resources/tinymce-wordcount"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/wordcount/plugin.js</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/tinymce_modern_theme"
+  <records prefix="Products.CMFPlone.resources/tinymce-modern-theme"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/themes/modern/theme.js</value>
   </records>
@@ -430,17 +430,17 @@
       <value key="init">function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_router"
+  <records prefix="Products.CMFPlone.resources/mockup-router"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockupjs/router.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_utils"
+  <records prefix="Products.CMFPlone.resources/mockup-utils"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockupjs/utils.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_i18n"
+  <records prefix="Products.CMFPlone.resources/mockup-i18n"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockupjs/i18n.js</value>
   </records>
@@ -448,149 +448,149 @@
 
  <!-- Patterns -->
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_select2"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-select2"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/select2/patterns.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_accessibility"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-accessibility"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/accessibility/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_autotoc"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-autotoc"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/autotoc/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_backdrop"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-backdrop"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/backdrop/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_sortable"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-sortable"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/sortable/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_dropzone"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-dropzone"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/dropzone/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_formautofocus"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-formautofocus"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/formautofocus/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_formunloadalert"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-formunloadalert"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/formunloadalert/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_modal"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-modal"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/modal/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_moment"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-moment"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/moment/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_pickadate"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-pickadate"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/pickadate/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_preventdoublesubmit"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-preventdoublesubmit"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/preventdoublesubmit/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_querystring"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-querystring"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/querystring/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_relateditems"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-relateditems"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/relateditems/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_select2"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-select2"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/select2/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_structure_url"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-structure-url"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/structure</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_structure"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-structure"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/structure/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_upload_url"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-upload-url"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/upload</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_upload"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-upload"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/upload/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_tablesorter"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-tablesorter"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tablesorter/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_tinymce_url"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-tinymce-url"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tinymce</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_tinymce"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-tinymce"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tinymce/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_toggle"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-toggle"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/toggle/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_tooltip"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-tooltip"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tooltip/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_patterns_tree"
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-tree"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tree/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup_ui_url"
+  <records prefix="Products.CMFPlone.resources/mockup-ui-url"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockupjs/ui</value>
   </records>
 
   <!-- legacy js -->
 
-  <records prefix="Products.CMFPlone.resources/plone_javascript_variables.js"
+  <records prefix="Products.CMFPlone.resources/plone-javascript-variables.js"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">plone_javascript_variables.js</value>
+      <value key="js">plone-javascript-variables.js</value>
       <value key="force">True</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/cookie_functions.js"
+  <records prefix="Products.CMFPlone.resources/cookie-functions.js"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">cookie_functions.js</value>
+      <value key="js">cookie-functions.js</value>
       <value key="force">True</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/select_all.js"
+  <records prefix="Products.CMFPlone.resources/select-all.js"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">select_all.js</value>
       <value key="force">True</value>
@@ -620,7 +620,7 @@
       <value key="js">dropdown.js</value>
       <value key="force">True</value>
   </records>
-  <records prefix="Products.CMFPlone.resources/inline_validation.js"
+  <records prefix="Products.CMFPlone.resources/inline-validation.js"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">inline_validation.js</value>
       <value key="force">True</value>
