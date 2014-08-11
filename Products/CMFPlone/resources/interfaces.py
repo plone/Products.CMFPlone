@@ -4,6 +4,9 @@ from zope import schema
 
 from Products.CMFPlone import PloneMessageFactory as _
 
+OVERRIDE_RESOURCE_DIRECTORY_NAME = 'resource_overrides'
+
+
 class IResourceRegistry(zope.interface.Interface):
 
     url = schema.ASCIILine(

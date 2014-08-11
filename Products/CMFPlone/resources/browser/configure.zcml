@@ -74,6 +74,6 @@
         name="compile_less"
         class=".compile_less.CompileLess"
         permission="zope.Public"
-        />        
+        />
 
 </configure>

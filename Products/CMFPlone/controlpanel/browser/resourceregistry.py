@@ -5,6 +5,11 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.interfaces import (
     IBundleRegistry, IResourceRegistry
 )
+from plone.resource.interfaces import IResourceDirectory
+from Products.CMFPlone.resources.interfaces import (
+    OVERRIDE_RESOURCE_DIRECTORY_NAME)
+from StringIO import StringIO
+from zExceptions import NotFound
 
 
 def recordsToDict(record):
@@ -28,11 +33,7 @@ def updateRecordFromDict(record, data):
                         item = item.encode('utf-8')
                     newval.append(item)
                 val = newval
-            try:
-                setattr(record, name, val)
-            except Exception, ex:
-                import pdb; pdb.set_trace()
-                raise
+            setattr(record, name, val)
 
 
 class ResourceRegistryControlPanelView(BrowserView):
@@ -87,10 +88,51 @@ class ResourceRegistryControlPanelView(BrowserView):
         })
 
     def save_file(self):
-        pass
+        req = self.request
+        resource_path = req.form.get('filepath').split('++plone++')[-1]
+        resource_name, resource_filepath = resource_path.split('/', 1)
+
+        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        if resource_name not in container:
+            container.makeDirectory(resource_name)
+        folder = container[resource_name]
+        fi = StringIO(req.form['data'])
+        folder.writeFile(resource_filepath, fi)
+        return json.dumps({
+            'success': True
+        })
+
+    def get_parent(self, item):
+        path = '/'.join(item.getPhysicalPath()[:-1])
+        return self.context.restrictedTraverse(path)
+
+    def list_dir(self, container):
+        if hasattr(container, 'listDirectory'):
+            return container.listDirectory()
+        else:
+            return container.objectIds()
 
     def delete_file(self):
-        pass
+        req = self.request
+        resource_path = req.form.get('filepath').split('++plone++')[-1]
+        resource_name, resource_filepath = resource_path.split('/', 1)
+
+        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        if resource_name not in container:
+            return
+        folder = container[resource_name]
+        try:
+            fi = folder[resource_filepath]
+        except NotFound:
+            return
+        parent = self.get_parent(fi)
+        del parent[fi.getId()]
 
     def build(self):
         pass
