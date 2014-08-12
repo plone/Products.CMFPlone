@@ -23,7 +23,6 @@ configjs = """requirejs.config({
 
 
 class RequireJsView(BrowserView):
-<<<<<<< HEAD
 
     @property
     def registry(self):
@@ -31,11 +30,6 @@ class RequireJsView(BrowserView):
 
     def registryResources(self):
         return self.registry.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
-=======
-    def registry(self):
-        registryUtility = getUtility(IRegistry)
-        return registryUtility.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
->>>>>>> 7695eaa99df0500e1cb585c2526aab5fd7b6c15b
 
     def base_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
@@ -43,23 +37,11 @@ class RequireJsView(BrowserView):
         site_url = portal_state.portal_url()
         return site_url
 
-<<<<<<< HEAD
     def get_requirejs_config(self):
         """
         Returns the information for requirejs configuration
         """
         registry = self.registryResources()
-=======
-
-
-
-class ConfigJsView(RequireJsView):
-    """ config.js for requirejs for script rendering. """
-
-    def get_config(self):
-        registry = self.registry()
->>>>>>> 7695eaa99df0500e1cb585c2526aab5fd7b6c15b
-
         paths = {}
         shims = {}
         mains = []
@@ -83,16 +65,11 @@ class ConfigJsView(RequireJsView):
         shims_str = str(shims).replace('\'deps\'', 'deps').replace('\'exports\'', 'exports').replace('\'init\': \'', 'init: ').replace('}\'}', '}}')
         return (self.base_url(), str(paths), shims_str)
 
-<<<<<<< HEAD
 class ConfigJsView(RequireJsView):
     """ config.js for requirejs for script rendering. """
 
     def __call__(self):
         (baseUrl, paths, shims) = self.get_requirejs_config()
-=======
-    def __call__(self):
-        (baseUrl, paths, shims) = self.get_config()
->>>>>>> 7695eaa99df0500e1cb585c2526aab5fd7b6c15b
         self.request.response.setHeader("Content-Type", "application/javascript")
         return configjs % (baseUrl, paths, shims)
 
@@ -123,19 +100,10 @@ class BBBConfigJsView(RequireJsView):
     """ bbbplone.js for non-requirejs code """
 
     def get_bbb_scripts(self):
-<<<<<<< HEAD
         return self.registry.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.manualjs")
 
     def get_bbb_order(self):
         return self.registry.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.jslist")
-=======
-        registryUtility = getUtility(IRegistry)
-        return registryUtility.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.manualjs")
-
-    def get_bbb_order(self):
-        registryUtility = getUtility(IRegistry)
-        return registryUtility.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.jslist")
->>>>>>> 7695eaa99df0500e1cb585c2526aab5fd7b6c15b
 
     def get_data(self, script):
         """
@@ -159,14 +127,8 @@ class BBBConfigJsView(RequireJsView):
 
     def get_config(self):
         norequire = []
-<<<<<<< HEAD
         # Load the ordered list of js
         list_of_js = self.registry.records['Products.CMFPlone.jslist']
-=======
-        registryUtility = getUtility(IRegistry)
-        # Load the ordered list of js
-        list_of_js = registryUtility.records['Products.CMFPlone.jslist']
->>>>>>> 7695eaa99df0500e1cb585c2526aab5fd7b6c15b
         scripts = self.get_bbb_scripts()
         loaded = []
         for script_id in list_of_js.value:
@@ -190,46 +152,4 @@ class BBBConfigJsView(RequireJsView):
         return bbbplone % (norequire)
 
 
-<<<<<<< HEAD
 
-=======
-optimize = """requirejs.optimize({
-    baseUrl: '%s',
-    paths: %s,
-    shims: %s,
-    optimize: "none",
-    include: %s,
-    out: function (text) {
-        document.getElementById('output').value = text;
-    }
-}, function (buildText) {
-    document.getElementById('buildMessages').value = buildText;
-});
-"""
-
-
-class OptimizeJS(ConfigJsView):
-
-    def get_bundles(self):
-        bundles = self.registry.collectionOfInterface(IBundleRegistry, prefix="Products.CMFPlone.bundles")
-        mains = []
-        for key, bundle in bundles.items():
-            mains.append(key)
-        return mains
-
-
-    def optimize(self):
-        (baseUrl, paths, shims) = self.get_config()
-        mains = self.get_bundles()
-        return optimize % (baseUrl, paths, shims, mains)
-
-
-class SaveOpimalJS(BrowserView):
-
-    def __call__(self):
-        # We need to check auth, valid js
-        # TODO
-        if self.request.get('text', None):
-            # Save the file on the resource directory .. registry ...
-            pass
->>>>>>> 7695eaa99df0500e1cb585c2526aab5fd7b6c15b
