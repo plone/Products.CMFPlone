@@ -357,6 +357,12 @@
       <value key="export">$.drop</value>
   </records>
 
+  <records prefix="Products.CMFPlone.resources/jquery-migrate"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery-migrate.min.js</value>
+      <value key="deps">jquery</value>
+  </records>
+
   <records prefix="Products.CMFPlone.resources/tinymce-advlist"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/tinymce/plugins/advlist/plugin.js</value>

@@ -23,6 +23,7 @@
 
 require([
   'jquery',
+  'jquery-migrate',
   'mockup-registry',
   'mockup-patterns-base',
 
