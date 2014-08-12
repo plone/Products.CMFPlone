@@ -36,7 +36,7 @@
 
     <div tal:replace="structure provider:plone.scripts" />
     <metal:javascriptslot define-slot="javascript_head_slot" />
-    
+
     <meta name="generator" content="Plone - http://plone.org" />
 
   </head>
@@ -54,7 +54,7 @@
       <div id="edit-zone" role="toolbar" class="plone-toolbar-left">
         <div class="plone-toolbar-container">
           <a class="plone-toolbar-logo">
-            <img alt="Plone Toolbar" src="++resource++plone-toolbarlogo.svg" />
+            <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
           </a>
           <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
           <nav role="navigation">
