@@ -12,6 +12,7 @@ from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.CMFPlone.CatalogTool import is_folderish
 from Products.CMFPlone.tests import dummy
 from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from Products.CMFPlone.tests.utils import folder_position
 from zope.event import notify
 from zope.interface import alsoProvides
 from zope.lifecycleevent import ObjectCreatedEvent
@@ -657,7 +658,7 @@ class TestCatalogOrdering(PloneTestCase):
     def testOrderIsUnchangedOnDefaultFolderPosition(self):
         # Calling the folder_position script with no arguments should
         # give no complaints and have no effect.
-        self.folder.folder_position()
+        folder_position(self.folder)
         folder_docs = self.catalog(
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
@@ -666,7 +667,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveDown(self):
-        self.folder.folder_position('down', 'doc1')
+        folder_position(self.folder, 'down', 'doc1')
         folder_docs = self.catalog(
             portal_type='Document',
             path='/'.join(self.folder.getPhysicalPath()),
@@ -676,7 +677,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveUp(self):
-        self.folder.folder_position('up', 'doc3')
+        folder_position(self.folder, 'up', 'doc3')
         folder_docs = self.catalog(
             portal_type='Document',
             path='/'.join(self.folder.getPhysicalPath()),
@@ -686,7 +687,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveTop(self):
-        self.folder.folder_position('top', 'doc3')
+        folder_position(self.folder, 'top', 'doc3')
         folder_docs = self.catalog(
             portal_type='Document',
             path='/'.join(self.folder.getPhysicalPath()),
@@ -696,7 +697,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnMoveBottom(self):
-        self.folder.folder_position('bottom', 'doc3')
+        folder_position(self.folder, 'bottom', 'doc3')
         folder_docs = self.catalog(
             portal_type='Document',
             path='/'.join(self.folder.getPhysicalPath()),
@@ -706,7 +707,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnSort(self):
-        self.folder.folder_position(id='Title')
+        folder_position(self.folder, id='Title')
         folder_docs = self.catalog(
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
@@ -715,7 +716,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnReverse(self):
-        self.folder.folder_position(id='Title', reverse=True)
+        folder_position(self.folder, id='Title', reverse=True)
         folder_docs = self.catalog(
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
@@ -724,7 +725,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnSimpleReverse(self):
-        self.folder.folder_position(reverse=True)
+        folder_position(self.folder, reverse=True)
         folder_docs = self.catalog(
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
@@ -773,11 +774,11 @@ class TestCatalogOrdering(PloneTestCase):
     def testOrderAfterALotOfChanges(self):
         # ['doc1','doc2','doc3','doc4']
 
-        self.folder.folder_position('down', 'doc1')
-        self.folder.folder_position('down', 'doc1')
+        folder_position(self.folder, 'down', 'doc1')
+        folder_position(self.folder, 'down', 'doc1')
         # ['doc2','doc3','doc1','doc4']
 
-        self.folder.folder_position('top', 'doc3')
+        folder_position(self.folder, 'top', 'doc3')
         # ['doc3','doc2','doc1','doc4']
 
         self.folder.invokeFactory('Document', id='doc5', text='blam')

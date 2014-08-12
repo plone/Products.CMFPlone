@@ -1,6 +1,0 @@
-[default]
-title = Order items
-
-[actions]
-action.failure=traverse_to:python:request.get('template_id', 'folder_contents')
-action.success=redirect_to:python:request.get('template_id', 'folder_contents')

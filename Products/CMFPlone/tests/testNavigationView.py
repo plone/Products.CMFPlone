@@ -5,7 +5,7 @@ from Products.CMFPlone.interfaces import INavigationSchema
 
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from Products.CMFPlone.tests.utils import validateCSSIdentifier
+from Products.CMFPlone.tests.utils import validateCSSIdentifier, folder_position
 
 from Products.CMFPlone.browser.navigation import CatalogNavigationTree
 from Products.CMFPlone.browser.navigation import CatalogSiteMap
@@ -533,7 +533,7 @@ class TestBasePortalTabs(PloneTestCase.PloneTestCase):
         tabs1 = view.topLevelTabs(actions=[])
         # Must be manager to change order on portal itself
         self.setRoles(['Manager', 'Member'])
-        self.portal.folder_position('up', 'folder2')
+        folder_position(self.portal, 'up', 'folder2')
         view = self.view_class(self.portal, self.request)
         tabs2 = view.topLevelTabs(actions=[])
         #Same number of objects
