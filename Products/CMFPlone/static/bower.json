@@ -26,7 +26,6 @@
     "tinymce": "4.1.3",
     "tinymce-builded": "4.1.0",
 
-    "jquery-migrate": "1.2.1",
     "requirejs": "",
     "less": "1.7.4"
   },
