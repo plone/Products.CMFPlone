@@ -730,6 +730,33 @@
       </value>
   </records>
 
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-texteditor"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/texteditor/pattern.js</value>
+  </records>
+
+  <!-- ace resources -->
+  <records prefix="Products.CMFPlone.resources/ace"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/ace.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-theme-monokai"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/theme-monokai.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-mode-text"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-text.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-mode-javascript"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-javascript.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-mode-css"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-css.js</value>
+  </records>
+
   <records prefix="Products.CMFPlone.resources/mockup-ui-url"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockupjs/ui</value>
@@ -792,38 +819,8 @@
       <value key="enabled">false</value>
   </records>
 
-  <!-- JS and CSS order manual resources -->
-
-  <record name="Products.CMFPlone.jslist">
-    <field type="plone.registry.field.List">
-      <title>List of ordered javascript elements</title>
-      <description>The ones that are not defined here are going to be at the end</description>
-      <value_type type="plone.registry.field.TextLine" />
-    </field>
-    <value>
-      <element>cookie_functions.js</element>
-      <element>select_all.js</element>
-      <element>dragdropreorder.js</element>
-      <element>jquery.highlightsearchterms.js</element>
-      <element>styleswitcher.js</element>
-      <element>collapsibleformfields.js</element>
-      <element>inline_validation.js</element>
-      <element>kss-bbb.js</element>
-    </value>
-  </record>
-  <record name="Products.CMFPlone.csslist">
-    <field type="plone.registry.field.List">
-      <title>List of ordered CSS elements</title>
-      <description>The ones that are not defined here are going to be at the end</description>
-      <value_type type="plone.registry.field.TextLine" />
-    </field>
-    <value>
-      
-    </value>
-  </record>
 
   <!-- Mixins vars for less with the paths -->
-
   <record name="Products.CMFPlone.lessvariables">
     <field type="plone.registry.field.Dict">
       <title>Less variables</title>

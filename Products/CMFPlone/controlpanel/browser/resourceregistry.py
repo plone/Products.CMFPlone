@@ -3,7 +3,8 @@ import json
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.interfaces import (
-    IBundleRegistry, IResourceRegistry
+    IBundleRegistry, IResourceRegistry,
+    IJSManualResource, ICSSManualResource
 )
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.resources.interfaces import (
@@ -143,6 +144,8 @@ class ResourceRegistryControlPanelView(BrowserView):
         data = {
             'resources': {},
             'bundles': {},
+            'javascripts': {},
+            'css': {},
             'baseUrl': base_url,
             'manageUrl': '%s/@@resourceregistry-controlpanel' % base_url
         }
@@ -150,8 +153,16 @@ class ResourceRegistryControlPanelView(BrowserView):
             IResourceRegistry, prefix="Products.CMFPlone.resources")
         bundles = registry.collectionOfInterface(
             IBundleRegistry, prefix="Products.CMFPlone.bundles")
+        javascripts = registry.collectionOfInterface(
+            IJSManualResource, prefix="Products.CMFPlone.manualjs")
+        allcss = registry.collectionOfInterface(
+            ICSSManualResource, prefix="Products.CMFPlone.manualcss")
         for key, resource in resources.items():
             data['resources'][key] = recordsToDict(resource)
         for key, bundle in bundles.items():
             data['bundles'][key] = recordsToDict(bundle)
+        for key, js in javascripts.items():
+            data['javascripts'][key] = recordsToDict(js)
+        for key, css in allcss.items():
+            data['css'][key] = recordsToDict(css)
         return json.dumps(data)
