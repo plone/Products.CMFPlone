@@ -1,11 +1,5 @@
 <?xml version="1.0"?>
 <registry>
-  <records interface="Products.CMFPlone.interfaces.IEditingSchema"
-           prefix="plone" />
-  <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
-           prefix="plone" />
-  <records interface="Products.CMFPlone.interfaces.INavigationSchema"
-           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISearchSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISiteSchema"
@@ -75,7 +69,7 @@
       <element key="linkAttribute">UID</element>
       <element key="prependToScalePart">/@@images/image/</element>
     </value>
-  </record>
+  </record>  
   <record name="Products.CMFPlone.resources.development">
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
@@ -100,11 +94,12 @@
     </field>
     <value>++plone++static/components/less/dist/less-1.7.4.min.js</value>
   </record>
+
   <record name="Products.CMFPlone.resources.less-variables">
-    <field type="plone.registry.field.ASCII">
-      <title>LESS variables js definer</title>
-    </field>
-    <value key="js">less-variables.js</value>
+      <field type="plone.registry.field.ASCII">
+        <title>LESS variables js definer</title>
+      </field>
+      <value key="js">less-variables.js</value>
   </record>
 
   <records prefix="Products.CMFPlone.resources/mockup-registry"
@@ -118,7 +113,7 @@
 
   <records prefix="Products.CMFPlone.resources/jquery"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/jquery/jquery.js</value>
+      <value key="js">++plone++static/components/jquery/dist/jquery.min.js</value>
   </records>
 
 
@@ -735,36 +730,9 @@
       </value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup-patterns-texteditor"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/texteditor/pattern.js</value>
-  </records>
-
   <records prefix="Products.CMFPlone.resources/mockup-ui-url"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockupjs/ui</value>
-  </records>
-
-  <!-- ace resources -->
-  <records prefix="Products.CMFPlone.resources/ace"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/ace-builds/src/ace.js</value>
-  </records>
-  <records prefix="Products.CMFPlone.resources/ace-theme-monokai"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/ace-builds/src/theme-monokai.js</value>
-  </records>
-  <records prefix="Products.CMFPlone.resources/ace-mode-text"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/ace-builds/src/mode-text.js</value>
-  </records>
-  <records prefix="Products.CMFPlone.resources/ace-mode-javascript"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/ace-builds/src/mode-javascript.js</value>
-  </records>
-  <records prefix="Products.CMFPlone.resources/ace-mode-css"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/ace-builds/src/mode-css.js</value>
   </records>
 
   <!-- legacy js -->
@@ -869,6 +837,7 @@
       <element key="mockuplessPath">{site_url}/++resource++mockupless/</element>
     </value>
   </record>
+
 
   <!-- Plone bundle resources -->
 
