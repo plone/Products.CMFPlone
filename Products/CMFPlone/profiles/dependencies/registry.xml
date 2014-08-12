@@ -772,10 +772,6 @@
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">jquery.highlightsearchterms.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/styleswitcher"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">styleswitcher.js</value>
-  </records>
   <records prefix="Products.CMFPlone.manualjs/inline-validation"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">inline_validation.js</value>
@@ -785,7 +781,6 @@
       <value key="url">kss-bbb.js</value>
       <value key="enabled">false</value>
   </records>
-
   <records prefix="Products.CMFPlone.manualjs/table_sorter"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">table_sorter.js</value>

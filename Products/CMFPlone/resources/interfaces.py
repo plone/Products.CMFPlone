@@ -6,6 +6,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 OVERRIDE_RESOURCE_DIRECTORY_NAME = 'resource_overrides'
 
+
 class IManualResource(zope.interface.Interface):
 
     expression = schema.ASCIILine(
@@ -27,7 +28,7 @@ class IManualResource(zope.interface.Interface):
 
     depends = schema.ASCIILine(
         title=_(u"Depends on another resource"),
-        description=_(u"In case you want to be the last: *, in case its the first should be empty"),
+        description=_(u"Just a maintenance field to save the order"),
         required=False)
 
     enabled = schema.Bool(

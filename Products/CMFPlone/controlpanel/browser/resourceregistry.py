@@ -49,40 +49,50 @@ class ResourceRegistryControlPanelView(BrowserView):
                 return self.save_file()
             elif action == 'delete-file':
                 return self.delete_file()
+            elif action == 'save-manual':
+                return self.save_manual()
             elif action == 'build':
                 return self.build()
         else:
             return self.index()
 
+    def update_registry_collection(self, registry, itype, prefix, newdata):
+        rdata = registry.collectionOfInterface(itype, prefix=prefix)
+        for key, data in newdata.items():
+            if key not in rdata:
+                record = rdata.add(key)
+            else:
+                record = rdata[key]
+            updateRecordFromDict(record, data)
+        # remove missing ones
+        for key in set(rdata.keys()) - set(newdata.keys()):
+            del rdata[key]
+
     def save_registry(self):
         req = self.request
         registry = getUtility(IRegistry)
 
-        resourcesData = json.loads(req.get('resources'))
-        resources = registry.collectionOfInterface(
-            IResourceRegistry, prefix="Products.CMFPlone.resources")
-        for key, data in resourcesData.items():
-            if key not in resources:
-                record = resources.add(key)
-            else:
-                record = resources[key]
-            updateRecordFromDict(record, data)
-        # remove missing ones
-        for key in set(resources.keys()) - set(resourcesData.keys()):
-            del resources[key]
+        self.update_registry_collection(
+            registry, IResourceRegistry, "Products.CMFPlone.resources",
+            json.loads(req.get('resources')))
+        self.update_registry_collection(
+            registry, IResourceRegistry, "Products.CMFPlone.bundles",
+            json.loads(req.get('bundles')))
 
-        bundlesData = json.loads(req.get('bundles'))
-        bundles = registry.collectionOfInterface(
-            IBundleRegistry, prefix="Products.CMFPlone.bundles")
-        for key, data in bundlesData.items():
-            if key not in bundles:
-                record = bundles.add(key)
-            else:
-                record = bundles[key]
-            updateRecordFromDict(record, data)
-        # remove missing ones
-        for key in set(bundles.keys()) - set(bundlesData.keys()):
-            del bundles[key]
+        return json.dumps({
+            'success': True
+        })
+
+    def save_manual(self):
+        req = self.request
+        registry = getUtility(IRegistry)
+
+        self.update_registry_collection(
+            registry, IJSManualResource, "Products.CMFPlone.manualjs",
+            json.loads(req.get('javascripts')))
+        self.update_registry_collection(
+            registry, ICSSManualResource, "Products.CMFPlone.manualcss",
+            json.loads(req.get('css')))
 
         return json.dumps({
             'success': True
@@ -138,6 +148,31 @@ class ResourceRegistryControlPanelView(BrowserView):
     def build(self):
         pass
 
+    def get_overrides(self):
+        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
+        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+
+        def _read_folder(folder):
+            files = []
+            for filename in folder.listDirectory():
+                item = folder[filename]
+                if folder.isDirectory(filename):
+                    files.extend(_read_folder(item))
+                else:
+                    files.append(item)
+            return files
+        files = _read_folder(container)
+        results = []
+        site_path = self.context.getPhysicalPath()
+        for fi in files:
+            path = fi.getPhysicalPath()
+            rel_path = path[len(site_path) + 2:]
+            results.append('++plone++%s/%s' % (
+                rel_path[0], '/'.join(rel_path[1:])))
+        return results
+
     def config(self):
         registry = getUtility(IRegistry)
         base_url = self.context.absolute_url()
@@ -165,4 +200,5 @@ class ResourceRegistryControlPanelView(BrowserView):
             data['javascripts'][key] = recordsToDict(js)
         for key, css in allcss.items():
             data['css'][key] = recordsToDict(css)
+        data['overrides'] = self.get_overrides()
         return json.dumps(data)
