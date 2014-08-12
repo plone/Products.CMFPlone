@@ -51,7 +51,7 @@
         id="visual-portal-wrapper">
 
     <section id="edit-bar" role="toolbar">
-      <div id="edit-zone" role="toolbar" class="plone-toolbar-left">
+      <div id="edit-zone" role="toolbar" class="plone-toolbar-left pat-toolbar">
         <div class="plone-toolbar-container">
           <a class="plone-toolbar-logo">
             <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
