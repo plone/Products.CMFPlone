@@ -26,7 +26,9 @@ define([
             $( "html" ).css("margin-right", "120px");
           }
         });
-        $( "#edit-zone nav li" ).has( "a .plone-toolbar-caret" ).click(function() {
+        $( "#edit-zone nav li" ).has( "a .plone-toolbar-caret" ).click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
           if ($(this).hasClass("active")) {
             $( "#edit-zone" ).css("right", "0");
             $( "html" ).css("margin-left", "-120px");
@@ -99,7 +101,9 @@ define([
         }
 
         //active
-        $( "#edit-zone nav li" ).has( "a .plone-toolbar-caret" ).click(function() {
+        $( "#edit-zone nav li" ).has( "a .plone-toolbar-caret" ).click(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
           if ($(this).hasClass("active")) {
             $( "#edit-zone nav li" ).removeClass("active");
           } else {
