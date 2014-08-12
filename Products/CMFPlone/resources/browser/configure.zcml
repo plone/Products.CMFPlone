@@ -50,9 +50,17 @@
 
     <browser:page
         for="*"
-        name="optimize_js"
-        class=".configjs.OptimizeJS"
-        template="optimize.pt"
+        name="compile_js"
+        class=".compile_js.OptimizeJS"
+        template="compile_js.pt"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        for="*"
+        name="compile_less"
+        class=".compile_less.OptimizeLESS"
+        template="compile_less.pt"
         permission="zope.Public"
         />
 
