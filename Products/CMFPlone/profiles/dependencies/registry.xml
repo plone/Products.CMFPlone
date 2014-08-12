@@ -768,10 +768,6 @@
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">cookie_functions.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/select-all"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">select_all.js</value>
-  </records>
   <records prefix="Products.CMFPlone.manualjs/jquery-highlightsearchterms"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">jquery.highlightsearchterms.js</value>
@@ -779,10 +775,6 @@
   <records prefix="Products.CMFPlone.manualjs/styleswitcher"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">styleswitcher.js</value>
-  </records>
-  <records prefix="Products.CMFPlone.manualjs/collapsibleformfields"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">collapsibleformfields.js</value>
   </records>
   <records prefix="Products.CMFPlone.manualjs/inline-validation"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
@@ -807,11 +799,6 @@
   <records prefix="Products.CMFPlone.manualjs/mark_special_links"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">mark_special_links.js</value>
-      <value key="enabled">false</value>
-  </records>
-  <records prefix="Products.CMFPlone.manualjs/fullscreenmode"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">fullscreenmode.js</value>
       <value key="enabled">false</value>
   </records>
 

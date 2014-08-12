@@ -43,7 +43,6 @@ class TestJSRegistry(PloneTestCase):
             '++resource++plone.js',
             'jquery.highlightsearchterms.js',
             'mark_special_links.js',
-            'select_all.js',
             'styleswitcher.js',
             'table_sorter.js',
             'cookie_functions.js',
