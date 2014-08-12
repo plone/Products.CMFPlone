@@ -41,6 +41,9 @@ define([
       Registry.warn = function(msg) {
         self.warnMsg = msg;
       };
+      Registry.error = function(msg) {
+        self.warnMsg = msg;
+      };
       self.jqueryPatterns = {};
       $.each(Registry.patterns, function(patternName) {
         self.jqueryPatterns[Registry.patterns[patternName].prototype.jqueryPlugin] = $.fn[Registry.patterns[patternName].prototype.jqueryPlugin];

@@ -3,8 +3,8 @@
   "version": "5.0a2",
   "description": "CMFPlone Javascript Bundle",
   "dependencies": {
+    "ace-builds": "1.1.3",
     "backbone": "1.1.2",
-    "requirejs": "",
     "backbone.paginator": "0.8.1",
     "bootstrap": "3.1.1",
     "console-polyfill": "0.1.1",
@@ -13,11 +13,11 @@
     "es5-shim": "2.3.0",
     "html5shiv": "3.7.0",
     "jqtree": "0.20.0",
-    "jquery": "1.8.3",
+    "jquery": "1.11.1",
     "jquery-form": "3.46.0",
-    "jquery.cookie": "1.4.0",
+    "jquery.cookie": "1.4.1",
     "lodash": "2.4.1",
-    "mockup-core": "1.2.4",
+    "mockup-core": "1.2.9",
     "moment": "2.5.1",
     "pickadate": "3.4.0",
     "requirejs-text": "2.0.10",
@@ -25,6 +25,8 @@
     "select2": "3.4.5",
     "tinymce": "4.1.3",
     "tinymce-builded": "4.1.0",
+
+    "requirejs": "",
     "less": "1.7.4"
   },
   "devDependencies": {

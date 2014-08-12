@@ -12,7 +12,7 @@
       'bootstrap-collapse': 'bower_components/bootstrap/js/collapse',
       'bootstrap-transition': 'bower_components/bootstrap/js/transition',
       'expect': 'bower_components/expect/index',
-      'jquery': 'bower_components/jquery/jquery',
+      'jquery': 'bower_components/jquery/dist/jquery',
       'marked': 'bower_components/marked/lib/marked',
       'mockup-docs': 'js/docs/app',
       'mockup-docs-page': 'js/docs/page',

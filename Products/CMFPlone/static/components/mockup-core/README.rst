@@ -86,6 +86,34 @@ Status of builds
 Changelog
 =========
 
+v1.2.9 - 2014-08-12
+-------------------
+
+* fix tests and better karm reporting
+  [thet]
+
+v1.2.8 - 2014-08-11
+-------------------
+
+* finish removing jscs
+  [vangheem]
+
+v1.2.7 - 2014-08-10
+-------------------
+
+* correctly generate js min and dev files with maps
+  [vangheem]
+
+v1.2.6 - 2014-08-10
+-------------------
+
+* fix tests to work with latest mockup
+  [vangheem]
+
+* do not use jscs anymore
+  [vangheem]
+
+
 v1.2.4 - 2014-04-19
 -------------------
 

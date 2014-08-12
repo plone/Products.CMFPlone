@@ -8,7 +8,7 @@
       extend = require('extend'),
       path = require('path'),
       appDir = process.cwd(),
-      karmaConfig = require(appDir + '/node_modules/karma/lib/config'),
+      karmaConstants = require(appDir + '/node_modules/karma/lib/constants'),
       MockupGrunt = function (requirejsOptions) { this.init(requirejsOptions); },
       BROWSERS = process.env.BROWSERS;
 
@@ -26,12 +26,13 @@
           this.gruntConfig.requirejs = this.gruntConfig.requirejs || {};
           this.gruntConfig.requirejs[name] = this.gruntConfig.requirejs[name] || {};
           this.gruntConfig.requirejs[name].options = this.gruntConfig.requirejs[name].options || {};
+
           this.gruntConfig.requirejs[name].options = {
             name: 'node_modules/requirejs/require.js',
             include: ['mockup-bundles-' + name].concat(bundleOptions.extraInclude || []),
             exclude: bundleOptions.exclude || [],
             insertRequire: ['mockup-bundles-' + name],
-            out: bundleOptions.path + name + '.min.js'
+            out: bundleOptions.path + name + '.js'
           };
         }
       },
@@ -40,9 +41,16 @@
           this.gruntConfig.uglify = this.gruntConfig.uglify || {};
           this.gruntConfig.uglify[name] = this.gruntConfig.uglify[name] || {};
           this.gruntConfig.uglify[name].files = this.gruntConfig.uglify[name].files || {};
-          this.gruntConfig.uglify[name].files[bundleOptions.path + name + '.js'] = [
+          this.gruntConfig.uglify[name].options = {
+            mangle: false,
+            sourceMap: true
+          };
+          this.gruntConfig.uglify[name].files[bundleOptions.path + name + '.min.js'] = [
+            'build/' + name + '.js'
+          ];
+          this.gruntConfig.uglify[name].files[bundleOptions.path + name + '.dev.js'] = [
             'bower_components/domready/ready.js',
-            'node_modules/requirejs/require.js',
+            'node_modules/requirejs/require.js' ,
             'bower_components/jquery/jquery.js',
             'js/bundles/' + name + '_develop.js'
           ];
@@ -212,7 +220,8 @@
       */
       this.files = this.files.concat([
         {pattern: 'tests/**/*', included: false},
-        {pattern: 'js/**/*', included: false}
+        {pattern: 'js/**/*', included: false},
+        {pattern: 'patterns/**/*', included: false}
       ]);
 
 
@@ -278,28 +287,28 @@
         bundles.push('bundle-' + name);
         grunt.registerTask('bundle-' + name, this.bundles[name]);
       }
-      grunt.registerTask('test', [ 'jshint', 'jscs', 'karma:test' ]);
-      grunt.registerTask('test_once', [ 'jshint', 'jscs', 'karma:testOnce' ]);
+      grunt.registerTask('test', [ 'jshint', 'karma:test' ]);
+      grunt.registerTask('test_once', [ 'jshint', 'karma:testOnce' ]);
       grunt.registerTask('test_dev', [ 'karma:testDev' ]);
-      grunt.registerTask('test_ci', [ 'jshint', 'jscs', 'karma:testCI'].concat(bundles));
+      grunt.registerTask('test_ci', [ 'jshint', 'karma:testCI'].concat(bundles));
 
       /*
        * TODO: add description
        */
       grunt.initConfig(extend(true, {
         jshint: { options: { jshintrc: '.jshintrc' }, all: ['Gruntfile.js', 'js/**/*.js', 'tests/**/*.js'] },
-        jscs: { options: { config: '.jscs.json' }, all: ['Gruntfile.js', 'js/**/*.js', 'tests/**/*.js'] },
         karma: {
           options: {
             basePath: './',
             frameworks: [],
             files: this.files,
             preprocessors: { 'js/**/*.js': 'coverage' },
-            reporters: ['dots', 'progress', 'coverage'],
+            reporters: ['dots', 'progress', 'coverage', 'spec'],
             coverageReporter: { type : 'lcov', dir : 'coverage/' },
             port: 9876,
             colors: true,
-            logLevel: karmaConfig.DEBUG_INFO,
+            // logLevel: karmaConstants.LOG_DEBUG,
+            logLevel: karmaConstants.LOG_INFO,
             browserNoActivityTimeout: 200000,
             autoWatch: true,
             captureTimeout: 60000,
@@ -310,7 +319,9 @@
               'karma-sauce-launcher',
               'karma-chrome-launcher',
               'karma-phantomjs-launcher',
-              'karma-junit-reporter'
+              'karma-junit-reporter',
+              'karma-spec-reporter'
+
             ]
           },
           test: {
@@ -382,7 +393,6 @@
       grunt.loadNpmTasks('grunt-contrib-requirejs');
       grunt.loadNpmTasks('grunt-contrib-uglify');
       grunt.loadNpmTasks('grunt-contrib-watch');
-      grunt.loadNpmTasks('grunt-jscs-checker');
       grunt.loadNpmTasks('grunt-karma');
       grunt.loadNpmTasks('grunt-sed');
 
