@@ -772,10 +772,6 @@
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">select_all.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/dragdropreorder"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">dragdropreorder.js</value>
-  </records>
   <records prefix="Products.CMFPlone.manualjs/jquery-highlightsearchterms"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">jquery.highlightsearchterms.js</value>

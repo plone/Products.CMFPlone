@@ -46,7 +46,6 @@ class TestJSRegistry(PloneTestCase):
             'select_all.js',
             'styleswitcher.js',
             'table_sorter.js',
-            'dragdropreorder.js',
             'cookie_functions.js',
             'plone_javascript_variables.js']
         for e in expected:
