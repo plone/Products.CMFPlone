@@ -98,15 +98,15 @@
     <field type="plone.registry.field.ASCII">
       <title>URL of less.js</title>
     </field>
-    <value>++plone++static/components/less/dist/less-1.7.0.min.js</value>
+    <value>++plone++static/components/less/dist/less-1.7.4.min.js</value>
+  </record>
+  <record name="Products.CMFPlone.resources.less-variables">
+    <field type="plone.registry.field.ASCII">
+      <title>LESS variables js definer</title>
+    </field>
+    <value key="js">less-variables.js</value>
   </record>
 
-  <records prefix="Products.CMFPlone.resources/plone-mixins"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="css">
-        <element>plone-mixins.less</element>
-      </value>
-  </records>
   <records prefix="Products.CMFPlone.resources/mockup-registry"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
@@ -827,6 +827,21 @@
     </value>
   </record>
 
+  <!-- Mixins vars for less with the paths -->
+
+  <record name="Products.CMFPlone.lessvariables">
+    <field type="plone.registry.field.Dict">
+      <title>Less variables</title>
+      <description>Variables that are going to be compiled on less</description>
+      <key_type type="plone.registry.field.ASCIILine" />
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value>
+      <element key="bowerPath">{site_url}/++plone++static/components/</element>
+      <element key="mockupPath">{site_url}/++resource++mockup/</element>
+      <element key="mockuplessPath">{site_url}/++resource++mockupless/</element>
+    </value>
+  </record>
 
   <!-- Plone bundle resources -->
 

@@ -1,15 +1,34 @@
-@pathPrefix: './components/';
 @fontsPrefix: './fonts/';
-@import "plone-mixins.less";
+@bowerPath: './components/';
+@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
 
-@import (reference) "@{pathPrefix}bootstrap/less/variables.less";
-@import (reference) "@{pathPrefix}bootstrap/less/mixins.less";
-@import (reference) "@{pathPrefix}bootstrap/less/utilities.less";
-@import (reference) "@{pathPrefix}bootstrap/less/forms.less";
-@import (reference) "@{pathPrefix}bootstrap/less/scaffolding.less";
-@import (reference) "@{pathPrefix}bootstrap/less/dropdowns.less";
-@import (reference) "@{pathPrefix}bootstrap/less/navs.less";
-@import (reference) "@{pathPrefix}bootstrap/less/navbar.less";
+.define-variables-if-not-defined() {
+  @mockup-patterns-tinymce: 'https://raw.githubusercontent.com/plone/mockup/master/patterns/tinymce/less/pattern.tinymce.less';
+}
+.define-variables-if-not-defined();
+
+
+@import url("@{mockup-patterns-select2}");
+@import url("@{mockup-patterns-pickadate}");
+@import url("@{mockup-patterns-relateditems}");
+@import url("@{mockup-patterns-querystring}");
+@import url("@{mockup-patterns-autotoc}");
+@import url("@{mockup-patterns-modal}");
+@import url("@{mockup-patterns-structure}");
+@import url("@{mockup-patterns-upload}");
+@import url("@{mockup-patterns-tinymce}");
+
+
+
+@import "@{bowerPath}bootstrap/less/variables.less";
+@import "@{bowerPath}bootstrap/less/mixins.less";
+@import "@{bowerPath}bootstrap/less/utilities.less";
+@import "@{bowerPath}bootstrap/less/forms.less";
+@import "@{bowerPath}bootstrap/less/scaffolding.less";
+@import "@{bowerPath}bootstrap/less/dropdowns.less";
+@import "@{bowerPath}bootstrap/less/navs.less";
+@import "@{bowerPath}bootstrap/less/navbar.less";
+
 
 @font-face {
   font-family: 'fontello';

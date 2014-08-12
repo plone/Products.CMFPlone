@@ -35,8 +35,15 @@
 
     <browser:page
         for="*"
-        name="plone-mixins.less"
-        class=".mixins.LessMixinsWeb"
+        name="less-variables.js"
+        class=".mixins.LessConfiguration"
+        permission="zope.Public"
+        />
+
+    <browser:page
+        for="*"
+        name="plone_less_dependency.less"
+        class=".mixins.LessDependency"
         permission="zope.Public"
         />
 
@@ -52,13 +59,6 @@
     <browser:resource
         name="r.js"
         file="r.js"
-        />
-
-    <browser:page
-        for="*"
-        name="compile_less"
-        class=".compile_less.CompileLess"
-        permission="zope.Public"
         />
 
 </configure>

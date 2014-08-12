@@ -51,9 +51,10 @@ class StylesView(ResourceView):
             for data in self.get_urls(style, bundle):
                 result.append(data)
 
-    def get_config(self, style):
+    def get_manual_data(self, style):
         """
         Gets the information of a specific style
+        Style is a CSS manual entry
         """
         data = None
         if style.enabled:
@@ -97,14 +98,14 @@ class StylesView(ResourceView):
         for style_id in list_of_css.value:
             if style_id in styles:
                 loaded.append(style_id)
-                data = self.get_config(styles[style_id])
+                data = self.get_manual_data(styles[style_id])
                 if data:
                     result.append(data)
 
         # The rest of scripts
         for key, style in styles.items():
             if key not in loaded:
-                data = self.get_config(style)
+                data = self.get_manual_data(style)
                 if data:
                     result.append(data)
         return result
