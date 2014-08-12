@@ -735,9 +735,36 @@
       </value>
   </records>
 
+  <records prefix="Products.CMFPlone.resources/mockup-patterns-texteditor"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/texteditor/pattern.js</value>
+  </records>
+
   <records prefix="Products.CMFPlone.resources/mockup-ui-url"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockupjs/ui</value>
+  </records>
+
+  <!-- ace resources -->
+  <records prefix="Products.CMFPlone.resources/ace"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/ace.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-theme-monokai"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/theme-monokai.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-mode-text"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-text.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-mode-javascript"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-javascript.js</value>
+  </records>
+  <records prefix="Products.CMFPlone.resources/ace-mode-css"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-css.js</value>
   </records>
 
   <!-- legacy js -->

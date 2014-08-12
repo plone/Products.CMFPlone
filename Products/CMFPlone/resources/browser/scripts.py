@@ -50,7 +50,6 @@ class ScriptsView(ResourceView):
         registryUtility = getUtility(IRegistry)
         return registryUtility.records['Products.CMFPlone.lessvariables'].value
 
-
     def less_config(self):
         registry = self.lessvariables()
         result = ""

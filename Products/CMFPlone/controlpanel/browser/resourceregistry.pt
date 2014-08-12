@@ -13,7 +13,7 @@
 <link rel="stylesheet"
           tal:attributes="href string:${portal_url}/++plone++static/resourceregistry.min.css" />
 
-    <script tal:attributes="src string:${portal_url}/++plone++static/resourceregistry.min.js"></script>
+    <script tal:attributes="src string:${portal_url}/++plone++static/resourceregistry.js"></script>
   </metal:block>
 <body>
 

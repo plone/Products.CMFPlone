@@ -1,9 +1,8 @@
 @fontsPrefix: './fonts/';
-@bowerPath: './components/';
-@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
 
 .define-variables-if-not-defined() {
   @mockup-patterns-tinymce: 'https://raw.githubusercontent.com/plone/mockup/master/patterns/tinymce/less/pattern.tinymce.less';
+  @bowerPath: './components/';
 }
 .define-variables-if-not-defined();
 
@@ -19,8 +18,8 @@
 @import url("@{mockup-patterns-tinymce}");
 
 
-
 @import "@{bowerPath}bootstrap/less/variables.less";
+@icon-font-path: "@{bowerPath}/bootstrap/dist/fonts/";
 @import "@{bowerPath}bootstrap/less/mixins.less";
 @import "@{bowerPath}bootstrap/less/utilities.less";
 @import "@{bowerPath}bootstrap/less/forms.less";
