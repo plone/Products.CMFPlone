@@ -1,15 +1,13 @@
-from Acquisition import aq_inner
-from Products.PythonScripts.standard import url_quote
-from Products.Five.browser import BrowserView
+from Acquisition import aq_inner, aq_base, aq_parent
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceRegistry
+from Products.CMFPlone.resources.interfaces import (
+    IBundleRegistry, IResourceRegistry)
 from plone.app.layout.viewlets.common import ViewletBase
-from urlparse import urlparse
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.Expression import createExprContext
 from zope.component import getMultiAdapter
-
+from Products.CMFCore.utils import getToolByName
 
 
 class ResourceView(ViewletBase):
@@ -49,22 +47,23 @@ class ResourceView(ViewletBase):
 
     def update(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
-                        name=u'plone_portal_state')
+                                            name=u'plone_portal_state')
         self.site_url = self.portal_state.portal_url()
         self.registry = getUtility(IRegistry)
 
     def get_bundles(self):
-        return self.registry.collectionOfInterface(IBundleRegistry, prefix="Products.CMFPlone.bundles")
+        return self.registry.collectionOfInterface(
+            IBundleRegistry, prefix="Products.CMFPlone.bundles")
 
     def get_resources(self):
-        return self.registry.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
+        return self.registry.collectionOfInterface(
+            IResourceRegistry, prefix="Products.CMFPlone.resources")
 
     def development(self):
         return self.registry.records['Products.CMFPlone.resources.development']
 
     def bundles(self):
         bundles = self.get_bundles()
-        result = []
         for key, bundle in bundles.items():
             if bundle.enabled:
                 # check expression
@@ -72,12 +71,12 @@ class ResourceView(ViewletBase):
                     if bundle.cooked_expression:
                         expr = Expression(bundle.expression)
                         bundle.cooked_expression = expr
-                    if self.evaluateExpression(bundle.cooked_expression, context):
+                    if self.evaluateExpression(bundle.cooked_expression,
+                                               self.context):
                         continue
                 yield key, bundle
 
     def ordered_result(self):
-        missing_bundles = {}
         result = []
         # The first one
         inserted = []
@@ -87,14 +86,14 @@ class ResourceView(ViewletBase):
                 # its the first one
                 self.get_data(bundle, result)
                 inserted.append(key)
-            else: 
+            else:
                 name = bundle.depends.strip()
                 if name in depends_on:
                     depends_on[name].append(bundle)
                 else:
                     depends_on[name] = [bundle]
 
-        while len(depends_on)>0:
+        while len(depends_on) > 0:
             found = False
             for key, bundles_to_add in depends_on.items():
                 if key in inserted:
