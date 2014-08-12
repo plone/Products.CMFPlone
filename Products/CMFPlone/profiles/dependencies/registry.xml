@@ -773,7 +773,7 @@
   <records prefix="Products.CMFPlone.manualjs/kss-bbb"
             interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
       <value key="url">kss-bbb.js</value>
-      <value key="enabled">true</value>
+      <value key="enabled">false</value>
   </records>
 
   <records prefix="Products.CMFPlone.manualjs/table_sorter"
@@ -796,6 +796,36 @@
       <value key="url">fullscreenmode.js</value>
       <value key="enabled">false</value>
   </records>
+
+  <!-- JS and CSS order manual resources -->
+
+  <record name="Products.CMFPlone.jslist">
+    <field type="plone.registry.field.List">
+      <title>List of ordered javascript elements</title>
+      <description>The ones that are not defined here are going to be at the end</description>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value>
+      <element>cookie_functions.js</element>
+      <element>select_all.js</element>
+      <element>dragdropreorder.js</element>
+      <element>jquery.highlightsearchterms.js</element>
+      <element>styleswitcher.js</element>
+      <element>collapsibleformfields.js</element>
+      <element>inline_validation.js</element>
+      <element>kss-bbb.js</element>
+    </value>
+  </record>
+  <record name="Products.CMFPlone.csslist">
+    <field type="plone.registry.field.List">
+      <title>List of ordered CSS elements</title>
+      <description>The ones that are not defined here are going to be at the end</description>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value>
+      
+    </value>
+  </record>
 
 
   <!-- Plone bundle resources -->

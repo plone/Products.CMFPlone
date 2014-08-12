@@ -29,6 +29,10 @@ class ScriptsView(ResourceView):
             result.append(data)
 
     def scripts(self):
+        """ 
+        The requirejs scripts, the ones that are not resources
+        are loaded on configjs.py
+        """
         result = []
         if self.development():
             # We need to add require.js and config.js

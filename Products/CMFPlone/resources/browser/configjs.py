@@ -95,24 +95,50 @@ class BBBConfigJsView(RequireJsView):
         registryUtility = getUtility(IRegistry)
         return registryUtility.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.manualjs")
 
+    def get_bbb_order(self):
+        registryUtility = getUtility(IRegistry)
+        return registryUtility.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.jslist")
+
+    def get_data(self, script):
+        """
+        Get the src for the script and check expression
+        """
+        src = None
+        if script.enabled:
+            if script.expression:
+                    if script.cooked_expression:
+                        expr = Expression(script.expression)
+                        script.cooked_expression = expr
+                    if self.evaluateExpression(script.cooked_expression, context):
+                        return src
+            url = urlparse(script.url)
+            if url.netloc == '':
+                # Local
+                src = "%s/%s" % (self.base_url(), script.url)
+            else:
+                src = "%s" % (script.url)
+        return src
+
     def get_config(self):
         norequire = []
-        for key, script in self.get_bbb_scripts().items():
-            if script.enabled:
-                if script.expression:
-                        if script.cooked_expression:
-                            expr = Expression(script.expression)
-                            script.cooked_expression = expr
-                        if self.evaluateExpression(script.cooked_expression, context):
-                            continue
-                url = urlparse(script.url)
-                if url.netloc == '':
-                    # Local
-                    src = "%s/%s" % (self.base_url(), script.url)
-                else:
-                    src = "%s" % (script.url)
+        registryUtility = getUtility(IRegistry)
+        # Load the ordered list of js
+        list_of_js = registryUtility.records['Products.CMFPlone.jslist']
+        scripts = self.get_bbb_scripts()
+        loaded = []
+        for script_id in list_of_js.value:
+            if script_id in scripts:
+                loaded.append(script_id)
+                src = self.get_data(scripts[script_id])
+                if src:
+                    norequire.append(src)
 
-                norequire.append(src)
+        # The rest of scripts
+        for key, script in scripts.items():
+            if key not in loaded:
+                src = self.get_data(script)
+                if src:
+                    norequire.append(src)
         return norequire
 
     def __call__(self):
