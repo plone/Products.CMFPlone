@@ -4,7 +4,8 @@ from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.resources.interfaces import IResourceRegistry
+from Products.CMFPlone.resources.interfaces import ICSSManualResource
+from Products.CMFPlone.resources.interfaces import IJSManualResource
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
 
@@ -53,9 +54,20 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                 if key == 'remove':
                     add = False
                     continue
+                if key in ('position-before', 'insert-before'):
+                    position = ('before', queryUtility(IIDNormalizer).normalize(str(value)))
+                    continue
+                if key in ('position-after', 'insert-after'):
+                    position = ('after', queryUtility(IIDNormalizer).normalize(str(value)))
+                    continue
+                if key in ('position-top', 'insert-top'):
+                    position = ('*',)
+                    continue
+                if key in ('position-bottom', 'insert-bottom'):
+                    position = ('',)
+                    continue
                 if key == 'id':
                     res_id = queryUtility(IIDNormalizer).normalize(str(value))
-                    res_id = res_id.replace('-', '_')
                     data['url'] = str(value)
                 elif value.lower() == 'false':
                     data[key] = False
@@ -68,12 +80,27 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                         data[key] = str(value)
 
             if add:
-                collection = self.registry.collectionOfInterface(
-                                 IResourceRegistry,
-                                 prefix="Products.CMFPlone.resources")
-                proxy = collection.setdefault(res_id)
                 if self.resource_type == 'javascript':
-                    proxy.js = data['url']
-                if self.resource_type == 'stylesheet':
-                    proxy.css = [data['url']]
-                proxy.force = True
+                    collection = self.registry.collectionOfInterface(
+                                     IJSManualResource,
+                                     prefix="Products.CMFPlone.manualjs")
+                elif self.resource_type == 'stylesheet':
+                    collection = self.registry.collectionOfInterface(
+                                     ICSSManualResource,
+                                     prefix="Products.CMFPlone.manualcss")
+                proxy = collection.setdefault(res_id)
+                proxy.url = data['url']
+                if 'conditionalcomment' in data:
+                    proxy.conditionalcomment = data['conditionalcomment']
+                if 'expression' in data:
+                    proxy.expression = data['expression']
+                if 'enabled' in data:
+                    proxy.enabled = data['enabled']
+                if position is not None:
+                    if position[0] == '*' or position[0] == '':
+                        proxy.depends = position[0]
+                    elif position[0] == 'after':
+                        if position[1] in collection:
+                            collection[position[1]].depends = res_id
+                    elif position[0] == 'before':
+                        proxy.depends = queryUtility(IIDNormalizer).normalize(str(position[1]))

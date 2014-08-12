@@ -25,6 +25,11 @@ class IManualResource(zope.interface.Interface):
         description=_(u"In case you want to render this resource on conditional comment"),
         required=False)
 
+    depends = schema.ASCIILine(
+        title=_(u"Depends on another resource"),
+        description=_(u"In case you want to be the last: *, in case its the first should be empty"),
+        required=False)
+
     enabled = schema.Bool(
         title=_(u"It's enabled?"),
         default=True,

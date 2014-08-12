@@ -77,7 +77,7 @@ class StylesView(ResourceView):
                 rel = "stylesheet/%s" % extension
 
             data = {'rel': rel,
-                    'conditionalcomment' : style.conditionalcomment if bundle else '',
+                    'conditionalcomment' : style.conditionalcomment,
                     'src': src}
             return data
 
