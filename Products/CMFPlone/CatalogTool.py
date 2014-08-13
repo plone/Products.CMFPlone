@@ -29,7 +29,7 @@ from plone.indexer import indexer
 from plone.indexer.interfaces import IIndexableObject
 from zope.component import queryMultiAdapter
 from zope.interface import Interface
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface import providedBy
 import re
 import time
@@ -260,10 +260,9 @@ def location(obj):
     return obj.getField('location').get(obj)
 
 
+@implementer(IPloneCatalogTool)
 class CatalogTool(PloneBaseTool, BaseTool):
     """Plone's catalog tool"""
-
-    implements(IPloneCatalogTool)
 
     meta_type = 'Plone Catalog Tool'
     security = ClassSecurityInfo()
