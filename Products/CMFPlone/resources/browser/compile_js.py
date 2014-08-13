@@ -65,7 +65,7 @@ class OptimizeJS(RequireJsView):
                     if key == 'plone_bbb':
                         # special case as it needs more includes
                         list_of_js = self.registry.records['Products.CMFPlone.jslist']
-                        scripts = self.get_bbb_scripts()
+                        # scripts = self.get_bbb_scripts()
                         loaded = []
                         for script_id in list_of_js.value:
                             if script_id in scripts:
@@ -103,8 +103,6 @@ bbbplone = """require(%s, function($) {
 class BBBConfigJsView(RequireJsView):
     """ bbbplone.js for listjs code """
 
-    def get_bbb_scripts(self):
-        return self.registry.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.manualjs")
 
     def get_data(self, script):
         """
@@ -130,7 +128,7 @@ class BBBConfigJsView(RequireJsView):
         norequire = []
         # Load the ordered list of js
         list_of_js = self.registry.records['Products.CMFPlone.jslist']
-        scripts = self.get_bbb_scripts()
+        # scripts = self.get_bbb_scripts()
         loaded = []
         for script_id in list_of_js.value:
             if script_id in scripts:
