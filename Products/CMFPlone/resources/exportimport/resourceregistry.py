@@ -4,8 +4,8 @@ from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.resources.interfaces import ICSSManualResource
-from Products.CMFPlone.resources.interfaces import IJSManualResource
+from Products.CMFPlone.resources.interfaces import IResourceRegistry
+from Products.CMFPlone.resources.interfaces import IBundleRegistry
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
 
@@ -39,6 +39,20 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
         """
         Import the object from the DOM node.
         """
+
+        resources = self.registry.collectionOfInterface(
+                         IResourceRegistry,
+                         prefix="Products.CMFPlone.resources")
+
+        bundles = self.registry.collectionOfInterface(
+                         IBundleRegistry,
+                         prefix="Products.CMFPlone.bundles")
+        if 'plone-legacy' in bundles:
+            legacy = bundles['plone-legacy']
+        else:
+            legacy = resources.setdefault('plone-legacy')
+            legacy.resources = []
+            legacy.enabled = True
 
         for child in node.childNodes:
             if child.nodeName != self.resource_type:
@@ -80,27 +94,30 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                         data[key] = str(value)
 
             if add:
+                proxy = resources.setdefault(res_id)
                 if self.resource_type == 'javascript':
-                    collection = self.registry.collectionOfInterface(
-                                     IJSManualResource,
-                                     prefix="Products.CMFPlone.manualjs")
+                    proxy.js = data['url']
                 elif self.resource_type == 'stylesheet':
-                    collection = self.registry.collectionOfInterface(
-                                     ICSSManualResource,
-                                     prefix="Products.CMFPlone.manualcss")
-                proxy = collection.setdefault(res_id)
-                proxy.url = data['url']
-                if 'conditionalcomment' in data:
-                    proxy.conditionalcomment = data['conditionalcomment']
-                if 'expression' in data:
-                    proxy.expression = data['expression']
-                if 'enabled' in data:
-                    proxy.enabled = data['enabled']
-                if position is not None:
-                    if position[0] == '*' or position[0] == '':
-                        proxy.depends = position[0]
-                    elif position[0] == 'after':
-                        if position[1] in collection:
-                            collection[position[1]].depends = res_id
-                    elif position[0] == 'before':
-                        proxy.depends = queryUtility(IIDNormalizer).normalize(str(position[1]))
+                    proxy.css = [data['url']]
+                if 'enabled' in data and not data['enabled']:
+                    continue
+                if position is None:
+                    position = ('',)
+                if position[0] == '*':
+                    legacy.resources.insert(0, res_id)
+                elif position[0] == '':
+                    legacy.resources.append(res_id)
+                elif position[0] == 'after':
+                    if position[1] in legacy.resources:
+                        legacy.resources.insert(
+                            legacy.resources.index(position[1]) + 1,
+                            res_id)
+                    else:
+                        legacy.resources.append(res_id)
+                elif position[0] == 'before':
+                    if position[1] in legacy.resources:
+                        legacy.resources.insert(
+                            legacy.resources.index(position[1]) + 1,
+                            res_id)
+                    else:
+                        legacy.resources.append(res_id)

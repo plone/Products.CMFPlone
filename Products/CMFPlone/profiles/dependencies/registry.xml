@@ -832,7 +832,6 @@
       <element>inline-validation</element>
       <element>jquery-highlightsearchterms</element>
       <element>cookie_functions.js</element>
-
     </value>
     <value key="enabled">True</value>
   </records>

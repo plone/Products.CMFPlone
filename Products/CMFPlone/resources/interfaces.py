@@ -41,6 +41,7 @@ class IResourceRegistry(zope.interface.Interface):
         description=_(u"Should be accessible on @@getWCconfig?id=name"),
         required=False)
 
+
 class IBundleRegistry(zope.interface.Interface):
 
     jscompilation = schema.ASCIILine(
