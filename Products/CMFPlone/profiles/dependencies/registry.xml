@@ -754,37 +754,35 @@
 
   <!-- legacy js -->
 
-  <records prefix="Products.CMFPlone.manualjs/cookie_functions"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">cookie_functions.js</value>
+  <records prefix="Products.CMFPlone.resources/cookie_functions"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">cookie_functions.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/jquery-highlightsearchterms"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">jquery.highlightsearchterms.js</value>
+  <records prefix="Products.CMFPlone.resources/jquery-highlightsearchterms"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">jquery.highlightsearchterms.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/inline-validation"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">inline_validation.js</value>
+  <records prefix="Products.CMFPlone.resources/inline-validation"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">inline_validation.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/kss-bbb"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">kss-bbb.js</value>
-      <value key="enabled">false</value>
+  <records prefix="Products.CMFPlone.resources/kss-bbb"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">kss-bbb.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/table_sorter"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">table_sorter.js</value>
+  <records prefix="Products.CMFPlone.resources/table_sorter"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">table_sorter.js</value>
   </records>
-  <records prefix="Products.CMFPlone.manualjs/unlockOnFormUnload"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">unlockOnFormUnload.js</value>
+  <records prefix="Products.CMFPlone.resources/unlockOnFormUnload"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">unlockOnFormUnload.js</value>
   </records>
 
   <!-- disabled -->
-  <records prefix="Products.CMFPlone.manualjs/mark_special_links"
-            interface='Products.CMFPlone.resources.interfaces.IJSManualResource'>
-      <value key="url">mark_special_links.js</value>
-      <value key="enabled">false</value>
+  <records prefix="Products.CMFPlone.resources/mark_special_links"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">mark_special_links.js</value>
   </records>
 
 
@@ -819,7 +817,23 @@
 
   <records prefix="Products.CMFPlone.bundles/plone"
             interface='Products.CMFPlone.resources.interfaces.IBundleRegistry'>
-    <value key="resource">plone</value>
+    <value key="resources">
+      <element>plone</element>
+    </value>
+    <value key="enabled">True</value>
+  </records>
+
+  <records prefix="Products.CMFPlone.bundles/plone-legacy"
+            interface='Products.CMFPlone.resources.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>unlockOnFormUnload</element>
+      <element>table_sorter</element>
+      <element>kss-bbb</element>
+      <element>inline-validation</element>
+      <element>jquery-highlightsearchterms</element>
+      <element>cookie_functions.js</element>
+
+    </value>
     <value key="enabled">True</value>
   </records>
 

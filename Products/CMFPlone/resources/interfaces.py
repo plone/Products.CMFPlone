@@ -7,49 +7,6 @@ from Products.CMFPlone import PloneMessageFactory as _
 OVERRIDE_RESOURCE_DIRECTORY_NAME = 'resource_overrides'
 
 
-class IManualResource(zope.interface.Interface):
-
-    expression = schema.ASCIILine(
-        title=_(u"Expression to render"),
-        description=_(u"In case its a bundle we can have a condition to render it"),
-        default='',
-        required=False)
-
-    cooked_expression = schema.ASCIILine(
-        title=_(u"Coocked expression to render"),
-        description=_(u"Filled automatic"),
-        default='',
-        required=False)
-
-    conditionalcomment = schema.ASCIILine(
-        title=_(u"Conditional comment"),
-        description=_(u"In case you want to render this resource on conditional comment"),
-        required=False)
-
-    depends = schema.ASCIILine(
-        title=_(u"Depends on another resource"),
-        description=_(u"Just a maintenance field to save the order"),
-        required=False)
-
-    enabled = schema.Bool(
-        title=_(u"It's enabled?"),
-        default=True,
-        required=False)
-
-
-class ICSSManualResource(IManualResource):
-
-    url = schema.ASCIILine(
-        title=_(u"Main css file"),
-        required=False)
-
-
-class IJSManualResource(IManualResource):
-
-    url = schema.ASCIILine(
-        title=_(u"Main js file"),
-        required=False)
-
 class IResourceRegistry(zope.interface.Interface):
 
     url = schema.ASCIILine(
@@ -114,9 +71,10 @@ class IBundleRegistry(zope.interface.Interface):
         description=_(u"In case you want to render this resource on conditional comment"),
         required=False)
 
-    resource = schema.ASCIILine(
-        title=_(u"Main resource"),
-        description=_(u"The resource that is going to be loaded on this bundle"),
+    resources = schema.List(
+        title=_(u"Loaded resources"),
+        description=_(u"The resources that is going to be loaded on this bundle in order"),
+        value_type=schema.ASCIILine(title=_(u"Resource name")),
         required=False)
 
     enabled = schema.Bool(

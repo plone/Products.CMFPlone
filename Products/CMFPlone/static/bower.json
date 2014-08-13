@@ -14,7 +14,7 @@
     "html5shiv": "3.7.0",
     "jqtree": "0.20.0",
     "jquery": "1.11.1",
-    "jquery-form": "3.46.0",
+    "jquery-form": "3.46",
     "jquery.cookie": "1.4.1",
     "lodash": "2.4.1",
     "mockup-core": "1.2.9",

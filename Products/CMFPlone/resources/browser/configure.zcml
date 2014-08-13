@@ -28,13 +28,6 @@
 
     <browser:page
         for="*"
-        name="bbbplone.js"
-        class=".configjs.BBBConfigJsView"
-        permission="zope.Public"
-        />
-
-    <browser:page
-        for="*"
         name="less-variables.js"
         class=".mixins.LessConfiguration"
         permission="zope.Public"
