@@ -1,4 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import re
+
+try:
+    import simplejson as json
+    json  # Pyflakes
+except ImportError:
+    import json
+
 from types import ClassType
 from os.path import join, abspath, split
 
@@ -709,3 +718,17 @@ def ajax_load_url(url):
         sep = '?' in url and '&' or '?'  # url parameter seperator
         url = '%s%sajax_load=1' % (url, sep)
     return url
+
+
+def validate_json(value):
+    try:
+        json.loads(value)
+    except ValueError, exc:
+        class JSONError(schema.ValidationError):
+            __doc__ = _(u"Must be empty or a valid JSON-formatted "
+                        u"configuration – ${message}.", mapping={
+                            'message': unicode(exc)})
+
+        raise JSONError(value)
+
+    return True

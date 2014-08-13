@@ -6,6 +6,8 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IDateAndTimeSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
+           prefix="plone" />
   <record name="Products.CMFPlone.i18nl10n.override_dateformat.Enabled">
     <field type="plone.registry.field.Bool">
       <title>Enabled</title>
