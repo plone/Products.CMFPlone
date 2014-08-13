@@ -12,6 +12,14 @@ from StringIO import StringIO
 from zExceptions import NotFound
 
 
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+
 def recordsToDict(record):
     data = {}
     for name in record.__schema__.names():
@@ -175,4 +183,4 @@ class ResourceRegistryControlPanelView(BrowserView):
         for key, bundle in bundles.items():
             data['bundles'][key] = recordsToDict(bundle)
         data['overrides'] = self.get_overrides()
-        return json.dumps(data)
+        return json.dumps(data, cls=JSONEncoder)
