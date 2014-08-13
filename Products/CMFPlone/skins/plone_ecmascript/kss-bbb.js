@@ -58,7 +58,7 @@ function applyPortletTimeout(portlet){
 /* dom loaded related actions */
 $(document).ready(function(){
     /* Show animated spinner while AJAX is loading. */
-    var spinner = $('<div id="ajax-spinner"><img src="' + portal_url + '/spinner.gif" alt="loading"/></div>');
+    var spinner = $('<div id="ajax-spinner"><img src="' + $('body').attr('data-portal-url') + '/spinner.gif" alt="loading"/></div>');
     spinner.appendTo('body').hide();
     $(document).ajaxStart(function() { spinner.show(); });
     $(document).ajaxStop(function() { spinner.hide(); });
