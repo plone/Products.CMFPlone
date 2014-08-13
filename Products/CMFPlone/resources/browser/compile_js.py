@@ -56,3 +56,45 @@ class OptimizeJS(RequireJsView):
             'paths': paths
             })
 
+bbbplone = """require([
+  'jquery',
+], function($) {
+  'use strict';
+
+  require(%s, function(undefined){
+    // initialize only if we are in top frame
+    if (window.parent === window) {
+      $(document).ready(function() {
+        $('body').addClass('legacyplone-loaded');
+      });
+    }
+  })
+});"""
+
+
+class notCompiledJS(RequireJsView):
+
+    def get_bundles(self):
+        bundles = self.registry.collectionOfInterface(IBundleRegistry, prefix="Products.CMFPlone.bundles")
+        return bundles
+
+    def get_resources(self):
+        resources = self.registry.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
+        return resources
+
+    def __call__(self):
+        """
+        Returns the shims/paths/and include
+        Gets a get parameter with the name of the bundle
+        """
+        (baseUrl, paths, shims) = self.get_requirejs_config()
+        bundles = self.get_bundles()
+        resources_objects = self.get_resources()
+        bundle = self.request.get('bundle', None)
+        resources = []
+        if bundle and bundle in bundles:
+            bundle_obj = bundles[bundle]
+            for resource in bundle_obj.resources:
+                if resource in resources_objects and resources_objects[resource].js:
+                    resources.append(resource)
+        return bbbplone % resources

@@ -50,7 +50,7 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
         if 'plone-legacy' in bundles:
             legacy = bundles['plone-legacy']
         else:
-            legacy = resources.setdefault('plone-legacy')
+            legacy = bundles.setdefault('plone-legacy')
             legacy.resources = []
             legacy.enabled = True
 

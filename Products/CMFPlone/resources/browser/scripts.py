@@ -17,6 +17,7 @@ class ScriptsView(ResourceView):
                 })
         else:
             resources = self.get_resources()
+            # if bundle.compile:
             for resource in bundle.resources:
                 if resource in resources:
                     script = resources[resource]
@@ -31,6 +32,12 @@ class ScriptsView(ResourceView):
                         data = {'conditionalcomment' : bundle.conditionalcomment,
                                 'src': src}
                         result.append(data)
+            # else:
+            #     bundle_id = bundle.__prefix__.split('/')[1][:-1]
+            #     src = "%s/not_compiled_js.js?bundle=%s" % (self.portal_url, bundle_id)
+            #     data = {'conditionalcomment' : bundle.conditionalcomment,
+            #             'src': src}
+            #     result.append(data)
 
     def scripts(self):
         """ 

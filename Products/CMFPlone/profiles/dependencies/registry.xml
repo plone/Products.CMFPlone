@@ -758,6 +758,12 @@
 
   <!-- legacy js -->
 
+  
+  <records prefix="Products.CMFPlone.resources/plone_javascript_variables"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">plone_javascript_variables.js</value>
+  </records>
+
   <records prefix="Products.CMFPlone.resources/cookie_functions"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">cookie_functions.js</value>
@@ -832,12 +838,13 @@
 
   <records prefix="Products.CMFPlone.bundles/plone-legacy"
             interface='Products.CMFPlone.resources.interfaces.IBundleRegistry'>
-    <value key="resources">
+    <value key="resources" purge="false">
+      <element>plone_javascript_variables</element>
       <element>unlockOnFormUnload</element>
       <element>table_sorter</element>
       <element>inline-validation</element>
       <element>jquery-highlightsearchterms</element>
-      <element>cookie_functions.js</element>
+      <element>cookie_functions</element>
     </value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
     <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>

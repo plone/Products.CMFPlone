@@ -40,6 +40,12 @@
         permission="zope.Public"
         />
 
+    <browser:page
+        for="*"
+        name="not_compiled_js.js"
+        class=".compile_js.notCompiledJS"
+        permission="zope.Public"
+        />
 
     <browser:page
         for="*"
