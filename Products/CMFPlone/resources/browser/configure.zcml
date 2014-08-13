@@ -45,7 +45,6 @@
         for="*"
         name="compile_js"
         class=".compile_js.OptimizeJS"
-        template="compile_js.pt"
         permission="zope.Public"
         />
 
@@ -53,7 +52,6 @@
         for="*"
         name="compile_less"
         class=".compile_less.OptimizeLESS"
-        template="compile_less.pt"
         permission="zope.Public"
         />
 
@@ -61,5 +59,12 @@
         name="r.js"
         file="r.js"
         />
+
+    <subscriber
+        for=".interfaces.settings.IResourceRegistriesSettings
+              plone.registry.interfaces.IRecordModifiedEvent"
+        handler=".cooking.cookWhenChangingSettings"
+        />
+
 
 </configure>

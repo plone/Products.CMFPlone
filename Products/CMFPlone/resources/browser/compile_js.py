@@ -12,6 +12,7 @@ from urlparse import urlparse
 import re
 
 optimize = """
+// YOU NEED r.js Products.CMFPlone.resources.rjs entry on the registry
 document.getElementById('build-%s').addEventListener('click', function (evt) {
 
     requirejs.optimize({
@@ -29,13 +30,6 @@ document.getElementById('build-%s').addEventListener('click', function (evt) {
 
 """
 
-results = """
-    <button id="build-{bundle}">Build it</button>
-    <h2>{bundle}</h2>
-    <textarea id="{bundle}"></textarea>
-    <h2>Build Messages {bundle}</h2>
-    <textarea id="{bundle}-debug"></textarea>
-"""
 
 class OptimizeJS(RequireJsView):
 
@@ -43,120 +37,22 @@ class OptimizeJS(RequireJsView):
         bundles = self.registry.collectionOfInterface(IBundleRegistry, prefix="Products.CMFPlone.bundles")
         return bundles
 
-    def results(self):
-        (baseUrl, paths, shims) = self.get_requirejs_config()
-        resource_registry = self.registryResources()
-        bundles = self.get_bundles()
-        result = ""
-        for key, bundle in bundles.items():
-            if bundle.resource:
-                if bundle.resource in resource_registry and resource_registry[bundle.resource].js:
-                    result += results.format(**{'bundle': key})
-        return result
-
-    def optimize(self):
-        (baseUrl, paths, shims) = self.get_requirejs_config()
-        resource_registry = self.registryResources()
-        bundles = self.get_bundles()
-        result = ""
-        for key, bundle in bundles.items():
-            if bundle.resource:
-                if bundle.resource in resource_registry and resource_registry[bundle.resource].js:
-                    if key == 'plone_bbb':
-                        # special case as it needs more includes
-                        list_of_js = self.registry.records['Products.CMFPlone.jslist']
-                        # scripts = self.get_bbb_scripts()
-                        loaded = []
-                        for script_id in list_of_js.value:
-                            if script_id in scripts:
-                                loaded.append(script_id)
-                                src = self.get_data(scripts[script_id])
-                                if src:
-                                    norequire.append(src)
-
-                        # The rest of scripts
-                        for key, script in scripts.items():
-                            if key not in loaded:
-                                src = self.get_data(script)
-                                if src:
-                                    norequire.append(src)
-                        for nore in norequire:
-                            paths += ', \'%s\': \'%s\'' % (nore, nore)
-                        result += optimize % (key, paths, shims, norequire, key, key)
-                    else:
-                        result += optimize % (key, paths, shims, [bundle.resource], key, key)
-        return result
-
-
-bbbplone = """require(%s, function($) {
-  'use strict';
-
-    // initialize only if we are in top frame
-    if (window.parent === window) {
-      $(document).ready(function() {
-        $('body').addClass('pat-bbbplone');
-      });
-    }
-});"""
-
-
-class BBBConfigJsView(RequireJsView):
-    """ bbbplone.js for listjs code """
-
-
-    def get_data(self, script):
-        """
-        Get the src for the script and check expression
-        """
-        src = None
-        if script.enabled:
-            if script.expression:
-                    if script.cooked_expression:
-                        expr = Expression(script.expression)
-                        script.cooked_expression = expr
-                    if self.evaluateExpression(script.cooked_expression, context):
-                        return src
-            url = urlparse(script.url)
-            if url.netloc == '':
-                # Local
-                src = "%s/%s" % (self.base_url(), script.url)
-            else:
-                src = "%s" % (script.url)
-        return src
-
-    def get_config(self):
-        norequire = []
-        # Load the ordered list of js
-        list_of_js = self.registry.records['Products.CMFPlone.jslist']
-        # scripts = self.get_bbb_scripts()
-        loaded = []
-        for script_id in list_of_js.value:
-            if script_id in scripts:
-                loaded.append(script_id)
-                src = self.get_data(scripts[script_id])
-                if src:
-                    norequire.append(src)
-
-        # The rest of scripts
-        for key, script in scripts.items():
-            if key not in loaded:
-                src = self.get_data(script)
-                if src:
-                    norequire.append(src)
-        return norequire
-
     def __call__(self):
-        norequire = self.get_config()
-        self.request.response.setHeader("Content-Type", "application/javascript")
-        return bbbplone % (norequire)
+        """
+        Returns the shims/paths/and include
+        Gets a get parameter with the name of the bundle
+        """
+        (baseUrl, paths, shims) = self.get_requirejs_config()
+        bundles = self.get_bundles()
+        bundle = self.request.get('bundle', None)
+        resources = []
+        if bundle and bundle in bundles:
+            bundle_obj = bundles[bundle]
+            for resource in bundle_obj.resources:
+                resources.append(resource)
+        return json.dumps({
+            'include': resources,
+            'shims': shims,
+            'paths': paths
+            })
 
-
-
-class SaveOptimalJS(BrowserView):
-
-    def __call__(self):
-        # We need to check auth, valid js
-        # TODO
-        if self.request.get('text', None):
-            # Save the file on the resource directory .. registry ...
-            pass

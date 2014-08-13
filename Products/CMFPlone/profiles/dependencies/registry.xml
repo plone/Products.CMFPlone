@@ -6,8 +6,6 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IDateAndTimeSchema"
            prefix="plone" />
-  <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
-           prefix="plone" />
   <record name="Products.CMFPlone.i18nl10n.override_dateformat.Enabled">
     <field type="plone.registry.field.Bool">
       <title>Enabled</title>
@@ -77,6 +75,12 @@
       <title>Frontend development mode</title>
     </field>
     <value>true</value>
+  </record>
+  <record name="Products.CMFPlone.resources.rjs">
+    <field type="plone.registry.field.ASCII">
+      <title>URL of r.js</title>
+    </field>
+    <value>++resource++r.js</value>
   </record>
   <record name="Products.CMFPlone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
@@ -821,6 +825,9 @@
       <element>plone</element>
     </value>
     <value key="enabled">True</value>
+    <value key="jscompilation">++plone++static/plone-compiled.js</value>
+    <value key="csscompilation">++plone++static/plone-compiled.css</value>
+    <value key="last_compilation">original</value>
   </records>
 
   <records prefix="Products.CMFPlone.bundles/plone-legacy"
@@ -833,6 +840,9 @@
       <element>jquery-highlightsearchterms</element>
       <element>cookie_functions.js</element>
     </value>
+    <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
+    <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
+    <value key="compile">False</value>
     <value key="enabled">True</value>
   </records>
 

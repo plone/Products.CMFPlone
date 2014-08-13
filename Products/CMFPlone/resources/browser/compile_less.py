@@ -1,55 +1,59 @@
-from Acquisition import aq_inner
-from Products.PythonScripts.standard import url_quote
 from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceRegistry
-from zope.component import getMultiAdapter
 from zope.component import getUtility
-from Products.CMFPlone.resources.browser.configjs import ConfigJsView
-
+from zope.component import getMultiAdapter
 from urlparse import urlparse
-import re
 
-optimize = """requirejs.optimize({
-    baseUrl: '%s',
-    paths: %s,
-    shims: %s,
-    optimize: "none",
-    include: %s,
-    out: function (text) {
-        document.getElementById('%s').value = text;
-    }
-}, function (buildText) {
-    document.getElementById('%s-debug').value = buildText;
-});
+optimize = """
+<!-- You need less.js Products.CMFPlone.resources.lessc on registry -->
+    <link rel="stylesheet/less" type="text/css" href="http://localhost:8080/Plone/++plone++static/plone.less">
+<!-- generates    <style type="text/css" id="less:Plone-plone-static-plone"> -->
 """
 
 
-class OptimizeLESS(ConfigJsView):
+class OptimizeLESS(BrowserView):
 
     def get_bundles(self):
-        bundles = self.registry.collectionOfInterface(IBundleRegistry, prefix="Products.CMFPlone.bundles")
-        mains = []
-        for key, bundle in bundles.items():
-            mains.append(key)
-        return mains
+        registry = getUtility(IRegistry)
+        bundles = registry.collectionOfInterface(IBundleRegistry, prefix="Products.CMFPlone.bundles")
+        return bundles
 
-
-    def optimize(self):
-        (baseUrl, paths, shims) = self.get_config()
-        bundles = self.get_bundles()
-        result = ""
-        for bundle in bundles:
-            result += optimize % (baseUrl, paths, shims, bundle, bundle)
-        return result
-
-
-class SaveOptimalLESS(BrowserView):
+    def get_resources(self):
+        registry = getUtility(IRegistry)
+        resources = registry.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
+        return resources
 
     def __call__(self):
-        # We need to check auth, valid js
-        # TODO
-        if self.request.get('text', None):
-            # Save the file on the resource directory .. registry ...
-            pass
+        """
+        It gets the bundle name
+        It returns the less file
+        """
+        portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        site_url = portal_state.portal_url()
+
+        bundles = self.get_bundles()
+        bundle = self.request.get('bundle', None)
+        resources = self.get_resources()
+        less_files = []
+        if bundle and bundle in bundles:
+            bundle_obj = bundles[bundle]
+            for resource in bundle_obj.resources:
+                if resource in resources:
+                    for css in resources[resource]:
+                        url = urlparse(css)
+                        if url.netloc == '':
+                            # Local
+                            src = "%s/%s" % (site_url, css)
+                        else:
+                            src = "%s" % (css)
+
+                        extension = url.path.split('.')[-1]
+                        if extension == 'less':
+                            less_files.append(src)
+        return json.dumps({
+            'less': less_files,
+            })
+
+
