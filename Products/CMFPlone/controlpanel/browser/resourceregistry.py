@@ -4,7 +4,6 @@ from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.interfaces import (
     IBundleRegistry, IResourceRegistry,
-    IJSManualResource, ICSSManualResource
 )
 from plone.resource.interfaces import IResourceDirectory
 from Products.CMFPlone.resources.interfaces import (
@@ -49,8 +48,6 @@ class ResourceRegistryControlPanelView(BrowserView):
                 return self.save_file()
             elif action == 'delete-file':
                 return self.delete_file()
-            elif action == 'save-manual':
-                return self.save_manual()
             elif action == 'build':
                 return self.build()
         else:
@@ -78,21 +75,6 @@ class ResourceRegistryControlPanelView(BrowserView):
         self.update_registry_collection(
             registry, IBundleRegistry, "Products.CMFPlone.bundles",
             json.loads(req.get('bundles')))
-
-        return json.dumps({
-            'success': True
-        })
-
-    def save_manual(self):
-        req = self.request
-        registry = getUtility(IRegistry)
-
-        self.update_registry_collection(
-            registry, IJSManualResource, "Products.CMFPlone.manualjs",
-            json.loads(req.get('javascripts')))
-        self.update_registry_collection(
-            registry, ICSSManualResource, "Products.CMFPlone.manualcss",
-            json.loads(req.get('css')))
 
         return json.dumps({
             'success': True
@@ -188,17 +170,9 @@ class ResourceRegistryControlPanelView(BrowserView):
             IResourceRegistry, prefix="Products.CMFPlone.resources")
         bundles = registry.collectionOfInterface(
             IBundleRegistry, prefix="Products.CMFPlone.bundles")
-        javascripts = registry.collectionOfInterface(
-            IJSManualResource, prefix="Products.CMFPlone.manualjs")
-        allcss = registry.collectionOfInterface(
-            ICSSManualResource, prefix="Products.CMFPlone.manualcss")
         for key, resource in resources.items():
             data['resources'][key] = recordsToDict(resource)
         for key, bundle in bundles.items():
             data['bundles'][key] = recordsToDict(bundle)
-        for key, js in javascripts.items():
-            data['javascripts'][key] = recordsToDict(js)
-        for key, css in allcss.items():
-            data['css'][key] = recordsToDict(css)
         data['overrides'] = self.get_overrides()
         return json.dumps(data)
