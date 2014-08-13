@@ -8,6 +8,10 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Minor optimizations and better readable code for indexer
+  ``allowedRolesAndUsers``. Now using a set. No feature change.
+  [jensens]
+
 - folder_position script: make position and id optional.  Default
   position to 'ordered' and id to None, which means: do nothing.
   plone.folder 1.0.5 allows this, making it possible to simply reverse

@@ -122,9 +122,7 @@ def allowedRolesAndUsers(obj):
     """Return a list of roles and users with View permission.
     Used to filter out items you're not allowed to see.
     """
-    allowed = {}
-    for r in rolesForPermissionOn('View', obj):
-        allowed[r] = 1
+    allowed = set(rolesForPermissionOn('View', obj))
     # shortcut roles and only index the most basic system role if the object
     # is viewable by either of those
     if 'Anonymous' in allowed:
@@ -139,12 +137,11 @@ def allowedRolesAndUsers(obj):
     except AttributeError:
         localroles = _mergedLocalRoles(obj)
     for user, roles in localroles.items():
-        for role in roles:
-            if role in allowed:
-                allowed['user:' + user] = 1
+        if allowed.intersection(roles):
+            allowed.update(['user:' + user])
     if 'Owner' in allowed:
-        del allowed['Owner']
-    return list(allowed.keys())
+        allowed.remove('Owner')
+    return list(allowed)
 
 
 @indexer(Interface)
