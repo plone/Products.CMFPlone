@@ -92,22 +92,48 @@ class StylesView(ResourceView):
         # Manual scripts
         registryUtility = getUtility(IRegistry)
         # Load the ordered list of js
-        list_of_css = registryUtility.records['Products.CMFPlone.csslist']
         styles = self.get_bbb_styles()
-        loaded = []
-        for style_id in list_of_css.value:
-            if style_id in styles:
-                loaded.append(style_id)
-                data = self.get_manual_data(styles[style_id])
-                if data:
-                    result.append(data)
-
-        # The rest of scripts
+        to_order = styles.keys()
+        # Quick Sort
+        depends_on = {}
         for key, style in styles.items():
-            if key not in loaded:
-                data = self.get_manual_data(style)
-                if data:
-                    result.append(data)
+            if style.depends is not None or style.depends != '':
+                if style.depends in depends_on:
+                    depends_on[style.depends].append(key)
+                else:
+                    depends_on[style.depends] = [key]
+
+
+        ordered = []
+        depends = {}
+        insert_point = 0
+        # First the ones that are not depending or dependences are not here
+        for key, style in styles.items():
+            if style.depends is None or style.depends == '':
+                ordered.insert(0, key)
+                insert_point += 1
+            else:
+                if style.depends in to_order:
+                    depends[key] = style
+                else:
+                    ordered.insert(len(to_order), key)
+
+        # The dependency ones
+        while len(depends) > 0:
+            to_remove = []
+            for key in depends.keys():
+                if style.depends in ordered:
+                    ordered.insert(ordered.index(style.depends) + 1, key)
+                    to_remove.append(key)
+            for e in to_remove:
+                del depends[e]
+
+        for key in to_order:
+            data = self.get_manual_data(styles[key])
+            if data:
+                result.append(data)
+
+
         return result
 
 

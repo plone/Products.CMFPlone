@@ -23,6 +23,11 @@ configjs = """requirejs.config({
 
 
 class RequireJsView(BrowserView):
+    """ 
+    This view creates the config.js for requirejs with all the registered resources
+
+    It's used on development for the config.js and on compilation for the optimize.js
+    """
 
     @property
     def registry(self):
@@ -48,6 +53,7 @@ class RequireJsView(BrowserView):
         norequire = []
         for requirejs, script in registry.items():
             if script.js:
+                # Main resource js file
                 src = re.sub(r"\.js$", "", script.js)
                 paths[requirejs] = src
                 exports = script.export
@@ -61,6 +67,10 @@ class RequireJsView(BrowserView):
                         shims[requirejs]['deps'] = deps.split(',')
                     if inits != '' and inits is not None:
                         shims[requirejs]['init'] = inits
+            if script.url:
+                # Resources available under name-url name
+                src = script.url
+                paths[requirejs + '-url'] = src
 
         shims_str = str(shims).replace('\'deps\'', 'deps').replace('\'exports\'', 'exports').replace('\'init\': \'', 'init: ').replace('}\'}', '}}')
         return (self.base_url(), str(paths), shims_str)
@@ -75,14 +85,8 @@ class ConfigJsView(RequireJsView):
 
 
 bbbplone = """require([
-<<<<<<< HEAD
   'jquery'  
 ], function($) {
-=======
-  'jquery',
-  'plone'
-], function($, Plone) {
->>>>>>> 7695eaa99df0500e1cb585c2526aab5fd7b6c15b
   'use strict';
 
   require(%s, function(undefined){
@@ -97,13 +101,10 @@ bbbplone = """require([
 
 
 class BBBConfigJsView(RequireJsView):
-    """ bbbplone.js for non-requirejs code """
+    """ bbbplone.js for listjs code """
 
     def get_bbb_scripts(self):
         return self.registry.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.manualjs")
-
-    def get_bbb_order(self):
-        return self.registry.collectionOfInterface(IJSManualResource, prefix="Products.CMFPlone.jslist")
 
     def get_data(self, script):
         """

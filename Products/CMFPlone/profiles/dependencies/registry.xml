@@ -665,27 +665,19 @@
       <value key="js">++resource++mockup/select2/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup-patterns-structure-url"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/structure</value>
-  </records>
-
   <records prefix="Products.CMFPlone.resources/mockup-patterns-structure"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/structure/pattern.js</value>
+      <value key="url">++resource++mockup/structure</value>
       <value key="css">
         <element>++resource++mockup/structure/less/pattern.structure.less</element>
       </value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup-patterns-upload-url"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/upload</value>
-  </records>
-
   <records prefix="Products.CMFPlone.resources/mockup-patterns-upload"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/upload/pattern.js</value>
+      <value key="url">++resource++mockup/upload</value>
       <value key="css">
         <element>++resource++mockup/upload/less/pattern.upload.less</element>
       </value>
@@ -696,14 +688,10 @@
       <value key="js">++resource++mockup/tablesorter/pattern.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup-patterns-tinymce-url"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/tinymce</value>
-  </records>
-
   <records prefix="Products.CMFPlone.resources/mockup-patterns-tinymce"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tinymce/pattern.js</value>
+      <value key="url">++resource++mockup/tinymce</value>
       <value key="css">
         <element>++resource++mockup/tinymce/less/pattern.tinymce.less</element>
       </value>
@@ -757,9 +745,9 @@
       <value key="js">++plone++static/components/ace-builds/src/mode-css.js</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/mockup-ui-url"
+  <records prefix="Products.CMFPlone.resources/mockup-ui"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockupjs/ui</value>
+      <value key="url">++resource++mockupjs/ui</value>
   </records>
 
   <!-- legacy js -->
