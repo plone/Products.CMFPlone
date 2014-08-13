@@ -61,9 +61,15 @@
         />
 
     <subscriber
-        for=".interfaces.settings.IResourceRegistriesSettings
+        for="..interfaces.IResourceRegistry
               plone.registry.interfaces.IRecordModifiedEvent"
-        handler=".cooking.cookWhenChangingSettings"
+        handler=".cook.cookWhenChangingSettings"
+        />
+
+    <subscriber
+        for="..interfaces.IBundleRegistry
+              plone.registry.interfaces.IRecordModifiedEvent"
+        handler=".cook.cookWhenChangingSettings"
         />
 
 

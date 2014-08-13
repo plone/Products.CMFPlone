@@ -18,8 +18,8 @@ class ScriptsView(ResourceView):
         else:
             resources = self.get_resources()
             for resource in bundle.resources:
-                if resource in resources:        
-                    script = resources[bundle.resource]
+                if resource in resources:
+                    script = resources[resource]
                     if script.js:
                         url = urlparse(script.js)
                         if url.netloc == '':

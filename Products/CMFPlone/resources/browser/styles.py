@@ -47,7 +47,7 @@ class StylesView(ResourceView):
             # The bundle resources
             for resource in bundle.resources:
                 if resource in self.resources:        
-                    style = self.resources[bundle.resource]
+                    style = self.resources[resource]
                     for data in self.get_urls(style, bundle):
                         result.append(data)
 
