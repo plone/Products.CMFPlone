@@ -813,11 +813,6 @@
       <value key="deps">jquery</value>
   </records>
 
-  <records prefix="Products.CMFPlone.resources/plone_bbb"
-            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
-      <value key="js">bbbplone.js</value>
-  </records>
-
   <!-- Bundles -->
 
   <records prefix="Products.CMFPlone.bundles/plone"
@@ -826,9 +821,4 @@
     <value key="enabled">True</value>
   </records>
 
-  <records prefix="Products.CMFPlone.bundles/plone_bbb"
-            interface='Products.CMFPlone.resources.interfaces.IBundleRegistry'>
-    <value key="resource">plone_bbb</value>
-    <value key="enabled">True</value>
-  </records>
 </registry>

@@ -1,84 +1,77 @@
 from Acquisition import aq_inner
 from Products.PythonScripts.standard import url_quote
 from Products.Five.browser import BrowserView
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import IBundleRegistry
 from Products.CMFPlone.resources.browser.resource import ResourceView
 from urlparse import urlparse
-from Products.CMFCore.Expression import Expression
-from Products.CMFCore.Expression import createExprContext
 
-
-lessconfig = """
- window.less = {
-    env: "development",
-    logLevel: 2,
-    async: false,
-    fileAsync: false,
-    errorReporting: 'console',
-    poll: 1000,
-    functions: {},
-    dumpLineNumbers: "comments",
-    globalVars: {
-      %s
-    },
-  };
-"""
 
 
 class ScriptsView(ResourceView):
     """ Information for script rendering. """
 
     def get_data(self, bundle, result):
-        resources = self.get_resources()
-        if bundle.resource in resources:        
-            script = resources[bundle.resource]
-            if script.js:
-                url = urlparse(script.js)
-                if url.netloc == '':
-                    # Local
-                    src = "%s/%s" % (self.portal_url, script.js)
-                else:
-                    src = "%s" % (script.js)
+        if self.development is False:
+            result.append({
+                'conditionalcomment' : bundle.conditionalcomment,
+                'src': '%s/%s?version=%s' % (self.portal_url, bundle.jscompilation, bundle.last_compilation)
+                })
+        else:
+            resources = self.get_resources()
+            if bundle.resource in resources:        
+                script = resources[bundle.resource]
+                if script.js:
+                    url = urlparse(script.js)
+                    if url.netloc == '':
+                        # Local
+                        src = "%s/%s" % (self.portal_url, script.js)
+                    else:
+                        src = "%s" % (script.js)
 
-                data = {'conditionalcomment' : bundle.conditionalcomment,
-                        'src': src}
-                result.append(data)
+                    data = {'conditionalcomment' : bundle.conditionalcomment,
+                            'src': src}
+                    result.append(data)
 
-    def lessvariables(self):
-        registryUtility = getUtility(IRegistry)
-        return registryUtility.records['Products.CMFPlone.lessvariables'].value
 
-    def less_config(self):
-        registry = self.lessvariables()
-        result = ""
-        result += "sitePath: '%s',\n" % self.portal_url
-        result += "isPlone: true,\n"
+    def get_manual_data(self, script):
+        """
+        Gets the information of a specific style
+        Style is a CSS manual entry
+        """
+        data = None
+        if script.enabled:
+            if script.expression:
+                    if script.cooked_expression:
+                        expr = Expression(script.expression)
+                        script.cooked_expression = expr
+                    if self.evaluateExpression(script.cooked_expression, context):
+                        return data
+            url = urlparse(script.url)
+            if url.netloc == '':
+                # Local
+                src = "%s/%s" % (self.portal_url, script.url)
+            else:
+                src = "%s" % (script.url)
 
-        for name, value in registry.items():
-            result += "'%s': '\"%s\"',\n" % (name, value)
-
-        for name, value in self.get_resources().items():
-            for css in value.css:
-                url = urlparse(css)
-                if url.netloc == '':
-                    # Local
-                    src = "%s/%s" % (self.portal_url, css)
-                else:
-                    src = "%s" % (css)
-                result += "'%s': '\"%s\"',\n" % (name, src)
-
-        return lessconfig % result
-
+            data = {'conditionalcomment' : script.conditionalcomment,
+                    'src': src}
+            return data
 
     def scripts(self):
         """ 
         The requirejs scripts, the ones that are not resources
         are loaded on configjs.py
         """
-        result = []
-        if self.development():
+        result = []        
+        # We always add jquery resource 
+        result.append({
+            'src':'%s/%s' % (
+                self.portal_url, 
+                self.registry.records['Products.CMFPlone.resources/jquery.js'].value)
+            ,
+            'conditionalcomment': None
+        })
+
+        if self.development:
             # We need to add require.js and config.js
             result.append({
                 'src':'%s/%s' % (
@@ -99,13 +92,6 @@ class ScriptsView(ResourceView):
             result.append({
                 'src':'%s/%s' % (
                     self.portal_url, 
-                    self.registry.records['Products.CMFPlone.resources/jquery'].js)
-                ,
-                'conditionalcomment': None
-            })
-            result.append({
-                'src':'%s/%s' % (
-                    self.portal_url, 
                     self.registry.records['Products.CMFPlone.resources.requirejs'].value)
                 ,
 
@@ -118,5 +104,9 @@ class ScriptsView(ResourceView):
                 ,
                 'conditionalcomment': None
             })
-        result.extend(self.ordered_result())
+
+        result.extend(self.ordered_bundles_result())
+        manual_result = self.get_manual_order('js')
+        result.extend(manual_result)
+
         return result

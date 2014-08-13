@@ -2,7 +2,10 @@ from Acquisition import aq_inner, aq_base, aq_parent
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.interfaces import (
-    IBundleRegistry, IResourceRegistry)
+    IBundleRegistry,
+    IResourceRegistry,
+    ICSSManualResource,
+    IJSManualResource)
 from plone.app.layout.viewlets.common import ViewletBase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.Expression import createExprContext
@@ -12,6 +15,11 @@ from Products.CMFCore.utils import getToolByName
 
 class ResourceView(ViewletBase):
     """ Information for script rendering. """
+
+    @property
+    def development(self):
+        return self.registry.records['Products.CMFPlone.resources.development'].value
+
 
     def evaluateExpression(self, expression, context):
         """Evaluate an object's TALES condition to see if it should be
@@ -59,10 +67,19 @@ class ResourceView(ViewletBase):
         return self.registry.collectionOfInterface(
             IResourceRegistry, prefix="Products.CMFPlone.resources")
 
-    def development(self):
-        return self.registry.records['Products.CMFPlone.resources.development']
+    def get_manual_resources(self, kind):
+        if kind == 'js':
+            return self.registry.collectionOfInterface(
+                IJSManualResource, prefix="Products.CMFPlone.manualjs")
+        elif kind == 'css':
+            return self.registry.collectionOfInterface(
+                ICSSManualResource, prefix="Products.CMFPlone.manualcss")
 
-    def bundles(self):
+
+    def get_cooked_bundles(self):
+        """ 
+        Get the cooked bundles
+        """
         bundles = self.get_bundles()
         for key, bundle in bundles.items():
             if bundle.enabled:
@@ -76,12 +93,15 @@ class ResourceView(ViewletBase):
                         continue
                 yield key, bundle
 
-    def ordered_result(self):
+    def ordered_bundles_result(self):
+        """ 
+        It gets the ordered result of bundles
+        """
         result = []
         # The first one
         inserted = []
         depends_on = {}
-        for key, bundle in self.bundles():
+        for key, bundle in self.get_cooked_bundles():
             if bundle.depends is None or bundle.depends == '':
                 # its the first one
                 self.get_data(bundle, result)
@@ -108,5 +128,51 @@ class ResourceView(ViewletBase):
         # THe ones that does not get the dependencies
         for bundle in depends_on.values():
             self.get_data(bundle, result)
+
+        return result
+
+    def get_manual_order(self, kind):
+        resources = self.get_manual_resources(kind)
+        to_order = resources.keys()
+        result = []
+        depends_on = {}
+        for key, resource in resources.items():
+            if resource.depends is not None or resource.depends != '':
+                if resource.depends in depends_on:
+                    depends_on[resource.depends].append(key)
+                else:
+                    depends_on[resource.depends] = [key]
+
+
+        ordered = []
+        depends = {}
+        insert_point = 0
+        # First the ones that are not depending or dependences are not here
+        for key, resource in resources.items():
+            if resource.depends is None or resource.depends == '':
+                ordered.insert(0, key)
+                insert_point += 1
+            else:
+                if resource.depends in to_order:
+                    depends[key] = resource
+                else:
+                    ordered.insert(len(to_order), key)
+
+        # The dependency ones
+        while len(depends) > 0:
+            to_remove = []
+            for key in depends.keys():
+                if resources[key].depends in ordered:
+                    ordered.insert(ordered.index(resources[key].depends) + 1, key)
+                    to_remove.append(key)
+            for e in to_remove:
+                del depends[e]
+            if len(to_remove) == 0:
+                continue
+
+        for key in to_order:
+            data = self.get_manual_data(resources[key])
+            if data:
+                result.append(data)
 
         return result
