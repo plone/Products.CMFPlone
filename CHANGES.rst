@@ -8,6 +8,16 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- Minor overhaul of CatalogTool.py - no feature changes!
+  Optimizations and better readable code for indexer
+  ``allowedRolesAndUsers``: now using a set.
+  Change if/elif/else to oneliner boolean expression in ``is_folderish``
+  indexer.
+  Usage of AccessControl 3 style decorators for security declarations.
+  Minor reformattings to make code-analysis happy.
+  [jensens]
+
+
 - PLIP 13260: Migration cut, copy and paste into browser views.
   [saily]
 
