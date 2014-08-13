@@ -83,6 +83,12 @@ class IBundleRegistry(zope.interface.Interface):
         default=True,
         required=False)
 
+    compile = schema.Bool(
+        title=_(u"Does your bundle contains any RequireJS or LESS file?"),
+        description=_(u"If its true and you modify this bundle you need to build it before production"),
+        default=True,
+        required=False)
+
     depends = schema.ASCIILine(
         title=_(u"Depends on another bundle"),
         description=_(u"In case you want to be the last: *, in case its the first should be empty"),
