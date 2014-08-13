@@ -3,7 +3,7 @@ from Products.PythonScripts.standard import url_quote
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceRegistry, IJSManualResource
+from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
