@@ -311,7 +311,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         result.append('Anonymous')
         return result
 
-    security.declarePrivate('indexObject')
+    @security.private
     def indexObject(self, object, idxs=None):
         """Add object to catalog.
 
@@ -322,7 +322,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
             idxs = []
         self.reindexObject(object, idxs)
 
-    security.declareProtected(ManageZCatalogEntries, 'catalog_object')
+    @security.protected(ManageZCatalogEntries)
     def catalog_object(self, object, uid=None, idxs=None,
                        update_metadata=1, pghandler=None):
         if idxs is None:
@@ -340,7 +340,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         ZCatalog.catalog_object(self, w, uid, idxs,
                                 update_metadata, pghandler=pghandler)
 
-    security.declareProtected(ManageZCatalogEntries, 'catalog_object')
+    @security.protected(ManageZCatalogEntries)
     def uncatalog_object(self, *args, **kwargs):
         self._increment_counter()
         return BaseTool.uncatalog_object(self, *args, **kwargs)
@@ -350,11 +350,11 @@ class CatalogTool(PloneBaseTool, BaseTool):
             self._counter = Length()
         self._counter.change(1)
 
-    security.declarePrivate('getCounter')
+    @security.private
     def getCounter(self):
         return self._counter is not None and self._counter() or 0
 
-    security.declareProtected(SearchZCatalog, 'searchResults')
+    @security.protected(SearchZCatalog)
     def searchResults(self, REQUEST=None, **kw):
         """Calls ZCatalog.searchResults with extra arguments that
         limit the results to what the user is allowed to see.
@@ -373,9 +373,8 @@ class CatalogTool(PloneBaseTool, BaseTool):
         user = _getAuthenticatedUser(self)
         kw['allowedRolesAndUsers'] = self._listAllowedRolesAndUsers(user)
 
-        if not show_inactive and not _checkPermission(
-            AccessInactivePortalContent, self):
-
+        if not show_inactive \
+           and not _checkPermission(AccessInactivePortalContent, self):
             kw['effectiveRange'] = DateTime()
 
         return ZCatalog.searchResults(self, REQUEST, **kw)
@@ -403,7 +402,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         return super(CatalogTool, self).search(**kw)
 
-    security.declareProtected(ManageZCatalogEntries, 'clearFindAndRebuild')
+    @security.protected(ManageZCatalogEntries)
     def clearFindAndRebuild(self):
         """Empties catalog, then finds all contentish objects (i.e. objects
            with an indexObject method), and reindexes them.
@@ -411,7 +410,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
         """
         def indexObject(obj, path):
             if (base_hasattr(obj, 'indexObject') and
-                safe_callable(obj.indexObject)):
+                    safe_callable(obj.indexObject)):
                 try:
                     obj.indexObject()
                 except TypeError:
@@ -420,10 +419,13 @@ class CatalogTool(PloneBaseTool, BaseTool):
                     pass
         self.manage_catalogClear()
         portal = aq_parent(aq_inner(self))
-        portal.ZopeFindAndApply(portal, search_sub=True,
-            apply_func=indexObject)
+        portal.ZopeFindAndApply(
+            portal,
+            search_sub=True,
+            apply_func=indexObject
+        )
 
-    security.declareProtected(ManageZCatalogEntries, 'manage_catalogRebuild')
+    @security.protected(ManageZCatalogEntries)
     def manage_catalogRebuild(self, RESPONSE=None, URL1=None):
         """Clears the catalog and indexes all objects with an 'indexObject'
         method. This may take a long time.
@@ -438,10 +440,10 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
         if RESPONSE is not None:
             RESPONSE.redirect(
-              URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
-              urllib.quote('Catalog Rebuilt\n'
-                           'Total time: %s\n'
-                           'Total CPU time: %s'
-                                % (repr(elapse), repr(c_elapse))))
+                URL1 + '/manage_catalogAdvanced?manage_tabs_message=' +
+                urllib.quote('Catalog Rebuilt\n'
+                             'Total time: %s\n'
+                             'Total CPU time: %s' %
+                             (repr(elapse), repr(c_elapse))))
 
 InitializeClass(CatalogTool)
