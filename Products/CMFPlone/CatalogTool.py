@@ -1,12 +1,8 @@
-import re
-import time
-import urllib
-
 from AccessControl import ClassSecurityInfo
+from AccessControl.PermissionRole import rolesForPermissionOn
 from AccessControl.Permissions import manage_zcatalog_entries as \
     ManageZCatalogEntries
 from AccessControl.Permissions import search_zcatalog as SearchZCatalog
-from AccessControl.PermissionRole import rolesForPermissionOn
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -15,28 +11,29 @@ from App.special_dtml import DTMLFile
 from BTrees.Length import Length
 from DateTime import DateTime
 from OFS.interfaces import IOrderedContainer
-from plone.indexer import indexer
-from plone.indexer.interfaces import IIndexableObject
+from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
+from Products.CMFCore.CatalogTool import _mergedLocalRoles
+from Products.CMFCore.permissions import AccessInactivePortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.CatalogTool import _mergedLocalRoles
-from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
-from Products.CMFCore.permissions import AccessInactivePortalContent
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import IPloneCatalogTool
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_callable
+from Products.CMFPlone.utils import safe_unicode
 from Products.ZCatalog.ZCatalog import ZCatalog
+from plone.i18n.normalizer.base import mapUnicode
+from plone.indexer import indexer
+from plone.indexer.interfaces import IIndexableObject
 from zope.component import queryMultiAdapter
 from zope.interface import Interface
 from zope.interface import implements
 from zope.interface import providedBy
-
-from Products.CMFPlone.PloneBaseTool import PloneBaseTool
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import safe_callable
-from Products.CMFPlone.utils import safe_unicode
-from Products.CMFPlone.interfaces import IPloneCatalogTool
-
-from plone.i18n.normalizer.base import mapUnicode
+import re
+import time
+import urllib
 
 _marker = object()
 
