@@ -3,9 +3,7 @@ from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.resources.interfaces import (
     IBundleRegistry,
-    IResourceRegistry,
-    ICSSManualResource,
-    IJSManualResource)
+    IResourceRegistry)
 from plone.app.layout.viewlets.common import ViewletBase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.Expression import createExprContext
@@ -66,15 +64,6 @@ class ResourceView(ViewletBase):
     def get_resources(self):
         return self.registry.collectionOfInterface(
             IResourceRegistry, prefix="Products.CMFPlone.resources")
-
-    # def get_manual_resources(self, kind):
-    #     if kind == 'js':
-    #         return self.registry.collectionOfInterface(
-    #             IJSManualResource, prefix="Products.CMFPlone.manualjs")
-    #     elif kind == 'css':
-    #         return self.registry.collectionOfInterface(
-    #             ICSSManualResource, prefix="Products.CMFPlone.manualcss")
-
 
     def get_cooked_bundles(self):
         """ 
