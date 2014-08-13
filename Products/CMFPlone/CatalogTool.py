@@ -146,8 +146,10 @@ def allowedRolesAndUsers(obj):
 
 @indexer(Interface)
 def object_provides(obj):
-    return tuple([i.__identifier__ for i in providedBy(obj).flattened()
-        if i.__identifier__ not in BLACKLISTED_INTERFACES])
+    return tuple(
+        [i.__identifier__ for i in providedBy(obj).flattened()
+         if i.__identifier__ not in BLACKLISTED_INTERFACES]
+    )
 
 
 def zero_fill(matchobj):
@@ -234,12 +236,7 @@ def is_folderish(obj):
     # If the object explicitly states it doesn't want to be treated as a
     # structural folder, don't argue with it.
     folderish = bool(getattr(aq_base(obj), 'isPrincipiaFolderish', False))
-    if not folderish:
-        return False
-    elif INonStructuralFolder.providedBy(obj):
-        return False
-    else:
-        return folderish
+    return folderish and not INonStructuralFolder.providedBy(obj)
 
 
 @indexer(Interface)
