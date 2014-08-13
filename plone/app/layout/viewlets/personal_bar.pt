@@ -13,14 +13,14 @@
     </li>
     <li tal:repeat="action view/user_actions">
       <a href=""
-         tal:attributes="action"
-         tal:content="action/title"
-         i18n:translate="">
-          action title
+         tal:attributes="action">
+          <tal:actionname tal:content="action/title">
+           action title
+          </tal:actionname>
+          <tal:islogout condition="python:action['id'] == 'personaltools-logout'">
+            <span class="icon-logout"></span>
+          </tal:islogout>
       </a>
-    </li>
-    <li>
-      <a href="#">Log out <span class="icon-logout"></span></a>
     </li>
   </ul>
 </li>
