@@ -76,7 +76,7 @@ class ResourceRegistryControlPanelView(BrowserView):
             registry, IResourceRegistry, "Products.CMFPlone.resources",
             json.loads(req.get('resources')))
         self.update_registry_collection(
-            registry, IResourceRegistry, "Products.CMFPlone.bundles",
+            registry, IBundleRegistry, "Products.CMFPlone.bundles",
             json.loads(req.get('bundles')))
 
         return json.dumps({
