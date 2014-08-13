@@ -4,6 +4,7 @@ from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceReg
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from urlparse import urlparse
+import json
 
 optimize = """
 <!-- You need less.js Products.CMFPlone.resources.lessc on registry -->
@@ -41,7 +42,7 @@ class OptimizeLESS(BrowserView):
             bundle_obj = bundles[bundle]
             for resource in bundle_obj.resources:
                 if resource in resources:
-                    for css in resources[resource]:
+                    for css in resources[resource].css:
                         url = urlparse(css)
                         if url.netloc == '':
                             # Local

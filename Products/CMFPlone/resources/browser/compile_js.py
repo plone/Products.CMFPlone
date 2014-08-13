@@ -7,7 +7,7 @@ from Products.CMFPlone.resources.interfaces import IBundleRegistry, IResourceReg
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from Products.CMFPlone.resources.browser.configjs import RequireJsView
-
+import json
 from urlparse import urlparse
 import re
 
