@@ -29,6 +29,8 @@ def recordsToDict(record):
 
 def updateRecordFromDict(record, data):
     for name in record.__schema__.names():
+        if name in ['last_compilation']:
+            continue
         if name in data:
             # almost all string data needs to be str, not unicode
             val = data[name]
