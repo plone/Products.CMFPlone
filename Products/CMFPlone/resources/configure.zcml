@@ -2,6 +2,10 @@
     xmlns="http://namespaces.zope.org/zope"
     i18n_domain="plone.registry">
 
+    <!-- subscribe to event when theme is applied so we can
+         check for bundles enabled or disabled -->
+    <subscriber handler=".onThemeApplied" />
+
     <include package=".browser" />
     <include package=".exportimport" />
 
