@@ -40,32 +40,6 @@
         permission="zope.Public"
         />
 
-    <browser:page
-        for="*"
-        name="not_compiled_js.js"
-        class=".compile_js.notCompiledJS"
-        permission="zope.Public"
-        />
-
-    <browser:page
-        for="*"
-        name="compile_js"
-        class=".compile_js.OptimizeJS"
-        permission="zope.Public"
-        />
-
-    <browser:page
-        for="*"
-        name="compile_less"
-        class=".compile_less.OptimizeLESS"
-        permission="zope.Public"
-        />
-
-    <browser:resource
-        name="r.js"
-        file="r.js"
-        />
-
     <subscriber
         for="..interfaces.IResourceRegistry
               plone.registry.interfaces.IRecordModifiedEvent"

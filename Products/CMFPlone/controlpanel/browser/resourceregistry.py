@@ -1,4 +1,3 @@
-from Products.Five import BrowserView
 import json
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
@@ -10,6 +9,9 @@ from Products.CMFPlone.resources.interfaces import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME)
 from StringIO import StringIO
 from zExceptions import NotFound
+from Products.CMFPlone.resources.browser.configjs import RequireJsView
+from plone.memoize.view import memoize
+from urlparse import urlparse
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -46,7 +48,57 @@ def updateRecordFromDict(record, data):
             setattr(record, name, val)
 
 
-class ResourceRegistryControlPanelView(BrowserView):
+class OverrideFolderManager(object):
+
+    def __init__(self):
+        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
+        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
+            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
+        self.container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+
+    def save_file(self, filepath, data):
+        resource_name, resource_filepath = filepath.split('/', 1)
+        if resource_name not in self.container:
+            self.container.makeDirectory(resource_name)
+        folder = self.container[resource_name]
+        fi = StringIO(data)
+        folder.writeFile(resource_filepath, fi)
+        return folder[resource_filepath]
+
+    def delete_file(self, filepath):
+        resource_name, resource_filepath = filepath.split('/', 1)
+
+        if resource_name not in self.container:
+            return
+        folder = self.container[resource_name]
+        try:
+            fi = folder[resource_filepath]
+        except NotFound:
+            return
+        parent = self.get_parent(fi)
+        del parent[fi.getId()]
+        if filepath not in self.container:
+            return
+        folder = self.container[resource_name]
+        try:
+            fi = folder[resource_filepath]
+        except NotFound:
+            return
+        parent = self.get_parent(fi)
+        del parent[fi.getId()]
+
+    def get_parent(self, item):
+        path = '/'.join(item.getPhysicalPath()[:-1])
+        return self.context.restrictedTraverse(path)
+
+    def list_dir(self, container):
+        if hasattr(container, 'listDirectory'):
+            return container.listDirectory()
+        else:
+            return container.objectIds()
+
+
+class ResourceRegistryControlPanelView(RequireJsView):
 
     def __call__(self):
         req = self.request
@@ -58,13 +110,24 @@ class ResourceRegistryControlPanelView(BrowserView):
                 return self.save_file()
             elif action == 'delete-file':
                 return self.delete_file()
-            elif action == 'build':
-                return self.build()
+            elif action == 'js-build-config':
+                return self.js_build_config()
+            elif action == 'less-build-config':
+                return self.less_build_config()
+            elif action == 'save-js-build':
+                return self.save_js_build()
+            elif action == 'save-less-build':
+                return self.save_less_build()
         else:
             return self.index()
 
-    def update_registry_collection(self, registry, itype, prefix, newdata):
-        rdata = registry.collectionOfInterface(itype, prefix=prefix)
+    @property
+    @memoize
+    def registry(self):
+        return getUtility(IRegistry)
+
+    def update_registry_collection(self, itype, prefix, newdata):
+        rdata = self.registry.collectionOfInterface(itype, prefix=prefix)
         for key, data in newdata.items():
             if key not in rdata:
                 record = rdata.add(key)
@@ -77,13 +140,12 @@ class ResourceRegistryControlPanelView(BrowserView):
 
     def save_registry(self):
         req = self.request
-        registry = getUtility(IRegistry)
 
         self.update_registry_collection(
-            registry, IResourceRegistry, "Products.CMFPlone.resources",
+            IResourceRegistry, "Products.CMFPlone.resources",
             json.loads(req.get('resources')))
         self.update_registry_collection(
-            registry, IBundleRegistry, "Products.CMFPlone.bundles",
+            IBundleRegistry, "Products.CMFPlone.bundles",
             json.loads(req.get('bundles')))
 
         return json.dumps({
@@ -93,58 +155,102 @@ class ResourceRegistryControlPanelView(BrowserView):
     def save_file(self):
         req = self.request
         resource_path = req.form.get('filepath').split('++plone++')[-1]
-        resource_name, resource_filepath = resource_path.split('/', 1)
-
-        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
-        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
-        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
-        if resource_name not in container:
-            container.makeDirectory(resource_name)
-        folder = container[resource_name]
-        fi = StringIO(req.form['data'])
-        folder.writeFile(resource_filepath, fi)
+        overrides = OverrideFolderManager()
+        overrides.save_file(resource_path, req.form['data'])
         return json.dumps({
             'success': True
         })
 
-    def get_parent(self, item):
-        path = '/'.join(item.getPhysicalPath()[:-1])
-        return self.context.restrictedTraverse(path)
-
-    def list_dir(self, container):
-        if hasattr(container, 'listDirectory'):
-            return container.listDirectory()
-        else:
-            return container.objectIds()
-
     def delete_file(self):
         req = self.request
         resource_path = req.form.get('filepath').split('++plone++')[-1]
-        resource_name, resource_filepath = resource_path.split('/', 1)
+        overrides = OverrideFolderManager()
+        overrides.delete_file(resource_path)
 
-        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
-        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
-        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
-        if resource_name not in container:
-            return
-        folder = container[resource_name]
-        try:
-            fi = folder[resource_filepath]
-        except NotFound:
-            return
-        parent = self.get_parent(fi)
-        del parent[fi.getId()]
+        return json.dumps({
+            'success': True
+        })
 
-    def build(self):
-        pass
+    def get_bundles(self):
+        return self.registry.collectionOfInterface(
+            IBundleRegistry, prefix="Products.CMFPlone.bundles")
+
+    def get_resources(self):
+        return self.registry.collectionOfInterface(
+            IResourceRegistry, prefix="Products.CMFPlone.resources")
+
+    def less_build_config(self):
+        site_url = self.context.portal_url()
+        bundles = self.get_bundles()
+        bundle = self.request.get('bundle', None)
+        resources = self.get_resources()
+        less_files = []
+        if bundle and bundle in bundles:
+            bundle_obj = bundles[bundle]
+            for resource in bundle_obj.resources:
+                if resource in resources:
+                    for css in resources[resource].css:
+                        url = urlparse(css)
+                        if url.netloc == '':
+                            # Local
+                            src = "%s/%s" % (site_url, css)
+                        else:
+                            src = "%s" % (css)
+
+                        extension = url.path.split('.')[-1]
+                        if extension == 'less':
+                            less_files.append(src)
+        return json.dumps({
+            'less': less_files,
+        })
+
+    def js_build_config(self):
+        (baseUrl, paths, shims) = self.get_requirejs_config()
+        bundles = self.get_bundles()
+        resources = self.get_resources()
+
+        bundle = self.request.get('bundle', None)
+        includes = []
+        if bundle and bundle in bundles:
+            bundle_obj = bundles[bundle]
+            for resource_name in bundle_obj.resources:
+                # need to check if this resource has a js file
+                # it could just be a css resource
+                try:
+                    resource = resources[resource_name]
+                    if resource.js:
+                        includes.append(resource_name)
+                except:
+                    # skip if missing
+                    pass
+        return json.dumps({
+            'include': includes,
+            'shims': shims,
+            'paths': paths
+        })
+
+    def save_js_build(self):
+        overrides = OverrideFolderManager()
+        req = self.request
+        filepath = 'static/%s-compiled.js' % req.form['bundle']
+        overrides.save_file(filepath, req.form['data'])
+        return json.dumps({
+            'success': True
+        })
+
+    def save_less_build(self):
+        overrides = OverrideFolderManager()
+        req = self.request
+        filepath = 'static/%s-compiled.css' % req.form['bundle']
+        data = '\n'.join([req.form[k] for k in req.form.keys()
+                          if k.startswith('data-')])
+        overrides.save_file(filepath, data)
+        return json.dumps({
+            'success': True
+        })
 
     def get_overrides(self):
-        persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
-        if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-            persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
-        container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
+        overrides = OverrideFolderManager()
 
         def _read_folder(folder):
             files = []
@@ -155,7 +261,7 @@ class ResourceRegistryControlPanelView(BrowserView):
                 else:
                     files.append(item)
             return files
-        files = _read_folder(container)
+        files = _read_folder(overrides.container)
         results = []
         site_path = self.context.getPhysicalPath()
         for fi in files:
@@ -166,20 +272,24 @@ class ResourceRegistryControlPanelView(BrowserView):
         return results
 
     def config(self):
-        registry = getUtility(IRegistry)
         base_url = self.context.absolute_url()
+        resources = self.get_resources()
+        try:
+            less_url = resources['lessc'].url
+        except KeyError:
+            less_url = '++plone++static/components/less/dist/less-1.7.4.min.js'
+
         data = {
             'resources': {},
             'bundles': {},
             'javascripts': {},
             'css': {},
             'baseUrl': base_url,
-            'manageUrl': '%s/@@resourceregistry-controlpanel' % base_url
+            'manageUrl': '%s/@@resourceregistry-controlpanel' % base_url,
+            'lessUrl': '%s/%s' % (base_url, less_url),
+            'lessConfigUrl': '%s/less-variables.js' % base_url
         }
-        resources = registry.collectionOfInterface(
-            IResourceRegistry, prefix="Products.CMFPlone.resources")
-        bundles = registry.collectionOfInterface(
-            IBundleRegistry, prefix="Products.CMFPlone.bundles")
+        bundles = self.get_bundles()
         for key, resource in resources.items():
             data['resources'][key] = recordsToDict(resource)
         for key, bundle in bundles.items():

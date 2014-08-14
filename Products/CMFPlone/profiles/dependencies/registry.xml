@@ -76,12 +76,6 @@
     </field>
     <value>true</value>
   </record>
-  <record name="Products.CMFPlone.resources.rjs">
-    <field type="plone.registry.field.ASCII">
-      <title>URL of r.js</title>
-    </field>
-    <value>++resource++r.js</value>
-  </record>
   <record name="Products.CMFPlone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
       <title>URL of require.js</title>
@@ -754,6 +748,11 @@
   <records prefix="Products.CMFPlone.resources/mockup-ui"
             interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
       <value key="url">++resource++mockupjs/ui</value>
+  </records>
+
+  <records prefix="Products.CMFPlone.resources/rjs"
+            interface='Products.CMFPlone.resources.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/r.js/dist/r.js</value>           
   </records>
 
   <!-- legacy js -->
