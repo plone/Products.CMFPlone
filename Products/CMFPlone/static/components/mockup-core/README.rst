@@ -86,10 +86,19 @@ Status of builds
 Changelog
 =========
 
+v1.2.10 - 2014-08-13
+--------------------
+
+* dependency version upgrades.
+  [thet]
+
 v1.2.9 - 2014-08-12
 -------------------
 
-* fix tests and better karm reporting
+* upgrade to jQuery 1.11.1
+  [thet]
+
+* fix tests and better karma reporting
   [thet]
 
 v1.2.8 - 2014-08-11
