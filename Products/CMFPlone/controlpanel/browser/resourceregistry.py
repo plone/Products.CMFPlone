@@ -50,7 +50,8 @@ def updateRecordFromDict(record, data):
 
 class OverrideFolderManager(object):
 
-    def __init__(self):
+    def __init__(self, context):
+        self.context = context
         persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
         if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
             persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
@@ -155,7 +156,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def save_file(self):
         req = self.request
         resource_path = req.form.get('filepath').split('++plone++')[-1]
-        overrides = OverrideFolderManager()
+        overrides = OverrideFolderManager(self.context)
         overrides.save_file(resource_path, req.form['data'])
         return json.dumps({
             'success': True
@@ -164,7 +165,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def delete_file(self):
         req = self.request
         resource_path = req.form.get('filepath').split('++plone++')[-1]
-        overrides = OverrideFolderManager()
+        overrides = OverrideFolderManager(self.context)
         overrides.delete_file(resource_path)
 
         return json.dumps({
@@ -220,7 +221,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
                     resource = resources[resource_name]
                     if resource.js:
                         includes.append(resource_name)
-                except:
+                except KeyError:
                     # skip if missing
                     pass
         return json.dumps({
@@ -230,27 +231,29 @@ class ResourceRegistryControlPanelView(RequireJsView):
         })
 
     def save_js_build(self):
-        overrides = OverrideFolderManager()
+        overrides = OverrideFolderManager(self.context)
         req = self.request
         filepath = 'static/%s-compiled.js' % req.form['bundle']
         overrides.save_file(filepath, req.form['data'])
         return json.dumps({
-            'success': True
+            'success': True,
+            'filepath': '++plone++' + filepath
         })
 
     def save_less_build(self):
-        overrides = OverrideFolderManager()
+        overrides = OverrideFolderManager(self.context)
         req = self.request
         filepath = 'static/%s-compiled.css' % req.form['bundle']
         data = '\n'.join([req.form[k] for k in req.form.keys()
                           if k.startswith('data-')])
         overrides.save_file(filepath, data)
         return json.dumps({
-            'success': True
+            'success': True,
+            'filepath': '++plone++' + filepath
         })
 
     def get_overrides(self):
-        overrides = OverrideFolderManager()
+        overrides = OverrideFolderManager(self.context)
 
         def _read_folder(folder):
             files = []
@@ -275,9 +278,13 @@ class ResourceRegistryControlPanelView(RequireJsView):
         base_url = self.context.absolute_url()
         resources = self.get_resources()
         try:
-            less_url = resources['lessc'].url
+            less_url = resources['lessc'].js
         except KeyError:
             less_url = '++plone++static/components/less/dist/less-1.7.4.min.js'
+        try:
+            rjs_url = resources['rjs'].js
+        except KeyError:
+            rjs_url = '++plone++static/components/r.js/dist/r.js'
 
         data = {
             'resources': {},
@@ -287,7 +294,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
             'baseUrl': base_url,
             'manageUrl': '%s/@@resourceregistry-controlpanel' % base_url,
             'lessUrl': '%s/%s' % (base_url, less_url),
-            'lessConfigUrl': '%s/less-variables.js' % base_url
+            'lessConfigUrl': '%s/less-variables.js' % base_url,
+            'rjsUrl': rjs_url
         }
         bundles = self.get_bundles()
         for key, resource in resources.items():

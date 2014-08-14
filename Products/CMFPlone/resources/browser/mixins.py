@@ -1,7 +1,4 @@
 from Products.Five.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-from Acquisition import aq_inner
-from Products.PythonScripts.standard import url_quote
 from zope.component import getUtility
 from zope.component import getMultiAdapter
 from urlparse import urlparse
@@ -13,10 +10,10 @@ from Products.CMFPlone.resources.interfaces import IResourceRegistry
 lessconfig = """
  window.less = {
     env: "development",
-    logLevel: 2,
+    logLevel: %i,
     async: false,
     fileAsync: false,
-    errorReporting: 'console',
+    errorReporting: window.lessErrorReporting || 'console',
     poll: 1000,
     functions: {},
     dumpLineNumbers: "comments",
@@ -38,12 +35,13 @@ class LessConfiguration(BrowserView):
 
     def resource_registry(self):
         registryUtility = getUtility(IRegistry)
-        return registryUtility.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
+        return registryUtility.collectionOfInterface(
+            IResourceRegistry, prefix="Products.CMFPlone.resources")
 
     def __call__(self):
         registry = self.registry()
         portal_state = getMultiAdapter((self.context, self.request),
-            name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         site_url = portal_state.portal_url()
         result = ""
         result += "sitePath: '\"%s\"',\n" % site_url
@@ -67,11 +65,17 @@ class LessConfiguration(BrowserView):
                 else:
                     src = "%s" % (css)
                 # less vars can't have dots on it
-                result += "'%s': '\"%s\"',\n" % (name.replace('.','_'), src)
+                result += "'%s': '\"%s\"',\n" % (name.replace('.', '_'), src)
 
-        self.request.response.setHeader("Content-Type", "application/javascript")
+        self.request.response.setHeader("Content-Type",
+                                        "application/javascript")
 
-        return lessconfig % result
+        try:
+            debug_level = int(self.request.get('debug', 2))
+        except:
+            debug_level = 2
+        return lessconfig % (debug_level, result)
+
 
 class LessDependency(BrowserView):
     """
@@ -80,11 +84,12 @@ class LessDependency(BrowserView):
 
     def registry(self):
         registryUtility = getUtility(IRegistry)
-        return registryUtility.collectionOfInterface(IResourceRegistry, prefix="Products.CMFPlone.resources")
+        return registryUtility.collectionOfInterface(
+            IResourceRegistry, prefix="Products.CMFPlone.resources")
 
     def __call__(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         site_url = portal_state.portal_url()
 
         registry = self.registry()
@@ -100,7 +105,7 @@ class LessDependency(BrowserView):
                     else:
                         src = "%s" % (css)
 
-                    result += "@import url('%s');\n" % css
+                    result += "@import url('%s');\n" % src
 
         self.request.response.setHeader("Content-Type", "stylesheet/less")
 

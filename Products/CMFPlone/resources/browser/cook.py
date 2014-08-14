@@ -10,9 +10,7 @@ from plone.subrequest import subrequest
 from datetime import datetime
 from plone.resource.interfaces import IResourceDirectory
 from StringIO import StringIO
-from zExceptions import NotFound
 from zope.component.hooks import getSite
-
 
 
 def cookWhenChangingSettings(settings, event):
