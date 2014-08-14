@@ -29,7 +29,6 @@ define([
         $( "#edit-zone nav li" ).has( "a .plone-toolbar-caret" ).click(function(e) {
           e.preventDefault();
           e.stopPropagation();
-          console.log('first');
           if ($(this).hasClass("active")) {
             $( "#edit-zone" ).css("right", "0");
             $( "html" ).css("margin-left", "-120px");
@@ -109,7 +108,6 @@ define([
         $( "#edit-zone nav > ul > li" ).has( "a .plone-toolbar-caret" ).on('click', function(event) {
           event.preventDefault();
           event.stopPropagation();
-          console.log('second');
           if ($(this).hasClass("active")) {
             $( "#edit-zone nav li" ).removeClass("active");
           } else {
