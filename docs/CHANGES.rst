@@ -8,6 +8,10 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
+- Fix getFolderContents to no longer ignore 'show_inactive' in contentFilter.
+  This is part of a fix for https://dev.plone.org/ticket/8353.
+  [pbauer]
+
 - Fix link to the mail_password_form on the login_form for sites using VHM
   [fRiSi]
 

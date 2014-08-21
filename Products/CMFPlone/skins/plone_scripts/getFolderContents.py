@@ -31,8 +31,11 @@ if contentFilter.get('path', None) is None:
     path['depth'] = 1
     contentFilter['path'] = path
 
-show_inactive = mtool.checkPermission(
-                    'Access inactive portal content', context)
+if 'show_inactive' in contentFilter:
+    show_inactive = contentFilter.get('show_inactive')
+else:
+    show_inactive = mtool.checkPermission(
+        'Access inactive portal content', context)
 
 # Provide batching hints to the catalog
 b_start = int(context.REQUEST.get('b_start', 0))
