@@ -1,4 +1,4 @@
-<tal:sections 
+<tal:sections
      xmlns:tal="http://xml.zope.org/namespaces/tal"
      xmlns:metal="http://xml.zope.org/namespaces/metal"
      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
@@ -18,8 +18,8 @@
         </div>
 
         <div class="collapse navbar-collapse" id="portal-globalnav-collapse">
-          <ul class="nav navbar-nav" 
-              id="portal-globalnav" 
+          <ul class="nav navbar-nav"
+              id="portal-globalnav"
               tal:define="selected_tab python:view.selected_portal_tab">
               <tal:tabs tal:repeat="tab portal_tabs">
                 <li tal:define="tid tab/id"

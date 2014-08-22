@@ -4,7 +4,7 @@
      <div tal:condition="not: history">—</div>
      <ol id="history-list" tal:condition="history">
          <li tal:repeat="item history" class="historyRecord">
-             <tal:historyItem 
+             <tal:historyItem
                     define="rhComments item/comments|nothing;
                                 actor item/actor;
                                 actor_name python:actor and actor.get('fullname','username') or item['actorid'];
