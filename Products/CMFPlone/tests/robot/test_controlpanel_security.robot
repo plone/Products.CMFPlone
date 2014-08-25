@@ -32,6 +32,18 @@ Scenario: Enable users to select their own passwords in the Security Control Pan
     and the registration form
    Then the password field is shown in the page
 
+Scenario: Enable user folders in the Security Control Panel
+  Given a logged-in site administrator
+    and the security control panel
+   When I enable self registration
+    and I enable users to select their own passwords
+    and I enable user folders
+    and I save the settings
+  Given an anonymous user
+   When I register to the site
+    and I login to the site
+   Then the user folder should be created
+
 Scenario: Enable use email as login in the Security Control Panel
   Given a logged-in site administrator
     and the security control panel
@@ -126,6 +138,11 @@ The email field is shown in the page
 
 The username field is not shown in the page
   Element Should Not Be Visible  xpath=//input[@id='form-widgets-username']
+
+The user folder should be created
+  Go to  ${PLONE_URL}/Members/joe
+  Element Should Contain  css=h1.documentFirstHeading  joe
+  Page should Not contain  This page does not seem to exist
 
 # XXX: Here we can't really test that this is a uuid, since it's random, so
 # we just check that user id is not equal to username or email

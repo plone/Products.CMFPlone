@@ -43,6 +43,15 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
             id="test-folder",
             title=u"Test Folder"
         )
+        # XXX: this is needed for tests that rely on the Members folder to be
+        # present. This folder is otherwise created by a setup handler in
+        # ATContentTypes, but that package is optional now.
+        if 'Members' not in portal.keys():
+            portal.invokeFactory(
+                "Folder",
+                id="Members",
+                title=u"Members"
+            )
 
     def tearDownPloneSite(self, portal):
         login(portal, 'admin')

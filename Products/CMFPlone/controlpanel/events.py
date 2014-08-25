@@ -73,6 +73,9 @@ def handle_enable_user_folders(obj, event):
     portal = getSite()
     value = event.newValue
 
+    membership = getToolByName(portal, 'portal_membership')
+    membership.memberareaCreationFlag = value
+
     # support the 'my folder' user action #8417
     portal_actions = getToolByName(portal, 'portal_actions', None)
     if portal_actions is not None:
