@@ -55,6 +55,10 @@ Changelog
   resources are registered in the portal_css tool
   [keul]
 
+- Small scoping fix in locking js code
+  [do3cc]
+
+
 4.3.3 (2014-02-19)
 ------------------
 - Fix incorrect use of dict get method in CatalogTool.search, introduced by
