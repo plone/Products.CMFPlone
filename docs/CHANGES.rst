@@ -84,6 +84,9 @@ Changelog
 - Stop unload-protection from popping up needlessly if tinyMCE is used on tabbed forms
   [href]
 
+- Small scoping fix in locking js code
+  [do3cc]
+
 
 4.3.1 (unreleased)
 ------------------
