@@ -38,7 +38,7 @@ plone.UnlockHandler = {
     },
     
     refresh: function() {
-        if (this.submitting) {return;}
+        if (plone.UnlockHandler.submitting) {return;}
         $.get(plone.UnlockHandler._baseUrl() + '/@@plone_lock_operations/refresh_lock');
     },
     
