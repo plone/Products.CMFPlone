@@ -28,6 +28,9 @@ Changelog
 - Fix JavaScript to work with recent jQuery (>= 1.9) versions.
   [thet]
 
+- Small scoping fix in locking js code
+  [do3cc]
+
 
 5.0a2 (2014-04-20)
 ------------------
