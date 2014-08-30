@@ -9,7 +9,6 @@ from controlpanel import IEditingSchema
 from controlpanel import IMaintenanceSchema
 from controlpanel import INavigationSchema
 from controlpanel import ISearchSchema
-from controlpanel import ISecuritySchema
 from controlpanel import ISiteSchema
 from controlpanel import ITypesSchema
 from events import IConfigurationChangedEvent

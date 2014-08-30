@@ -7,6 +7,4 @@
   <include package=".bbb" />
   <include package=".browser" />
 
-  <include file="events.zcml" />
-
 </configure>
