@@ -7,7 +7,6 @@
   <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
   <adapter factory=".navigation.NavigationControlPanelAdapter" />
   <adapter factory=".search.SearchControlPanelAdapter" />
-  <adapter factory=".security.SecurityControlPanelAdapter" />
   <adapter factory=".site.SiteControlPanelAdapter" />
 
 </configure>
