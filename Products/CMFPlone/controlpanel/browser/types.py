@@ -1,28 +1,22 @@
+# -*- coding: utf-8 -*-
+from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
+from Products.CMFPlone.interfaces import ITypesSchema
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from operator import itemgetter
+from plone.app.workflow.remap import remap_workflow
+from plone.autoform.form import AutoExtensibleForm
+from plone.memoize.instance import memoize
 from z3c.form import button
 from z3c.form import form
-
-from Products.CMFPlone.interfaces import ITypesSchema
-
-from Products.CMFPlone import PloneMessageFactory as _
-
-from plone.autoform.form import AutoExtensibleForm
-
-from plone.app.workflow.remap import remap_workflow
-from plone.memoize.instance import memoize
-
 from zope.component import getUtility
-
 from zope.event import notify
-
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
-
-from Acquisition import aq_inner
-
-from Products.CMFPlone.controlpanel.events import ConfigurationChangedEvent
 
 
 def format_description(text, request=None):
@@ -279,10 +273,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 )
             types.append(dict(id=v.value, title=title))
 
-        def _key(v):
-            return v['title']
-
-        types.sort(key=_key)
+        types.sort(key=itemgetter('title'))
         return types
 
     def selected_type_title(self):
@@ -343,7 +334,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 wf_id = chain[0]
                 wf = getattr(portal_workflow, wf_id)
                 title = translate(
-                    wf.title,
+                    safe_unicode(wf.title),
                     domain='plone',
                     context=self.request
                 )
@@ -351,7 +342,7 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                     id=wf.id,
                     title=title,
                     description=format_description(
-                        wf.description,
+                        safe_unicode(wf.description),
                         self.request
                     )
                 )
@@ -361,8 +352,11 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
         if default_workflow == '[none]':
             return empty_workflow_dict
 
-        default_title = translate(default_workflow.title, domain='plone',
-                                  context=self.request)
+        default_title = translate(
+            safe_unicode(default_workflow.title),
+            domain='plone',
+            context=self.request
+        )
         return dict(id='(Default)',
                     title=_(
                         u"label_default_workflow_title",
@@ -388,17 +382,17 @@ class TypesControlPanel(AutoExtensibleForm, form.EditForm):
                 )
             workflows.append(dict(id=v.value, title=title))
 
-        def _key(v):
-            return v['title']
-
-        workflows.sort(key=_key)
+        workflows.sort(key=itemgetter('title'))
 
         default_workflow = self.default_workflow(False)
         if self.type_id and default_workflow != '[none]':
             # Only offer a default workflow option on a real type
             default_workflow = self.default_workflow(False)
-            default_title = translate(default_workflow.title,
-                                      domain='plone', context=self.request)
+            default_title = translate(
+                safe_unicode(default_workflow.title),
+                domain='plone',
+                context=self.request
+            )
             workflows.insert(
                 0,
                 dict(

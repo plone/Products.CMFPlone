@@ -8,6 +8,11 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- type controlpanel: Resolved problem with workflow selection form as it 
+  was breaking if state title had non-ascii characters. see also 
+  https://github.com/plone/plone.app.controlpanel/pull/26
+  [lewicki, jensens]
+
 - Minor overhaul of CatalogTool.py - no feature changes!
   Optimizations and better readable code for indexer
   ``allowedRolesAndUsers``: now using a set.
