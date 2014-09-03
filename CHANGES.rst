@@ -33,6 +33,11 @@ Changelog
   https://github.com/plone/Products.CMFPlone/issues/290
   [khink]
 
+- PLIP 10359: Migrate usergroups controlpanel to ``z3c.form`` and move it from
+  plone.app.controlpanel to Products.CMFPlone. Fix and extend tests and add
+  robot tests.
+  [ferewuz]
+
 
 5.0a3 (2014-11-01)
 ------------------
