@@ -289,8 +289,9 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def config(self):
         base_url = self.context.absolute_url()
         resources = self.get_resources()
+
         try:
-            less_url = resources['lessc'].js
+            less_url = self.registry['Products.CMFPlone.resources.lessc']
         except KeyError:
             less_url = '++plone++static/components/less/dist/less-1.7.4.min.js'
         try:
