@@ -119,6 +119,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
                 return self.save_js_build()
             elif action == 'save-less-build':
                 return self.save_less_build()
+            elif action == 'save-less-variables':
+                return self.save_less_variables()
         else:
             return self.index()
 
@@ -252,6 +254,16 @@ class ResourceRegistryControlPanelView(RequireJsView):
             'filepath': '++plone++' + filepath
         })
 
+    def save_less_variables(self):
+        data = {}
+        for key, val in json.loads(self.request.form.get('data')).items():
+            # need to convert to str: unicode
+            data[key.encode('utf8')] = val
+        self.registry['Products.CMFPlone.lessvariables'] = data
+        return json.dumps({
+            'success': True
+        })
+
     def get_overrides(self):
         overrides = OverrideFolderManager(self.context)
 
@@ -287,6 +299,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             rjs_url = '++plone++static/components/r.js/dist/r.js'
 
         data = {
+            'lessvariables': self.registry['Products.CMFPlone.lessvariables'],
             'resources': {},
             'bundles': {},
             'javascripts': {},
