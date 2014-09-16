@@ -8,7 +8,7 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 - remove BBB code-patches for securemailhost. warn explicit if DateTime.ISO
-  is called. adresses #109.
+  is called. Remove CMF 2.3 compat. Adresses issue #109.
   [jensens]
 
 - type controlpanel: Resolved problem with workflow selection form as it 
