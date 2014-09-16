@@ -1,9 +1,5 @@
-from Acquisition import aq_inner
-from Products.PythonScripts.standard import url_quote
-from Products.Five.browser import BrowserView
 from Products.CMFPlone.resources.browser.resource import ResourceView
 from urlparse import urlparse
-
 
 
 class ScriptsView(ResourceView):
@@ -12,9 +8,11 @@ class ScriptsView(ResourceView):
     def get_data(self, bundle, result):
         if self.development is False:
             result.append({
-                'conditionalcomment' : bundle.conditionalcomment,
-                'src': '%s/%s?version=%s' % (self.portal_url, bundle.jscompilation, bundle.last_compilation)
-                })
+                'conditionalcomment': bundle.conditionalcomment,
+                'src': '%s/%s?version=%s' % (
+                    self.portal_url, bundle.jscompilation,
+                    bundle.last_compilation)
+            })
         else:
             resources = self.get_resources()
             # if bundle.compile:
@@ -29,60 +27,51 @@ class ScriptsView(ResourceView):
                         else:
                             src = "%s" % (script.js)
 
-                        data = {'conditionalcomment' : bundle.conditionalcomment,
+                        data = {'conditionalcomment': bundle.conditionalcomment,  # noqa
                                 'src': src}
                         result.append(data)
 
     def scripts(self):
-        """ 
+        """
         The requirejs scripts, the ones that are not resources
         are loaded on configjs.py
         """
-        result = []        
-        # We always add jquery resource 
+        result = []
+        # We always add jquery resource
         result.append({
-            'src':'%s/%s' % (
-                self.portal_url, 
-                self.registry.records['Products.CMFPlone.resources/jquery.js'].value)
-            ,
+            'src': '%s/%s' % (
+                self.portal_url,
+                self.registry.records['plone.resources/jquery.js'].value),
             'conditionalcomment': None
         })
-
 
         if self.development:
             # We need to add require.js and config.js
             result.append({
-                'src':'%s/%s' % (
-                    self.portal_url, 
-                    self.registry.records['Products.CMFPlone.resources.less-variables'].value)
-                ,
-
+                'src': '%s/%s' % (
+                    self.portal_url,
+                    self.registry.records['plone.resources.less-variables'].value),  # noqa
                 'conditionalcomment': None
             })
             result.append({
-                'src':'%s/%s' % (
-                    self.portal_url, 
-                    self.registry.records['Products.CMFPlone.resources.lessc'].value)
-                ,
-
+                'src': '%s/%s' % (
+                    self.portal_url,
+                    self.registry.records['plone.resources.lessc'].value),
                 'conditionalcomment': None
             })
             result.append({
-                'src':'%s/%s' % (
-                    self.portal_url, 
-                    self.registry.records['Products.CMFPlone.resources.requirejs'].value)
-                ,
-
+                'src': '%s/%s' % (
+                    self.portal_url,
+                    self.registry.records['plone.resources.requirejs'].value),
                 'conditionalcomment': None
             })
             result.append({
-                'src':'%s/%s' % (
-                    self.portal_url, 
-                    self.registry.records['Products.CMFPlone.resources.configjs'].value)
-                ,
+                'src': '%s/%s' % (
+                    self.portal_url,
+                    self.registry.records['plone.resources.configjs'].value),
                 'conditionalcomment': None
             })
-            
+
         result.extend(self.ordered_bundles_result())
 
         return result

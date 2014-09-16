@@ -1,6 +1,4 @@
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
@@ -41,12 +39,10 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
         """
 
         resources = self.registry.collectionOfInterface(
-                         IResourceRegistry,
-                         prefix="Products.CMFPlone.resources")
+            IResourceRegistry, prefix="plone.resources")
 
         bundles = self.registry.collectionOfInterface(
-                         IBundleRegistry,
-                         prefix="Products.CMFPlone.bundles")
+            IBundleRegistry, prefix="plone.bundles")
         if 'plone-legacy' in bundles:
             legacy = bundles['plone-legacy']
         else:
@@ -69,10 +65,12 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                     add = False
                     continue
                 if key in ('position-before', 'insert-before'):
-                    position = ('before', queryUtility(IIDNormalizer).normalize(str(value)))
+                    position = ('before', queryUtility(
+                        IIDNormalizer).normalize(str(value)))
                     continue
                 if key in ('position-after', 'insert-after'):
-                    position = ('after', queryUtility(IIDNormalizer).normalize(str(value)))
+                    position = ('after', queryUtility(
+                        IIDNormalizer).normalize(str(value)))
                     continue
                 if key in ('position-top', 'insert-top'):
                     position = ('*',)

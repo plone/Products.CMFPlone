@@ -20,9 +20,9 @@ def cookWhenChangingSettings(settings, event):
     # search for bundles, cook css/js for each that is not compile
     registry = getUtility(IRegistry)
     bundles = registry.collectionOfInterface(
-        IBundleRegistry, prefix="Products.CMFPlone.bundles")
+        IBundleRegistry, prefix="plone.bundles")
     resources = registry.collectionOfInterface(
-        IResourceRegistry, prefix="Products.CMFPlone.resources")
+        IResourceRegistry, prefix="plone.resources")
 
     if event.record.fieldName == 'last_compilation':
         return

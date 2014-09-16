@@ -33,7 +33,7 @@ class RequireJsView(BrowserView):
 
     def registryResources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="Products.CMFPlone.resources")
+            IResourceRegistry, prefix="plone.resources")
 
     def base_url(self):
         portal_state = getMultiAdapter((self.context, self.request),

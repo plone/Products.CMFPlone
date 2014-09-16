@@ -145,10 +145,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
         req = self.request
 
         self.update_registry_collection(
-            IResourceRegistry, "Products.CMFPlone.resources",
+            IResourceRegistry, "plone.resources",
             json.loads(req.get('resources')))
         self.update_registry_collection(
-            IBundleRegistry, "Products.CMFPlone.bundles",
+            IBundleRegistry, "plone.bundles",
             json.loads(req.get('bundles')))
 
         return json.dumps({
@@ -176,11 +176,11 @@ class ResourceRegistryControlPanelView(RequireJsView):
 
     def get_bundles(self):
         return self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="Products.CMFPlone.bundles")
+            IBundleRegistry, prefix="plone.bundles")
 
     def get_resources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="Products.CMFPlone.resources")
+            IResourceRegistry, prefix="plone.resources")
 
     def less_build_config(self):
         site_url = self.context.portal_url()
@@ -259,7 +259,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         for key, val in json.loads(self.request.form.get('data')).items():
             # need to convert to str: unicode
             data[key.encode('utf8')] = val
-        self.registry['Products.CMFPlone.lessvariables'] = data
+        self.registry['plone.lessvariables'] = data
         return json.dumps({
             'success': True
         })
@@ -291,7 +291,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         resources = self.get_resources()
 
         try:
-            less_url = self.registry['Products.CMFPlone.resources.lessc']
+            less_url = self.registry['plone.resources.lessc']
         except KeyError:
             less_url = '++plone++static/components/less/dist/less-1.7.4.min.js'
         try:
@@ -300,7 +300,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             rjs_url = '++plone++static/components/r.js/dist/r.js'
 
         data = {
-            'lessvariables': self.registry['Products.CMFPlone.lessvariables'],
+            'lessvariables': self.registry['plone.lessvariables'],
             'resources': {},
             'bundles': {},
             'javascripts': {},

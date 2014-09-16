@@ -31,12 +31,12 @@ class LessConfiguration(BrowserView):
 
     def registry(self):
         registryUtility = getUtility(IRegistry)
-        return registryUtility.records['Products.CMFPlone.lessvariables'].value
+        return registryUtility.records['plone.lessvariables'].value
 
     def resource_registry(self):
         registryUtility = getUtility(IRegistry)
         return registryUtility.collectionOfInterface(
-            IResourceRegistry, prefix="Products.CMFPlone.resources")
+            IResourceRegistry, prefix="plone.resources")
 
     def __call__(self):
         registry = self.registry()
@@ -85,7 +85,7 @@ class LessDependency(BrowserView):
     def registry(self):
         registryUtility = getUtility(IRegistry)
         return registryUtility.collectionOfInterface(
-            IResourceRegistry, prefix="Products.CMFPlone.resources")
+            IResourceRegistry, prefix="plone.resources")
 
     def __call__(self):
         portal_state = getMultiAdapter((self.context, self.request),

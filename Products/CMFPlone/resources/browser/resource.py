@@ -16,8 +16,7 @@ class ResourceView(ViewletBase):
 
     @property
     def development(self):
-        return self.registry.records['Products.CMFPlone.resources.development'].value
-
+        return self.registry.records['plone.resources.development'].value
 
     def evaluateExpression(self, expression, context):
         """Evaluate an object's TALES condition to see if it should be
@@ -59,14 +58,14 @@ class ResourceView(ViewletBase):
 
     def get_bundles(self):
         return self.registry.collectionOfInterface(
-            IBundleRegistry, prefix="Products.CMFPlone.bundles")
+            IBundleRegistry, prefix="plone.bundles")
 
     def get_resources(self):
         return self.registry.collectionOfInterface(
-            IResourceRegistry, prefix="Products.CMFPlone.resources")
+            IResourceRegistry, prefix="plone.resources")
 
     def get_cooked_bundles(self):
-        """ 
+        """
         Get the cooked bundles
         """
         bundles = self.get_bundles()
@@ -83,7 +82,7 @@ class ResourceView(ViewletBase):
                 yield key, bundle
 
     def ordered_bundles_result(self):
-        """ 
+        """
         It gets the ordered result of bundles
         """
         result = []
@@ -152,7 +151,7 @@ class ResourceView(ViewletBase):
     #         to_remove = []
     #         for key in depends.keys():
     #             if resources[key].depends in ordered:
-    #                 ordered.insert(ordered.index(resources[key].depends) + 1, key)
+    #                 ordered.insert(ordered.index(resources[key].depends) + 1, key)  # noqa
     #                 to_remove.append(key)
     #         for e in to_remove:
     #             del depends[e]
