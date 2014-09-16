@@ -893,11 +893,16 @@
     <value key="enabled">True</value>
   </records>
 
-  <records prefix="plone.patternoptions/pickadate"
-           interface="Products.CMFPlone.interfaces.IPatternConfiguration">
-    <value key="configuration">{
-      "selectYears": 200
-    }</value>
-  </records>
+  <record name="plone.patternoptions">
+    <field type="plone.registry.field.Dict">
+      <title>Patterns configuration</title>
+      <description>Base pattern configuration options</description>
+      <key_type type="plone.registry.field.ASCIILine" />
+      <value_type type="plone.registry.field.Text" />
+    </field>
+    <value>
+      <element key="pickadate">{"selectYears": 200}</element>
+    </value>
+  </record>
 
 </registry>

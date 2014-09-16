@@ -121,6 +121,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
                 return self.save_less_build()
             elif action == 'save-less-variables':
                 return self.save_less_variables()
+            elif action == 'save-pattern-options':
+                return self.save_pattern_options()
         else:
             return self.index()
 
@@ -264,6 +266,16 @@ class ResourceRegistryControlPanelView(RequireJsView):
             'success': True
         })
 
+    def save_pattern_options(self):
+        data = {}
+        for key, val in json.loads(self.request.form.get('data')).items():
+            # need to convert to str: unicode
+            data[key.encode('utf8')] = val
+        self.registry['plone.patternoptions'] = data
+        return json.dumps({
+            'success': True
+        })
+
     def get_overrides(self):
         overrides = OverrideFolderManager(self.context)
 
@@ -309,7 +321,8 @@ class ResourceRegistryControlPanelView(RequireJsView):
             'manageUrl': '%s/@@resourceregistry-controlpanel' % base_url,
             'lessUrl': '%s/%s' % (base_url, less_url),
             'lessConfigUrl': '%s/less-variables.js' % base_url,
-            'rjsUrl': rjs_url
+            'rjsUrl': rjs_url,
+            'patternoptions': self.registry['plone.patternoptions']
         }
         bundles = self.get_bundles()
         for key, resource in resources.items():

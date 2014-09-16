@@ -33,4 +33,3 @@ from breadcrumbs import IHideFromBreadcrumbs
 from workflow import IWorkflowChain
 from resources import IResourceRegistry
 from resources import IBundleRegistry
-from patterns import IPatternConfiguration
