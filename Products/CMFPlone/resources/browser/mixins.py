@@ -5,7 +5,7 @@ from urlparse import urlparse
 
 
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import IResourceRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
 
 lessconfig = """
  window.less = {

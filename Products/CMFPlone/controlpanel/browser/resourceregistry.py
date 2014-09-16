@@ -1,7 +1,7 @@
 import json
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import (
+from Products.CMFPlone.interfaces import (
     IBundleRegistry, IResourceRegistry,
 )
 from plone.resource.interfaces import IResourceDirectory

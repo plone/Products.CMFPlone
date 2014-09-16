@@ -1,7 +1,7 @@
 from Acquisition import aq_inner, aq_base, aq_parent
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import (
+from Products.CMFPlone.interfaces import (
     IBundleRegistry,
     IResourceRegistry)
 from plone.app.layout.viewlets.common import ViewletBase

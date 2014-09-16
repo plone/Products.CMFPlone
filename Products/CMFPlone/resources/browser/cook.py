@@ -1,6 +1,6 @@
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.resources.interfaces import (
+from Products.CMFPlone.interfaces.resources import (
     IBundleRegistry,
     IResourceRegistry,
     OVERRIDE_RESOURCE_DIRECTORY_NAME)

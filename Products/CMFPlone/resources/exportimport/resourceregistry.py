@@ -2,8 +2,8 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.resources.interfaces import IResourceRegistry
-from Products.CMFPlone.resources.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
 
