@@ -9,7 +9,7 @@ def ISO(self):
     warn('Calls to `DateTime.ISO()` should be replaced with '
          '`DateTime.ISO8601()` to avoid implicit changes to GMT in '
          'expressions like `DateTime(obj.ModificationTime())`.',
-          DeprecationWarning, stacklevel=2)
+         DeprecationWarning, stacklevel=2)
     return self.ISO8601()
 
 
