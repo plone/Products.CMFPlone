@@ -28,7 +28,11 @@ def applyPatches():
     MT.deleteLocalRoles = patch(MT.deleteLocalRoles)
     MT.deleteMembers = patch(MT.deleteMembers)
 
-    from Products.CMFCore.MemberDataTool import MemberData as MD
+    try:
+        # XXX CMF 2.3 compatibility, but does it still make sense?
+        from Products.CMFCore.MemberDataTool import MemberAdapter as MD
+    except ImportError:
+        from Products.CMFCore.MemberDataTool import MemberData as MD
     original_setProperties = MD.setProperties
 
     def setProperties(self, properties=None, REQUEST=None, **kw):
@@ -50,7 +54,7 @@ def applyPatches():
         GroupsTool.removePrincipalFromGroup)
 
     from Products.PluggableAuthService.PluggableAuthService import \
-        PluggableAuthService as PAS
+         PluggableAuthService as PAS
     PAS.userFolderAddUser = patch(PAS.userFolderAddUser)
     PAS.userFolderEditUser = patch(PAS.userFolderEditUser)
     PAS.userFolderDelUsers = patch(PAS.userFolderDelUsers)
