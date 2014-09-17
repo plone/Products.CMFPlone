@@ -6,7 +6,6 @@ log = logging.getLogger("MailDataManager")
 
 
 # BBB remove when zope.sendmail 3.8.0 is released.
-# note: looks like 4.0 is next version. when will it happen?
 def catchAllExceptions(func):
     def _catch(*args, **kwargs):
         try:

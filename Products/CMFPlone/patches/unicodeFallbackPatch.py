@@ -10,10 +10,10 @@
 # Therefor these patches will probably stay here for quite a while.
 
 # import hacks
-from .unicodehacks import new__call__
-from .unicodehacks import _nulljoin
-from .unicodehacks import _unicode_replace
-from .unicodehacks import FasterStringIO
+from unicodehacks import new__call__
+from unicodehacks import _nulljoin
+from unicodehacks import _unicode_replace
+from unicodehacks import FasterStringIO
 
 # import the poor victims of our monkey patches
 from zope.tal import talinterpreter
