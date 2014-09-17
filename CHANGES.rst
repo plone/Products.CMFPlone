@@ -7,6 +7,9 @@ Changelog
 
 5.0a3 (unreleased)
 ------------------
+- remove BBB code-patches for securemailhost. warn explicit if DateTime.ISO
+  is called. Remove CMF 2.3 compat. Adresses issue #109.
+  [jensens]
 
 - type controlpanel: Resolved problem with workflow selection form as it 
   was breaking if state title had non-ascii characters. see also 
@@ -41,10 +44,10 @@ Changelog
 ------------------
 
 - Added timezone selection to add site page
-  [pysailor, yenzenz]
+  [pysailor, jensens]
 
 - Added date date and time controlpanel (moved over from plone.app.event).
-  [yenzenz. thet]
+  [jensens. thet]
 
 - Remove DL/DT/DD's from portal messages, portlet templates and others.
   https://github.com/plone/Products.CMFPlone/issues/153
