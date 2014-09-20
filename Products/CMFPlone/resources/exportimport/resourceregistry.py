@@ -6,6 +6,7 @@ from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
+from datetime import datetime
 
 
 def importResRegistry(context, reg_id, reg_title, filename):
@@ -119,3 +120,5 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                             res_id)
                     else:
                         legacy.resources.append(res_id)
+                if 'plone.resources.last_legacy_import' in self.registry.records:
+                    self.registry.records['plone.resources.last_legacy_import'].value = datetime.now()

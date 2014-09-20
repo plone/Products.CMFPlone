@@ -1,7 +1,5 @@
-from Acquisition import aq_inner
-from Products.PythonScripts.standard import url_quote
-from Products.Five.browser import BrowserView
 from Products.CMFPlone.resources.browser.resource import ResourceView
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 from urlparse import urlparse
 
 
@@ -37,6 +35,12 @@ class StylesView(ResourceView):
         and stores it on the result list
         """
         if self.development is False:
+            if bundle.compile is False:
+                # Its a legacy css bundle
+                if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
+                    # We need to compile
+                    cookWhenChangingSettings(self.context, bundle)
+
             result.append({
                 'rel': 'stylesheet',
                 'conditionalcomment' : bundle.conditionalcomment,

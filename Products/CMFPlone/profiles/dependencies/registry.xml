@@ -835,6 +835,14 @@
       <value key="js">mark_special_links.js</value>
   </records>
 
+  <record name="plone.resources.last_legacy_import">
+    <field type="plone.registry.field.Datetime">
+      <title>Last legacy js/css import date</title>
+      <description>It's used to decide if its needed to compile or not the production css/js</description>
+    </field>
+    <value>2014-08-14 00:00:00</value>
+  </record>
+
 
   <!-- Mixins vars for less with the paths -->
   <record name="plone.lessvariables">

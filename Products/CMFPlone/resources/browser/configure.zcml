@@ -40,17 +40,5 @@
         permission="zope.Public"
         />
 
-    <subscriber
-        for="Products.CMFPlone.interfaces.resources.IResourceRegistry
-              plone.registry.interfaces.IRecordModifiedEvent"
-        handler=".cook.cookWhenChangingSettings"
-        />
-
-    <subscriber
-        for="Products.CMFPlone.interfaces.resources.IBundleRegistry
-              plone.registry.interfaces.IRecordModifiedEvent"
-        handler=".cook.cookWhenChangingSettings"
-        />
-
 
 </configure>

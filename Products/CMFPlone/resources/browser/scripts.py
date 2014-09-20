@@ -1,5 +1,6 @@
 from Products.CMFPlone.resources.browser.resource import ResourceView
 from urlparse import urlparse
+from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 
 
 class ScriptsView(ResourceView):
@@ -7,6 +8,12 @@ class ScriptsView(ResourceView):
 
     def get_data(self, bundle, result):
         if self.development is False:
+            if bundle.compile is False:
+                # Its a legacy css bundle
+                if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
+                    # We need to compile
+                    cookWhenChangingSettings(self.context, bundle)
+    
             result.append({
                 'conditionalcomment': bundle.conditionalcomment,
                 'src': '%s/%s?version=%s' % (
@@ -15,7 +22,6 @@ class ScriptsView(ResourceView):
             })
         else:
             resources = self.get_resources()
-            # if bundle.compile:
             for resource in bundle.resources:
                 if resource in resources:
                     script = resources[resource]

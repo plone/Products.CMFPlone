@@ -18,6 +18,10 @@ class ResourceView(ViewletBase):
     def development(self):
         return self.registry.records['plone.resources.development'].value
 
+    @property
+    def last_legacy_import(self):
+        return self.registry.records['plone.resources.last_legacy_import'].value
+
     def evaluateExpression(self, expression, context):
         """Evaluate an object's TALES condition to see if it should be
         displayed.
