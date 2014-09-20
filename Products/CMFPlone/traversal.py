@@ -1,7 +1,7 @@
 from plone.resource.traversal import ResourceTraverser
 from zope.component import getUtility
 from plone.resource.interfaces import IResourceDirectory
-from Products.CMFPlone.resources.interfaces import (
+from Products.CMFPlone.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME)
 
 

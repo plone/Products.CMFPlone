@@ -41,13 +41,13 @@
         />
 
     <subscriber
-        for="..interfaces.IResourceRegistry
+        for="Products.CMFPlone.interfaces.resources.IResourceRegistry
               plone.registry.interfaces.IRecordModifiedEvent"
         handler=".cook.cookWhenChangingSettings"
         />
 
     <subscriber
-        for="..interfaces.IBundleRegistry
+        for="Products.CMFPlone.interfaces.resources.IBundleRegistry
               plone.registry.interfaces.IRecordModifiedEvent"
         handler=".cook.cookWhenChangingSettings"
         />
