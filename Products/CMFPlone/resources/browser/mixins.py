@@ -16,6 +16,7 @@ lessconfig = """
     errorReporting: window.lessErrorReporting || 'console',
     poll: 1000,
     functions: {},
+    relativeUrls: true,
     dumpLineNumbers: "comments",
     globalVars: {
       %s
