@@ -204,7 +204,7 @@ overlay should remain open
     Wait until element is visible  css=div.modal-wrapper
 
 I close the overlay
-    Click Element  css=div.modal-header a.close
+    Click Element  css=div.plone-modal-header a.close
 
 overlay should close
     Wait until keyword succeeds  30  1  Page should not contain element  css=div.plone-modal-dialog
