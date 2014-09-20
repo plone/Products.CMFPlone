@@ -9,6 +9,9 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFCore.Expression import createExprContext
 from zope.component import getMultiAdapter
 from Products.CMFCore.utils import getToolByName
+from plone.app.theming.utils import getCurrentTheme
+from plone.app.theming.utils import isThemeEnabled
+from plone.app.theming.utils import getTheme
 
 
 class ResourceView(ViewletBase):
@@ -73,8 +76,19 @@ class ResourceView(ViewletBase):
         Get the cooked bundles
         """
         bundles = self.get_bundles()
+        # Check if its Diazo enabled
+        if isThemeEnabled(self.request):
+            theme = getCurrentTheme()
+            themeObj = getTheme(theme)
+            enabled_diazo_bundles = themeObj.enabled_bundles
+            disabled_diazo_bundles = themeObj.disabled_bundles
+        else:
+            enabled_diazo_bundles = []
+            disabled_diazo_bundles = []
         for key, bundle in bundles.items():
-            if bundle.enabled:
+            # The diazo manifest is more important than the disabled bundle on registry
+            # We can access the site with diazo.off=1 without diazo bundles
+            if (bundle.enabled or key in enabled_diazo_bundles) and (key not in disabled_diazo_bundles):
                 # check expression
                 if bundle.expression:
                     if bundle.cooked_expression:

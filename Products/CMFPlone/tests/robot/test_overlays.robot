@@ -194,10 +194,10 @@ I click the '${link_name}' link
 
 the '${link_name}' overlay
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
-    Wait until keyword succeeds  30  1  Page should contain element  css=div.modal-dialog
+    Wait until keyword succeeds  30  1  Page should contain element  css=div.plone-modal-dialog
 
 overlay should open
-    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-dialog
+    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.plone-modal-dialog
 
 overlay should remain open
     Wait until page contains element  css=div.modal-wrapper
@@ -207,7 +207,7 @@ I close the overlay
     Click Element  css=div.modal-header a.close
 
 overlay should close
-    Wait until keyword succeeds  30  1  Page should not contain element  css=div.modal-dialog
+    Wait until keyword succeeds  30  1  Page should not contain element  css=div.plone-modal-dialog
 
 overlay shows an error
     Wait Until Page Contains  Error
@@ -275,7 +275,7 @@ I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  id=plone-contentmenu-actions-${action}
-    Wait until page contains Element  css=div.modal-dialog
+    Wait until page contains Element  css=div.plone-modal-dialog
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
