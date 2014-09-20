@@ -26,8 +26,11 @@ def importResRegistry(context, reg_id, reg_title, filename):
     if importer is None:
         logger.warning("%s: Import adapter missing." % reg_title)
         return
-
-    importer.registry = getToolByName(site, 'portal_registry')
+    try:
+        importer.registry = getToolByName(site, 'portal_registry')
+    except AttributeError:
+        # Upgrade 3.x no registry there
+        importer.registry = None
     importer.body = body
     logger.info("%s imported." % reg_title)
 
@@ -38,7 +41,9 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
         """
         Import the object from the DOM node.
         """
-
+        if self.registry is None:
+            # Upgrade 3.x no registry there
+            return
         resources = self.registry.collectionOfInterface(
             IResourceRegistry, prefix="plone.resources")
 
