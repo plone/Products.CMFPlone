@@ -13,7 +13,3 @@ class IStylesView(Interface):
         """ Returns a list of dicts with information for style rendering. """
 
 
-class IKSSView(Interface):
-
-    def kineticstylesheets():
-        """ Returns a list of dicts with information for kss rendering. """

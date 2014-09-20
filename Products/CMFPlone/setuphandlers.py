@@ -3,7 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IDateAndTimeSchema
 from Products.CMFPlone.interfaces import IMigrationTool
-from Products.CMFPlone.resources.interfaces import OVERRIDE_RESOURCE_DIRECTORY_NAME
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
     import AcceleratedHTTPCacheManager
