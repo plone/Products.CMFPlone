@@ -5,7 +5,7 @@ from Products.CMFPlone.interfaces import (
     IBundleRegistry, IResourceRegistry,
 )
 from plone.resource.interfaces import IResourceDirectory
-from Products.CMFPlone.resources.interfaces import (
+from Products.CMFPlone.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME)
 from StringIO import StringIO
 from zExceptions import NotFound
