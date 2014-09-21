@@ -8,6 +8,8 @@ html, #edit-zone {
 body.userrole-authenticated {
 }
 
+@test-color: @plone-toolbar-link;
+
 #edit-zone {
     position: fixed;
     height: 100%;
@@ -60,7 +62,7 @@ body.userrole-authenticated {
                 display: block; text-align: center; height: 50px; width:60px;
                 &:before {line-height: 50px;}
             }
-            > span + span {padding:0 2px;display: table-cell; text-align: center; padding: 0 8px; height: 50px; width:60px; vertical-align: middle; background: @plone-toolbar-link;}
+            > span + span {display: table-cell; text-align: center; padding: 0 0px; height: 50px; width:60px; vertical-align: middle; background: @plone-toolbar-link;}
         }
         /*states on first level*/
         a.label-state-published > span:before, a.label-state-external > span:before {color: @plone-toolbar-published-color; }
@@ -80,7 +82,10 @@ body.userrole-authenticated {
         font-family:@plone-toolbar-font-secundary; font-size: 14px; list-style: none; padding:0; margin:0; line-height: 30px;
         a {
             color: @plone-toolbar-submenu-text-color;
-            &:hover {color: lighten(@plone-toolbar-submenu-text-color, 25%); background: lighten(@plone-toolbar-bg, 10%);}
+            &:hover {
+                color: lighten(@plone-toolbar-submenu-text-color, 25%); 
+                background: lighten(@plone-toolbar-bg, 10%);
+            }
         }
         li:last-child {margin-bottom: 5px; }
         li > span {display: block;}
@@ -270,7 +275,7 @@ body.userrole-authenticated {
 #edit-zone.plone-toolbar-top.expanded {
     .plone-toolbar-logo {width: 60px;}
     nav > ul > li {width: inherit;}
-    nav > ul a > span + span {width: inherit; padding: 0 8px 0 0;}
+    nav > ul a > span + span {width: inherit}
     nav > ul a > [class^="icon"] {padding-left: 0;}
     .plone-toolbar-caret {left:16px;}
     li.active > a:after {margin-left: 10px;}

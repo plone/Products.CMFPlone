@@ -92,7 +92,7 @@
     <field type="plone.registry.field.ASCII">
       <title>URL of less.js</title>
     </field>
-    <value>++plone++static/components/less/dist/less-1.7.4.min.js</value>
+    <value>++plone++static/components/less/dist/less-1.7.4.js</value>
   </record>
 
   <record name="plone.resources.less-variables">
@@ -853,9 +853,39 @@
       <value_type type="plone.registry.field.TextLine" />
     </field>
     <value>
-      <element key="bowerPath">{site_url}/++plone++static/components/</element>
-      <element key="mockupPath">{site_url}/++resource++mockup/</element>
-      <element key="mockuplessPath">{site_url}/++resource++mockupless/</element>
+      <element key="bowerPath">\"{site_url}/++plone++static/components/\"</element>
+      <element key="mockupPath">\"{site_url}/++resource++mockup/\"</element>
+      <element key="mockuplessPath">\"{site_url}/++resource++mockupless/\"</element>
+
+      <element key="plone-link-color">rgba(0,123,179,1)</element>
+      <element key="plone-gray-lighter">lighten(#000, 80%)</element>
+      <element key="plone-gray-light">lighten(#000, 46.5%)</element>
+
+      <element key="plone-toolbar-bg">rgba(0,0,0,.9)</element>
+      <element key="plone-toolbar-submenu-bg">rgba(20,20,20,.9)</element>
+      <element key="plone-toolbar-font-primary">\"'Roboto Condensed', sans-serif\"</element>
+      <element key="plone-toolbar-font-secundary">\"'Roboto', sans-serif\"</element>
+      <element key="plone-toolbar-separator-color">rgba(255,255,255,.17)</element>
+      <element key="plone-toolbar-link">{plone-link-color}</element>
+      <element key="plone-toolbar-text-color">rgba(255,255,255,.9)</element>
+      <element key="plone-toolbar-submenu-text-color">{plone-gray-lighter}</element>
+      <element key="plone-toolbar-submenu-header-color">{plone-gray-light}</element>
+      <element key="plone-toolbar-published-color">{plone-link-color}</element>
+      <element key="plone-toolbar-draft-color">rgb(250,184,42)</element>
+      <element key="plone-toolbar-pending-color">rgb(226,231,33)</element>
+      <element key="plone-toolbar-private-color">rgb(196,24,60)</element>
+      <element key="plone-toolbar-internal-color">rgb(250,184,42)</element>
+      <element key="plone-toolbar-internally-published-color">rgb(136,61,250)</element>
+
+      <element key="plone-screen-xs-min">480px</element>
+      <element key="plone-screen-sm-min">768px</element>
+      <element key="plone-screen-md-min">992px</element>
+      <element key="plone-screen-lg-min">1200px</element>
+
+      <element key="plone-screen-xs-max">(@plone-screen-sm-min + 1)</element>
+      <element key="plone-screen-sm-max">(@plone-screen-md-min + 1)</element>
+      <element key="plone-screen-md-max">(@plone-screen-lg-min + 1)</element>
+
     </value>
   </record>
 
