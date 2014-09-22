@@ -1,11 +1,25 @@
 <?xml version="1.0"?>
 <registry>
+  <records interface="Products.CMFPlone.interfaces.IEditingSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.INavigationSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISearchSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISiteSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IDateAndTimeSchema"
            prefix="plone" />
+  <record interface="Products.ResourceRegistries.interfaces.settings.IResourceRegistriesSettings" field="resourceBundlesForThemes">
+    <value purge="false">
+      <element key="(default)">
+        <element>jquery</element>
+        <element>default</element>
+      </element>
+    </value>
+  </record>
   <record name="Products.CMFPlone.i18nl10n.override_dateformat.Enabled">
     <field type="plone.registry.field.Bool">
       <title>Enabled</title>
@@ -69,7 +83,7 @@
       <element key="linkAttribute">UID</element>
       <element key="prependToScalePart">/@@images/image/</element>
     </value>
-  </record>  
+  </record> 
   <record name="plone.resources.development">
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
@@ -863,8 +877,8 @@
 
       <element key="plone-toolbar-bg">rgba(0,0,0,.9)</element>
       <element key="plone-toolbar-submenu-bg">rgba(20,20,20,.9)</element>
-      <element key="plone-toolbar-font-primary">\"'Roboto Condensed', sans-serif\"</element>
-      <element key="plone-toolbar-font-secundary">\"'Roboto', sans-serif\"</element>
+      <element key="plone-toolbar-font-primary">'Roboto Condensed', sans-serif</element>
+      <element key="plone-toolbar-font-secundary">'Roboto', sans-serif</element>
       <element key="plone-toolbar-separator-color">rgba(255,255,255,.17)</element>
       <element key="plone-toolbar-link">{plone-link-color}</element>
       <element key="plone-toolbar-text-color">rgba(255,255,255,.9)</element>
