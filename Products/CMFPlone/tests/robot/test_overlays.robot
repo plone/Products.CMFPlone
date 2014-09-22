@@ -200,11 +200,11 @@ overlay should open
     Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.plone-modal-dialog
 
 overlay should remain open
-    Wait until page contains element  css=div.modal-wrapper
-    Wait until element is visible  css=div.modal-wrapper
+    Wait until page contains element  css=div.plone-modal-wrapper
+    Wait until element is visible  css=div.plone-modal-wrapper
 
 I close the overlay
-    Click Element  css=div.plone-modal-header a.close
+    Click Element  css=div.plone-modal-header a.plone-modal-close
 
 overlay should close
     Wait until keyword succeeds  30  1  Page should not contain element  css=div.plone-modal-dialog
@@ -213,19 +213,19 @@ overlay shows an error
     Wait Until Page Contains  Error
 
 I '${action}' the form
-    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.modal-footer input[name="form.buttons.${action}"]
-    Click Element  css=div.modal-footer input[name="form.buttons.${action}"]
+    Wait until keyword succeeds  30  1  Element Should Be Visible  css=div.plone-modal-footer input[name="form.buttons.${action}"]
+    Click Element  css=div.plone-modal-footer input[name="form.buttons.${action}"]
 
 I enter wrong credentials
     Input text  __ac_name  wrong
     Input text  __ac_password  user
-    Click Button  css=div.modal-footer input
+    Click Button  css=div.plone-modal-footer input
 
 I enter valid credentials
     Wait until page contains element  name=__ac_name
     Input text for sure  __ac_name  ${SITE_OWNER_NAME}
     Input text for sure  __ac_password  ${SITE_OWNER_PASSWORD}
-    Click Button  css=div.modal-footer input
+    Click Button  css=div.plone-modal-footer input
 
 I enter valid user data
     Wait until page contains element  name=form.widgets.password_ctl
@@ -240,8 +240,8 @@ I enter valid register user data
     Input text  form.widgets.email          my@email.eu
 
 I send the register form
-    Wait until page contains element  css=div.modal-footer #form-buttons-register
-    Click Element  css=div.modal-footer #form-buttons-register
+    Wait until page contains element  css=div.plone-modal-footer #form-buttons-register
+    Click Element  css=div.plone-modal-footer #form-buttons-register
 
 I trigger the add a new user action
     Click Element  id=add-user
@@ -263,7 +263,7 @@ a document as the default view of the test folder
     Wait until element is visible  id=contextSetDefaultPage
     Click link  id=contextSetDefaultPage
     Click element  id=doc
-    Click element  css=div.modal-footer input[name="form.buttons.Save"]
+    Click element  css=div.plone-modal-footer input[name="form.buttons.Save"]
 
 I change the default content view of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
@@ -279,5 +279,5 @@ I trigger the '${action}' action menu item of the test folder
 
 I confirm deletion of the content
     # Note: The 'delete' button has no standard z3c.form name attribute
-    Wait until keyword succeeds  2  2  Click Element  css=div.modal-footer input#form-buttons-Delete
+    Wait until keyword succeeds  2  2  Click Element  css=div.plone-modal-footer input#form-buttons-Delete
 
