@@ -9,7 +9,7 @@ from Products.CMFPlone.patches.securemailhost import secureSend
 VALID_CSS_ID = re.compile("[A-Za-z_@][A-Za-z0-9_@-]*")
 
 
-def folder_position(context, position=None, id=None, delta=1, reverse=None):
+def folder_position(context, position='', id=None, delta=1, reverse=None):
     """
     XXX Why is this here you ask?
 

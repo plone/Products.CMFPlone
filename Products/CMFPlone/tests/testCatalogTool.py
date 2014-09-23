@@ -707,7 +707,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnSort(self):
-        folder_position(self.folder, id='Title')
+        folder_position(self.folder, position='ordered', id='Title')
         folder_docs = self.catalog(
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
@@ -716,7 +716,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnReverse(self):
-        folder_position(self.folder, id='Title', reverse=True)
+        folder_position(self.folder, position='ordered', id='Title', reverse=True)
         folder_docs = self.catalog(
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
@@ -725,7 +725,7 @@ class TestCatalogOrdering(PloneTestCase):
         self.assertEqual([b.getId for b in folder_docs], expected)
 
     def testOrderIsUpdatedOnSimpleReverse(self):
-        folder_position(self.folder, reverse=True)
+        folder_position(self.folder, position='ordered', reverse=True)
         folder_docs = self.catalog(
                             portal_type='Document',
                             path='/'.join(self.folder.getPhysicalPath()),
