@@ -54,9 +54,9 @@ Scenario: Hovering mouse from expanded menu on other menu shows that menu
 
 Scenario: Clicking outside of Contentactions menu
     Given an actionsmenu page
-     When first menu link is clicked
+     When menu link is clicked
       and I click outside of menu
-     Then first menu should not be visible
+     Then actions menu should not be visible
 
 # ---
 # Workflow stuff
@@ -117,6 +117,9 @@ second menu should be visible
 
 first menu should not be visible
     Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=(//li[contains(@class, 'actionMenu')])[1]//li
+
+actions menu should not be visible
+    Wait until keyword succeeds  10s  1s  Element Should Not Be Visible  xpath=//li[@id='plone-contentmenu-actions']
 
 I click outside of menu
     Click Element  xpath=//h1
