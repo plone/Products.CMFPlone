@@ -62,7 +62,7 @@ body.userrole-authenticated {
                 display: block; text-align: center; height: 50px; width:60px;
                 &:before {line-height: 50px;}
             }
-            > span + span {display: table-cell; text-align: center; padding: 0 0px; height: 50px; width:60px; vertical-align: middle; background: @plone-toolbar-link;}
+            > span + span {display: table-cell; text-align: center; padding: 0 8px; height: 50px; width:60px; vertical-align: middle; background: @plone-toolbar-link;}
         }
         /*states on first level*/
         a.label-state-published > span:before, a.label-state-external > span:before {color: @plone-toolbar-published-color; }
@@ -83,7 +83,7 @@ body.userrole-authenticated {
         a {
             color: @plone-toolbar-submenu-text-color;
             &:hover {
-                color: lighten(@plone-toolbar-submenu-text-color, 25%); 
+                color: lighten(@plone-toolbar-submenu-text-color, 25%);
                 background: lighten(@plone-toolbar-bg, 10%);
             }
         }
