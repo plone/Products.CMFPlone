@@ -11,7 +11,8 @@
     <li class="plone-toolbar-submenu-header">
       <span tal:content="view/user_name">Username</span>
     </li>
-    <li tal:repeat="action view/user_actions">
+    <li class="user-action"
+        tal:repeat="action view/user_actions">
       <a href=""
          tal:attributes="action">
           <tal:actionname tal:content="action/title">
