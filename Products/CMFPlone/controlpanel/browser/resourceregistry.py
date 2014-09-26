@@ -104,25 +104,15 @@ class ResourceRegistryControlPanelView(RequireJsView):
     def __call__(self):
         req = self.request
         if req.REQUEST_METHOD == 'POST':
-            action = req.get('action')
-            if action == 'save-registry':
-                return self.save_registry()
-            elif action == 'save-file':
-                return self.save_file()
-            elif action == 'delete-file':
-                return self.delete_file()
-            elif action == 'js-build-config':
-                return self.js_build_config()
-            elif action == 'less-build-config':
-                return self.less_build_config()
-            elif action == 'save-js-build':
-                return self.save_js_build()
-            elif action == 'save-less-build':
-                return self.save_less_build()
-            elif action == 'save-less-variables':
-                return self.save_less_variables()
-            elif action == 'save-pattern-options':
-                return self.save_pattern_options()
+            action = req.get('action', '')
+            method = action.replace('-', '_')
+            if hasattr(self, method):
+                return getattr(self, method)()
+            else:
+                return json.dumps({
+                    'success': False,
+                    'msg': 'Invalid action: ' + action
+                })
         else:
             return self.index()
 
@@ -142,6 +132,15 @@ class ResourceRegistryControlPanelView(RequireJsView):
         # remove missing ones
         for key in set(rdata.keys()) - set(newdata.keys()):
             del rdata[key]
+
+    def save_development_mode(self):
+        if self.request.form.get('value', '').lower() == 'true':
+            self.registry['plone.resources.development'] = True
+        else:
+            self.registry['plone.resources.development'] = False
+        return json.dumps({
+            'success': True
+        })
 
     def save_registry(self):
         req = self.request
@@ -312,6 +311,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
             rjs_url = '++plone++static/components/r.js/dist/r.js'
 
         data = {
+            'development': self.registry['plone.resources.development'],
             'lessvariables': self.registry['plone.lessvariables'],
             'resources': {},
             'bundles': {},
