@@ -8,6 +8,11 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- reduce deprecation warnings to use plone_layout and not plone_view for
+  certain method calls in order to make debugging of robottests easier: 
+  w/o it shows 1000ds of extra lines in html report.
+  [jensens]
+
 - type controlpanel: Resolved problem with workflow selection form as it 
   was breaking if state title had non-ascii characters. see also 
   https://github.com/plone/plone.app.controlpanel/pull/26
@@ -21,7 +26,6 @@ Changelog
   Usage of AccessControl 3 style decorators for security declarations.
   Minor reformattings to make code-analysis happy.
   [jensens]
-
 
 - PLIP 13260: Migration cut, copy and paste into browser views.
   [saily]

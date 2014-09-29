@@ -8,9 +8,10 @@
       tal:define="portal_state context/@@plone_portal_state;
           context_state context/@@plone_context_state;
           plone_view context/@@plone;
+          plone_layout context/@@plone_layout;
           lang portal_state/language;
           view nocall:view | nocall: plone_view;
-          dummy python: plone_view.mark_view(view);
+          dummy python: plone_layout.mark_view(view);
           portal_url portal_state/portal_url;
           checkPermission nocall: context/portal_membership/checkPermission;
           site_properties context/portal_properties/site_properties;
@@ -39,9 +40,9 @@
   </head>
 
   <body tal:define="isRTL portal_state/is_rtl;
-                    sl python:plone_view.have_portlets('plone.leftcolumn', view);
-                    sr python:plone_view.have_portlets('plone.rightcolumn', view);
-                    body_class python:plone_view.bodyClass(template, view);"
+                    sl python:plone_layout.have_portlets('plone.leftcolumn', view);
+                    sr python:plone_layout.have_portlets('plone.rightcolumn', view);
+                    body_class python:plone_layout.bodyClass(template, view);"
         tal:attributes="class body_class;
                         dir python:isRTL and 'rtl' or 'ltr';
                         python:plone_view.patterns_settings()"
