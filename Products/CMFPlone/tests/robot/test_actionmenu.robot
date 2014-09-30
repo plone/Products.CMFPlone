@@ -152,7 +152,6 @@ workflow link is clicked softly
 state should have changed
     Wait until page contains  Item state changed
     ${NEW_STATE} =  Get Text  xpath=(//span[contains(@class,'state-')])[2]
-    Log Variables
     # Should Not Be Equal  ${NEW_STATE}  ${OLD_STATE}
 
 Open Menu

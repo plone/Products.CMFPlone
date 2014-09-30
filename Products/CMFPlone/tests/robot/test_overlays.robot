@@ -207,7 +207,7 @@ I close the overlay
     Click Element  css=div.plone-modal-header a.plone-modal-close
 
 overlay should close
-    Wait until keyword succeeds  30  1  Page should not contain element  css=div.plone-modal-dialog
+    Wait until keyword succeeds  40  1  Page should not contain element  css=div.plone-modal-dialog
 
 overlay shows an error
     Wait Until Page Contains  Error
