@@ -116,6 +116,13 @@ define([
           }
         });
 
+        $('body').on('click', function(event) {
+          if (!($(this).parent('#edit-zone').length > 0)) {
+            $('#edit-zone nav > ul > li').each(function(key, element){
+              $(element).removeClass("active");
+            })
+          }
+        })
         //switcher -- provisional
         $( "#edit-zone .plone-toolbar-switcher" ).click(function() {
           if ($("#edit-zone").hasClass("plone-toolbar-top")) {
