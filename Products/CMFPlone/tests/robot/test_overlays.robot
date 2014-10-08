@@ -190,6 +190,7 @@ the users and groups configlet
     Go to  ${PLONE_URL}/@@usergroup-userprefs
 
 I click the '${link_name}' link
+    Element should be visible  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
     Click Link  xpath=//a[descendant-or-self::*[contains(text(), '${link_name}')]]
 
 the '${link_name}' overlay
