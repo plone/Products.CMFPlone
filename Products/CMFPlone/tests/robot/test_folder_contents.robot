@@ -61,7 +61,7 @@ a document '${title}' in the test folder
     Click Button  Save
 
 I select all the elements
-    Wait until element is visible  css=.pat-structure .select-all
+    Element should be visible  css=.pat-structure .select-all
     Click Element  css=.pat-structure .select-all
 
 the four elements got selected
