@@ -10,6 +10,7 @@ from controlpanel import IMaintenanceSchema
 from controlpanel import INavigationSchema
 from controlpanel import ISearchSchema
 from controlpanel import ISiteSchema
+from controlpanel import IMarkupSchema
 from controlpanel import ITypesSchema
 from events import IConfigurationChangedEvent
 from events import ISiteManagerCreatedEvent
@@ -26,3 +27,4 @@ from structure import INonStructuralFolder
 from translationservice import ITranslationServiceTool
 from breadcrumbs import IHideFromBreadcrumbs
 from workflow import IWorkflowChain
+
