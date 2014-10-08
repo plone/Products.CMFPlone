@@ -273,7 +273,9 @@ I change the default content view of the test folder
 
 I trigger the '${action}' action menu item of the test folder
     Go to  ${PLONE_URL}/${TEST_FOLDER}
+    Element should be visible  xpath=//li[@id='plone-contentmenu-moreoptions']/a
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
+    Wait until element is visible  id=plone-contentmenu-actions-${action}
     Click link  id=plone-contentmenu-actions-${action}
     Wait until page contains Element  css=div.plone-modal-dialog
 
