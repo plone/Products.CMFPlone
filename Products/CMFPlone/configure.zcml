@@ -40,6 +40,9 @@
   <include package="plone.session" />
   <include package="plone.protect" />
   <include package="plone.indexer" />
+  
+  <!-- mockup -->
+  <include package="mockup" />
 
   <!-- viewlets zope 3 layers support for themes -->
   <include package="plone.browserlayer" />
