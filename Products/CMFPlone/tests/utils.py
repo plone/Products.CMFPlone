@@ -9,6 +9,31 @@ from Products.CMFPlone.patches.securemailhost import secureSend
 VALID_CSS_ID = re.compile("[A-Za-z_@][A-Za-z0-9_@-]*")
 
 
+def folder_position(context, position='', id=None, delta=1, reverse=None):
+    """
+    XXX Why is this here you ask?
+
+    Well, we removed this from skins but we still test folder positions
+    and ordering in CMFPlone so it was easier to use this.
+    We do not use this any longer with new folder contents implementation
+    """
+
+    position = position.lower()
+    if position == 'up':
+        context.moveObjectsUp(id, delta=delta)
+    elif position == 'down':
+        context.moveObjectsDown(id, delta=delta)
+    elif position == 'top':
+        context.moveObjectsToTop(id)
+    elif position == 'bottom':
+        context.moveObjectsToBottom(id)
+    # order folder by field
+    # id in this case is the field
+    elif position == 'ordered':
+        context.orderObjects(id, reverse)
+    context.plone_utils.reindexOnReorder(context)
+
+
 class MockMailHost(MailBase):
     """A MailHost that collects messages instead of sending them.
     """

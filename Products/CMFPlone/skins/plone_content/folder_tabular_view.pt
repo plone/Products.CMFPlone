@@ -9,11 +9,11 @@
 <body>
 
     <metal:content-core fill-slot="content-core">
-        <metal:block define-macro="listing" extend-macro="context/folder_listing/macros/content-core">
-            <metal:entries fill-slot="entries">
+      <metal:block define-macro="listing" extend-macro="context/folder_listing/macros/content-core">
+        <metal:entries fill-slot="entries">
 
-            <div metal:use-macro="context/batch_macros/macros/navigation" />
-
+          <div metal:use-macro="context/batch_macros/macros/navigation" />
+          <div class="has-table">
             <table class="listing"
                    summary="Content listing"
                    i18n:attributes="summary summary_content_listing;">
@@ -86,11 +86,14 @@
                     </metal:block>
                 </tbody>
             </table>
+          </div>
 
-            </metal:entries>
-        </metal:block>
+        </metal:entries>
+      </metal:block>
 
+<!--
         <metal:subtopics use-macro="context/atct_topic_view/macros/folderlisting_macro" />
+-->
 
     </metal:content-core>
 

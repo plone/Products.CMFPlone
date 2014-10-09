@@ -1,0 +1,61 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:cmf="http://namespaces.zope.org/cmf"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:plone="http://namespaces.plone.org/plone"
+           xmlns:i18n="http://namespaces.zope.org/i18n"
+           i18n_domain="plone">
+
+  <adapter
+    name="plone"
+    for="* zope.publisher.interfaces.IRequest"
+    provides="zope.traversing.interfaces.ITraversable"
+    factory=".traversal.PloneBundlesTraverser"
+    />
+
+  <plone:static
+    directory="static"
+    type="plone"
+    name="static"
+    />
+
+<!--   <browser:resourceDirectory
+    name="plonejs"
+    directory="static/components"
+    />
+
+  <browser:resource
+    name="plone-fontello.eot"
+    file="static/fonts/plone-fontello.eot"
+    />
+  <browser:resource
+    name="plone-fontello.svg"
+    file="static/fonts/plone-fontello.svg"
+    />
+  <browser:resource
+    name="plone-fontello.ttf"
+    file="static/fonts/plone-fontello.ttf"
+    />
+  <browser:resource
+    name="plone-fontello.woff"
+    file="static/fonts/plone-fontello.woff"
+    /> -->
+
+
+  <browser:resource
+    name="plone.js"
+    file="static/plone.js"
+    />
+
+  <browser:resource
+    name="plone.css"
+    file="static/plone.css"
+    />
+
+  <browser:resource
+    name="plone.less"
+    file="static/plone.less"
+    />
+
+
+</configure>

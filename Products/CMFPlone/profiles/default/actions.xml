@@ -29,19 +29,6 @@
    </property>
    <property name="visible">False</property>
   </object>
-  <object name="full_screen" meta_type="CMF Action" i18n:domain="plone">
-   <property name="title" i18n:translate="">Toggle full screen mode</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:javascript:toggleFullScreenMode();</property>
-   <property
-      name="icon_expr">string:$portal_url/fullscreenexpand_icon.png</property>
-   <property name="available_expr">python:member is not None</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">False</property>
-  </object>
   <object name="extedit" meta_type="CMF Action" i18n:domain="plone">
    <property name="title"
        i18n:translate="">Edit with external application</property>

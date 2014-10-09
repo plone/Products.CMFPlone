@@ -152,6 +152,20 @@
     icon_expr="string:$portal_url/rss.png"
     url_expr="string:${portal_url}/@@syndication-settings" visible="True"
     i18n:attributes="title">
-  <permission>Manage portal</permission>
+  <permission>Plone Site Setup: Site</permission>
+ </configlet>
+ <configlet title="Resource Registries" action_id="resourceregistries" appId="Plone"
+    category="Plone" condition_expr=""
+    icon_expr=""
+    url_expr="string:${portal_url}/@@resourceregistry-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: Site</permission>
+ </configlet>
+ <configlet title="TinyMCE" action_id="tinymce" appId="Plone"
+    category="Plone" condition_expr=""
+    icon_expr="string:$portal_url/tinymce.png"
+    url_expr="string:${portal_url}/@@tinymce-controlpanel" visible="True"
+    i18n:attributes="title">
+  <permission>Plone Site Setup: TinyMCE</permission>
  </configlet>
 </object>

@@ -33,7 +33,7 @@
 
     <div tal:condition="email_from_address">
 
-        <div i18n:translate="description_contact_site_owner">
+        <div i18n:translate="description_contact_site_owner" class="documentDescription">
             Fill in this form to contact the site owners.
         </div>
         <div id="content-core">

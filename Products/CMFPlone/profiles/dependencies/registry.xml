@@ -83,5 +83,878 @@
       <element key="linkAttribute">UID</element>
       <element key="prependToScalePart">/@@images/image/</element>
     </value>
+  </record> 
+  <record name="plone.resources.development">
+    <field type="plone.registry.field.Bool">
+      <title>Frontend development mode</title>
+    </field>
+    <value>true</value>
   </record>
+  <record name="plone.resources.requirejs">
+    <field type="plone.registry.field.ASCII">
+      <title>URL of require.js</title>
+    </field>
+    <value>++plone++static/components/requirejs/require.js</value>
+  </record>
+  <record name="plone.resources.configjs">
+    <field type="plone.registry.field.ASCII">
+      <title>config.js</title>
+    </field>
+    <value>config.js</value>
+  </record>
+  <record name="plone.resources.lessc">
+    <field type="plone.registry.field.ASCII">
+      <title>URL of less.js</title>
+    </field>
+    <value>++plone++static/components/less/dist/less-1.7.4.js</value>
+  </record>
+
+  <record name="plone.resources.less-variables">
+      <field type="plone.registry.field.ASCII">
+        <title>LESS variables js definer</title>
+      </field>
+      <value key="js">less-variables.js</value>
+  </record>
+
+  <records prefix="plone.resources/mockup-registry"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/mockup-core/js/registry.js</value>
+  </records>
+  <records prefix="plone.resources/mockup-patterns-base"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/mockup-core/js/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/jquery"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery/dist/jquery.min.js</value>
+  </records>
+
+
+  <records prefix="plone.resources/JSXTransformer"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/react/JSXTransformer.js</value>
+      <value key="export">window.JSXTransformer</value>
+  </records>
+
+  <records prefix="plone.resources/underscore"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/lodash/dist/lodash.underscore.js</value>
+      <value key="export">window._</value>
+  </records>
+
+  <records prefix="plone.resources/backbone"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/backbone/backbone.js</value>
+      <value key="export">window.Backbone</value>
+      <value key="deps">underscore,jquery</value>
+  </records>
+
+  <records prefix="plone.resources/backbone.paginator"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/backbone.paginator/lib/backbone.paginator.js</value>
+      <value key="export">window.Backbone.Paginator</value>
+      <value key="deps">backbone</value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-variables"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/variables.less</element>
+      </value>
+  </records>
+  <records prefix="plone.resources/bootstrap-mixins"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/mixins.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-basic"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/utilities.less</element>
+        <element>++plone++static/components/bootstrap/less/forms.less</element>
+        <element>++plone++static/components/bootstrap/less/scafoolding.less</element>
+        <element>++plone++static/components/bootstrap/less/navs.less</element>
+        <element>++plone++static/components/bootstrap/less/navbar.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-progress-bars"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/progress-bars.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-modal"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/modal.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-button-groups"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/button-groups.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-buttons"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/buttons.less</element>
+        <element>++plone++static/components/bootstrap/less/close.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-alert"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/bootstrap/js/alert.js</value>
+      <value key="deps">jquery</value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-dropdown"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/bootstrap/js/dropdown.js</value>
+      <value key="css">
+        <element>++plone++static/components/bootstrap/less/dropdowns.less</element>
+      </value>
+      <value key="deps">jquery</value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-collapse"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/bootstrap/js/collapse.js</value>
+      <value key="deps">jquery</value>
+      <value key="export">window.jQuery.fn.collapse.Constructor</value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-tooltip"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/bootstrap/js/tooltip.js</value>
+      <value key="deps">jquery</value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-transition"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/bootstrap/js/transition.js</value>
+      <value key="deps">jquery</value>
+      <value key="export">window.jQuery.support.transition</value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-glyphicons"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/boostrap/less/glyphicons.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/bootstrap-badges"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++plone++static/components/boostrap/less/badges.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/domready"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/domready/ready.js</value>
+  </records>
+
+  <records prefix="plone.resources/dropzone"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/dropzone/downloads/dropzone-amd-module.js</value>
+      <value key="css">
+        <element>++plone++static/components/dropzone/downloads/css/dropzone.css</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/expect"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/expect/index.js</value>
+      <value key="export">window.expect</value>
+  </records>
+
+  <records prefix="plone.resources/jquery.cookie"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery.cookie/jquery.cookie.js</value>
+      <value key="deps">jquery</value>
+  </records>
+
+  <records prefix="plone.resources/jqtree"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jqtree/tree.jquery.js</value>
+      <value key="deps">jquery</value>
+      <value key="css">
+        <element>++plone++static/components/jqtree/jqtree.css</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/jquery.form"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/jquery-form/jquery.form.js</value>
+  </records>
+
+  <records prefix="plone.resources/marked"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/marked/lib/marked.js</value>
+  </records>
+
+  <records prefix="plone.resources/moment"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/moment/moment.js</value>
+  </records>
+
+  <records prefix="plone.resources/picker"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/pickadate/lib/picker.js</value>
+      <value key="css">
+        <element>++plone++static/components/pickadate/lib/themes/classic.css</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/picker.date"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/pickadate/lib/picker.date.js</value>
+      <value key="css">
+        <element>++plone++static/components/pickadate/lib/themes/classic.date.css</element>
+      </value>
+      <value key="deps">picker</value>
+  </records>
+
+  <records prefix="plone.resources/picker.time"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/pickadate/lib/picker.time.js</value>
+      <value key="css">
+        <element>++plone++static/components/pickadate/lib/themes/classic.time.css</element>
+      </value>
+      <value key="deps">picker</value>
+  </records>
+
+  <records prefix="plone.resources/react"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/react/react.js</value>
+  </records>
+
+  <records prefix="plone.resources/select2"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/select2/select2.js</value>
+      <value key="css">
+        <element>++plone++static/components/select2/select2.css</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/sinon"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/sinonjs/sinon.js</value>
+      <value key="export">window.sinon</value>
+  </records>
+
+  <records prefix="plone.resources/text"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/requirejs-text/text.js</value>
+  </records>
+
+  <records prefix="plone.resources/jquery.event.drag"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockuplib/jquery.event.drag.js</value>
+      <value key="deps">jquery</value>
+  </records>
+
+  <records prefix="plone.resources/jquery.event.drop"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockuplib/jquery.event.drop.js</value>
+      <value key="deps">jquery</value>
+      <value key="export">$.drop</value>
+  </records>
+
+  <records prefix="plone.resources/tinymce-advlist"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/advlist/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+
+
+  <records prefix="plone.resources/tinymce-anchor"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/anchor/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-autolink"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/autolink/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-autoresize"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/autoresize/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-autosave"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/autosave/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-bbcode"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/bbcode/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-charmap"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/charmap/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-code"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/code/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-colorpicker"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/colorpicker/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-contextmenu"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/contextmenu/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-directionality"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/directionality/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-emoticons"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/emoticons/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-fullpage"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/fullpage/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-fullscreen"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/fullscreen/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-hr"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/hr/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-image"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/image/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-importcss"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/importcss/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-insertdatetime"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/insertdatetime/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-layer"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/layer/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-legacyoutput"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/legacyoutput/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-link"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/link/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-lists"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/lists/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-media"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/media/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-nonbreaking"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/nonbreaking/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-noneditable"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/noneditable/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-pagebreak"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/pagebreak/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-paste"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/paste/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-preview"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/preview/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-print"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/print/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-save"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/save/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-searchreplace"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/searchreplace/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-spellchecker"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/spellchecker/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-tabfocus"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/tabfocus/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-table"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/table/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-template"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/template/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-textcolor"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/textcolor/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-textpattern"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/textpattern/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-visualblocks"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/visualblocks/plugin.js</value>
+      <value key="css">
+        <element>++plone++static/components/tinymce/plugins/visualblocks/css/visualblocks.css</element>
+      </value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-visualchars"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/visualchars/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-wordcount"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/plugins/wordcount/plugin.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+  <records prefix="plone.resources/tinymce-modern-theme"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/themes/modern/theme.js</value>
+      <value key="deps">tinymce</value>
+  </records>
+
+
+  <records prefix="plone.resources/tinymce"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/tinymce/tinymce.js</value>
+      <value key="export">window.tinyMCE</value>
+      <value key="init">function () { this.tinyMCE.DOM.events.domLoaded = true; return this.tinyMCE; }</value>
+      <value key="css">
+        <element>++plone++static/components/tinymce/skins/lightgray/skin.min.css</element>
+        <element>++plone++static/components/tinymce/skins/lightgray/content.inline.min.css</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-popover"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="css">
+        <element>++resource++mockupless/popover.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-router"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockupjs/router.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-utils"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockupjs/utils.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-i18n"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockupjs/i18n.js</value>
+  </records>
+
+
+ <!-- Patterns -->
+
+  <records prefix="plone.resources/plone-patterns-toolbar"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/patterns/toolbar/src/toolbar.js</value>
+      <value key="css">
+        <element>++plone++static/patterns/toolbar/src/css/toolbar.plone.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-select2"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/select2/patterns.js</value>
+      <value key="css">
+        <element>++resource++mockup/select2/pattern.select2.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-accessibility"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/accessibility/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-autotoc"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/autotoc/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/autotoc/pattern.autotoc.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-backdrop"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/backdrop/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-sortable"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/sortable/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-dropzone"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/dropzone/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-formautofocus"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/formautofocus/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-formunloadalert"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/formunloadalert/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-modal"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/modal/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/modal/pattern.modal.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-moment"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/moment/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-pickadate"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/pickadate/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/pickadate/pattern.pickadate.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-preventdoublesubmit"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/preventdoublesubmit/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-querystring"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/querystring/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/querystring/pattern.querystring.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-relateditems"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/relateditems/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/relateditems/pattern.relateditems.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-select2"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/select2/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-structure"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/structure/pattern.js</value>
+      <value key="url">++resource++mockup/structure</value>
+      <value key="css">
+        <element>++resource++mockup/structure/less/pattern.structure.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-upload"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/upload/pattern.js</value>
+      <value key="url">++resource++mockup/upload</value>
+      <value key="css">
+        <element>++resource++mockup/upload/less/pattern.upload.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-tablesorter"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/tablesorter/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-tinymce"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/tinymce/pattern.js</value>
+      <value key="url">++resource++mockup/tinymce</value>
+      <value key="css">
+        <element>++resource++mockup/tinymce/less/pattern.tinymce.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-toggle"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/toggle/pattern.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-tooltip"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/tooltip/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/tooltip/pattern.tooltip.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-tree"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/tree/pattern.js</value>
+      <value key="css">
+        <element>++resource++mockup/tree/pattern.tree.less</element>
+      </value>
+  </records>
+
+  <records prefix="plone.resources/mockup-patterns-texteditor"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/texteditor/pattern.js</value>
+  </records>
+
+  <!-- ace resources -->
+  <records prefix="plone.resources/ace"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/ace.js</value>
+  </records>
+  <records prefix="plone.resources/ace-theme-monokai"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/theme-monokai.js</value>
+  </records>
+  <records prefix="plone.resources/ace-mode-text"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-text.js</value>
+  </records>
+  <records prefix="plone.resources/ace-mode-javascript"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-javascript.js</value>
+  </records>
+  <records prefix="plone.resources/ace-mode-css"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/ace-builds/src/mode-css.js</value>
+  </records>
+
+  <records prefix="plone.resources/mockup-ui"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="url">++resource++mockupjs/ui</value>
+  </records>
+
+  <records prefix="plone.resources/rjs"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/r.js/dist/r.js</value>           
+  </records>
+
+  <!-- legacy js -->
+
+  
+  <records prefix="plone.resources/plone_javascript_variables"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">plone_javascript_variables.js</value>
+  </records>
+
+  <records prefix="plone.resources/cookie_functions"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">cookie_functions.js</value>
+  </records>
+  <records prefix="plone.resources/jquery-highlightsearchterms"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">jquery.highlightsearchterms.js</value>
+  </records>
+  <records prefix="plone.resources/inline-validation"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">inline_validation.js</value>
+  </records>
+  <records prefix="plone.resources/kss-bbb"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">kss-bbb.js</value>
+  </records>
+  <records prefix="plone.resources/table_sorter"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">table_sorter.js</value>
+  </records>
+  <records prefix="plone.resources/unlockOnFormUnload"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">unlockOnFormUnload.js</value>
+  </records>
+
+  <!-- disabled -->
+  <records prefix="plone.resources/mark_special_links"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">mark_special_links.js</value>
+  </records>
+
+  <record name="plone.resources.last_legacy_import">
+    <field type="plone.registry.field.Datetime">
+      <title>Last legacy js/css import date</title>
+      <description>It's used to decide if its needed to compile or not the production css/js</description>
+    </field>
+    <value>2014-08-14 00:00:00</value>
+  </record>
+
+
+  <!-- Mixins vars for less with the paths -->
+  <record name="plone.lessvariables">
+    <field type="plone.registry.field.Dict">
+      <title>Less variables</title>
+      <description>Variables that are going to be compiled on less</description>
+      <key_type type="plone.registry.field.ASCIILine" />
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value>
+      <element key="bowerPath">\"{site_url}/++plone++static/components/\"</element>
+      <element key="mockupPath">\"{site_url}/++resource++mockup/\"</element>
+      <element key="mockuplessPath">\"{site_url}/++resource++mockupless/\"</element>
+
+      <element key="plone-link-color">rgba(0,123,179,1)</element>
+      <element key="plone-gray-lighter">lighten(#000, 80%)</element>
+      <element key="plone-gray-light">lighten(#000, 46.5%)</element>
+
+      <element key="plone-toolbar-bg">rgba(0,0,0,.9)</element>
+      <element key="plone-toolbar-submenu-bg">rgba(20,20,20,.9)</element>
+      <element key="plone-toolbar-font-primary">'Roboto Condensed', sans-serif</element>
+      <element key="plone-toolbar-font-secundary">'Roboto', sans-serif</element>
+      <element key="plone-toolbar-separator-color">rgba(255,255,255,.17)</element>
+      <element key="plone-toolbar-link">{plone-link-color}</element>
+      <element key="plone-toolbar-text-color">rgba(255,255,255,.9)</element>
+      <element key="plone-toolbar-submenu-text-color">{plone-gray-lighter}</element>
+      <element key="plone-toolbar-submenu-header-color">{plone-gray-light}</element>
+      <element key="plone-toolbar-published-color">{plone-link-color}</element>
+      <element key="plone-toolbar-draft-color">rgb(250,184,42)</element>
+      <element key="plone-toolbar-pending-color">rgb(226,231,33)</element>
+      <element key="plone-toolbar-private-color">rgb(196,24,60)</element>
+      <element key="plone-toolbar-internal-color">rgb(250,184,42)</element>
+      <element key="plone-toolbar-internally-published-color">rgb(136,61,250)</element>
+
+      <element key="plone-screen-xs-min">480px</element>
+      <element key="plone-screen-sm-min">768px</element>
+      <element key="plone-screen-md-min">992px</element>
+      <element key="plone-screen-lg-min">1200px</element>
+
+      <element key="plone-screen-xs-max">(@plone-screen-sm-min + 1)</element>
+      <element key="plone-screen-sm-max">(@plone-screen-md-min + 1)</element>
+      <element key="plone-screen-md-max">(@plone-screen-lg-min + 1)</element>
+
+    </value>
+  </record>
+
+
+  <!-- Plone bundle resources -->
+
+  <records prefix="plone.resources/plone"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++plone.js</value>
+      <value key="css">
+        <element>++plone++static/plone.less</element>
+      </value>
+      <value key="deps">jquery</value>
+  </records>
+
+  <!-- Bundles -->
+
+  <records prefix="plone.bundles/plone"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>plone</element>
+    </value>
+    <value key="enabled">True</value>
+    <value key="jscompilation">++plone++static/plone-compiled.js</value>
+    <value key="csscompilation">++plone++static/plone-compiled.css</value>
+    <value key="last_compilation">2014-08-14 00:00:00</value>
+  </records>
+
+  <records prefix="plone.bundles/plone-legacy"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources" purge="false">
+      <element>plone_javascript_variables</element>
+      <element>unlockOnFormUnload</element>
+      <element>table_sorter</element>
+      <element>inline-validation</element>
+      <element>jquery-highlightsearchterms</element>
+      <element>cookie_functions</element>
+    </value>
+    <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
+    <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
+    <value key="last_compilation">2014-08-14 00:00:00</value>
+    <value key="compile">False</value>
+    <value key="enabled">True</value>
+  </records>
+
+  <record name="plone.patternoptions">
+    <field type="plone.registry.field.Dict">
+      <title>Patterns configuration</title>
+      <description>Base pattern configuration options</description>
+      <key_type type="plone.registry.field.ASCIILine" />
+      <value_type type="plone.registry.field.Text" />
+    </field>
+    <value>
+      <element key="pickadate">{"selectYears": 200}</element>
+    </value>
+  </record>
+
 </registry>

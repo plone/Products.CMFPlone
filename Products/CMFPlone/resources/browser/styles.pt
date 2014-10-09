@@ -1,0 +1,13 @@
+<tal:styles repeat="style view/styles"
+  ><tal:block define="condcomment style/conditionalcomment"
+    ><tal:wcondcomment tal:condition="condcomment">
+        <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />    
+    </tal:wcondcomment
+    ><link rel="style"
+          type="text/css"
+          tal:attributes="href style/src;
+                          rel style/rel;" /><tal:wcondcomment tal:condition="condcomment">
+        <tal:closecc tal:replace="structure string:&lt;![endif]--&gt;" />
+    </tal:wcondcomment
+  ></tal:block
+></tal:styles>

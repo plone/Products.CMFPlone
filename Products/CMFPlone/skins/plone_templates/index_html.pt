@@ -14,9 +14,9 @@
         <span i18n:name="sitename" tal:omit-tag="" tal:content="context/Title">Portal title</span>
     </h1>
 
-    <div class="documentDescription" tal:content="context/description">
+    <p class="documentDescription" tal:content="context/description">
         Portal description
-    </div>
+    </p>
 
 </metal:main>
 

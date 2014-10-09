@@ -3,12 +3,26 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser">
 
+  <permission id="plone.app.controlpanel.TinyMCE"
+              title="Plone Site Setup: TinyMCE">
+    <role name="Manager"/>
+    <role name="Site Administrator"/>
+  </permission>
+
   <!-- Editing Control Panel -->
   <browser:page
     name="editing-controlpanel"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".editing.EditingControlPanel"
     permission="plone.app.controlpanel.Editing"
+    />
+
+  <!-- TinyMCE Control Panel -->
+  <browser:page
+    name="tinymce-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".tinymce.TinyMCEControlPanel"
+    permission="plone.app.controlpanel.TinyMCE"
     />
 
   <!-- Maintenance Control Panel -->
@@ -57,6 +71,14 @@
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".types.TypesControlPanel"
     permission="plone.app.controlpanel.Types"
+    />
+
+  <browser:page
+    name="resourceregistry-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".resourceregistry.ResourceRegistryControlPanelView"
+    permission="plone.app.controlpanel.Site"
+    template="resourceregistry.pt"
     />
 
 </configure>

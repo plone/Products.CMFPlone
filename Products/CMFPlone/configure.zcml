@@ -46,6 +46,7 @@
   <include package="plone.theme" />
 
   <include package=".controlpanel" />
+  <include package=".resources" />
 
   <!-- Archetypes -->
   <include zcml:condition="installed Products.ATContentTypes"
@@ -71,138 +72,13 @@
   <include file="deprecated.zcml"/>
   <include file="profiles.zcml"/>
   <include file="catalog.zcml" />
+  <include file="static.zcml" />
 
   <cmf:registerDirectory
       name="skins"
       directory="skins"
       recursive="True"
       />
-
-  <browser:resource
-    name="plone-bootstrap-glyphicons-halflings-regular.eot"
-    file="static/plone-bootstrap-glyphicons-halflings-regular.eot"
-    />
-  <browser:resource
-    name="plone-bootstrap-glyphicons-halflings-regular.svg"
-    file="static/plone-bootstrap-glyphicons-halflings-regular.svg"
-    />
-  <browser:resource
-    name="plone-bootstrap-glyphicons-halflings-regular.ttf"
-    file="static/plone-bootstrap-glyphicons-halflings-regular.ttf"
-    />
-  <browser:resource
-    name="plone-bootstrap-glyphicons-halflings-regular.woff"
-    file="static/plone-bootstrap-glyphicons-halflings-regular.woff"
-    />
-  <browser:resource
-    name="plone-dropzone-spritemap@2x.png"
-    file="static/plone-dropzone-spritemap@2x.png"
-    />
-  <browser:resource
-    name="plone-dropzone-spritemap.png"
-    file="static/plone-dropzone-spritemap.png"
-    />
-  <browser:resource
-    name="plone-fontello.eot"
-    file="static/plone-fontello.eot"
-    />
-  <browser:resource
-    name="plone-fontello.svg"
-    file="static/plone-fontello.svg"
-    />
-  <browser:resource
-    name="plone-fontello.ttf"
-    file="static/plone-fontello.ttf"
-    />
-  <browser:resource
-    name="plone-fontello.woff"
-    file="static/plone-fontello.woff"
-    />
-  <browser:resource
-    name="plone-jqtree-jqtree-circle.png"
-    file="static/plone-jqtree-jqtree-circle.png"
-    />
-  <browser:resource
-    name="plone-select2-select2.png"
-    file="static/plone-select2-select2.png"
-    />
-  <browser:resource
-    name="plone-select2-select2-spinner.gif"
-    file="static/plone-select2-select2-spinner.gif"
-    />
-  <browser:resource
-    name="plone-select2-select2x2.png"
-    file="static/plone-select2-select2x2.png"
-    />
-  <browser:resource
-    name="plone-tinymce-content.css"
-    file="static/plone-tinymce-content.min.css"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce-small.eot"
-    file="static/plone-tinymce-font-tinymce-small.eot"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce-small.svg"
-    file="static/plone-tinymce-font-tinymce-small.svg"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce-small.ttf"
-    file="static/plone-tinymce-font-tinymce-small.ttf"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce-small.woff"
-    file="static/plone-tinymce-font-tinymce-small.woff"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce.eot"
-    file="static/plone-tinymce-font-tinymce.eot"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce.svg"
-    file="static/plone-tinymce-font-tinymce.svg"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce.ttf"
-    file="static/plone-tinymce-font-tinymce.ttf"
-    />
-  <browser:resource
-    name="plone-tinymce-font-tinymce.woff"
-    file="static/plone-tinymce-font-tinymce.woff"
-    />
-  <browser:resource
-    name="plone-tinymce-img-anchor.gif"
-    file="static/plone-tinymce-img-anchor.gif"
-    />
-  <browser:resource
-    name="plone-tinymce-img-loader.gif"
-    file="static/plone-tinymce-img-loader.gif"
-    />
-  <browser:resource
-    name="plone-tinymce-img-object.gif"
-    file="static/plone-tinymce-img-object.gif"
-    />
-
-  <configure zcml:condition="installed mockup">
-    <browser:resource
-        name="plone.js"
-        file="static/plone.js"
-        />
-    <browser:resource
-        name="plone.css"
-        file="static/plone.css"
-        />
-  </configure>
-  <configure zcml:condition="not-installed mockup">
-    <browser:resource
-        name="plone.js"
-        file="static/plone.min.js"
-        />`
-    <browser:resource
-        name="plone.css"
-        file="static/plone.min.css"
-        />
-  </configure>
 
   <class class="Products.PluggableAuthService.PluggableAuthService.PluggableAuthService">
     <implements interface=".interfaces.IHideFromBreadcrumbs" />

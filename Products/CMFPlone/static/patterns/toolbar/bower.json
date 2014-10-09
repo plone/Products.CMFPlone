@@ -1,0 +1,17 @@
+{
+  "name": "jspak",
+  "version": "0.1.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.0",
+    "requirejs": "~2.1.6",
+    "mockup-core": ""
+  },
+  "resolutions": {
+    "jquery": "~2.0.0"
+  }
+}

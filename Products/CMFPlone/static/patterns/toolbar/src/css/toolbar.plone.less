@@ -1,0 +1,360 @@
+//*// TOOLBAR EDIT ZONE PLONE //*//
+
+html, #edit-zone {
+    transition-property: margin, right; //margin for body and right for edit-zone mobile
+    transition-duration: .2s, .2s;
+    transition-timing-function: ease-in-out;
+}
+body.userrole-authenticated {
+}
+
+@test-color: @plone-toolbar-link;
+
+#edit-zone {
+    position: fixed;
+    height: 100%;
+    width: 60px;
+    top:0;
+    left:0;
+    z-index: 3;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    color: @plone-toolbar-text-color;
+    background: @plone-toolbar-bg;
+    a {color: @plone-toolbar-link; text-decoration: none; display: block;}
+    /*logo*/
+    .plone-toolbar-logo {
+        background: darken(@plone-toolbar-link, 10%);
+        height: 50px;
+        padding-left: 18px;
+        padding-right: 18px;
+        cursor: pointer;
+        display: table-cell;
+        vertical-align: middle;
+        width: 60px;
+        &:after {
+            content: "";
+            border-top: 4px solid darken(@plone-toolbar-link, 10%);
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            position: absolute;
+            left: 25px;
+            top:50px;
+        }
+        &:hover {
+            background: @plone-toolbar-link; transition: background .35s; -webkit-transition: background .25s;
+            &:after {border-top: 4px solid @plone-toolbar-link; transition: border-top .35s; -webkit-transition: border-top .25s;}
+        }
+    }
+    &.expanded .plone-toolbar-logo {
+        width: 120px;
+        span {display: inline;}
+    }
+    /*first-level*/
+    nav > ul {
+        font-family: @plone-toolbar-font-primary; font-size: 12px; list-style: none; margin:0; padding: 0;
+        [class^="icon"] {font-size: 20px;}
+        a {
+            position:relative; color: @plone-toolbar-text-color; overflow-y: hidden; height: 50px;
+            &:hover > span {margin-top: -50px; transition: margin-top .35s; -webkit-transition: margin-top .35s;}
+            &:hover > span.plone-toolbar-caret {opacity: 1;}
+            > span {
+                display: block; text-align: center; height: 50px; width:60px;
+                &:before {line-height: 50px;}
+            }
+            > span + span {display: table-cell; text-align: center; padding: 0 8px; height: 50px; width:60px; vertical-align: middle; background: @plone-toolbar-link;}
+        }
+        /*states on first level*/
+        a.label-state-published > span:before, a.label-state-external > span:before {color: @plone-toolbar-published-color; }
+        a.label-state-published > span + span, a.label-state-external > span:before { background: @plone-toolbar-published-color; }
+        a.label-state-internally_published > span:before {color: @plone-toolbar-internally-published-color; }
+        a.label-state-internally_published > span + span { background: @plone-toolbar-internally-published-color; }
+        a.label-state-pending > span:before {color: @plone-toolbar-pending-color; }
+        a.label-state-pending > span + span { background: @plone-toolbar-pending-color; }
+        a.label-state-draft > span:before, a.label-state-internal > span:before {color: @plone-toolbar-draft-color; }
+        a.label-state-draft > span + span, a.label-state-internal > span + span  { background: @plone-toolbar-draft-color; }
+        a.label-state-private > span:before {color: @plone-toolbar-private-color; }
+        a.label-state-private > span + span { background: @plone-toolbar-private-color; }
+
+    }
+    /*second-level*/
+    nav > ul ul {
+        font-family:@plone-toolbar-font-secundary; font-size: 14px; list-style: none; padding:0; margin:0; line-height: 30px;
+        a {
+            color: @plone-toolbar-submenu-text-color;
+            &:hover {
+                color: lighten(@plone-toolbar-submenu-text-color, 25%);
+                background: lighten(@plone-toolbar-bg, 10%);
+            }
+        }
+        li:last-child {margin-bottom: 5px; }
+        li > span {display: block;}
+        .plone-toolbar-submenu-header > a {
+            color: @plone-toolbar-link; font-weight: 500;
+            &:hover {color: lighten(@plone-toolbar-link, 15%);}
+        }
+        .plone-toolbar-submenu-header > span {font-weight: 500; color: @plone-toolbar-submenu-header-color;}
+        li:not(.plone-toolbar-submenu-header) > a:before {content:"•"; left: 15px; color: @plone-toolbar-link; position: absolute;}
+        li:not(.plone-toolbar-submenu-header) > span:before {content:"•"; left: 15px; color: darken(@plone-toolbar-text-color,70%); position: absolute;}
+        li:not(.plone-toolbar-submenu-header) > a:hover:before {color: lighten(@plone-toolbar-link, 25%);}
+        .actionMenuSelected {
+            color: @plone-toolbar-text-color; font-weight: 500;
+            &:hover {color: @plone-toolbar-text-color; background: none; cursor: default;}
+            &:before {content:"✓" !important; margin-left: -3px;}
+        }
+        .actionMenuSelected:hover {color: @plone-toolbar-text-color; background: none; cursor: default;}
+        li:not(.plone-toolbar-submenu-header) > a.actionMenuSelected:before {color: @plone-toolbar-text-color;}
+    }
+    .plone-toolbar-separator {border-bottom: 1px solid @plone-toolbar-separator-color;}
+    .plone-toolbar-caret {
+        border-left: 4px solid;
+        border-bottom: 4px solid transparent;
+        border-top: 4px solid transparent;
+        position: absolute;
+        right: 0;
+        background: transparent !important;
+        margin-top: 0 !important;
+        top: 21px;
+        opacity: .67;
+        display: inline-block;
+        width: 0;
+        height: 0;
+        right: 2px;
+        padding: 0;
+        vertical-align: middle;
+    }
+}
+
+/*de moment per borrar coses*/
+#edit-zone nav > ul ul {
+    position: absolute;
+    left: 60px;
+    background: @plone-toolbar-submenu-bg;
+    top: 0;
+    overflow-y: auto;
+    li {width: 180px}
+    li > a, li > span {padding: 5px 15px; height: auto; line-height: 20px;}
+    li:not(.plone-toolbar-submenu-header) > a, li:not(.plone-toolbar-submenu-header) > span {padding: 5px 15px 5px 30px; height: auto;}
+    li:not(.plone-toolbar-submenu-header) > span { color: darken(@plone-toolbar-text-color,35%); font-weight: 100;}
+    .plone-toolbar-submenu-header {border-top: 1px solid @plone-toolbar-separator-color; padding: 5px 0 0;margin: 5px 0 0;}
+    .plone-toolbar-submenu-header:first-child {border-top:0; margin:0;}
+    [class^="icon"] {
+        display: inline !important; line-height: 0;
+        &:before {font-size: 10px;line-height: 18px;position: absolute;right: 10px;color: @plone-toolbar-private-color; margin-top: 7px; top:0;}
+    }
+    /*state marker*/
+    .state-published:after, .state-external:after {right:15px; content:"•"; color:@plone-toolbar-published-color; position: absolute; font-size: 20px;}
+    .state-internally_published:after {right:15px; content:"•"; color:@plone-toolbar-internally-published-color; position: absolute; font-size: 20px;}
+    .state-pending:after {right:15px; content:"•"; color:@plone-toolbar-pending-color; position: absolute; font-size: 20px;}
+    .state-draft:after, .state-internal:after {right:15px; content:"•"; color:@plone-toolbar-draft-color; position: absolute; font-size: 20px;}
+    .state-private:after {right:15px; content:"•"; color:@plone-toolbar-private-color; position: absolute; font-size: 20px;}
+
+    /*current*/
+    .plone-toolbar-submenu-header :after {font-size: 30px; right:13px;}
+}
+#edit-zone.plone-toolbar-left nav > ul ul {width: 0; height: 100%}
+#edit-zone.plone-toolbar-top nav > ul ul {height: 0; max-height: 0; width: 180px}
+
+
+#edit-zone.expanded {
+    width:120px;
+    nav > ul ul { left: 120px;}
+    nav > ul a > [class^="icon"] {display: table-cell; width: 40px; padding-left: 10px; }
+    nav > ul a > span + span {background: none; width: 80px; text-align: left;}
+    .plone-toolbar-caret {width: 0;}
+    li:not(.active) a:hover > span {background: @plone-toolbar-link; transition: background .35s;}
+
+    /*states*/
+    li a.label-state-published:hover > span, li a.label-state-external:hover > span  {
+        background: @plone-toolbar-published-color;
+        &:first-child:before {color:@plone-toolbar-text-color;}
+    }
+    li a.label-state-internally_published:hover > span {
+        background: @plone-toolbar-internally-published-color;
+        &:first-child:before {color:@plone-toolbar-text-color;}
+    }
+    li a.label-state-pending:hover > span {
+        background: @plone-toolbar-pending-color;
+        &:first-child:before {color:@plone-toolbar-text-color;}
+    }
+    li a.label-state-draft:hover > span, li a.label-state-internal:hover > span {
+        background: @plone-toolbar-draft-color;
+        &:first-child:before {color:@plone-toolbar-text-color;}
+    }
+    li a.label-state-private:hover > span {
+        background: @plone-toolbar-private-color;
+        &:first-child:before {color:@plone-toolbar-text-color;}
+    }
+}
+
+#edit-zone.plone-toolbar-left.compressed, #edit-zone.plone-toolbar-top.compressed {
+    height: 50px;
+    width: 60px;
+    background: none;
+    .plone-toolbar-logo { opacity: .5; }
+    .plone-toolbar-logo:hover, .plone-toolbar-logo:active, .plone-toolbar-logo:focus {opacity: 1;}
+    nav {display: none;}
+}
+
+#edit-zone nav > ul > li.active {
+    > a:after {
+        content:"";
+        border-right: 10px solid #2a2a2a;
+        border-bottom: 10px solid transparent;
+        border-top: 10px solid transparent;
+        position: absolute;
+        right: 0;
+        margin-top: -35px;
+    }
+    a > span {margin-top: -50px; }
+    > a {background: @plone-toolbar-link;
+        & span:before {color:@plone-toolbar-text-color !important;} /*state icon on white*/
+    }
+    > a.label-state-published, > a.label-state-external {background: @plone-toolbar-published-color;}
+    > a.label-state-internally_published {background: @plone-toolbar-internally-published-color;}
+    > a.label-state-pending {background: @plone-toolbar-pending-color;}
+    > a.label-state-draft, > a.label-state-internal {background: @plone-toolbar-draft-color;}
+    > a.label-state-private {background: @plone-toolbar-private-color;}
+    ul {display: block; width: 180px;}
+    /*a:hover { background: none; }*/
+    }
+
+
+
+/*plone-toolbar-top*/
+#edit-zone.plone-toolbar-top {
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    .plone-toolbar-logo:after {
+        border-left: 4px solid darken(@plone-toolbar-link, 10%);
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        left: 60px;
+        top:20px;
+    }
+    .plone-toolbar-logo:hover:after {
+        border-left: 4px solid @plone-toolbar-link;
+        transition: border-top .35s; -webkit-transition: border-top .25s;
+    }
+    .plone-toolbar-logo, nav, nav > ul {display: inline-block;}
+    nav > ul > li {display: inline-block; width: 60px; float: left;}
+    .plone-toolbar-logo {
+        position: absolute; top:0;
+        img {margin-top: 13px;}
+    }
+    nav {margin-left: 60px;}
+    .plone-toolbar-caret {
+        border-top: 4px solid;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        left: 26px;
+        top: 43px;
+        right: inherit;
+        padding: 0 !important;
+    }
+    nav > ul ul {
+        left: auto;
+        top:50px;
+        overflow-y: auto;
+        height: 0;
+    }
+    nav > ul li.active ul {
+        height: inherit;
+        max-height: 1000px; // trick to activate transition
+    }
+    li.active > a:after {
+        border-bottom: 10px solid #2a2a2a;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        right: inherit;
+        margin-top: -20px;
+        margin-left: 20px;
+    }
+}
+#edit-zone.plone-toolbar-top.expanded {
+    .plone-toolbar-logo {width: 60px;}
+    nav > ul > li {width: inherit;}
+    nav > ul a > span + span {width: inherit}
+    nav > ul a > [class^="icon"] {padding-left: 0;}
+    .plone-toolbar-caret {left:16px;}
+    li.active > a:after {margin-left: 10px;}
+}
+
+/*container*/
+#edit-zone.plone-toolbar-top .plone-toolbar-container {margin: 0 auto; width: 960px; height: 50px;}
+#edit-zone.plone-toolbar-top.compressed .plone-toolbar-container {width: auto;}
+
+/*switcher*/
+#edit-zone .plone-toolbar-switcher {
+    position: absolute;
+    width: 10px; height: 10px;
+    background: rgba(0,0,0,.2);
+    border-radius: 0 0 100% 0;
+    top: 0;
+    cursor: pointer;
+    span {font-size: 0;}
+}
+
+/*mobile*/
+@media (max-width: @plone-screen-xs-max) {
+    #edit-zone.plone-toolbar-left.compressed, #edit-zone.plone-toolbar-top.compressed {
+        height: 100%;
+        width: 120px;
+        nav {
+            display: block;
+        }
+    }
+    #edit-zone, #edit-zone.expanded {
+        .plone-toolbar-logo {
+            position: absolute;
+            width: 60px;
+            left: -60px;
+            &:after {
+                content: none;
+            }
+            img {margin-top: 12px}
+        }
+    }
+    #edit-zone {
+        #edit-zone.expanded(); /*default view users left-expanded as a reference*/
+        width: 100%;
+        right: 0;
+        left: inherit;
+        nav ul  ul {width: 200px;}
+        nav {
+            overflow-y: scroll;
+
+        }
+    }
+    body.userrole-authenticated {
+        right: 0;
+        width: 100%;
+        height: 100%;
+        left: inherit;
+    }
+    #edit-zone nav ul li ul {
+        width: 0;
+    }
+    #edit-zone nav ul li.active ul {
+        width: 180px;
+    }
+}
+@media (min-width: @plone-screen-xs-min) {
+
+}
+
+
+/* transitions for menu openings*/
+#edit-zone, body  { transition: all .15s ease-in-out;}
+#edit-zone nav > ul ul { transition: all .1s ease-in;}
+#edit-zone nav > ul li.active ul {transition: all .25s ease-out;}
+#edit-zone.plone-toolbar-top nav > ul li.active ul {transition: all .25s ease-in-out;}
+
+
+
+
+
+
+
+

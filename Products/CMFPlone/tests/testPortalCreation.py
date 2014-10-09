@@ -177,14 +177,6 @@ class TestPortalCreation(PloneTestCase.PloneTestCase, WarningInterceptor):
         # navigation_properties should have been removed
         self.assertFalse('navigation_properties' in self.properties)
 
-    def testFullScreenAction(self):
-        # There should be a full_screen action
-        self.assertTrue(
-            self.actions.getActionInfo('document_actions/full_screen')
-                is not None)
-        action = self.actions.getActionInfo('document_actions/full_screen')
-        self.assertTrue('fullscreenexpand_icon' in action['icon'])
-
     def testVisibleIdsProperties(self):
         # visible_ids should be a site property and a memberdata property
         self.assertTrue(

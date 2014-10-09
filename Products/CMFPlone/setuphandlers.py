@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.factory import _DEFAULT_PROFILE
 from Products.CMFPlone.interfaces import IDateAndTimeSchema
 from Products.CMFPlone.interfaces import IMigrationTool
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME
 from Products.CMFQuickInstallerTool.interfaces import INonInstallable
 from Products.StandardCacheManagers.AcceleratedHTTPCacheManager \
     import AcceleratedHTTPCacheManager
@@ -11,6 +12,7 @@ from borg.localrole.utils import replace_local_role_manager
 from plone.keyring.interfaces import IKeyManager
 from plone.keyring.keymanager import KeyManager
 from plone.registry.interfaces import IRegistry
+from plone.resource.interfaces import IResourceDirectory
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -184,6 +186,11 @@ def importFinalSteps(context):
 
     first_weekday_setup(context)
     timezone_setup(context)
+
+    # setup resource overrides plone.resource
+    persistentDirectory = getUtility(IResourceDirectory, name="persistent")
+    if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistentDirectory:
+        persistentDirectory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
 
 
 def updateWorkflowRoleMappings(context):

@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+
+
+  <metal:block fill-slot="javascript_head_slot">
+
+<link rel="stylesheet"
+          tal:attributes="href string:${portal_url}/++plone++static/resourceregistry.min.css" />
+
+    <script tal:attributes="src string:${portal_url}/++plone++static/resourceregistry.js"></script>
+  </metal:block>
+<body>
+
+<metal:content-core fill-slot="content-core">
+    <metal:content-core define-macro="content-core">
+      <span tal:replace="structure context/@@authenticator/authenticator"/>
+      <div class="pat-resourceregistry" tal:attributes="data-pat-resourceregistry view/config" />
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
+    

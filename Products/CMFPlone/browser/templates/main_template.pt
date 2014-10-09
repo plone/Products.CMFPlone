@@ -33,6 +33,8 @@
     <metal:topslot define-slot="top_slot" />
     <metal:headslot define-slot="head_slot" />
     <metal:styleslot define-slot="style_slot" />
+
+    <div tal:replace="structure provider:plone.scripts" />
     <metal:javascriptslot define-slot="javascript_head_slot" />
 
     <meta name="generator" content="Plone - http://plone.org" />
@@ -49,13 +51,17 @@
         id="visual-portal-wrapper">
 
     <section id="edit-bar" role="toolbar">
-      <div class="navbar navbar-fixed-left navbar-inverse" id="edit-zone" role="navigation">
-        <div class="container">
-          <header>
-
-            <div tal:content="structure provider:plone.toolbar">
-            </div>
-          </header>
+      <div id="edit-zone" role="toolbar" class="plone-toolbar-left pat-toolbar">
+        <div class="plone-toolbar-container">
+          <a class="plone-toolbar-logo">
+            <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
+          </a>
+          <a class="plone-toolbar-switcher"><span>Left-Top switcher</span></a>
+          <nav role="navigation">
+            <ul>
+              <div tal:replace="structure provider:plone.toolbar">
+              </div>
+            </ul>
         </div>
       </div>
     </section>
@@ -85,7 +91,7 @@
 
         <metal:slot define-slot="body">
 
-        <div id="content">
+        <article id="content">
 
           <metal:bodytext define-slot="main">
 
@@ -118,7 +124,7 @@
           <section id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" />
 
           </metal:bodytext>
-        </div>
+        </article>
 
         </metal:slot>
 
@@ -155,6 +161,7 @@
     <footer id="portal-footer-wrapper" i18n:domain="plone">
       <div tal:replace="structure provider:plone.portalfooter" />
     </footer>
+
 
   </body>
 </html>

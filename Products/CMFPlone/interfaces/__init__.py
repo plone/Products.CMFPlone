@@ -10,6 +10,11 @@ from controlpanel import IMaintenanceSchema
 from controlpanel import INavigationSchema
 from controlpanel import ISearchSchema
 from controlpanel import ISiteSchema
+from controlpanel import ITinyMCESchema
+from controlpanel import ITinyMCELayoutSchema
+from controlpanel import ITinyMCEToolbarSchema
+from controlpanel import ITinyMCELibrariesSchema
+from controlpanel import ITinyMCEResourceTypesSchema
 from controlpanel import ITypesSchema
 from events import IConfigurationChangedEvent
 from events import ISiteManagerCreatedEvent
@@ -26,3 +31,5 @@ from structure import INonStructuralFolder
 from translationservice import ITranslationServiceTool
 from breadcrumbs import IHideFromBreadcrumbs
 from workflow import IWorkflowChain
+from resources import IResourceRegistry
+from resources import IBundleRegistry

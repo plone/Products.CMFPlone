@@ -27,6 +27,9 @@ Changelog
   Minor reformattings to make code-analysis happy.
   [jensens]
 
+- Removed some javascripts: fullscreenmode.js, dragdropreorder.js,
+  styleswitcher.js, select_all.js, collapsibleformfields.js
+
 - PLIP 13260: Migration cut, copy and paste into browser views.
   [saily]
 

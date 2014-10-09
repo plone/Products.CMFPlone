@@ -44,6 +44,7 @@ Scenario: Select All items
 
 the folder contents view
     Go to  ${PLONE_URL}/${TEST_FOLDER}/folder_contents
+    Page should contain element  css=.pat-structure
 
 I click the '${link_name}' link
     Click Link  ${link_name}
@@ -60,6 +61,7 @@ a document '${title}' in the test folder
     Click Button  Save
 
 I select all the elements
+    Element should be visible  css=.pat-structure .select-all
     Click Element  css=.pat-structure .select-all
 
 the four elements got selected
