@@ -1,8 +1,10 @@
-<dl id="document-toc" class="portlet toc" style="display: none"
+<section id="document-toc" class="portlet toc"  role="section" style="display: none"
     tal:condition="view/enabled"
     i18n:domain="plone">
-  <dt class="portletHeader"
-      i18n:translate="label_tableofcontents">Contents</dt>
-  <dd class="portletItem">
-  </dd>
-</dl>
+  <header class="portletHeader"
+      i18n:translate="label_tableofcontents">Contents</header>
+  <section class="portletContent">
+	  <div class="portletItem">
+	  </div>
+  </section>
+</section>

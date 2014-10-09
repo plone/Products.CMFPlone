@@ -176,6 +176,15 @@
         permission="zope2.View"
         />
 
+    <!-- The anontools (login, register) -->
+    <browser:viewlet
+        name="plone.anontools"
+        manager=".interfaces.IPortalHeader"
+        class=".common.PersonalBarViewlet"
+        permission="zope2.View"
+        template="anontools.pt"
+        />
+
     <!-- The logo -->
     <browser:viewlet
         name="plone.logo"
@@ -189,14 +198,6 @@
         name="plone.global_sections"
         manager=".interfaces.IMainNavigation"
         class=".common.GlobalSectionsViewlet"
-        permission="zope2.View"
-        />
-
-    <!-- The tiny logo -->
-    <browser:viewlet
-        name="plone.tiny_logo"
-        manager=".interfaces.IToolbar"
-        class=".common.TinyLogoViewlet"
         permission="zope2.View"
         />
 

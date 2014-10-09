@@ -1,49 +1,27 @@
-<div id="portal-personaltools-wrapper"
-     i18n:domain="plone">
-
-<p class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</p>
-
-<ul class="actionMenu deactivated" id="portal-personaltools"
-    tal:condition="python:view.user_actions and not view.anonymous">
-  <tal:block condition="not: view/anonymous">
-  <li class="actionMenuHeader dropdown">
-    <a id="user-name"
-      data-toggle="dropdown"
-      tal:attributes="href view/homelink_url">
-      <span class="icon-user" aria-hidden="true"></span>
-      <span tal:content="view/user_name" class="text-toolbar">John</span>
-      <span class="caret"></span>
-    </a>
-    <ul class="actionMenuContent dropdown-menu">
-        <li class="dropdown-header">
-          <span tal:content="view/user_name">John</span>
-        </li>
-        <li tal:repeat="action view/user_actions"
-            tal:attributes="id string:personaltools-${action/id}">
-            <a href=""
-               tal:attributes="action"
-               tal:content="action/title"
-               i18n:translate="">
-                action title
-            </a>
-        </li>
-    </ul>
-  </li>
-  </tal:block>
-</ul>
-
-<ul class="actionMenu deactivated" id="portal-personaltools"
-    tal:condition="python:view.user_actions and view.anonymous">
-  <li id="anon-personalbar">
-    <tal:actions repeat="action view/user_actions">
-        <a href=""
-           tal:attributes="action"
-           tal:content="action/title"
-           i18n:translate="">
-            action title
-        </a>
-    </tal:actions>
-  </li>
-</ul>
-
-</div>
+<li id="portal-personaltools" class="plone-toolbar-separator"
+    tal:condition="python:view.user_actions and not view.anonymous"
+    i18n:domain="plone">
+  <a href="#"
+     tal:attributes="href view/homelink_url">
+    <span class="icon-user" aria-hidden="true"></span>
+    <span tal:content="view/user_name">User</span>
+    <span class="plone-toolbar-caret"></span>
+  </a>
+  <ul>
+    <li class="plone-toolbar-submenu-header">
+      <span tal:content="view/user_name">Username</span>
+    </li>
+    <li class="user-action"
+        tal:repeat="action view/user_actions">
+      <a href=""
+         tal:attributes="action">
+          <tal:actionname tal:content="action/title">
+           action title
+          </tal:actionname>
+          <tal:islogout condition="python:action['id'] == 'personaltools-logout'">
+            <span class="icon-logout"></span>
+          </tal:islogout>
+      </a>
+    </li>
+  </ul>
+</li>
