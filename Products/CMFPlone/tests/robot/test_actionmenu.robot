@@ -158,11 +158,11 @@ Open Menu
     [Arguments]  ${elementId}
     Element Should Not Be Visible  css=#${elementId} ul.actionMenuContent
     Click link  css=#${elementId} a.actionMenuHeader
-    Wait until keyword succeeds  1  5  Element Should Be Visible  css=#${elementId} .actionMenuContent
+    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#${elementId} .actionMenuContent
 
 Open Action Menu
     Click link  xpath=//li[@id='plone-contentmenu-moreoptions']/a
-    Wait until keyword succeeds  1  5  Element Should Be Visible  css=#plone-contentmenu-actions
+    Wait until keyword succeeds  5  1  Element Should Be Visible  css=#plone-contentmenu-actions
 
 I copy the page
     Open Action Menu
