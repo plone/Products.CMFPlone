@@ -384,3 +384,20 @@ class IContactForm(Interface):
                       default=u'Please enter the message you want to send.'),
         required=False
     )
+
+class IAuthorFeedbackForm(Interface):
+    """ Interface describing the author feedback form """
+
+    subject = schema.TextLine(
+        title=_('label_subject', default=u'Subject'),
+        required=True
+    )
+
+    message = schema.Text(
+        title=_('label_message', default=u'Message'),
+        required=True
+    )
+
+    author = schema.TextLine()
+    referer = schema.TextLine(required=False)
+
