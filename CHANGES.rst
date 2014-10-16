@@ -43,6 +43,9 @@ Changelog
 - Small scoping fix in locking js code
   [do3cc]
 
+- PLIP 13260: Migrate author page to browser views/z3c.form (issue #78)
+  [bosim]
+
 
 5.0a2 (2014-04-20)
 ------------------
@@ -67,9 +70,6 @@ Changelog
 - PLIP 13260: Migration contact-info to ``z3c.form`` and make it highly
   customizeable.
   [timitos, saily]
-  
-- PLIP 13260: Migrate author page to browser views/z3c.form (issue #78)
-  [bosim]
 
 
 5.0a1 (2014-03-02)
