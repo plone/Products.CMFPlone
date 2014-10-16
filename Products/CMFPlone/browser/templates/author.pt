@@ -40,7 +40,7 @@
                     No user by that name.
                 </dd>
             </dl>
-            <div id="content">
+            <article id="content">
                 &nbsp;
             </article>
         </tal:noAuthor>
