@@ -9,12 +9,12 @@ Changelog
 ------------------
 
 - reduce deprecation warnings to use plone_layout and not plone_view for
-  certain method calls in order to make debugging of robottests easier: 
+  certain method calls in order to make debugging of robottests easier:
   w/o it shows 1000ds of extra lines in html report.
   [jensens]
 
-- type controlpanel: Resolved problem with workflow selection form as it 
-  was breaking if state title had non-ascii characters. see also 
+- type controlpanel: Resolved problem with workflow selection form as it
+  was breaking if state title had non-ascii characters. see also
   https://github.com/plone/plone.app.controlpanel/pull/26
   [lewicki, jensens]
 
@@ -45,6 +45,23 @@ Changelog
 
 - PLIP 13260: Migrate author page to browser views/z3c.form (issue #78)
   [bosim]
+
+- Integration of the new markup update and CSS for both Plone and Barceloneta
+  theme. This is the work done in the GSOC Barceloneta theme project.
+  [albertcasado, sneridagh]
+
+- Created new viewlet manager for holding main navigation for a more semantic
+  use of it. Move the global sections viewlet into it.
+  [albertcasado]
+
+- New toolbar markup based in ul li tags.
+  [albertcasado, bloodbare, sneridagh]
+
+- Update <div id="content"> in all templates with <article id="content">
+  [albertcasado]
+
+- PLIP 14261: New resource registries.
+  [bloodbare, vangheem, robgietema, et al]
 
 
 5.0a2 (2014-04-20)
