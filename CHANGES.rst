@@ -19,6 +19,28 @@ Changelog
 - Add more data attributes to body tag
   [vangheem]
 
+- Change document byline viewlet manager to toolbar. Adapt template for toolbar.
+  [sneridagh]
+
+- Update byline viewlet name.
+  [sneridagh]
+
+- Created new viewlet manager for holding main navigation for a more semantic
+  use of it. Move the global sections viewlet into it.
+  [albertcasado]
+
+- Update and cleaning History markup popup.
+  [bloodbare]
+
+- Updated global navigation and breadcrumbs markup. Added ARIA roles.
+  [bloodbare]
+
+- New toolbar markup based in ul li tags.
+  [albertcasado, bloodbare, sneridagh]
+
+- Update <div id="content"> in all templates with <article id="content">
+  [albertcasado]
+
 
 2.5.1 (2014-04-05)
 ------------------
