@@ -8,38 +8,43 @@
       i18n:domain="plone">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title i18n:translate="">Upgrade this site</title>
-
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css"
         href="/++resource++plone-admin-ui.css"
-        tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css"/>
-
+        tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css" />
 </head>
+
 <body id="plone-upgrade-screen"
       tal:define="versions view/versions; report options/report|nothing;">
-
-  <img src="/++resource++plone-logo.png" width="215" height="56"
-       tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"/>
-
-  <h1 i18n:translate="">
+<div id="box">
+    <header><h1><img src="/++resource++plone-logo.png" width="108" height="28"
+         tal:attributes="src string:${context/absolute_url}/++resource++plone-logo.png"
+         alt="Plone"/></h1>
+    </header>
+    <article>
+  <div class="circle running">
+            <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAADRxJREFUeNrsXAtQU2cWvnlAwisogqsrOLvqqqu2xcpsl611q9M6VduOVWmLzrYKLRVtZ53aKR3c1fqc2aHTqttxkHbaop2pFGx1WUFY10VcnCrt7vCYQh2rFcMzPEIMBEhI9jvmzzZFSG6Sm5DEe2bO3Jub5P435/vPOd8597+RWCwWThT/EaloAhEQUURAREBEEQERARFFBEQERBQREBEQUURARBEBEQERRQQkCETuyZclEgl3r7fvyQYjxRObyMU56TiC9Pb2/kKpVM6AkROkUmk8APgZjiuxnYhtmMlkUmB7Uy6Xv4SteVw9JJiksLBQtmrVqvtlMtnvYPhF2C7Edk50dLQMbw9Ch6BGpmT4Yba1DAwMaJgthzz2OE/cK9BDVnd3d3xERMRTMP4K6GL8HiUO66H9TAf4zHqdTtcA4DKwaxBDloui0WimqFSqVISY1JiYmAfInkxvQU2jzTtn50TYGhBZlguye/duaX9//0oY7kxcXNwPCoXiLXiECm/VQ5ug2jHA4CU4L31fkFAR1CHr2rVrioSEhLSQkJDXkQ8mk4MwbxD0oltaWk5PmzbtLyzXeGSToPSQiooK5eDg4LaZM2degzfsARiUbL9nYNjCkGAK79MIBbI02EITGM+GJUuW1AOIbHiwluWGQS+TgzahAAmKpA7DS3p6eh7YsWNHLpL1bBxqhap9Nf7169d/EKIGCYocUltbGzFnzpxd8IjNeEkztc+X4+P3D02fPn2FWq3W2kDxyKaBCgh5BaropMjIyHzkiAk41CF0suYjyB83UMu8iN3bQrROAjKHIFfIDQbDDtQT5wAGJdZ2d8AwGo23ST25ltu3b6tZ1X5v1iGgsnHIFWeUSuVrePkDS9i8GRFmr6WxsbFk69atr4WGhqaTZmZmvtrQ0PB3vGV2lWF1dXXVC5U/AipkUYjSarWLoqKiCuAVnH2IcCHem4qKinKeffbZKpZrTHbkJrygoODhlJSUNzEUb7Jz4sSJV1JTU//Delweh6yAAITAQGhYi1idi13KFW418eAFRfPmzfuA1SODzCPo/IQwdW2j6urqXl6wYEEKn/Oh1umCp67Dbq+9lwR1DiEw9Hr9diTvPOy2spnocvFGRjp06NAXzHgDNjCYAWmf+lG6nJycQr6hC/VHHfdj9zf4cwhCiwyF3rvwjCxWV7j9w0ECWo4ePdpC3mUZZQqzY0PHjh3rwGdb+ZwTVLfakx5YQBWGBMbx48dzUV+sYoWereXhtrOR8ew9YxRQzPBCI5uoDscaHh427N+/v1JoQPzSQ/Ly8kI+/fTT4wBjBV52CnHOsLCwhO3btyudfW716tUhyAvxzj4HdvXN6dOne4WkvH7pIZRgUWztBR19BC97PPSKn+SirKysVGzet4yRdekz7e3t66VWGucwPII6X2DkwhK0HsIM8jhm8wuc9R6FkGKeNGnSdtQx88f6wM2bN38dGxv7ujMwwK40CKn/Ejpc+R0gX375ZXRMTMx72O3mBG6Rk2LiG2bMmFHe19f3h4qKiv9HB9rHsQ3x8fFU+ZucnQfAncPE6Rc6XPlVHUKhCkY5GB4e/gQnwGIBB0KLFqbiuo1IzHV3DshkCzB+KGdtTjqc9Waz2YhctP7gwYPfU2NR6GVAfgEIhSqEkgdnzpx5itUJvhACxpbkB/mGn1u3bpVOnz59H3UKGCsTFBCfJXW4eER0dPRv8QMW0tomaDQuvBPapdVqa8Fs3mDtEJeTOArHW01NTd9gq1WpVDEJCQlJqF1+7iyncNaVJRxfSk2tl88h9lV+QIUsmvkIQ0+AMb0il8sfZ4xkgMXeYTZL5axt0cVZl+Dwz9Jm89CFCxc+WLFiRRkSrW3JjgyghJWVlT310EMPvehKX4qHd5TAOw5QRY/fPWyzgd97CGsELjSZTIdowRmjr008KKJL3lFeXn6QwGBAGtn5pTqdLiQ5OfmzixcvDixevPhVQSia2Tx4+PDh41T028AICA8hMFBHbAN13cWoa783Lrynp6cGjGwbG+Mn7RCJddqS100AOHlRUVGzPB3vu++++2zu3Ll/Zd5htreBkB4iFdgzaJHBewDjz4yxGLxBX0nVanUV84y7elPsNSVqfUtLS5WnY9FS0bS0tGPMO8ycF0UqJBjwjAMKhSKVc/MOniuC3ESNQuNYVbetWQhp93QshL7cS5cudXN29zy8JXKBwJB0dnY+Dc9IsyvqvCqoqCdwzru/FjA7lSfXA3Z4cfny5ee4ES17v/aQs2fPToS8w8CgaanDDG5G/L4BdydqK3iLIS4ubjEPQ0uQZxa7O4bRaNRmZWUdZKHRxPlA5EKEKiTYF+Ahp7/66qv/Hjly5FtQTp3d7JVMnTo1dPfu3XOTkpLumz179lIeNYJTAbVdXl9fPw+7NQ6KTVqVkuwusaisrHw/Pz9fzY1xD8UvWRbxfoSPcACiZHnDyGoMy4iqOISYDyTsk08+SVq5cuUmGHWGJ9cOWm3RaDRPA/DGkWB0dHQkTpo06QupVOpW3AdpKEGBuZ9YHLVZnNjAf1onLGzI2fbOgywjZxOjoVIGDPWMwhByJuBH56NojPUAlBAMFYMQmQ9wihmzm4YidDXOu55SmzuhBuH2+rJlyzKvXLnSxnKHxVeAeByy2MUaeXzmTnXO7sgNYGabent7GwHMIx4Mb8L5NMTsoC8xwAkAWlFiWzjnUkJH3tCjANwLMDpZi8Sni+983n63WIWMZiguLv6IKmBPT8mKw2bWDWhhDUqLG9dmLi0tPZCdnf2tL2oOn/eynHyXZnNUYWHhsjVr1uxFrFdw4yw1NTUfJCYmfkSAUmvdhbDtn5W6q+0hYj8pKSmVRUVFOwXwFI+kqampBGDkc9aOs3G8rmPcALHLPbrnnnvuAgNlyFutFkcKhnglOTmZ6ijdeOQNf/GQu0BB+PqTrz1Fq9XWr127dldLS0u3M0YV9ICMBOX555+v9CUoOp2uESHzLRSAbeOVxP0OEAegeDV86fX679PS0t48d+4csbN+b97j8HuWBWNMDgkJoWfEleD91yIjIxvsCkiq6FUnTpxYgtm73xvsCzXQlfT09L2g3fT8YZ8nYATsIgcydldX1zyVSpWDSvoxu/aKHN5wY3BwcFd4eHiBrQK3A+WAUKBgHEN1dfVHS5cu/dxgMGg9BcMbgNz5srvK9/uMyTwGg3TjdTv0xghVQ/W0sJr7cV0ttVhiAcqa4eHhxlG+45J2dHQUbtu27WGck/48Jpyqek9+u70NhLSpTzwEs3LKokWLLrPHzxwlThVYzxsTJ0782N5TCgoKfr9u3Tq3PAWe0FZWVvb+M888U8lqDGqrGIViUwFXGFJ7fv78+dl81stSUkdIy964caNilDol2x32RUuMAMY/OOuibbofPmTx47+f8DogX3/9dXxYWFgKA4PPck/lzp07H6GcMwYoLrEveNt9nPUGk8FfmNS4AULeMWvWrM2sw8tXhhUKxa9s1zYSlLy8vNfoUQAGjFMJDQ2dbOtpcgEgXgUkIyNDGRUVtc6GD18F47Lt31WnZGZmXomNjf2jTCZb1draeoGHx4VyAfS0sdSL3iF5++23V8MgEW40+q46Kh4567/6dOzbt+9dorLOPI7zwaILvy8MaQlnX1/fSdQWC105J6hvM8Lck83NzVpHMd/Wvgd4OxMSEtaN9TmTydSDIvRhotVemniBwbJKSkqmIJn/xsWWBnf58uUjAMPpX+sxsAaqqqr+5iT8tXLj8JcbfgUIJfOkpKQ12PJmNWTgmpqaI48++mgpx3+VhzE1NbXWaDT2OKC9Dfc8IFQFI5mv4msIYk25ublbExMTP+ZcWwNFXjSk0+lqx/rA1atXKzgvPOnkLfHK6vdTp05NUSqV9zsyBNHW9vb2qtLS0i/S09O/YUD0ueAddxI9eSGqcfVoiXtoaKht/fr1lzgfLXLzS0AoXMHQT40Fhl6vv97Y2Hh2z549Z4uLi4kt0SI2YkpUVwy7US+Y2Z9QjuYdBW1tbQZOwH9aCEQPkUVGRj5pfwCJtV2tVv+7vLz8n1u2bKljAJAOMipr9qBws7BzjexhNW3YsOEzzoerDv0SkMOHD08Au1pIYYRAOH/+fMXmzZvrmPHtQTAJdIfOAlobMaKQNJ08eXJPbW2tlhvHBQvu/RoB2+9kFOSPhA8//JDa3L+E0hreGGgkZ32ARmarfYRS6o50dnYewX4zUzWo8BY2rlzIsXzRfhccEM7aMicAIrwFwogxFf39/ecJDBCFW9XV1W/i2GQ2tuSeBsQOFIkvjEGak5MzGUC0glE1nDlzZiNnvQGl9NX4fg+IL5WMDhb1skajObpp06YH8TrOl2CIgNw9viwjI4NWz5NGs3Ap8fE1CApIQP9vL1ulYnsUwjQui6P98PkQUQKh2yuKCEhQiHy8XFMU0UNEQEQRAREBEUUERAREFBEQERBRREBEEQERARFFBEQERBQRkOCV/wkwAG3HvBgewMy5AAAAAElFTkSuQmCC" />
+        </div>
+  <h1>
+    <span i18n:translate="">
     Upgrade this site
+    </span>
+    <div class="prominent">
+        <a href="#"
+           target="_new"
+           tal:attributes="href context/absolute_url;
+                           title context/Title;"
+           tal:content="context/Title">
+            Site title
+        </a>
+        <span class="discreet"
+              tal:content="string:– ${context/getId}"/>
+    </div>
   </h1>
-
-  <div class="prominent">
-      <a href="#"
-         target="_new"
-         tal:attributes="href context/absolute_url;
-                         title context/Title;"
-         tal:content="context/Title">
-          Site title
-      </a>
-      <span class="discreet"
-            tal:content="string:(${context/getId})"/>
-  </div>
-
-  <p i18n:translate="">
+  <p class="upgrade-info" i18n:translate="">
     More information about the upgrade procedure can be found in the
     documentation section of plone.org in the
     <a href="http://plone.org/upgrade"
@@ -50,8 +55,7 @@
 
   <tal:current tal:condition="versions/equal">
 
-    <p class="prominent">
-      <img src="confirm_icon.png" />
+    <p class="upgrade-info">
       <span i18n:translate="" tal:omit-tag="">Your site is up to date.</span>
     </p>
 
@@ -76,8 +80,7 @@
 
   <tal:downgrade tal:condition="versions/instance_gt">
 
-    <p class="prominent">
-      <img src="error_icon.png" />
+    <p class="upgrade-warning" >
       <span i18n:translate="" tal:omit-tag="">WARNING! Your database requires a newer version of Plone than you are currently using. This is a dangerous situation. Please upgrade your Plone version as soon as possible.</span>
     </p>
 
@@ -127,11 +130,11 @@
             Upgrade steps
           </legend>
 
-          <div class="formHelp" i18n:translate="">
+          <p class="formHelp" i18n:translate="">
             The following list shows which upgrade steps are going to be run.
             Upgrading sometimes performs a catalog/security update, which may
             take a long time on large sites. Be patient.
-          </div>
+          </p>
 
           <dl class="upgrade-steps">
             <tal:block tal:repeat="upgrade_info view/upgrades">
@@ -169,14 +172,12 @@
         </fieldset>
 
         <div class="field">
-          <label for="dry_run" i18n:translate="">Dry run mode</label>
-          <div class="formHelp" />
-
-          <input name="dry_run" type="checkbox" value="1:int" />
-          <span i18n:translate="">
+          <label for="dry_run" i18n:translate=""><input id="dry_run" name="dry_run" type="checkbox" value="1:int" /> Dry run mode</label>
+          
+          <div class="formHelp"  i18n:translate="">
             Run the upgrade and show the result without actually writing
             anything to the database.
-          </span>
+          </div>
         </div>
 
         <div class="formControls">
@@ -211,6 +212,7 @@
       <li>Zope <span tal:replace="corelist/Zope" /></li>
       <li>Python <span tal:replace="corelist/Python" /></li>
   </ul>
-
+  </article>
+</div>
 </body>
 </html>
