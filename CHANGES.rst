@@ -41,6 +41,10 @@ Changelog
 - Update <div id="content"> in all templates with <article id="content">
   [albertcasado]
 
+- Added new class to the body tag via globals layout bodyClass method. This is
+  used for maintain the consistency of the selected toolbar state.
+  [sneridagh]
+
 
 2.5.1 (2014-04-05)
 ------------------

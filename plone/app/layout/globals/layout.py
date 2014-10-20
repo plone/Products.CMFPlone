@@ -187,4 +187,22 @@ class LayoutPolicy(BrowserView):
             for role in user.getRolesInContext(self.context):
                 body_class += ' userrole-' + role.lower().replace(' ', '-')
 
+        # class for the toolbar state
+        if not membership.isAnonymousUser():
+            toolbar_state = self.request.cookies.get('plone-toolbar')
+            if toolbar_state:
+                if 'plone-toolbar-left' in toolbar_state:
+                    if 'expanded' in toolbar_state:
+                        body_class += ' plone-toolbar-left-expanded'
+                    else:
+                        body_class += ' plone-toolbar-left-default'
+                if 'plone-toolbar-top' in toolbar_state:
+                    if 'expanded' in toolbar_state:
+                        body_class += ' plone-toolbar-top-expanded'
+                    else:
+                        body_class += ' plone-toolbar-top-default'
+                if 'compressed' in toolbar_state:
+                    body_class += ' plone-toolbar-compressed'
+            else:
+                body_class += ' plone-toolbar-left-default'
         return body_class

@@ -221,13 +221,13 @@
             The default version is a blank bar; the one with real menus is
             registered for the main view + folder contents only.
       -->
-    <browser:viewlet
+<!--     <browser:viewlet
         name="plone.contentactions"
         for="*"
         manager=".interfaces.IToolbar"
         template="contentactions_blank.pt"
         permission="zope2.View"
-        />
+        /> -->
 
     <browser:viewlet
         name="plone.contentactions"
