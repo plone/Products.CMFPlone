@@ -16,7 +16,8 @@
           checkPermission nocall: context/portal_membership/checkPermission;
           site_properties context/portal_properties/site_properties;
           ajax_include_head request/ajax_include_head | nothing;
-          ajax_load python:False;"
+          ajax_load python:False;
+          toolbar_class python:request.cookies.get('plone-toolbar', 'plone-toolbar-left pat-toolbar')"
       tal:attributes="lang lang;">
 
     <metal:cache tal:replace="structure provider:plone.httpheaders" />
@@ -51,7 +52,7 @@
         id="visual-portal-wrapper">
 
     <section id="edit-bar" role="toolbar">
-      <div id="edit-zone" role="toolbar" class="plone-toolbar-left pat-toolbar">
+      <div id="edit-zone" role="toolbar" tal:attributes="class toolbar_class">
         <div class="plone-toolbar-container">
           <a class="plone-toolbar-logo">
             <img alt="Plone Toolbar" tal:attributes="src string:${portal_url}/++plone++static/plone-toolbarlogo.svg" />
