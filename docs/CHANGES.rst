@@ -58,9 +58,6 @@ Changelog
 - Small scoping fix in locking js code
   [do3cc]
 
-- Fix for https://dev.plone.org/ticket/11573 - fix traversal in private state.
-  [spereverde, jfroche, gotcha]
-
 
 4.3.3 (2014-02-19)
 ------------------
