@@ -70,7 +70,6 @@
    <permission-role>Reader</permission-role>
    <permission-role>Contributor</permission-role>
    <permission-role>Site Administrator</permission-role>
-   <permission-role>Member</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
