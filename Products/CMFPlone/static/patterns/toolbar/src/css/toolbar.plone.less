@@ -71,13 +71,14 @@ body.userrole-authenticated {
         a.label-state-internally_published > span + span { background: @plone-toolbar-internally-published-color; }
         a.label-state-pending > span:before {color: @plone-toolbar-pending-color; }
         a.label-state-pending > span + span { background: @plone-toolbar-pending-color; }
-            a.label-state-pending:hover > span { color:(#fff - @plone-toolbar-text-color) !important;}
+            a.label-state-pending > span { color:(#fff - @plone-toolbar-text-color) !important;} //contrast
         a.label-state-draft > span:before, a.label-state-internal > span:before {color: @plone-toolbar-draft-color; }
         a.label-state-draft > span + span, a.label-state-internal > span + span  { background: @plone-toolbar-draft-color; }
         a.label-state-private > span:before {color: @plone-toolbar-private-color; }
         a.label-state-private > span + span { background: @plone-toolbar-private-color; }
 
     }
+
     /*second-level*/
     nav > ul ul {
         font-family:@plone-toolbar-font-secundary; font-size: 14px; list-style: none; padding:0; margin:0; line-height: 30px;
@@ -144,11 +145,20 @@ body.userrole-authenticated {
         &:before {font-size: 10px;line-height: 18px;position: absolute;right: 10px;color: @plone-toolbar-private-color; margin-top: 7px; top:0;}
     }
     /*state marker*/
-    .state-published:after, .state-external:after {right:15px; content:"•"; color:@plone-toolbar-published-color; position: absolute; font-size: 20px;}
-    .state-internally_published:after {right:15px; content:"•"; color:@plone-toolbar-internally-published-color; position: absolute; font-size: 20px;}
-    .state-pending:after {right:15px; content:"•"; color:@plone-toolbar-pending-color; position: absolute; font-size: 20px;}
-    .state-draft:after, .state-internal:after {right:15px; content:"•"; color:@plone-toolbar-draft-color; position: absolute; font-size: 20px;}
-    .state-private:after {right:15px; content:"•"; color:@plone-toolbar-private-color; position: absolute; font-size: 20px;}
+    //dictionary translate flow into state
+    @flow-private: workflow-transition-reject;
+    @flow-published: workflow-transition-publish;
+    @flow-pending: workflow-transition-submit;
+    @flow-internally_published: workflow-transition-show_internally;
+    @flow-internal: workflow-transition-hide;
+
+    //states
+    .state-published:after, .state-external:after, #@{flow-published}:after  {right:15px; content:"•"; color:@plone-toolbar-published-color; position: absolute; font-size: 20px;}
+    .state-internally_published:after, #@{flow-internally_published}:after {right:15px; content:"•"; color:@plone-toolbar-internally-published-color; position: absolute; font-size: 20px;}
+    .state-pending:after, #@{flow-pending}:after {right:15px; content:"•"; color:@plone-toolbar-pending-color; position: absolute; font-size: 20px;}
+    .state-draft:after, .state-internal:after, #@{flow-internal}:after {right:15px; content:"•"; color:@plone-toolbar-draft-color; position: absolute; font-size: 20px;}
+    .state-private:after, #@{flow-private}:after {right:15px; content:"•"; color:@plone-toolbar-private-color; position: absolute; font-size: 20px;}
+
 
     /*current*/
     .plone-toolbar-submenu-header :after {font-size: 30px; right:13px;}
@@ -218,7 +228,6 @@ body.userrole-authenticated {
     > a.label-state-draft, > a.label-state-internal {background: @plone-toolbar-draft-color;}
     > a.label-state-private {background: @plone-toolbar-private-color;}
     ul {display: block; width: 180px;}
-    /*a:hover { background: none; }*/
     }
 
 
