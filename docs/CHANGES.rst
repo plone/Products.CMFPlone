@@ -5,7 +5,7 @@
 Changelog
 =========
 
-4.3.4 (unreleased)
+4.3.4 (2014-10-22)
 ------------------
 
 - Fix getFolderContents to no longer ignore 'show_inactive' in contentFilter.
