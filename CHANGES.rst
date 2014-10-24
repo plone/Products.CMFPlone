@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.2 (unreleased)
+2.5.2 (2014-10-23)
 ------------------
 
 - Switch site_title setting from root property to p.a.registry.
