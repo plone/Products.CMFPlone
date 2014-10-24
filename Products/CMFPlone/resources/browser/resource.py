@@ -126,7 +126,8 @@ class ResourceView(ViewletBase):
                     found = True
                     for bundle in bundles_to_add:
                         self.get_data(bundle, result)
-                        inserted.append(key)
+                        inserted.append(
+                            bundle.__prefix__.split('/', 1)[1].rstrip('.'))
                     del depends_on[key]
             if not found:
                 continue

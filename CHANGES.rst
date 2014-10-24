@@ -8,6 +8,10 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- Fix endless resource dependency loop when dependeing on a bundle that also has
+  a dependency.
+  [rpatterson]
+
 - reduce deprecation warnings to use plone_layout and not plone_view for
   certain method calls in order to make debugging of robottests easier:
   w/o it shows 1000ds of extra lines in html report.
