@@ -375,3 +375,12 @@ body.userrole-authenticated {
 #edit-zone nav > ul li.active ul {transition: all .25s ease-out;}
 #edit-zone.plone-toolbar-top nav > ul li.active ul {transition: all .25s ease-in-out;}
 
+
+/* small height devices <480 apanyo*/
+@media (max-height: 480px) {
+    #edit-zone nav > ul a, #edit-zone nav > ul a span, #edit-zone nav > ul a > span + span {height: 35px;}
+    #edit-zone nav > ul a > span, #edit-zone nav > ul a > span:before {line-height: 35px;}
+    #edit-zone nav > ul a > span + span {line-height: 1em;}
+    #edit-zone .plone-toolbar-caret {top:15px;}
+
+}
