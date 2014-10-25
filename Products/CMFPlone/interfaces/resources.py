@@ -62,11 +62,6 @@ class IBundleRegistry(zope.interface.Interface):
         description=_(u"In case its a bundle we can have a condition to render it"),
         required=False)
 
-    cooked_expression = schema.ASCIILine(
-        title=_(u"Coocked expression to render"),
-        description=_(u"Filled automatic"),
-        required=False)
-
     conditionalcomment = schema.ASCIILine(
         title=_(u"Conditional comment"),
         description=_(u"In case you want to render this resource on conditional comment"),

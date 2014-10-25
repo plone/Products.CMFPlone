@@ -1,3 +1,6 @@
+from zope import component
+from zope.ramcache.interfaces import ram
+
 from Acquisition import aq_inner, aq_base, aq_parent
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
@@ -75,6 +78,7 @@ class ResourceView(ViewletBase):
         """
         Get the cooked bundles
         """
+        cache = component.queryUtility(ram.IRAMCache)
         bundles = self.get_bundles()
         # Check if its Diazo enabled
         if isThemeEnabled(self.request):
@@ -91,11 +95,22 @@ class ResourceView(ViewletBase):
             if (bundle.enabled or key in enabled_diazo_bundles) and (key not in disabled_diazo_bundles):
                 # check expression
                 if bundle.expression:
-                    if bundle.cooked_expression:
-                        expr = Expression(bundle.expression)
-                        bundle.cooked_expression = expr
-                    if self.evaluateExpression(bundle.cooked_expression,
-                                               self.context):
+                    cooked_expression = None
+                    if cache is not None:
+                        cooked_expression = cache.query(
+                            'plone.bundles.cooked_expressions',
+                            key=dict(prefix=bundle.__prefix__), default=None)
+                    if (
+                            cooked_expression is None or
+                            cooked_expression.text != bundle.expression):
+                        cooked_expression = Expression(bundle.expression)
+                        if cache is not None:
+                            cache.set(
+                                cooked_expression,
+                                'plone.bundles.cooked_expressions',
+                                key=dict(prefix=bundle.__prefix__))
+                    if not self.evaluateExpression(
+                            cooked_expression, self.context):
                         continue
                 yield key, bundle
 

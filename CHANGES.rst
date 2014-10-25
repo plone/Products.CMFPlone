@@ -8,6 +8,11 @@ Changelog
 5.0a3 (unreleased)
 ------------------
 
+- Fix resource bundle expressions.  They weren't being checked at all and
+  reversed the condition if they had been.  Also move caching of the cooked
+  expressions out of the DB and into a RAM cache.
+  [rpatterson]
+
 - Fix endless resource dependency loop when dependeing on a bundle that also has
   a dependency.
   [rpatterson]
