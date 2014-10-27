@@ -88,7 +88,7 @@
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
     </field>
-    <value>false</value>
+    <value>True</value>
   </record>
   <record name="plone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
@@ -175,7 +175,7 @@
       <value key="css">
         <element>++plone++static/components/bootstrap/less/utilities.less</element>
         <element>++plone++static/components/bootstrap/less/forms.less</element>
-        <element>++plone++static/components/bootstrap/less/scafoolding.less</element>
+        <element>++plone++static/components/bootstrap/less/scaffolding.less</element>
         <element>++plone++static/components/bootstrap/less/navs.less</element>
         <element>++plone++static/components/bootstrap/less/navbar.less</element>
       </value>
@@ -191,7 +191,7 @@
   <records prefix="plone.resources/bootstrap-modal"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="css">
-        <element>++plone++static/components/bootstrap/less/modal.less</element>
+        <element>++plone++static/components/bootstrap/less/modals.less</element>
       </value>
   </records>
 
@@ -248,14 +248,14 @@
   <records prefix="plone.resources/bootstrap-glyphicons"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="css">
-        <element>++plone++static/components/boostrap/less/glyphicons.less</element>
+        <element>++plone++static/components/bootstrap/less/glyphicons.less</element>
       </value>
   </records>
 
   <records prefix="plone.resources/bootstrap-badges"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="css">
-        <element>++plone++static/components/boostrap/less/badges.less</element>
+        <element>++plone++static/components/bootstrap/less/badges.less</element>
       </value>
   </records>
 
