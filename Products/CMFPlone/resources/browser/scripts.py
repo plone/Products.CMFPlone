@@ -62,6 +62,7 @@ class ScriptsView(ResourceView):
                 self.registry.records['plone.resources.configjs'].value),
             'conditionalcomment': None
         })
+
         if self.development:
             # We need to add require.js and config.js
             result.append({

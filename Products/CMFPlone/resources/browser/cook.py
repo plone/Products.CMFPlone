@@ -6,11 +6,11 @@ from Products.CMFPlone.interfaces.resources import (
     OVERRIDE_RESOURCE_DIRECTORY_NAME)
 from slimit import minify
 from cssmin import cssmin
-from plone.subrequest import subrequest
 from datetime import datetime
 from plone.resource.interfaces import IResourceDirectory
 from StringIO import StringIO
 from zope.component.hooks import getSite
+from Products.Five.browser.resource import Resource as z3_Resource
 
 
 def cookWhenChangingSettings(context, bundle):
@@ -20,8 +20,6 @@ def cookWhenChangingSettings(context, bundle):
     resources = registry.collectionOfInterface(
         IResourceRegistry, prefix="plone.resources")
 
-    siteUrl = getSite().absolute_url()
-
     # Let's join all css and js
     css_file = ""
     js_file = ""
@@ -29,15 +27,29 @@ def cookWhenChangingSettings(context, bundle):
         if package in resources:
             resource = resources[package]
             for css in resource.css:
-                response = subrequest(siteUrl + '/' + css)
-                if response.status == 200:
-                    css_file += response.getBody()
-                    css_file += '\n'
+                css_obj = getSite().restrictedTraverse(css, None)
+                if css_obj:
+                    try:
+                        path = css_obj.chooseContext().path
+                        css_file += open(path, 'r').read()
+                        css_file += '\n'
+                    except:
+                        pass
+                        # if callable(css_obj):
+                        #     css_file += css_obj()
+
             if resource.js:
-                response = subrequest(siteUrl + '/' + resource.js)
-                if response.status == 200:
-                    js_file += response.getBody()
-                    js_file += '\n'
+                js_obj = getSite().restrictedTraverse(resource.js, None)
+                if js_obj:
+                    try:
+                        path = js_obj.chooseContext().path
+                        js_file += open(path, 'r').read()
+                        js_file += '\n'
+                    except:
+                        pass
+                        # if callable(js_obj):
+                        #     js_file += js_obj()
+
     cooked_js = minify(js_file, mangle=True, mangle_toplevel=True)
     cooked_css = cssmin(css_file)
 

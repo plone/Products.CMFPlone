@@ -88,7 +88,7 @@
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
     </field>
-    <value>True</value>
+    <value>False</value>
   </record>
   <record name="plone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
@@ -175,7 +175,6 @@
       <value key="css">
         <element>++plone++static/components/bootstrap/less/utilities.less</element>
         <element>++plone++static/components/bootstrap/less/forms.less</element>
-        <element>++plone++static/components/bootstrap/less/scaffolding.less</element>
         <element>++plone++static/components/bootstrap/less/navs.less</element>
         <element>++plone++static/components/bootstrap/less/navbar.less</element>
       </value>

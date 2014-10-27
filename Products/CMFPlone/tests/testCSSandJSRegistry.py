@@ -42,6 +42,7 @@ class TestCSSRegistry(PloneTestCase):
     #                         cb)
 
     def testJSIsInsertedInPage(self):
+        self.registry['plone.resources.development'] = True
         page = self.portal.index_html()
         self.assertTrue("++plone++static/plone.less" in page)
 
@@ -67,6 +68,6 @@ class TestJSRegistry(PloneTestCase):
 
 
     def testJSIsInsertedInPage(self):
-        self.assertTrue(self.registry['plone.resources.development'])
+        self.registry['plone.resources.development'] = True
         page = self.portal.index_html()
         self.assertTrue("++resource++plone.js" in page)
