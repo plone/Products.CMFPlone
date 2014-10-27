@@ -88,7 +88,7 @@
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
     </field>
-    <value>true</value>
+    <value>false</value>
   </record>
   <record name="plone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
@@ -656,11 +656,6 @@
   <records prefix="plone.resources/mockup-patterns-sortable"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/sortable/pattern.js</value>
-  </records>
-
-  <records prefix="plone.resources/mockup-patterns-dropzone"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/dropzone/pattern.js</value>
   </records>
 
   <records prefix="plone.resources/mockup-patterns-formautofocus"

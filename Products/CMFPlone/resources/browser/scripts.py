@@ -13,13 +13,13 @@ class ScriptsView(ResourceView):
                 if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
                     # We need to compile
                     cookWhenChangingSettings(self.context, bundle)
-    
-            result.append({
-                'conditionalcomment': bundle.conditionalcomment,
-                'src': '%s/%s?version=%s' % (
-                    self.portal_url, bundle.jscompilation,
-                    bundle.last_compilation)
-            })
+            if bundle.jscompilation:
+                result.append({
+                    'conditionalcomment': bundle.conditionalcomment,
+                    'src': '%s/%s?version=%s' % (
+                        self.portal_url, bundle.jscompilation,
+                        bundle.last_compilation)
+                })
         else:
             resources = self.get_resources()
             for resource in bundle.resources:
@@ -50,7 +50,18 @@ class ScriptsView(ResourceView):
                 self.registry.records['plone.resources/jquery.js'].value),
             'conditionalcomment': None
         })
-
+        result.append({
+            'src': '%s/%s' % (
+                self.portal_url,
+                self.registry.records['plone.resources.requirejs'].value),
+            'conditionalcomment': None
+        })
+        result.append({
+            'src': '%s/%s' % (
+                self.portal_url,
+                self.registry.records['plone.resources.configjs'].value),
+            'conditionalcomment': None
+        })
         if self.development:
             # We need to add require.js and config.js
             result.append({
@@ -65,18 +76,7 @@ class ScriptsView(ResourceView):
                     self.registry.records['plone.resources.lessc'].value),
                 'conditionalcomment': None
             })
-            result.append({
-                'src': '%s/%s' % (
-                    self.portal_url,
-                    self.registry.records['plone.resources.requirejs'].value),
-                'conditionalcomment': None
-            })
-            result.append({
-                'src': '%s/%s' % (
-                    self.portal_url,
-                    self.registry.records['plone.resources.configjs'].value),
-                'conditionalcomment': None
-            })
+
 
         result.extend(self.ordered_bundles_result())
 

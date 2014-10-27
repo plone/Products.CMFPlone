@@ -41,11 +41,12 @@ class StylesView(ResourceView):
                     # We need to compile
                     cookWhenChangingSettings(self.context, bundle)
 
-            result.append({
-                'rel': 'stylesheet',
-                'conditionalcomment' : bundle.conditionalcomment,
-                'src': '%s/%s?version=%s' % (self.portal_url, bundle.csscompilation, bundle.last_compilation)
-                })
+            if bundle.csscompilation:
+                result.append({
+                    'rel': 'stylesheet',
+                    'conditionalcomment' : bundle.conditionalcomment,
+                    'src': '%s/%s?version=%s' % (self.portal_url, bundle.csscompilation, bundle.last_compilation)
+                    })
         else:
             self.resources = self.get_resources()
             # The bundle resources

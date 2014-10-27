@@ -6,7 +6,6 @@
 }
 .define-variables-if-not-defined();
 
-
 @import url("@{mockup-patterns-select2}");
 @import url("@{mockup-patterns-pickadate}");
 @import url("@{mockup-patterns-relateditems}");
@@ -17,6 +16,20 @@
 @import url("@{mockup-patterns-upload}");
 @import url("@{plone-patterns-toolbar}");
 @import url("@{mockup-patterns-tinymce}");
+
+// .import_dependencies() when not (isurl(@mockup-patterns-select2)) {
+//   @import "@{mockup-patterns-select2}";
+//   @import "@{mockup-patterns-pickadate}";
+//   @import "@{mockup-patterns-relateditems}";
+//   @import "@{mockup-patterns-querystring}";
+//   @import "@{mockup-patterns-autotoc}";
+//   @import "@{mockup-patterns-modal}";
+//   @import "@{mockup-patterns-structure}";
+//   @import "@{mockup-patterns-upload}";
+//   @import "@{plone-patterns-toolbar}";
+//   @import "@{mockup-patterns-tinymce}";
+// }
+// .import_dependencies();
 
 
 @import "@{bowerPath}bootstrap/less/variables.less";
@@ -44,18 +57,17 @@
   font-weight: normal;
   font-style: normal;
 }
-/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
-/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
-/*
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  @font-face {
-    font-family: 'fontello';
-    src: url('../font/fontello.svg?13758537#fontello') format('svg');
-  }
-}
-*/
+// Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. 
+// Note, that will break hinting! In other OS-es font will be not as sharp as it could be 
 
-/* fix navbar height, for twitter bootstrap */
+// @media screen and (-webkit-min-device-pixel-ratio:0) {
+//   @font-face {
+//     font-family: 'fontello';
+//     src: url('../font/fontello.svg?13758537#fontello') format('svg');
+//   }
+// }
+
+// fix navbar height, for twitter bootstrap
 @navbar-height: 29px;
 
  [class^="icon-"]:before, [class*=" icon-"]:before {
@@ -69,38 +81,38 @@
   width: 1em;
   margin-right: .2em;
   text-align: center;
-  /* opacity: .8; */
+  // opacity: .8;
 
-  /* For safety - reset parent styles, that can break glyph codes*/
+  // For safety - reset parent styles, that can break glyph codes
   font-variant: normal;
   text-transform: none;
 
-  /* fix buttons height, for twitter bootstrap */
+  // fix buttons height, for twitter bootstrap
   line-height: 1em;
 
-  /* Animation center compensation - margins should be symmetric */
-  /* remove if not needed */
+  // Animation center compensation - margins should be symmetric
+  // remove if not needed 
   margin-left: .2em;
 
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
+  // you can be more comfortable with increased icons size 
+  // font-size: 120%; 
 
-  /* Uncomment for 3D effect */
-  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+  // Uncomment for 3D effect 
+  // text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
 }
 
-// ?Albert: I do not know if this is longer needed
-.icon-plus:before { content: '\e807'; } /* '' */
-.icon-resize-horizontal:before { content: '\e804'; } /* '' */
-.icon-down-dir:before { content: '\e800'; } /* '' */
-.icon-up-dir:before { content: '\e801'; } /* '' */
-.icon-right-dir:before { content: '\e80a'; } /* '' */
-.icon-ellipsis:before { content: '\e80c'; } /* '' */
-.icon-dot-circled:before { content: '\e809'; } /* '' */
-.icon-pencil:before { content: '\e806'; } /* '' */
-.icon-user:before { content: '\e802'; } /* '' */
-.icon-group:before { content: '\e808'; } /* '' */
-.icon-view-mode:before { content: '\e80d'; } /* '' */
-.icon-folder-open:before { content: '\e803'; } /* '' */
-.icon-resize-vertical:before { content: '\e80b'; } /* '' */
-.icon-eye:before { content: '\e805'; } /* '' */
+// Albert: I do not know if this is longer needed
+.icon-plus:before { content: '\e807'; } // ''
+.icon-resize-horizontal:before { content: '\e804'; } // ''
+.icon-down-dir:before { content: '\e800'; } // ''
+.icon-up-dir:before { content: '\e801'; } // '' 
+.icon-right-dir:before { content: '\e80a'; } // '' 
+.icon-ellipsis:before { content: '\e80c'; } // '' 
+.icon-dot-circled:before { content: '\e809'; } // '' 
+.icon-pencil:before { content: '\e806'; } // '' 
+.icon-user:before { content: '\e802'; } // '' 
+.icon-group:before { content: '\e808'; } // ''
+.icon-view-mode:before { content: '\e80d'; } // ''
+.icon-folder-open:before { content: '\e803'; } // ''
+.icon-resize-vertical:before { content: '\e80b'; } // ''
+.icon-eye:before { content: '\e805'; } // ''

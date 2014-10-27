@@ -17,7 +17,7 @@ lessconfig = """
     poll: 1000,
     functions: {},
     relativeUrls: true,
-    dumpLineNumbers: "comments",
+    dumpLineNumbers: "mediaquery",
     globalVars: {
       %s
     }

@@ -10,6 +10,10 @@ class PloneBundlesTraverser(ResourceTraverser):
     name = 'plone'
 
     def traverse(self, name, remaining):
+        # in case its not a request get the default one
+        if 'PATH_INFO' not in self.context.REQUEST.environ:
+            return super(PloneBundlesTraverser, self).traverse(name, remaining)
+
         resource_path = self.context.REQUEST.environ['PATH_INFO'].split('++plone++')[-1]  # noqa
         resource_name, resource_filepath = resource_path.split('/', 1)
 
