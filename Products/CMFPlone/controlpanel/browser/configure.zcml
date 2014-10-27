@@ -73,6 +73,7 @@
     permission="plone.app.controlpanel.Types"
     />
 
+  <!-- Resource Registry -->
   <browser:page
     name="resourceregistry-controlpanel"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"

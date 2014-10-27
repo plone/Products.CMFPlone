@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import validate_json
 from basetool import IPloneBaseTool
 from plone.locking.interfaces import ILockSettings
-from zope.interface import Attribute
 from zope.interface import Interface
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
