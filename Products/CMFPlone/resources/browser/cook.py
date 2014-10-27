@@ -12,6 +12,8 @@ from StringIO import StringIO
 from zope.component.hooks import getSite
 from Products.Five.browser.resource import Resource as z3_Resource
 
+from Products.CMFCore.FSFile import FSFile
+
 
 def cookWhenChangingSettings(context, bundle):
     """When our settings are changed, re-cook the not compilable bundles
@@ -34,9 +36,10 @@ def cookWhenChangingSettings(context, bundle):
                         css_file += open(path, 'r').read()
                         css_file += '\n'
                     except:
-                        pass
-                        # if callable(css_obj):
-                        #     css_file += css_obj()
+                        if isinstance(css_obj, FSFile):
+                            js_file += str(css_obj)
+                        elif callable(css_obj):
+                            css_file += css_obj().encode('utf-8')
 
             if resource.js:
                 js_obj = getSite().restrictedTraverse(resource.js, None)
@@ -46,9 +49,10 @@ def cookWhenChangingSettings(context, bundle):
                         js_file += open(path, 'r').read()
                         js_file += '\n'
                     except:
-                        pass
-                        # if callable(js_obj):
-                        #     js_file += js_obj()
+                        if isinstance(js_obj, FSFile):
+                            js_file += str(js_obj)
+                        elif callable(js_obj):
+                            js_file += js_obj().encode('utf-8')
 
     cooked_js = minify(js_file, mangle=True, mangle_toplevel=True)
     cooked_css = cssmin(css_file)
