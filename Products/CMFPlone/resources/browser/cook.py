@@ -200,7 +200,6 @@ def cookWhenChangingSettings(context, bundle):
     css_file = ""
     js_file = ""
     siteUrl = getSite().absolute_url()
-
     request = getRequest()
     original_request = request.clone()
     for package in bundle.resources:
