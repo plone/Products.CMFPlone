@@ -109,6 +109,11 @@
     <value>++plone++static/components/less/dist/less-1.7.4.js</value>
   </record>
 
+  <records prefix="plone.resources/lessc"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/less/dist/less-1.7.4.js</value>
+  </records>
+
   <record name="plone.resources.less-variables">
       <field type="plone.registry.field.ASCII">
         <title>LESS variables js definer</title>
