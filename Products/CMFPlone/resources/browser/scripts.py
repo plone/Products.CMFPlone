@@ -9,10 +9,26 @@ class ScriptsView(ResourceView):
     def get_data(self, bundle, result):
         if self.development is False:
             if bundle.compile is False:
+                # Workarround until cooking works
+                resources = self.get_resources()
+                for resource in bundle.resources:
+                    if resource in resources:
+                        script = resources[resource]
+                        if script.js:
+                            url = urlparse(script.js)
+                            if url.netloc == '':
+                                # Local
+                                src = "%s/%s" % (self.portal_url, script.js)
+                            else:
+                                src = "%s" % (script.js)
+
+                            data = {'conditionalcomment': bundle.conditionalcomment,  # noqa
+                                    'src': src}
+                            result.append(data)
                 # Its a legacy css bundle
-                if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
-                    # We need to compile
-                    cookWhenChangingSettings(self.context, bundle)
+                # if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
+                #     # We need to compile
+                #     cookWhenChangingSettings(self.context, bundle)
             if bundle.jscompilation:
                 result.append({
                     'conditionalcomment': bundle.conditionalcomment,
@@ -62,6 +78,7 @@ class ScriptsView(ResourceView):
                 self.registry.records['plone.resources.configjs'].value),
             'conditionalcomment': None
         })
+
         if self.development:
             # We need to add require.js and config.js
             result.append({
