@@ -79,6 +79,11 @@ class EditingControlPanelFunctionalTest(unittest.TestCase):
     def test_default_editor_active(self):
         pass
 
+    def test_available_editors_hidden(self):
+        self.browser.open(
+            "%s/@@editing-controlpanel" % self.portal_url)
+        self.assertTrue('Available editors' not in self.browser.contents)
+
     def test_ext_editor(self):
         self.browser.open(
             "%s/@@editing-controlpanel" % self.portal_url)

@@ -47,6 +47,14 @@ class IEditingSchema(Interface):
         default=False,
         required=False)
 
+    available_editors = schema.List(
+        title=_(u'Available editors'),
+        description=_(u"Available editors in the portal."),
+        default=['Kupu', 'TinyMCE'],
+        value_type=schema.TextLine(),
+        required=True
+    )
+
     default_editor = schema.Choice(
         title=_(u'Default editor'),
         description=_(
