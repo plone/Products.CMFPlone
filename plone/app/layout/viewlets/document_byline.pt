@@ -92,15 +92,26 @@
         </span>
       </span>
     </li>
+<!-- Part of the Albert's mockup, just decide if we need/want it.
+
     <li class="plone-toolbar-submenu-header">
       <span>File info</span>
     </li>
     <li><span>Content name: Name</span></li>
     <li><span>Short name: /short-name</span></li>
-    <li class="plone-toolbar-submenu-header">
+
+  -->
+    <li class="plone-toolbar-submenu-header"
+        tal:condition="view/has_pam">
       <span>Linked Translations</span>
     </li>
-    <li><a>Occitanian</a></li>
-    <li><a>German</a></li>
+    <tal:translations condition="view/has_pam">
+      <li tal:repeat="linked_content view/get_translations">
+        <a tal:attributes="href linked_content/url"
+           tal:content="linked_content/lang_native">
+            Occitanian
+        </a>
+      </li>
+    </tal:translations>
   </ul>
 </li>

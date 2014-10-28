@@ -29,6 +29,16 @@ else:
     from plone.app.relationfield.behavior import IRelatedItems
     HAS_RELATIONFIELD = True
 
+try:
+    pkg_resources.get_distribution('plone.app.multilingual')
+except pkg_resources.DistributionNotFound:
+    HAS_PAM = False
+else:
+    HAS_PAM = True
+    from plone.app.multilingual.interfaces import ITranslatable
+    from plone.app.multilingual.interfaces import ITranslationManager
+    from plone.app.multilingual.browser.vocabularies import translated_languages
+
 
 class DocumentActionsViewlet(ViewletBase):
 
@@ -51,6 +61,7 @@ class DocumentBylineViewlet(ViewletBase):
         self.context_state = getMultiAdapter((self.context, self.request),
                                              name=u'plone_context_state')
         self.anonymous = self.portal_state.anonymous()
+        self.has_pam = HAS_PAM
 
     def show(self):
         properties = getToolByName(self.context, 'portal_properties')
@@ -137,6 +148,17 @@ class DocumentBylineViewlet(ViewletBase):
             return None
 
         return DateTime(date)
+
+    def get_translations(self):
+        cts = []
+        if ITranslatable.providedBy(self.context):
+            t_langs = translated_languages(self.context)
+            context_translations = ITranslationManager(self.context).get_translations()
+            for lang in t_langs:
+                cts.append(dict(lang_native=lang.title,
+                                url=context_translations[lang.value].absolute_url()))
+
+        return cts
 
 
 class ContentRelatedItems(ViewletBase):
