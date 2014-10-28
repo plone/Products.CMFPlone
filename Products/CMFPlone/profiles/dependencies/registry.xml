@@ -88,7 +88,7 @@
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
     </field>
-    <value>False</value>
+    <value>True</value>
   </record>
   <record name="plone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
