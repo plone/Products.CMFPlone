@@ -108,8 +108,15 @@
     </field>
     <value>++plone++static/components/less/dist/less-1.7.4.js</value>
   </record>
+  <record name="plone.resources.less-modify">
+    <field type="plone.registry.field.ASCII">
+      <title>less-modify js</title>
+    </field>
+    <value>less-modify.js</value>
+  </record>
 
-  <records prefix="plone.resources/lessc"
+
+  <records prefix="plone.resources/less"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++plone++static/components/less/dist/less-1.7.4.js</value>
   </records>

@@ -93,7 +93,12 @@ class ScriptsView(ResourceView):
                     self.registry.records['plone.resources.lessc'].value),
                 'conditionalcomment': None
             })
-
+            result.append({
+                'src': '%s/%s' % (
+                    self.portal_url,
+                    self.registry.records['plone.resources.less-modify'].value),
+                'conditionalcomment': None
+            })
 
         result.extend(self.ordered_bundles_result())
 
