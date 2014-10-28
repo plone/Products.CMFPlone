@@ -199,8 +199,10 @@ def cookWhenChangingSettings(context, bundle):
     # Let's join all css and js
     css_file = ""
     js_file = ""
-    # siteUrl = getSite().absolute_url()
+    siteUrl = getSite().absolute_url()
 
+    request = getRequest()
+    original_request = request.clone()
     for package in bundle.resources:
         if package in resources:
             resource = resources[package]
@@ -289,5 +291,6 @@ def cookWhenChangingSettings(context, bundle):
     folder.writeFile(resource_filepath, fi)
     bundle.last_compilation = datetime.now()
 
-    # import transaction
-    # transaction.commit()
+    setRequest(original_request)
+    import transaction
+    transaction.commit()
