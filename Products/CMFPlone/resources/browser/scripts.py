@@ -29,7 +29,7 @@ class ScriptsView(ResourceView):
                 # if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
                 #     # We need to compile
                 #     cookWhenChangingSettings(self.context, bundle)
-            if bundle.jscompilation:
+            if bundle.compile is True and bundle.jscompilation:
                 result.append({
                     'conditionalcomment': bundle.conditionalcomment,
                     'src': '%s/%s?version=%s' % (
