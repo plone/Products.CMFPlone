@@ -180,6 +180,7 @@ class LayoutPolicy(BrowserView):
 
         # class for user roles
         membership = getToolByName(context, "portal_membership")
+
         if membership.isAnonymousUser():
             body_class += ' userrole-anonymous'
         else:

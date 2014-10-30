@@ -273,11 +273,6 @@ class IViewView(Interface):
     """
 
 
-class IPatternsSettings(Interface):
-    """ Interface to register global pattern settings adapters
-    """
-
-
 class IPatternsSettingsRenderer(Interface):
     """ Interface for the adapter that renders the settings for patterns
     """

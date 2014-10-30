@@ -49,14 +49,8 @@
         for="*"
         permission="zope.Public"
         class=".patterns_settings.PatternsSettings"
-        allowed_interface=".interfaces.IPatternsSettings"
+        allowed_interface="Products.CMFPlone.interfaces.IPatternsSettings"
         />
-
-  <!-- Adapters for patterns settings -->
-
-  <adapter for="* *"
-      factory=".patterns_settings.TinyMceSettingsAdapter"
-      provides=".interfaces.IPatternsSettings" />
 
 
     <!-- We need to make the request annotatable for this to work -->
