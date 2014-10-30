@@ -2,12 +2,18 @@ from plone.app.registry.browser import controlpanel
 
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import ITinyMCESchema
+from Products.CMFPlone.interfaces import ITinyMCEPatternSchema
 from Products.CMFPlone.interfaces import ITinyMCELayoutSchema
 from Products.CMFPlone.interfaces import ITinyMCEToolbarSchema
 from Products.CMFPlone.interfaces import ITinyMCELibrariesSchema
 from Products.CMFPlone.interfaces import ITinyMCEResourceTypesSchema
 from z3c.form import group
 from z3c.form import field
+
+
+class TinyMCEPatternForm(group.GroupForm):
+    label = _(u"Pattern")
+    fields = field.Fields(ITinyMCEPatternSchema)
 
 
 class TinyMCEToolbarForm(group.GroupForm):
@@ -33,7 +39,7 @@ class TinyMCEControlPanelForm(controlpanel.RegistryEditForm):
     schema_prefix = "plone"
     fields = field.Fields(ITinyMCELayoutSchema)
     groups = (TinyMCEToolbarForm, TinyMCELibrariesForm,
-              TinyMCEResourceTypesForm)
+              TinyMCEResourceTypesForm, TinyMCEPatternForm)
 
 
 class TinyMCEControlPanel(controlpanel.ControlPanelFormWrapper):

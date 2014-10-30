@@ -66,19 +66,6 @@ class ScriptsView(ResourceView):
                 self.registry.records['plone.resources/jquery.js'].value),
             'conditionalcomment': None
         })
-        result.append({
-            'src': '%s/%s' % (
-                self.portal_url,
-                self.registry.records['plone.resources.requirejs'].value),
-            'conditionalcomment': None
-        })
-        result.append({
-            'src': '%s/%s' % (
-                self.portal_url,
-                self.registry.records['plone.resources.configjs'].value),
-            'conditionalcomment': None
-        })
-
         if self.development:
             # We need to add require.js and config.js
             result.append({
@@ -99,6 +86,19 @@ class ScriptsView(ResourceView):
                     self.registry.records['plone.resources.less-modify'].value),
                 'conditionalcomment': None
             })
+        result.append({
+            'src': '%s/%s' % (
+                self.portal_url,
+                self.registry.records['plone.resources.requirejs'].value),
+            'conditionalcomment': None
+        })
+        result.append({
+            'src': '%s/%s' % (
+                self.portal_url,
+                self.registry.records['plone.resources.configjs'].value),
+            'conditionalcomment': None
+        })
+
 
         result.extend(self.ordered_bundles_result())
 

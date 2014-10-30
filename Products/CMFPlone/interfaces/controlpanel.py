@@ -97,6 +97,42 @@ class IEditingSchema(Interface):
         required=False)
 
 
+class ITinyMCEPatternSchema(Interface):
+
+    relatedItems = schema.Text(
+        title=_(u"Related Items vocabulary url"),
+        description=u"json:{'vocabularyUrl': '%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog'}",
+        default=u'json:{"vocabularyUrl": "%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog"}',
+        required=True)
+
+    rel_upload_path = schema.Text(
+        title=_(u"Relative upload path"),
+        description=u"@@fileUpload",
+        default=u'@@fileUpload',
+        required=True)
+
+    folder_url = schema.Text(
+        title=_(u"Folder URL"),
+        description=u"%(document_base_url)s",
+        default=u'%(document_base_url)s',
+        required=True)
+
+    linkAttribute = schema.TextLine(
+        title=_(u"Link Attribute"),
+        description=u"UID",
+        default=u'UID',
+        required=True)
+
+    prependToScalePart = schema.Text(
+        title=_(u"Prepend to Scale Part"),
+        description=u'/@@images/image/',
+        default=u'/@@images/image/')
+
+    content_css = schema.Text(
+        title=_(u"Content CSS URL"),
+        description=u'++plone++static/components/tinymce/skins/lightgray/content.min.css')
+
+
 class ITinyMCELayoutSchema(Interface):
     """This interface defines the layout properties."""
 
@@ -631,6 +667,7 @@ class ITinyMCESchema(
     ITinyMCEToolbarSchema,
     ITinyMCELibrariesSchema,
     ITinyMCEResourceTypesSchema,
+    ITinyMCEPatternSchema
     ):
     """TinyMCE Schema"""
 

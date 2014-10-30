@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="plone">
+
+  <!-- Adapters for patterns settings -->
+
+  <adapter for="* * *"
+      factory=".tinymce.TinyMceSettingsAdapter"
+      provides="Products.CMFPlone.interfaces.IPatternsSettings"
+      name="tinymce_settings" />
+
+</configure>
