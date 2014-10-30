@@ -12,6 +12,7 @@ from controlpanel import IMaintenanceSchema
 from controlpanel import IMarkupSchema
 from controlpanel import INavigationSchema
 from controlpanel import ISearchSchema
+from controlpanel import ISecuritySchema
 from controlpanel import ISiteSchema
 from controlpanel import ITinyMCELayoutSchema
 from controlpanel import ITinyMCELibrariesSchema

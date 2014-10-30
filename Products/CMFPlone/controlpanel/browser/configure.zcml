@@ -57,6 +57,23 @@
     permission="plone.app.controlpanel.Search"
     />
 
+  <!-- Security Control Panel -->
+  <browser:page
+    name="security-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".security.SecurityControlPanel"
+    permission="plone.app.controlpanel.Security"
+    />
+
+  <!-- Security Control Panel - EMail Login -->
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="migrate-to-emaillogin"
+    class=".security.EmailLogin"
+    template="emaillogin.pt"
+    permission="cmf.ManagePortal"
+    />
+
   <!-- Site Control Panel -->
   <browser:page
     name="site-controlpanel"

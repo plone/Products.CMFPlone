@@ -8,6 +8,8 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISearchSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISecuritySchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISiteSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IDateAndTimeSchema"
