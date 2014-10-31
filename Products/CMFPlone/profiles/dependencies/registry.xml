@@ -935,6 +935,7 @@
       <element>jquery-highlightsearchterms</element>
       <element>cookie_functions</element>
     </value>
+    <value key="depends">plone</value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
     <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
     <value key="last_compilation">2014-08-14 00:00:00</value>
