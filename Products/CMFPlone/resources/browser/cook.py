@@ -289,7 +289,6 @@ def cookWhenChangingSettings(context, bundle):
     fi = StringIO(cooked_css)
     folder.writeFile(resource_filepath, fi)
     bundle.last_compilation = datetime.now()
-
-    setRequest(original_request)
+    # setRequest(original_request)
     import transaction
     transaction.commit()

@@ -79,7 +79,7 @@
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
     </field>
-    <value>True</value>
+    <value>False</value>
   </record>
   <record name="plone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
@@ -864,6 +864,7 @@
       <value_type type="plone.registry.field.TextLine" />
     </field>
     <value>
+      <element key="icon-font-path">\"{site_url}/++plone++static/components/bootstrap/dist/fonts/\"</element>
       <element key="bowerPath">\"{site_url}/++plone++static/components/\"</element>
       <element key="mockupPath">\"{site_url}/++resource++mockup/\"</element>
       <element key="mockuplessPath">\"{site_url}/++resource++mockupless/\"</element>
