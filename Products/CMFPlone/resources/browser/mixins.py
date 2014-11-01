@@ -17,11 +17,17 @@ lessconfig = """
     poll: 1000,
     functions: {},
     relativeUrls: true,
-    dumpLineNumbers: "mediaquery",
+    dumpLineNumbers: "comments",
     globalVars: {
       %s
     }
   };
+"""
+
+lessmodify = """
+less.modifyVars({
+    %s
+})
 """
 
 
@@ -81,6 +87,32 @@ class LessConfiguration(BrowserView):
         except:
             debug_level = 2
         return lessconfig % (debug_level, result)
+
+
+class LessModifyConfiguration(LessConfiguration):
+    def __call__(self):
+        registry = self.registry()
+        portal_state = getMultiAdapter((self.context, self.request),
+                                       name=u'plone_portal_state')
+        site_url = portal_state.portal_url()
+        result2 = ""
+
+        less_vars_params = {
+            'site_url': site_url,
+        }
+
+        # Storing variables to use them on further vars
+        for name, value in registry.items():
+            less_vars_params[name] = value
+
+        for name, value in registry.items():
+            t = value.format(**less_vars_params)
+            result2 += "'@%s': \"%s\",\n" % (name, t)
+
+        self.request.response.setHeader("Content-Type",
+                                        "application/javascript")
+
+        return lessmodify % (result2)
 
 
 class LessDependency(BrowserView):

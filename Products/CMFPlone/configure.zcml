@@ -50,6 +50,7 @@
 
   <include package=".controlpanel" />
   <include package=".resources" />
+  <include package=".patterns" />
 
   <!-- Archetypes -->
   <include zcml:condition="installed Products.ATContentTypes"

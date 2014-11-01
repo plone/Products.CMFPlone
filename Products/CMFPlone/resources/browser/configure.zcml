@@ -35,6 +35,15 @@
 
     <browser:page
         for="*"
+        name="less-modify.js"
+        class=".mixins.LessModifyConfiguration"
+        permission="zope.Public"
+        />
+
+
+
+    <browser:page
+        for="*"
         name="plone_less_dependency.less"
         class=".mixins.LessDependency"
         permission="zope.Public"

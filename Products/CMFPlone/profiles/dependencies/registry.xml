@@ -70,25 +70,16 @@
     </value>
   </record>
   <records interface="Products.CMFPlone.interfaces.syndication.ISiteSyndicationSettings" />
-  <record name="Products.CMFPlone.TinyMCEsettings">
-    <field type="plone.registry.field.Dict">
-      <title>TinyMCE configuration</title>
-      <key_type type="plone.registry.field.TextLine" />
-      <value_type type="plone.registry.field.TextLine" />
-    </field>
-    <value>
-      <element key="relatedItems">json:{"vocabularyUrl": "%(portal_url)s/@@getVocabulary?name=plone.app.vocabularies.Catalog"}</element>
-      <element key="rel_upload_path">@@fileUpload</element>
-      <element key="folder_url">%(document_base_url)s</element>
-      <element key="linkAttribute">UID</element>
-      <element key="prependToScalePart">/@@images/image/</element>
-    </value>
-  </record> 
+  <records interface="Products.CMFPlone.interfaces.ITinyMCESchema"
+           prefix="plone">
+    <value key="content_css">++plone++static/components/tinymce/skins/lightgray/content.min.css</value>
+    <value key="prependToScalePart">/@@images/image/</value>
+  </records>
   <record name="plone.resources.development">
     <field type="plone.registry.field.Bool">
       <title>Frontend development mode</title>
     </field>
-    <value>False</value>
+    <value>True</value>
   </record>
   <record name="plone.resources.requirejs">
     <field type="plone.registry.field.ASCII">
@@ -108,6 +99,18 @@
     </field>
     <value>++plone++static/components/less/dist/less-1.7.4.js</value>
   </record>
+  <record name="plone.resources.less-modify">
+    <field type="plone.registry.field.ASCII">
+      <title>less-modify js</title>
+    </field>
+    <value>less-modify.js</value>
+  </record>
+
+
+  <records prefix="plone.resources/less"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++plone++static/components/less/dist/less-1.7.4.js</value>
+  </records>
 
   <record name="plone.resources.less-variables">
       <field type="plone.registry.field.ASCII">
@@ -932,6 +935,7 @@
       <element>jquery-highlightsearchterms</element>
       <element>cookie_functions</element>
     </value>
+    <value key="depends">plone</value>
     <value key="jscompilation">++plone++static/plone-legacy-compiled.js</value>
     <value key="csscompilation">++plone++static/plone-legacy-compiled.css</value>
     <value key="last_compilation">2014-08-14 00:00:00</value>

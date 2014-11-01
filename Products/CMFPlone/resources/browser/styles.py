@@ -37,9 +37,16 @@ class StylesView(ResourceView):
         if self.development is False:
             if bundle.compile is False:
                 # Its a legacy css bundle
-                if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
-                    # We need to compile
-                    cookWhenChangingSettings(self.context, bundle)
+                self.resources = self.get_resources()
+                # The bundle resources
+                for resource in bundle.resources:
+                    if resource in self.resources:        
+                        style = self.resources[resource]
+                        for data in self.get_urls(style, bundle):
+                            result.append(data)
+                # if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
+                #     # We need to compile
+                #     cookWhenChangingSettings(self.context, bundle)
 
             if bundle.csscompilation:
                 result.append({

@@ -10,6 +10,7 @@ from controlpanel import IMaintenanceSchema
 from controlpanel import INavigationSchema
 from controlpanel import ISearchSchema
 from controlpanel import ISiteSchema
+from controlpanel import ITinyMCEPatternSchema
 from controlpanel import ITinyMCESchema
 from controlpanel import ITinyMCELayoutSchema
 from controlpanel import ITinyMCEToolbarSchema
@@ -33,3 +34,4 @@ from breadcrumbs import IHideFromBreadcrumbs
 from workflow import IWorkflowChain
 from resources import IResourceRegistry
 from resources import IBundleRegistry
+from patterns import IPatternsSettings
