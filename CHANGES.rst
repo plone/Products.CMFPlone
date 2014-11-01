@@ -1,10 +1,14 @@
 Changelog
 =========
 
-2.5.3 (unreleased)
+2.5.3 (2014-11-01)
 ------------------
 
-- Nothing changed yet.
+- Move patterns settings to CMFPlone
+  [bloodbare]
+
+- Initial implementation of Mockup-aware content info section.
+  [sneridagh]
 
 
 2.5.2 (2014-10-23)
