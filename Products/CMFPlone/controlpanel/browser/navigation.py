@@ -12,7 +12,7 @@ class NavigationControlPanelForm(controlpanel.RegistryEditForm):
     id = "NavigationControlPanel"
     label = _(u"Navigation settings")
     description = _(
-        u"Lets you control how navigation is constructed in your site." +
+        u"Lets you control how navigation is constructed in your site. " +
         u"Note that to control how the navigation tree is displayed, you " +
         u"should go to 'Manage portlets' at the root of the site (or " +
         u"wherever a navigation tree portlet has been added) and change " +
