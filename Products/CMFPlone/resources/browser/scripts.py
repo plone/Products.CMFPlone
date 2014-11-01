@@ -85,4 +85,17 @@ class ScriptsView(ResourceView):
 
         result.extend(self.ordered_bundles_result())
 
+        # Add diazo url
+        origin = None
+        if self.diazo_production_js and self.development is False:
+            origin = self.diazo_production_js
+        if self.diazo_development_js and self.development is True:
+            origin = self.diazo_development_js
+        if origin:
+            result.append({
+                'conditionalcomment': '',
+                'src': '%s/%s' % (
+                    self.portal_url, origin)
+            })
+
         return result

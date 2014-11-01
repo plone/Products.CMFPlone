@@ -86,9 +86,17 @@ class ResourceView(ViewletBase):
             themeObj = getTheme(theme)
             enabled_diazo_bundles = themeObj.enabled_bundles
             disabled_diazo_bundles = themeObj.disabled_bundles
+            self.diazo_production_css = themeObj.production_css
+            self.diazo_development_css = themeObj.development_css
+            self.diazo_development_js = themeObj.development_js
+            self.diazo_production_js = themeObj.production_js
         else:
             enabled_diazo_bundles = []
             disabled_diazo_bundles = []
+            self.diazo_production_css = None
+            self.diazo_development_css = None
+            self.diazo_development_js = None
+            self.diazo_production_js = None
         for key, bundle in bundles.items():
             # The diazo manifest is more important than the disabled bundle on registry
             # We can access the site with diazo.off=1 without diazo bundles

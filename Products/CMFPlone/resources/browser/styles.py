@@ -61,6 +61,30 @@ class StylesView(ResourceView):
         Get all the styles
         """
         result = self.ordered_bundles_result()
+        # Add diazo css
+        origin = None
+        if self.diazo_production_css and self.development is False:
+            origin = self.diazo_production_css
+        if self.diazo_development_css and self.development is True:
+            origin = self.diazo_development_css
+        if origin:
+            url = urlparse(origin)
+            if url.netloc == '':
+                # Local
+                src = "%s/%s" % (self.portal_url, origin)
+            else:
+                src = "%s" % (origin)
+
+            extension = url.path.split('.')[-1]
+            rel = 'stylesheet'
+            if extension != '' and extension != 'css':
+                rel = "stylesheet/%s" % extension
+
+            data = {'rel': rel,
+                    'conditionalcomment': '',
+                    'src': src}
+        
+            result.append(data)
         return result
 
 

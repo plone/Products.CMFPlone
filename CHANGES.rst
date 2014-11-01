@@ -8,7 +8,8 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adding the option to configure a bundle from the diazo manifest file.
+  [bloodbare]
 
 
 5.0a3 (2014-11-01)
