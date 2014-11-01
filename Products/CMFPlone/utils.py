@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-
-try:
-    import simplejson as json
-    json  # Pyflakes
-except ImportError:
-    import json
+import json
 
 from types import ClassType
 from os.path import join, abspath, split
