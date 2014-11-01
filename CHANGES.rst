@@ -5,7 +5,7 @@
 Changelog
 =========
 
-5.0a3 (unreleased)
+5.0a3 (2014-11-01)
 ------------------
 
 - Fix JS resource viewlet HTML syntax error.
