@@ -86,10 +86,16 @@ class ResourceView(ViewletBase):
             themeObj = getTheme(theme)
             enabled_diazo_bundles = themeObj.enabled_bundles
             disabled_diazo_bundles = themeObj.disabled_bundles
-            self.diazo_production_css = themeObj.production_css
-            self.diazo_development_css = themeObj.development_css
-            self.diazo_development_js = themeObj.development_js
-            self.diazo_production_js = themeObj.production_js
+            if hasattr(themeObj, 'production_css'):
+                self.diazo_production_css = themeObj.production_css
+                self.diazo_development_css = themeObj.development_css
+                self.diazo_development_js = themeObj.development_js
+                self.diazo_production_js = themeObj.production_js
+            else:
+                self.diazo_production_css = None
+                self.diazo_development_css = None
+                self.diazo_development_js = None
+                self.diazo_production_js = None
         else:
             enabled_diazo_bundles = []
             disabled_diazo_bundles = []
