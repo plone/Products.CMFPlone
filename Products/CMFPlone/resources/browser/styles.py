@@ -11,6 +11,7 @@ class StylesView(ResourceView):
         """
         Extracts the urls for the specific resource
         """
+        bundle_name = bundle.__prefix__.split('/', 1)[1].rstrip('.') if bundle else 'none'
         for css in style.css:
             url = urlparse(css)
             if url.netloc == '':
@@ -25,6 +26,7 @@ class StylesView(ResourceView):
                 rel = "stylesheet/%s" % extension
 
             data = {'rel': rel,
+                    'bundle': bundle_name,
                     'conditionalcomment' : bundle.conditionalcomment if bundle else '',
                     'src': src}
             yield data
@@ -34,6 +36,7 @@ class StylesView(ResourceView):
         Gets the needed information for the bundle
         and stores it on the result list
         """
+        bundle_name = bundle.__prefix__.split('/', 1)[1].rstrip('.') if bundle else 'none'
         if self.development is False:
             if bundle.compile is False:
                 # Its a legacy css bundle
@@ -43,6 +46,7 @@ class StylesView(ResourceView):
 
             if bundle.csscompilation:
                 result.append({
+                    'bundle': bundle_name,
                     'rel': 'stylesheet',
                     'conditionalcomment' : bundle.conditionalcomment,
                     'src': '%s/%s?version=%s' % (self.portal_url, bundle.csscompilation, bundle.last_compilation)
@@ -82,7 +86,8 @@ class StylesView(ResourceView):
 
             data = {'rel': rel,
                     'conditionalcomment': '',
-                    'src': src}
+                    'src': src,
+                    'bundle': 'diazo'}
         
             result.append(data)
         return result

@@ -3,7 +3,7 @@
     ><tal:wcondcomment tal:condition="condcomment">
        <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />
      </tal:wcondcomment
-        ><script type="text/javascript" tal:attributes="src script/src"></script><tal:wcondcomment tal:condition="condcomment">
+        ><script type="text/javascript" tal:attributes="src script/src; data-bundle script/bundle"></script><tal:wcondcomment tal:condition="condcomment">
        <tal:closecc tal:replace="structure string:&lt;![endif]--&gt;" />
      </tal:wcondcomment
     ></tal:block
