@@ -146,3 +146,51 @@ class MailControlPanelFunctionalTest(unittest.TestCase):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IMailSchema, prefix="plone")
         self.assertEqual(settings.email_from_address, 'john@example.com')
+
+    def test_mail_controlpanel_contactinfo_page(self):
+        self.browser.open(
+            "%s/@@mail-controlpanel" % self.portal_url)
+        self.browser.getControl(
+            name='form.widgets.email_from_name').value = 'John'
+        self.browser.getControl(
+            name='form.widgets.email_from_address').value = \
+                'john@example.com'
+        self.browser.getControl(name='form.buttons.save').click()
+
+        self.browser.open(
+            "%s/contact-info" % self.portal_url)
+        self.assertTrue(
+            'Message' in self.browser.contents,
+            u'Message exists not in the contact-info form!'
+        )
+
+    def test_controlpanel_overview_shows_no_unconfigured_mailhost_warning(
+            self):
+        self.browser.open(
+            "%s/@@mail-controlpanel" % self.portal_url)
+        self.browser.getControl(
+            name='form.widgets.email_from_name').value = 'John'
+        self.browser.getControl(
+            name='form.widgets.email_from_address').value = \
+                'john@example.com'
+        self.browser.getControl(name='form.buttons.save').click()
+
+        self.browser.open(
+            "%s/overview-controlpanel" % self.portal_url)
+        self.assertFalse(
+            'not configured a mail host' in self.browser.contents,
+            u'There should not be a warning for unconfigured mailhost!'
+        )
+
+    def test_controlpanel_overview_shows_unconfigured_mailhost_warning(
+            self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IMailSchema, prefix="plone")
+        settings.email_from_name = None
+        settings.email_from_address = None
+        self.browser.open(
+            "%s/overview-controlpanel" % self.portal_url)
+        self.assertTrue(
+            'not configured a mail host' in self.browser.contents,
+            u'There should be a warning for unconfigured mailhost!'
+        )

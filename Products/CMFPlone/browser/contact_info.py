@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IContactForm
+from Products.CMFPlone.interfaces import IMailSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from plone.registry.interfaces import IRegistry
 from smtplib import SMTPException
 from z3c.form import form, field, button
+from zope.component import getUtility
 from zope.site.hooks import getSite
-
 import logging
 
 log = logging.getLogger(__name__)
@@ -20,6 +23,13 @@ class ContactForm(form.Form):
 
     fields = field.Fields(IContactForm)
     ignoreContext = True
+
+    def mailhost_is_configured(self):
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        if not mail_settings.email_from_address:
+            return False
+        return True
 
     @button.buttonAndHandler(_(u'label_send', default='Send'), name='send')
     def handle_send(self, action):
@@ -43,8 +53,10 @@ class ContactForm(form.Form):
         subject = data.get('subject')
 
         portal = getSite()
-        send_to_address = portal.getProperty('email_from_address')
-        from_address = portal.getProperty('email_from_address')
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        send_to_address = mail_settings.email_from_address
+        from_address = mail_settings.email_from_address
         encoding = portal.getProperty('email_charset')
         host = getToolByName(self.context, 'MailHost')
 
