@@ -3,7 +3,6 @@ from plone.app.testing import setRoles
 from Products.CMFPlone.interfaces import IMaintenanceSchema
 from zope.component import getAdapter
 from plone.app.testing import TEST_USER_ID
-from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
