@@ -871,3 +871,73 @@ class IDateAndTimeSchema(Interface):
 class ITypesSchema(Interface):
     """
     """
+
+
+class IMailSchema(Interface):
+
+    smtp_host = schema.TextLine(
+        title=_(
+            u'label_smtp_server',
+            default=u'SMTP server'),
+        description=_(
+            u"help_smtp_server",
+            default=u"The address of your local "
+                    u"SMTP (outgoing e-mail) server. Usually "
+                    u"'localhost', unless you use an "
+                    u"external server to send e-mail."),
+        default=u'localhost',
+        required=True)
+
+    smtp_port = schema.Int(
+        title=_(u'label_smtp_port',
+                default=u'SMTP port'),
+        description=_(u"help_smtp_port",
+                      default=u"The port of your local SMTP "
+                              u"(outgoing e-mail) server. Usually '25'."),
+        default=25,
+        required=True)
+
+    smtp_userid = schema.TextLine(
+        title=_(
+            u'label_smtp_userid',
+            default=u'ESMTP username'),
+        description=_(
+            u"help_smtp_userid",
+            default=u"Username for authentication "
+                    u"to your e-mail server. Not required "
+                    u"unless you are using ESMTP."),
+        default=None,
+        required=False)
+
+    smtp_pass = schema.Password(
+        title=_(
+            u'label_smtp_pass',
+            default=u'ESMTP password'),
+        description=_(
+            u"help_smtp_pass",
+            default=u"The password for the ESMTP "
+                    u"user account."),
+        default=None,
+        required=False)
+
+    email_from_name = schema.TextLine(
+        title=_(u"Site 'From' name"),
+        description=_(
+            u"Plone generates e-mail using "
+            u"this name as the e-mail "
+            u"sender."),
+        default=None,
+        required=True)
+
+    email_from_address = schema.ASCII(
+        title=_(u"Site 'From' address"),
+        description=_(
+            u"Plone generates e-mail using "
+            u"this address as the e-mail "
+            u"return address. It is also "
+            u"used as the destination "
+            u"address for the site-wide "
+            u"contact form and the 'Send test "
+            u"e-mail' feature."),
+        default=None,
+        required=True)

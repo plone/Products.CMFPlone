@@ -140,15 +140,3 @@ Site Control Panel
   >>> site_settings.webstats_js
   u''
   >>> site_settings.webstats_js = u'<script>a=1</script>'
-
-
-TinyMCE Layout
---------------
-
-  >>> from Products.CMFPlone.interfaces import ITinyMCELayoutSchema
-  >>> tiny_layout = registry.forInterface(ITinyMCELayoutSchema, prefix='plone5')
-
-# check TinyMCE settings
-
-
-

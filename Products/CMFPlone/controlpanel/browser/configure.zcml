@@ -33,6 +33,14 @@
     permission="cmf.ManagePortal"
     />
 
+  <!-- Mail Control Panel -->
+  <browser:page
+    name="mail-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".mail.MailControlPanel"
+    permission="cmf.ManagePortal"
+    />
+
   <!-- Navigation Control Panel -->
   <browser:page
     name="navigation-controlpanel"
