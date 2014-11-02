@@ -4,7 +4,7 @@ from Acquisition import aq_inner
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.controlpanel.form import ControlPanelView
+from plone.app.registry.browser import controlpanel
 from plone.memoize.instance import memoize
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
@@ -16,7 +16,7 @@ except ImportError:
     HAS_PAE = False
 
 
-class OverviewControlPanel(ControlPanelView):
+class OverviewControlPanel(controlpanel.RegistryEditForm):
 
     template = ViewPageTemplateFile('overview.pt')
 
