@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Make inline validation of AT multiple selection widget work.
+  [gbastien]
+
 - Make sure compiling resources does not commit transaction prematurely.
   [davisagli]
 
