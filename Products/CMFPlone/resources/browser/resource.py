@@ -148,6 +148,7 @@ class ResourceView(ViewletBase):
                 else:
                     depends_on[name] = [bundle]
 
+        # We need to check all dependencies
         while len(depends_on) > 0:
             found = False
             for key, bundles_to_add in depends_on.items():
@@ -159,56 +160,12 @@ class ResourceView(ViewletBase):
                             bundle.__prefix__.split('/', 1)[1].rstrip('.'))
                     del depends_on[key]
             if not found:
-                continue
+                break
 
         # THe ones that does not get the dependencies
-        for bundle in depends_on.values():
-            self.get_data(bundle, result)
+        for bundles_to_add in depends_on.values():
+            for bundle in bundles_to_add:
+                self.get_data(bundle, result)
 
         return result
 
-    # def get_manual_order(self, kind):
-    #     resources = self.get_manual_resources(kind)
-    #     to_order = resources.keys()
-    #     result = []
-    #     depends_on = {}
-    #     for key, resource in resources.items():
-    #         if resource.depends is not None or resource.depends != '':
-    #             if resource.depends in depends_on:
-    #                 depends_on[resource.depends].append(key)
-    #             else:
-    #                 depends_on[resource.depends] = [key]
-
-
-    #     ordered = []
-    #     depends = {}
-    #     insert_point = 0
-    #     # First the ones that are not depending or dependences are not here
-    #     for key, resource in resources.items():
-    #         if resource.depends is None or resource.depends == '':
-    #             ordered.insert(0, key)
-    #             insert_point += 1
-    #         else:
-    #             if resource.depends in to_order:
-    #                 depends[key] = resource
-    #             else:
-    #                 ordered.insert(len(to_order), key)
-
-    #     # The dependency ones
-    #     while len(depends) > 0:
-    #         to_remove = []
-    #         for key in depends.keys():
-    #             if resources[key].depends in ordered:
-    #                 ordered.insert(ordered.index(resources[key].depends) + 1, key)  # noqa
-    #                 to_remove.append(key)
-    #         for e in to_remove:
-    #             del depends[e]
-    #         if len(to_remove) == 0:
-    #             continue
-
-    #     for key in to_order:
-    #         data = self.get_manual_data(resources[key])
-    #         if data:
-    #             result.append(data)
-
-    #     return result

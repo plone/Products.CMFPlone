@@ -92,7 +92,6 @@ class ScriptsView(ResourceView):
             'conditionalcomment': None,
             'bundle': 'basic'
         })
-
         result.extend(self.ordered_bundles_result())
 
         # Add diazo url
