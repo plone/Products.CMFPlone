@@ -11,12 +11,14 @@ from plone.resource.interfaces import IResourceDirectory
 from StringIO import StringIO
 from zope.component.hooks import getSite
 from Products.Five.browser.resource import Resource as z3_Resource
+from plone.protect.interfaces import IDisableCSRFProtection
 from plone.subrequest import subrequest
 from Products.CMFCore.FSFile import FSFile
 from Products.CMFCore.utils import getToolByName
 from AccessControl import ClassSecurityInfo, Unauthorized
 from ZPublisher.Iterators import IStreamIterator
 from zope.globalrequest import getRequest, setRequest
+from zope.interface import alsoProvides
 from Acquisition import aq_base
 
 
@@ -290,5 +292,6 @@ def cookWhenChangingSettings(context, bundle):
     folder.writeFile(resource_filepath, fi)
     bundle.last_compilation = datetime.now()
     # setRequest(original_request)
-    import transaction
-    transaction.commit()
+
+    # Disable CSRF protection on this request
+    alsoProvides(request, IDisableCSRFProtection)

@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Make sure compiling resources does not commit transaction prematurely.
+  [davisagli]
+
 - Adding the option to configure a bundle from the diazo manifest file.
   [bloodbare]
 
