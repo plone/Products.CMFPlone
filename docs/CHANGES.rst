@@ -8,7 +8,8 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make inline validation of AT multiple selection widget work.
+  [gbastien]
 
 
 4.3.4 (2014-10-22)

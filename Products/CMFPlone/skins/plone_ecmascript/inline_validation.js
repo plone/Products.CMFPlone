@@ -39,7 +39,7 @@ jQuery(function ($) {
 
         // if value is an Array, it will be send as value[]=value1&value[]=value2 by $.post
         // turn it into something that will be useable or value will be omitted from the request
-        params = $.param({uid: uid, fname: fname, value: value}, traditional=true)
+        params = $.param({uid: uid, fname: fname, value: value}, traditional = true);
 
         if ($field && uid && fname) {
             $.post($('base').attr('href') + '/at_validate_field', params, function (data) {
