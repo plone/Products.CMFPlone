@@ -103,10 +103,21 @@ class ResourceView(ViewletBase):
             self.diazo_development_css = None
             self.diazo_development_js = None
             self.diazo_production_js = None
+
+        # Request set bundles
+        enabled_request_bundles = []
+        disabled_request_bundles = []
+        if hasattr(self.request, 'enabled_bundles'):
+            enabled_request_bundles.extend(self.request.enabled_bundles)
+
+        if hasattr(self.request, 'disabled_bundles'):
+            disabled_request_bundles.extend(self.request.disabled_bundles)
+
         for key, bundle in bundles.items():
-            # The diazo manifest is more important than the disabled bundle on registry
+            # The diazo manifest and request bundles are more important than the disabled bundle on registry
             # We can access the site with diazo.off=1 without diazo bundles
-            if (bundle.enabled or key in enabled_diazo_bundles) and (key not in disabled_diazo_bundles):
+            if (bundle.enabled or key in enabled_request_bundles or key in enabled_diazo_bundles) and \
+                    (key not in disabled_diazo_bundles and key not in disabled_request_bundles):
                 # check expression
                 if bundle.expression:
                     cooked_expression = None
