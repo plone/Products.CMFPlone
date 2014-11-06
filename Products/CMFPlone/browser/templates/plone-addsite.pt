@@ -22,6 +22,22 @@
     }
     window.onload = siteid_focus;
   </script>
+  <script type="text/javascript" tal:attributes="src string:${context/absolute_url}/++resource++jstz-1.0.4.min.js"></script>
+  <script type="text/javascript">
+    function set_timezone() {
+      tz = jstz.determine();
+      tzname = tz.name();
+      tzopts = document.getElementById('portal_timezone').options;
+      for (i=1; i<=tzopts.length; i++){
+        tzopt=tzopts[i-1];
+        if (tzname == tzopt.value){
+          tzopt.selected = 'selected';
+          break;
+        }
+      }
+    }
+    window.onload = set_timezone;
+  </script>
 </head>
 
 <body>
@@ -103,7 +119,8 @@
           time settings.
         </div>
 
-        <select name="portal_timezone"
+        <select id="portal_timezone"
+          name="portal_timezone"
           tal:define="tz_list view/timezones">
           <option value="UTC"
                   tal:repeat="tz tz_list"
