@@ -82,5 +82,5 @@ Overview Control Panel
 ----------------------
 
   >>> from Products.CMFPlone.interfaces.controlpanel import IDateAndTimeSchema
-  >>> tz_settings = IDateAndTimeSchema(prefix='plone')
+  >>> tz_settings = registry.forInterface(IDateAndTimeSchema, prefix='plone')
   >>> tz_settings.portal_timezone = 'UTC'
