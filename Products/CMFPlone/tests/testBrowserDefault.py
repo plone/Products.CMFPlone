@@ -75,6 +75,11 @@ class TestPloneToolBrowserDefault(unittest.TestCase):
         self.layer['app'].REQUEST['ACTUAL_URL'] = obj.absolute_url()
         resolved = obj.restrictedTraverse(viewaction)()
 
+        # rendering the view cooked the resource registry,
+        # so commit the transaction so loading it via the testbrowser
+        # doesn't cook it again
+        transaction.commit()
+
         self.browser.open(obj.absolute_url() + path)
         body = self.browser.contents.decode('utf8')
 

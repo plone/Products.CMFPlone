@@ -27,28 +27,44 @@ class SiteControlPanelAdapterTest(unittest.TestCase):
     def test_adapter_lookup(self):
         self.assertTrue(getAdapter(self.portal, ISiteSchema))
 
-    def test_site_title_unicode(self):
-        site_settings_adapter = getAdapter(self.portal, ISiteSchema)
-        site_settings_adapter.site_title = u'Lorem Ipsum'
+    def test_get_site_title(self):
+        self.settings.site_title = u'Great Site'
         self.assertEquals(
-            site_settings_adapter.site_title, u'Lorem Ipsum')
+            getAdapter(self.portal, ISiteSchema).site_title,
+            u'Great Site'
+        )
 
-    def test_site_title_string(self):
-        site_settings_adapter = getAdapter(self.portal, ISiteSchema)
-        site_settings_adapter.site_title = 'Lorem Ipsum'
+    def test_set_site_title(self):
+        getAdapter(self.portal, ISiteSchema).site_title = u'Good Site'
         self.assertEquals(
-            site_settings_adapter.site_title, u'Lorem Ipsum')
+            self.settings.site_title,
+            u'Good Site'
+        )
 
-    def test_webstats_js_unicode(self):
-        self.assertEqual(self.settings.webstats_js, u'')
-        site_settings_adapter = getAdapter(self.portal, ISiteSchema)
-        site_settings_adapter.webstats_js = u'Lorem Ipsum'
+    def test_set_site_title_string(self):
+        getAdapter(self.portal, ISiteSchema).site_title = 'Good Site'
         self.assertEquals(
-            site_settings_adapter.webstats_js, u'Lorem Ipsum')
+            self.settings.site_title,
+            u'Good Site'
+        )
 
-    def test_webstats_js_string(self):
-        self.assertEqual(self.settings.webstats_js, u'')
-        site_settings_adapter = getAdapter(self.portal, ISiteSchema)
-        site_settings_adapter.webstats_js = 'Lorem Ipsum'
+    def test_get_webstats_js(self):
+        self.settings.webstats_js = u'Script Tag'
         self.assertEquals(
-            site_settings_adapter.webstats_js, u'Lorem Ipsum')
+            getAdapter(self.portal, ISiteSchema).webstats_js,
+            u'Script Tag'
+        )
+
+    def test_set_webstats_js(self):
+        getAdapter(self.portal, ISiteSchema).webstats_js = u'Script Tag'
+        self.assertEquals(
+            self.settings.webstats_js,
+            u'Script Tag'
+        )
+
+    def test_set_webstats_js_string(self):
+        getAdapter(self.portal, ISiteSchema).webstats_js = 'Script Tag'
+        self.assertEquals(
+            self.settings.webstats_js,
+            u'Script Tag'
+        )

@@ -5,7 +5,20 @@
 Changelog
 =========
 
-5.0a3 (unreleased)
+5.0b1 (unreleased)
+------------------
+
+- Make inline validation of AT multiple selection widget work.
+  [gbastien]
+
+- Make sure compiling resources does not commit transaction prematurely.
+  [davisagli]
+
+- Adding the option to configure a bundle from the diazo manifest file.
+  [bloodbare]
+
+
+5.0a3 (2014-11-01)
 ------------------
 
 - Fix JS resource viewlet HTML syntax error.

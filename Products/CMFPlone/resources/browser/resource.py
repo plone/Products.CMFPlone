@@ -86,13 +86,38 @@ class ResourceView(ViewletBase):
             themeObj = getTheme(theme)
             enabled_diazo_bundles = themeObj.enabled_bundles
             disabled_diazo_bundles = themeObj.disabled_bundles
+            if hasattr(themeObj, 'production_css'):
+                self.diazo_production_css = themeObj.production_css
+                self.diazo_development_css = themeObj.development_css
+                self.diazo_development_js = themeObj.development_js
+                self.diazo_production_js = themeObj.production_js
+            else:
+                self.diazo_production_css = None
+                self.diazo_development_css = None
+                self.diazo_development_js = None
+                self.diazo_production_js = None
         else:
             enabled_diazo_bundles = []
             disabled_diazo_bundles = []
+            self.diazo_production_css = None
+            self.diazo_development_css = None
+            self.diazo_development_js = None
+            self.diazo_production_js = None
+
+        # Request set bundles
+        enabled_request_bundles = []
+        disabled_request_bundles = []
+        if hasattr(self.request, 'enabled_bundles'):
+            enabled_request_bundles.extend(self.request.enabled_bundles)
+
+        if hasattr(self.request, 'disabled_bundles'):
+            disabled_request_bundles.extend(self.request.disabled_bundles)
+
         for key, bundle in bundles.items():
-            # The diazo manifest is more important than the disabled bundle on registry
+            # The diazo manifest and request bundles are more important than the disabled bundle on registry
             # We can access the site with diazo.off=1 without diazo bundles
-            if (bundle.enabled or key in enabled_diazo_bundles) and (key not in disabled_diazo_bundles):
+            if (bundle.enabled or key in enabled_request_bundles or key in enabled_diazo_bundles) and \
+                    (key not in disabled_diazo_bundles and key not in disabled_request_bundles):
                 # check expression
                 if bundle.expression:
                     cooked_expression = None
@@ -134,6 +159,7 @@ class ResourceView(ViewletBase):
                 else:
                     depends_on[name] = [bundle]
 
+        # We need to check all dependencies
         while len(depends_on) > 0:
             found = False
             for key, bundles_to_add in depends_on.items():
@@ -145,56 +171,12 @@ class ResourceView(ViewletBase):
                             bundle.__prefix__.split('/', 1)[1].rstrip('.'))
                     del depends_on[key]
             if not found:
-                continue
+                break
 
         # THe ones that does not get the dependencies
-        for bundle in depends_on.values():
-            self.get_data(bundle, result)
+        for bundles_to_add in depends_on.values():
+            for bundle in bundles_to_add:
+                self.get_data(bundle, result)
 
         return result
 
-    # def get_manual_order(self, kind):
-    #     resources = self.get_manual_resources(kind)
-    #     to_order = resources.keys()
-    #     result = []
-    #     depends_on = {}
-    #     for key, resource in resources.items():
-    #         if resource.depends is not None or resource.depends != '':
-    #             if resource.depends in depends_on:
-    #                 depends_on[resource.depends].append(key)
-    #             else:
-    #                 depends_on[resource.depends] = [key]
-
-
-    #     ordered = []
-    #     depends = {}
-    #     insert_point = 0
-    #     # First the ones that are not depending or dependences are not here
-    #     for key, resource in resources.items():
-    #         if resource.depends is None or resource.depends == '':
-    #             ordered.insert(0, key)
-    #             insert_point += 1
-    #         else:
-    #             if resource.depends in to_order:
-    #                 depends[key] = resource
-    #             else:
-    #                 ordered.insert(len(to_order), key)
-
-    #     # The dependency ones
-    #     while len(depends) > 0:
-    #         to_remove = []
-    #         for key in depends.keys():
-    #             if resources[key].depends in ordered:
-    #                 ordered.insert(ordered.index(resources[key].depends) + 1, key)  # noqa
-    #                 to_remove.append(key)
-    #         for e in to_remove:
-    #             del depends[e]
-    #         if len(to_remove) == 0:
-    #             continue
-
-    #     for key in to_order:
-    #         data = self.get_manual_data(resources[key])
-    #         if data:
-    #             result.append(data)
-
-    #     return result

@@ -527,7 +527,7 @@ class ITinyMCELibrariesSchema(Interface):
         title=_(u"AtD Ignore strings"),
         description=_(
             'label_atd_ignore_strings',
-            default=u"A list of strings which the \"After the Deadline\"" \
+            default=u"A list of strings which the \"After the Deadline\" " \
                     u"spellchecker should ignore. " \
                     u"Note: This option is only applicable when the appropriate " \
                 "spellchecker has been chosen above."),

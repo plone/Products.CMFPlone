@@ -4,7 +4,6 @@ from zope.component import getAdapter
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from plone.app.testing import TEST_USER_ID
-from Products.CMFCore.utils import getToolByName
 
 from Products.CMFPlone.testing import \
     PRODUCTS_CMFPLONE_INTEGRATION_TESTING

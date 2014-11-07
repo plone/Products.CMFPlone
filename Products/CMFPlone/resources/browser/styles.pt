@@ -6,7 +6,8 @@
     ><link rel="style"
           type="text/css"
           tal:attributes="href style/src;
-                          rel style/rel;" /><tal:wcondcomment tal:condition="condcomment">
+                          rel style/rel;
+                          data-bundle style/bundle;" /><tal:wcondcomment tal:condition="condcomment">
         <tal:closecc tal:replace="structure string:&lt;![endif]--&gt;" />
     </tal:wcondcomment
   ></tal:block
