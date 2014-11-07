@@ -60,10 +60,3 @@ class TestControlPanel(unittest.TestCase):
         # If new plone.portal_timezone is set, return False
         view = self.portal.restrictedTraverse('@@overview-controlpanel')
         self.assertFalse(view.timezone_warning())
-
-    @mock.patch('plone.app.controlpanel.overview.getUtility',
-                new=mock_getUtility4)
-    def test_timezone_warning__paeset(self):
-        # If old plone.app.event.portal_timezone is set, return False
-        view = self.portal.restrictedTraverse('@@overview-controlpanel')
-        self.assertFalse(view.timezone_warning())
