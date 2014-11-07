@@ -39,7 +39,8 @@ class TestControlPanel(unittest.TestCase):
         # If no registry key is available, return True
         registry = getUtility(IRegistry)
         reg_key = "plone.portal_timezone"
-        #import ipdb; ipdb.set_trace()
+        del registry.records[reg_key]
+        self.assertFalse(reg_key in registry)
         view = self.portal.restrictedTraverse('@@overview-controlpanel')
         self.assertTrue(view.timezone_warning())
 
