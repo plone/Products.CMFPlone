@@ -1,6 +1,8 @@
 from plone.app.testing import PLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 
 import mock
 import unittest
@@ -35,6 +37,9 @@ class TestControlPanel(unittest.TestCase):
                 new=mock_getUtility1)
     def test_timezone_warning__noreg(self):
         # If no registry key is available, return True
+        registry = getUtility(IRegistry)
+        reg_key = "plone.portal_timezone"
+        #import ipdb; ipdb.set_trace()
         view = self.portal.restrictedTraverse('@@overview-controlpanel')
         self.assertTrue(view.timezone_warning())
 
@@ -42,6 +47,9 @@ class TestControlPanel(unittest.TestCase):
                 new=mock_getUtility2)
     def test_timezone_warning__emptyreg(self):
         # If registry key value is empty, return True
+        registry = getUtility(IRegistry)
+        reg_key = "plone.portal_timezone"
+        registry[reg_key] = None
         view = self.portal.restrictedTraverse('@@overview-controlpanel')
         self.assertTrue(view.timezone_warning())
 
