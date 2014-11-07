@@ -76,3 +76,11 @@ Site Control Panel
   >>> site_settings.exposeDCMetaTags = True
   >>> site_settings.enable_sitemap = True
   >>> site_settings.webstats_js = u'<script>a=1</script>'
+
+
+Overview Control Panel
+----------------------
+
+  >>> from Products.CMFPlone.interfaces.controlpanel import IDateAndTimeSchema
+  >>> tz_settings = IDateAndTimeSchema(prefix='plone')
+  >>> tz_settings.portal_timezone = 'UTC'
