@@ -11,7 +11,7 @@ many other features. Available protocols: FTP, XMLRPC, HTTP and WEBDAV
 Turn it into a distributed application system by installing ZEO.
 
 Plone shares some of the qualities of Livelink, Interwoven and Documentum. It
-aims to be *the* open source out-of-the-box publishing system.
+aims to be *the* open source out-of-the-box publishing system. 
 
 Installing Plone
 -----------------
