@@ -670,6 +670,11 @@
       <value key="js">++resource++mockup/formunloadalert/pattern.js</value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-inlinevalidation"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/inlinevalidation/pattern.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-modal"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/modal/pattern.js</value>

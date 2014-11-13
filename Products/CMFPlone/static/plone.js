@@ -36,6 +36,7 @@ require([
   'mockup-patterns-autotoc',
   'mockup-patterns-formunloadalert',
   'mockup-patterns-preventdoublesubmit',
+  'mockup-patterns-inlinevalidation',
   'mockup-patterns-formautofocus',
   'mockup-patterns-modal',
   'mockup-patterns-structure',
