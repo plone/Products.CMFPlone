@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from zope.component import adapts
 from Products.CMFPlone.interfaces import INavigationSchema
-from zope.interface import implements
-from zope.component import getUtility
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-
 from plone.registry.interfaces import IRegistry
+from zope.component import adapts
+from zope.component import getUtility
+from zope.interface import implements
 
 
 class NavigationControlPanelAdapter(object):

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from zope.site.hooks import getSite
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
-from zope.component import adapts
-from zope.interface import implements
-from Products.CMFPlone.interfaces import ISearchSchema
 from Products.CMFCore.utils import getToolByName
-from zope.component import getUtility
+from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from plone.registry.interfaces import IRegistry
+from zope.component import adapts
+from zope.component import getUtility
+from zope.interface import implements
+from zope.site.hooks import getSite
 
 
 class SearchControlPanelAdapter(object):
@@ -27,10 +27,10 @@ class SearchControlPanelAdapter(object):
     def set_enable_livesearch(self, value):
         if value:
             self.search_settings.enable_livesearch = True
-            #self.jstool.getResource('livesearch.js').setEnabled(True)
+            # self.jstool.getResource('livesearch.js').setEnabled(True)
         else:
             self.search_settings.enable_livesearch = False
-            #self.jstool.getResource('livesearch.js').setEnabled(False)
+            # self.jstool.getResource('livesearch.js').setEnabled(False)
         self.jstool.cookResources()
 
     enable_livesearch = property(get_enable_livesearch, set_enable_livesearch)

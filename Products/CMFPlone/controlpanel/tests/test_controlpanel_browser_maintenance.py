@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing import TEST_USER_PASSWORD
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.z2 import Browser
-
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-
 import unittest2 as unittest
 
 

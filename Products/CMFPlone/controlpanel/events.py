@@ -1,9 +1,9 @@
+from Products.CMFPlone.interfaces import IConfigurationChangedEvent
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.interface import implements
 from zope.ramcache.interfaces.ram import IRAMCache
 
-from Products.CMFPlone.interfaces import IConfigurationChangedEvent
 
 class ConfigurationChangedEvent(object):
     implements(IConfigurationChangedEvent)
