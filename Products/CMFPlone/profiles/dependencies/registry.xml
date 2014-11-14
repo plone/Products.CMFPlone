@@ -655,6 +655,11 @@
       <value key="js">++resource++mockup/backdrop/pattern.js</value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-cookietrigger"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/cookietrigger/pattern.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-sortable"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/sortable/pattern.js</value>
