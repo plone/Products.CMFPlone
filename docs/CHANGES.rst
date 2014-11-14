@@ -5,8 +5,8 @@
 Changelog
 =========
 
-4.3.5 (unreleased)
-------------------
+4.3.4.1 (2014-11-13)
+--------------------
 
 - Make inline validation of AT multiple selection widget work.
   [gbastien]
