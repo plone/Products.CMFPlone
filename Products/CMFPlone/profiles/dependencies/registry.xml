@@ -1037,6 +1037,14 @@
       </value>
   </records>
 
+  <records prefix="plone.resources/plonenonui"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++plonenonui.js</value>
+      <value key="css">
+        <element>++plone++static/plonenonui.less</element>
+      </value>
+      <value key="deps">jquery</value>
+  </records>
 
   <!-- Bundles -->
   <records prefix="plone.bundles/plone"
@@ -1061,6 +1069,17 @@
     <value key="jscompilation">++plone++static/plone-logged-in-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-logged-in-compiled.css</value>
     <value key="last_compilation">2015-05-07 00:00:00</value>
+  </records>
+
+  <records prefix="plone.bundles/plonenonui"
+            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>plonenonui</element>
+    </value>
+    <value key="enabled">False</value>
+    <value key="jscompilation">++plone++static/plonenonui-compiled.js</value>
+    <value key="csscompilation">++plone++static/plonenonui-compiled.css</value>
+    <value key="last_compilation">2014-08-14 00:00:00</value>
   </records>
 
   <records prefix="plone.bundles/plone-legacy"
