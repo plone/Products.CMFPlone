@@ -34,6 +34,7 @@ require([
   'plone-patterns-toolbar',
   'mockup-patterns-accessibility',
   'mockup-patterns-autotoc',
+  'mockup-patterns-cookietrigger',
   'mockup-patterns-formunloadalert',
   'mockup-patterns-preventdoublesubmit',
   'mockup-patterns-inlinevalidation',
