@@ -92,5 +92,5 @@ Markup Control Panel
   >>> from Products.CMFPlone.interfaces import IMarkupSchema
   >>> markup_settings = registry.forInterface(IMarkupSchema, prefix='plone')
 
-  >>> markup_settings.default_type = True
-  >>> markup_settings.allowed_types = True
+  >>> markup_settings.default_type = 'text/html'
+  >>> markup_settings.allowed_types = ('text/html', 'text/x-web-textile')
