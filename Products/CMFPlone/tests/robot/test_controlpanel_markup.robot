@@ -1,3 +1,7 @@
+Documentation
+...            $ bin/robot-server Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
+...            $ bin/robot test_controlpanel_markup.robot
+
 *** Settings *****************************************************************
 
 Resource  plone/app/robotframework/keywords.robot
@@ -17,21 +21,19 @@ Scenario: Change Default Markup Types in the Markup Control Panel
   Given a logged-in site administrator
     and the markup control panel
    When I set allowed types to "text/restructured"
-   Then I do not see the standard editor when I create a document
+#TODO: Waiting on richtext pattern to support this
+#   Then I do not see the standard editor when I create a document
 
 Scenario: Set Default Markup to be Restructured Text
   Given a logged-in site administrator
     and the markup control panel
    When I set the default type to "text/restructured"
-   Then I do not see the standard editor when I create a document
-
+#TODO: Waiting on richtext pattern to support this
+#   Then I do not see the standard editor when I create a document
 
 *** Keywords *****************************************************************
 
 # --- GIVEN ------------------------------------------------------------------
-
-a logged-in site administrator
-  Enable autologin as  Site Administrator
 
 a document '${title}'
   Create content  type=Document  id=doc  title=${title}
@@ -49,6 +51,10 @@ I set allowed types to "${type}"
   Click Button  Save
   Wait until page contains  Changes saved
 
+I set the default type to "${type}"
+  Select from list by label  name=form.widgets.default_type:list  ${type}
+  Click Button  Save
+  Wait until page contains  Changes saved
 
 I disable the standard editor
   Select from list by label  name=form.widgets.default_editor:list  None
