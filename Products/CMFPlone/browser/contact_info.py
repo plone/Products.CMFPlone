@@ -3,7 +3,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.browser.interfaces import IContactForm
-from Products.CMFPlone.interfaces import IMailSchema
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from plone.registry.interfaces import IRegistry
@@ -54,7 +54,7 @@ class ContactForm(form.Form):
 
         portal = getSite()
         registry = getUtility(IRegistry)
-        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
         send_to_address = mail_settings.email_from_address
         from_address = mail_settings.email_from_address
         encoding = portal.getProperty('email_charset')

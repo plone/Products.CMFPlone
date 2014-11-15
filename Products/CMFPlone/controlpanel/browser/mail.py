@@ -5,7 +5,9 @@ from Products.MailHost.MailHost import MailHostError
 from Products.statusmessages.interfaces import IStatusMessage
 from logging import getLogger
 from plone.app.registry.browser import controlpanel
+from plone.registry.interfaces import IRegistry
 from z3c.form import button
+from zope.component import getUtility
 
 import smtplib
 import socket
@@ -38,9 +40,10 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
         self.handle_edit_action.success(data)
         mailhost = getToolByName(self.context, 'MailHost')
 
-        # XXX Will self.context always be the Plone site?
-        fromaddr = self.context.getProperty('email_from_address')
-        fromname = self.context.getProperty('email_from_name')
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        fromaddr = mail_settings.email_from_address
+        fromname = self.mail_settings.email_from_name
 
         message = ("Hi,\n\nThis is a test message sent from the Plone "
                    "'Mail settings' control panel. Your receipt of this "
@@ -49,7 +52,7 @@ class MailControlPanelForm(controlpanel.RegistryEditForm):
                    "working!\n\n"
                    "Have a nice day.\n\n"
                    "Love,\n\nPlone")
-        email_charset = self.context.getProperty('email_charset')
+        email_charset = mail_settings.email_charset
         email_recipient, source = fromaddr, fromaddr
         subject = "Test e-mail from Plone"
 
