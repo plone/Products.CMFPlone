@@ -71,8 +71,7 @@ def zmi_constructor(context):
 
 
 def addPloneSite(context, site_id, title='Plone site', description='',
-                 create_userfolder=True, email_from_address='',
-                 email_from_name='', validate_email=True,
+                 create_userfolder=True, validate_email=True,
                  profile_id=_DEFAULT_PROFILE, content_profile_id=_CONTENT_PROFILE,
                  snapshot=False, extension_ids=(), setup_content=True,
                  default_language='en', portal_timezone='UTC'):
@@ -100,8 +99,6 @@ def addPloneSite(context, site_id, title='Plone site', description='',
     props = dict(
         title=title,
         description=description,
-        email_from_address=email_from_address,
-        email_from_name=email_from_name,
         validate_email=validate_email,
     )
     # Do this before applying extension profiles, so the settings from a
