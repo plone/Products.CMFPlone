@@ -1,15 +1,11 @@
-import unittest
+from Products.CMFPlone.interfaces import IEditingSchema
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.registry.interfaces import IRegistry
 from zope.component import getAdapter
 from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from plone.app.testing import TEST_USER_ID
-from Products.CMFCore.utils import getToolByName
-
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_INTEGRATION_TESTING
-
-from Products.CMFPlone.interfaces import IEditingSchema
+import unittest
 
 
 class EditingControlPanelAdapterTest(unittest.TestCase):
@@ -50,12 +46,12 @@ class EditingControlPanelAdapterTest(unittest.TestCase):
 
     def test_get_enable_link_integrity_checks_setting(self):
         self.assertEqual(
-            getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks,
+            getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks,  # noqa
             True
         )
         self.settings.enable_link_integrity_checks = False
         self.assertEqual(
-            getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks,
+            getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks,  # noqa
             False
         )
 
@@ -64,7 +60,7 @@ class EditingControlPanelAdapterTest(unittest.TestCase):
             self.settings.enable_link_integrity_checks,
             True
         )
-        getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks = False
+        getAdapter(self.portal, IEditingSchema).enable_link_integrity_checks = False  # noqa
         self.assertEqual(
             self.settings.enable_link_integrity_checks,
             False
@@ -124,6 +120,7 @@ class EditingControlPanelAdapterTest(unittest.TestCase):
             getAdapter(self.portal, IEditingSchema).lock_on_ttw_edit,
             False
         )
+
     def test_set_lock_on_ttw_edit_setting(self):
         self.assertEqual(
             self.settings.lock_on_ttw_edit,

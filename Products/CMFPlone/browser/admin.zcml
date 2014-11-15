@@ -66,4 +66,10 @@
       name="plone-admin-ui.css"
       />
 
+  <browser:resource
+      file="jstz-1.0.4.min.js"
+      name="jstz-1.0.4.min.js"
+      />
+
+
 </configure>

@@ -140,3 +140,21 @@ Site Control Panel
   >>> site_settings.webstats_js
   u''
   >>> site_settings.webstats_js = u'<script>a=1</script>'
+
+
+Overview Control Panel
+----------------------
+
+  >>> from Products.CMFPlone.interfaces.controlpanel import IDateAndTimeSchema
+  >>> tz_settings = registry.forInterface(IDateAndTimeSchema, prefix='plone')
+  >>> tz_settings.portal_timezone = 'UTC'
+
+  
+Markup Control Panel
+------------------------
+
+  >>> from Products.CMFPlone.interfaces import IMarkupSchema
+  >>> markup_settings = registry.forInterface(IMarkupSchema, prefix='plone')
+
+  >>> markup_settings.default_type = 'text/html'
+  >>> markup_settings.allowed_types = ('text/html', 'text/x-web-textile')

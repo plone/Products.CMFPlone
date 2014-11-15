@@ -6,11 +6,6 @@
       i18n:domain="plone">
 
 <head>
-    <metal:js fill-slot="javascript_head_slot">
-        <script type="text/javascript" src=""
-                tal:attributes="src string:${context/portal_url}/login.js">
-        </script>
-    </metal:js>
     <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1);
                              disable_column_one python:request.set('disable_plone.leftcolumn',1);
@@ -55,9 +50,7 @@
                         target python:test(target in ('_parent', '_top', '_blank', '_self'), target, None);
                         ztu modules/ZTUtils;">
 
-            <div class="portalMessage error"
-                id="enable_cookies_message"
-                style="display:none">
+            <div class="portalMessage error pat-cookietrigger" style="display:none">
                 <strong i18n:translate="">
                     Error
                 </strong>

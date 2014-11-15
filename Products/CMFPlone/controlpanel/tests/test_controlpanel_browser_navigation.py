@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.interfaces import INavigationSchema
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
-
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-
-from Products.CMFPlone.interfaces import INavigationSchema
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-
 import unittest2 as unittest
 
 
@@ -65,7 +61,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(
             self.browser.getControl('Automatically generate tabs').selected,
             True
-            )
+        )
         self.browser.getControl('Automatically generate tabs').selected = False
         self.browser.getControl('Save').click()
 
@@ -80,7 +76,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
         self.assertEqual(
             self.browser.getControl('Automatically generate tabs').selected,
             True
-            )
+        )
         self.browser.getControl(
             'Generate tabs for items other than folders').selected = False
         self.browser.getControl('Save').click()
@@ -120,9 +116,9 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
             "%s/@@navigation-controlpanel" % self.portal_url)
 
         self.browser.getControl('Filter on workflow state').selected = True
-        self.browser.getControl('Externally visible [external]').selected = True
+        self.browser.getControl('Externally visible [external]').selected = True  # noqa
         self.browser.getControl('Internal draft [internal]').selected = True
-        self.browser.getControl('Internally published [internally_published]').selected = True
+        self.browser.getControl('Internally published [internally_published]').selected = True  # noqa
         self.browser.getControl('Pending [pending]').selected = True
         self.browser.getControl('Private [private]').selected = True
         self.browser.getControl('Public draft [visible]').selected = True
@@ -136,7 +132,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertTrue('external' in settings.workflow_states_to_show)
         self.assertTrue('internal' in settings.workflow_states_to_show)
-        self.assertTrue('internally_published' in settings.workflow_states_to_show)
+        self.assertTrue('internally_published' in settings.workflow_states_to_show)  # noqa
         self.assertTrue('pending' in settings.workflow_states_to_show)
         self.assertTrue('private' in settings.workflow_states_to_show)
         self.assertTrue('visible' in settings.workflow_states_to_show)
@@ -149,7 +145,7 @@ class NavigationControlPanelFunctionalTest(unittest.TestCase):
             "%s/@@navigation-controlpanel" % self.portal_url)
 
         self.browser.getControl(
-            'Show items normally excluded from navigation if viewing their children.').selected = False
+            'Show items normally excluded from navigation if viewing their children.').selected = False  # noqa
         self.browser.getControl("Save").click()
 
         self.assertFalse(settings.show_excluded_items)

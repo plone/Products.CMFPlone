@@ -527,7 +527,7 @@ class ITinyMCELibrariesSchema(Interface):
         title=_(u"AtD Ignore strings"),
         description=_(
             'label_atd_ignore_strings',
-            default=u"A list of strings which the \"After the Deadline\"" \
+            default=u"A list of strings which the \"After the Deadline\" " \
                     u"spellchecker should ignore. " \
                     u"Note: This option is only applicable when the appropriate " \
                 "spellchecker has been chosen above."),
@@ -941,3 +941,33 @@ class IMailSchema(Interface):
             u"e-mail' feature."),
         default=None,
         required=True)
+
+
+class IMarkupSchema(Interface):
+
+    default_type = schema.Choice(
+        title=_(u'Default format'),
+        description=_(
+            u"Select the default format of textfields for newly "
+            u"created content objects."
+        ),
+        default=u'text/html',
+        vocabulary="plone.app.vocabularies.AllowableContentTypes",
+        required=True
+    )
+
+    allowed_types = schema.Tuple(
+        title=_(u'Alternative formats'),
+        description=_(
+            u"Select which formats are available for users as "
+            u"alternative to the default format. Note that if new "
+            u"formats are installed, they will be enabled for text "
+            u"fields by default unless explicitly turned off here "
+            u"or by the relevant installer."
+        ),
+        required=True,
+        default=('text/html', 'text/x-web-textile'),
+        value_type=schema.Choice(
+            vocabulary="plone.app.vocabularies.AllowableContentTypes"
+        )
+    )

@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from plone.app.testing import SITE_OWNER_PASSWORD
-from plone.app.testing import SITE_OWNER_NAME
-from plone.testing.z2 import Browser
 from Products.CMFPlone.interfaces import IEditingSchema
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.linkintegrity.interfaces import ILinkIntegrityInfo
-
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.registry.interfaces import IRegistry
+from plone.testing.z2 import Browser
+from zope.component import getUtility
 import unittest2 as unittest
-
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 
 
 class EditingControlPanelFunctionalTest(unittest.TestCase):

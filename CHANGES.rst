@@ -5,7 +5,30 @@
 Changelog
 =========
 
-5.0a3 (unreleased)
+5.0b1 (unreleased)
+------------------
+
+- Move markup control panel to CMFPlone. Fixes #220.
+  [djay, thet]
+
+- Use jstz to set default portal_timezone in @@plone-addsite.
+  [instification]
+
+- Make inline validation of AT multiple selection widget work.
+  [gbastien]
+
+- Make sure compiling resources does not commit transaction prematurely.
+  [davisagli]
+
+- Adding the option to configure a bundle from the diazo manifest file.
+  [bloodbare]
+
+- Move the controlpanel overview from plone.app.controlpanel into this package
+  https://github.com/plone/Products.CMFPlone/issues/290
+  [khink]
+
+
+5.0a3 (2014-11-01)
 ------------------
 
 - Fix JS resource viewlet HTML syntax error.

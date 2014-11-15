@@ -45,9 +45,7 @@
                     Click the button to log in immediately.
                 </p>
 
-                <div class="portalMessage error"
-                    id="enable_cookies_message"
-                    style="display:none">
+                <div class="portalMessage error pat-cookietrigger" style="display:none">
                     <strong i18n:translate="">
                         Error
                     </strong>

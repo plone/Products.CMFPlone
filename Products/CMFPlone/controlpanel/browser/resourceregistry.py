@@ -1,17 +1,15 @@
-import json
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import (
-    IBundleRegistry, IResourceRegistry,
-)
-from plone.resource.interfaces import IResourceDirectory
-from Products.CMFPlone.interfaces.resources import (
-    OVERRIDE_RESOURCE_DIRECTORY_NAME)
-from StringIO import StringIO
-from zExceptions import NotFound
+from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
 from Products.CMFPlone.resources.browser.configjs import RequireJsView
+from StringIO import StringIO
 from plone.memoize.view import memoize
+from plone.registry.interfaces import IRegistry
+from plone.resource.interfaces import IResourceDirectory
 from urlparse import urlparse
+from zExceptions import NotFound
+from zope.component import getUtility
+import json
 
 
 class JSONEncoder(json.JSONEncoder):

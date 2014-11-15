@@ -6,11 +6,6 @@
       i18n:domain="plone">
 
 <head>
-    <metal:js fill-slot="javascript_head_slot">
-        <script type="text/javascript" src=""
-                tal:attributes="src string:${context/portal_url}/login.js">
-        </script>
-    </metal:js>
     <metal:block fill-slot="top_slot"
                  tal:define="dummy python:request.set('disable_border',1);
                              disable_column_one python:request.set('disable_plone.leftcolumn',1);

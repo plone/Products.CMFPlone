@@ -1,14 +1,13 @@
-from plone.app.registry.browser import controlpanel
-
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ITinyMCESchema
-from Products.CMFPlone.interfaces import ITinyMCEPatternSchema
 from Products.CMFPlone.interfaces import ITinyMCELayoutSchema
-from Products.CMFPlone.interfaces import ITinyMCEToolbarSchema
 from Products.CMFPlone.interfaces import ITinyMCELibrariesSchema
+from Products.CMFPlone.interfaces import ITinyMCEPatternSchema
 from Products.CMFPlone.interfaces import ITinyMCEResourceTypesSchema
-from z3c.form import group
+from Products.CMFPlone.interfaces import ITinyMCESchema
+from Products.CMFPlone.interfaces import ITinyMCEToolbarSchema
+from plone.app.registry.browser import controlpanel
 from z3c.form import field
+from z3c.form import group
 
 
 class TinyMCEPatternForm(group.GroupForm):
