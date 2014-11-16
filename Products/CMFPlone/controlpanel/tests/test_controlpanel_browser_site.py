@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
-
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-
-from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
-
 import unittest2 as unittest
 
 

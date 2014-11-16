@@ -1,10 +1,9 @@
 from Products.CMFPlone.interfaces import IMaintenanceSchema
-from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.registry.interfaces import IRegistry
 from zope.component import adapts
 from zope.component import getUtility
 from zope.interface import implements
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 
 class MaintenanceControlPanelAdapter(object):

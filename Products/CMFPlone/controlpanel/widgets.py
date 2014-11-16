@@ -11,8 +11,8 @@ class ReverseCheckBoxWidget(CheckBoxWidget):
 
     def extract(self, default=NO_VALUE):
         tokens = [t.token for t in self.terms]
-        if (self.name not in self.request and
-            self.name + '-empty-marker' in self.request):
+        if self.name not in self.request and\
+                self.name + '-empty-marker' in self.request:
             return tokens
         value = self.request.get(self.name, default)
         if value == default:

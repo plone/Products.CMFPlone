@@ -8,6 +8,12 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Move markup control panel to CMFPlone. Fixes #220.
+  [djay, thet]
+
+- Use jstz to set default portal_timezone in @@plone-addsite.
+  [instification]
+
 - Make inline validation of AT multiple selection widget work.
   [gbastien]
 

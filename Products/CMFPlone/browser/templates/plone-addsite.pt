@@ -15,12 +15,33 @@
   <link rel="stylesheet" type="text/css"
         tal:attributes="href string:${context/absolute_url}/++resource++plone-admin-ui.css"
         href="/++resource++plone-admin-ui.css" />
+  <script type="text/javascript" tal:attributes="src string:${context/absolute_url}/++resource++jstz-1.0.4.min.js"></script>
   <script type="text/javascript">
     function siteid_focus() {
-      siteid = document.getElementById('site_id')
-      siteid.focus()
+      "use strict";
+      var siteid = document.getElementById('site_id');
+      siteid.focus();
     }
-    window.onload = siteid_focus;
+
+    function set_timezone() {
+      "use strict";
+      var i, tzopt,
+          tz = jstz.determine(),
+          tzname = tz.name(),
+          tzopts = document.getElementById('portal_timezone').options;
+      for (i=1; i<=tzopts.length; i++) {
+        tzopt = tzopts[i-1];
+        if (tzname === tzopt.value){
+          tzopt.selected = 'selected';
+          break;
+        }
+      }
+    }
+    window.onload = function () {
+      "use strict";
+      siteid_focus();
+      set_timezone();
+    };
   </script>
 </head>
 
@@ -103,7 +124,8 @@
           time settings.
         </div>
 
-        <select name="portal_timezone"
+        <select id="portal_timezone"
+          name="portal_timezone"
           tal:define="tz_list view/timezones">
           <option value="UTC"
                   tal:repeat="tz tz_list"

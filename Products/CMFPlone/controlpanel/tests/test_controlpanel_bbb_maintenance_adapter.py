@@ -1,13 +1,11 @@
-import unittest
-from plone.app.testing import setRoles
 from Products.CMFPlone.interfaces import IMaintenanceSchema
-from zope.component import getAdapter
+from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 from plone.registry.interfaces import IRegistry
+from zope.component import getAdapter
 from zope.component import getUtility
-
-from Products.CMFPlone.testing import \
-    PRODUCTS_CMFPLONE_INTEGRATION_TESTING
+import unittest
 
 
 class MaintenanceControlPanelAdapterTest(unittest.TestCase):

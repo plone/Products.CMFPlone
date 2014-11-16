@@ -1,22 +1,16 @@
-from z3c.form import button
-import os
-from cgi import escape
-
-from plone.app.form.validators import null_validator
-from z3c.form import form
-
 from AccessControl import getSecurityManager
 from AccessControl.Permissions import view_management_screens
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.protect import CheckAuthenticator
-
-from plone.autoform.form import AutoExtensibleForm
-
 from Products.CMFPlone.interfaces import IMaintenanceSchema
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from cgi import escape
+from plone.autoform.form import AutoExtensibleForm
+from plone.protect import CheckAuthenticator
+from z3c.form import button
+from z3c.form import form
+import os
 
 
 class MaintenanceControlPanel(AutoExtensibleForm, form.EditForm):

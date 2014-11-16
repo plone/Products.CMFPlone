@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone.interfaces import ISearchSchema
+from Products.CMFPlone.interfaces import IMarkupSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
@@ -9,9 +9,9 @@ from zope.component import getUtility
 import unittest2 as unittest
 
 
-class SearchControlPanelFunctionalTest(unittest.TestCase):
-    """Test that changes in the search control panel are actually
-    stored in the registry.
+class MarkupControlPanelFunctionalTest(unittest.TestCase):
+    """Make sure changes in the markup control panel are properly
+    stored in plone.app.registry.
     """
 
     layer = PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
@@ -27,49 +27,49 @@ class SearchControlPanelFunctionalTest(unittest.TestCase):
             'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD,)
         )
 
-    def test_search_control_panel_link(self):
+    def test_markup_control_panel_link(self):
         self.browser.open(
             "%s/plone_control_panel" % self.portal_url)
-        self.browser.getLink('Search').click()
+        self.browser.getLink('Markup').click()
 
-    def test_search_control_panel_backlink(self):
+    def test_markup_control_panel_backlink(self):
         self.browser.open(
-            "%s/@@search-controlpanel" % self.portal_url)
+            "%s/@@markup-controlpanel" % self.portal_url)
         self.assertTrue("Plone Configuration" in self.browser.contents)
 
-    def test_search_control_panel_sidebar(self):
+    def test_markup_control_panel_sidebar(self):
         self.browser.open(
-            "%s/@@search-controlpanel" % self.portal_url)
+            "%s/@@markup-controlpanel" % self.portal_url)
         self.browser.getLink('Site Setup').click()
         self.assertEqual(
             self.browser.url,
             'http://nohost/plone/@@overview-controlpanel')
 
-    def test_search_controlpanel_view(self):
+    def test_markup_controlpanel_view(self):
         view = getMultiAdapter((self.portal, self.portal.REQUEST),
-                               name="search-controlpanel")
+                               name="markup-controlpanel")
         view = view.__of__(self.portal)
         self.assertTrue(view())
 
-    def test_enable_livesearch(self):
+    def test_default_type(self):
         self.browser.open(
-            "%s/@@search-controlpanel" % self.portal_url)
-        self.browser.getControl('Enable LiveSearch').selected = True
+            "%s/@@markup-controlpanel" % self.portal_url)
+        self.browser.getControl('Default format').value = ['text/plain']
         self.browser.getControl('Save').click()
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISearchSchema, prefix="plone")
-        self.assertEqual(settings.enable_livesearch, True)
+        settings = registry.forInterface(IMarkupSchema, prefix='plone')
+        self.assertEqual(settings.default_type, 'text/plain')
 
-    def test_types_not_searched(self):
+    def test_allowed_types(self):
         self.browser.open(
-            "%s/@@search-controlpanel" % self.portal_url)
+            "%s/@@markup-controlpanel" % self.portal_url)
         self.browser.getControl(
-            name='form.widgets.types_not_searched:list'
-        ).value = ['Discussion Item', 'News Item']
+            name='form.widgets.allowed_types:list'
+        ).value = ['text/html', 'text/x-web-textile']
         self.browser.getControl('Save').click()
 
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(ISearchSchema, prefix="plone")
-        self.assertFalse('Discussion Item' in settings.types_not_searched)
-        self.assertFalse('News Item Item' in settings.types_not_searched)
+        settings = registry.forInterface(IMarkupSchema, prefix='plone')
+        self.assertEqual(settings.allowed_types,
+                         ('text/html', 'text/x-web-textile'))
