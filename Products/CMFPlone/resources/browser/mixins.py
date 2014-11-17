@@ -11,8 +11,8 @@ lessconfig = """
  window.less = {
     env: "development",
     logLevel: %i,
-    async: false,
-    fileAsync: false,
+    async: true,
+    fileAsync: true,
     errorReporting: window.lessErrorReporting || 'console',
     poll: 1000,
     functions: {},
