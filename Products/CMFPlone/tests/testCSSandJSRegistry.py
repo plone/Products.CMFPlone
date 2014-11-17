@@ -1,11 +1,8 @@
 from plone.app.testing.bbb import PloneTestCase
-from Products.ResourceRegistries.config import CSSTOOLNAME, JSTOOLNAME
-from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
-from Products.CMFPlone.interfaces import (
-    IBundleRegistry,
-    IResourceRegistry)
+from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
 
 
 class TestCSSRegistry(PloneTestCase):
@@ -59,7 +56,6 @@ class TestJSRegistry(PloneTestCase):
             'jquery.highlightsearchterms.js',
             'mark_special_links.js',
             'table_sorter.js',
-            'cookie_functions.js',
             'plone_javascript_variables.js',
             ]
         js_files = [x.js for x in installedResources.values()]
