@@ -23,7 +23,6 @@ class MarkupControlPanelAdapterTest(unittest.TestCase):
         self.assertTrue(getAdapter(self.portal, IMarkupSchema))
 
     def test_get_default_type(self):
-#        import pdb; pdb.set_trace()
         self.settings.default_type = 'text/plain'
         self.assertEquals(
             getAdapter(self.portal, IMarkupSchema).default_type,
@@ -31,7 +30,6 @@ class MarkupControlPanelAdapterTest(unittest.TestCase):
         )
 
     def test_set_default_type(self):
-#        import pdb; pdb.set_trace()
         getAdapter(self.portal, IMarkupSchema).default_type = 'text/plain'  # noqa
         self.assertEquals(
             self.settings.default_type,
@@ -40,14 +38,12 @@ class MarkupControlPanelAdapterTest(unittest.TestCase):
 
     def test_get_allowed_types(self):
         self.settings.allowed_types = ('text/plain', 'text/x-web-textile')
-#        import pdb; pdb.set_trace()
         self.assertEquals(
             getAdapter(self.portal, IMarkupSchema).allowed_types,
             ('text/plain', 'text/x-web-textile')
         )
 
     def test_set_allowed_types(self):
-#        import pdb; pdb.set_trace()
         getAdapter(self.portal, IMarkupSchema).allowed_types =\
             ('text/plain', 'text/x-web-textile')
         self.assertEquals(
