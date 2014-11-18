@@ -8,6 +8,7 @@
     <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
     <dependency>profile-Products.PloneLanguageTool:PloneLanguageTool</dependency>
     <dependency>profile-Products.PlonePAS:PlonePAS</dependency>
+    <dependency>profile-plone.app.folder:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
     <dependency>profile-plone.app.jquerytools:default</dependency>
     <dependency>profile-plone.app.registry:default</dependency>
