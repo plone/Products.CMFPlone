@@ -8,12 +8,6 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
-- removed superfluos/dup registerClass for 
-  ``plone.app.folder.nogopip.GopipIndex`` (it is registered already in 
-  plone.app.folder). Remove gopip index from catalog.xml and laod the one 
-  as dependency from plone.app.folder.
-  [jensens]
-
 - Move markup control panel to CMFPlone. Fixes #220.
   [djay, thet]
 

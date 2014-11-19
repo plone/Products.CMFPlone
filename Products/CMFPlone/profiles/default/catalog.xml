@@ -66,6 +66,9 @@
  <index name="getId" meta_type="FieldIndex">
   <indexed_attr value="getId"/>
  </index>
+ <index name="getObjPositionInParent" meta_type="GopipIndex">
+  <indexed_attr value="getObjPositionInParent"/>
+ </index>
  <index name="getRawRelatedItems" meta_type="KeywordIndex">
   <indexed_attr value="getRawRelatedItems"/>
  </index>
