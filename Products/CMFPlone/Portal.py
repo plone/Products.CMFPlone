@@ -1,9 +1,8 @@
-from Products.CMFDefault.Portal import CMFSite
-
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import UniqueObject
+from Products.CMFCore.PortalObject import PortalObjectBase
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.PloneFolder import OrderedContainer
@@ -24,8 +23,9 @@ from zope.interface import implements
 from zope.component import queryUtility
 
 
-class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
-    """Make PloneSite subclass CMFSite and add some methods."""
+class PloneSite(PortalObjectBase, OrderedContainer, BrowserDefaultMixin,
+                UniqueObject):
+    """ The Plone site object. """
 
     security = ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
@@ -33,15 +33,19 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     implements(IPloneSiteRoot, ISyndicatable)
 
     manage_options = (
-        CMFSite.manage_options[:2] +
-        CMFSite.manage_options[3:]
+        PortalObjectBase.manage_options[:2] +
+        PortalObjectBase.manage_options[3:]
         )
 
-    __ac_permissions__ = tuple(list(CMFSite.__ac_permissions__) +
-        [('Modify portal content',
+    __ac_permissions__ = (( AddPortalContent, () )
+                       , ( AddPortalFolders, () )
+                       , ( ListPortalMembers, () )
+                       , ( ReplyToItem, () )
+                       , ( View, ('isEffective',)),
+        ('Modify portal content',
          ('manage_cutObjects', 'manage_pasteObjects',
           'manage_renameForm', 'manage_renameObject',
-          'manage_renameObjects'))])
+          'manage_renameObjects')))
 
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
@@ -62,6 +66,10 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
     title = ''
     description = ''
     icon = 'misc_/CMFPlone/tool.gif'
+
+    def __init__( self, id, title='' ):
+        PortalObjectBase.__init__( self, id, title )
+        DefaultDublinCoreImpl.__init__( self )
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
@@ -106,7 +114,7 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
             if not _checkPermission(permissions.DeleteObjects, item):
                 raise Unauthorized(
                     "Do not have permissions to remove this object")
-        return CMFSite.manage_delObjects(self, ids, REQUEST=REQUEST)
+        return PortalObjectBase.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def view(self):
         """ Ensure that we get a plain view of the object, via a delegation to
@@ -144,8 +152,6 @@ class PloneSite(CMFSite, OrderedContainer, BrowserDefaultMixin, UniqueObject):
         pass
 
     def reindexObject(self, idxs=None):
-        if idxs is None:
-            idxs = []
         pass
 
     def reindexObjectSecurity(self, skip_self=False):

@@ -11,13 +11,6 @@
       class=".Portal.PloneSite" />
 
   <five:deprecatedManageAddDelete
-      class=".PloneFolder.PloneFolder" />
-
-  <five:deprecatedManageAddDelete
       class=".CatalogTool.CatalogTool" />
-
-  <five:deprecatedManageAddDelete
-      zcml:condition="installed Products.kupu"
-      class="Products.kupu.plone.plonelibrarytool.PloneKupuLibraryTool" />
 
 </configure>
