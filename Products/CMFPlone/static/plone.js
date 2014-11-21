@@ -26,6 +26,7 @@ require([
   'mockup-registry',
   'mockup-patterns-base',
 
+  'mockup-patterns-textareamimetypeselector',
   'mockup-patterns-select2',
   'mockup-patterns-pickadate',
   'mockup-patterns-relateditems',
