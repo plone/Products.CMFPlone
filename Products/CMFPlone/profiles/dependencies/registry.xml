@@ -631,14 +631,6 @@
       </value>
   </records>
 
-  <records prefix="plone.resources/mockup-patterns-select2"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/select2/patterns.js</value>
-      <value key="css">
-        <element>++resource++mockup/select2/pattern.select2.less</element>
-      </value>
-  </records>
-
   <records prefix="plone.resources/mockup-patterns-accessibility"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/accessibility/pattern.js</value>
@@ -726,7 +718,10 @@
 
   <records prefix="plone.resources/mockup-patterns-select2"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockup/select2/pattern.js</value>
+      <value key="js">++resource++mockup/select2/patterns.js</value>
+      <value key="css">
+        <element>++resource++mockup/select2/pattern.select2.less</element>
+      </value>
   </records>
 
   <records prefix="plone.resources/mockup-patterns-structure"
