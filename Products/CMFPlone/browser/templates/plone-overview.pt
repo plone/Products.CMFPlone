@@ -70,7 +70,7 @@
                     <ul class="sites">
                         <li tal:repeat="site sites">
                             <span class="prominent">
-                                
+
                                 <a href="#"
                                    tal:attributes="href site/absolute_url;
                                                    title site/Title;"
@@ -116,11 +116,14 @@
                       tal:attributes="action string:${context/absolute_url}/@@plone-addsite">
                     <input type="hidden" name="site_id" value="Plone" />
                     <input type="submit"
-                           i18n:attributes="value;"  
+                           i18n:attributes="value;"
                            value="Create a new Plone site" />
+                    <a class="discreet"
+                       tal:attributes="href string:${context/absolute_url}/@@plone-addsite?site_id=Plone&advanced=1"
+                       >Advanced</a>
                 </form>
             </li>
-            
+
         </ul>
     </div>
   </article>

@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Added a link for the advanced 'Create a Plone site' screen to the Plone overview.
+  [jaroel]
+
 - Fixed the label for 'Example content' in the advanced 'Create a Plone site' screen.
   [jaroel]
 
