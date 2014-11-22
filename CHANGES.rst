@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Fixed the label for 'Example content' in the advanced 'Create a Plone site' screen.
+  [jaroel]
+
 - Move markup control panel to CMFPlone. Fixes #220.
   [djay, thet]
 
