@@ -747,6 +747,11 @@
       <value key="js">++resource++mockup/tablesorter/pattern.js</value>
   </records>
 
+  <records prefix="plone.resources/mockup-patterns-textareamimetypeselector"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockup/textareamimetypeselector/pattern.js</value>
+  </records>
+
   <records prefix="plone.resources/mockup-patterns-tinymce"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">++resource++mockup/tinymce/pattern.js</value>
