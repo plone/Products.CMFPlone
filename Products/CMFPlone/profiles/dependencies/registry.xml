@@ -831,10 +831,6 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">jquery.highlightsearchterms.js</value>
   </records>
-  <records prefix="plone.resources/inline-validation"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">inline_validation.js</value>
-  </records>
   <records prefix="plone.resources/table_sorter"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">table_sorter.js</value>
@@ -936,7 +932,6 @@
       <element>plone_javascript_variables</element>
       <element>unlockOnFormUnload</element>
       <element>table_sorter</element>
-      <element>inline-validation</element>
       <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>
