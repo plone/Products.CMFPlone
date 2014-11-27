@@ -1,3 +1,4 @@
+from datetime import datetime
 from Products.CMFPlone.interfaces import IBundleRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
@@ -236,6 +237,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
         req = self.request
         filepath = 'static/%s-compiled.js' % req.form['bundle']
         overrides.save_file(filepath, req.form['data'])
+        bundle = self.get_bundles().get(req.form['bundle'])
+        if bundle:
+            bundle.last_compilation = datetime.now()
+            bundle.jscompilation = '++plone++' + filepath
         return json.dumps({
             'success': True,
             'filepath': '++plone++' + filepath
@@ -248,6 +253,10 @@ class ResourceRegistryControlPanelView(RequireJsView):
         data = '\n'.join([req.form[k] for k in req.form.keys()
                           if k.startswith('data-')])
         overrides.save_file(filepath, data)
+        bundle = self.get_bundles().get(req.form['bundle'])
+        if bundle:
+            bundle.last_compilation = datetime.now()
+            bundle.csscompilation = '++plone++' + filepath
         return json.dumps({
             'success': True,
             'filepath': '++plone++' + filepath
