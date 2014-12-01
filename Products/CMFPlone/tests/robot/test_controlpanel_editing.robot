@@ -13,16 +13,16 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test Cases ***************************************************************
 
-#Scenario: Enable Visible IDs in the Editing Control Panel
-#  Given a logged-in site administrator
-#    and the editing control panel
-#   When I enable visible ids
-#   Then I can see an id field in the settings tab when I create a document
+Scenario: Enable Visible IDs in the Editing Control Panel
+  Given a logged-in site administrator
+    and the editing control panel
+   When I enable visible ids
+   Then I can see an id field in the settings tab when I create a document
 
-#Scenario: Disable Standard Editor in the Editing Control Panel
-#  Given a logged-in site administrator
-#    and the editing control panel
-#   When I disable the standard editor
+Scenario: Disable Standard Editor in the Editing Control Panel
+  Given a logged-in site administrator
+    and the editing control panel
+   When I disable the standard editor
 # XXX: This test fails because the TinyMCE 4 widget ignores both the old and
 # the new setting.
 #   Then I do not see the standard editor when I create a document
@@ -36,10 +36,10 @@ Scenario: Enable Link Integrity Check in the Editing Control Panel
    Then I will be warned if I remove a linked document
 
 
-#Scenario: Enable Lock on Through The Web in the Editing Control Panel
-#  Given a logged-in site administrator
-#    and the editing control panel
-#   When I enable lock on through the web
+Scenario: Enable Lock on Through The Web in the Editing Control Panel
+  Given a logged-in site administrator
+    and the editing control panel
+   When I enable lock on through the web
 # XXX: This test is not finished yet.
 #   Then I will see a warning if a document is edited by another user
 
