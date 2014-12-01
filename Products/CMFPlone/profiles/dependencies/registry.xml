@@ -921,9 +921,9 @@
       <element>plone</element>
     </value>
     <value key="enabled">True</value>
-    <value key="jscompilation">++plone++static/plone-compiled.js</value>
+    <value key="jscompilation">++plone++static/plone-compiled.min.js</value>
     <value key="csscompilation">++plone++static/plone-compiled.css</value>
-    <value key="last_compilation">2014-08-14 00:00:00</value>
+    <value key="last_compilation">2014-11-26 00:00:00</value>
   </records>
 
   <records prefix="plone.bundles/plone-legacy"
