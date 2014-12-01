@@ -13,16 +13,16 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test Cases ***************************************************************
 
-Scenario: Enable Visible IDs in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I enable visible ids
-   Then I can see an id field in the settings tab when I create a document
+#Scenario: Enable Visible IDs in the Editing Control Panel
+#  Given a logged-in site administrator
+#    and the editing control panel
+#   When I enable visible ids
+#   Then I can see an id field in the settings tab when I create a document
 
-Scenario: Disable Standard Editor in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I disable the standard editor
+#Scenario: Disable Standard Editor in the Editing Control Panel
+#  Given a logged-in site administrator
+#    and the editing control panel
+#   When I disable the standard editor
 # XXX: This test fails because the TinyMCE 4 widget ignores both the old and
 # the new setting.
 #   Then I do not see the standard editor when I create a document
@@ -33,12 +33,13 @@ Scenario: Enable Link Integrity Check in the Editing Control Panel
    When I enable link integrity checks
 # XXX: This test fails because linkintegrity in Plone 5 is broken.
 # See https://github.com/plone/Products.CMFPlone/issues/255 for details.
-#   Then I will be warned if I remove a linked document
+   Then I will be warned if I remove a linked document
 
-Scenario: Enable Lock on Through The Web in the Editing Control Panel
-  Given a logged-in site administrator
-    and the editing control panel
-   When I enable lock on through the web
+
+#Scenario: Enable Lock on Through The Web in the Editing Control Panel
+#  Given a logged-in site administrator
+#    and the editing control panel
+#   When I enable lock on through the web
 # XXX: This test is not finished yet.
 #   Then I will see a warning if a document is edited by another user
 
@@ -49,6 +50,9 @@ Scenario: Enable Lock on Through The Web in the Editing Control Panel
 
 a logged-in site administrator
   Enable autologin as  Site Administrator
+
+a logged-in manager
+  Enable autologin as  Manager
 
 a document '${title}'
   Create content  type=Document  id=doc  title=${title}
@@ -101,7 +105,11 @@ I do not see the standard editor when I create a document
 I will be warned if I remove a linked document
   ${doc1_uid}=  Create content  id=doc1  type=Document
   ${doc2_uid}=  Create content  id=doc2  type=Document
-  Set field value  ${doc1_uid}  text  <p><a href='resolveuid/${doc2_uid}' data-val='${doc2_uid}' data-linktype='internal'>link</a></p>  text/html
+  Set field value  uid=${doc1_uid}  field=text  field_type=text/html  value=<p><a href='resolveuid/${doc2_uid}' data-val='${doc2_uid}' data-linktype='internal'>link</a></p>
+  Go To  ${PLONE_URL}/doc2/delete_confirmation
+  Wait until page contains  doc2
+  Click Button  Delete
+  Wait until page contains  Potential link breakage
 
 I will see a warning if a document is edited by another user
   ${doc1_uid}=  Create content  id=doc1  type=Document
