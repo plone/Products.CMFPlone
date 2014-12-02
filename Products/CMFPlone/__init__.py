@@ -178,14 +178,6 @@ def initialize(context):
         constructors=(zmi_constructor, ),
     )
 
-    from plone.app.folder import nogopip
-    context.registerClass(nogopip.GopipIndex,
-        permission='Add Pluggable Index',
-        constructors=(nogopip.manage_addGopipForm,
-                      nogopip.manage_addGopipIndex),
-        icon='index.gif',
-        visibility=None)
-
 
 # Import PloneMessageFactory to create messages in the plone domain
 from zope.i18nmessageid import MessageFactory

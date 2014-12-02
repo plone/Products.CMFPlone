@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Fix `GopipIndex registered twice <https://github.com/plone/Products.CMFPlone/issues/313>`_
+  [jensens]
+
 - Added a link for the advanced 'Create a Plone site' screen to the Plone overview.
   [jaroel]
 
