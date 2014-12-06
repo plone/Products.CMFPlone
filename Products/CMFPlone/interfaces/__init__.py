@@ -8,6 +8,7 @@ from constrains import ISelectableConstrainTypes
 from controlpanel import IControlPanel
 from controlpanel import IDateAndTimeSchema
 from controlpanel import IEditingSchema
+from controlpanel import IFilterSchema
 from controlpanel import IMaintenanceSchema
 from controlpanel import IMarkupSchema
 from controlpanel import INavigationSchema

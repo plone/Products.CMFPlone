@@ -2,6 +2,8 @@
 <registry>
   <records interface="Products.CMFPlone.interfaces.IEditingSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IFilterSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.INavigationSchema"
@@ -816,12 +818,12 @@
 
   <records prefix="plone.resources/rjs"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/r.js/dist/r.js</value>           
+      <value key="js">++plone++static/components/r.js/dist/r.js</value>
   </records>
 
   <!-- legacy js -->
 
-  
+
   <records prefix="plone.resources/plone_javascript_variables"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">plone_javascript_variables.js</value>
