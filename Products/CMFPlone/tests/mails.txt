@@ -8,7 +8,13 @@ Some initial setup:
 
 We need to fake a valid mail setup:
 
-  >>> portal.email_from_address = "mail@plone.test"
+  >>> from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+  >>> from plone.registry.interfaces import IRegistry
+  >>> from zope.component import getUtility
+
+  >>> registry = getUtility(IRegistry)
+  >>> mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+  >>> mail_settings.email_from_address = "mail@plone.test"
   >>> mailhost = self.portal.MailHost
   >>> import transaction; transaction.commit()
 

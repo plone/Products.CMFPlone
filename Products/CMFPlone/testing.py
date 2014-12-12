@@ -1,3 +1,6 @@
+from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import IMailSchema
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework import AutoLogin
 from plone.app.robotframework import Content
@@ -49,8 +52,21 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
         portal.manage_delObjects(['test-folder'])
 
 
+# XXX: This should probably go into plone.app.robotframework (@tisto).
+class ValidMailhostLayer(PloneSandboxLayer):
+
+    defaultBases = (PLONE_FIXTURE,)
+
+    def setUpPloneSite(self, portal):
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        mail_settings.smtp_host = u'localhost'
+        mail_settings.email_from_address = 'john@doe.com'
+
+
 PRODUCTS_CMFPLONE_FIXTURE = ProductsCMFPloneLayer()
 
+PRODUCTS_CMFPLONE_VALID_MAILHOST_FIXTURE = ValidMailhostLayer()
 PRODUCTS_CMFPLONE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PRODUCTS_CMFPLONE_FIXTURE,),
     name="CMFPloneLayer:Integration"
@@ -71,6 +87,7 @@ PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE = RemoteLibraryLayer(
 PRODUCTS_CMFPLONE_ROBOT_TESTING = FunctionalTesting(
     bases=(
         PRODUCTS_CMFPLONE_FIXTURE,
+        PRODUCTS_CMFPLONE_VALID_MAILHOST_FIXTURE,
         PRODUCTS_CMFPLONE_ROBOT_REMOTE_LIBRARY_FIXTURE,
         z2.ZSERVER_FIXTURE
     ),

@@ -23,3 +23,7 @@ docs/Makefile
 docs/make.bat
 docs/doctrees
 docs/html
+/Products/CMFPlone/controlpanel/.ropeproject/config.py
+/Products/CMFPlone/controlpanel/.ropeproject/globalnames
+/Products/CMFPlone/controlpanel/.ropeproject/history
+/Products/CMFPlone/controlpanel/.ropeproject/objectdb

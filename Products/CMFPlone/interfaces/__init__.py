@@ -9,6 +9,7 @@ from controlpanel import IControlPanel
 from controlpanel import IDateAndTimeSchema
 from controlpanel import IEditingSchema
 from controlpanel import IMaintenanceSchema
+from controlpanel import IMailSchema
 from controlpanel import IMarkupSchema
 from controlpanel import INavigationSchema
 from controlpanel import ISearchSchema
@@ -37,3 +38,6 @@ from siteroot import ITestCasePloneSiteRoot
 from structure import INonStructuralFolder
 from translationservice import ITranslationServiceTool
 from workflow import IWorkflowChain
+from resources import IResourceRegistry
+from resources import IBundleRegistry
+from patterns import IPatternsSettings
