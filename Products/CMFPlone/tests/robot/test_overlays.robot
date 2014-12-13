@@ -234,7 +234,6 @@ I enter valid user data
     Input text for sure  form.widgets.email          my@email.eu
     Input text for sure  form.widgets.password       123123
     Input text for sure  form.widgets.password_ctl   123123
-    Unselect Checkbox  form.widgets.mail_me:list
 
 I enter valid register user data
     Wait until page contains element  name=form.widgets.username
