@@ -1,6 +1,3 @@
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IMailSchema
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework import AutoLogin
 from plone.app.robotframework import Content
@@ -45,6 +42,15 @@ class ProductsCMFPloneLayer(PloneSandboxLayer):
             id="test-folder",
             title=u"Test Folder"
         )
+        # XXX: this is needed for tests that rely on the Members folder to be
+        # present. This folder is otherwise created by a setup handler in
+        # ATContentTypes, but that package is optional now.
+        if 'Members' not in portal.keys():
+            portal.invokeFactory(
+                "Folder",
+                id="Members",
+                title=u"Members"
+            )
 
     def tearDownPloneSite(self, portal):
         login(portal, 'admin')
