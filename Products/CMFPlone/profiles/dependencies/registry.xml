@@ -844,12 +844,6 @@
       <value key="js">unlockOnFormUnload.js</value>
   </records>
 
-  <!-- disabled -->
-  <records prefix="plone.resources/mark_special_links"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">mark_special_links.js</value>
-  </records>
-
   <record name="plone.resources.last_legacy_import">
     <field type="plone.registry.field.Datetime">
       <title>Last legacy js/css import date</title>

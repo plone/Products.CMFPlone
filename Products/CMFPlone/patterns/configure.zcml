@@ -8,4 +8,9 @@
       provides="Products.CMFPlone.interfaces.IPatternsSettings"
       name="tinymce_settings" />
 
+  <adapter for="* * *"
+      factory=".markspeciallinks.MarkSpecialLinksSettingsAdapter"
+      provides="Products.CMFPlone.interfaces.IPatternsSettings"
+      name="markspecialinks_settings" />
+
 </configure>

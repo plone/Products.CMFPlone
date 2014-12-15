@@ -41,6 +41,7 @@ require([
   'mockup-patterns-inlinevalidation',
   'mockup-patterns-formautofocus',
   'mockup-patterns-modal',
+  'mockup-patterns-markspeciallinks',
   'mockup-patterns-structure',
   'bootstrap-dropdown',
   'bootstrap-collapse',

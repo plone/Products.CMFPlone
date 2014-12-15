@@ -6,6 +6,10 @@ For what's new in this release, see CHANGES.txt.
 5.0.0 (unreleased)
 ------------------
 
+- Replaced the legacy mark_special_links javascript with a
+  corresponding mockup pattern.
+  [fulv]
+
 - Plone's javascript is now developed as part of the Plone mockup
   (http://github.com/plone/mockup) and is included as a compiled
   bundle.

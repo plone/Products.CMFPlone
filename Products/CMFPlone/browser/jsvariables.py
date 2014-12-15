@@ -9,8 +9,6 @@ TEMPLATE = """\
 var portal_url = '%(portal_url)s';
 var form_modified_message = '%(form_modified)s';
 var form_resubmit_message = '%(form_resubmit)s';
-var external_links_open_new_window = '%(open_links)s';
-var mark_special_links = '%(mark_links)s';
 var ajax_noresponse_message = '%(ajax_noresponse)s';
 """
 
@@ -36,12 +34,6 @@ class JSVariables(BrowserView):
 
         props = getToolByName(context, 'portal_properties').site_properties
         portal_url = getToolByName(context, 'portal_url')()
-
-        # the following are flags for mark_special_links.js
-        # links get the target="_blank" attribute
-        open_links = props.getProperty('external_links_open_new_window',
-                                       'false')
-        mark_links = props.getProperty('mark_special_links', 'false')
 
         form_modified = translate(FORM_MODIFIED, context=self.request)
         form_resubmit = translate(FORM_RESUBMIT, context=self.request)

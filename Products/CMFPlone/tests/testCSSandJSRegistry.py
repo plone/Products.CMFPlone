@@ -54,7 +54,6 @@ class TestJSRegistry(PloneTestCase):
         expected = [
             '++resource++plone.js',
             'jquery.highlightsearchterms.js',
-            'mark_special_links.js',
             'table_sorter.js',
             'plone_javascript_variables.js',
             ]
