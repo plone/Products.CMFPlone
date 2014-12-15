@@ -49,6 +49,14 @@
     permission="cmf.ManagePortal"
     />
 
+  <!-- Mail Control Panel -->
+  <browser:page
+    name="mail-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".mail.MailControlPanel"
+    permission="cmf.ManagePortal"
+    />
+
   <!-- Navigation Control Panel -->
   <browser:page
     name="navigation-controlpanel"
@@ -63,6 +71,23 @@
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".search.SearchControlPanel"
     permission="plone.app.controlpanel.Search"
+    />
+
+  <!-- Security Control Panel -->
+  <browser:page
+    name="security-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".security.SecurityControlPanel"
+    permission="plone.app.controlpanel.Security"
+    />
+
+  <!-- Security Control Panel - EMail Login -->
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="migrate-to-emaillogin"
+    class=".security.EmailLogin"
+    template="emaillogin.pt"
+    permission="cmf.ManagePortal"
     />
 
   <!-- Site Control Panel -->

@@ -882,6 +882,70 @@ class ISearchSchema(Interface):
     )
 
 
+class ISecuritySchema(Interface):
+
+    enable_self_reg = schema.Bool(
+        title=_(u'Enable self-registration'),
+        description=_(
+            u"Allows users to register themselves on the site. If "
+            u"not selected, only site managers can add new users."),
+        default=False,
+        required=False)
+
+    enable_user_pwd_choice = schema.Bool(
+        title=_(u'Let users select their own passwords'),
+        description=_(
+            u"If not selected, a URL will be generated and "
+            u"e-mailed. Users are instructed to follow the link to "
+            u"reach a page where they can change their password and "
+            u"complete the registration process; this also verifies "
+            u"that they have entered a valid email address."),
+        default=False,
+        required=False)
+
+    enable_user_folders = schema.Bool(
+        title=_(u'Enable User Folders'),
+        description=_(
+            u"If selected, home folders where users can create "
+            u"content will be created when they log in."),
+        default=False,
+        required=False)
+
+    allow_anon_views_about = schema.Bool(
+        title=_(u"Allow anyone to view 'about' information"),
+        description=_(
+            u"If not selected only logged-in users will be able to "
+            u"view information about who created an item and when it "
+            u"was modified."),
+        default=False,
+        required=False)
+
+    use_email_as_login = schema.Bool(
+        title=_(u'Use email address as login name'),
+        description=_(
+            u"Allows users to login with their email address instead "
+            u"of specifying a separate login name. This also updates "
+            u"the login name of existing users, which may take a "
+            u"while on large sites. The login name is saved as "
+            u"lower case, but to be userfriendly it does not matter "
+            u"which case you use to login. When duplicates are found, "
+            u"saving this form will fail. You can use the "
+            u"@@migrate-to-emaillogin page to show the duplicates."),
+        default=False,
+        required=False)
+
+    use_uuid_as_userid = schema.Bool(
+        title=_(u'Use UUID user ids'),
+        description=_(
+            u"Use automatically generated UUIDs as user id for new users. "
+            u"When not turned on, the default is to use the same as the "
+            u"login name, or when using the email address as login name we "
+            u"generate a user id based on the fullname."),
+        default=False,
+        required=False)
+
+
+# XXX: Why does ISiteSchema inherit from ILockSettings here ???
 class ISiteSchema(ILockSettings):
 
     site_title = schema.TextLine(
@@ -960,6 +1024,76 @@ class IDateAndTimeSchema(Interface):
 class ITypesSchema(Interface):
     """
     """
+
+
+class IMailSchema(Interface):
+
+    smtp_host = schema.TextLine(
+        title=_(
+            u'label_smtp_server',
+            default=u'SMTP server'),
+        description=_(
+            u"help_smtp_server",
+            default=u"The address of your local "
+                    u"SMTP (outgoing e-mail) server. Usually "
+                    u"'localhost', unless you use an "
+                    u"external server to send e-mail."),
+        default=u'localhost',
+        required=True)
+
+    smtp_port = schema.Int(
+        title=_(u'label_smtp_port',
+                default=u'SMTP port'),
+        description=_(u"help_smtp_port",
+                      default=u"The port of your local SMTP "
+                              u"(outgoing e-mail) server. Usually '25'."),
+        default=25,
+        required=True)
+
+    smtp_userid = schema.TextLine(
+        title=_(
+            u'label_smtp_userid',
+            default=u'ESMTP username'),
+        description=_(
+            u"help_smtp_userid",
+            default=u"Username for authentication "
+                    u"to your e-mail server. Not required "
+                    u"unless you are using ESMTP."),
+        default=None,
+        required=False)
+
+    smtp_pass = schema.Password(
+        title=_(
+            u'label_smtp_pass',
+            default=u'ESMTP password'),
+        description=_(
+            u"help_smtp_pass",
+            default=u"The password for the ESMTP "
+                    u"user account."),
+        default=None,
+        required=False)
+
+    email_from_name = schema.TextLine(
+        title=_(u"Site 'From' name"),
+        description=_(
+            u"Plone generates e-mail using "
+            u"this name as the e-mail "
+            u"sender."),
+        default=None,
+        required=True)
+
+    email_from_address = schema.ASCII(
+        title=_(u"Site 'From' address"),
+        description=_(
+            u"Plone generates e-mail using "
+            u"this address as the e-mail "
+            u"return address. It is also "
+            u"used as the destination "
+            u"address for the site-wide "
+            u"contact form and the 'Send test "
+            u"e-mail' feature."),
+        default=None,
+        required=True)
 
 
 class IMarkupSchema(Interface):

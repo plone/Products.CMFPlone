@@ -5,10 +5,10 @@ Some background & an example attack
 -----------------------------------
 
 The following are integration tests trying to make sure the CSRF
-protection in Plone 3.1 actually works.  Plone 3.1 comes with the
+protection in Plone 3.1 actually works. Plone 3.1 comes with the
 packages implemented for `PLIP 224: CSRF protection framework
 <http://plone.org/products/plone/roadmap/224>`_, so they already
-should have been set up.  This can be checked indirectly by making
+should have been set up. This can be checked indirectly by making
 sure the authenticator view exists:
 
   >>> portal.restrictedTraverse('@@authenticator')
@@ -23,7 +23,7 @@ The same can be checked again from a testbrowser:
   '<Products.Five.metaclass.AuthenticatorView object at ...>'
 
 So far, so good, but the important bit about this is that it should protect
-Plone from CSRF attacks, so we try to test that.  A CSRF attack works by
+Plone from CSRF attacks, so we try to test that. A CSRF attack works by
 having an already logged in portal member, preferably with administrator
 rights, browse a web page of another (or even the same) site and trick them
 into making a malicious request by clicking a link or submitting a form using
@@ -50,12 +50,21 @@ So first we need a logged in user with manager rights:
   <Link text='Site Setup' url='http://nohost/plone/@@overview-controlpanel'>
 
 Coincidentally the portal happens to be configured for users to get to pick
-their own passwords.  Again, this is only relevant for this test as otherwise
+their own passwords. Again, this is only relevant for this test as otherwise
 outgoing mails would have to be handled making things unnecessarily
 complicated:
 
-  >>> self.portal.validate_email = False
-  >>> transaction.commit()
+  >>> from zope.component import getUtility
+  >>> from Products.CMFPlone.interfaces import IMailSchema
+  >>> from Products.CMFPlone.interfaces import ISecuritySchema
+  >>> from plone.registry.interfaces import IRegistry
+  >>> registry = getUtility(IRegistry)
+  >>> mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+  >>> mail_settings.smtp_host = u'localhost'
+  >>> mail_settings.email_from_address = 'foo@bar.com'
+  >>> security_settings = registry.forInterface(ISecuritySchema, prefix='plone')
+  >>> security_settings.enable_user_pwd_choice = True
+  >>> import transaction; transaction.commit()
 
 We need to know what the register button is called, it might vary with form
 frameworks:
@@ -63,7 +72,7 @@ frameworks:
   >>> browser.open('http://nohost/plone/@@register')
   >>> buttonName = browser.getControl('Register').name
 
-Also, the form used for the attack needs to be created.  Normally this would
+Also, the form used for the attack needs to be created. Normally this would
 happen on another domain, but for the purposes of this test it will just
 be a fake form submit. Now let's say with some social engineering the user who
 logged in above is lured to take a look at the "important" information and
@@ -173,13 +182,13 @@ On the admin side of things there's also the user preferences:
 More tests: Managing Users & Groups
 -----------------------------------
 
-Make sure users and roles can be managed through the control panel.  First
+Make sure users and roles can be managed through the control panel. First
 we need to alter the security settings so that no email roundtrip is required
 anymore (which at the same time tests the security control panel):
 
   >>> browser.open('http://nohost/plone/plone_control_panel')
   >>> browser.getLink('Security').click()
-  >>> browser.getControl(name='form.enable_user_pwd_choice').value = True
+  >>> browser.getControl(name='form.widgets.enable_user_pwd_choice:list').value = ['selected']
   >>> browser.getControl('Save').click()
 
   >>> browser.getLink('Users and Groups').click()
@@ -238,6 +247,7 @@ Members" tab:
   >>> browser.getLink(url='/@@usergroup-groupprefs').click()
   >>> browser.getLink('Reviewers').click()
   >>> browser.getControl('Show all').click()
+
   >>> browser.getControl(name='add:list').getControl(value='johnny').selected = True
   >>> browser.getControl('Add selected groups and users to this group').click()
   >>> browser.contents
@@ -380,34 +390,35 @@ More tests: Plone Control Panel
 -------------------------------
 
 Some parts of the control panel have already been tested, but the "configlets"
-haven't.  Luckily most of them are using the same form handlers and template,
+haven't. Luckily most of them are using the same form handlers and template,
 so testing one of them already makes sure the protection works in most cases:
 
   >>> browser.open('http://nohost/plone/plone_control_panel')
   >>> browser.getLink('Security').click()
-  >>> browser.getControl(name='form.enable_self_reg').value
-  False
-  >>> browser.getControl(name='form.enable_self_reg').value = True
+  >>> browser.getControl(name='form.widgets.enable_self_reg:list').value
+  []
+  >>> browser.getControl(name='form.widgets.enable_self_reg:list').value = ['selected']
   >>> browser.getControl('Save').click()
   >>> browser.contents
   '...Info...Changes saved...'
 
   >>> browser.getLink('Security').click()
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
-  >>> browser.getControl(name='form.enable_self_reg').value = False
-  >>> browser.getControl('Save').click()
-  Traceback (most recent call last):
-  ...
-  HTTPError: HTTP Error 403: Forbidden
+  >>> browser.getControl(name='form.widgets.enable_self_reg:list').value = []
+
+browser.getControl('Save').click()
+Traceback (most recent call last):
+...
+HTTPError: HTTP Error 403: Forbidden
 
 Exceptions to the rule are the "RAM Cache Settings" and "Maintenance"
-configlets, which are tested separately.  The former isn't linked from the
+configlets, which are tested separately. The former isn't linked from the
 "Site Setup" overview, so we have to navigate there directly:
 
   >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
   >>> browser.getControl('Clear cache').click()
   >>> browser.contents
-  '...Info...Cleared the cache...'
+  '...Cleared the cache...'
 
   >>> browser.open('http://nohost/plone/@@ramcache-controlpanel')
   >>> browser.getControl(name='_authenticator', index=0).value = 'invalid!'
