@@ -4,7 +4,8 @@ Changelog
 2.5.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add pat-markspeciallinks to bodyClass depending on settings in @@theming-controlpanel.
+  [fulv]
 
 
 2.5.3 (2014-11-01)
