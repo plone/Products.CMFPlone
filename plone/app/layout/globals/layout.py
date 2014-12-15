@@ -126,6 +126,7 @@ class LayoutPolicy(BrowserView):
         - section structure
             - a class for every container in the tree
         - hide icons: icons-on
+        - markspeciallinks: pat-markspeciallinks
         """
         context = self.context
         portal_state = getMultiAdapter(
@@ -206,4 +207,14 @@ class LayoutPolicy(BrowserView):
                     body_class += ' plone-toolbar-compressed'
             else:
                 body_class += ' plone-toolbar-left-default'
+
+        # class for markspeciallinks pattern
+        properties = getToolByName(context, "portal_properties")
+        props = getattr(properties, 'site_properties')
+
+        msl = props.getProperty('mark_special_links', 'false')
+        elonw = props.getProperty('external_links_open_new_window', 'false')
+        if msl == 'true' or elonw == 'true':
+            body_class += ' pat-markspeciallinks'
+
         return body_class
