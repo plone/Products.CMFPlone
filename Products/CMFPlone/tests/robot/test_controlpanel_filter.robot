@@ -23,7 +23,7 @@ Test Teardown  Run keywords  Report test status  Close all browsers
 
 *** Test Cases ***************************************************************
 
-Scenario: Enable self registration in the Security Control Panel
+Scenario: Configure Filter Control Panel to filter out nasty tags
   Given a logged-in site administrator
     and the filter control panel
    When I add 'h1' to the nasty tags list
@@ -43,6 +43,7 @@ the filter control panel
 Input RichText
   [Arguments]  ${input}
   Wait until keyword succeeds  5s  1s  Execute Javascript  tinyMCE.activeEditor.setContent('${input}');
+
 
 # --- WHEN -------------------------------------------------------------------
 
