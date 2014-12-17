@@ -934,8 +934,6 @@
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources" purge="false">
       <element>plone_javascript_variables</element>
-      <element>unlockOnFormUnload</element>
-      <element>table_sorter</element>
       <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>
