@@ -624,6 +624,10 @@
       <value key="js">++resource++mockupjs/i18n.js</value>
   </records>
 
+  <records prefix="plone.resources/translate"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockupjs/i18n-wrapper</value>
+  </records>
 
  <!-- Patterns -->
 
