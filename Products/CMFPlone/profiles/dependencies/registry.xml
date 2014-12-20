@@ -624,6 +624,10 @@
       <value key="js">++resource++mockupjs/i18n.js</value>
   </records>
 
+  <records prefix="plone.resources/translate"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockupjs/i18n-wrapper.js</value>
+  </records>
 
  <!-- Patterns -->
 
@@ -835,14 +839,6 @@
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">jquery.highlightsearchterms.js</value>
   </records>
-  <records prefix="plone.resources/table_sorter"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">table_sorter.js</value>
-  </records>
-  <records prefix="plone.resources/unlockOnFormUnload"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">unlockOnFormUnload.js</value>
-  </records>
 
   <!-- disabled -->
   <records prefix="plone.resources/mark_special_links"
@@ -934,8 +930,6 @@
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources" purge="false">
       <element>plone_javascript_variables</element>
-      <element>unlockOnFormUnload</element>
-      <element>table_sorter</element>
       <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>
