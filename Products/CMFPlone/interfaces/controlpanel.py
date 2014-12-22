@@ -97,6 +97,48 @@ class IEditingSchema(Interface):
         required=False)
 
 
+class ILanguageSchema(Interface):
+
+    default_language = schema.Choice(
+        title=_(u"heading_site_language",
+                default=u"Site language"),
+        description=_(
+            u"description_site_language",
+            default=u"The language used for the content and the UI "
+                    u"of this site."),
+        default='en',
+        required=True,
+        vocabulary="plone.app.vocabularies.AvailableContentLanguages"
+    )
+
+    available_languages = schema.List(
+        title=_(u"heading_available_languages",
+                default=u"Available languages"),
+        description=_(u"description_available_languages",
+                      default=u"The languages in which the site should be "
+                              u"translatable."),
+        required=True,
+        default=['en'],
+        value_type=schema.Choice(
+            vocabulary="plone.app.vocabularies.AvailableContentLanguages"
+        )
+    )
+
+    use_combined_language_codes = schema.Bool(
+        title=_(
+            u'label_allow_combined_language_codes',
+            default=u"Show country-specific language variants"
+        ),
+        description=_(
+            u"help_allow_combined_language_codes",
+            default=u"Examples: pt-br (Brazilian Portuguese), "
+                    u"en-us (American English) etc."
+        ),
+        default=False,
+        required=False
+    )
+
+
 class ITinyMCEPatternSchema(Interface):
 
     relatedItems = schema.Text(
