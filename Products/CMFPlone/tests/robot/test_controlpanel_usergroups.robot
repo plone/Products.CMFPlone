@@ -1,3 +1,13 @@
+# ============================================================================
+# Tests for the Plone Usergroups Control Panel
+# ============================================================================
+#
+# $ bin/robot-server --reload-path src/Products.CMFPlone/Products/CMFPlone/ Products.CMFPlone.testing.PRODUCTS_CMFPLONE_ROBOT_TESTING
+#
+# $ bin/robot src/Products.CMFPlone/Products/CMFPlone/tests/robot/test_controlpanel_usergroups.robot
+#
+# ============================================================================
+
 *** Settings *****************************************************************
 
 Resource  plone/app/robotframework/keywords.robot
@@ -10,9 +20,6 @@ Resource  keywords.robot
 Test Setup  Open SauceLabs test browser
 Test Teardown  Run keywords  Report test status  Close all browsers
 
-*** Variables ***
-
-${new_group}  this-is-my-new_group
 
 *** Test Cases ***************************************************************
 
@@ -69,10 +76,14 @@ I click show all groups
 
 I create new group
   Click button  Add New Group
-  Input Text  name=addname  ${new_group}
-  Click button  Save
+  Input Text  name=addname  my-new-group
+  Input Text  name=title:string  My New Group
+  Input Text  name=description:text  This is my new group
+  Input Text  name=email:string  my-group@plone.org
+  Submit Form  id=createGroup
+#  "Click button  Save" does not work for modals. See https://stackoverflow.com/questions/17602334/element-is-not-currently-visible-and-so-may-not-be-interacted-with-but-another for details.
   I click show all groups
-  Page should contain  this-is-my-new_group
+  Page should contain  my-new-group
 
 I go to Settings control panel
   Click link  Settings
@@ -85,14 +96,14 @@ enable many groups and many users settings
 # --- THEN -------------------------------------------------------------------
 
 all users should be shown
-  Page should contain  (test_user_1_)
-  Page should contain  (admin)
+  Page should contain  test-user
+  Page should contain  admin
 
 all groups should be shown
-  Page should contain  Administrators (Administrators)
+  Page should contain  Administrators
   Page should contain  Authenticated Users (Virtual Group) (AuthenticatedUsers)
-  Page should contain  Reviewers (Reviewers)
-  Page should contain  Site Administrators (Site Administrators)
+  Page should contain  Reviewers
+  Page should contain  Site Administrators
 
 showing all users is disabled
   Click link  Users
@@ -103,4 +114,4 @@ showing all groups is disabled
   Page should not contain  Show all
 
 new group should show under all groups
-  Page should contain  ${new_group}
+  Page should contain  my-new-group

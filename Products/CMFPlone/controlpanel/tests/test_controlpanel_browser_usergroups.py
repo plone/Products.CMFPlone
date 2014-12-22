@@ -182,7 +182,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_user_add_new_link(self):
         self.browser.open(self.usergroups_url)
-        self.browser.getControl('Add New User').click()
+        self.browser.getLink(id='add-user').click()
         self.assertEqual(
             self.browser.url,
             "%s/@@new-user" % self.portal_url
