@@ -15,7 +15,7 @@ from Products.CMFPlone.utils import normalizeString
 from Products.CMFPlone.controlpanel.browser.usergroups import \
     UsersGroupsControlPanelView
 
-logger = logging.getLogger('plone.app.controlpanel')
+logger = logging.getLogger('Products.CMFPlone')
 
 
 class UsersOverviewControlPanel(UsersGroupsControlPanelView):
