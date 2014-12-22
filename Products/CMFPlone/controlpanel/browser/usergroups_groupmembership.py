@@ -48,9 +48,16 @@ class GroupMembershipControlPanel(UsersGroupsControlPanelView):
                 self.context.plone_utils.addPortalMessage(_(u'Changes made.'))
 
             search = form.get('form.button.Search', None) is not None
-            findAll = form.get('form.button.FindAll', None) is not None and not self.many_users
-            self.searchString = not findAll and form.get('searchstring', '') or ''
-            if findAll or self.searchString != '':
+            edit = form.get('form.button.Edit', None) is not None and toDelete
+            add = form.get('form.button.Add', None) is not None and toAdd
+            findAll = form.get('form.button.FindAll', None) is not None and \
+                not self.many_users
+            # The search string should be cleared when one of the
+            # non-search buttons has been clicked.
+            if findAll or edit or add:
+                form['searchstring'] = ''
+            self.searchString = form.get('searchstring', '')
+            if findAll or bool(self.searchString):
                 self.searchResults = self.getPotentialMembers(self.searchString)
 
             if search or findAll:

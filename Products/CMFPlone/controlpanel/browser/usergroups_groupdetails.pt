@@ -49,7 +49,7 @@
         </div>
 
         <!-- When no group is specified, this gets used as the add group page page -->
-        <div id="content" tal:condition="not:view/group">
+        <article id="content" tal:condition="not:view/group">
             <metal:block metal:use-macro="template/macros/props">
                 <metal:title metal:fill-slot="content-title">
                     <h1 class="documentFirstHeading"
@@ -74,9 +74,9 @@
                     </div>
                 </metal:name>
             </metal:block>
-        </div>
+        </article>
 
-        <div id="content" tal:condition="view/group | nothing">
+        <article id="content" tal:condition="view/group | nothing">
             <metal:block define-macro="props">
 
                 <h1 class="documentFirstHeading"
@@ -243,7 +243,7 @@
                     </form>
                 </div>
             </metal:block>
-        </div>
+        </article>
 
 
     </div>

@@ -58,16 +58,16 @@
           Portal status message
         </div>
 
-        <div id="content" tal:define="many_groups view/many_groups">
+        <article id="content" tal:define="many_groups view/many_groups">
 
             <h1 class="documentFirstHeading"
                 i18n:translate="heading_group_memberships_for_fullname">
               Group memberships for
               <span i18n:name="fullname"
                     tal:replace="python:member.getProperty('fullname')" />
-              (<span tal:content="userid"
+              (<span tal:content="python:member.getUser().getUserName()"
                     tal:omit-tag=""
-                    i18n:name="userid">user id</span>)
+                    i18n:name="userid">login name</span>)
             </h1>
 
             <div id="content-core">
@@ -216,7 +216,7 @@
 
                 </form>
             </div>
-        </div>
+        </article>
     </div>
 
 </metal:main>

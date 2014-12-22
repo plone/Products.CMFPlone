@@ -53,14 +53,13 @@
             Portal status message
         </div>
 
-        <div id="content">
+        <article id="content">
             <a href=""
                id="setup-link"
                tal:attributes="href string:$portal_url/plone_control_panel"
                i18n:translate="">
-                Site Setup
+              Site Setup
             </a>
-
             <h1 class="documentFirstHeading"
                 i18n:translate="heading_groups_overview">Groups Overview</h1>
 
@@ -78,8 +77,8 @@
                   <span tal:omit-tag=""
                         i18n:translate="description_groups_management2">
                     The symbol
-                    <img src="" i18n:name="image_link_icon"
-                         tal:attributes="src string:${context/absolute_url}/site_icon.png" />
+                    <img i18n:name="image_link_icon"
+                         tal:replace="structure context/site_icon.png" />
                     indicates a role inherited from membership in another group.
                   </span>
                 </p>
@@ -92,18 +91,10 @@
                     doing a specific search.
                 </p>
 
-                <form action=""
-                      name="groups_add"
-                      method="post"
-                      tal:attributes="action string:$portal_url/@@usergroup-groupdetails">
-
-                    <input class="standalone add"
-                           type="submit"
-                           name="form.button.AddGroup"
-                           value="Add New Group"
-                           i18n:attributes="value label_add_new_group;"
-                           />
-                </form>
+                <a class="pat-modal" id="add-group"
+                   tal:attributes="href string:${portal_url}/@@usergroup-groupdetails">
+                   <button i18n:translate="label_add_new_group">Add New Group</button>
+                </a>
 
                 <form action=""
                       name="groups_search"
@@ -199,7 +190,7 @@
                                        tal:attributes="href python:portal_url+'/@@usergroup-groupmembership?'+view.makeQuery(groupname=group_info['groupid']);
                                                        title group_info/description|string:''">
                                        <tal:block replace="structure context/portal_url/group.png" />&nbsp;
-                                       <tal:group tal:replace="group_info/title" /> (<tal:id tal:replace="group_info/groupid" />)
+                                       <tal:group tal:replace="group_info/title" /> <tal:groupid tal:condition="python:group_info['groupid'] != group_info['title']">(<tal:id tal:replace="group_info/groupid" />)</tal:groupid>
                                    </a>
                                 </td>
 
@@ -224,9 +215,7 @@
                                            tal:condition="python:explicit and not enabled and not inherited"
                                            tal:attributes="name string:group_${group_info/groupid}:list;
                                                            value portal_role" />
-                                    <img tal:condition="inherited" src=""
-                                         tal:attributes="src string:${context/absolute_url}/site_icon.png"
-                                         />
+                                    <img tal:condition="inherited" tal:replace="structure context/site_icon.png" />
                                   </tal:block>
                                 </td>
 
@@ -283,7 +272,7 @@
 
                 </form>
             </div>
-        </div>
+        </article>
     </div>
 
 </metal:main>

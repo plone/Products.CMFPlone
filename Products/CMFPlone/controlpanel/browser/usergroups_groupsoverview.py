@@ -55,7 +55,9 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
             group_info['title'] = group.getProperty('title', group_info['title'])
             allAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
-                allAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
+                # getRolesForPrincipal can return None
+                roles = rolemaker.getRolesForPrincipal(group) or ()
+                allAssignedRoles.extend(roles)
             allInheritedRoles[groupId] = allAssignedRoles
 
         # Now, search for all roles explicitly assigned to each group.
@@ -75,7 +77,9 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
 
             explicitlyAssignedRoles = []
             for rolemaker_id, rolemaker in rolemakers:
-                explicitlyAssignedRoles.extend(rolemaker.getRolesForPrincipal(group))
+                # getRolesForPrincipal can return None
+                roles = rolemaker.getRolesForPrincipal(group) or ()
+                explicitlyAssignedRoles.extend(roles)
 
             roleList = {}
             for role in self.portal_roles:
@@ -84,10 +88,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
                     canAssign = False
                 roleList[role]={'canAssign': canAssign,
                                 'explicit': role in explicitlyAssignedRoles,
-                                'inherited': role in allInheritedRoles[groupId] }
+                                'inherited': role in allInheritedRoles.get(groupId, [])}
 
             canDelete = group.canDelete()
-            if roleList['Manager']['explicit'] or roleList['Manager']['inherited']:
+            if ('Manager' in explicitlyAssignedRoles or
+                'Manager' in allInheritedRoles.get(groupId, [])):
                 if not self.is_zope_manager:
                     canDelete = False
 
@@ -101,7 +106,11 @@ class GroupsOverviewControlPanel(UsersGroupsControlPanelView):
         self.request.set('__ignore_group_roles__', False)
         return sortedResults
 
-    def manageGroup(self, groups=[], delete=[]):
+    def manageGroup(self, groups=None, delete=None):
+        if groups is None:
+            groups = []
+        if delete is None:
+            delete = []
         CheckAuthenticator(self.request)
         context = aq_inner(self.context)
 
