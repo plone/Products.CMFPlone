@@ -149,7 +149,7 @@ Overview Control Panel
   >>> tz_settings = registry.forInterface(IDateAndTimeSchema, prefix='plone')
   >>> tz_settings.portal_timezone = 'UTC'
 
-  
+
 Markup Control Panel
 ------------------------
 
@@ -158,3 +158,13 @@ Markup Control Panel
 
   >>> markup_settings.default_type = 'text/html'
   >>> markup_settings.allowed_types = ('text/html', 'text/x-web-textile')
+
+
+User and Groups Control Panel
+------------------
+
+  >>> from Products.CMFPlone.interfaces import IUserGroupsSettingsSchema
+  >>> usergroups_settings = registry.forInterface(IUserGroupsSettingsSchema, prefix='plone')
+
+  >>> usergroups_settings.many_groups = False
+  >>> usergroups_settings.many_users = False

@@ -123,4 +123,97 @@
     permission="plone.app.controlpanel.Markup"
     />
 
+  <!-- Syndication Control Panel -->
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="syndication-controlpanel"
+    class=".syndication.SyndicationControlPanel"
+    permission="cmf.ManagePortal"
+    />
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="syndication-settings"
+    class=".syndication.SyndicationControlPanel"
+    permission="cmf.ManagePortal"
+    />
+
+  <!-- Usergroup Control Panel -->
+  <browser:page
+    name="usergroup-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".usergroups.UserGroupsSettingsPanelView"
+    permission="plone.app.controlpanel.UsersAndGroups"
+    />
+
+  <browser:page
+    name="usergroup-userprefs"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".usergroups_usersoverview.UsersOverviewControlPanel"
+    permission="plone.app.controlpanel.UsersAndGroups"
+    template="usergroups_usersoverview.pt"
+    />
+
+  <browser:page
+      name="usergroup-groupprefs"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_groupsoverview.GroupsOverviewControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupsoverview.pt"
+      />
+
+  <browser:page
+      name="usergroup-groupmembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_groupmembership.GroupMembershipControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupmembership.pt"
+      />
+
+  <browser:page
+      name="usergroup-usermembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_usermembership.UserMembershipControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_usermembership.pt"
+      />
+
+  <browser:page
+      name="usergroup-groupdetails"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_groupdetails.GroupDetailsControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupdetails.pt"
+      />
+
+  <!-- Quick Installer -->
+
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="prefs_install_products_form"
+    class=".quickinstaller.ManageProductsView"
+    permission="cmf.ManagePortal"
+    template="quickinstaller.pt"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="upgrade_products"
+    class=".quickinstaller.UpgradeProductsView"
+    permission="cmf.ManagePortal"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="install_products"
+    class=".quickinstaller.InstallProductsView"
+    permission="cmf.ManagePortal"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="uninstall_products"
+    class=".quickinstaller.UninstallProductsView"
+    permission="cmf.ManagePortal"
+    />
+
 </configure>

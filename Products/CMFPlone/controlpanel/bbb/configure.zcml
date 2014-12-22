@@ -11,5 +11,6 @@
   <adapter factory=".security.SecurityControlPanelAdapter" />
   <adapter factory=".site.SiteControlPanelAdapter" />
   <adapter factory=".markup.MarkupControlPanelAdapter" />
+  <adapter factory=".usergroups.UserGroupsSettingsControlPanelAdapter" />
 
 </configure>

@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Rename syndication-settings to syndication-controlpanel. Keep the old view registration for backwards compatibility.
+  [timo]
+
 - Added a link for the advanced 'Create a Plone site' screen to the Plone overview.
   [jaroel]
 
@@ -32,6 +35,11 @@ Changelog
 - Move the controlpanel overview from plone.app.controlpanel into this package
   https://github.com/plone/Products.CMFPlone/issues/290
   [khink]
+
+- PLIP 10359: Migrate usergroups controlpanel to ``z3c.form`` and move it from
+  plone.app.controlpanel to Products.CMFPlone. Fix and extend tests and add
+  robot tests.
+  [ferewuz]
 
 
 5.0a3 (2014-11-01)

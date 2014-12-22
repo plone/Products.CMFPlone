@@ -150,7 +150,7 @@
  <configlet title="Syndication" action_id="syndication" appId="Plone"
     category="Plone" condition_expr=""
     icon_expr="string:$portal_url/rss.png"
-    url_expr="string:${portal_url}/@@syndication-settings" visible="True"
+    url_expr="string:${portal_url}/@@syndication-controlpanel" visible="True"
     i18n:attributes="title">
   <permission>Plone Site Setup: Site</permission>
  </configlet>

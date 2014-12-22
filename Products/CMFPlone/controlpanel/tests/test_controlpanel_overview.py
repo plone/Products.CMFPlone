@@ -32,7 +32,7 @@ class TestControlPanel(unittest.TestCase):
         self.request = self.layer['request']
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
-    @mock.patch('plone.app.controlpanel.overview.getUtility',
+    @mock.patch('Products.CMFPlone.controlpanel.browser.overview.getUtility',
                 new=mock_getUtility1)
     def test_timezone_warning__noreg(self):
         # If no registry key is available, return True
@@ -43,7 +43,7 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse('@@overview-controlpanel')
         self.assertTrue(view.timezone_warning())
 
-    @mock.patch('plone.app.controlpanel.overview.getUtility',
+    @mock.patch('Products.CMFPlone.controlpanel.browser.overview.getUtility',
                 new=mock_getUtility2)
     def test_timezone_warning__emptyreg(self):
         # If registry key value is empty, return True
@@ -53,7 +53,7 @@ class TestControlPanel(unittest.TestCase):
         view = self.portal.restrictedTraverse('@@overview-controlpanel')
         self.assertTrue(view.timezone_warning())
 
-    @mock.patch('plone.app.controlpanel.overview.getUtility',
+    @mock.patch('Products.CMFPlone.controlpanel.browser.overview.getUtility',
                 new=mock_getUtility3)
     def test_timezone_warning__set(self):
         # If new plone.portal_timezone is set, return False
