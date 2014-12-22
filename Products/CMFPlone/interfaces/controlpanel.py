@@ -138,6 +138,82 @@ class ILanguageSchema(Interface):
         required=False
     )
 
+    use_content_negotiation = schema.Bool(
+        title=_(u"heading_language_of_the_content",
+                default=u"Use the language of the content item."),
+        description=_(u"description_language_of_the_content",
+                      default=u"Use the language of the content item."),
+        required=False,
+    )
+
+    use_path_negotiation = schema.Bool(
+        title=_(
+            u"heading_language_codes_in_URL",
+            default=u"Use language codes in URL path for manual override."),
+        description=_(
+            u"description_language_codes_in_URL",
+            default=u"Use language codes in URL path for manual override."),
+        required=False,
+    )
+
+    use_cookie_negotiation = schema.Bool(
+        title=_(u"heading_cookie_manual_override",
+                default=(u"Use cookie for manual override. (Required for "
+                         u"the language selector viewlet to be rendered.)")),
+        description=_(
+            u"description_cookie_manual_override",
+            default=(u"Use cookie for manual override. (Required for the "
+                     u"language selector viewlet to be rendered.)")),
+        required=False,
+    )
+
+    authenticated_users_only = schema.Bool(
+        title=_(u"heading_auth_cookie_manual_override",
+                default=u"Authenticated users only."),
+        description=_(
+            u"description_auth_ookie_manual_override",
+            default=(u"Authenticated users only. Use cookie for manual "
+                     u"override. (Required for the language selector viewlet "
+                     u"to be rendered.)")),
+        required=False,
+    )
+
+    set_cookie_everywhere = schema.Bool(
+        title=_(
+            u"heading_set_language_cookie_always",
+            default=(u"Set the language cookie always, i.e. also when the "
+                     u"'set_language' request parameter is absent.")),
+        description=_(
+            u"description_set_language_cookie_always",
+            default=(u"Set the language cookie always, i.e. also when the "
+                     u"'set_language' request parameter is absent.")),
+        required=False,
+        )
+
+    use_subdomain_negotiation = schema.Bool(
+        title=_(u"heading_use_subdomain",
+                default=u"Use subdomain (e.g.: de.plone.org)."),
+        description=_(u"description_use_subdomain",
+                      default=u"Use subdomain (e.g.: de.plone.org)."),
+        required=False,
+        )
+
+    use_cctld_negotiation = schema.Bool(
+        title=_(u"heading_top_level_domain",
+                default=u"Use top-level domain (e.g.: www.plone.de)."),
+        description=_(u"description_top_level_domain",
+                      default=u"Use top-level domain (e.g.: www.plone.de)."),
+        required=False,
+        )
+
+    use_request_negotiation = schema.Bool(
+        title=_(u"heading_browser_language_request_negotiation",
+                default=u"Use browser language request negotiation."),
+        description=_(u"description_browser_language_request_negotiation",
+                      default=u"Use browser language request negotiation."),
+        required=False,
+        )
+
 
 class ITinyMCEPatternSchema(Interface):
 
