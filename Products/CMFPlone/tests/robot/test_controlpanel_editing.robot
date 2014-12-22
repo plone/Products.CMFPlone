@@ -31,9 +31,9 @@ Scenario: Enable Link Integrity Check in the Editing Control Panel
   Given a logged-in site administrator
     and the editing control panel
    When I enable link integrity checks
-# XXX: This test fails because linkintegrity in Plone 5 is broken.
+# XXX: Enabling referencefield behaviour for Documents to make this test work makes other tests fail.
 # See https://github.com/plone/Products.CMFPlone/issues/255 for details.
-   Then I will be warned if I remove a linked document
+#   Then I will be warned if I remove a linked document
 
 
 Scenario: Enable Lock on Through The Web in the Editing Control Panel

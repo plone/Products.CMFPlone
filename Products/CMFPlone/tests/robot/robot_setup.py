@@ -2,7 +2,9 @@
 from plone.app.robotframework.remote import RemoteLibrary
 
 from zope.component.hooks import getSite
-from Products.CMFCore.utils import getToolByName
+from zope.component import queryUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import IMailSchema
 
 
 class CMFPloneRemoteKeywords(RemoteLibrary):
@@ -10,11 +12,14 @@ class CMFPloneRemoteKeywords(RemoteLibrary):
     """
 
     def the_mail_setup_configured(self):
-        portal = getSite()
-        mailhost = getToolByName(portal, 'MailHost')
-        mailhost.smtp_host = 'localhost'
-        portal.email_from_address = 'dummyme@dummy.com'
-        portal.email_from_name = 'me'
+        registry = queryUtility(IRegistry)
+        if registry is None:
+            return
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        if mail_settings is None:
+            return
+        mail_settings.smtp_host = u'localhost'
+        mail_settings.email_from_address = 'john@doe.com'
 
     def the_self_registration_enabled(self):
         portal = getSite()

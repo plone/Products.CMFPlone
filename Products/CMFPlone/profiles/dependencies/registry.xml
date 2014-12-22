@@ -4,9 +4,13 @@
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.IMaintenanceSchema"
            prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.IMailSchema"
+           prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.INavigationSchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISearchSchema"
+           prefix="plone" />
+  <records interface="Products.CMFPlone.interfaces.ISecuritySchema"
            prefix="plone" />
   <records interface="Products.CMFPlone.interfaces.ISiteSchema"
            prefix="plone" />
@@ -622,6 +626,10 @@
       <value key="js">++resource++mockupjs/i18n.js</value>
   </records>
 
+  <records prefix="plone.resources/translate"
+            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      <value key="js">++resource++mockupjs/i18n-wrapper</value>
+  </records>
 
  <!-- Patterns -->
 
@@ -932,8 +940,6 @@
             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="resources" purge="false">
       <element>plone_javascript_variables</element>
-      <element>unlockOnFormUnload</element>
-      <element>table_sorter</element>
       <element>jquery-highlightsearchterms</element>
     </value>
     <value key="depends">plone</value>

@@ -1,4 +1,5 @@
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import pretty_title_or_id
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MailHost.interfaces import IMailHost
@@ -6,6 +7,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 
 from ZODB.POSException import ConflictError
 
+from plone.registry.interfaces import IRegistry
 from plone.z3cform import layout
 
 from zope.component import getMultiAdapter
@@ -65,7 +67,9 @@ class SendToForm(form.Form):
         title = pretty_title_or_id(self, self.context)
         description = self.context.Description()
         comment = data.get('comment', None)
-        envelope_from = site.getProperty('email_from_address', None)
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        envelope_from = mail_settings.email_from_address
 
         try:
             # Sends a link of a page to someone.

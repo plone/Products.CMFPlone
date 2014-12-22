@@ -5,8 +5,10 @@
 
   <adapter factory=".editing.EditingControlPanelAdapter" />
   <adapter factory=".maintenance.MaintenanceControlPanelAdapter" />
+  <adapter factory=".mail.MailControlPanelAdapter" />
   <adapter factory=".navigation.NavigationControlPanelAdapter" />
   <adapter factory=".search.SearchControlPanelAdapter" />
+  <adapter factory=".security.SecurityControlPanelAdapter" />
   <adapter factory=".site.SiteControlPanelAdapter" />
   <adapter factory=".markup.MarkupControlPanelAdapter" />
   <adapter factory=".usergroups.UserGroupsSettingsControlPanelAdapter" />

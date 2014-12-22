@@ -2,6 +2,7 @@ from AccessControl import Unauthorized
 
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import getToolByName
 from Products.CMFPlone.utils import pretty_title_or_id
 from Products.Five.browser import BrowserView
@@ -12,6 +13,8 @@ from Products.statusmessages.interfaces import IStatusMessage
 from ZODB.POSException import ConflictError
 
 from interfaces import IAuthorFeedbackForm
+
+from plone.registry.interfaces import IRegistry
 
 from urllib import quote_plus
 
@@ -68,12 +71,12 @@ class AuthorFeedbackForm(form.Form):
         author = data.get('author', None)
 
         sender = self.portal_state.member()
-        envelope_from = self.portal.getProperty('email_from_address')
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        envelope_from = mail_settings.email_from_address
 
         if author is None:
-            send_to_address = self.portal.getProperty(
-                'email_from_address'
-            )
+            send_to_address = mail_settings.email_from_address
         else:
             author_member = self.membership_tool.getMemberById(author)
             send_to_address = author_member.getProperty('email')
@@ -94,7 +97,7 @@ class AuthorFeedbackForm(form.Form):
         )
 
         mail_host = getUtility(IMailHost)
-        encoding = self.portal.getProperty('email_charset')
+        encoding = mail_settings.email_charset
 
         try:
             message = self.feedback_template(

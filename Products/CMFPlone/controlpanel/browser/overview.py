@@ -1,6 +1,7 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -72,11 +73,10 @@ class OverviewControlPanel(controlpanel.RegistryEditForm):
         return False
 
     def mailhost_warning(self):
-        mailhost = getToolByName(aq_inner(self.context), 'MailHost', None)
-        if mailhost is None:
-            return True
-        mailhost = getattr(aq_base(mailhost), 'smtp_host', None)
-        email = getattr(aq_inner(self.context), 'email_from_address', None)
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix='plone')
+        mailhost = mail_settings.smtp_host
+        email = mail_settings.email_from_address
         if mailhost and email:
             return False
         return True
