@@ -1035,3 +1035,32 @@ class IMarkupSchema(Interface):
             vocabulary="plone.app.vocabularies.AllowableContentTypes"
         )
     )
+
+
+class IUserGroupsSettingsSchema(Interface):
+
+    many_groups = schema.Bool(
+        title=_(u'Many groups?'),
+        description=_(
+            u"Determines if your Plone is optimized "
+            u"for small or large sites. In environments with a "
+            u"lot of groups it can be very slow or impossible "
+            u"to build a list all groups. This option tunes the "
+            u"user interface and behaviour of Plone for this "
+            u"case by allowing you to search for groups instead "
+            u"of listing all of them."),
+        default=False
+    )
+
+    many_users = schema.Bool(
+        title=_(u'Many users?'),
+        description=_(
+            u"Determines if your Plone is optimized "
+            u"for small or large sites. In environments with a "
+            u"lot of users it can be very slow or impossible to "
+            u"build a list all users. This option tunes the user "
+            u"interface and behaviour of Plone for this case by "
+            u"allowing you to search for users instead of "
+            u"listing all of them."),
+        default=False
+    )

@@ -123,4 +123,52 @@
     permission="plone.app.controlpanel.Markup"
     />
 
+  <!-- Usergroup Control Panel -->
+  <browser:page
+    name="usergroup-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".usergroups.UserGroupsSettingsPanelView"
+    permission="plone.app.controlpanel.UsersAndGroups"
+    />
+
+  <browser:page
+    name="usergroup-userprefs"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".usergroups_usersoverview.UsersOverviewControlPanel"
+    permission="plone.app.controlpanel.UsersAndGroups"
+    template="usergroups_usersoverview.pt"
+    />
+
+  <browser:page
+      name="usergroup-groupprefs"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_groupsoverview.GroupsOverviewControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupsoverview.pt"
+      />
+
+  <browser:page
+      name="usergroup-groupmembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_groupmembership.GroupMembershipControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupmembership.pt"
+      />
+
+  <browser:page
+      name="usergroup-usermembership"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_usermembership.UserMembershipControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_usermembership.pt"
+      />
+
+  <browser:page
+      name="usergroup-groupdetails"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".usergroups_groupdetails.GroupDetailsControlPanel"
+      permission="plone.app.controlpanel.UsersAndGroups"
+      template="usergroups_groupdetails.pt"
+      />
+
 </configure>
