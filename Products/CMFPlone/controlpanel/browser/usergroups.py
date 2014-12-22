@@ -4,7 +4,7 @@ from itertools import chain
 from Acquisition import aq_inner
 from Products.CMFPlone.utils import normalizeString
 from zope.component import getAdapter
-from plone.app.controlpanel.security import ISecuritySchema
+from Products.CMFPlone.interfaces import ISecuritySchema
 from zope.component import getMultiAdapter
 from AccessControl import getSecurityManager
 from Products.Five.browser import BrowserView
