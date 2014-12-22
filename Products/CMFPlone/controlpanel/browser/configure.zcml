@@ -125,11 +125,17 @@
 
   <!-- Syndication Control Panel -->
   <browser:page
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      name="syndication-settings"
-      class=".syndication.SyndicationControlPanel"
-      permission="cmf.ManagePortal"
-      />
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="syndication-controlpanel"
+    class=".syndication.SyndicationControlPanel"
+    permission="cmf.ManagePortal"
+    />
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="syndication-settings"
+    class=".syndication.SyndicationControlPanel"
+    permission="cmf.ManagePortal"
+    />
 
   <!-- Usergroup Control Panel -->
   <browser:page
