@@ -1,0 +1,211 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/prefs_main_template/macros/master">
+
+<body>
+
+
+<metal:main metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
+
+    <h1 class="documentFirstHeading"
+        i18n:translate="">Add-ons</h1>
+
+    <div class="documentDescription"
+       i18n:translate="">
+      This is the Add-on configuration section, you can activate and deactivate
+      add-ons in the lists below.
+    </div>
+
+    <div id="content-core"
+         tal:define="products  view/get_addons">
+        <!--<a href=""
+           class="link-parent"
+           tal:attributes="href string:${context/portal_url}/plone_control_panel"
+           i18n:translate="label_up_to_plone_setup">
+          Up to Site Setup
+        </a>-->
+
+        <p class="discreet" i18n:translate="">
+          To make new add-ons show up here, add them to your buildout
+          configuration, run buildout, and restart the server process.
+          For detailed instructions see
+          <span i18n:name="third_party_product">
+          <a i18n:translate="" href="http://plone.org/documentation/tutorial/buildout/installing-a-third-party-product">
+            Installing a third party add-on
+          </a>
+          </span>.
+        </p>
+
+        <section tal:define="products   view/get_upgrades;
+                         num_products  python:len(products)"
+             id="upgrade-products" class="portlet">
+          <header class="portletHeader">Upgrades</header>
+          <section tal:condition="not:products" class="portletContent">
+            <div id="up-to-date-message" class="portalMessage info">
+                 <strong>No upgrades in this corner</strong>
+                 <span>You are up to date. High fives.</span>
+             </div>
+          </section>
+          <section class="portletContent" tal:condition="products">
+            <ul class="configlets">
+              <tal:products  tal:repeat="product products">
+              <li tal:define="pid product/id;">
+                <form action="upgrade_products" method="post" class="pull-right">
+                  <input type="hidden"
+                                     name="prefs_reinstallProducts:list"
+                                     tal:attributes="value pid;" />
+                  <span i18n:translate="label_product_upgrade_action">
+                    <span i18n:name="reinstall_button">
+                    <input class="standalone"
+                                     type="submit"
+                                     value="product"
+                                     name="form.submitted"
+                                     tal:attributes="value string:Upgrade ${pid};"/>
+                    </span>
+                  </span>
+                </form>
+                <h3>
+                  <span tal:replace="product/title">
+                    Add-on Name
+                  </span>
+                </h3>
+                <p class="configletDescription discreet">
+                  <tal:span tal:condition="product/description" tal:content="product/description">add-on description</tal:span>
+                  <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
+                </p>
+                <ul class="configletDetails">
+                  <li tal:define="upgrade_info product/upgrade_info">
+                      <span i18n:translate="">
+                        This addon has been upgraded.
+                      </span>
+                      <span tal:condition="not:upgrade_info/hasProfile"
+                            i18n:translate="label_product_upgrade_old_version">
+                        Old version was <strong i18n:name="version" tal:content="upgrade_info/installedVersion">version</strong>.
+                      </span>
+                      <span tal:condition="upgrade_info/hasProfile">
+                        <tal:span i18n:translate="label_product_upgrade_old_profile_version">
+                          Old profile version was <strong i18n:name="version" tal:content="upgrade_info/installedVersion">version</strong>.
+                        </tal:span>
+                        <tal:span i18n:translate="label_product_upgrade_new_profile_version">
+                          New profile version is <strong i18n:name="version" tal:content="upgrade_info/newVersion">version</strong>.
+                        </tal:span>
+                      </span>
+
+                      <div i18n:translate=""
+                            tal:condition="not:upgrade_info/available">
+                        <strong>Warning</strong>
+                        <span>There is no upgrade procedure defined for this
+                        addon. Please consult the addon documentation
+                        for upgrade information, or contact the addon
+                        author.</span>
+                      </div>
+                  </li>
+                </ul>
+              </li>
+              </tal:products>
+              <li  tal:condition="python:num_products > 1">
+                <form action="upgrade_products" method="post">
+                   <tal:products  tal:repeat="product products">
+                   <input type="hidden" value="product"
+                          name="prefs_reinstallProducts:list"
+                          tal:attributes="value product/id;" />
+                   </tal:products>
+                   <span i18n:translate="label_product_upgrade_all_action">
+                     <div>The question is, do you feel lucky, punk?</div>
+                     <span i18n:name="reinstall_all_button">
+                              <input class="context"
+                                     type="submit"
+                                     value="Upgrade them ALL!"
+                                     name="form.submitted" />
+                     </span>
+                   </span>
+                </form>
+               </li>
+              </ul>
+          </section>
+        </section>
+
+
+        <section tal:define="products   view/get_available;
+                         num_products  python:len(products)"
+             id="install-products" class="portlet">
+          <header class="portletHeader" i18n:translate="">Available add-ons</header>
+          <section class="portletContent">
+            <ul class="configlets">
+              <li tal:repeat="product products">
+              <tal:product define="pid product/id">
+                <form action="install_products" method="post" class="pull-right">
+                   <input type="hidden"
+                           name="install_products:list"
+                           tal:attributes="value string:profile-${product/install_profile/id};" />
+                   <span i18n:translate="label_product_install_action">
+                      <span i18n:name="install_button">
+                         <input class="context"
+                           type="submit"
+                           value="product"
+                           name="form.submitted"
+                           tal:attributes="value string:Install"/>
+                       </span>
+                   </span>
+                </form>
+
+                <h3>
+                  <span tal:replace="product/title">
+                    Add-on Name
+                  </span>
+                </h3>
+                <p class="configletDescription discreet">
+                  <tal:span tal:condition="product/description" tal:content="product/description">add-on description</tal:span>
+                  <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
+                </p>
+              </tal:product>
+              </li>
+            </ul>
+          </section>
+        </section>
+
+
+        <section tal:define="products   view/get_installed;
+                         num_products  python:len(products)"
+             id="activated-products" class="portlet">
+          <header class="portletHeader" i18n:translate="">Activated add-ons</header>
+          <section class="portletContent">
+            <ul class="configlets">
+                <li tal:repeat="product products">
+                <tal:product define="pid product/id">
+                  <form action="uninstall_products" method="post" class="pull-right">
+                    <input type="hidden"
+                          name="uninstall_products:list"
+                          tal:attributes="value pid;" />
+                      <span i18n:translate="label_product_uninstall_action">
+                        <span i18n:name="uninstall_button">
+                           <input class="destructive"
+                             type="submit"
+                             value="product"
+                             name="form.submitted"
+                             tal:attributes="value string:Uninstall;"/>
+                         </span>
+                     </span>
+                  </form>
+                    <h3>
+                      <span tal:replace="product/title">
+                        Add-on Name
+                      </span>
+                    </h3>
+                    <p class="configletDescription discreet">
+                      <tal:span tal:condition="product/description" tal:content="product/description">add-on description</tal:span>
+                      <em class="discreet"> – (<tal:span tal:content="string:${pid}"> plugin.app.name </tal:span>)</em>
+                    </p>
+                </tal:product>
+                </li>
+              </ul>
+          </section>
+        </section>
+</metal:main>
+
+</body>
+</html>
+

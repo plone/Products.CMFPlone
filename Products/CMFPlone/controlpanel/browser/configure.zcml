@@ -171,4 +171,35 @@
       template="usergroups_groupdetails.pt"
       />
 
+  <!-- Quick Installer -->
+
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="prefs_install_products_form"
+    class=".quickinstaller.ManageProductsView"
+    permission="cmf.ManagePortal"
+    template="quickinstaller.pt"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="upgrade_products"
+    class=".quickinstaller.UpgradeProductsView"
+    permission="cmf.ManagePortal"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="install_products"
+    class=".quickinstaller.InstallProductsView"
+    permission="cmf.ManagePortal"
+    />
+
+ <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="uninstall_products"
+    class=".quickinstaller.UninstallProductsView"
+    permission="cmf.ManagePortal"
+    />
+
 </configure>
