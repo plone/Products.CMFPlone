@@ -123,6 +123,14 @@
     permission="plone.app.controlpanel.Markup"
     />
 
+  <!-- Syndication Control Panel -->
+  <browser:page
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      name="syndication-settings"
+      class=".syndication.SyndicationControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
   <!-- Usergroup Control Panel -->
   <browser:page
     name="usergroup-controlpanel"
