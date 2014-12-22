@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Rename syndication-settings to syndication-controlpanel. Keep the old view registration for backwards compatibility.
+  [timo]
+
 - Added a link for the advanced 'Create a Plone site' screen to the Plone overview.
   [jaroel]
 
