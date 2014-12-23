@@ -48,15 +48,15 @@ class ScriptsView(ResourceView):
         """
         result = []
         # We always add jquery resource
+        result.append({
+            'src': '%s/%s' % (
+                self.portal_url,
+                self.registry.records['plone.resources/jquery.js'].value),
+            'conditionalcomment': None,
+            'bundle': 'basic'
+        })
         if self.development:
             # We need to add require.js and config.js
-            result.append({
-                'src': '%s/%s' % (
-                    self.portal_url,
-                    self.registry.records['plone.resources/jquery.js'].value),
-                'conditionalcomment': None,
-                'bundle': 'basic'
-            })
             result.append({
                 'src': '%s/%s' % (
                     self.portal_url,
