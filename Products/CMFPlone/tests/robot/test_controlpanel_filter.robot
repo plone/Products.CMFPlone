@@ -29,11 +29,27 @@ Scenario: Configure Filter Control Panel to filter out nasty tags
    When I add 'h1' to the nasty tags list
    Then the 'h1' tag is filtered out when a document is saved
 
-Scenario: Configure Filter Control Panel to filter out stripped tags
+Scenario: Configure Filter Control Panel to strip out tags
   Given a logged-in site administrator
     and the filter control panel
    When I add 'h1' to the stripped tags list
    Then the 'h1' tag is stripped when a document is saved
+
+# XXX: This test currently fails because TinyMCE filters out the marquee tag
+# and ignores the filter control panel settings.
+Scenario: Configure Filter Control Panel to allow custom tags
+  Given a logged-in site administrator
+    and the filter control panel
+   When I add 'marquee' to the custom tags list
+   Then the 'marquee' tag is preserved when a document is saved
+
+#Scenario: Configure Filter Control Panel to strip out attributes
+
+#Scenario: Configure Filter Control Panel to strip out combinations
+
+#Scenario: Configure Filter Control Panel to allow style attributes
+
+#Scenario: Configure Filter Control Panel to filter out classes
 
 
 *** Keywords *****************************************************************
@@ -65,6 +81,12 @@ I add '${tag}' to the stripped tags list
   Click Button  Save
   Wait until page contains  Changes saved
 
+I add '${tag}' to the custom tags list
+  Click Button  Add Custom tags
+  Input Text  name=form.custom_tags.26.  ${tag}
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 
 # --- THEN -------------------------------------------------------------------
 
@@ -84,3 +106,11 @@ the 'h1' tag is stripped when a document is saved
   Wait until page contains  Changes saved
   Page should contain  heading
   XPath Should Match X Times  //div[@id='content-core']//h1  0  message=h1 should have been stripped out
+
+the 'marquee' tag is preserved when a document is saved
+  ${doc1_uid}=  Create content  id=doc1  title=Document 1  type=Document
+  Go To  ${PLONE_URL}/doc1/edit
+  Input RichText  <marquee>lorem ipsum</marquee>
+  Click Button  Save
+  Wait until page contains  Changes saved
+  XPath Should Match X Times  //div[@id='content-core']//marquee  1  message=the marquee tag should have been preserved
