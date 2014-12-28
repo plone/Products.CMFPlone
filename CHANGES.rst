@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Get icon from layout_view instead of plone_view.
+  [pbauer]
+
 - Rename syndication-settings to syndication-controlpanel. Keep the old view registration for backwards compatibility.
   [timo]
 

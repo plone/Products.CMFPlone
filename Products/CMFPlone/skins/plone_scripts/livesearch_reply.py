@@ -17,7 +17,7 @@ from Products.PythonScripts.standard import html_quote
 ploneUtils = getToolByName(context, 'plone_utils')
 portal_url = getToolByName(context, 'portal_url')()
 pretty_title_or_id = ploneUtils.pretty_title_or_id
-plone_view = context.restrictedTraverse('@@plone')
+layout_view = context.restrictedTraverse('@@plone_layout')
 portal_state = context.restrictedTraverse('@@plone_portal_state')
 
 portalProperties = getToolByName(context, 'portal_properties')
@@ -130,7 +130,7 @@ else:
     write('''<div class="LSIEFix">''')
     write('''<ul class="LSTable">''')
     for result in results[:limit]:
-        icon = plone_view.getIcon(result)
+        icon = layout_view.getIcon(result)
         itemUrl = result.getURL()
         if result.portal_type in useViewAction:
             itemUrl += '/view'
