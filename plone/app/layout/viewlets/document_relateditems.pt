@@ -4,36 +4,34 @@
      tal:condition="related">
     <div class="visualClear" id="clear-space-before-relatedItemBox"><!-- --></div>
     <div id="relatedItemBox"
-              tal:define="ploneview nocall:context/@@plone;
-                          normalizeString nocall:ploneview/normalizeString;
-                          tools nocall:context/@@plone_tools;
-                          wf_tool tools/workflow;
-                          getInfoFor python:wf_tool.getInfoFor;
+              tal:define="plone_view nocall:context/@@plone;
+                          plone_layout nocall:context/@@plone_layout;
+                          normalizeString nocall:plone_view/normalizeString;
+                          context_state nocall:context/@@plone_context_state;
                           site_properties context/portal_properties/site_properties;
                           use_view_action site_properties/typesUseViewActionInListings|python:();">
         <header i18n:translate="label_related_items">Related content</header>
         <ul>
-        <li repeat="item related"
-            tal:define="
-                    desc                item/Description;
-                    item_icon           python:ploneview.getIcon(item);
-                    item_type           item/portal_type;
-                    item_type_class     python:'contenttype-' + normalizeString(item_type);
-                    item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
-                    item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
-                    item_url            item/getURL|item/absolute_url;
-                    item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url">
-                <span tal:attributes="class item_type_class">
-                    <img tal:replace="structure item_icon/html_tag" />
-                    <a href="" class=""
-                       tal:attributes="href  item_url;
-                                       title desc;
-                                       class string:$item_wf_state_class"
-                       tal:content="item/pretty_title_or_id">
-                        Related Item
-                    </a>
-                </span>
-        </li>
+          <li tal:repeat="item related">
+            <span tal:define="desc                item/Description;
+                              item_icon           python:plone_layout.getIcon(item);
+                              item_type           item/portal_type;
+                              item_type_class     python:'contenttype-' + normalizeString(item_type);
+                              item_wf_state       item/review_state|python: context_state.workflow_state();
+                              item_wf_state_class python: 'state-' + normalizeString(item_wf_state);
+                              item_url            item/getURL|item/absolute_url;
+                              item_url            python:(item_type in use_view_action) and item_url+'/view' or item_url"
+                  tal:attributes="class item_type_class">
+              <img tal:replace="structure item_icon/html_tag" />
+              <a href="" class=""
+                 tal:attributes="href  item_url;
+                                 title desc;
+                                 class string:$item_wf_state_class"
+                 tal:content="item/pretty_title_or_id">
+                  Related Item
+              </a>
+            </span>
+          </li>
         </ul>
     </div>
 </div>
