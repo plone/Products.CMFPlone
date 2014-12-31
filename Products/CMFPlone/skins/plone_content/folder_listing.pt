@@ -41,7 +41,7 @@
                         show_about python:not isAnon or site_properties.allowAnonymousViewAbout;
                         navigation_root_url context/@@plone_portal_state/navigation_root_url;
                         pas_member context/@@pas_member;
-                        plone_view context/@@plone;">
+                        layout_view context/@@plone_layout;">
     <tal:listing condition="batch">
 
         <div metal:define-slot="entries">
@@ -54,7 +54,7 @@
                                    item_type_title item/Type;
                                    item_modified item/ModificationDate;
                                    item_created item/CreationDate;
-                                   item_icon python:plone_view.getIcon(item);
+                                   item_icon python:layout_view.getIcon(item);
                                    item_type_class python:'contenttype-' + normalizeString(item_type);
                                    item_wf_state item/review_state|python: context.portal_workflow.getInfoFor(item, 'review_state', '');
                                    item_wf_state_class python:'state-' + normalizeString(item_wf_state);

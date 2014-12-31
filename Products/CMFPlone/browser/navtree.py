@@ -170,7 +170,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
                 (portalType is None or portalType not in self.parentTypesNQ):
             showChildren = True
 
-        ploneview = getMultiAdapter((context, request), name=u'plone')
+        layout_view = getMultiAdapter((context, request), name=u'plone_layout')
 
         newNode['Title'] = utils.pretty_title_or_id(context, item)
         newNode['id'] = item.getId
@@ -178,7 +178,7 @@ class SitemapNavtreeStrategy(NavtreeStrategyBase):
         newNode['absolute_url'] = itemUrl
         newNode['getURL'] = itemUrl
         newNode['path'] = item.getPath()
-        newNode['item_icon'] = ploneview.getIcon(item)
+        newNode['item_icon'] = layout_view.getIcon(item)
         newNode['Creator'] = getattr(item, 'Creator', None)
         newNode['creation_date'] = getattr(item, 'CreationDate', None)
         newNode['portal_type'] = portalType
