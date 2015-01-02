@@ -7,6 +7,9 @@ Changelog
 - Add pat-markspeciallinks to bodyClass depending on settings in @@theming-controlpanel.
   [fulv]
 
+- Fix relateditems viewlet (tal:repeat is executed after tal:define).
+  [pbauer]
+
 
 2.5.3 (2014-11-01)
 ------------------
