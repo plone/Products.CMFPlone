@@ -4,6 +4,9 @@ Changelog
 2.5.4 (unreleased)
 ------------------
 
+- Add pat-markspeciallinks to bodyClass depending on settings in @@theming-controlpanel.
+  [fulv]
+
 - Fix relateditems viewlet (tal:repeat is executed after tal:define).
   [pbauer]
 
