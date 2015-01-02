@@ -46,8 +46,6 @@ class JSVariables(BrowserView):
 
         return TEMPLATE % dict(
             portal_url=portal_url,
-            open_links=open_links,
-            mark_links=mark_links,
             form_modified=form_modified,
             form_resubmit=form_resubmit,
             ajax_noresponse=ajax_noresponse,
