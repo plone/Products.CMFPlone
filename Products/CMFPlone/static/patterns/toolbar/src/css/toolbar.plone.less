@@ -85,7 +85,7 @@ body.userrole-authenticated {
         a {
             color: @plone-toolbar-submenu-text-color;
             &:hover {
-                color: lighten(@plone-toolbar-submenu-text-color, 25%);
+                color: darken(@plone-toolbar-submenu-text-color, 15%);
                 background: lighten(@plone-toolbar-bg, 10%);
             }
         }
@@ -93,7 +93,7 @@ body.userrole-authenticated {
         li > span {display: block;}
         .plone-toolbar-submenu-header > a {
             color: @plone-toolbar-link; font-weight: 500;
-            &:hover {color: lighten(@plone-toolbar-link, 15%);}
+            &:hover {color: darken(@plone-toolbar-link, 15%);}
         }
         .plone-toolbar-submenu-header > span {font-weight: 500; color: @plone-toolbar-submenu-header-color;}
         li:not(.plone-toolbar-submenu-header) > a:before {content:"•"; left: 15px; color: @plone-toolbar-link; position: absolute;}
@@ -137,7 +137,7 @@ body.userrole-authenticated {
     li {width: 180px}
     li > a, li > span {padding: 5px 15px; height: auto; line-height: 20px;}
     li:not(.plone-toolbar-submenu-header) > a, li:not(.plone-toolbar-submenu-header) > span {padding: 5px 15px 5px 30px; height: auto;}
-    li:not(.plone-toolbar-submenu-header) > span { color: darken(@plone-toolbar-text-color,35%); font-weight: 100;}
+    li:not(.plone-toolbar-submenu-header) > span { color: @plone-toolbar-text-color; font-weight: 100;}
     .plone-toolbar-submenu-header {border-top: 1px solid @plone-toolbar-separator-color; padding: 5px 0 0;margin: 5px 0 0;}
     .plone-toolbar-submenu-header:first-child {border-top:0; margin:0;}
     [class^="icon"] {
