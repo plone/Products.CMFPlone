@@ -20,7 +20,8 @@ class MarkSpecialLinksSettingsAdapter(object):
 
         msl = props.getProperty('mark_special_links', 'false')
         elonw = props.getProperty('external_links_open_new_window', 'false')
-        if msl == 'true' and elonw == 'true':
+        if msl == 'true' or elonw == 'true':
             result = {'data-pat-markspeciallinks':
-                      '{"external_links_open_new_window": "true"}'}
+                      ('{"external_links_open_new_window": "%s",'
+                       '"mark_special_links": "%s"}' % (elonw, msl))}
         return result
