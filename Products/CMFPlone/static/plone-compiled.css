@@ -4224,7 +4224,7 @@ html,
   color: #cccccc;
 }
 #edit-zone nav > ul ul a:hover {
-  color: #ffffff;
+  color: #a6a6a6;
   background: rgba(26, 26, 26, 0.9);
 }
 #edit-zone nav > ul ul li:last-child {
@@ -4238,7 +4238,7 @@ html,
   font-weight: 500;
 }
 #edit-zone nav > ul ul .plone-toolbar-submenu-header > a:hover {
-  color: #00afff;
+  color: #004666;
 }
 #edit-zone nav > ul ul .plone-toolbar-submenu-header > span {
   font-weight: 500;
@@ -4325,7 +4325,7 @@ html,
   height: auto;
 }
 #edit-zone nav > ul ul li:not(.plone-toolbar-submenu-header) > span {
-  color: rgba(166, 166, 166, 0.9);
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 100;
 }
 #edit-zone nav > ul ul .plone-toolbar-submenu-header {
@@ -9404,4 +9404,4 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .icon-eye:before {
   content: '\e805';
 }
-/*# sourceMappingURL=/Users/ramon/Development/buildout.coredev/src/Products.CMFPlone/Products/CMFPlone/static/plone-compiled.css.map */
+/*# sourceMappingURL=/../++plone++static/plone-compiled.css.map */
