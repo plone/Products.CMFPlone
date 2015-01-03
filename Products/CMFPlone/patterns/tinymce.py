@@ -55,7 +55,7 @@ class TinyMceSettingsAdapter(object):
         # Check if theme has a custom content css
         theme = getCurrentTheme()
         themeObj = getTheme(theme)
-        if themeObj.tinymce_content_css:
+        if themeObj and themeObj.tinymce_content_css:
             content_css = self.config['portal_url'] + themeObj.tinymce_content_css
         else:
             content_css = self.settings.content_css
