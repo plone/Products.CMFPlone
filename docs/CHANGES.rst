@@ -8,6 +8,9 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
+- Fix user/group control panel markup for Plone 5.
+  [davisagli]
+
 - folder_position script: make position and id optional.  Default
   position to 'ordered' and id to None, which means: do nothing.
   plone.folder 1.0.5 allows this, making it possible to simply reverse

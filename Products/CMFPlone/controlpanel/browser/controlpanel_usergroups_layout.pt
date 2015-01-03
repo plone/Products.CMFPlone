@@ -23,35 +23,23 @@
     Portal status message
   </div>
 
-  <div id="layout-contents">
+  <div id="content-core">
 
-      <div id="edit-bar">
-          <ul class="contentViews" id="content-views">
-            <li>
-              <a href=""
-                 tal:attributes="href string:$portal_url/@@usergroup-userprefs"
-                 i18n:translate="label_users">Users</a>
-            </li>
-            <li>
-              <a href=""
-                 tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
-                 i18n:translate="label_groups">Groups</a>
-            </li>
-            <li class="selected">
-              <a href=""
-                 tal:attributes="href string:$portal_url/@@usergroup-controlpanel"
-                 i18n:translate="label_usergroup_settings">Settings</a>
-            </li>
-            <li>
-              <a href=""
-                 tal:attributes="href string:$portal_url/@@member-registration"
-                 i18n:translate="label_member_registration">Member Registration</a>
-            </li>
-          </ul>
-          <div class="contentActions">&nbsp;</div>
+    <div class="autotabs">
+      <div class="autotoc-nav">
+        <a href="${portal_url}/@@usergroup-userprefs"
+           i18n:translate="label_users">Users</a>
+        <a href="${portal_url}/@@usergroup-groupprefs"
+           i18n:translate="label_groups">Groups</a>
+        <a class="active"
+           href="${portal_url}/@@usergroup-controlpanel"
+           i18n:translate="label_usergroup_settings">Settings</a>
+        <a href="${portal_url}/@@member-registration"
+           i18n:translate="label_member_registration">Member Registration</a>
       </div>
+      <span tal:replace="structure view/contents" />
+    </div>
 
-    <span tal:replace="structure view/contents" />
   </div>
 
 </div>
