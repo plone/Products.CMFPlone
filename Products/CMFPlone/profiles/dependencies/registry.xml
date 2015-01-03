@@ -105,7 +105,7 @@
     <field type="plone.registry.field.ASCII">
       <title>URL of less.js</title>
     </field>
-    <value>++plone++static/components/less/dist/less-1.7.4.js</value>
+    <value>++plone++static/components/less/dist/less.js</value>
   </record>
   <record name="plone.resources.less-modify">
     <field type="plone.registry.field.ASCII">
@@ -117,7 +117,7 @@
 
   <records prefix="plone.resources/less"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++plone++static/components/less/dist/less-1.7.4.js</value>
+      <value key="js">++plone++static/components/less/dist/less.js</value>
   </records>
 
   <record name="plone.resources.less-variables">
@@ -628,7 +628,7 @@
 
   <records prefix="plone.resources/translate"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">++resource++mockupjs/i18n-wrapper</value>
+      <value key="js">++resource++mockupjs/i18n-wrapper.js</value>
   </records>
 
  <!-- Patterns -->
@@ -840,14 +840,6 @@
   <records prefix="plone.resources/jquery-highlightsearchterms"
             interface='Products.CMFPlone.interfaces.IResourceRegistry'>
       <value key="js">jquery.highlightsearchterms.js</value>
-  </records>
-  <records prefix="plone.resources/table_sorter"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">table_sorter.js</value>
-  </records>
-  <records prefix="plone.resources/unlockOnFormUnload"
-            interface='Products.CMFPlone.interfaces.IResourceRegistry'>
-      <value key="js">unlockOnFormUnload.js</value>
   </records>
 
   <!-- disabled -->

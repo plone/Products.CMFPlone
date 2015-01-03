@@ -1,7 +1,7 @@
 {
   "name": "mockup-core",
-  "version": "1.2.10",
-  "description": "Plone CMS Mockup Core",
+  "version": "1.2.15",
+  "description": "Core library for the Mockup front end library",
   "homepage": "http://plone.github.io/mockup",
   "devDependencies": {
     "bower": "~1.3.1",
@@ -34,9 +34,9 @@
   },
   "maintainers": [
     {
-      "name": "Rok Garbas",
-      "email": "rok@garbas.si",
-      "url": "http://garbas.si"
+      "name": "Plone Foundation",
+      "email": "plone-developers@lists.sourceforge.net",
+      "url": "http://plone.org"
     }
   ],
   "repository": {
@@ -45,7 +45,7 @@
   },
   "bugs": {
     "url": "https://github.com/plone/mockup/issues",
-    "email": "rok@garbas.si"
+    "email": "plone-developers@lists.sourceforge.net"
   },
   "licenses": [
     {

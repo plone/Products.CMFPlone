@@ -15,7 +15,7 @@
     "jquery-form": "3.46.0",
     "jquery.cookie": "1.4.1",
     "lodash": "2.4.1",
-    "mockup-core": "1.2.12",
+    "mockup-core": "1.2.15",
     "moment": "2.8.3",
     "pickadate": "3.4.0",
     "requirejs-text": "2.0.12",
@@ -25,7 +25,7 @@
     "tinymce-builded": "4.1.0",
 
     "requirejs": "",
-    "less": "1.7.4",
+    "less": "2.1.2",
     "r.js": "2.1.14"
   },
   "devDependencies": {

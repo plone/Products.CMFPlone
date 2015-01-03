@@ -10,6 +10,8 @@ from Products.CMFCore.interfaces._content import IFolderish
 from plone.uuid.interfaces import IUUID
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Acquisition import aq_parent
+from plone.app.theming.utils import getCurrentTheme
+from plone.app.theming.utils import getTheme
 
 
 class TinyMceSettingsAdapter(object):
@@ -49,6 +51,15 @@ class TinyMceSettingsAdapter(object):
         else:
             initial = IUUID(folder, None)
         current_path = folder.absolute_url()[len(self.config['portal_url']):]
+
+        # Check if theme has a custom content css
+        theme = getCurrentTheme()
+        themeObj = getTheme(theme)
+        if themeObj.tinymce_content_css:
+            content_css = self.config['portal_url'] + themeObj.tinymce_content_css
+        else:
+            content_css = self.settings.content_css
+
         configuration = {
             'relatedItems': format_pattern_settings(
                 self.settings.relatedItems,
@@ -66,7 +77,7 @@ class TinyMceSettingsAdapter(object):
             },
             'base_url': self.config['document_base_url'],
             'tiny': {
-                'content_css': self.settings.content_css,
+                'content_css': content_css,
             },
             # This is for loading the languages on tinymce
             'loadingBaseUrl': '++plone++static/components/tinymce-builded/js/tinymce',

@@ -20,6 +20,9 @@ lessconfig = """
     dumpLineNumbers: "comments",
     globalVars: {
       %s
+    },
+    modifyVars: {
+      %s
     }
   };
 """
@@ -52,8 +55,8 @@ class LessConfiguration(BrowserView):
         site_url = portal_state.portal_url()
         result = ""
         result += "sitePath: '\"%s\"',\n" % site_url
-        result += "isPlone: 'true',\n"
-        result += "isMockup: 'false',\n"
+        result += "isPlone: true,\n"
+        result += "isMockup: false,\n"
 
         less_vars_params = {
             'site_url': site_url,
@@ -86,7 +89,7 @@ class LessConfiguration(BrowserView):
             debug_level = int(self.request.get('debug', 2))
         except:
             debug_level = 2
-        return lessconfig % (debug_level, result)
+        return lessconfig % (debug_level, result, result)
 
 
 class LessModifyConfiguration(LessConfiguration):
@@ -96,6 +99,9 @@ class LessModifyConfiguration(LessConfiguration):
                                        name=u'plone_portal_state')
         site_url = portal_state.portal_url()
         result2 = ""
+        result2 += "'@sitePath': '\"%s\"',\n" % site_url
+        result2 += "'@isPlone': true,\n"
+        result2 += "'@isMockup': false,\n"
 
         less_vars_params = {
             'site_url': site_url,

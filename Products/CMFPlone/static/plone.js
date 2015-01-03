@@ -21,6 +21,8 @@
 // Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
+if(window.jQuery){define('jquery', [], function(){ return window.jQuery; })}
+
 require([
   'jquery',
   'mockup-registry',

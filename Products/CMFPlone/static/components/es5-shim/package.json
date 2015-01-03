@@ -1,6 +1,6 @@
 {
   "name": "es5-shim",
-  "version": "4.0.1",
+  "version": "4.0.3",
   "description": "ECMAScript 5 compatibility shims for legacy JavaScript engines",
   "homepage": "http://github.com/es-shims/es5-shim/",
   "contributors": [
@@ -30,7 +30,7 @@
     "minify": "npm run minify-shim && npm run minify-sham",
     "minify-shim": "uglifyjs es5-shim.js --comments --source-map=es5-shim.map -m -b ascii_only=true,beautify=false > es5-shim.min.js",
     "minify-sham": "uglifyjs es5-sham.js --comments --source-map=es5-sham.map -m -b ascii_only=true,beautify=false > es5-sham.min.js",
-    "test": "jasmine-node --matchall ./ tests/spec/",
+    "test": "npm run lint && jasmine-node --matchall ./ tests/spec/",
     "test-native": "jasmine-node --matchall tests/spec/",
     "lint": "jscs tests/helpers/*.js tests/spec/*.js es5-shim.js es5-sham.js"
   },
@@ -58,6 +58,14 @@
       "iphone/6.0..latest",
       "android-browser/4.2"
     ]
-  }
+  },
+  "keywords": [
+    "shim",
+    "es5",
+    "es5 shim",
+    "javascript",
+    "ecmascript",
+    "polyfill"
+  ]
 }
 

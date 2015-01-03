@@ -1,34 +1,11 @@
-// tests for Registry
-//
-// @author Rok Garbas
-// @version 1.0
-// @licstart  The following is the entire license notice for the JavaScript
-//            code in this page.
-//
-// Copyright (C) 2010 Plone Foundation
-//
-// This program is free software; you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by the Free
-// Software Foundation; either version 2 of the License.
-//
-// This program is distributed in the hope that it will be useful, but WITHOUT
-// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-// more details.
-//
-// You should have received a copy of the GNU General Public License along with
-// this program; if not, write to the Free Software Foundation, Inc., 51
-// Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//
-// @licend  The above is the entire license notice for the JavaScript code in
-//          this page.
-//
+// Tests for Registry
 
 define([
   'expect',
+  'sinon',
   'jquery',
   'mockup-registry'
-], function(expect, $, Registry) {
+], function(expect, sinon, $, Registry) {
   'use strict';
 
   window.mocha.setup('bdd');
@@ -124,6 +101,15 @@ define([
       };
       Registry.scan($el);
       expect($el.data('pattern-example').example).to.be.equal('works');
+    });
+
+    it('trigger event on completed scan', function () {
+      var spy = sinon.spy();
+      // register spy as event listener
+      $(document).on('scan-completed.registry.mockup-core', spy);
+      var $el = $('<div />');
+      Registry.scan($el);
+      expect(spy.called).to.be(true);  // spy must be called
     });
 
     it('try register a pattern without name', function() {
@@ -227,4 +213,3 @@ define([
   });
 
 });
-

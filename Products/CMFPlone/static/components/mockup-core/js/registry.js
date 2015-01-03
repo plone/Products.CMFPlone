@@ -91,6 +91,9 @@ define([
           }
         });
       });
+      // Trigger event after pattern scan has completed and all patterns were
+      // initialized
+      $(document).trigger('scan-completed.registry.mockup-core');
     },
 
     register: function(Pattern) {

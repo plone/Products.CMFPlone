@@ -1,4 +1,4 @@
-/* globals module:true,process:true */
+/* global module:true, process:true */
 
 (function() {
   'use strict';
@@ -43,16 +43,11 @@
           this.gruntConfig.uglify[name].files = this.gruntConfig.uglify[name].files || {};
           this.gruntConfig.uglify[name].options = {
             mangle: false,
-            sourceMap: true
+            sourceMap: true,
+            sourceMapName: bundleOptions.path + name + '.min.js.map'
           };
           this.gruntConfig.uglify[name].files[bundleOptions.path + name + '.min.js'] = [
-            'build/' + name + '.js'
-          ];
-          this.gruntConfig.uglify[name].files[bundleOptions.path + name + '.dev.js'] = [
-            'bower_components/domready/ready.js',
-            'node_modules/requirejs/require.js' ,
-            'bower_components/jquery/jquery.js',
-            'js/bundles/' + name + '_develop.js'
+            bundleOptions.path + name + '.js'
           ];
         }
       },
@@ -64,7 +59,10 @@
           gruntConfig.less[name] = gruntConfig.less[name] || {};
           gruntConfig.less[name].files = gruntConfig.less[name].files || {};
           gruntConfig.less[name].files[bundleOptions.path + name + '.min.css'] = 'less/' + name + '.less';
-
+          gruntConfig.less[name].options = {
+            sourceMap: true,
+            sourceMapFilename: bundleOptions.path + name + '.min.css.map'
+          };
 
           gruntConfig.watch = gruntConfig.watch || {};
           gruntConfig.watch['less-' + name] = gruntConfig.watch['less-' + name] || {
@@ -92,15 +90,6 @@
               expand: true, cwd: 'bower_components/bootstrap/dist/fonts/', src: 'glyphicons-halflings-regular.*', dest: bundleOptions.path,
               rename: function(dest, src) { return dest + name + '-bootstrap-' + src; }
             }, {
-              expand: true, cwd: 'lib/tinymce/skins/lightgray/fonts/', src: 'tinymce*', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-tinymce-font-' + src; }
-            }, {
-              expand: true, cwd: 'lib/tinymce/skins/lightgray/img/', src: '*', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-tinymce-img-' + src; }
-            }, {
-              expand: true, cwd: 'lib/tinymce/skins/lightgray/', src: 'content.min.css', dest: bundleOptions.path,
-              rename: function(dest, src) { return dest + name + '-tinymce-' + src; }
-            }, {
               expand: true, cwd: 'bower_components/jqtree/', src: 'jqtree-circle.png', dest: bundleOptions.path,
               rename: function(dest, src) { return dest + name + '-jqtree-' + src; }
             }, {
@@ -119,6 +108,18 @@
       sed: {
         registerBundle: function(name, customGruntConfig, bundleOptions, sections) {
           this.gruntConfig.sed = this.gruntConfig.sed || {};
+          // source maps
+          this.gruntConfig.sed[name + '.min.css.map'] = {
+            path: bundleOptions.path + name + '.min.css',
+            pattern: 'sourceMappingURL=' + bundleOptions.path + name + '.min.css.map',
+            replacement: 'sourceMappingURL=' + bundleOptions.url + '.min.css.map',
+          };
+          this.gruntConfig.sed[name + '.min.js.map'] = {
+            path: bundleOptions.path + name + '.min.js',
+            pattern: 'sourceMappingURL=' + name + '.min.js.map',
+            replacement: 'sourceMappingURL=' + bundleOptions.url + '.min.js.map',
+          };
+          // pattern resources
           this.gruntConfig.sed[name + '-bootstrap-glyphicons'] = {
             path: bundleOptions.path + name + '.min.css',
             pattern: 'url\\(\'../bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular',
@@ -133,26 +134,6 @@
             path: bundleOptions.path + name + '.min.css',
             pattern: 'url\\(\'select2',
             replacement: 'url(\'' + bundleOptions.url + '-select2-select2'
-          };
-          this.gruntConfig.sed[name + '-tinymce-fonts'] = {
-            path: bundleOptions.path + name + '.min.css',
-            pattern: 'url\\(\'fonts/tinymce',
-            replacement: 'url(\'' + bundleOptions.url + '-tinymce-font-tinymce'
-          };
-          this.gruntConfig.sed[name + '-tinymce-img-loader'] = {
-            path: bundleOptions.path + name + '.min.css',
-            pattern: 'url\\(\'img/loader.gif',
-            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-loader.gif'
-          };
-          this.gruntConfig.sed[name + '-tinymce-img-anchor'] = {
-            path: bundleOptions.path + name + '.min.css',
-            pattern: 'url\\(\'img/anchor.gif',
-            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-anchor.gif'
-          };
-          this.gruntConfig.sed[name + '-tinymce-img-object'] = {
-            path: bundleOptions.path + name + '.min.css',
-            pattern: 'url\\(\'img/object.gif',
-            replacement: 'url(\'' + bundleOptions.url + '-tinymce-img-object.gif'
           };
           this.gruntConfig.sed[name + '-jqtree-circle'] = {
             path: bundleOptions.path + name + '.min.css',
@@ -238,7 +219,7 @@
        */
       bundleOptions = extend(true, {
         path: 'build/',
-        url: ' ++resource++plone.app.' + name,
+        url: '++resource++plone.app.' + name,
         insertExtraRequires: []
       }, bundleOptions || {});
 
@@ -296,7 +277,7 @@
        * TODO: add description
        */
       grunt.initConfig(extend(true, {
-        jshint: { options: { jshintrc: '.jshintrc' }, all: ['Gruntfile.js', 'js/**/*.js', 'tests/**/*.js'] },
+        jshint: { options: { jshintrc: '.jshintrc' }, all: ['Gruntfile.js', 'js/**/*.js', 'tests/*.js'] },
         karma: {
           options: {
             basePath: './',
@@ -350,10 +331,10 @@
             sauceLabs: { testName: 'Mockup', startConnect: true },
             browsers: BROWSERS,
             customLaunchers: {
-              'SL_Chrome': { base: 'SauceLabs', browserName: 'chrome', platform: 'Windows 8.1', version: '33' },
-              'SL_Firefox': { base: 'SauceLabs', browserName: 'firefox', platform: 'Windows 8.1', version: '28' },
-              'SL_Opera': { base: 'SauceLabs', browserName: 'opera', platform: 'Windows 7', version: '12' },
-              'SL_Safari': { base: 'SauceLabs', browserName: 'safari', platform: 'Mac 10.9', version: '7' },
+              'SL_Chrome': { base: 'SauceLabs', browserName: 'chrome', platform: 'Windows 8.1', version: '38' },
+              'SL_Firefox': { base: 'SauceLabs', browserName: 'firefox', platform: 'Windows 8.1', version: '33' },
+              'SL_Opera': { base: 'SauceLabs', browserName: 'opera', platform: 'Windows 8.1', version: '25' },
+              'SL_Safari': { base: 'SauceLabs', browserName: 'safari', platform: 'Mac 10.9', version: '7.1' },
               'SL_IE_8': { base: 'SauceLabs', browserName: 'internet explorer', platform: 'Windows 7', version: '8' },
               'SL_IE_9': { base: 'SauceLabs', browserName: 'internet explorer', platform: 'Windows 7', version: '9' },
               'SL_IE_10': { base: 'SauceLabs', browserName: 'internet explorer', platform: 'Windows 7', version: '10' },

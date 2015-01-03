@@ -115,10 +115,10 @@ define([
       var documentation = this.state.pattern.documentation,
           options = this.state.pattern.options,
           license = this.state.pattern.license;
-      return (
-        div({ className: 'mockup-pattern' }, [
-          h2({}, 'Documentation'),
-          div({ className: 'mockup-pattern-documentation', dangerouslySetInnerHTML: {__html: documentation} }),
+
+      var render_options = [];
+      if (options) {
+        render_options = [
           h2({}, 'Configuration'),
           div({ className: 'table-responsive mockup-pattern-configuration' },
             table({ className: 'table table-stripped table-condensed' }, [
@@ -143,10 +143,23 @@ define([
                 })
               )
             ])
-          ),
+          )
+        ];
+      }
+
+      var render_license = [];
+      if (license) {
+        render_license = [
           h2({}, 'License'),
           div({ className: 'mockup-pattern-license', dangerouslySetInnerHTML: {__html: license} })
-        ])
+        ];
+      }
+
+      return (
+        div({ className: 'mockup-pattern' }, [
+          h2({}, 'Documentation'),
+          div({ className: 'mockup-pattern-documentation', dangerouslySetInnerHTML: {__html: documentation} })
+        ].concat(render_options).concat(render_license))
       );
     }
   });

@@ -1,6 +1,6 @@
 {
   "name": "jqTree",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "main": [
     "jqtree.css",
     "jqtree-circle.png",
@@ -10,13 +10,13 @@
     "jquery": ">=1.5"
   },
   "homepage": "https://github.com/mbraak/jqTree",
-  "_release": "0.21.0",
+  "_release": "0.22.0",
   "_resolution": {
     "type": "version",
-    "tag": "0.21.0",
-    "commit": "347695413caf38df6acee7c2eb8bcc2ab5c8fafb"
+    "tag": "0.22.0",
+    "commit": "a493d846f0f991fccc6077e805eb25c75f7b134c"
   },
   "_source": "git://github.com/mbraak/jqTree.git",
-  "_target": "0.21.0",
+  "_target": "0.22.0",
   "_originalSource": "jqtree"
 }

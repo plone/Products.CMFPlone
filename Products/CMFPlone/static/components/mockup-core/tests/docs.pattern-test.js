@@ -1,12 +1,9 @@
 define([
   'jquery',
-  'underscore',
   'expect',
-  'sinon',
   'react',
-  'mockup-registry',
   'mockup-docs-pattern'
-], function($, _, expect, sinon, React, Registry, Pattern) {
+], function($, expect, React, Pattern) {
   'use strict';
 
   window.mocha.setup('bdd');
@@ -46,6 +43,21 @@ define([
       expect($('.mockup-pattern-documentation', this.$root).html().toLowerCase()).to.be('<p>this is documentation</p>');
       expect($('.mockup-pattern-license', this.$root).html().toLowerCase()).to.be('<p>this is license</p>');
       expect($('.mockup-pattern-configuration > table > tbody > tr', this.$root).size()).to.be(2);
+    });
+
+    it('doesn\'t display options or license, if they are not defined', function() {
+      var pattern = new Pattern();
+      React.renderComponent(pattern, this.$root[0]);
+      expect($('.mockup-pattern', this.$root).size()).to.be(1);
+      expect($('.mockup-pattern', this.$root).html()).to.be('');
+      pattern.setState({
+        pattern: {
+          documentation: '<p>this is documentation</p>',
+        }
+      });
+      expect($('.mockup-pattern-documentation', this.$root).html().toLowerCase()).to.be('<p>this is documentation</p>');
+      expect($('.mockup-pattern-license', this.$root).length).to.be(0);
+      expect($('.mockup-pattern-configuration', this.$root).length).to.be(0);
     });
 
     it('parses first comment of pattern script', function() {

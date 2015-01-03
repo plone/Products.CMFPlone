@@ -1,0 +1,301 @@
+@import "@{bowerPath}/bootstrap/less/variables.less";
+@import "@{bowerPath}/bootstrap/less/bootstrap.less";
+
+@mockupColor1: #0083BE;
+@mockupColor2: #026B99;
+@mockupColor3: #A1D2E7;
+
+body {
+  position: relative;
+  padding-top: 50px;
+}
+
+.mockup-header {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background-color: @mockupColor1;
+  border-color: @mockupColor2;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  .navbar-header {
+    .navbar-toggle {
+      border: 0;
+
+      &:hover, &:focus {
+        background-color: #FFF;
+
+        .icon-bar {
+          background-color: @mockupColor1;
+        }
+      }
+    }
+  }
+
+  .navbar-brand {
+    color: #FFF;
+
+    &:focus {
+      outline: none;
+    }
+  }
+  .navbar-left {
+    margin-bottom: 0;
+  }
+  .navbar-right {
+    margin-top: 0;
+  }
+  .navbar-collapse {
+    border-color: @mockupColor2;
+  }
+  .navbar-nav > li > a {
+    color: @mockupColor3;
+    text-align: left;
+  }
+  .navbar-nav > li.active > a,
+  .navbar-nav > li.active > a:hover,
+  .navbar-nav > li.active > a:focus {
+    background-color: @mockupColor2;
+    outline: none;
+  }
+}
+
+.mockup-content {
+
+  .page-header {
+    margin: 0;
+    color: @mockupColor3;
+    background-color: @mockupColor1;
+    text-align: center;
+    padding: 30px 0 40px 0;
+
+    h1 {
+      color: #FFF;
+    }
+    p {
+      .lead();
+      margin: 0;
+      font-size: @font-size-base * 1.2;
+    }
+  }
+
+  .mockup-autotoc {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-shadow: 0 1px 0 #FFF;
+    background-color: #F5F5F5;
+    border: 1px solid #CCCCCC;
+    border-radius: 0.3em;
+    ul ul {
+      display: none;
+    }
+    ul li.active > a {
+      font-weight: bold;
+    }
+    a {
+      color: #333333;
+      font-size: @font-size-base;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+    }
+  }
+
+  .mockup-patterns {
+    margin: 1em 0 0 0;
+
+    .mockup-pattern-tile {
+      color: #333;
+      text-align: center;
+      text-decoration: none;
+      margin: 0 0 1em 0;
+      padding: 0.5em;
+      border: 1px solid #CCC;
+      display: block;
+      height: 135px;
+
+      &:focus {
+        outline: none;
+      }
+      &.active {
+        background-color: #F5F5F5;
+        border-bottom: none;
+        margin-bottom: 0;
+        z-index: 1000;
+      }
+    }
+
+    .mockup-pattern {
+      border: 1px solid #CCC;
+      background-color: #F5F5F5;
+      float: left;
+      width: 100%;
+      margin: -15px 0 1em 0;
+      padding: 1em;
+    }
+
+    .mockup-pattern-documentation {
+      padding: 1em;
+      background-color: #FFF;
+    }
+  }
+}
+
+.mockup-footer {
+  border-radius: 0;
+  margin: 0;
+  padding: 0 0 0.5em 0;
+  border-top: 0;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background-color: @mockupColor1;
+  border-color: @mockupColor2;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: @mockupColor3;
+
+  a {
+    color: #FFF;
+    border-style: dotted;
+    border-width: 0 0 1px 0;
+    border-color: #FFF;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .github-btn {
+    border: 0;
+    margin: 0;
+  }
+  .mockup-credits {
+    margin: 1em 0;
+
+    p {
+      margin: 0;
+    }
+  }
+  .mockup-links {
+    list-style: none;
+    margin: 1em 0;
+    padding: 0;
+    li {
+      display: inline;
+      a {
+        margin: 0 1em;
+      }
+    }
+  }
+}
+
+.page-index {
+
+  color: @mockupColor3;
+  background-color: @mockupColor1;
+  text-align: center;
+
+  .page-header {
+    border: 0;
+    padding: 30px;
+
+    h1 {
+      font-size: @font-size-base * 3.6;
+      line-height: 1;
+    }
+  }
+
+  .page-content {
+    padding: 30px;
+    a {
+      color:  #FFF;
+      display: inline-block;
+      border: 1px solid @mockupColor3;
+      padding: 0.5em 1em;
+      margin: 30px;
+      font-size: 18px;
+      border-radius: 0.2em;
+      text-decoration: none;
+
+      &:hover, &focus {
+        color: @mockupColor1;
+        border-color: #FFF;
+        background-color: #FFF;
+      }
+    }
+  }
+}
+  
+@media (min-width: @screen-sm-min) {
+
+  .mockup-header {
+    .navbar-header {
+      margin-right: 15px;
+    }
+  }
+
+  .mockup-content .page-header {
+    text-align: left;
+
+    h1 {
+      font-size: @font-size-base * 4.4;
+    }
+    p {
+      font-size: @font-size-base * 1.6;
+    }
+  }
+
+  .mockup-footer {
+    .mockup-github {
+      text-align: center;
+    }
+    .mockup-links {
+      text-align: right;
+      margin-top: 2.5em;
+
+      li a {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .page-index {
+    text-align: left;
+
+    .page-header {
+      padding: 140px 0 0 0;
+
+      h1 {
+        font-size: @font-size-base * 7.1;
+      }
+      p {
+        font-size: @font-size-base * 2.5;
+      }
+    }
+
+    .page-content {
+      padding: 30px 0px 140px 0;
+
+      a {
+        font-size: @font-size-base * 1.8;
+        margin: 0;
+      }
+    }
+  }
+}
+
+
+@media (min-width: @screen-md-min) {
+
+  .mockup-content .mockup-autotoc {
+    ul ul {
+      display: block;
+      li > a {
+        padding-left: 2em;
+      }
+    }
+  }
+}
+
+
+@media (min-width: @screen-lg-min) {
+
+  .mockup-content .mockup-autotoc {
+  }
+}

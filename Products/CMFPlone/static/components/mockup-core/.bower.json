@@ -1,12 +1,11 @@
 {
   "name": "mockup-core",
-  "version": "1.2.10",
-  "description": "Mockup Core",
+  "description": "Core library for the Mockup front end library",
   "dependencies": {
     "backbone": "1.1.2",
     "bootstrap": "3.2.0",
-    "console-polyfill": "0.1.1",
-    "es5-shim": "4.0.1",
+    "console-polyfill": "0.1.2",
+    "es5-shim": "4.0.3",
     "selectivizr": "1.0.2",
     "jquery": "1.11.1",
     "lodash": "2.4.1",
@@ -19,13 +18,14 @@
     "sinonjs": "1.10.2"
   },
   "homepage": "https://github.com/plone/mockup-core",
-  "_release": "1.2.10",
+  "version": "1.2.15",
+  "_release": "1.2.15",
   "_resolution": {
     "type": "version",
-    "tag": "v1.2.10",
-    "commit": "f90696e3a0bfdff00817397b71418e38454abac1"
+    "tag": "v1.2.15",
+    "commit": "992d94a52936c5fdc9235f0d4af3ef4b6077af6c"
   },
   "_source": "git://github.com/plone/mockup-core.git",
-  "_target": "1.2.10",
+  "_target": "1.2.15",
   "_originalSource": "mockup-core"
 }
