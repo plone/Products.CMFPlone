@@ -114,7 +114,7 @@ class UserGroupsControlPanelFunctionalTest(unittest.TestCase):
 
     def test_usergroups_groups_link(self):
         self.browser.open(self.usergroups_url)
-        self.browser.getLink('Groups').click()
+        self.browser.getLink('Groups', index=1).click()
         self.assertEqual(
             self.browser.url,
             "%s/@@usergroup-groupprefs" % self.portal_url
