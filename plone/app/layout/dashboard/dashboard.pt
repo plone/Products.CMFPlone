@@ -8,60 +8,43 @@
 
 <body>
 
-<metal:main fill-slot="content">
-    <tal:main-macro metal:define-macro="main"
-                    tal:define="memberinfo context/portal_membership/getMemberInfo;
-                                member context/@@plone_portal_state/member;
-                                name python:memberinfo['fullname'] or member.getId() or member.getId();
-                                portal_url context/portal_url">
+<metal:b fill-slot="content-title">
+  <h1 class="documentFirstHeading" i18n:translate="heading_dashboard"
+      tal:define="memberinfo context/portal_membership/getMemberInfo;
+                  member context/@@plone_portal_state/member;
+                  name python:memberinfo['fullname'] or member.getId() or member.getId()">
+    <span tal:replace="name" i18n:name="user_name" />&#8217;s dashboard
+  </h1>
+</metal:b>
 
-        <div id="edit-bar" tal:condition="view/can_edit">
-            <p class="hiddenStructure"
-                i18n:translate="heading_views">Views</p>
+<metal:b fill-slot="content-core">
+  <tal:b metal:define-macro="content-core">
 
-            <ul id="content-views"
-                class="contentViews">
-              <li class="selected">
-                <a href=""
-                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
-                   i18n:translate="label_dashboard">Dashboard</a>
-              </li>
-              <li>
-                <a href=""
-                   tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
-                   i18n:translate="label_edit">Edit</a>
-              </li>
-            </ul>
+    <div class="autotabs">
+      <nav class="autotoc-nav">
+        <a class="active"
+           href="${context/@@plone_portal_state/navigation_root_url}/dashboard"
+           i18n:translate="label_dashboard">Dashboard</a>
+        <a href="${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
+           i18n:translate="label_edit">Edit</a>
+      </nav>
 
-            <div class="contentActions" tal:condition="view/can_edit">
-              &nbsp;
-            </div>
-        </div>
+      <div id="dashboard">
+          <div class="visualClear"><!-- --></div>
+          <div id="dashboard-portlets1"
+            tal:content="structure provider:plone.dashboard1" />
+          <div id="dashboard-portlets2"
+            tal:content="structure provider:plone.dashboard2" />
+          <div id="dashboard-portlets3"
+            tal:content="structure provider:plone.dashboard3" />
+          <div id="dashboard-portlets4"
+            tal:content="structure provider:plone.dashboard4" />
+      </div>
+      <div class="visualClear"><!-- --></div>
+    </div>
 
-        <article id="content">
-
-            <h1 class="documentFirstHeading" i18n:translate="heading_dashboard">
-                <span tal:replace="name" i18n:name="user_name" />&#8217;s dashboard
-            </h1>
-
-            <div id="content-core">
-                <div id="dashboard">
-                    <div class="visualClear"><!-- --></div>
-                    <div id="dashboard-portlets1"
-                      tal:content="structure provider:plone.dashboard1" />
-                    <div id="dashboard-portlets2"
-                      tal:content="structure provider:plone.dashboard2" />
-                    <div id="dashboard-portlets3"
-                      tal:content="structure provider:plone.dashboard3" />
-                    <div id="dashboard-portlets4"
-                      tal:content="structure provider:plone.dashboard4" />
-                </div>
-                <div class="visualClear"><!-- --></div>
-            </div>
-        </article>
-
-    </tal:main-macro>
-</metal:main>
+  </tal:b>
+</metal:b>
 
 </body>
 </html>

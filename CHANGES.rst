@@ -4,6 +4,9 @@ Changelog
 2.5.4 (unreleased)
 ------------------
 
+- Updated markup for dashboard.
+  [davisagli]
+
 - Add pat-markspeciallinks to bodyClass depending on settings in @@theming-controlpanel.
   [fulv]
 
