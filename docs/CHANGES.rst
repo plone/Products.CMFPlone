@@ -8,7 +8,7 @@ Changelog
 5.0a1 (unreleased)
 ------------------
 
-- Fix user/group control panel markup for Plone 5.
+- Fix contentViews (tabs) markup for Plone 5.
   [davisagli]
 
 - folder_position script: make position and id optional.  Default
