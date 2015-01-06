@@ -8,7 +8,8 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Sharing view javascript now works with jQuery 1.9.
+  [vincentfretin]
 
 
 4.3.4.1 (2014-11-13)
