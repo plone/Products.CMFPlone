@@ -8,6 +8,9 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
+- jQuery 1.9 compatibility for the toggleSelect function (Select all checkbox)
+  [vincentfretin]
+
 - Sharing view javascript now works with jQuery 1.9.
   [vincentfretin]
 
