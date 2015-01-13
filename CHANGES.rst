@@ -8,6 +8,12 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Fix the resource registry to save the automatically generated filepath to the
+  compiled resource on the bundle object after compilation. The filepath is
+  always in the '++plone++static/' namespace. This fix makes custom bundles
+  actually includable.
+  [thet]
+
 - Get icon from layout_view instead of plone_view.
   [pbauer]
 

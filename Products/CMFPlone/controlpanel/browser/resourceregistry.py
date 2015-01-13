@@ -240,6 +240,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         bundle = self.get_bundles().get(req.form['bundle'])
         if bundle:
             bundle.last_compilation = datetime.now()
+            bundle.jscompilation = '++plone++{}'.format(filepath)
         return json.dumps({
             'success': True,
             'filepath': '++plone++' + filepath
@@ -255,6 +256,7 @@ class ResourceRegistryControlPanelView(RequireJsView):
         bundle = self.get_bundles().get(req.form['bundle'])
         if bundle:
             bundle.last_compilation = datetime.now()
+            bundle.csscompilation = '++plone++{}'.format(filepath)
         return json.dumps({
             'success': True,
             'filepath': '++plone++' + filepath
