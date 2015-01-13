@@ -1,16 +1,15 @@
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces.resources import (
-    IResourceRegistry,
-    OVERRIDE_RESOURCE_DIRECTORY_NAME)
-from slimit import minify
+from Products.CMFPlone.interfaces.resources import IResourceRegistry
+from Products.CMFPlone.interfaces.resources import OVERRIDE_RESOURCE_DIRECTORY_NAME  # noqa
+from StringIO import StringIO
 from cssmin import cssmin
 from datetime import datetime
-from plone.resource.interfaces import IResourceDirectory
-from StringIO import StringIO
-from zope.component.hooks import getSite
 from plone.protect.interfaces import IDisableCSRFProtection
+from plone.registry.interfaces import IRegistry
+from plone.resource.interfaces import IResourceDirectory
 from plone.subrequest import subrequest
+from slimit import minify
+from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
@@ -37,7 +36,8 @@ def cookWhenChangingSettings(context, bundle):
                     css_file += '\n'
 
             if resource.js:
-                response = subrequest(siteUrl + '/' + resource.js, root=context)
+                response = subrequest(
+                    siteUrl + '/' + resource.js, root=context)
                 if response.status == 200:
                     js_file += response.getBody()
                     js_file += '\n'
@@ -51,9 +51,9 @@ def cookWhenChangingSettings(context, bundle):
     # Storing js
     resource_path = js_path.split('++plone++')[-1]
     resource_name, resource_filepath = resource_path.split('/', 1)
-    persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
+    persistent_directory = getUtility(IResourceDirectory, name="persistent")
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-        persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
+        persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
     if resource_name not in container:
         container.makeDirectory(resource_name)
@@ -64,9 +64,9 @@ def cookWhenChangingSettings(context, bundle):
     # Storing css
     resource_path = css_path.split('++plone++')[-1]
     resource_name, resource_filepath = resource_path.split('/', 1)
-    persistent_directory = getUtility(IResourceDirectory, name="persistent")  # noqa
+    persistent_directory = getUtility(IResourceDirectory, name="persistent")
     if OVERRIDE_RESOURCE_DIRECTORY_NAME not in persistent_directory:
-        persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)  # noqa
+        persistent_directory.makeDirectory(OVERRIDE_RESOURCE_DIRECTORY_NAME)
     container = persistent_directory[OVERRIDE_RESOURCE_DIRECTORY_NAME]
     if resource_name not in container:
         container.makeDirectory(resource_name)

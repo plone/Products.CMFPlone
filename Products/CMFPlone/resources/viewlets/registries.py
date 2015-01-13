@@ -1,22 +1,25 @@
-from zope.interface import Interface
 from zope.interface import Attribute
+from zope.interface import Interface
+
 
 class ICookedFile(Interface):
     """Marker interface for file objects created on the fly for
     concatenated resources.
     """
 
+
 class IResourceProvider(Interface):
     """A provider of resources.
-    
+
     Register a named adapter from the particular resource registry object
     to this interface to provide resources from locations other than the
     main persistent registry.
     """
-    
+
     def getResources(self):
         """Get a list of available Resource objects
         """
+
 
 class IResourceRegistry(Interface):
     """A tool for registering and evaluating resource linkage."""
@@ -34,7 +37,7 @@ class IResourceRegistry(Interface):
 
     def getResource(id):
         """Get resource object by id.
-        
+
         If any property of the resource is changed, then cookResources of the
         registry must be called."""
 
@@ -74,6 +77,7 @@ class IResourceRegistry(Interface):
         For use in management screens.
         """
 
+
 class ICSSRegistry(Interface):
     """A tool for registering and evaluating stylesheet linkage."""
 
@@ -87,8 +91,14 @@ class ICSSRegistry(Interface):
                            rendering='link', enabled=1):
         """Register a stylesheet."""
 
-    def manage_addStylesheet(id, expression='', media='screen', rel='stylesheet',
-                             rendering='link', enabled=True , REQUEST=None):
+    def manage_addStylesheet(
+            id,
+            expression='',
+            media='screen',
+            rel='stylesheet',
+            rendering='link',
+            enabled=True,
+            REQUEST=None):
         """Add stylesheet from a ZMI form."""
 
     def manage_removeStylesheet(id, REQUEST=None):
@@ -110,8 +120,8 @@ class IKSSRegistry(Interface):
     def registerKineticStylesheet(id, expression='', enabled=1):
         """Register a kineticstylesheet."""
 
-    def manage_addKineticStylesheet(id, expression='', 
-                                    enabled=True , REQUEST=None):
+    def manage_addKineticStylesheet(id, expression='',
+                                    enabled=True, REQUEST=None):
         """Add kineticstylesheet from a ZMI form."""
 
     def manage_removeKineticStylesheet(id, REQUEST=None):
@@ -122,6 +132,7 @@ class IKSSRegistry(Interface):
 
 
 class IJSRegistry(Interface):
+
     """A tool for registering and evaluating script linkage."""
 
     id = Attribute('id',
@@ -136,7 +147,12 @@ class IJSRegistry(Interface):
     def manage_saveScripts(REQUEST=None):
         """Save script data from form submission."""
 
-    def manage_addScript(id, expression='', inline=False, enabled=True , REQUEST=None):
+    def manage_addScript(
+            id,
+            expression='',
+            inline=False,
+            enabled=True,
+            REQUEST=None):
         """Add script from a ZMI form."""
 
     def manage_removeScript(id, REQUEST=None):

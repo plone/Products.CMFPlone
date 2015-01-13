@@ -1,11 +1,11 @@
+from .resourceregistry import ResourceRegistryNodeAdapter
+from .resourceregistry import importResRegistry
 from Products.ResourceRegistries.interfaces import ICSSRegistry
-
-from resourceregistry import ResourceRegistryNodeAdapter, \
-     importResRegistry
 
 _FILENAME = 'cssregistry.xml'
 _REG_ID = 'portal_css'
 _REG_TITLE = 'Stylesheet registry'
+
 
 def importCSSRegistry(context):
     """
@@ -15,6 +15,7 @@ def importCSSRegistry(context):
 
 
 class CSSRegistryNodeAdapter(ResourceRegistryNodeAdapter):
+
     """
     Node im- and exporter for CSSRegistry.
     """

@@ -1,53 +1,52 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="plone">
 
-    <browser:viewlet  
-        name="plone.resourceregistries.scripts" 
-        manager="plone.app.layout.viewlets.interfaces.IScripts"
-        class="Products.CMFPlone.resources.browser.scripts.ScriptsView"
-        template="scripts.pt"
-        permission="zope2.View" 
-        />
+  <browser:viewlet
+      name="plone.resourceregistries.scripts"
+      manager="plone.app.layout.viewlets.interfaces.IScripts"
+      class="Products.CMFPlone.resources.browser.scripts.ScriptsView"
+      template="scripts.pt"
+      permission="zope2.View"
+      />
 
-    <browser:viewlet  
-        name="plone.resourceregistries.styles" 
-        manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-        class="Products.CMFPlone.resources.browser.styles.StylesView"
-        template="styles.pt"
-        permission="zope2.View" 
-        />
-
-
-    <browser:page
-        for="*"
-        name="config.js"
-        class=".configjs.ConfigJsView"
-        permission="zope.Public"
-        />
-
-    <browser:page
-        for="*"
-        name="less-variables.js"
-        class=".mixins.LessConfiguration"
-        permission="zope.Public"
-        />
-
-    <browser:page
-        for="*"
-        name="less-modify.js"
-        class=".mixins.LessModifyConfiguration"
-        permission="zope.Public"
-        />
+  <browser:viewlet
+      name="plone.resourceregistries.styles"
+      manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
+      class="Products.CMFPlone.resources.browser.styles.StylesView"
+      template="styles.pt"
+      permission="zope2.View"
+      />
 
 
+  <browser:page
+      for="*"
+      name="config.js"
+      class=".configjs.ConfigJsView"
+      permission="zope.Public"
+      />
 
-    <browser:page
-        for="*"
-        name="plone_less_dependency.less"
-        class=".mixins.LessDependency"
-        permission="zope.Public"
-        />
+  <browser:page
+      for="*"
+      name="less-variables.js"
+      class=".mixins.LessConfiguration"
+      permission="zope.Public"
+      />
 
+  <browser:page
+      for="*"
+      name="less-modify.js"
+      class=".mixins.LessModifyConfiguration"
+      permission="zope.Public"
+      />
+
+
+  <browser:page
+      for="*"
+      name="plone_less_dependency.less"
+      class=".mixins.LessDependency"
+      permission="zope.Public"
+      />
 
 </configure>

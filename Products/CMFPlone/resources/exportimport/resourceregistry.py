@@ -1,17 +1,16 @@
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from zope.component import queryMultiAdapter
-from zope.component import queryUtility
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.utils import XMLAdapterBase
 from datetime import datetime
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
 
 
 def importResRegistry(context, reg_id, reg_title, filename):
-    """
-    Import resource registry.
+    """Import resource registry.
     """
     site = context.getSite()
     logger = context.getLogger('resourceregistry')
@@ -38,8 +37,7 @@ def importResRegistry(context, reg_id, reg_title, filename):
 class ResourceRegistryNodeAdapter(XMLAdapterBase):
 
     def _importNode(self, node):
-        """
-        Import the object from the DOM node.
+        """Import the object from the DOM node.
         """
         if self.registry is None:
             # Upgrade 3.x no registry there
@@ -125,5 +123,7 @@ class ResourceRegistryNodeAdapter(XMLAdapterBase):
                             res_id)
                     else:
                         legacy.resources.append(res_id)
-                if 'plone.resources.last_legacy_import' in self.registry.records:
-                    self.registry.records['plone.resources.last_legacy_import'].value = datetime.now()
+                if 'plone.resources.last_legacy_import' in self.registry.records:  # noqa
+                    self.registry.records[
+                        'plone.resources.last_legacy_import'
+                    ].value = datetime.now()

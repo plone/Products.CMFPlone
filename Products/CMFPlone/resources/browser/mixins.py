@@ -1,11 +1,10 @@
-from Products.Five.browser import BrowserView
-from zope.component import getUtility
-from zope.component import getMultiAdapter
-from urlparse import urlparse
-
-
-from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import IResourceRegistry
+from Products.Five.browser import BrowserView
+from plone.registry.interfaces import IRegistry
+from urlparse import urlparse
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+
 
 lessconfig = """
  window.less = {
@@ -35,8 +34,7 @@ less.modifyVars({
 
 
 class LessConfiguration(BrowserView):
-    """
-    Browser view that gets the definition of less variables on plone
+    """Browser view that gets the definition of less variables on plone.
     """
 
     def registry(self):
@@ -93,6 +91,7 @@ class LessConfiguration(BrowserView):
 
 
 class LessModifyConfiguration(LessConfiguration):
+
     def __call__(self):
         registry = self.registry()
         portal_state = getMultiAdapter((self.context, self.request),
@@ -122,8 +121,8 @@ class LessModifyConfiguration(LessConfiguration):
 
 
 class LessDependency(BrowserView):
-    """
-    Browser view that returns the less/css on less format for specific resource
+    """Browser view that returns the less/css on less format for specific
+    resource.
     """
 
     def registry(self):

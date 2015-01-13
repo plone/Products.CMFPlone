@@ -1,9 +1,8 @@
+from Products.CMFPlone.interfaces import IResourceRegistry
 from Products.Five.browser import BrowserView
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import IResourceRegistry
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-
 import re
 
 

@@ -1,24 +1,23 @@
-from zope import component
-from zope.ramcache.interfaces import ram
-
 from Acquisition import aq_inner, aq_base, aq_parent
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import (
-    IBundleRegistry,
-    IResourceRegistry)
-from plone.app.layout.viewlets.common import ViewletBase
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.Expression import createExprContext
-from zope.component import getMultiAdapter
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import IBundleRegistry
+from Products.CMFPlone.interfaces import IResourceRegistry
+from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.theming.utils import getCurrentTheme
-from plone.app.theming.utils import isThemeEnabled
 from plone.app.theming.utils import getTheme
+from plone.app.theming.utils import isThemeEnabled
+from plone.registry.interfaces import IRegistry
+from zope import component
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.ramcache.interfaces import ram
 
 
 class ResourceView(ViewletBase):
-    """ Information for script rendering. """
+    """Information for script rendering.
+    """
 
     @property
     def development(self):
@@ -26,7 +25,7 @@ class ResourceView(ViewletBase):
 
     @property
     def last_legacy_import(self):
-        return self.registry.records['plone.resources.last_legacy_import'].value
+        return self.registry.records['plone.resources.last_legacy_import'].value  # noqa
 
     def evaluateExpression(self, expression, context):
         """Evaluate an object's TALES condition to see if it should be
@@ -114,10 +113,14 @@ class ResourceView(ViewletBase):
             disabled_request_bundles.extend(self.request.disabled_bundles)
 
         for key, bundle in bundles.items():
-            # The diazo manifest and request bundles are more important than the disabled bundle on registry
+            # The diazo manifest and request bundles are more important than
+            # the disabled bundle on registry.
             # We can access the site with diazo.off=1 without diazo bundles
-            if (bundle.enabled or key in enabled_request_bundles or key in enabled_diazo_bundles) and \
-                    (key not in disabled_diazo_bundles and key not in disabled_request_bundles):
+            if (bundle.enabled
+                    or key in enabled_request_bundles
+                    or key in enabled_diazo_bundles) and\
+                    (key not in disabled_diazo_bundles
+                        and key not in disabled_request_bundles):
                 # check expression
                 if bundle.expression:
                     cooked_expression = None
@@ -179,4 +182,3 @@ class ResourceView(ViewletBase):
                 self.get_data(bundle, result)
 
         return result
-

@@ -4,14 +4,16 @@ from Products.CMFPlone.resources.browser.cook import cookWhenChangingSettings
 
 
 class ScriptsView(ResourceView):
-    """ Information for script rendering. """
+    """Information for script rendering.
+    """
 
     def get_data(self, bundle, result):
         bundle_name = bundle.__prefix__.split('/', 1)[1].rstrip('.')
         if self.development is False:
             if bundle.compile is False:
                 # Its a legacy css bundle
-                if not bundle.last_compilation or self.last_legacy_import > bundle.last_compilation:
+                if not bundle.last_compilation\
+                        or self.last_legacy_import > bundle.last_compilation:
                     # We need to compile
                     cookWhenChangingSettings(self.context, bundle)
             if bundle.jscompilation:
@@ -42,9 +44,8 @@ class ScriptsView(ResourceView):
                         result.append(data)
 
     def scripts(self):
-        """
-        The requirejs scripts, the ones that are not resources
-        are loaded on configjs.py
+        """The requirejs scripts, the ones that are not resources are loaded on
+        configjs.py
         """
         result = []
         # We always add jquery resource
