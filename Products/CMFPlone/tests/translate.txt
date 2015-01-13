@@ -29,7 +29,7 @@ First make a custom translator for our i18n domain
     >>> t = TranslationDomain()
     >>> from zope.component import provideUtility
     >>> provideUtility(t, ITranslationDomain, 'attesti18n')
-    >>> from Products.Archetypes.tests.atsitetestcase import portal_owner
+    >>> from plone.app.testing import SITE_OWNER_NAME as portal_owner
 
 
 Now be sure our values are correctly translated in view
