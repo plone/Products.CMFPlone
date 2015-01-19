@@ -20,7 +20,7 @@
     for="Products.ATContentTypes.interfaces.topic.IATTopic"
     zcml:condition="installed Products.ATContentTypes" />
   <adapter factory=".adapters.SearchFeed"
-    for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+    for="plone.app.layout.navigation.interfaces.INavigationRoot"
     provides="Products.CMFPlone.interfaces.syndication.ISearchFeed" />
   <adapter factory=".adapters.DexterityItem"
     zcml:condition="installed plone.dexterity"

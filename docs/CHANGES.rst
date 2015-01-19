@@ -8,6 +8,10 @@ Changelog
 4.3.5 (unreleased)
 ------------------
 
+- Allow search_rss view on subsites (implementing INavigationRoot, not only
+  IPloneSiteRoot) like it was the case in Plone 4.1.6.
+  [vincentfretin]
+
 - jQuery 1.9 compatibility for the toggleSelect function (Select all checkbox)
   [vincentfretin]
 
