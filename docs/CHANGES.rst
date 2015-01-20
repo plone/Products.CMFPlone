@@ -5,7 +5,28 @@
 Changelog
 =========
 
-4.3.4 (unreleased)
+4.3.5 (unreleased)
+------------------
+
+- Allow search_rss view on subsites (implementing INavigationRoot, not only
+  IPloneSiteRoot) like it was the case in Plone 4.1.6.
+  [vincentfretin]
+
+- jQuery 1.9 compatibility for the toggleSelect function (Select all checkbox)
+  [vincentfretin]
+
+- Sharing view javascript now works with jQuery 1.9.
+  [vincentfretin]
+
+
+4.3.4.1 (2014-11-13)
+--------------------
+
+- Make inline validation of AT multiple selection widget work.
+  [gbastien]
+
+
+4.3.4 (2014-10-22)
 ------------------
 
 - Fix getFolderContents to no longer ignore 'show_inactive' in contentFilter.
