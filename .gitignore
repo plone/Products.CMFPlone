@@ -16,6 +16,7 @@
 /lib
 /.project
 /.pydevproject
+.ropeproject
 /.mr.developer.cfg
 /src/*
 *.mo
