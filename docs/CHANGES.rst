@@ -441,3 +441,4 @@ Changelog
 - Use configuration registry to override translation of date format,
   or fall back to ISO style as last resort. Fixes http://dev.plone.org/ticket/11171
   [kleist]
+

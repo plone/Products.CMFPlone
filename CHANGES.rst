@@ -8,6 +8,9 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Extended ulocalized_time for target_language
+  [agitator]
+
 - Caching for ``@@site-logo``.
   [thet]
 
