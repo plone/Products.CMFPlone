@@ -1,21 +1,18 @@
 """
 Collection of i18n and l10n utility methods.
 """
-import re
-import logging
-
+from Acquisition import aq_acquire
+from DateTime import DateTime
+from DateTime.interfaces import IDateTime
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.utils import log
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.i18n.locales import locales
 from zope.publisher.interfaces.browser import IBrowserRequest
+import logging
+import re
 
-from Acquisition import aq_acquire
-from DateTime import DateTime
-from DateTime.interfaces import IDateTime
-
-from plone.registry.interfaces import IRegistry
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import log
 
 # these are taken from PTS, used for format interpolation
 NAME_RE = r"[a-zA-Z][a-zA-Z0-9_]*"
@@ -104,6 +101,7 @@ def get_formatstring_from_registry(msgid):
     record_name = name_root + msgid
     return registry.get(record_name, None)
 
+
 def ulocalized_time(time, long_format=None, time_only=False, context=None,
                     domain='plonelocales', request=None):
     """unicode aware localized time method (l10n)"""
@@ -164,7 +162,7 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
     # 1. if our Enabled flag in the configuration registry is set,
     # the format string there should override the translation machinery
     formatstring = get_formatstring_from_registry(msgid)
-    if not formatstring is None:
+    if formatstring is not None:
         return time.strftime(formatstring)
 
     # 2. the normal case: translation machinery,
@@ -174,11 +172,11 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
     # 3. if both failed, fall back to hardcoded ISO style
     if formatstring == msgid:
         if msgid == 'date_format_long':
-            formatstring = '%Y-%m-%d %H:%M' # 2038-01-19 03:14
+            formatstring = '%Y-%m-%d %H:%M'  # 2038-01-19 03:14
         elif msgid == 'date_format_short':
-            formatstring = '%Y-%m-%d' # 2038-01-19
+            formatstring = '%Y-%m-%d'  # 2038-01-19
         elif msgid == 'time_format':
-            formatstring = '%H:%M' # 03:14
+            formatstring = '%H:%M'  # 03:14
         else:
             formatstring = '[INTERNAL ERROR]'
         return time.strftime(formatstring)
@@ -225,6 +223,7 @@ def ulocalized_time(time, long_format=None, time_only=False, context=None,
 
     # translate the time string
     return translate(msgid, domain, mapping, request)
+
 
 def _numbertoenglishname(number, format=None, attr='_days'):
     # returns the english name of day or month number
