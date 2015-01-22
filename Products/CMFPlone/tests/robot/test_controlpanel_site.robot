@@ -6,6 +6,7 @@ Documentation
 
 Resource  plone/app/robotframework/keywords.robot
 Resource  plone/app/robotframework/saucelabs.robot
+Variables  Products/CMFPlone/tests/robot/variables.py
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
@@ -22,6 +23,12 @@ Scenario: Set Site Title in the Site Control Panel
     and the site control panel
    When I set the site title to 'My Site'
    Then the site title should be set to 'My Site'
+
+Scenario: Set Site Logo in the Site Control Panel
+  Given a logged-in site administrator
+    and the site control panel
+   When I set a custom logo
+   Then the site logo should be set to the custom logo
 
 Scenario: Enable Dublin Core Metadata in the Site Control Panel
   Given a logged-in site administrator
@@ -63,6 +70,11 @@ I set the site title to '${site_title}'
   Click Button  Save
   Wait until page contains  Changes saved
 
+I set a custom logo
+  Choose File  name=form.widgets.site_logo  ${PATH_TO_TEST_FILES}/pixel.png
+  Click Button  Save
+  Wait until page contains  Changes saved
+
 I enable dublin core metadata
   Select Checkbox  form.widgets.exposeDCMetaTags:list
   Click Button  Save
@@ -81,6 +93,10 @@ the site title should be set to '${expected_site_title}'
   ${actual_site_title}=  Get title
   Should be equal  ${actual_site_title}  ${expected_site_title}
 
+the site logo should be set to the custom logo
+  Go To  ${PLONE_URL}
+  Page should contain element  //*[@id="portal-logo"]/img[contains(@src,'@@site-logo/pixel.png')]
+  
 then I can see a sitemap
   Go to  ${PLONE_URL}/sitemap.xml.gz
   # We need a 'Download file' selenium2library keyword to test this:
