@@ -1,8 +1,11 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five">
+           xmlns:i18n="http://namespaces.zope.org/i18n"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           i18n_domain="plone">
 
   <include file="admin.zcml" />
+  <include file="caching.zcml" zcml:condition="installed z3c.caching"/>
 
   <class class="Products.CMFPlone.Portal.PloneSite">
     <implements interface="plone.app.layout.navigation.interfaces.INavigationRoot" />
@@ -15,6 +18,18 @@
   <permission
     id="Products.CMFPlone.AllowSendto"
     title="Allow sendto" />
+
+  <browser:resource
+      file="plone-logo.png"
+      name="plone-logo.png"
+      />
+
+  <browser:page
+      for="*"
+      name="site-logo"
+      class=".sitelogo.SiteLogo"
+      permission="zope.Public"
+      />
 
   <browser:page
       for="*"

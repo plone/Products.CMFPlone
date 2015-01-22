@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:cache="http://namespaces.zope.org/cache"
+    i18n_domain="plone">
+
+    <include package="z3c.caching" />
+    <include package="z3c.caching" file="meta.zcml" />
+
+    <cache:ruleset
+        for=".sitelogo.SiteLogo"
+        ruleset="plone.stableResource"
+        />
+
+</configure>

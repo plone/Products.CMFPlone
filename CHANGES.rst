@@ -8,6 +8,13 @@ Changelog
 5.0b1 (unreleased)
 ------------------
 
+- Caching for ``@@site-logo``.
+  [thet]
+
+- Support for portal site logos stored in the portal registry by uploading via
+  the site control panel. Add a ``@@site-logo`` view for downloading the logo.
+  [thet]
+
 - Fix the resource registry to save the automatically generated filepath to the
   compiled resource on the bundle object after compilation. The filepath is
   always in the '++plone++static/' namespace. This fix makes custom bundles

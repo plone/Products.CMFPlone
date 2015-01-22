@@ -36,5 +36,6 @@ class SiteControlPanelAdapter(object):
     site_title = property(get_site_title, set_site_title)
     webstats_js = property(get_webstats_js, set_webstats_js)
 
+    site_logo = ProxyFieldProperty(ISiteSchema['site_logo'])
     enable_sitemap = ProxyFieldProperty(ISiteSchema['enable_sitemap'])
     exposeDCMetaTags = ProxyFieldProperty(ISiteSchema['exposeDCMetaTags'])

@@ -57,11 +57,6 @@
   <adapter factory=".admin.AppTraverser" />
 
   <browser:resource
-      file="plone-logo.png"
-      name="plone-logo.png"
-      />
-
-  <browser:resource
       file="plone-admin-ui.css"
       name="plone-admin-ui.css"
       />

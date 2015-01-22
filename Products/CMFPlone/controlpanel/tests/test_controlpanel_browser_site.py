@@ -1,12 +1,22 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.testing import PRODUCTS_CMFPLONE_FUNCTIONAL_TESTING
+from StringIO import StringIO
 from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 import unittest2 as unittest
+
+# Red pixel with filename pixel.png
+SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
+                   'AAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAAAA'\
+                   'ElFTkSuQmCC'
+SITE_LOGO_HEX = '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00'\
+                '\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDAT'\
+                '\x08\xd7c\xf8\xcf\xc0\x00\x00\x03\x01\x01\x00\x18\xdd\x8d'\
+                '\xb0\x00\x00\x00\x00IEND\xaeB`\x82'
 
 
 class SiteControlPanelFunctionalTest(unittest.TestCase):
@@ -83,6 +93,17 @@ class SiteControlPanelFunctionalTest(unittest.TestCase):
 
         self.assertEqual(self.portal.title, u'My Site')
         self.assertEqual(self.portal.Title(), u'My Site')
+
+    def test_site_logo_is_stored_in_registry(self):
+        self.browser.open(
+            "%s/@@site-controlpanel" % self.portal_url)
+        ctrl = self.browser.getControl(name="form.widgets.site_logo")
+        ctrl.add_file(StringIO(SITE_LOGO_HEX), 'image/png', 'pixel.png')
+        self.browser.getControl('Save').click()
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix='plone')
+        self.assertEqual(settings.site_logo, SITE_LOGO_BASE64)
 
     def test_exposeDCMetaTags(self):
         self.browser.open(
