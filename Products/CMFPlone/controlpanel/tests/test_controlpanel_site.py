@@ -38,6 +38,9 @@ class SiteRegistryIntegrationTest(unittest.TestCase):
     def test_site_title_setting(self):
         self.assertTrue(hasattr(self.settings, 'site_title'))
 
+    def test_site_logo_setting(self):
+        self.assertTrue(hasattr(self.settings, 'site_logo'))
+
     def test_exposeDCMetaTags_setting(self):
         self.assertTrue(hasattr(self.settings, 'exposeDCMetaTags'))
 
