@@ -251,7 +251,7 @@
     <element value="Delete objects"/>
    </property>
    <property name="visible">True</property>
-   <property name="modal" type="text">{"actionOptions": {"formsUseAjax":false}}</property>
+   <property name="modal" type="text">{"actionOptions": {"formsUseAjax":false, "redirectOnResponse":true}}</property>
   </object>
   <object name="rename" meta_type="CMF Action" i18n:domain="plone">
    <property name="title" i18n:translate="">Rename</property>
