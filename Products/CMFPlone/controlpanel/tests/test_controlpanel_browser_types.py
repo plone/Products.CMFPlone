@@ -68,6 +68,28 @@ class TypesControlPanelFunctionalTest(unittest.TestCase):
             self.browser.contents
         )
 
+    def test_standard_types_redirect_links(self):
+        self.browser.open(self.types_url)
+        self.browser.getControl(name='type_id').value = ['Link']
+        self.browser.getForm(action=self.types_url).submit()
+        self.browser.getControl(
+            'Redirect immediately to link target'
+        ).selected = True
+        self.browser.getControl('Apply Changes').click()
+
+        # Check if settings got saved correctly
+        self.browser.open(self.types_url)
+        self.browser.getControl(name='type_id').value = ['Link']
+        self.browser.getForm(action=self.types_url).submit()
+        self.assertTrue(
+            'Redirect immediately to link target' in self.browser.contents
+        )
+        self.assertEquals(
+            self.browser.getControl(
+                'Redirect immediately to link target').selected,
+            True
+        )
+
     def test_set_no_default_workflow(self):
         # references http://dev.plone.org/plone/ticket/11901
         self.browser.open(self.types_url)
