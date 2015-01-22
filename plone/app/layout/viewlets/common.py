@@ -24,6 +24,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.layout.globals.interfaces import IViewView
 from plone.protect.utils import addTokenToUrl
+from plone.formwidget.namedfile.converter import b64decode_file
+from plone.namedfile.file import NamedImage
 
 
 class ViewletBase(BrowserView):
@@ -191,17 +193,35 @@ class LogoViewlet(ViewletBase):
     def update(self):
         super(LogoViewlet, self).update()
 
-        portal = self.portal_state.portal()
-        bprops = portal.restrictedTraverse('base_properties', None)
-        if bprops is not None:
-            logoName = bprops.logoName
-        else:
-            logoName = 'logo.png'
-
-        logoTitle = self.portal_state.portal_title()
-        self.logo_tag = portal.restrictedTraverse(
-            logoName).tag(title=logoTitle, alt=logoTitle)
+        # TODO: should this be changed to settings.site_title?
         self.navigation_root_title = self.portal_state.navigation_root_title()
+
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix="plone")
+        logo_title = settings.site_title
+
+        if getattr(settings, 'site_logo', False):
+            filename, data = b64decode_file(settings.site_logo)
+            data = NamedImage(data=data, filename=filename)
+            width, height = data.getImageSize()
+            img_src = '{}/@@site-logo/{}'.format(
+                self.navigation_root_url, filename)
+            self.logo_tag = u'<img src="{img_src}" '\
+                u'width="{width}" height="{height}"'\
+                u'alt="{logo_title}" title="{logo_title}"/>'.format(
+                    img_src=img_src,
+                    width=width,
+                    height=height,
+                    logo_title=logo_title
+                )
+        else:
+            portal = self.portal_state.navigation_root()
+            # Support for OFS.Image/skin layer based logos
+            logo_name = 'logo.png'
+            self.logo_tag = portal.restrictedTraverse(
+                logo_name).tag(title=logo_title, alt=logo_title)
+            # TODO: deprecate the skin layer based logo above and use one
+            #       defined as browser or plone resource.
 
 
 class GlobalSectionsViewlet(ViewletBase):
