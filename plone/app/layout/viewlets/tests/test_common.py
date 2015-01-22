@@ -1,17 +1,24 @@
+# -*- coding: utf-8 -*-
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import ISiteSchema
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.layout.viewlets.common import ContentViewsViewlet
+from plone.app.layout.viewlets.common import LogoViewlet
+from plone.app.layout.viewlets.common import TitleViewlet
+from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.layout.viewlets.tests.base import ViewletsTestCase
+from plone.protect import authenticator as auth
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 from zope.interface import noLongerProvides
 
-from Products.CMFPlone.interfaces import INonStructuralFolder
 
-from plone.app.layout.viewlets.tests.base import ViewletsTestCase
-from plone.app.layout.viewlets.common import (
-    ViewletBase, LogoViewlet, TitleViewlet)
-
-from plone.app.layout.viewlets.common import ContentViewsViewlet
-from plone.app.layout.navigation.interfaces import INavigationRoot
-
-from plone.protect import authenticator as auth
+# Red pixel with filename pixel.png
+SITE_LOGO_BASE64 = 'filenameb64:cGl4ZWwucG5n;datab64:iVBORw0KGgoAAAANSUhEUgAA'\
+                   'AAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4z8AAAAMBAQAY3Y2wAAAAA'\
+                   'ElFTkSuQmCC'
 
 
 class TestViewletBase(ViewletsTestCase):
@@ -119,7 +126,7 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.site_title,
                          u'Add Page &mdash; Folder')
 
-    def testLogoViewlet(self):
+    def testLogoViewletDefault(self):
         """Logo links towards navigation root
         """
         self._invalidateRequestMemoizations()
@@ -131,3 +138,17 @@ class TestContentViewsViewlet(ViewletsTestCase):
         self.assertEqual(viewlet.navigation_root_title, "Folder")
         # there is no theme yet in Plone 5, so we see the old png logo
         self.assertTrue("http://nohost/plone/logo.png" in viewlet.logo_tag)
+
+    def testLogoViewletRegistry(self):
+        """If logo is defined in plone.app.registry, use that one.
+        """
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ISiteSchema, prefix='plone')
+        settings.site_logo = SITE_LOGO_BASE64
+
+        viewlet = LogoViewlet(self.folder.test, self.app.REQUEST, None)
+        viewlet.update()
+        self.assertTrue(
+            '<img src="http://nohost/plone/@@site-logo/pixel.png"'
+            ' width="1" height="1"alt="Plone site" title="Plone site"/>'
+            in viewlet.logo_tag)
