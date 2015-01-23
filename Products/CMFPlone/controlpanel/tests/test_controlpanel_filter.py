@@ -55,3 +55,6 @@ class FilterRegistryIntegrationTest(unittest.TestCase):
 
     def test_style_whitelist_setting(self):
         self.assertTrue(hasattr(self.settings, 'style_whitelist'))
+
+    def test_class_blacklist_setting(self):
+        self.assertTrue(hasattr(self.settings, 'class_blacklist'))

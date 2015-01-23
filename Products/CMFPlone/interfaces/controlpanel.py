@@ -179,13 +179,13 @@ class IFilterSchema(Interface):
         value_type=schema.TextLine(),
         required=False)
 
-    # class_blacklist = schema.List(
-    #     title=_(u'Filtered classes'),
-    #     description=_(u'These class names are not allowed in class '
-    #                   'attributes.'),
-    #     default=[],
-    #     value_type=schema.TextLine(),
-    #     required=False)
+    class_blacklist = schema.List(
+        title=_(u'Filtered classes'),
+        description=_(u'These class names are not allowed in class '
+                      'attributes.'),
+        default=[],
+        value_type=schema.TextLine(),
+        required=False)
 
 
 class ITinyMCEPatternSchema(Interface):
