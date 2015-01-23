@@ -171,13 +171,13 @@ class IFilterSchema(Interface):
 
     # class IFilterEditorSchema(Interface):
 
-    # style_whitelist = schema.List(
-    #     title=_(u'Permitted properties'),
-    #     description=_(
-    #         u'These CSS properties are allowed in style attributes.'),
-    #     default=u'text-align list-style-type float text-decoration'.split(),
-    #     value_type=schema.TextLine(),
-    #     required=False)
+    style_whitelist = schema.List(
+        title=_(u'Permitted properties'),
+        description=_(
+            u'These CSS properties are allowed in style attributes.'),
+        default=u'text-align list-style-type float text-decoration'.split(),
+        value_type=schema.TextLine(),
+        required=False)
 
     # class_blacklist = schema.List(
     #     title=_(u'Filtered classes'),

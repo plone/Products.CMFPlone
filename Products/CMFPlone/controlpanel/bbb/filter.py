@@ -51,6 +51,13 @@ class FilterControlPanelAdapter(object):
     def set_stripped_combinations(self, value):
         self.settings.stripped_combinations = value
 
+    def get_style_whitelist(self):
+        return self.settings.style_whitelist
+
+    def set_style_whitelist(self, value):
+        self.settings.style_whitelist = value
+
+    style_whitelist = property(get_style_whitelist, set_style_whitelist)
     stripped_combinations = property(get_stripped_combinations,
                                      set_stripped_combinations)
     stripped_attributes = property(get_stripped_attributes,
