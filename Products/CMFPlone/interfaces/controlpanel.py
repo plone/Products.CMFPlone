@@ -140,13 +140,13 @@ class IFilterSchema(Interface):
         value_type=schema.TextLine(),
         required=False)
 
-    # custom_tags = schema.List(
-    #     title=_(u'Custom tags'),
-    #     description=_(u"Add tag names here for tags which are not part of "
-    #                   "XHTML but which should be permitted."),
-    #     default=[],
-    #     value_type=schema.TextLine(),
-    #     required=False)
+    custom_tags = schema.List(
+        title=_(u'Custom tags'),
+        description=_(u"Add tag names here for tags which are not part of "
+                      "XHTML but which should be permitted."),
+        default=[],
+        value_type=schema.TextLine(),
+        required=False)
 
     # class IFilterAttributesSchema(Interface):
 
