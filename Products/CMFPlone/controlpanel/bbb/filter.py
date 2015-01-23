@@ -39,6 +39,22 @@ class FilterControlPanelAdapter(object):
     def set_custom_tags(self, value):
         self.settings.custom_tags = value
 
+    def get_stripped_attributes(self):
+        return self.settings.stripped_attributes
+
+    def set_stripped_attributes(self, value):
+        self.settings.stripped_attributes = value
+
+    # def get_stripped_combinations(self):
+    #     return self.settings.stripped_combinations
+
+    # def set_stripped_combinations(self, value):
+    #     self.settings.stripped_combinations = value
+
+    # stripped_combinations = property(get_stripped_combinations,
+    #                                  set_stripped_combinations)
+    stripped_attributes = property(get_stripped_attributes,
+                                   set_stripped_attributes)
     custom_tags = property(get_custom_tags, set_custom_tags)
     stripped_tags = property(get_stripped_tags, set_stripped_tags)
     nasty_tags = property(get_nasty_tags, set_nasty_tags)

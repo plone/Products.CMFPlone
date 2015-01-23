@@ -150,14 +150,14 @@ class IFilterSchema(Interface):
 
     # class IFilterAttributesSchema(Interface):
 
-    # stripped_attributes = schema.List(
-    #     title=_(u'Stripped attributes'),
-    #     description=_(u"These attributes are stripped from any tag when "
-    #                   "saving."),
-    #     default=(u'dir lang valign halign border frame rules cellspacing '
-    #              'cellpadding bgcolor').split(),
-    #     value_type=schema.TextLine(),
-    #     required=False)
+    stripped_attributes = schema.List(
+        title=_(u'Stripped attributes'),
+        description=_(u"These attributes are stripped from any tag when "
+                      "saving."),
+        default=(u'dir lang valign halign border frame rules cellspacing '
+                 'cellpadding bgcolor').split(),
+        value_type=schema.TextLine(),
+        required=False)
 
     # stripped_combinations = schema.List(
     #     title=_(u'Stripped combinations'),

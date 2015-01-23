@@ -46,3 +46,9 @@ class FilterRegistryIntegrationTest(unittest.TestCase):
 
     def test_custom_tags_setting(self):
         self.assertTrue(hasattr(self.settings, 'custom_tags'))
+
+    def test_stripped_attributes_setting(self):
+        self.assertTrue(hasattr(self.settings, 'stripped_attributes'))
+
+    # def test_stripped_combinations_setting(self):
+    #     self.assertTrue(hasattr(self.settings, 'stripped_combinations'))
