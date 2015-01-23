@@ -15,7 +15,7 @@ class FilterRegistryIntegrationTest(unittest.TestCase):
 
     layer = PRODUCTS_CMFPLONE_INTEGRATION_TESTING
 
-    def setUp(self):
+    def setUp(self):  # NOQA
         self.portal = self.layer['portal']
         self.request = self.layer['request']
         registry = getUtility(IRegistry)
