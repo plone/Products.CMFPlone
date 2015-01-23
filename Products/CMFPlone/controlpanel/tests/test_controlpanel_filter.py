@@ -40,3 +40,6 @@ class FilterRegistryIntegrationTest(unittest.TestCase):
 
     def test_nasty_tags_setting(self):
         self.assertTrue(hasattr(self.settings, 'nasty_tags'))
+
+    def test_stripped_tags_setting(self):
+        self.assertTrue(hasattr(self.settings, 'stripped_tags'))
