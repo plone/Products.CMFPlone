@@ -29,7 +29,7 @@
   <browser:page
     name="filter-controlpanel"
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    class=".filter.FilterControlPanel"
+    class=".filter.FilterControlPanelView"
     permission="plone.app.controlpanel.Filtering"
     />
 

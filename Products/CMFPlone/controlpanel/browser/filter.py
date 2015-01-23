@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 from Products.CMFPlone import PloneMessageFactory as _  # NOQA
 from Products.CMFPlone.interfaces import IFilterSchema
-from plone.app.registry.browser import controlpanel
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.autoform.form import AutoExtensibleForm
+from plone.z3cform import layout
+from z3c.form import form
 
 
-class FilterControlPanelForm(controlpanel.RegistryEditForm):
-
+class FilterControlPanel(AutoExtensibleForm, form.EditForm):
     id = "FilterControlPanel"
     label = _(u"Filter settings")
     description = _("Filter settings.")
     schema = IFilterSchema
-    schema_prefix = "plone"
+    form_name = _(u"Filter Settings")
+    control_panel_view = "filter-controlpanel"
 
 
-class FilterControlPanel(controlpanel.ControlPanelFormWrapper):
-    form = FilterControlPanelForm
+class ControlPanelFormWrapper(layout.FormWrapper):
+    """Use this form as the plone.z3cform layout wrapper to get the control
+    panel layout.
+    """
+    index = ViewPageTemplateFile('filter_controlpanel.pt')
+
+
+FilterControlPanelView = layout.wrap_form(
+    FilterControlPanel, ControlPanelFormWrapper)
