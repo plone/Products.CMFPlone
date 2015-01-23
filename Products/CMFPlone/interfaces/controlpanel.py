@@ -124,67 +124,68 @@ class IFilterSchema(Interface):
         default=False,
         required=False)
 
-    nasty_tags = schema.List(
-        title=_(u'Nasty tags'),
-        description=_(u"These tags, and their content are completely blocked "
-                      "when a page is saved or rendered."),
-        default=[u'applet', u'embed', u'object', u'script'],
-        value_type=schema.TextLine(),
-        required=False)
+    # nasty_tags = schema.List(
+    #     title=_(u'Nasty tags'),
+    #     description=_(u"These tags, and their content are completely blocked "
+    #                   "when a page is saved or rendered."),
+    #     default=[u'applet', u'embed', u'object', u'script'],
+    #     value_type=schema.TextLine(),
+    #     required=False)
 
-    stripped_tags = schema.List(
-        title=_(u'Stripped tags'),
-        description=_(u"These tags are stripped when saving or rendering, "
-                      "but any content is preserved."),
-        default=[u'font', ],
-        value_type=schema.TextLine(),
-        required=False)
+    # stripped_tags = schema.List(
+    #     title=_(u'Stripped tags'),
+    #     description=_(u"These tags are stripped when saving or rendering, "
+    #                   "but any content is preserved."),
+    #     default=[u'font', ],
+    #     value_type=schema.TextLine(),
+    #     required=False)
 
-    custom_tags = schema.List(
-        title=_(u'Custom tags'),
-        description=_(u"Add tag names here for tags which are not part of "
-                      "XHTML but which should be permitted."),
-        default=[],
-        value_type=schema.TextLine(),
-        required=False)
+    # custom_tags = schema.List(
+    #     title=_(u'Custom tags'),
+    #     description=_(u"Add tag names here for tags which are not part of "
+    #                   "XHTML but which should be permitted."),
+    #     default=[],
+    #     value_type=schema.TextLine(),
+    #     required=False)
 
     # class IFilterAttributesSchema(Interface):
 
-    stripped_attributes = schema.List(
-        title=_(u'Stripped attributes'),
-        description=_(u"These attributes are stripped from any tag when "
-                      "saving."),
-        default=(u'dir lang valign halign border frame rules cellspacing '
-                 'cellpadding bgcolor').split(),
-        value_type=schema.TextLine(),
-        required=False)
+    # stripped_attributes = schema.List(
+    #     title=_(u'Stripped attributes'),
+    #     description=_(u"These attributes are stripped from any tag when "
+    #                   "saving."),
+    #     default=(u'dir lang valign halign border frame rules cellspacing '
+    #              'cellpadding bgcolor').split(),
+    #     value_type=schema.TextLine(),
+    #     required=False)
 
-    stripped_combinations = schema.List(
-        title=_(u'Stripped combinations'),
-        description=_(u"These attributes are stripped from those tags when "
-                      "saving."),
-        default=[],
-        # default=u'dir lang valign halign border frame rules cellspacing '
-        #         'cellpadding bgcolor'.split()
-        value_type=schema.Object(ITagAttrPair, title=u"combination"),
-        required=False)
+    # stripped_combinations = schema.List(
+    #     title=_(u'Stripped combinations'),
+    #     description=_(u"These attributes are stripped from those tags when "
+    #                   "saving."),
+    #     default=[],
+    #     # default=u'dir lang valign halign border frame rules cellspacing '
+    #     #         'cellpadding bgcolor'.split()
+    #     value_type=schema.Object(ITagAttrPair, title=u"combination"),
+    #     required=False)
 
     # class IFilterEditorSchema(Interface):
 
-    style_whitelist = schema.List(
-        title=_(u'Permitted properties'),
-        description=_(u'These CSS properties are allowed in style attributes.'),
-        default=u'text-align list-style-type float text-decoration'.split(),
-        value_type=schema.TextLine(),
-        required=False)
+    # style_whitelist = schema.List(
+    #     title=_(u'Permitted properties'),
+    #     description=_(
+    #         u'These CSS properties are allowed in style attributes.'),
+    #     default=u'text-align list-style-type float text-decoration'.split(),
+    #     value_type=schema.TextLine(),
+    #     required=False)
 
-    class_blacklist = schema.List(
-        title=_(u'Filtered classes'),
-        description=_(u'These class names are not allowed in class '
-                      'attributes.'),
-        default=[],
-        value_type=schema.TextLine(),
-        required=False)
+    # class_blacklist = schema.List(
+    #     title=_(u'Filtered classes'),
+    #     description=_(u'These class names are not allowed in class '
+    #                   'attributes.'),
+    #     default=[],
+    #     value_type=schema.TextLine(),
+    #     required=False)
 
 
 class ITinyMCEPatternSchema(Interface):
